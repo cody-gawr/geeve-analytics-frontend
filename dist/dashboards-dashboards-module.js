@@ -949,6 +949,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -962,10 +963,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ClinicianAnalysisService = /** @class */ (function () {
     function ClinicianAnalysisService(http, _cookieService) {
         this.http = http;
         this._cookieService = _cookieService;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
         //append headers
         this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         this.headers.append("Content-Type", 'application/json');
@@ -978,7 +981,7 @@ var ClinicianAnalysisService = /** @class */ (function () {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/caDentistProtection/23/1", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caDentistProtection/23/1", { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -988,7 +991,7 @@ var ClinicianAnalysisService = /** @class */ (function () {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/caDentistProtection/23/1/" + dentist_id, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caDentistProtection/23/1/" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -998,7 +1001,7 @@ var ClinicianAnalysisService = /** @class */ (function () {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost/23/1", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost/23/1", { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1008,7 +1011,7 @@ var ClinicianAnalysisService = /** @class */ (function () {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost/23/1/" + dentist_id, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost/23/1/" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1018,7 +1021,7 @@ var ClinicianAnalysisService = /** @class */ (function () {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost/23/1", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost/23/1", { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1028,7 +1031,7 @@ var ClinicianAnalysisService = /** @class */ (function () {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/caNumberPatientComplaints/23/1", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNumberPatientComplaints/23/1", { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1038,7 +1041,7 @@ var ClinicianAnalysisService = /** @class */ (function () {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/caNumberPatientComplaints/23/1/" + dentist_id, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNumberPatientComplaints/23/1/" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1617,6 +1620,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1630,10 +1634,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ClinicianProceeduresService = /** @class */ (function () {
     function ClinicianProceeduresService(http, _cookieService) {
         this.http = http;
         this._cookieService = _cookieService;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
         //append headers
         this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         this.headers.append("Content-Type", 'application/json');
@@ -1646,18 +1652,18 @@ var ClinicianProceeduresService = /** @class */ (function () {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get("http://localhost/jeeveanalytics/server/ClinicianProcedures/cpItemsPredictorAnalysis?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpItemsPredictorAnalysis?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
-    // Items Predictor Analysis 
+    // Items Predictor Analysis  
     ClinicianProceeduresService.prototype.ItemsPredictorAnalysisDentist = function (dentist_id, user_id, clinic_id, startDate, endDate) {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get("http://localhost/jeeveanalytics/server/ClinicianProcedures/cpItemsPredictorAnalysis?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&dentist_id=" + dentist_id, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpItemsPredictorAnalysis?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&dentist_id=" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1668,7 +1674,7 @@ var ClinicianProceeduresService = /** @class */ (function () {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get("http://localhost/jeeveanalytics/server/ClinicianProcedures/cpPredictorRatio?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpPredictorRatio?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1679,7 +1685,7 @@ var ClinicianProceeduresService = /** @class */ (function () {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get("http://localhost/jeeveanalytics/server/ClinicianProcedures/cpPredictorRatio?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&dentist_id=" + dentist_id, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpPredictorRatio?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&dentist_id=" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1690,7 +1696,7 @@ var ClinicianProceeduresService = /** @class */ (function () {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get("http://localhost/jeeveanalytics/server/ClinicianProcedures/cpTotalRevenueOfClinicianPerProcedure?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpTotalRevenueOfClinicianPerProcedure?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1701,7 +1707,7 @@ var ClinicianProceeduresService = /** @class */ (function () {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get("http://localhost/jeeveanalytics/server/ClinicianProcedures/cpTotalRevenueOfClinicianPerProcedure?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&dentist_id=" + dentist_id, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpTotalRevenueOfClinicianPerProcedure?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&dentist_id=" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1712,7 +1718,7 @@ var ClinicianProceeduresService = /** @class */ (function () {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get("http://localhost/jeeveanalytics/server/ClinicianProcedures/cpReferralToOtherClinicians?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpReferralToOtherClinicians?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1723,7 +1729,7 @@ var ClinicianProceeduresService = /** @class */ (function () {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get("http://localhost/jeeveanalytics/server/ClinicianProcedures/cpReferralToOtherClinicians?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpReferralToOtherClinicians?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));

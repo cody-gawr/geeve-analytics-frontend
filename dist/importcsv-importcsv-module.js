@@ -405,7 +405,7 @@ var ImportcsvService = /** @class */ (function () {
         formData.append('file_input', 'file');
         formData.append('token', this._cookieService.get("token"));
         // console.log(formData);
-        return this.http.post("http://localhost/jeeveanalytices/server/AccountingInvoicesAndReceipts/uploadFile", formData)
+        return this.http.post("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/uploadFile", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -415,7 +415,7 @@ var ImportcsvService = /** @class */ (function () {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytices/server/logs/getUploadedCsvLogs/23/1", {})
+        return this.http.get("http://localhost/jeeveanalytics/server/logs/getUploadedCsvLogs/23/1", {})
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -425,7 +425,7 @@ var ImportcsvService = /** @class */ (function () {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytices/server/AccountingInvoicesAndReceipts/processAllCsv/23/1", {})
+        return this.http.get("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/processAllCsv/23/1", {})
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));

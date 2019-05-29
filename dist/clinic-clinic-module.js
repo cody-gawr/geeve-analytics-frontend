@@ -256,6 +256,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -269,10 +270,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ClinicService = /** @class */ (function () {
     function ClinicService(http, _cookieService) {
         this.http = http;
         this._cookieService = _cookieService;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
         //append headers
         this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         this.headers.append("Content-Type", 'application/json');
@@ -284,7 +287,7 @@ var ClinicService = /** @class */ (function () {
         if (user_id === void 0) { user_id = '23'; }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytics/server/Practices/getPractices/23/", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/Practices/getPractices/23/", { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -295,7 +298,7 @@ var ClinicService = /** @class */ (function () {
         var formData = new FormData();
         formData.append('id', clinic_id);
         formData.append('token', token);
-        return this.http.post("http://localhost/jeeveanalytics/server/Practices/delete", formData)
+        return this.http.post(this.apiUrl + "/Practices/delete", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -309,7 +312,7 @@ var ClinicService = /** @class */ (function () {
         formData.append('user_id', '23');
         formData.append('clinic_id', '1');
         formData.append('token', token);
-        return this.http.post("http://localhost/jeeveanalytics/server/Practices/update/", formData)
+        return this.http.post(this.apiUrl + "/Practices/update/", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
