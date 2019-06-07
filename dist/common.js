@@ -59,17 +59,18 @@ var DentistService = /** @class */ (function () {
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
     }
     // Get Dentist
-    DentistService.prototype.getDentists = function (user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    DentistService.prototype.getDentists = function (clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/dentists/23/1", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/dentists?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     // Delete Dentist
-    DentistService.prototype.deleteDentists = function (dentist_id, token) {
+    DentistService.prototype.deleteDentists = function (dentist_id, user_id, token) {
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
         var formData = new FormData();
         formData.append('id', dentist_id);
@@ -80,15 +81,29 @@ var DentistService = /** @class */ (function () {
         }));
     };
     // Update Dentist
-    DentistService.prototype.updateDentists = function (dentist_id, value, token) {
+    DentistService.prototype.updateDentists = function (dentist_id, value, clinic_id, token) {
         if (token === void 0) { token = this._cookieService.get("token"); }
         var formData = new FormData();
         formData.append('provider_id', dentist_id);
         formData.append('name', value);
         formData.append('user_id', '23');
-        formData.append('clinic_id', '1');
+        formData.append('clinic_id', clinic_id);
         formData.append('token', token);
         return this.http.post(this.apiUrl + "/Dentists/update", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Add Dentist
+    DentistService.prototype.addDentists = function (dentist_id, value, clinic_id, token) {
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        var formData = new FormData();
+        formData.append('provider_id', dentist_id);
+        formData.append('name', value);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('clinic_id', clinic_id);
+        formData.append('token', token);
+        return this.http.post(this.apiUrl + "/Dentists/add", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));

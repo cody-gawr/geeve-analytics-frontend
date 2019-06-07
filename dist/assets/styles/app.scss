@@ -1011,10 +1011,37 @@ list inline
         &:last-child{
             margin-right: 0px;
         }
-        
+
     }
 }
 .button-row button{
     margin-right:2px;
     margin-left:2px;
 }
+
+
+.mat-gray{
+    background: #293846;
+    color: #fff;
+    box-shadow: none;
+}
+.mat-white{background: #fff;
+    color: #424242;
+    box-shadow: 0 1px 2px 0 rgba(36,50,66,.15);}
+
+.mat-toolbar-row, .mat-toolbar-single-row{height:60px!important;}
+.ngx-gauge-meter{margin-left:-150px!important; left:50%!important;}
+.mat-drawer-container{background:#F3F3F4!important;}
+.mat-sidenav{background:#2f4050!important; color:#676a6c!important; font-size:13px!important; border:none!important}
+#snav{
+    .app-sidebar {
+        .mat-nav-list {
+            .mat-list-item {
+                .mat-list-item-content {
+                    padding: 0 0px!important; border-radius:0;
+                }
+            }
+        }
+    }
+}
+

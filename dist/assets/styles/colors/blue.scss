@@ -11,11 +11,11 @@ $blue-app-accent: mat-palette($mat-blue, A200, A100, A400);
 $blue-app-warn: mat-palette($mat-pink);
 // Create the theme object (a Sass map containing all of the palettes).
 $blue-app-theme: mat-light-theme($blue-app-primary, $blue-app-accent, $blue-app-warn);
-$themecolor:#1E88E5;
-$themecolor-alt: #1E88E5;
+$themecolor:#18A689;
+$themecolor-alt: #18A689;
 $white:#fff;
 #snav {
-    .mat-nav-list .mat-list-item { 
+    .mat-nav-list .mat-list-item {
         .mat-list-item-content {
             &:hover {
                 > a {

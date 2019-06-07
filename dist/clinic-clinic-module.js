@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Clinics</mat-card-title>\n        <input type='button' value='Add Clinic' (click)=\"addClinics()\">\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter Clinic name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n       <ngx-datatable-column name=\"Id\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span>\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"clinicName\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'clinicName')\" *ngIf=\"!editing[rowIndex + '-clinicName']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'clinicName', rowIndex)\" *ngIf=\"editing[rowIndex+ '-clinicName']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n       <ngx-datatable-column name=\"Address\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'address')\" *ngIf=\"!editing[rowIndex + '-address']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'address', rowIndex)\" *ngIf=\"editing[rowIndex+ '-address']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n       <ngx-datatable-column name=\"ContactName\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'contactName')\" *ngIf=\"!editing[rowIndex + '-contactName']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'contactName', rowIndex)\" *ngIf=\"editing[rowIndex+ '-contactName']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Created\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Created\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n           <button mat-menu-item (click) = \"deleteClinic(rowIndex)\">\n         <i class=\"ti-trash text-danger m-r-10\"></i></button>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
+module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Clinics  <button class=\"sa-pull-right mat-raised-button mat-gray\" mat-raised-button (click)=\"openDialog()\"disabled =\"true \">Add Clinic</button></mat-card-title>\n\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter Clinic name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n       <ngx-datatable-column name=\"Sr\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Id</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span>\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"clinicName\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Clinic Name</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'clinicName')\" *ngIf=\"!editing[rowIndex + '-clinicName']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'clinicName', rowIndex)\" *ngIf=\"editing[rowIndex+ '-clinicName']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n       <ngx-datatable-column name=\"Address\">\n       \n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'address')\" *ngIf=\"!editing[rowIndex + '-address']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'address', rowIndex)\" *ngIf=\"editing[rowIndex+ '-address']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n       <ngx-datatable-column name=\"ContactName\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Contact Name</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'contactName')\" *ngIf=\"!editing[rowIndex + '-contactName']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'contactName', rowIndex)\" *ngIf=\"editing[rowIndex+ '-contactName']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Created\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n            {{value| date}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"id\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Actions</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\" style=\"width:266px!important;\">\n           \n          <a [routerLink]=\"['/importcsv',value]\" class=\"action_btn golden\" title= 'Import CSV'><i class=\"ti-upload  m-r-10\"></i></a>\n          <a [routerLink]=\"['/dentist',value]\" class=\"action_btn golden\" title= 'List Dentist'><i class=\"ti-view-list-alt  m-r-10\"></i></a>\n             <a [routerLink]=\"['/clinic-goals',value]\" class=\"action_btn golden\" title= 'Clinic Goals'><i class=\"fas fa-stethoscope  m-r-10\"></i></a>\n          <a [routerLink]=\"['/dentist-goals',value]\" class=\"action_btn golden\" title= 'Dentist Goals'><i class=\"fas fa-tooth m-r-10\"></i></a>\n          <a [routerLink]=\"['/clinic-settings',value]\" class=\"action_btn golden\" title= 'Clinic Settings'><i class=\"ti-settings  m-r-10\"></i></a>\n          <button class=\"action_btn danger\" mat-menu-item (click) = \"deleteClinic(rowIndex)\">\n         <i class=\"ti-trash text-danger m-r-10\"></i></button>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
 
 /***/ }),
 
@@ -26,14 +26,16 @@ module.exports = ".lds-roller div::after {\n  background: black; }\n\n.spinner {
 /*!********************************************!*\
   !*** ./src/app/clinic/clinic.component.ts ***!
   \********************************************/
-/*! exports provided: ClinicComponent */
+/*! exports provided: DialogOverviewExampleDialogComponent, ClinicComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DialogOverviewExampleDialogComponent", function() { return DialogOverviewExampleDialogComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClinicComponent", function() { return ClinicComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _clinic_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./clinic.service */ "./src/app/clinic/clinic.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -43,19 +45,51 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 
+
+
+var DialogOverviewExampleDialogComponent = /** @class */ (function () {
+    function DialogOverviewExampleDialogComponent(dialogRef, data) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+    }
+    DialogOverviewExampleDialogComponent.prototype.onNoClick = function () {
+        this.dialogRef.close();
+    };
+    DialogOverviewExampleDialogComponent.prototype.onChange = function (event) {
+        var eventObj = event;
+        var target = eventObj.target;
+        var files = target.files;
+        this.file = files[0];
+        console.log(this.file);
+        //  this.filedata =this.file;
+    };
+    DialogOverviewExampleDialogComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-dialog-overview-example-dialog',
+            template: __webpack_require__(/*! ./dialog-overview-example.html */ "./src/app/clinic/dialog-overview-example.html"),
+        }),
+        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"], Object])
+    ], DialogOverviewExampleDialogComponent);
+    return DialogOverviewExampleDialogComponent;
+}());
 
 var data = __webpack_require__(/*! assets/company.json */ "./src/assets/company.json");
 var ClinicComponent = /** @class */ (function () {
-    function ClinicComponent(clinicService) {
+    function ClinicComponent(clinicService, dialog) {
         var _this = this;
         this.clinicService = clinicService;
+        this.dialog = dialog;
         this.editing = {};
         this.rows = [];
         this.temp = data.slice();
         this.loadingIndicator = true;
         this.reorderable = true;
-        this.columns = [{ prop: 'id' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
+        this.columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
         this.rows = data;
         this.temp = data.slice();
         setTimeout(function () {
@@ -65,6 +99,23 @@ var ClinicComponent = /** @class */ (function () {
     ClinicComponent_1 = ClinicComponent;
     ClinicComponent.prototype.ngAfterViewInit = function () {
         this.getClinics();
+    };
+    ClinicComponent.prototype.openDialog = function () {
+        var _this = this;
+        var dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            width: '250px',
+            data: { name: this.name, address: this.address, contact_name: this.contact_name }
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            _this.clinicService.addClinic(result.name, result.address, result.contact_name).subscribe(function (res) {
+                if (res.message == 'success') {
+                    alert('Clinic Added');
+                    _this.getClinics();
+                }
+            }, function (error) {
+                _this.warningMessage = "Please Provide Valid Inputs!";
+            });
+        });
     };
     ClinicComponent.prototype.getClinics = function () {
         var _this = this;
@@ -81,19 +132,21 @@ var ClinicComponent = /** @class */ (function () {
     };
     ClinicComponent.prototype.deleteClinic = function (row) {
         var _this = this;
-        if (this.rows[row]['id']) {
-            this.clinicService.deleteClinic(this.rows[row]['id']).subscribe(function (res) {
-                if (res.message == 'success') {
-                    alert('Clinic Removed');
-                    _this.getClinics();
-                }
-            }, function (error) {
-                _this.warningMessage = "Please Provide Valid Inputs!";
-            });
-        }
-        else {
-            this.rows.splice(row, 1);
-            this.rows = this.rows.slice();
+        if (confirm("Are you sure to delete Clinic?")) {
+            if (this.rows[row]['id']) {
+                this.clinicService.deleteClinic(this.rows[row]['id']).subscribe(function (res) {
+                    if (res.message == 'success') {
+                        alert('Clinic Removed');
+                        _this.getClinics();
+                    }
+                }, function (error) {
+                    _this.warningMessage = "Please Provide Valid Inputs!";
+                });
+            }
+            else {
+                this.rows.splice(row, 1);
+                this.rows = this.rows.slice();
+            }
         }
     };
     ClinicComponent.prototype.addDentist = function () {
@@ -147,7 +200,7 @@ var ClinicComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./clinic.component.html */ "./src/app/clinic/clinic.component.html"),
             styles: [__webpack_require__(/*! ./clinic.component.scss */ "./src/app/clinic/clinic.component.scss")]
         }),
-        __metadata("design:paramtypes", [_clinic_service__WEBPACK_IMPORTED_MODULE_1__["ClinicService"]])
+        __metadata("design:paramtypes", [_clinic_service__WEBPACK_IMPORTED_MODULE_1__["ClinicService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]])
     ], ClinicComponent);
     return ClinicComponent;
 }());
@@ -176,12 +229,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _clinic_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./clinic.service */ "./src/app/clinic/clinic.service.ts");
 /* harmony import */ var _clinic_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./clinic.component */ "./src/app/clinic/clinic.component.ts");
 /* harmony import */ var _clinic_routing__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./clinic.routing */ "./src/app/clinic/clinic.routing.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -201,12 +256,15 @@ var ClinicModule = /** @class */ (function () {
                 _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(_clinic_routing__WEBPACK_IMPORTED_MODULE_8__["ClinicRoutes"]),
                 _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatInputModule"],
                 _swimlane_ngx_datatable__WEBPACK_IMPORTED_MODULE_5__["NgxDatatableModule"],
-                _demo_material_module__WEBPACK_IMPORTED_MODULE_4__["DemoMaterialModule"]
+                _demo_material_module__WEBPACK_IMPORTED_MODULE_4__["DemoMaterialModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_9__["FormsModule"]
             ],
             providers: [
                 _clinic_service__WEBPACK_IMPORTED_MODULE_6__["ClinicService"]
             ],
-            declarations: [_clinic_component__WEBPACK_IMPORTED_MODULE_7__["ClinicComponent"]]
+            entryComponents: [_clinic_component__WEBPACK_IMPORTED_MODULE_7__["DialogOverviewExampleDialogComponent"]],
+            declarations: [_clinic_component__WEBPACK_IMPORTED_MODULE_7__["ClinicComponent"],
+                _clinic_component__WEBPACK_IMPORTED_MODULE_7__["DialogOverviewExampleDialogComponent"]]
         })
     ], ClinicModule);
     return ClinicModule;
@@ -284,10 +342,10 @@ var ClinicService = /** @class */ (function () {
     }
     // Get Dentist
     ClinicService.prototype.getClinics = function (user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/Practices/getPractices/23/", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/Practices/getPractices?user_id=" + user_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -309,10 +367,24 @@ var ClinicService = /** @class */ (function () {
         var formData = new FormData();
         formData.append('id', clinic_id);
         formData.append(column, value);
-        formData.append('user_id', '23');
+        formData.append('user_id', this._cookieService.get("userid"));
         formData.append('clinic_id', '1');
         formData.append('token', token);
         return this.http.post(this.apiUrl + "/Practices/update/", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Update Clinic
+    ClinicService.prototype.addClinic = function (name, address, contact_name, token) {
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        var formData = new FormData();
+        formData.append('clinicName', name);
+        formData.append('address', address);
+        formData.append('contactName', contact_name);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', token);
+        return this.http.post(this.apiUrl + "/Practices/add/", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -325,6 +397,17 @@ var ClinicService = /** @class */ (function () {
 }());
 
 
+
+/***/ }),
+
+/***/ "./src/app/clinic/dialog-overview-example.html":
+/*!*****************************************************!*\
+  !*** ./src/app/clinic/dialog-overview-example.html ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h1 mat-dialog-title>Add Clinic</h1>\n<div mat-dialog-content>\n \n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.name\" placeholder=\"Clinic Name\">\n  </mat-form-field>\n\n  \n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.address\" placeholder=\"Address\">\n  </mat-form-field>\n\n  \n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.contact_name\" placeholder=\"Contact Name\">\n  </mat-form-field>\n  <!--  <input type=\"file\" (change)=\"onChange($event)\"> -->\n</div>\n<div mat-dialog-actions>\n  <button mat-button [mat-dialog-close]=\"data\" tabindex=\"2\" class=\"mat-raised-button mat-dc\">Ok</button>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" class=\"mat-raised-button mat-gray\">No Thanks</button>\n</div>"
 
 /***/ })
 

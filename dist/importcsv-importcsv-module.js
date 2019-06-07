@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Import CSV</mat-card-title>\n        <span class=\"error\" [style.display]=\"'none'\"></span>\n        <input type='button' value=\"Process Files\" (click) = \"processAllFiles()\">\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter file name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n            <ngx-datatable-column name=\"Name\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          {{value}}\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Date\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" >\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Sample\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n         <a href='{{value}}'>Sample CSV</a>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Select File\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n           <input #fileInput\n                         type=\"file\"\n                         accept=\"csv/*\"\n                         (change)=\"processFile(fileInput,[rowIndex],'name')\" >\n                        <span *ngIf=\"show\">Uploading File...</span>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
+module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Import CSV<input type='button'  class=\"sa-pull-right mat-raised-button mat-gray\" value=\"Process Files\" (click) = \"processAllFiles()\"><img alt=\"homepage\" src=\"assets/images/loading-gif-transparent-4.gif\" height=\"20px\" width=\"20px\" class=\"ng-hide\" id=\"processLoader\"> &nbsp;&nbsp;&nbsp;  <i class=\"fas fa-info-circle text-inspinia m-r-10\" matTooltip=\"File to be uploaded should have the same defined name.\"></i></mat-card-title>\n        <span class=\"error\" [style.display]=\"'none'\"></span>\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter file name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n            <ngx-datatable-column name=\"Name\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          {{value}}\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Date\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" >\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Sample\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n         <a class=\"mat-raised-button sa_smtable_btn\" href='{{homeUrl}}../src/assets/{{value}}.csv'>Sample CSV</a>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Status\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n        <span class=\"label label-red\"  *ngIf=\"value == 'Processed'\">{{value}}</span>\n        <span class=\"label label-danger\"  *ngIf=\"value == 'Pending'\">{{value}}</span>\n        <span class=\"label label-info\"  *ngIf=\"value == 'In Progress'\">{{value}}</span>\n        <span class=\"label label-light-success\"  *ngIf=\"value == 'No File Uploaded  '\">{{value}}</span>\n\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"id\">\n        <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Actions</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n           <input id=\"file-upload{{value}}\" class=\"ng-hide\" #fileInput\n                         type=\"file\"\n                         accept=\"csv/*\"\n                         (change)=\"processFile(fileInput,[rowIndex],'name')\" >\n                        <span *ngIf=\"show\">Uploading File...</span>\n            <label for=\"file-upload{{value}}\" class=\"mat-raised-button sa_smtable_btn mat-dc\">Choose Files</label>\n\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
 
 /***/ }),
 
@@ -24,6 +24,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _importcsv_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./importcsv.service */ "./src/app/importcsv/importcsv.service.ts");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -36,109 +38,150 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 var data = [
     {
-        name: 'Accounting Invoices and Receipts.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '1',
+        name: 'Accounting Invoices and Receipts',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Items Performed Over Period.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '2',
+        name: 'Items Performed Over Period',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Treatment Plan Analysis.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '3',
+        name: 'Treatment Plan Analysis',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Work Time Analysis.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '4',
+        name: 'Work Time Analysis',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Efficiency of Referral Sources New Patients.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '5',
+        name: 'Efficiency of Referral Sources New Patients',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - Attended.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '6',
+        name: 'Status - Attended',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - CDBS.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '7',
+        name: 'Status - CDBS',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - Confirmed.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '8',
+        name: 'Status - Confirmed',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - FTA.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '9',
+        name: 'Status - FTA',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - Lab Arrived.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '10',
+        name: 'Status - Lab Arrived',
+        date: 'No Uploads Yet',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - Lab Work.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '11',
+        name: 'Status - Lab Work',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - Message Given.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '12',
+        name: 'Status - Message Given',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - New Patient.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '13',
+        name: 'Status - New Patient',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - No Status (Non Financial).csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '14',
+        name: 'Status - No Status (Non Financial)',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - Phone Patient.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '15',
+        name: 'Status - Phone Patient',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - Recall.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '16',
+        name: 'Status - Recall',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     },
     {
-        name: 'Status - SMS Sent.csv',
-        date: '2019-04-22',
-        sample: 'sample-csv/Accounting Invoices and Receipts.csv',
+        id: '17',
+        name: 'Status - SMS Sent',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     }
 ];
 var ImportcsvComponent = /** @class */ (function () {
-    function ImportcsvComponent(importcsvService, datePipe) {
+    function ImportcsvComponent(importcsvService, datePipe, route) {
         var _this = this;
         this.importcsvService = importcsvService;
         this.datePipe = datePipe;
+        this.route = route;
+        this.clinic_id = {};
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiUrl;
+        this.homeUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].homeUrl;
         this.show = false;
         this.editing = {};
         this.rows = [];
         this.logData = [];
         this.arr1 = [];
         this.temp = data.slice();
+        this.label = '';
         this.loadingIndicator = true;
         this.reorderable = true;
         this.currentDate = new Date();
         this.columns = [{ prop: 'name' }, { name: 'date' }];
         this.radioModel = 'Month';
+        this.clinic_id = this.route.snapshot.paramMap.get("id");
         this.rows = data;
         this.temp = data.slice();
         setTimeout(function () {
@@ -147,7 +190,11 @@ var ImportcsvComponent = /** @class */ (function () {
     }
     ImportcsvComponent_1 = ImportcsvComponent;
     ImportcsvComponent.prototype.ngAfterViewInit = function () {
-        this.getLogs();
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            _this.clinic_id = _this.route.snapshot.paramMap.get("id");
+            _this.getLogs();
+        });
     };
     ImportcsvComponent.prototype.processFile = function (fileInput, rowIndex, cell) {
         var _this = this;
@@ -158,10 +205,10 @@ var ImportcsvComponent = /** @class */ (function () {
         //this.show = true;   
         reader.addEventListener('load', function (event) {
             _this.selectedFile = new FileSnippet(event.target.result, file);
-            if (_this.selectedFile.file.name == _this.rows[rowIndex][cell]) {
-                _this.importcsvService.uploadFile(_this.selectedFile.file).subscribe(function (data) {
+            if (_this.selectedFile.file.name == _this.rows[rowIndex][cell] + '.csv') {
+                _this.importcsvService.uploadFile(_this.selectedFile.file, _this.clinic_id).subscribe(function (data) {
                     if (data.message == 'success') {
-                        alert('File Uploaded Successfully-' + _this.selectedFile.file.name);
+                        alert('File Uploaded Successfully-' + _this.selectedFile.file.name + ' . Please Process the files');
                         _this.getLogs();
                         _this.show = false;
                     }
@@ -171,29 +218,53 @@ var ImportcsvComponent = /** @class */ (function () {
                 });
             }
             else {
-                document.querySelector('.error').style.display = 'block';
-                document.querySelector('.error').innerHTML += '<b style = "color:red">Incorrect File uploaded for ' + _this.rows[rowIndex][cell] + '</b>';
+                alert('Incorrect File uploaded for ' + _this.rows[rowIndex][cell]);
+                /*(<HTMLElement>document.querySelector('.error')).style.display = 'block';
+                (<HTMLElement>document.querySelector('.error')).innerHTML += '<b style = "color:red">Incorrect File uploaded for '+this.rows[rowIndex][cell]+'</b>';*/
             }
         });
         reader.readAsDataURL(file);
     };
     ImportcsvComponent.prototype.getLogs = function () {
         var _this = this;
-        this.importcsvService.getLogs().subscribe(function (res) {
+        this.rows = data;
+        this.temp = data.slice();
+        this.table = data;
+        this.arr1 = [];
+        this.importcsvService.getLogs(this.clinic_id).subscribe(function (res) {
             if (res.message == 'success') {
                 res.data.forEach(function (result, key) {
                     var temp = {};
+                    temp['id'] = key;
                     temp['name'] = result.filename;
-                    temp['sample'] = 'sample-csv/' + result.filename;
-                    if (result.uploaded_csv_logs.length > 0) {
-                        temp['date'] = _this.datePipe.transform(result.uploaded_csv_logs[0].created, 'yyyy/MM/dd h:m:s');
+                    temp['sample'] = 'csv-sample/' + result.filename;
+                    if (result.uploaded_csv_logs_unprocess) {
+                        temp['date'] = _this.datePipe.transform(result.uploaded_csv_logs_unprocess[0].created, 'yyyy/MM/dd h:m:s');
+                        temp['status'] = 'Pending';
+                        _this.label = 'danger';
                     }
-                    else
+                    else if (result.uploaded_csv_logs_inprocess) {
+                        temp['date'] = _this.datePipe.transform(result.uploaded_csv_logs_inprocess[0].created, 'yyyy/MM/dd h:m:s');
+                        temp['status'] = 'In Progress';
+                        _this.label = 'info';
+                    }
+                    else if (result.uploaded_csv_logs.length > 0) {
+                        temp['date'] = _this.datePipe.transform(result.uploaded_csv_logs[0].created, 'yyyy/MM/dd h:m:s');
+                        temp['status'] = 'Processed';
+                        _this.label = 'red';
+                    }
+                    else {
                         temp['date'] = 'No Uploads Yet';
+                        temp['status'] = 'No File Uploaded';
+                        _this.label = 'light-success';
+                    }
+                    console.log(_this.label);
                     _this.arr1.push(temp);
                     //    this.productionTotal = this.productionTotal + parseInt(res.total);
                 });
                 _this.rows = _this.arr1;
+                _this.temp = _this.arr1.slice();
+                _this.table = data;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -219,14 +290,16 @@ var ImportcsvComponent = /** @class */ (function () {
     };
     ImportcsvComponent.prototype.processAllFiles = function () {
         var _this = this;
-        this.importcsvService.processAllFiles().subscribe(function (res) {
+        this.importcsvService.processAllFiles(this.clinic_id).subscribe(function (res) {
             if (res.message == 'success') {
                 alert('All Files Processed Successfully');
                 _this.getLogs();
+                _this.show = false;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
+        alert('File Processing in Progress. You can check the status once files is processed.');
     };
     var ImportcsvComponent_1;
     __decorate([
@@ -237,7 +310,7 @@ var ImportcsvComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             template: __webpack_require__(/*! ./importcsv.component.html */ "./src/app/importcsv/importcsv.component.html")
         }),
-        __metadata("design:paramtypes", [_importcsv_service__WEBPACK_IMPORTED_MODULE_2__["ImportcsvService"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]])
+        __metadata("design:paramtypes", [_importcsv_service__WEBPACK_IMPORTED_MODULE_2__["ImportcsvService"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"]])
     ], ImportcsvComponent);
     return ImportcsvComponent;
 }());
@@ -378,6 +451,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -391,41 +465,43 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ImportcsvService = /** @class */ (function () {
     function ImportcsvService(http, _cookieService) {
         this.http = http;
         this._cookieService = _cookieService;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
     }
-    ImportcsvService.prototype.uploadFile = function (file) {
+    ImportcsvService.prototype.uploadFile = function (file, clinic_id) {
         var formData = new FormData();
         formData.append('file', file);
-        formData.append('clinic_id', '1');
-        formData.append('user_id', '23');
+        formData.append('clinic_id', clinic_id);
+        formData.append('user_id', this._cookieService.get("userid"));
         formData.append('target', 'webroot/uploads/');
         formData.append('file_input', 'file');
         formData.append('token', this._cookieService.get("token"));
         // console.log(formData);
-        return this.http.post("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/uploadFile", formData)
+        return this.http.post(this.apiUrl + "/AccountingInvoicesAndReceipts/uploadFile", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     // Get Logs
-    ImportcsvService.prototype.getLogs = function (user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    ImportcsvService.prototype.getLogs = function (clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytics/server/logs/getUploadedCsvLogs/23/1", {})
+        return this.http.get(this.apiUrl + "/logs/getUploadedCsvLogs?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), {})
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     // Process All Files
-    ImportcsvService.prototype.processAllFiles = function (user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    ImportcsvService.prototype.processAllFiles = function (clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get("http://localhost/jeeveanalytics/server/AccountingInvoicesAndReceipts/processAllCsv/23/1", {})
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/processAllCsv?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), {})
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));

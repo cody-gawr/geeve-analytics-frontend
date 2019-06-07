@@ -10,7 +10,7 @@
 var map = {
 	"./apps/apps.module": [
 		"./src/app/apps/apps.module.ts",
-		"default~apps-apps-module~clinic-goals-clinic-goals-module~dentist-goals-dentist-goals-module~forms-f~687192af",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6b94e512",
 		"common",
 		"apps-apps-module"
 	],
@@ -29,10 +29,17 @@ var map = {
 	],
 	"./clinic-goals/clinic-goals.module": [
 		"./src/app/clinic-goals/clinic-goals.module.ts",
-		"default~apps-apps-module~clinic-goals-clinic-goals-module~dentist-goals-dentist-goals-module~forms-f~687192af",
-		"default~clinic-goals-clinic-goals-module~dentist-goals-dentist-goals-module~forms-forms-module",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6b94e512",
+		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~4a81695a",
 		"common",
 		"clinic-goals-clinic-goals-module"
+	],
+	"./clinic-settings/clinic-settings.module": [
+		"./src/app/clinic-settings/clinic-settings.module.ts",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6b94e512",
+		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~4a81695a",
+		"common",
+		"clinic-settings-clinic-settings-module"
 	],
 	"./clinic/clinic.module": [
 		"./src/app/clinic/clinic.module.ts",
@@ -63,8 +70,8 @@ var map = {
 	],
 	"./dentist-goals/dentist-goals.module": [
 		"./src/app/dentist-goals/dentist-goals.module.ts",
-		"default~apps-apps-module~clinic-goals-clinic-goals-module~dentist-goals-dentist-goals-module~forms-f~687192af",
-		"default~clinic-goals-clinic-goals-module~dentist-goals-dentist-goals-module~forms-forms-module",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6b94e512",
+		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~4a81695a",
 		"common",
 		"dentist-goals-dentist-goals-module"
 	],
@@ -77,8 +84,8 @@ var map = {
 	],
 	"./forms/forms.module": [
 		"./src/app/forms/forms.module.ts",
-		"default~apps-apps-module~clinic-goals-clinic-goals-module~dentist-goals-dentist-goals-module~forms-f~687192af",
-		"default~clinic-goals-clinic-goals-module~dentist-goals-dentist-goals-module~forms-forms-module",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6b94e512",
+		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~4a81695a",
 		"default~authentication-authentication-module~forms-forms-module",
 		"common",
 		"forms-forms-module"
@@ -345,7 +352,7 @@ var AppRoutes = [
                 loadChildren: './dashboard/dashboard.module#DashboardModule'
             },
             {
-                path: 'importcsv',
+                path: 'importcsv/:id',
                 loadChildren: './importcsv/importcsv.module#ImportcsvModule',
                 canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
             },
@@ -364,17 +371,22 @@ var AppRoutes = [
                 canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
             },
             {
-                path: 'dentist',
+                path: 'dentist/:id',
                 loadChildren: './dentist/dentist.module#DentistModule',
                 canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
             },
             {
-                path: 'clinic-goals',
+                path: 'clinic-goals/:id',
                 loadChildren: './clinic-goals/clinic-goals.module#ClinicGoalsModule',
                 canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
             },
             {
-                path: 'dentist-goals',
+                path: 'clinic-settings/:id',
+                loadChildren: './clinic-settings/clinic-settings.module#ClinicSettingsModule',
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+            },
+            {
+                path: 'dentist-goals/:id',
                 loadChildren: './dentist-goals/dentist-goals.module#DentistGoalsModule',
                 canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
             },
@@ -657,7 +669,7 @@ var AppBlankComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Main wrapper - style you can find in pages.scss -->\n<!-- ============================================================== -->\n<div class=\"main-container\" [dir]=\"dir\" [ngClass]=\"{'minisidebar': minisidebar, 'boxed': boxed, 'danger': danger, 'blue': blue, 'green': green, 'dark': dark }\">\n    <!-- ============================================================== -->\n    <!-- Topbar - style you can find in header.scss -->\n    <!-- ============================================================== -->\n    <mat-toolbar color=\"primary\" class=\"topbar telative\">\n        <!-- ============================================================== -->\n        <!-- Logo - style you can find in header.scss -->\n        <!-- ============================================================== -->\n        <div class=\"navbar-header\">\n            <a class=\"navbar-brand\" href=\"/\">\n                <!-- Logo icon -->\n                <b>\n                    <!--You can put here icon as well // <i class=\"wi wi-sunset\"></i> //-->\n                    <!-- Dark Logo icon -->\n                    <img src=\"assets/images/logo-icon.png\" alt=\"homepage\" class=\"dark-logo\">\n                    <!-- Light Logo icon -->\n                    <img src=\"assets/images/logo-light-icon.png\" alt=\"homepage\" class=\"light-logo\">\n                </b>\n                <!--End Logo icon -->\n                <!-- Logo text -->\n                <span fxShow=\"false\" fxShow.gt-xs>\n                    <!-- dark Logo text -->\n                    <img src=\"assets/images/logo-text.png\" alt=\"homepage\" class=\"dark-logo\">\n                    <!-- Light Logo text -->\n                    <img src=\"assets/images/logo-light-text.png\" class=\"light-logo\" alt=\"homepage\">\n                </span>\n            </a>\n        </div>\n        <!-- ============================================================== -->\n        <!-- sidebar toggle -->\n        <!-- ============================================================== -->\n\n        <button mat-icon-button (click)=\"snav.toggle()\" value=\"sidebarclosed\">\n            <mat-icon>menu</mat-icon>\n        </button>\n        <!-- ============================================================== -->\n        <!-- Search - style you can find in header.scss -->\n        <!-- ============================================================== -->\n        <button mat-icon-button class=\"srh-btn\">\n            <mat-icon>search</mat-icon>\n        </button>\n        <form class=\"app-search\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Search &amp; enter\">\n            <a class=\"cl-srh-btn\">\n                <i class=\"ti-close\"></i>\n            </a>\n        </form>\n        <span fxFlex></span>\n        <!-- ============================================================== -->\n        <!-- app header component - style you can find in header.scss / header.component.ts-->\n        <!-- ============================================================== -->\n        <app-header></app-header>\n        <!-- ============================================================== -->\n        <!-- Right sidebar toggle - style you can find in rightsidebar.component.scss -->\n        <!-- ============================================================== -->\n        <button (click)=\"end.toggle()\" mat-icon-button class=\"ml-xs overflow-visible\">\n            <mat-icon>settings</mat-icon>\n        </button>\n    </mat-toolbar>\n    <!-- ============================================================== -->\n    <!-- End Topbar - style you can find in pages.scss -->\n    <!-- ============================================================== -->\n    <mat-sidenav-container class=\"example-sidenav-container\" [style.marginTop.px]=\"mobileQuery.matches ? 0 : 0\"\n        [ngClass]=\"{'minisidebar': minisidebar}\">\n        <!-- ============================================================== -->\n        <!-- Sidebar - style you can find in sidebar.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav #snav id=\"snav\" class=\"pl-xs\" [mode]=\"mobileQuery.matches ? 'side' : 'over'\" fixedTopGap=\"0\"\n            [opened]=\"mobileQuery.matches\" [disableClose]=\"mobileQuery.matches\" (open)=\"sidebarOpened = true\" (close)=\"sidebarOpened = false\"\n            [perfectScrollbar]=\"config\">\n\n            <app-sidebar class=\"app-sidebar\"></app-sidebar>\n\n        </mat-sidenav>\n        <!-- ============================================================== -->\n        <!-- Sidebar - style you can find in sidebar.scss -->\n        <!-- ============================================================== -->\n        <!-- ============================================================== -->\n        <!-- Right Sidebar - style you can find in rightsidebar.component.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav #end position=\"end\" class=\"chat-panel\" mode=\"over\" opened=\"false\">\n            <div class=\"scroll\">\n                <mat-nav-list>\n\n                    <h3 mat-subheader class=\"text-uppercase font-weight-bold\">Settings</h3>\n                    <mat-list-item>\n                        <mat-slide-toggle color=\"warn\" (change)=\"dir = (dir == 'rtl' ? 'ltr' : 'rtl')\">RTL</mat-slide-toggle>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-slide-toggle color=\"warn\" [(ngModel)]=\"boxed\">Boxed Layout</mat-slide-toggle>\n                    </mat-list-item>\n                    <!--<mat-list-item>\n                    <mat-slide-toggle [(ngModel)]=\"minisidebar\">Mini Sidebar</mat-slide-toggle>\n                  </mat-list-item>    -->\n                    <mat-divider></mat-divider>\n                    <h3 mat-subheader class=\"text-uppercase font-weight-bold\">Colors</h3>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"danger\" (change)=\"green = blue = false\" class=\"text-danger\">Red</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"green\" (change)=\"danger = blue = false\" class=\"text-megna\">Teal\n                            Green</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"blue\" (change)=\"green = danger = false\" class=\"text-info\">Blue</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"dark\" (change)=\"green = blue = danger = false\">Dark</mat-checkbox>\n                    </mat-list-item>\n                </mat-nav-list>\n            </div>\n        </mat-sidenav>\n\n        <!-- ============================================================== -->\n        <!-- Page container - style you can find in pages.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav-content class=\"page-wrapper\">\n            \n                <div class=\"page-content\">\n\n                    <router-outlet>\n                        <app-spinner></app-spinner>\n                    </router-outlet>\n\n                </div>\n            \n        </mat-sidenav-content>\n        <!-- ============================================================== -->\n        <!-- Page container - style you can find in pages.scss -->\n        <!-- ============================================================== -->\n    </mat-sidenav-container>\n</div>"
+module.exports = "<!-- ============================================================== -->\n<!-- Main wrapper - style you can find in pages.scss -->\n<!-- ============================================================== -->\n<div class=\"main-container\" [dir]=\"dir\" [ngClass]=\"{'minisidebar': minisidebar, 'boxed': boxed, 'danger': danger, 'blue': blue, 'green': green, 'dark': dark }\">\n    <!-- ============================================================== -->\n    <!-- Topbar - style you can find in header.scss -->\n    <!-- ============================================================== -->\n    <mat-toolbar color=\"white\" class=\"topbar telative\">\n        <!-- ============================================================== -->\n        <!-- Logo - style you can find in header.scss -->\n        <!-- ============================================================== -->\n       <div class=\"navbar-header\">\n            <a class=\"navbar-brand\" href=\"/\">\n                <!-- Logo icon -->\n                <b>\n                    <!--You can put here icon as well // <i class=\"wi wi-sunset\"></i> //-->\n                    <!-- Dark Logo icon -->\n                    <img src=\"assets/images/logo-light-icon.png\" alt=\"homepage\" class=\"dark-logo\">\n                    <!-- Light Logo icon -->\n                    <img src=\"assets/images/logo-icon.png\" alt=\"homepage\" class=\"light-logo\">\n                </b>\n                <!--End Logo icon -->\n                <!-- Logo text -->\n                <span fxShow=\"false\" fxShow.gt-xs>\n                    <!-- dark Logo text -->\n                    <img src=\"assets/images/logo-light-text.png\" alt=\"homepage\" class=\"dark-logo\">\n                    <!-- Light Logo text -->\n                    <img src=\"assets/images/logo-text.png\" class=\"light-logo\" alt=\"homepage\">\n                </span>\n            </a>\n        </div>\n        <!-- ============================================================== -->\n        <!-- sidebar toggle -->\n        <!-- ============================================================== -->\n\n        <button mat-icon-button (click)=\"snav.toggle()\" value=\"sidebarclosed\">\n            <mat-icon>menu</mat-icon>\n        </button>\n        <!-- ============================================================== -->\n        <!-- Search - style you can find in header.scss -->\n        <!-- ============================================================== -->\n        <!-- <button mat-icon-button class=\"srh-btn\">\n            <mat-icon>search</mat-icon>\n        </button> -->\n        <form class=\"app-search\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Search &amp; enter\">\n            <a class=\"cl-srh-btn\">\n                <i class=\"ti-close\"></i>\n            </a>\n        </form>\n        <span fxFlex></span>\n            <div fxFlex.gt-sm=\"10\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"header_select\">\n  <mat-form-field>\n      <mat-select placeholder=\"Select Clinic\" (ngModelChange)=\"loadClinic($event)\" [value] =\"1\">\n        <mat-option *ngFor=\"let clinicData of clinicsData\" [value]=\"clinicData.id\">{{clinicData.clinicName}}\n         </mat-option>\n      </mat-select>\n    </mat-form-field> \n    </div>\n\n        <!-- ============================================================== -->\n        <!-- app header component - style you can find in header.scss / header.component.ts-->\n        <!-- ============================================================== -->\n        <app-header></app-header>\n        <!-- ============================================================== -->\n        <!-- Right sidebar toggle - style you can find in rightsidebar.component.scss -->\n        <!-- ============================================================== -->\n        <!-- <button (click)=\"end.toggle()\" mat-icon-button class=\"ml-xs overflow-visible\">\n            <mat-icon>settings</mat-icon>\n        </button> -->\n    </mat-toolbar>\n    <!-- ============================================================== -->\n    <!-- End Topbar - style you can find in pages.scss -->\n    <!-- ============================================================== -->\n    <mat-sidenav-container class=\"example-sidenav-container\" [style.marginTop.px]=\"mobileQuery.matches ? 0 : 0\"\n        [ngClass]=\"{'minisidebar': minisidebar}\">\n        <!-- ============================================================== -->\n        <!-- Sidebar - style you can find in sidebar.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav #snav id=\"snav\" class=\"pl-xs\" [mode]=\"mobileQuery.matches ? 'side' : 'over'\" fixedTopGap=\"0\"\n            [opened]=\"mobileQuery.matches\" [disableClose]=\"mobileQuery.matches\" (open)=\"sidebarOpened = true\" (close)=\"sidebarOpened = false\"\n            [perfectScrollbar]=\"config\">\n\n            <app-sidebar class=\"app-sidebar\"></app-sidebar>\n\n        </mat-sidenav>\n        <!-- ============================================================== -->\n        <!-- Sidebar - style you can find in sidebar.scss -->\n        <!-- ============================================================== -->\n        <!-- ============================================================== -->\n        <!-- Right Sidebar - style you can find in rightsidebar.component.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav #end position=\"end\" class=\"chat-panel\" mode=\"over\" opened=\"false\">\n            <div class=\"scroll\">\n                <mat-nav-list>\n\n                    <h3 mat-subheader class=\"text-uppercase font-weight-bold\">Settings</h3>\n                    <mat-list-item>\n                        <mat-slide-toggle color=\"warn\" (change)=\"dir = (dir == 'rtl' ? 'ltr' : 'rtl')\">RTL</mat-slide-toggle>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-slide-toggle color=\"warn\" [(ngModel)]=\"boxed\">Boxed Layout</mat-slide-toggle>\n                    </mat-list-item>\n                    <!--<mat-list-item>\n                    <mat-slide-toggle [(ngModel)]=\"minisidebar\">Mini Sidebar</mat-slide-toggle>\n                  </mat-list-item>    -->\n                    <mat-divider></mat-divider>\n                    <h3 mat-subheader class=\"text-uppercase font-weight-bold\">Colors</h3>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"danger\" (change)=\"green = blue = false\" class=\"text-danger\">Red</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"green\" (change)=\"danger = blue = false\" class=\"text-megna\">Teal\n                            Green</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"blue\" (change)=\"green = danger = false\" class=\"text-info\">Blue</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item> \n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"dark\" (change)=\"green = blue = danger = false\">Dark</mat-checkbox>\n                    </mat-list-item>\n                </mat-nav-list>\n            </div>\n        </mat-sidenav>\n\n        <!-- ============================================================== -->\n        <!-- Page container - style you can find in pages.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav-content class=\"page-wrapper\">\n            \n                <div class=\"page-content\">\n\n                    <router-outlet>\n                        <app-spinner></app-spinner>\n                    </router-outlet>\n\n                </div>\n            \n        </mat-sidenav-content>\n        <!-- ============================================================== -->\n        <!-- Page container - style you can find in pages.scss -->\n        <!-- ============================================================== -->\n    </mat-sidenav-container>\n</div>"
 
 /***/ }),
 
@@ -674,8 +686,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/layout */ "./node_modules/@angular/cdk/esm5/layout.es5.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../shared/menu-items/menu-items */ "./src/app/shared/menu-items/menu-items.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../shared/menu-items/menu-items */ "./src/app/shared/menu-items/menu-items.ts");
+/* harmony import */ var _header_header_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./header/header.service */ "./src/app/layouts/full/header/header.service.ts");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -689,12 +707,26 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
+
+
 /** @title Responsive sidenav */
 var FullComponent = /** @class */ (function () {
-    function FullComponent(changeDetectorRef, media, menuItems) {
+    function FullComponent(changeDetectorRef, media, menuItems, headerService, router, _cookieService, location, route) {
         this.menuItems = menuItems;
+        this.headerService = headerService;
+        this.router = router;
+        this._cookieService = _cookieService;
+        this.location = location;
+        this.route = route;
         this.dir = 'ltr';
         this.config = {};
+        this.clinicsData = [];
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].apiUrl;
+        this.selectedClinic = "1";
+        this.id = this.route.snapshot.paramMap.get("id");
         this.mobileQuery = media.matchMedia('(min-width: 768px)');
         this._mobileQueryListener = function () { return changeDetectorRef.detectChanges(); };
         this.mobileQuery.addListener(this._mobileQueryListener);
@@ -707,17 +739,34 @@ var FullComponent = /** @class */ (function () {
         jquery__WEBPACK_IMPORTED_MODULE_0__('.srh-btn, .cl-srh-btn').on('click', function () {
             jquery__WEBPACK_IMPORTED_MODULE_0__('.app-search').toggle(200);
         });
+        this.getClinics();
         // This is for the megamenu
     };
+    FullComponent.prototype.loadClinic = function (value) {
+        this.finalUrl = this.router.url.substring(0, this.router.url.lastIndexOf('/') + 1);
+        this.router.navigate([this.finalUrl + value]);
+        //this.location.go(this.finalUrl+value);
+    };
+    FullComponent.prototype.getClinics = function () {
+        var _this = this;
+        this.headerService.getClinics().subscribe(function (res) {
+            if (res.message == 'success') {
+                _this.clinicsData = res.data;
+            }
+        }, function (error) {
+            // this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
     FullComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
             selector: 'app-full-layout',
             template: __webpack_require__(/*! ./full.component.html */ "./src/app/layouts/full/full.component.html"),
             styleUrls: []
         }),
-        __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_2__["ChangeDetectorRef"],
+        __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_3__["ChangeDetectorRef"],
             _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__["MediaMatcher"],
-            _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_3__["MenuItems"]])
+            _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_4__["MenuItems"], _header_header_service__WEBPACK_IMPORTED_MODULE_5__["HeaderService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6__["CookieService"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["Location"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"]])
     ], FullComponent);
     return FullComponent;
 }());
@@ -733,7 +782,7 @@ var FullComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Notification - style you can find in header.scss -->\n<!-- ============================================================== -->\n<button [matMenuTriggerFor]=\"notification\" mat-icon-button class=\"m-r-10\">\n    <mat-icon>message</mat-icon>\n    <div class=\"notify\">\n        <span class=\"heartbit\"></span>\n        <span class=\"point\"></span>\n    </div>\n</button>\n<mat-menu #notification=\"matMenu\" class=\"mymegamenu\">\n    <div class=\"mailbox\">\n        <ul>\n            <li>\n                <div class=\"drop-title\">Notifications</div>\n            </li>\n            <li>\n                <div class=\"message-center\">\n                    <perfect-scrollbar [config]=\"config\">\n                        <!-- Message -->\n                        <a href=\"#\" *ngFor=\"let notification of notifications\">\n                            <div class=\"round {{notification.round}}\">\n                                <i class=\"{{notification.icon}}\"></i>\n                            </div>\n                            <div class=\"mail-content\">\n                                <h5>{{notification.title}}</h5>\n                                <span class=\"mail-desc\">{{notification.subject}}</span>\n                                <span class=\"time\">{{notification.time}}</span>\n                            </div>\n                        </a>\n\n                    </perfect-scrollbar>\n                </div>\n            </li>\n\n        </ul>\n    </div>\n</mat-menu>\n<!-- ============================================================== -->\n<!-- Profile - style you can find in header.scss -->\n<!-- ============================================================== -->\n<button [matMenuTriggerFor]=\"message\" mat-icon-button class=\"m-r-10\">\n    <mat-icon>email</mat-icon>\n    <div class=\"notify\">\n        <span class=\"heartbit\"></span>\n        <span class=\"point\"></span>\n    </div>\n</button>\n<mat-menu #message=\"matMenu\" class=\"mymessage\">\n    <div class=\"mailbox\">\n        <ul>\n            <li>\n                <div class=\"drop-title\">You have 4 new Mymessages</div>\n            </li>\n            <li>\n                <div class=\"message-center\">\n                    <perfect-scrollbar [config]=\"config\">\n                        <!-- Message -->\n                        <a href=\"#\" *ngFor=\"let mymessage of mymessages\">\n                            <div class=\"user-img\">\n                                <img src=\"{{mymessage.useravatar}}\" alt=\"user\" class=\"img-circle\" width=\"40\">\n                                <span class=\"profile-status {{mymessage.status}} pull-right\"></span>\n                            </div>\n                            <div class=\"mail-content\">\n                                <h5>{{mymessage.from}}</h5>\n                                <span class=\"mail-desc\">{{mymessage.subject}}</span>\n                                <span class=\"time\">{{mymessage.time}}</span>\n                            </div>\n                        </a>\n                        <!-- Message -->\n                    </perfect-scrollbar>\n                </div>\n            </li>\n        </ul>\n    </div>\n</mat-menu>\n<!-- ============================================================== -->\n<!-- Profile - style you can find in header.scss -->\n<!-- ============================================================== -->\n<button [matMenuTriggerFor]=\"profile\" mat-icon-button class=\"m-r-5\">\n    <img src=\"assets/images/users/1.jpg\" alt=\"user\" class=\"profile-pic\"> </button>\n<mat-menu #profile=\"matMenu\" class=\"mymegamenu\">\n    <button mat-menu-item>\n        <mat-icon>settings</mat-icon> Settings </button>\n    <button mat-menu-item>\n        <mat-icon>account_box</mat-icon> Profile </button>\n    <button mat-menu-item>\n        <mat-icon>notifications_off</mat-icon> Disable notifications </button>\n    <button mat-menu-item (click) = \"logout()\">\n        <mat-icon>exit_to_app</mat-icon> Sign Out </button>\n</mat-menu>"
+module.exports = "<!-- ============================================================== -->\n<!-- Notification - style you can find in header.scss -->\n<!-- ============================================================== -->\n<!-- ============================================================== -->\n<!-- Profile - style you can find in header.scss -->\n<!-- ============================================================== -->\n\n\n\n<button [matMenuTriggerFor]=\"profile\" mat-icon-button class=\"m-r-5\">\n    <img src=\"assets/images/users/index.jpeg\" alt=\"user\" class=\"profile-pic\"> </button>\n<mat-menu #profile=\"matMenu\" class=\"mymegamenu\">\n    <button mat-menu-item>\n      <a href ='/clinic'>  <mat-icon>settings</mat-icon> Settings</a> </button>\n    <button mat-menu-item (click) = \"logout()\">\n        <mat-icon>exit_to_app</mat-icon> Sign Out </button>\n</mat-menu>"
 
 /***/ }),
 
@@ -876,6 +925,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -888,22 +940,40 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 var HeaderService = /** @class */ (function () {
-    function HeaderService(http) {
+    function HeaderService(http, _cookieService) {
         this.http = http;
+        this._cookieService = _cookieService;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
+        //append headers
+        this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        this.headers.append("Content-Type", 'application/json');
+        this.headers.append("Access-Control-Allow-Origin", "*");
+        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
     }
     // Items Predictor Analysis 
     HeaderService.prototype.logout = function (id) {
         var formData = new FormData();
         formData.append('user_id', id);
-        return this.http.post("http://localhost/jeeveanalytices/server/users/applogout", formData)
+        return this.http.post(this.apiUrl + "/users/applogout", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    HeaderService.prototype.getClinics = function (user_id, clinic_id, token) {
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Practices/getPractices?user_id=" + user_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     HeaderService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"]])
     ], HeaderService);
     return HeaderService;
 }());
@@ -919,7 +989,7 @@ var HeaderService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- sidebar -->\n<!-- ============================================================== -->\n<div class=\"user-profile\" style=\"background: url(assets/images/background/user-info.jpg) no-repeat;\">\n    <!-- User profile image -->\n    <div class=\"profile-img\">\n        <img src=\"assets/images/users/profile.png\" alt=\"user\"> </div>\n    <!-- User profile text-->\n    <!-- ============================================================== -->\n    <!-- Profile - style you can find in header.scss -->\n    <!-- ============================================================== -->\n    <div class=\"profile-text\">\n        <a [matMenuTriggerFor]=\"sdprofile\" class=\"\"> Markarn Doe\n            <i class=\"ti-angle-down font-12 m-l-5\"></i>\n        </a>\n    </div>\n    <mat-menu #sdprofile=\"matMenu\" class=\"mymegamenu\">\n        <button mat-menu-item>\n            <mat-icon>settings</mat-icon> Settings\n        </button>\n        <button mat-menu-item>\n            <mat-icon>account_box</mat-icon> Profile\n        </button>\n        <button mat-menu-item>\n            <mat-icon>notifications_off</mat-icon> Disable notifications\n        </button>\n        <button mat-menu-item>\n            <mat-icon>exit_to_app</mat-icon> Sign Out\n        </button>\n    </mat-menu>\n</div>\n\n<mat-nav-list appAccordion>\n    <mat-list-item appAccordionLink *ngFor=\"let menuitem of menuItems.getMenuitem()\" routerLinkActive=\"selected\" group=\"{{menuitem.state}}\">\n        <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state]\" *ngIf=\"menuitem.type === 'link'\">\n            <mat-icon>{{ menuitem.icon }}</mat-icon>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" *ngIf=\"menuitem.type === 'extLink'\">\n            <mat-icon>{{ menuitem.icon }}</mat-icon>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" target=\"_blank\" *ngIf=\"menuitem.type === 'extTabLink'\">\n            <mat-icon>{{ menuitem.icon }}</mat-icon>\n            <span>{{ menuitem.name}}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type === 'sub'\">\n            <mat-icon>{{ menuitem.icon }}</mat-icon>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n            <mat-icon class=\"dd-icon\">keyboard_arrow_down</mat-icon>\n        </a>\n        <mat-nav-list class=\"sub-item\" *ngIf=\"menuitem.type === 'sub'\">\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\" routerLinkActive=\"selected\">\n                <a [routerLink]=\"['/', menuitem.state, childitem.state ]\" *ngIf=\"childitem.type === 'link'\" class=\"relative\"\n                    routerLinkActive=\"selected\">{{ childitem.name}}</a>\n            </mat-list-item>\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\">\n                <a class=\"\" href=\"javascript: void(0);\" *ngIf=\"childitem.type === 'subchild'\" (click)=\"clickEvent()\"\n                    [ngClass]=\"status ? 'selected' : ''\">\n                    <span>{{ childitem.name }}</span>\n                    <span fxFlex></span>\n                    <mat-icon class=\"dd-icon\">keyboard_arrow_down</mat-icon>\n                </a>\n                <mat-nav-list class=\"child-sub-item\" *ngIf=\"childitem.type === 'subchild'\">\n                    <mat-list-item *ngFor=\"let child of childitem.subchildren\" routerLinkActive=\"selected\">\n                        <a [routerLink]=\"['/', menuitem.state, childitem.state, child.state ]\" routerLinkActive=\"selected\">{{child.name}}</a>\n                    </mat-list-item>\n                </mat-nav-list>\n            </mat-list-item>\n\n        </mat-nav-list>\n\n        <div class=\"saperator text-muted\" *ngIf=\"menuitem.type === 'saperator'\">\n            <span>{{ menuitem.name }}</span>\n        </div>\n    </mat-list-item>\n</mat-nav-list>"
+module.exports = "<!-- ============================================================== -->\n<!-- sidebar -->\n<!-- ============================================================== -->\n<mat-nav-list appAccordion>\n    <mat-list-item appAccordionLink *ngFor=\"let menuitem of menuItems.getMenuitem()\" routerLinkActive=\"selected\" group=\"{{menuitem.state}}\">\n        <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state, menuitem.param]\"     *ngIf=\"menuitem.type === 'link'\">\n            <i class=\"{{ menuitem.icon }}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n         <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state]\" *ngIf=\"menuitem.type === 'link-noparam'\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" *ngIf=\"menuitem.type === 'extLink'\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" target=\"_blank\" *ngIf=\"menuitem.type === 'extTabLink'\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name}}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'sub'\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n            <i class=\"fas fa-caret-down\"></i>\n        </a>\n        <mat-nav-list class=\"sub-item\" *ngIf=\"menuitem.type === 'sub'\">\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\" routerLinkActive=\"selected\">\n                <a [routerLink]=\"['/', menuitem.state, childitem.state, childitem.param ]\" *ngIf=\"childitem.type === 'link'\" class=\"relative\"\n                    routerLinkActive=\"selected\"><i class=\"{{childitem.icon}}\"></i>{{ childitem.name}}</a>\n            </mat-list-item>\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\">\n                <a class=\"\" href=\"javascript: void(0);\" *ngIf=\"childitem.type === 'subchild'\" (click)=\"clickEvent()\"\n                    [ngClass]=\"status ? 'selected' : ''\">\n                    <span>{{ childitem.name }}</span>\n                    <span fxFlex></span>\n                    <i class=\"fas fa-caret-down\"></i>\n                </a>\n                <mat-nav-list class=\"child-sub-item\" *ngIf=\"childitem.type === 'subchild'\">\n                    <mat-list-item *ngFor=\"let child of childitem.subchildren\" routerLinkActive=\"selected\">\n                        <a [routerLink]=\"['/', menuitem.state, childitem.state, child.state ]\" routerLinkActive=\"selected\">{{child.name}}</a>\n                    </mat-list-item>\n                </mat-nav-list>\n            </mat-list-item>\n\n        </mat-nav-list>\n\n        <div class=\"saperator text-muted\" *ngIf=\"menuitem.type === 'saperator'\">\n            <span>{{ menuitem.name }}</span>\n        </div>\n    </mat-list-item>\n</mat-nav-list>"
 
 /***/ }),
 
@@ -1236,61 +1306,66 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 };
 
 var MENUITEMS = [
-    /*{
-       state: '',
-       name: 'Personal',
-       type: 'saperator',
-       icon: 'av_timer'
-     },
-     {
-       state: 'dashboard',
-       name: 'Dashboard',
-       type: 'sub',
-       icon: 'av_timer',
-       children: [
-         { state: 'dashboard1', name: 'Dashboard 1', type: 'link' },
-         { state: 'dashboard2', name: 'Dashboard 2', type: 'link' }
-       ]
-     },*/
+    /* {
+        state: '',
+        name: 'Personal',
+        type: 'saperator',
+        icon: 'av_timer'
+      },
+      {
+        state: 'dashboard',
+        name: 'Dashboard',
+        type: 'sub',
+        icon: 'av_timer',
+        children: [
+          { state: 'dashboard1', name: 'Dashboard 1', type: 'link' },
+          { state: 'dashboard2', name: 'Dashboard 2', type: 'link' }
+        ]
+      },*/
     {
         state: 'dashboards',
         name: 'Dashboards',
         type: 'sub',
-        icon: 'av_timer',
+        icon: 'fas fa-chart-area',
         children: [
-            { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link' },
-            { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link' }
-        ]
+            { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param: '1', icon: 'fas fa-chart-line' },
+            { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', param: '1', icon: 'fas fa-chart-line' }
+        ],
+        param: '1'
     },
     {
         state: 'importcsv',
         name: 'Importcsv',
         type: 'link',
-        icon: 'widgets'
+        icon: 'fas fa-upload',
+        param: '1'
     },
     {
         state: 'clinic',
-        name: 'Clinic',
-        type: 'link',
-        icon: 'widgets'
+        name: 'Clinic Management',
+        type: 'link-noparam',
+        icon: 'fas fa-list'
     },
     {
         state: 'dentist',
-        name: 'Dentist',
+        name: 'Dentist Management',
         type: 'link',
-        icon: 'widgets'
+        icon: 'fas fa-list',
+        param: '1'
     },
     {
         state: 'clinic-goals',
         name: 'Clinic Goals',
         type: 'link',
-        icon: 'widgets'
+        icon: 'fas fa-chart-line',
+        param: '1'
     },
     {
         state: 'dentist-goals',
         name: 'Dentist Goals',
         type: 'link',
-        icon: 'widgets'
+        icon: 'fas fa-chart-line',
+        param: '1'
     },
 ];
 var MenuItems = /** @class */ (function () {
@@ -1443,8 +1518,9 @@ __webpack_require__.r(__webpack_exports__);
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
-    production: false,
-    apiUrl: "http://localhost/jeeveanalytics/server/"
+    production: true,
+    apiUrl: "https://analytics-api.jeeve.com.au/",
+    homeUrl: "https://analytics.jeeve.com.au/"
 };
 
 

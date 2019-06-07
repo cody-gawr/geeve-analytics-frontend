@@ -634,7 +634,7 @@ var NgxGaugeModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<div fxLayout=\"row wrap\">\n  <!-- Column-->\n    <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n  <mat-card>\n  <mat-card-content>\n    <mat-card-title class=\"mb-3\">Select Dentist</mat-card-title>\n    <mat-form-field>\n      <mat-select placeholder=\"Select Dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n        <mat-option value =\"all\">All Dentists</mat-option>\n        <mat-option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\">\n          {{dentist.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field> \n\n  </mat-card-content>\n</mat-card>\n</div>\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n    <mat-card  class=\"dentistProduction\">\n      <mat-card-content>\n        <mat-card-title>Dentist Production</mat-card-title>\n        <canvas baseChart [datasets]=\"barChartData\" [labels]=\"barChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"barChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{productionTotal | number : '1.2-2'}}</h3>\n                        <small>Total (Current)</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{productionTotalAverage | number : '1.2-2'}}</h3>\n                        <small>Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">---</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n     <mat-card class=\"dentistProductionSingle\" [style.display]=\"'none'\" >\n      <mat-card-content>\n        <mat-card-title>Dentist Production</mat-card-title>\n         <ngx-gauge [type]=\"gaugeType\"\n           [value]=\"gaugeValue\" \n           [label]=\"gaugeLabel\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{productionTotal | number : '1.2-2'}}</h3>\n                        <small>Total (Current)</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{productionTotalAverage | number : '1.2-2'}}</h3>\n                        <small>Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">---</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content>\n        <mat-card-title>Treatment Plan Average Cost</mat-card-title>\n        <canvas baseChart class=\"chart\"\n          [datasets]=\"planChartData\"\n          [labels]=\"planChartLabels\"\n          [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [colors]=\"barChartColors\"></canvas>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{planTotalAverage | number : '1.2-2'}}</h3>\n                        <small>Current Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">---</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>          \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"treatmentPlanSingle\" [style.display]=\"'none'\">\n      <mat-card-content>\n        <mat-card-title>Treatment Plan Average Cost</mat-card-title>\n        <ngx-gauge [type]=\"gaugeType\"\n           [value]=\"gaugeValueTreatment\" \n           [label]=\"gaugeLabelTreatment\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{planTotalAverage | number : '1.2-2'}}</h3>\n                        <small>Current Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">---</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>          \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n    <mat-card  class=\"noPatients\">\n      <mat-card-content>\n        <mat-card-title>No. Patient Complaints</mat-card-title>\n        <div class=\"chart\" *ngIf=\"doughnutChartLabels.length > 0\">\n        <canvas baseChart class=\"chart\"\n          [data]=\"doughnutChartData\"\n          [labels]=\"doughnutChartLabels\"\n          [chartType]=\"doughnutChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"[{backgroundColor: ['#1976d2', '#26dad2', '#dadada']}]\"></canvas>\n        </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{doughnutTotal | number : '1.2-2'}}</h3>\n                        <small>Current Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">---</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>        \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"noPatientsSingle\" [style.display]=\"'none'\">\n      <mat-card-content>\n        <mat-card-title>No. Patient Complaints</mat-card-title>\n        <div class=\"chart\" *ngIf=\"doughnutChartLabels.length > 0\">\n         <ngx-gauge [type]=\"gaugeType\"\n           [value]=\"gaugeValuePatients\" \n           [label]=\"gaugeLabelPatients\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n        </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{doughnutTotal | number : '1.2-2'}}</h3>\n                        <small>Current Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">---</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>        \n      </mat-card-content>\n    </mat-card>    \n  </div>\n\n</div>"
+module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<div fxLayout=\"row wrap\" >\n  <!-- Column-->\n    <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n      <mat-card>\n      <mat-card-content style=\"padding-bottom:0px!important;\">\n            <div fxFlex.gt-sm=\"25\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n                <mat-form-field>\n                    <mat-select placeholder=\"All Dentist( {{dentistCount}} )\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n                        <mat-option value =\"all\">All Dentists</mat-option>\n                        <mat-option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\">\n                            {{dentist.name}}\n                        </mat-option>\n                    </mat-select>\n                </mat-form-field>\n            </div>\n      </mat-card-content>\n    </mat-card>\n    </div>\n</div>\n<div class=\"sa_dentist_graphs_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction\">\n      <mat-card-content>\n        <mat-card-title>Dentist Production</mat-card-title>\n        <canvas baseChart [datasets]=\"barChartData\" [labels]=\"barChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"barChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{productionTotal | number : '1.2-2'}}</h3>\n                        <small>Total (Current)</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{productionTotalAverage | number : '1.2-2'}}</h3>\n                        <small>Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{productionGoal | number : '1.2-2'}}</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"dentistProductionSingle\" [style.display]=\"'none'\" >\n      <mat-card-content>\n        <mat-card-title>Dentist Production</mat-card-title>\n         <ngx-gauge [type]=\"gaugeType\"\n           [value]=\"gaugeValue\" \n           [label]=\"gaugeLabel\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{productionTotal | number : '1.2-2'}}</h3>\n                        <small>Total (Current)</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{productionTotalAverage | number : '1.2-2'}}</h3>\n                        <small>Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{productionGoal | number : '1.2-2'}}</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"sa_flexbg\">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content>\n        <mat-card-title>Treatment Plan Average Cost</mat-card-title>\n        <canvas baseChart class=\"chart\"\n          [datasets]=\"planChartData\"\n          [labels]=\"planChartLabels\"\n          [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [colors]=\"barChartColors\"></canvas>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{planTotalAverage | number : '1.2-2'}}</h3>\n                        <small>Current Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{planTotalGoal | number : '1.2-2'}}</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>          \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"treatmentPlanSingle\" [style.display]=\"'none'\">\n      <mat-card-content>\n        <mat-card-title>Treatment Plan Average Cost</mat-card-title>\n        <ngx-gauge [type]=\"gaugeType\"\n           [value]=\"gaugeValueTreatment\" \n           [label]=\"gaugeLabelTreatment\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{planTotalAverage | number : '1.2-2'}}</h3>\n                        <small>Current Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{planTotalGoal | number : '1.2-2'}}</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>          \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"sa_flexbg\">\n    <mat-card  class=\"noPatients\">\n      <mat-card-content>\n        <mat-card-title>No. Patient Complaints</mat-card-title>\n        <div class=\"chart\" *ngIf=\"doughnutChartLabels.length > 0\">\n        <canvas baseChart class=\"chart\"\n          [data]=\"doughnutChartData\"\n          [labels]=\"doughnutChartLabels\"\n          [chartType]=\"doughnutChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"[{backgroundColor: ['#18a689', '#B9DBE6', '#5F818A']}]\"></canvas>\n        </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{doughnutTotal | number : '1.2-2'}}</h3>\n                        <small>Current Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{doughnutGoals | number : '1.2-2'}}</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>        \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"noPatientsSingle\" [style.display]=\"'none'\">\n      <mat-card-content>\n        <mat-card-title>No. Patient Complaints</mat-card-title>\n        <div class=\"chart\" *ngIf=\"doughnutChartLabels.length > 0\">\n         <ngx-gauge [type]=\"gaugeType\"\n           [value]=\"gaugeValuePatients\" \n           [label]=\"gaugeLabelPatients\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n        </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{doughnutTotal | number : '1.2-2'}}</h3>\n                        <small>Current Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">${{doughnutGoals | number : '1.2-2'}}</h3>\n                        <small>Goals</small>\n                    </div>\n                </div>        \n      </mat-card-content>\n    </mat-card>    \n  </div>\n\n\n</div>\n</div>"
 
 /***/ }),
 
@@ -651,6 +651,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cliniciananalysis.service */ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.service.ts");
 /* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -663,16 +664,22 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ClinicianAnalysisComponent = /** @class */ (function () {
-    function ClinicianAnalysisComponent(cliniciananalysisService, dentistService) {
+    function ClinicianAnalysisComponent(cliniciananalysisService, dentistService, route) {
         this.cliniciananalysisService = cliniciananalysisService;
         this.dentistService = dentistService;
+        this.route = route;
+        this.id = {};
+        this.clinic_id = {};
+        this.UrlSegment = {};
+        this.dentistCount = {};
         this.dentists = [
             { providerId: 'all', name: 'All Dentists' },
         ];
         this.barChartColors = [
-            { backgroundColor: '#1976d2' },
-            { backgroundColor: '#26dad2' }
+            { backgroundColor: '#18a689' },
+            { backgroundColor: '#CACACA' }
         ];
         this.barChartType = 'bar';
         this.barChartLegend = true;
@@ -718,19 +725,22 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         //Total  
         this.productionTotal = 0;
         this.productionTotalAverage = 0;
+        this.productionGoal = 0;
         this.planTotal = 0;
         this.planTotalAverage = 0;
+        this.planTotalGoal = 0;
         this.recallTotal = 0;
         this.recallTotalAverage = 0;
         this.treatmentTotal = 0;
         this.treatmentTotalAverage = 0;
         this.doughnutTotal = 0;
         this.doughnutTotalAverage = 0;
+        this.doughnutGoals = 0;
         this.gaugeType = "arch";
         this.gaugeValue = '';
         this.gaugeLabel = "";
         this.gaugeThick = "20";
-        this.foregroundColor = "#1e88e5";
+        this.foregroundColor = "#18a689";
         this.cap = "round";
         this.size = "300";
         this.gaugeValueTreatment = 0;
@@ -739,10 +749,12 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         this.gaugeLabelPatients = "";
     }
     ClinicianAnalysisComponent.prototype.ngAfterViewInit = function () {
-        this.buildChartNopatients();
-        this.buildChart();
-        this.buildChartTreatment();
-        this.getDentists();
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            _this.clinic_id = _this.route.snapshot.paramMap.get("id");
+            _this.getDentists();
+            _this.loadDentist('all');
+        });
         //this.recallChartTreatment();
     };
     // events
@@ -780,16 +792,21 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     //Dentist Production Chart
     ClinicianAnalysisComponent.prototype.buildChart = function () {
         var _this = this;
-        this.cliniciananalysisService.DentistProduction().subscribe(function (data) {
+        this.barChartData1 = [];
+        this.barChartLabels1 = [];
+        this.productionTotal = 0;
+        this.cliniciananalysisService.DentistProduction(this.clinic_id).subscribe(function (data) {
             if (data.message == 'success') {
                 data.data.forEach(function (res) {
                     _this.barChartData1.push(res.total);
                     _this.barChartLabels1.push(res.name);
-                    _this.productionTotal = _this.productionTotal + parseInt(res.total);
+                    if (res.total != null)
+                        _this.productionTotal = _this.productionTotal + parseInt(res.total);
                 });
                 _this.barChartData[0]['data'] = _this.barChartData1;
                 _this.barChartLabels = _this.barChartLabels1;
                 _this.productionTotalAverage = _this.productionTotal / _this.barChartData1.length;
+                _this.productionGoal = data.goals;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -798,11 +815,12 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     //Individual Dentist Production Chart
     ClinicianAnalysisComponent.prototype.buildChartDentist = function () {
         var _this = this;
-        this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist).subscribe(function (data) {
+        this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id).subscribe(function (data) {
             if (data.message == 'success') {
                 _this.gaugeValue = data.data.total;
                 _this.gaugeLabel = data.data.name;
                 _this.productionTotal = data.data.total;
+                _this.productionGoal = data.goals;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -811,7 +829,11 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     //Treatment Plan Average Cost
     ClinicianAnalysisComponent.prototype.buildChartTreatment = function () {
         var _this = this;
-        this.cliniciananalysisService.TreatmentPlan().subscribe(function (data) {
+        this.planChartData1 = [];
+        this.planChartData2 = [];
+        this.planChartLabels1 = [];
+        this.planTotal = 0;
+        this.cliniciananalysisService.TreatmentPlan(this.clinic_id).subscribe(function (data) {
             if (data.message == 'success') {
                 data.data.forEach(function (res) {
                     _this.planChartData1.push(res.total_all);
@@ -823,6 +845,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                 _this.planChartData[1]['data'] = _this.planChartData2;
                 _this.planChartLabels = _this.planChartLabels1;
                 _this.planTotalAverage = _this.planTotal / _this.planChartData1.length;
+                _this.planTotalGoal = data.goals;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -831,7 +854,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     //Individual Treatment Plan Average Cost
     ClinicianAnalysisComponent.prototype.buildChartTreatmentDentist = function () {
         var _this = this;
-        this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist).subscribe(function (data) {
+        this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id).subscribe(function (data) {
             if (data.message == 'success') {
                 if (data.data != null) {
                     _this.gaugeValueTreatment = data.data.total_all;
@@ -845,6 +868,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                     _this.planTotal = 0;
                     _this.planTotalAverage = 0;
                 }
+                _this.planTotalGoal = data.goals;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -853,7 +877,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     //Recall Prebook Rate
     ClinicianAnalysisComponent.prototype.recallChartTreatment = function () {
         var _this = this;
-        this.cliniciananalysisService.RecallPrebook().subscribe(function (data) {
+        this.cliniciananalysisService.RecallPrebook(this.clinic_id).subscribe(function (data) {
             if (data.message == 'success') {
                 data.data.forEach(function (res) {
                     _this.planChartData1.push(parseInt(res.average_cost));
@@ -870,7 +894,10 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     };
     ClinicianAnalysisComponent.prototype.buildChartNopatients = function () {
         var _this = this;
-        this.cliniciananalysisService.NoPatients().subscribe(function (data) {
+        this.doughnutChartData1 = [];
+        this.doughnutChartLabels1 = [];
+        this.doughnutTotal = 0;
+        this.cliniciananalysisService.NoPatients(this.clinic_id).subscribe(function (data) {
             console.log(_this.doughnutChartLabels);
             if (data.message == 'success') {
                 data.data.forEach(function (res) {
@@ -881,6 +908,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                 _this.doughnutChartData = _this.doughnutChartData1;
                 _this.doughnutChartLabels = _this.doughnutChartLabels1;
                 _this.doughnutTotalAverage = _this.doughnutTotal / _this.doughnutChartData1.length;
+                _this.doughnutGoals = data.goals;
                 console.log(_this.doughnutChartLabels1);
                 console.log(_this.doughnutChartLabels);
             }
@@ -890,7 +918,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     };
     ClinicianAnalysisComponent.prototype.buildChartNopatientsDentist = function () {
         var _this = this;
-        this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist).subscribe(function (data) {
+        this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id).subscribe(function (data) {
             console.log(_this.doughnutChartLabels);
             if (data.message == 'success') {
                 if (data.data != null) {
@@ -905,6 +933,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                     _this.doughnutTotal = 0;
                     _this.doughnutTotalAverage = 0;
                 }
+                _this.doughnutGoals = data.goals;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -913,9 +942,10 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     // Get Dentist
     ClinicianAnalysisComponent.prototype.getDentists = function () {
         var _this = this;
-        this.dentistService.getDentists().subscribe(function (res) {
+        this.dentistService.getDentists(this.clinic_id).subscribe(function (res) {
             if (res.message == 'success') {
                 _this.dentists = res.data;
+                _this.dentistCount = res.data.length;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -925,7 +955,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             template: __webpack_require__(/*! ./cliniciananalysis.component.html */ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.html")
         }),
-        __metadata("design:paramtypes", [_cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_1__["ClinicianAnalysisService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__["DentistService"]])
+        __metadata("design:paramtypes", [_cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_1__["ClinicianAnalysisService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__["DentistService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
     ], ClinicianAnalysisComponent);
     return ClinicianAnalysisComponent;
 }());
@@ -977,71 +1007,71 @@ var ClinicianAnalysisService = /** @class */ (function () {
         this.headers.append("Token", this._cookieService.get("token"));
     }
     // Dentist Production Service
-    ClinicianAnalysisService.prototype.DentistProduction = function (user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianAnalysisService.prototype.DentistProduction = function (clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caDentistProtection/23/1", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caDentistProtection?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     // Dentist Production Single Service
-    ClinicianAnalysisService.prototype.DentistProductionSingle = function (dentist_id, user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianAnalysisService.prototype.DentistProductionSingle = function (dentist_id, clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caDentistProtection/23/1/" + dentist_id, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caDentistProtection?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Treatment Plan Average Cost service
-    ClinicianAnalysisService.prototype.TreatmentPlan = function (user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianAnalysisService.prototype.TreatmentPlan = function (clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost/23/1", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Treatment Plan Average Cost Single service
-    ClinicianAnalysisService.prototype.TreatmentPlanDentist = function (dentist_id, user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianAnalysisService.prototype.TreatmentPlanDentist = function (dentist_id, clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost/23/1/" + dentist_id, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Recall Prebook Rate service
-    ClinicianAnalysisService.prototype.RecallPrebook = function (user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianAnalysisService.prototype.RecallPrebook = function (clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost/23/1", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Hourly Rate service
-    ClinicianAnalysisService.prototype.NoPatients = function (user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianAnalysisService.prototype.NoPatients = function (clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNumberPatientComplaints/23/1", { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNumberPatientComplaints?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Hourly Rate service
-    ClinicianAnalysisService.prototype.NoPatientsDentist = function (dentist_id, user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianAnalysisService.prototype.NoPatientsDentist = function (dentist_id, clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNumberPatientComplaints/23/1/" + dentist_id, { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNumberPatientComplaints?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1066,7 +1096,7 @@ var ClinicianAnalysisService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<div fxLayout=\"row wrap\">\n      <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n  <mat-card>\n  <mat-card-content>\n    <mat-card-title class=\"mb-3\">Select Dentist</mat-card-title>\n    <mat-form-field>\n      <mat-select placeholder=\"Select Dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n        <mat-option value =\"all\">All Dentists</mat-option>\n        <mat-option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\">\n          {{dentist.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field> \n  </mat-card-content>\n      <div><span (click)=\"filterDate('w')\">This Week</span> | <span (click)=\"filterDate('m')\">This Month</span> | <span  (click)=\"filterDate('q')\">This Quarter</span> | <span (click)=\"filterDate('lq')\">Last Quarter</span> | <span (click)=\"filterDate('cytd')\">Current YTD</span> | <span (click)=\"filterDate('fytd')\">Financial YTD</span></div>\n</mat-card>\n</div>\n  <!-- Column-->\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n    <mat-card class=\"itemsPredictor\">\n      <mat-card-content>\n        <mat-card-title>Items Predictor Analysis </mat-card-title>\n        <canvas baseChart [datasets]=\"stackedChartData\" [labels]=\"stackedChartLabels\" [options]=\"stackedChartOptions\" [legend]=\"stackedChartLegend\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"itemsPredictorSingle\" [style.display]=\"'none'\" >\n      <mat-card-content>\n        <mat-card-title>Items Predictor Analysis </mat-card-title>\n          <div class=\"chart\" *ngIf=\"itemPredictedChartLabels.length > 0\">\n        <canvas baseChart [datasets]=\"itemPredictedChartData\" [labels]=\"itemPredictedChartLabels\" [options]=\"stackedChartOptions\" [legend]=\"stackedChartLegend\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n    <mat-card class=\"ratioPredictor\">\n      <mat-card-content>\n        <mat-card-title>Predictor Ratio</mat-card-title>\n        <canvas baseChart class=\"chart\"\n          [datasets]=\"predictedChartData\"\n          [labels]=\"predictedChartLabels\"\n          [options]=\"barChartOptions\"\n          [legend]=\"stackedChartLegend\"\n          [chartType]=\"stackedChartType\"\n            [colors]=\"[{backgroundColor: ['#1976d2', '#26dad2']}]\"></canvas>\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage1 | number : '1.2-2'}}</h3>\n                        <small>Current Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div> \n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted2\" [style.display]=\"'none'\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage2 | number : '1.2-2'}}</h3>\n                        <small>Current Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div> \n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted3\" [style.display]=\"'none'\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage3 | number : '1.2-2'}}</h3>\n                        <small>Current Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div>             \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"ratioPredictorSingle\" [style.display]=\"'none'\" >\n      <mat-card-content>\n        <mat-card-title>Predictor Ratio</mat-card-title>\n         <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small (click) = \"changeDentistPredictor('1')\">Crown to Large Filling</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small (click) = \"changeDentistPredictor('2')\">Extraction to RCT</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small (click) = \"changeDentistPredictor('3')\">RCT Conversion</small>\n                    </div>\n                </div>\n        <ngx-gauge [type]=\"gaugeType\"\n           [value]=\"gaugeValuePredicted\" \n           [label]=\"gaugeLabelPredicted\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{predictedDentistTotal | number : '1.2-2'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n    <mat-card class=\"revenueProceedure\">\n      <mat-card-content>\n        <mat-card-title>Total Revenue of Clinician Per Procedure</mat-card-title>\n        <canvas baseChart class=\"chart\"\n          [datasets]=\"proceedureChartData\"\n          [labels]=\"proceedureChartLabels\"\n          [options]=\"barChartOptions\"\n          [legend]=\"stackedChartLegend\"\n          [chartType]=\"proceedureChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [colors]=\"stackedChartColors\"></canvas>\n        \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"revenueProceedureSingle\" [style.display]=\"'none'\">\n      <mat-card-content>\n        <mat-card-title>Total Revenue of Clinician Per Procedure</mat-card-title>\n        <canvas baseChart class=\"chart\"\n          [datasets]=\"proceedureDentistChartData\"\n          [labels]=\"proceedureDentistChartLabels\"\n          [options]=\"barChartOptions\"\n          [legend]=\"stackedChartLegend\"\n          [chartType]=\"proceedureChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [colors]=\"stackedChartColors\"></canvas>\n        \n      </mat-card-content>\n    </mat-card>\n  </div>\n   <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n    <mat-card>\n      <mat-card-content>\n        <mat-card-title>Referral to Other Clinicians Internal / External</mat-card-title>\n         <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small (click) = \"changePieReferral('Internal')\">Internal</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small (click) = \"changePieReferral('External')\">External</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small (click) = \"changePieReferral('Combined')\">Combined</small>\n                    </div>\n                </div>\n          <div class=\"chart\" *ngIf=\"pieChartLabels.length > 0\">\n        <canvas *ngIf=\"showInternal == true\" baseChart height=\"150px\" [data]=\"pieChartData1\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#1976d2', '#26dad2', '#dadada','#1976d2', '#26dad2', '#dadada']}]\">\n        </canvas>\n         <canvas *ngIf=\"showExternal == true\" baseChart height=\"150px\" [data]=\"pieChartData2\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#1976d2', '#26dad2', '#dadada','#1976d2', '#26dad2', '#dadada']}]\">\n        </canvas>\n         <canvas *ngIf=\"showCombined == true\" baseChart height=\"150px\" [data]=\"pieChartData3\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#1976d2', '#26dad2', '#dadada','#1976d2', '#26dad2', '#dadada']}]\">\n        </canvas>\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{pieChartInternalTotal}}</h3>\n                        <small>Total Internal Ref</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{pieChartExternalTotal}}</h3>\n                        <small>Total External Ref</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{pieChartCombinedTotal}}</h3>\n                        <small>Total Referrals</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n  \n</div>"
+module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<div fxLayout=\"row wrap\">\n      <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n  <mat-card>\n  <mat-card-content style=\"padding-bottom:0px!important;\">\n    <div fxFlex.gt-sm=\"25\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n    <mat-form-field>\n      <mat-select placeholder=\"All Dentist( {{dentistCount}} )\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n        <mat-option value =\"all\">All Dentists</mat-option>\n        <mat-option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\">\n          {{dentist.name}}\n        </mat-option>\n      </mat-select>\n    </mat-form-field> \n    </div>\n  </mat-card-content>\n  </mat-card>\n\n\n  <mat-card>\n  <mat-card-content>\n      <div class=\"sa_tabs_design\"><span class=\"active\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\">This Month</span><span  (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\">Last Quarter</span><span (click)=\"filterDate('cytd')\">Current YTD</span><span (click)=\"filterDate('fytd')\">Financial YTD</span></div>\n  </mat-card-content>\n  </mat-card>\n</div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n<div fxLayout=\"row wrap\">\n  <!-- Column-->\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"sa_flexbg\">\n    <mat-card class=\"itemsPredictor\">\n      <mat-card-content>\n        <mat-card-title>Items Predictor Analysis </mat-card-title>\n        <canvas baseChart [datasets]=\"stackedChartData\" [labels]=\"stackedChartLabels\" [options]=\"stackedChartOptions\" [legend]=\"stackedChartLegend\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"itemsPredictorSingle\" [style.display]=\"'none'\" >\n      <mat-card-content>\n        <mat-card-title>Items Predictor Analysis </mat-card-title>\n          <div class=\"chart\" *ngIf=\"itemPredictedChartLabels.length > 0\">\n        <canvas baseChart [datasets]=\"itemPredictedChartData\" [labels]=\"itemPredictedChartLabels\" [options]=\"stackedChartOptions\" [legend]=\"stackedChartLegend\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"sa_flexbg\">\n    <mat-card class=\"ratioPredictor\">\n      <mat-card-content>\n        <mat-card-title>Predictor Ratio</mat-card-title>\n        <canvas baseChart class=\"chart\"\n          [datasets]=\"predictedChartData\"\n          [labels]=\"predictedChartLabels\"\n          [options]=\"barChartOptions\"\n          [legend]=\"stackedChartLegend\"\n          [chartType]=\"stackedChartType\"\n            [colors]=\"[{backgroundColor: ['#18a689', '#B9DBE6']}]\"></canvas>\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage1 | number : '1.2-2'}}</h3>\n                        <small>Current Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div> \n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted2\" [style.display]=\"'none'\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage2 | number : '1.2-2'}}</h3>\n                        <small>Current Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div> \n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted3\" [style.display]=\"'none'\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage3 | number : '1.2-2'}}</h3>\n                        <small>Current Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div>             \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"ratioPredictorSingle\" [style.display]=\"'none'\" >\n      <mat-card-content>\n        <mat-card-title>Predictor Ratio</mat-card-title>\n         <div fxLayout=\"row wrap\" class=\"\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn\" (click) = \"changeDentistPredictor('1')\">Crown to Large Filling</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn\" (click) = \"changeDentistPredictor('2')\">Extraction to RCT</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn\" (click) = \"changeDentistPredictor('3')\">RCT Conversion</small>\n                    </div>\n                </div>\n        <ngx-gauge [type]=\"gaugeType\"\n           [value]=\"gaugeValuePredicted\" \n           [label]=\"gaugeLabelPredicted\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{predictedDentistTotal | number : '1.2-2'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">--</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"sa_flexbg\">\n    <mat-card class=\"revenueProceedure\">\n      <mat-card-content>\n        <mat-card-title>Total Revenue of Clinician Per Procedure</mat-card-title>\n        <canvas baseChart class=\"chart\"\n          [datasets]=\"proceedureChartData\"\n          [labels]=\"proceedureChartLabels\"\n          [options]=\"barChartOptions\"\n          [legend]=\"stackedChartLegend\"\n          [chartType]=\"proceedureChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [colors]=\"stackedChartColors\"></canvas>\n        \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"revenueProceedureSingle\" [style.display]=\"'none'\">\n      <mat-card-content>\n        <mat-card-title>Total Revenue of Clinician Per Procedure</mat-card-title>\n        <canvas baseChart class=\"chart\"\n          [datasets]=\"proceedureDentistChartData\"\n          [labels]=\"proceedureDentistChartLabels\"\n          [options]=\"barChartOptions\"\n          [legend]=\"stackedChartLegend\"\n          [chartType]=\"proceedureChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [colors]=\"stackedChartColors\"></canvas>\n        \n      </mat-card-content>\n    </mat-card>\n  </div>\n   <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"sa_flexbg\">\n    <mat-card>\n      <mat-card-content>\n        <mat-card-title>Referral to Other Clinicians Internal / External</mat-card-title>\n         <div fxLayout=\"row wrap\" class=\"\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn\" (click) = \"changePieReferral('Internal')\">Internal</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn\" (click) = \"changePieReferral('External')\">External</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn\"(click) = \"changePieReferral('Combined')\">Combined</small>\n                    </div>\n                </div>\n          <div class=\"chart\" *ngIf=\"pieChartLabels.length > 0\">\n        <canvas *ngIf=\"showInternal == true\" baseChart height=\"150px\" [data]=\"pieChartData1\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#18a689', '#B9DBE6', '#5F818A','#36585E', '#26dad2', '#2F4852']}]\">\n        </canvas>\n         <canvas *ngIf=\"showExternal == true\" baseChart height=\"150px\" [data]=\"pieChartData2\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#18a689', '#B9DBE6', '#5F818A','#36585E', '#26dad2', '#2F4852']}]\">\n        </canvas>\n         <canvas *ngIf=\"showCombined == true\" baseChart height=\"150px\" [data]=\"pieChartData3\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#18a689', '#B9DBE6', '#5F818A','#36585E', '#26dad2', '#2F4852']}]\">\n        </canvas>\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{pieChartInternalTotal}}</h3>\n                        <small>Total Internal Ref</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{pieChartExternalTotal}}</h3>\n                        <small>Total External Ref</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <h3 class=\"m-0 font-light\">{{pieChartCombinedTotal}}</h3>\n                        <small>Total Referrals</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n  \n</div>\n</div>"
 
 /***/ }),
 
@@ -1084,6 +1114,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _clinicianproceedures_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./clinicianproceedures.service */ "./src/app/dashboards/clinicianproceedures/clinicianproceedures.service.ts");
 /* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1097,11 +1128,15 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ClinicianProceeduresComponent = /** @class */ (function () {
-    function ClinicianProceeduresComponent(clinicianproceeduresService, dentistService, datePipe) {
+    function ClinicianProceeduresComponent(clinicianproceeduresService, dentistService, datePipe, route) {
         this.clinicianproceeduresService = clinicianproceeduresService;
         this.dentistService = dentistService;
         this.datePipe = datePipe;
+        this.route = route;
+        this.clinic_id = {};
+        this.dentistCount = {};
         this.dentists = [
             { providerId: 'all', name: 'All Dentists' },
         ];
@@ -1187,11 +1222,11 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         this.showExternal = false;
         this.showCombined = false;
         this.stackedChartColors = [
-            { backgroundColor: '#1976d2' },
-            { backgroundColor: '#26dad2' },
-            { backgroundColor: '#808080' },
-            { backgroundColor: '#0040ff' },
-            { backgroundColor: '#ffe6e6' },
+            { backgroundColor: '#18a689' },
+            { backgroundColor: '#B9DBE6' },
+            { backgroundColor: '#5F818A' },
+            { backgroundColor: '#36585E' },
+            { backgroundColor: '#2F4852' },
         ];
         this.stackedChartType = 'bar';
         this.stackedChartLegend = true;
@@ -1261,7 +1296,7 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         this.gaugeValue = '';
         this.gaugeLabel = "";
         this.gaugeThick = "20";
-        this.foregroundColor = "#1e88e5";
+        this.foregroundColor = "#18a689";
         this.cap = "round";
         this.size = "300";
         this.gaugeValuePredicted = 0;
@@ -1270,13 +1305,16 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         this.gaugeValuePredicted3 = 0;
         this.gaugeLabelPredicted = "";
         this.predictedDentistTotal = 0;
+        this.startDate = '';
+        this.endDate = '';
     }
     ClinicianProceeduresComponent.prototype.ngAfterViewInit = function () {
-        this.buildChartPredictor();
-        this.buildChart();
-        this.buildChartProceedure();
-        this.buildChartReferral();
-        this.getDentists();
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            _this.clinic_id = _this.route.snapshot.paramMap.get("id");
+            _this.loadDentist('all');
+            _this.getDentists();
+        });
     };
     // events
     ClinicianProceeduresComponent.prototype.chartClicked = function (e) {
@@ -1287,6 +1325,7 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
     };
     ClinicianProceeduresComponent.prototype.loadDentist = function (newValue) {
         if (newValue == 'all') {
+            // this.filterDate('w')
             this.buildChartPredictor();
             this.buildChart();
             this.buildChartProceedure();
@@ -1326,13 +1365,26 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         }
     };
     //Items Predictor Analysis 
-    ClinicianProceeduresComponent.prototype.buildChart = function (startDate, endDate) {
+    ClinicianProceeduresComponent.prototype.buildChart = function () {
         var _this = this;
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
         var user_id;
         var clinic_id;
-        this.clinicianproceeduresService.ItemsPredictorAnalysis(user_id = '23', clinic_id = '1', startDate, endDate).subscribe(function (data) {
+        this.stackedChartData = [
+            { data: [], label: 'Crowns' },
+            { data: [], label: 'Splints ' },
+            { data: [], label: 'Root Canals' },
+            { data: [], label: 'Perio Charts' },
+            { data: [], label: 'Surgical Extractions' }
+        ];
+        this.stackedChartData1 = [];
+        this.stackedChartData2 = [];
+        this.stackedChartData3 = [];
+        this.stackedChartData4 = [];
+        this.stackedChartData5 = [];
+        this.stackedChartLabels1 = [];
+        this.stackedChartLabels = [];
+        console.log(this.stackedChartLabels);
+        this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
                 if (data.data.length <= 0) {
                 }
@@ -1360,13 +1412,11 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         });
     };
     //Items Predictor Analysis Single
-    ClinicianProceeduresComponent.prototype.buildChartDentist = function (startDate, endDate) {
+    ClinicianProceeduresComponent.prototype.buildChartDentist = function () {
         var _this = this;
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
         var user_id;
         var clinic_id;
-        this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, user_id = '23', clinic_id = '1', startDate, endDate).subscribe(function (data) {
+        this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
                 _this.itemPredictedChartData1 = [];
                 _this.itemPredictedChartData1.push(data.data[0].crowns);
@@ -1383,13 +1433,18 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         });
     };
     //Predictor Ratio :
-    ClinicianProceeduresComponent.prototype.buildChartPredictor = function (startDate, endDate) {
+    ClinicianProceeduresComponent.prototype.buildChartPredictor = function () {
         var _this = this;
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
+        this.predictedChartData1 = [];
+        this.predictedChartData2 = [];
+        this.predictedChartData3 = [];
+        this.predictedChartLabels1 = [];
+        this.predictedChartData[0]['data'] = [];
+        this.predictedChartData[1]['data'] = [];
+        this.predictedChartData[2]['data'] = [];
         var user_id;
         var clinic_id;
-        this.clinicianproceeduresService.PredictorRatio(user_id = '23', clinic_id = '1', startDate, endDate).subscribe(function (data) {
+        this.clinicianproceeduresService.PredictorRatio(this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
                 data.data.forEach(function (res) {
                     _this.predictedChartData1.push(res.ratio1);
@@ -1413,13 +1468,11 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         });
     };
     //Predictor Ratio :
-    ClinicianProceeduresComponent.prototype.buildChartPredictorDentist = function (startDate, endDate) {
+    ClinicianProceeduresComponent.prototype.buildChartPredictorDentist = function () {
         var _this = this;
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
         var user_id;
         var clinic_id;
-        this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist, user_id = '23', clinic_id = '1', startDate, endDate).subscribe(function (data) {
+        this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
                 _this.gaugeValuePredicted1 = data.data[0].ratio1;
                 _this.gaugeValuePredicted2 = data.data[0].ratio2;
@@ -1433,17 +1486,17 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         });
     };
     //Total Revenue of Clinician Per Procedure
-    ClinicianProceeduresComponent.prototype.buildChartProceedure = function (startDate, endDate) {
+    ClinicianProceeduresComponent.prototype.buildChartProceedure = function () {
         var _this = this;
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
         var user_id;
         var clinic_id;
-        this.clinicianproceeduresService.ClinicianProceedure(user_id = '23', clinic_id = '1', startDate, endDate).subscribe(function (data) {
+        this.proceedureChartData1 = [];
+        this.proceedureChartLabels1 = [];
+        this.clinicianproceeduresService.ClinicianProceedure(this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
                 data.data.forEach(function (res) {
                     _this.proceedureChartData1.push(res.total);
-                    +_this.proceedureChartLabels1.push(res.treat_item);
+                    _this.proceedureChartLabels1.push(res.treat_item);
                     //    this.productionTotal = this.productionTotal + parseInt(res.total);
                 });
                 _this.proceedureChartData[0]['data'] = _this.proceedureChartData1;
@@ -1454,15 +1507,13 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         });
     };
     //Total Revenue of Clinician Per Procedure
-    ClinicianProceeduresComponent.prototype.buildChartProceedureDentist = function (startDate, endDate) {
+    ClinicianProceeduresComponent.prototype.buildChartProceedureDentist = function () {
         var _this = this;
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
         var user_id;
         var clinic_id;
         this.proceedureChartData1 = [];
         this.proceedureChartLabels1 = [];
-        this.clinicianproceeduresService.ClinicianProceedureDentist(this.selectedDentist, user_id = '23', clinic_id = '1', startDate, endDate).subscribe(function (data) {
+        this.clinicianproceeduresService.ClinicianProceedureDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
                 data.data.forEach(function (res) {
                     _this.proceedureChartData1.push(res.total);
@@ -1477,13 +1528,14 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         });
     };
     //Referral to Other Clinicians Internal / External
-    ClinicianProceeduresComponent.prototype.buildChartReferral = function (startDate, endDate) {
+    ClinicianProceeduresComponent.prototype.buildChartReferral = function () {
         var _this = this;
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
         var user_id;
         var clinic_id;
-        this.clinicianproceeduresService.ClinicianReferral(user_id = '23', clinic_id = '1', startDate, endDate).subscribe(function (data) {
+        this.pieChartInternalTotal = 0;
+        this.pieChartExternalTotal = 0;
+        this.pieChartCombinedTotal = 0;
+        this.clinicianproceeduresService.ClinicianReferral(this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
                 _this.pieChartDatares1 = [];
                 _this.pieChartDatares2 = [];
@@ -1508,13 +1560,14 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         });
     };
     //Referral to Other Clinicians Internal / External
-    ClinicianProceeduresComponent.prototype.buildChartReferralDentist = function (startDate, endDate) {
+    ClinicianProceeduresComponent.prototype.buildChartReferralDentist = function () {
         var _this = this;
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
         var user_id;
         var clinic_id;
-        this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, user_id = '23', clinic_id = '1', startDate, endDate).subscribe(function (data) {
+        this.pieChartInternalTotal = 0;
+        this.pieChartExternalTotal = 0;
+        this.pieChartCombinedTotal = 0;
+        this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
                 _this.pieChartDatares1 = [];
                 _this.pieChartDatares2 = [];
@@ -1555,8 +1608,8 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
             var now = new Date();
             var first = now.getDate() - now.getDay();
             var last = first + 6;
-            var startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'yyyy-MM-dd');
-            var endDate = this.datePipe.transform(new Date(now.setDate(last)).toUTCString(), 'yyyy-MM-dd');
+            this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'yyyy-MM-dd');
+            this.endDate = this.datePipe.transform(new Date(now.setDate(last)).toUTCString(), 'yyyy-MM-dd');
             var dates = startDate + "," + endDate;
         }
         else if (duration == 'm') {
@@ -1564,15 +1617,14 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
             var startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
             var endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'yyyy-MM-dd');
         }
-        console.log(startDate + ' ' + endDate);
-        this.buildChart(startDate, endDate);
     };
     // Get Dentist
     ClinicianProceeduresComponent.prototype.getDentists = function () {
         var _this = this;
-        this.dentistService.getDentists().subscribe(function (res) {
+        this.dentistService.getDentists(this.clinic_id).subscribe(function (res) {
             if (res.message == 'success') {
                 _this.dentists = res.data;
+                _this.dentistCount = res.data.length;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -1596,7 +1648,7 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             template: __webpack_require__(/*! ./clinicianproceedures.component.html */ "./src/app/dashboards/clinicianproceedures/clinicianproceedures.component.html")
         }),
-        __metadata("design:paramtypes", [_clinicianproceedures_service__WEBPACK_IMPORTED_MODULE_1__["ClinicianProceeduresService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__["DentistService"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["DatePipe"]])
+        __metadata("design:paramtypes", [_clinicianproceedures_service__WEBPACK_IMPORTED_MODULE_1__["ClinicianProceeduresService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__["DentistService"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["DatePipe"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"]])
     ], ClinicianProceeduresComponent);
     return ClinicianProceeduresComponent;
 }());
@@ -1647,89 +1699,97 @@ var ClinicianProceeduresService = /** @class */ (function () {
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
     }
     // Items Predictor Analysis 
-    ClinicianProceeduresService.prototype.ItemsPredictorAnalysis = function (user_id, clinic_id, startDate, endDate) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianProceeduresService.prototype.ItemsPredictorAnalysis = function (clinic_id, startDate, endDate, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
         return this.http.get(this.apiUrl + "/ClinicianProcedures/cpItemsPredictorAnalysis?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     // Items Predictor Analysis  
-    ClinicianProceeduresService.prototype.ItemsPredictorAnalysisDentist = function (dentist_id, user_id, clinic_id, startDate, endDate) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianProceeduresService.prototype.ItemsPredictorAnalysisDentist = function (dentist_id, clinic_id, startDate, endDate, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpItemsPredictorAnalysis?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&dentist_id=" + dentist_id, { headers: this.headers })
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpItemsPredictorAnalysis?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&provider_id=" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Predictor Ratio 1:
-    ClinicianProceeduresService.prototype.PredictorRatio = function (user_id, clinic_id, startDate, endDate) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianProceeduresService.prototype.PredictorRatio = function (clinic_id, startDate, endDate, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
         return this.http.get(this.apiUrl + "/ClinicianProcedures/cpPredictorRatio?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Predictor Ratio 1:
-    ClinicianProceeduresService.prototype.PredictorRatioDentist = function (dentist_id, user_id, clinic_id, startDate, endDate) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianProceeduresService.prototype.PredictorRatioDentist = function (dentist_id, clinic_id, startDate, endDate, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpPredictorRatio?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&dentist_id=" + dentist_id, { headers: this.headers })
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpPredictorRatio?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&provider_id=" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Total Revenue of Clinician Per Procedure
-    ClinicianProceeduresService.prototype.ClinicianProceedure = function (user_id, clinic_id, startDate, endDate) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianProceeduresService.prototype.ClinicianProceedure = function (clinic_id, startDate, endDate, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
         return this.http.get(this.apiUrl + "/ClinicianProcedures/cpTotalRevenueOfClinicianPerProcedure?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Total Revenue of Clinician Per Procedure
-    ClinicianProceeduresService.prototype.ClinicianProceedureDentist = function (dentist_id, user_id, clinic_id, startDate, endDate) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianProceeduresService.prototype.ClinicianProceedureDentist = function (dentist_id, clinic_id, startDate, endDate, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpTotalRevenueOfClinicianPerProcedure?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&dentist_id=" + dentist_id, { headers: this.headers })
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpTotalRevenueOfClinicianPerProcedure?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&provider_id=" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Referral to Other Clinicians Internal / External
-    ClinicianProceeduresService.prototype.ClinicianReferral = function (user_id, clinic_id, startDate, endDate) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianProceeduresService.prototype.ClinicianReferral = function (clinic_id, startDate, endDate, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
         return this.http.get(this.apiUrl + "/ClinicianProcedures/cpReferralToOtherClinicians?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     //Referral to Other Clinicians Internal / External
-    ClinicianProceeduresService.prototype.ClinicianReferralDentist = function (dentist_id, user_id, clinic_id, startDate, endDate) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicianProceeduresService.prototype.ClinicianReferralDentist = function (dentist_id, clinic_id, startDate, endDate, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
         if (endDate === void 0) { endDate = ''; }
-        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpReferralToOtherClinicians?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/ClinicianProcedures/cpReferralToOtherClinicians?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&provider_id=" + dentist_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -1854,11 +1914,11 @@ var DashboardsRoutes = [
         path: '',
         children: [
             {
-                path: 'cliniciananalysis',
+                path: 'cliniciananalysis/:id',
                 component: _cliniciananalysis_cliniciananalysis_component__WEBPACK_IMPORTED_MODULE_0__["ClinicianAnalysisComponent"]
             },
             {
-                path: 'clinicianproceedures',
+                path: 'clinicianproceedures/:id',
                 component: _clinicianproceedures_clinicianproceedures_component__WEBPACK_IMPORTED_MODULE_1__["ClinicianProceeduresComponent"]
             }
         ]

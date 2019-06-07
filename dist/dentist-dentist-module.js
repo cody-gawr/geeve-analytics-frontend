@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Dentist</mat-card-title>\n        <input type='button' value='Add Dentist' (click)=\"addDentist()\">\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter dentist name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n            <ngx-datatable-column name=\"ProviderId\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span title=\"Double click to edit\" (dblclick)=\"editing[rowIndex + '-providerId'] = true\" *ngIf=\"!editing[rowIndex + '-providerId']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'providerId', rowIndex)\" *ngIf=\"editing[rowIndex+ '-providerId']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Name\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'name')\" *ngIf=\"!editing[rowIndex + '-name']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'name', rowIndex)\" *ngIf=\"editing[rowIndex+ '-name']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Action\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n           <button mat-menu-item (click) = \"deleteDentists(rowIndex)\">\n         <i class=\"ti-trash text-danger m-r-10\"></i></button>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
+module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Dentist  <button class=\"sa-pull-right mat-raised-button mat-gray\" mat-raised-button (click)=\"openDialog()\">Add Dentist</button></mat-card-title>\n\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter dentist name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n            <ngx-datatable-column name=\"Sr\">\n                <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Provider Id</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span title=\"Double click to edit\" (dblclick)=\"editing[rowIndex + '-providerId'] = true\" *ngIf=\"!editing[rowIndex + '-providerId']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'providerId', rowIndex)\" *ngIf=\"editing[rowIndex+ '-providerId']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Name\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'name')\" *ngIf=\"!editing[rowIndex + '-name']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'name', rowIndex)\" *ngIf=\"editing[rowIndex+ '-name']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Action\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n           <button class=\"action_btn danger\" mat-menu-item (click) = \"deleteDentists(rowIndex)\">\n         <i class=\"ti-trash text-danger m-r-10\"></i></button>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
 
 /***/ }),
 
@@ -26,14 +26,17 @@ module.exports = ".lds-roller div::after {\n  background: black; }\n\n.spinner {
 /*!**********************************************!*\
   !*** ./src/app/dentist/dentist.component.ts ***!
   \**********************************************/
-/*! exports provided: DentistComponent */
+/*! exports provided: DialogOverviewExampleDialogComponent, DentistComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DialogOverviewExampleDialogComponent", function() { return DialogOverviewExampleDialogComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DentistComponent", function() { return DentistComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _dentist_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dentist.service */ "./src/app/dentist/dentist.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -43,19 +46,48 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 
+
+
+
+var DialogOverviewExampleDialogComponent = /** @class */ (function () {
+    function DialogOverviewExampleDialogComponent(dialogRef, data) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.clinic_id = {};
+    }
+    DialogOverviewExampleDialogComponent.prototype.onNoClick = function () {
+        this.dialogRef.close();
+    };
+    DialogOverviewExampleDialogComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-dialog-overview-example-dialog',
+            template: __webpack_require__(/*! ./dialog-overview-example.html */ "./src/app/dentist/dialog-overview-example.html"),
+        }),
+        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"], Object])
+    ], DialogOverviewExampleDialogComponent);
+    return DialogOverviewExampleDialogComponent;
+}());
 
 var data = __webpack_require__(/*! assets/company.json */ "./src/assets/company.json");
 var DentistComponent = /** @class */ (function () {
-    function DentistComponent(dentistService) {
+    function DentistComponent(dentistService, dialog, route) {
         var _this = this;
         this.dentistService = dentistService;
+        this.dialog = dialog;
+        this.route = route;
+        this.clinic_id = {};
         this.editing = {};
         this.rows = [];
         this.temp = data.slice();
         this.loadingIndicator = true;
         this.reorderable = true;
-        this.columns = [{ prop: 'providerId' }, { name: 'name' }, { name: 'Action' }];
+        this.columns = [{ prop: 'sr' }, { name: 'name' }, { name: 'Action' }];
+        this.clinic_id = this.route.snapshot.paramMap.get("id");
         this.rows = data;
         this.temp = data.slice();
         setTimeout(function () {
@@ -64,12 +96,34 @@ var DentistComponent = /** @class */ (function () {
     }
     DentistComponent_1 = DentistComponent;
     DentistComponent.prototype.ngAfterViewInit = function () {
-        this.getDentists();
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            _this.clinic_id = _this.route.snapshot.paramMap.get("id");
+            _this.getDentists();
+        });
+    };
+    DentistComponent.prototype.openDialog = function () {
+        var _this = this;
+        var dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            width: '250px',
+            data: { dentist_name: this.dentist_name, provider_id: this.provider_id }
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            _this.dentistService.addDentists(result.provider_id, result.dentist_name, _this.clinic_id).subscribe(function (res) {
+                console.log(res);
+                if (res.message == 'success') {
+                    alert('Dentist Added');
+                    _this.getDentists();
+                }
+            }, function (error) {
+                _this.warningMessage = "Please Provide Valid Inputs!";
+            });
+        });
     };
     DentistComponent.prototype.getDentists = function () {
         var _this = this;
         console.log(this.rows);
-        this.dentistService.getDentists().subscribe(function (res) {
+        this.dentistService.getDentists(this.clinic_id).subscribe(function (res) {
             if (res.message == 'success') {
                 _this.rows = res.data;
                 _this.temp = res.data.slice();
@@ -81,31 +135,22 @@ var DentistComponent = /** @class */ (function () {
     };
     DentistComponent.prototype.deleteDentists = function (row) {
         var _this = this;
-        if (this.rows[row]['providerId']) {
-            this.dentistService.deleteDentists(this.rows[row]['providerId']).subscribe(function (res) {
-                if (res.message == 'success') {
-                    alert('Dentist Removed');
-                    _this.getDentists();
-                }
-            }, function (error) {
-                _this.warningMessage = "Please Provide Valid Inputs!";
-            });
+        if (confirm("Are you sure to delete Dentist?")) {
+            if (this.rows[row]['providerId']) {
+                this.dentistService.deleteDentists(this.rows[row]['providerId']).subscribe(function (res) {
+                    if (res.message == 'success') {
+                        alert('Dentist Removed');
+                        _this.getDentists();
+                    }
+                }, function (error) {
+                    _this.warningMessage = "Please Provide Valid Inputs!";
+                });
+            }
+            else {
+                this.rows.splice(row, 1);
+                this.rows = this.rows.slice();
+            }
         }
-        else {
-            this.rows.splice(row, 1);
-            this.rows = this.rows.slice();
-        }
-    };
-    DentistComponent.prototype.addDentist = function () {
-        console.log(this.rows);
-        var temp = {};
-        temp['providerId'] = 'Enter Provider Id';
-        temp['name'] = 'Enter Name';
-        var length = this.rows.length;
-        this.editing[length + '-providerId'] = true;
-        this.editing[length + '-name'] = true;
-        this.rows.push(temp);
-        this.table = data;
     };
     DentistComponent.prototype.updateFilter = function (event) {
         var val = event.target.value.toLowerCase();
@@ -127,7 +172,7 @@ var DentistComponent = /** @class */ (function () {
         else {
             this.editing[rowIndex + '-' + cell] = false;
             this.rows[rowIndex][cell] = event.target.value;
-            this.dentistService.updateDentists(this.rows[rowIndex]['providerId'], this.rows[rowIndex][cell]).subscribe(function (res) {
+            this.dentistService.updateDentists(this.rows[rowIndex]['providerId'], this.rows[rowIndex][cell], this.clinic_id).subscribe(function (res) {
                 if (res.message == 'success') {
                     alert('Dentist Updated');
                     _this.getDentists();
@@ -153,7 +198,7 @@ var DentistComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./dentist.component.html */ "./src/app/dentist/dentist.component.html"),
             styles: [__webpack_require__(/*! ./dentist.component.scss */ "./src/app/dentist/dentist.component.scss")]
         }),
-        __metadata("design:paramtypes", [_dentist_service__WEBPACK_IMPORTED_MODULE_1__["DentistService"]])
+        __metadata("design:paramtypes", [_dentist_service__WEBPACK_IMPORTED_MODULE_1__["DentistService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
     ], DentistComponent);
     return DentistComponent;
 }());
@@ -182,12 +227,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _dentist_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./dentist.service */ "./src/app/dentist/dentist.service.ts");
 /* harmony import */ var _dentist_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./dentist.component */ "./src/app/dentist/dentist.component.ts");
 /* harmony import */ var _dentist_routing__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./dentist.routing */ "./src/app/dentist/dentist.routing.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -207,12 +254,16 @@ var DentistModule = /** @class */ (function () {
                 _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(_dentist_routing__WEBPACK_IMPORTED_MODULE_8__["DentistRoutes"]),
                 _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatInputModule"],
                 _swimlane_ngx_datatable__WEBPACK_IMPORTED_MODULE_5__["NgxDatatableModule"],
-                _demo_material_module__WEBPACK_IMPORTED_MODULE_4__["DemoMaterialModule"]
+                _demo_material_module__WEBPACK_IMPORTED_MODULE_4__["DemoMaterialModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_9__["FormsModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_9__["ReactiveFormsModule"],
             ],
             providers: [
                 _dentist_service__WEBPACK_IMPORTED_MODULE_6__["DentistService"]
             ],
-            declarations: [_dentist_component__WEBPACK_IMPORTED_MODULE_7__["DentistComponent"]]
+            entryComponents: [_dentist_component__WEBPACK_IMPORTED_MODULE_7__["DialogOverviewExampleDialogComponent"]],
+            declarations: [_dentist_component__WEBPACK_IMPORTED_MODULE_7__["DentistComponent"],
+                _dentist_component__WEBPACK_IMPORTED_MODULE_7__["DialogOverviewExampleDialogComponent"]]
         })
     ], DentistModule);
     return DentistModule;
@@ -244,6 +295,17 @@ var DentistRoutes = [
     }
 ];
 
+
+/***/ }),
+
+/***/ "./src/app/dentist/dialog-overview-example.html":
+/*!******************************************************!*\
+  !*** ./src/app/dentist/dialog-overview-example.html ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h1 mat-dialog-title>Add Dentist</h1>\n<div mat-dialog-content>\n\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.provider_id\" placeholder=\"Provider ID\">\n  </mat-form-field>\n\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.dentist_name\" placeholder=\"Dentist Name\">\n  </mat-form-field>\n</div>\n<div mat-dialog-actions>\n  <button mat-button [mat-dialog-close]=\"data\" tabindex=\"2\" class=\"mat-raised-button mat-dc\">Ok</button>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" class=\"mat-raised-button mat-gray\">No Thanks</button>\n</div>"
 
 /***/ })
 
