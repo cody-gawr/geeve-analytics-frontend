@@ -1,0 +1,61 @@
+<!-- ============================================================== -->
+<!-- Card Grid-->
+<!-- ============================================================== -->
+<div fxLayout="row wrap">
+  <div fxFlex.gt-sm="100" fxFlex="100">
+    <mat-card>
+      <mat-card-content>
+        <mat-card-title>Clinic Settings <button class="sa-pull-right mat-raised-button mat-gray" mat-raised-button >Connect To Xero</button></mat-card-title>
+
+        <!-- ============================================================== -->
+        <!-- column -->
+        <!-- ============================================================== -->
+        <div fxLayout="row wrap">
+        <!-- Card column -->
+        <div fxFlex.gt-sm="100%" fxFlex="100">
+
+                           <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
+
+                                <div fxLayout="row wrap">
+                                  <!-- column -->
+                                  <div fxFlex.gt-md="100" fxFlex="100">
+                                    <mat-form-field>
+                                        <mat-card-title>Clinic Name</mat-card-title>
+                                      <input matInput placeholder="" [formControl]="form.controls['clinicName']" [(ngModel)]= "clinicName">
+                                    </mat-form-field>
+                                  </div>
+                                   <div fxFlex.gt-md="100" fxFlex="100">
+                                    <mat-form-field>
+                                        <mat-card-title>Contact Name</mat-card-title>
+                                      <input matInput placeholder="" [formControl]="form.controls['contactName']" [(ngModel)]="contactName">
+                                    </mat-form-field>
+                                  </div>
+                                   <div fxFlex.gt-md="100" fxFlex="100">
+                                    <mat-form-field>
+                                        <mat-card-title>Address</mat-card-title>
+                                      <input matInput placeholder="" [formControl]="form.controls['address']" [(ngModel)]="address">
+                                    </mat-form-field>
+                                  </div>
+                                   <div fxFlex.gt-md="100" fxFlex="100">
+                                    <mat-form-field>
+                                        <mat-card-title>Practice Size</mat-card-title>
+                                      <input matInput placeholder="" [formControl]="form.controls['practice_size']" [(ngModel)]="practice_size">
+                                    </mat-form-field>
+                                  </div>
+                                   
+                                 </div> 
+                                  <mat-card-actions>
+                                    <button mat-raised-button color="primary" type="submit">Submit</button>
+                                  </mat-card-actions>
+                                  <!-- column -->
+
+                              </form>
+
+
+        </div>
+      </div>
+ 
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

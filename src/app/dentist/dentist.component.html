@@ -1,0 +1,40 @@
+<mat-card>
+    <mat-card-content>
+        <mat-card-title>Dentist  <button class="sa-pull-right mat-raised-button mat-gray" mat-raised-button (click)="openDialog()">Add Dentist</button></mat-card-title>
+
+        <mat-form-field>
+            <input matInput type='text' class="form-control" placeholder='Type to filter dentist name...' (keyup)='updateFilter($event)'
+            />
+        </mat-form-field>
+        <ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+            [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+            <ngx-datatable-column name="Sr">
+                <ng-template let-column="column" ngx-datatable-header-template>
+        <span>Provider Id</span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          <span title="Double click to edit" (dblclick)="editing[rowIndex + '-providerId'] = true" *ngIf="!editing[rowIndex + '-providerId']">
+            {{value}}
+          </span>
+          <input autofocus (blur)="updateValue($event, 'providerId', rowIndex)" *ngIf="editing[rowIndex+ '-providerId']" type="text" [value]="value"
+          />
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Name">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'name')" *ngIf="!editing[rowIndex + '-name']">
+            {{value}}
+          </span>
+          <input autofocus (blur)="updateValue($event, 'name', rowIndex)" *ngIf="editing[rowIndex+ '-name']" type="text" [value]="value"
+          />
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Action">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+           <button class="action_btn danger" mat-menu-item (click) = "deleteDentists(rowIndex)">
+         <i class="ti-trash text-danger m-r-10"></i></button>
+        </ng-template>
+      </ngx-datatable-column>
+        </ngx-datatable>
+    </mat-card-content>
+</mat-card>

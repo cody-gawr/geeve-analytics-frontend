@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Add Clinic</h1>
+<div mat-dialog-content>
+ 
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.name" placeholder="Clinic Name">
+  </mat-form-field>
+
+  
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.address" placeholder="Address">
+  </mat-form-field>
+
+  
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.contact_name" placeholder="Contact Name">
+  </mat-form-field>
+  <!--  <input type="file" (change)="onChange($event)"> -->
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+</div>

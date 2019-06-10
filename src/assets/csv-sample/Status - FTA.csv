@@ -1,0 +1,9 @@
+app_date_from,app_date_to,surname,dob,phone_home,app_date,needed_appoint_id,duration,total_sum,start,app_book_id,app_book_description,status,firstname,middlename,patient_count,patient_id,patient_unique_count,preferred_name,patient_name
+15/04/1900,15/04/2099,,3/04/1951,9399 6570,30/10/1998,2249,75,,09:45:00,1,Dr Frank Spencer,FTA,,,1,35,1,,"Anderson, Dr William (Bill)"
+15/04/1900,15/04/2099,,2/05/1948,,1/12/1998,2287,29,,08:15:00,1,Dr Frank Spencer,FTA,,,1,2,1,,"Brown, Mrs Lucy"
+15/04/1900,15/04/2099,,2/09/1971,4589 2569,28/10/1998,2248,60,,09:45:00,1,Dr Frank Spencer,FTA,,,1,24,1,,"Travis, Miss Kerry"
+15/04/1900,15/04/2099,,2/09/1971,4589 2569,3/07/2007,2669,120,490.00,14:00:00,1,Dr Frank Spencer,FTA,,,0,24,0,,"Travis, Miss Kerry"
+15/04/1900,15/04/2099,,2/05/1969, 8595 2599,22/10/1998,2245,45,,10:00:00,1,Dr Frank Spencer,FTA,,,1,25,1,,"Universe, Mr Arnold"
+15/04/1900,15/04/2099,,2/05/1967,8596 2598,18/11/1998,2269,45,,10:45:00,1,Dr Frank Spencer,FTA,,,1,26,1,,"Venus, Ms Helen"
+15/04/1900,15/04/2099,,,2589 9856,27/10/1998,2247,45,,11:15:00,1,Dr Frank Spencer,FTA,,,1,1,1,,"White, Mr Fred"
+15/04/1900,15/04/2099,,5/05/1962,,20/02/2001,2734,15,,11:15:00,3,3 Treat Room ,FTA,,,1,13,1,,"Graple, Mr George"

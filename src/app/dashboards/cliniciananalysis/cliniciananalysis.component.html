@@ -1,0 +1,195 @@
+<!-- ============================================================== -->
+<!-- Grid-->
+<!-- ============================================================== -->
+<div fxLayout="row wrap" >
+  <!-- Column-->
+    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <mat-card>
+      <mat-card-content style="padding-bottom:0px!important;">
+            <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
+                <mat-form-field>
+                    <mat-select placeholder="All Dentist( {{dentistCount}} )"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
+                        <mat-option value ="all">All Dentists</mat-option>
+                        <mat-option *ngFor="let dentist of dentists" [value]="dentist.providerId">
+                            {{dentist.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+      </mat-card-content>
+    </mat-card>
+    </div>
+</div>
+<div class="sa_dentist_graphs_area">
+  <div fxLayout="row wrap" >
+  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
+    <mat-card  class="dentistProduction">
+      <mat-card-content>
+        <mat-card-title>Dentist Production</mat-card-title>
+        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"  [legend]="barChartLegend"
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [colors]="barChartColors" (chartClick)="chartClicked($event)">
+        </canvas>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{productionTotal | number : '1.2-2'}}</h3>
+                        <small>Total (Current)</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{productionTotalAverage | number : '1.2-2'}}</h3>
+                        <small>Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{productionGoal | number : '1.2-2'}}</h3>
+                        <small>Goals</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+
+     <mat-card class="dentistProductionSingle" [style.display]="'none'" >
+      <mat-card-content>
+        <mat-card-title>Dentist Production</mat-card-title>
+         <ngx-gauge [type]="gaugeType"
+           [value]="gaugeValue" 
+           [label]="gaugeLabel"  
+           [thick]="gaugeThick"  
+           [foregroundColor]="foregroundColor"
+           [cap] ="cap"
+           [size] = "size">
+          </ngx-gauge>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{productionTotal | number : '1.2-2'}}</h3>
+                        <small>Total (Current)</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{productionTotalAverage | number : '1.2-2'}}</h3>
+                        <small>Practice Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{productionGoal | number : '1.2-2'}}</h3>
+                        <small>Goals</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Column-->
+  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
+    <mat-card  class="treatmentPlan">
+      <mat-card-content>
+        <mat-card-title>Treatment Plan Average Cost</mat-card-title>
+        <canvas baseChart class="chart"
+          [datasets]="planChartData"
+          [labels]="planChartLabels"
+          [legend]="barChartLegend"
+          [chartType]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"  [colors]="barChartColors"></canvas>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{planTotalAverage | number : '1.2-2'}}</h3>
+                        <small>Current Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{planTotalGoal | number : '1.2-2'}}</h3>
+                        <small>Goals</small>
+                    </div>
+                </div>          
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="treatmentPlanSingle" [style.display]="'none'">
+      <mat-card-content>
+        <mat-card-title>Treatment Plan Average Cost</mat-card-title>
+        <ngx-gauge [type]="gaugeType"
+           [value]="gaugeValueTreatment" 
+           [label]="gaugeLabelTreatment"  
+           [thick]="gaugeThick"  
+           [foregroundColor]="foregroundColor"
+           [cap] ="cap"
+           [size] = "size">
+          </ngx-gauge>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{planTotalAverage | number : '1.2-2'}}</h3>
+                        <small>Current Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{planTotalGoal | number : '1.2-2'}}</h3>
+                        <small>Goals</small>
+                    </div>
+                </div>          
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Column-->
+  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
+    <mat-card  class="noPatients">
+      <mat-card-content>
+        <mat-card-title>No. Patient Complaints</mat-card-title>
+        <div class="chart" *ngIf="doughnutChartLabels.length > 0">
+        <canvas baseChart class="chart"
+          [data]="doughnutChartData"
+          [labels]="doughnutChartLabels"
+          [chartType]="doughnutChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)" [colors]="[{backgroundColor: ['#18a689', '#B9DBE6', '#5F818A']}]"></canvas>
+        </div>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{doughnutTotal | number : '1.2-2'}}</h3>
+                        <small>Current Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{doughnutGoals | number : '1.2-2'}}</h3>
+                        <small>Goals</small>
+                    </div>
+                </div>        
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="noPatientsSingle" [style.display]="'none'">
+      <mat-card-content>
+        <mat-card-title>No. Patient Complaints</mat-card-title>
+        <div class="chart" *ngIf="doughnutChartLabels.length > 0">
+         <ngx-gauge [type]="gaugeType"
+           [value]="gaugeValuePatients" 
+           [label]="gaugeLabelPatients"  
+           [thick]="gaugeThick"  
+           [foregroundColor]="foregroundColor"
+           [cap] ="cap"
+           [size] = "size">
+          </ngx-gauge>
+        </div>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{doughnutTotal | number : '1.2-2'}}</h3>
+                        <small>Current Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">${{doughnutGoals | number : '1.2-2'}}</h3>
+                        <small>Goals</small>
+                    </div>
+                </div>        
+      </mat-card-content>
+    </mat-card>    
+  </div>
+
+
+</div>
+</div>

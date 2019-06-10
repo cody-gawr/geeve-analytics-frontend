@@ -1,0 +1,208 @@
+<!-- ============================================================== -->
+<!-- Grid-->
+<!-- ============================================================== -->
+<div fxLayout="row wrap">
+      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+  <mat-card>
+  <mat-card-content style="padding-bottom:0px!important;">
+    <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
+    <mat-form-field>
+      <mat-select placeholder="All Dentist( {{dentistCount}} )"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
+        <mat-option value ="all">All Dentists</mat-option>
+        <mat-option *ngFor="let dentist of dentists" [value]="dentist.providerId">
+          {{dentist.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> 
+    </div>
+  </mat-card-content>
+  </mat-card>
+
+
+  <mat-card>
+  <mat-card-content>
+      <div class="sa_tabs_design"><span class="active" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')">This Month</span><span  (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')">Last Quarter</span><span (click)="filterDate('cytd')">Current YTD</span><span (click)="filterDate('fytd')">Financial YTD</span></div>
+  </mat-card-content>
+  </mat-card>
+</div>
+</div>
+
+<div class="sa_dentist_graphs_area">
+<div fxLayout="row wrap">
+  <!-- Column-->
+  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
+    <mat-card class="itemsPredictor">
+      <mat-card-content>
+        <mat-card-title>Items Predictor Analysis </mat-card-title>
+        <canvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels" [options]="stackedChartOptions" [legend]="stackedChartLegend"
+          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
+        </canvas>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="itemsPredictorSingle" [style.display]="'none'" >
+      <mat-card-content>
+        <mat-card-title>Items Predictor Analysis </mat-card-title>
+          <div class="chart" *ngIf="itemPredictedChartLabels.length > 0">
+        <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels" [options]="stackedChartOptions" [legend]="stackedChartLegend"
+          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Column-->
+  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
+    <mat-card class="ratioPredictor">
+      <mat-card-content>
+        <mat-card-title>Predictor Ratio</mat-card-title>
+        <canvas baseChart class="chart"
+          [datasets]="predictedChartData"
+          [labels]="predictedChartLabels"
+          [options]="barChartOptions"
+          [legend]="stackedChartLegend"
+          [chartType]="stackedChartType"
+            [colors]="[{backgroundColor: ['#18a689', '#B9DBE6']}]"></canvas>
+            <div fxLayout="row wrap" class="m-t-40 predicted1">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <h3 class="m-0 font-light">{{predictedTotalAverage1 | number : '1.2-2'}}</h3>
+                        <small>Current Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous Average</small>
+                    </div>
+                </div> 
+            <div fxLayout="row wrap" class="m-t-40 predicted2" [style.display]="'none'">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <h3 class="m-0 font-light">{{predictedTotalAverage2 | number : '1.2-2'}}</h3>
+                        <small>Current Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous Average</small>
+                    </div>
+                </div> 
+            <div fxLayout="row wrap" class="m-t-40 predicted3" [style.display]="'none'">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <h3 class="m-0 font-light">{{predictedTotalAverage3 | number : '1.2-2'}}</h3>
+                        <small>Current Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous Average</small>
+                    </div>
+                </div>             
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="ratioPredictorSingle" [style.display]="'none'" >
+      <mat-card-content>
+        <mat-card-title>Predictor Ratio</mat-card-title>
+         <div fxLayout="row wrap" class="">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <small class="sa_tab_btn" (click) = "changeDentistPredictor('1')">Crown to Large Filling</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <small class="sa_tab_btn" (click) = "changeDentistPredictor('2')">Extraction to RCT</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <small class="sa_tab_btn" (click) = "changeDentistPredictor('3')">RCT Conversion</small>
+                    </div>
+                </div>
+        <ngx-gauge [type]="gaugeType"
+           [value]="gaugeValuePredicted" 
+           [label]="gaugeLabelPredicted"  
+           [thick]="gaugeThick"  
+           [foregroundColor]="foregroundColor"
+           [cap] ="cap"
+           [size] = "size">
+          </ngx-gauge>
+            <div fxLayout="row wrap" class="m-t-40 predicted1">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <h3 class="m-0 font-light">{{predictedDentistTotal | number : '1.2-2'}}</h3>
+                        <small>Current</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous</small>
+                    </div>
+                </div>            
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Column-->
+  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
+    <mat-card class="revenueProceedure">
+      <mat-card-content>
+        <mat-card-title>Total Revenue of Clinician Per Procedure</mat-card-title>
+        <canvas baseChart class="chart"
+          [datasets]="proceedureChartData"
+          [labels]="proceedureChartLabels"
+          [options]="barChartOptions"
+          [legend]="stackedChartLegend"
+          [chartType]="proceedureChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"  [colors]="stackedChartColors"></canvas>
+        
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="revenueProceedureSingle" [style.display]="'none'">
+      <mat-card-content>
+        <mat-card-title>Total Revenue of Clinician Per Procedure</mat-card-title>
+        <canvas baseChart class="chart"
+          [datasets]="proceedureDentistChartData"
+          [labels]="proceedureDentistChartLabels"
+          [options]="barChartOptions"
+          [legend]="stackedChartLegend"
+          [chartType]="proceedureChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"  [colors]="stackedChartColors"></canvas>
+        
+      </mat-card-content>
+    </mat-card>
+  </div>
+   <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
+    <mat-card>
+      <mat-card-content>
+        <mat-card-title>Referral to Other Clinicians Internal / External</mat-card-title>
+         <div fxLayout="row wrap" class="">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <small class="sa_tab_btn" (click) = "changePieReferral('Internal')">Internal</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <small class="sa_tab_btn" (click) = "changePieReferral('External')">External</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <small class="sa_tab_btn"(click) = "changePieReferral('Combined')">Combined</small>
+                    </div>
+                </div>
+          <div class="chart" *ngIf="pieChartLabels.length > 0">
+        <canvas *ngIf="showInternal == true" baseChart height="150px" [data]="pieChartData1" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"  [options]="pieChartOptions" [colors]="[{backgroundColor: ['#18a689', '#B9DBE6', '#5F818A','#36585E', '#26dad2', '#2F4852']}]">
+        </canvas>
+         <canvas *ngIf="showExternal == true" baseChart height="150px" [data]="pieChartData2" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)" [options]="pieChartOptions" [colors]="[{backgroundColor: ['#18a689', '#B9DBE6', '#5F818A','#36585E', '#26dad2', '#2F4852']}]">
+        </canvas>
+         <canvas *ngIf="showCombined == true" baseChart height="150px" [data]="pieChartData3" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)" [options]="pieChartOptions" [colors]="[{backgroundColor: ['#18a689', '#B9DBE6', '#5F818A','#36585E', '#26dad2', '#2F4852']}]">
+        </canvas>
+      </div>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">{{pieChartInternalTotal}}</h3>
+                        <small>Total Internal Ref</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">{{pieChartExternalTotal}}</h3>
+                        <small>Total External Ref</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
+                        <h3 class="m-0 font-light">{{pieChartCombinedTotal}}</h3>
+                        <small>Total Referrals</small>
+                    </div>
+                </div>       
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+</div>
+</div>

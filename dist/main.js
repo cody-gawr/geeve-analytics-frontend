@@ -1519,8 +1519,8 @@ __webpack_require__.r(__webpack_exports__);
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
     production: true,
-    apiUrl: "https://analytics-api.jeeve.com.au/",
-    homeUrl: "https://analytics.jeeve.com.au/"
+    apiUrl: "https://staging-analytics-api.jeeve.com.au",
+    homeUrl: "https://staging-analytics.jeeve.com.au"
 };
 
 
