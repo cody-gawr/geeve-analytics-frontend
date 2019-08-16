@@ -34,6 +34,15 @@ export class ClinicianProceeduresService {
     }
 
     // Items Predictor Analysis  
+    ItemsPredictorAnalysisTrendDentist(dentist_id, clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpItemsPredictorAnalysisTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+dentist_id+"&mode="+mode, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    // Items Predictor Analysis  
     ItemsPredictorAnalysisDentist(dentist_id, clinic_id='1', startDate = '', endDate = '', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpItemsPredictorAnalysis?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, { headers: this.headers })
         .pipe(map((response: Response) => {
@@ -43,16 +52,16 @@ export class ClinicianProceeduresService {
     }
 
     //Predictor Ratio 1:
-    PredictorRatio( clinic_id='1', startDate = '', endDate = '', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate, { headers: this.headers })
+    PredictorRatio( clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }  
         //Predictor Ratio 1:
-    PredictorRatioDentist(dentist_id, clinic_id='1', startDate = '', endDate = '', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, { headers: this.headers })
+    PredictorRatioDentist(dentist_id, clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -78,8 +87,8 @@ export class ClinicianProceeduresService {
     } 
 
     //Referral to Other Clinicians Internal / External
-    ClinicianReferral( clinic_id='1', startDate = '', endDate = '', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferralToOtherClinicians?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate, { headers: this.headers })
+    ClinicianReferral( clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferralToOtherClinicians?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -90,6 +99,23 @@ export class ClinicianProceeduresService {
     //Referral to Other Clinicians Internal / External
     ClinicianReferralDentist(dentist_id, clinic_id='1', startDate = '', endDate = '', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferralToOtherClinicians?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+        //Referral to Other Clinicians Internal / External
+    ClinicianReferralTrendDentist(dentist_id, clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferralToOtherCliniciansTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&mode="+mode+"&provider_id="+dentist_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+            //Referral to Other Clinicians Internal / External
+    CpPredictorRatioTrend(dentist_id, clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatioTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&mode="+mode+"&provider_id="+dentist_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })

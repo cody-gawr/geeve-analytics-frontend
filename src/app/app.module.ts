@@ -28,8 +28,9 @@ import { AuthGuard } from './auth/authguard.service';
 
 import { HeaderService } from './layouts/full/header/header.service';
 import { Globals } from 'globals';
+import { DentistService } from './dentist/dentist.service';
 
-
+import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 2,
@@ -43,7 +44,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppHeaderComponent,
     SpinnerComponent,
     AppBlankComponent,
-    AppSidebarComponent
+    AppSidebarComponent,
+    AppHeaderrightComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +67,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
-      CookieService
+      CookieService,
+      DentistService
   ],
   bootstrap: [AppComponent]
 })

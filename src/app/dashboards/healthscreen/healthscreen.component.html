@@ -1,0 +1,256 @@
+<!-- ============================================================== -->
+<!-- Grid-->
+<!-- ============================================================== -->
+<!-- <div fxLayout="row wrap">
+    <div class="sa_heading_bar">
+        <div fxFlex.gt-sm="85" fxFlex.gt-xs="100" fxFlex="100" class="">
+            <h4><span class="page_title">Clinician Procedures &#38; Referrals</span></h4>
+        </div>
+        <app-headerright class="app-headerright"></app-headerright>
+
+        <div fxFlex.gt-sm="18" fxFlex.gt-xs="100" fxFlex="100" class="">
+            <div class="vertical_center_header_content">
+                <div class="sa_select_outer">
+                    <select class="sa_select"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
+                        <option value ="all">All Dentist( {{dentistCount}} )</option>
+                        <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+ <select class="sa_select internal_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)" [style.display]="'none'">
+                     <option value ="all">All Dentist</option>
+                    <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+                </select> 
+                <input type="button" id="dentist_initiate" (click) = "initiate_dentist()"  [style.display]="'none'">
+                <input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
+<div class="sa_dashboard_inner_content">
+  <div class="sa_card gridshadow">
+    <div fxLayout="row wrap">
+
+        <div fxFlex.lg="80" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="80">
+             <div class="sa_tabs_design"><span class="filter_c active filter sa_filter_span" (click)="filterDate('c')">Current Month</span><span (click)="filterDate('p')" class="filter_p filter sa_filter_span">Previous Month</span><span class="filter_f filter sa_filter_span" (click)="filterDate('f')">Future Status</span>
+            </div>
+        </div>
+
+      
+  </div>
+</div>
+<div *ngIf="filter_val == 'c'">
+<div class="sa_dentist_graphs_area">
+  <div fxLayout="row wrap" >
+  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg">
+    <mat-card  class="dentistProduction">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">Production
+            <!--   <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+          </mat-card-title>
+           <rg-gauge-chart *ngIf="production_c >= ''"
+    [canvasWidth]="canvasWidth"
+    [needleValue]="production_c"
+    [centralLabel]="centralLabel"
+    [options]="options_production"
+    [bottomLabel]="production_c"></rg-gauge-chart>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Column-->
+  <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg ">
+    <mat-card  class="treatmentPlan">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">Profit
+
+             <!--  <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
+           <rg-gauge-chart *ngIf="profit_c >= ''"
+    [canvasWidth]="canvasWidth"
+    [needleValue]="profit_c"
+    [centralLabel]="centralLabel"
+    [options]="options_profit"
+    [bottomLabel]="profit_c"></rg-gauge-chart>
+      </mat-card-content>
+    </mat-card>
+   </div>
+  <!-- Column-->
+  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg last">
+    <mat-card  class="noPatients">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">Total Visits
+          </mat-card-title>
+        <div class="chart" >
+           <rg-gauge-chart *ngIf="visits_c >= ''"
+    [canvasWidth]="canvasWidth"
+    [needleValue]="visits_c"
+    [centralLabel]="centralLabel"
+    [options]="options_visits"
+    [bottomLabel]="visits_c"></rg-gauge-chart>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+</div>
+</div>
+<div *ngIf="filter_val == 'p'">
+
+<div class="sa_dentist_graphs_area">
+  <div fxLayout="row wrap" >
+  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg">
+    <mat-card  class="dentistProduction">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">Production
+
+            <!--   <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
+           <rg-gauge-chart *ngIf="production_p >= ''"
+    [canvasWidth]="canvasWidth"
+    [needleValue]="production_p"
+    [centralLabel]="centralLabel"
+    [options]="options_production"
+    [bottomLabel]="production_p"></rg-gauge-chart>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Column-->
+  <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg ">
+    <mat-card  class="treatmentPlan">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">Profit
+
+             <!--  <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
+           <rg-gauge-chart *ngIf="profit_p >= ''"
+    [canvasWidth]="canvasWidth"
+    [needleValue]="profit_p"
+    [centralLabel]="centralLabel"
+    [options]="options_profit"
+    [bottomLabel]="profit_p"></rg-gauge-chart>
+      </mat-card-content>
+    </mat-card>
+   </div>
+  <!-- Column-->
+  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg last">
+    <mat-card  class="noPatients">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">Total Visits
+          </mat-card-title>
+        <div class="chart" >
+           <rg-gauge-chart *ngIf="visits_p >= ''"
+    [canvasWidth]="canvasWidth"
+    [needleValue]="visits_p"
+    [centralLabel]="centralLabel"
+    [options]="options_visits"
+    [bottomLabel]="visits_p"></rg-gauge-chart>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+</div>
+</div>
+<div *ngIf="filter_val == 'f'">
+<div class="sa_dentist_graphs_area">
+  <div fxLayout="row wrap" >
+  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg">
+    <mat-card  class="dentistProduction">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">Pre-booked Visits
+
+            <!--   <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
+           <rg-gauge-chart *ngIf="visits_f >= ''"
+    [canvasWidth]="canvasWidth"
+    [needleValue]="visits_f"
+    [centralLabel]="centralLabel"
+    [options]="options_visits"
+    [bottomLabel]="visits_f"></rg-gauge-chart>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Column-->
+  <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg ">
+    <mat-card  class="treatmentPlan">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">Chair Utilisation Rate
+
+             <!--  <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
+           <rg-gauge-chart *ngIf="utilisation_rate_f >= ''"
+    [canvasWidth]="canvasWidth"
+    [needleValue]="utilisation_rate_f"
+    [centralLabel]="centralLabel"
+    [options]="options_utilisation"
+    [bottomLabel]="utilisation_rate_f"></rg-gauge-chart>
+      </mat-card-content>
+    </mat-card>
+   </div>
+  <!-- Column-->
+  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg last">
+    <mat-card  class="noPatients">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">Unscheduled Production
+          </mat-card-title>
+        <div class="chart" >
+           <rg-gauge-chart *ngIf="production_c >= ''"
+    [canvasWidth]="canvasWidth"
+    [needleValue]="production_c"
+    [centralLabel]="centralLabel"
+    [options]="options_utilisation"
+    [bottomLabel]="production_c"></rg-gauge-chart>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+</div>
+</div>
+</div>

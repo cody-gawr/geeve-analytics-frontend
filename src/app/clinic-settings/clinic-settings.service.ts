@@ -24,7 +24,7 @@ export class ClinicSettingsService {
 
 
    // Get ClinicSettings
-    getClinicSettings(user_id = '23', clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    getClinicSettings( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
         return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
@@ -42,7 +42,7 @@ export class ClinicSettingsService {
 
     formData.append('id', clinic_id);
 
-     formData.append('user_id', '23');
+     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);
 
         return this.http.post(this.apiUrl +"/Practices/update/", formData)
@@ -51,7 +51,30 @@ export class ClinicSettingsService {
                     })
         );
     }
+    // Get ClinicSettings
+    getXeroLink( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Xeros/startPublic/?getxero=1", { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 
+    checkXeroStatus( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Xeros/getXeroStatus?getxero=1&user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    clearSession( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
        
 }
 

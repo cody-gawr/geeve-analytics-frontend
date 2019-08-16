@@ -24,7 +24,7 @@ export class ClinicGoalsService {
 
 
    // Get ClinicGoals
-    getClinicGoals(clinic_id='1', user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+    getClinicGoals(clinic_id='', user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         return this.http.get(this.apiUrl +"/Goals/getClinicGoals?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
@@ -32,7 +32,7 @@ export class ClinicGoalsService {
         );
     }
        // Get ClinicGoals
-    updateClinicGoals(clinicData, clinic_id='1', user_id =  this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+    updateClinicGoals(clinicData, clinic_id='', user_id =  this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
             const formData = new FormData();
 
     formData.append('goals', clinicData);

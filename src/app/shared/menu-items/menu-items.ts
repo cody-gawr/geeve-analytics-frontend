@@ -54,34 +54,66 @@ const MENUITEMS = [
     type: 'sub',
     icon: 'fas fa-chart-area',
     children: [
-      { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param : '1', icon: 'fas fa-chart-line'},
-      { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', param : '1' , icon: 'fas fa-chart-line'}
-
+      { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param : '1'},
+      { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', param : '1'},
+      { state: 'frontdesk', name: 'Front Desk', type: 'link', param : '1'}, 
+      { state: 'marketing', name: 'Marketing', type: 'link', param : '1'}, 
+      { state: 'finances', name: 'Finances', type: 'link', param : '1' , icon: ''}, 
+    /*  { state: 'healthscreen', name: 'Health Screen', type: 'link', param : '1' , icon: ''}*/
     ],
-    param: '1'
-  },
-  {
-    state: 'importcsv',
-    name: 'Importcsv',
-    type: 'link',
-    icon: 'fas fa-upload',
-    param : '1'
-
-  },
+    param: '1',
+    role:['2']
+  },  
   {
     state: 'clinic',
-    name: 'Clinic Management',
+    name: 'Clinics',
     type: 'link-noparam',
-    icon: 'fas fa-list'
+    icon: 'fas fa-home',
+    role:['2']
   },
   {
     state: 'dentist',
-    name: 'Dentist Management',
+    name: 'Dentists',
     type: 'link',
-    icon: 'fas fa-list',
-    param : '1'
+    icon: 'fas fa-tooth',
+    param : '1',
+    role:['2']
   },
   {
+    state: 'users',
+    name: 'Registered Users',
+    type: 'link-noparam',
+    icon: 'fas fa-users',
+    role:['1']
+  },
+  {
+    state: 'plans',
+    name: 'Subscription Plans',
+    type: 'link-noparam',
+    icon: 'fas fa-receipt',
+    role:['1']
+
+  },
+  {
+    state: 'settings',
+    name: 'Settings',
+    type: 'link',
+    icon: 'fas fa-settings',
+    param : '1',
+    role:['1']
+
+  }
+  ,
+  {
+    state: 'roles',
+    name: 'Roles Management',
+    type: 'link',
+    icon: 'fas fa-settings',
+    param : '1',
+    role:['1']
+
+  },
+  /*{
     state: 'clinic-goals',
     name: 'Clinic Goals',
     type: 'link',
@@ -94,6 +126,28 @@ const MENUITEMS = [
     type: 'link',
     icon: 'fas fa-chart-line',
     param : '1'
+  },*/
+  {
+    state: '',
+    name: 'Goals',
+    type: 'sub-child',
+    icon: 'fas fa-medal',
+    children: [
+      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link', param : '1'},
+      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link', param : '1' }
+
+    ],
+    param: '1',
+    role:['1','2']
+
+  },
+  {
+    state: 'importcsv',
+    name: 'Data Upload',
+    type: 'link',
+    icon: 'fas fa-upload',
+    param : '1',
+    role:['2']
   },
   /*{
     state: 'material',

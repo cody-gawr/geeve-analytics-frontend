@@ -2,8 +2,8 @@ import { Component,OnInit, AfterViewInit  } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ClinicGoalsService } from './clinic-goals.service';
-import { ActivatedRoute } from "@angular/router";
-
+import { CookieService } from "angular2-cookie/core";
+import { ActivatedRoute, Router } from "@angular/router";
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-goals.component.html',
@@ -62,8 +62,8 @@ export class ClinicGoalsComponent implements OnInit {
 
   options: FormGroup;
 
-  constructor(private fb: FormBuilder,  private clinicGoalsService: ClinicGoalsService, private route: ActivatedRoute) {
-  this.clinic_id = this.route.snapshot.paramMap.get("id");
+  constructor(private fb: FormBuilder,  private clinicGoalsService: ClinicGoalsService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
+//  this.clinic_id = this.route.snapshot.paramMap.get("id");
 
     this.options = fb.group({
       hideRequired: false,
@@ -72,8 +72,18 @@ export class ClinicGoalsComponent implements OnInit {
   }
   ngOnInit() {
     this.route.params.subscribe(params => {
+      if(this._cookieService.get("userid") != '1'){
     this.clinic_id = this.route.snapshot.paramMap.get("id");
+  }
+  else
+  {
+    this.clinic_id = '';
+
+  }
         this.getClinicGoals();
+            $('#title').html('Clinics Goals');
+        $('.external_clinic').show();
+        $('.external_dentist').hide();
      });
 
      this.form = this.fb.group({
@@ -180,6 +190,13 @@ export class ClinicGoalsComponent implements OnInit {
 
 
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -228,7 +245,6 @@ export class ClinicGoalsComponent implements OnInit {
   this.chartData[35] = this.form.value.discount;
   this.chartData[36] = this.form.value.overdueaccount;
   var myJsonString = JSON.stringify(this.chartData);
-  console.log(myJsonString);
    this.clinicGoalsService.updateClinicGoals(myJsonString, this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
         alert('Clinic Goals Updated');
@@ -237,7 +253,5 @@ export class ClinicGoalsComponent implements OnInit {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
-
-
   } 
 }

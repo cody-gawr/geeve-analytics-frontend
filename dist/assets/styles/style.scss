@@ -61,7 +61,14 @@ File: scss
   	@include angular-material-theme($dark-theme); 
 }
   
+.ngx-datepicker-calendar-container {
+    z-index: 999;
+}
+.customRange {
 
+    position: absolute;
+
+}
 $custom-typography: mat-typography-config( 
   $font-family: 'Poppins'
 ); 

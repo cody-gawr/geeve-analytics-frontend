@@ -3,7 +3,8 @@ import { DatePipe } from '@angular/common';
 import { ImportcsvService } from './importcsv.service';
 import { environment } from "../../environments/environment";
 import {MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions} from '@angular/material';
-import { ActivatedRoute } from "@angular/router";
+import { CookieService } from "angular2-cookie/core";
+import { ActivatedRoute, Router } from "@angular/router";
 
 declare var require: any;
 
@@ -125,6 +126,13 @@ const data: any = [
       date: 'No Uploads Yet',
       sample: 'csv-sample/Accounting Invoices and Receipts.csv', 
       status : 'No File Uploaded'
+    },
+    {
+      id:'17',
+      name: 'Status - UTA',
+      date: 'No Uploads Yet',
+      sample: 'csv-sample/Accounting Invoices and Receipts.csv', 
+      status : 'No File Uploaded'
     }
   ];
 @Component({
@@ -137,6 +145,9 @@ export class ImportcsvComponent implements AfterViewInit {
      this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
         this.getLogs();
+          $('#title').html('Data Upload');
+        $('.external_clinic').show();
+        $('.external_dentist').hide();
      });
     
   }
@@ -156,7 +167,7 @@ export class ImportcsvComponent implements AfterViewInit {
 currentDate: any = new Date();
   columns = [{ prop: 'name' }, { name: 'date' }];
   @ViewChild(ImportcsvComponent) table: ImportcsvComponent;
-  constructor(private importcsvService: ImportcsvService, private datePipe: DatePipe, private route: ActivatedRoute){
+  constructor(private importcsvService: ImportcsvService, private datePipe: DatePipe, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router){
   this.clinic_id = this.route.snapshot.paramMap.get("id");
 
         this.rows = data;
@@ -242,6 +253,13 @@ currentDate: any = new Date();
             this.temp = [...this.arr1];
           this.table = data; 
        }
+       else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
 

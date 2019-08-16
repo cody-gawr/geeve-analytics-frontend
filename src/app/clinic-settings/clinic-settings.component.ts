@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ClinicSettingsService } from './clinic-settings.service';
 import { ActivatedRoute } from "@angular/router";
+import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 
 @Component({
   selector: 'app-formlayout',
@@ -15,18 +16,17 @@ export class ClinicSettingsComponent implements OnInit {
    public clinic_id:any ={};
 
           private warningMessage: string;
-  
           public id:any ={};
-
           public clinicName:any =0;
           public contactName =0;
           // public chartData: any[] = [];
           public address:any = {};
           public practice_size:any ={};
-
-  options: FormGroup;
-
-  constructor(private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute) {
+          options: FormGroup;
+          public xero_link;
+          public xeroConnect = false;
+          public xeroOrganization='';
+  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -36,6 +36,12 @@ export class ClinicSettingsComponent implements OnInit {
       this.route.params.subscribe(params => {
     this.id = this.route.snapshot.paramMap.get("id");
       this.getClinicSettings();
+          $('#title').html('Clinic Settings');
+         $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
+        this.checkXeroStatus();
+
      });
     
      this.form = this.fb.group({
@@ -61,8 +67,7 @@ export class ClinicSettingsComponent implements OnInit {
   }
 
   getClinicSettings() {
-  this.clinicSettingsService.getClinicSettings('23',this.id).subscribe((res) => {
-    console.log(res);
+  this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
        if(res.message == 'success'){
         this.clinicName = res.data[0].clinicName;
         this.contactName = res.data[0].contactName;
@@ -82,7 +87,6 @@ export class ClinicSettingsComponent implements OnInit {
   this.address = this.form.value.address;
   this.practice_size = this.form.value.practice_size;
    this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.contactName,  this.address,this.practice_size ).subscribe((res) => {
-    console.log(res);
        if(res.message == 'success'){
         alert('Clinic Settings Updated');
        }
@@ -90,7 +94,70 @@ export class ClinicSettingsComponent implements OnInit {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
-
-
   } 
+
+  getXeroLink(){
+    this.clinicSettingsService.getXeroLink(this.id).subscribe((res) => {
+       if(res.message == 'success'){
+        this.xero_link = res.data.button_link;
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );  
+  }
+
+  public openXero(){
+      var success;
+      var win = window.open(this.xero_link, "MsgWindow", "width=400,height=400");
+      var self = this;
+     var timer = setInterval(function() { 
+        if(win.closed) {
+          self.checkXeroStatus();
+          clearTimeout(timer);
+        }
+      }, 1000);
+  }
+  public checkXeroStatus(){
+        this.clinicSettingsService.checkXeroStatus(this.id).subscribe((res) => {
+       if(res.message == 'success'){
+        if(res.data.xero_connect == 1) {
+        this.xeroConnect = true;
+        this.xeroOrganization = res.data.Name;
+      }
+        else {
+          this.xeroConnect = false;
+           this.xeroOrganization = '';          
+          this.disconnectXero();
+      }
+       }
+       else {
+        //alert('Error Connecting Xero!!');
+        this.xeroConnect = false;
+           this.xeroOrganization = '';          
+
+          this.disconnectXero();
+
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });  
+ }
+ public disconnectXero() {
+    this.clinicSettingsService.clearSession(this.id).subscribe((res) => {
+       if(res.message == 'success'){
+      //  alert('Xero Account Disconnected');
+        this.xeroConnect = false;
+           this.xeroOrganization = '';          
+        
+         this.getXeroLink();
+       }
+       else {
+      //  alert('Error Disonnecting Xero!!');
+        this.xeroConnect = true;
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });   
+ }
 }

@@ -39,7 +39,6 @@ export class NgxchartComponent {
   doughnut = false;
   arcWidth = 0.25;
   rangeFillOpacity = 0.15;
-
   colorScheme = {
     domain: ['#1e88e5', '#2ECC71', '#26c6da', '#ffc65d', '#d96557', '#ba68c8']
   };

@@ -179,7 +179,7 @@
                 <div class="w100">
                     <ngx-charts-pie-chart class="chart-container" [scheme]="colorScheme" [results]="single" [legend]="showLegend" [explodeSlices]="explodeSlices"
                         [labels]="showLabels" [doughnut]="doughnut" [arcWidth]="arcWidth" (legendLabelClick)="onLegendLabelClick($event)"
-                        [gradient]="gradient" [tooltipDisabled]="tooltipDisabled" (select)="select($event)">
+                        [gradient]="gradient"  [trimLabels]="false" [tooltipDisabled]="tooltipDisabled" (select)="select($event)">
                     </ngx-charts-pie-chart>
                 </div>
             </mat-card-content>

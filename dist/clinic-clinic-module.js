@@ -36,6 +36,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _clinic_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./clinic.service */ "./src/app/clinic/clinic.service.ts");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -48,6 +51,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+
+
 
 
 
@@ -80,10 +85,12 @@ var DialogOverviewExampleDialogComponent = /** @class */ (function () {
 
 var data = __webpack_require__(/*! assets/company.json */ "./src/assets/company.json");
 var ClinicComponent = /** @class */ (function () {
-    function ClinicComponent(clinicService, dialog) {
+    function ClinicComponent(clinicService, dialog, _cookieService, router) {
         var _this = this;
         this.clinicService = clinicService;
         this.dialog = dialog;
+        this._cookieService = _cookieService;
+        this.router = router;
         this.editing = {};
         this.rows = [];
         this.temp = data.slice();
@@ -99,6 +106,11 @@ var ClinicComponent = /** @class */ (function () {
     ClinicComponent_1 = ClinicComponent;
     ClinicComponent.prototype.ngAfterViewInit = function () {
         this.getClinics();
+        $('#title').html('Clinics');
+        //$('.header_filters').hide();
+        $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
     };
     ClinicComponent.prototype.openDialog = function () {
         var _this = this;
@@ -125,6 +137,13 @@ var ClinicComponent = /** @class */ (function () {
                 _this.rows = res.data;
                 _this.temp = res.data.slice();
                 _this.table = data;
+            }
+            else if (res.status == '401') {
+                _this._cookieService.put("username", '');
+                _this._cookieService.put("email", '');
+                _this._cookieService.put("token", '');
+                _this._cookieService.put("userid", '');
+                _this.router.navigateByUrl('/login');
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -200,7 +219,7 @@ var ClinicComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./clinic.component.html */ "./src/app/clinic/clinic.component.html"),
             styles: [__webpack_require__(/*! ./clinic.component.scss */ "./src/app/clinic/clinic.component.scss")]
         }),
-        __metadata("design:paramtypes", [_clinic_service__WEBPACK_IMPORTED_MODULE_1__["ClinicService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]])
+        __metadata("design:paramtypes", [_clinic_service__WEBPACK_IMPORTED_MODULE_1__["ClinicService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]])
     ], ClinicComponent);
     return ClinicComponent;
 }());

@@ -13,7 +13,8 @@ export const AppRoutes: Routes = [
         path: '',
         redirectTo: '/login',
         pathMatch: 'full'
-      },
+      }
+      ,
       {
         path: 'dashboard',
         loadChildren: './dashboard/dashboard.module#DashboardModule'
@@ -35,6 +36,16 @@ export const AppRoutes: Routes = [
       {
         path: 'clinic',
         loadChildren: './clinic/clinic.module#ClinicModule',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'users',
+        loadChildren: './users/users.module#UsersModule',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'plans',
+        loadChildren: './plans/plans.module#PlansModule',
         canActivate: [AuthGuard]
       },
       {

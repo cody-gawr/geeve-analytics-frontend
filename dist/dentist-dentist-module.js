@@ -37,6 +37,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _dentist_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dentist.service */ "./src/app/dentist/dentist.service.ts");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -49,6 +51,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+
 
 
 
@@ -75,11 +78,13 @@ var DialogOverviewExampleDialogComponent = /** @class */ (function () {
 
 var data = __webpack_require__(/*! assets/company.json */ "./src/assets/company.json");
 var DentistComponent = /** @class */ (function () {
-    function DentistComponent(dentistService, dialog, route) {
+    function DentistComponent(dentistService, dialog, route, _cookieService, router) {
         var _this = this;
         this.dentistService = dentistService;
         this.dialog = dialog;
         this.route = route;
+        this._cookieService = _cookieService;
+        this.router = router;
         this.clinic_id = {};
         this.editing = {};
         this.rows = [];
@@ -100,6 +105,10 @@ var DentistComponent = /** @class */ (function () {
         this.route.params.subscribe(function (params) {
             _this.clinic_id = _this.route.snapshot.paramMap.get("id");
             _this.getDentists();
+            $('.external_clinic').show();
+            $('.dentist_dropdown').hide();
+            $('.header_filters').addClass('flex_direct_mar');
+            $('#title').html('Dentist');
         });
     };
     DentistComponent.prototype.openDialog = function () {
@@ -114,6 +123,9 @@ var DentistComponent = /** @class */ (function () {
                 if (res.message == 'success') {
                     alert('Dentist Added');
                     _this.getDentists();
+                    $('.external_clinic').show();
+                    $('.dentist_dropdown').hide();
+                    $('.header_filters').addClass('flex_direct_mar');
                 }
             }, function (error) {
                 _this.warningMessage = "Please Provide Valid Inputs!";
@@ -128,6 +140,13 @@ var DentistComponent = /** @class */ (function () {
                 _this.rows = res.data;
                 _this.temp = res.data.slice();
                 _this.table = data;
+            }
+            else if (res.status == '401') {
+                _this._cookieService.put("username", '');
+                _this._cookieService.put("email", '');
+                _this._cookieService.put("token", '');
+                _this._cookieService.put("userid", '');
+                _this.router.navigateByUrl('/login');
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -198,7 +217,7 @@ var DentistComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./dentist.component.html */ "./src/app/dentist/dentist.component.html"),
             styles: [__webpack_require__(/*! ./dentist.component.scss */ "./src/app/dentist/dentist.component.scss")]
         }),
-        __metadata("design:paramtypes", [_dentist_service__WEBPACK_IMPORTED_MODULE_1__["DentistService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [_dentist_service__WEBPACK_IMPORTED_MODULE_1__["DentistService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
     ], DentistComponent);
     return DentistComponent;
 }());

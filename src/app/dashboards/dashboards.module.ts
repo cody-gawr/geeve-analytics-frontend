@@ -12,14 +12,25 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { DashboardsRoutes } from './dashboards.routing';
 import { ChartistModule } from 'ng-chartist';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ClinicianAnalysisService } from './cliniciananalysis/cliniciananalysis.service';
 import { ClinicianAnalysisComponent } from './cliniciananalysis/cliniciananalysis.component';
 import { ClinicianProceeduresService } from './clinicianproceedures/clinicianproceedures.service';
 import { ClinicianProceeduresComponent } from './clinicianproceedures/clinicianproceedures.component';
+import { FinancesService } from './finances/finances.service';
+import { FinancesComponent } from './finances/finances.component';
+import { FrontDeskComponent } from './frontdesk/frontdesk.component';
+import { FrontDeskService } from './frontdesk/frontdesk.service';
+import { HealthScreenComponent } from './healthscreen/healthscreen.component';
+import { HealthScreenService } from './healthscreen/healthscreen.service';
+import { MarketingComponent } from './marketing/marketing.component';
+import { MarketingService } from './marketing/marketing.service';
 import { DentistService } from '../dentist/dentist.service';
 import { NgxGaugeModule } from 'ngx-gauge';
-
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import {MatButtonToggleModule, MatIconModule} from '@angular/material';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { GaugeChartModule } from 'angular-gauge-chart'
+import 'chartjs-plugin-annotation';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,9 +44,12 @@ import { NgxGaugeModule } from 'ngx-gauge';
     ChartistModule,
     ChartsModule,
     NgxChartsModule,
-    NgxGaugeModule
+    NgxGaugeModule,
+     NgxDaterangepickerMd.forRoot(),
+     MatButtonToggleModule, MatIconModule,
+     GaugeChartModule
   ],
-  providers: [ ClinicianAnalysisService, ClinicianProceeduresService, DentistService,DatePipe],
-  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent]
+  providers: [ ClinicianAnalysisService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, HealthScreenService],
+  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent]
 })
 export class DashboardsModule {}

@@ -1,7 +1,8 @@
 import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
 import { DentistService } from './dentist.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+import { CookieService } from "angular2-cookie/core";
 
 @Component({
   selector: 'app-dialog-overview-example-dialog',
@@ -35,7 +36,10 @@ export class DentistComponent implements AfterViewInit {
      this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
       this.getDentists();
-
+          $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
+        $('#title').html('Dentist');
      });
   
   }
@@ -49,7 +53,7 @@ export class DentistComponent implements AfterViewInit {
   columns = [{ prop: 'sr' }, { name: 'name' }, { name: 'Action' }];
 
   @ViewChild(DentistComponent) table: DentistComponent;
-  constructor(private dentistService: DentistService, public dialog: MatDialog, private route: ActivatedRoute) {
+  constructor(private dentistService: DentistService, public dialog: MatDialog, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
   this.clinic_id = this.route.snapshot.paramMap.get("id");
 
     this.rows = data;
@@ -72,6 +76,9 @@ export class DentistComponent implements AfterViewInit {
        if(res.message == 'success'){
         alert('Dentist Added');
           this.getDentists();
+              $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -89,6 +96,13 @@ export class DentistComponent implements AfterViewInit {
         
 this.table = data;
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    

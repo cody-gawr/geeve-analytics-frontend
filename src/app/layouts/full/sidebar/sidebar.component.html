@@ -2,53 +2,80 @@
 <!-- sidebar -->
 <!-- ============================================================== -->
 <mat-nav-list appAccordion>
+    <div class="sa_sidebar_logo_main">
+    <div class="sa_sidebar_logo"><img src="assets/images/logo-text.png" alt="homepage" class=""></div>
+    </div>
+
+    <div class="sa_sidebar_usersec">
+        <div class="suer_image_sidebar"><img src="assets/images/gPZwCbdS.jpg"></div>
+        <div class="suer_text_sidebar">Project Manager</div>
+
+    </div>
+
+
+<!--     <div class="sa-col-12">
+        <div class="fxFlex">
+            <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="header_select">
+                <div class="sa_select_outer_main" style="padding:10px 10px 20px; float:left; width:100%;">
+                    <div class="sa_select_outer" >
+                        <select class="sa_select forwhite" >
+                            <option>Select Clinic</option>
+                            <option *ngFor="let clinicData of clinicsData" [value]="clinicData.id">{{clinicData.clinicName}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
     <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected" group="{{menuitem.state}}">
-        <a class="" appAccordionToggle [routerLink]="['/', menuitem.state, menuitem.param]"     *ngIf="menuitem.type === 'link'">
+        <a class="" appAccordionToggle [routerLink]="['/', menuitem.state, menuitem.param]" *ngIf="menuitem.type === 'link' &&  menuitem.role.indexOf(user_type) !== -1" >
             <i class="{{ menuitem.icon }}"></i>
             <span>{{ menuitem.name }}</span>
             <span fxFlex></span>
             <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
         </a>
-         <a class="" appAccordionToggle [routerLink]="['/', menuitem.state]" *ngIf="menuitem.type === 'link-noparam'">
+         <a class="" appAccordionToggle [routerLink]="['/', menuitem.state]" *ngIf="menuitem.type === 'link-noparam'  && menuitem.role.indexOf(user_type) !== -1" >
             <i class="{{menuitem.icon}}"></i>
             <span>{{ menuitem.name }}</span>
             <span fxFlex></span>
             <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
         </a>
 
-        <a class="" appAccordionToggle href="{{menuitem.state}}" *ngIf="menuitem.type === 'extLink'">
+        <a class="" appAccordionToggle href="{{menuitem.state}}" *ngIf="menuitem.type === 'extLink' && menuitem.role.indexOf(user_type) !== -1" >
             <i class="{{menuitem.icon}}"></i>
             <span>{{ menuitem.name }}</span>
             <span fxFlex></span>
             <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
         </a>
-        <a class="" appAccordionToggle href="{{menuitem.state}}" target="_blank" *ngIf="menuitem.type === 'extTabLink'">
+        <a class="" appAccordionToggle href="{{menuitem.state}}" target="_blank" *ngIf="menuitem.type === 'extTabLink'  && menuitem.role.indexOf(user_type) !== -1" >
             <i class="{{menuitem.icon}}"></i>
             <span>{{ menuitem.name}}</span>
             <span fxFlex></span>
             <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
         </a>
 
-        <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'sub'">
+        <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'sub' && menuitem.role.indexOf(user_type) !== -1" >
             <i class="{{menuitem.icon}}"></i>
             <span>{{ menuitem.name }}</span>
             <span fxFlex></span>
             <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
             <i class="fas fa-caret-down"></i>
         </a>
-        <mat-nav-list class="sub-item" *ngIf="menuitem.type === 'sub'">
+        <mat-nav-list class="sub-item" *ngIf="menuitem.type === 'sub' && menuitem.role.indexOf(user_type) !== -1">
             <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="selected">
-                <a [routerLink]="['/', menuitem.state, childitem.state, childitem.param ]" *ngIf="childitem.type === 'link'" class="relative"
-                    routerLinkActive="selected"><i class="{{childitem.icon}}"></i>{{ childitem.name}}</a>
+                <a [routerLink]="['/', menuitem.state, childitem.state, childitem.param ]" *ngIf="childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1" class="relative"
+                    routerLinkActive="selected" ><i class="{{childitem.icon}}"></i>{{ childitem.name}}</a>
             </mat-list-item>
             <mat-list-item *ngFor="let childitem of menuitem.children">
-                <a class="" href="javascript: void(0);" *ngIf="childitem.type === 'subchild'" (click)="clickEvent()"
-                    [ngClass]="status ? 'selected' : ''">
+                <a class="" href="javascript: void(0);" *ngIf="childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1" (click)="clickEvent()"
+                    [ngClass]="status ? 'selected' : ''" >
                     <span>{{ childitem.name }}</span>
                     <span fxFlex></span>
                     <i class="fas fa-caret-down"></i>
                 </a>
-                <mat-nav-list class="child-sub-item" *ngIf="childitem.type === 'subchild'">
+                <mat-nav-list class="child-sub-item" *ngIf="childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1">
                     <mat-list-item *ngFor="let child of childitem.subchildren" routerLinkActive="selected">
                         <a [routerLink]="['/', menuitem.state, childitem.state, child.state ]" routerLinkActive="selected">{{child.name}}</a>
                     </mat-list-item>
@@ -57,8 +84,37 @@
 
         </mat-nav-list>
 
-        <div class="saperator text-muted" *ngIf="menuitem.type === 'saperator'">
+        <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'sub-child' && menuitem.role.indexOf(user_type) !== -1" >
+            <i class="{{menuitem.icon}}"></i>
+            <span>{{ menuitem.name }}</span>
+            <span fxFlex></span>
+            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+            <i class="fas fa-caret-down"></i>
+        </a>
+        <mat-nav-list class="sub-item" *ngIf="menuitem.type === 'sub-child' && menuitem.role.indexOf(user_type) !== -1">
+            <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="selected">
+                <a [routerLink]="['/', childitem.state, childitem.param ]" *ngIf="childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1" class="relative"
+                    routerLinkActive="selected"><i class="{{childitem.icon}}"></i>{{ childitem.name}}</a>
+            </mat-list-item>
+            <mat-list-item *ngFor="let childitem of menuitem.children">
+                <a class="" href="javascript: void(0);" *ngIf="childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1" (click)="clickEvent()"
+                    [ngClass]="status ? 'selected' : ''" >
+                    <span>{{ childitem.name }}</span>
+                    <span fxFlex></span>
+                    <i class="fas fa-caret-down"></i>
+                </a>
+                <mat-nav-list class="child-sub-item" *ngIf="childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1" >
+                    <mat-list-item *ngFor="let child of childitem.subchildren" routerLinkActive="selected">
+                        <a [routerLink]="['/', childitem.state, child.state ]" routerLinkActive="selected">{{child.name}}</a>
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-list-item>
+
+        </mat-nav-list>
+
+        <div class="saperator text-muted" *ngIf="menuitem.type === 'saperator' && menuitem.role.indexOf(user_type) !== -1">
             <span>{{ menuitem.name }}</span>
         </div>
     </mat-list-item>
+      <div class="sa_logout_icon" (click) = "logout()"><button mat-icon-button ><i class="fas fa-power-off"></i></button></div>
 </mat-nav-list>

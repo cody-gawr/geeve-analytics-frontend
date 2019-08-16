@@ -1,6 +1,8 @@
 import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
 import { ClinicService } from './clinic.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { CookieService } from "angular2-cookie/core";
+import { ActivatedRoute, Router } from "@angular/router";
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -44,6 +46,11 @@ export class ClinicComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getClinics();
+        $('#title').html('Clinics');
+        //$('.header_filters').hide();
+        $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
   }
   editing = {};
   rows = [];
@@ -55,7 +62,7 @@ export class ClinicComponent implements AfterViewInit {
   columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
 
   @ViewChild(ClinicComponent) table: ClinicComponent;
-  constructor(private clinicService: ClinicService, public dialog: MatDialog) {
+  constructor(private clinicService: ClinicService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
     this.rows = data;
     this.temp = [...data];
     setTimeout(() => {
@@ -96,6 +103,13 @@ export class ClinicComponent implements AfterViewInit {
   this.table = data;
 
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    

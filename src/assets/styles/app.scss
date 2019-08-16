@@ -1029,10 +1029,10 @@ list inline
     color: #424242;
     box-shadow: 0 1px 2px 0 rgba(36,50,66,.15);}
 
-.mat-toolbar-row, .mat-toolbar-single-row{height:60px!important;}
+.mat-toolbar-row, .mat-toolbar-single-row{height:50px!important;}
 .ngx-gauge-meter{margin-left:-150px!important; left:50%!important;}
 .mat-drawer-container{background:#F3F3F4!important;}
-.mat-sidenav{background:#2f4050!important; color:#676a6c!important; font-size:13px!important; border:none!important}
+
 #snav{
     .app-sidebar {
         .mat-nav-list {
@@ -1044,4 +1044,6 @@ list inline
         }
     }
 }
-
+.ngx-datepicker-calendar-container {
+    z-index: 999;
+}

@@ -35,7 +35,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _clinic_goals_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./clinic-goals.service */ "./src/app/clinic-goals/clinic-goals.service.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -50,11 +52,15 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ClinicGoalsComponent = /** @class */ (function () {
-    function ClinicGoalsComponent(fb, clinicGoalsService, route) {
+    function ClinicGoalsComponent(fb, clinicGoalsService, route, _cookieService, router) {
+        //  this.clinic_id = this.route.snapshot.paramMap.get("id");
         this.fb = fb;
         this.clinicGoalsService = clinicGoalsService;
         this.route = route;
+        this._cookieService = _cookieService;
+        this.router = router;
         this.clinic_id = {};
         this.errorLogin = false;
         this.dentistprod = 0;
@@ -99,7 +105,6 @@ var ClinicGoalsComponent = /** @class */ (function () {
         this.email = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].email]);
         // Sufix and prefix
         this.hide = true;
-        this.clinic_id = this.route.snapshot.paramMap.get("id");
         this.options = fb.group({
             hideRequired: false,
             floatLabel: 'auto'
@@ -108,8 +113,16 @@ var ClinicGoalsComponent = /** @class */ (function () {
     ClinicGoalsComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.route.params.subscribe(function (params) {
-            _this.clinic_id = _this.route.snapshot.paramMap.get("id");
+            if (_this._cookieService.get("userid") != '1') {
+                _this.clinic_id = _this.route.snapshot.paramMap.get("id");
+            }
+            else {
+                _this.clinic_id = '';
+            }
             _this.getClinicGoals();
+            $('#title').html('Clinics Goals');
+            $('.external_clinic').show();
+            $('.external_dentist').hide();
         });
         this.form = this.fb.group({
             dentistprod: [null, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required])],
@@ -199,6 +212,13 @@ var ClinicGoalsComponent = /** @class */ (function () {
                 _this.discount = res.data[35].value;
                 _this.overdueaccount = res.data[36].value;
             }
+            else if (res.status == '401') {
+                _this._cookieService.put("username", '');
+                _this._cookieService.put("email", '');
+                _this._cookieService.put("token", '');
+                _this._cookieService.put("userid", '');
+                _this.router.navigateByUrl('/login');
+            }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
@@ -242,7 +262,6 @@ var ClinicGoalsComponent = /** @class */ (function () {
         this.chartData[35] = this.form.value.discount;
         this.chartData[36] = this.form.value.overdueaccount;
         var myJsonString = JSON.stringify(this.chartData);
-        console.log(myJsonString);
         this.clinicGoalsService.updateClinicGoals(myJsonString, this.clinic_id).subscribe(function (res) {
             if (res.message == 'success') {
                 alert('Clinic Goals Updated');
@@ -257,7 +276,7 @@ var ClinicGoalsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./clinic-goals.component.html */ "./src/app/clinic-goals/clinic-goals.component.html"),
             styles: [__webpack_require__(/*! ./clinic-goals.component.scss */ "./src/app/clinic-goals/clinic-goals.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], _clinic_goals_service__WEBPACK_IMPORTED_MODULE_2__["ClinicGoalsService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], _clinic_goals_service__WEBPACK_IMPORTED_MODULE_2__["ClinicGoalsService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]])
     ], ClinicGoalsComponent);
     return ClinicGoalsComponent;
 }());
@@ -415,7 +434,7 @@ var ClinicGoalsService = /** @class */ (function () {
     }
     // Get ClinicGoals
     ClinicGoalsService.prototype.getClinicGoals = function (clinic_id, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (clinic_id === void 0) { clinic_id = ''; }
         if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
         return this.http.get(this.apiUrl + "/Goals/getClinicGoals?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
@@ -425,7 +444,7 @@ var ClinicGoalsService = /** @class */ (function () {
     };
     // Get ClinicGoals
     ClinicGoalsService.prototype.updateClinicGoals = function (clinicData, clinic_id, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (clinic_id === void 0) { clinic_id = ''; }
         if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
         var formData = new FormData();

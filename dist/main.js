@@ -43,8 +43,7 @@ var map = {
 	],
 	"./clinic/clinic.module": [
 		"./src/app/clinic/clinic.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~7c0cf883",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
 		"common",
 		"clinic-clinic-module"
 	],
@@ -63,8 +62,7 @@ var map = {
 	],
 	"./datatables/datatables.module": [
 		"./src/app/datatables/datatables.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~7c0cf883",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
 		"common",
 		"datatables-datatables-module"
 	],
@@ -77,8 +75,7 @@ var map = {
 	],
 	"./dentist/dentist.module": [
 		"./src/app/dentist/dentist.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~7c0cf883",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
 		"common",
 		"dentist-dentist-module"
 	],
@@ -92,7 +89,7 @@ var map = {
 	],
 	"./importcsv/importcsv.module": [
 		"./src/app/importcsv/importcsv.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~7c0cf883",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
 		"default~charts-chartslib-module~dashboard-dashboard-module~dashboards-dashboards-module~importcsv-im~dcb35db1",
 		"default~charts-chartslib-module~dashboards-dashboards-module~importcsv-importcsv-module",
 		"common",
@@ -116,14 +113,26 @@ var map = {
 	],
 	"./pages/pages.module": [
 		"./src/app/pages/pages.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~7c0cf883",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
 		"common",
 		"pages-pages-module"
+	],
+	"./plans/plans.module": [
+		"./src/app/plans/plans.module.ts",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
+		"common",
+		"plans-plans-module"
 	],
 	"./tables/tables.module": [
 		"./src/app/tables/tables.module.ts",
 		"common",
 		"tables-tables-module"
+	],
+	"./users/users.module": [
+		"./src/app/users/users.module.ts",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
+		"common",
+		"users-users-module"
 	],
 	"./widgets/widgets.module": [
 		"./src/app/widgets/widgets.module.ts",
@@ -242,12 +251,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_http__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/http */ "./node_modules/@angular/http/fesm5/http.js");
 /* harmony import */ var _auth_authguard_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./auth/authguard.service */ "./src/app/auth/authguard.service.ts");
 /* harmony import */ var _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./layouts/full/header/header.service */ "./src/app/layouts/full/header/header.service.ts");
+/* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
+/* harmony import */ var _layouts_full_headerright_headerright_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./layouts/full/headerright/headerright.component */ "./src/app/layouts/full/headerright/headerright.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -287,7 +300,8 @@ var AppModule = /** @class */ (function () {
                 _layouts_full_header_header_component__WEBPACK_IMPORTED_MODULE_10__["AppHeaderComponent"],
                 _shared_spinner_component__WEBPACK_IMPORTED_MODULE_17__["SpinnerComponent"],
                 _layouts_blank_blank_component__WEBPACK_IMPORTED_MODULE_9__["AppBlankComponent"],
-                _layouts_full_sidebar_sidebar_component__WEBPACK_IMPORTED_MODULE_11__["AppSidebarComponent"]
+                _layouts_full_sidebar_sidebar_component__WEBPACK_IMPORTED_MODULE_11__["AppSidebarComponent"],
+                _layouts_full_headerright_headerright_component__WEBPACK_IMPORTED_MODULE_23__["AppHeaderrightComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -309,7 +323,8 @@ var AppModule = /** @class */ (function () {
                     provide: ngx_perfect_scrollbar__WEBPACK_IMPORTED_MODULE_15__["PERFECT_SCROLLBAR_CONFIG"],
                     useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
                 },
-                angular2_cookie_services_cookies_service__WEBPACK_IMPORTED_MODULE_18__["CookieService"]
+                angular2_cookie_services_cookies_service__WEBPACK_IMPORTED_MODULE_18__["CookieService"],
+                _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_22__["DentistService"]
             ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
         })
@@ -368,6 +383,16 @@ var AppRoutes = [
             {
                 path: 'clinic',
                 loadChildren: './clinic/clinic.module#ClinicModule',
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+            },
+            {
+                path: 'users',
+                loadChildren: './users/users.module#UsersModule',
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+            },
+            {
+                path: 'plans',
+                loadChildren: './plans/plans.module#PlansModule',
                 canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
             },
             {
@@ -616,6 +641,108 @@ var DemoMaterialModule = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/dentist/dentist.service.ts":
+/*!********************************************!*\
+  !*** ./src/app/dentist/dentist.service.ts ***!
+  \********************************************/
+/*! exports provided: DentistService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DentistService", function() { return DentistService; });
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var DentistService = /** @class */ (function () {
+    function DentistService(http, _cookieService) {
+        this.http = http;
+        this._cookieService = _cookieService;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
+        //append headers
+        this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        this.headers.append("Content-Type", 'application/json');
+        this.headers.append("Access-Control-Allow-Origin", "*");
+        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+    }
+    // Get Dentist
+    DentistService.prototype.getDentists = function (clinic_id, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/dentists?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Delete Dentist
+    DentistService.prototype.deleteDentists = function (dentist_id, user_id, token) {
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        var formData = new FormData();
+        formData.append('id', dentist_id);
+        formData.append('token', token);
+        return this.http.post(this.apiUrl + "/Dentists/delete", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Update Dentist
+    DentistService.prototype.updateDentists = function (dentist_id, value, clinic_id, token) {
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        var formData = new FormData();
+        formData.append('provider_id', dentist_id);
+        formData.append('name', value);
+        formData.append('user_id', '23');
+        formData.append('clinic_id', clinic_id);
+        formData.append('token', token);
+        return this.http.post(this.apiUrl + "/Dentists/update", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Add Dentist
+    DentistService.prototype.addDentists = function (dentist_id, value, clinic_id, token) {
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        var formData = new FormData();
+        formData.append('provider_id', dentist_id);
+        formData.append('name', value);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('clinic_id', clinic_id);
+        formData.append('token', token);
+        return this.http.post(this.apiUrl + "/Dentists/add", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    DentistService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"]])
+    ], DentistService);
+    return DentistService;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/layouts/blank/blank.component.html":
 /*!****************************************************!*\
   !*** ./src/app/layouts/blank/blank.component.html ***!
@@ -669,7 +796,7 @@ var AppBlankComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Main wrapper - style you can find in pages.scss -->\n<!-- ============================================================== -->\n<div class=\"main-container\" [dir]=\"dir\" [ngClass]=\"{'minisidebar': minisidebar, 'boxed': boxed, 'danger': danger, 'blue': blue, 'green': green, 'dark': dark }\">\n    <!-- ============================================================== -->\n    <!-- Topbar - style you can find in header.scss -->\n    <!-- ============================================================== -->\n    <mat-toolbar color=\"white\" class=\"topbar telative\">\n        <!-- ============================================================== -->\n        <!-- Logo - style you can find in header.scss -->\n        <!-- ============================================================== -->\n       <div class=\"navbar-header\">\n            <a class=\"navbar-brand\" href=\"/\">\n                <!-- Logo icon -->\n                <b>\n                    <!--You can put here icon as well // <i class=\"wi wi-sunset\"></i> //-->\n                    <!-- Dark Logo icon -->\n                    <img src=\"assets/images/logo-light-icon.png\" alt=\"homepage\" class=\"dark-logo\">\n                    <!-- Light Logo icon -->\n                    <img src=\"assets/images/logo-icon.png\" alt=\"homepage\" class=\"light-logo\">\n                </b>\n                <!--End Logo icon -->\n                <!-- Logo text -->\n                <span fxShow=\"false\" fxShow.gt-xs>\n                    <!-- dark Logo text -->\n                    <img src=\"assets/images/logo-light-text.png\" alt=\"homepage\" class=\"dark-logo\">\n                    <!-- Light Logo text -->\n                    <img src=\"assets/images/logo-text.png\" class=\"light-logo\" alt=\"homepage\">\n                </span>\n            </a>\n        </div>\n        <!-- ============================================================== -->\n        <!-- sidebar toggle -->\n        <!-- ============================================================== -->\n\n        <button mat-icon-button (click)=\"snav.toggle()\" value=\"sidebarclosed\">\n            <mat-icon>menu</mat-icon>\n        </button>\n        <!-- ============================================================== -->\n        <!-- Search - style you can find in header.scss -->\n        <!-- ============================================================== -->\n        <!-- <button mat-icon-button class=\"srh-btn\">\n            <mat-icon>search</mat-icon>\n        </button> -->\n        <form class=\"app-search\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Search &amp; enter\">\n            <a class=\"cl-srh-btn\">\n                <i class=\"ti-close\"></i>\n            </a>\n        </form>\n        <span fxFlex></span>\n            <div fxFlex.gt-sm=\"10\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"header_select\">\n  <mat-form-field>\n      <mat-select placeholder=\"Select Clinic\" (ngModelChange)=\"loadClinic($event)\" [value] =\"1\">\n        <mat-option *ngFor=\"let clinicData of clinicsData\" [value]=\"clinicData.id\">{{clinicData.clinicName}}\n         </mat-option>\n      </mat-select>\n    </mat-form-field> \n    </div>\n\n        <!-- ============================================================== -->\n        <!-- app header component - style you can find in header.scss / header.component.ts-->\n        <!-- ============================================================== -->\n        <app-header></app-header>\n        <!-- ============================================================== -->\n        <!-- Right sidebar toggle - style you can find in rightsidebar.component.scss -->\n        <!-- ============================================================== -->\n        <!-- <button (click)=\"end.toggle()\" mat-icon-button class=\"ml-xs overflow-visible\">\n            <mat-icon>settings</mat-icon>\n        </button> -->\n    </mat-toolbar>\n    <!-- ============================================================== -->\n    <!-- End Topbar - style you can find in pages.scss -->\n    <!-- ============================================================== -->\n    <mat-sidenav-container class=\"example-sidenav-container\" [style.marginTop.px]=\"mobileQuery.matches ? 0 : 0\"\n        [ngClass]=\"{'minisidebar': minisidebar}\">\n        <!-- ============================================================== -->\n        <!-- Sidebar - style you can find in sidebar.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav #snav id=\"snav\" class=\"pl-xs\" [mode]=\"mobileQuery.matches ? 'side' : 'over'\" fixedTopGap=\"0\"\n            [opened]=\"mobileQuery.matches\" [disableClose]=\"mobileQuery.matches\" (open)=\"sidebarOpened = true\" (close)=\"sidebarOpened = false\"\n            [perfectScrollbar]=\"config\">\n\n            <app-sidebar class=\"app-sidebar\"></app-sidebar>\n\n        </mat-sidenav>\n        <!-- ============================================================== -->\n        <!-- Sidebar - style you can find in sidebar.scss -->\n        <!-- ============================================================== -->\n        <!-- ============================================================== -->\n        <!-- Right Sidebar - style you can find in rightsidebar.component.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav #end position=\"end\" class=\"chat-panel\" mode=\"over\" opened=\"false\">\n            <div class=\"scroll\">\n                <mat-nav-list>\n\n                    <h3 mat-subheader class=\"text-uppercase font-weight-bold\">Settings</h3>\n                    <mat-list-item>\n                        <mat-slide-toggle color=\"warn\" (change)=\"dir = (dir == 'rtl' ? 'ltr' : 'rtl')\">RTL</mat-slide-toggle>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-slide-toggle color=\"warn\" [(ngModel)]=\"boxed\">Boxed Layout</mat-slide-toggle>\n                    </mat-list-item>\n                    <!--<mat-list-item>\n                    <mat-slide-toggle [(ngModel)]=\"minisidebar\">Mini Sidebar</mat-slide-toggle>\n                  </mat-list-item>    -->\n                    <mat-divider></mat-divider>\n                    <h3 mat-subheader class=\"text-uppercase font-weight-bold\">Colors</h3>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"danger\" (change)=\"green = blue = false\" class=\"text-danger\">Red</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"green\" (change)=\"danger = blue = false\" class=\"text-megna\">Teal\n                            Green</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"blue\" (change)=\"green = danger = false\" class=\"text-info\">Blue</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item> \n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"dark\" (change)=\"green = blue = danger = false\">Dark</mat-checkbox>\n                    </mat-list-item>\n                </mat-nav-list>\n            </div>\n        </mat-sidenav>\n\n        <!-- ============================================================== -->\n        <!-- Page container - style you can find in pages.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav-content class=\"page-wrapper\">\n            \n                <div class=\"page-content\">\n\n                    <router-outlet>\n                        <app-spinner></app-spinner>\n                    </router-outlet>\n\n                </div>\n            \n        </mat-sidenav-content>\n        <!-- ============================================================== -->\n        <!-- Page container - style you can find in pages.scss -->\n        <!-- ============================================================== -->\n    </mat-sidenav-container>\n</div>"
+module.exports = "<!-- ============================================================== -->\n<!-- Main wrapper - style you can find in pages.scss -->\n<!-- ============================================================== -->\n<div class=\"main-container\" [dir]=\"dir\" [ngClass]=\"{'minisidebar': minisidebar, 'boxed': boxed, 'danger': danger, 'blue': blue, 'green': green, 'dark': dark }\">\n    <!-- ============================================================== -->\n    <!-- Topbar - style you can find in header.scss -->\n    <!-- ============================================================== -->\n\n\n\n    <!-- ============================================================== -->\n    <!-- End Topbar - style you can find in pages.scss -->\n    <!-- ============================================================== -->\n    <mat-sidenav-container class=\"example-sidenav-container\" [style.marginTop.px]=\"mobileQuery.matches ? 0 : 0\"\n        [ngClass]=\"{'minisidebar': minisidebar}\">\n        <!-- ============================================================== -->\n        <!-- Sidebar - style you can find in sidebar.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav #snav id=\"snav\" class=\"pl-xs\" [mode]=\"mobileQuery.matches ? 'side' : 'over'\" fixedTopGap=\"0\"\n            [opened]=\"mobileQuery.matches\" [disableClose]=\"mobileQuery.matches\" (open)=\"sidebarOpened = true\" (close)=\"sidebarOpened = false\"\n            [perfectScrollbar]=\"config\">\n\n            <app-sidebar class=\"app-sidebar\"></app-sidebar>\n\n        </mat-sidenav>\n        <!-- ============================================================== -->\n        <!-- Sidebar - style you can find in sidebar.scss -->\n        <!-- ============================================================== -->\n        <!-- ============================================================== -->\n        <!-- Right Sidebar - style you can find in rightsidebar.component.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav #end position=\"end\" class=\"chat-panel\" mode=\"over\" opened=\"false\">\n            <div class=\"scroll\">\n                <mat-nav-list>\n\n                    <h3 mat-subheader class=\"text-uppercase font-weight-bold\">Settings</h3>\n                    <mat-list-item>\n                        <mat-slide-toggle color=\"warn\" (change)=\"dir = (dir == 'rtl' ? 'ltr' : 'rtl')\">RTL</mat-slide-toggle>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-slide-toggle color=\"warn\" [(ngModel)]=\"boxed\">Boxed Layout</mat-slide-toggle>\n                    </mat-list-item>\n                    <!--<mat-list-item>\n                    <mat-slide-toggle [(ngModel)]=\"minisidebar\">Mini Sidebar</mat-slide-toggle>\n                  </mat-list-item>    -->\n                    <mat-divider></mat-divider>\n                    <h3 mat-subheader class=\"text-uppercase font-weight-bold\">Colors</h3>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"danger\" (change)=\"green = blue = false\" class=\"text-danger\">Red</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"green\" (change)=\"danger = blue = false\" class=\"text-megna\">Teal\n                            Green</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item>\n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"blue\" (change)=\"green = danger = false\" class=\"text-info\">Blue</mat-checkbox>\n                    </mat-list-item>\n                    <mat-list-item> \n                        <mat-checkbox color=\"warn\" [(ngModel)]=\"dark\" (change)=\"green = blue = danger = false\">Dark</mat-checkbox>\n                    </mat-list-item>\n                </mat-nav-list>\n            </div>\n        </mat-sidenav>\n\n        <!-- ============================================================== -->\n        <!-- Page container - style you can find in pages.scss -->\n        <!-- ============================================================== -->\n        <mat-sidenav-content class=\"page-wrapper\">\n\n                <div class=\"sa_mobile_header\">\n                    <div class=\"sa_mobile_logo_area\">\n                        <div class=\"sa_header_icons\">\n                            <button class=\"sa_mat_menu_icon sa_backslide_area hamburger_menu\" mat-icon-button (click)=\"snav.toggle()\" value=\"sidebarclosed\">\n                                <mat-icon class=\"sa_ico1 sa_mobile_menu_ico\">menu</mat-icon>\n                                <mat-icon class=\"sa_ico2 sa_mobile_menu_ico\">menu</mat-icon>\n                            </button>\n                        </div>\n\n                        <div class=\"sa_sidebar_logo_main\">\n                            <div class=\"sa_sidebar_logo\"><img src=\"assets/images/logo-text.png\" alt=\"homepage\" class=\"\"></div>\n                        </div>\n\n                    </div>\n                </div>\n                <div class=\"sa_heading_bar\">\n                    <div fxLayout=\"row wrap\">\n                        <div fxFlex.lg=\"70\" fxFlex.md=\"60\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"70\" class=\"sa_mobile_heading\">\n                            <div class=\"sa_header_icons\">\n                                <button class=\"sa_mat_menu_icon sa_backslide_area hamburger_menu\" mat-icon-button (click)=\"snav.toggle()\" value=\"sidebarclosed\">\n                                    <mat-icon class=\"sa_ico1\">arrow_back_ios</mat-icon>\n                                    <mat-icon class=\"sa_ico2\">arrow_forward_ios</mat-icon>\n                                </button>\n                                <button class=\"sa_mat_menu_icon sa_expand_area hamburger_menu fullscreen\" mat-icon-button (click) =\"fullScreen()\" >\n                                    <mat-icon class=\"sa_ico1\" >fullscreen</mat-icon>\n                                    <mat-icon class=\"sa_ico2\" (click) =\"closeFullscreen()\">fullscreen_exit</mat-icon>\n                                </button>\n\n                            </div>\n                            <h4><span class=\"page_title\" id=\"title\"></span></h4>\n                        </div>\n                        <div fxFlex.lg=\"30\" fxFlex.md=\"40\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"30\" class=\"\">\n                         <app-headerright class=\"app-headerright\"></app-headerright>\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"page-content\">\n                  \n                    <router-outlet>\n                        <app-spinner></app-spinner>\n                    </router-outlet>\n\n                </div>\n            \n        </mat-sidenav-content>\n        <!-- ============================================================== -->\n        <!-- Page container - style you can find in pages.scss -->\n        <!-- ============================================================== -->\n    </mat-sidenav-container>\n</div>"
 
 /***/ }),
 
@@ -685,15 +812,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FullComponent", function() { return FullComponent; });
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/layout */ "./node_modules/@angular/cdk/esm5/layout.es5.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../shared/menu-items/menu-items */ "./src/app/shared/menu-items/menu-items.ts");
-/* harmony import */ var _header_header_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./header/header.service */ "./src/app/layouts/full/header/header.service.ts");
-/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
-/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/cdk/layout */ "./node_modules/@angular/cdk/esm5/layout.es5.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../shared/menu-items/menu-items */ "./src/app/shared/menu-items/menu-items.ts");
+/* harmony import */ var _header_header_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./header/header.service */ "./src/app/layouts/full/header/header.service.ts");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -702,6 +829,9 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 };
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
 };
 
 
@@ -714,32 +844,44 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 /** @title Responsive sidenav */
 var FullComponent = /** @class */ (function () {
-    function FullComponent(changeDetectorRef, media, menuItems, headerService, router, _cookieService, location, route) {
+    function FullComponent(changeDetectorRef, media, menuItems, headerService, router, _cookieService, location, route, document) {
         this.menuItems = menuItems;
         this.headerService = headerService;
         this.router = router;
         this._cookieService = _cookieService;
         this.location = location;
         this.route = route;
+        this.document = document;
         this.dir = 'ltr';
         this.config = {};
         this.clinicsData = [];
-        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].apiUrl;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_8__["environment"].apiUrl;
         this.selectedClinic = "1";
         this.id = this.route.snapshot.paramMap.get("id");
         this.mobileQuery = media.matchMedia('(min-width: 768px)');
         this._mobileQueryListener = function () { return changeDetectorRef.detectChanges(); };
         this.mobileQuery.addListener(this._mobileQueryListener);
+        document.addEventListener("fullscreenchange", this.onFullScreenChange, false);
+        document.addEventListener("webkitfullscreenchange", this.onFullScreenChange, false);
+        document.addEventListener("mozfullscreenchange", this.onFullScreenChange, false);
     }
     FullComponent.prototype.ngOnDestroy = function () {
         this.mobileQuery.removeListener(this._mobileQueryListener);
     };
     FullComponent.prototype.ngAfterViewInit = function () {
+        this.title = jquery__WEBPACK_IMPORTED_MODULE_0__('#page_title').val();
+        this.elem = document.documentElement;
         // This is for the topbar search
         jquery__WEBPACK_IMPORTED_MODULE_0__('.srh-btn, .cl-srh-btn').on('click', function () {
             jquery__WEBPACK_IMPORTED_MODULE_0__('.app-search').toggle(200);
         });
         this.getClinics();
+        jquery__WEBPACK_IMPORTED_MODULE_0__(".hamburger_menu").click(function (e) {
+            if (jquery__WEBPACK_IMPORTED_MODULE_0__(this).hasClass('active'))
+                jquery__WEBPACK_IMPORTED_MODULE_0__(this).removeClass('active');
+            else
+                jquery__WEBPACK_IMPORTED_MODULE_0__(this).addClass('active');
+        });
         // This is for the megamenu
     };
     FullComponent.prototype.loadClinic = function (value) {
@@ -757,16 +899,60 @@ var FullComponent = /** @class */ (function () {
             // this.warningMessage = "Please Provide Valid Inputs!";
         });
     };
+    FullComponent.prototype.fullScreen = function () {
+        if (this.elem.requestFullscreen) {
+            this.elem.requestFullscreen();
+        }
+        else if (this.elem.mozRequestFullScreen) {
+            /* Firefox */
+            this.elem.mozRequestFullScreen();
+        }
+        else if (this.elem.webkitRequestFullscreen) {
+            /* Chrome, Safari and Opera */
+            this.elem.webkitRequestFullscreen();
+        }
+        else if (this.elem.msRequestFullscreen) {
+            /* IE/Edge */
+            this.elem.msRequestFullscreen();
+        }
+    };
+    FullComponent.prototype.onFullScreenChange = function () {
+        //alert(window.screenTop);
+        if (window.screenTop > 0) {
+            jquery__WEBPACK_IMPORTED_MODULE_0__('.fullscreen').removeClass('active');
+        }
+        else if (window.screenTop == 0)
+            jquery__WEBPACK_IMPORTED_MODULE_0__('.fullscreen').addClass('active');
+        // if in fullscreen mode fullscreenElement won't be null
+    };
+    FullComponent.prototype.closeFullscreen = function () {
+        if (this.document.exitFullscreen) {
+            this.document.exitFullscreen();
+        }
+        else if (this.document.mozCancelFullScreen) {
+            /* Firefox */
+            this.document.mozCancelFullScreen();
+        }
+        else if (this.document.webkitExitFullscreen) {
+            /* Chrome, Safari and Opera */
+            this.document.webkitExitFullscreen();
+        }
+        else if (this.document.msExitFullscreen) {
+            /* IE/Edge */
+            this.document.msExitFullscreen();
+        }
+    };
     FullComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"])({
             selector: 'app-full-layout',
             template: __webpack_require__(/*! ./full.component.html */ "./src/app/layouts/full/full.component.html"),
             styleUrls: []
         }),
-        __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_3__["ChangeDetectorRef"],
-            _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__["MediaMatcher"],
-            _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_4__["MenuItems"], _header_header_service__WEBPACK_IMPORTED_MODULE_5__["HeaderService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6__["CookieService"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["Location"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"]])
+        __param(8, Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_1__["DOCUMENT"])),
+        __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ChangeDetectorRef"],
+            _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_2__["MediaMatcher"],
+            _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_5__["MenuItems"], _header_header_service__WEBPACK_IMPORTED_MODULE_6__["HeaderService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7__["CookieService"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["Location"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"], Object])
     ], FullComponent);
     return FullComponent;
 }());
@@ -982,6 +1168,136 @@ var HeaderService = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/layouts/full/headerright/headerright.component.html":
+/*!*********************************************************************!*\
+  !*** ./src/app/layouts/full/headerright/headerright.component.html ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n    <div fxLayout=\"row wrap\" class=\"header_filters\" >\n\n        <div fxFlex.lg=\"48\" fxFlex.xs=\"100\" fxFlex=\"48\" class=\"header_first_select\">\n\n              <div class=\"vertical_center_header_content\">\n\n                  <div class=\"sa_mat_select_topbar\">\n\n                    <mat-form-field>\n\n                            <mat-select [value] =\"1\" class=\"external_clinic\">\n\n                                <mat-option *ngFor=\"let clinicData of clinicsData\" [value]=\"clinicData.id\">\n\n                                    {{clinicData.clinicName}}\n\n                                </mat-option>\n\n                            </mat-select>\n\n                        </mat-form-field>\n\n                  </div>\n              </div>\n          </div>\n            <div fxFlex.lg=\"50\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"dentist_dropdown\">\n\n                <div class=\"vertical_center_header_content\">\n\n                    <div class=\"sa_mat_select_topbar\">\n\n                        <mat-form-field>\n\n                            <mat-select [value] =\"selectedDentist\" class=\"external_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n\n                                <mat-option value=\"all\">All Dentists</mat-option>\n\n                                <mat-option *ngFor=\"let dentist of dentists\"  [value]=\"dentist.providerId\">\n\n                                    {{dentist.name}}\n\n                                </mat-option>\n\n                            </mat-select>\n\n                        </mat-form-field>\n\n                    </div>\n\n                </div>\n\n            </div>\n\n\n       </div>"
+
+/***/ }),
+
+/***/ "./src/app/layouts/full/headerright/headerright.component.ts":
+/*!*******************************************************************!*\
+  !*** ./src/app/layouts/full/headerright/headerright.component.ts ***!
+  \*******************************************************************/
+/*! exports provided: AppHeaderrightComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppHeaderrightComponent", function() { return AppHeaderrightComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _header_header_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../header/header.service */ "./src/app/layouts/full/header/header.service.ts");
+/* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var AppHeaderrightComponent = /** @class */ (function () {
+    function AppHeaderrightComponent(_cookieService, route, headerService, dentistService) {
+        this._cookieService = _cookieService;
+        this.route = route;
+        this.headerService = headerService;
+        this.dentistService = dentistService;
+        this.clinicsData = [];
+        this.config = {};
+        this.clinic_id = {};
+        this.dentistCount = {};
+        this.selectedDentist = 'all';
+        this.dentists = [
+            { providerId: 'all', name: 'All Dentists' },
+        ];
+    }
+    AppHeaderrightComponent.prototype.ngAfterViewInit = function () {
+        this.clinic_id = '1';
+        this.getClinics();
+        this.getDentists();
+    };
+    AppHeaderrightComponent.prototype.getClinics = function () {
+        var _this = this;
+        this.headerService.getClinics().subscribe(function (res) {
+            if (res.message == 'success') {
+                _this.clinicsData = res.data;
+                _this.title = $('#page_title').val();
+            }
+        }, function (error) {
+            // this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    // Get Dentist
+    AppHeaderrightComponent.prototype.getDentists = function () {
+        var _this = this;
+        this.dentistService.getDentists(this.clinic_id).subscribe(function (res) {
+            if (res.message == 'success') {
+                _this.dentists = res.data;
+                _this.dentistCount = res.data.length;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    AppHeaderrightComponent.prototype.loadClinic = function (value) {
+        this.finalUrl = this.route.url.substring(0, this.route.url.lastIndexOf('/') + 1);
+        this.route.navigate([this.finalUrl + value]);
+        //this.location.go(this.finalUrl+value);
+    };
+    /*  logout() {
+          this.headerrightService.logout(this._cookieService.get("userid")).subscribe((res) => {
+           console.log(res);
+           if(res.message == 'success'){
+            this._cookieService.put("username",'');
+            this._cookieService.put("email", '');
+            this._cookieService.put("token", '');
+            this._cookieService.put("userid", '');
+    
+            this.router.navigate(['/login']);
+           }
+        }, error => {
+        }
+        );
+      }*/
+    AppHeaderrightComponent.prototype.loadDentist = function (newValue) {
+        if ($('body').find('span#currentDentist').length <= 0) {
+            $('body').append('<span id="currentDentist" style="display:none" did="' + newValue + '"></span>');
+        }
+        else {
+            $('#currentDentist').attr('did', newValue);
+        }
+        this.selectedDentist = newValue;
+        $('.internal_dentist').val(newValue);
+        $('#dentist_initiate').click();
+    };
+    AppHeaderrightComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-headerright',
+            template: __webpack_require__(/*! ./headerright.component.html */ "./src/app/layouts/full/headerright/headerright.component.html"),
+            styleUrls: []
+        }),
+        __metadata("design:paramtypes", [angular2_cookie_core__WEBPACK_IMPORTED_MODULE_1__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _header_header_service__WEBPACK_IMPORTED_MODULE_3__["HeaderService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_4__["DentistService"]])
+    ], AppHeaderrightComponent);
+    return AppHeaderrightComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/layouts/full/sidebar/sidebar.component.html":
 /*!*************************************************************!*\
   !*** ./src/app/layouts/full/sidebar/sidebar.component.html ***!
@@ -989,7 +1305,7 @@ var HeaderService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- sidebar -->\n<!-- ============================================================== -->\n<mat-nav-list appAccordion>\n    <mat-list-item appAccordionLink *ngFor=\"let menuitem of menuItems.getMenuitem()\" routerLinkActive=\"selected\" group=\"{{menuitem.state}}\">\n        <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state, menuitem.param]\"     *ngIf=\"menuitem.type === 'link'\">\n            <i class=\"{{ menuitem.icon }}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n         <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state]\" *ngIf=\"menuitem.type === 'link-noparam'\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" *ngIf=\"menuitem.type === 'extLink'\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" target=\"_blank\" *ngIf=\"menuitem.type === 'extTabLink'\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name}}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'sub'\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n            <i class=\"fas fa-caret-down\"></i>\n        </a>\n        <mat-nav-list class=\"sub-item\" *ngIf=\"menuitem.type === 'sub'\">\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\" routerLinkActive=\"selected\">\n                <a [routerLink]=\"['/', menuitem.state, childitem.state, childitem.param ]\" *ngIf=\"childitem.type === 'link'\" class=\"relative\"\n                    routerLinkActive=\"selected\"><i class=\"{{childitem.icon}}\"></i>{{ childitem.name}}</a>\n            </mat-list-item>\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\">\n                <a class=\"\" href=\"javascript: void(0);\" *ngIf=\"childitem.type === 'subchild'\" (click)=\"clickEvent()\"\n                    [ngClass]=\"status ? 'selected' : ''\">\n                    <span>{{ childitem.name }}</span>\n                    <span fxFlex></span>\n                    <i class=\"fas fa-caret-down\"></i>\n                </a>\n                <mat-nav-list class=\"child-sub-item\" *ngIf=\"childitem.type === 'subchild'\">\n                    <mat-list-item *ngFor=\"let child of childitem.subchildren\" routerLinkActive=\"selected\">\n                        <a [routerLink]=\"['/', menuitem.state, childitem.state, child.state ]\" routerLinkActive=\"selected\">{{child.name}}</a>\n                    </mat-list-item>\n                </mat-nav-list>\n            </mat-list-item>\n\n        </mat-nav-list>\n\n        <div class=\"saperator text-muted\" *ngIf=\"menuitem.type === 'saperator'\">\n            <span>{{ menuitem.name }}</span>\n        </div>\n    </mat-list-item>\n</mat-nav-list>"
+module.exports = "<!-- ============================================================== -->\n<!-- sidebar -->\n<!-- ============================================================== -->\n<mat-nav-list appAccordion>\n    <div class=\"sa_sidebar_logo_main\">\n    <div class=\"sa_sidebar_logo\"><img src=\"assets/images/logo-text.png\" alt=\"homepage\" class=\"\"></div>\n    </div>\n\n    <div class=\"sa_sidebar_usersec\">\n        <div class=\"suer_image_sidebar\"><img src=\"assets/images/gPZwCbdS.jpg\"></div>\n        <div class=\"suer_text_sidebar\">Project Manager</div>\n\n    </div>\n\n\n<!--     <div class=\"sa-col-12\">\n        <div class=\"fxFlex\">\n            <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"header_select\">\n                <div class=\"sa_select_outer_main\" style=\"padding:10px 10px 20px; float:left; width:100%;\">\n                    <div class=\"sa_select_outer\" >\n                        <select class=\"sa_select forwhite\" >\n                            <option>Select Clinic</option>\n                            <option *ngFor=\"let clinicData of clinicsData\" [value]=\"clinicData.id\">{{clinicData.clinicName}}</option>\n                        </select>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div> -->\n\n\n    <mat-list-item appAccordionLink *ngFor=\"let menuitem of menuItems.getMenuitem()\" routerLinkActive=\"selected\" group=\"{{menuitem.state}}\">\n        <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state, menuitem.param]\" *ngIf=\"menuitem.type === 'link' &&  menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{ menuitem.icon }}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n         <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state]\" *ngIf=\"menuitem.type === 'link-noparam'  && menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" *ngIf=\"menuitem.type === 'extLink' && menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" target=\"_blank\" *ngIf=\"menuitem.type === 'extTabLink'  && menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name}}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'sub' && menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n            <i class=\"fas fa-caret-down\"></i>\n        </a>\n        <mat-nav-list class=\"sub-item\" *ngIf=\"menuitem.type === 'sub' && menuitem.role.indexOf(user_type) !== -1\">\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\" routerLinkActive=\"selected\">\n                <a [routerLink]=\"['/', menuitem.state, childitem.state, childitem.param ]\" *ngIf=\"childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1\" class=\"relative\"\n                    routerLinkActive=\"selected\" ><i class=\"{{childitem.icon}}\"></i>{{ childitem.name}}</a>\n            </mat-list-item>\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\">\n                <a class=\"\" href=\"javascript: void(0);\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\" (click)=\"clickEvent()\"\n                    [ngClass]=\"status ? 'selected' : ''\" >\n                    <span>{{ childitem.name }}</span>\n                    <span fxFlex></span>\n                    <i class=\"fas fa-caret-down\"></i>\n                </a>\n                <mat-nav-list class=\"child-sub-item\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\">\n                    <mat-list-item *ngFor=\"let child of childitem.subchildren\" routerLinkActive=\"selected\">\n                        <a [routerLink]=\"['/', menuitem.state, childitem.state, child.state ]\" routerLinkActive=\"selected\">{{child.name}}</a>\n                    </mat-list-item>\n                </mat-nav-list>\n            </mat-list-item>\n\n        </mat-nav-list>\n\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'sub-child' && menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n            <i class=\"fas fa-caret-down\"></i>\n        </a>\n        <mat-nav-list class=\"sub-item\" *ngIf=\"menuitem.type === 'sub-child' && menuitem.role.indexOf(user_type) !== -1\">\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\" routerLinkActive=\"selected\">\n                <a [routerLink]=\"['/', childitem.state, childitem.param ]\" *ngIf=\"childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1\" class=\"relative\"\n                    routerLinkActive=\"selected\"><i class=\"{{childitem.icon}}\"></i>{{ childitem.name}}</a>\n            </mat-list-item>\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\">\n                <a class=\"\" href=\"javascript: void(0);\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\" (click)=\"clickEvent()\"\n                    [ngClass]=\"status ? 'selected' : ''\" >\n                    <span>{{ childitem.name }}</span>\n                    <span fxFlex></span>\n                    <i class=\"fas fa-caret-down\"></i>\n                </a>\n                <mat-nav-list class=\"child-sub-item\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\" >\n                    <mat-list-item *ngFor=\"let child of childitem.subchildren\" routerLinkActive=\"selected\">\n                        <a [routerLink]=\"['/', childitem.state, child.state ]\" routerLinkActive=\"selected\">{{child.name}}</a>\n                    </mat-list-item>\n                </mat-nav-list>\n            </mat-list-item>\n\n        </mat-nav-list>\n\n        <div class=\"saperator text-muted\" *ngIf=\"menuitem.type === 'saperator' && menuitem.role.indexOf(user_type) !== -1\">\n            <span>{{ menuitem.name }}</span>\n        </div>\n    </mat-list-item>\n      <div class=\"sa_logout_icon\" (click) = \"logout()\"><button mat-icon-button ><i class=\"fas fa-power-off\"></i></button></div>\n</mat-nav-list>"
 
 /***/ }),
 
@@ -1006,6 +1322,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/layout */ "./node_modules/@angular/cdk/esm5/layout.es5.js");
 /* harmony import */ var _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../shared/menu-items/menu-items */ "./src/app/shared/menu-items/menu-items.ts");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _header_header_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../header/header.service */ "./src/app/layouts/full/header/header.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1018,10 +1338,18 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 var AppSidebarComponent = /** @class */ (function () {
-    function AppSidebarComponent(changeDetectorRef, media, menuItems) {
+    function AppSidebarComponent(changeDetectorRef, media, menuItems, headerService, _cookieService, route, router) {
         this.menuItems = menuItems;
+        this.headerService = headerService;
+        this._cookieService = _cookieService;
+        this.route = route;
+        this.router = router;
         this.config = {};
+        this.clinicsData = [];
         this.status = false;
         this.mobileQuery = media.matchMedia('(min-width: 768px)');
         this._mobileQueryListener = function () { return changeDetectorRef.detectChanges(); };
@@ -1033,8 +1361,41 @@ var AppSidebarComponent = /** @class */ (function () {
     AppSidebarComponent.prototype.subclickEvent = function () {
         this.status = true;
     };
+    AppSidebarComponent.prototype.ngAfterViewInit = function () {
+        $('.srh-btn, .cl-srh-btn').on('click', function () {
+            $('.app-search').toggle(200);
+        });
+        // This is for the topbar search
+        this.getClinics();
+        this.user_type = this._cookieService.get("user_type");
+        // This is for the megamenu
+    };
     AppSidebarComponent.prototype.ngOnDestroy = function () {
         this.mobileQuery.removeListener(this._mobileQueryListener);
+    };
+    AppSidebarComponent.prototype.logout = function () {
+        var _this = this;
+        this.headerService.logout(this._cookieService.get("userid")).subscribe(function (res) {
+            console.log(res);
+            if (res.message == 'success') {
+                _this._cookieService.put("username", '');
+                _this._cookieService.put("email", '');
+                _this._cookieService.put("token", '');
+                _this._cookieService.put("userid", '');
+                _this.router.navigate(['/login']);
+            }
+        }, function (error) {
+        });
+    };
+    AppSidebarComponent.prototype.getClinics = function () {
+        var _this = this;
+        this.headerService.getClinics().subscribe(function (res) {
+            if (res.message == 'success') {
+                _this.clinicsData = res.data;
+            }
+        }, function (error) {
+            // this.warningMessage = "Please Provide Valid Inputs!";
+        });
     };
     AppSidebarComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -1044,7 +1405,10 @@ var AppSidebarComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"],
             _angular_cdk_layout__WEBPACK_IMPORTED_MODULE_1__["MediaMatcher"],
-            _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_2__["MenuItems"]])
+            _shared_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_2__["MenuItems"],
+            _header_header_service__WEBPACK_IMPORTED_MODULE_4__["HeaderService"],
+            angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
     ], AppSidebarComponent);
     return AppSidebarComponent;
 }());
@@ -1328,44 +1692,93 @@ var MENUITEMS = [
         type: 'sub',
         icon: 'fas fa-chart-area',
         children: [
-            { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param: '1', icon: 'fas fa-chart-line' },
-            { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', param: '1', icon: 'fas fa-chart-line' }
+            { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param: '1' },
+            { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', param: '1' },
+            { state: 'frontdesk', name: 'Front Desk', type: 'link', param: '1' },
+            { state: 'marketing', name: 'Marketing', type: 'link', param: '1' },
+            { state: 'finances', name: 'Finances', type: 'link', param: '1', icon: '' },
         ],
-        param: '1'
-    },
-    {
-        state: 'importcsv',
-        name: 'Importcsv',
-        type: 'link',
-        icon: 'fas fa-upload',
-        param: '1'
+        param: '1',
+        role: ['2']
     },
     {
         state: 'clinic',
-        name: 'Clinic Management',
+        name: 'Clinics',
         type: 'link-noparam',
-        icon: 'fas fa-list'
+        icon: 'fas fa-home',
+        role: ['2']
     },
     {
         state: 'dentist',
-        name: 'Dentist Management',
+        name: 'Dentists',
         type: 'link',
-        icon: 'fas fa-list',
-        param: '1'
+        icon: 'fas fa-tooth',
+        param: '1',
+        role: ['2']
     },
     {
-        state: 'clinic-goals',
-        name: 'Clinic Goals',
-        type: 'link',
-        icon: 'fas fa-chart-line',
-        param: '1'
+        state: 'users',
+        name: 'Registered Users',
+        type: 'link-noparam',
+        icon: 'fas fa-users',
+        role: ['1']
     },
     {
-        state: 'dentist-goals',
-        name: 'Dentist Goals',
+        state: 'plans',
+        name: 'Subscription Plans',
+        type: 'link-noparam',
+        icon: 'fas fa-receipt',
+        role: ['1']
+    },
+    {
+        state: 'settings',
+        name: 'Settings',
         type: 'link',
-        icon: 'fas fa-chart-line',
-        param: '1'
+        icon: 'fas fa-settings',
+        param: '1',
+        role: ['1']
+    },
+    {
+        state: 'roles',
+        name: 'Roles Management',
+        type: 'link',
+        icon: 'fas fa-settings',
+        param: '1',
+        role: ['1']
+    },
+    /*{
+      state: 'clinic-goals',
+      name: 'Clinic Goals',
+      type: 'link',
+      icon: 'fas fa-chart-line',
+      param : '1'
+    },
+      {
+      state: 'dentist-goals',
+      name: 'Dentist Goals',
+      type: 'link',
+      icon: 'fas fa-chart-line',
+      param : '1'
+    },*/
+    {
+        state: '',
+        name: 'Goals',
+        type: 'sub-child',
+        icon: 'fas fa-medal',
+        children: [
+            { state: 'clinic-goals', name: 'Clinic Goals', type: 'link', param: '1' },
+            { state: 'dentist-goals', name: 'Dentist Goals', type: 'link', param: '1' }
+        ],
+        param: '1',
+        role: ['1', '2']
+    },
+    {
+        state: 'importcsv',
+        name: 'Data Upload',
+        type: 'link',
+        icon: 'fas fa-upload',
+        param: '1',
+        role: ['2']
     },
 ];
 var MenuItems = /** @class */ (function () {
@@ -1489,7 +1902,7 @@ var SpinnerComponent = /** @class */ (function () {
     SpinnerComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-spinner',
-            template: "<div class=\"preloader\" *ngIf=\"isSpinnerVisible\">\n        <div class=\"spinner\">\n          <div class=\"double-bounce1\"></div>\n          <div class=\"double-bounce2\"></div>\n        </div>\n    </div>",
+            template: "<div class=\"preloader\" *ngIf=\"isSpinnerVisible\">\n        <div class=\"spinner\">\n\t\t\n        </div>\n    </div>",
             encapsulation: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewEncapsulation"].None
         }),
         __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_2__["DOCUMENT"])),
@@ -1519,8 +1932,8 @@ __webpack_require__.r(__webpack_exports__);
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
     production: true,
-    apiUrl: "https://staging-analytics-api.jeeve.com.au",
-    homeUrl: "https://staging-analytics.jeeve.com.au"
+    apiUrl: "http://localhost/jeeveanalytics/server/",
+    homeUrl: "http://localhost/jeeveanalytics/client2/"
 };
 
 

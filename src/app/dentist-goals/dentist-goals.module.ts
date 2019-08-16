@@ -16,6 +16,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { DentistGoalsComponent } from './dentist-goals.component';
 
 import { DentistGoalsService } from './dentist-goals.service';
+import { DentistService } from '../dentist/dentist.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -31,7 +33,7 @@ import { DentistGoalsService } from './dentist-goals.service';
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
-    DentistGoalsService
+    DentistGoalsService, DentistService
   ],
   declarations: [
     DentistGoalsComponent

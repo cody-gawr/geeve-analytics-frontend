@@ -25,7 +25,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _importcsv_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./importcsv.service */ "./src/app/importcsv/importcsv.service.ts");
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -35,6 +37,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -158,14 +161,23 @@ var data = [
         date: 'No Uploads Yet',
         sample: 'csv-sample/Accounting Invoices and Receipts.csv',
         status: 'No File Uploaded'
+    },
+    {
+        id: '17',
+        name: 'Status - UTA',
+        date: 'No Uploads Yet',
+        sample: 'csv-sample/Accounting Invoices and Receipts.csv',
+        status: 'No File Uploaded'
     }
 ];
 var ImportcsvComponent = /** @class */ (function () {
-    function ImportcsvComponent(importcsvService, datePipe, route) {
+    function ImportcsvComponent(importcsvService, datePipe, route, _cookieService, router) {
         var _this = this;
         this.importcsvService = importcsvService;
         this.datePipe = datePipe;
         this.route = route;
+        this._cookieService = _cookieService;
+        this.router = router;
         this.clinic_id = {};
         this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiUrl;
         this.homeUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].homeUrl;
@@ -194,6 +206,9 @@ var ImportcsvComponent = /** @class */ (function () {
         this.route.params.subscribe(function (params) {
             _this.clinic_id = _this.route.snapshot.paramMap.get("id");
             _this.getLogs();
+            $('#title').html('Data Upload');
+            $('.external_clinic').show();
+            $('.external_dentist').hide();
         });
     };
     ImportcsvComponent.prototype.processFile = function (fileInput, rowIndex, cell) {
@@ -266,6 +281,13 @@ var ImportcsvComponent = /** @class */ (function () {
                 _this.temp = _this.arr1.slice();
                 _this.table = data;
             }
+            else if (res.status == '401') {
+                _this._cookieService.put("username", '');
+                _this._cookieService.put("email", '');
+                _this._cookieService.put("token", '');
+                _this._cookieService.put("userid", '');
+                _this.router.navigateByUrl('/login');
+            }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
@@ -310,7 +332,7 @@ var ImportcsvComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             template: __webpack_require__(/*! ./importcsv.component.html */ "./src/app/importcsv/importcsv.component.html")
         }),
-        __metadata("design:paramtypes", [_importcsv_service__WEBPACK_IMPORTED_MODULE_2__["ImportcsvService"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [_importcsv_service__WEBPACK_IMPORTED_MODULE_2__["ImportcsvService"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
     ], ImportcsvComponent);
     return ImportcsvComponent;
 }());

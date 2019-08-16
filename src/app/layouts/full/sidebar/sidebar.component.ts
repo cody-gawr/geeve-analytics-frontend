@@ -11,17 +11,22 @@ import {
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MenuItems } from '../../../shared/menu-items/menu-items';
+import { CookieService } from "angular2-cookie/core";
+import { HeaderService } from '../header/header.service';
+import { Router, ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: []
 })
-export class AppSidebarComponent implements OnDestroy {
+export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   public config: PerfectScrollbarConfigInterface = {};
   mobileQuery: MediaQueryList;
-
+  public clinicsData:any[] = [];
   private _mobileQueryListener: () => void;
   status: boolean = false;
+  public user_type;
   clickEvent() {
     this.status = !this.status;
   }
@@ -32,14 +37,50 @@ export class AppSidebarComponent implements OnDestroy {
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
-    public menuItems: MenuItems
+    public menuItems: MenuItems,
+    private headerService: HeaderService
+    ,private _cookieService: CookieService,
+    private route: ActivatedRoute, private router: Router
   ) {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
-
+ ngAfterViewInit() {
+(<any>$('.srh-btn, .cl-srh-btn')).on('click', function() {
+      (<any>$('.app-search')).toggle(200);
+    });
+    // This is for the topbar search
+     this.getClinics();
+     this.user_type = this._cookieService.get("user_type");
+    // This is for the megamenu
+  }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+      logout() {
+      this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
+       console.log(res);
+       if(res.message == 'success'){
+        this._cookieService.put("username",'');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this.router.navigate(['/login']);
+       }
+    }, error => {
+    }    
+    );
+  }
+   private getClinics() { 
+  this.headerService.getClinics().subscribe((res) => {
+       if(res.message == 'success'){
+        this.clinicsData = res.data;
+       }
+    }, error => {
+     // this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+
   }
 }

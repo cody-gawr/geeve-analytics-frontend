@@ -1,195 +1,608 @@
 <!-- ============================================================== -->
 <!-- Grid-->
 <!-- ============================================================== -->
-<div fxLayout="row wrap" >
-  <!-- Column-->
-    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
-      <mat-card>
-      <mat-card-content style="padding-bottom:0px!important;">
-            <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
-                <mat-form-field>
-                    <mat-select placeholder="All Dentist( {{dentistCount}} )"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
-                        <mat-option value ="all">All Dentists</mat-option>
-                        <mat-option *ngFor="let dentist of dentists" [value]="dentist.providerId">
-                            {{dentist.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+<!-- <div fxLayout="row wrap">
+    <div class="sa_heading_bar">
+        <div fxFlex.gt-sm="85" fxFlex.gt-xs="100" fxFlex="100" class="">
+            <h4><span class="page_title">Clinician Procedures &#38; Referrals</span></h4>
+        </div>
+        <app-headerright class="app-headerright"></app-headerright>
+
+        <div fxFlex.gt-sm="18" fxFlex.gt-xs="100" fxFlex="100" class="">
+            <div class="vertical_center_header_content">
+                <div class="sa_select_outer">
+                    <select class="sa_select"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
+                        <option value ="all">All Dentist( {{dentistCount}} )</option>
+                        <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+                    </select>
+                </div>
             </div>
-      </mat-card-content>
-    </mat-card>
+        </div>
     </div>
+</div> -->
+ <select class="sa_select internal_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)" [style.display]="'none'">
+                     <option value ="all">All Dentist</option>
+                    <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+                </select> 
+                <input type="button" id="dentist_initiate" (click) = "initiate_dentist()"  [style.display]="'none'">
+                <input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
+<div class="sa_dashboard_inner_content">
+   <div class="sa_card gridshadow">
+    <div fxLayout="row wrap">
+
+        <div fxFlex.lg="80" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="80">
+             <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial YTD</span>
+              <div class="custom_date">
+              <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="" (click)="filterDate('custom')" />
+              <ngx-daterangepicker-material (rangeClicked)="rangeClicked($event)" class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'"></ngx-daterangepicker-material></div>
+            </div>
+        </div>
+             <div fxFlex.lg="20" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20" *ngIf="dentistVal == 'all'"> 
+         <div class="onofftoogle2">
+           <span class="trend_mode_title">Target:</span>
+              <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group2" aria-label="Font Style" >
+                  <mat-button-toggle checked value = "off" class = "toggle_off target_filter" (click)="goalToggle('off')">
+                  <span>Off</span>
+               </mat-button-toggle>
+               <mat-button-toggle value = "average" class = "toggle_average target_filter" (click)="goalToggle('average')">
+                  <span>Average</span>
+               </mat-button-toggle>
+               <mat-button-toggle value = "goal" class = "toggle_goal target_filter" (click)="goalToggle('goal')">
+                  <span>Goal</span>
+               </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+      </div>
+     <div fxFlex.lg="20" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20">
+         <div class="onofftoogle" *ngIf="showTrend == true">
+          <span class="trend_mode_title">Trend Mode:</span>
+              <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group" aria-label="Font Style" >
+               <mat-button-toggle checked value = "off" class = "target_off target_filter" (click)="toggleFilter('off')"><span>Off</span>
+               </mat-button-toggle>
+               <mat-button-toggle value = "current" class = "target_current target_filter" (click)="toggleFilter('current')">
+                  <span>Current</span>
+               </mat-button-toggle>
+               <mat-button-toggle value = "historic" class = "target_historic target_filter" (click)="toggleFilter('historic')">
+                  <span>Historic</span>
+               </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+      </div>
+  </div>
 </div>
+
 <div class="sa_dentist_graphs_area">
   <div fxLayout="row wrap" >
-  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
-    <mat-card  class="dentistProduction">
-      <mat-card-content>
-        <mat-card-title>Dentist Production</mat-card-title>
-        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"  [legend]="barChartLegend"
-          [chartType]="barChartType" (chartHover)="chartHovered($event)" [colors]="barChartColors" (chartClick)="chartClicked($event)">
+  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg">
+    <mat-card  class="dentistProduction sa_no_tabs_area">
+      <mat-card-content class="sa_matcard_content">
+        <span class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{productionTooltip}}.png"></span>
+          <mat-card-title class="text-center">Dentist Production
+            <!--   <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+          </mat-card-title>
+        <div  style="height: 250px">
+        <canvas *ngIf="barChartLabels.length > 0" #myCanvas baseChart [datasets]="barChartData" [labels]="barChartLabels"  [legend]="barChartLegend"
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsDP" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
         </canvas>
-          <div fxLayout="row wrap" class="m-t-40">
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{productionTotal | number : '1.2-2'}}</h3>
-                        <small>Total (Current)</small>
+        <div *ngIf="barChartLabels.length <= 0" class="sa_nodata_div">
+              <h4>No Data</h4>
+              <p>Oops! Looks like we don't have any data to show you</p>
+          </div>
+
+      </div>
+          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="barChartLabels.length > 0">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{productionTotal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Total</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{productionTotalAverage | number : '1.2-2'}}</h3>
-                        <small>Average</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{productionTotalAverage| number:'1.0-0'}}</h3>
+                        <small class="text-center">Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{productionGoal | number : '1.2-2'}}</h3>
-                        <small>Goals</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"fddf>
+                        <h3 class="m-0 font-light text-center">${{productionGoal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
                     </div>
                 </div>
       </mat-card-content>
     </mat-card>
 
-     <mat-card class="dentistProductionSingle" [style.display]="'none'" >
-      <mat-card-content>
-        <mat-card-title>Dentist Production</mat-card-title>
-         <ngx-gauge [type]="gaugeType"
-           [value]="gaugeValue" 
-           [label]="gaugeLabel"  
-           [thick]="gaugeThick"  
+     <mat-card class="dentistProductionSingle sa_no_tabs_area" [style.display]="'none'" >
+      <mat-card-content class="sa_matcard_content">
+
+          <mat-card-title class="text-center">Dentist Production
+
+              <!-- <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
+         <ngx-gauge  *ngIf="showTrendChart == false && gaugeValue >0" [type]="gaugeType"
+           [value]="gaugeValue"
+           [label]="gaugeLabel"
+           [thick]="gaugeThick"
            [foregroundColor]="foregroundColor"
+           [max] = "productionGoal"
            [cap] ="cap"
+           [duration]= "gaugeDuration"
+           [prepend]="gaugePrependText"
            [size] = "size">
           </ngx-gauge>
-          <div fxLayout="row wrap" class="m-t-40">
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{productionTotal | number : '1.2-2'}}</h3>
-                        <small>Total (Current)</small>
+          <div *ngIf="showTrendChart == true && dentistProductionTrendLabels.length >0" style="height: 250px">
+          <canvas  #myCanvas baseChart [datasets]="dentistProdTrend" [labels]="dentistProductionTrendLabels"  [legend]="barChartLegend"
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptions" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+      
+       <div *ngIf="dentistProductionTrendLabels.length <= 0 && gaugeValue<=0" class="sa_nodata_div">
+            <h4>No Data</h4>
+            <p>Oops! Looks like we don't have any data to show you</p>
+        </div>
+
+
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && gaugeValue >0">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{productionTotal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Total  </small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{productionTotalAverage | number : '1.2-2'}}</h3>
-                        <small>Practice Average</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{productionTotalAverage| number:'1.0-0'}}</h3>
+                        <small class="text-center">Practice Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{productionGoal | number : '1.2-2'}}</h3>
-                        <small>Goals</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{productionGoal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
                     </div>
                 </div>
       </mat-card-content>
     </mat-card>
   </div>
   <!-- Column-->
-  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
+  <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg ">
     <mat-card  class="treatmentPlan">
-      <mat-card-content>
-        <mat-card-title>Treatment Plan Average Cost</mat-card-title>
-        <canvas baseChart class="chart"
-          [datasets]="planChartData"
-          [labels]="planChartLabels"
-          [legend]="barChartLegend"
+      <mat-card-content class="sa_matcard_content">
+      <span class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{planTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
+          <mat-card-title class="text-center">Treatment Plan Average Cost
+             <!--  <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+          </mat-card-title>
+                    <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                      <small class="sa_tab_btn tcmain1 active" (click) = "changeTreatmentCost('1')">Proposed Fees</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <small class="sa_tab_btn tcmain2" (click) = "changeTreatmentCost('2')">Completed Fees</small>
+                    </div>
+                </div>
+        <div style="height: 250px" *ngIf="planChartLabels1.length > 0" >
+        <canvas #myCanvas *ngIf="tcmain == 1"  baseChart class="chart"
+          [datasets]="planChartDataP"
+          [labels]="planChartLabels1"
+          [options]="barChartOptionsTC"
+          [legend]="false"
           [chartType]="barChartType"
           (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"  [colors]="barChartColors"></canvas>
-          <div fxLayout="row wrap" class="m-t-40">
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{planTotalAverage | number : '1.2-2'}}</h3>
-                        <small>Current Average</small>
+          (chartClick)="chartClicked($event)" [colors]="lineChartColors"></canvas>
+          <canvas #myCanvas *ngIf="tcmain == 2" baseChart class="chart"
+          [datasets]="planChartDataC"
+          [labels]="planChartLabels2"
+          [options]="barChartOptionsTC"
+          [legend]="false"
+          [chartType]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)" [colors]="lineChartColors"></canvas>
+        </div>
+        
+
+         <div *ngIf="planChartLabels1.length <= 0" class="sa_nodata_div">
+            <h4>No Data</h4>
+            <p>Oops! Looks like we don't have any data to show you</p>
+        </div>
+
+
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && planChartLabels.length > 0">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{planTotalAverage | number:'1.0-0'}}</h3>
+                        <small class="text-center">Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">--</h3>
-                        <small>Previous Average</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{planTotalPrev | number:'1.0-0'}}</h3>
+                        <small class="text-center">Previous Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{planTotalGoal | number : '1.2-2'}}</h3>
-                        <small>Goals</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{planTotalGoal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
                     </div>
-                </div>          
+                </div>
       </mat-card-content>
     </mat-card>
     <mat-card class="treatmentPlanSingle" [style.display]="'none'">
-      <mat-card-content>
-        <mat-card-title>Treatment Plan Average Cost</mat-card-title>
-        <ngx-gauge [type]="gaugeType"
-           [value]="gaugeValueTreatment" 
-           [label]="gaugeLabelTreatment"  
-           [thick]="gaugeThick"  
+      <mat-card-content class="sa_matcard_content">
+   
+          <mat-card-title class="text-center">Treatment Plan Average Cost
+
+              <!-- <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
+          <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                      <small class="sa_tab_btn tcmain1 active" (click) = "changeTreatmentCostSingle('1')">Proposed Fees</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <small class="sa_tab_btn tcmain2" (click) = "changeTreatmentCostSingle('2')">Completed Fees</small>
+                    </div>
+                </div>
+         <ngx-gauge *ngIf="showTrendChart == false && gaugeValueTreatment >0" [type]="gaugeType"
+           [value]="gaugeValueTreatment"
+           [label]="gaugeLabelTreatment"
+           [thick]="gaugeThick"
            [foregroundColor]="foregroundColor"
            [cap] ="cap"
+             [max] = "planTotalGoal"
+           [duration]= "gaugeDuration"
+           [prepend]="gaugePrependText"
            [size] = "size">
           </ngx-gauge>
-          <div fxLayout="row wrap" class="m-t-40">
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{planTotalAverage | number : '1.2-2'}}</h3>
-                        <small>Current Average</small>
+          <div *ngIf="showTrendChart == true && treatmentPlanTrendLabels.length > 0" style="height: 250px">
+              <canvas #myCanvas baseChart [datasets]="treatPlanTrend" [labels]="treatmentPlanTrendLabels"  [legend]="barChartLegend"
+              [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptions" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+              </canvas>
+          </div>
+
+          <div *ngIf="treatmentPlanTrendLabels.length <= 0 && gaugeValueTreatment<=0" class="sa_nodata_div">
+              <h4>No Data</h4>
+              <p>Oops! Looks like we don't have any data to show you</p>
+          </div>
+
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && gaugeValueTreatment >0">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{gaugeValueTreatment | number:'1.0-0' }}</h3>
+                        <small class="text-center">Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">--</h3>
-                        <small>Previous Average</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{planTotalPrev | number:'1.0-0' }}</h3>
+                        <small class="text-center">Practice Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{planTotalGoal | number : '1.2-2'}}</h3>
-                        <small>Goals</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{planTotalGoal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
                     </div>
-                </div>          
+                </div>
       </mat-card-content>
     </mat-card>
   </div>
   <!-- Column-->
-  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
-    <mat-card  class="noPatients">
-      <mat-card-content>
-        <mat-card-title>No. Patient Complaints</mat-card-title>
+  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg last">
+    <mat-card  class="noPatients sa_no_tabs_area">
+      <mat-card-content class="sa_matcard_content">
+      <span class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} :  {{doughnutTotalPrev}}"><img class="trend_ico" src="../assets/images/trend_{{doughnutTotalTooltip}}.png"></span>
+          <mat-card-title class="text-center">No. Patient Complaints
+
+             <!--  <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
         <div class="chart" *ngIf="doughnutChartLabels.length > 0">
-        <canvas baseChart class="chart"
-          [data]="doughnutChartData"
+          <div *ngIf="showTrendChart == false" style="height: 250px">
+        <canvas #myCanvas baseChart class="chart"
+        [data]="doughnutChartData"
           [labels]="doughnutChartLabels"
+          [legend]="true"
+          [options]="doughnutChartOptions"
           [chartType]="doughnutChartType"
           (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)" [colors]="[{backgroundColor: ['#18a689', '#B9DBE6', '#5F818A']}]"></canvas>
+          (chartClick)="chartClicked($event)" [colors]="doughnutChartColors"></canvas>
         </div>
-          <div fxLayout="row wrap" class="m-t-40">
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{doughnutTotal | number : '1.2-2'}}</h3>
-                        <small>Current Total</small>
+        </div>
+         
+          <div *ngIf="doughnutChartLabels.length <= 0" class="sa_nodata_div">
+              <h4>No Data</h4>
+              <p>Oops! Looks like we don't have any data to show you</p>
+          </div>
+
+
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && doughnutChartLabels.length > 0">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{doughnutTotal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Total</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">--</h3>
-                        <small>Previous Total</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{doughnutTotalPrev| number:'1.0-0'}}</h3>
+                        <small class="text-center">Previous Total</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{doughnutGoals | number : '1.2-2'}}</h3>
-                        <small>Goals</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light typext-center">{{doughnutGoals| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
                     </div>
-                </div>        
+                </div>
       </mat-card-content>
     </mat-card>
-    <mat-card class="noPatientsSingle" [style.display]="'none'">
-      <mat-card-content>
-        <mat-card-title>No. Patient Complaints</mat-card-title>
-        <div class="chart" *ngIf="doughnutChartLabels.length > 0">
-         <ngx-gauge [type]="gaugeType"
-           [value]="gaugeValuePatients" 
-           [label]="gaugeLabelPatients"  
-           [thick]="gaugeThick"  
+    <mat-card class="noPatientsSingle sa_no_tabs_area" [style.display]="'none'">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">No. Patient Complaints
+
+          <!--     <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
+        <div class="chart">
+         <ngx-gauge *ngIf="showTrendChart == false && gaugeValuePatients >0" [type]="gaugeType"
+           [value]="gaugeValuePatients"
+           [label]="gaugeLabelPatients"
+           [thick]="gaugeThick"
            [foregroundColor]="foregroundColor"
+           [max] = "doughnutGoals"
            [cap] ="cap"
+           [size] = "size"
+           [duration]= "gaugeDuration">
+          </ngx-gauge>
+          <div *ngIf="showTrendChart == true && patientComplaintsTrendLabels.length>0" style="height: 250px">
+              <canvas #myCanvas baseChart [datasets]="patientComplaintTrend" [labels]="patientComplaintsTrendLabels"  [legend]="barChartLegend"
+              [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+              </canvas>
+          </div>
+        
+           <div *ngIf="patientComplaintsTrendLabels.length <= 0 && gaugeValuePatients<=0" class="sa_nodata_div">
+              <h4>No Data</h4>
+              <p>Oops! Looks like we don't have any data to show you</p>
+          </div>
+
+        </div>
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && gaugeValuePatients >0">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{doughnutTotal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{doughnutTotalPrev| number:'1.0-0'}}</h3>
+                        <small class="text-center">Previous Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{doughnutGoals| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+   <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg">
+    <mat-card  class="recallPrebook">
+      <mat-card-content class="sa_matcard_content">
+        <span class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{recallChartAveragePrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{recallChartTooltip}}.png"></span>
+          <mat-card-title class="text-center">Recall Prebook Rate
+            <!--   <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+          </mat-card-title>
+          <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                      <small class="sa_tab_btn tcmain1 active" (click) = "changePrebookRate('1')">Recall Prebook Rate</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
+                        <small class="sa_tab_btn tcmain2" (click) = "changePrebookRate('2')">Treatment
+Prebook Rate</small>
+                    </div>
+                </div>
+        <div  style="height: 250px">
+        <canvas *ngIf="recallChartLabels.length > 0" #myCanvas baseChart [datasets]="recallChartData" [labels]="recallChartLabels"  [legend]="barChartLegend"
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptions" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+        </canvas>
+        <div *ngIf="recallChartLabels.length <= 0" class="sa_nodata_div">
+            <h4>No Data</h4>
+            <p>Oops! Looks like we don't have any data to show you</p>
+        </div>
+
+      </div>
+          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="recallChartLabels.length > 0">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{recallChartAverage}}</h3>
+                        <small class="text-center">Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{recallChartAveragePrev}}</h3>
+                        <small class="text-center">Previous Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{recallChartGoal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+
+     <mat-card class="recallPrebookSingle sa_no_tabs_area" [style.display]="'none'" >
+      <mat-card-content class="sa_matcard_content">
+
+          <mat-card-title class="text-center">Recall Prebook Rate
+
+              <!-- <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
+         <ngx-gauge  *ngIf="showTrendChart == false && recallValue >0" [type]="gaugeType"
+           [value]="recallValue"
+           [label]="recallLabel"
+           [thick]="gaugeThick"
+           [foregroundColor]="foregroundColor"
+           [max] = "recallGoal"
+           [cap] ="cap"
+           [duration]= "gaugeDuration"
+           [prepend]="gaugePrependText"
            [size] = "size">
           </ngx-gauge>
-        </div>
-          <div fxLayout="row wrap" class="m-t-40">
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{doughnutTotal | number : '1.2-2'}}</h3>
-                        <small>Current Total</small>
+          <div *ngIf="showTrendChart == true && recallChartLabels.length >0" style="height: 250px">
+          <canvas  #myCanvas baseChart [datasets]="dentistProdTrend" [labels]="dentistProductionTrendLabels"  [legend]="barChartLegend"
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptions" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+          </canvas>
+      </div>
+       <div *ngIf="patientComplaintsTrendLabels.length <= 0 && recallValue<=0" class="sa_nodata_div">
+              <h4>No Data</h4>
+              <p>Oops! Looks like we don't have any data to show you</p>
+          </div>
+
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && recallValue >0">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{recallValue}}</h3>
+                        <small class="text-center">Total  </small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">--</h3>
-                        <small>Previous Total</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{recallChartAverage}}</h3>
+                        <small class="text-center">Practice Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <h3 class="m-0 font-light">${{doughnutGoals | number : '1.2-2'}}</h3>
-                        <small>Goals</small>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{recallGoal}}</h3>
+                        <small class="text-center">Goal</small>
                     </div>
-                </div>        
+                </div>
+
       </mat-card-content>
-    </mat-card>    
+    </mat-card>
   </div>
 
 
+  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg">
+    <mat-card  class="treatmentPlanRate sa_no_tabs_area">
+      <mat-card-content class="sa_matcard_content">
+        <span class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{treatmentChartAveragePrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{treatmentChartTooltip}}.png"></span>
+          <mat-card-title class="text-center">Treatment Plan Completion Rate (%)
+            <!--   <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+          </mat-card-title>
+        <div  style="height: 250px">
+        <canvas *ngIf="treatmentChartLabels.length > 0" #myCanvas baseChart [datasets]="treatmentChartData" [labels]="treatmentChartLabels"  [legend]="barChartLegend"
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptions" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+        </canvas>
+        <div *ngIf="treatmentChartLabels.length <= 0" class="sa_nodata_div">
+            <h4>No Data</h4>
+            <p>Oops! Looks like we don't have any data to show you</p>
+        </div>
+
+      </div>
+          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="recallChartLabels.length > 0">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{treatmentChartAverage}}</h3>
+                        <small class="text-center">Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{treatmentChartAveragePrev}}</h3>
+                        <small class="text-center">Previous Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{treatmentChartGoal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+
+     <mat-card class="treatmentPlanRateSingle sa_no_tabs_area" [style.display]="'none'" >
+      <mat-card-content class="sa_matcard_content">
+
+          <mat-card-title class="text-center">Treatment Plan Completion Rate (%)
+
+              <!-- <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+
+          </mat-card-title>
+         <ngx-gauge  *ngIf="showTrendChart == false && treatmentPlanValue >0" [type]="gaugeType"
+           [value]="treatmentPlanValue"
+           [label]="treatmentPlanLabel"
+           [thick]="gaugeThick"
+           [foregroundColor]="foregroundColor"
+           [max] = "treatmentPlanGoal"
+           [cap] ="cap"
+           [duration]= "gaugeDuration"
+           [prepend]="gaugePrependText"
+           [size] = "size">
+          </ngx-gauge>
+          <div *ngIf="showTrendChart == true && dentistProductionTrendLabels.length >0" style="height: 250px">
+          <canvas  #myCanvas baseChart [datasets]="dentistProdTrend" [labels]="dentistProductionTrendLabels"  [legend]="barChartLegend"
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptions" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+          </canvas>
+      </div>
+
+       <div *ngIf="patientComplaintsTrendLabels.length <= 0 && treatmentPlanValue<=0" class="sa_nodata_div">
+              <h4>No Data</h4>
+              <p>Oops! Looks like we don't have any data to show you</p>
+          </div>
+
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && treatmentPlanValue >0">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{treatmentPlanValue}}</h3>
+                        <small class="text-center">Current  </small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{treatmentChartAverage}}</h3>
+                        <small class="text-center">Practice Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{treatmentPlanGoal}}</h3>
+                        <small class="text-center">Goal</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 </div>
+</div> <canvas #myCanvas baseChart [style.display]="'none'"></canvas>

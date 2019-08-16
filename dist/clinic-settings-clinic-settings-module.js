@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Card Grid-->\n<!-- ============================================================== -->\n<div fxLayout=\"row wrap\">\n  <div fxFlex.gt-sm=\"100\" fxFlex=\"100\">\n    <mat-card>\n      <mat-card-content>\n        <mat-card-title>Clinic Settings <button class=\"sa-pull-right mat-raised-button mat-gray\" mat-raised-button >Connect To Xero</button></mat-card-title>\n\n        <!-- ============================================================== -->\n        <!-- column -->\n        <!-- ============================================================== -->\n        <div fxLayout=\"row wrap\">\n        <!-- Card column -->\n        <div fxFlex.gt-sm=\"100%\" fxFlex=\"100\">\n\n                           <form [formGroup]=\"form\" class=\"basic-form\" (ngSubmit)=\"onSubmit()\">\n\n                                <div fxLayout=\"row wrap\">\n                                  <!-- column -->\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <mat-card-title>Clinic Name</mat-card-title>\n                                      <input matInput placeholder=\"\" [formControl]=\"form.controls['clinicName']\" [(ngModel)]= \"clinicName\">\n                                    </mat-form-field>\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <mat-card-title>Contact Name</mat-card-title>\n                                      <input matInput placeholder=\"\" [formControl]=\"form.controls['contactName']\" [(ngModel)]=\"contactName\">\n                                    </mat-form-field>\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <mat-card-title>Address</mat-card-title>\n                                      <input matInput placeholder=\"\" [formControl]=\"form.controls['address']\" [(ngModel)]=\"address\">\n                                    </mat-form-field>\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <mat-card-title>Practice Size</mat-card-title>\n                                      <input matInput placeholder=\"\" [formControl]=\"form.controls['practice_size']\" [(ngModel)]=\"practice_size\">\n                                    </mat-form-field>\n                                  </div>\n                                   \n                                 </div> \n                                  <mat-card-actions>\n                                    <button mat-raised-button color=\"primary\" type=\"submit\">Submit</button>\n                                  </mat-card-actions>\n                                  <!-- column -->\n\n                              </form>\n\n\n        </div>\n      </div>\n \n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n"
+module.exports = "<!-- ============================================================== -->\n<!-- Card Grid-->\n<!-- ============================================================== -->\n<div fxLayout=\"row wrap\">\n  <div fxFlex.gt-sm=\"100\" fxFlex=\"100\">\n    <mat-card>\n      <mat-card-content>\n        <mat-card-title>Clinic Settings <button class=\"sa-pull-right mat-raised-button mat-gray connect-xero\" *ngIf =\"xeroConnect == false\" mat-raised-button (click) = \"openXero()\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>\n         <span class=\"org_xero\" *ngIf=\"xeroOrganization != ''\" >- {{xeroOrganization}}</span> <button class=\"sa-pull-right mat-raised-button mat-red disconnect-xero\" *ngIf =\"xeroConnect == true\" mat-raised-button (click) = \"disconnectXero()\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></mat-card-title>\n\n        <!-- ============================================================== -->\n        <!-- column -->\n        <!-- ============================================================== -->\n        <div fxLayout=\"row wrap\">\n        <!-- Card column -->\n        <div fxFlex.gt-sm=\"100%\" fxFlex=\"100\">\n\n                           <form [formGroup]=\"form\" class=\"basic-form\" (ngSubmit)=\"onSubmit()\">\n\n                                <div fxLayout=\"row wrap\">\n                                  <!-- column -->\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <mat-card-title>Clinic Name</mat-card-title>\n                                      <input matInput placeholder=\"\" [formControl]=\"form.controls['clinicName']\" [(ngModel)]= \"clinicName\">\n                                    </mat-form-field>\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <mat-card-title>Contact Name</mat-card-title>\n                                      <input matInput placeholder=\"\" [formControl]=\"form.controls['contactName']\" [(ngModel)]=\"contactName\">\n                                    </mat-form-field>\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <mat-card-title>Address</mat-card-title>\n                                      <input matInput placeholder=\"\" [formControl]=\"form.controls['address']\" [(ngModel)]=\"address\">\n                                    </mat-form-field>\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <mat-card-title>Practice Size</mat-card-title>\n                                      <input matInput placeholder=\"\" [formControl]=\"form.controls['practice_size']\" [(ngModel)]=\"practice_size\">\n                                    </mat-form-field>\n                                  </div>\n                                   \n                                 </div> \n                                  <mat-card-actions>\n                                    <button mat-raised-button color=\"primary\" type=\"submit\">Submit</button>\n                                  </mat-card-actions>\n                                  <!-- column -->\n\n                              </form>\n\n\n        </div>\n      </div>\n \n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -36,6 +36,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _clinic_settings_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./clinic-settings.service */ "./src/app/clinic-settings/clinic-settings.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -50,8 +52,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ClinicSettingsComponent = /** @class */ (function () {
-    function ClinicSettingsComponent(fb, clinicSettingsService, route) {
+    function ClinicSettingsComponent(_cookieService, fb, clinicSettingsService, route) {
+        this._cookieService = _cookieService;
         this.fb = fb;
         this.clinicSettingsService = clinicSettingsService;
         this.route = route;
@@ -63,6 +67,8 @@ var ClinicSettingsComponent = /** @class */ (function () {
         // public chartData: any[] = [];
         this.address = {};
         this.practice_size = {};
+        this.xeroConnect = false;
+        this.xeroOrganization = '';
         // For form validator
         this.email = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].email]);
         // Sufix and prefix
@@ -77,6 +83,11 @@ var ClinicSettingsComponent = /** @class */ (function () {
         this.route.params.subscribe(function (params) {
             _this.id = _this.route.snapshot.paramMap.get("id");
             _this.getClinicSettings();
+            $('#title').html('Clinic Settings');
+            $('.external_clinic').show();
+            $('.dentist_dropdown').hide();
+            $('.header_filters').addClass('flex_direct_mar');
+            _this.checkXeroStatus();
         });
         this.form = this.fb.group({
             clinicName: [null, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required])],
@@ -94,8 +105,7 @@ var ClinicSettingsComponent = /** @class */ (function () {
     };
     ClinicSettingsComponent.prototype.getClinicSettings = function () {
         var _this = this;
-        this.clinicSettingsService.getClinicSettings('23', this.id).subscribe(function (res) {
-            console.log(res);
+        this.clinicSettingsService.getClinicSettings(this.id).subscribe(function (res) {
             if (res.message == 'success') {
                 _this.clinicName = res.data[0].clinicName;
                 _this.contactName = res.data[0].contactName;
@@ -113,9 +123,70 @@ var ClinicSettingsComponent = /** @class */ (function () {
         this.address = this.form.value.address;
         this.practice_size = this.form.value.practice_size;
         this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName, this.contactName, this.address, this.practice_size).subscribe(function (res) {
-            console.log(res);
             if (res.message == 'success') {
                 alert('Clinic Settings Updated');
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicSettingsComponent.prototype.getXeroLink = function () {
+        var _this = this;
+        this.clinicSettingsService.getXeroLink(this.id).subscribe(function (res) {
+            if (res.message == 'success') {
+                _this.xero_link = res.data.button_link;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicSettingsComponent.prototype.openXero = function () {
+        var success;
+        var win = window.open(this.xero_link, "MsgWindow", "width=400,height=400");
+        var self = this;
+        var timer = setInterval(function () {
+            if (win.closed) {
+                self.checkXeroStatus();
+                clearTimeout(timer);
+            }
+        }, 1000);
+    };
+    ClinicSettingsComponent.prototype.checkXeroStatus = function () {
+        var _this = this;
+        this.clinicSettingsService.checkXeroStatus(this.id).subscribe(function (res) {
+            if (res.message == 'success') {
+                if (res.data.xero_connect == 1) {
+                    _this.xeroConnect = true;
+                    _this.xeroOrganization = res.data.Name;
+                }
+                else {
+                    _this.xeroConnect = false;
+                    _this.xeroOrganization = '';
+                    _this.disconnectXero();
+                }
+            }
+            else {
+                //alert('Error Connecting Xero!!');
+                _this.xeroConnect = false;
+                _this.xeroOrganization = '';
+                _this.disconnectXero();
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicSettingsComponent.prototype.disconnectXero = function () {
+        var _this = this;
+        this.clinicSettingsService.clearSession(this.id).subscribe(function (res) {
+            if (res.message == 'success') {
+                //  alert('Xero Account Disconnected');
+                _this.xeroConnect = false;
+                _this.xeroOrganization = '';
+                _this.getXeroLink();
+            }
+            else {
+                //  alert('Error Disonnecting Xero!!');
+                _this.xeroConnect = true;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -127,7 +198,7 @@ var ClinicSettingsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./clinic-settings.component.html */ "./src/app/clinic-settings/clinic-settings.component.html"),
             styles: [__webpack_require__(/*! ./clinic-settings.component.scss */ "./src/app/clinic-settings/clinic-settings.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], _clinic_settings_service__WEBPACK_IMPORTED_MODULE_2__["ClinicSettingsService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__["CookieService"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], _clinic_settings_service__WEBPACK_IMPORTED_MODULE_2__["ClinicSettingsService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
     ], ClinicSettingsComponent);
     return ClinicSettingsComponent;
 }());
@@ -284,9 +355,9 @@ var ClinicSettingsService = /** @class */ (function () {
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
     }
     // Get ClinicSettings
-    ClinicSettingsService.prototype.getClinicSettings = function (user_id, clinic_id, token) {
-        if (user_id === void 0) { user_id = '23'; }
+    ClinicSettingsService.prototype.getClinicSettings = function (clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
         return this.http.get(this.apiUrl + "/Practices/getPractices?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
@@ -303,9 +374,37 @@ var ClinicSettingsService = /** @class */ (function () {
         formData.append('contactName', contact_name);
         formData.append('practice_size', practice_size);
         formData.append('id', clinic_id);
-        formData.append('user_id', '23');
+        formData.append('user_id', this._cookieService.get("userid"));
         formData.append('token', token);
         return this.http.post(this.apiUrl + "/Practices/update/", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Get ClinicSettings
+    ClinicSettingsService.prototype.getXeroLink = function (clinic_id, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Xeros/startPublic/?getxero=1", { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    ClinicSettingsService.prototype.checkXeroStatus = function (clinic_id, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Xeros/getXeroStatus?getxero=1&user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    ClinicSettingsService.prototype.clearSession = function (clinic_id, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Xeros/clearSession/?getxero=1?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));

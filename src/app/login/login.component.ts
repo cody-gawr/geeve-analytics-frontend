@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import {
   FormBuilder,
   FormGroup,
@@ -29,20 +29,27 @@ export class LoginComponent implements OnInit {
           this.errorLogin  =false;
 
   this.loginService.login(this.form.value.uname, this.form.value.password).subscribe((res) => {
-       console.log(res);
        if(res.message == 'success'){
         var datares = [];
         datares['username'] = res.data.data.username;
         datares['email'] = res.data.data.email;
         datares['token'] = res.data.data.token;        
-        datares['userid'] = res.data.data.id;        
+        datares['userid'] = res.data.data.id;      
+        datares['user_type'] = res.data.data.user_type;        
 
-        this._cookieService.put("username", datares['username']);
-        this._cookieService.put("email", datares['email']);
-        this._cookieService.put("token", datares['token']);
-        this._cookieService.put("userid", datares['userid']);
-
+        let opts: CookieOptionsArgs = {
+            expires: new Date('2030-07-19')
+        };
+        this._cookieService.put("username", datares['username'], opts);
+        this._cookieService.put("email", datares['email'], opts);
+        this._cookieService.put("token", datares['token'], opts);
+        this._cookieService.put("user_type", datares['user_type'], opts);
+        this._cookieService.put("userid", datares['userid'], opts);
+        if(datares['user_type'] == '1')
+        this.router.navigate(['/users']);
+        else if(datares['user_type'] == '2') 
         this.router.navigate(['/dashboards/cliniciananalysis/1']);
+
        }
        else if(res.message == 'error'){
           this.errorLogin  =true;
@@ -52,4 +59,4 @@ export class LoginComponent implements OnInit {
     );
 
   }
-}
+2}

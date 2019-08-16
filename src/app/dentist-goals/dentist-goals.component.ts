@@ -2,8 +2,13 @@ import { Component,OnInit, AfterViewInit  } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { DentistGoalsService } from './dentist-goals.service';
-import { ActivatedRoute } from "@angular/router";
-
+import { ActivatedRoute, Router } from "@angular/router";
+import { DentistService } from '../dentist/dentist.service';
+import { CookieService } from "angular2-cookie/core";
+export interface Dentist {
+  providerId: string;
+  name: string;
+}
 @Component({
   selector: 'app-formlayout',
   templateUrl: './dentist-goals.component.html',
@@ -11,7 +16,10 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class DentistGoalsComponent implements OnInit {
    public clinic_id:any ={};
-
+   public dentistCount:any ={};
+    dentists: Dentist[] = [
+       { providerId: 'all', name: 'All Dentists' },
+    ];
    public form: FormGroup;
    public errorLogin = false;
           private warningMessage: string;
@@ -57,25 +65,36 @@ export class DentistGoalsComponent implements OnInit {
 
           public discount:any =0;
           public overdueaccount =0;
+          public dentist_id = '';
           // public chartData: any[] = [];
           public chartData:any = {};
-
+          public user_id;
   options: FormGroup;
 
-  constructor(private fb: FormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute, private dentistService: DentistService,private _cookieService: CookieService, private router: Router) {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
-
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
     });
   }
-  ngOnInit() {
-         this.route.params.subscribe(params => {
-    this.clinic_id = this.route.snapshot.paramMap.get("id");
-    this.getDentistGoals();
-     
 
+  ngOnInit() {
+    this.user_id = this._cookieService.get("userid");
+     this.route.params.subscribe(params => {
+          if(this._cookieService.get("userid") != '1'){
+            this.clinic_id = this.route.snapshot.paramMap.get("id");
+          }
+          else
+          {
+            this.clinic_id = '';
+
+          }
+          this.getDentistGoals();
+          this.getDentists(); 
+            $('#title').html('Dentist Goals');
+        $('.external_clinic').show();
+        $('.external_dentist').hide();
      });
      this.form = this.fb.group({
       dentistprod: [null, Validators.compose([Validators.required])],
@@ -134,9 +153,8 @@ export class DentistGoalsComponent implements OnInit {
         : '';
   }
 
-  getDentistGoals() {
-  this.dentistGoalsService.getDentistGoals(this.clinic_id).subscribe((res) => {
-    console.log(res);
+  getDentistGoals(dentist_id ='' ) {
+  this.dentistGoalsService.getDentistGoals(this.clinic_id,dentist_id).subscribe((res) => {
        if(res.message == 'success'){
           this.dentistprod =res.data[1].value;
           this.treatmentplan =res.data[2].value;
@@ -230,7 +248,7 @@ export class DentistGoalsComponent implements OnInit {
   this.chartData[36] = this.form.value.overdueaccount;
   var myJsonString = JSON.stringify(this.chartData);
   console.log(myJsonString);
-   this.dentistGoalsService.updateDentistGoals(myJsonString, this.clinic_id).subscribe((res) => {
+   this.dentistGoalsService.updateDentistGoals(myJsonString, this.clinic_id, this.dentist_id).subscribe((res) => {
        if(res.message == 'success'){
         alert('Dentist Goals Updated');
        }
@@ -238,7 +256,29 @@ export class DentistGoalsComponent implements OnInit {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
-
-
   } 
+
+    // Get Dentist
+    getDentists() {
+      this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+           if(res.message == 'success'){
+              this.dentists= res.data;
+              this.dentistCount= res.data.length;
+           }
+            else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+        }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        }    
+        );
+  }
+   private loadDentist(newValue) {
+    this.dentist_id = newValue;
+    this.getDentistGoals(newValue);
+   }
 }

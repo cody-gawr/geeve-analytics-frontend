@@ -1,23 +1,28 @@
+<div class="sa_login_blur" style="background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; height: 100vh;
+display: flex;
+background-size: cover;
+align-items: center;"></div>
+<img class="login_abso_logo" src="../assets/images/logo-white.png">
 <div class="login-register" style="background-image:url(assets/images/background/login-register.jpg);">
     <div class="login-register-box">
         <mat-card>
             <mat-card-content>
                 <form [formGroup]="form" (ngSubmit)="onSubmit()">
                     <div class="text-center">
-                        <img alt="homepage" src="assets/images/logo-icon.png">
+                        <img alt="homepage" src="../assets/images/logo-icon.gif">
                         <h4 class="m-t-0">Login to Jeeve Analytics</h4>
                     </div>
 
                     <div fxLayout="row wrap">
                         <!-- col full-->
-                        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="dc_input">
                             <mat-form-field>
                                 <input matInput placeholder="Email" [formControl]="form.controls['uname']">
                             </mat-form-field>
                             <small *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched" class="text-danger support-text">Email is required.</small>
                         </div>
                         <!-- col full-->
-                        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="dc_input">
                             <mat-form-field>
                                 <input matInput type="password" placeholder="Password" [formControl]="form.controls['password']">
                             </mat-form-field>
@@ -35,7 +40,7 @@
                         <!-- col full-->
                         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                          <small *ngIf="errorLogin" class="text-danger support-text">Incorrect Email or Password.</small>
-                            <button mat-raised-button color="primary" class="btn-block btn-lg m-t-20 m-b-20" type="submit" [disabled]="!form.valid">Login</button>
+                            <button mat-raised-button color="dc" class="btn-block btn-lg m-t-20 m-b-20" type="submit" [disabled]="!form.valid">Login</button>
                         </div>
                         <!-- col full-->
                       <!--   <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center">

@@ -24,28 +24,28 @@ export class DentistGoalsService {
 
 
    // Get ClinicGoals
-    getDentistGoals(clinic_id='1', user_id = this._cookieService.get("userid"), dentist_id ='1', token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"Goals/getDentistGoals?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&dentist_id="+dentist_id, { headers: this.headers })
+    getDentistGoals(clinic_id='', dentist_id ='', user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Goals/getDentistGoals?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&dentist_id="+dentist_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
        // Get ClinicGoals
-    updateDentistGoals(clinicData, clinic_id='1', user_id =this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+    updateDentistGoals(clinicData, clinic_id='', dentist_id = '', user_id =this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
             const formData = new FormData();
 
     formData.append('goals', clinicData);
     formData.append('user_id', user_id);
     formData.append('clinic_id', clinic_id);
-    formData.append('dentist_id', '1');
+    formData.append('dentist_id', dentist_id);
     formData.append('token', token);
 
-        return this.http.post(this.apiUrl +"Goals/addDentistGoal/", formData)
+        return this.http.post(this.apiUrl +"/Goals/addDentistGoal/", formData)
         .pipe(map((response: Response) => {
                         return response;
        })
-        );
+      );
     }
 
        

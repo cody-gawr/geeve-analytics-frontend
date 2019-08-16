@@ -26,8 +26,8 @@ export class ClinicianAnalysisService {
    }
 
     // Dentist Production Service
-    DentistProduction( clinic_id='1', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caDentistProtection?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+    DentistProduction( clinic_id='1', startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caDentistProtection?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -35,8 +35,17 @@ export class ClinicianAnalysisService {
     }
 
     // Dentist Production Single Service
-    DentistProductionSingle(dentist_id, clinic_id = '1', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caDentistProtection?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+dentist_id, { headers: this.headers })
+    DentistProductionSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caDentistProtection?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+        // Dentist Production Single Service
+    caDentistProtectionTrend(dentist_id, clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caDentistProtectionTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&mode="+mode, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -44,8 +53,8 @@ export class ClinicianAnalysisService {
     }
 
     //Treatment Plan Average Cost service
-    TreatmentPlan( clinic_id='1',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+    TreatmentPlan( clinic_id='1', startDate = '', endDate = '', duration='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -53,26 +62,43 @@ export class ClinicianAnalysisService {
     }  
 
     //Treatment Plan Average Cost Single service
-    TreatmentPlanDentist(dentist_id,clinic_id='1',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+dentist_id, { headers: this.headers })
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
-        );
-    }      
-    
-    //Recall Prebook Rate service
-    RecallPrebook(clinic_id='1',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+    TreatmentPlanDentist(dentist_id,clinic_id='1', startDate = '', endDate = '', duration='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     } 
+
+        // Dentist Production Single Service
+    caNumberPatientComplaintsTrend(dentist_id, clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caNumberPatientComplaintsTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&mode="+mode, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+            // Dentist Production Single Service
+    caTreatmentPlanAverageCostTrend(dentist_id, clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCostTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&mode="+mode, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }     
+    
+    //Recall Prebook Rate service
+/*    RecallPrebook(clinic_id='1', startDate = '', endDate = '', duration='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    } */
     
     //Hourly Rate service
-    NoPatients(clinic_id='1',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caNumberPatientComplaints?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+    NoPatients(clinic_id='1', startDate = '', endDate = '', duration='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caNumberPatientComplaints?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -80,8 +106,44 @@ export class ClinicianAnalysisService {
     }
 
     //Hourly Rate service
-    NoPatientsDentist(dentist_id,clinic_id='1',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caNumberPatientComplaints?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+dentist_id, { headers: this.headers })
+    NoPatientsDentist(dentist_id,clinic_id='1', startDate = '', endDate = '', duration='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caNumberPatientComplaints?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+        // Dentist Production Service
+    RecallPrebook( clinic_id='1', startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpRecallPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    } 
+
+        // Dentist Production Service
+    RecallPrebookSingle(dentist_id, clinic_id='1', startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpRecallPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    } 
+
+            // Dentist Production Service
+    TreatmentPlanRate( clinic_id='1', startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpTreatmentPlanRate?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    } 
+
+                // Dentist Production Service
+    TreatmentPlanRateSingle(dentist_id, clinic_id='1', startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpTreatmentPlanRate?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
