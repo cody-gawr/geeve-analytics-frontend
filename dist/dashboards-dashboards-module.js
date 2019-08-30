@@ -5290,6 +5290,2831 @@ var NgxGaugeModule = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./node_modules/ngx-smart-modal/esm5/ngx-smart-modal.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/ngx-smart-modal/esm5/ngx-smart-modal.js ***!
+  \**************************************************************/
+/*! exports provided: NgxSmartModalService, NgxSmartModalComponent, NgxSmartModalModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NgxSmartModalService", function() { return NgxSmartModalService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NgxSmartModalComponent", function() { return NgxSmartModalComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NgxSmartModalModule", function() { return NgxSmartModalModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/**
+ * @license ngx-smart-modal
+ * MIT license
+ */
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var NgxSmartModalService = (function () {
+    function NgxSmartModalService() {
+        this.modalStack = [];
+    }
+    /**
+     * Add a new modal instance. This step is essential and allows to retrieve any modal at any time.
+     * It stores an object that contains the given modal identifier and the modal itself directly in the `modalStack`.
+     *
+     * @param {?} modalInstance The object that contains the given modal identifier and the modal itself.
+     * @param {?=} force Optional parameter that forces the overriding of modal instance if it already exists.
+     * @return {?} nothing special.
+     */
+    NgxSmartModalService.prototype.addModal = /**
+     * Add a new modal instance. This step is essential and allows to retrieve any modal at any time.
+     * It stores an object that contains the given modal identifier and the modal itself directly in the `modalStack`.
+     *
+     * @param {?} modalInstance The object that contains the given modal identifier and the modal itself.
+     * @param {?=} force Optional parameter that forces the overriding of modal instance if it already exists.
+     * @return {?} nothing special.
+     */
+    function (modalInstance, force) {
+        if (force) {
+            var /** @type {?} */ i = this.modalStack.findIndex(function (o) {
+                return o.id === modalInstance.id;
+            });
+            if (i > -1) {
+                this.modalStack[i].modal = modalInstance.modal;
+            }
+            else {
+                this.modalStack.push(modalInstance);
+            }
+            return;
+        }
+        this.modalStack.push(modalInstance);
+    };
+    /**
+     * Retrieve a modal instance by its identifier.
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @return {?}
+     */
+    NgxSmartModalService.prototype.getModal = /**
+     * Retrieve a modal instance by its identifier.
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @return {?}
+     */
+    function (id) {
+        return this.modalStack.filter(function (o) {
+            return o.id === id;
+        })[0].modal;
+    };
+    /**
+     * Alias of `getModal` to retrieve a modal instance by its identifier.
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @return {?}
+     */
+    NgxSmartModalService.prototype.get = /**
+     * Alias of `getModal` to retrieve a modal instance by its identifier.
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @return {?}
+     */
+    function (id) {
+        return this.getModal(id);
+    };
+    /**
+     * Open a given modal
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @param {?=} force Tell the modal to open top of all other opened modals
+     * @return {?}
+     */
+    NgxSmartModalService.prototype.open = /**
+     * Open a given modal
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @param {?=} force Tell the modal to open top of all other opened modals
+     * @return {?}
+     */
+    function (id, force) {
+        if (force === void 0) { force = false; }
+        var /** @type {?} */ instance = this.modalStack.find(function (o) {
+            return o.id === id;
+        });
+        if (!!instance) {
+            instance.modal.open(force);
+        }
+        else {
+            throw new Error('Modal not found');
+        }
+    };
+    /**
+     * Close a given modal
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @return {?}
+     */
+    NgxSmartModalService.prototype.close = /**
+     * Close a given modal
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @return {?}
+     */
+    function (id) {
+        var /** @type {?} */ instance = this.modalStack.find(function (o) {
+            return o.id === id;
+        });
+        if (!!instance) {
+            instance.modal.close();
+        }
+        else {
+            throw new Error('Modal not found');
+        }
+    };
+    /**
+     * Toggles a given modal
+     * If the retrieved modal is opened it closes it, else it opens it.
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @param {?=} force Tell the modal to open top of all other opened modals
+     * @return {?}
+     */
+    NgxSmartModalService.prototype.toggle = /**
+     * Toggles a given modal
+     * If the retrieved modal is opened it closes it, else it opens it.
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @param {?=} force Tell the modal to open top of all other opened modals
+     * @return {?}
+     */
+    function (id, force) {
+        if (force === void 0) { force = false; }
+        var /** @type {?} */ instance = this.modalStack.find(function (o) {
+            return o.id === id;
+        });
+        if (!!instance) {
+            instance.modal.toggle(force);
+        }
+        else {
+            throw new Error('Modal not found');
+        }
+    };
+    /**
+     * Retrieve all the created modals.
+     *
+     * @return {?} an array that contains all modal instances.
+     */
+    NgxSmartModalService.prototype.getModalStack = /**
+     * Retrieve all the created modals.
+     *
+     * @return {?} an array that contains all modal instances.
+     */
+    function () {
+        return this.modalStack;
+    };
+    /**
+     * Retrieve all the opened modals. It looks for all modal instances with their `visible` property set to `true`.
+     *
+     * @return {?} an array that contains all the opened modals.
+     */
+    NgxSmartModalService.prototype.getOpenedModals = /**
+     * Retrieve all the opened modals. It looks for all modal instances with their `visible` property set to `true`.
+     *
+     * @return {?} an array that contains all the opened modals.
+     */
+    function () {
+        var /** @type {?} */ modals = [];
+        this.modalStack.forEach(function (o) {
+            if (o.modal.visible) {
+                modals.push(o);
+            }
+        });
+        return modals;
+    };
+    /**
+     * Get the higher `z-index` value between all the modal instances. It iterates over the `ModalStack` array and
+     * calculates a higher value (it takes the highest index value between all the modal instances and adds 1).
+     * Use it to make a modal appear foreground.
+     *
+     * @return {?} a higher index from all the existing modal instances.
+     */
+    NgxSmartModalService.prototype.getHigherIndex = /**
+     * Get the higher `z-index` value between all the modal instances. It iterates over the `ModalStack` array and
+     * calculates a higher value (it takes the highest index value between all the modal instances and adds 1).
+     * Use it to make a modal appear foreground.
+     *
+     * @return {?} a higher index from all the existing modal instances.
+     */
+    function () {
+        var /** @type {?} */ index = [1041];
+        var /** @type {?} */ modals = this.getModalStack();
+        modals.forEach(function (o) {
+            index.push(o.modal.layerPosition);
+        });
+        return Math.max.apply(Math, index) + 1;
+    };
+    /**
+     * It gives the number of modal instances. It's helpful to know if the modal stack is empty or not.
+     *
+     * @return {?} the number of modal instances.
+     */
+    NgxSmartModalService.prototype.getModalStackCount = /**
+     * It gives the number of modal instances. It's helpful to know if the modal stack is empty or not.
+     *
+     * @return {?} the number of modal instances.
+     */
+    function () {
+        return this.modalStack.length;
+    };
+    /**
+     * Remove a modal instance from the modal stack.
+     *
+     * @param {?} id The modal identifier.
+     * @return {?} the removed modal instance.
+     */
+    NgxSmartModalService.prototype.removeModal = /**
+     * Remove a modal instance from the modal stack.
+     *
+     * @param {?} id The modal identifier.
+     * @return {?} the removed modal instance.
+     */
+    function (id) {
+        var /** @type {?} */ i = this.modalStack.findIndex(function (o) {
+            return o.id === id;
+        });
+        if (i > -1) {
+            this.modalStack.splice(i, 1);
+        }
+    };
+    /**
+     * Associate data to an identified modal. If the modal isn't already associated to some data, it creates a new
+     * entry in the `modalData` array with its `id` and the given `data`. If the modal already has data, it rewrites
+     * them with the new ones. Finally if no modal found it returns an error message in the console and false value
+     * as method output.
+     *
+     * @param {?} data The data you want to associate to the modal.
+     * @param {?} id The modal identifier.
+     * @param {?=} force If true, overrides the previous stored data if there was.
+     * @return {?} true if the given modal exists and the process has been tried, either false.
+     */
+    NgxSmartModalService.prototype.setModalData = /**
+     * Associate data to an identified modal. If the modal isn't already associated to some data, it creates a new
+     * entry in the `modalData` array with its `id` and the given `data`. If the modal already has data, it rewrites
+     * them with the new ones. Finally if no modal found it returns an error message in the console and false value
+     * as method output.
+     *
+     * @param {?} data The data you want to associate to the modal.
+     * @param {?} id The modal identifier.
+     * @param {?=} force If true, overrides the previous stored data if there was.
+     * @return {?} true if the given modal exists and the process has been tried, either false.
+     */
+    function (data, id, force) {
+        if (!!this.modalStack.find(function (o) {
+            return o.id === id;
+        })) {
+            this.getModal(id).setData(data, force);
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+    /**
+     * Retrieve modal data by its identifier.
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @return {?} the associated modal data.
+     */
+    NgxSmartModalService.prototype.getModalData = /**
+     * Retrieve modal data by its identifier.
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @return {?} the associated modal data.
+     */
+    function (id) {
+        return this.getModal(id).getData();
+    };
+    /**
+     * Reset the data attached to a given modal.
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @return {?} the removed data or false if modal doesn't exist.
+     */
+    NgxSmartModalService.prototype.resetModalData = /**
+     * Reset the data attached to a given modal.
+     *
+     * @param {?} id The modal identifier used at creation time.
+     * @return {?} the removed data or false if modal doesn't exist.
+     */
+    function (id) {
+        if (!!this.modalStack.find(function (o) {
+            return o.id === id;
+        })) {
+            var /** @type {?} */ removed = this.getModal(id).getData();
+            this.getModal(id).removeData();
+            return removed;
+        }
+        else {
+            return false;
+        }
+    };
+    /**
+     * Close the latest opened modal if it has been declared as escapable
+     * Using a debounce system because one or more modals could be listening
+     * escape key press event.
+     * @return {?}
+     */
+    NgxSmartModalService.prototype.closeLatestModal = /**
+     * Close the latest opened modal if it has been declared as escapable
+     * Using a debounce system because one or more modals could be listening
+     * escape key press event.
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ me = this;
+        clearTimeout(this.debouncer);
+        this.debouncer = setTimeout(function () {
+            var /** @type {?} */ tmp;
+            me.getOpenedModals().forEach(function (m) {
+                if (m.modal.layerPosition > (!!tmp ? tmp.modal.layerPosition : 0 && m.modal.escapable)) {
+                    tmp = m;
+                }
+            });
+            return !!tmp ? tmp.modal.close() : false;
+        }, 100);
+    };
+    NgxSmartModalService.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"] },
+    ];
+    /** @nocollapse */
+    NgxSmartModalService.ctorParameters = function () { return []; };
+    return NgxSmartModalService;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var NgxSmartModalComponent = (function () {
+    function NgxSmartModalComponent(_renderer, _changeDetectorRef, _ngxSmartModalService) {
+        var _this = this;
+        this._renderer = _renderer;
+        this._changeDetectorRef = _changeDetectorRef;
+        this._ngxSmartModalService = _ngxSmartModalService;
+        this.closable = true;
+        this.escapable = true;
+        this.dismissable = true;
+        this.identifier = '';
+        this.customClass = 'nsm-dialog-animation-fade';
+        this.visible = false;
+        this.backdrop = true;
+        this.force = true;
+        this.hideDelay = 500;
+        this.autostart = false;
+        this.visibleChange = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onClose = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onCloseFinished = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onDismiss = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onDismissFinished = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onAnyCloseEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onAnyCloseEventFinished = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onOpen = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onEscape = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onDataAdded = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onDataRemoved = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.layerPosition = 1041;
+        this.overlayVisible = false;
+        this.openedClass = false;
+        this.escapeKeyboardEvent = function (event) {
+            if (event.keyCode === 27) {
+                _this.onEscape.emit(_this);
+                _this._ngxSmartModalService.closeLatestModal();
+            }
+        };
+    }
+    /**
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        if (!!this.identifier && this.identifier.length) {
+            this.layerPosition += this._ngxSmartModalService.getModalStackCount();
+            this._ngxSmartModalService.addModal({ id: this.identifier, modal: this }, this.force);
+            if (this.autostart) {
+                this._ngxSmartModalService.open(this.identifier);
+            }
+        }
+        else {
+            throw new Error('identifier field isn’t set. Please set one before calling <ngx-smart-modal> in a template.');
+        }
+    };
+    /**
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._ngxSmartModalService.removeModal(this.identifier);
+        window.removeEventListener('keyup', this.escapeKeyboardEvent);
+        if (!this._ngxSmartModalService.getModalStack.length) {
+            this._renderer.removeClass(document.body, 'dialog-open');
+        }
+    };
+    /**
+     * @param {?=} top
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.open = /**
+     * @param {?=} top
+     * @return {?}
+     */
+    function (top) {
+        var _this = this;
+        if (top) {
+            this.layerPosition = this._ngxSmartModalService.getHigherIndex();
+        }
+        this._renderer.addClass(document.body, 'dialog-open');
+        this.overlayVisible = true;
+        this.visible = true;
+        setTimeout(function () {
+            _this.openedClass = true;
+            if (_this.target) {
+                _this.targetPlacement();
+            }
+            _this._changeDetectorRef.markForCheck();
+        });
+        this.onOpen.emit(this);
+        if (this.escapable) {
+            window.addEventListener('keyup', this.escapeKeyboardEvent);
+        }
+    };
+    /**
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.close = /**
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ me = this;
+        this.openedClass = false;
+        this.onClose.emit(this);
+        this.onAnyCloseEvent.emit(this);
+        if (this._ngxSmartModalService.getOpenedModals().length < 2) {
+            this._renderer.removeClass(document.body, 'dialog-open');
+        }
+        setTimeout(function () {
+            me.visibleChange.emit(me.visible);
+            me.visible = false;
+            me.overlayVisible = false;
+            me._changeDetectorRef.markForCheck();
+            me.onCloseFinished.emit(me);
+            me.onAnyCloseEventFinished.emit(me);
+        }, this.hideDelay);
+        window.removeEventListener('keyup', this.escapeKeyboardEvent);
+    };
+    /**
+     * @param {?} e
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.dismiss = /**
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        var /** @type {?} */ me = this;
+        if (!this.dismissable) {
+            return;
+        }
+        if (e.target.classList.contains('overlay')) {
+            this.openedClass = false;
+            this.onDismiss.emit(this);
+            this.onAnyCloseEvent.emit(this);
+            if (this._ngxSmartModalService.getOpenedModals().length < 2) {
+                this._renderer.removeClass(document.body, 'dialog-open');
+            }
+            setTimeout(function () {
+                me.visible = false;
+                me.visibleChange.emit(me.visible);
+                me.overlayVisible = false;
+                me._changeDetectorRef.markForCheck();
+                me.onDismissFinished.emit(me);
+                me.onAnyCloseEventFinished.emit(me);
+            }, this.hideDelay);
+            window.removeEventListener('keyup', this.escapeKeyboardEvent);
+        }
+    };
+    /**
+     * @param {?=} top
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.toggle = /**
+     * @param {?=} top
+     * @return {?}
+     */
+    function (top) {
+        if (this.visible) {
+            this.close();
+        }
+        else {
+            this.open(top);
+        }
+    };
+    /**
+     * @param {?} className
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.addCustomClass = /**
+     * @param {?} className
+     * @return {?}
+     */
+    function (className) {
+        if (!this.customClass.length) {
+            this.customClass = className;
+        }
+        else {
+            this.customClass += ' ' + className;
+        }
+    };
+    /**
+     * @param {?=} className
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.removeCustomClass = /**
+     * @param {?=} className
+     * @return {?}
+     */
+    function (className) {
+        if (className) {
+            this.customClass = this.customClass.replace(className, '').trim();
+        }
+        else {
+            this.customClass = '';
+        }
+    };
+    /**
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.isVisible = /**
+     * @return {?}
+     */
+    function () {
+        return this.visible;
+    };
+    /**
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.hasData = /**
+     * @return {?}
+     */
+    function () {
+        return this._data !== undefined;
+    };
+    /**
+     * @param {?} data
+     * @param {?=} force
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.setData = /**
+     * @param {?} data
+     * @param {?=} force
+     * @return {?}
+     */
+    function (data, force) {
+        if (!this.hasData() || (this.hasData() && force)) {
+            this._data = data;
+            this.onDataAdded.emit(this._data);
+            this._changeDetectorRef.markForCheck();
+        }
+    };
+    /**
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.getData = /**
+     * @return {?}
+     */
+    function () {
+        return this._data;
+    };
+    /**
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.removeData = /**
+     * @return {?}
+     */
+    function () {
+        this._data = undefined;
+        this.onDataRemoved.emit(true);
+        this._changeDetectorRef.markForCheck();
+    };
+    /**
+     * @return {?}
+     */
+    NgxSmartModalComponent.prototype.targetPlacement = /**
+     * @return {?}
+     */
+    function () {
+        if (!this.nsmDialog || !this.nsmContent || !this.nsmOverlay || !this.target) {
+            return;
+        }
+        var /** @type {?} */ targetElementRect = document.querySelector(this.target).getBoundingClientRect();
+        var /** @type {?} */ bodyRect = this.nsmOverlay.nativeElement.getBoundingClientRect();
+        var /** @type {?} */ nsmContentRect = this.nsmContent.nativeElement.getBoundingClientRect();
+        var /** @type {?} */ nsmDialogRect = this.nsmDialog.nativeElement.getBoundingClientRect();
+        var /** @type {?} */ marginLeft = parseInt(/** @type {?} */ (getComputedStyle(this.nsmContent.nativeElement).marginLeft), 10);
+        var /** @type {?} */ marginTop = parseInt(/** @type {?} */ (getComputedStyle(this.nsmContent.nativeElement).marginTop), 10);
+        var /** @type {?} */ offsetTop = targetElementRect.top - nsmDialogRect.top - ((nsmContentRect.height - targetElementRect.height) / 2);
+        var /** @type {?} */ offsetLeft = targetElementRect.left - nsmDialogRect.left - ((nsmContentRect.width - targetElementRect.width) / 2);
+        if (offsetLeft + nsmDialogRect.left + nsmContentRect.width + (marginLeft * 2) > bodyRect.width) {
+            offsetLeft = bodyRect.width - (nsmDialogRect.left + nsmContentRect.width) - (marginLeft * 2);
+        }
+        else if (offsetLeft + nsmDialogRect.left < 0) {
+            offsetLeft = -nsmDialogRect.left;
+        }
+        if (offsetTop + nsmDialogRect.top + nsmContentRect.height + marginTop > bodyRect.height) {
+            offsetTop = bodyRect.height - (nsmDialogRect.top + nsmContentRect.height) - marginTop;
+        }
+        if (offsetTop < 0) {
+            offsetTop = 0;
+        }
+        this._renderer.setStyle(this.nsmContent.nativeElement, 'top', offsetTop + 'px');
+        this._renderer.setStyle(this.nsmContent.nativeElement, 'left', offsetLeft + 'px');
+    };
+    NgxSmartModalComponent.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"], args: [{
+                    selector: 'ngx-smart-modal',
+                    template: "\n    <div *ngIf=\"overlayVisible\"\n         [style.z-index]=\"visible ? layerPosition-1 : -1\"\n         [ngClass]=\"{'transparent':!backdrop, 'overlay':true, 'nsm-overlay-open':openedClass}\"\n         (click)=\"dismiss($event)\" #nsmOverlay>\n      <div [style.z-index]=\"visible ? layerPosition : -1\"\n           [ngClass]=\"['nsm-dialog', customClass, openedClass ? 'nsm-dialog-open': 'nsm-dialog-close']\" #nsmDialog>\n        <div class=\"nsm-content\" #nsmContent>\n          <div class=\"nsm-body\">\n            <ng-content></ng-content>\n          </div>\n          <button type=\"button\" *ngIf=\"closable\" (click)=\"close()\" aria-label=\"Close\" class=\"nsm-dialog-btn-close\">\n            <img\n              src=\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1MTIgNTEyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDMsNi4wNThjLTguMDc3LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDksMEw2LjA1OCw0NzYuNjkzYy04LjA3Nyw4LjA3Ny04LjA3NywyMS4xNzIsMCwyOS4yNDkgICAgQzEwLjA5Niw1MDkuOTgyLDE1LjM5LDUxMiwyMC42ODMsNTEyYzUuMjkzLDAsMTAuNTg2LTIuMDE5LDE0LjYyNS02LjA1OUw1MDUuOTQzLDM1LjMwNiAgICBDNTE0LjAxOSwyNy4yMyw1MTQuMDE5LDE0LjEzNSw1MDUuOTQzLDYuMDU4eiIgZmlsbD0iIzAwMDAwMCIvPgoJPC9nPgo8L2c+CjxnPgoJPGc+CgkJPHBhdGggZD0iTTUwNS45NDIsNDc2LjY5NEwzNS4zMDYsNi4wNTljLTguMDc2LTguMDc3LTIxLjE3Mi04LjA3Ny0yOS4yNDgsMGMtOC4wNzcsOC4wNzYtOC4wNzcsMjEuMTcxLDAsMjkuMjQ4bDQ3MC42MzYsNDcwLjYzNiAgICBjNC4wMzgsNC4wMzksOS4zMzIsNi4wNTgsMTQuNjI1LDYuMDU4YzUuMjkzLDAsMTAuNTg3LTIuMDE5LDE0LjYyNC02LjA1N0M1MTQuMDE4LDQ5Ny44NjYsNTE0LjAxOCw0ODQuNzcxLDUwNS45NDIsNDc2LjY5NHoiIGZpbGw9IiMwMDAwMDAiLz4KCTwvZz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K\" />\n          </button>\n        </div>\n      </div>\n    </div>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    NgxSmartModalComponent.ctorParameters = function () { return [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Renderer2"], },
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ChangeDetectorRef"], },
+        { type: NgxSmartModalService, },
+    ]; };
+    NgxSmartModalComponent.propDecorators = {
+        "closable": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "escapable": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "dismissable": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "identifier": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "customClass": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "visible": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "backdrop": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "force": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "hideDelay": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "autostart": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "target": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"] },],
+        "visibleChange": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "onClose": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "onCloseFinished": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "onDismiss": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "onDismissFinished": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "onAnyCloseEvent": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "onAnyCloseEventFinished": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "onOpen": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "onEscape": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "onDataAdded": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "onDataRemoved": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"] },],
+        "nsmContent": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['nsmContent',] },],
+        "nsmDialog": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['nsmDialog',] },],
+        "nsmOverlay": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"], args: ['nsmOverlay',] },],
+        "targetPlacement": [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["HostListener"], args: ['window:resize',] },],
+    };
+    return NgxSmartModalComponent;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var NgxSmartModalModule = (function () {
+    function NgxSmartModalModule() {
+    }
+    /**
+     * Use in AppModule: new instance of NgxSmartModal.
+     * @return {?}
+     */
+    NgxSmartModalModule.forRoot = /**
+     * Use in AppModule: new instance of NgxSmartModal.
+     * @return {?}
+     */
+    function () {
+        return {
+            ngModule: NgxSmartModalModule,
+            providers: [NgxSmartModalService]
+        };
+    };
+    /**
+     * Use in features modules with lazy loading: new instance of NgxSmartModal.
+     * @return {?}
+     */
+    NgxSmartModalModule.forChild = /**
+     * Use in features modules with lazy loading: new instance of NgxSmartModal.
+     * @return {?}
+     */
+    function () {
+        return {
+            ngModule: NgxSmartModalModule,
+            providers: [NgxSmartModalService]
+        };
+    };
+    NgxSmartModalModule.decorators = [
+        { type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"], args: [{
+                    declarations: [NgxSmartModalComponent],
+                    exports: [NgxSmartModalComponent],
+                    imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]]
+                },] },
+    ];
+    /** @nocollapse */
+    NgxSmartModalModule.ctorParameters = function () { return []; };
+    return NgxSmartModalModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+// Public classes.
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Entry point for all public APIs of the package.
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+
+//# sourceMappingURL=ngx-smart-modal.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/primeng/autocomplete.js":
+/*!**********************************************!*\
+  !*** ./node_modules/primeng/autocomplete.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* Shorthand */
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(/*! ./components/autocomplete/autocomplete */ "./node_modules/primeng/components/autocomplete/autocomplete.js"));
+
+/***/ }),
+
+/***/ "./node_modules/primeng/components/autocomplete/autocomplete.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/primeng/components/autocomplete/autocomplete.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var common_1 = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+var animations_1 = __webpack_require__(/*! @angular/animations */ "./node_modules/@angular/animations/fesm5/animations.js");
+var inputtext_1 = __webpack_require__(/*! ../inputtext/inputtext */ "./node_modules/primeng/components/inputtext/inputtext.js");
+var button_1 = __webpack_require__(/*! ../button/button */ "./node_modules/primeng/components/button/button.js");
+var shared_1 = __webpack_require__(/*! ../common/shared */ "./node_modules/primeng/components/common/shared.js");
+var domhandler_1 = __webpack_require__(/*! ../dom/domhandler */ "./node_modules/primeng/components/dom/domhandler.js");
+var objectutils_1 = __webpack_require__(/*! ../utils/objectutils */ "./node_modules/primeng/components/utils/objectutils.js");
+var forms_1 = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+exports.AUTOCOMPLETE_VALUE_ACCESSOR = {
+    provide: forms_1.NG_VALUE_ACCESSOR,
+    useExisting: core_1.forwardRef(function () { return AutoComplete; }),
+    multi: true
+};
+var AutoComplete = /** @class */ (function () {
+    function AutoComplete(el, renderer, cd, differs) {
+        this.el = el;
+        this.renderer = renderer;
+        this.cd = cd;
+        this.differs = differs;
+        this.minLength = 1;
+        this.delay = 300;
+        this.type = 'text';
+        this.autoZIndex = true;
+        this.baseZIndex = 0;
+        this.dropdownIcon = "pi pi-caret-down";
+        this.completeMethod = new core_1.EventEmitter();
+        this.onSelect = new core_1.EventEmitter();
+        this.onUnselect = new core_1.EventEmitter();
+        this.onFocus = new core_1.EventEmitter();
+        this.onBlur = new core_1.EventEmitter();
+        this.onDropdownClick = new core_1.EventEmitter();
+        this.onClear = new core_1.EventEmitter();
+        this.onKeyUp = new core_1.EventEmitter();
+        this.scrollHeight = '200px';
+        this.dropdownMode = 'blank';
+        this.immutable = true;
+        this.showTransitionOptions = '225ms ease-out';
+        this.hideTransitionOptions = '195ms ease-in';
+        this.onModelChange = function () { };
+        this.onModelTouched = function () { };
+        this.overlayVisible = false;
+        this.focus = false;
+        this.inputFieldValue = null;
+        this.differ = differs.find([]).create(null);
+    }
+    Object.defineProperty(AutoComplete.prototype, "suggestions", {
+        get: function () {
+            return this._suggestions;
+        },
+        set: function (val) {
+            this._suggestions = val;
+            if (this.immutable) {
+                this.handleSuggestionsChange();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AutoComplete.prototype.ngDoCheck = function () {
+        if (!this.immutable) {
+            var changes = this.differ.diff(this.suggestions);
+            if (changes) {
+                this.handleSuggestionsChange();
+            }
+        }
+    };
+    AutoComplete.prototype.ngAfterViewChecked = function () {
+        var _this = this;
+        //Use timeouts as since Angular 4.2, AfterViewChecked is broken and not called after panel is updated
+        if (this.suggestionsUpdated && this.overlay && this.overlay.offsetParent) {
+            setTimeout(function () {
+                if (_this.overlay) {
+                    _this.alignOverlay();
+                }
+            }, 1);
+            this.suggestionsUpdated = false;
+        }
+        if (this.highlightOptionChanged) {
+            setTimeout(function () {
+                if (_this.overlay) {
+                    var listItem = domhandler_1.DomHandler.findSingle(_this.overlay, 'li.ui-state-highlight');
+                    if (listItem) {
+                        domhandler_1.DomHandler.scrollInView(_this.overlay, listItem);
+                    }
+                }
+            }, 1);
+            this.highlightOptionChanged = false;
+        }
+    };
+    AutoComplete.prototype.handleSuggestionsChange = function () {
+        if (this._suggestions != null && this.loading) {
+            this.highlightOption = null;
+            if (this._suggestions.length) {
+                this.noResults = false;
+                this.show();
+                this.suggestionsUpdated = true;
+                if (this.autoHighlight) {
+                    this.highlightOption = this._suggestions[0];
+                }
+            }
+            else {
+                this.noResults = true;
+                if (this.emptyMessage) {
+                    this.show();
+                    this.suggestionsUpdated = true;
+                }
+                else {
+                    this.hide();
+                }
+            }
+            this.loading = false;
+        }
+    };
+    AutoComplete.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.templates.forEach(function (item) {
+            switch (item.getType()) {
+                case 'item':
+                    _this.itemTemplate = item.template;
+                    break;
+                case 'selectedItem':
+                    _this.selectedItemTemplate = item.template;
+                    break;
+                default:
+                    _this.itemTemplate = item.template;
+                    break;
+            }
+        });
+    };
+    AutoComplete.prototype.writeValue = function (value) {
+        this.value = value;
+        this.filled = this.value && this.value != '';
+        this.updateInputField();
+    };
+    AutoComplete.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
+    };
+    AutoComplete.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
+    };
+    AutoComplete.prototype.setDisabledState = function (val) {
+        this.disabled = val;
+    };
+    AutoComplete.prototype.onInput = function (event) {
+        var _this = this;
+        if (!this.inputKeyDown) {
+            return;
+        }
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+        var value = event.target.value;
+        if (!this.multiple && !this.forceSelection) {
+            this.onModelChange(value);
+        }
+        if (value.length === 0 && !this.multiple) {
+            this.hide();
+            this.onClear.emit(event);
+            this.onModelChange(value);
+        }
+        if (value.length >= this.minLength) {
+            this.timeout = setTimeout(function () {
+                _this.search(event, value);
+            }, this.delay);
+        }
+        else {
+            this.suggestions = null;
+            this.hide();
+        }
+        this.updateFilledState();
+        this.inputKeyDown = false;
+    };
+    AutoComplete.prototype.onInputClick = function (event) {
+        if (this.documentClickListener) {
+            this.inputClick = true;
+        }
+    };
+    AutoComplete.prototype.search = function (event, query) {
+        //allow empty string but not undefined or null
+        if (query === undefined || query === null) {
+            return;
+        }
+        this.loading = true;
+        this.completeMethod.emit({
+            originalEvent: event,
+            query: query
+        });
+    };
+    AutoComplete.prototype.selectItem = function (option, focus) {
+        if (focus === void 0) { focus = true; }
+        if (this.forceSelectionUpdateModelTimeout) {
+            clearTimeout(this.forceSelectionUpdateModelTimeout);
+            this.forceSelectionUpdateModelTimeout = null;
+        }
+        if (this.multiple) {
+            this.multiInputEL.nativeElement.value = '';
+            this.value = this.value || [];
+            if (!this.isSelected(option)) {
+                this.value = this.value.concat([option]);
+                this.onModelChange(this.value);
+            }
+        }
+        else {
+            this.inputEL.nativeElement.value = this.field ? objectutils_1.ObjectUtils.resolveFieldData(option, this.field) || '' : option;
+            this.value = option;
+            this.onModelChange(this.value);
+        }
+        this.onSelect.emit(option);
+        this.updateFilledState();
+        if (focus) {
+            this.focusInput();
+        }
+    };
+    AutoComplete.prototype.show = function () {
+        if (this.multiInputEL || this.inputEL) {
+            var hasFocus = this.multiple ? document.activeElement == this.multiInputEL.nativeElement : document.activeElement == this.inputEL.nativeElement;
+            if (!this.overlayVisible && hasFocus) {
+                this.overlayVisible = true;
+            }
+        }
+    };
+    AutoComplete.prototype.onOverlayAnimationStart = function (event) {
+        switch (event.toState) {
+            case 'visible':
+                this.overlay = event.element;
+                this.appendOverlay();
+                if (this.autoZIndex) {
+                    this.overlay.style.zIndex = String(this.baseZIndex + (++domhandler_1.DomHandler.zindex));
+                }
+                this.alignOverlay();
+                this.bindDocumentClickListener();
+                this.bindDocumentResizeListener();
+                break;
+            case 'void':
+                this.onOverlayHide();
+                break;
+        }
+    };
+    AutoComplete.prototype.onOverlayAnimationDone = function (event) {
+        if (event.toState === 'void') {
+            this._suggestions = null;
+        }
+    };
+    AutoComplete.prototype.appendOverlay = function () {
+        if (this.appendTo) {
+            if (this.appendTo === 'body')
+                document.body.appendChild(this.overlay);
+            else
+                domhandler_1.DomHandler.appendChild(this.overlay, this.appendTo);
+            this.overlay.style.minWidth = domhandler_1.DomHandler.getWidth(this.el.nativeElement.children[0]) + 'px';
+        }
+    };
+    AutoComplete.prototype.resolveFieldData = function (value) {
+        return this.field ? objectutils_1.ObjectUtils.resolveFieldData(value, this.field) : value;
+    };
+    AutoComplete.prototype.restoreOverlayAppend = function () {
+        if (this.overlay && this.appendTo) {
+            this.el.nativeElement.appendChild(this.overlay);
+        }
+    };
+    AutoComplete.prototype.alignOverlay = function () {
+        if (this.appendTo)
+            domhandler_1.DomHandler.absolutePosition(this.overlay, (this.multiple ? this.multiContainerEL.nativeElement : this.inputEL.nativeElement));
+        else
+            domhandler_1.DomHandler.relativePosition(this.overlay, (this.multiple ? this.multiContainerEL.nativeElement : this.inputEL.nativeElement));
+    };
+    AutoComplete.prototype.hide = function () {
+        this.overlayVisible = false;
+    };
+    AutoComplete.prototype.handleDropdownClick = function (event) {
+        this.focusInput();
+        var queryValue = this.multiple ? this.multiInputEL.nativeElement.value : this.inputEL.nativeElement.value;
+        if (this.dropdownMode === 'blank')
+            this.search(event, '');
+        else if (this.dropdownMode === 'current')
+            this.search(event, queryValue);
+        this.onDropdownClick.emit({
+            originalEvent: event,
+            query: queryValue
+        });
+    };
+    AutoComplete.prototype.focusInput = function () {
+        if (this.multiple)
+            this.multiInputEL.nativeElement.focus();
+        else
+            this.inputEL.nativeElement.focus();
+    };
+    AutoComplete.prototype.removeItem = function (item) {
+        var itemIndex = domhandler_1.DomHandler.index(item);
+        var removedValue = this.value[itemIndex];
+        this.value = this.value.filter(function (val, i) { return i != itemIndex; });
+        this.onModelChange(this.value);
+        this.updateFilledState();
+        this.onUnselect.emit(removedValue);
+    };
+    AutoComplete.prototype.onKeydown = function (event) {
+        if (this.overlayVisible) {
+            var highlightItemIndex = this.findOptionIndex(this.highlightOption);
+            switch (event.which) {
+                //down
+                case 40:
+                    if (highlightItemIndex != -1) {
+                        var nextItemIndex = highlightItemIndex + 1;
+                        if (nextItemIndex != (this.suggestions.length)) {
+                            this.highlightOption = this.suggestions[nextItemIndex];
+                            this.highlightOptionChanged = true;
+                        }
+                    }
+                    else {
+                        this.highlightOption = this.suggestions[0];
+                    }
+                    event.preventDefault();
+                    break;
+                //up
+                case 38:
+                    if (highlightItemIndex > 0) {
+                        var prevItemIndex = highlightItemIndex - 1;
+                        this.highlightOption = this.suggestions[prevItemIndex];
+                        this.highlightOptionChanged = true;
+                    }
+                    event.preventDefault();
+                    break;
+                //enter
+                case 13:
+                    if (this.highlightOption) {
+                        this.selectItem(this.highlightOption);
+                        this.hide();
+                    }
+                    event.preventDefault();
+                    break;
+                //escape
+                case 27:
+                    this.hide();
+                    event.preventDefault();
+                    break;
+                //tab
+                case 9:
+                    if (this.highlightOption) {
+                        this.selectItem(this.highlightOption);
+                    }
+                    this.hide();
+                    break;
+            }
+        }
+        else {
+            if (event.which === 40 && this.suggestions) {
+                this.search(event, event.target.value);
+            }
+        }
+        if (this.multiple) {
+            switch (event.which) {
+                //backspace
+                case 8:
+                    if (this.value && this.value.length && !this.multiInputEL.nativeElement.value) {
+                        this.value = this.value.slice();
+                        var removedValue = this.value.pop();
+                        this.onModelChange(this.value);
+                        this.updateFilledState();
+                        this.onUnselect.emit(removedValue);
+                    }
+                    break;
+            }
+        }
+        this.inputKeyDown = true;
+    };
+    AutoComplete.prototype.onKeyup = function (event) {
+        this.onKeyUp.emit(event);
+    };
+    AutoComplete.prototype.onInputFocus = function (event) {
+        this.focus = true;
+        this.onFocus.emit(event);
+    };
+    AutoComplete.prototype.onInputBlur = function (event) {
+        this.focus = false;
+        this.onModelTouched();
+        this.onBlur.emit(event);
+    };
+    AutoComplete.prototype.onInputChange = function (event) {
+        var _this = this;
+        if (this.forceSelection && this.suggestions) {
+            var valid = false;
+            var inputValue = event.target.value.trim();
+            if (this.suggestions) {
+                var _loop_1 = function (suggestion) {
+                    var itemValue = this_1.field ? objectutils_1.ObjectUtils.resolveFieldData(suggestion, this_1.field) : suggestion;
+                    if (itemValue && inputValue === itemValue.trim()) {
+                        valid = true;
+                        this_1.forceSelectionUpdateModelTimeout = setTimeout(function () {
+                            _this.selectItem(suggestion, false);
+                        }, 250);
+                        return "break";
+                    }
+                };
+                var this_1 = this;
+                for (var _i = 0, _a = this.suggestions; _i < _a.length; _i++) {
+                    var suggestion = _a[_i];
+                    var state_1 = _loop_1(suggestion);
+                    if (state_1 === "break")
+                        break;
+                }
+            }
+            if (!valid) {
+                if (this.multiple) {
+                    this.multiInputEL.nativeElement.value = '';
+                }
+                else {
+                    this.value = null;
+                    this.inputEL.nativeElement.value = '';
+                }
+                this.onClear.emit(event);
+                this.onModelChange(this.value);
+            }
+        }
+    };
+    AutoComplete.prototype.onInputPaste = function (event) {
+        this.onKeydown(event);
+    };
+    AutoComplete.prototype.isSelected = function (val) {
+        var selected = false;
+        if (this.value && this.value.length) {
+            for (var i = 0; i < this.value.length; i++) {
+                if (objectutils_1.ObjectUtils.equals(this.value[i], val, this.dataKey)) {
+                    selected = true;
+                    break;
+                }
+            }
+        }
+        return selected;
+    };
+    AutoComplete.prototype.findOptionIndex = function (option) {
+        var index = -1;
+        if (this.suggestions) {
+            for (var i = 0; i < this.suggestions.length; i++) {
+                if (objectutils_1.ObjectUtils.equals(option, this.suggestions[i])) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        return index;
+    };
+    AutoComplete.prototype.updateFilledState = function () {
+        if (this.multiple)
+            this.filled = (this.value && this.value.length) || (this.multiInputEL && this.multiInputEL.nativeElement && this.multiInputEL.nativeElement.value != '');
+        else
+            this.filled = (this.inputFieldValue && this.inputFieldValue != '') || (this.inputEL && this.inputEL.nativeElement && this.inputEL.nativeElement.value != '');
+        ;
+    };
+    AutoComplete.prototype.updateInputField = function () {
+        var formattedValue = this.value ? (this.field ? objectutils_1.ObjectUtils.resolveFieldData(this.value, this.field) || '' : this.value) : '';
+        this.inputFieldValue = formattedValue;
+        if (this.inputEL && this.inputEL.nativeElement) {
+            this.inputEL.nativeElement.value = formattedValue;
+        }
+        this.updateFilledState();
+    };
+    AutoComplete.prototype.bindDocumentClickListener = function () {
+        var _this = this;
+        if (!this.documentClickListener) {
+            this.documentClickListener = this.renderer.listen('document', 'click', function (event) {
+                if (event.which === 3) {
+                    return;
+                }
+                if (!_this.inputClick && !_this.isDropdownClick(event)) {
+                    _this.hide();
+                }
+                _this.inputClick = false;
+                _this.cd.markForCheck();
+            });
+        }
+    };
+    AutoComplete.prototype.isDropdownClick = function (event) {
+        if (this.dropdown) {
+            var target = event.target;
+            return (target === this.dropdownButton.nativeElement || target.parentNode === this.dropdownButton.nativeElement);
+        }
+        else {
+            return false;
+        }
+    };
+    AutoComplete.prototype.unbindDocumentClickListener = function () {
+        if (this.documentClickListener) {
+            this.documentClickListener();
+            this.documentClickListener = null;
+        }
+    };
+    AutoComplete.prototype.bindDocumentResizeListener = function () {
+        this.documentResizeListener = this.onWindowResize.bind(this);
+        window.addEventListener('resize', this.documentResizeListener);
+    };
+    AutoComplete.prototype.unbindDocumentResizeListener = function () {
+        if (this.documentResizeListener) {
+            window.removeEventListener('resize', this.documentResizeListener);
+            this.documentResizeListener = null;
+        }
+    };
+    AutoComplete.prototype.onWindowResize = function () {
+        this.hide();
+    };
+    AutoComplete.prototype.onOverlayHide = function () {
+        this.unbindDocumentClickListener();
+        this.unbindDocumentResizeListener();
+        this.overlay = null;
+    };
+    AutoComplete.prototype.ngOnDestroy = function () {
+        this.restoreOverlayAppend();
+        this.onOverlayHide();
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "minLength", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "delay", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], AutoComplete.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], AutoComplete.prototype, "panelStyle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "panelStyleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], AutoComplete.prototype, "inputStyle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "inputId", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "inputStyleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "placeholder", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "readonly", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "disabled", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "maxlength", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "required", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "size", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], AutoComplete.prototype, "appendTo", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "autoHighlight", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "forceSelection", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "type", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "autoZIndex", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "baseZIndex", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "ariaLabel", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "ariaLabelledBy", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "dropdownIcon", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "completeMethod", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onSelect", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onUnselect", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onFocus", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onBlur", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onDropdownClick", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onClear", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onKeyUp", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "field", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "scrollHeight", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "dropdown", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "dropdownMode", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "multiple", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "tabindex", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "dataKey", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "emptyMessage", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "immutable", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "showTransitionOptions", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "hideTransitionOptions", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "autofocus", void 0);
+    __decorate([
+        core_1.ViewChild('in', { static: false }),
+        __metadata("design:type", core_1.ElementRef)
+    ], AutoComplete.prototype, "inputEL", void 0);
+    __decorate([
+        core_1.ViewChild('multiIn', { static: false }),
+        __metadata("design:type", core_1.ElementRef)
+    ], AutoComplete.prototype, "multiInputEL", void 0);
+    __decorate([
+        core_1.ViewChild('multiContainer', { static: false }),
+        __metadata("design:type", core_1.ElementRef)
+    ], AutoComplete.prototype, "multiContainerEL", void 0);
+    __decorate([
+        core_1.ViewChild('ddBtn', { static: false }),
+        __metadata("design:type", core_1.ElementRef)
+    ], AutoComplete.prototype, "dropdownButton", void 0);
+    __decorate([
+        core_1.ContentChildren(shared_1.PrimeTemplate),
+        __metadata("design:type", core_1.QueryList)
+    ], AutoComplete.prototype, "templates", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array),
+        __metadata("design:paramtypes", [Array])
+    ], AutoComplete.prototype, "suggestions", null);
+    AutoComplete = __decorate([
+        core_1.Component({
+            selector: 'p-autoComplete',
+            template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown,'ui-autocomplete-multiple':multiple}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in [attr.type]=\"type\" [attr.id]=\"inputId\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" autocomplete=\"off\" [attr.required]=\"required\"\n            [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all ui-autocomplete-input'\" [value]=\"inputFieldValue\" aria-autocomplete=\"list\" role=\"combobox\" [attr.aria-expanded]=\"overlayVisible\" aria-haspopup=\"true\" [attr.aria-activedescendant]=\"'p-highlighted-option'\"\n            (click)=\"onInputClick($event)\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" [attr.autofocus]=\"autofocus\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (change)=\"onInputChange($event)\" (paste)=\"onInputPaste($event)\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [readonly]=\"readonly\" [disabled]=\"disabled\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" [attr.aria-required]=\"required\"\n            ><ul *ngIf=\"multiple\" #multiContainer class=\"ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-disabled':disabled,'ui-state-focus':focus}\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon pi pi-fw pi-times\" (click)=\"removeItem(token)\" *ngIf=\"!disabled\"></span>\n                    <span *ngIf=\"!selectedItemTemplate\" class=\"ui-autocomplete-token-label\">{{resolveFieldData(val)}}</span>\n                    <ng-container *ngTemplateOutlet=\"selectedItemTemplate; context: {$implicit: val}\"></ng-container>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn [attr.type]=\"type\" [attr.id]=\"inputId\" [disabled]=\"disabled\" [attr.placeholder]=\"(value&&value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (input)=\"onInput($event)\"  (click)=\"onInputClick($event)\"\n                            (keydown)=\"onKeydown($event)\" [readonly]=\"readonly\" (keyup)=\"onKeyup($event)\" [attr.autofocus]=\"autofocus\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (change)=\"onInputChange($event)\" (paste)=\"onInputPaste($event)\" autocomplete=\"off\" \n                            [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" [attr.aria-required]=\"required\"\n                            aria-autocomplete=\"list\" role=\"combobox\" [attr.aria-expanded]=\"overlayVisible\" aria-haspopup=\"true\" [attr.aria-activedescendant]=\"'p-highlighted-option'\">\n                </li>\n            </ul\n            ><i *ngIf=\"loading\" class=\"ui-autocomplete-loader pi pi-spinner pi-spin\"></i><button #ddBtn type=\"button\" pButton [icon]=\"dropdownIcon\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\" [attr.tabindex]=\"tabindex\"></button>\n            <div #panel *ngIf=\"overlayVisible\" [ngClass]=\"['ui-autocomplete-panel ui-widget ui-widget-content ui-corner-all ui-shadow']\" [style.max-height]=\"scrollHeight\" [ngStyle]=\"panelStyle\" [class]=\"panelStyleClass\"\n                [@overlayAnimation]=\"{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\" (@overlayAnimation.start)=\"onOverlayAnimationStart($event)\" (@overlayAnimation.done)=\"onOverlayAnimationDone($event)\" >\n                <ul role=\"listbox\" class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\">\n                    <li role=\"option\"  *ngFor=\"let option of suggestions; let idx = index\" [ngClass]=\"{'ui-autocomplete-list-item ui-corner-all':true,'ui-state-highlight':(highlightOption==option)}\"\n                        (mouseenter)=\"highlightOption=option\" (mouseleave)=\"highlightOption=null\" [id]=\"highlightOption == option ? 'p-highlighted-option':''\" (click)=\"selectItem(option)\">\n                        <span *ngIf=\"!itemTemplate\">{{resolveFieldData(option)}}</span>\n                        <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option, index: idx}\"></ng-container>\n                    </li>\n                    <li *ngIf=\"noResults && emptyMessage\" class=\"ui-autocomplete-emptymessage ui-autocomplete-list-item ui-corner-all\">{{emptyMessage}}</li>\n                </ul>\n            </div>\n        </span>\n    ",
+            animations: [
+                animations_1.trigger('overlayAnimation', [
+                    animations_1.state('void', animations_1.style({
+                        transform: 'translateY(5%)',
+                        opacity: 0
+                    })),
+                    animations_1.state('visible', animations_1.style({
+                        transform: 'translateY(0)',
+                        opacity: 1
+                    })),
+                    animations_1.transition('void => visible', animations_1.animate('{{showTransitionParams}}')),
+                    animations_1.transition('visible => void', animations_1.animate('{{hideTransitionParams}}'))
+                ])
+            ],
+            host: {
+                '[class.ui-inputwrapper-filled]': 'filled',
+                '[class.ui-inputwrapper-focus]': 'focus && !disabled'
+            },
+            providers: [exports.AUTOCOMPLETE_VALUE_ACCESSOR]
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer2, core_1.ChangeDetectorRef, core_1.IterableDiffers])
+    ], AutoComplete);
+    return AutoComplete;
+}());
+exports.AutoComplete = AutoComplete;
+var AutoCompleteModule = /** @class */ (function () {
+    function AutoCompleteModule() {
+    }
+    AutoCompleteModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule, inputtext_1.InputTextModule, button_1.ButtonModule, shared_1.SharedModule],
+            exports: [AutoComplete, shared_1.SharedModule],
+            declarations: [AutoComplete]
+        })
+    ], AutoCompleteModule);
+    return AutoCompleteModule;
+}());
+exports.AutoCompleteModule = AutoCompleteModule;
+//# sourceMappingURL=autocomplete.js.map
+
+/***/ }),
+
+/***/ "./node_modules/primeng/components/button/button.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/primeng/components/button/button.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var domhandler_1 = __webpack_require__(/*! ../dom/domhandler */ "./node_modules/primeng/components/dom/domhandler.js");
+var common_1 = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+var ButtonDirective = /** @class */ (function () {
+    function ButtonDirective(el) {
+        this.el = el;
+        this.iconPos = 'left';
+        this.cornerStyleClass = 'ui-corner-all';
+    }
+    ButtonDirective.prototype.ngAfterViewInit = function () {
+        domhandler_1.DomHandler.addMultipleClasses(this.el.nativeElement, this.getStyleClass());
+        if (this.icon) {
+            var iconElement = document.createElement("span");
+            iconElement.setAttribute("aria-hidden", "true");
+            var iconPosClass = (this.iconPos == 'right') ? 'ui-button-icon-right' : 'ui-button-icon-left';
+            iconElement.className = iconPosClass + ' ui-clickable ' + this.icon;
+            this.el.nativeElement.appendChild(iconElement);
+        }
+        var labelElement = document.createElement("span");
+        labelElement.className = 'ui-button-text ui-clickable';
+        labelElement.appendChild(document.createTextNode(this.label || 'ui-btn'));
+        this.el.nativeElement.appendChild(labelElement);
+        this.initialized = true;
+    };
+    ButtonDirective.prototype.getStyleClass = function () {
+        var styleClass = 'ui-button ui-widget ui-state-default ' + this.cornerStyleClass;
+        if (this.icon) {
+            if (this.label != null && this.label != undefined) {
+                if (this.iconPos == 'left')
+                    styleClass = styleClass + ' ui-button-text-icon-left';
+                else
+                    styleClass = styleClass + ' ui-button-text-icon-right';
+            }
+            else {
+                styleClass = styleClass + ' ui-button-icon-only';
+            }
+        }
+        else {
+            if (this.label) {
+                styleClass = styleClass + ' ui-button-text-only';
+            }
+            else {
+                styleClass = styleClass + ' ui-button-text-empty';
+            }
+        }
+        return styleClass;
+    };
+    Object.defineProperty(ButtonDirective.prototype, "label", {
+        get: function () {
+            return this._label;
+        },
+        set: function (val) {
+            this._label = val;
+            if (this.initialized) {
+                domhandler_1.DomHandler.findSingle(this.el.nativeElement, '.ui-button-text').textContent = this._label;
+                if (!this.icon) {
+                    if (this._label) {
+                        domhandler_1.DomHandler.removeClass(this.el.nativeElement, 'ui-button-text-empty');
+                        domhandler_1.DomHandler.addClass(this.el.nativeElement, 'ui-button-text-only');
+                    }
+                    else {
+                        domhandler_1.DomHandler.addClass(this.el.nativeElement, 'ui-button-text-empty');
+                        domhandler_1.DomHandler.removeClass(this.el.nativeElement, 'ui-button-text-only');
+                    }
+                }
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ButtonDirective.prototype, "icon", {
+        get: function () {
+            return this._icon;
+        },
+        set: function (val) {
+            this._icon = val;
+            if (this.initialized) {
+                var iconPosClass = (this.iconPos == 'right') ? 'ui-button-icon-right' : 'ui-button-icon-left';
+                domhandler_1.DomHandler.findSingle(this.el.nativeElement, '.ui-clickable').className =
+                    iconPosClass + ' ui-clickable ' + this.icon;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ButtonDirective.prototype.ngOnDestroy = function () {
+        while (this.el.nativeElement.hasChildNodes()) {
+            this.el.nativeElement.removeChild(this.el.nativeElement.lastChild);
+        }
+        this.initialized = false;
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ButtonDirective.prototype, "iconPos", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ButtonDirective.prototype, "cornerStyleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String),
+        __metadata("design:paramtypes", [String])
+    ], ButtonDirective.prototype, "label", null);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String),
+        __metadata("design:paramtypes", [String])
+    ], ButtonDirective.prototype, "icon", null);
+    ButtonDirective = __decorate([
+        core_1.Directive({
+            selector: '[pButton]'
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef])
+    ], ButtonDirective);
+    return ButtonDirective;
+}());
+exports.ButtonDirective = ButtonDirective;
+var Button = /** @class */ (function () {
+    function Button() {
+        this.iconPos = 'left';
+        this.onClick = new core_1.EventEmitter();
+        this.onFocus = new core_1.EventEmitter();
+        this.onBlur = new core_1.EventEmitter();
+    }
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Button.prototype, "type", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Button.prototype, "iconPos", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Button.prototype, "icon", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Button.prototype, "label", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Button.prototype, "disabled", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Button.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Button.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Button.prototype, "onClick", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Button.prototype, "onFocus", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Button.prototype, "onBlur", void 0);
+    Button = __decorate([
+        core_1.Component({
+            selector: 'p-button',
+            template: "\n        <button [attr.type]=\"type\" [class]=\"styleClass\" [style]=\"style\" [disabled]=\"disabled\"\n            [ngClass]=\"{'ui-button ui-widget ui-state-default ui-corner-all':true,\n                        'ui-button-icon-only': (icon && !label),\n                        'ui-button-text-icon-left': (icon && label && iconPos === 'left'),\n                        'ui-button-text-icon-right': (icon && label && iconPos === 'right'),\n                        'ui-button-text-only': (!icon && label),\n                        'ui-button-text-empty': (!icon && !label),\n                        'ui-state-disabled': disabled}\"\n                        (click)=\"onClick.emit($event)\" (focus)=\"onFocus.emit($event)\" (blur)=\"onBlur.emit($event)\">\n            <ng-content></ng-content>\n            <span [ngClass]=\"{'ui-clickable': true,\n                        'ui-button-icon-left': (iconPos === 'left'), \n                        'ui-button-icon-right': (iconPos === 'right')}\"\n                        [class]=\"icon\" *ngIf=\"icon\"></span>\n            <span class=\"ui-button-text ui-clickable\">{{label||'ui-btn'}}</span>\n        </button>\n    "
+        })
+    ], Button);
+    return Button;
+}());
+exports.Button = Button;
+var ButtonModule = /** @class */ (function () {
+    function ButtonModule() {
+    }
+    ButtonModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [ButtonDirective, Button],
+            declarations: [ButtonDirective, Button]
+        })
+    ], ButtonModule);
+    return ButtonModule;
+}());
+exports.ButtonModule = ButtonModule;
+//# sourceMappingURL=button.js.map
+
+/***/ }),
+
+/***/ "./node_modules/primeng/components/common/shared.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/primeng/components/common/shared.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var common_1 = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+var core_2 = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var Header = /** @class */ (function () {
+    function Header() {
+    }
+    Header = __decorate([
+        core_2.Component({
+            selector: 'p-header',
+            template: '<ng-content></ng-content>'
+        })
+    ], Header);
+    return Header;
+}());
+exports.Header = Header;
+var Footer = /** @class */ (function () {
+    function Footer() {
+    }
+    Footer = __decorate([
+        core_2.Component({
+            selector: 'p-footer',
+            template: '<ng-content></ng-content>'
+        })
+    ], Footer);
+    return Footer;
+}());
+exports.Footer = Footer;
+var PrimeTemplate = /** @class */ (function () {
+    function PrimeTemplate(template) {
+        this.template = template;
+    }
+    PrimeTemplate.prototype.getType = function () {
+        return this.name;
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], PrimeTemplate.prototype, "type", void 0);
+    __decorate([
+        core_1.Input('pTemplate'),
+        __metadata("design:type", String)
+    ], PrimeTemplate.prototype, "name", void 0);
+    PrimeTemplate = __decorate([
+        core_1.Directive({
+            selector: '[pTemplate]',
+            host: {}
+        }),
+        __metadata("design:paramtypes", [core_1.TemplateRef])
+    ], PrimeTemplate);
+    return PrimeTemplate;
+}());
+exports.PrimeTemplate = PrimeTemplate;
+/* Deprecated */
+var Column = /** @class */ (function () {
+    function Column() {
+        this.filterType = 'text';
+        this.exportable = true;
+        this.resizable = true;
+        this.sortFunction = new core_1.EventEmitter();
+    }
+    Column.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.templates.forEach(function (item) {
+            switch (item.getType()) {
+                case 'header':
+                    _this.headerTemplate = item.template;
+                    break;
+                case 'body':
+                    _this.bodyTemplate = item.template;
+                    break;
+                case 'footer':
+                    _this.footerTemplate = item.template;
+                    break;
+                case 'filter':
+                    _this.filterTemplate = item.template;
+                    break;
+                case 'editor':
+                    _this.editorTemplate = item.template;
+                    break;
+                default:
+                    _this.bodyTemplate = item.template;
+                    break;
+            }
+        });
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "field", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "colId", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "sortField", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "filterField", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "header", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "footer", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Column.prototype, "sortable", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Column.prototype, "editable", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Column.prototype, "filter", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "filterMatchMode", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "filterType", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Column.prototype, "excludeGlobalFilter", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], Column.prototype, "rowspan", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], Column.prototype, "colspan", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "scope", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Column.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Column.prototype, "exportable", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Column.prototype, "headerStyle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "headerStyleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Column.prototype, "bodyStyle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "bodyStyleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Column.prototype, "footerStyle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "footerStyleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Column.prototype, "hidden", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Column.prototype, "expander", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "selectionMode", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Column.prototype, "filterPlaceholder", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], Column.prototype, "filterMaxlength", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Column.prototype, "frozen", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Column.prototype, "resizable", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Column.prototype, "sortFunction", void 0);
+    __decorate([
+        core_1.ContentChildren(PrimeTemplate),
+        __metadata("design:type", core_1.QueryList)
+    ], Column.prototype, "templates", void 0);
+    __decorate([
+        core_1.ContentChild(core_1.TemplateRef, { static: false }),
+        __metadata("design:type", core_1.TemplateRef)
+    ], Column.prototype, "template", void 0);
+    Column = __decorate([
+        core_2.Component({
+            selector: 'p-column',
+            template: ''
+        })
+    ], Column);
+    return Column;
+}());
+exports.Column = Column;
+/* Deprecated */
+var Row = /** @class */ (function () {
+    function Row() {
+    }
+    __decorate([
+        core_1.ContentChildren(Column),
+        __metadata("design:type", core_1.QueryList)
+    ], Row.prototype, "columns", void 0);
+    Row = __decorate([
+        core_2.Component({
+            selector: 'p-row',
+            template: ""
+        })
+    ], Row);
+    return Row;
+}());
+exports.Row = Row;
+/* Deprecated */
+var HeaderColumnGroup = /** @class */ (function () {
+    function HeaderColumnGroup() {
+    }
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], HeaderColumnGroup.prototype, "frozen", void 0);
+    __decorate([
+        core_1.ContentChildren(Row),
+        __metadata("design:type", core_1.QueryList)
+    ], HeaderColumnGroup.prototype, "rows", void 0);
+    HeaderColumnGroup = __decorate([
+        core_2.Component({
+            selector: 'p-headerColumnGroup',
+            template: ""
+        })
+    ], HeaderColumnGroup);
+    return HeaderColumnGroup;
+}());
+exports.HeaderColumnGroup = HeaderColumnGroup;
+/* Deprecated */
+var FooterColumnGroup = /** @class */ (function () {
+    function FooterColumnGroup() {
+    }
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], FooterColumnGroup.prototype, "frozen", void 0);
+    __decorate([
+        core_1.ContentChildren(Row),
+        __metadata("design:type", core_1.QueryList)
+    ], FooterColumnGroup.prototype, "rows", void 0);
+    FooterColumnGroup = __decorate([
+        core_2.Component({
+            selector: 'p-footerColumnGroup',
+            template: ""
+        })
+    ], FooterColumnGroup);
+    return FooterColumnGroup;
+}());
+exports.FooterColumnGroup = FooterColumnGroup;
+var SharedModule = /** @class */ (function () {
+    function SharedModule() {
+    }
+    SharedModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [Header, Footer, Column, PrimeTemplate, Row, HeaderColumnGroup, FooterColumnGroup],
+            declarations: [Header, Footer, Column, PrimeTemplate, Row, HeaderColumnGroup, FooterColumnGroup]
+        })
+    ], SharedModule);
+    return SharedModule;
+}());
+exports.SharedModule = SharedModule;
+//# sourceMappingURL=shared.js.map
+
+/***/ }),
+
+/***/ "./node_modules/primeng/components/dom/domhandler.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/primeng/components/dom/domhandler.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var DomHandler = /** @class */ (function () {
+    function DomHandler() {
+    }
+    DomHandler.addClass = function (element, className) {
+        if (element.classList)
+            element.classList.add(className);
+        else
+            element.className += ' ' + className;
+    };
+    DomHandler.addMultipleClasses = function (element, className) {
+        if (element.classList) {
+            var styles = className.split(' ');
+            for (var i = 0; i < styles.length; i++) {
+                element.classList.add(styles[i]);
+            }
+        }
+        else {
+            var styles = className.split(' ');
+            for (var i = 0; i < styles.length; i++) {
+                element.className += ' ' + styles[i];
+            }
+        }
+    };
+    DomHandler.removeClass = function (element, className) {
+        if (element.classList)
+            element.classList.remove(className);
+        else
+            element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    };
+    DomHandler.hasClass = function (element, className) {
+        if (element.classList)
+            return element.classList.contains(className);
+        else
+            return new RegExp('(^| )' + className + '( |$)', 'gi').test(element.className);
+    };
+    DomHandler.siblings = function (element) {
+        return Array.prototype.filter.call(element.parentNode.children, function (child) {
+            return child !== element;
+        });
+    };
+    DomHandler.find = function (element, selector) {
+        return Array.from(element.querySelectorAll(selector));
+    };
+    DomHandler.findSingle = function (element, selector) {
+        if (element) {
+            return element.querySelector(selector);
+        }
+        return null;
+    };
+    DomHandler.index = function (element) {
+        var children = element.parentNode.childNodes;
+        var num = 0;
+        for (var i = 0; i < children.length; i++) {
+            if (children[i] == element)
+                return num;
+            if (children[i].nodeType == 1)
+                num++;
+        }
+        return -1;
+    };
+    DomHandler.indexWithinGroup = function (element, attributeName) {
+        var children = element.parentNode.childNodes;
+        var num = 0;
+        for (var i = 0; i < children.length; i++) {
+            if (children[i] == element)
+                return num;
+            if (children[i].attributes && children[i].attributes[attributeName] && children[i].nodeType == 1)
+                num++;
+        }
+        return -1;
+    };
+    DomHandler.relativePosition = function (element, target) {
+        var elementDimensions = element.offsetParent ? { width: element.offsetWidth, height: element.offsetHeight } : this.getHiddenElementDimensions(element);
+        var targetHeight = target.offsetHeight;
+        var targetOffset = target.getBoundingClientRect();
+        var viewport = this.getViewport();
+        var top, left;
+        if ((targetOffset.top + targetHeight + elementDimensions.height) > viewport.height) {
+            top = -1 * (elementDimensions.height);
+            if (targetOffset.top + top < 0) {
+                top = -1 * targetOffset.top;
+            }
+        }
+        else {
+            top = targetHeight;
+        }
+        if (elementDimensions.width > viewport.width) {
+            // element wider then viewport and cannot fit on screen (align at left side of viewport)
+            left = targetOffset.left * -1;
+        }
+        else if ((targetOffset.left + elementDimensions.width) > viewport.width) {
+            // element wider then viewport but can be fit on screen (align at right side of viewport)
+            left = (targetOffset.left + elementDimensions.width - viewport.width) * -1;
+        }
+        else {
+            // element fits on screen (align with target)
+            left = 0;
+        }
+        element.style.top = top + 'px';
+        element.style.left = left + 'px';
+    };
+    DomHandler.absolutePosition = function (element, target) {
+        var elementDimensions = element.offsetParent ? { width: element.offsetWidth, height: element.offsetHeight } : this.getHiddenElementDimensions(element);
+        var elementOuterHeight = elementDimensions.height;
+        var elementOuterWidth = elementDimensions.width;
+        var targetOuterHeight = target.offsetHeight;
+        var targetOuterWidth = target.offsetWidth;
+        var targetOffset = target.getBoundingClientRect();
+        var windowScrollTop = this.getWindowScrollTop();
+        var windowScrollLeft = this.getWindowScrollLeft();
+        var viewport = this.getViewport();
+        var top, left;
+        if (targetOffset.top + targetOuterHeight + elementOuterHeight > viewport.height) {
+            top = targetOffset.top + windowScrollTop - elementOuterHeight;
+            if (top < 0) {
+                top = windowScrollTop;
+            }
+        }
+        else {
+            top = targetOuterHeight + targetOffset.top + windowScrollTop;
+        }
+        if (targetOffset.left + elementOuterWidth > viewport.width)
+            left = Math.max(0, targetOffset.left + windowScrollLeft + targetOuterWidth - elementOuterWidth);
+        else
+            left = targetOffset.left + windowScrollLeft;
+        element.style.top = top + 'px';
+        element.style.left = left + 'px';
+    };
+    DomHandler.getHiddenElementOuterHeight = function (element) {
+        element.style.visibility = 'hidden';
+        element.style.display = 'block';
+        var elementHeight = element.offsetHeight;
+        element.style.display = 'none';
+        element.style.visibility = 'visible';
+        return elementHeight;
+    };
+    DomHandler.getHiddenElementOuterWidth = function (element) {
+        element.style.visibility = 'hidden';
+        element.style.display = 'block';
+        var elementWidth = element.offsetWidth;
+        element.style.display = 'none';
+        element.style.visibility = 'visible';
+        return elementWidth;
+    };
+    DomHandler.getHiddenElementDimensions = function (element) {
+        var dimensions = {};
+        element.style.visibility = 'hidden';
+        element.style.display = 'block';
+        dimensions.width = element.offsetWidth;
+        dimensions.height = element.offsetHeight;
+        element.style.display = 'none';
+        element.style.visibility = 'visible';
+        return dimensions;
+    };
+    DomHandler.scrollInView = function (container, item) {
+        var borderTopValue = getComputedStyle(container).getPropertyValue('borderTopWidth');
+        var borderTop = borderTopValue ? parseFloat(borderTopValue) : 0;
+        var paddingTopValue = getComputedStyle(container).getPropertyValue('paddingTop');
+        var paddingTop = paddingTopValue ? parseFloat(paddingTopValue) : 0;
+        var containerRect = container.getBoundingClientRect();
+        var itemRect = item.getBoundingClientRect();
+        var offset = (itemRect.top + document.body.scrollTop) - (containerRect.top + document.body.scrollTop) - borderTop - paddingTop;
+        var scroll = container.scrollTop;
+        var elementHeight = container.clientHeight;
+        var itemHeight = this.getOuterHeight(item);
+        if (offset < 0) {
+            container.scrollTop = scroll + offset;
+        }
+        else if ((offset + itemHeight) > elementHeight) {
+            container.scrollTop = scroll + offset - elementHeight + itemHeight;
+        }
+    };
+    DomHandler.fadeIn = function (element, duration) {
+        element.style.opacity = 0;
+        var last = +new Date();
+        var opacity = 0;
+        var tick = function () {
+            opacity = +element.style.opacity.replace(",", ".") + (new Date().getTime() - last) / duration;
+            element.style.opacity = opacity;
+            last = +new Date();
+            if (+opacity < 1) {
+                (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+            }
+        };
+        tick();
+    };
+    DomHandler.fadeOut = function (element, ms) {
+        var opacity = 1, interval = 50, duration = ms, gap = interval / duration;
+        var fading = setInterval(function () {
+            opacity = opacity - gap;
+            if (opacity <= 0) {
+                opacity = 0;
+                clearInterval(fading);
+            }
+            element.style.opacity = opacity;
+        }, interval);
+    };
+    DomHandler.getWindowScrollTop = function () {
+        var doc = document.documentElement;
+        return (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+    };
+    DomHandler.getWindowScrollLeft = function () {
+        var doc = document.documentElement;
+        return (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+    };
+    DomHandler.matches = function (element, selector) {
+        var p = Element.prototype;
+        var f = p['matches'] || p.webkitMatchesSelector || p['mozMatchesSelector'] || p['msMatchesSelector'] || function (s) {
+            return [].indexOf.call(document.querySelectorAll(s), this) !== -1;
+        };
+        return f.call(element, selector);
+    };
+    DomHandler.getOuterWidth = function (el, margin) {
+        var width = el.offsetWidth;
+        if (margin) {
+            var style = getComputedStyle(el);
+            width += parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+        }
+        return width;
+    };
+    DomHandler.getHorizontalPadding = function (el) {
+        var style = getComputedStyle(el);
+        return parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    };
+    DomHandler.getHorizontalMargin = function (el) {
+        var style = getComputedStyle(el);
+        return parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+    };
+    DomHandler.innerWidth = function (el) {
+        var width = el.offsetWidth;
+        var style = getComputedStyle(el);
+        width += parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+        return width;
+    };
+    DomHandler.width = function (el) {
+        var width = el.offsetWidth;
+        var style = getComputedStyle(el);
+        width -= parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+        return width;
+    };
+    DomHandler.getInnerHeight = function (el) {
+        var height = el.offsetHeight;
+        var style = getComputedStyle(el);
+        height += parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+        return height;
+    };
+    DomHandler.getOuterHeight = function (el, margin) {
+        var height = el.offsetHeight;
+        if (margin) {
+            var style = getComputedStyle(el);
+            height += parseFloat(style.marginTop) + parseFloat(style.marginBottom);
+        }
+        return height;
+    };
+    DomHandler.getHeight = function (el) {
+        var height = el.offsetHeight;
+        var style = getComputedStyle(el);
+        height -= parseFloat(style.paddingTop) + parseFloat(style.paddingBottom) + parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+        return height;
+    };
+    DomHandler.getWidth = function (el) {
+        var width = el.offsetWidth;
+        var style = getComputedStyle(el);
+        width -= parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) + parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+        return width;
+    };
+    DomHandler.getViewport = function () {
+        var win = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], w = win.innerWidth || e.clientWidth || g.clientWidth, h = win.innerHeight || e.clientHeight || g.clientHeight;
+        return { width: w, height: h };
+    };
+    DomHandler.getOffset = function (el) {
+        var rect = el.getBoundingClientRect();
+        return {
+            top: rect.top + document.body.scrollTop,
+            left: rect.left + document.body.scrollLeft
+        };
+    };
+    DomHandler.replaceElementWith = function (element, replacementElement) {
+        var parentNode = element.parentNode;
+        if (!parentNode)
+            throw "Can't replace element";
+        return parentNode.replaceChild(replacementElement, element);
+    };
+    DomHandler.getUserAgent = function () {
+        return navigator.userAgent;
+    };
+    DomHandler.isIE = function () {
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf('MSIE ');
+        if (msie > 0) {
+            // IE 10 or older => return version number
+            return true;
+        }
+        var trident = ua.indexOf('Trident/');
+        if (trident > 0) {
+            // IE 11 => return version number
+            var rv = ua.indexOf('rv:');
+            return true;
+        }
+        var edge = ua.indexOf('Edge/');
+        if (edge > 0) {
+            // Edge (IE 12+) => return version number
+            return true;
+        }
+        // other browser
+        return false;
+    };
+    DomHandler.isIOS = function () {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window['MSStream'];
+    };
+    DomHandler.isAndroid = function () {
+        return /(android)/i.test(navigator.userAgent);
+    };
+    DomHandler.appendChild = function (element, target) {
+        if (this.isElement(target))
+            target.appendChild(element);
+        else if (target.el && target.el.nativeElement)
+            target.el.nativeElement.appendChild(element);
+        else
+            throw 'Cannot append ' + target + ' to ' + element;
+    };
+    DomHandler.removeChild = function (element, target) {
+        if (this.isElement(target))
+            target.removeChild(element);
+        else if (target.el && target.el.nativeElement)
+            target.el.nativeElement.removeChild(element);
+        else
+            throw 'Cannot remove ' + element + ' from ' + target;
+    };
+    DomHandler.isElement = function (obj) {
+        return (typeof HTMLElement === "object" ? obj instanceof HTMLElement :
+            obj && typeof obj === "object" && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === "string");
+    };
+    DomHandler.calculateScrollbarWidth = function (el) {
+        if (el) {
+            var style = getComputedStyle(el);
+            return (el.offsetWidth - el.clientWidth - parseFloat(style.borderLeftWidth) - parseFloat(style.borderRightWidth));
+        }
+        else {
+            if (this.calculatedScrollbarWidth !== null)
+                return this.calculatedScrollbarWidth;
+            var scrollDiv = document.createElement("div");
+            scrollDiv.className = "ui-scrollbar-measure";
+            document.body.appendChild(scrollDiv);
+            var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+            document.body.removeChild(scrollDiv);
+            this.calculatedScrollbarWidth = scrollbarWidth;
+            return scrollbarWidth;
+        }
+    };
+    DomHandler.calculateScrollbarHeight = function () {
+        if (this.calculatedScrollbarHeight !== null)
+            return this.calculatedScrollbarHeight;
+        var scrollDiv = document.createElement("div");
+        scrollDiv.className = "ui-scrollbar-measure";
+        document.body.appendChild(scrollDiv);
+        var scrollbarHeight = scrollDiv.offsetHeight - scrollDiv.clientHeight;
+        document.body.removeChild(scrollDiv);
+        this.calculatedScrollbarWidth = scrollbarHeight;
+        return scrollbarHeight;
+    };
+    DomHandler.invokeElementMethod = function (element, methodName, args) {
+        element[methodName].apply(element, args);
+    };
+    DomHandler.clearSelection = function () {
+        if (window.getSelection) {
+            if (window.getSelection().empty) {
+                window.getSelection().empty();
+            }
+            else if (window.getSelection().removeAllRanges && window.getSelection().rangeCount > 0 && window.getSelection().getRangeAt(0).getClientRects().length > 0) {
+                window.getSelection().removeAllRanges();
+            }
+        }
+        else if (document['selection'] && document['selection'].empty) {
+            try {
+                document['selection'].empty();
+            }
+            catch (error) {
+                //ignore IE bug
+            }
+        }
+    };
+    DomHandler.getBrowser = function () {
+        if (!this.browser) {
+            var matched = this.resolveUserAgent();
+            this.browser = {};
+            if (matched.browser) {
+                this.browser[matched.browser] = true;
+                this.browser['version'] = matched.version;
+            }
+            if (this.browser['chrome']) {
+                this.browser['webkit'] = true;
+            }
+            else if (this.browser['webkit']) {
+                this.browser['safari'] = true;
+            }
+        }
+        return this.browser;
+    };
+    DomHandler.resolveUserAgent = function () {
+        var ua = navigator.userAgent.toLowerCase();
+        var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
+            /(webkit)[ \/]([\w.]+)/.exec(ua) ||
+            /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
+            /(msie) ([\w.]+)/.exec(ua) ||
+            ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+            [];
+        return {
+            browser: match[1] || "",
+            version: match[2] || "0"
+        };
+    };
+    DomHandler.isInteger = function (value) {
+        if (Number.isInteger) {
+            return Number.isInteger(value);
+        }
+        else {
+            return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
+        }
+    };
+    DomHandler.isHidden = function (element) {
+        return element.offsetParent === null;
+    };
+    DomHandler.getFocusableElements = function (element) {
+        var focusableElements = DomHandler.find(element, "button:not([tabindex = \"-1\"]):not([disabled]):not([style*=\"display:none\"]):not([hidden]), \n                [href][clientHeight][clientWidth]:not([tabindex = \"-1\"]):not([disabled]):not([style*=\"display:none\"]):not([hidden]), \n                input:not([tabindex = \"-1\"]):not([disabled]):not([style*=\"display:none\"]):not([hidden]), select:not([tabindex = \"-1\"]):not([disabled]):not([style*=\"display:none\"]):not([hidden]), \n                textarea:not([tabindex = \"-1\"]):not([disabled]):not([style*=\"display:none\"]):not([hidden]), [tabIndex]:not([tabIndex = \"-1\"]):not([disabled]):not([style*=\"display:none\"]):not([hidden]), \n                [contenteditable]:not([tabIndex = \"-1\"]):not([disabled]):not([style*=\"display:none\"]):not([hidden])");
+        var visibleFocusableElements = [];
+        for (var _i = 0, focusableElements_1 = focusableElements; _i < focusableElements_1.length; _i++) {
+            var focusableElement = focusableElements_1[_i];
+            if (getComputedStyle(focusableElement).display != "none" && getComputedStyle(focusableElement).visibility != "hidden")
+                visibleFocusableElements.push(focusableElement);
+        }
+        return visibleFocusableElements;
+    };
+    DomHandler.zindex = 1000;
+    DomHandler.calculatedScrollbarWidth = null;
+    DomHandler.calculatedScrollbarHeight = null;
+    return DomHandler;
+}());
+exports.DomHandler = DomHandler;
+//# sourceMappingURL=domhandler.js.map
+
+/***/ }),
+
+/***/ "./node_modules/primeng/components/inputtext/inputtext.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/primeng/components/inputtext/inputtext.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var forms_1 = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+var common_1 = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+var InputText = /** @class */ (function () {
+    function InputText(el, ngModel) {
+        this.el = el;
+        this.ngModel = ngModel;
+    }
+    InputText.prototype.ngDoCheck = function () {
+        this.updateFilledState();
+    };
+    //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
+    InputText.prototype.onInput = function (e) {
+        this.updateFilledState();
+    };
+    InputText.prototype.updateFilledState = function () {
+        this.filled = (this.el.nativeElement.value && this.el.nativeElement.value.length) ||
+            (this.ngModel && this.ngModel.model);
+    };
+    __decorate([
+        core_1.HostListener('input', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], InputText.prototype, "onInput", null);
+    InputText = __decorate([
+        core_1.Directive({
+            selector: '[pInputText]',
+            host: {
+                '[class.ui-inputtext]': 'true',
+                '[class.ui-corner-all]': 'true',
+                '[class.ui-state-default]': 'true',
+                '[class.ui-widget]': 'true',
+                '[class.ui-state-filled]': 'filled'
+            }
+        }),
+        __param(1, core_1.Optional()),
+        __metadata("design:paramtypes", [core_1.ElementRef, forms_1.NgModel])
+    ], InputText);
+    return InputText;
+}());
+exports.InputText = InputText;
+var InputTextModule = /** @class */ (function () {
+    function InputTextModule() {
+    }
+    InputTextModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [InputText],
+            declarations: [InputText]
+        })
+    ], InputTextModule);
+    return InputTextModule;
+}());
+exports.InputTextModule = InputTextModule;
+//# sourceMappingURL=inputtext.js.map
+
+/***/ }),
+
+/***/ "./node_modules/primeng/components/utils/objectutils.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/primeng/components/utils/objectutils.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ObjectUtils = /** @class */ (function () {
+    function ObjectUtils() {
+    }
+    ObjectUtils.equals = function (obj1, obj2, field) {
+        if (field)
+            return (this.resolveFieldData(obj1, field) === this.resolveFieldData(obj2, field));
+        else
+            return this.equalsByValue(obj1, obj2);
+    };
+    ObjectUtils.equalsByValue = function (obj1, obj2) {
+        if (obj1 === obj2)
+            return true;
+        if (obj1 && obj2 && typeof obj1 == 'object' && typeof obj2 == 'object') {
+            var arrA = Array.isArray(obj1), arrB = Array.isArray(obj2), i, length, key;
+            if (arrA && arrB) {
+                length = obj1.length;
+                if (length != obj2.length)
+                    return false;
+                for (i = length; i-- !== 0;)
+                    if (!this.equalsByValue(obj1[i], obj2[i]))
+                        return false;
+                return true;
+            }
+            if (arrA != arrB)
+                return false;
+            var dateA = obj1 instanceof Date, dateB = obj2 instanceof Date;
+            if (dateA != dateB)
+                return false;
+            if (dateA && dateB)
+                return obj1.getTime() == obj2.getTime();
+            var regexpA = obj1 instanceof RegExp, regexpB = obj2 instanceof RegExp;
+            if (regexpA != regexpB)
+                return false;
+            if (regexpA && regexpB)
+                return obj1.toString() == obj2.toString();
+            var keys = Object.keys(obj1);
+            length = keys.length;
+            if (length !== Object.keys(obj2).length)
+                return false;
+            for (i = length; i-- !== 0;)
+                if (!Object.prototype.hasOwnProperty.call(obj2, keys[i]))
+                    return false;
+            for (i = length; i-- !== 0;) {
+                key = keys[i];
+                if (!this.equalsByValue(obj1[key], obj2[key]))
+                    return false;
+            }
+            return true;
+        }
+        return obj1 !== obj1 && obj2 !== obj2;
+    };
+    ObjectUtils.resolveFieldData = function (data, field) {
+        if (data && field) {
+            if (this.isFunction(field)) {
+                return field(data);
+            }
+            else if (field.indexOf('.') == -1) {
+                return data[field];
+            }
+            else {
+                var fields = field.split('.');
+                var value = data;
+                for (var i = 0, len = fields.length; i < len; ++i) {
+                    if (value == null) {
+                        return null;
+                    }
+                    value = value[fields[i]];
+                }
+                return value;
+            }
+        }
+        else {
+            return null;
+        }
+    };
+    ObjectUtils.isFunction = function (obj) {
+        return !!(obj && obj.constructor && obj.call && obj.apply);
+    };
+    ObjectUtils.filter = function (value, fields, filterValue) {
+        var filteredItems = [];
+        var filterText = this.removeAccents(filterValue).toLowerCase();
+        if (value) {
+            for (var _i = 0, value_1 = value; _i < value_1.length; _i++) {
+                var item = value_1[_i];
+                for (var _a = 0, fields_1 = fields; _a < fields_1.length; _a++) {
+                    var field = fields_1[_a];
+                    var fieldValue = this.removeAccents(String(this.resolveFieldData(item, field))).toLowerCase();
+                    if (fieldValue.indexOf(filterText) > -1) {
+                        filteredItems.push(item);
+                        break;
+                    }
+                }
+            }
+        }
+        return filteredItems;
+    };
+    ObjectUtils.reorderArray = function (value, from, to) {
+        var target;
+        if (value && from !== to) {
+            if (to >= value.length) {
+                to %= value.length;
+                from %= value.length;
+            }
+            value.splice(to, 0, value.splice(from, 1)[0]);
+        }
+    };
+    ObjectUtils.generateSelectItems = function (val, field) {
+        var selectItems;
+        if (val && val.length) {
+            selectItems = [];
+            for (var _i = 0, val_1 = val; _i < val_1.length; _i++) {
+                var item = val_1[_i];
+                selectItems.push({ label: this.resolveFieldData(item, field), value: item });
+            }
+        }
+        return selectItems;
+    };
+    ObjectUtils.insertIntoOrderedArray = function (item, index, arr, sourceArr) {
+        if (arr.length > 0) {
+            var injected = false;
+            for (var i = 0; i < arr.length; i++) {
+                var currentItemIndex = this.findIndexInList(arr[i], sourceArr);
+                if (currentItemIndex > index) {
+                    arr.splice(i, 0, item);
+                    injected = true;
+                    break;
+                }
+            }
+            if (!injected) {
+                arr.push(item);
+            }
+        }
+        else {
+            arr.push(item);
+        }
+    };
+    ObjectUtils.findIndexInList = function (item, list) {
+        var index = -1;
+        if (list) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i] == item) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        return index;
+    };
+    ObjectUtils.removeAccents = function (str) {
+        if (str && str.search(/[\xC0-\xFF]/g) > -1) {
+            str = str
+                .replace(/[\xC0-\xC5]/g, "A")
+                .replace(/[\xC6]/g, "AE")
+                .replace(/[\xC7]/g, "C")
+                .replace(/[\xC8-\xCB]/g, "E")
+                .replace(/[\xCC-\xCF]/g, "I")
+                .replace(/[\xD0]/g, "D")
+                .replace(/[\xD1]/g, "N")
+                .replace(/[\xD2-\xD6\xD8]/g, "O")
+                .replace(/[\xD9-\xDC]/g, "U")
+                .replace(/[\xDD]/g, "Y")
+                .replace(/[\xDE]/g, "P")
+                .replace(/[\xE0-\xE5]/g, "a")
+                .replace(/[\xE6]/g, "ae")
+                .replace(/[\xE7]/g, "c")
+                .replace(/[\xE8-\xEB]/g, "e")
+                .replace(/[\xEC-\xEF]/g, "i")
+                .replace(/[\xF1]/g, "n")
+                .replace(/[\xF2-\xF6\xF8]/g, "o")
+                .replace(/[\xF9-\xFC]/g, "u")
+                .replace(/[\xFE]/g, "p")
+                .replace(/[\xFD\xFF]/g, "y");
+        }
+        return str;
+    };
+    return ObjectUtils;
+}());
+exports.ObjectUtils = ObjectUtils;
+//# sourceMappingURL=objectutils.js.map
+
+/***/ }),
+
 /***/ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.html":
 /*!*******************************************************************************!*\
   !*** ./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.html ***!
@@ -5297,7 +8122,7 @@ var NgxGaugeModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<!-- <div fxLayout=\"row wrap\">\n    <div class=\"sa_heading_bar\">\n        <div fxFlex.gt-sm=\"85\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <h4><span class=\"page_title\">Clinician Procedures &#38; Referrals</span></h4>\n        </div>\n        <app-headerright class=\"app-headerright\"></app-headerright>\n\n        <div fxFlex.gt-sm=\"18\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <div class=\"vertical_center_header_content\">\n                <div class=\"sa_select_outer\">\n                    <select class=\"sa_select\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n                        <option value =\"all\">All Dentist( {{dentistCount}} )</option>\n                        <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                    </select>\n                </div>\n            </div>\n        </div>\n    </div>\n</div> -->\n <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\" [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n        <div fxFlex.lg=\"80\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"80\">\n             <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n              <div class=\"custom_date\">\n              <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n              <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n            </div>\n        </div>\n             <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\" *ngIf=\"dentistVal == 'all'\"> \n         <div class=\"onofftoogle2\">\n           <span class=\"trend_mode_title\">Target:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group2\" aria-label=\"Font Style\" >\n                  <mat-button-toggle checked value = \"off\" class = \"toggle_off target_filter\" (click)=\"goalToggle('off')\">\n                  <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"average\" class = \"toggle_average target_filter\" (click)=\"goalToggle('average')\">\n                  <span>Average</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"goal\" class = \"toggle_goal target_filter\" (click)=\"goalToggle('goal')\">\n                  <span>Goal</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n     <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\">\n         <div class=\"onofftoogle\" *ngIf=\"showTrend == true\">\n          <span class=\"trend_mode_title\">Trend Mode:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\" >\n               <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\"><span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                  <span>Current</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                  <span>Historic</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{productionTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Dentist Production\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"barChartLabels.length > 0\" #myCanvas baseChart [datasets]=\"barChartData\" [labels]=\"barChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsDP\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"barChartLabels.length <= 0\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"barChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotalAverage| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\"fddf>\n                        <h3 class=\"m-0 font-light text-center\">${{productionGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"dentistProductionSingle sa_no_tabs_area\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Dentist Production\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n         <ngx-gauge  *ngIf=\"showTrendChart == false && gaugeValue >0\" [type]=\"gaugeType\"\n           [value]=\"gaugeValue\"\n           [label]=\"gaugeLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"productionGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && dentistProductionTrendLabels.length >0\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"dentistProdTrend\" [labels]=\"dentistProductionTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      \n       <div *ngIf=\"dentistProductionTrendLabels.length <= 0 && gaugeValue<=0\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValue >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total  </small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotalAverage| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg \">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : $ {{planTotalPrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{planTotalTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Treatment Plan Average Cost\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n                    <div fxLayout=\"row wrap\" class=\"treatment_cost sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn tcmain1 active\" (click) = \"changeTreatmentCost('1')\">Proposed Fees</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn tcmain2\" (click) = \"changeTreatmentCost('2')\">Completed Fees</small>\n                    </div>\n                </div>\n        <div style=\"height: 250px\" *ngIf=\"planChartLabels1.length > 0\" >\n        <canvas #myCanvas *ngIf=\"tcmain == 1\"  baseChart class=\"chart\"\n          [datasets]=\"planChartDataP\"\n          [labels]=\"planChartLabels1\"\n          [options]=\"barChartOptionsTC\"\n          [legend]=\"false\"\n          [chartType]=\"barChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"lineChartColors\"></canvas>\n          <canvas #myCanvas *ngIf=\"tcmain == 2\" baseChart class=\"chart\"\n          [datasets]=\"planChartDataC\"\n          [labels]=\"planChartLabels2\"\n          [options]=\"barChartOptionsTC\"\n          [legend]=\"false\"\n          [chartType]=\"barChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"lineChartColors\"></canvas>\n        </div>\n        \n\n         <div *ngIf=\"planChartLabels1.length <= 0\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && planChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalAverage | number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalPrev | number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"treatmentPlanSingle\" [style.display]=\"'none'\">\n      <mat-card-content class=\"sa_matcard_content\">\n   \n          <mat-card-title class=\"text-center\">Treatment Plan Average Cost\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div fxLayout=\"row wrap\" class=\"treatment_cost sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn tcmain1 active\" (click) = \"changeTreatmentCostSingle('1')\">Proposed Fees</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn tcmain2\" (click) = \"changeTreatmentCostSingle('2')\">Completed Fees</small>\n                    </div>\n                </div>\n         <ngx-gauge *ngIf=\"showTrendChart == false && gaugeValueTreatment >0\" [type]=\"gaugeType\"\n           [value]=\"gaugeValueTreatment\"\n           [label]=\"gaugeLabelTreatment\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n             [max] = \"planTotalGoal\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && treatmentPlanTrendLabels.length > 0\" style=\"height: 250px\">\n              <canvas #myCanvas baseChart [datasets]=\"treatPlanTrend\" [labels]=\"treatmentPlanTrendLabels\"  [legend]=\"barChartLegend\"\n              [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n              </canvas>\n          </div>\n\n          <div *ngIf=\"treatmentPlanTrendLabels.length <= 0 && gaugeValueTreatment<=0\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValueTreatment >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{gaugeValueTreatment | number:'1.0-0' }}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalPrev | number:'1.0-0' }}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"noPatients sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} :  {{doughnutTotalPrev}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{doughnutTotalTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">No. Patient Complaints\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n        <div class=\"chart\" *ngIf=\"doughnutChartLabels.length > 0\">\n          <div *ngIf=\"showTrendChart == false\" style=\"height: 250px\">\n        <canvas #myCanvas baseChart class=\"chart\"\n        [data]=\"doughnutChartData\"\n          [labels]=\"doughnutChartLabels\"\n          [legend]=\"true\"\n          [options]=\"doughnutChartOptions\"\n          [chartType]=\"doughnutChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"doughnutChartColors\"></canvas>\n        </div>\n        </div>\n         \n          <div *ngIf=\"doughnutChartLabels.length <= 0\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && doughnutChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotalPrev| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Previous Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light typext-center\">{{doughnutGoals| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"noPatientsSingle sa_no_tabs_area\" [style.display]=\"'none'\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">No. Patient Complaints\n\n          <!--     <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n        <div class=\"chart\">\n         <ngx-gauge *ngIf=\"showTrendChart == false && gaugeValuePatients >0\" [type]=\"gaugeType\"\n           [value]=\"gaugeValuePatients\"\n           [label]=\"gaugeLabelPatients\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"doughnutGoals\"\n           [cap] =\"cap\"\n           [size] = \"size\"\n           [duration]= \"gaugeDuration\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && patientComplaintsTrendLabels.length>0\" style=\"height: 250px\">\n              <canvas #myCanvas baseChart [datasets]=\"patientComplaintTrend\" [labels]=\"patientComplaintsTrendLabels\"  [legend]=\"barChartLegend\"\n              [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionstrend\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n              </canvas>\n          </div>\n        \n           <div *ngIf=\"patientComplaintsTrendLabels.length <= 0 && gaugeValuePatients<=0\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n        </div>\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValuePatients >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotalPrev| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Previous Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutGoals| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n   <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"recallPrebook sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{recallChartAveragePrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{recallChartTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Recall Prebook Rate\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n          <div fxLayout=\"row wrap\" class=\"treatment_cost sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn tcmain1 active\" (click) = \"changePrebookRate('1')\">Recall Prebook Rate</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn tcmain2\" (click) = \"changePrebookRate('2')\">Treatment\nPrebook Rate</small>\n                    </div>\n                </div>\n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"recallChartLabels.length > 0\" #myCanvas baseChart [datasets]=\"recallChartData\" [labels]=\"recallChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"recallChartLabels.length <= 0\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"recallChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallChartAverage}}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallChartAveragePrev}}</h3>\n                        <small class=\"text-center\">Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallChartGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"recallPrebookSingle sa_no_tabs_area\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Recall Prebook Rate\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n         <ngx-gauge  *ngIf=\"showTrendChart == false && gaugeValue >0\" [type]=\"gaugeType\"\n           [value]=\"recallValue\"\n           [label]=\"recallLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"recallGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && dentistProductionTrendLabels.length >0\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"dentistProdTrend\" [labels]=\"dentistProductionTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n          </canvas>\n      </div>\n\n       <div *ngIf=\"dentistProductionTrendLabels.length <= 0 && gaugeValue<=0\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValue >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total  </small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotalAverage| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n\n\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{treatmentChartAveragePrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{treatmentChartTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Treatment Plan Completion Rate (%)\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"treatmentChartLabels.length > 0\" #myCanvas baseChart [datasets]=\"treatmentChartData\" [labels]=\"treatmentChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"treatmentChartLabels.length <= 0\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"recallChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentChartAverage}}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentChartAveragePrev}}</h3>\n                        <small class=\"text-center\">Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentChartGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"dentistProductionSingle sa_no_tabs_area\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Treatment Plan Completion Rate (%)\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n         <ngx-gauge  *ngIf=\"showTrendChart == false && gaugeValue >0\" [type]=\"gaugeType\"\n           [value]=\"gaugeValue\"\n           [label]=\"gaugeLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"productionGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && dentistProductionTrendLabels.length >0\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"dentistProdTrend\" [labels]=\"dentistProductionTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n          </canvas>\n      </div>\n\n       <div *ngIf=\"dentistProductionTrendLabels.length <= 0 && gaugeValue<=0\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValue >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total  </small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotalAverage| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div> <canvas #myCanvas baseChart [style.display]=\"'none'\"></canvas>"
+module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<!-- <div fxLayout=\"row wrap\">\n    <div class=\"sa_heading_bar\">\n        <div fxFlex.gt-sm=\"85\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <h4><span class=\"page_title\">Clinician Procedures &#38; Referrals</span></h4>\n        </div>\n        <app-headerright class=\"app-headerright\"></app-headerright>\n\n        <div fxFlex.gt-sm=\"18\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <div class=\"vertical_center_header_content\">\n                <div class=\"sa_select_outer\">\n                    <select class=\"sa_select\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n                        <option value =\"all\">All Dentist( {{dentistCount}} )</option>\n                        <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                    </select>\n                </div>\n            </div>\n        </div>\n    </div>\n</div> -->\n <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\" [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n        <div fxFlex.lg=\"80\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"80\">\n             <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n              <div class=\"custom_date\">\n              <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n              <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n            </div>\n        </div>\n             <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\" *ngIf=\"dentistVal == 'all'\"> \n         <div class=\"onofftoogle2\">\n           <span class=\"trend_mode_title\">Target:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group2\" aria-label=\"Font Style\" >\n                  <mat-button-toggle checked value = \"off\" class = \"toggle_off target_filter\" (click)=\"goalToggle('off')\">\n                  <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"average\" class = \"toggle_average target_filter\" (click)=\"goalToggle('average')\">\n                  <span>Average</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"goal\" class = \"toggle_goal target_filter\" (click)=\"goalToggle('goal')\">\n                  <span>Goal</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n     <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\">\n         <div class=\"onofftoogle\" *ngIf=\"showTrend == true\">\n          <span class=\"trend_mode_title\">Trend Mode:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\" >\n               <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\"><span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                  <span>Current</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                  <span>Historic</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{productionTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Dentist Production\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n          <div *ngIf=\"buildChartLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"barChartLabels.length > 0\" #myCanvas baseChart [datasets]=\"barChartData\" [labels]=\"barChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsDP\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"barChartLabels.length <= 0 && buildChartLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"barChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotalAverage| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\"fddf>\n                        <h3 class=\"m-0 font-light text-center\">${{productionGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"dentistProductionSingle sa_no_tabs_area\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Dentist Production\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div *ngIf=\"buildChartDentistLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n         <ngx-gauge  *ngIf=\"showTrendChart == false && gaugeValue >0\" [type]=\"gaugeType\"\n           [value]=\"gaugeValue\"\n           [label]=\"gaugeLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"productionGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"dentistProductionTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n          <div *ngIf=\"showTrendChart == true && dentistProductionTrendLabels.length >0\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"dentistProdTrend\" [labels]=\"dentistProductionTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      \n       <div *ngIf=\"dentistProductionTrendLabels.length <= 0 && gaugeValue<=0 && buildChartDentistLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValue >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total  </small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotalAverage| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg \">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : $ {{planTotalPrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{planTotalTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Treatment Plan Average Cost\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n                    <div fxLayout=\"row wrap\" class=\"treatment_cost sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn tcmain1 active\" (click) = \"changeTreatmentCost('1')\">Proposed Fees</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn tcmain2\" (click) = \"changeTreatmentCost('2')\">Completed Fees</small>\n                    </div>\n                </div>\n          <div *ngIf=\"buildChartTreatmentLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <div style=\"height: 250px\" *ngIf=\"planChartLabels1.length > 0\" >\n        <canvas #myCanvas *ngIf=\"tcmain == 1\"  baseChart class=\"chart\"\n          [datasets]=\"planChartDataP\"\n          [labels]=\"planChartLabels1\"\n          [options]=\"barChartOptionsTC\"\n          [legend]=\"false\"\n          [chartType]=\"barChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"lineChartColors\"></canvas>\n          <canvas #myCanvas *ngIf=\"tcmain == 2\" baseChart class=\"chart\"\n          [datasets]=\"planChartDataC\"\n          [labels]=\"planChartLabels2\"\n          [options]=\"barChartOptionsTC\"\n          [legend]=\"false\"\n          [chartType]=\"barChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"lineChartColors\"></canvas>\n        </div>\n        \n\n         <div *ngIf=\"planChartLabels1.length <= 0 && buildChartTreatmentLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && planChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalAverage | number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalPrev | number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"treatmentPlanSingle\" [style.display]=\"'none'\">\n      <mat-card-content class=\"sa_matcard_content\">\n   \n          <mat-card-title class=\"text-center\">Treatment Plan Average Cost\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div fxLayout=\"row wrap\" class=\"treatment_cost sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn tcmain1 active\" (click) = \"changeTreatmentCostSingle('1')\">Proposed Fees</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn tcmain2\" (click) = \"changeTreatmentCostSingle('2')\">Completed Fees</small>\n                    </div>\n                </div>\n          <div *ngIf=\"buildChartTreatmentDentistLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n         <ngx-gauge *ngIf=\"showTrendChart == false && gaugeValueTreatment >0\" [type]=\"gaugeType\"\n           [value]=\"gaugeValueTreatment\"\n           [label]=\"gaugeLabelTreatment\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n             [max] = \"planTotalGoal\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && treatmentPlanTrendLabels.length > 0\" style=\"height: 250px\">\n              <canvas #myCanvas baseChart [datasets]=\"treatPlanTrend\" [labels]=\"treatmentPlanTrendLabels\"  [legend]=\"barChartLegend\"\n              [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n              </canvas>\n          </div>\n\n          <div *ngIf=\"treatmentPlanTrendLabels.length <= 0 && gaugeValueTreatment<=0 && buildChartTreatmentDentistLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValueTreatment >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{gaugeValueTreatment | number:'1.0-0' }}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalPrev | number:'1.0-0' }}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"noPatients sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} :  {{doughnutTotalPrev}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{doughnutTotalTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">No. Patient Complaints\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div *ngIf=\"buildChartNopatientsLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n        <div class=\"chart\" *ngIf=\"doughnutChartLabels.length > 0\">\n          <div *ngIf=\"showTrendChart == false\" style=\"height: 250px\">\n        <canvas #myCanvas baseChart class=\"chart\"\n        [data]=\"doughnutChartData\"\n          [labels]=\"doughnutChartLabels\"\n          [legend]=\"true\"\n          [options]=\"doughnutChartOptions\"\n          [chartType]=\"doughnutChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"doughnutChartColors\"></canvas>\n        </div>\n        </div>\n         \n          <div *ngIf=\"doughnutChartLabels.length <= 0 && buildChartNopatientsLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && doughnutChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotalPrev| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Previous Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light typext-center\">{{doughnutGoals| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"noPatientsSingle sa_no_tabs_area\" [style.display]=\"'none'\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">No. Patient Complaints\n\n          <!--     <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div *ngIf=\"buildChartNopatientsDentistLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <div class=\"chart\">\n         <ngx-gauge *ngIf=\"showTrendChart == false && gaugeValuePatients >0\" [type]=\"gaugeType\"\n           [value]=\"gaugeValuePatients\"\n           [label]=\"gaugeLabelPatients\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"doughnutGoals\"\n           [cap] =\"cap\"\n           [size] = \"size\"\n           [duration]= \"gaugeDuration\">\n          </ngx-gauge>\n           <div *ngIf=\"patientComplaintsTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n          <div *ngIf=\"showTrendChart == true && patientComplaintsTrendLabels.length>0\" style=\"height: 250px\">\n              <canvas #myCanvas baseChart [datasets]=\"patientComplaintTrend\" [labels]=\"patientComplaintsTrendLabels\"  [legend]=\"barChartLegend\"\n              [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionstrend\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n              </canvas>\n          </div>\n        \n           <div *ngIf=\"patientComplaintsTrendLabels.length <= 0 && gaugeValuePatients<=0 && buildChartNopatientsDentistLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n        </div>\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValuePatients >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotalPrev| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Previous Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutGoals| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n   \n   <!-- Column-->\n  <div fxFlex.lg=\"66\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"66\" class=\"sa_flexbg\">\n    <mat-card  class=\"newPatients sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} :  {{newPatientTotalPrev}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{newPatientTotalTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">No. New Patients\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div *ngIf=\"buildChartNewpatientsLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <div class=\"chart\" *ngIf=\"newPatientChartLabels.length > 0\">\n          <div *ngIf=\"showTrendChart == false\" style=\"height: 250px\">\n        <canvas #myCanvas baseChart class=\"chart\"\n        [data]=\"newPatientChartData\"\n          [labels]=\"newPatientChartLabels\"\n          [legend]=\"true\"\n          [options]=\"doughnutChartOptions\"\n          [chartType]=\"doughnutChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"doughnutChartColors\"></canvas>\n        </div>\n        </div>\n         \n          <div *ngIf=\"newPatientChartLabels.length <= 0 && buildChartNewpatientsLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && newPatientChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{newPatientTotalAverage| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{newPatientTotalPrev| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Previous Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light typext-center\">{{newPatientGoals| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"newPatientsSingle sa_no_tabs_area\" [style.display]=\"'none'\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">No. New Patients\n\n\n          <!--     <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div *ngIf=\"buildChartNewpatientsDentistLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n          <div *ngIf=\"fdnewPatientsRateTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <div class=\"chart\">\n          <h1 *ngIf=\"showTrendChart == false\">{{newPatientValuePatients}}</h1>\n         <ngx-gauge *ngIf=\"showTrendChart == false && newPatientPercent >0\" [type]=\"gaugeType\"\n           [value]=\"newPatientPercent\"\n           [label]=\"newPatientLabelPatients\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"newPatientGoals\"\n           [cap] =\"cap\"\n           [append] =\"gaugeAppendText\"\n           [size] = \"size\"\n           [duration]= \"gaugeDuration\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && newPatientsChartTrendLabels.length>0\" style=\"height: 250px\">\n              <canvas #myCanvas baseChart [datasets]=\"newPatientsChartTrend\" [labels]=\"newPatientsChartTrendLabels\"  [legend]=\"barChartLegend\"\n              [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionstrend\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n              </canvas>\n          </div>\n        \n           <div *ngIf=\"newPatientsChartTrendLabels.length <= 0 && newPatientPercent<=0 && buildChartNewpatientsDentistLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n        </div>\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && newPatientPercent >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{newPatientTotalAverage| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{newPatientTotalPrev| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Previous Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{newPatientGoals| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n<div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"recallPrebook\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{recallChartAveragePrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{recallChartTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Recall Prebook Rate\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n          <div fxLayout=\"row wrap\" class=\"prebook_rate sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn pr_recall active\" (click) = \"changePrebookRate('recall')\">Recall Prebook Rate</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn pr_treatment\" (click) = \"changePrebookRate('treatment')\">Treatment\nPrebook Rate</small>\n                    </div>\n                </div>\n          <div *ngIf=\"recallPrebookLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"recallChartLabels.length > 0 && prebook=='recall' \" #myCanvas baseChart [datasets]=\"recallChartData\" [labels]=\"recallChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsRP\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n\n        <canvas *ngIf=\"treatmentPreChartLabels.length > 0 && prebook=='treatment'\" #myCanvas baseChart [datasets]=\"treatmentPreChartData\" [labels]=\"treatmentPreChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsRP\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"recallChartLabels.length <= 0 && prebook=='recall' && recallPrebookLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n        <div *ngIf=\"treatmentPreChartLabels.length <= 0 && prebook=='treatment' && treatmentPrebookLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"recallChartLabels.length > 0 && prebook=='recall'\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallChartAverage}}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallChartAveragePrev}}</h3>\n                        <small class=\"text-center\">Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallChartGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n  <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"treatmentPreChartLabels.length > 0 && prebook=='treatment'\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentPreChartAverage}}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentPreChartAveragePrev}}</h3>\n                        <small class=\"text-center\">Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentPreChartGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"recallPrebookSingle\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Recall Prebook Rate\n        \n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div fxLayout=\"row wrap\" class=\"prebook_rate sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn pr_recall active\" (click) = \"changePrebookRate('recall')\">Recall Prebook Rate</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn pr_treatment\" (click) = \"changePrebookRate('treatment')\">Treatment\nPrebook Rate</small>\n                    </div>\n                </div>\n                <div *ngIf=\"recallPrebookDentistLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n          <div *ngIf=\"fdRecallPrebookRateTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n         <ngx-gauge  *ngIf=\"showTrendChart == false && recallValue >0 && prebook=='recall'\" [type]=\"gaugeType\"\n           [value]=\"recallValue\"\n           [label]=\"recallLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"recallGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n                <ngx-gauge  *ngIf=\"showTrendChart == false && treatmentPreValue >0 && prebook=='treatment'\" [type]=\"gaugeType\"\n           [value]=\"treatmentPreValue\"\n           [label]=\"treatmentPreLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"recallGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && recallPrebookChartTrendLabels.length >0  && prebook=='recall' && recallPrebookDentistLoader == false\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"recallPrebookChartTrend\" [labels]=\"recallPrebookChartTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n          </canvas>\n      </div>\n      <div *ngIf=\"showTrendChart == true && treatmentPrebookChartTrendLabels.length >0 && prebook=='treatment' && treatmentPrebookDentistLoader == false\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"treatmentPrebookChartTrend\" [labels]=\"treatmentPrebookChartTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n          </canvas>\n      </div>\n       <div *ngIf=\"patientComplaintsTrendLabels.length <= 0 && recallValue<=0  && prebook=='recall'\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n           <div *ngIf=\"patientComplaintsTrendLabels.length <= 0 && treatmentPreValue<=0  && prebook=='treatment'\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && recallValue >0 && prebook=='recall'\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{recallValue}}</h3>\n                        <small class=\"text-center\">Total  </small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{recallChartAverage}}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{recallGoal}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && treatmentPreValue >0 && prebook=='treatment'\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentPreValue}}</h3>\n                        <small class=\"text-center\">Total  </small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentPreChartAverage}}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentPreGoal}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n\n      </mat-card-content>\n    </mat-card>\n  </div>\n\n<div fxFlex.lg=\"50\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"sa_flexbg\">\n    <mat-card  class=\"hourlyRate sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{hourlyRateChartAveragePrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{hourlyRateChartTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Hourly Rate\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n          <div class=\"relative\">\n           <div class=\"settingsBtn\"><button class=\"mat-raised-button mat-green-button sa_smtable_btn\" mat-raised-button (click)=\"ngxSmartModalService.getModal('myModal').open()\">Settings</button></div>\n\n\n          <div *ngIf=\"hourlyRateChartLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"hourlyRateChartLabels.length > 0\" #myCanvas baseChart [datasets]=\"hourlyRateChartData\" [labels]=\"hourlyRateChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsHR\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"hourlyRateChartLabels.length <= 0 && hourlyRateChartLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n      </div>\n    </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"recallChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{hourlyRateChartAverage}}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{hourlyRateChartAveragePrev}}</h3>\n                        <small class=\"text-center\">Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{hourlyRateChartGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"hourlyRateSingle sa_no_tabs_area\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Hourly Rate\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div *ngIf=\"hourlyRateDentistLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n          <div *ngIf=\"fdhourlyRateRateTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n         <ngx-gauge  *ngIf=\"showTrendChart == false && hourlyValue >0\" [type]=\"gaugeType\"\n           [value]=\"hourlyValue\"\n           [label]=\"hourlyLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"hourlyGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && hourlyRateChartTrendLabels.length >0\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"hourlyRateChartTrend\" [labels]=\"hourlyRateChartTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n          </canvas>\n      </div>\n\n       <div *ngIf=\"patientComplaintsTrendLabels.length <= 0 && hourlyValue<=0 && hourlyRateDentistLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && hourlyValue >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{hourlyValue}}</h3>\n                        <small class=\"text-center\">Current  </small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentChartAverage}}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{hourlyGoal}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"49\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg last\">\n    <mat-card  class=\"treatmentPlanRate sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{treatmentChartAveragePrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{treatmentChartTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Treatment Plan Completion Rate (%)\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n          <div *ngIf=\"treatmentPlanRateLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"treatmentChartLabels.length > 0\" #myCanvas baseChart [datasets]=\"treatmentChartData\" [labels]=\"treatmentChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsTP\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"treatmentChartLabels.length <= 0 && treatmentPlanRateLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"recallChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentChartAverage}}</h3>\n                        <small class=\"text-center\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentChartAveragePrev}}</h3>\n                        <small class=\"text-center\">Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentChartGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"treatmentPlanRateSingle sa_no_tabs_area\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Treatment Plan Completion Rate (%)\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div *ngIf=\"treatmentPlanRateDentistLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n          <div *ngIf=\"fdtreatmentPlanRateTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n         <ngx-gauge  *ngIf=\"showTrendChart == false && treatmentPlanValue >0\" [type]=\"gaugeType\"\n           [value]=\"treatmentPlanValue\"\n           [label]=\"treatmentPlanLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"treatmentPlanGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && treatmentPlanChartTrendLabels.length >0\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"treatmentPlanChartTrend\" [labels]=\"treatmentPlanChartTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n          </canvas>\n      </div>\n\n       <div *ngIf=\"treatmentPlanChartTrendLabels.length <= 0 && treatmentPlanValue<=0 && treatmentPlanRateDentistLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && treatmentPlanValue >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentPlanValue}}</h3>\n                        <small class=\"text-center\">Current  </small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentChartAverage}}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentPlanGoal}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div> <canvas #myCanvas baseChart [style.display]=\"'none'\"></canvas>\n  <ngx-smart-modal #myModal identifier=\"myModal\">\n  <h3 class=\"datamapping-heading\">Data Mapping</h3>\n <div fxFlex.lg=\"100\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"100\" class=\"modal-popup-mapping sa_flexbg referral_clinicians\">   \n  <div *ngFor=\"let acntngDentist of accountingDentist\">\n    <span fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">{{acntngDentist.name}}<span class=\"name_arrow\"><i class=\"fas fa-caret-right\"></i></span></span>\n   <select fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"sa_select internal_dentist\" name=\"dentistMap_{{acntngDentist.provider_id}}\" id=\"dentistMap_{{acntngDentist.provider_id}}\">\n      <option value =\"\">Select Dentist</option>\n      <option *ngFor=\"let statDentist of statusDentist\" value =\"{{statDentist.book_desc}}\" [attr.selected] = \"statDentist.provider_id == acntngDentist.provider_id ? 'selected' : null\"\n      >{{statDentist.book_desc}}</option>\n   </select> \n   </div>\n   \n </div>\n <div class=\"modal-footer-mapping\"><button class=\"mat-raised-button mat-gray\" mat-raised-button (click)=\"save_mapping()\">Save Mapping</button></div>\n\n  <button (click)=\"myModal.close()\" class=\"close_modal\" style=\"display:none\">Close</button>\n</ngx-smart-modal>"
 
 /***/ }),
 
@@ -5314,15 +8139,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cliniciananalysis.service */ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.service.ts");
 /* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! chartjs-plugin-style */ "./node_modules/chartjs-plugin-style/dist/chartjs-plugin-style.js");
-/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../layouts/full/header/header.service */ "./src/app/layouts/full/header/header.service.ts");
-/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
-/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ng2-charts */ "./node_modules/ng2-charts/index.js");
-/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(ng2_charts__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _frontdesk_frontdesk_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../frontdesk/frontdesk.service */ "./src/app/dashboards/frontdesk/frontdesk.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! chartjs-plugin-style */ "./node_modules/chartjs-plugin-style/dist/chartjs-plugin-style.js");
+/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../layouts/full/header/header.service */ "./src/app/layouts/full/header/header.service.ts");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ng2-charts */ "./node_modules/ng2-charts/index.js");
+/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(ng2_charts__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var ngx_smart_modal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ngx-smart-modal */ "./node_modules/ngx-smart-modal/esm5/ngx-smart-modal.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5341,8 +8168,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 var ClinicianAnalysisComponent = /** @class */ (function () {
-    function ClinicianAnalysisComponent(cliniciananalysisService, dentistService, datePipe, route, headerService, _cookieService, router) {
+    function ClinicianAnalysisComponent(cliniciananalysisService, dentistService, datePipe, route, headerService, _cookieService, router, ngxSmartModalService, frontdeskService) {
         this.cliniciananalysisService = cliniciananalysisService;
         this.dentistService = dentistService;
         this.datePipe = datePipe;
@@ -5350,6 +8179,8 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         this.headerService = headerService;
         this._cookieService = _cookieService;
         this.router = router;
+        this.ngxSmartModalService = ngxSmartModalService;
+        this.frontdeskService = frontdeskService;
         this.id = {};
         this.clinic_id = {};
         this.UrlSegment = {};
@@ -5382,14 +8213,20 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         this.pieChartLabels = ['ddfs'];
         this.planChartLabels = [];
         this.recallChartLabels = [];
+        this.treatmentPreChartLabels = [];
         this.treatmentChartLabels = [];
         this.barChartLabels1 = [];
         this.planChartLabels1 = [];
         this.recallChartLabels1 = [];
+        this.treatmentPreChartLabels1 = [];
         this.treatmentChartLabels1 = [];
         this.doughnutChartLabels = [];
         this.doughnutChartLabels1 = [];
+        this.newPatientChartLabels = [];
+        this.newPatientChartLabels1 = [];
         this.doughnutChartType = 'doughnut';
+        this.hourlyRateChartLabels = [];
+        this.hourlyRatePreChartLabels1 = [];
         //data
         this.barChartData = [
             { data: [], shadowOffsetX: 3,
@@ -5471,8 +8308,12 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         this.planChartData1 = [];
         this.planChartData2 = [];
         this.recallChartData1 = [];
+        this.treatmentPreChartData1 = [];
         this.treatmentChartData1 = [];
+        this.hourlyRateChartData1 = [];
         this.doughnutChartData1 = [];
+        this.newPatientChartData = [350, 450, 100];
+        this.newPatientChartData1 = [];
         //Total  
         this.productionTotal = 0;
         this.productionTotalAverage = 0;
@@ -5482,12 +8323,18 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         this.planTotalGoal = 0;
         this.recallTotal = 0;
         this.recallTotalAverage = 0;
+        this.treatmentPreTotal = 0;
+        this.treatmentPreTotalAverage = 0;
         this.treatmentTotal = 0;
         this.treatmentTotalAverage = 0;
         this.doughnutTotal = 0;
         this.doughnutTotalAverage = 0;
         this.doughnutGoals = 0;
+        this.newPatientTotal = 0;
+        this.newPatientTotalAverage = 0;
+        this.newPatientGoals = 0;
         this.gaugePrependText = "$";
+        this.gaugeAppendText = "%";
         this.gaugeDuration = '2500';
         this.gaugeType = "arch";
         this.gaugeValue = '';
@@ -5500,9 +8347,14 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         this.gaugeLabelTreatment = "";
         this.gaugeValuePatients = 0;
         this.gaugeLabelPatients = "";
+        this.newPatientValuePatients = 0;
+        this.newPatientLabelPatients = "";
         this.recallValue = '';
         this.recallLabel = "";
         this.recallGoal = 0;
+        this.treatmentPreValue = '';
+        this.treatmentPreLabel = "";
+        this.treatmentPreGoal = 0;
         this.barChartOptions = {
             scaleShowVerticalLines: false,
             cornerRadius: 60,
@@ -5627,6 +8479,9 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
             }
         };
         this.dentistVal = 'all';
+        this.accountingDentist = [];
+        this.statusDentist = [];
+        this.final_map = {};
         this.productionTooltip = 'down';
         this.barChartOptionsDP = this.barChartOptions;
         this.recallChartData = [
@@ -5644,6 +8499,24 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                 backgroundOverlayMode: 'multiply' }
         ];
         this.recallChartTooltip = 'down';
+        this.barChartOptionsRP = this.barChartOptionstrend;
+        this.treatmentPreChartData = [
+            { data: [], shadowOffsetX: 3,
+                shadowOffsetY: 3,
+                shadowBlur: 5,
+                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.5)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.treatmentPreChartTooltip = 'down';
+        this.barChartOptionsTPB = this.barChartOptionstrend;
+        this.prebook = 'recall';
         this.treatmentChartData = [
             { data: [], shadowOffsetX: 3,
                 shadowOffsetY: 3,
@@ -5659,6 +8532,9 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                 backgroundOverlayMode: 'multiply' }
         ];
         this.treatmentChartTooltip = 'down';
+        this.barChartOptionsTP = this.barChartOptionstrend;
+        this.treatmentPlanValue = 0;
+        this.treatmentPlanLabel = '';
         this.planTotalTooltip = 'down';
         this.planAllTotal = 0;
         this.planAllTotalTrend = 0;
@@ -5668,6 +8544,28 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         this.gaugeValueTreatmentC = 0;
         this.doughnutTotalTooltip = 'down';
         this.doughnutTotalPrev = 0;
+        this.newPatientTotalTooltip = 'down';
+        this.newPatientTotalPrev = 0;
+        this.newPatientPercent = 0;
+        this.hourlyRateChartData = [
+            { data: [], shadowOffsetX: 3,
+                shadowOffsetY: 3,
+                shadowBlur: 5,
+                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.5)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.hourlyRateChartLabels1 = [];
+        this.hourlyRateChartTooltip = 'down';
+        this.barChartOptionsHR = this.barChartOptions;
+        this.hourlyValue = 0;
+        this.hourlyLabel = '';
         this.toggleChecked = false;
         this.trendValue = '';
         this.isDisabled = true;
@@ -5723,6 +8621,91 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         this.patientComplaintsTrend1 = [];
         this.patientComplaintsTrendLabels = [];
         this.patientComplaintsTrendLabels1 = [];
+        this.recallPrebookChartTrend = [
+            { data: [], label: '', shadowOffsetX: 3,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.recallPrebookChartTrend1 = [];
+        this.recallPrebookChartTrendLabels = [];
+        this.recallPrebookChartTrendLabels1 = [];
+        this.treatmentPrebookChartTrend = [
+            { data: [], label: '', shadowOffsetX: 3,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.treatmentPrebookChartTrend1 = [];
+        this.treatmentPrebookChartTrendLabels = [];
+        this.treatmentPrebookChartTrendLabels1 = [];
+        this.hourlyRateChartTrend = [
+            { data: [], label: '', shadowOffsetX: 3,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.hourlyRateChartTrend1 = [];
+        this.hourlyRateChartTrendLabels = [];
+        this.hourlyRateChartTrendLabels1 = [];
+        this.newPatientsChartTrend = [
+            { data: [], label: '', shadowOffsetX: 3,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.newPatientsChartTrend1 = [];
+        this.newPatientsChartTrendLabels = [];
+        this.newPatientsChartTrendLabels1 = [];
+        this.treatmentPlanChartTrend = [
+            { data: [], label: '', shadowOffsetX: 3,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.treatmentPlanChartTrend1 = [];
+        this.treatmentPlanChartTrendLabels = [];
+        this.treatmentPlanChartTrendLabels1 = [];
     }
     ClinicianAnalysisComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
@@ -5802,6 +8785,9 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         console.log(e);
     };
     ClinicianAnalysisComponent.prototype.loadDentist = function (newValue) {
+        this.getAccountingDentist();
+        this.getStatusDentist();
+        this.changePrebookRate('recall');
         if (newValue == 'all') {
             this.dentistVal = 'all';
             this.showTrend = false;
@@ -5810,12 +8796,23 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
             this.buildChartTreatment();
             this.recallPrebook();
             this.treatmentPlanRate();
+            this.treatmentPrePrebook();
+            this.buildChartNewpatients();
+            this.hourlyRateChart();
             document.querySelector('.dentistProductionSingle').style.display = 'none';
             document.querySelector('.dentistProduction').style.display = 'block';
             document.querySelector('.treatmentPlanSingle').style.display = 'none';
             document.querySelector('.treatmentPlan').style.display = 'block';
             document.querySelector('.noPatientsSingle').style.display = 'none';
             document.querySelector('.noPatients').style.display = 'block';
+            document.querySelector('.newPatientsSingle').style.display = 'none';
+            document.querySelector('.newPatients').style.display = 'block';
+            document.querySelector('.recallPrebookSingle').style.display = 'none';
+            document.querySelector('.recallPrebook').style.display = 'block';
+            document.querySelector('.treatmentPlanRateSingle').style.display = 'none';
+            document.querySelector('.treatmentPlanRate').style.display = 'block';
+            document.querySelector('.hourlyRateSingle').style.display = 'none';
+            document.querySelector('.hourlyRate').style.display = 'block';
         }
         else {
             this.dentistVal = newValue;
@@ -5831,9 +8828,72 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
             document.querySelector('.noPatientsSingle').style.display = 'block';
             document.querySelector('.noPatients').style.display = 'none';
             this.recallPrebookDentist();
+            this.treatmentPrePrebookDentist();
             document.querySelector('.recallPrebookSingle').style.display = 'block';
             document.querySelector('.recallPrebook').style.display = 'none';
+            this.treatmentPlanRateDentist();
+            document.querySelector('.treatmentPlanRateSingle').style.display = 'block';
+            document.querySelector('.treatmentPlanRate').style.display = 'none';
+            this.buildChartNewpatientsDentist();
+            document.querySelector('.newPatientsSingle').style.display = 'block';
+            document.querySelector('.newPatients').style.display = 'none';
+            this.hourlyRateDentist();
+            document.querySelector('.hourlyRateSingle').style.display = 'block';
+            document.querySelector('.hourlyRate').style.display = 'none';
         }
+    };
+    ClinicianAnalysisComponent.prototype.getAccountingDentist = function () {
+        var _this = this;
+        this.cliniciananalysisService.getAccountingDentist(this.clinic_id).subscribe(function (data) {
+            if (data.message == 'success') {
+                data.data.forEach(function (res) {
+                    var temp = [];
+                    temp['provider_id'] = res.provider_id;
+                    temp['name'] = res.name;
+                    _this.accountingDentist.push(temp);
+                });
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicianAnalysisComponent.prototype.getStatusDentist = function () {
+        var _this = this;
+        this.cliniciananalysisService.getStatusDentist(this.clinic_id).subscribe(function (data) {
+            if (data.message == 'success') {
+                data.data.forEach(function (res) {
+                    var temp = [];
+                    temp['book_desc'] = res.app_book_description;
+                    temp['provider_id'] = res.provider_id;
+                    _this.statusDentist.push(temp);
+                });
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicianAnalysisComponent.prototype.save_mapping = function () {
+        var _this = this;
+        var i = 0;
+        this.accountingDentist.forEach(function (res) {
+            var id = res.provider_id;
+            if ($("#dentistMap_" + id).val() != '') {
+                var temp = {};
+                temp['id'] = id;
+                temp['book_desc'] = $("#dentistMap_" + id).val();
+                _this.final_map[i] = JSON.stringify(temp);
+                i++;
+            }
+        });
+        var myJsonString = JSON.stringify(this.final_map);
+        this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe(function (res) {
+            if (res.data.message == 'success') {
+                alert('Mapping Saved!');
+                $('.nsm-dialog-btn-close').click();
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
     };
     ClinicianAnalysisComponent.prototype.changeTreatmentCost = function (val) {
         $('.treatmentPlan .treatment_cost .sa_tab_btn').removeClass('active');
@@ -5872,11 +8932,13 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     //Dentist Production Chart
     ClinicianAnalysisComponent.prototype.buildChart = function () {
         var _this = this;
+        this.buildChartLoader = true;
         this.barChartData1 = [];
         this.barChartLabels1 = [];
         this.productionTotal = 0;
         this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.buildChartLoader = false;
                 _this.productionTooltip = 'down';
                 data.data.forEach(function (res) {
                     _this.barChartData1.push(res.total);
@@ -5937,14 +8999,15 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
-        console.log(this.productionGoal);
     };
     //Individual Dentist Production Chart
     ClinicianAnalysisComponent.prototype.buildChartDentist = function () {
         var _this = this;
+        this.buildChartDentistLoader = true;
         this.barChartOptionsDP.annotation = [];
         this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.buildChartDentistLoader = false;
                 _this.gaugeValue = '0';
                 if (data.data != null) {
                     _this.gaugeValue = data.data.total;
@@ -5971,11 +9034,13 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     };
     ClinicianAnalysisComponent.prototype.recallPrebook = function () {
         var _this = this;
+        this.recallPrebookLoader = true;
         this.recallChartData1 = [];
         this.recallChartLabels1 = [];
         this.productionTotal = 0;
         this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.recallPrebookLoader = false;
                 _this.productionTooltip = 'down';
                 data.data.forEach(function (res) {
                     _this.recallChartData1.push(Math.abs(res.percent).toFixed(1));
@@ -5988,6 +9053,37 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                 _this.recallChartGoal = data.goals;
                 if (_this.recallChartAverage >= _this.recallChartAveragePrev)
                     _this.recallChartTooltip = 'up';
+                _this.barChartOptionsDP.annotation = [];
+                if (_this.goalchecked == 'average') {
+                    _this.barChartOptionsRP.annotation = { annotations: [{
+                                type: 'line',
+                                drawTime: 'afterDatasetsDraw',
+                                mode: 'horizontal',
+                                scaleID: 'y-axis-0',
+                                value: _this.recallChartAverage,
+                                borderColor: '#0e3459',
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                borderDashOffset: 0,
+                            },
+                        ]
+                    };
+                }
+                else if (_this.goalchecked == 'goal') {
+                    _this.barChartOptionsRP.annotation = { annotations: [{
+                                type: 'line',
+                                drawTime: 'afterDatasetsDraw',
+                                mode: 'horizontal',
+                                scaleID: 'y-axis-0',
+                                value: _this.recallChartGoal,
+                                borderColor: 'red',
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                borderDashOffset: 0,
+                            },
+                        ]
+                    };
+                }
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -5996,14 +9092,90 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     //Individual Dentist Production Chart
     ClinicianAnalysisComponent.prototype.recallPrebookDentist = function () {
         var _this = this;
+        this.recallPrebookDentistLoader = true;
         this.cliniciananalysisService.RecallPrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
-                _this.gaugeValue = '0';
-                if (data.data != null) {
-                    _this.recallValue = data.data.RecallPrebook;
-                    _this.recallLabel = data.data.provider;
-                    _this.recallTotal = data.data.total;
+                _this.recallPrebookDentistLoader = false;
+                _this.recallValue = '0';
+                if (data.data.length > 0) {
+                    _this.recallValue = data.data[0].percent;
+                    _this.recallLabel = data.data[0].provider;
                     _this.recallGoal = data.goals;
+                }
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicianAnalysisComponent.prototype.treatmentPrePrebook = function () {
+        var _this = this;
+        this.treatmentPreChartData1 = [];
+        this.treatmentPreChartLabels1 = [];
+        this.productionTotal = 0;
+        this.treatmentPrebookLoader = true;
+        this.cliniciananalysisService.treatmentPrePrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.treatmentPrebookLoader = false;
+                _this.productionTooltip = 'down';
+                data.data.forEach(function (res) {
+                    _this.treatmentPreChartData1.push(Math.abs(res.percent).toFixed(1));
+                    _this.treatmentPreChartLabels1.push(res.provider);
+                });
+                _this.treatmentPreChartData[0]['data'] = _this.treatmentPreChartData1;
+                _this.treatmentPreChartLabels = _this.treatmentPreChartLabels1;
+                _this.treatmentPreChartAverage = Math.abs(data.total).toFixed(1);
+                _this.treatmentPreChartAveragePrev = data.total_ta;
+                _this.treatmentPreChartGoal = data.goals;
+                if (_this.treatmentPreChartAverage >= _this.treatmentPreChartAveragePrev)
+                    _this.treatmentPreChartTooltip = 'up';
+                _this.barChartOptionsTPB.annotation = [];
+                if (_this.goalchecked == 'average') {
+                    _this.barChartOptionsTPB.annotation = { annotations: [{
+                                type: 'line',
+                                drawTime: 'afterDatasetsDraw',
+                                mode: 'horizontal',
+                                scaleID: 'y-axis-0',
+                                value: _this.treatmentPreChartAverage,
+                                borderColor: '#0e3459',
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                borderDashOffset: 0,
+                            },
+                        ]
+                    };
+                }
+                else if (_this.goalchecked == 'goal') {
+                    _this.barChartOptionsTPB.annotation = { annotations: [{
+                                type: 'line',
+                                drawTime: 'afterDatasetsDraw',
+                                mode: 'horizontal',
+                                scaleID: 'y-axis-0',
+                                value: _this.treatmentPreChartGoal,
+                                borderColor: 'red',
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                borderDashOffset: 0,
+                            },
+                        ]
+                    };
+                }
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    //Individual Dentist Production Chart
+    ClinicianAnalysisComponent.prototype.treatmentPrePrebookDentist = function () {
+        var _this = this;
+        this.treatmentPrebookDentistLoader = true;
+        this.cliniciananalysisService.treatmentPrePrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.treatmentPrebookDentistLoader = false;
+                _this.treatmentPreValue = '0';
+                if (data.data.length > 0) {
+                    _this.treatmentPreValue = data.data[0].percent;
+                    _this.treatmentPreLabel = data.data[0].provider;
+                    _this.treatmentPreGoal = data.goals;
                 }
             }
         }, function (error) {
@@ -6014,9 +9186,11 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         var _this = this;
         this.treatmentChartData1 = [];
         this.treatmentChartLabels1 = [];
+        this.treatmentPlanRateLoader = true;
         this.productionTotal = 0;
         this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.treatmentPlanRateLoader = false;
                 _this.productionTooltip = 'down';
                 data.data.forEach(function (res) {
                     _this.treatmentChartData1.push(Math.abs(res.percent).toFixed(2));
@@ -6033,11 +9207,68 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                 _this.treatmentChartData[0]['data'] = _this.treatmentChartData1;
                 _this.treatmentChartLabels = _this.treatmentChartLabels1;
                 _this.treatmentChartAverage = Math.abs(data.total).toFixed(2);
-                console.log(_this.treatmentChartData);
                 _this.treatmentChartAveragePrev = data.total_ta;
                 _this.treatmentChartGoal = data.goals;
                 if (_this.treatmentChartAverage >= _this.treatmentChartAveragePrev)
                     _this.treatmentChartTooltip = 'up';
+                _this.barChartOptionsDP.annotation = [];
+                if (_this.goalchecked == 'average') {
+                    _this.barChartOptionsTP.annotation = { annotations: [{
+                                type: 'line',
+                                drawTime: 'afterDatasetsDraw',
+                                mode: 'horizontal',
+                                scaleID: 'y-axis-0',
+                                value: _this.treatmentChartAverage,
+                                borderColor: '#0e3459',
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                borderDashOffset: 0,
+                            },
+                        ]
+                    };
+                }
+                else if (_this.goalchecked == 'goal') {
+                    _this.barChartOptionsTP.annotation = { annotations: [{
+                                type: 'line',
+                                drawTime: 'afterDatasetsDraw',
+                                mode: 'horizontal',
+                                scaleID: 'y-axis-0',
+                                value: _this.treatmentChartGoal,
+                                borderColor: 'red',
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                borderDashOffset: 0,
+                            },
+                        ]
+                    };
+                }
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    //Individual Dentist Production Chart
+    ClinicianAnalysisComponent.prototype.treatmentPlanRateDentist = function () {
+        var _this = this;
+        this.treatmentPlanRateDentistLoader = true;
+        this.cliniciananalysisService.TreatmentPlanRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.treatmentPlanRateDentistLoader = false;
+                _this.treatmentPlanValue = '0';
+                if (data.data.length > 0) {
+                    _this.treatmentPlanValue = Math.abs(data.data[0].percent).toFixed(2);
+                    _this.treatmentPlanLabel = data.data[0].provider;
+                    var name = data.data[0].provider;
+                    if (data.data[0].provider != null) {
+                        name = data.data[0].provider.split(',');
+                        if (name.length > 0)
+                            name = name[1] + " " + name[0];
+                        _this.treatmentPlanLabel = name;
+                    }
+                    else
+                        _this.treatmentPlanLabel = data.data[0].provider;
+                    _this.treatmentPlanGoal = data.goals;
+                }
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -6046,6 +9277,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     //Treatment Plan Average Cost
     ClinicianAnalysisComponent.prototype.buildChartTreatment = function () {
         var _this = this;
+        this.buildChartTreatmentLoader = true;
         $('.treatment_cost .sa_tab_btn').removeClass('active');
         $('.tcmain1').addClass('active');
         this.tcmain = 1;
@@ -6056,6 +9288,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         this.planTotal = 0;
         this.cliniciananalysisService.TreatmentPlan(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.buildChartTreatmentLoader = false;
                 _this.planTotalTooltip = 'down';
                 data.data.plan_fee_all.forEach(function (res) {
                     _this.planChartData1.push(Math.abs(res.average_cost_all).toFixed(1));
@@ -6122,8 +9355,10 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         var _this = this;
         $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
         $('.treatmentPlanSingle .tcmain1').addClass('active');
+        this.buildChartTreatmentDentistLoader = true;
         this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.buildChartTreatmentDentistLoader = false;
                 _this.gaugeValueTreatmentP = 0;
                 _this.gaugeValueTreatmentC = 0;
                 _this.gaugeValueTreatment = 0;
@@ -6150,7 +9385,7 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
     };
-    //Recall Prebook Rate
+    //treatmentPre Prebook Rate
     ClinicianAnalysisComponent.prototype.recallChartTreatment = function () {
         var _this = this;
         this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
@@ -6170,11 +9405,13 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     };
     ClinicianAnalysisComponent.prototype.buildChartNopatients = function () {
         var _this = this;
+        this.buildChartNopatientsLoader = true;
         this.doughnutChartData1 = [];
         this.doughnutChartLabels1 = [];
         this.doughnutTotal = 0;
         this.cliniciananalysisService.NoPatients(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.buildChartNopatientsLoader = false;
                 _this.doughnutTotalTooltip = 'down';
                 data.data.forEach(function (res) {
                     _this.doughnutChartData1.push(parseInt(res.treat_item));
@@ -6195,8 +9432,10 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     };
     ClinicianAnalysisComponent.prototype.buildChartNopatientsDentist = function () {
         var _this = this;
+        this.buildChartNopatientsDentistLoader = true;
         this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.buildChartNopatientsDentistLoader = false;
                 if (data.data != null) {
                     _this.gaugeValuePatients = data.data.treat_item;
                     _this.gaugeLabelPatients = data.data.provider;
@@ -6211,6 +9450,154 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                     _this.doughnutTotalAverage = 0;
                 }
                 _this.doughnutGoals = data.goals;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicianAnalysisComponent.prototype.buildChartNewpatients = function () {
+        var _this = this;
+        this.newPatientChartData1 = [];
+        this.newPatientChartLabels1 = [];
+        this.newPatientTotal = 0;
+        this.buildChartNewpatientsLoader = true;
+        this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.buildChartNewpatientsLoader = false;
+                _this.newPatientTotalTooltip = 'down';
+                data.data.forEach(function (res) {
+                    _this.newPatientChartData1.push(parseInt(res.getX));
+                    _this.newPatientChartLabels1.push(res.provider);
+                });
+                _this.newPatientChartData = _this.newPatientChartData1;
+                _this.newPatientChartLabels = _this.newPatientChartLabels1;
+                _this.newPatientTotalAverage = data.total;
+                _this.newPatientTotalPrev = data.total_ta;
+                _this.newPatientGoals = data.goals;
+                if (_this.newPatientTotalAverage >= _this.newPatientTotalPrev)
+                    _this.newPatientTotalTooltip = 'up';
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicianAnalysisComponent.prototype.buildChartNewpatientsDentist = function () {
+        var _this = this;
+        this.buildChartNewpatientsDentistLoader = true;
+        this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.buildChartNewpatientsDentistLoader = false;
+                if (data.data != null) {
+                    _this.newPatientValuePatients = data.data[0].getX;
+                    _this.newPatientLabelPatients = data.data[0].provider;
+                    _this.newPatientPercent = data.data[0].percent;
+                    _this.newPatientTotalAverage = data.total;
+                    _this.newPatientTotalPrev = data.total_ta;
+                }
+                else {
+                    _this.newPatientValuePatients = 0;
+                    _this.newPatientLabelPatients = "";
+                    _this.newPatientTotalPrev = 0;
+                    _this.newPatientTotalAverage = 0;
+                }
+                _this.newPatientGoals = data.goals;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicianAnalysisComponent.prototype.hourlyRateChart = function () {
+        var _this = this;
+        this.hourlyRateChartLoader = true;
+        this.hourlyRateChartData1 = [];
+        this.hourlyRateChartLabels1 = [];
+        this.productionTotal = 0;
+        this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.hourlyRateChartLoader = false;
+                _this.productionTooltip = 'down';
+                data.data.forEach(function (res) {
+                    _this.hourlyRateChartData1.push(Math.abs(res.hourlyRate).toFixed(2));
+                    var name = res.provider;
+                    if (res.provider != null) {
+                        name = res.provider.split(')');
+                        if (name.length > 0 && name[1] != undefined) {
+                            name = name[1].split(',');
+                            if (name.length > 0)
+                                name = name[1] + " " + name[0];
+                        }
+                        _this.hourlyRateChartLabels1.push(name);
+                    }
+                    else
+                        _this.hourlyRateChartLabels1.push(res.provider);
+                });
+                _this.hourlyRateChartData[0]['data'] = _this.hourlyRateChartData1;
+                _this.hourlyRateChartLabels = _this.hourlyRateChartLabels1;
+                _this.hourlyRateChartAverage = Math.abs(data.total).toFixed(2);
+                _this.hourlyRateChartAveragePrev = Math.abs(data.total_ta).toFixed(2);
+                _this.hourlyRateChartGoal = data.goals;
+                if (_this.hourlyRateChartAverage >= _this.hourlyRateChartAveragePrev)
+                    _this.hourlyRateChartTooltip = 'up';
+                _this.barChartOptionsDP.annotation = [];
+                if (_this.goalchecked == 'average') {
+                    _this.barChartOptionsHR.annotation = { annotations: [{
+                                type: 'line',
+                                drawTime: 'afterDatasetsDraw',
+                                mode: 'horizontal',
+                                scaleID: 'y-axis-0',
+                                value: _this.hourlyRateChartAverage,
+                                borderColor: '#0e3459',
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                borderDashOffset: 0,
+                            },
+                        ]
+                    };
+                }
+                else if (_this.goalchecked == 'goal') {
+                    _this.barChartOptionsHR.annotation = { annotations: [{
+                                type: 'line',
+                                drawTime: 'afterDatasetsDraw',
+                                mode: 'horizontal',
+                                scaleID: 'y-axis-0',
+                                value: _this.hourlyRateChartGoal,
+                                borderColor: 'red',
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                borderDashOffset: 0,
+                            },
+                        ]
+                    };
+                }
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    //Individual Dentist Production Chart
+    ClinicianAnalysisComponent.prototype.hourlyRateDentist = function () {
+        var _this = this;
+        this.hourlyRateDentistLoader = true;
+        this.cliniciananalysisService.hourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.hourlyRateDentistLoader = false;
+                _this.hourlyValue = '0';
+                if (data.data.length > 0) {
+                    _this.hourlyValue = Math.abs(data.data[0].hourlyRate).toFixed(2);
+                    var name = data.data[0].provider;
+                    if (name != null) {
+                        name = name.split(')');
+                        if (name.length > 0 && name[1] != undefined) {
+                            name = name[1].split(',');
+                            if (name.length > 0)
+                                name = name[1] + " " + name[0];
+                        }
+                        _this.hourlyLabel = name;
+                    }
+                    else
+                        _this.hourlyLabel = data.data[0].provider;
+                    _this.hourlyGoal = data.goals;
+                }
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -6367,16 +9754,17 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
             this.toggleChecked = false;
             this.showTrendChart = false;
         }
-        console.log(this.showTrendChart);
     };
     ClinicianAnalysisComponent.prototype.dentistProductionTrend = function () {
         var _this = this;
+        this.dentistProductionTrendLoader = true;
         this.dentistProductionTrendLabels1 = [];
         this.dentistProductionTrend1 = [];
         var user_id;
         var clinic_id;
         this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.dentistProductionTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.dentistProductionTrend1.push(res.val.total);
                     if (_this.trendValue == 'c')
@@ -6393,12 +9781,14 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     };
     ClinicianAnalysisComponent.prototype.treatmentPlanTrend = function () {
         var _this = this;
+        this.treatmentPlanTrendLoader = true;
         this.treatmentPlanTrendLabels1 = [];
         this.treatmentPlanTrend1 = [];
         var user_id;
         var clinic_id;
         this.cliniciananalysisService.caTreatmentPlanAverageCostTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.treatmentPlanTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.treatmentPlanTrend1.push(res.val.average_cost);
                     if (_this.trendValue == 'c')
@@ -6415,12 +9805,14 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
     };
     ClinicianAnalysisComponent.prototype.patientComplaintsTrend = function () {
         var _this = this;
+        this.patientComplaintsTrendLoader = true;
         this.patientComplaintsTrendLabels1 = [];
         this.patientComplaintsTrend1 = [];
         var user_id;
         var clinic_id;
         this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.patientComplaintsTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.patientComplaintsTrend1.push(res.val.treat_item);
                     if (_this.trendValue == 'c')
@@ -6435,32 +9827,167 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
     };
+    ClinicianAnalysisComponent.prototype.fdRecallPrebookRateTrend = function () {
+        var _this = this;
+        this.fdRecallPrebookRateTrendLoader = true;
+        var user_id;
+        var clinic_id;
+        this.frontdeskService.fdRecallPrebookRateTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.fdRecallPrebookRateTrendLoader = false;
+                _this.recallPrebookChartTrendLabels1 = [];
+                _this.recallPrebookChartTrend1 = [];
+                data.data.forEach(function (res) {
+                    _this.recallPrebookChartTrend1.push(res.percent.toFixed(2));
+                    if (_this.trendValue == 'c')
+                        _this.recallPrebookChartTrendLabels1.push(_this.datePipe.transform(res.treat_date, 'MMM y'));
+                    else
+                        _this.recallPrebookChartTrendLabels1.push(res.treat_date);
+                });
+                _this.recallPrebookChartTrend[0]['data'] = _this.recallPrebookChartTrend1;
+                _this.recallPrebookChartTrendLabels = _this.recallPrebookChartTrendLabels1;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicianAnalysisComponent.prototype.fdTreatmentPrebookRateTrend = function () {
+        var _this = this;
+        this.fdTreatmentPrebookRateTrendLoader = true;
+        var user_id;
+        var clinic_id;
+        this.frontdeskService.fdTreatmentPrebookRateTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.fdTreatmentPrebookRateTrendLoader = false;
+                _this.treatmentPrebookChartTrendLabels1 = [];
+                _this.treatmentPrebookChartTrend1 = [];
+                data.data.forEach(function (res) {
+                    _this.treatmentPrebookChartTrend1.push(res.percent.toFixed(2));
+                    if (_this.trendValue == 'c')
+                        _this.treatmentPrebookChartTrendLabels1.push(_this.datePipe.transform(res.treat_date, 'MMM y'));
+                    else
+                        _this.treatmentPrebookChartTrendLabels1.push(res.treat_date);
+                });
+                _this.treatmentPrebookChartTrend[0]['data'] = _this.treatmentPrebookChartTrend1;
+                _this.treatmentPrebookChartTrendLabels = _this.treatmentPrebookChartTrendLabels1;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicianAnalysisComponent.prototype.fdhourlyRateRateTrend = function () {
+        var _this = this;
+        this.fdhourlyRateRateTrendLoader = true;
+        var user_id;
+        var clinic_id;
+        this.cliniciananalysisService.cahourlyRateRateTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.fdhourlyRateRateTrendLoader = false;
+                _this.hourlyRateChartTrendLabels1 = [];
+                _this.hourlyRateChartTrend1 = [];
+                data.data.forEach(function (res) {
+                    _this.hourlyRateChartTrend1.push(res.val.hourlyRate.toFixed(2));
+                    if (_this.trendValue == 'c')
+                        _this.hourlyRateChartTrendLabels1.push(_this.datePipe.transform(res.duration, 'MMM y'));
+                    else
+                        _this.hourlyRateChartTrendLabels1.push(res.duration);
+                });
+                _this.hourlyRateChartTrend[0]['data'] = _this.hourlyRateChartTrend1;
+                _this.hourlyRateChartTrendLabels = _this.hourlyRateChartTrendLabels1;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicianAnalysisComponent.prototype.fdnewPatientsRateTrend = function () {
+        var _this = this;
+        this.fdnewPatientsRateTrendLoader = true;
+        var user_id;
+        var clinic_id;
+        this.cliniciananalysisService.canewPatientsRateTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.fdnewPatientsRateTrendLoader = false;
+                _this.newPatientsChartTrendLabels1 = [];
+                _this.newPatientsChartTrend1 = [];
+                data.data.forEach(function (res) {
+                    _this.newPatientsChartTrend1.push(res.val.getX.toFixed(2));
+                    if (_this.trendValue == 'c')
+                        _this.newPatientsChartTrendLabels1.push(_this.datePipe.transform(res.duration, 'MMM y'));
+                    else
+                        _this.newPatientsChartTrendLabels1.push(res.duration);
+                });
+                _this.newPatientsChartTrend[0]['data'] = _this.newPatientsChartTrend1;
+                _this.newPatientsChartTrendLabels = _this.newPatientsChartTrendLabels1;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    ClinicianAnalysisComponent.prototype.fdtreatmentPlanRateTrend = function () {
+        var _this = this;
+        this.fdtreatmentPlanRateTrendLoader = true;
+        this.treatmentPlanChartTrendLabels = [];
+        var user_id;
+        var clinic_id;
+        this.cliniciananalysisService.catreatmentPlanRateTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.fdtreatmentPlanRateTrendLoader = false;
+                _this.treatmentPlanChartTrendLabels1 = [];
+                _this.treatmentPlanChartTrend1 = [];
+                data.data.forEach(function (res) {
+                    _this.treatmentPlanChartTrend1.push(res.val.percent.toFixed(2));
+                    if (_this.trendValue == 'c')
+                        _this.treatmentPlanChartTrendLabels1.push(_this.datePipe.transform(res.duration, 'MMM y'));
+                    else
+                        _this.treatmentPlanChartTrendLabels1.push(res.duration);
+                });
+                _this.treatmentPlanChartTrend[0]['data'] = _this.treatmentPlanChartTrend1;
+                _this.treatmentPlanChartTrendLabels = _this.treatmentPlanChartTrendLabels1;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
     ClinicianAnalysisComponent.prototype.toggleChangeProcess = function () {
         if (this.toggleChecked) {
             $('.filter').removeClass('active');
             this.dentistProductionTrend();
             this.treatmentPlanTrend();
             this.patientComplaintsTrend();
+            this.fdRecallPrebookRateTrend();
+            this.fdTreatmentPrebookRateTrend();
+            this.fdhourlyRateRateTrend();
+            this.fdnewPatientsRateTrend();
+            this.fdtreatmentPlanRateTrend();
         }
     };
     ClinicianAnalysisComponent.prototype.goalToggle = function (val) {
         this.goalchecked = val;
         this.buildChart();
         this.buildChartTreatment();
+        this.recallPrebook();
+        this.treatmentPlanRate();
+        this.treatmentPrePrebook();
+        this.hourlyRateChart();
+    };
+    ClinicianAnalysisComponent.prototype.changePrebookRate = function (val) {
+        $('.prebook_rate .sa_tab_btn').removeClass('active');
+        this.prebook = val;
+        $('.prebook_rate .pr_' + val).addClass('active');
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])("myCanvas"),
         __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])
     ], ClinicianAnalysisComponent.prototype, "canvas", void 0);
     __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(ng2_charts__WEBPACK_IMPORTED_MODULE_8__["BaseChartDirective"]),
-        __metadata("design:type", ng2_charts__WEBPACK_IMPORTED_MODULE_8__["BaseChartDirective"])
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(ng2_charts__WEBPACK_IMPORTED_MODULE_9__["BaseChartDirective"]),
+        __metadata("design:type", ng2_charts__WEBPACK_IMPORTED_MODULE_9__["BaseChartDirective"])
     ], ClinicianAnalysisComponent.prototype, "chart", void 0);
     ClinicianAnalysisComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             template: __webpack_require__(/*! ./cliniciananalysis.component.html */ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.html")
         }),
-        __metadata("design:paramtypes", [_cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_1__["ClinicianAnalysisService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__["DentistService"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["DatePipe"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"], _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_6__["HeaderService"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]])
+        __metadata("design:paramtypes", [_cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_1__["ClinicianAnalysisService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__["DentistService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["DatePipe"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"], _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_7__["HeaderService"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_8__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"], ngx_smart_modal__WEBPACK_IMPORTED_MODULE_10__["NgxSmartModalService"], _frontdesk_frontdesk_service__WEBPACK_IMPORTED_MODULE_3__["FrontDeskService"]])
     ], ClinicianAnalysisComponent);
     return ClinicianAnalysisComponent;
 }());
@@ -6657,6 +10184,32 @@ var ClinicianAnalysisService = /** @class */ (function () {
         }));
     };
     // Dentist Production Service
+    ClinicianAnalysisService.prototype.treatmentPrePrebook = function (clinic_id, startDate, endDate, duration, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (duration === void 0) { duration = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpTreatmentPrebookRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Dentist Production Service
+    ClinicianAnalysisService.prototype.treatmentPrePrebookSingle = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (duration === void 0) { duration = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpTreatmentPrebookRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Dentist Production Service
     ClinicianAnalysisService.prototype.TreatmentPlanRate = function (clinic_id, startDate, endDate, duration, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (startDate === void 0) { startDate = ''; }
@@ -6665,6 +10218,134 @@ var ClinicianAnalysisService = /** @class */ (function () {
         if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
         return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpTreatmentPlanRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Dentist Production Service
+    ClinicianAnalysisService.prototype.TreatmentPlanRateSingle = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (duration === void 0) { duration = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpTreatmentPlanRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    //Hourly Rate service
+    ClinicianAnalysisService.prototype.NewPatients = function (clinic_id, startDate, endDate, duration, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (duration === void 0) { duration = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNoNewPatients?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    ClinicianAnalysisService.prototype.NewPatientsDentist = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (duration === void 0) { duration = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNoNewPatients?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    ClinicianAnalysisService.prototype.hourlyRateChart = function (clinic_id, startDate, endDate, duration, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (duration === void 0) { duration = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caHourlyRateChart?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Dentist Production Single Service
+    ClinicianAnalysisService.prototype.cahourlyRateRateTrend = function (clinic_id, mode, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (mode === void 0) { mode = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caHourlyRateChartTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Dentist Production Single Service
+    ClinicianAnalysisService.prototype.canewPatientsRateTrend = function (clinic_id, mode, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (mode === void 0) { mode = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/canewPatientsRateTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Dentist Production Single Service
+    ClinicianAnalysisService.prototype.catreatmentPlanRateTrend = function (clinic_id, mode, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (mode === void 0) { mode = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpTreatmentPlanRateTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    //Treatment Plan Average Cost service
+    ClinicianAnalysisService.prototype.hourlyRateSingle = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (duration === void 0) { duration = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caHourlyRateChart?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    ClinicianAnalysisService.prototype.getAccountingDentist = function (clinic_id, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/getAccountingDentist?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    ClinicianAnalysisService.prototype.getStatusDentist = function (clinic_id, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/getStatusDentist?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    ClinicianAnalysisService.prototype.saveDentistMapping = function (data, clinic_id, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        var formData = new FormData();
+        formData.append('dentistData', data);
+        formData.append('user_id', user_id);
+        formData.append('clinic_id', clinic_id);
+        formData.append('token', token);
+        return this.http.post(this.apiUrl + "/AccountingInvoicesAndReceipts/saveDentistMapping/", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -6689,7 +10370,7 @@ var ClinicianAnalysisService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n \n  <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\"  [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n      <div fxFlex.lg=\"80\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"80\">\n         <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n          <div class=\"custom_date\">\n          <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n           <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n        </div>\n      </div>\n\n     <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\">\n         <div class=\"onofftoogle\" [style.display]=\"'none'\">\n          <span class=\"trend_mode_title\">Trend Mode:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\" >\n               <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\">\n                  <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                  <span>Current</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                  <span>Historic</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n<div fxLayout=\"row wrap\">\n  <div fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"100\" class=\"sa_flex_transparent\">\n    {{startDate| date}}- {{endDate| date}}\n</div>\n\n  <!-- Column-->\n  <div fxFlex.lg=\"65\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"65\" class=\"sa_flexbg items_predictor md_mrn\" >\n    <mat-card class=\"itemsPredictor\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <mat-card-title class=\"text-center\">Item Predictor \n\n          <div class=\"sa_box_title_right_buttons\">\n               <!--  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                    <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n         \n        </mat-card-title>\n       <div  style=\"height: 300px\" *ngIf=\"stackedChartDataMax > 0\">\n        <canvas #myCanvas baseChart [datasets]=\"stackedChartData\" [labels]=\"stackedChartLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"true\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n       </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"stackedChartDataMax <= 0\" class=\"blankChart\"> \n\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"itemsPredictorSingle\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Item Predictor\n\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n\n          </mat-card-title>\n          <div class=\"chart\" *ngIf=\"itemPredictedChartDataMax > 0\">\n             <div  style=\"height: 300px\">\n        <canvas baseChart [datasets]=\"itemPredictedChartData\" [labels]=\"itemPredictedChartLabels\" [options]=\"stackedChartOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"itemPredictedChartDataMax <= 0\" class=\"blankChart\"> \n\n      </mat-card-content>\n    </mat-card>\n  </div>\n <div fxFlex.lg=\"34\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"34\" class=\"sa_flexbg referral_clinicians last\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{pieChartInternalPrevTotal}}\"><i class=\"fas fa-chart-line {{pieChartInternalPrevTooltip}}\"></i></span>\n            <span class=\"referral2Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip=\"{{trendText}} : {{pieChartExternalPrevTotal}}\" [style.display]=\"'none'\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{pieChartExternalPrevTooltip}}.png\"></span>\n            <span class=\"referral3Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip=\"{{trendText}} : {{pieChartCombinedPrevTotal}}\" [style.display]=\"'none'\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{pieChartCombinedPrevTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">Clinician Referrals\n\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                   <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>  \n        </mat-card-title>\n         <div fxLayout=\"row wrap\" class=\"sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn referall_btn Internal active\" (click) = \"changePieReferral('Internal')\">Internal</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn referall_btn External\" (click) = \"changePieReferral('External')\">External</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn referall_btn Combined\" (click) = \"changePieReferral('Combined')\">Combined</small>\n                    </div>\n                </div>\n          <div class=\"chart\" *ngIf=\"pieChartLabels.length > 0\">\n             <div  style=\"height: 190px\">\n        <canvas *ngIf=\"showInternal == true && pieChartDataMax1 > 0\" baseChart [data]=\"pieChartData1\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [legend] = \"true\" [options]=\"pieChartOptions\" [colors]=\"doughnutChartColors\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"pieChartDataMax1 <= 0 && showInternal == true \" class=\"blankChart\"> \n \n         <canvas *ngIf=\"showExternal == true && pieChartDataMax2 > 0\" baseChart [data]=\"pieChartData2\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [options]=\"pieChartOptions\" [colors]=\"doughnutChartColors\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"pieChartDataMax2 <= 0 && showExternal == true\" class=\"blankChart\"> \n         <canvas *ngIf=\"showCombined == true  && pieChartDataMax3 > 0\" baseChart [data]=\"pieChartData3\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [options]=\"pieChartOptions\" [colors]=\"doughnutChartColors\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"pieChartDataMax3 <= 0 && showCombined == true\" class=\"blankChart\"> \n\n         <canvas *ngIf=\"showTrend == true && stackedChartTrendDataMax > 0\" baseChart [datasets]=\"stackedChartTrendData\" [labels]=\"stackedChartTrendLabels\" [options]=\"stackedChartOptions\" [legend]=\"false\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\"></canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"stackedChartTrendDataMax <= 0 && showTrend == true\" class=\"blankChart\"> \n\n      </div>\n      </div>\n\n          <div *ngIf=\"toggleChecked == false\" fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{pieChartInternalTotal | number:'1.0-0'}}</h3>\n                        <small>Internal</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{pieChartExternalTotal | number:'1.0-0'}}</h3>\n                        <small>External</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{pieChartCombinedTotal | number:'1.0-0'}}</h3>\n                        <small>Total</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n \n  <!-- Column--> \n  <div  fxFlex.lg=\"48\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"48\" class=\"sa_flexbg predictor_ratio\">\n    <mat-card class=\"ratioPredictor\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <mat-card-title class=\"text-center\">\n<span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{predictedPreviousAverage1}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{predictedTotalAverageTooltip1}}.png\"></span>\n            <span class=\"predicted2Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{predictedPreviousAverage2}}\" [style.display]=\"'none'\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{predictedTotalAverageTooltip2}}.png\"></span>\n            <span class=\"predicted3Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{predictedPreviousAverage3}}\" [style.display]=\"'none'\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{predictedTotalAverageTooltip3}}.png\"></span>\n            Predictor Ratio\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                     <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n        </mat-card-title>\n         <div fxLayout=\"row wrap\" class=\"predictor_ratio_main sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn prmain1 active\" (click) = \"changeDentistPredictorMain('1')\">Crown to Large Filling</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn prmain2\" (click) = \"changeDentistPredictorMain('2')\">Extraction to RCT</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn prmain3\" (click) = \"changeDentistPredictorMain('3')\">RCT Conversion</small>\n                    </div>\n                </div>\n         <div  style=\"height: 350px\"  *ngIf=\"predictedMax > 0\">\n        <canvas baseChart class=\"chart\" \n          [datasets]=\"predictedChartData\"\n          [labels]=\"predictedChartLabels\"\n          [options]=\"barChartOptions\"\n          [legend]=\"false\"\n          [chartType]=\"stackedChartType\"\n          [colors]=\"predictedChartColors\"></canvas>\n          </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"predictedMax <= 0\" class=\"blankChart\"> \n\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted_main predicted1 sa_chart_details_sec\" *ngIf=\"predictedMax > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                   <!--    <mat-progress-bar mode=\"determinate\" value=\"80\" color=\"accent\"></mat-progress-bar> -->\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage1 | number:'1.0-0' }}</h3>\n                        <small>Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n            <!--           <mat-progress-bar mode=\"determinate\" value=\"80\" color=\"accent\"></mat-progress-bar> -->\n                        <h3 class=\"m-0 font-light\">{{predictedPreviousAverage1 | number:'1.0-0' }}</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div> \n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted_main predicted2 sa_chart_details_sec\" [style.display]=\"'none'\"  *ngIf=\"predictedMax > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage2  | number:'1.0-0'}}</h3>\n                        <small>Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedPreviousAverage2  | number:'1.0-0'}}</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div> \n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted_main predicted3 sa_chart_details_sec\" [style.display]=\"'none'\"  *ngIf=\"predictedMax > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage3  | number:'1.0-0'}}</h3>\n                        <small>Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedPreviousAverage3 | number:'1.0-0' }}</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div>             \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"ratioPredictorSingle\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Predictor Ratio\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n         <div fxLayout=\"row wrap\" class=\"predictor_ratio sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn pr1 active\" (click) = \"changeDentistPredictor('1')\">Crown to Large Filling</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn pr2\" (click) = \"changeDentistPredictor('2')\">Extraction to RCT</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn pr3\" (click) = \"changeDentistPredictor('3')\">RCT Conversion</small>\n                    </div>\n                </div>\n          <div  style=\"height: 250px\"  *ngIf=\"toggleChecked == false && gaugeValuePredicted>0\">\n          <ngx-gauge class=\"singleRatio\"  [type]=\"gaugeType\"\n           [value]=\"gaugeValuePredicted\" \n           [label]=\"gaugeLabelPredicted\"  \n           [thick]=\"gaugeThick\"  \n           [max] = \"predictedDentistTotal\"\n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [size] = \"size\"\n           [duration]= \"gaugeDuration\">\n          </ngx-gauge>\n        </div>\n         <img src='../assets/images/nodata02.png' *ngIf=\"toggleChecked == false && gaugeValuePredicted<=0\" class=\"blankChart\"> \n        <div  style=\"height: 250px\" *ngIf=\"toggleChecked == true &&  ratioChartDataMax>0\">\n           <canvas  class=\"trendRatio\" baseChart [datasets]=\"ratioChartData\" [labels]=\"ratioChartLabels\" [options]=\"stackedChartOptions\" [legend]=\"false\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n         <img src='../assets/images/nodata02.png' *ngIf=\"toggleChecked == true && ratioChartDataMax<=0\" class=\"blankChart\"> \n\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1 sa_chart_details_sec predictorRatioDetails\" *ngIf=\"toggleChecked == false && gaugeValuePredicted>0\" >\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedDentistTotal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedDentistPrevTotal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div  *ngIf=\"toggleChecked == false\" fxFlex.lg=\"51\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"51\" class=\"sa_flexbg last revenue_proceedure\">\n    <mat-card class=\"revenueProceedure\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <mat-card-title class=\"text-center\">Total Revenue Per Procedure\n            <div class=\"sa_box_title_right_buttons\">\n               <!--  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n        </mat-card-title>\n         <div  style=\"height: 400px\" *ngIf=\"proceedureChartLabels.length>0\">\n        <canvas baseChart class=\"chart\" \n          [datasets]=\"proceedureChartData\"\n          [labels]=\"proceedureChartLabels\"\n          [options]=\"proceedureChartOptions\"\n          [legend]=\"false\"\n          [chartType]=\"proceedureChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [colors]=\"preoceedureChartColors\"></canvas>\n        </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"proceedureChartLabels.length <= 0\" class=\"blankChart\"> \n        \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"revenueProceedureSingle\" [style.display]=\"'none'\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Revenue Per Procedure\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n         <div style=\"height: 400px\"  *ngIf=\"proceedureDentistChartLabels.length>0\">\n        <canvas baseChart class=\"chart\" \n          [datasets]=\"proceedureDentistChartData\"\n          [labels]=\"proceedureDentistChartLabels\"\n          [options]=\"proceedureChartOptions\"\n          [legend]=\"false\"\n          [chartType]=\"proceedureChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [colors]=\"preoceedureChartColors\"></canvas>\n        </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"proceedureDentistChartLabels.length <= 0\" class=\"blankChart\"> \n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div><canvas #myCanvas baseChart [style.display]=\"'none'\"></canvas>"
+module.exports = "\n<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n \n  <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\"  [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n      <div fxFlex.lg=\"80\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"80\">\n         <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n          <div class=\"custom_date\">\n          <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n           <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n        </div>\n      </div>\n\n     <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\">\n         <div class=\"onofftoogle\" [style.display]=\"'none'\">\n          <span class=\"trend_mode_title\">Trend Mode:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\" >\n               <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\">\n                  <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                  <span>Current</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                  <span>Historic</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n<div fxLayout=\"row wrap\">\n  <div fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"100\" class=\"sa_flex_transparent\">\n    {{startDate| date}}- {{endDate| date}}\n</div>\n\n  <!-- Column-->\n  <div fxFlex.lg=\"65\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"65\" class=\"sa_flexbg items_predictor md_mrn\" >\n    <mat-card class=\"itemsPredictor\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <mat-card-title class=\"text-center\">Item Predictor \n\n          <div class=\"sa_box_title_right_buttons\">\n               <!--  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                    <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n         \n        </mat-card-title>\n          <div *ngIf=\"buildChartLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n       <div  style=\"height: 300px\" *ngIf=\"stackedChartDataMax > 0\">\n        <canvas #myCanvas baseChart [datasets]=\"stackedChartData\" [labels]=\"stackedChartLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"true\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n       </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"stackedChartDataMax <= 0 && buildChartLoader == false\"  class=\"blankChart\"> \n\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"itemsPredictorSingle\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Item Predictor\n\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n\n          </mat-card-title>\n          <div *ngIf=\"buildChartDentistLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n          <div class=\"chart\" *ngIf=\"itemPredictedChartDataMax > 0\">\n             <div  style=\"height: 300px\">\n        <canvas baseChart [datasets]=\"itemPredictedChartData\" [labels]=\"itemPredictedChartLabels\" [options]=\"stackedChartOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false\" class=\"blankChart\"> \n\n      </mat-card-content>\n    </mat-card>\n  </div>\n <div fxFlex.lg=\"34\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"34\" class=\"sa_flexbg referral_clinicians last\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{pieChartInternalPrevTotal}}\"><i class=\"fas fa-chart-line {{pieChartInternalPrevTooltip}}\"></i></span>\n            <span class=\"referral2Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip=\"{{trendText}} : {{pieChartExternalPrevTotal}}\" [style.display]=\"'none'\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{pieChartExternalPrevTooltip}}.png\"></span>\n            <span class=\"referral3Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip=\"{{trendText}} : {{pieChartCombinedPrevTotal}}\" [style.display]=\"'none'\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{pieChartCombinedPrevTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">Clinician Referrals\n\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                   <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>  \n        </mat-card-title>\n         <div fxLayout=\"row wrap\" class=\"sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn referall_btn Internal active\" (click) = \"changePieReferral('Internal')\">Internal</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn referall_btn External\" (click) = \"changePieReferral('External')\">External</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn referall_btn Combined\" (click) = \"changePieReferral('Combined')\">Combined</small>\n                    </div>\n                </div>\n          <div class=\"chart\" *ngIf=\"pieChartLabels.length > 0\">\n             <div  style=\"height: 190px\">\n        <canvas *ngIf=\"showInternal == true && pieChartDataMax1 > 0\" baseChart [data]=\"pieChartData1\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [legend] = \"true\" [options]=\"pieChartOptions\" [colors]=\"doughnutChartColors\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"pieChartDataMax1 <= 0 && showInternal == true \" class=\"blankChart\"> \n \n         <canvas *ngIf=\"showExternal == true && pieChartDataMax2 > 0\" baseChart [data]=\"pieChartData2\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [options]=\"pieChartOptions\" [colors]=\"doughnutChartColors\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"pieChartDataMax2 <= 0 && showExternal == true\" class=\"blankChart\"> \n         <canvas *ngIf=\"showCombined == true  && pieChartDataMax3 > 0\" baseChart [data]=\"pieChartData3\" [labels]=\"pieChartLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [options]=\"pieChartOptions\" [colors]=\"doughnutChartColors\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"pieChartDataMax3 <= 0 && showCombined == true\" class=\"blankChart\"> \n\n         <canvas *ngIf=\"showTrend == true && stackedChartTrendDataMax > 0\" baseChart [datasets]=\"stackedChartTrendData\" [labels]=\"stackedChartTrendLabels\" [options]=\"stackedChartOptions\" [legend]=\"false\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\"></canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"stackedChartTrendDataMax <= 0 && showTrend == true\" class=\"blankChart\"> \n\n      </div>\n      </div>\n\n          <div *ngIf=\"toggleChecked == false\" fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{pieChartInternalTotal | number:'1.0-0'}}</h3>\n                        <small>Internal</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{pieChartExternalTotal | number:'1.0-0'}}</h3>\n                        <small>External</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{pieChartCombinedTotal | number:'1.0-0'}}</h3>\n                        <small>Total</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n \n  <!-- Column--> \n  <div  fxFlex.lg=\"48\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"48\" class=\"sa_flexbg predictor_ratio\">\n    <mat-card class=\"ratioPredictor\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <mat-card-title class=\"text-center\">\n<span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{predictedPreviousAverage1}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{predictedTotalAverageTooltip1}}.png\"></span>\n            <span class=\"predicted2Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{predictedPreviousAverage2}}\" [style.display]=\"'none'\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{predictedTotalAverageTooltip2}}.png\"></span>\n            <span class=\"predicted3Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{predictedPreviousAverage3}}\" [style.display]=\"'none'\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{predictedTotalAverageTooltip3}}.png\"></span>\n            Predictor Ratio\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                     <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n        </mat-card-title>\n         <div fxLayout=\"row wrap\" class=\"predictor_ratio_main sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn prmain1 active\" (click) = \"changeDentistPredictorMain('1')\">Crown to Large Filling</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn prmain2\" (click) = \"changeDentistPredictorMain('2')\">Extraction to RCT</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn prmain3\" (click) = \"changeDentistPredictorMain('3')\">RCT Conversion</small>\n                    </div>\n                </div>\n          <div *ngIf=\"buildChartPredictorLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n         <div  style=\"height: 350px\"  *ngIf=\"predictedMax > 0\">\n        <canvas baseChart class=\"chart\" \n          [datasets]=\"predictedChartData\"\n          [labels]=\"predictedChartLabels\"\n          [options]=\"barChartOptions\"\n          [legend]=\"false\"\n          [chartType]=\"stackedChartType\"\n          [colors]=\"predictedChartColors\"></canvas>\n          </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"predictedMax <= 0 && buildChartPredictorLoader == false\" class=\"blankChart\"> \n\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted_main predicted1 sa_chart_details_sec\" *ngIf=\"predictedMax > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                   <!--    <mat-progress-bar mode=\"determinate\" value=\"80\" color=\"accent\"></mat-progress-bar> -->\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage1 | number:'1.0-0' }}</h3>\n                        <small>Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n            <!--           <mat-progress-bar mode=\"determinate\" value=\"80\" color=\"accent\"></mat-progress-bar> -->\n                        <h3 class=\"m-0 font-light\">{{predictedPreviousAverage1 | number:'1.0-0' }}</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div> \n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted_main predicted2 sa_chart_details_sec\" [style.display]=\"'none'\"  *ngIf=\"predictedMax > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage2  | number:'1.0-0'}}</h3>\n                        <small>Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedPreviousAverage2  | number:'1.0-0'}}</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div> \n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted_main predicted3 sa_chart_details_sec\" [style.display]=\"'none'\"  *ngIf=\"predictedMax > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedTotalAverage3  | number:'1.0-0'}}</h3>\n                        <small>Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedPreviousAverage3 | number:'1.0-0' }}</h3>\n                        <small>Previous Average</small>\n                    </div>\n                </div>             \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"ratioPredictorSingle\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Predictor Ratio\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n         <div fxLayout=\"row wrap\" class=\"predictor_ratio sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn pr1 active\" (click) = \"changeDentistPredictor('1')\">Crown to Large Filling</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn pr2\" (click) = \"changeDentistPredictor('2')\">Extraction to RCT</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn pr3\" (click) = \"changeDentistPredictor('3')\">RCT Conversion</small>\n                    </div>\n                </div>\n          <div *ngIf=\"buildChartPredictorDentistLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n          <div  style=\"height: 250px\"  *ngIf=\"toggleChecked == false && gaugeValuePredicted>0\">\n          <ngx-gauge class=\"singleRatio\"  [type]=\"gaugeType\"\n           [value]=\"gaugeValuePredicted\" \n           [label]=\"gaugeLabelPredicted\"  \n           [thick]=\"gaugeThick\"  \n           [max] = \"predictedDentistTotal\"\n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [size] = \"size\"\n           [duration]= \"gaugeDuration\">\n          </ngx-gauge>\n        </div>\n         <img src='../assets/images/nodata02.png' *ngIf=\"toggleChecked == false && gaugeValuePredicted<=0 && buildChartPredictorDentistLoader == false\" class=\"blankChart\"> \n        <div  style=\"height: 250px\" *ngIf=\"toggleChecked == true &&  ratioChartDataMax>0\">\n           <canvas  class=\"trendRatio\" baseChart [datasets]=\"ratioChartData\" [labels]=\"ratioChartLabels\" [options]=\"stackedChartOptions\" [legend]=\"false\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n         <img src='../assets/images/nodata02.png' *ngIf=\"toggleChecked == true && ratioChartDataMax<=0\" class=\"blankChart\"> \n\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1 sa_chart_details_sec predictorRatioDetails\" *ngIf=\"toggleChecked == false && gaugeValuePredicted>0\" >\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedDentistTotal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{predictedDentistPrevTotal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div  *ngIf=\"toggleChecked == false\" fxFlex.lg=\"51\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"51\" class=\"sa_flexbg last revenue_proceedure\">\n    <mat-card class=\"revenueProceedure\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <mat-card-title class=\"text-center\">Total Revenue Per Procedure\n            <div class=\"sa_box_title_right_buttons\">\n               <!--  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n        </mat-card-title>\n          <div *ngIf=\"buildChartProceedureLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n         <div  style=\"height: 400px\" *ngIf=\"proceedureChartLabels.length>0\">\n        <canvas baseChart class=\"chart\" \n          [datasets]=\"proceedureChartData\"\n          [labels]=\"proceedureChartLabels\"\n          [options]=\"proceedureChartOptions\"\n          [legend]=\"false\"\n          [chartType]=\"proceedureChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [colors]=\"preoceedureChartColors\"></canvas>\n        </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"proceedureChartLabels.length <= 0 && buildChartProceedureLoader == false\" class=\"blankChart\"> \n        \n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"revenueProceedureSingle\" [style.display]=\"'none'\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Revenue Per Procedure\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n          <div *ngIf=\"proceedureDentistChartData == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n         <div style=\"height: 400px\"  *ngIf=\"proceedureDentistChartLabels.length>0\">\n        <canvas baseChart class=\"chart\" \n          [datasets]=\"proceedureDentistChartData\"\n          [labels]=\"proceedureDentistChartLabels\"\n          [options]=\"proceedureChartOptions\"\n          [legend]=\"false\"\n          [chartType]=\"proceedureChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [colors]=\"preoceedureChartColors\"></canvas>\n        </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"proceedureDentistChartLabels.length <= 0 && proceedureDentistChartData == false\" class=\"blankChart\"> \n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div><canvas #myCanvas baseChart [style.display]=\"'none'\"></canvas>"
 
 /***/ }),
 
@@ -7483,6 +11164,7 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
     //Items Predictor Analysis 
     ClinicianProceeduresComponent.prototype.buildChart = function () {
         var _this = this;
+        this.buildChartLoader = true;
         var user_id;
         var clinic_id;
         this.stackedChartData = [
@@ -7494,6 +11176,7 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
         ];
         this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.buildChartLoader = false;
                 _this.stackedChartData1 = [];
                 _this.stackedChartData2 = [];
                 _this.stackedChartData3 = [];
@@ -7530,10 +11213,12 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
     //Items Predictor Analysis Single
     ClinicianProceeduresComponent.prototype.buildChartDentist = function () {
         var _this = this;
+        this.buildChartDentistLoader = true;
         var user_id;
         var clinic_id;
         this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.buildChartDentistLoader = false;
                 _this.itemPredictedChartData1 = [];
                 _this.itemPredictedChartData1.push(data.data[0].crowns);
                 _this.itemPredictedChartData1.push(data.data[0].splints);
@@ -7553,10 +11238,12 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
     ClinicianProceeduresComponent.prototype.buildChartPredictor = function () {
         var _this = this;
         if (this.duration) {
+            this.buildChartPredictorLoader = true;
             var user_id;
             var clinic_id;
             this.clinicianproceeduresService.PredictorRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
                 if (data.message == 'success') {
+                    _this.buildChartPredictorLoader = false;
                     _this.predictedChartData1 = [];
                     _this.predictedChartData2 = [];
                     _this.predictedChartData3 = [];
@@ -7639,10 +11326,12 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
     //Predictor Ratio :
     ClinicianProceeduresComponent.prototype.buildChartPredictorDentist = function () {
         var _this = this;
+        this.buildChartPredictorDentistLoader = true;
         var user_id;
         var clinic_id;
         this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.buildChartPredictorDentistLoader = false;
                 _this.gaugeValuePredicted1 = data.data.ratio1[0].ratio;
                 _this.gaugeValuePredicted2 = data.data.ratio2[0].ratio;
                 _this.gaugeValuePredicted3 = data.data.ratio3[0].ratio;
@@ -7658,15 +11347,16 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
     };
-    //Total Revenue of Clinician Per Procedure
     ClinicianProceeduresComponent.prototype.buildChartProceedure = function () {
         var _this = this;
+        this.buildChartProceedureLoader = true;
         var user_id;
         var clinic_id;
         this.clinicianproceeduresService.ClinicianProceedure(this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             _this.proceedureChartData1 = [];
             _this.proceedureChartLabels1 = [];
             if (data.message == 'success') {
+                _this.buildChartProceedureLoader = false;
                 data.data.forEach(function (res) {
                     _this.proceedureChartData1.push(Math.floor(res.total));
                     _this.proceedureChartLabels1.push(res.treat_item);
@@ -7679,13 +11369,14 @@ var ClinicianProceeduresComponent = /** @class */ (function () {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
     };
-    //Total Revenue of Clinician Per Procedure
     ClinicianProceeduresComponent.prototype.buildChartProceedureDentist = function () {
         var _this = this;
+        this.buildChartProceedureDentistLoader = true;
         var user_id;
         var clinic_id;
         this.clinicianproceeduresService.ClinicianProceedureDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.buildChartProceedureDentistLoader = false;
                 _this.proceedureChartData1 = [];
                 _this.proceedureChartLabels1 = [];
                 data.data.forEach(function (res) {
@@ -8511,14 +12202,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @swimlane/ngx-charts */ "./node_modules/@swimlane/ngx-charts/release/index.js");
 /* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_28___default = /*#__PURE__*/__webpack_require__.n(_swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_28__);
 /* harmony import */ var angular_gauge_chart__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! angular-gauge-chart */ "./node_modules/angular-gauge-chart/fesm5/angular-gauge-chart.js");
-/* harmony import */ var chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! chartjs-plugin-annotation */ "./node_modules/chartjs-plugin-annotation/src/index.js");
-/* harmony import */ var chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_30___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_30__);
+/* harmony import */ var primeng_autocomplete__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! primeng/autocomplete */ "./node_modules/primeng/autocomplete.js");
+/* harmony import */ var primeng_autocomplete__WEBPACK_IMPORTED_MODULE_30___default = /*#__PURE__*/__webpack_require__.n(primeng_autocomplete__WEBPACK_IMPORTED_MODULE_30__);
+/* harmony import */ var ngx_smart_modal__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ngx-smart-modal */ "./node_modules/ngx-smart-modal/esm5/ngx-smart-modal.js");
+/* harmony import */ var chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! chartjs-plugin-annotation */ "./node_modules/chartjs-plugin-annotation/src/index.js");
+/* harmony import */ var chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_32___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_32__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -8568,9 +12264,11 @@ var DashboardsModule = /** @class */ (function () {
                 ng2_charts__WEBPACK_IMPORTED_MODULE_7__["ChartsModule"],
                 _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_28__["NgxChartsModule"],
                 ngx_gauge__WEBPACK_IMPORTED_MODULE_25__["NgxGaugeModule"],
+                primeng_autocomplete__WEBPACK_IMPORTED_MODULE_30__["AutoCompleteModule"],
                 ngx_daterangepicker_material__WEBPACK_IMPORTED_MODULE_26__["NgxDaterangepickerMd"].forRoot(),
                 _angular_material__WEBPACK_IMPORTED_MODULE_27__["MatButtonToggleModule"], _angular_material__WEBPACK_IMPORTED_MODULE_27__["MatIconModule"],
-                angular_gauge_chart__WEBPACK_IMPORTED_MODULE_29__["GaugeChartModule"]
+                angular_gauge_chart__WEBPACK_IMPORTED_MODULE_29__["GaugeChartModule"],
+                ngx_smart_modal__WEBPACK_IMPORTED_MODULE_31__["NgxSmartModalModule"].forRoot()
             ],
             providers: [_cliniciananalysis_cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_12__["ClinicianAnalysisService"], _clinicianproceedures_clinicianproceedures_service__WEBPACK_IMPORTED_MODULE_14__["ClinicianProceeduresService"], _finances_finances_service__WEBPACK_IMPORTED_MODULE_16__["FinancesService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_24__["DentistService"], _frontdesk_frontdesk_service__WEBPACK_IMPORTED_MODULE_19__["FrontDeskService"], _marketing_marketing_service__WEBPACK_IMPORTED_MODULE_23__["MarketingService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["DatePipe"], _healthscreen_healthscreen_service__WEBPACK_IMPORTED_MODULE_21__["HealthScreenService"]],
             declarations: [_cliniciananalysis_cliniciananalysis_component__WEBPACK_IMPORTED_MODULE_13__["ClinicianAnalysisComponent"], _clinicianproceedures_clinicianproceedures_component__WEBPACK_IMPORTED_MODULE_15__["ClinicianProceeduresComponent"], _finances_finances_component__WEBPACK_IMPORTED_MODULE_17__["FinancesComponent"], _frontdesk_frontdesk_component__WEBPACK_IMPORTED_MODULE_18__["FrontDeskComponent"], _marketing_marketing_component__WEBPACK_IMPORTED_MODULE_22__["MarketingComponent"], _healthscreen_healthscreen_component__WEBPACK_IMPORTED_MODULE_20__["HealthScreenComponent"]]
@@ -8647,7 +12345,7 @@ var DashboardsRoutes = [
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<!-- <div fxLayout=\"row wrap\">\n  <div class=\"sa_heading_bar\">\n      <div fxFlex.gt-sm=\"85\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n          <h4><span class=\"page_title\">Clinician Procedures &#38; Referrals</span></h4>\n       </div>\n      <div id=\"file\">\n</div>\n<app-headerright class=\"app-headerright\"></app-headerright>\n    \n\n       <div fxFlex.gt-sm=\"18\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n          <div class=\"vertical_center_header_content\">\n            <div class=\"sa_select_outer\">\n                <select class=\"sa_select\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n                     <option value =\"all\">All Dentist( {{dentistCount}} )</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n            </div>\n          </div>\n       </div>\n  </div>\n</div>   -->\n <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\"  [style.display]=\"'none'\">1\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Finances\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n       <div fxFlex.lg=\"80\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"80\">\n         <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n          <div class=\"custom_date\">\n          <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n           <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n        </div>\n      </div>\n\n\n        <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\">\n            <div class=\"onofftoogle\">\n                <span class=\"trend_mode_title\">Trend Mode</span>\n                <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\">\n                    <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\">\n                        <span>Off</span>\n                    </mat-button-toggle>\n                    <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                        <span>Current</span>\n                    </mat-button-toggle>\n                    <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                        <span>Historic</span>\n                    </mat-button-toggle>\n                </mat-button-toggle-group>\n            </div>\n        </div>\n\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n<div fxLayout=\"row wrap\">\n  <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"sa_flex_transparent\">\n        {{startDate| date}}- {{endDate| date}}\n    </div>\n</div>\n\n  <!-- Column-->\n   <div class=\"nonTrendMode\" fxLayout=\"row wrap\">\n<div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_main_grid_dashboard md_mrn\">\n        <div class=\"graph_abso\"></div>\n\n            <mat-card-content>\n                <!-- column -->\n                <div class=\"d-flex no-block align-items-center\">\n                    <div class=\"stats\">\n                       <h3 class=\"text-white m-0\"><span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{netProfitTrendTotal | number:'1.0-2'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{netProfitTrendIcon}}.png\"></span>\n                           Net Profit</h3>\n\n                        <h1 class=\"text-white m-0\">$ {{netProfitIcon}}{{netProfitVal | number:'1.0-0'}}</h1>\n                    </div>\n                    <!-- <div class=\"spark-count ml-auto\"> <i class=\"fas fa-sort-amount-{{netProfitIcon}}-alt\"></i></div> -->\n                </div>\n            </mat-card-content>\n\n    </div>\n    <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_main_grid_dashboard md_mrn\">\n        <div class=\"graph_abso\"></div>\n\n            <mat-card-content>\n                <!-- column -->\n                <div class=\"d-flex no-block align-items-center\">\n                    <div class=\"stats\">\n\n                              <h3 class=\"text-white m-0\"> <span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{netProfitPercentTrendTotal | number:'1.0-2'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{netProfitPercentTrendIcon}}.png\"></span> Net Profit % (Xero)</h3>\n                        <h1 class=\"text-white m-0\">{{netProfitPercentIcon}}{{netProfitPercentVal | number:'1.0-2'}}%</h1>\n                    </div>\n                    <!-- <div class=\"spark-count ml-auto\"> <i class=\"fas fa-sort-amount-{{netProfitPercentIcon}}-alt\"></i></div> -->\n                </div>\n            </mat-card-content>\n\n    </div>\n    <div fxFlex.lg=\"33\" fxFlex.xl=\"33\"  fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_main_grid_dashboard last md_mrn\">\n        <div class=\"graph_abso\"></div>\n\n            <mat-card-content>\n                <!-- column -->\n                <div class=\"d-flex no-block align-items-center\">\n                    <div class=\"stats\">\n                      <h3 class=\"text-white m-0\" ><span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{netProfitPmsTrendTotal | number:'1.0-2'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{netProfitPmsTrendIcon}}.png\"></span>\n                          Net Profit % (PMS)</h3>\n                        <h1 class=\"text-white m-0\">{{netProfitPmsIcon}}{{netProfitPmsVal}}%</h1>\n                    </div>\n                    <!-- <div class=\"spark-count ml-auto\"> <i class=\"fas fa-sort-amount-{{netProfitPmsIcon}}-alt\"></i></div> -->\n                </div>\n            </mat-card-content>\n\n    </div>\n   \n    <div fxFlex.lg=\"59\" fxFlex.xl=\"59\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"59\" class=\"sa_flexbg md_mrn\nexpenses_card custom_ngx_cw01\" >\n        <mat-card class=\"chart_card\" >\n            <mat-card-content class=\"sa_matcard_content\">\n              <span  class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{expensescChartTrendTotal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{expensescChartTrendIcon}}.png\"></span>\n                <mat-card-title class=\"text-center\">Expenses\n                    <div class=\"sa_box_title_right_buttons\">\n                        <button mat-icon-button (click) = \"flipcard('expenses_card')\" ><i class=\"fas fa-list-ul list_ico\"></i><i class=\"fas fa-chart-line chart_ico\"></i></button>\n                        <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                        <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button> \n                        <mat-menu #menu=\"matMenu\">\n                            <button mat-menu-item>Save Image</button>\n                            <button mat-menu-item>Download PDF</button>\n                        </mat-menu> -->\n                    </div>\n                </mat-card-title>\n\n                <div class=\" sa_chart_summary_flip_main\">\n                <div class=\" sa_chart_summary_flip\">\n                    <div class=\"chart sa_chart_flip sa_flip\">\n                     \n                       <!--      <canvas *ngIf=\"showInternal == true\" baseChart\n                                    [data]=\"pieChartData\" [labels]=\"pieChartLabels\"\n                                    [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n                                    (chartClick)=\"chartClicked($event)\"\n                                    [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">                  \n                            </canvas> -->\n                             <div fxLayout=\"row wrap\">\n                            <div class=\"ngx-charts-fix \" fxFlex.lg=\"69\" fxFlex.xl=\"73\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"73\">\n                                <div style=\"margin:0 auto; display:table\">\n                                <ngx-charts-pie-chart *ngIf=\"pieChartLabels.length > 0\"\n                              class=\"chart-container sa_chart_custom\"\n                              [view]=\"[500]\"\n                              [scheme]=\"colorScheme\"\n                              [trimLabels] =\"true\"\n                              [maxLabelLength] =\"15\"\n                              [results]=\"single\"\n                              [animations]=\"animations\"\n                              [legend]=\"false\"\n                              [legendTitle]=\"legendTitle\"\n                              [explodeSlices]=\"explodeSlices\"\n                              [labels]=\"showLabels\"\n                              [doughnut]=\"doughnut\"\n                              [gradient]=\"gradient\"\n                              [tooltipDisabled]=\"tooltipDisabled\"\n                              [tooltipText]=\"pieTooltipText\"\n                            >\n                            </ngx-charts-pie-chart>\n                <img src='../assets/images/nodata02.png' *ngIf=\"pieChartLabels.length <= 0\" class=\"blankChart\"> \n                                </div>\n                          </div>\n                            <div class=\"\" fxFlex.lg=\"30\" fxFlex.xl=\"26\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"26\">\n                              <div class=\"sa_pie_chart_txtdata\">\n                                  <h6>Industry Benchmarks</h6>\n                                <span><b>Dentist:</b> 35-40%</span>\n                                <span><b>Lab Fees:</b> 2-4%</span>\n                                <span><b>Consumables:</b> 6-8%</span>\n                                <span><b>Advertising:</b> 2-5%</span>\n                                <span><b>Rent:</b> 4-8%</span>\n                                <span><b>Wages (non-clinical):</b> 18-23%</span>\n                                <span><b>EBITDA (profit):</b> 5-25%</span>\n                              </div>\n                            </div>\n                                              \n                                          </div>\n                    </div>\n                    <div class=\"sa_summary_flip sa_flip\" *ngIf=\"pieChartLabels.length > 0\">\n                        <div class=\"sa_list_show\"*ngFor=\"let a of pieChartData; let i = index\">\n                            <span class=\"sa_clr_box sa_clr{{i}}m\"></span>\n                            <span class=\"frl\">{{pieChartLabels[i]}}</span>\n                            <span class=\"frv\">{{a | number:'1.0-2'}} ({{pieChartDataPercentres[i]}} %)</span>\n                        </div>\n                    </div>\n                </div>\n                </div>\n            </mat-card-content>\n        </mat-card>\n    </div>\n\n  <div fxFlex.lg=\"40\" fxFlex.xl=\"40\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"40\" class=\"sa_flexbg predictor_ratio md_mrn last custom_ngx_cw02\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n        <span  class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{productionChartTrendTotal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{productionChartTrendIcon}}.png\"></span>\n          <mat-card-title class=\"text-center\">% of Production By Clinician\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n\n<div class=\"chart\" *ngIf=\"productionChartLabels.length > 0\">\n             <div  style=\"height: 280px\">\n        <canvas class=\"productionPercentage\" #myCanvas *ngIf=\"showInternal == true\" baseChart [data]=\"productionChartData\" [labels]=\"productionChartLabels\" [chartType]=\"productionChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n      </div>\n      </div>\n                <img src='../assets/images/nodata02.png' *ngIf=\"productionChartLabels.length <= 0\" class=\"blankChart\"> \n           \n      </mat-card-content>\n    </mat-card>\n  </div>\n    <div fxFlex.lg=\"49\" fxFlex.xl=\"49\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg predictor_ratio md_mrn custom_ngx_cw03\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n         <span  class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{totalDiscountChartTrendTotal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{totalDiscountChartTrendIcon}}.png\"></span>\n          <mat-card-title class=\"text-center\">Total Discounts\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n\n<div class=\"chart\" *ngIf=\"totalDiscountChartLabels.length > 0\">\n             <div  style=\"height: 280px\">\n        <canvas class=\"totalDiscount\" #myCanvas *ngIf=\"showInternal == true\" baseChart [data]=\"totalDiscountChartData\" [labels]=\"totalDiscountChartLabels\" [chartType]=\"totalDiscountChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [options]=\"pieChartOptions2\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n      </div>\n      </div>\n                <img src='../assets/images/nodata02.png' *ngIf=\"totalDiscountChartLabels.length <= 0\" class=\"blankChart\"> \n\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\" *ngIf=\"totalDiscountChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">${{totalDiscountChartTotal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">${{totalDiscountChartTrendTotal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n      <div fxFlex.lg=\"50\" fxFlex.xl=\"50\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"sa_flexbg predictor_ratio md_mrn last custom_ngx_cw04\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{totalOverdueTrendAccount | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{totalOverdueTrendIcon}}.png\"></span>\n          <mat-card-title class=\"text-center\">Overdue Accounts\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n<div class=\"chart\" >\n             <div  style=\"height: 280px\" *ngIf=\"totalOverdueAccountDataMax > 0\">\n        <canvas class=\"totalOverdue\" #myCanvas *ngIf=\"showInternal == true\" baseChart [data]=\"totalOverdueAccountData\" [labels]=\"totalOverdueAccountLabels\" [chartType]=\"productionChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [options]=\"pieChartOptions2\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n      </div>\n       <img src='../assets/images/nodata02.png' *ngIf=\"totalOverdueAccountDataMax <= 0\" class=\"blankChart\"> \n\n      </div>\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\" *ngIf=\"totalOverdueAccountDataMax > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{totalOverdueAccount | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{totalOverdueTrendAccount | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n <div fxFlex.lg=\"65\" fxFlex.xl=\"65\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"65\" class=\"sa_flexbg predictor_ratio total_val md_mrn custom_ngx_cw05\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Production & Collection\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n\n           <div fxLayout=\"row wrap\" class=\"m-t-20 sa_combine_title\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h5 class=\"m-0 font-light\"><span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{totalProductionTrendVal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{totalProductionTrendIcon}}.png\"></span>Production</h5>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h5 class=\"m-0 font-light\"><span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{collectionTrendVal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{collectionTrendIcon}}.png\"></span>Collection</h5>\n                    </div>\n                </div>  \n\n       <div *ngIf=\"totalProductionCollectionLabel1.length > 0\" style=\"height: 180px\">\n       \n     <canvas #myCanvas2 baseChart [datasets]=\"totalProductionCollection1\" [labels]=\"totalProductionCollectionLabel1\" [options]=\"labelBarOptionsTC\" [legend]=\"false\"\n          [chartType]=\"stackedChartTypeHorizontal\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" \n          (chartClick)=\"chartClicked($event)\"></canvas>\n      <!--   <ngx-gauge class=\"totalProduction\" [type]=\"gaugeType\"\n           [value]=\"totalProductionVal\" \n           [label]=\"totalProductionLabel\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor2\"\n           [cap] =\"cap\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge> -->\n        </div>\n       <img src='../assets/images/nodata02.png' *ngIf=\"totalProductionCollectionLabel1.length <= 0\"  class=\"blankChart\"> \n        <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\" *ngIf=\"totalProductionCollectionLabel1.length > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                         <h4 class=\"m-0 font-light\"><b>Production</b></h4>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                         <h4 class=\"m-0 font-light\"><b>Collection ({{collectionPercentageC}}%)</b></h4>\n                    </div>\n                </div>   \n            <div fxLayout=\"row wrap\" class=\"m-t-20 predicted1\" *ngIf=\"totalProductionCollectionLabel1.length > 0\">\n                    <div fxFlex.gt-sm=\"25%\" fxFlex.gt-xs=\"25%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{totalProductionVal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"25%\" fxFlex.gt-xs=\"25%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{totalProductionTrendVal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                     <div fxFlex.gt-sm=\"25%\" fxFlex.gt-xs=\"25%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{collectionVal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"25%\" fxFlex.gt-xs=\"25%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{collectionTrendVal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!--  <div fxFlex.lg=\"33\" fxFlex.xl=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg predictor_ratio md_mrn custom_ngx_cw06\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{collectionTrendVal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{collectionTrendIcon}}.png\"></span>\n          <mat-card-title class=\"text-center\">Collection\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n          <!--    </div>\n          </mat-card-title>\n          <h1 class=\"text-black m-0 sa_cart_title\">$ {{collectionVal | number:'1.0-2'}}</h1>\n\n             <div  style=\"height: 180px\">\n        <ngx-gauge  class=\"collection\" [type]=\"gaugeType\"\n           [value]=\"collectionPercentage\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [append]=\"collectionAppend\"\n           [size]=\"size\"\n           >\n          </ngx-gauge>\n         \n        </div>\n\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{collectionVal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{collectionTrendVal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>\n\n      </mat-card-content>\n    </mat-card>\n  </div> -->\n   <div fxFlex.lg=\"32\" fxFlex.xl=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"total_val sa_flexbg predictor_ratio md_mrn last custom_ngx_cw07\">\n     \n    <mat-card class=\"\">\n      <mat-card-content class=\"sa_matcard_content\">\n<span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{productionTrendVal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{productionTrendIcon}}.png\"></span>\n       <mat-card-title class=\"text-center\">Production Per Visit\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n       </mat-card-title>\n       <h1 class=\"text-black m-0 sa_cart_title\">&nbsp;</h1>\n       <div  style=\"height: 180px\" *ngIf=\"productionVal > 0\">\n        <ngx-gauge class=\"productionVisit\" [type]=\"gaugeType\"\n           [value]=\"productionVal\" \n           [thick]=\"gaugeThick\"  \n           [prepend]= \"gaugePrependText\"\n           [foregroundColor]=\"foregroundColor2\"\n            [max] = \"productionTrendVal\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n          \n        </div>\n       <img src='../assets/images/nodata02.png' *ngIf=\"productionVal <= 0\" class=\"blankChart\"> \n\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\" *ngIf=\"productionVal > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">${{productionVal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">${{productionTrendVal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n <div class=\"trendMode\"  fxLayout=\"row wrap\" [style.display]=\"'none'\">\n   <div fxFlex.lg=\"59\" fxFlex.xl=\"59\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg predictor_ratio md_mrn \">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <div fxLayout=\"row wrap\" class=\"sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn profit_btn netProfit1 active\" (click) = \"displayProfit('1')\">Net Profit</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn profit_btn netProfit2\" (click) = \"displayProfit('2')\">Net Profit % Xero</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn profit_btn netProfit3\" (click) = \"displayProfit('3')\">Net Profit % PMS</small>\n                    </div>\n             </div>\n      <div  style=\"height: 280px\"  >\n        <canvas *ngIf=\"netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  >0\" class=\"profit1 net_profit\" baseChart [datasets]=\"netProfitChartTrend\" [labels]=\"netProfitChartTrendLabels\" [options]=\"labelBarOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColorsBar\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n       <img src='../assets/images/nodata02.png' *ngIf=\"netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  <=0\" class=\"blankChart\"> \n\n        <canvas *ngIf=\"netProfitDisplayVal == 2 && netProfitPercentChartTrendLabels.length  >0\" class=\"profit2 net_profit\" baseChart [datasets]=\"netProfitPercentChartTrend\" [labels]=\"netProfitPercentChartTrendLabels\" [options]=\"labelBarPercentOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColorsBar\" (chartClick)=\"chartClicked($event)\" >\n        </canvas>\n       <img src='../assets/images/nodata02.png' *ngIf=\"netProfitDisplayVal == 2  && netProfitPercentChartTrendLabels.length  <=0\" class=\"blankChart\"> \n\n        <canvas *ngIf=\"netProfitDisplayVal == 3 && netProfitPmsChartTrendLabels.length  > 0\" #myCanvas2 class=\"profit3 net_profit\" baseChart [datasets]=\"netProfitPmsChartTrend\" [labels]=\"netProfitPmsChartTrendLabels\" [options]=\"labelBarPercentOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColorsBar\" (chartClick)=\"chartClicked($event)\"> \n        </canvas>\n       <img src='../assets/images/nodata02.png' *ngIf=\"netProfitDisplayVal == 3  && netProfitPmsChartTrendLabels.length  <=0\" class=\"blankChart\"> \n\n      </div>        \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"40\" fxFlex.xl=\"40\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"40\" class=\"sa_flexbg predictor_ratio md_mrn last\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Discounts\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n\n             <div  style=\"height: 280px\">\n        <canvas  #myCanvas2 class=\"trendtotalDiscount\" *ngIf=\"discountsChartTrendLabels.length  > 0\" baseChart [datasets]=\"discountsChartTrend\" [labels]=\"discountsChartTrendLabels\" [options]=\"labelBarOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColorsBar\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"discountsChartTrendLabels.length  <=0\" class=\"blankChart\"> \n      </div>\n                     \n      </mat-card-content>\n    </mat-card>\n  </div>\n    <div fxFlex.lg=\"49\" fxFlex.xl=\"49\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg md_mrn\nexpenses_card\" >\n        <mat-card class=\"chart_card\" >\n            <mat-card-content class=\"sa_matcard_content\">\n                <mat-card-title class=\"text-center\">Expenses\n                    <div class=\"sa_box_title_right_buttons\">\n                        <button mat-icon-button (click) = \"flipcard('expenses_card')\" ><i class=\"fas fa-list-ul list_ico\"></i><i class=\"fas fa-chart-line chart_ico\"></i></button>\n                        <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                        <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button> \n                        <mat-menu #menu=\"matMenu\">\n                            <button mat-menu-item>Save Image</button>\n                            <button mat-menu-item>Download PDF</button>\n                        </mat-menu> -->\n                    </div>\n                </mat-card-title>\n\n                <div class=\" sa_chart_summary_flip_main\">\n                <div class=\" sa_chart_summary_flip\">\n                    <div class=\"chart sa_chart_flip sa_flip\" >\n                        <div style=\"height: 280px;\">\n                                  <canvas #myCanvas2 class=\"trendProductionPercentage\" *ngIf=\"expensesChartTrendLabels.length  > 0\" baseChart [datasets]=\"expensesChartTrend\" [labels]=\"expensesChartTrendLabels\" [options]=\"stackedChartOptions\" [legend]=\"false\"\n              [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" (chartClick)=\"chartClicked($event)\" >\n            </canvas>\n            <img src='../assets/images/nodata02.png' *ngIf=\"expensesChartTrendLabels.length  <=0\" class=\"blankChart\"> \n                        </div>\n                    </div>\n                </div>\n                </div>\n            </mat-card-content>\n        </mat-card>\n    </div>\n  <div fxFlex.lg=\"50\" fxFlex.xl=\"50\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"sa_flexbg predictor_ratio md_mrn last\">    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">% of Production By Clinician\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n             <div  style=\"height: 280px\">\n        <canvas #myCanvas2 class=\"trendProductionPercentage\" baseChart *ngIf=\"productionChartTrendLabels.length  > 0\" [datasets]=\"productionChartTrend\" [labels]=\"productionChartTrendLabels\" [options]=\"labelBarPercentOptions\" [legend]=\"false\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"productionChartTrendLabels.length  <=0\" class=\"blankChart\"> \n      </div>\n           \n      </mat-card-content>\n    </mat-card>\n  </div>\n    \n  <div fxFlex.lg=\"32\" fxFlex.xl=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg predictor_ratio md_mrn\"> \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Overdue Accounts\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n             <div  style=\"height: 280px\">\n         <canvas  #myCanvas class=\"trendtotalOverdue\" *ngIf=\"overdueChartTrendLabels.length  > 0\" baseChart [datasets]=\"overdueChartTrend\" [labels]=\"overdueChartTrendLabels\" [options]=\"labelBarOptions\" [legend]=\"false\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"overdueChartTrendLabels.length  <=0\" class=\"blankChart\"> \n\n      </div>           \n      </mat-card-content>\n    </mat-card>\n  </div>\n <div fxFlex.lg=\"32\" fxFlex.xl=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg predictor_ratio md_mrn\">\n <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Production & Collection\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n       <div  style=\"height: 280px\">\n          <canvas  #myCanvas2 class=\"trendtotalProduction\" *ngIf=\"totalProductionCollectionLabel.length  > 0\" baseChart [datasets]=\"totalProductionCollection\" [labels]=\"totalProductionCollectionLabel\" [options]=\"labelBarOptions\" [legend]=\"true\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"totalProductionCollectionLabel.length  <=0\" class=\"blankChart\"> \n\n        </div>           \n      </mat-card-content>\n    </mat-card>\n  </div>\n   <div fxFlex.lg=\"33\" fxFlex.xl=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"sa_flexbg predictor_ratio last md_mrn last\">\n     \n    <mat-card class=\"\">\n      <mat-card-content class=\"sa_matcard_content\">\n       <mat-card-title class=\"text-center\">Production Per Visit\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n       </mat-card-title>\n       <div  style=\"height: 280px\">\n           <canvas #myCanvas2 class=\"trendproductionVisit\" *ngIf=\"productionVisitChartTrendLabels.length  > 0\" baseChart [datasets]=\"productionVisitChartTrend\" [labels]=\"productionVisitChartTrendLabels\" [options]=\"labelBarOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" (chartClick)=\"chartClicked($event)\"></canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"productionVisitChartTrendLabels.length  <=0\" class=\"blankChart\"> \n\n        </div>           \n      </mat-card-content>\n    </mat-card>\n  </div>\n  \n</div>\n  <!-- Column-->   \n</div>\n\n</div><canvas #myCanvas2 baseChart [style.display]=\"'none'\"></canvas><canvas #myCanvas baseChart [style.display]=\"'none'\"></canvas>"
+module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<!-- <div fxLayout=\"row wrap\">\n  <div class=\"sa_heading_bar\">\n      <div fxFlex.gt-sm=\"85\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n          <h4><span class=\"page_title\">Clinician Procedures &#38; Referrals</span></h4>\n       </div>\n      <div id=\"file\">\n</div>\n<app-headerright class=\"app-headerright\"></app-headerright>\n    \n\n       <div fxFlex.gt-sm=\"18\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n          <div class=\"vertical_center_header_content\">\n            <div class=\"sa_select_outer\">\n                <select class=\"sa_select\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n                     <option value =\"all\">All Dentist( {{dentistCount}} )</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n            </div>\n          </div>\n       </div>\n  </div>\n</div>   -->\n <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\"  [style.display]=\"'none'\">1\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Finances\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n       <div fxFlex.lg=\"80\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"80\">\n         <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n          <div class=\"custom_date\">\n          <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n           <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n        </div>\n      </div>\n\n\n        <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\">\n            <div class=\"onofftoogle\">\n                <span class=\"trend_mode_title\">Trend Mode</span>\n                <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\">\n                    <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\">\n                        <span>Off</span>\n                    </mat-button-toggle>\n                    <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                        <span>Current</span>\n                    </mat-button-toggle>\n                    <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                        <span>Historic</span>\n                    </mat-button-toggle>\n                </mat-button-toggle-group>\n            </div>\n        </div>\n\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n<div fxLayout=\"row wrap\">\n  <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"sa_flex_transparent\">\n        {{startDate| date}}- {{endDate| date}}\n    </div>\n</div>\n\n  <!-- Column-->\n   <div class=\"nonTrendMode\" fxLayout=\"row wrap\">\n<div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_main_grid_dashboard md_mrn\">\n        <div class=\"graph_abso\"></div>\n\n            <mat-card-content>\n                <!-- column -->\n                <div class=\"d-flex no-block align-items-center\">\n                    <div class=\"stats\">\n                       <h3 class=\"text-white m-0\"><span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{netProfitTrendTotal | number:'1.0-2'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{netProfitTrendIcon}}.png\"></span>\n                           Net Profit</h3>\n\n                        <h1 class=\"text-white m-0\">$ {{netProfitIcon}}{{netProfitVal | number:'1.0-0'}}</h1>\n                    </div>\n                    <!-- <div class=\"spark-count ml-auto\"> <i class=\"fas fa-sort-amount-{{netProfitIcon}}-alt\"></i></div> -->\n                </div>\n            </mat-card-content>\n\n    </div>\n    <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_main_grid_dashboard md_mrn\">\n        <div class=\"graph_abso\"></div>\n\n            <mat-card-content>\n                <!-- column -->\n                <div class=\"d-flex no-block align-items-center\">\n                    <div class=\"stats\">\n\n                              <h3 class=\"text-white m-0\"> <span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{netProfitPercentTrendTotal | number:'1.0-2'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{netProfitPercentTrendIcon}}.png\"></span> Net Profit % (Xero)</h3>\n                        <h1 class=\"text-white m-0\">{{netProfitPercentIcon}}{{netProfitPercentVal | number:'1.0-2'}}%</h1>\n                    </div>\n                    <!-- <div class=\"spark-count ml-auto\"> <i class=\"fas fa-sort-amount-{{netProfitPercentIcon}}-alt\"></i></div> -->\n                </div>\n            </mat-card-content>\n\n    </div>\n    <div fxFlex.lg=\"33\" fxFlex.xl=\"33\"  fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_main_grid_dashboard last md_mrn\">\n        <div class=\"graph_abso\"></div>\n\n            <mat-card-content>\n                <!-- column -->\n                <div class=\"d-flex no-block align-items-center\">\n                    <div class=\"stats\">\n                      <h3 class=\"text-white m-0\" ><span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{netProfitPmsTrendTotal | number:'1.0-2'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{netProfitPmsTrendIcon}}.png\"></span>\n                          Net Profit % (PMS)</h3>\n                        <h1 class=\"text-white m-0\">{{netProfitPmsIcon}}{{netProfitPmsVal}}%</h1>\n                    </div>\n                    <!-- <div class=\"spark-count ml-auto\"> <i class=\"fas fa-sort-amount-{{netProfitPmsIcon}}-alt\"></i></div> -->\n                </div>\n            </mat-card-content>\n\n    </div>\n   \n    <div fxFlex.lg=\"59\" fxFlex.xl=\"59\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"59\" class=\"sa_flexbg md_mrn\nexpenses_card custom_ngx_cw01\" >\n        <mat-card class=\"chart_card\" >\n            <mat-card-content class=\"sa_matcard_content\">\n              <span  class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{expensescChartTrendTotal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{expensescChartTrendIcon}}.png\"></span>\n                <mat-card-title class=\"text-center\">Expenses\n                    <div class=\"sa_box_title_right_buttons\">\n                        <button mat-icon-button (click) = \"flipcard('expenses_card')\" ><i class=\"fas fa-list-ul list_ico\"></i><i class=\"fas fa-chart-line chart_ico\"></i></button>\n                        <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                        <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button> \n                        <mat-menu #menu=\"matMenu\">\n                            <button mat-menu-item>Save Image</button>\n                            <button mat-menu-item>Download PDF</button>\n                        </mat-menu> -->\n                    </div>\n                </mat-card-title>\n\n                <div class=\" sa_chart_summary_flip_main\">\n                <div class=\" sa_chart_summary_flip\">\n                    <div class=\"chart sa_chart_flip sa_flip\">\n                     \n                       <!--      <canvas *ngIf=\"showInternal == true\" baseChart\n                                    [data]=\"pieChartData\" [labels]=\"pieChartLabels\"\n                                    [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n                                    (chartClick)=\"chartClicked($event)\"\n                                    [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">                  \n                            </canvas> -->\n                             <div fxLayout=\"row wrap\">\n                            <div class=\"ngx-charts-fix \" fxFlex.lg=\"69\" fxFlex.xl=\"73\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"73\">\n          <div *ngIf=\"categoryExpensesLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n                                <div style=\"margin:0 auto; display:table\">\n                                <ngx-charts-pie-chart *ngIf=\"pieChartLabels.length > 0\"\n                              class=\"chart-container sa_chart_custom\"\n                              [view]=\"[500]\"\n                              [scheme]=\"colorScheme\"\n                              [trimLabels] =\"true\"\n                              [maxLabelLength] =\"15\"\n                              [results]=\"single\"\n                              [animations]=\"animations\"\n                              [legend]=\"false\"\n                              [legendTitle]=\"legendTitle\"\n                              [explodeSlices]=\"explodeSlices\"\n                              [labels]=\"showLabels\"\n                              [doughnut]=\"doughnut\"\n                              [gradient]=\"gradient\"\n                              [tooltipDisabled]=\"tooltipDisabled\"\n                              [tooltipText]=\"pieTooltipText\"\n                            >\n                            </ngx-charts-pie-chart>\n                <img src='../assets/images/nodata02.png' *ngIf=\"pieChartLabels.length <= 0 && categoryExpensesLoader == false\" class=\"blankChart\"> \n                                </div>\n                          </div>\n                            <div class=\"\" fxFlex.lg=\"30\" fxFlex.xl=\"26\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"26\">\n                              <div class=\"sa_pie_chart_txtdata\">\n                                  <h6>Industry Benchmarks</h6>\n                                <span><b>Dentist:</b> 35-40%</span>\n                                <span><b>Lab Fees:</b> 2-4%</span>\n                                <span><b>Consumables:</b> 6-8%</span>\n                                <span><b>Advertising:</b> 2-5%</span>\n                                <span><b>Rent:</b> 4-8%</span>\n                                <span><b>Wages (non-clinical):</b> 18-23%</span>\n                                <span><b>EBITDA (profit):</b> 5-25%</span>\n                              </div>\n                            </div>\n                                              \n                                          </div>\n                    </div>\n                    <div class=\"sa_summary_flip sa_flip\" *ngIf=\"pieChartLabels.length > 0\">\n                        <div class=\"sa_list_show\"*ngFor=\"let a of pieChartData; let i = index\">\n                            <span class=\"sa_clr_box sa_clr{{i}}m\"></span>\n                            <span class=\"frl\">{{pieChartLabels[i]}}</span>\n                            <span class=\"frv\">{{a | number:'1.0-2'}} ({{pieChartDataPercentres[i]}} %)</span>\n                        </div>\n                    </div>\n                </div>\n                </div>\n            </mat-card-content>\n        </mat-card>\n    </div>\n\n  <div fxFlex.lg=\"40\" fxFlex.xl=\"40\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"40\" class=\"sa_flexbg predictor_ratio md_mrn last custom_ngx_cw02\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n        <span  class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{productionChartTrendTotal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{productionChartTrendIcon}}.png\"></span>\n          <mat-card-title class=\"text-center\">% of Production By Clinician\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n          <div *ngIf=\"finProductionByClinicianLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n<div class=\"chart\" *ngIf=\"productionChartLabels.length > 0\">\n             <div  style=\"height: 280px\">\n        <canvas class=\"productionPercentage\" #myCanvas *ngIf=\"showInternal == true\" baseChart [data]=\"productionChartData\" [labels]=\"productionChartLabels\" [chartType]=\"productionChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n      </div>\n      </div>\n      <img src='../assets/images/nodata02.png' *ngIf=\"productionChartLabels.length <= 0 && finProductionByClinicianLoader == false\" class=\"blankChart\">           \n      </mat-card-content>\n    </mat-card>\n  </div>\n    <div fxFlex.lg=\"49\" fxFlex.xl=\"49\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg predictor_ratio md_mrn custom_ngx_cw03\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n         <span  class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{totalDiscountChartTrendTotal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{totalDiscountChartTrendIcon}}.png\"></span>\n          <mat-card-title class=\"text-center\">Total Discounts\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n          <div *ngIf=\"finTotalDiscountsLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n<div class=\"chart\" *ngIf=\"totalDiscountChartLabels.length > 0\">\n             <div  style=\"height: 280px\">\n        <canvas class=\"totalDiscount\" #myCanvas *ngIf=\"showInternal == true\" baseChart [data]=\"totalDiscountChartData\" [labels]=\"totalDiscountChartLabels\" [chartType]=\"totalDiscountChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [options]=\"pieChartOptions2\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n      </div>\n      </div>\n                <img src='../assets/images/nodata02.png' *ngIf=\"totalDiscountChartLabels.length <= 0 && finTotalDiscountsLoader == false\" class=\"blankChart\"> \n\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\" *ngIf=\"totalDiscountChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">${{totalDiscountChartTotal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">${{totalDiscountChartTrendTotal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n      <div fxFlex.lg=\"50\" fxFlex.xl=\"50\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"sa_flexbg predictor_ratio md_mrn last custom_ngx_cw04\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{totalOverdueTrendAccount | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{totalOverdueTrendIcon}}.png\"></span>\n          <mat-card-title class=\"text-center\">Overdue Accounts\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n<div class=\"chart\" >\n          <div *ngIf=\"finOverdueAccountsLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n             <div  style=\"height: 280px\" *ngIf=\"totalOverdueAccountDataMax > 0\">\n        <canvas class=\"totalOverdue\" #myCanvas *ngIf=\"showInternal == true\" baseChart [data]=\"totalOverdueAccountData\" [labels]=\"totalOverdueAccountLabels\" [chartType]=\"productionChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\"  [options]=\"pieChartOptions2\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n      </div>\n       <img src='../assets/images/nodata02.png' *ngIf=\"totalOverdueAccountDataMax <= 0 && finOverdueAccountsLoader == false\" class=\"blankChart\"> \n\n      </div>\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\" *ngIf=\"totalOverdueAccountDataMax > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{totalOverdueAccount | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{totalOverdueTrendAccount | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n <div fxFlex.lg=\"65\" fxFlex.xl=\"65\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"65\" class=\"sa_flexbg predictor_ratio total_val md_mrn custom_ngx_cw05\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Production & Collection\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n\n           <div fxLayout=\"row wrap\" class=\"m-t-20 sa_combine_title\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h5 class=\"m-0 font-light\"><span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{totalProductionTrendVal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{totalProductionTrendIcon}}.png\"></span>Production</h5>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h5 class=\"m-0 font-light\"><span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{collectionTrendVal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{collectionTrendIcon}}.png\"></span>Collection</h5>\n                    </div>\n                </div>  \n          <div *ngIf=\"finTotalProductionLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n       <div *ngIf=\"totalProductionCollectionLabel1.length > 0\" style=\"height: 180px\">\n       \n     <canvas #myCanvas2 baseChart [datasets]=\"totalProductionCollection1\" [labels]=\"totalProductionCollectionLabel1\" [options]=\"labelBarOptionsTC\" [legend]=\"false\"\n          [chartType]=\"stackedChartTypeHorizontal\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" \n          (chartClick)=\"chartClicked($event)\"></canvas>\n      <!--   <ngx-gauge class=\"totalProduction\" [type]=\"gaugeType\"\n           [value]=\"totalProductionVal\" \n           [label]=\"totalProductionLabel\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor2\"\n           [cap] =\"cap\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge> -->\n        </div>\n       <img src='../assets/images/nodata02.png' *ngIf=\"totalProductionCollectionLabel1.length <= 0 && finTotalProductionLoader == false\"  class=\"blankChart\"> \n        <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\" *ngIf=\"totalProductionCollectionLabel1.length > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                         <h4 class=\"m-0 font-light\"><b>Production</b></h4>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                         <h4 class=\"m-0 font-light\"><b>Collection ({{collectionPercentageC}}%)</b></h4>\n                    </div>\n                </div>   \n            <div fxLayout=\"row wrap\" class=\"m-t-20 predicted1\" *ngIf=\"totalProductionCollectionLabel1.length > 0\">\n                    <div fxFlex.gt-sm=\"25%\" fxFlex.gt-xs=\"25%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{totalProductionVal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"25%\" fxFlex.gt-xs=\"25%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{totalProductionTrendVal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                     <div fxFlex.gt-sm=\"25%\" fxFlex.gt-xs=\"25%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{collectionVal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"25%\" fxFlex.gt-xs=\"25%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{collectionTrendVal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!--  <div fxFlex.lg=\"33\" fxFlex.xl=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg predictor_ratio md_mrn custom_ngx_cw06\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{collectionTrendVal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{collectionTrendIcon}}.png\"></span>\n          <mat-card-title class=\"text-center\">Collection\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n          <!--    </div>\n          </mat-card-title>\n          <h1 class=\"text-black m-0 sa_cart_title\">$ {{collectionVal | number:'1.0-2'}}</h1>\n\n             <div  style=\"height: 180px\">\n        <ngx-gauge  class=\"collection\" [type]=\"gaugeType\"\n           [value]=\"collectionPercentage\"  \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [append]=\"collectionAppend\"\n           [size]=\"size\"\n           >\n          </ngx-gauge>\n         \n        </div>\n\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{collectionVal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{collectionTrendVal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>\n\n      </mat-card-content>\n    </mat-card>\n  </div> -->\n   <div fxFlex.lg=\"32\" fxFlex.xl=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"total_val sa_flexbg predictor_ratio md_mrn last custom_ngx_cw07\">\n     \n    <mat-card class=\"\">\n      <mat-card-content class=\"sa_matcard_content\">\n<span class=\"predicted3Tool sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : ${{productionTrendVal | number:'1.0-0'}}\" ><img class=\"trend_ico\" src=\"../assets/images/trend_{{productionTrendIcon}}.png\"></span>\n       <mat-card-title class=\"text-center\">Production Per Visit\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n       </mat-card-title>\n       <h1 class=\"text-black m-0 sa_cart_title\">&nbsp;</h1>\n          <div *ngIf=\"finProductionPerVisitLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n       <div  style=\"height: 180px\" *ngIf=\"productionVal > 0\">\n        <ngx-gauge class=\"productionVisit\" [type]=\"gaugeType\"\n           [value]=\"productionVal\" \n           [thick]=\"gaugeThick\"  \n           [prepend]= \"gaugePrependText\"\n           [foregroundColor]=\"foregroundColor2\"\n            [max] = \"productionTrendVal\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n          \n        </div>\n       <img src='../assets/images/nodata02.png' *ngIf=\"productionVal <= 0 && finProductionPerVisitLoader == false\" class=\"blankChart\"> \n\n            <div fxLayout=\"row wrap\" class=\"m-t-40 predicted1\" *ngIf=\"productionVal > 0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">${{productionVal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">${{productionTrendVal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>            \n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n <div class=\"trendMode\"  fxLayout=\"row wrap\" [style.display]=\"'none'\">\n   <div fxFlex.lg=\"59\" fxFlex.xl=\"59\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg predictor_ratio md_mrn \">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <div fxLayout=\"row wrap\" class=\"sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn profit_btn netProfit1 active\" (click) = \"displayProfit('1')\">Net Profit</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn profit_btn netProfit2\" (click) = \"displayProfit('2')\">Net Profit % Xero</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <small class=\"sa_tab_btn profit_btn netProfit3\" (click) = \"displayProfit('3')\">Net Profit % PMS</small>\n                    </div>\n             </div>\n      <div  style=\"height: 280px\"  >\n          <div *ngIf=\"finNetProfitTrendLoader == true && netProfitDisplayVal == 1\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <canvas *ngIf=\"netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  >0\" class=\"profit1 net_profit\" baseChart [datasets]=\"netProfitChartTrend\" [labels]=\"netProfitChartTrendLabels\" [options]=\"labelBarOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColorsBar\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n       <img src='../assets/images/nodata02.png' *ngIf=\"netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  <=0 && finNetProfitTrendLoader == false\" class=\"blankChart\"> \n          <div *ngIf=\"finNetProfitPercentTrendLoader == true && netProfitDisplayVal == 2\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <canvas *ngIf=\"netProfitDisplayVal == 2 && netProfitPercentChartTrendLabels.length  >0\" class=\"profit2 net_profit\" baseChart [datasets]=\"netProfitPercentChartTrend\" [labels]=\"netProfitPercentChartTrendLabels\" [options]=\"labelBarPercentOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColorsBar\" (chartClick)=\"chartClicked($event)\" >\n        </canvas>\n       <img src='../assets/images/nodata02.png' *ngIf=\"netProfitDisplayVal == 2  && netProfitPercentChartTrendLabels.length <=0 && finNetProfitPercentTrendLoader == false\"  class=\"blankChart\"> \n          <div *ngIf=\"finNetProfitPMSTrendLoader == true && netProfitDisplayVal == 3\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <canvas *ngIf=\"netProfitDisplayVal == 3 && netProfitPmsChartTrendLabels.length  > 0\" #myCanvas2 class=\"profit3 net_profit\" baseChart [datasets]=\"netProfitPmsChartTrend\" [labels]=\"netProfitPmsChartTrendLabels\" [options]=\"labelBarPercentOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColorsBar\" (chartClick)=\"chartClicked($event)\"> \n        </canvas>\n       <img src='../assets/images/nodata02.png' *ngIf=\"netProfitDisplayVal == 3  && netProfitPmsChartTrendLabels.length  <=0 && finNetProfitPMSTrendLoader == true\" class=\"blankChart\"> \n      </div>        \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"40\" fxFlex.xl=\"40\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"40\" class=\"sa_flexbg predictor_ratio md_mrn last\">\n    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Discounts\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n          <div *ngIf=\"finTotalDiscountsTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n             <div  style=\"height: 280px\">\n        <canvas  #myCanvas2 class=\"trendtotalDiscount\" *ngIf=\"discountsChartTrendLabels.length  > 0\" baseChart [datasets]=\"discountsChartTrend\" [labels]=\"discountsChartTrendLabels\" [options]=\"labelBarOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"stackedChartColorsBar\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"discountsChartTrendLabels.length  <=0 && finTotalDiscountsTrendLoader == false\" class=\"blankChart\"> \n      </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n    <div fxFlex.lg=\"49\" fxFlex.xl=\"49\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg md_mrn\nexpenses_card\" >\n        <mat-card class=\"chart_card\" >\n            <mat-card-content class=\"sa_matcard_content\">\n                <mat-card-title class=\"text-center\">Expenses\n                    <div class=\"sa_box_title_right_buttons\">\n                        <button mat-icon-button (click) = \"flipcard('expenses_card')\" ><i class=\"fas fa-list-ul list_ico\"></i><i class=\"fas fa-chart-line chart_ico\"></i></button>\n                        <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                        <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button> \n                        <mat-menu #menu=\"matMenu\">\n                            <button mat-menu-item>Save Image</button>\n                            <button mat-menu-item>Download PDF</button>\n                        </mat-menu> -->\n                    </div>\n                </mat-card-title>\n\n                <div class=\" sa_chart_summary_flip_main\">\n                <div class=\" sa_chart_summary_flip\">\n                    <div class=\"chart sa_chart_flip sa_flip\" >\n                        <div style=\"height: 280px;\">\n                                  <canvas #myCanvas2 class=\"trendProductionPercentage\" *ngIf=\"expensesChartTrendLabels.length  > 0\" baseChart [datasets]=\"expensesChartTrend\" [labels]=\"expensesChartTrendLabels\" [options]=\"stackedChartOptions\" [legend]=\"false\"\n              [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" (chartClick)=\"chartClicked($event)\" >\n            </canvas>\n            <img src='../assets/images/nodata02.png' *ngIf=\"expensesChartTrendLabels.length  <=0\" class=\"blankChart\"> \n                        </div>\n                    </div>\n                </div>\n                </div>\n            </mat-card-content>\n        </mat-card>\n    </div>\n  <div fxFlex.lg=\"50\" fxFlex.xl=\"50\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"sa_flexbg predictor_ratio md_mrn last\">    \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">% of Production By Clinician\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n          <div *ngIf=\"finProductionByClinicianTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n             <div  style=\"height: 280px\">\n        <canvas #myCanvas2 class=\"trendProductionPercentage\" baseChart *ngIf=\"productionChartTrendLabels.length  > 0\" [datasets]=\"productionChartTrend\" [labels]=\"productionChartTrendLabels\" [options]=\"labelBarPercentOptions\" [legend]=\"false\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"productionChartTrendLabels.length  <=0 && finProductionByClinicianTrendLoader == false\" class=\"blankChart\"> \n      </div>\n           \n      </mat-card-content>\n    </mat-card>\n  </div>\n    \n  <div fxFlex.lg=\"32\" fxFlex.xl=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg predictor_ratio md_mrn\"> \n    <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Overdue Accounts\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          </mat-card-title>\n          <div *ngIf=\"finOverdueAccountsTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n             <div  style=\"height: 280px\">\n         <canvas  #myCanvas class=\"trendtotalOverdue\" *ngIf=\"overdueChartTrendLabels.length  > 0\" baseChart [datasets]=\"overdueChartTrend\" [labels]=\"overdueChartTrendLabels\" [options]=\"labelBarOptions\" [legend]=\"false\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"overdueChartTrendLabels.length  <=0 && finOverdueAccountsTrendLoader == false\" class=\"blankChart\"> \n      </div>           \n      </mat-card-content>\n    </mat-card>\n  </div>\n <div fxFlex.lg=\"32\" fxFlex.xl=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg predictor_ratio md_mrn\">\n <mat-card class=\"\" >\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Production & Collection\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n          <div *ngIf=\"finCollectionTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n          </mat-card-title>\n       <div  style=\"height: 280px\">\n          <canvas  #myCanvas2 class=\"trendtotalProduction\" *ngIf=\"totalProductionCollectionLabel.length  > 0\" baseChart [datasets]=\"totalProductionCollection\" [labels]=\"totalProductionCollectionLabel\" [options]=\"labelBarOptions\" [legend]=\"true\"\n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"totalProductionCollectionLabel.length  <=0 && finCollectionTrendLoader == false\" class=\"blankChart\"> \n\n        </div>           \n      </mat-card-content>\n    </mat-card>\n  </div>\n   <div fxFlex.lg=\"33\" fxFlex.xl=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"sa_flexbg predictor_ratio last md_mrn last\">\n     \n    <mat-card class=\"\">\n      <mat-card-content class=\"sa_matcard_content\">\n       <mat-card-title class=\"text-center\">Production Per Visit\n              <div class=\"sa_box_title_right_buttons\">\n                  <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Save Image</button>\n                      <button mat-menu-item>Download PDF</button>\n                  </mat-menu> -->\n              </div>\n       </mat-card-title>\n          <div *ngIf=\"finProductionPerVisitTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n       <div  style=\"height: 280px\">\n           <canvas #myCanvas2 class=\"trendproductionVisit\" *ngIf=\"productionVisitChartTrendLabels.length  > 0\" baseChart [datasets]=\"productionVisitChartTrend\" [labels]=\"productionVisitChartTrendLabels\" [options]=\"labelBarOptions\" [legend]=\"false\"\n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [colors]=\"preoceedureChartColors\" (chartClick)=\"chartClicked($event)\"></canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"productionVisitChartTrendLabels.length  <=0 && finProductionPerVisitTrendLoader == false\" class=\"blankChart\"> \n\n        </div>           \n      </mat-card-content>\n    </mat-card>\n  </div>\n  \n</div>\n  <!-- Column-->   \n</div>\n\n</div><canvas #myCanvas2 baseChart [style.display]=\"'none'\"></canvas><canvas #myCanvas baseChart [style.display]=\"'none'\"></canvas>"
 
 /***/ }),
 
@@ -9737,12 +13435,14 @@ var FinancesComponent = /** @class */ (function () {
     //expenses
     FinancesComponent.prototype.categoryExpenses = function () {
         var _this = this;
+        this.categoryExpensesLoader = true;
         var user_id;
         var clinic_id;
         this.expensescChartTrendIcon = "down";
         this.expensescChartTrendTotal = 0;
         this.financesService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.categoryExpensesLoader = false;
                 _this.pieChartLabels = [];
                 _this.pieChartLabelsres = [];
                 _this.single = [];
@@ -9769,18 +13469,21 @@ var FinancesComponent = /** @class */ (function () {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
     };
-    //finProductionByClinician
     FinancesComponent.prototype.finProductionByClinician = function () {
         var _this = this;
         var user_id;
         var clinic_id;
         this.productionChartDatares = [];
+        this.finProductionByClinicianLoader = true;
+        this.productionChartTotal = 0;
+        this.productionChartLabels = [];
         this.financesService.finProductionByClinician(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             _this.productionChartLabelsres = [];
             _this.productionChartTotal = 0;
             _this.productionChartTrendIcon = "down";
             _this.productionChartTrendTotal = 0;
             if (data.message == 'success') {
+                _this.finProductionByClinicianLoader = false;
                 _this.productionChartDatares = [];
                 data.data.forEach(function (res) {
                     _this.productionChartDatares.push((res.percent).toFixed(1));
@@ -9802,6 +13505,8 @@ var FinancesComponent = /** @class */ (function () {
         var _this = this;
         var user_id;
         var clinic_id;
+        this.totalDiscountChartLabels = [];
+        this.finTotalDiscountsLoader = true;
         this.financesService.finTotalDiscounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             _this.totalDiscountChartDatares = [];
             _this.totalDiscountChartLabelsres = [];
@@ -9809,6 +13514,7 @@ var FinancesComponent = /** @class */ (function () {
             _this.totalDiscountChartTrendIcon = "down";
             _this.totalDiscountChartTrendTotal = 0;
             if (data.message == 'success') {
+                _this.finTotalDiscountsLoader = false;
                 _this.totalDiscountChartDatares = [];
                 _this.totalDiscountChartTotal = 0;
                 data.data.total_production_by_provider.forEach(function (res) {
@@ -9829,12 +13535,15 @@ var FinancesComponent = /** @class */ (function () {
     //finTotalProduction
     FinancesComponent.prototype.finTotalProduction = function () {
         var _this = this;
+        this.finTotalProductionLoader = true;
         this.totalProductionTrendIcon = "down";
         this.totalProductionTrendVal = 0;
+        this.totalProductionCollectionLabel1 = [];
         var user_id;
         var clinic_id;
         this.financesService.finTotalProduction(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finTotalProductionLoader = false;
                 _this.totalProductionCollection1[0]['data'] = [];
                 _this.totalProductionVal = data.data[0].total;
                 _this.totalProductionLabel = data.data[0].name;
@@ -9852,10 +13561,12 @@ var FinancesComponent = /** @class */ (function () {
         var _this = this;
         var user_id;
         var clinic_id;
+        this.finCollectionLoader = true;
         this.collectionTrendIcon = "down";
         this.collectionTrendVal = 0;
         this.financesService.finCollection(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finCollectionLoader = false;
                 _this.collectionVal = 0;
                 _this.collectionVal = (data.data.paym_total).toFixed(2);
                 _this.collectionPercentage = (data.data.percent).toFixed(2);
@@ -9874,12 +13585,15 @@ var FinancesComponent = /** @class */ (function () {
     };
     FinancesComponent.prototype.finProductionPerVisit = function () {
         var _this = this;
+        this.finProductionPerVisitLoader = true;
+        this.productionVal = 0;
         var user_id;
         var clinic_id;
         this.productionTrendIcon = "down";
         this.productionTrendVal = 0;
         this.financesService.finProductionPerVisit(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finProductionPerVisitLoader = false;
                 _this.productionVal = Math.floor(data.data);
                 _this.productionTrendVal = data.data_ta.toFixed(2);
                 if (Math.abs(_this.productionVal) >= Math.abs(_this.productionTrendVal))
@@ -9894,8 +13608,10 @@ var FinancesComponent = /** @class */ (function () {
         var _this = this;
         var user_id;
         var clinic_id;
+        this.finOverdueAccountsLoader = true;
         this.financesService.finOverdueAccounts(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finOverdueAccountsLoader = false;
                 _this.totalOverdueAccountLabels = [];
                 _this.totalOverdueAccountres = [];
                 _this.totalOverdueTrendIcon = "down";
@@ -10134,6 +13850,8 @@ var FinancesComponent = /** @class */ (function () {
     };
     FinancesComponent.prototype.finProductionByClinicianTrend = function () {
         var _this = this;
+        this.finProductionByClinicianTrendLoader = true;
+        this.productionChartTrendLabels = [];
         this.productionChartTrendLabels1 = [];
         this.productionChartTrend = [
             { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }, { data: [], label: '' }
@@ -10142,6 +13860,7 @@ var FinancesComponent = /** @class */ (function () {
         var clinic_id;
         this.financesService.finProductionByClinicianTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(function (res) {
                     res.val.forEach(function (result, key) {
                         _this.productionChartTrend[key]['data'].push(Math.abs(result.total).toFixed(1));
@@ -10160,12 +13879,15 @@ var FinancesComponent = /** @class */ (function () {
     };
     FinancesComponent.prototype.finTotalDiscountsTrend = function () {
         var _this = this;
+        this.discountsChartTrendLabels = [];
         this.discountsChartTrendLabels1 = [];
         this.discountsChartTrend1 = [];
+        this.finTotalDiscountsTrendLoader = true;
         var user_id;
         var clinic_id;
         this.financesService.finTotalDiscountsTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finTotalDiscountsTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.discountsChartTrend1.push(res.val.total);
                     if (_this.trendValue == 'c')
@@ -10183,12 +13905,15 @@ var FinancesComponent = /** @class */ (function () {
     };
     FinancesComponent.prototype.finOverdueAccountsTrend = function () {
         var _this = this;
+        this.finOverdueAccountsTrendLoader = true;
         this.overdueChartTrendLabels1 = [];
+        this.overdueChartTrendLabels = [];
         this.overdueChartTrend1 = [];
         var user_id;
         var clinic_id;
         this.financesService.finOverdueAccountsTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finOverdueAccountsTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.overdueChartTrend1.push(res.val.total);
                     if (_this.trendValue == 'c')
@@ -10205,12 +13930,14 @@ var FinancesComponent = /** @class */ (function () {
     };
     FinancesComponent.prototype.finTotalProductionTrend = function () {
         var _this = this;
+        this.finTotalProductionTrendLoader = true;
         this.totalProductionChartTrendLabels1 = [];
         this.totalProductionChartTrend1 = [];
         var user_id;
         var clinic_id;
         this.financesService.finTotalProductionTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finTotalProductionTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.totalProductionChartTrend1.push(Math.abs(res.val.total));
                     if (_this.trendValue == 'c')
@@ -10228,12 +13955,14 @@ var FinancesComponent = /** @class */ (function () {
     };
     FinancesComponent.prototype.finCollectionTrend = function () {
         var _this = this;
+        this.finCollectionTrendLoader = true;
         this.collectionChartTrendLabels1 = [];
         this.collectionChartTrend1 = [];
         var user_id;
         var clinic_id;
         this.financesService.finCollectionTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finCollectionTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.collectionChartTrend1.push(Math.abs(res.val.total));
                     if (_this.trendValue == 'c')
@@ -10253,12 +13982,15 @@ var FinancesComponent = /** @class */ (function () {
     };
     FinancesComponent.prototype.finProductionPerVisitTrend = function () {
         var _this = this;
+        this.finProductionPerVisitTrendLoader = true;
         this.productionVisitChartTrendLabels1 = [];
+        this.productionVisitChartTrendLabels = [];
         this.productionVisitChartTrend1 = [];
         var user_id;
         var clinic_id;
         this.financesService.finProductionPerVisitTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finProductionPerVisitTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.productionVisitChartTrend1.push(Math.abs(res.val).toFixed(1));
                     if (_this.trendValue == 'c')
@@ -10276,11 +14008,14 @@ var FinancesComponent = /** @class */ (function () {
     FinancesComponent.prototype.finNetProfitTrend = function () {
         var _this = this;
         this.netProfitChartTrendLabels1 = [];
+        this.netProfitChartTrendLabels = [];
         this.netProfitChartTrend1 = [];
+        this.finNetProfitTrendLoader = true;
         var user_id;
         var clinic_id;
         this.financesService.finNetProfitTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finNetProfitTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.netProfitChartTrend1.push(Math.abs(res.val).toFixed(1));
                     if (_this.trendValue == 'c')
@@ -10298,11 +14033,14 @@ var FinancesComponent = /** @class */ (function () {
     FinancesComponent.prototype.finNetProfitPercentTrend = function () {
         var _this = this;
         this.netProfitPercentChartTrendLabels1 = [];
+        this.netProfitPercentChartTrendLabels = [];
         this.netProfitPercentChartTrend1 = [];
+        this.finNetProfitPercentTrendLoader = true;
         var user_id;
         var clinic_id;
         this.financesService.finNetProfitPercentTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finNetProfitPercentTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.netProfitPercentChartTrend1.push(Math.abs(res.val).toFixed(1));
                     if (_this.trendValue == 'c')
@@ -10319,12 +14057,14 @@ var FinancesComponent = /** @class */ (function () {
     };
     FinancesComponent.prototype.finNetProfitPMSTrend = function () {
         var _this = this;
+        this.finNetProfitPMSTrendLoader = true;
         this.netProfitPmsChartTrendLabels1 = [];
         this.netProfitPmsChartTrend1 = [];
         var user_id;
         var clinic_id;
         this.financesService.finNetProfitPMSTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.finNetProfitPMSTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.netProfitPmsChartTrend1.push(Math.abs(res.val).toFixed(1));
                     if (_this.trendValue == 'c')
@@ -10675,6 +14415,17 @@ var FinancesService = /** @class */ (function () {
             return response;
         }));
     };
+    // finExpensesByCategoryMktTrend
+    FinancesService.prototype.finExpensesByCategoryMktTrend = function (clinic_id, mode, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (mode === void 0) { mode = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Finances/finExpensesByCategoryMktTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
     FinancesService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
             providedIn: 'root'
@@ -10695,7 +14446,7 @@ var FinancesService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n \n  <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\"  [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n      <div fxFlex.lg=\"68\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"68\">\n         <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n          <div class=\"custom_date\">\n          <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n           <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n        </div>\n      </div>\n <div fxFlex.lg=\"16\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"16\"> \n           <div class=\"onofftoogle2\">\n          <span class=\"trend_mode_title\">Target:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group2\" aria-label=\"Font Style\" >\n                  <mat-button-toggle checked value = \"off\" class = \"toggle_off toggle_filter\" (click)=\"goalToggle('off')\">\n                  <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"average\" class = \"toggle_average toggle_filter\" (click)=\"goalToggle('average')\">\n                  <span>Average</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"goal\" class = \"toggle_goal toggle_filter\" (click)=\"goalToggle('goal')\">\n                  <span>Goal</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n     <div fxFlex.lg=\"16\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"16\">\n         <div class=\"onofftoogle\">\n          <span class=\"trend_mode_title\">Trend Mode:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\" >\n               <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\">\n               <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                  <span>Current</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                  <span>Historic</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n<div fxLayout=\"row wrap\">\n  <div fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"100\" class=\"sa_flex_transparent\">\n    {{startDate| date}}- {{endDate| date}}\n</div>\n\n  <!-- Column-->\n  <div fxFlex.lg=\"49\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg items_predictor md_mrn\" >\n    <mat-card class=\"itemsPredictor\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{prevWorkTimeTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{prevWorkTimeTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">Utilisation Rate\n\n          <div class=\"sa_box_title_right_buttons\">\n               <!--  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                    <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n         \n        </mat-card-title>\n         <div  style=\"height: 300px\">\n        <canvas *ngIf=\"showTrend == false && workTimeLabels.length > 0\" #myCanvas baseChart [datasets]=\"workTimeData\" [labels]=\"workTimeLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && workTimeLabels.length <= 0\" class=\"blankChart\"> \n\n         <canvas *ngIf=\"showTrend == true && wtaChartTrendLabels.length > 0\" #myCanvas baseChart [datasets]=\"wtaChartTrend\" [labels]=\"wtaChartTrendLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == true && wtaChartTrendLabels.length <= 0\" class=\"blankChart\"> \n\n      </div>\n       <div *ngIf=\"showTrend == false && workTimeLabels.length > 0\" fxLayout=\"row wrap\" class=\"m-t-40 predicted_main predicted1 sa_chart_details_sec\">\n                    <div fxFlex.gt-sm=\"30%\" fxFlex.gt-xs=\"30%\" fxFlex=\"100\" class=\"text-center\">\n                   <!--    <mat-progress-bar mode=\"determinate\" value=\"80\" color=\"accent\"></mat-progress-bar> -->\n                        <h3 class=\"m-0 font-light\">{{workTimeTotal | number }}%</h3>\n                        <small>Current average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"30%\" fxFlex.gt-xs=\"30%\" fxFlex=\"100\" class=\"text-center\">\n            <!--           <mat-progress-bar mode=\"determinate\" value=\"80\" color=\"accent\"></mat-progress-bar> -->\n                        <h3 class=\"m-0 font-light\">{{prevWorkTimeTotal | number }}%</h3>\n                        <small>Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"30%\" fxFlex.gt-xs=\"30%\" fxFlex=\"100\" class=\"text-center\">\n            <!--           <mat-progress-bar mode=\"determinate\" value=\"80\" color=\"accent\"></mat-progress-bar> -->\n                        <h3 class=\"m-0 font-light\">{{workTimeGoal | number }}%</h3>\n                        <small>Goal</small>\n                    </div>\n                </div> \n      </mat-card-content>\n    </mat-card>\n  </div>\n <div fxFlex.lg=\"50\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"sa_flexbg referral_clinicians last\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{ftaPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{ftaTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">FTA ratio (%)\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                   <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div *ngIf=\"showTrend == false && ftaTotal> 0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"ftaTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [append]=\"gaugeAppendText\"\n           [max] = \"ftaGoal\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && ftaTotal <= 0\" class=\"blankChart\"> \n\n       <div *ngIf=\"showTrend == true && ftaChartTrendLabels.length > 0\" style=\"height: 300px\">\n          <canvas #myCanvas baseChart [datasets]=\"ftaChartTrend\" [labels]=\"ftaChartTrendLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n\n      </div>\n          <div *ngIf=\"showTrend == false && ftaTotal> 0\"  fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{ftaTotal | number:'1.0-0'}}%</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{ftaPrevTotal | number:'1.0-0'}}%</h3>\n                        <small>Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{ftaGoal | number:'1.0-0'}}%</h3>\n                        <small>Goal</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"49\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg referral_clinicians\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{utaPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{utaTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">UTA ratio (%)\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                   <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div *ngIf=\"showTrend == false && utaTotal>0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"utaTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [append]=\"gaugeAppendText\"\n           [max] = \"utaGoal\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && utaTotal <= 0\" class=\"blankChart\"> \n\n       <div *ngIf=\"showTrend == true && utaChartTrendLabels.length > 0\" style=\"height: 300px\">\n      <canvas #myCanvas baseChart [datasets]=\"utaChartTrend\" [labels]=\"utaChartTrendLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == true && utaChartTrendLabels.length <= 0\" class=\"blankChart\"> \n\n      </div>\n          <div *ngIf=\"showTrend == false && utaTotal>0\" fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{utaTotal | number:'1.0-0'}}%</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{utaPrevTotal | number:'1.0-0'}}%</h3>\n                        <small>Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{utaGoal | number:'1.0-0'}}%</h3>\n                        <small>Goal</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column--> \n<div fxFlex.lg=\"49\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg referral_clinicians\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{ticksPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{ticksTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">Number of Ticks\n            <div class=\"sa_box_title_right_buttons\">\n\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div *ngIf=\"showTrend == false && ticksTotal>0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"ticksTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [max] = \"ticksTotal\"\n           [size] = \"size\">\n          </ngx-gauge>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && ticksTotal<=0\" class=\"blankChart\"> \n\n      <div *ngIf=\"showTrend == true && tickChartTrendLabels.length > 0\" style=\"height: 300px\">\n      <canvas #myCanvas baseChart [datasets]=\"tickChartTrend\" [labels]=\"tickChartTrendLabels\" [options]=\"stackedChartOptionsticks\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n        <img src='../assets/images/nodata02.png'*ngIf=\"showTrend == true && tickChartTrendLabels.length <= 0\"class=\"blankChart\"> \n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\" *ngIf=\"showTrend == false && ticksTotal>0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{ticksTotal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{ticksPrevTotal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n  \n</div>\n</div>\n</div><canvas #myCanvas baseChart [style.display]=\"'none'\"></canvas>"
+module.exports = "\n<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n \n  <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\"  [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n      <div fxFlex.lg=\"68\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"68\">\n         <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n          <div class=\"custom_date\">\n          <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n           <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n        </div>\n      </div>\n <div fxFlex.lg=\"16\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"16\"> \n           <div class=\"onofftoogle2\">\n          <span class=\"trend_mode_title\">Target:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group2\" aria-label=\"Font Style\" >\n                  <mat-button-toggle checked value = \"off\" class = \"toggle_off toggle_filter\" (click)=\"goalToggle('off')\">\n                  <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"average\" class = \"toggle_average toggle_filter\" (click)=\"goalToggle('average')\">\n                  <span>Average</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"goal\" class = \"toggle_goal toggle_filter\" (click)=\"goalToggle('goal')\">\n                  <span>Goal</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n     <div fxFlex.lg=\"16\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"16\">\n         <div class=\"onofftoogle\">\n          <span class=\"trend_mode_title\">Trend Mode:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\" >\n               <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\">\n               <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                  <span>Current</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                  <span>Historic</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n<div fxLayout=\"row wrap\">\n  <div fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"100\" class=\"sa_flex_transparent\">\n    {{startDate| date}}- {{endDate| date}}\n</div>\n\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg items_predictor md_mrn\" >\n    <mat-card class=\"itemsPredictor\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{prevWorkTimeTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{prevWorkTimeTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">Utilisation Rate\n\n          <div class=\"sa_box_title_right_buttons\">\n               <!--  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                    <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n         \n        </mat-card-title>\n         <div  style=\"height: 300px\">\n          <div *ngIf=\"fdWorkTimeAnalysisLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <canvas *ngIf=\"showTrend == false && workTimeLabels.length > 0\" #myCanvas baseChart [datasets]=\"workTimeData\" [labels]=\"workTimeLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && workTimeLabels.length <= 0 && fdWorkTimeAnalysisLoader == false\" class=\"blankChart\"> \n          <div *ngIf=\"fdwtaRatioTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n         <canvas *ngIf=\"showTrend == true && wtaChartTrendLabels.length > 0\" #myCanvas baseChart [datasets]=\"wtaChartTrend\" [labels]=\"wtaChartTrendLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == true && wtaChartTrendLabels.length <= 0 && fdwtaRatioTrendLoader == false\" class=\"blankChart\"> \n\n      </div>\n       <div *ngIf=\"showTrend == false && workTimeLabels.length > 0\" fxLayout=\"row wrap\" class=\"m-t-40 predicted_main predicted1 sa_chart_details_sec\">\n                    <div fxFlex.gt-sm=\"30%\" fxFlex.gt-xs=\"30%\" fxFlex=\"100\" class=\"text-center\">\n                   <!--    <mat-progress-bar mode=\"determinate\" value=\"80\" color=\"accent\"></mat-progress-bar> -->\n                        <h3 class=\"m-0 font-light\">{{workTimeTotal | number }}%</h3>\n                        <small>Current average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"30%\" fxFlex.gt-xs=\"30%\" fxFlex=\"100\" class=\"text-center\">\n            <!--           <mat-progress-bar mode=\"determinate\" value=\"80\" color=\"accent\"></mat-progress-bar> -->\n                        <h3 class=\"m-0 font-light\">{{prevWorkTimeTotal | number }}%</h3>\n                        <small>Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"30%\" fxFlex.gt-xs=\"30%\" fxFlex=\"100\" class=\"text-center\">\n            <!--           <mat-progress-bar mode=\"determinate\" value=\"80\" color=\"accent\"></mat-progress-bar> -->\n                        <h3 class=\"m-0 font-light\">{{workTimeGoal | number }}%</h3>\n                        <small>Goal</small>\n                    </div>\n                </div> \n      </mat-card-content>\n    </mat-card>\n  </div>\n <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg referral_clinicians\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{ftaPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{ftaTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">FTA ratio (%)\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                   <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div *ngIf=\"fdFtaRatioLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n          <div *ngIf=\"showTrend == false && ftaTotal> 0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"ftaTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [append]=\"gaugeAppendText\"\n           [max] = \"ftaGoal\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && ftaTotal <= 0 && fdFtaRatioLoader == false\" class=\"blankChart\"> \n        <div *ngIf=\"fdFtaRatioTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n       <div *ngIf=\"showTrend == true && ftaChartTrendLabels.length > 0\" style=\"height: 300px\">\n          <canvas #myCanvas baseChart [datasets]=\"ftaChartTrend\" [labels]=\"ftaChartTrendLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && ftaChartTrendLabels.length <= 0 && fdFtaRatioTrendLoader == false\" class=\"blankChart\">\n      </div>\n          <div *ngIf=\"showTrend == false && ftaTotal> 0\"  fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{ftaTotal | number:'1.0-0'}}%</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{ftaPrevTotal | number:'1.0-0'}}%</h3>\n                        <small>Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{ftaGoal | number:'1.0-0'}}%</h3>\n                        <small>Goal</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg referral_clinicians last\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{utaPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{utaTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">UTA ratio (%)\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                   <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div *ngIf=\"fdUtaRatioLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n          <div *ngIf=\"showTrend == false && utaTotal>0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"utaTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [append]=\"gaugeAppendText\"\n           [max] = \"utaGoal\"\n           [cap] =\"cap\"\n           [size] = \"size\">\n          </ngx-gauge>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && utaTotal <= 0 && fdUtaRatioLoader == false\" class=\"blankChart\"> \n          <div *ngIf=\"fdUtaRatioTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n       <div *ngIf=\"showTrend == true && utaChartTrendLabels.length > 0\" style=\"height: 300px\">\n      <canvas #myCanvas baseChart [datasets]=\"utaChartTrend\" [labels]=\"utaChartTrendLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"lineChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == true && utaChartTrendLabels.length <= 0 && fdUtaRatioTrendLoader == false\" class=\"blankChart\"> \n\n      </div>\n          <div *ngIf=\"showTrend == false && utaTotal>0\" fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{utaTotal | number:'1.0-0'}}%</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{utaPrevTotal | number:'1.0-0'}}%</h3>\n                        <small>Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{utaGoal | number:'1.0-0'}}%</h3>\n                        <small>Goal</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column--> \n<div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg referral_clinicians\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{ticksPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{ticksTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">Number of Ticks\n            <div class=\"sa_box_title_right_buttons\">\n\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div *ngIf=\"fdNumberOfTicksLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n          <div *ngIf=\"showTrend == false && ticksTotal>0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"ticksTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [max] = \"ticksTotal\"\n           [size] = \"size\">\n          </ngx-gauge>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && ticksTotal<=0 && fdNumberOfTicksLoader == true\" class=\"blankChart\"> \n          <div *ngIf=\"fdNumberOfTicksTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n      <div *ngIf=\"showTrend == true && tickChartTrendLabels.length > 0\" style=\"height: 300px\">\n      <canvas #myCanvas baseChart [datasets]=\"tickChartTrend\" [labels]=\"tickChartTrendLabels\" [options]=\"stackedChartOptionsticks\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n        <img src='../assets/images/nodata02.png'*ngIf=\"showTrend == true && tickChartTrendLabels.length <= 0 && fdNumberOfTicksTrendLoader == false\" class=\"blankChart\"> \n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\" *ngIf=\"showTrend == false && ticksTotal>0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{ticksTotal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{ticksPrevTotal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n    <!-- Column--> \n<div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg referral_clinicians\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{recallPrebookPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{recallPrebookTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">Recall prebook rate (%)\n            <div class=\"sa_box_title_right_buttons\">\n\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div *ngIf=\"fdRecallPrebookRateLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n          <div *ngIf=\"showTrend == false && recallPrebookTotal>0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"recallPrebookTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [max] = \"recallPrebookTotal\"\n           [size] = \"size\">\n          </ngx-gauge>\n         </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && recallPrebookTotal<=0 && fdRecallPrebookRateLoader == false\" class=\"blankChart\"> \n          <div *ngIf=\"fdRecallPrebookRateTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n        <div *ngIf=\"showTrend == true && recallPrebookChartTrendLabels.length > 0\" style=\"height: 300px\">\n      <canvas #myCanvas baseChart [datasets]=\"recallPrebookChartTrend\" [labels]=\"recallPrebookChartTrendLabels\" [options]=\"stackedChartOptionsticks\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == true && recallPrebookChartTrendLabels.length <= 0 && fdRecallPrebookRateTrendLoader == false\" class=\"blankChart\"> \n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\" *ngIf=\"showTrend == false && ticksTotal>0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{recallPrebookTotal}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{recallPrebookPrevTotal}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n      <!-- Column--> \n<div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg referral_clinicians last\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{treatmentPrebookPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{treatmentPrebookTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">Treatment prebook rate (%)\n            <div class=\"sa_box_title_right_buttons\">\n\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div *ngIf=\"fdtreatmentPrebookRateLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n          <div *ngIf=\"showTrend == false && treatmentPrebookTotal>0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"treatmentPrebookTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [max] = \"treatmentPrebookTotal\"\n           [size] = \"size\">\n          </ngx-gauge>\n      </div>\n        <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && treatmentPrebookTotal<=0 && fdtreatmentPrebookRateLoader == false\" class=\"blankChart\"> \n     \n     <div *ngIf=\"fdTreatmentPrebookRateTrendLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n<div *ngIf=\"showTrend == true && treatmentPrebookChartTrendLabels.length > 0\" style=\"height: 300px\">\n      <canvas #myCanvas baseChart [datasets]=\"treatmentPrebookChartTrend\" [labels]=\"treatmentPrebookChartTrendLabels\" [options]=\"stackedChartOptionsticks\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"predictedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n        <img src='../assets/images/nodata02.png'*ngIf=\"showTrend == true && treatmentPrebookChartTrendLabels.length <= 0 && fdTreatmentPrebookRateTrendLoader == false\" class=\"blankChart\"> \n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\" *ngIf=\"showTrend == false && ticksTotal>0\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{treatmentPrebookTotal}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{treatmentPrebookPrevTotal}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div><canvas #myCanvas baseChart [style.display]=\"'none'\"></canvas>"
 
 /***/ }),
 
@@ -10900,6 +14651,8 @@ var FrontDeskComponent = /** @class */ (function () {
         this.ftaTooltip = 'down';
         this.utaTooltip = 'down';
         this.ticksTooltip = 'down';
+        this.recallPrebookTooltip = 'down';
+        this.treatmentPrebookTooltip = 'down';
         this.toggleChecked = false;
         this.trendValue = '';
         this.isDisabled = true;
@@ -10974,6 +14727,40 @@ var FrontDeskComponent = /** @class */ (function () {
         this.tickChartTrend1 = [];
         this.tickChartTrendLabels = [];
         this.tickChartTrendLabels1 = [];
+        this.recallPrebookChartTrend = [
+            { data: [], label: '', shadowOffsetX: 3,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.recallPrebookChartTrend1 = [];
+        this.recallPrebookChartTrendLabels = [];
+        this.recallPrebookChartTrendLabels1 = [];
+        this.treatmentPrebookChartTrend = [
+            { data: [], label: '', shadowOffsetX: 3,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.treatmentPrebookChartTrend1 = [];
+        this.treatmentPrebookChartTrendLabels = [];
+        this.treatmentPrebookChartTrendLabels1 = [];
     }
     FrontDeskComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
@@ -11069,6 +14856,8 @@ var FrontDeskComponent = /** @class */ (function () {
             this.fdUtaRatio();
             this.fdNumberOfTicks();
             this.fdWorkTimeAnalysis();
+            this.fdRecallPrebookRate();
+            this.fdtreatmentPrebookRate();
         }
     };
     //Items Predictor Analysis 
@@ -11076,8 +14865,11 @@ var FrontDeskComponent = /** @class */ (function () {
         var _this = this;
         var user_id;
         var clinic_id;
+        this.fdWorkTimeAnalysisLoader = true;
+        this.workTimeLabels = [];
         this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.fdWorkTimeAnalysisLoader = false;
                 _this.workTimeData1 = [];
                 _this.workTimeLabels1 = [];
                 _this.prevWorkTimeTooltip = 'down';
@@ -11132,12 +14924,15 @@ var FrontDeskComponent = /** @class */ (function () {
     FrontDeskComponent.prototype.fdFtaRatio = function () {
         var _this = this;
         if (this.duration) {
+            this.fdFtaRatioLoader = true;
+            this.ftaTotal = 0;
             var user_id;
             var clinic_id;
             this.frontdeskService.fdFtaRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
                 _this.ftaTotal = 0;
                 _this.ftaPrevTotal = 0;
                 if (data.message == 'success') {
+                    _this.fdFtaRatioLoader = false;
                     _this.ftaTotal = Math.abs(data.data).toFixed(1);
                     _this.ftaPrevTotal = Math.abs(data.data_ta).toFixed(1);
                     _this.ftaGoal = data.goals;
@@ -11153,14 +14948,17 @@ var FrontDeskComponent = /** @class */ (function () {
     FrontDeskComponent.prototype.fdUtaRatio = function () {
         var _this = this;
         if (this.duration) {
+            this.fdUtaRatioLoader = true;
+            this.utaTotal = 0;
             var user_id;
             var clinic_id;
             this.frontdeskService.fdUtaRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
                 _this.utaTotal = 0;
                 _this.utaPrevTotal = 0;
                 if (data.message == 'success') {
-                    _this.utaTotal = Math.abs(data.data).toFixed(1);
-                    _this.utaPrevTotal = Math.abs(data.data_ta).toFixed(1);
+                    _this.fdUtaRatioLoader = false;
+                    _this.utaTotal = Math.abs(data.data).toFixed(2);
+                    _this.utaPrevTotal = Math.abs(data.data_ta).toFixed(2);
                     _this.utaGoal = data.goals;
                     if (_this.utaTotal >= _this.utaPrevTotal)
                         _this.utaTooltip = 'up';
@@ -11174,10 +14972,13 @@ var FrontDeskComponent = /** @class */ (function () {
     FrontDeskComponent.prototype.fdNumberOfTicks = function () {
         var _this = this;
         if (this.duration) {
+            this.fdNumberOfTicksLoader = true;
+            this.ticksPrevTotal = 0;
             var user_id;
             var clinic_id;
             this.frontdeskService.fdNumberOfTicks(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
                 if (data.message == 'success') {
+                    _this.fdNumberOfTicksLoader = false;
                     _this.ticksPrevTotal = 0;
                     _this.ticksTotal = 0;
                     if (data.data.length > 0)
@@ -11185,6 +14986,57 @@ var FrontDeskComponent = /** @class */ (function () {
                     _this.ticksPrevTotal = Math.abs(data.data_ta).toFixed(1);
                     if (_this.ticksTotal >= _this.ticksPrevTotal)
                         _this.ticksTooltip = 'up';
+                }
+            }, function (error) {
+                _this.warningMessage = "Please Provide Valid Inputs!";
+            });
+        }
+    };
+    //Predictor Ratio :
+    FrontDeskComponent.prototype.fdRecallPrebookRate = function () {
+        var _this = this;
+        if (this.duration) {
+            this.fdRecallPrebookRateLoader = true;
+            this.recallPrebookTotal = 0;
+            var user_id;
+            var clinic_id;
+            this.frontdeskService.fdRecallPrebookRate(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+                if (data.message == 'success') {
+                    _this.fdRecallPrebookRateLoader = false;
+                    _this.recallPrebookPrevTotal = 0;
+                    _this.recallPrebookTotal = 0;
+                    if (data.data.length > 0) {
+                        if (data.data[0].percent > 0)
+                            _this.recallPrebookTotal = Math.abs(data.data[0].percent).toFixed(1);
+                    }
+                    _this.recallPrebookPrevTotal = Math.abs(data.total_ta).toFixed(1);
+                    console.log(_this.recallPrebookTotal);
+                    if (_this.recallPrebookTotal >= _this.recallPrebookPrevTotal)
+                        _this.recallPrebookTooltip = 'up';
+                }
+            }, function (error) {
+                _this.warningMessage = "Please Provide Valid Inputs!";
+            });
+        }
+    };
+    //Predictor Ratio :
+    FrontDeskComponent.prototype.fdtreatmentPrebookRate = function () {
+        var _this = this;
+        if (this.duration) {
+            this.fdtreatmentPrebookRateLoader = true;
+            this.treatmentPrebookTotal = 0;
+            var user_id;
+            var clinic_id;
+            this.frontdeskService.fdTreatmentPrebookRate(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+                if (data.message == 'success') {
+                    _this.fdtreatmentPrebookRateLoader = false;
+                    _this.treatmentPrebookPrevTotal = 0;
+                    _this.treatmentPrebookTotal = 0;
+                    if (data.data.length > 0)
+                        _this.treatmentPrebookTotal = Math.abs(data.data[0].percent).toFixed(1);
+                    _this.treatmentPrebookPrevTotal = Math.abs(data.total_ta).toFixed(1);
+                    if (_this.treatmentPrebookTotal >= _this.treatmentPrebookPrevTotal)
+                        _this.treatmentPrebookTooltip = 'up';
                 }
             }, function (error) {
                 _this.warningMessage = "Please Provide Valid Inputs!";
@@ -11368,15 +15220,20 @@ var FrontDeskComponent = /** @class */ (function () {
         this.fdFtaRatioTrend();
         this.fdUtaRatioTrend();
         this.fdNumberOfTicksTrend();
+        this.fdRecallPrebookRateTrend();
+        this.fdTreatmentPrebookRateTrend();
     };
     FrontDeskComponent.prototype.fdFtaRatioTrend = function () {
         var _this = this;
+        this.fdFtaRatioTrendLoader = true;
+        this.ftaChartTrendLabels = [];
         this.ftaChartTrendLabels1 = [];
         this.ftaChartTrend1 = [];
         var user_id;
         var clinic_id;
         this.frontdeskService.fdFtaRatioTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.fdFtaRatioTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.ftaChartTrend1.push(res.val);
                     if (_this.trendValue == 'c')
@@ -11393,12 +15250,15 @@ var FrontDeskComponent = /** @class */ (function () {
     };
     FrontDeskComponent.prototype.fdwtaRatioTrend = function () {
         var _this = this;
+        this.fdwtaRatioTrendLoader = true;
+        this.wtaChartTrendLabels = [];
         this.wtaChartTrendLabels1 = [];
         this.wtaChartTrend1 = [];
         var user_id;
         var clinic_id;
         this.frontdeskService.fdWorkTimeAnalysisTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.fdwtaRatioTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.wtaChartTrend1.push(res.val);
                     if (_this.trendValue == 'c')
@@ -11415,12 +15275,15 @@ var FrontDeskComponent = /** @class */ (function () {
     };
     FrontDeskComponent.prototype.fdUtaRatioTrend = function () {
         var _this = this;
+        this.fdUtaRatioTrendLoader = true;
         this.utaChartTrendLabels1 = [];
+        this.utaChartTrendLabels = [];
         this.utaChartTrend1 = [];
         var user_id;
         var clinic_id;
         this.frontdeskService.fdUtaRatioTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.fdUtaRatioTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.utaChartTrend1.push(res.val);
                     if (_this.trendValue == 'c')
@@ -11437,12 +15300,15 @@ var FrontDeskComponent = /** @class */ (function () {
     };
     FrontDeskComponent.prototype.fdNumberOfTicksTrend = function () {
         var _this = this;
+        this.fdNumberOfTicksTrendLoader = true;
+        this.tickChartTrendLabels = [];
         this.tickChartTrendLabels1 = [];
         this.tickChartTrend1 = [];
         var user_id;
         var clinic_id;
         this.frontdeskService.fdNumberOfTicksTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.fdNumberOfTicksTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.tickChartTrend1.push(res.val);
                     if (_this.trendValue == 'c')
@@ -11452,6 +15318,60 @@ var FrontDeskComponent = /** @class */ (function () {
                 });
                 _this.tickChartTrend[0]['data'] = _this.tickChartTrend1;
                 _this.tickChartTrendLabels = _this.tickChartTrendLabels1;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    FrontDeskComponent.prototype.fdRecallPrebookRateTrend = function () {
+        var _this = this;
+        this.fdRecallPrebookRateTrendLoader = true;
+        this.recallPrebookChartTrendLabels = [];
+        this.recallPrebookChartTrendLabels1 = [];
+        this.recallPrebookChartTrend1 = [];
+        var user_id;
+        var clinic_id;
+        this.frontdeskService.fdRecallPrebookRateTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.fdRecallPrebookRateTrendLoader = false;
+                _this.recallPrebookChartTrendLabels1 = [];
+                _this.recallPrebookChartTrend1 = [];
+                data.data.forEach(function (res) {
+                    _this.recallPrebookChartTrend1.push(res.percent.toFixed(2));
+                    if (_this.trendValue == 'c')
+                        _this.recallPrebookChartTrendLabels1.push(_this.datePipe.transform(res.treat_date, 'MMM y'));
+                    else
+                        _this.recallPrebookChartTrendLabels1.push(res.treat_date);
+                });
+                _this.recallPrebookChartTrend[0]['data'] = _this.recallPrebookChartTrend1;
+                _this.recallPrebookChartTrendLabels = _this.recallPrebookChartTrendLabels1;
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    FrontDeskComponent.prototype.fdTreatmentPrebookRateTrend = function () {
+        var _this = this;
+        this.fdTreatmentPrebookRateTrendLoader = true;
+        this.treatmentPrebookChartTrendLabels1 = [];
+        this.treatmentPrebookChartTrendLabels = [];
+        this.treatmentPrebookChartTrend1 = [];
+        var user_id;
+        var clinic_id;
+        this.frontdeskService.fdTreatmentPrebookRateTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.fdTreatmentPrebookRateTrendLoader = false;
+                _this.treatmentPrebookChartTrendLabels1 = [];
+                _this.treatmentPrebookChartTrend1 = [];
+                data.data.forEach(function (res) {
+                    _this.treatmentPrebookChartTrend1.push(res.percent.toFixed(2));
+                    if (_this.trendValue == 'c')
+                        _this.treatmentPrebookChartTrendLabels1.push(_this.datePipe.transform(res.treat_date, 'MMM y'));
+                    else
+                        _this.treatmentPrebookChartTrendLabels1.push(res.treat_date);
+                });
+                _this.treatmentPrebookChartTrend[0]['data'] = _this.treatmentPrebookChartTrend1;
+                _this.treatmentPrebookChartTrendLabels = _this.treatmentPrebookChartTrendLabels1;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -11615,6 +15535,54 @@ var FrontDeskService = /** @class */ (function () {
             return response;
         }));
     };
+    // Items Predictor Analysis  
+    FrontDeskService.prototype.fdRecallPrebookRate = function (clinic_id, startDate, endDate, duration, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (duration === void 0) { duration = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/FrontDesks/fdRecallPrebookRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Items Predictor Analysis  
+    FrontDeskService.prototype.fdTreatmentPrebookRate = function (clinic_id, startDate, endDate, duration, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (duration === void 0) { duration = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/FrontDesks/fdTreatmentPrebookRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    //Referral to Other Clinicians Internal / External
+    FrontDeskService.prototype.fdRecallPrebookRateTrend = function (clinic_id, mode, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (mode === void 0) { mode = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/FrontDesks/fdRecallPrebookRateTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    //Referral to Other Clinicians Internal / External
+    FrontDeskService.prototype.fdTreatmentPrebookRateTrend = function (clinic_id, mode, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (mode === void 0) { mode = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/FrontDesks/fdTreatmentPrebookRateTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
     FrontDeskService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
             providedIn: 'root'
@@ -11635,7 +15603,7 @@ var FrontDeskService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<!-- <div fxLayout=\"row wrap\">\n    <div class=\"sa_heading_bar\">\n        <div fxFlex.gt-sm=\"85\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <h4><span class=\"page_title\">Clinician Procedures &#38; Referrals</span></h4>\n        </div>\n        <app-headerright class=\"app-headerright\"></app-headerright>\n\n        <div fxFlex.gt-sm=\"18\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <div class=\"vertical_center_header_content\">\n                <div class=\"sa_select_outer\">\n                    <select class=\"sa_select\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n                        <option value =\"all\">All Dentist( {{dentistCount}} )</option>\n                        <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                    </select>\n                </div>\n            </div>\n        </div>\n    </div>\n</div> -->\n <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\" [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n  <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n        <div fxFlex.lg=\"80\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"80\">\n             <div class=\"sa_tabs_design\"><span class=\"filter_c active filter sa_filter_span\" (click)=\"filterDate('c')\">Current Month</span><span (click)=\"filterDate('p')\" class=\"filter_p filter sa_filter_span\">Previous Month</span><span class=\"filter_f filter sa_filter_span\" (click)=\"filterDate('f')\">Future Status</span>\n            </div>\n        </div>\n\n      \n  </div>\n</div>\n<div *ngIf=\"filter_val == 'c'\">\n<div class=\"sa_dentist_graphs_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Production\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"production_c >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"production_c\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_production\"\n    [bottomLabel]=\"production_c\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg \">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Profit\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"profit_c >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"profit_c\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_profit\"\n    [bottomLabel]=\"profit_c\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n   </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"noPatients\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Visits\n          </mat-card-title>\n        <div class=\"chart\" >\n           <rg-gauge-chart *ngIf=\"visits_c >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"visits_c\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_visits\"\n    [bottomLabel]=\"visits_c\"></rg-gauge-chart>\n        </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div>\n<div *ngIf=\"filter_val == 'p'\">\n\n<div class=\"sa_dentist_graphs_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Production\n\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"production_p >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"production_p\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_production\"\n    [bottomLabel]=\"production_p\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg \">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Profit\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"profit_p >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"profit_p\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_profit\"\n    [bottomLabel]=\"profit_p\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n   </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"noPatients\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Visits\n          </mat-card-title>\n        <div class=\"chart\" >\n           <rg-gauge-chart *ngIf=\"visits_p >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"visits_p\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_visits\"\n    [bottomLabel]=\"visits_p\"></rg-gauge-chart>\n        </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div>\n<div *ngIf=\"filter_val == 'f'\">\n<div class=\"sa_dentist_graphs_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Pre-booked Visits\n\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"visits_f >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"visits_f\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_visits\"\n    [bottomLabel]=\"visits_f\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg \">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Chair Utilisation Rate\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"utilisation_rate_f >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"utilisation_rate_f\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_utilisation\"\n    [bottomLabel]=\"utilisation_rate_f\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n   </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"noPatients\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Unscheduled Production\n          </mat-card-title>\n        <div class=\"chart\" >\n           <rg-gauge-chart *ngIf=\"production_c >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"production_c\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_utilisation\"\n    [bottomLabel]=\"production_c\"></rg-gauge-chart>\n        </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div>\n</div>"
+module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<!-- <div fxLayout=\"row wrap\">\n    <div class=\"sa_heading_bar\">\n        <div fxFlex.gt-sm=\"85\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <h4><span class=\"page_title\">Clinician Procedures &#38; Referrals</span></h4>\n        </div>\n        <app-headerright class=\"app-headerright\"></app-headerright>\n\n        <div fxFlex.gt-sm=\"18\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <div class=\"vertical_center_header_content\">\n                <div class=\"sa_select_outer\">\n                    <select class=\"sa_select\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n                        <option value =\"all\">All Dentist( {{dentistCount}} )</option>\n                        <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                    </select>\n                </div>\n            </div>\n        </div>\n    </div>\n</div> -->\n <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\" [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n<div>\n<div class=\"sa_dentist_graphs_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Production\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"production_c >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"production_c\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_production\"\n    [bottomLabel]=\"production_c\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg \">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Profit\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"profit_c >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"profit_c\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_profit\"\n    [bottomLabel]=\"profit_c\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n   </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"noPatients\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Visits\n          </mat-card-title>\n        <div class=\"chart\" >\n           <rg-gauge-chart *ngIf=\"visits_c >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"visits_c\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_visits\"\n    [bottomLabel]=\"visits_c\"></rg-gauge-chart>\n        </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div>\n<div>\n\n<div class=\"sa_dentist_graphs_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Production\n\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"production_p >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"production_p\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_production\"\n    [bottomLabel]=\"production_p\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg \">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Profit\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"profit_p >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"profit_p\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_profit\"\n    [bottomLabel]=\"profit_p\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n   </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"noPatients\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Total Visits\n          </mat-card-title>\n        <div class=\"chart\" >\n           <rg-gauge-chart *ngIf=\"visits_p >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"visits_p\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_visits\"\n    [bottomLabel]=\"visits_p\"></rg-gauge-chart>\n        </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div>\n<div>\n<div class=\"sa_dentist_graphs_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Pre-booked Visits\n\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"visits_f >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"visits_f\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_visits\"\n    [bottomLabel]=\"visits_f\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg \">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Chair Utilisation Rate\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n           <rg-gauge-chart *ngIf=\"utilisation_rate_f >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"utilisation_rate_f\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_utilisation\"\n    [bottomLabel]=\"utilisation_rate_f\"></rg-gauge-chart>\n      </mat-card-content>\n    </mat-card>\n   </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"noPatients\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">Unscheduled Production\n          </mat-card-title>\n        <div class=\"chart\" >\n           <rg-gauge-chart *ngIf=\"production_c >= ''\"\n    [canvasWidth]=\"canvasWidth\"\n    [needleValue]=\"production_c\"\n    [centralLabel]=\"centralLabel\"\n    [options]=\"options_utilisation\"\n    [bottomLabel]=\"production_c\"></rg-gauge-chart>\n        </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div>\n</div>"
 
 /***/ }),
 
@@ -11706,7 +15674,7 @@ var HealthScreenComponent = /** @class */ (function () {
             needleUpdateSpeed: 3000,
             arcColors: ['rgb(255,84,84)', 'rgb(239,214,19)', 'rgb(61,204,91)'],
             arcDelimiters: [],
-            rangeLabel: ['0', '100'],
+            rangeLabel: ['0', '500'],
             needleStartValue: 50,
         };
         this.options_visits = {
@@ -11715,7 +15683,7 @@ var HealthScreenComponent = /** @class */ (function () {
             needleUpdateSpeed: 3000,
             arcColors: ['rgb(255,84,84)', 'rgb(239,214,19)', 'rgb(61,204,91)'],
             arcDelimiters: [],
-            rangeLabel: ['0', '1000'],
+            rangeLabel: ['0', '100'],
             needleStartValue: 50,
         };
         this.options_production = {
@@ -11724,7 +15692,7 @@ var HealthScreenComponent = /** @class */ (function () {
             needleUpdateSpeed: 3000,
             arcColors: ['rgb(255,84,84)', 'rgb(239,214,19)', 'rgb(61,204,91)'],
             arcDelimiters: [],
-            rangeLabel: ['0', '100'],
+            rangeLabel: ['0', '2000'],
             needleStartValue: 50,
         };
         this.options_utilisation = {
@@ -11763,8 +15731,8 @@ var HealthScreenComponent = /** @class */ (function () {
             //   $('.external_dentist').val('all');
             $('#title').html('Health Check Screen');
             $('.external_clinic').show();
-            $('.dentist_dropdown').show();
-            $('.header_filters').removeClass('flex_direct_mar');
+            $('.dentist_dropdown').hide();
+            $('.header_filters').addClass('flex_direct_mar');
             if ($('body').find('span#currentDentist').length > 0) {
                 var did = $('body').find('span#currentDentist').attr('did');
                 $('.external_dentist').val(did);
@@ -11799,6 +15767,7 @@ var HealthScreenComponent = /** @class */ (function () {
         this.healthscreenService.healthCheckStats(this.clinic_id).subscribe(function (data) {
             if (data.message == 'success') {
                 _this.production_c = data.data.production_c;
+                console.log(_this.options_production);
                 _this.profit_c = data.data.profit_c;
                 _this.visits_c = data.data.visits_c;
                 _this.production_p = data.data.production_p;
@@ -11811,14 +15780,15 @@ var HealthScreenComponent = /** @class */ (function () {
                 _this.visits_g = data.data.visits_g;
                 _this.production_g = data.data.production_g;
                 _this.utilisation_rate_f_g = data.data.utilisation_rate_f_g;
-                _this.options_profit.arcDelimiters[1] = _this.profit_g;
-                _this.options_profit.arcDelimiters[0] = Math.floor(_this.profit_g / 2);
-                _this.options_visits.arcDelimiters[1] = _this.visits_g;
-                _this.options_visits.arcDelimiters[0] = Math.floor(_this.visits_g / 2);
-                _this.options_production.arcDelimiters[1] = _this.production_g;
-                _this.options_production.arcDelimiters[0] = Math.floor(_this.production_g / 2);
+                // this.options_profit.arcDelimiters[1] = this.profit_g;
+                // this.options_profit.arcDelimiters[0] =Math.floor(this.profit_g/2);
+                // this.options_visits.arcDelimiters[1] = this.visits_g;
+                // this.options_visits.arcDelimiters[0] = Math.floor(this.visits_g/2);
+                // this.options_production.arcDelimiters[1] = this.production_g;
+                // this.options_production.arcDelimiters[0] = Math.floor(this.production_g/2);
                 _this.options_utilisation.arcDelimiters[1] = _this.utilisation_rate_f_g;
                 _this.options_utilisation.arcDelimiters[0] = Math.floor(_this.utilisation_rate_f_g / 2);
+                console.log(_this.options_profit);
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -11918,7 +15888,7 @@ var HealthScreenService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n \n  <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\"  [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n      <div fxFlex.lg=\"80\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"80\">\n         <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n          <div class=\"custom_date\">\n          <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n           <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n        </div>\n      </div>\n\n     <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\">\n         <div class=\"onofftoogle\">\n          <span class=\"trend_mode_title\">Trend Mode:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\" >\n               <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\">\n                  <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                  <span>Current</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                  <span>Historic</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n<div fxLayout=\"row wrap\">\n  <div fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"100\" class=\"sa_flex_transparent\">\n    {{startDate| date}}- {{endDate| date}}\n</div>\n\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg items_predictor md_mrn\" >\n    <mat-card class=\"itemsPredictor\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <mat-card-title class=\"text-center\">No. New Patients By Referral\n          <div class=\"sa_box_title_right_buttons\">\n               <!--  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                    <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n         \n        </mat-card-title>\n         <div  style=\"height: 300px\">\n         <div class=\"sa_back_btn_holder\"><span *ngIf=\"newPatientsTimeLabelsl2.length > 0\" (click) =\"changeLevel('newPatient')\">Back</span></div>\n       <canvas *ngIf=\"newPatientsTimeLabels.length > 0\"  #myCanvas2 baseChart [data]=\"newPatientsTimeData\" [labels]=\"newPatientsTimeLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event,'newPatients')\"  [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n         <canvas *ngIf=\"newPatientsTimeLabelsl2.length > 0\"  #myCanvas2 baseChart [data]=\"newPatientsTimeData\" [labels]=\"newPatientsTimeLabelsl2\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0\" class=\"blankChart\"> \n\n      </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg referral_clinicians\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{visitsPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{visitsTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">Total Visits\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                   <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div *ngIf=\"showTrend == false && visitsTotal>0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"visitsTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [max] = \"visitsGoal\"\n           [size] = \"size\">\n          </ngx-gauge>\n      </div>\n      <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && visitsTotal<=0\" class=\"blankChart\"> \n\n       <div *ngIf=\"showTrend == true\" style=\"height: 300px\">\n      <canvas #myCanvas baseChart [datasets]=\"visitsChartTrend\" [labels]=\"visitsChartTrendLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == true && visitsChartTrendLabels.length <=0\" class=\"blankChart\"> \n      </div>\n          <div *ngIf=\"showTrend == false && visitsTotal>0\" fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{visitsTotal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{visitsPrevTotal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{visitsGoal | number:'1.0-0'}}</h3>\n                        <small>Goal</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n   <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg items_predictor md_mrn last\" >\n    <mat-card class=\"itemsPredictor\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <mat-card-title class=\"text-center\">Revenue by Referral\n          <div class=\"sa_box_title_right_buttons\">\n               <!--  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                    <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n         \n        </mat-card-title>\n         <div  style=\"height: 300px\">\n          <span *ngIf=\"revenueReferralLabelsl2.length > 0\" (click) =\"changeLevel('revenue')\">Back</span>\n       <canvas *ngIf=\"revenueReferralLabels.length > 0\"  #myCanvas2 baseChart [data]=\"revenueReferralData\" [labels]=\"revenueReferralLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event,'revenue')\" [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n         <canvas *ngIf=\"revenueReferralLabelsl2.length > 0\"  #myCanvas2 baseChart [data]=\"revenueReferralData\" [labels]=\"revenueReferralLabelsl2\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n         <img src='../assets/images/nodata02.png' *ngIf=\"revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0\" class=\"blankChart\"> \n      </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column--> \n\n  \n</div>\n</div>\n</div>"
+module.exports = "\n<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n \n  <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\"  [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n      <div fxFlex.lg=\"80\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"80\">\n         <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n          <div class=\"custom_date\">\n          <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n           <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n        </div>\n      </div>\n\n     <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\">\n         <div class=\"onofftoogle\">\n          <span class=\"trend_mode_title\">Trend Mode:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\" >\n               <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\">\n                  <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                  <span>Current</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                  <span>Historic</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area\">\n<div fxLayout=\"row wrap\">\n  <div fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"100\" class=\"sa_flex_transparent\">\n    {{startDate| date}}- {{endDate| date}}\n</div>\n\n  <!-- Column-->\n  <div fxFlex.lg=\"50\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"sa_flexbg items_predictor md_mrn\" >\n    <mat-card class=\"itemsPredictor\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <mat-card-title class=\"text-center\">No. New Patients By Referral\n          <div class=\"sa_box_title_right_buttons\">\n               <!--  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                    <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n         \n        </mat-card-title>\n          <div *ngIf=\"mkNewPatientsByReferralLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n         <div  style=\"height: 300px\">\n         <div class=\"sa_back_btn_holder\"><span *ngIf=\"newPatientsTimeLabelsl2.length > 0\" (click) =\"changeLevel('newPatient')\">Back</span></div>\n       <canvas *ngIf=\"newPatientsTimeLabels.length > 0\"  #myCanvas2 baseChart [data]=\"newPatientsTimeData\" [labels]=\"newPatientsTimeLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event,'newPatients')\"  [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n         <canvas *ngIf=\"newPatientsTimeLabelsl2.length > 0\"  #myCanvas2 baseChart [data]=\"newPatientsTimeData\" [labels]=\"newPatientsTimeLabelsl2\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n        <img src='../assets/images/nodata02.png' *ngIf=\"newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false\" class=\"blankChart\"> \n\n      </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n\n   <div fxFlex.lg=\"49\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg items_predictor md_mrn last\" >\n    <mat-card class=\"itemsPredictor\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <mat-card-title class=\"text-center\">Revenue by Referral\n          <div class=\"sa_box_title_right_buttons\">\n               <!--  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                    <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>\n         \n        </mat-card-title>\n          <div *ngIf=\"mkRevenueByReferralLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n         <div  style=\"height: 300px\">\n           <div class=\"sa_back_btn_holder\"><span *ngIf=\"revenueReferralLabelsl2.length > 0\" (click) =\"changeLevel('revenue')\">Back</span></div>\n       <canvas *ngIf=\"revenueReferralLabels.length > 0\"  #myCanvas2 baseChart [data]=\"revenueReferralData\" [labels]=\"revenueReferralLabels\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event,'revenue')\" [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n         <canvas *ngIf=\"revenueReferralLabelsl2.length > 0\"  #myCanvas2 baseChart [data]=\"revenueReferralData\" [labels]=\"revenueReferralLabelsl2\" [chartType]=\"pieChartType\" (chartHover)=\"chartHovered($event)\"\n          [options]=\"pieChartOptions\" [colors]=\"[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]\">\n        </canvas>\n         <img src='../assets/images/nodata02.png' *ngIf=\"revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false\" class=\"blankChart\"> \n      </div>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <!-- Column--> \n<div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg referral_clinicians\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{newPatientsPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{newPatientsTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">No. New Patients\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                   <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div *ngIf=\"fdnewPatientsRatioLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n\n          <div *ngIf=\"showTrend == false && visitsTotal>0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"newPatientsTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [max] = \"newPatientsGoal\"\n           [size] = \"size\">\n          </ngx-gauge>\n      </div>\n      <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && newPatientsTotal<=0 && fdnewPatientsRatioLoader == false\" class=\"blankChart\"> \n\n       <div *ngIf=\"showTrend == true\" style=\"height: 300px\">\n      <canvas #myCanvas baseChart [datasets]=\"newPatientsChartTrend\" [labels]=\"newPatientsChartTrendLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == true && visitsChartTrendLabels.length <=0\" class=\"blankChart\"> \n      </div>\n          <div *ngIf=\"showTrend == false && newPatientsTotal>0\" fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{newPatientsTotal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{newPatientsPrevTotal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"textxt-center\">\n                        <h3 class=\"m-0 font-light\">{{newPatientsGoal | number:'1.0-0'}}</h3>\n                        <small>Goal</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg referral_clinicians\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{newPatientsPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{newPatientsTooltip}}.png\"></span>\n        <mat-card-title class=\"text-center\">Cost of New Patient Acquisition\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                   <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>\n                </mat-menu> -->\n            </div>  \n        </mat-card-title>\n          <div class=\"chart\">\n          <div>  \n            <div class=\"CategoriesBtn\" *ngIf=\"showTrend == false\"><button class=\"mat-raised-button mat-gray mat-green-button\" mat-raised-button (click)=\"ngxSmartModalService.getModal('myModal').open()\">Set Categories</button></div>\n          <div  *ngIf=\"showTrend == false && newAcqValue>0\" style=\"height: 190px\">\n         \n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"newAcqValue\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [prepend] =\"gaugePrependText\"\n           [size] = \"size\">\n            </ngx-gauge>\n                      <div *ngIf=\"showTrend == false && newAcqValue>0\" fxLayout=\"row wrap\" class=\"pieChartDetails\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{newAcqValue}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">$ {{newPatientsPrevTotal}}</h3>\n                        <small>Previous</small>\n                    </div>\n                </div>  \n        </div>\n      <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && newAcqValue<=0\" class=\"blankChart\"> \n\n       <div *ngIf=\"showTrend == true\" style=\"height: 300px\">\n      <canvas #myCanvas baseChart [datasets]=\"expenseDataTrend\" [labels]=\"expenseDataTrendLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == true && visitsChartTrendLabels.length <=0\" class=\"blankChart\"> \n    </div>\n      </div>     \n      </mat-card-content>\n    </mat-card>\n  </div>                                                                                                                                                                                \n   <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg referral_clinicians last\">\n    <mat-card>\n      <mat-card-content class=\"sa_matcard_content\"> \n         <span *ngIf=\"showTrend == false\" class=\"referral_cliniciansrral1Tool referral sa_inc_dec_arrows trend_arrow\" matTooltip= \"{{trendText}} : {{visitsPrevTotal}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{visitsTooltip}}.png\"></span>         \n        <mat-card-title class=\"text-center\">Total Visits\n            <div class=\"sa_box_title_right_buttons\">\n                <!-- <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                <mat-menu #menu=\"matMenu\">\n                   <button mat-menu-item>Save Image</button>\n                    <button mat-menu-item>Download PDF</button>                                                                                                                \n                </mat-menu> -->\n            </div>  \n        </mat-card-title>                                         \n           <div class=\"chart\">           \n          <div *ngIf=\"fdvisitsRatioLoader == true\" class=\"loader_container\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"></div>\n          <div *ngIf=\"showTrend == false && visitsTotal>0\" style=\"height: 190px\">\n          <ngx-gauge class=\"singleRatio\" [type]=\"gaugeType\"\n           [value]=\"visitsTotal\" \n           [thick]=\"gaugeThick\"  \n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n           [max] = \"visitsGoal\"\n           [size] = \"size\">\n          </ngx-gauge>\n      </div>\n      <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == false && visitsTotal<=0 && fdvisitsRatioLoader == false\" class=\"blankChart\">\n       <div *ngIf=\"showTrend == true\" style=\"height: 300px\">\n      <canvas #myCanvas baseChart [datasets]=\"visitsChartTrend\" [labels]=\"visitsChartTrendLabels\" [options]=\"stackedChartOptions\" \n          [chartType]=\"stackedChartType\" (chartHover)=\"chartHovered($event)\" [legend]=\"false\" [colors]=\"stackedChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      <img src='../assets/images/nodata02.png' *ngIf=\"showTrend == true && visitsChartTrendLabels.length <=0\" class=\"blankChart\"> \n      </div>\n          <div *ngIf=\"showTrend == false && visitsTotal>0\" fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec pieChartDetails\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{visitsTotal | number:'1.0-0'}}</h3>\n                        <small>Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{visitsPrevTotal | number:'1.0-0'}}</h3>\n                        <small>Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light\">{{visitsGoal | number:'1.0-0'}}</h3>\n                        <small>Goal</small>\n                    </div>\n                </div>       \n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n</div>\n</div>\n\n  <ngx-smart-modal #myModal identifier=\"myModal\">\n  <h3 class=\"mt-0\">Select Categories</h3>\n <div fxFlex.lg=\"100\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"100\" class=\"SelectCategories sa_flexbg referral_clinicians\">\n\n                  <span class=\"ui-fluid\">\n                <p-autoComplete [(ngModel)]=\"selectedCategories\" [suggestions]=\"filteredCountriesMultiple\" (completeMethod)=\"filterCountryMultiple($event)\" styleClass=\"wid100\"\n                    [minLength]=\"1\" placeholder=\"Categories\" [multiple]=\"true\">\n                </p-autoComplete>\n            </span>\n            <ul>\n                <li *ngFor=\"let category of \">{{category}}</li>\n            </ul>\n            <button class=\"mat-raised-button mat-gray\" mat-raised-button (click)=\"load_chart_acq()\">Load Chart</button>\n          </div>\n\n  <button (click)=\"myModal.close()\" class=\"close_modal\" style=\"display:none\">Close</button>\n</ngx-smart-modal>"
 
 /***/ }),
 
@@ -11936,14 +15906,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _marketing_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./marketing.service */ "./src/app/dashboards/marketing/marketing.service.ts");
-/* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! chartjs-plugin-style */ "./node_modules/chartjs-plugin-style/dist/chartjs-plugin-style.js");
-/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../layouts/full/header/header.service */ "./src/app/layouts/full/header/header.service.ts");
-/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
-/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _finances_finances_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../finances/finances.service */ "./src/app/dashboards/finances/finances.service.ts");
+/* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! chartjs-plugin-style */ "./node_modules/chartjs-plugin-style/dist/chartjs-plugin-style.js");
+/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../layouts/full/header/header.service */ "./src/app/layouts/full/header/header.service.ts");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var ngx_smart_modal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ngx-smart-modal */ "./node_modules/ngx-smart-modal/esm5/ngx-smart-modal.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11962,18 +15934,23 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 var MarketingComponent = /** @class */ (function () {
-    function MarketingComponent(marketingService, dentistService, datePipe, route, headerService, _cookieService, router) {
+    function MarketingComponent(marketingService, financesService, dentistService, datePipe, route, headerService, _cookieService, router, ngxSmartModalService) {
         this.marketingService = marketingService;
+        this.financesService = financesService;
         this.dentistService = dentistService;
         this.datePipe = datePipe;
         this.route = route;
         this.headerService = headerService;
         this._cookieService = _cookieService;
         this.router = router;
+        this.ngxSmartModalService = ngxSmartModalService;
         this.clinic_id = {};
         this.dentistCount = {};
         this.clinicsData = [];
+        this.selectedCategories = [];
         this.myTemplate = "";
         this.date = new Date();
         this.stackedChartOptions = {
@@ -12066,6 +16043,11 @@ var MarketingComponent = /** @class */ (function () {
         this.revenueReferralData1 = [];
         this.revenueReferralLabelsl2 = [];
         this.visitsTooltip = 'down';
+        this.newPatientsTotal = 0;
+        this.newPatientsPrevTotal = 0;
+        this.newPatientsTooltip = 'down';
+        this.expenseData = [];
+        this.categories = [];
         this.toggleChecked = false;
         this.trendValue = '';
         this.isDisabled = true;
@@ -12089,6 +16071,42 @@ var MarketingComponent = /** @class */ (function () {
         this.visitsChartTrend1 = [];
         this.visitsChartTrendLabels = [];
         this.visitsChartTrendLabels1 = [];
+        this.newPatientsChartTrend = [
+            { data: [], label: '', shadowOffsetX: 3,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.newPatientsChartTrend1 = [];
+        this.newPatientsChartTrendLabels = [];
+        this.newPatientsChartTrendLabels1 = [];
+        this.newPatientsChartTemp = [];
+        this.expenseDataTrend = [
+            { data: [], label: '', shadowOffsetX: 3,
+                shadowOffsetY: 2,
+                shadowBlur: 3,
+                shadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointBevelWidth: 2,
+                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+                pointShadowOffsetX: 3,
+                pointShadowOffsetY: 3,
+                pointShadowBlur: 10,
+                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+                backgroundOverlayMode: 'multiply' }
+        ];
+        this.expenseDataTrend1 = [];
+        this.expenseDataTrendLabels1 = [];
+        this.expenseDataTrendLabels = [];
+        this.newAcqValue = 0;
     }
     MarketingComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
@@ -12101,6 +16119,7 @@ var MarketingComponent = /** @class */ (function () {
             jquery__WEBPACK_IMPORTED_MODULE_0__('.dentist_dropdown').hide();
             jquery__WEBPACK_IMPORTED_MODULE_0__('.header_filters').addClass('flex_direct_mar');
             jquery__WEBPACK_IMPORTED_MODULE_0__('#title').html('Marketing');
+            8;
             jquery__WEBPACK_IMPORTED_MODULE_0__('.external_clinic').show();
             jquery__WEBPACK_IMPORTED_MODULE_0__('.external_dentist').show();
             jquery__WEBPACK_IMPORTED_MODULE_0__(document).on('click', function (e) {
@@ -12191,24 +16210,44 @@ var MarketingComponent = /** @class */ (function () {
             }
         }
     };
+    MarketingComponent.prototype.filterCountryMultiple = function (event) {
+        var query = event.query;
+        this.filteredCountriesMultiple = this.filterCountry(query, this.categories);
+    };
+    MarketingComponent.prototype.filterCountry = function (query, categories) {
+        //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+        var filtered = [];
+        for (var i = 0; i < categories.length; i++) {
+            var category = categories[i];
+            if (category.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filtered.push(category);
+            }
+        }
+        return filtered;
+    };
     MarketingComponent.prototype.chartHovered = function (e) {
         // console.log(e);
     };
     MarketingComponent.prototype.loadDentist = function (newValue) {
         if (newValue == 'all') {
+            this.fdnewPatientsRatio();
             this.mkNewPatientsByReferral();
             this.fdvisitsRatio();
             this.mkRevenueByReferral();
+            this.fdnewPatientsAcq();
             //this.fdWorkTimeAnalysis();
         }
     };
     //Items Predictor Analysis 
     MarketingComponent.prototype.mkNewPatientsByReferral = function () {
         var _this = this;
+        this.mkNewPatientsByReferralLoader = true;
+        this.newPatientsTimeLabels = [];
         var user_id;
         var clinic_id;
         this.marketingService.mkNewPatientsByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.mkNewPatientsByReferralLoader = false;
                 _this.newPatientsTimeData1 = [];
                 _this.newPatientsTimeLabelsl2 = [];
                 _this.newPatientsTimeLabels1 = [];
@@ -12260,10 +16299,12 @@ var MarketingComponent = /** @class */ (function () {
     //Items Predictor Analysis 
     MarketingComponent.prototype.mkRevenueByReferral = function () {
         var _this = this;
+        this.mkRevenueByReferralLoader = true;
         var user_id;
         var clinic_id;
         this.marketingService.mkRevenueByReferral(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.mkRevenueByReferralLoader = false;
                 _this.revenueReferralData1 = [];
                 _this.revenueReferralLabelsl2 = [];
                 _this.revenueReferralLabels1 = [];
@@ -12316,17 +16357,71 @@ var MarketingComponent = /** @class */ (function () {
     MarketingComponent.prototype.fdvisitsRatio = function () {
         var _this = this;
         if (this.duration) {
+            this.visitsTotal = 0;
+            this.fdvisitsRatioLoader = true;
             var user_id;
             var clinic_id;
             this.marketingService.fdvisitsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
                 _this.visitsTotal = 0;
                 _this.visitsPrevTotal = 0;
                 if (data.message == 'success') {
+                    _this.fdvisitsRatioLoader = false;
                     _this.visitsTotal = data.total;
                     _this.visitsPrevTotal = data.total_ta;
                     _this.visitsGoal = data.goals;
                     if (_this.visitsTotal >= _this.visitsPrevTotal)
                         _this.visitsTooltip = 'up';
+                }
+            }, function (error) {
+                _this.warningMessage = "Please Provide Valid Inputs!";
+            });
+        }
+    };
+    //Predictor Ratio :
+    MarketingComponent.prototype.fdnewPatientsRatio = function () {
+        var _this = this;
+        if (this.duration) {
+            this.fdnewPatientsRatioLoader = true;
+            this.newPatientsTotal = 0;
+            var user_id;
+            var clinic_id;
+            this.marketingService.fdnewPatientsRatio(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+                _this.newPatientsTotal = 0;
+                _this.newPatientsPrevTotal = 0;
+                if (data.message == 'success') {
+                    _this.fdnewPatientsRatioLoader = false;
+                    if (data.total != null)
+                        _this.newPatientsTotal = data.total;
+                    if (data.total_ta != null)
+                        _this.newPatientsPrevTotal = data.total_ta;
+                    _this.newPatientsGoal = data.goals;
+                    if (_this.newPatientsTotal >= _this.newPatientsPrevTotal)
+                        _this.newPatientsTooltip = 'up';
+                }
+            }, function (error) {
+                _this.warningMessage = "Please Provide Valid Inputs!";
+            });
+        }
+    };
+    //Predictor Ratio :
+    MarketingComponent.prototype.fdnewPatientsAcq = function () {
+        var _this = this;
+        if (this.duration) {
+            var user_id;
+            var clinic_id;
+            this.fdnewPatientsAcqLoader = true;
+            this.financesService.categoryExpenses(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
+                if (data.message == 'success') {
+                    _this.fdnewPatientsAcqLoader = false;
+                    _this.categories = [];
+                    _this.expenseData = [];
+                    data.data.forEach(function (res, key) {
+                        _this.expenseData[res.meta_key] = res.expenses;
+                        _this.categories.push(res.meta_key);
+                    });
+                    if (_this.selectedCategories.length <= 0)
+                        _this.selectedCategories = _this.categories;
+                    _this.load_chart_acq();
                 }
             }, function (error) {
                 _this.warningMessage = "Please Provide Valid Inputs!";
@@ -12463,8 +16558,6 @@ var MarketingComponent = /** @class */ (function () {
         else if (val == 'off') {
             this.showTrend = false;
         }
-        console.log(this.startDate);
-        console.log(this.endDate);
     };
     MarketingComponent.prototype.getClinics = function () {
         var _this = this;
@@ -12482,6 +16575,7 @@ var MarketingComponent = /** @class */ (function () {
     };
     MarketingComponent.prototype.toggleChangeProcess = function () {
         this.showTrend = true;
+        this.mkNoNewPatientsTrend();
         this.fdvisitsRatioTrend();
         this.mkRevenueByReferral();
         this.mkNewPatientsByReferral();
@@ -12489,11 +16583,14 @@ var MarketingComponent = /** @class */ (function () {
     MarketingComponent.prototype.fdvisitsRatioTrend = function () {
         var _this = this;
         this.visitsChartTrendLabels1 = [];
+        this.visitsChartTrendLabels = [];
+        this.fdvisitsRatioTrendLoader = true;
         this.visitsChartTrend1 = [];
         var user_id;
         var clinic_id;
         this.marketingService.mkTotalVisitsTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
             if (data.message == 'success') {
+                _this.fdvisitsRatioTrendLoader = false;
                 data.data.forEach(function (res) {
                     _this.visitsChartTrend1.push(res.val);
                     if (_this.trendValue == 'c')
@@ -12507,6 +16604,79 @@ var MarketingComponent = /** @class */ (function () {
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
+    };
+    MarketingComponent.prototype.mkNoNewPatientsTrend = function () {
+        var _this = this;
+        this.newPatientsChartTrendLabels1 = [];
+        this.newPatientsChartTrend1 = [];
+        var user_id;
+        var clinic_id;
+        this.marketingService.mkNoNewPatientsTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
+            if (data.message == 'success') {
+                _this.newPatientsChartTemp = data.data;
+                data.data.forEach(function (res) {
+                    _this.newPatientsChartTrend1.push(res.val);
+                    if (_this.trendValue == 'c')
+                        _this.newPatientsChartTrendLabels1.push(_this.datePipe.transform(res.duration, 'MMM y'));
+                    else
+                        _this.newPatientsChartTrendLabels1.push(res.duration);
+                });
+                _this.newPatientsChartTrend[0]['data'] = _this.newPatientsChartTrend1;
+                _this.newPatientsChartTrendLabels = _this.newPatientsChartTrendLabels1;
+                _this.fdnewPatientsAcqTrend();
+            }
+        }, function (error) {
+            _this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    };
+    //Predictor Ratio :
+    MarketingComponent.prototype.fdnewPatientsAcqTrend = function () {
+        var _this = this;
+        if (this.duration) {
+            var user_id;
+            var clinic_id;
+            this.financesService.finExpensesByCategoryMktTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
+                if (data.message == 'success') {
+                    _this.expenseDataTrend1 = [];
+                    _this.expenseDataTrendLabels1 = [];
+                    console.log(_this.selectedCategories);
+                    _this.newPatientsChartTemp.forEach(function (res, key) {
+                        data.data.forEach(function (res1, key1) {
+                            if (res1.duration == res.duration) {
+                                var dataX = 0;
+                                var dataY = 0;
+                                var percent = 0;
+                                if (res1.val.expenses != undefined) {
+                                    dataY = res1.val.expenses;
+                                }
+                                if (res.val != '') {
+                                    dataX = res.val;
+                                }
+                                if (dataX != 0)
+                                    percent = dataY / dataX;
+                                _this.expenseDataTrend1.push(percent.toFixed(1));
+                                _this.expenseDataTrendLabels1.push(res.duration);
+                            }
+                        });
+                    });
+                    _this.expenseDataTrend[0]['data'] = _this.expenseDataTrend1;
+                    _this.expenseDataTrendLabels = _this.expenseDataTrendLabels1;
+                }
+            }, function (error) {
+                _this.warningMessage = "Please Provide Valid Inputs!";
+            });
+        }
+    };
+    MarketingComponent.prototype.load_chart_acq = function () {
+        var _this = this;
+        var totalY = 0;
+        this.selectedCategories.forEach(function (res, key) {
+            if (_this.expenseData[res])
+                totalY = totalY + parseInt(_this.expenseData[res]);
+        });
+        if (totalY != undefined && this.newPatientsTotal > 0)
+            this.newAcqValue = (totalY / this.newPatientsTotal).toFixed(1);
+        jquery__WEBPACK_IMPORTED_MODULE_0__('.close_modal').click();
     };
     MarketingComponent.prototype.changeLevel = function (val) {
         if (val == 'newPatient')
@@ -12522,7 +16692,7 @@ var MarketingComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             template: __webpack_require__(/*! ./marketing.component.html */ "./src/app/dashboards/marketing/marketing.component.html")
         }),
-        __metadata("design:paramtypes", [_marketing_service__WEBPACK_IMPORTED_MODULE_2__["MarketingService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_3__["DentistService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["DatePipe"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"], _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_7__["HeaderService"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_8__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
+        __metadata("design:paramtypes", [_marketing_service__WEBPACK_IMPORTED_MODULE_2__["MarketingService"], _finances_finances_service__WEBPACK_IMPORTED_MODULE_3__["FinancesService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_4__["DentistService"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["DatePipe"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"], _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_8__["HeaderService"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_9__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], ngx_smart_modal__WEBPACK_IMPORTED_MODULE_10__["NgxSmartModalService"]])
     ], MarketingComponent);
     return MarketingComponent;
 }());
@@ -12618,6 +16788,30 @@ var MarketingService = /** @class */ (function () {
         if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
         return this.http.get(this.apiUrl + "/Marketings/mkTotalVisitsTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    //Referral to Other Clinicians Internal / External
+    MarketingService.prototype.fdnewPatientsRatio = function (clinic_id, startDate, endDate, duration, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (duration === void 0) { duration = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Marketings/mkNoNewPatients?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    //Referral to Other Clinicians Internal / External
+    MarketingService.prototype.mkNoNewPatientsTrend = function (clinic_id, mode, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (mode === void 0) { mode = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Marketings/mkNoNewPatientsTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));

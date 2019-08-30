@@ -1,0 +1,208 @@
+/********carousel-dashboard***************/
+body{font-family: 'Poppins', sans-serif; font-size: 18px; }
+.carousel-caption-dash {
+    position: absolute;
+    max-width: 310px;
+    background-color: #dcebe9;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 13px;
+    box-shadow: 0 0 10px rgba(0,0,0,.4);
+}
+.arrow-section{ 
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+} 
+.carousel-control-prev-new, .carousel-control-next-new {
+    color: #1ab394 !important;
+    padding: 6px 16px;
+    display: inline-block;
+    border-radius: 100px;
+    font-size: 30px;
+    text-decoration: none !important;
+}
+.intro-step-btn{
+    z-index:1
+}
+.intro-step-btn i{
+    line-height:56px;
+    font-size:30px
+}
+.intro-step-btn .ripple{
+    position:absolute;
+    width:60px;
+    height:60px;
+    z-index:-1;
+    left:50%;
+    top:50%;
+    opacity:0;
+    margin:-30px 0 0 -30px;
+    border-radius:100px;
+    -webkit-animation:ripple 1.8s infinite;
+    animation:ripple 1.8s infinite
+}
+.greenBg {
+    background-color: #18a689!important;
+    background-image: linear-gradient(90deg, #18a689, #18a689);
+}
+
+@-webkit-keyframes ripple{
+    0%{
+        opacity:1;
+        -webkit-transform:scale(0);
+        transform:scale(0)
+    }
+    100%{
+        opacity:0;
+        -webkit-transform:scale(1);
+        transform:scale(1)
+    }
+}
+@keyframes ripple{
+    0%{
+        opacity:1;
+        -webkit-transform:scale(0);
+        transform:scale(0)
+    }
+    100%{
+        opacity:0;
+        -webkit-transform:scale(1);
+        transform:scale(1)
+    }
+}
+.intro-step-btn .ripple:nth-child(2){
+    animation-delay:.3s;
+    -webkit-animation-delay:.3s
+}
+.intro-step-btn .ripple:nth-child(3){
+    animation-delay:.6s;
+    -webkit-animation-delay:.6s
+}
+.clinician-analysis-item .carousel-caption-dash.step-one{
+top: 42%;
+left: 18%;
+}
+.clinician-analysis-item .carousel-caption-dash.step-two {
+    top: 18%;
+    right: 3%;
+    left: auto;
+}
+.clinician-analysis-item .carousel-caption-dash.step-three {
+    top: 40%;
+    left: 16%;
+}
+.clinician-analysis-item .carousel-caption-dash.step-four {
+    top: 40%;
+    right: 3%;
+    left: auto;
+}
+.carousel-caption-dash .steps {
+    position: absolute;
+    padding: 0px 4px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+    background-color: #18a689;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    line-height: 22px;
+}
+.steps-count {
+    position: relative;
+    top: -20px;
+}
+.clinician-analysis-item .carousel-caption-dash.step-one .steps {
+    left: -126px;
+    top: -68px;
+}
+.clinician-analysis-item .carousel-caption-dash.step-two .steps {
+    right: 150px;
+    top: -116px;
+}
+.clinician-analysis-item .carousel-caption-dash.step-three .steps {
+    left: 350px;
+    top: -205px;
+}
+.clinician-analysis-item .carousel-caption-dash.step-four .steps {
+    right: 60px;
+    top: -205px;
+}
+.clinic-goals-item .carousel-caption-dash.step-one {
+    top: 70%;
+}
+.clinic-goals-item .carousel-caption-dash.step-two {
+    top: 34%;
+}
+.clinic-goals-item .carousel-caption-dash.step-one .steps {
+    left: -208px;
+    top: -90px;
+}
+.clinic-goals-item .carousel-caption-dash.step-two .steps {
+    right: 40px;
+    top: -202px;
+}
+.clinic-goals-item .carousel-caption-dash.step-three {
+    top: 33%;
+right: 47%;
+left: auto;
+}
+.clinic-goals-item .carousel-caption-dash.step-three .steps {
+    left: 280px;
+    top: -100px;
+}
+.data-upload-item .carousel-caption-dash.step-one {
+    top: 67%;
+}
+.data-upload-item .carousel-caption-dash.step-two {
+    top: 33%;
+}
+.data-upload-item .carousel-caption-dash.step-three {
+    top: 18%;
+    left: 14%;
+}
+.data-upload-item .carousel-caption-dash.step-one .steps {
+    top: -70px;
+}
+.data-upload-item .carousel-caption-dash.step-two .steps {
+    right: 50px;
+    top: -198px;
+}
+.data-upload-item .carousel-caption-dash.step-three .steps {
+    left: auto;
+    top: 85px;
+    right: -158px;
+}
+.data-upload-item-two .carousel-caption-dash.step-one {
+    right: 6%;
+    left: auto;
+    top: 64%;
+}
+.data-upload-item-two .carousel-caption-dash.step-two {
+    right: 26%;
+    top: 12%;
+}
+.data-upload-item-two .carousel-caption-dash.step-one .steps {
+    left: 198px;
+    top: -200px;
+}
+.data-upload-item-two .carousel-caption-dash.step-two .steps {
+    right: -208px;
+    top: -3px;
+}
+.skip-btn {
+    position: absolute;
+    z-index: 1;
+    background-color: rgba(26, 179, 148, 0.5);
+    bottom: 20px;
+    right: 30px;
+    text-transform: uppercase;
+    color: #ccc;
+    padding: 5px 37px;
+}
+.skip-btn:hover, .skip-btn:focus{
+    background-color: rgba(26, 179, 148, 0.9); color: #fff; box-shadow: none;
+}
