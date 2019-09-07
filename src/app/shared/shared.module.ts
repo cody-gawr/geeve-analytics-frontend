@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { MenuItems } from './menu-items/menu-items';
+import { RolesUsersService } from '../roles-users/roles-users.service';
 import {
   AccordionAnchorDirective,
   AccordionLinkDirective,
@@ -18,6 +19,6 @@ import {
     AccordionLinkDirective,
     AccordionDirective
   ],
-  providers: [MenuItems]
+  providers: [MenuItems,RolesUsersService]
 })
 export class SharedModule {}

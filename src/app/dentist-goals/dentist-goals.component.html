@@ -3,7 +3,7 @@
 <!-- ============================================================== -->
 <div fxLayout="row wrap">
     <div fxFlex.gt-sm="100" fxFlex="100">
-         <mat-form-field *ngIf="user_id != '1'">
+         <mat-form-field class="alldentists-field" *ngIf="user_id != '1'">
       <mat-select placeholder="All Dentist( {{dentistCount}} )"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
         <mat-option value ="">All Dentists</mat-option>
         <mat-option *ngFor="let dentist of dentists" [value]="dentist.providerId">

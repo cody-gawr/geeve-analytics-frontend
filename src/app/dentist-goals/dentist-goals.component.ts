@@ -88,13 +88,16 @@ export class DentistGoalsComponent implements OnInit {
           else
           {
             this.clinic_id = '';
-
           }
           this.getDentistGoals();
           this.getDentists(); 
-            $('#title').html('Dentist Goals');
-        $('.external_clinic').show();
-        $('.external_dentist').hide();
+          if(this.user_id == '1') 
+          {
+            $('.header_filters').hide();
+          }
+        $('#title').html('Dentist Goals');
+        // $('.external_clinic').show();
+        // $('.external_dentist').hide();
      });
      this.form = this.fb.group({
       dentistprod: [null, Validators.compose([Validators.required])],

@@ -1,7 +1,7 @@
 
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
-
+@import "~ngx-smart-modal/ngx-smart-modal";
 
 .mat-sidenav{color:#fff!important; font-size:13px!important; border:none!important;
 
@@ -372,7 +372,7 @@ padding: 10px 15px;}
 
 .sa_matcard_content .ngx-gauge-meter{margin-left:-125px!important;}
 
-.sa_chart_details_sec{margin: 50px 0 30px 0 !important;
+.sa_chart_details_sec{margin: 10px 0 0px 0 !important;
     padding: 15px 0px 10px;
     border-radius: 4px; color:#0E3459; background:#f9f9f9;}
 
@@ -456,13 +456,452 @@ padding: 10px 15px;}
   background: red;
   color: #fff;
   box-shadow: none; }
+
+/****************add css after media****************/
+.sa_combine_title{margin-bottom:20px;}
+.sa_combine_title .trend_ico{float:none;}
+.sa_nodata_div{padding:20px; text-align:center; position:relative; margin: 20px auto 20px !important; width:100%; max-width: 370px; background-image: url(assets/images/nodata02.jpg); background-size: cover;}
+.sa_back_btn_holder{float:left; width:100%; margin-bottom:10px; }
+.sa_back_btn_holder span{
+
+    float: left; background:#18A689; 
+    min-width: 47px;
+    font-weight: 500;
+    color: #fff;
+    padding: 2px 9px 2px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+
+}
+.connect-xero{
+    background-image: url('https://staging-analytics.jeeve.com.au/assets/images/connect-blue.svg') !important;
+
+background-repeat: no-repeat !important;
+
+background-size: 100% 100% !important;
+width: 190px;
+
+height: 43px;
+}
+
+
+.disconnect-xero{
+    background-image: url('https://staging-analytics.jeeve.com.au/assets/images/disconnect-blue.svg') !important;
+
+background-repeat: no-repeat !important;
+
+background-size: 100% 100% !important;
+width: 222px;
+
+height: 43px;
+}
+.settingsBtn {
+    position: absolute;
+    top: -42px;
+    right: 0;
+}
+.mat-green-button.mat-raised-button {
+    background: linear-gradient(308deg, rgba(14,52,89,0.8) 10%, rgba(24,166,137,0.7) 80%);
+    color: #fff;
+}
+.datamapping-heading {
+    margin-top: 0;
+}
+.modal-popup-mapping {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    max-height: 400px;
+overflow-x: hidden;
+padding-left: 20px;
+padding-right: 20px;
+}
+.modal-footer-mapping {
+    padding: 20px 0 10px;
+    text-align: right;
+}
+.modal-popup-mapping .ng-star-inserted {
+    margin-bottom: 10px;
+}
+.modal-popup-mapping .sa_select {
+    border: 1px solid #ddd;
+    -webkit-appearance: menulist;
+    appearance: menulist;
+    -moz-appearance: menulist;
+    font-family: "Poppins", sans-serif;
+height: auto;
+}
+.CategoriesBtn{ position: absolute; right: 0; z-index: 1; }
+.CategoriesBtn button{ line-height: 20px; padding: 4px 10px; font-size: 13px; }
+.mt-0{ margin-top: 0 !important; }
+.SelectCategories ul.ui-widget{ padding: 0 !important; border:none; }
+.SelectCategories ul.ui-widget > li {
+    margin-bottom: 4px !important;
+}
+.SelectCategories ul.ui-widget > li.ui-state-highlight {
+    background: #18a689 !important;
+}
+.SelectCategories ul.ui-widget > li .ui-autocomplete-token-icon::before {
+    content: "\f00d";
+}
+.SelectCategories ul.ui-widget > li .ui-autocomplete-token-icon {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+}
+.SelectCategories ul.ui-widget > li .ui-autocomplete-token-icon {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900; font-size: 12px;
+}
+.SelectCategories ul.ui-widget > li.ui-autocomplete-input-token input {
+    padding: 4px !important;
+    border: 1px solid #293846;
+    height: 22px; border-radius: 3px;
+}
+.name_arrow {
+    float:right;
+    padding:0px 10px;
+}
+
+
+
+
+
+
+
+/*stepper
+/********carousel-dashboard***************/
+
+.carousel-caption-dash {
+    position: absolute;
+    max-width: 310px;
+    background-color: #dcebe9;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 13px;
+    box-shadow: 0 0 10px rgba(0,0,0,.4);
+}
+.arrow-section{ 
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+} 
+.carousel-control-prev-new, .carousel-control-next-new {
+    color: #1ab394 !important;
+    padding: 6px 16px;
+    display: inline-block;
+    border-radius: 100px;
+    font-size: 30px;
+    text-decoration: none !important;
+}
+.intro-step-btn{
+    z-index:1
+}
+.intro-step-btn i{
+    line-height:56px;
+    font-size:30px
+}
+.intro-step-btn .ripple{
+    position:absolute;
+    width:60px;
+    height:60px;
+    z-index:-1;
+    left:50%;
+    top:50%;
+    opacity:0;
+    margin:-30px 0 0 -30px;
+    border-radius:100px;
+    -webkit-animation:ripple 1.8s infinite;
+    animation:ripple 1.8s infinite
+}
+.greenBg {
+    background-color: #18a689!important;
+    background-image: linear-gradient(90deg, #18a689, #18a689);
+}
+
+@-webkit-keyframes ripple{
+    0%{
+        opacity:1;
+        -webkit-transform:scale(0);
+        transform:scale(0)
+    }
+    100%{
+        opacity:0;
+        -webkit-transform:scale(1);
+        transform:scale(1)
+    }
+}
+@keyframes ripple{
+    0%{
+        opacity:1;
+        -webkit-transform:scale(0);
+        transform:scale(0)
+    }
+    100%{
+        opacity:0;
+        -webkit-transform:scale(1);
+        transform:scale(1)
+    }
+}
+.intro-step-btn .ripple:nth-child(2){
+    animation-delay:.3s;
+    -webkit-animation-delay:.3s
+}
+.intro-step-btn .ripple:nth-child(3){
+    animation-delay:.6s;
+    -webkit-animation-delay:.6s
+}
+.clinician-analysis-item .carousel-caption-dash.step-one{
+top: 42%;
+left: 18%;
+}
+.clinician-analysis-item .carousel-caption-dash.step-two {
+    top: 18%;
+    right: 3%;
+    left: auto;
+}
+.clinician-analysis-item .carousel-caption-dash.step-three {
+    top: 40%;
+    left: 16%;
+}
+.clinician-analysis-item .carousel-caption-dash.step-four {
+    top: 40%;
+    right: 3%;
+    left: auto;
+}
+.carousel-caption-dash .steps {
+    position: absolute;
+    padding: 0px 4px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+    background-color: #18a689;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    line-height: 22px;
+}
+.steps-count {
+    position: relative;
+    top: -20px;
+}
+.clinician-analysis-item .carousel-caption-dash.step-one .steps {
+    left: -126px;
+    top: -68px;
+}
+.clinician-analysis-item .carousel-caption-dash.step-two .steps {
+    right: 150px;
+    top: -116px;
+}
+.clinician-analysis-item .carousel-caption-dash.step-three .steps {
+    left: 350px;
+    top: -205px;
+}
+.clinician-analysis-item .carousel-caption-dash.step-four .steps {
+    right: 60px;
+    top: -205px;
+}
+.clinic-goals-item .carousel-caption-dash.step-one {
+    top: 70%;
+}
+.clinic-goals-item .carousel-caption-dash.step-two {
+    top: 34%;
+}
+.clinic-goals-item .carousel-caption-dash.step-one .steps {
+    left: -208px;
+    top: -90px;
+}
+.clinic-goals-item .carousel-caption-dash.step-two .steps {
+    right: 40px;
+    top: -202px;
+}
+.clinic-goals-item .carousel-caption-dash.step-three {
+    top: 33%;
+right: 47%;
+left: auto;
+}
+.clinic-goals-item .carousel-caption-dash.step-three .steps {
+    left: 280px;
+    top: -100px;
+}
+.data-upload-item .carousel-caption-dash.step-one {
+    top: 67%;
+}
+.data-upload-item .carousel-caption-dash.step-two {
+    top: 33%;
+}
+.data-upload-item .carousel-caption-dash.step-three {
+    top: 18%;
+    left: 14%;
+}
+.data-upload-item .carousel-caption-dash.step-one .steps {
+    top: -70px;
+}
+.data-upload-item .carousel-caption-dash.step-two .steps {
+    right: 50px;
+    top: -198px;
+}
+.data-upload-item .carousel-caption-dash.step-three .steps {
+    left: auto;
+    top: 85px;
+    right: -158px;
+}
+.data-upload-item-two .carousel-caption-dash.step-one {
+    right: 6%;
+    left: auto;
+    top: 64%;
+}
+.data-upload-item-two .carousel-caption-dash.step-two {
+    right: 26%;
+    top: 12%;
+}
+.data-upload-item-two .carousel-caption-dash.step-one .steps {
+    left: 198px;
+    top: -200px;
+}
+.data-upload-item-two .carousel-caption-dash.step-two .steps {
+    right: -208px;
+    top: -3px;
+}
+.skip-btn {
+    position: absolute;
+    z-index: 1;
+    background-color: rgba(26, 179, 148, 0.5);
+    bottom: 20px;
+    right: 30px;
+    text-transform: uppercase;
+    color: #ccc;
+    padding: 5px 37px;
+}
+.skip-btn:hover, .skip-btn:focus{
+    background-color: rgba(26, 179, 148, 0.9); color: #fff; box-shadow: none;
+}
+
+.gauge-chart__label[_ngcontent-c14] {
+    color: rgb(23, 82, 110);  font-size: 22px !important;
+}
+.gauge-chart[_ngcontent-c14] { margin: auto; }
+
+.loader_container.ng-star-inserted {
+
+    width: 100%;
+    text-align: center;
+
+}
+.loader_ico {
+
+    width: 5%;
+
+}
+.no-boldText h5 {
+    font-weight: 300 !important;
+}
+.sa_health_screen_area .sa_matcard_content .ngx-gauge-meter{ margin-left: -150px !important; }
+.sa_dentist_graphs_area .sa_flexbg { min-height: 260px; position: relative; }
+.loader_container_middle.loader_container {
+    position: absolute;
+    z-index: 9999999;
+    left: 50%;
+    right: 0;
+    top: 50%;
+    max-width: 102px;
+    text-align: center;
+    transform: translate(-50%, -50%);
+}
+.loader_ico {
+    width: 32px;
+    height: 32px;
+}
+.loader-text {
+    font-size: 15px;
+}
+.toogletopright{ float: right; }
+.toogletopright .onofftoogle2 { float: left; margin-right: 15px; }
+.predictor_ratio_vertical .sa_chart_details_sec {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+.sa_frontdesk_graph .mat-card {
+    height: calc(100% - 26px);
+}
+.sa_frontdesk_graph .sa_chart_details_sec {
+   margin: 6px 0 0px 0 !important;
+}
+.sa_frontdesk_graph .chart {
+    min-height: 330px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.sa_dashboard_inner_content .sa_chart_details_sec small.ng-star-inserted{ line-height: 16px; display: block; padding-top: 4px; }
+.py-2 { padding-bottom: 30px; padding-top: 30px;}
+.sa_tabs_main_sec.sa_tabs_clinician_referrals {
+    margin-bottom: 40px;
+}
+.Item_Predictor_clinicianproceedures{  }
+ul.list-categories { padding: 0 5px; list-style-type: none;  margin-bottom: 20px;}
+.list-categories li {
+    background-color: #18a689;
+    border-radius: 3px;
+    display: inline-block;
+    margin: 2px;
+    font-size: 13px;
+    padding: 1px 6px;
+    color: #fff;
+}
+.list-categories li .fa {
+    font-size: 10px;
+    padding-right: 5px; cursor: pointer;
+}
+.row_sc {
+    margin: 0 -5px;
+}
+.row_sc .SelectCategories {
+    padding: 0 5px;
+}
+.row_sc h5 {
+    background-color: #f2f2f2;
+    padding: 10px 10px;
+    margin-bottom: 20px;
+}
+.sa_new_patients_outer img{ 
+max-width: 240px;
+margin-bottom: 00px;
+width: 100%; }
+.sa_new_patients {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 20px;
+    display: block;
+    padding: 14px 22px;
+    border-radius: 24px;
+}
+.row_Patients { align-items: center; } 
+.sa_new_patients strong {
+    /*font-size: 25px; 
+    color: #18A689;*/
+    font-weight: 500;
+    vertical-align: middle;
+    padding-right: 7px;
+}
+.CategoriesBtnMarketing{ top: 44px; }
+.pb-2{ padding-bottom: 30px; }
+.alldentists-field { padding: 0 14px; }
+.mat-raised-button{ border-radius: 4px !important; }
+.ImportCSV { display: inline-block; }
+
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (max-width: 599px) {
     .header_first_select{margin-right:0;}
-
-
-
-
 }
 @media only screen and (max-width: 959px) {
     .trending_mode_area{float:left; padding:1px 10px 9px; }
@@ -503,7 +942,7 @@ padding: 10px 15px;}
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (max-width: 1440px) {
 
-    .sa_tabs_design .sa_filter_span{margin-bottom:0;}
+    .sa_tabs_design .sa_filter_span{/*margin-bottom:0;*/}
 .custom_date input{margin-left:0px;}
     .customRange{left:0; right:auto;}
 
@@ -523,9 +962,6 @@ padding: 10px 15px;}
     .custom_date .customRange .md-drppicker{ margin: 0 auto!important; position:relative!important; top:10px;}
     .custom_date .customRange .md-drppicker.inline{display:table; width:100%;}
 
-
-
-
 }
 @media only screen and (max-width: 959px) {
     .md_mrn{margin-right:0!important;}
@@ -534,7 +970,6 @@ padding: 10px 15px;}
 }
 @media only screen and (max-width: 1279px) {
     .lg_mrn{margin-right:0!important;}
-
 
 }
 
@@ -565,55 +1000,51 @@ padding: 10px 15px;}
 
 
 }
-
-
-.sa_combine_title{margin-bottom:20px;}
-.sa_combine_title .trend_ico{float:none;}
-.sa_nodata_div{padding:20px; text-align:center; position:relative; float:left; width:100%; margin-top:20px;}
-.sa_back_btn_holder{float:left; width:100%; margin-bottom:10px; }
-.sa_back_btn_holder span{
-
-    float: left; background:#18A689; 
-    min-width: 47px;
-    font-weight: 500;
-    color: #fff;
-    padding: 2px 9px 2px;
-    border-radius: 4px;
-    font-size: 13px;
-    cursor: pointer;
-
+@media (min-width:1440px) and (max-width:1599px) {
+.sa_tab_btn { font-size: 13px; padding: 2px 5px;}
 }
-.connect-xero{
-    background-image: url('https://staging-analytics.jeeve.com.au/assets/images/connect-blue.svg') !important;
-
-background-repeat: no-repeat !important;
-
-background-size: 100% 100% !important;
-width: 190px;
-
-height: 43px;
+@media only screen and (max-width: 1279px) {
+.toogletopright {
+    float: left;
 }
-
-
-.disconnect-xero{
-    background-image: url('https://staging-analytics.jeeve.com.au/assets/images/disconnect-blue.svg') !important;
-
-background-repeat: no-repeat !important;
-
-background-size: 100% 100% !important;
-width: 222px;
-
-height: 43px;
+.onofftoogle {
+    float: left;
 }
+.onofftoogle2 {
+    float: left;
+}
+}
+@media (max-width:991px) {
+.material.responsive-datatable .visible { width: 100% !important; }
+.material.responsive-datatable.ngx-datatable.fixed-header{ overflow-x: scroll; }
+.ngx-datatable.responsive-datatable .datatable-header{ overflow: initial !important; width: 100% !important; border: none !important; }
+.ngx-datatable.material.responsive-datatable .datatable-footer{ border: none !important; }
+.ngx-datatable.fixed-header.responsive-datatable .datatable-header .datatable-header-inner{ width: 100% !important }
+.ngx-datatable.responsive-datatable .datatable-header-inner .datatable-row-center, .ngx-datatable.responsive-datatable .datatable-body .datatable-body-row .datatable-row-center { width: 800px !important; border-bottom: 1px solid rgba(0, 0, 0, 0.12); }
+.ngx-datatable.fixed-header.responsive-datatable .datatable-header .datatable-header-inner .datatable-header-cell, .ngx-datatable.material.responsive-datatable .datatable-body .datatable-body-row .datatable-body-cell { 
+    width: 200px !important }
+}
+@media (max-width:767px) {
+.toogletopright { float: left; }
+.sa_tabs_design .sa_filter_span{margin-bottom:0;}
+}
+@media (max-width:600px) {
+.sa_chart_details_sec > .text-center {
+    margin-bottom: 15px;
+}
+.sa_chart_details_sec > .text-center:last-child {
+    margin-bottom: 0px;
+}
+.sa_mattabs_design .mat-tab-body{ padding: 15px; }
+.sa_matforms_design .mat-form-field { padding: 7px 2px; }
+.ngx-datatable.material.responsive-datatable .datatable-footer .datatable-pager a {padding: 0 0px;margin: 6px 1px;}
+}
+@media (max-width:575px) { 
+.ImportCSV { display: block; }
+.ImportCSV-outer input.sa-pull-right{ float:left; margin-top: 15px; }
 
-
-
-
-
-
-
-
-
-
-
-
+.ngx-datatable.material.dentist-datatable .datatable-footer .datatable-footer-inner, .ngx-datatable.material.responsive-datatable .datatable-footer .datatable-footer-inner{ display: block; height: auto !important; }
+.ngx-datatable.material.dentist-datatable .datatable-footer .datatable-pager a, .ngx-datatable.material.responsive-datatable .datatable-footer .datatable-pager a { padding: 0px 0px; margin: 6px 0px;}
+.ngx-datatable.material.dentist-datatable .datatable-body .datatable-body-row .datatable-body-cell, .ngx-datatable.material.responsive-datatable .datatable-body .datatable-body-row .datatable-body-cell { padding: .6rem .6rem; }
+.dentist-datatable .pager, .responsive-datatable .pager{ margin-bottom: 15px !important; }
+}

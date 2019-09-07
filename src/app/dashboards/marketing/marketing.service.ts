@@ -58,6 +58,23 @@ export class MarketingService {
                     })
         );
     }
+    //Referral to Other Clinicians Internal / External
+    fdnewPatientsRatio(clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
+        return this.http.get(this.apiUrl +"/Marketings/mkNoNewPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+                            //Referral to Other Clinicians Internal / External
+    mkNoNewPatientsTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/Marketings/mkNoNewPatientsTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&mode="+mode, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+               
 
 }
 

@@ -71,19 +71,17 @@ export class ClinicGoalsComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe(params =>  {
       if(this._cookieService.get("userid") != '1'){
     this.clinic_id = this.route.snapshot.paramMap.get("id");
+     $('.header_filters').hide();
   }
   else
   {
     this.clinic_id = '';
-
   }
         this.getClinicGoals();
-            $('#title').html('Clinics Goals');
-        $('.external_clinic').show();
-        $('.external_dentist').hide();
+        $('#title').html('Clinics Goals');
      });
 
      this.form = this.fb.group({

@@ -34,6 +34,14 @@ export const AppRoutes: Routes = [
         loadChildren: './layouts/full/header/header.module#HeaderModule'
       },
       {
+        path: 'roles/:id',
+        loadChildren: './roles/roles.module#RolesModule'
+      },
+      {
+        path: 'roles-users/:id',
+        loadChildren: './roles-users/roles-users.module#RolesUsersModule'
+      },
+      {
         path: 'clinic',
         loadChildren: './clinic/clinic.module#ClinicModule',
         canActivate: [AuthGuard]
@@ -61,6 +69,11 @@ export const AppRoutes: Routes = [
       {
         path: 'clinic-settings/:id',
         loadChildren: './clinic-settings/clinic-settings.module#ClinicSettingsModule',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'profile-settings/:id',
+        loadChildren: './profile-settings/profile-settings.module#ProfileSettingsModule',
         canActivate: [AuthGuard]
       },
       {

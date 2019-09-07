@@ -46,7 +46,8 @@ export class FrontDeskComponent implements AfterViewInit {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
          this.filterDate('cytd');
         this.getClinics();
-       $('#title').html('Front Desk');
+   $('#title').html('Front Desk ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
+        
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
@@ -275,7 +276,7 @@ public stackedChartOptionsticks: any = {
   public  gaugeValue = '';
   public  gaugeLabel = "";
   public  gaugeThick = "20";
-  public  foregroundColor= "rgba(0, 150, 136,0.5)";
+  public  foregroundColor= "rgba(0, 150, 136,0.7)";
   public  cap= "round";
   public  size = "250"
   public gaugeAppendText ='%';
@@ -284,11 +285,15 @@ public stackedChartOptionsticks: any = {
   public selectedValToggle ='off';
 
  private loadDentist(newValue) {
+   $('#title').html('Front Desk ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
+
     if(newValue == 'all') {
       this.fdFtaRatio();
       this.fdUtaRatio();
       this.fdNumberOfTicks();
       this.fdWorkTimeAnalysis();
+      this.fdRecallPrebookRate();
+      this.fdtreatmentPrebookRate();
     }
   }
 
@@ -304,14 +309,19 @@ public stackedChartOptionsticks: any = {
   public prevWorkTimeTooltip ='down';
   public goalchecked='off';
     public stackedChartOptionssWT:any =this.stackedChartOptions;
+public fdWorkTimeAnalysisLoader:any;
+
   //Items Predictor Analysis 
   private fdWorkTimeAnalysis() {
     var user_id;
     var clinic_id;
+    this.fdWorkTimeAnalysisLoader = true;
+    this.workTimeLabels= [];
 
   this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
 
        if(data.message == 'success'){
+        this.fdWorkTimeAnalysisLoader = false;
               this.workTimeData1 =[];
       this.workTimeLabels1 =[];
       this.prevWorkTimeTooltip = 'down';
@@ -370,15 +380,21 @@ public ftaTotal;
 public ftaPrevTotal;
 public ftaTooltip='down';
 public ftaGoal;
+public fdFtaRatioLoader:any;
+
 //Predictor Ratio :
   private fdFtaRatio() {
      if(this.duration){
+      this.fdFtaRatioLoader = true;
+    this.ftaTotal = 0;
+
        var user_id;
        var clinic_id;
   this.frontdeskService.fdFtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     this.ftaTotal = 0;
           this.ftaPrevTotal = 0;
        if(data.message == 'success'){
+        this.fdFtaRatioLoader = false;
           this.ftaTotal = Math.abs(data.data).toFixed(1);
           this.ftaPrevTotal = Math.abs(data.data_ta).toFixed(1);
           this.ftaGoal = data.goals;
@@ -398,15 +414,20 @@ public utaTotal;
 public utaPrevTotal;
 public utaTooltip='down';
 public utaGoal;
+public fdUtaRatioLoader:any;
 //Predictor Ratio :
   private fdUtaRatio() {
      if(this.duration){
+      this.fdUtaRatioLoader = true;
+     this.utaTotal = 0;
+
        var user_id;
        var clinic_id;
   this.frontdeskService.fdUtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
      this.utaTotal = 0;
           this.utaPrevTotal = 0;
        if(data.message == 'success'){
+        this.fdUtaRatioLoader = false;
           this.utaTotal = Math.abs(data.data).toFixed(1);
           this.utaPrevTotal = Math.abs(data.data_ta).toFixed(1);
           this.utaGoal = data.goals;
@@ -424,13 +445,19 @@ public utaGoal;
 public ticksTotal;
 public ticksPrevTotal;
 public ticksTooltip='down';
+public fdNumberOfTicksLoader:any;
+
 //Predictor Ratio :
   private fdNumberOfTicks() {
      if(this.duration){
+      this.fdNumberOfTicksLoader = true;
+          this.ticksPrevTotal = 0;
+
        var user_id;
        var clinic_id;
       this.frontdeskService.fdNumberOfTicks(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
+        this.fdNumberOfTicksLoader = false;
           this.ticksPrevTotal = 0;
         this.ticksTotal = 0;
         if(data.data.length > 0)
@@ -446,7 +473,71 @@ public ticksTooltip='down';
     }
   }
 
+public recallPrebookTotal;
+public recallPrebookPrevTotal;
+public recallPrebookTooltip='down';
+public fdRecallPrebookRateLoader:any;
 
+//Predictor Ratio :
+  private fdRecallPrebookRate() {
+     if(this.duration){
+      this.fdRecallPrebookRateLoader = true;
+      this.recallPrebookTotal =0;
+       var user_id;
+       var clinic_id;
+      this.frontdeskService.fdRecallPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+       if(data.message == 'success'){
+        this.fdRecallPrebookRateLoader = false;
+          this.recallPrebookPrevTotal = 0;
+        this.recallPrebookTotal = 0;
+        if(data.data.length > 0) {
+          if(data.data[0].percent >0)
+          this.recallPrebookTotal = Math.abs(data.data[0].percent).toFixed(1);
+        }
+          this.recallPrebookPrevTotal = Math.abs(data.total_ta).toFixed(1);
+          console.log(this.recallPrebookTotal);
+          if(this.recallPrebookTotal>=this.recallPrebookPrevTotal)
+            this.recallPrebookTooltip = 'up';
+        }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+    }
+  }
+
+public treatmentPrebookTotal;
+public treatmentPrebookPrevTotal;
+public treatmentPrebookTooltip='down';
+public fdtreatmentPrebookRateLoader:any;
+
+//Predictor Ratio :
+  private fdtreatmentPrebookRate() {
+     if(this.duration){
+      this.fdtreatmentPrebookRateLoader = true;
+        this.treatmentPrebookTotal = 0;
+
+       var user_id;
+       var clinic_id;
+      this.frontdeskService.fdTreatmentPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+       if(data.message == 'success'){
+        this.fdtreatmentPrebookRateLoader = false;
+          this.treatmentPrebookPrevTotal = 0;
+        this.treatmentPrebookTotal = 0;
+        if(data.data.length > 0)
+          this.treatmentPrebookTotal = Math.abs(data.data[0].percent).toFixed(1);
+          this.treatmentPrebookPrevTotal = Math.abs(data.total_ta).toFixed(1);
+          if(this.treatmentPrebookTotal>=this.treatmentPrebookPrevTotal)
+            this.treatmentPrebookTooltip = 'up';
+        }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+    }
+  }
+
+public currentText;
 
   // Filter By Date
   filterDate(duration) {
@@ -456,7 +547,8 @@ public ticksTooltip='down';
     this.showTrend= false;
      $('.customRange').css('display','none');
     if(duration == 'w') {
-      this.trendText= 'Last Week';
+       this.trendText= 'Last Week';
+      this.currentText= 'This Week';
       const now = new Date();
        var first = now.getDate() - now.getDay();
        var last = first + 6; 
@@ -471,6 +563,7 @@ public ticksTooltip='down';
     }
     else if (duration == 'm') {
       this.trendText= 'Last Month';
+      this.currentText= 'This Month';
 
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
@@ -480,6 +573,7 @@ public ticksTooltip='down';
     }
     else if (duration == 'q') {
       this.trendText= 'Last Quarter';
+      this.currentText= 'This Quarter';
 
       const now = new Date();
       var cmonth = now.getMonth()+1;
@@ -502,6 +596,7 @@ public ticksTooltip='down';
     }
     else if (duration == 'lq') {
       this.trendText= 'Previous Quarter';
+      this.currentText= 'Last Quarter';
 
       const now = new Date();
       var cmonth = now.getMonth()+1;
@@ -526,6 +621,7 @@ public ticksTooltip='down';
     }
     else if (duration == 'cytd') {
       this.trendText= 'Last Year';
+      this.currentText= 'This Year';
 
      var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'yyyy-MM-dd');
@@ -535,6 +631,7 @@ public ticksTooltip='down';
     }
      else if (duration == 'fytd') {
       this.trendText= 'Last Financial Year';
+      this.currentText= 'This Financial Year';
 
      var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 3, 1), 'yyyy-MM-dd');
@@ -543,6 +640,8 @@ public ticksTooltip='down';
       this.loadDentist('all');
     }
      else if (duration == 'custom') {
+      this.trendText= '';
+      this.currentText= '';
      $('.customRange').css('display','block');
     }
     $('.filter').removeClass('active');
@@ -638,6 +737,8 @@ toggleChangeProcess(){
       this.fdFtaRatioTrend();
       this.fdUtaRatioTrend();
       this.fdNumberOfTicksTrend();
+      this.fdRecallPrebookRateTrend();
+      this.fdTreatmentPrebookRateTrend();
 }
 
  public ftaChartTrend: any[]  = [
@@ -656,13 +757,18 @@ toggleChangeProcess(){
     public ftaChartTrend1=[];
   public ftaChartTrendLabels =[];
   public ftaChartTrendLabels1 =[];
+  public fdFtaRatioTrendLoader:any;
   private fdFtaRatioTrend() {
+    this.fdFtaRatioTrendLoader =true;
+  this.ftaChartTrendLabels=[];
+  
   this.ftaChartTrendLabels1=[];
   this.ftaChartTrend1=[];
     var user_id;
     var clinic_id;
     this.frontdeskService.fdFtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
+        this.fdFtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
                      this.ftaChartTrend1.push(res.val);
                    if(this.trendValue == 'c')
@@ -697,13 +803,18 @@ toggleChangeProcess(){
     public wtaChartTrend1=[];
   public wtaChartTrendLabels =[];
   public wtaChartTrendLabels1 =[];
+  public fdwtaRatioTrendLoader:any;
   private fdwtaRatioTrend() {
+    this.fdwtaRatioTrendLoader =true;
+  this.wtaChartTrendLabels=[];
+ 
   this.wtaChartTrendLabels1=[];
   this.wtaChartTrend1=[];
     var user_id;
     var clinic_id;
     this.frontdeskService.fdWorkTimeAnalysisTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
+        this.fdwtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
                      this.wtaChartTrend1.push(res.val);
                    if(this.trendValue == 'c')
@@ -739,13 +850,19 @@ toggleChangeProcess(){
     public utaChartTrend1=[];
   public utaChartTrendLabels =[];
   public utaChartTrendLabels1 =[];
+  public fdUtaRatioTrendLoader:any;
+
   private fdUtaRatioTrend() {
+    this.fdUtaRatioTrendLoader = true;
   this.utaChartTrendLabels1=[];
+  this.utaChartTrendLabels=[];
+
   this.utaChartTrend1=[];
     var user_id;
     var clinic_id;
     this.frontdeskService.fdUtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
+        this.fdUtaRatioTrendLoader = false;
                 data.data.forEach(res => {  
                      this.utaChartTrend1.push(res.val);
                    if(this.trendValue == 'c')
@@ -780,13 +897,18 @@ toggleChangeProcess(){
     public tickChartTrend1=[];
   public tickChartTrendLabels =[];
   public tickChartTrendLabels1 =[];
+  public fdNumberOfTicksTrendLoader:any;
+
   private fdNumberOfTicksTrend() {
+    this.fdNumberOfTicksTrendLoader = true;
+  this.tickChartTrendLabels=[];
   this.tickChartTrendLabels1=[];
   this.tickChartTrend1=[];
     var user_id;
     var clinic_id;
     this.frontdeskService.fdNumberOfTicksTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
+        this.fdNumberOfTicksTrendLoader = false;
                 data.data.forEach(res => {  
                      this.tickChartTrend1.push(res.val);
                    if(this.trendValue == 'c')
@@ -805,6 +927,105 @@ toggleChangeProcess(){
     });
   }
 
+
+ public recallPrebookChartTrend: any[]  = [
+    {data: [], label: '',  shadowOffsetX: 3,
+            shadowOffsetY: 2,
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.3)',
+            pointBevelWidth: 2,
+            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+            pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+            pointShadowOffsetX: 3,
+            pointShadowOffsetY: 3,
+            pointShadowBlur: 10,
+            pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+            backgroundOverlayMode: 'multiply'}];
+    public recallPrebookChartTrend1=[];
+  public recallPrebookChartTrendLabels =[];
+  public recallPrebookChartTrendLabels1 =[];
+  public fdRecallPrebookRateTrendLoader:any;
+
+  private fdRecallPrebookRateTrend() {
+    this.fdRecallPrebookRateTrendLoader = true;
+  this.recallPrebookChartTrendLabels=[];
+
+  this.recallPrebookChartTrendLabels1=[];
+  this.recallPrebookChartTrend1=[];
+    var user_id;
+    var clinic_id;
+    this.frontdeskService.fdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+       if(data.message == 'success'){
+        this.fdRecallPrebookRateTrendLoader = false;
+          this.recallPrebookChartTrendLabels1=[];
+  this.recallPrebookChartTrend1=[];
+                data.data.forEach(res => {  
+                     this.recallPrebookChartTrend1.push(res.percent.toFixed(1));
+                   if(this.trendValue == 'c')
+                   this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
+                    else
+                   this.recallPrebookChartTrendLabels1.push(res.treat_date);
+                  
+                 });
+                 this.recallPrebookChartTrend[0]['data'] = this.recallPrebookChartTrend1;
+
+                 this.recallPrebookChartTrendLabels =this.recallPrebookChartTrendLabels1; 
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+ 
+    });
+  }
+
+
+ public treatmentPrebookChartTrend: any[]  = [
+    {data: [], label: '',  shadowOffsetX: 3,
+            shadowOffsetY: 2,
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.3)',
+            pointBevelWidth: 2,
+            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+            pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+            pointShadowOffsetX: 3,
+            pointShadowOffsetY: 3,
+            pointShadowBlur: 10,
+            pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+            backgroundOverlayMode: 'multiply'}];
+    public treatmentPrebookChartTrend1=[];
+  public treatmentPrebookChartTrendLabels =[];
+  public treatmentPrebookChartTrendLabels1 =[];
+  public fdTreatmentPrebookRateTrendLoader:any;
+
+  private fdTreatmentPrebookRateTrend() {
+    this.fdTreatmentPrebookRateTrendLoader = true;
+  this.treatmentPrebookChartTrendLabels1=[];
+  this.treatmentPrebookChartTrendLabels=[];
+
+  this.treatmentPrebookChartTrend1=[];
+    var user_id;
+    var clinic_id;
+    this.frontdeskService.fdTreatmentPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+       if(data.message == 'success'){
+        this.fdTreatmentPrebookRateTrendLoader = false;
+          this.treatmentPrebookChartTrendLabels1=[];
+          this.treatmentPrebookChartTrend1=[];
+                data.data.forEach(res => {  
+                     this.treatmentPrebookChartTrend1.push(res.percent.toFixed(1));
+                   if(this.trendValue == 'c')
+                   this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
+                    else
+                   this.treatmentPrebookChartTrendLabels1.push(res.treat_date);
+                  
+                 });
+                 this.treatmentPrebookChartTrend[0]['data'] = this.treatmentPrebookChartTrend1;
+
+                 this.treatmentPrebookChartTrendLabels =this.treatmentPrebookChartTrendLabels1; 
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+ 
+    });
+  }
   goalToggle(val) {
      this.goalchecked = val;
       this.fdWorkTimeAnalysis();  

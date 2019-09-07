@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Add User</h1>
+<div mat-dialog-content>
+ 
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.display_name" placeholder="Display Name">
+  </mat-form-field>
+
+  
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.email" placeholder="Email">
+  </mat-form-field>
+     <select fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="sa_select" name="user_type" [(ngModel)]="data.user_type">
+      <option value ="" selected>Select User Type</option>
+      <option value ="3">Practice Manager</option>
+      <option value ="4">Clinician</option>
+      <option value ="5">Staff</option>
+   </select> 
+   <input type='hidden' tabindex="1" [(ngModel)]="data.password"  placeholder="Email">
+  <!--  <input type="file" (change)="onChange($event)"> -->
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data"  tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+</div>

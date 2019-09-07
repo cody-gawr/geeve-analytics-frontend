@@ -92,6 +92,40 @@ export class FrontDeskService {
                     })
         );
     }
-      
+
+        // Items Predictor Analysis  
+    fdRecallPrebookRate(clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
+        return this.http.get(this.apiUrl +"/FrontDesks/fdRecallPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+     
+        // Items Predictor Analysis  
+    fdTreatmentPrebookRate(clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
+        return this.http.get(this.apiUrl +"/FrontDesks/fdTreatmentPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+       
+                               //Referral to Other Clinicians Internal / External
+    fdRecallPrebookRateTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/FrontDesks/fdRecallPrebookRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&mode="+mode, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }  
+                                   //Referral to Other Clinicians Internal / External
+    fdTreatmentPrebookRateTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/FrontDesks/fdTreatmentPrebookRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&mode="+mode, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }    
 }
 

@@ -133,6 +133,13 @@ const data: any = [
       date: 'No Uploads Yet',
       sample: 'csv-sample/Accounting Invoices and Receipts.csv', 
       status : 'No File Uploaded'
+    },
+    {
+      id:'18',
+      name: 'All Patients',
+      date: 'No Uploads Yet',
+      sample: 'csv-sample/All Patients.csv', 
+      status : 'No File Uploaded'
     }
   ];
 @Component({
@@ -146,8 +153,9 @@ export class ImportcsvComponent implements AfterViewInit {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
         this.getLogs();
           $('#title').html('Data Upload');
-        $('.external_clinic').show();
-        $('.external_dentist').hide();
+       $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
      });
     
   }

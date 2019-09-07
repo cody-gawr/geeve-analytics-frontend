@@ -52,7 +52,7 @@ export class HealthScreenComponent implements AfterViewInit {
       needleUpdateSpeed: 3000,
       arcColors: ['rgb(255,84,84)','rgb(239,214,19)','rgb(61,204,91)'],
       arcDelimiters: [],
-      rangeLabel: ['0','100'],
+      rangeLabel: ['0','500'],
       needleStartValue: 50,
   }
     public options_visits = {
@@ -61,7 +61,7 @@ export class HealthScreenComponent implements AfterViewInit {
       needleUpdateSpeed: 3000,
       arcColors: ['rgb(255,84,84)','rgb(239,214,19)','rgb(61,204,91)'],
       arcDelimiters: [],
-      rangeLabel: ['0','1000'],
+      rangeLabel: ['0','100'],
       needleStartValue: 50,
   }
     public options_production = {
@@ -70,7 +70,7 @@ export class HealthScreenComponent implements AfterViewInit {
       needleUpdateSpeed: 3000,
       arcColors: ['rgb(255,84,84)','rgb(239,214,19)','rgb(61,204,91)'],
       arcDelimiters: [],
-      rangeLabel: ['0','100'],
+      rangeLabel: ['0','2000'],
       needleStartValue: 50,
   }
 public options_utilisation = {
@@ -91,9 +91,9 @@ public options_utilisation = {
       this.clinic_id = this.route.snapshot.paramMap.get("id");
  //   $('.external_dentist').val('all');
     $('#title').html('Health Check Screen');
-      $('.external_clinic').show();
-        $('.dentist_dropdown').show();
-        $('.header_filters').removeClass('flex_direct_mar');
+       $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
          if($('body').find('span#currentDentist').length > 0){
              var did= $('body').find('span#currentDentist').attr('did');
              $('.external_dentist').val(did);
@@ -165,6 +165,7 @@ public options_utilisation = {
     this.healthscreenService.healthCheckStats(this.clinic_id).subscribe((data) => {
        if(data.message == 'success'){
           this.production_c = data.data.production_c;
+          console.log(this.options_production);
           this.profit_c = data.data.profit_c;
           this.visits_c = data.data.visits_c;
           this.production_p = data.data.production_p;
@@ -177,14 +178,15 @@ public options_utilisation = {
           this.visits_g = data.data.visits_g;          
           this.production_g = data.data.production_g;          
           this.utilisation_rate_f_g = data.data.utilisation_rate_f_g;          
-          this.options_profit.arcDelimiters[1] = this.profit_g;
-          this.options_profit.arcDelimiters[0] =Math.floor(this.profit_g/2);
-          this.options_visits.arcDelimiters[1] = this.visits_g;
-          this.options_visits.arcDelimiters[0] = Math.floor(this.visits_g/2);
-          this.options_production.arcDelimiters[1] = this.production_g;
-          this.options_production.arcDelimiters[0] = Math.floor(this.production_g/2);
+         // this.options_profit.arcDelimiters[1] = this.profit_g;
+          // this.options_profit.arcDelimiters[0] =Math.floor(this.profit_g/2);
+          // this.options_visits.arcDelimiters[1] = this.visits_g;
+          // this.options_visits.arcDelimiters[0] = Math.floor(this.visits_g/2);
+         // this.options_production.arcDelimiters[1] = this.production_g;
+         // this.options_production.arcDelimiters[0] = Math.floor(this.production_g/2);
            this.options_utilisation.arcDelimiters[1] = this.utilisation_rate_f_g;
           this.options_utilisation.arcDelimiters[0] = Math.floor(this.utilisation_rate_f_g/2);
+          console.log(this.options_profit);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

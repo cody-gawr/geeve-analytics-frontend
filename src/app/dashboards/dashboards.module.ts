@@ -28,8 +28,11 @@ import { DentistService } from '../dentist/dentist.service';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import {MatButtonToggleModule, MatIconModule} from '@angular/material';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { GaugeChartModule } from 'angular-gauge-chart'
+import { NgxChartsModule } from '@swimlane/ngx-charts';               
+import { GaugeChartModule } from 'angular-gauge-chart';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import { NgxSmartModalModule } from 'ngx-smart-modal';
+
 import 'chartjs-plugin-annotation';
 @NgModule({
   imports: [
@@ -45,9 +48,11 @@ import 'chartjs-plugin-annotation';
     ChartsModule,
     NgxChartsModule,
     NgxGaugeModule,
+    AutoCompleteModule,                                                                                                                 
      NgxDaterangepickerMd.forRoot(),
      MatButtonToggleModule, MatIconModule,
-     GaugeChartModule
+     GaugeChartModule,
+    NgxSmartModalModule.forRoot()
   ],
   providers: [ ClinicianAnalysisService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, HealthScreenService],
   declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent]

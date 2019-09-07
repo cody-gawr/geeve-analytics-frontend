@@ -56,7 +56,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
         this.getClinics();
         $('.dentist_dropdown').show();
         $('.header_filters').removeClass('flex_direct_mar');
-        $('#title').html('Clinician Procedures & Referrals');
+  $('#title').html('Clinician Procedures & Referrals ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
+        
         $('.external_clinic').show();
         $('.external_dentist').show();
         $(document).on('click', function(e) {
@@ -384,6 +385,7 @@ this.preoceedureChartColors = [
             display: true
          }
   };
+  
    public lineChartColors1: Array<any> = [
     {
       // grey
@@ -722,7 +724,7 @@ this.preoceedureChartColors = [
   public  gaugeValue = '';
   public  gaugeLabel = "";
   public  gaugeThick = "20";
-  public  foregroundColor= "rgba(0, 150, 136,0.5)";
+  public  foregroundColor= "rgba(0, 150, 136,0.7)";
   public  cap= "round";
   public  size = "250"
   public  gaugeValuePredicted = 0;
@@ -743,6 +745,7 @@ this.preoceedureChartColors = [
   public selectedValToggle ='off';
   public gaugeDuration ='2500';
  private loadDentist(newValue) {  
+  $('#title').html('Clinician Procedures & Referrals ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
   if(newValue == 'all') {
     $(".predicted1Tool").show();
     $(".referral1Tool").show();
@@ -754,7 +757,7 @@ this.preoceedureChartColors = [
     $('.target_off').addClass('mat-button-toggle-checked');
     this.toggleChecked =false;
   }
-    this.changePieReferral('Internal');
+    this.changePieReferral('Combined');
     this.buildChartPredictor();
     this.buildChart();
     this.buildChartProceedure();
@@ -805,9 +808,11 @@ this.preoceedureChartColors = [
   }
 
   public stackedChartDataMax;
+  public buildChartLoader:any;
+
   //Items Predictor Analysis 
   private buildChart() {
-
+    this.buildChartLoader =true;
     var user_id;
     var clinic_id;
        this.stackedChartData = [
@@ -821,6 +826,7 @@ this.preoceedureChartColors = [
   this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
    
        if(data.message == 'success'){
+        this.buildChartLoader =false;
           this.stackedChartData1 = [];
           this.stackedChartData2 = [];
           this.stackedChartData3 = [];
@@ -857,12 +863,15 @@ this.preoceedureChartColors = [
   }
 
   public itemPredictedChartDataMax;
+  public buildChartDentistLoader:any;
   //Items Predictor Analysis Single
   private buildChartDentist() {
+    this.buildChartDentistLoader = true;
     var user_id;
     var clinic_id;
   this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
        if(data.message == 'success'){
+        this.buildChartDentistLoader = false;
           this.itemPredictedChartData1 = [];
           this.itemPredictedChartData1.push(data.data[0].crowns);
           this.itemPredictedChartData1.push(data.data[0].splints);
@@ -887,15 +896,18 @@ public predictedTotal0;
 public predictedTotal;
 public predictedTP=[];
 public predictedMax;
+public buildChartPredictorLoader:any;
 //Predictor Ratio :
   private buildChartPredictor() {
 
      if(this.duration){
+      this.buildChartPredictorLoader = true;
        var user_id;
     var clinic_id;
   this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
 
        if(data.message == 'success'){
+        this.buildChartPredictorLoader = false;
             this.predictedChartData1 =[];
            this.predictedChartData2 =[];
            this.predictedChartData3 =[];
@@ -985,22 +997,32 @@ this.predictedPreviousAverage3=0;
 public gaugeValuePredictedPrev1;
 public gaugeValuePredictedPrev2;
 public gaugeValuePredictedPrev3;
-
+public buildChartPredictorDentistLoader:any;
   //Predictor Ratio :
   private buildChartPredictorDentist() {
+    this.buildChartPredictorDentistLoader =true;
        var user_id;
     var clinic_id;
   this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
        if(data.message == 'success'){
+        console.log(data);
+          this.buildChartPredictorDentistLoader =false;
+          if(data.data.ratio1[0]) {
            this.gaugeValuePredicted1 = data.data.ratio1[0].ratio;
-           this.gaugeValuePredicted2 = data.data.ratio2[0].ratio;
-           this.gaugeValuePredicted3 = data.data.ratio3[0].ratio;
            this.gaugeValuePredictedPrev1 = data.data.ratio1[0].ratio_ta;
-           this.gaugeValuePredictedPrev2 = data.data.ratio2[0].ratio_ta;
-           this.gaugeValuePredictedPrev3 = data.data.ratio3[0].ratio_ta;
            this.gaugeLabelPredicted = data.data.ratio1[0].provider;
-           this.predictedDentistTotal = data.data.ratio1[0].ratio;
-           this.predictedDentistPrevTotal = data.data.ratio1[0].ratio_ta;
+         }
+          if(data.data.ratio2[0]) {
+           this.gaugeValuePredicted2 = data.data.ratio2[0].ratio;
+           this.gaugeValuePredictedPrev2 = data.data.ratio2[0].ratio_ta;
+         }
+         if(data.data.ratio3[0]) {
+           this.gaugeValuePredicted3 = data.data.ratio3[0].ratio;
+           this.gaugeValuePredictedPrev3 = data.data.ratio3[0].ratio_ta;
+         }
+
+           this.predictedDentistTotal = this.gaugeValuePredicted1;
+           this.predictedDentistPrevTotal = this.gaugeValuePredictedPrev1;
 
            this.gaugeValuePredicted= this.gaugeValuePredicted1;
        }
@@ -1012,7 +1034,11 @@ public gaugeValuePredictedPrev3;
   }
 
 //Total Revenue of Clinician Per Procedure
+
+public buildChartProceedureLoader:any;
+
   private buildChartProceedure() {
+    this.buildChartProceedureLoader =true;
         var user_id;
     var clinic_id;
           
@@ -1020,6 +1046,7 @@ public gaugeValuePredictedPrev3;
     this.proceedureChartData1 =[];
            this.proceedureChartLabels1 = [];
        if(data.message == 'success'){
+        this.buildChartProceedureLoader =false;
         data.data.forEach(res => {
            this.proceedureChartData1.push(Math.floor(res.total));
            this.proceedureChartLabels1.push(res.treat_item);
@@ -1036,12 +1063,16 @@ public gaugeValuePredictedPrev3;
 
 
 //Total Revenue of Clinician Per Procedure
+public buildChartProceedureDentistLoader:any;
+
   private buildChartProceedureDentist() {
+    this.buildChartProceedureDentistLoader =true;
         var user_id;
     var clinic_id;
     
   this.clinicianproceeduresService.ClinicianProceedureDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
        if(data.message == 'success'){
+        this.buildChartProceedureDentistLoader =false;
         this.proceedureChartData1 = [];
            this.proceedureChartLabels1 = [];
         data.data.forEach(res => {
@@ -1050,7 +1081,6 @@ public gaugeValuePredictedPrev3;
         });
        this.proceedureDentistChartData[0]['data'] = this.proceedureChartData1;
        this.proceedureDentistChartLabels = this.proceedureChartLabels1;
-
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1082,7 +1112,7 @@ public pieChartDataMax3;
           this.pieChartCombinedPrevTooltip = 'down';
   this.clinicianproceeduresService.ClinicianReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
-                  this.pieChartDatares1 = [];
+           this.pieChartDatares1 = [];
            this.pieChartDatares2 = [];
            this.pieChartDatares3 = [];
            this.pieChartLabelsres = [];
@@ -1113,6 +1143,7 @@ public pieChartDataMax3;
        this.pieChartDataMax1 = Math.max(...this.pieChartData1);
        this.pieChartDataMax2 = Math.max(...this.pieChartData2);
        this.pieChartDataMax3 = Math.max(...this.pieChartData3);
+
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1125,6 +1156,9 @@ public pieChartDataMax3;
   private buildChartReferralDentist() {
         var user_id;
     var clinic_id;
+    this.pieChartDataMax1=0;
+this.pieChartDataMax2=0;
+this.pieChartDataMax3=0;
 
   this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
        if(data.message == 'success'){
@@ -1150,13 +1184,16 @@ public pieChartDataMax3;
        this.pieChartData3 = this.pieChartDatares3;
 
        this.pieChartLabels = this.pieChartLabelsres;
+       this.pieChartDataMax1 = Math.max(...this.pieChartData1);
+       this.pieChartDataMax2 = Math.max(...this.pieChartData2);
+       this.pieChartDataMax3 = Math.max(...this.pieChartData3);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
  
     }
     );
-  this.changePieReferral('Internal');
+  this.changePieReferral('Combined');
   }
 
    changePieReferral(chart){
@@ -1191,12 +1228,14 @@ public pieChartDataMax3;
     $("."+chart).addClass('active');
   }
 
+public currentText;
+
   // Filter By Date
   filterDate(duration) {
     this.showTrend =false;
     this.isDisabled = true;
     this.toggleChecked = false
-    this.showInternal =true;
+    this.showCombined =true;
     $('.ratioPredictorSingle').show();
     //  $('.target_off').click();
     $('.target_filter').removeClass('mat-button-toggle-checked');
@@ -1211,6 +1250,8 @@ public pieChartDataMax3;
       
     if(duration == 'w') {
       this.trendText= 'Last Week';
+      this.currentText= 'This Week';
+
       const now = new Date();
        var first = now.getDate() - now.getDay();
        var last = first + 6; 
@@ -1225,6 +1266,8 @@ public pieChartDataMax3;
     }
     else if (duration == 'm') {
       this.trendText= 'Last Month';
+      this.currentText= 'This Month';
+
 
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
@@ -1234,6 +1277,7 @@ public pieChartDataMax3;
     }
     else if (duration == 'q') {
       this.trendText= 'Last Quarter';
+      this.currentText= 'This Quarter';
 
       const now = new Date();
       var cmonth = now.getMonth()+1;
@@ -1256,6 +1300,7 @@ public pieChartDataMax3;
     }
     else if (duration == 'lq') {
       this.trendText= 'Previous Quarter';
+      this.currentText= 'Last Quarter';
 
       const now = new Date();
       var cmonth = now.getMonth()+1;
@@ -1280,6 +1325,7 @@ public pieChartDataMax3;
     }
     else if (duration == 'cytd') {
       this.trendText= 'Last Year';
+      this.currentText= 'This Year';
 
      var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'yyyy-MM-dd');
@@ -1289,6 +1335,7 @@ public pieChartDataMax3;
     }
      else if (duration == 'fytd') {
       this.trendText= 'Last Financial Year';
+      this.currentText= 'This Financial Year';
 
      var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 3, 1), 'yyyy-MM-dd');
@@ -1297,6 +1344,8 @@ public pieChartDataMax3;
       this.loadDentist(dentistVal);
     }
      else if (duration == 'custom') {
+       this.trendText= '';
+      this.currentText= '';
      $('.customRange').css('display','block');
     }
     $('.filter').removeClass('active');
@@ -1381,7 +1430,7 @@ toggleFilter(val) {
     }
     else if(val == 'off') {
         this.changeDentistPredictor('1');
-       this.changePieReferral('Internal');
+       this.changePieReferral('Combined');
         $('.pieChartDetails').show();
         this.toggleChecked = false;
         $('.filter_cytd').click();
@@ -1427,7 +1476,7 @@ toggleFilter(val) {
   //   }
   //   else if(this.toggleChecked == false) {
   //       this.isDisabled = true;
-  //       this.changePieReferral('Internal');
+  //       this.changePieReferral('Combined');
   //       this.showTrend =false;
   //       $('.pieChartDetails').show();
   //       this.filterDate('cytd');
