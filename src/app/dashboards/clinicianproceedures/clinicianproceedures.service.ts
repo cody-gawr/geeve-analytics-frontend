@@ -25,8 +25,8 @@ export class ClinicianProceeduresService {
    }
 
     // Items Predictor Analysis 
-    ItemsPredictorAnalysis(clinic_id='1', startDate = '', endDate = '', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpItemsPredictorAnalysis?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate, { headers: this.headers })
+    ItemsPredictorAnalysis(clinic_id='1', startDate = '', endDate = '', user_type='',clinician='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpItemsPredictorAnalysis?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&user_type="+user_type+"&clinician="+clinician, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -52,8 +52,8 @@ export class ClinicianProceeduresService {
     }
 
     //Predictor Ratio 1:
-    PredictorRatio( clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
+    PredictorRatio( clinic_id='1', startDate = '', endDate = '',duration='', user_type='',clinician='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })

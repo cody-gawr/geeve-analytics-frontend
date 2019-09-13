@@ -7,6 +7,7 @@ import {
   FormControl
 } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { LoginService } from '../../login/login.service';
 
 @Component({
   selector: 'app-forgot',
@@ -15,7 +16,11 @@ import { CustomValidators } from 'ng2-validation';
 })
 export class ForgotComponent implements OnInit {
   public form: FormGroup;
-  constructor(private fb: FormBuilder, private router: Router) {}
+  public errorLogin = false;
+  public errorLoginText = '';
+  public successLogin = false;
+  public successLoginText = '';
+  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -27,6 +32,21 @@ export class ForgotComponent implements OnInit {
   }
 
   onSubmit() {
-    this.router.navigate(['/authentication/login']);
+      this.loginService.checkEmail(this.form.value.email).subscribe((res) => {
+          this.errorLogin = false;
+          this.errorLoginText = '';
+          this.successLogin = false;
+          this.successLoginText = '';
+           if(res.message == 'success'){
+              this.successLogin  =true;
+              this.successLoginText  =res.data;
+            }
+           else if(res.message == 'error'){
+              this.errorLogin  =true;
+              this.errorLoginText  =res.data;
+           }
+        }, error => {
+    });
+  //  this.router.navigate(['/login']);
   }
 }

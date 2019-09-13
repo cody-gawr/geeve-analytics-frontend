@@ -82,7 +82,7 @@ export class RolesUsersService {
     }
 
         // Update Clinic
-    addRoleUser(display_name, email, user_type,password, clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    addRoleUser(display_name, email, user_type,password, clinic_id,dentist_id, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('display_name', display_name);
@@ -90,8 +90,9 @@ export class RolesUsersService {
     formData.append('user_type', user_type);
     formData.append('clinic_id', clinic_id);
     formData.append('password', password);
+    formData.append('dentist_id', dentist_id);
 
-     formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);
     
         return this.http.post(this.apiUrl +"/Users/addRoleUser/", formData)

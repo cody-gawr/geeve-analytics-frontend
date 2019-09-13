@@ -1,19 +1,29 @@
-<h1 mat-dialog-title>Add Clinic</h1>
+<h1 mat-dialog-title>Add plan</h1>
 <div mat-dialog-content>
  
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.name" placeholder="Clinic Name">
+    <input matInput tabindex="1" [(ngModel)]="data.plan" placeholder="Plan Name">
   </mat-form-field>
 
   
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.address" placeholder="Address">
+    <input matInput tabindex="1" [(ngModel)]="data.allowedClinics" placeholder="Allowed Clinics">
   </mat-form-field>
 
   
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.contact_name" placeholder="Contact Name">
+    <input matInput tabindex="1" [(ngModel)]="data.description" placeholder="Description">
   </mat-form-field>
+   <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.amount" placeholder="Amount">
+  </mat-form-field>
+
+  
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.discount" placeholder="Discount">
+  </mat-form-field>
+
+  
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
 <div mat-dialog-actions>

@@ -32,8 +32,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GaugeChartModule } from 'angular-gauge-chart';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
-
 import 'chartjs-plugin-annotation';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 @NgModule({
   imports: [
     CommonModule,
@@ -52,7 +52,8 @@ import 'chartjs-plugin-annotation';
      NgxDaterangepickerMd.forRoot(),
      MatButtonToggleModule, MatIconModule,
      GaugeChartModule,
-    NgxSmartModalModule.forRoot()
+    NgxSmartModalModule.forRoot(),
+    CarouselModule
   ],
   providers: [ ClinicianAnalysisService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, HealthScreenService],
   declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent]

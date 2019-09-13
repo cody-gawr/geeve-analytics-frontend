@@ -16,7 +16,7 @@ import { HeaderService } from '../../layouts/full/header/header.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "angular2-cookie/core";
-
+import {OwlCarousel} from 'ngx-owl-carousel';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -27,6 +27,30 @@ declare var Chart: any;
 })
 export class HealthScreenComponent implements AfterViewInit {
    @ViewChild("myCanvas") canvas: ElementRef;
+  // customOptions: OwlOptions = {
+  //   loop: true,
+  //   mouseDrag: false,
+  //   touchDrag: false,
+  //   pullDrag: false,
+  //   dots: false,
+  //   navSpeed: 700,
+  //   navText: [ '<i class="fas-fa-chevron-left"></i>', '<i class="fas-fa-chevron-right></i>"' ],
+  //   responsive: {
+  //     0: {
+  //       items: 1
+  //     },
+  //     400: {
+  //       items: 1
+  //     },
+  //     740: {
+  //       items: 1
+  //     },
+  //     940: {
+  //       items: 1
+  //     }
+  //   },
+  //   nav: true
+  // };
 
   lineChartColors;
   subtitle: string;

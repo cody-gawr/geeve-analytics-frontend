@@ -1,6 +1,7 @@
-<mat-card>
+<mat-card class="roles_users">
     <mat-card-content>
-        <mat-card-title>Users  <button class="sa-pull-right mat-raised-button mat-gray" mat-raised-button (click)="openDialog()">Add User</button> <button class="sa-pull-right mat-raised-button mat-gray" mat-raised-button (click)="openRoleDialog()">Set Roles</button></mat-card-title>
+        <mat-card-title>Users <div class="sa-pull-right"><button class="mat-raised-button mat-gray mr-15" mat-raised-button (click)="openRoleDialog()">Set Roles</button><button class="mat-raised-button mat-gray" mat-raised-button (click)="openDialog()">Add User</button></div>
+        </mat-card-title>
 
         <mat-form-field>
             <input matInput type='text' class="form-control" placeholder='Type to filter Users name...' (keyup)='updateFilter($event)'

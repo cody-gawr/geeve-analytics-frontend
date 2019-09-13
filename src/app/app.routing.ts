@@ -11,10 +11,9 @@ export const AppRoutes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/login',
+        redirectTo: '/home',
         pathMatch: 'full'
-      }
-      ,
+      },
       {
         path: 'dashboard',
         loadChildren: './dashboard/dashboard.module#DashboardModule'
@@ -139,6 +138,21 @@ export const AppRoutes: Routes = [
         path: 'login',
         loadChildren:
           './login/login.module#LoginModule'
+      },
+      {
+        path: 'home',
+        loadChildren:
+          './home/home.module#HomeModule'
+      },
+      {
+        path: 'xero',
+        loadChildren:
+          './xero/xero.module#XeroModule'
+      },
+      {
+        path: 'subscription',
+        loadChildren:
+          './subscription/subscription.module#SubscriptionModule'
       }
     ]
   },

@@ -37,7 +37,7 @@
               <ngx-daterangepicker-material (rangeClicked)="rangeClicked($event)" class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'"></ngx-daterangepicker-material></div>
             </div>
         </div>
-             <div fxFlex.lg="20" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20" *ngIf="dentistVal == 'all'"> 
+             <div fxFlex.lg="20" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20" *ngIf="dentistVal == 'all' && childid == ''"> 
          <div class="onofftoogle2">
            <span class="trend_mode_title">Target:</span>
               <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group2" aria-label="Font Style" >
@@ -90,7 +90,7 @@
          
         <div  style="height: 250px">
         <canvas *ngIf="barChartLabels.length > 0" #myCanvas baseChart [datasets]="barChartData" [labels]="barChartLabels"  [legend]="barChartLegend"
-          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsDP" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsDP" [colors]="DPcolors" (chartClick)="chartClicked($event)">
         </canvas>
         <div *ngIf="barChartLabels.length <= 0 && buildChartLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
@@ -215,7 +215,7 @@
           [legend]="false"
           [chartType]="barChartType"
           (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)" [colors]="lineChartColors"></canvas>
+          (chartClick)="chartClicked($event)" [colors]="TPACAcolors"></canvas>
           <canvas #myCanvas *ngIf="tcmain == 2" baseChart class="chart"
           [datasets]="planChartDataC"
           [labels]="planChartLabels2"
@@ -223,7 +223,7 @@
           [legend]="false"
           [chartType]="barChartType"
           (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)" [colors]="lineChartColors"></canvas>
+          (chartClick)="chartClicked($event)" [colors]="TPACCcolors"></canvas>
         </div>
         
 
@@ -346,7 +346,7 @@
           [options]="doughnutChartOptions"
           [chartType]="doughnutChartType"
           (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)" [colors]="doughnutChartColors"></canvas>
+          (chartClick)="chartClicked($event)" [colors]="npColors"></canvas>
         </div>
         </div>
          
@@ -465,7 +465,7 @@
           [options]="doughnutChartOptions"
           [chartType]="doughnutChartType"
           (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)" [colors]="doughnutChartColors"></canvas>
+          (chartClick)="chartClicked($event)" [colors]="newpColors"></canvas>
         </div>
         </div>
          
@@ -591,11 +591,11 @@ Prebook Rate</small>
 
         <div  style="height: 250px">
         <canvas *ngIf="recallChartLabels.length > 0 && prebook=='recall' " #myCanvas baseChart [datasets]="recallChartData" [labels]="recallChartLabels"  [legend]="barChartLegend"
-          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsRP" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsRP" [colors]="RPcolors" (chartClick)="chartClicked($event)">
         </canvas>
 
         <canvas *ngIf="treatmentPreChartLabels.length > 0 && prebook=='treatment'" #myCanvas baseChart [datasets]="treatmentPreChartData" [labels]="treatmentPreChartLabels"  [legend]="barChartLegend"
-          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsRP" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsRP" [colors]="TPcolors" (chartClick)="chartClicked($event)">
         </canvas>
         <div *ngIf="recallChartLabels.length <= 0 && prebook=='recall' && recallPrebookLoader == false" class="sa_nodata_div">
             <h4>No Data</h4>
@@ -609,7 +609,8 @@ Prebook Rate</small>
       </div>
           <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="recallChartLabels.length > 0 && prebook=='recall'">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{recallChartAverage}}%</h3>
+                        <h3 *ngIf="recallChartAverage > 0" class="m-0 font-light text-center">{{recallChartAverage}}%</h3>
+                         <h3 *ngIf="recallChartAverage <= 0" class="m-0 font-light text-center">{{recallChartAverage| number:'0.0-0'}}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
@@ -624,7 +625,8 @@ Prebook Rate</small>
                 </div>
   <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="treatmentPreChartLabels.length > 0 && prebook=='treatment'">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{treatmentPreChartAverage}}%</h3>
+                         <h3 *ngIf="treatmentPreChartAverage > 0" class="m-0 font-light text-center">{{treatmentPreChartAverage}}%</h3>
+                         <h3 *ngIf="treatmentPreChartAverage <= 0" class="m-0 font-light text-center">{{treatmentPreChartAverage| number:'0.0-0'}}%</h3>
                          <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
@@ -760,13 +762,9 @@ Prebook Rate</small>
           </mat-card-title>
           <div class="relative">
            <div class="settingsBtn"><button class="mat-raised-button mat-green-button sa_smtable_btn" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Settings</button></div>
-
-
-         
-
         <div  style="height: 250px">
         <canvas *ngIf="hourlyRateChartLabels.length > 0" #myCanvas baseChart [datasets]="hourlyRateChartData" [labels]="hourlyRateChartLabels"  [legend]="barChartLegend"
-          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR" [colors]="HRcolors" (chartClick)="chartClicked($event)">
         </canvas>
         <div *ngIf="hourlyRateChartLabels.length <= 0 && hourlyRateChartLoader == false" class="sa_nodata_div">
             <h4>No Data</h4>
@@ -871,7 +869,7 @@ Prebook Rate</small>
 
         <div  style="height: 250px">
         <canvas *ngIf="treatmentChartLabels.length > 0" #myCanvas baseChart [datasets]="treatmentChartData" [labels]="treatmentChartLabels"  [legend]="barChartLegend"
-          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP" [colors]="TPRcolors" (chartClick)="chartClicked($event)">
         </canvas>
         <div *ngIf="treatmentChartLabels.length <= 0 && treatmentPlanRateLoader == false" class="sa_nodata_div">
             <h4>No Data</h4>
@@ -881,7 +879,8 @@ Prebook Rate</small>
       </div>
           <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="recallChartLabels.length > 0">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{treatmentChartAverage}}%</h3>
+                      <h3 *ngIf="treatmentChartAverage > 0" class="m-0 font-light text-center">{{treatmentChartAverage}}%</h3>
+                         <h3 *ngIf="treatmentChartAverage <= 0" class="m-0 font-light text-center">{{treatmentChartAverage| number:'0.0-0'}}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>

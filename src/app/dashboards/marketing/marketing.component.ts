@@ -58,7 +58,7 @@ export class MarketingComponent implements AfterViewInit {
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
-  $('#title').html('Marketing ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
+  $('#title').html('Marketing '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
         
         $('.external_clinic').show();
         $('.external_dentist').show();
@@ -263,7 +263,7 @@ this.preoceedureChartColors = [
          }
   };
  private loadDentist(newValue) {
-  $('#title').html('Marketing ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
+  $('#title').html('Marketing '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
 
     if(newValue == 'all') {
       this.fdnewPatientsRatio();
@@ -271,7 +271,6 @@ this.preoceedureChartColors = [
       this.fdvisitsRatio();
       this.mkRevenueByReferral();
       this.fdnewPatientsAcq();
-
       //this.fdWorkTimeAnalysis();
     }
   }
@@ -910,7 +909,7 @@ load_chart_acq() {
       totalY = totalY+parseInt(this.expenseData[res]);
     });
     if(totalY != undefined && this.newPatientsTotal>0)
-    this.newAcqValue = (totalY/this.newPatientsTotal).toFixed(1);
+    this.newAcqValue = (totalY/this.newPatientsTotal).toFixed(0);
     $('.close_modal').click();
 }
 

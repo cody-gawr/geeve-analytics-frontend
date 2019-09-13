@@ -1,81 +1,89 @@
 <!-- ============================================================== -->
 <!-- Card Grid-->
 <!-- ============================================================== -->
-<div fxLayout="row wrap">
-  <div fxFlex.gt-sm="100" fxFlex="100">
-    <mat-card>
-      <mat-card-content>
-        <mat-card-title>Profile Settings</mat-card-title>
+
+        <!-- <mat-card-title>Profile Settings</mat-card-title> -->
 
         <!-- ============================================================== -->
         <!-- column -->
         <!-- ============================================================== -->
-        <div fxLayout="row wrap">
+       <div class="sa_dentist_graphs_area sa_profile_setting">
+  <div fxLayout="row wrap" >
         <!-- Card column -->
-        <div fxFlex.gt-sm="50%" fxFlex="50">
-                <h5>Basic Details</h5>
+        <div fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" fxFlex.xs="100" fxFlex="50">
+          <mat-card>
+      <mat-card-content>
+          <div class="basic_details_form">
+            <mat-card-title>Basic Details</mat-card-title>
                           <!--  <form [formGroup]="form" class="basic-form"> -->
 
                                 <div fxLayout="row wrap">
                                   <!-- column -->
                                   <div fxFlex.gt-md="100" fxFlex="100">
-                                        <mat-card-title>Display Name</mat-card-title>
+                                        <label>Display Name</label>
                                       <input matInput placeholder="" id="displayName" [(ngModel)]= "displayName">
                                   </div>
                                    <div fxFlex.gt-md="100" fxFlex="100">
-                                        <mat-card-title>Email</mat-card-title>
+                                        <label>Email</label>
                                       <input matInput placeholder="" id="email" [(ngModel)]="email">
                                   </div>
-                                   <div fxFlex.gt-md="100" fxFlex="100">
-                                        <mat-card-title>Upoad Image</mat-card-title>
-                                      <input type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)" >
+                                   <div class="bd_UpoadImage" fxFlex.gt-md="100" fxFlex="100">
+                                        <label>Upoad Image</label><br>
+                                        <div class="upload-btn">
+              <span>Choose file</span>
+               <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)" >
                                       <input type='hidden'  placeholder="" id="imageURL" [(ngModel)]="imageURL">
+            </div>
+                                     
                                   </div>
                                  </div> 
                                   <mat-card-actions>
-                                    <button mat-raised-button color="primary" type="button"  (click)="onSubmitBasic()">Submit</button>
+                                    <button mat-raised-button color="dc" type="button"  (click)="onSubmitBasic()">Submit</button>
                                   </mat-card-actions>
                                   <!-- column -->
                             <!--   </form> -->
+                          </div>
+                        </mat-card-content></mat-card>
         </div>
-                <div fxFlex.gt-sm="49%" fxFlex="49">
-                <h5>Change Password</h5>
+                <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="100" fxFlex.xs="100" fxFlex="49">
+                  <mat-card>
+      <mat-card-content>
+                  <div class="ChangePassword-section">
+                     <mat-card-title class="mat-card-title">Change Password</mat-card-title>
 
-                           <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmitPassword()">
+                           <form [formGroup]="form" class="basic-form change-password-form" (ngSubmit)="onSubmitPassword()">
 
                                 <div fxLayout="row wrap">
                                   <!-- column -->
                                   <div fxFlex.gt-md="100" fxFlex="100">
                                     <mat-form-field>
-                                        <mat-card-title>Current Password</mat-card-title>
+                                        <label>Current Password</label>
                                       <input matInput type="password" placeholder="" [formControl]="form.controls['currentPassword']" [(ngModel)]= "currentPassword">
                                     </mat-form-field>
                                   </div>
                                    <div fxFlex.gt-md="100" fxFlex="100">
                                     <mat-form-field>
-                                        <mat-card-title>New Password</mat-card-title>
+                                        <label>New Password</label>
                                       <input matInput type="password" placeholder="" [formControl]="form.controls['newPassword']" [(ngModel)]="newPassword">
                                     </mat-form-field>
                                   </div>
                                    <div fxFlex.gt-md="100" fxFlex="100">
                                     <mat-form-field>
-                                        <mat-card-title>Repeat Password</mat-card-title>
+                                        <label>Repeat Password</label>
                                       <input matInput type="password" placeholder="" [formControl]="form.controls['repeatPassword']" [(ngModel)]="repeatPassword">
                                     </mat-form-field>
                                   </div>                   
                                  </div> 
                                   <mat-card-actions>
-                                    <button mat-raised-button color="primary" type="submit">Submit</button>
+                                    <button mat-raised-button color="dc" type="submit">Submit</button>
                                   </mat-card-actions>
                                   <small *ngIf="errorLogin" class="text-danger support-text">{{errortext}}</small>
                                   <small  class="text-success support-text">{{successtext}}</small>
 
                                   <!-- column -->
-                              </form>  
+                              </form>  </div>
+                            </mat-card-content></mat-card>
         </div>
-      </div>
+      </div></div>
  
-      </mat-card-content>
-    </mat-card>
-  </div>
-</div>
+      

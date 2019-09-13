@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatInputModule } from '@angula
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
+import { DentistService } from '../dentist/dentist.service';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -12,6 +13,7 @@ import { EventEmitter , Output, Input} from '@angular/core';
 
 export class DialogOverviewExampleDialogComponent {
    public clinic_id:any ={};
+show_dentist = false;
 
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
@@ -20,6 +22,13 @@ export class DialogOverviewExampleDialogComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+    @Output() public onDentist: EventEmitter<any> = new EventEmitter();
+   public selected_id;
+
+    loadDentist(val) {
+      if(val == '4')
+        this.show_dentist = true;
+    }
 }
 
 @Component({
@@ -62,14 +71,14 @@ export class RolesUsersComponent implements AfterViewInit {
   user_type: string;
   fileInput: any ;
   public clinic_id;
+  dentist_id;
 password:string;
-
+dentists:any=[];
   ngAfterViewInit() {
     this.getUsers();
     this.getRoles();
-
+    this.getDentists();
     this.clinic_id = this.route.snapshot.paramMap.get("id");
-
         $('#title').html('Users');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
@@ -85,7 +94,7 @@ password:string;
   columns = [{ prop: 'sr' }, { name: 'displayName' }, { name: 'email' }, { name: 'usertype' }, { name: 'created' }];
 
   @ViewChild(RolesUsersComponent) table: RolesUsersComponent;
-  constructor(private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute) {
+  constructor(private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService) {
     this.rows = data;
     this.temp = [...data];
     setTimeout(() => {
@@ -94,18 +103,16 @@ password:string;
   }
   private warningMessage: string;
 
-
-
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '250px',
-      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password }
+      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,dentist_id:this.dentist_id }
     });
     dialogRef.afterClosed().subscribe(result => {
      this.rolesUsersService.checkUserEmail(result.email).subscribe((res) => {
            if(res.message == 'success'){
            if(res.data <=0)
-           this.add_user(result.display_name, result.email, result.user_type, 'jeeveanalytics',this.clinic_id);
+           this.add_user(result.display_name, result.email, result.user_type, 'jeeveanalytics',this.clinic_id,result.dentist_id);
             else
             alert("Email Already Exists!");
            }
@@ -117,7 +124,7 @@ password:string;
   openRoleDialog(): void {
     const rolesRef = this.dialog.open(RolesOverviewExampleDialogComponent, {
       width: '250px',
-      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password, roles:this.roles, selectedRole:this.selectedRole, selected_id:this.selected_id,abc:this.abc}
+      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password, roles:this.roles, selectedRole:this.selectedRole, selected_id:this.selected_id,dentists:this.dentists}
     });
     const sub = rolesRef.componentInstance.onAdd.subscribe((val) => {
     this.selected_id = val;
@@ -148,9 +155,27 @@ password:string;
          });
     });
   }
+    // Get Dentist
+    getDentists() {
+      this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+           if(res.message == 'success'){
+            res.data.forEach(result => {
+              var temp=[];
+            temp['providerId'] = result.providerId;
+            temp['name'] = result.name;
+            this.dentists.push(temp);
+            });
+           }
+        }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        }    
+        );
+  }
 
-  add_user(display_name, email, user_type, password,clinic_id) {
-  this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id).subscribe((res) => {
+  add_user(display_name, email, user_type, password,clinic_id,dentist_id) {
+  if(dentist_id =='' || dentist_id == undefined)
+    dentist_id ='';
+  this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
        if(res.message == 'success'){
         alert('User Added');
         this.getUsers();
@@ -210,7 +235,6 @@ password:string;
   private deleteUser(row) {
            if(confirm("Are you sure to delete User?")) {
     if(this.rows[row]['id']) {
-      alert(this.rows[row]['id']);
   this.rolesUsersService.deleteUser(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
         alert('User Removed');

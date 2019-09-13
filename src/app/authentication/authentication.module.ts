@@ -17,7 +17,8 @@ import { ForgotComponent } from './forgot/forgot.component';
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-
+import { ResetComponent } from './reset/reset.component';
+import { LoginService } from '../login/login.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -31,12 +32,16 @@ import { RegisterComponent } from './register/register.component';
     FormsModule,
     ReactiveFormsModule
   ],
+  providers: [
+    LoginService
+  ],  
   declarations: [
     ErrorComponent,
     ForgotComponent,
     LockscreenComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ResetComponent
   ]
 })
 export class AuthenticationModule {}

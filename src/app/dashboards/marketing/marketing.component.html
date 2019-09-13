@@ -228,12 +228,12 @@
       </div>  
       <div *ngIf="showTrend == false && newAcqValue>0" fxLayout="row wrap" class="pieChartDetails sa_chart_details_sec">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">$ {{newAcqValue}}</h3>
+                        <h3 class="m-0 font-light">$ {{newAcqValue | number:'0.0-0'}}</h3>
                          <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">$ {{newPatientsPrevTotal}}</h3>
+                        <h3 class="m-0 font-light">$ {{newPatientsPrevTotal | number:'0.0-0'}}</h3>
                         <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
@@ -271,7 +271,7 @@
        <div *ngIf="showTrend == false && visitsTotal<=0 && fdvisitsRatioLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p>Oops! Looks like we don't have any data to show you</p>
-          </div>
+       </div>
        <div *ngIf="showTrend == true" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="visitsChartTrend" [labels]="visitsChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
@@ -286,13 +286,13 @@
           <div *ngIf="showTrend == false && visitsTotal>0" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light">{{visitsTotal | number:'1.0-0'}}</h3>
-                         <small *ngIf="currentText != ''">{{currentText}}</small>
+                        <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{visitsPrevTotal | number:'1.0-0'}}</h3>
+                       <h3 class="m-0 font-light">{{visitsPrevTotal | number:'1.0-0'}}</h3>
                        <small *ngIf="trendText != ''">{{trendText}}</small>
-                        <small *ngIf="trendText == ''">Previous</small>
+                       <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light">{{visitsGoal | number:'1.0-0'}}</h3>
@@ -302,7 +302,7 @@
       </mat-card-content>
     </mat-card>
     <div *ngIf="fdvisitsRatioLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
-  </div>
+    </div>
 </div>
 </div>
 </div>
@@ -320,14 +320,14 @@
             
           </div>
           <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49" class="SelectCategories sa_flexbg referral_clinicians">
-            <h5 class="mt-0">Other Categories</h5>
+            <h5 class="mt-0 other_cat">Other Categories</h5>
             <ul class="list-categories">
               <li *ngFor="let category of categories; let i = index"><span (click)="add_category(i)"><i class="fa fa-plus"></i></span>
                 <span>{{category}}</span></li>
             </ul>
             
           </div>
-          <button class="mat-raised-button mat-gray" mat-raised-button (click)="load_chart_acq()">Load Chart</button>
+          <button class="mat-raised-button mat-gray" mat-raised-button (click)="load_chart_acq()">Save</button>
         </div>
   <button (click)="myModal.close()" class="close_modal" style="display:none">Close</button>
 </ngx-smart-modal>

@@ -25,6 +25,31 @@ export class LoginService {
                         })
             );
     }
+     // Items Predictor Analysis 
+    checkEmail(email): Observable<any> {
+            const formData = new FormData();
+
+            formData.append('email', email);
+            return this.http.post(this.apiUrl +"/users/forgotPasswordApi", formData)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
+         // resetPassword 
+    resetPassword(password,id): Observable<any> {
+            const formData = new FormData();
+            formData.append('password', password);
+            formData.append('confirm_password', password);
+            formData.append('id', id);
+
+            return this.http.post(this.apiUrl +"/users/resetPasswordApi", formData)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
+
 
 }
 

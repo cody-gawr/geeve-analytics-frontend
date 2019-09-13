@@ -45,6 +45,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public showTrendChart=false;
   public goalchecked= 'off';
   public averagechecked= false;
+  public childid:string='';
+  public user_type:string='';
 
   constructor(private cliniciananalysisService: ClinicianAnalysisService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService, private frontdeskService: FrontDeskService){
   }
@@ -54,12 +56,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       this.clinic_id = this.route.snapshot.paramMap.get("id");
       this.getDentists();
       this.changeLoginStatus();
-      
+      this.user_type = this._cookieService.get("user_type");
+      if( this._cookieService.get("childid"))
+         this.childid = this._cookieService.get("childid");
  //   $('.external_dentist').val('all');
     $('#title').html('Clinician Analysis');
       $('.external_clinic').show();
         $('.dentist_dropdown').show();
         $('.header_filters').removeClass('flex_direct_mar');
+        if(this.childid != ''){
+          $('.dentist_dropdown').hide();
+          $('.header_filters').addClass('flex_direct_mar'); 
+        }
          if($('body').find('span#currentDentist').length > 0){
              var did= $('body').find('span#currentDentist').attr('did');
              $('.external_dentist').val(did);
@@ -80,9 +88,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             $('.customRange').hide();
         }
     })
-
-
-
     }); 
   //this.canvas = (<HTMLElement>document.getElementById('#'))
 
@@ -133,14 +138,7 @@ this.lineChartColors = [
   dentists: Dentist[] = [
    { providerId: 'all', name: 'All Dentists' },
   ];
-    public barChartColors: Array<any> = [
-    { backgroundColor: '#5CB25D' },
-    { backgroundColor: '#5CB25D' },
-    { backgroundColor: '#33A5F5' },
-    { backgroundColor: '#5CB25D' },
-    { backgroundColor: '#C53D43' },
-    { backgroundColor: '#FDBD56' }
-  ];
+    public barChartColors: Array<any>;
     public barChartType = 'bar';
   public barChartLegend = false;
     public gradient = 'bar';
@@ -385,6 +383,7 @@ public barChartOptions: any = {
             }],
           yAxes: [{  
             ticks: {
+                 beginAtZero:true,
               userCallback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
@@ -505,7 +504,7 @@ changeLoginStatus(){
     });
 }
  private loadDentist(newValue) {
-   $('#title').html('Clinician Analysis ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
+   $('#title').html('Clinician Analysis '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
   this.getAccountingDentist();
   this.getStatusDentist();
   this.changePrebookRate('recall');
@@ -666,6 +665,8 @@ changeLoginStatus(){
   public productionTotalPrev;
   public barChartOptionsDP:any =this.barChartOptions;
   public buildChartLoader:any;
+  public dentistKey;
+  public DPcolors:any;
   //Dentist Production Chart
   private buildChart() {
     this.buildChartLoader =true;
@@ -674,14 +675,15 @@ changeLoginStatus(){
     this.productionTotal =0;
     this.barChartLabels = [];
 
-    this.cliniciananalysisService.DentistProduction(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.cliniciananalysisService.DentistProduction(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
         this.buildChartLoader =false;
         this.productionTooltip = 'down';
+        var i=0;
         data.data.forEach(res => {
            this.barChartData1.push(res.total);
            var name = res.name;
-           if(res.name != null) {
+           if(res.name != null && res.name !='Anonymous') {
              name = res.name.split(')');
             if(name.length >0 && name[1] != '')
             {
@@ -690,13 +692,27 @@ changeLoginStatus(){
                 name =name[1]+ " "+ name[0];
             }
            this.barChartLabels1.push(name);
+           this.dentistKey = i;
          }
            else
            this.barChartLabels1.push(res.firstname);
 
            if(res.total != null)
            this.productionTotal = this.productionTotal + parseInt(res.total);
+         i++;
         });
+
+        if(this.user_type == '4' && this.childid != '') {
+          this.barChartColors = [
+            { backgroundColor: [] }
+          ];
+        this.barChartColors[0].backgroundColor[this.dentistKey] = '#1CA49F';
+        this.DPcolors= this.barChartColors;
+      }
+      else
+        this.DPcolors= this.lineChartColors;
+
+
          this.barChartData[0]['data'] = this.barChartData1;
          this.barChartLabels = this.barChartLabels1;
          this.productionTotalAverage =Math.floor(data.total_average);
@@ -803,6 +819,8 @@ public buildChartDentistLoader:any;
 public recallChartTooltip = 'down';
   public barChartOptionsRP:any =this.barChartOptionsPercent;
   public recallPrebookLoader:any;
+  public rpKey:any;
+  public RPcolors:any;
 private recallPrebook() {
     this.recallPrebookLoader =true;
     this.recallChartData1 =[];
@@ -810,20 +828,35 @@ private recallPrebook() {
     this.productionTotal =0;
     this.recallChartLabels = [];
 
-    this.cliniciananalysisService.RecallPrebook(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.cliniciananalysisService.RecallPrebook(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
     this.recallPrebookLoader =false;
 
         this.productionTooltip = 'down';
+        var i=0;
         data.data.forEach(res => {
            this.recallChartData1.push(Math.abs(res.percent).toFixed(1));
            this.recallChartLabels1.push(res.provider);
+           if(res.provider != 'Anonymous')
+            this.rpKey = i;
+          i++;
         });
          this.recallChartData[0]['data'] = this.recallChartData1;
          this.recallChartLabels = this.recallChartLabels1;
          this.recallChartAverage =Math.abs(data.total).toFixed(1);
          this.recallChartAveragePrev =data.total_ta;
          this.recallChartGoal = data.goals;
+
+        if(this.user_type == '4' && this.childid != '') {
+          this.barChartColors = [
+            { backgroundColor: [] }
+          ];
+        this.barChartColors[0].backgroundColor[this.rpKey] = '#1CA49F';
+        this.RPcolors= this.barChartColors;
+      }
+      else
+        this.RPcolors= this.lineChartColors;
+
          if(this.recallChartAverage>=this.recallChartAveragePrev)
           this.recallChartTooltip = 'up';
             this.barChartOptionsDP.annotation =[];
@@ -907,7 +940,8 @@ public treatmentPreChartTooltip = 'down';
   public barChartOptionsTPB:any =this.barChartOptionstrend;
   public prebook='recall';
   public treatmentPrebookLoader:any;
-
+  public tpKey:any;
+  public TPcolors:any;
 private treatmentPrePrebook() {
 
     this.treatmentPreChartData1 =[];
@@ -916,19 +950,32 @@ private treatmentPrePrebook() {
     this.treatmentPrebookLoader = true;
     this.treatmentPreChartLabels = [];
 
-    this.cliniciananalysisService.treatmentPrePrebook(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.cliniciananalysisService.treatmentPrePrebook(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
         this.treatmentPrebookLoader = false;
         this.productionTooltip = 'down';
+        var i=0;
         data.data.forEach(res => {
            this.treatmentPreChartData1.push(Math.abs(res.percent).toFixed(1));
            this.treatmentPreChartLabels1.push(res.provider);
+           if(res.provider != 'Anonymous')
+            this.tpKey = i;
+          i++;
         });
          this.treatmentPreChartData[0]['data'] = this.treatmentPreChartData1;
          this.treatmentPreChartLabels = this.treatmentPreChartLabels1;
          this.treatmentPreChartAverage =Math.abs(data.total).toFixed(1);
          this.treatmentPreChartAveragePrev =data.total_ta;
          this.treatmentPreChartGoal = data.goals;
+          if(this.user_type == '4' && this.childid != '') {
+                    this.barChartColors = [
+                      { backgroundColor: [] }
+                    ];
+                  this.barChartColors[0].backgroundColor[this.tpKey] = '#1CA49F';
+                  this.TPcolors= this.barChartColors;
+                }
+                else
+                  this.TPcolors= this.lineChartColors;
          if(this.treatmentPreChartAverage>=this.treatmentPreChartAveragePrev)
           this.treatmentPreChartTooltip = 'up';
             this.barChartOptionsTPB.annotation =[];
@@ -1011,7 +1058,8 @@ private treatmentPrePrebook() {
   public treatmentChartTooltip = 'down';
     public barChartOptionsTP:any =this.barChartOptionsPercent;
   public treatmentPlanRateLoader:any;
-
+  public TPRKey:any;
+  public TPRcolors:any;
   private treatmentPlanRate() {
     this.treatmentChartData1 =[];
     this.treatmentChartLabels1 =[];
@@ -1019,27 +1067,39 @@ private treatmentPrePrebook() {
     this.productionTotal =0;
     this.treatmentChartLabels = [];
 
-    this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
         this.treatmentPlanRateLoader =false;
         this.productionTooltip = 'down';
+        var i=0;
         data.data.forEach(res => {
            this.treatmentChartData1.push(Math.abs(res.percent).toFixed(2));
              var name = res.provider;
-           if(res.provider != null) {
+           if(res.provider != null && res.provider !='Anonymous') {
               name = res.provider.split(',');
               if(name.length>0)
                 name =name[1]+ " "+ name[0];
            this.treatmentChartLabels1.push(name);
+           this.TPRKey = i;
          }
            else
            this.treatmentChartLabels1.push(res.provider);
+         i++;
         });
          this.treatmentChartData[0]['data'] = this.treatmentChartData1;
          this.treatmentChartLabels = this.treatmentChartLabels1;
          this.treatmentChartAverage =Math.abs(data.total).toFixed(2);
          this.treatmentChartAveragePrev =data.total_ta;
          this.treatmentChartGoal = data.goals;
+          if(this.user_type == '4' && this.childid != '') {
+                    this.barChartColors = [
+                      { backgroundColor: [] }
+                    ];
+                  this.barChartColors[0].backgroundColor[this.TPRKey] = '#1CA49F';
+                  this.TPRcolors= this.barChartColors;
+                }
+                else
+                  this.TPRcolors= this.lineChartColors;
          if(this.treatmentChartAverage>=this.treatmentChartAveragePrev)
           this.treatmentChartTooltip = 'up';
 
@@ -1123,6 +1183,11 @@ private treatmentPrePrebook() {
   public planChartLabels2 =[];
   public barChartOptionsTC:any =this.barChartOptions;
   public buildChartTreatmentLoader:any;
+  public TPACAcolors:any;
+  public TPACCcolors:any;
+  public tpacAKey;
+  public tpacCKey;
+
 
 //Treatment Plan Average Cost
   private buildChartTreatment() {
@@ -1137,21 +1202,28 @@ private treatmentPrePrebook() {
     this.planTotal =0;
     this.planChartLabels = [];
 
-    this.cliniciananalysisService.TreatmentPlan(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.cliniciananalysisService.TreatmentPlan(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
         this.buildChartTreatmentLoader=false;
         this.planTotalTooltip = 'down';
+        var ia=0;
         data.data.plan_fee_all.forEach(res => {
            this.planChartData1.push(Math.abs(res.average_cost_all).toFixed(1));
            this.planChartLabels1.push(res.provider);
- });
+           if(res.provider != 'Anonymous')
+            this.tpacAKey = ia;
+           ia++;
+        });
            this.planAllTotal =  data.total_all;
            this.planAllTotalTrend =  data.total_ta_all;
 
-
+           var ic=0;
         data.data.plan_fee_completed.forEach(res => {
            this.planChartData2.push(Math.abs(res.average_cost_completed).toFixed(1));
            this.planChartLabels2.push(res.provider);
+           if(res.provider != 'Anonymous')
+            this.tpacCKey = ic;
+           ic++;
         });
            this.planCompletedTotal = data.total_completed;
            this.planCompletedTotalTrend = data.total_ta_completed;
@@ -1167,6 +1239,24 @@ private treatmentPrePrebook() {
        this.planTotalAverage = this.planAllTotal;
        this.planTotalGoal = data.goals;
        this.planTotalPrev =this.planAllTotalTrend;
+      if(this.user_type == '4' && this.childid != '') {
+         this.barChartColors = [
+            { backgroundColor: [] }
+          ];
+        this.barChartColors[0].backgroundColor[this.tpacAKey] = '#1CA49F';
+        this.TPACAcolors= this.barChartColors;
+        this.barChartColors = [
+            { backgroundColor: [] }
+          ];
+        this.barChartColors[0].backgroundColor[this.tpacCKey] = '#1CA49F';        
+        this.TPACCcolors= this.barChartColors;
+
+      }
+      else {
+        this.TPACAcolors= this.lineChartColors;
+        this.TPACCcolors= this.lineChartColors;
+
+      }
        if(this.planTotalAverage>=this.planTotalPrev)
         this.planTotalTooltip = 'up';
       var index =0;
@@ -1274,7 +1364,9 @@ private treatmentPrePrebook() {
   public doughnutTotalTooltip='down';
   public doughnutTotalPrev=0;
   public buildChartNopatientsLoader:any;
-
+  public npKey:any;
+  public npColors:any;
+  public doughnutChartColors1:any;
   private buildChartNopatients() {
     this.buildChartNopatientsLoader =true;
      this.doughnutChartData1 =[];
@@ -1282,20 +1374,32 @@ private treatmentPrePrebook() {
            this.doughnutTotal = 0;
          this.doughnutChartLabels = [];
 
-  this.cliniciananalysisService.NoPatients(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+  this.cliniciananalysisService.NoPatients(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
         this.buildChartNopatientsLoader =false;
          this.doughnutTotalTooltip = 'down';
+         var i=0;
         data.data.forEach(res => {
            this.doughnutChartData1.push(parseInt(res.treat_item));
            this.doughnutChartLabels1.push(res.provider);
            this.doughnutTotal = this.doughnutTotal + parseInt(res.treat_item);
+           if(res.provider != 'Anonymous')
+            this.npKey = i;
+           i++;
         });
          this.doughnutChartData = this.doughnutChartData1;
          this.doughnutChartLabels = this.doughnutChartLabels1;
          this.doughnutTotalAverage = data.total;
          this.doughnutTotalPrev =  data.total_ta;
          this.doughnutGoals = data.goals;
+          if(this.user_type == '4' && this.childid != '') {
+         this.doughnutChartColors1 = [{backgroundColor: []}];
+          
+        this.doughnutChartColors1[0].backgroundColor[this.npKey] = '#1CA49F';
+        this.npColors= this.doughnutChartColors1;
+      }
+      else
+        this.npColors= this.doughnutChartColors;
         if(this.doughnutTotalAverage>=this.doughnutTotalPrev)
         this.doughnutTotalTooltip = 'up';
        }
@@ -1340,7 +1444,9 @@ private treatmentPrePrebook() {
   public newPatientTotalPrev=0;
   public buildChartNewpatientsLoader:any;
   public newPatientsDataMax;
-
+  public newpKey:any;
+  public newpColors:any;
+  public doughnutChartColors2:any;
   private buildChartNewpatients() {
           this.newPatientChartData1 =[];
            this.newPatientChartLabels1 =[];
@@ -1349,19 +1455,31 @@ private treatmentPrePrebook() {
          this.newPatientChartLabels = [];
          this.newPatientsDataMax =0;
 
-  this.cliniciananalysisService.NewPatients(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+  this.cliniciananalysisService.NewPatients(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
     if(data.message == 'success'){
       this.buildChartNewpatientsLoader = false;
          this.newPatientTotalTooltip = 'down';
+         var i=0;
         data.data.forEach(res => {
            this.newPatientChartData1.push(parseInt(res.getX));
            this.newPatientChartLabels1.push(res.provider);
+           if(res.provider != 'Anonymous')
+            this.newpKey = i;
+           i++;
         });
          this.newPatientChartData = this.newPatientChartData1;
          this.newPatientChartLabels = this.newPatientChartLabels1;
          this.newPatientTotalAverage = data.total;
          this.newPatientTotalPrev =  data.total_ta;
          this.newPatientGoals = data.goals;
+          if(this.user_type == '4' && this.childid != '') {
+         this.doughnutChartColors2 = [{backgroundColor: []}];
+          
+        this.doughnutChartColors2[0].backgroundColor[this.newpKey] = '#1CA49F';
+        this.newpColors= this.doughnutChartColors2;
+      }
+      else
+        this.newpColors= this.doughnutChartColors;
         if(this.newPatientTotalAverage>=this.newPatientTotalPrev)
           this.newPatientTotalTooltip = 'up';
          this.newPatientsDataMax = Math.max(...this.newPatientChartData);
@@ -1425,6 +1543,8 @@ public newPatientPercent=0;
   public hourlyRateChartTooltip = 'down';
     public barChartOptionsHR:any =this.barChartOptions;
   public hourlyRateChartLoader:any;
+  public hrKey:any;
+  public HRcolors:any;
 
   private hourlyRateChart() {
     this.hourlyRateChartLoader = true;
@@ -1433,14 +1553,15 @@ public newPatientPercent=0;
     this.productionTotal =0;
     this.hourlyRateChartLabels = [];
 
-    this.cliniciananalysisService.hourlyRateChart(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.cliniciananalysisService.hourlyRateChart(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
         this.hourlyRateChartLoader = false;
         this.productionTooltip = 'down';
+        var i=0;
         data.data.forEach(res => {
            this.hourlyRateChartData1.push(Math.abs(res.hourlyRate).toFixed(2));
              var name = res.provider;
-          if(res.provider != null) {
+          if(res.provider != null && res.provider !='Anonymous') {
              name = res.provider.split(')');
             if(name.length >0 && name[1] != undefined)
             {
@@ -1449,9 +1570,11 @@ public newPatientPercent=0;
                 name =name[1]+ " "+ name[0];
             }
            this.hourlyRateChartLabels1.push(name);
+           this.hrKey=i;
          }
            else
            this.hourlyRateChartLabels1.push(res.provider);
+         i++;
         });
 
          this.hourlyRateChartData[0]['data'] = this.hourlyRateChartData1;
@@ -1459,6 +1582,17 @@ public newPatientPercent=0;
          this.hourlyRateChartAverage =Math.floor(data.total);
          this.hourlyRateChartAveragePrev =Math.floor(data.total_ta);
          this.hourlyRateChartGoal = data.goals;
+         if(this.user_type == '4' && this.childid != '') {
+          console.log(this.hrKey);
+                    this.barChartColors = [
+                      { backgroundColor: [] }
+                    ];
+                  this.barChartColors[0].backgroundColor[this.hrKey] = '#1CA49F';
+                  this.HRcolors= this.barChartColors;
+                }
+                else
+                  this.HRcolors= this.lineChartColors;
+
          if(this.hourlyRateChartAverage>=this.hourlyRateChartAveragePrev)
           this.hourlyRateChartTooltip = 'up';
 

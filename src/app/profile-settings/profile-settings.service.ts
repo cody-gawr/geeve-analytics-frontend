@@ -37,7 +37,7 @@ export class ProfileSettingsService {
             formData.append('displayName', displayName);
             formData.append('email', email);
             formData.append('user_image', imageURL);   
-            if(this._cookieService.get("user_type")>2)         
+            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')         
             formData.append('id', this._cookieService.get("childid"));
             else
             formData.append('id', this._cookieService.get("userid"));
@@ -56,7 +56,7 @@ export class ProfileSettingsService {
             formData.append('oldpassword', currentPassword);
             formData.append('password', newPassword);
             formData.append('confirm_password', newPassword);            
-            if(this._cookieService.get("user_type")>2)         
+            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')         
             formData.append('id', this._cookieService.get("childid"));
             else
             formData.append('id', this._cookieService.get("userid"));
@@ -71,7 +71,7 @@ export class ProfileSettingsService {
     }
 
     logoUpload( formData): Observable<any> {
-        if(this._cookieService.get("user_type")>2)         
+            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
             formData.append('id', this._cookieService.get("childid"));
             else
             formData.append('id', this._cookieService.get("userid"));

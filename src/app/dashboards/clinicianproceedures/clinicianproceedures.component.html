@@ -67,7 +67,7 @@
 <div class="Item_Predictor_clinicianproceedures">
        <div  style="height: 300px" *ngIf="stackedChartDataMax > 0">
         <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels" [options]="stackedChartOptions" 
-          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
+          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
         </canvas>
        </div>
      </div>
@@ -229,7 +229,7 @@
           [options]="barChartOptions"
           [legend]="false"
           [chartType]="stackedChartType"
-          [colors]="predictedChartColors"></canvas>
+          [colors]="PRcolors"></canvas>
           </div>
 <div *ngIf="predictedMax <= 0 && buildChartPredictorLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
@@ -398,14 +398,14 @@
           (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)"  [colors]="preoceedureChartColors"></canvas>
         </div>
-        <div *ngIf="proceedureDentistChartLabels.length <= 0 && proceedureDentistChartData == false" class="sa_nodata_div">
+        <div *ngIf="proceedureDentistChartLabels.length <= 0 && buildChartProceedureDentistLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p>Oops! Looks like we don't have any data to show you</p>
           </div>
       </mat-card-content>
     </mat-card>
     <div *ngIf="buildChartProceedureLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
-          <div *ngIf="proceedureDentistChartData == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
+     
   </div>
 </div>
 </div>

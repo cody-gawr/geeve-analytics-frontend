@@ -86,6 +86,7 @@ document.addEventListener("mozfullscreenchange", this.onFullScreenChange, false)
     else
       $(this).addClass('active');
 }); 
+   $("#snav .mat-nav-list .sub-item").css('display','block');
     // This is for the megamenu
   }
 

@@ -36,6 +36,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
    public clinic_id:any ={};
    public dentistCount:any ={};
     public clinicsData:any[] = [];
+    public user_type;
+    public childid='';
   public trendText;
   constructor(private clinicianproceeduresService: ClinicianProceeduresService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
   }
@@ -44,22 +46,31 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
   ngAfterViewInit() {
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
+    this.user_type = this._cookieService.get("user_type");
         this.getDentists(); 
-        if($('body').find('span#currentDentist').length > 0){
+           if( this._cookieService.get("childid")) {
+             this.childid = this._cookieService.get("childid");
+             this.dentistid = this._cookieService.get("dentistid");
+           }
+
+          if($('body').find('span#currentDentist').length > 0){
              var did= $('body').find('span#currentDentist').attr('did');
              $('.external_dentist').val(did);
           }
           else {
              $('.external_dentist').val('all');
-          }
+          }        
         this.filterDate('cytd');
         this.getClinics();
         $('.dentist_dropdown').show();
         $('.header_filters').removeClass('flex_direct_mar');
-  $('#title').html('Clinician Procedures & Referrals ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
-        
+        $('#title').html('Clinician Procedures & Referrals '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');        
         $('.external_clinic').show();
         $('.external_dentist').show();
+        if(this.childid != ''){
+          $('.dentist_dropdown').hide();
+          $('.header_filters').addClass('flex_direct_mar'); 
+        }
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();
@@ -744,8 +755,9 @@ this.preoceedureChartColors = [
   public endDate = '';
   public selectedValToggle ='off';
   public gaugeDuration ='2500';
+  public dentistid ='';
  private loadDentist(newValue) {  
-  $('#title').html('Clinician Procedures & Referrals ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
+  $('#title').html('Clinician Procedures & Referrals '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
   if(newValue == 'all') {
     $(".predicted1Tool").show();
     $(".referral1Tool").show();
@@ -756,20 +768,27 @@ this.preoceedureChartColors = [
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_off').addClass('mat-button-toggle-checked');
     this.toggleChecked =false;
-  }
+    }
     this.changePieReferral('Combined');
     this.buildChartPredictor();
     this.buildChart();
-    this.buildChartProceedure();
-    this.buildChartReferral();
-    (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
+     (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
-
     (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';    
-
-    $('.revenueProceedureSingle').hide();
-    $('.revenueProceedure').show();
+    if(this.childid == '') {
+      this.buildChartProceedure();
+      this.buildChartReferral();
+      $('.revenueProceedureSingle').hide();
+      $('.revenueProceedure').show();
+    }else {
+        this.selectedDentist =  this.dentistid;
+        this.buildChartProceedureDentist();
+        this.buildChartReferralDentist();
+         $('.revenueProceedureSingle').show();
+         $('.revenueProceedure').hide();
+    }
+   
 /*
     (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'block';
@@ -809,7 +828,9 @@ this.preoceedureChartColors = [
 
   public stackedChartDataMax;
   public buildChartLoader:any;
-
+  public ipKey;
+  public IPcolors;
+  public barChartColors;
   //Items Predictor Analysis 
   private buildChart() {
     this.buildChartLoader =true;
@@ -823,7 +844,7 @@ this.preoceedureChartColors = [
     {data: [], label: 'Surgical Extractions' }  ];
 
 
-  this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
+  this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {
    
        if(data.message == 'success'){
         this.buildChartLoader =false;
@@ -837,6 +858,7 @@ this.preoceedureChartColors = [
         if(data.data.length <=0) {
 
         }else {
+          var i=0
         data.data.forEach(res => {
            this.stackedChartData1.push(res.crowns);
            this.stackedChartData2.push(res.splints);
@@ -844,6 +866,9 @@ this.preoceedureChartColors = [
            this.stackedChartData4.push(res.perio);
            this.stackedChartData5.push(res.surgical_extractions);
            this.stackedChartLabels1.push(res.provider);
+           if(res.provider != 'Anonymous')
+            this.ipKey =i;
+           i++;
        //    this.productionTotal = this.productionTotal + parseInt(res.total);
          });
        this.stackedChartData[0]['data'] = this.stackedChartData1;
@@ -852,6 +877,26 @@ this.preoceedureChartColors = [
        this.stackedChartData[3]['data'] = this.stackedChartData4;
        this.stackedChartData[4]['data'] = this.stackedChartData5;
        this.stackedChartLabels = this.stackedChartLabels1;
+         if(this.user_type == '4' && this.childid != '') {
+          this.barChartColors = [
+            { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
+            { backgroundColor: ['#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7'] },
+            { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
+            { backgroundColor: ['#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD'] },
+            { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] }
+          ];
+        this.barChartColors[0].backgroundColor[this.ipKey] = '#1CA49F';
+        this.barChartColors[1].backgroundColor[this.ipKey] = '#1fd6b1';
+        this.barChartColors[2].backgroundColor[this.ipKey] = '#09b391';
+        this.barChartColors[3].backgroundColor[this.ipKey] = '#82EDD8';
+        this.barChartColors[4].backgroundColor[this.ipKey] = 'rgba(22, 82, 141, 1)';
+        
+
+        this.IPcolors= this.barChartColors;
+      }
+      else
+        this.IPcolors= this.stackedChartColors;
+      
        this.stackedChartDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data']);
        //this.productionTotalAverage = this.productionTotal/this.barChartData1.length;
      }
@@ -897,6 +942,8 @@ public predictedTotal;
 public predictedTP=[];
 public predictedMax;
 public buildChartPredictorLoader:any;
+public prKey:any[] =[];
+public PRcolors;
 //Predictor Ratio :
   private buildChartPredictor() {
 
@@ -904,7 +951,7 @@ public buildChartPredictorLoader:any;
       this.buildChartPredictorLoader = true;
        var user_id;
     var clinic_id;
-  this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+  this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
 
        if(data.message == 'success'){
         this.buildChartPredictorLoader = false;
@@ -937,12 +984,17 @@ this.predictedPreviousAverage3=0;
         this.predictedTP[0] = 0;
        this.predictedTP[1]= 0;
        this.predictedTP[2] = 0;
+       var i=0;
         data.data.forEach((res,key) => {
+          var i=0;
              res.forEach((result) => {
                 this.predictedChartD[key].push(result.ratio);
                 this.predictedChartL[key].push(result.provider);
                 this.predictedT[key] = this.predictedT[key] + parseInt(result.ratio);
                 this.predictedTP[key] = this.predictedTP[key] + parseInt(result.ratio_ta);
+                if(result.provider != 'Anonymous')
+                  this.prKey[key] =i;
+                i++;
              });
         });
          this.predictedTotalAverage1 = this.predictedT[0]/this.predictedChartD[0].length;
@@ -954,6 +1006,16 @@ this.predictedPreviousAverage3=0;
          this.predictedChartData[0]['data'] = this.predictedChartD[0];
          this.predictedChartLabels = this.predictedChartL[0];
          this.predictedTotal =this.predictedT[0];
+         if(this.user_type == '4' && this.childid != '') {
+          this.barChartColors = [
+                { backgroundColor: [] }
+              ];
+            this.barChartColors[0].backgroundColor[this.prKey[0]] = '#1CA49F';
+            this.PRcolors= this.barChartColors;
+          }
+          else
+            this.PRcolors= this.predictedChartColors;
+
           if(this.predictedTotalAverage1>=this.predictedPreviousAverage1)
             this.predictedTotalAverageTooltip1 = 'up'
           if(this.predictedTotalAverage2>=this.predictedPreviousAverage2)
@@ -977,6 +1039,15 @@ this.predictedPreviousAverage3=0;
     $('.predictedToolMain').hide();
     $('.predicted'+val+'Tool').show();
     $('.predicted_main.predicted'+val).css('display','flex');
+    if(this.user_type == '4' && this.childid != '') {
+          this.barChartColors = [
+                { backgroundColor: [] }
+              ];
+            this.barChartColors[0].backgroundColor[this.prKey[val-1]] = '#1CA49F';
+            this.PRcolors= this.barChartColors;
+          }
+          else
+            this.PRcolors= this.predictedChartColors;
     if(val =='1') {
        this.predictedChartData[0]['data'] = this.predictedChartD[0];
          this.predictedChartLabels = this.predictedChartL[0];
@@ -1081,6 +1152,8 @@ public buildChartProceedureDentistLoader:any;
         });
        this.proceedureDentistChartData[0]['data'] = this.proceedureChartData1;
        this.proceedureDentistChartLabels = this.proceedureChartLabels1;
+       console.log(this.proceedureDentistChartLabels);
+
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1092,7 +1165,9 @@ public buildChartProceedureDentistLoader:any;
 public pieChartDataMax1;
 public pieChartDataMax2;
 public pieChartDataMax3;
-
+public crKey;
+public CRcolors;
+public doughnutChartColors1;
   //Referral to Other Clinicians Internal / External
   private buildChartReferral() {
         var user_id;
@@ -1116,6 +1191,7 @@ public pieChartDataMax3;
            this.pieChartDatares2 = [];
            this.pieChartDatares3 = [];
            this.pieChartLabelsres = [];
+           var i=0;
         data.data.forEach(res => {
            this.pieChartDatares1.push(res.i_count);
            this.pieChartDatares2.push(res.e_count);
@@ -1128,21 +1204,30 @@ public pieChartDataMax3;
            this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(res.i_count_ta);
            this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(res.e_count_ta);
            this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(res.total_ta);
-
- });
-      if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
-        this.pieChartInternalPrevTooltip = 'up'
-      if(this.pieChartExternalTotal>=this.pieChartExternalPrevTotal)
-        this.pieChartExternalPrevTooltip = 'up'
-      if(this.pieChartCombinedTotal>=this.pieChartCombinedPrevTotal)
-        this.pieChartCombinedPrevTooltip = 'up'
-       this.pieChartData1 = this.pieChartDatares1;
-       this.pieChartData2 = this.pieChartDatares2;
-       this.pieChartData3 = this.pieChartDatares3;
-       this.pieChartLabels = this.pieChartLabelsres;
-       this.pieChartDataMax1 = Math.max(...this.pieChartData1);
-       this.pieChartDataMax2 = Math.max(...this.pieChartData2);
-       this.pieChartDataMax3 = Math.max(...this.pieChartData3);
+           if(res.label != 'Anonymous')
+            this.crKey= i;
+            i++;
+          });
+        if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
+          this.pieChartInternalPrevTooltip = 'up'
+        if(this.pieChartExternalTotal>=this.pieChartExternalPrevTotal)
+          this.pieChartExternalPrevTooltip = 'up'
+        if(this.pieChartCombinedTotal>=this.pieChartCombinedPrevTotal)
+           this.pieChartCombinedPrevTooltip = 'up'
+         this.pieChartData1 = this.pieChartDatares1;
+         this.pieChartData2 = this.pieChartDatares2;
+         this.pieChartData3 = this.pieChartDatares3;
+         this.pieChartLabels = this.pieChartLabelsres;
+         this.pieChartDataMax1 = Math.max(...this.pieChartData1);
+         this.pieChartDataMax2 = Math.max(...this.pieChartData2);
+         this.pieChartDataMax3 = Math.max(...this.pieChartData3);
+        if(this.user_type == '4' && this.childid != '') {
+            this.doughnutChartColors1 = [{backgroundColor: []}];
+            this.doughnutChartColors1[0].backgroundColor[this.crKey] = '#1CA49F';
+            this.CRcolors= this.doughnutChartColors1;
+        }
+        else
+        this.CRcolors= this.lineChartColors;
 
        }
     }, error => {
@@ -1162,10 +1247,10 @@ this.pieChartDataMax3=0;
 
   this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
        if(data.message == 'success'){
-            this.pieChartInternalTotal = 0;
+           this.pieChartInternalTotal = 0;
            this.pieChartExternalTotal = 0;
            this.pieChartCombinedTotal =0;
-          this.pieChartDatares1 = [];
+           this.pieChartDatares1 = [];
            this.pieChartDatares2 = [];
            this.pieChartDatares3 = [];
            this.pieChartLabelsres = [];

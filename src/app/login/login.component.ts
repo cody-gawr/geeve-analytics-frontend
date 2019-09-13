@@ -40,11 +40,16 @@ export class LoginComponent implements OnInit {
         datares['user_image'] = res.data.data.user_image;        
 
         datares['login_status'] = res.data.data.login_status;        
-        datares['display_name'] = res.data.data.display_name;        
+        datares['display_name'] = res.data.data.display_name;  
+        datares['dentistid'] = res.data.data.dentist_id;        
 
         let opts: CookieOptionsArgs = {
             expires: new Date('2030-07-19')
         };
+        this._cookieService.put("userid", '', opts);
+        this._cookieService.put("childid", '', opts);
+        this._cookieService.put("dentistid", '', opts);
+
         this._cookieService.put("username", datares['username'], opts);
         this._cookieService.put("email", datares['email'], opts);
         this._cookieService.put("token", datares['token'], opts);
@@ -69,10 +74,9 @@ export class LoginComponent implements OnInit {
       else{
          this._cookieService.put("userid", datares['parentid'], opts);
          this._cookieService.put("childid", datares['userid'], opts);
-
-        this.router.navigate(['/profile-settings/1']);
+         this._cookieService.put("dentistid", datares['dentistid'], opts);
+         this.router.navigate(['/profile-settings/1']);
       }
-
        }
        else if(res.message == 'error'){
           this.errorLogin  =true;
@@ -82,4 +86,4 @@ export class LoginComponent implements OnInit {
     );
 
   }
-2}
+}

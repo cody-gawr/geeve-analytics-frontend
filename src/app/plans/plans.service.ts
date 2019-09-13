@@ -66,21 +66,21 @@ export class PlansService {
         );
     }
 
-        // Update Clinic
-    addClinic(name, address, contact_name, token = this._cookieService.get("token")): Observable<any> {
+    // Update Clinic
+    addPlans(plan, allowedClinics, description,amount, discount): Observable<any> {
     const formData = new FormData();
 
-    formData.append('clinicName', name);
-    formData.append('address', address);
-    formData.append('contactName', contact_name);
+    formData.append('plan', plan);
+    formData.append('allowedClinics', allowedClinics);
+    formData.append('description', description);
 
-     formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', token);
-    
+    formData.append('amount',amount);
+    formData.append('discount', discount);
+     formData.append('token', this._cookieService.get("token"));
         return this.http.post(this.apiUrl +"/Plans/add/", formData)
         .pipe(map((response: Response) => {
                         return response;
-                    })
+        })
         );
     }
 }

@@ -46,7 +46,7 @@ export class FrontDeskComponent implements AfterViewInit {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
          this.filterDate('cytd');
         this.getClinics();
-   $('#title').html('Front Desk ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
+   $('#title').html('Front Desk '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
         
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
@@ -285,7 +285,7 @@ public stackedChartOptionsticks: any = {
   public selectedValToggle ='off';
 
  private loadDentist(newValue) {
-   $('#title').html('Front Desk ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
+   $('#title').html('Front Desk '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
 
     if(newValue == 'all') {
       this.fdFtaRatio();
