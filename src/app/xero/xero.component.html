@@ -1,24 +1,21 @@
-<link rel="stylesheet" href="http://localhost/jeeveanalytics/client2/src/assets/styles/home/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="http://localhost/jeeveanalytics/client2/src/assets/styles/home/all.min.css" />
-<link rel="stylesheet" href="http://localhost/jeeveanalytics/client2/src/assets/styles/home/style.css">
-<link rel="stylesheet" href="http://localhost/jeeveanalytics/client2/src/assets/styles/home/responsive.css">
+<div class="inner-pages">
 <header id="header" class="sa-ste">
          <div class="container-fluid sa-cf">
             <nav class="navbar navbar-expand-lg navbar-light navbar-main">
                <a class="navbar-brand logo" href="/home">
-           <img class="d-none d-md-block logo-color" src="http://localhost/jeeveanalytics/client2/src/assets/images/home/logo.png" alt="logo"> 
-           <img class="d-block d-md-none logo-white" src="http://localhost/jeeveanalytics/client2/src/assets/images/home/logo-white.png" alt="logo white"> 
+           <img class="d-none d-md-block logo-color" src="../../assets/images/home/logo.png" alt="logo"> 
+           <img class="d-block d-md-none logo-white" src="../../assets/images/home/logo-white.png" alt="logo white"> 
          </a>
-               <button class="navbar-toggler navbar-toggler-mob" type="button" onclick="openNav()">
+               <button class="navbar-toggler navbar-toggler-mob" type="button" (click)="openNav()">
                   <div class="openMenu"> <span class="navbar-toggler-line line-first"></span> <span class="navbar-toggler-line line-second"></span> <span class="navbar-toggler-line line-third"></span></div>
                </button>
                <div id="myNav" class="overlay menu">
-                  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
                   <div class="overlay-content">
                      <ul class="navbar-nav navbar-nav-main ml-auto">
-                        <li class="nav-item"> <a class="nav-link" [routerLink]="['/','subscription']">Subscription</a> </li>
-                        <li class="nav-item"> <a class="nav-link" href="#">Xero Integration</a> </li>
-                        <li class="nav-item"> <a class="nav-link btn btn-login"  [routerLink]="['/','login']">Login</a> </li>
+                        <li class="nav-item"> <a class="nav-link" href="/subscription">Subscription</a> </li>
+                        <li class="nav-item"> <a class="nav-link" href="/xero">Xero Integration</a> </li>
+                        <li class="nav-item"> <a class="nav-link btn btn-login"  href="/login">Login</a> </li>
                      </ul>
                   </div>
                </div>
@@ -29,13 +26,13 @@
          <div class="container">
             <div class="row justify-content-center align-items-center">
                <div class="col-xl-7 col-lg-6 col-md-12">
-                  <img class="img-responsive" src="http://localhost/jeeveanalytics/client2/src/assets/images/home/xero-plus-jeeve.png" alt="">
+                  <img class="img-responsive" src="../../assets/images/home/xero-plus-jeeve.png" alt="">
                </div>
                <div class="col-xl-5 col-lg-6 col-md-12 xero-plus-jeeve-contnt">
-                  <h2 class="title">Use Jeeve + Xero to manage your small business in the cloud</h2>
-                  <p class="paragraph-line">Jeeve is a simple, easy to use and invoicing system. It's all online and is suited for small </p>
-                  <a class="btn btn-primary mb-2 ml-1 mr-1" href="#">Jeeve</a>
-                  <a class="btn btn-primary mb-2 ml-1 mr-1" href="#">Try Xero for Free</a>
+                  <h2 class="title">Use Jeeve Analytics to track your Xero Profits and Expenses</h2>
+                  <p class="paragraph-line">"Jeeve Analytics" is an Analytics platform suited for the Dental Clinic owners, to track their Clinic's performance and sales in Graphical view.</p>
+                  <a class="btn btn-primary mb-2 ml-1 mr-1" href="/">Jeeve Analytics</a>
+                  <a class="btn btn-primary mb-2 ml-1 mr-1" href="https://www.xero.com/signup/?xtid=x30jeeveanalytics">Try Xero for Free</a>
                </div>
             </div>
          </div>
@@ -46,9 +43,9 @@
                <div class="col-md-4">
                   <div class="features-box">
                      <div>
-                        <span><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/connecting.png" alt=""></span>
-                        <p>Jeeve is fully integrated with Xero
-                           Further improve the workflow of your sales data by connecting with Xero
+                        <span><img src="../../assets/images/home/connecting.png" alt=""></span>
+                        <p>Jeeve Analytics is fully integrated with Xero.
+                           Further track your sales by connecting with Xero.
                         </p>
                      </div>
                   </div>
@@ -56,9 +53,9 @@
                <div class="col-md-4">
                   <div class="features-box">
                      <div>
-                        <span><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/calculator.png" alt=""></span>
-                        <p>Bills paid in Jeeve are automatically imported into Xero
-                           Xero Displays your realtime balance
+                        <span><img src="../../assets/images/home/calculator.png" alt=""></span>
+                        <p>Jeeve Analytics automatically displays your Profits and Expenses from Xero's Profit & Loss reports.
+                           
                         </p>
                      </div>
                   </div>
@@ -66,9 +63,9 @@
                <div class="col-md-4">
                   <div class="features-box">
                      <div>
-                        <span><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/automatically.png" alt=""></span>
-                        <p>Sales records are cleverly matched to your customer records in Xero
-                           Automatically match products orders
+                        <span><img src="../../assets/images/home/automatically.png" alt=""></span>
+                         <p>Profits and Expenses records are matched with your records in Xero.
+                           Automatically matches expenses by categories.
                         </p>
                      </div>
                   </div>
@@ -80,11 +77,11 @@
          <div class="container">
             <div class="row justify-content-center align-items-center">
                <div class="col-xl-7 col-md-6 bg-round">
-                  <img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/laptop-dashboard.png" alt="" class="img-responsive">
+                  <img src="../../assets/images/home/laptop-dashboard.png" alt="" class="img-responsive overflow-img">
                </div>
                <div class="col-xl-5 col-md-6">
-                  <h2>More about Jeeve</h2>
-                  <p>Jeeve is the best place to handle all of your business needs giving you amazing features to help your business thrive.</p>
+                   <h2>More about Jeeve Analytics</h2>
+                  <p>"Jeeve Analytics" is the best place to handle all of your business needs giving you amazing features to help your business thrive.</p>
                   <ul>
                      <li>Complete your filing in less time with our automated filing feature</li>
                      <li>Submit your files and reports for online validation and proofing</li>
@@ -95,7 +92,7 @@
             </div>
          </div>
       </section>
-      <section class="video-section">
+   <!--    <section class="video-section">
          <div class="container">
             <div class="row justify-content-center align-items-center">
                <div class="col-md-5 video-text text-center">
@@ -109,7 +106,7 @@
                </div>
             </div>
          </div>
-      </section>
+      </section> -->
       <section class="what-is-xero">
          <div class="container">
             <h2>What is Xero?</h2>
@@ -117,25 +114,25 @@
             <div class="row mt-5">
                <div class="col-md-6">
                   <div class="box-text sa-ste">
-          <span class="counting">1</span>
+              <span class="counting">1</span>
                      Get a real-time view of your cashflow. Log in anytime, anywhere on your Mac, PC, tablet or phone to get a real-time view of your cash flow. It’s small business accounting software that’s simple, smart and occasionally magical.
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="box-text sa-ste">
-          <span class="counting">2</span>
+              <span class="counting">2</span>
                      Get paid faster with online invoicing. Send online invoices to your customers - and get updated when they’re opened.
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="box-text sa-ste">
-          <span class="counting">3</span>
+              <span class="counting">3</span>
                      Run your business on the go. Use our mobile app to reconcile, send invoices, or create expense claims - from anywhere.
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="box-text sa-ste">
-          <span class="counting">4</span>
+              <span class="counting">4</span>
                      Reconcile in seconds. Xero imports and categorises your latest bank transactions. Just click ok to reconcile.
                   </div>
                </div>
@@ -147,7 +144,7 @@
     
       <section class="get-started">
          <div class="container">
-            <h2>"I Love Jeeve + Xero Together"</h2>
+             <h2>"I Love Jeeve + Xero Together"</h2>
             <p>"These two applications work together perfectly. I can't imagine running my business without them. "</p>
             <div class="stars mb-3">
                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
@@ -166,25 +163,25 @@
                   <table class="table-borderless mx-auto">
                      <thead>
                         <tr>
-                           <th scope="col" class="text-center" width="100"> <a class="navbar-brand display-2 font-weight-bold"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/logo-white.png" alt=""></a></th>
+                           <th scope="col" class="text-center" width="100"> <a class="navbar-brand display-2 font-weight-bold"><img src="../../assets/images/home/logo-white.png" alt=""></a></th>
                            <th scope="col" class="text-center"></th>
-                           <th scope="col" class="text-center" width="100"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/Xero-Logo.png" alt="xero logo" ></th>
+                           <th scope="col" class="text-center" width="100"><img src="../../assets/images/home/Xero-Logo.png" alt="xero logo" ></th>
                         </tr>
                      </thead>
                      <tbody>
                         <tr>
                            <td class="text-center" height="60">Customer</td>
-                           <td class="text-center font-weight-bold data-direction-td"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/arrow_right.png" alt=""></td>
+                           <td class="text-center font-weight-bold data-direction-td"><img src="../../assets/images/home/arrow_right.png" alt=""></td>
                            <td class="text-center">Contacts</td>
                         </tr>
                         <tr>
                            <td class="text-center" height="60">Region</td>
-                           <td class="text-center font-weight-bold" width="100"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/arrow_left.png" alt=""></td>
+                           <td class="text-center font-weight-bold" width="100"><img src="../../assets/images/home/arrow_left.png" alt=""></td>
                            <td class="text-center">Categories</td>
                         </tr>
                         <tr>
                            <td class="text-center" height="60">Sales</td>
-                           <td class="text-center font-weight-bold" width="100"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/arrow.png" alt=""></td>
+                           <td class="text-center font-weight-bold" width="100"><img src="../../assets/images/home/arrow.png" alt=""></td>
                            <td class="text-center">Invoices</td>
             </tr>
                      </tbody>
@@ -203,42 +200,29 @@
       <!-- Return to Top -->
       <footer>
          <div class="container">
-            <div class="footerLogo"> <img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/footer-logo.png"> </div>
+            <div class="footerLogo"> <img src="../../assets/images/home/footer-logo.png"> </div>
             <div class="row">
-               <div class="col-md-3 col-sm-6">
+               <div class="col-md-4 col-sm-6">
                   <div class="widget mb-4 mb-md-0">
                      <h6>Navigation</h6>
                      <ul class="nav flex-column primary-hover">
-                        <li class="nav-item"><a class="nav-link" href="#">Product</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Results</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Company</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/subscription">Subscription</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/xero">Xero Integration</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
                      </ul>
                   </div>
                </div>
                <div class="col-md-4 col-sm-6">
-                  <div class="widget mb-4 mb-md-0">
-                     <h6>Featured</h6>
-                     <ul class="nav flex-column primary-hover">
-                        <li class="nav-item"><a class="nav-link" href="#">Improve Team Performance</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Improve Patient Care</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Increase Practice Profitability</a></li>
-                     </ul>
-                  </div>
-               </div>
-               <div class="col-md-2 col-sm-6">
                   <div class="widget mb-4 mb-sm-0">
                      <h6>Social</h6>
                      <ul class="nav flex-column primary-hover">
                         <li class="nav-item"><a class="nav-link" href="#">Facebook</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Twitter</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Linkedin</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Youtube</a></li>
                      </ul>
                   </div>
                </div>
-               <div class="col-md-3 col-sm-6">
+               <div class="col-md-4 col-sm-6">
                   <div class="widget bg-grad widget-form mb-4 mb-sm-0">
                      <h6>Newsletter</h6>
                      <div class="form-group mb-0">
@@ -254,6 +238,7 @@
             <div class="container">© 2018 Jeeve analytics - 2018  All right Reserved</div>
          </div>
       </footer>
+     </div>
       <!-- Optional JavaScript --> 
       <!-- jQuery first, then Popper.js, then Bootstrap JS --> 
       <script type="text/javascript" src="js/jquery-3.1.0.js" ></script> 
@@ -291,13 +276,3 @@
          window.scrollTo(0,0);
          });
       </script>
-      <script>
-         function openNav() {
-           document.getElementById("myNav").style.width = "100%";
-         }
-         
-         function closeNav() {
-           document.getElementById("myNav").style.width = "0%";
-         }
-      </script>
-     

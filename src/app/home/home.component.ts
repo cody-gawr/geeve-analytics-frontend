@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewEncapsulation} from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import {
@@ -8,15 +8,21 @@ import {
   FormControl
 } from '@angular/forms';
 import { HomeService } from './home.service';
+import { environment } from "../../environments/environment";
+
+// import "../assets/styles/home/style.css";
+// import "../assets/styles/home/responsive.css";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
+  public homeUrl = environment.homeUrl;
   constructor(private fb: FormBuilder, private router: Router, private homeService: HomeService,private _cookieService: CookieService) {}
 
   ngOnInit() {
@@ -24,6 +30,50 @@ export class HomeComponent implements OnInit {
       uname: [null, Validators.compose([Validators.required])],
       password: [null, Validators.compose([Validators.required])]
     });
+      $(window).scroll(function(){
+    if ($(window).scrollTop() >= 20) {
+        
+       $('#header').addClass('minheader');
+       $('.rg-logo').addClass('minlogo');
+       $('.min_header_hide').addClass('hide');
+      
+    }
+    else {
+      
+        $('#header').removeClass('minheader');
+      $('.rg-logo').removeClass('minlogo');
+       $('.min_header_hide').removeClass('hide');
+      
+    }
+  });
+          $('ul.list-circles-point li').click(function(){
+     var target = $(this).attr("data-target");
+      $('.list-circles-point li').removeClass("active");
+      $('.testimonial-text').removeClass("active");
+      $('.testimonial-img').removeClass("active");
+
+      $(this).addClass("active");
+      $(target).addClass("active");
+  });
+
+
+      $('.testimonial-img').click(function(){
+       var target = $(this).attr("data-target");
+       var target2 = $(this).attr("data-targets");
+        $('.list-circles-point li').removeClass("active");
+        $('.testimonial-text').removeClass("active");
+        $('.testimonial-img').removeClass("active");
+
+        $(target2).addClass("active");
+        $(target).addClass("active");
+    });
+  }
+   openNav() {
+      $("#myNav").css('width','100%');
+  }
+  closeNav() {
+      $("#myNav").css('width','0%');
+
   }
   onSubmit() {
           this.errorLogin  =false;

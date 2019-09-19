@@ -3,14 +3,15 @@
 <!-- ============================================================== -->
 <div fxLayout="row wrap">
     <div fxFlex.gt-sm="100" fxFlex="100">
-         <mat-form-field class="alldentists-field" *ngIf="user_id != '1'">
-      <mat-select placeholder="All Dentist( {{dentistCount}} )"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
-        <mat-option value ="">All Dentists</mat-option>
-        <mat-option *ngFor="let dentist of dentists" [value]="dentist.providerId">
+         <div *ngIf="user_id != '1'">
+      <select class="sa_select internal_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)" [style.display]="'none'">
+        <option value ="">All Dentists</option>
+        <option *ngFor="let dentist of dentists" [value]="dentist.providerId">
           {{dentist.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field> 
+        </option>
+      </select>
+      <input type="button" id="dentist_initiate" (click) = "initiate_dentist()"  [style.display]="'none'">
+    </div> 
         <mat-card>
             <mat-card-content>
                 Dentist Goals

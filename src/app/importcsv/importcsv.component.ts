@@ -149,6 +149,9 @@ export class ImportcsvComponent implements AfterViewInit {
    public clinic_id:any ={};
 
   ngAfterViewInit() {
+    $('.header_filters').removeClass('hide_header'); 
+    $('.header_filters').removeClass('flex_direct_mar'); 
+    
      this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
         this.getLogs();

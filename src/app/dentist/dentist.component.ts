@@ -10,11 +10,18 @@ import { CookieService } from "angular2-cookie/core";
 })
 export class DialogOverviewExampleDialogComponent {
    public clinic_id:any ={};
-
+  // public form: FormGroup;
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
+
+
+  // this.form = this.fb.group({
+  //     provider_id: [null, Validators.compose([Validators.required])],
+  //     dentist_name: [null, Validators.compose([Validators.required])]
+  //   });
+
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -33,6 +40,9 @@ export class DentistComponent implements AfterViewInit {
    public clinic_id:any ={};
 
   ngAfterViewInit() {
+    $('.header_filters').removeClass('hide_header'); 
+    $('.header_filters').removeClass('flex_direct_mar'); 
+    
      this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
       this.getDentists();

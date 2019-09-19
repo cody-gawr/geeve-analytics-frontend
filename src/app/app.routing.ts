@@ -153,6 +153,11 @@ export const AppRoutes: Routes = [
         path: 'subscription',
         loadChildren:
           './subscription/subscription.module#SubscriptionModule'
+      },
+      {
+        path: 'payment',
+        loadChildren:
+          './payment/payment.module#PaymentModule'
       }
     ]
   },

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import {
@@ -12,7 +12,8 @@ import { XeroService } from './xero.service';
 @Component({
   selector: 'app-xero',
   templateUrl: './xero.component.html',
-  styleUrls: ['./xero.component.scss']
+  styleUrls: ['./xero.component.scss'],
+   encapsulation: ViewEncapsulation.None
 })
 export class XeroComponent implements OnInit {
   public form: FormGroup;
@@ -24,6 +25,49 @@ export class XeroComponent implements OnInit {
       uname: [null, Validators.compose([Validators.required])],
       password: [null, Validators.compose([Validators.required])]
     });
+      $(window).scroll(function(){
+    if ($(window).scrollTop() >= 20) {
+        
+       $('#header').addClass('minheader');
+       $('.rg-logo').addClass('minlogo');
+       $('.min_header_hide').addClass('hide');
+      
+    }
+    else {
+      
+        $('#header').removeClass('minheader');
+      $('.rg-logo').removeClass('minlogo');
+       $('.min_header_hide').removeClass('hide');
+      
+    }
+  });
+          $(window).scroll(function () {
+      if($(this).scrollTop() > 1) {
+        $('.sa-gotop').css({
+          opacity: 1
+        });
+      } else {
+        $('.sa-gotop').css({
+          opacity: 0
+        });
+      }
+    });
+    $(document).on('click','.sa-gotop',function(){
+      $('html, body').animate({
+        scrollTop: '0px'
+      }, 800);
+      return false;
+    });
+  }
+
+
+
+  openNav() {
+      $("#myNav").css('width','100%');
+  }
+  closeNav() {
+      $("#myNav").css('width','0%');
+
   }
   onSubmit() {
           this.errorLogin  =false;
@@ -86,4 +130,4 @@ export class XeroComponent implements OnInit {
     );
 
   }
-2}
+}

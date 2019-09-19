@@ -1,23 +1,22 @@
-<link rel="stylesheet" href="http://localhost/jeeveanalytics/client2/src/assets/styles/home/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="http://localhost/jeeveanalytics/client2/src/assets/styles/home/all.min.css" />
-<link rel="stylesheet" href="http://localhost/jeeveanalytics/client2/src/assets/styles/home/style.css">
-<link rel="stylesheet" href="http://localhost/jeeveanalytics/client2/src/assets/styles/home/responsive.css">
+
+<!-- <link rel="stylesheet" href="../../assets/styles/home/style.css">
+<link rel="stylesheet" href="../../assets/styles/home/responsive.css"> -->
 <header id="header" class="sa-ste">
   <div class="container-fluid sa-cf">
   <nav class="navbar navbar-expand-lg navbar-light navbar-main">
 
-    <a class="navbar-brand logo" href="/home"><img class="d-none d-md-block logo-color" src="http://localhost/jeeveanalytics/client2/src/assets/images/home/logo.png" alt="logo"> <img class="d-block d-md-none logo-white" src="http://localhost/jeeveanalytics/client2/src/assets/images/home/logo-white.png" alt="logo white"> </a>
-      <button class="navbar-toggler navbar-toggler-mob" type="button" onclick="openNav()"><div class="openMenu"> <span class="navbar-toggler-line line-first"></span> <span class="navbar-toggler-line line-second"></span> <span class="navbar-toggler-line line-third"></span></div>
+    <a class="navbar-brand logo" href="/home"><img class="d-none d-md-block logo-color" src="../../assets/images/home/logo.png" alt="logo"> <img class="d-block d-md-none logo-white" src="../../assets/images/home/logo-white.png" alt="logo white"> </a>
+      <button class="navbar-toggler navbar-toggler-mob" type="button" (click)="openNav()"><div class="openMenu"> <span class="navbar-toggler-line line-first"></span> <span class="navbar-toggler-line line-second"></span> <span class="navbar-toggler-line line-third"></span></div>
 
        </button>
 
 <div id="myNav" class="overlay menu">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
   <div class="overlay-content">
     <ul class="navbar-nav navbar-nav-main ml-auto">
-       <li class="nav-item"> <a class="nav-link" [routerLink]="['/','subscription']">Subscription</a> </li>
-          <li class="nav-item active"> <a class="nav-link" [routerLink]="['/','xero']">Xero Integration</a> </li>
-          <li class="nav-item"> <a class="nav-link btn btn-login"  [routerLink]="['/','login']">Login</a> </li>
+       <li class="nav-item"> <a class="nav-link" href="/subscription">Subscription</a> </li>
+          <li class="nav-item active"> <a class="nav-link" href="/xero">Xero Integration</a> </li>
+          <li class="nav-item"> <a class="nav-link btn btn-login"  href="/login">Login</a> </li>
         </ul>
   </div>
 </div>
@@ -61,7 +60,7 @@
           </div>
         </div>
         <div class="col-lg-7 section-two-right-img">
-          <div class="image-section"> <img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/ipad.png" alt="image"> </div>
+          <div class="image-section"> <img src="../../assets/images/home/ipad.png" alt="image"> </div>
         </div>
       </div>
     </div>
@@ -119,11 +118,11 @@
       <div class="col-lg-5">
         <div class="testimonial-left">
           <ul class="list-unstyled list-testimonial-img">
-            <li class="testimonial-img ti1 sa-ste active tst1" data-target=".tst1" data-targets=".nv1" ><a href="JavaScript:void(0);"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/testimonial/5.jpg"></a></li>
-            <li class="testimonial-img ti2 sa-ste tst2" data-target=".tst2" data-targets=".nv2"><a href="JavaScript:void(0);"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/testimonial/2.jpg"></a></li>
-            <li class="testimonial-img ti3 sa-ste tst3" data-target=".tst3" data-targets=".nv3"><a href="JavaScript:void(0);"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/testimonial/3.jpg"></a></li>
-            <li class="testimonial-img ti4 sa-ste tst4" data-target=".tst4" data-targets=".nv4"><a href="JavaScript:void(0);"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/testimonial/4.jpg"></a></li>
-            <li class="testimonial-img ti5 sa-ste tst5" data-target=".tst5" data-targets=".nv5"><a href="JavaScript:void(0);"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/testimonial/1.jpg"></a></li>
+            <li class="testimonial-img ti1 sa-ste active tst1" data-target=".tst1" data-targets=".nv1" ><a href="JavaScript:void(0);"><img src="../../assets/images/home/testimonial/5.jpg"></a></li>
+            <li class="testimonial-img ti2 sa-ste tst2" data-target=".tst2" data-targets=".nv2"><a href="JavaScript:void(0);"><img src="../../assets/images/home/testimonial/2.jpg"></a></li>
+            <li class="testimonial-img ti3 sa-ste tst3" data-target=".tst3" data-targets=".nv3"><a href="JavaScript:void(0);"><img src="../../assets/images/home/testimonial/3.jpg"></a></li>
+            <li class="testimonial-img ti4 sa-ste tst4" data-target=".tst4" data-targets=".nv4"><a href="JavaScript:void(0);"><img src="../../assets/images/home/testimonial/4.jpg"></a></li>
+            <li class="testimonial-img ti5 sa-ste tst5" data-target=".tst5" data-targets=".nv5"><a href="JavaScript:void(0);"><img src="../../assets/images/home/testimonial/1.jpg"></a></li>
           </ul>
         </div>
         <div class="circles-point">
@@ -137,7 +136,7 @@
         </div>
       </div>
       <div class="col-lg-7">
-        <div class="testimonial-right-outer sa-ste"> <i class="quote-left"><img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/testimonial/quote-img.png"></i>
+        <div class="testimonial-right-outer sa-ste"> <i class="quote-left"><img src="../../assets/images/home/testimonial/quote-img.png"></i>
           <div class="testimonial-text active tst1">
             <p class="test-des">Most dentists fly blind when it comes to managing their business. Collecting the key statistics about their practice is difficult and time consuming and even when they do, the figures are hard for them to interpret.  Two things greatly impressed me about it. Firstly it made getting the relevant figures incredibly easy. Anyone could do it in a few moments. Secondly, the software made analysis of the figures easy, by highlighting significant factors within the practice.  I think this new software will be of great help to all business-minded dentists.</p>
             <p class="name m-0"><strong>Mark Hassed</strong></p>
@@ -172,53 +171,40 @@
 <!-- Return to Top -->
 <footer>
   <div class="container">
-    <div class="footerLogo"> <img src="http://localhost/jeeveanalytics/client2/src/assets/images/home/footer-logo.png"> </div>
-    <div class="row">
-      <div class="col-md-3 col-sm-6">
-        <div class="widget mb-4 mb-md-0">
-          <h6>Navigation</h6>
-          <ul class="nav flex-column primary-hover">
-            <li class="nav-item"><a class="nav-link" href="#">Product</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Results</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Company</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6">
-        <div class="widget mb-4 mb-md-0">
-          <h6>Featured</h6>
-          <ul class="nav flex-column primary-hover">
-            <li class="nav-item"><a class="nav-link" href="#">Improve Team Performance</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Improve Patient Care</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Increase Practice Profitability</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-2 col-sm-6">
-        <div class="widget mb-4 mb-sm-0">
-          <h6>Social</h6>
-          <ul class="nav flex-column primary-hover">
-            <li class="nav-item"><a class="nav-link" href="#">Facebook</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Twitter</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Linkedin</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Youtube</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <div class="widget bg-grad widget-form mb-4 mb-sm-0">
-          <h6>Newsletter</h6>
-          <div class="form-group mb-0">
-            <input class="form-control" type="email" placeholder="Your Email Address">
-            <p class="mb-3">We will  not disclose your details with others and spam your inbox.</p>
-            <button class="btn btn-main btn-block mb-0">Subcsribe</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+            <div class="footerLogo"> <img src="../../assets/images/home/footer-logo.png"> </div>
+            <div class="row">
+               <div class="col-md-4 col-sm-6">
+                  <div class="widget mb-4 mb-md-0">
+                     <h6>Navigation</h6>
+                     <ul class="nav flex-column primary-hover">
+                        <li class="nav-item"><a class="nav-link" href="/subscription">Subscription</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/xero">Xero Integration</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-md-4 col-sm-6">
+                  <div class="widget mb-4 mb-sm-0">
+                     <h6>Social</h6>
+                     <ul class="nav flex-column primary-hover">
+                        <li class="nav-item"><a class="nav-link" href="#">Facebook</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Twitter</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Linkedin</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-md-4 col-sm-6">
+                  <div class="widget bg-grad widget-form mb-4 mb-sm-0">
+                     <h6>Newsletter</h6>
+                     <div class="form-group mb-0">
+                        <input class="form-control" type="email" placeholder="Your Email Address">
+                        <p class="mb-3">We will  not disclose your details with others and spam your inbox.</p>
+                        <button class="btn btn-main btn-block mb-0">Subcsribe</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
   <div class="copyright-section text-center">
     <div class="container">© 2018 Jeeve analytics - 2018  All right Reserved</div>
   </div>
@@ -260,14 +246,5 @@ $(document).ready(function(){
 $(document).ready(function () {
 window.scrollTo(0,0);
 });
-</script>
-<script>
-function openNav() {
-  document.getElementById("myNav").style.width = "100%";
-}
-
-function closeNav() {
-  document.getElementById("myNav").style.width = "0%";
-}
 </script>
      

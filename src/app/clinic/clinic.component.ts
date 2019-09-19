@@ -46,6 +46,9 @@ export class ClinicComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getClinics();
+    $('.header_filters').removeClass('hide_header'); 
+    $('.header_filters').removeClass('flex_direct_mar'); 
+    
         $('#title').html('Clinics');
         //$('.header_filters').hide();
         $('.external_clinic').show();
@@ -167,7 +170,7 @@ export class ClinicComponent implements AfterViewInit {
     this.rows[rowIndex][cell] = event.target.value;
     this.clinicService.updateClinic(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
        if(res.message == 'success'){
-        alert('Dentist Updated');
+        alert('Clinic Details Updated');
           this.getClinics();
        }
     }, error => {

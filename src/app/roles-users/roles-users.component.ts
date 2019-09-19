@@ -68,13 +68,16 @@ const data: any = require('assets/company.json');
 export class RolesUsersComponent implements AfterViewInit {
   display_name: string;
   email: string;
-  user_type: string;
+  user_type='';
   fileInput: any ;
   public clinic_id;
-  dentist_id;
+  dentist_id = '';
 password:string;
 dentists:any=[];
   ngAfterViewInit() {
+    $('.header_filters').removeClass('hide_header'); 
+    $('.header_filters').removeClass('flex_direct_mar'); 
+    
     this.getUsers();
     this.getRoles();
     this.getDentists();
@@ -109,6 +112,7 @@ dentists:any=[];
       data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,dentist_id:this.dentist_id }
     });
     dialogRef.afterClosed().subscribe(result => {
+       if(result != undefined) {
      this.rolesUsersService.checkUserEmail(result.email).subscribe((res) => {
            if(res.message == 'success'){
            if(res.data <=0)
@@ -119,6 +123,7 @@ dentists:any=[];
         }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
+   }
     });
   }
   openRoleDialog(): void {
@@ -130,6 +135,7 @@ dentists:any=[];
     this.selected_id = val;
     });
     rolesRef.afterClosed().subscribe(result => {
+     if(result != undefined) {
       this.roles.forEach(res1 => {
           var checkedRoles1='';
           var checkedRoles =[];
@@ -153,6 +159,7 @@ dentists:any=[];
                 this.warningMessage = "Please Provide Valid Inputs!";
               });
          });
+    }
     });
   }
     // Get Dentist
@@ -176,10 +183,10 @@ dentists:any=[];
   if(dentist_id =='' || dentist_id == undefined)
     dentist_id ='';
   this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
-       if(res.message == 'success'){
+       //if(res.message == 'success'){
         alert('User Added');
         this.getUsers();
-       }
+     //  }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
@@ -207,6 +214,7 @@ dentists:any=[];
        if(res.message == 'success'){ 
         this.roles=[];
          res.data.forEach(result => {
+          if(result.id != '1' && result.id != '2') {
           this.selectedRole['dashboard1_'+result.id] = false;
           this.selectedRole['dashboard2_'+result.id] = false;
           this.selectedRole['dashboard3_'+result.id] = false;
@@ -222,9 +230,8 @@ dentists:any=[];
             dashboards.forEach(results=>{
                this.selectedRole[results+'_'+result.id] = true;
             })
-
+          }
          });
-          console.log(this.selectedRole);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -271,7 +278,7 @@ dentists:any=[];
 
     // filter our data
     const temp = this.temp.filter(function(d) {
-      return d.clinicName.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.displayName.toLowerCase().indexOf(val) !== -1 || !val;
     });
     // update the rows
     this.rows = temp;
@@ -279,6 +286,27 @@ dentists:any=[];
     this.table = data;
   }
 
+ updateValue(event, cell, rowIndex) {
+  if((this.rows[rowIndex]['providerId']  == 'Enter Provider Id') || (this.rows[rowIndex]['name']  == 'Enter Name')) {
+    this.editing[length + '-providerId'] = true;
+    this.editing[length + '-name'] = true;
+  }
+  else {
+    this.editing[rowIndex + '-' + cell] = false;
+    this.rows[rowIndex][cell] = event.target.value;
+    this.rolesUsersService.updateRoleUser(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
+       if(res.message == 'success'){
+        alert('User Details Updated');
+         // this.getDentists();
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );  
+    this.rows = [...this.rows];
+    console.log('UPDATED!', this.rows[rowIndex][cell]);
+  }
+  }
 
   enableEditing(rowIndex, cell) {
     this.editing[rowIndex + '-' + cell] = true;

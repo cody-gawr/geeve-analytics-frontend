@@ -59,7 +59,7 @@ body{ font-size: 16px; }
 .minheader .navbar-nav.navbar-nav-main.ml-auto{ box-shadow: none; }
 .navbar-expand-lg.navbar-main .navbar-nav .nav-link{ text-shadow: none; color: #ffffff !important; font-size: 20px; padding: 20px 0; }
 .navbar-expand-lg.navbar-main .navbar-nav .nav-link:hover, .navbar-expand-lg.navbar-main .navbar-nav .nav-link.btn-login:hover{color: #1ab394 !important; }
-.navbar-expand-lg.navbar-main .navbar-nav .nav-link.btn-login {
+.main-layout .navbar-expand-lg.navbar-main .navbar-nav .nav-link.btn-login {
     background-color: transparent; border: none; font-size: 20px;}
 .navbar-nav-main li.nav-item:last-child { margin-left: 1rem; margin-right: 1rem;}
 .list-testimonial-img { max-width: 430px; height: 100%; min-height: 250px; margin: auto; margin-bottom: 60px;}
@@ -80,7 +80,7 @@ ul.list-circles-point.list-unstyled { position: relative; top: auto; transform: 
 .list-circles-point li { display: inline-block; margin: 4px 10px 0; }
 .list-circles-point li a { margin-bottom: 0px;}
 
-.overlay {height: 100%; width: 0; position: fixed; z-index: 1; top: 0; left: 0; background-color: rgb(18,55,92); background-color: rgba(18,55,92, 0.9);
+.main-layout .overlay {height: 100%; width: 0; position: fixed; z-index: 1; top: 0; left: 0; background-color: rgb(18,55,92); background-color: rgba(18,55,92, 0.9);
   overflow-x: hidden; transition: 0.5s; display: block; }
 .overlay-content { position: relative; top: 4%; width: 100%; text-align: center; margin-top: 30px; }
 .overlay a { padding: 8px; text-decoration: none; font-size: 36px;  color: #818181;  display: block;  transition: 0.3s; }

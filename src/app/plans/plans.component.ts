@@ -38,8 +38,8 @@ export class PlansComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getPlans();
-        $('#title').html('Users');
-        $('.header_filters').hide();
+        $('#title').html('Plans');
+ $('.header_filters').addClass('hide_header'); 
         
   }
   editing = {};

@@ -80,6 +80,9 @@ export class DentistGoalsComponent implements OnInit {
   }
 
   ngOnInit() {
+    $('.header_filters').removeClass('hide_header'); 
+    $('.header_filters').removeClass('flex_direct_mar'); 
+    
     this.user_id = this._cookieService.get("userid");
      this.route.params.subscribe(params => {
           if(this._cookieService.get("userid") != '1'){
@@ -93,9 +96,16 @@ export class DentistGoalsComponent implements OnInit {
           this.getDentists(); 
           if(this.user_id == '1') 
           {
-            $('.header_filters').hide();
+             $('.header_filters').addClass('hide_header'); 
           }
         $('#title').html('Dentist Goals');
+         if($('body').find('span#currentDentist').length > 0){
+             var did= $('body').find('span#currentDentist').attr('did');
+             $('.external_dentist').val(did);
+          }
+          else {
+             $('.external_dentist').val('all');
+          }
         // $('.external_clinic').show();
         // $('.external_dentist').hide();
      });
@@ -141,6 +151,11 @@ export class DentistGoalsComponent implements OnInit {
 
 
     });
+  }
+  initiate_dentist() {
+
+    var val = $('.internal_dentist').val();
+    this.loadDentist(val);
   }
   // For form validator
   email = new FormControl('', [Validators.required, Validators.email]);

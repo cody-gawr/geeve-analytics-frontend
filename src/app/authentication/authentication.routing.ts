@@ -27,7 +27,7 @@ export const AuthenticationRoutes: Routes = [
         component: LoginComponent
       },
       {
-        path: 'register',
+        path: 'register/:id',
         component: RegisterComponent
       },
       {

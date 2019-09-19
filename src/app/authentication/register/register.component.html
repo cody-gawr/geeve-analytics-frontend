@@ -30,6 +30,8 @@
               </mat-form-field>
               <small *ngIf="form.controls['confirmPassword'].hasError('required') && form.controls['confirmPassword'].touched" class="text-danger support-text">You must include confirm password.</small>
               <small *ngIf="form.controls['confirmPassword'].errors?.equalTo" class="text-danger support-text">Passwords do not math.</small>
+               <small *ngIf="errorLogin ==true && errorLoginText != ''" class="text-danger support-text">{{errorLoginText}}</small>
+               <small *ngIf="successLogin ==true && successLoginText != ''" class="text-success support-text">{{successLoginText}}</small>
             </div>
             <!-- col full-->
             <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">

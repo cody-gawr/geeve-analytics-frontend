@@ -69,7 +69,7 @@
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'amount')" *ngIf="!editing[rowIndex + '-amount']">
-         {{value}}  
+        $ {{value}}  
           </span>
           <input autofocus (blur)="updateValue($event, 'amount', rowIndex)" *ngIf="editing[rowIndex+ '-amount']" type="text" [value]="value"
           />

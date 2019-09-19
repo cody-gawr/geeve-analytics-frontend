@@ -42,14 +42,37 @@ export class LoginService {
             formData.append('password', password);
             formData.append('confirm_password', password);
             formData.append('id', id);
-
             return this.http.post(this.apiUrl +"/users/resetPasswordApi", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
             );
     }
+     // Items Predictor Analysis 
+    checkEmailExists(email): Observable<any> {
+            const formData = new FormData();
+            formData.append('email', email);
+            return this.http.post(this.apiUrl +"/users/checkEmailExists", formData)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
+         // Items Predictor Analysis 
+    addUser(email, password,user_type,plan_id): Observable<any> {
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('password', password);  
+            formData.append('user_type', user_type);           
+            formData.append('plan_id', plan_id);  
+            formData.append('status', '0');            
 
+            return this.http.post(this.apiUrl +"/users/addPracticeOwner", formData)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
 
 }
 

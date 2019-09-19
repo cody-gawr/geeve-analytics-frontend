@@ -984,6 +984,8 @@ margin-bottom: 20px; }
 .breadcrumb-nav .breadcrumb li a{ color: #1ab394;  }
 .pricing.pricing-center {
     text-align: center;
+    padding: 130px 0 60px;
+z-index: 0 !important;
 }
 .pricing .pricing-box {
   background-color: #fff;
@@ -1065,6 +1067,11 @@ margin-bottom: 20px; }
     color: #1ab394;
     padding-right: 7px;
     font-size: 14px;
+}
+.header_filters.hide_header {
+
+    display: none !important;
+
 }
 .sub-description{font-size: 15px;max-width: 600px;margin: auto;}
 /* Large devices (laptops/desktops, 992px and up) */

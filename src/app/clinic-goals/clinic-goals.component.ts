@@ -71,10 +71,13 @@ export class ClinicGoalsComponent implements OnInit {
     });
   }
   ngOnInit() {
+    $('.header_filters').removeClass('hide_header'); 
+    $('.header_filters').removeClass('flex_direct_mar'); 
+    
     this.route.params.subscribe(params =>  {
       if(this._cookieService.get("userid") != '1'){
     this.clinic_id = this.route.snapshot.paramMap.get("id");
-     $('.header_filters').hide();
+  $('.header_filters').addClass('hide_header'); 
   }
   else
   {

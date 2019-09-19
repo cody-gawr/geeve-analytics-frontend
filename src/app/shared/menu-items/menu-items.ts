@@ -356,7 +356,7 @@ export class MenuItems {
       { state: 'finances', name: 'Finances', type: 'link', param : '1' , icon: '', role:this.dashboard5role}
     ],
     param: '1',
-    role:['1','2','3','4','5']
+    role:['2','3','4','5']
 
   },  
   {
@@ -434,6 +434,7 @@ export class MenuItems {
    this.rolesUsersService.getRoles().subscribe((res) => {
        if(res.message == 'success'){ 
          res.data.forEach(result => {
+          if(result.id != '1') {
             var dashboards = result.permisions.split(',');
             if(dashboards.includes("dashboard1")) 
               this.dashboard1role.push(result.id.toString());
@@ -445,6 +446,7 @@ export class MenuItems {
               this.dashboard4role.push(result.id.toString());
             if(dashboards.includes("dashboard5")) 
               this.dashboard5role.push(result.id.toString());
+          }
          });
        }
     }, error => {

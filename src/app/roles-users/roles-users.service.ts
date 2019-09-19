@@ -101,5 +101,21 @@ export class RolesUsersService {
                     })
         );
     }
+
+        // Update Clinic
+    updateRoleUser(user_id, value, column, token = this._cookieService.get("token")): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('id', user_id);
+    formData.append(column, value);
+
+    formData.append('token', token);
+    
+        return this.http.post(this.apiUrl +"/Users/updateUser/", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 }
 

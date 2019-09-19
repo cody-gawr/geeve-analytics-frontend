@@ -2,17 +2,17 @@
 <div mat-dialog-content>
  
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.name" placeholder="Clinic Name">
+    <input matInput tabindex="1" [(ngModel)]="data.name" placeholder="Clinic Name" required>
   </mat-form-field>
 
   
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.address" placeholder="Address">
+    <input matInput tabindex="1" [(ngModel)]="data.address" placeholder="Address" required>
   </mat-form-field>
 
   
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.contact_name" placeholder="Contact Name">
+    <input matInput tabindex="1" [(ngModel)]="data.contact_name" placeholder="Contact Name" required>
   </mat-form-field>
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
