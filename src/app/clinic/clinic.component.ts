@@ -53,7 +53,7 @@ export class ClinicComponent implements AfterViewInit {
         //$('.header_filters').hide();
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
-        $('.header_filters').addClass('flex_direct_mar');
+        $('.header_filters').addClass('hide_header');
   }
   editing = {};
   rows = [];

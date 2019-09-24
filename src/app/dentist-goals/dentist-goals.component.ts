@@ -98,6 +98,10 @@ export class DentistGoalsComponent implements OnInit {
           {
              $('.header_filters').addClass('hide_header'); 
           }
+          else {
+            $('.external_clinic').show();
+        $('.dentist_dropdown').show();
+          }
         $('#title').html('Dentist Goals');
          if($('body').find('span#currentDentist').length > 0){
              var did= $('body').find('span#currentDentist').attr('did');

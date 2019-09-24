@@ -73,15 +73,18 @@ export class ClinicGoalsComponent implements OnInit {
   ngOnInit() {
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
-    
-    this.route.params.subscribe(params =>  {
+      $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
+      this.route.params.subscribe(params =>  {
       if(this._cookieService.get("userid") != '1'){
-    this.clinic_id = this.route.snapshot.paramMap.get("id");
-  $('.header_filters').addClass('hide_header'); 
+     this.clinic_id = this.route.snapshot.paramMap.get("id");
+     
   }
   else
   {
     this.clinic_id = '';
+     $('.header_filters').addClass('hide_header'); 
   }
         this.getClinicGoals();
         $('#title').html('Clinics Goals');
@@ -146,7 +149,6 @@ export class ClinicGoalsComponent implements OnInit {
 
   getClinicGoals() {
   this.clinicGoalsService.getClinicGoals(this.clinic_id).subscribe((res) => {
-    console.log(res);
        if(res.message == 'success'){
           this.dentistprod =res.data[1].value;
           this.treatmentplan =res.data[2].value;

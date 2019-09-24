@@ -40,7 +40,7 @@ export class ProfileSettingsComponent implements OnInit {
     this.email = this._cookieService.get("email");
     //  this.getprofileSettings();
           $('#title').html('Profile Settings');
-    $('.header_filters').addClass('hide_header'); 
+      $('.header_filters').addClass('hide_header'); 
          // this.checkXeroStatus();
      });
   

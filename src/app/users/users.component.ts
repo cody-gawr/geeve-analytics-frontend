@@ -42,7 +42,7 @@ export class UsersComponent implements AfterViewInit {
   loadingIndicator = true;
   reorderable = true;
 
-  columns = [{ prop: 'id' }, { name: 'username' }, { name: 'email' }, { name: 'user_type' }, { name: 'created' }];
+  columns = [{ prop: 'id' }, { name: 'username' }, { name: 'email' }, { name: 'plan' }, { name: 'user_type' }, { name: 'created' }];
 
   constructor(private usersService: UsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
     this.rows = data;
@@ -100,7 +100,6 @@ export class UsersComponent implements AfterViewInit {
 
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
-
     // filter our data
     const temp = this.temp.filter(function(d) {
       return d.username.toLowerCase().indexOf(val) !== -1 || !val;

@@ -54,8 +54,8 @@ export class RegisterComponent implements OnInit {
                     this.successLogin = false;
                     this.successLoginText = '';
                      if(res.message == 'success'){
-                        this.successLogin  =true;
-                        //this.successLoginText  =;
+                          this.successLogin  =true;
+                          alert('Please confirm your mail and complete the payment!');
                       }
                      else if(res.message == 'error'){
                         this.errorLogin  =true;

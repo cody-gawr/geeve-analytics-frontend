@@ -73,52 +73,7 @@ export class LoginService {
                         })
             );
     }
-    getPlans(): Observable<any> {
-            return this.http.get(this.apiUrl +"/plans/getPlans")
-            .pipe(map((response: Response) => {
-                            return response;
-                        })
-            );
-    }
-     // Items Predictor Analysis 
-    checkuser(plan_id, user_id): Observable<any> {
-            const formData = new FormData();
-            formData.append('plan_id', plan_id);
-            formData.append('user_id', user_id);
-            
-            return this.http.post(this.apiUrl +"/users/checkuserplan", formData)
-            .pipe(map((response: Response) => {
-                            return response;
-                        })
-            );
-    }
 
-         // Items Predictor Analysis 
-    createSubscription(token:any,plan_id, user_id): Observable<any> {
-            const formData = new FormData();
-            formData.append('token', token.id);
-            formData.append('email', token.email);
-            
-            formData.append('plan_id', plan_id);
-            formData.append('user_id', user_id);
-            
-            return this.http.post(this.apiUrl +"/users/createSubscription", formData)
-            .pipe(map((response: Response) => {
-                            return response;
-                        })
-            );
-    }
-    // Items Predictor Analysis 
-    autoLogin(user_id): Observable<any> {
-            const formData = new FormData();
-
-            formData.append('user_id', user_id);
-            return this.http.post(this.apiUrl +"/users/autologin", formData)
-            .pipe(map((response: Response) => {
-                            return response;
-                        })
-            );
-    }
 }
 
 

@@ -16,7 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     NgxDatatableModule,
     DemoMaterialModule,
-    FormsModule
+    FormsModule,ReactiveFormsModule
   ],
   providers: [
     PlansService

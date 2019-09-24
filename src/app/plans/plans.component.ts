@@ -3,7 +3,7 @@ import { PlansService } from './plans.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
-
+import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 declare var require: any;
 const data: any = require('assets/company.json');
 @Component({
@@ -14,14 +14,31 @@ const data: any = require('assets/company.json');
 
 export class DialogOverviewExampleDialogComponent {
    public clinic_id:any ={};
-
+  form: FormGroup;
+  plan:string;
   constructor(
+     fb: FormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+
+    this.form = fb.group({
+                    plan: [this.plan, [Validators.required, Validators.maxLength(5)]]
+                });
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }
+   save(data) {
+    $('.form-control').click();
+     const {value, valid} = this.form;
+    if(data.allowedClinics != undefined && data.amount != undefined  && data.description != undefined  && data.discount != undefined && data.plan != undefined ){
+        this.dialogRef.close(data);
+      }
+    }
+    close() {
+        this.dialogRef.close();
+    }
 }
 
 @Component({
@@ -39,8 +56,7 @@ export class PlansComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.getPlans();
         $('#title').html('Plans');
- $('.header_filters').addClass('hide_header'); 
-        
+        $('.header_filters').addClass('hide_header'); 
   }
   editing = {};
   rows = [];
@@ -70,6 +86,7 @@ public discount;
       data: { plan: this.plan, allowedClinics: this.allowedClinics, description: this.description, amount: this.amount, discount: this.discount }
     });
     dialogRef.afterClosed().subscribe(result => {
+      if(result != undefined) {
      this.plansService.addPlans(result.plan, result.allowedClinics, result.description,result.amount, result.discount).subscribe((res) => {
            if(res.message == 'success'){
             alert('Plan Created Successfully!');  
@@ -78,6 +95,7 @@ public discount;
         }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
+   }
     });
   }
 

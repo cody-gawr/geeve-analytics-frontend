@@ -2,31 +2,30 @@
 <div mat-dialog-content>
  
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.plan" placeholder="Plan Name">
+    <input matInput tabindex="1" [(ngModel)]="data.plan" class="form-control" required="true" placeholder="Plan Name" >
   </mat-form-field>
 
   
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.allowedClinics" placeholder="Allowed Clinics">
+    <input matInput tabindex="1" [(ngModel)]="data.allowedClinics" class="form-control" required="true" placeholder="Allowed Clinics">
   </mat-form-field>
 
   
   <mat-form-field>
-    <textarea matInput tabindex="1" [(ngModel)]="data.description" placeholder="Description"></textarea>
+    <textarea matInput tabindex="1" [(ngModel)]="data.description" class="form-control" required="true" placeholder="Description"></textarea>
   </mat-form-field>
    <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.amount" placeholder="Amount($)">
+    <input matInput tabindex="1" [(ngModel)]="data.amount" class="form-control" required="true"  placeholder="Amount($)">
   </mat-form-field>
 
   
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.discount" placeholder="Discount">
+    <input matInput tabindex="1" [(ngModel)]="data.discount" class="form-control" required="true" placeholder="Discount">
   </mat-form-field>
-
-  
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
 </div>
+"""

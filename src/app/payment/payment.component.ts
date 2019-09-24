@@ -22,7 +22,7 @@ export class PaymentComponent implements OnInit {
   }
   openCheckout() {
     var handler = (<any>window).StripeCheckout.configure({
-      key: 'pk_test_oi0sKPJYLGjdvOXOM8tE8cMa',
+      key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
       locale: 'auto',
       token: function (token: any) {
         alert(token.id);

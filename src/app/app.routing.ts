@@ -158,6 +158,11 @@ export const AppRoutes: Routes = [
         path: 'payment',
         loadChildren:
           './payment/payment.module#PaymentModule'
+      },
+      {
+        path: 'planpayment/:id',
+        loadChildren:
+          './planpayment/planpayment.module#PlanpaymentModule'
       }
     ]
   },

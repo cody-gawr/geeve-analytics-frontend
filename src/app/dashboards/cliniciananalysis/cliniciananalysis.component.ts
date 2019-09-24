@@ -503,6 +503,7 @@ changeLoginStatus(){
       this.warningMessage = "Please Provide Valid Inputs!"; 
     });
 }
+
  private loadDentist(newValue) {
    $('#title').html('Clinician Analysis '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
   this.getAccountingDentist();
@@ -629,6 +630,7 @@ changeLoginStatus(){
     $('.treatmentPlan .tcmain'+val).addClass('active');
     this.planTotalTooltip = 'down';
     this.tcmain =val;
+    console.log(this.barChartOptionsTC);
     if(val == '1'){
       this.planTotalAverage = this.planAllTotal;
       this.planTotalPrev = this.planAllTotalTrend;
@@ -645,6 +647,8 @@ changeLoginStatus(){
     if(this.goalchecked == 'goal') {
       this.barChartOptionsTC.annotation.annotations[0].value =this.planTotalGoal;
     }
+    console.log(this.barChartOptionsTC);
+    
   }
 
   changeTreatmentCostSingle(val) {
@@ -658,7 +662,6 @@ changeLoginStatus(){
       this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentC);
     }
         //   this.predictedMax = Math.max(...this.predictedChartData[0]['data']);
-
   } 
 
   public productionTooltip='down';
@@ -1255,7 +1258,6 @@ private treatmentPrePrebook() {
       else {
         this.TPACAcolors= this.lineChartColors;
         this.TPACCcolors= this.lineChartColors;
-
       }
        if(this.planTotalAverage>=this.planTotalPrev)
         this.planTotalTooltip = 'up';
