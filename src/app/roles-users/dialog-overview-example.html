@@ -1,0 +1,30 @@
+<div class="AddUserPopup"> 
+<h1 mat-dialog-title>Add User</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.display_name" placeholder="Display Name">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.email" placeholder="Email">
+  </mat-form-field>
+  <div class="selectIcon">
+     <select fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="sa_select form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
+      <option value ="" selected>Select User Type</option>
+      <option value ="1">Employee</option>
+      <option value ="2">Receptionist</option>
+   </select> 
+ </div>
+ <div class="selectIcon" *ngIf="show_dentist == true">
+  <select class="sa_select sa_select_set_roles form-control" name="dentist_id" [(ngModel)]="data.dentist_id" >
+      <option value ="" selected="true">Select Dentist</option>
+      <option *ngFor="let dentist of data.dentists" value ="{{dentist.providerId}}">{{dentist.name}}</option>
+   </select> 
+ </div>
+   <input type='hidden' tabindex="1" [(ngModel)]="data.password"  placeholder="Email">
+  <!--  <input type="file" (change)="onChange($event)"> -->
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data"  tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+</div>
+</div>

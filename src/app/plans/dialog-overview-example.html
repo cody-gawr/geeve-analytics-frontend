@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>Add Member Plan</h1>
+<div mat-dialog-content>
+
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.planName" placeholder="Member Plan"  class="form-control-dialog" required="true">
+
+  </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Treatments" [formControl]="data.treat" multiple >
+          <mat-select-trigger >
+          {{data.treat.value ?  data.treat.value[0].treatmentName: ''}}
+            <span *ngIf="data.treat.value?.length > 1" class="example-additional-selection">
+          (+{{data.treat.value.length - 1}} {{data.treat.value?.length === 2 ? 'other' : 'others'}})   
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let treatment of data.treatmentdata" [value]="treatment">{{treatment.treatmentName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  <mat-form-field>
+    <mat-label>Duration</mat-label> 
+    <mat-select name ="value" tabindex="1" [(ngModel)]= "data.planLength"  class="form-control-dialog" required="true">
+      <mat-option value="MONTHLY">MONTHLY</mat-option>
+      <mat-option value="YEARLY">YEARLY</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput tabindex="1" type="number" [(ngModel)]="data.totalAmount" placeholder="Total Amount"  class="form-control-dialog" required="true">
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput tabindex="1" type="number" [(ngModel)]="data.discount" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder="Discount %"  class="form-control-dialog" required="true">
+    </mat-form-field>
+  
+    <mat-form-field>
+        <input matInput tabindex="1" [(ngModel)]="data.description" placeholder="Description" class="form-control-dialog" required="true">
+      </mat-form-field>
+  <!--  <input type="file" (change)="onChange($event)"> -->
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+</div>

@@ -1,0 +1,87 @@
+<!-- ============================================================== -->
+<!-- Card Grid-->
+<!-- ============================================================== -->
+<div fxLayout="row wrap">
+  <div fxFlex.gt-sm="100" fxFlex="100">
+    <mat-card>
+      <mat-card-content>
+          <div class="basic_details_form">
+        <mat-card-title>Clinic Settings</mat-card-title>
+
+        <!-- ============================================================== -->
+        <!-- column -->
+        <!-- ============================================================== -->
+        <div fxLayout="row wrap">
+        <!-- Card column -->
+        <div fxFlex.gt-sm="100%" fxFlex="100">
+                           <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
+                                <div fxLayout="row wrap">
+                                  <!-- column -->
+                                  <div fxFlex.gt-md="100" fxFlex="100">
+                                    
+                                        <label>Clinic Name</label>
+                                      <input matInput placeholder="" [formControl]="form.controls['clinicName']" [(ngModel)]= "clinicName">
+                                    
+                                  </div>
+                                   <div fxFlex.gt-md="100" fxFlex="100">
+                                    
+                                        <label>Contact Name</label>
+                                      <input matInput placeholder="" [formControl]="form.controls['contactName']" [(ngModel)]="contactName">
+                                    
+                                  </div>
+                                   <div fxFlex.gt-md="100" fxFlex="100">
+                                    
+                                        <label>Address</label>
+                                      <input matInput placeholder="" [formControl]="form.controls['address']" [(ngModel)]="address">
+                                    
+                                  </div>
+
+                                  <div fxFlex.gt-md="100" fxFlex="100">
+                                    
+                                        <label>Phone Number</label>
+                                      <input matInput type="number" placeholder="" [formControl]="form.controls['phoneNo']" [(ngModel)]="phoneNo">
+                                    
+                                  </div>
+
+                                  <div fxFlex.gt-md="100" fxFlex="100">
+                                    
+                                        <label>Publishable Key</label>
+                                      <input matInput  placeholder="" [formControl]="form.controls['publishable_key']" [(ngModel)]="publishable_key">
+                                    
+                                  </div>
+
+                                  <div fxFlex.gt-md="100" fxFlex="100">
+                                    
+                                        <label>Secret Key</label>
+                                      <input matInput placeholder="" [formControl]="form.controls['secret_key']" [(ngModel)]="secret_key">
+                                    
+                                  </div>
+
+                                  
+                                  <mat-card-title>Clinic Profile</mat-card-title>
+                                        <div class="clinic_logo"><img src="{{imageURL}}" height="150" width="150" *ngIf="imageURL != '' && imageURL != 'undefined'" >
+                                  </div>
+                                  <div class="bd_UpoadImage" fxFlex.gt-md="100" fxFlex="100">
+                                      <div class="upload-btn">
+                                        <span>Choose file</span>
+                                        <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)">
+                                        <input type='hidden'  placeholder="" id="imageURL" >
+                                      </div>
+                
+                                   </div>                                
+
+                                 </div> 
+                                  <mat-card-actions>
+                                    <button mat-raised-button color="primary" type="submit">Submit</button>
+                                  </mat-card-actions>
+                                  <!-- column -->
+                              </form>
+        </div>
+
+      </div>
+ </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

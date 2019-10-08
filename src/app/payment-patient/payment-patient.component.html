@@ -1,0 +1,118 @@
+<div class="sa_login_blur" style="background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; height: 100vh;
+display: flex;
+background-size: cover;
+align-items: center;"></div>
+<img class="login_abso_logo" src="../assets/images/logo-white.png">
+<div class="" style="background-image:url(assets/images/background/login-register.jpg);">
+    <div class="">
+        <mat-card>
+            <mat-card-content>
+                Patient Plan Details
+               <!-- ============================================================== -->
+                <!-- column -->
+                <!-- ============================================================== -->
+                <div fxLayout="row wrap">
+                    <!-- Card column -->
+                    <div fxFlex.gt-sm="100%" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
+                       <div fxFlex.gt-sm="50%" fxFlex="50" class="sa_mattabs_design sa_matforms_design">
+                                  <table>
+                                      <tr>
+                                          <th>Plan</th>
+                                          <td>&nbsp;&nbsp;</td>
+                                          <td>{{plan_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>No. of Members</th>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>{{total_subpatient+1}}</td>
+                                          </tr>
+                                    <tr>
+                                      <th>Payment Amount</th>
+                                      <td>&nbsp;&nbsp;</td>
+                                      <td>${{patient_amount}}</td>
+                                    </tr>
+                                  
+                                    <tr>
+                                      <th>&nbsp;</th>
+                                     </tr>
+                                   </table>
+                                  <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                                  [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+                             <ngx-datatable-column prop="sr" name="sr">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Id</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                <span>
+                                  {{rowIndex + 1}}
+                                </span>
+                              </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column prop="sub_patients_name" name="sub_patients_name">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Name</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                <span >
+                                  {{value}}
+                                </span>
+                              </ng-template>
+                            </ngx-datatable-column>
+                      
+                             <ngx-datatable-column prop="sub_patients_age" name="sub_patients_age">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Age</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                <span >
+                                  {{value}}
+                                </span>
+                               
+                              </ng-template>
+                            </ngx-datatable-column>
+                      
+                            <ngx-datatable-column prop="sub_patients_gender" name="sub_patients_gender">
+                              <ng-template let-column="column" ngx-datatable-header-template>
+                             <span>Gender</span>
+                           </ng-template>
+                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                               <span >
+                                 {{value}}
+                               </span>                              
+                             </ng-template>
+                           </ngx-datatable-column>
+                          </ngx-datatable>
+                        </div>
+                         <div fxFlex.gt-sm="50%" fxFlex="50" class="sa_mattabs_design sa_matforms_design">
+                        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                          <h1 mat-dialog-title>Add Member</h1>
+                          <div mat-dialog-content>
+                            <mat-form-field>
+                              <input matInput tabindex="1"  [formControl]="form.controls['name']" placeholder="Name">
+                            </mat-form-field>
+                            <mat-form-field>
+                              <input matInput tabindex="1"  [formControl]="form.controls['age']" placeholder="Age">
+                            </mat-form-field>
+
+                            <mat-radio-group class="gender"  [formControl]="form.controls['gender']">
+                              <mat-radio-button class="gender" value="male">
+                                Male
+                              </mat-radio-button>
+                              <mat-radio-button class="gender" value="female">
+                                Female
+                              </mat-radio-button>
+                            </mat-radio-group>
+                            <!--  <input type="file" (change)="onChange($event)"> -->
+                          </div>
+                          <div mat-dialog-actions>
+                            <button mat-raised-button color="dc" class="btn-block btn-lg m-t-20 m-b-20" type="submit" [disabled]="!form.valid">Add</button>
+                          </div>
+                          </form>
+                         </div>
+                       </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

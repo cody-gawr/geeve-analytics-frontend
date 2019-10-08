@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>Add Clinic</h1>
+<div mat-dialog-content>
+ 
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.name" placeholder="Clinic Name" class="form-control-dialog" required="true">
+  </mat-form-field>
+
+  
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.address" placeholder="Address" class="form-control-dialog" required="true">
+  </mat-form-field>
+
+  
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.contact_name" placeholder="Contact Name" class="form-control-dialog" required="true">
+  </mat-form-field>
+
+    
+  <mat-form-field>
+    <input matInput tabindex="1" type="number" [(ngModel)]="data.phone_no" placeholder="Phone No" class="form-control-dialog" required="true">
+  </mat-form-field>
+    
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.publishable_key" placeholder="Publishable Key"  class="form-control-dialog" required="true">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.secret_key" placeholder="Secret Key"  class="form-control-dialog" required="true">
+  </mat-form-field>
+
+  <input class="form-control b-b" type="file" name= "file" id="file" (change)="uploadImage($event.target.files)">
+
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+</div>

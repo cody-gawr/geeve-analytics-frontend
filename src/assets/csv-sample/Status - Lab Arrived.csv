@@ -1,0 +1,6 @@
+app_date_from,app_date_to,surname,dob,phone_home,app_date,needed_appoint_id,duration,total_sum,start,app_book_id,app_book_description,status,firstname,middlename,patient_count,patient_id,patient_unique_count,preferred_name,patient_name
+15/04/1900,15/04/2099,,7/07/1945,9785 5643,6/07/2007,2711,60,,17:00:00,1,Dr Frank Spencer,Lab arrived,,,1,30,1,,"Jones, Mr James"
+15/04/1900,15/04/2099,,7/09/1948,9785 5643,6/07/2007,2709,60,,15:30:00,1,Dr Frank Spencer,Lab arrived,,,1,31,1,,"Jones, Mrs Michelle"
+15/04/1900,15/04/2099,,,,12/04/2019,3138,15,,16:30:00,1,Dr Frank Spencer,Lab arrived,,,1,49,1,,"Prince, Mr Peter"
+15/04/1900,15/04/2099,,5/11/1914,,2/07/2007,2661,120,2050.00,14:00:00,1,Dr Frank Spencer,Lab arrived,,,1,48,1,,"Ulna, Mr Bob"
+15/04/1900,15/04/2099,,2/05/1969, 8595 2599,2/07/2007,2663,90,1500.00,16:00:00,1,Dr Frank Spencer,Lab arrived,,,1,25,1,,"Universe, Mr Arnold"

@@ -1,0 +1,224 @@
+<!-- ============================================================== -->
+<!-- Card Grid-->
+<!-- ============================================================== -->
+<div fxLayout="row wrap">
+    <div fxFlex.gt-sm="100" fxFlex="100">
+        <mat-card>
+            <mat-card-content>
+                Patient Plan Details
+               <!-- ============================================================== -->
+                <!-- column -->
+                <!-- ============================================================== -->
+                <div fxLayout="row wrap">
+                    <!-- Card column -->
+                    <div fxFlex.gt-sm="100%" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
+
+                            <mat-tab-group dynamicHeight>
+                         
+                        <!-- Plan Details tab -->
+                              <mat-tab label="Plan Details">
+                                <form>                                
+                                  <table>
+                                      <tr>
+                                          <th>Plan</th>
+                                          <td>&nbsp;&nbsp;</td>
+                                          <td>{{plan_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>No. of Members</th>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>{{total_subpatient +1}}</td>
+                                          </tr>
+                                    <tr>
+                                      <th>Payment Amount</th>
+                                      <td>&nbsp;&nbsp;</td>
+                                      <td>${{patient_amount}}</td>
+                                    </tr>
+                                  
+                                    <tr>
+                                      <th>&nbsp;</th>
+                                     </tr>
+                                   </table>
+                                </form>
+
+                                   
+                                  <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                                  [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+                             <ngx-datatable-column prop="sr" name="sr">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Id</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                <span>
+                                  {{rowIndex + 1}}
+                                </span>
+                              </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column prop="sub_patients_name" name="sub_patients_name">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Name</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                <span >
+                                  {{value}}
+                                </span>
+                                    </ng-template>
+                            </ngx-datatable-column>
+                      
+                             <ngx-datatable-column prop="sub_patients_age" name="sub_patients_age">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Age</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                <span >
+                                  {{value}}
+                                </span>
+                               
+                              </ng-template>
+                            </ngx-datatable-column>
+                      
+                            <ngx-datatable-column prop="sub_patients_gender" name="sub_patients_gender">
+                              <ng-template let-column="column" ngx-datatable-header-template>
+                             <span>Gender</span>
+                           </ng-template>
+                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                               <span >
+                                 {{value}}
+                               </span>
+                              
+                             </ng-template>
+                           </ngx-datatable-column>
+                      
+                        
+                          </ngx-datatable>
+
+                            </mat-tab>
+
+                        <!-- Benefits Used tab -->
+                                <mat-tab label="Benefits Used">
+  
+                                  <div class="responsive-table">
+                                        <mat-table #table [dataSource]="dataSource">
+
+                                          <ng-container matColumnDef="position">
+                                            <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+                                            <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+                                          </ng-container>
+                              
+
+                                          <ng-container matColumnDef="name">
+                                            <mat-header-cell *matHeaderCellDef> Benefits </mat-header-cell>
+                                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                                          </ng-container>
+                              
+                                          <ng-container matColumnDef="age">
+                                            
+                                            <mat-header-cell *matHeaderCellDef> Progress %age </mat-header-cell>
+                                            <!-- <mat-cell *matCellDef="let element"> {{element.age}} </mat-cell> -->
+                                            <mat-cell>
+                                                <mat-progress-bar style="width:20%" *matCellDef="let element" mode="determinate" value="40"></mat-progress-bar>
+                                              </mat-cell>
+                                           </ng-container>
+                              
+                                          <ng-container matColumnDef="gender">
+                                            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                                            <mat-cell *matCellDef="let element"> {{element.gender}} </mat-cell>
+                                          </ng-container>
+                                
+                                          <ng-container matColumnDef="action">
+                                              <mat-header-cell *matHeaderCellDef>Action </mat-header-cell>
+                                              <!-- <mat-cell *matCellDef="let element"> {{element.action}} </mat-cell> -->
+                                              <a class="action_btn golden mat-raised-button" mat-raised-button *matCellDef="let element" title= 'action' (click)="openDialog()"><i class="ti-settings  m-r-10"></i></a>
+
+                                              <!-- <button class="mat-raised-button ti-settings  m-r-10" *matCellDef="let element" mat-raised-button ></button> -->
+                                            </ng-container>
+
+                                          <ng-container matColumnDef="completiondate">
+                                              <mat-header-cell *matHeaderCellDef> Completion Date </mat-header-cell>
+                                              <mat-cell *matCellDef="let element"> {{element.gender}} </mat-cell>
+                                            </ng-container>
+                                                          
+
+
+                                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                        </mat-table>
+                                      </div>
+                                </mat-tab>
+
+                      <!-- Contract Upload tab -->
+                                <mat-tab label="Contract Upload">
+                             
+                                  <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
+                                    <div class="bd_UpoadImage" fxFlex.gt-md="100" fxFlex="100">
+                                        <label>Upload Agreement</label><br>
+                                        <div class="upload-btn">
+                                            <span>Choose file</span>
+                                            <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)">
+                                            <input type='hidden'  placeholder="" id="imageURL" >
+                                        </div>
+                                                          
+                                     </div>
+                               
+                                   <p>
+                                      <button mat-raised-button color="dc">Save</button>
+                                   </p>
+                                   </form>
+                                  <p *ngIf="contract_url; else empty">
+                                    Download Agreement
+                                    <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{contract_url}}">Download</a>
+                                </p>
+                                </mat-tab>
+
+                    <!-- Payment History tab -->
+
+                                <mat-tab label="Payment History">
+                                 
+                                                        
+                                    <div class="responsive-table">
+                                        <mat-table #table [dataSource]="dataSource">
+                                     
+                                          <ng-container matColumnDef="position">
+                                            <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+                                            <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+                                          </ng-container>
+                              
+                                       
+                                          <ng-container matColumnDef="name">
+                                            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                                          </ng-container>
+                              
+                                         
+                                          <ng-container matColumnDef="age">
+                                            <mat-header-cell *matHeaderCellDef> Age </mat-header-cell>
+                                            <mat-cell *matCellDef="let element"> {{element.age}} </mat-cell>
+                                            
+                                          </ng-container>
+
+                                        
+                                          <ng-container matColumnDef="gender">
+                                            <mat-header-cell *matHeaderCellDef> Gender </mat-header-cell>
+                                            <mat-cell *matCellDef="let element"> {{element.gender}} </mat-cell>
+                                          </ng-container>
+                              
+                                          <ng-container matColumnDef="action">
+                                              <mat-header-cell *matHeaderCellDef>Action </mat-header-cell>
+                                              <mat-cell *matCellDef="let element"> {{element.action}} </mat-cell>
+                                            </ng-container>
+                                            
+                                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                        </mat-table>
+                                      </div>
+
+                                </mat-tab>
+
+                            </mat-tab-group>
+                       </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

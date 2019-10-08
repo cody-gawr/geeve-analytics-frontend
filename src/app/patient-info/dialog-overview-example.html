@@ -1,0 +1,55 @@
+<h1 mat-dialog-title>Add/Edit Benefits</h1>
+<div mat-dialog-content>
+
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.name" placeholder="Benefits">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput tabindex="1" type="number" [(ngModel)]="data.age" placeholder="No. of sittings">
+  </mat-form-field>
+
+                     
+  <div class="responsive-table">
+    <mat-table #table [dataSource]="dataSource">
+ 
+      <ng-container matColumnDef="position">
+        <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{data.position}} </mat-cell>
+      </ng-container>
+
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{data.name}} </mat-cell>
+      </ng-container>
+
+     
+      <ng-container matColumnDef="age">
+        <mat-header-cell *matHeaderCellDef> Age </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{data.age}} </mat-cell>
+        
+      </ng-container>
+
+     
+      <ng-container matColumnDef="gender">
+        <mat-header-cell *matHeaderCellDef> Gender </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{data.gender}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef>Action </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{data.action}} </mat-cell>
+        </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+
+  <!--  <input type="file" (change)="onChange($event)"> -->
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+</div>
