@@ -6607,40 +6607,39 @@ exports.ObjectUtils = ObjectUtils;
 
 /***/ }),
 
-/***/ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.html":
-/*!*******************************************************************************!*\
-  !*** ./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.html ***!
-  \*******************************************************************************/
+/***/ "./src/app/dashboards/dashboards.component.html":
+/*!******************************************************!*\
+  !*** ./src/app/dashboards/dashboards.component.html ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<!-- <div fxLayout=\"row wrap\">\n    <div class=\"sa_heading_bar\">\n        <div fxFlex.gt-sm=\"85\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <h4><span class=\"page_title\">Clinician Procedures &#38; Referrals</span></h4>\n        </div>\n        <app-headerright class=\"app-headerright\"></app-headerright>\n\n        <div fxFlex.gt-sm=\"18\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <div class=\"vertical_center_header_content\">\n                <div class=\"sa_select_outer\">\n                    <select class=\"sa_select\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n                        <option value =\"all\">All Dentist( {{dentistCount}} )</option>\n                        <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                    </select>\n                </div>\n            </div>\n        </div>\n    </div>\n</div> -->\n <select class=\"sa_select internal_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\" [style.display]=\"'none'\">\n                     <option value =\"all\">All Dentist</option>\n                    <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                </select> \n                <input type=\"button\" id=\"dentist_initiate\" (click) = \"initiate_dentist()\"  [style.display]=\"'none'\">\n                <input type=\"text\" id=\"page_title\" value=\"Clinician Procedures & Referrals\" [style.display]=\"'none'\">\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n        <div fxFlex.lg=\"80\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"80\">\n             <div class=\"sa_tabs_design\"><span class=\"filter_w active filter sa_filter_span\" (click)=\"filterDate('w')\">This Week</span><span (click)=\"filterDate('m')\" class=\"filter_m filter sa_filter_span\">This Month</span><span class=\"filter_q filter sa_filter_span\" (click)=\"filterDate('q')\">This Quarter</span><span (click)=\"filterDate('lq')\" class=\"filter_lq filter sa_filter_span\">Last Quarter</span><span (click)=\"filterDate('cytd')\" class=\"filter_cytd filter sa_filter_span\">Current YTD</span><span (click)=\"filterDate('fytd')\" class=\"filter_fytd filter sa_filter_span\">Financial YTD</span>\n              <div class=\"custom_date\">\n              <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n              <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n            </div>\n        </div>\n             <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\" *ngIf=\"dentistVal == 'all'\"> \n         <div class=\"onofftoogle2\">\n           <span class=\"trend_mode_title\">Target:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group2\" aria-label=\"Font Style\" >\n                  <mat-button-toggle checked value = \"off\" class = \"toggle_off target_filter\" (click)=\"goalToggle('off')\">\n                  <span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"average\" class = \"toggle_average target_filter\" (click)=\"goalToggle('average')\">\n                  <span>Average</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"goal\" class = \"toggle_goal target_filter\" (click)=\"goalToggle('goal')\">\n                  <span>Goal</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n     <div fxFlex.lg=\"20\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"20\">\n         <div class=\"onofftoogle\" *ngIf=\"showTrend == true\">\n          <span class=\"trend_mode_title\">Trend Mode:</span>\n              <mat-button-toggle-group #group = \"matButtonToggleGroup\"  name=\"fontStyle\" class=\"trendToggle sa_toogle_group\" aria-label=\"Font Style\" >\n               <mat-button-toggle checked value = \"off\" class = \"target_off target_filter\" (click)=\"toggleFilter('off')\"><span>Off</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"current\" class = \"target_current target_filter\" (click)=\"toggleFilter('current')\">\n                  <span>Current</span>\n               </mat-button-toggle>\n               <mat-button-toggle value = \"historic\" class = \"target_historic target_filter\" (click)=\"toggleFilter('historic')\">\n                  <span>Historic</span>\n               </mat-button-toggle>\n            </mat-button-toggle-group>\n          </div>\n      </div>\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area sa_health_screen_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{productionTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Dentist Production\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n         \n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"barChartLabels.length > 0\" #myCanvas baseChart [datasets]=\"barChartData\" [labels]=\"barChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsDP\" [colors]=\"DPcolors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"barChartLabels.length <= 0 && buildChartLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"barChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotal| number:'1.0-0'}}</h3>\n                        <small *ngIf=\"currentText != ''\">{{currentText}} Total</small>\n                        <small *ngIf=\"currentText == ''\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotalAverage| number:'1.0-0'}}</h3>\n                       <small *ngIf=\"trendText != ''\">{{trendText}} Average</small>\n                        <small *ngIf=\"trendText == ''\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\"fddf>\n                        <h3 class=\"m-0 font-light text-center\">${{productionGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"dentistProductionSingle sa_no_tabs_area\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Dentist Production\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n         \n         <ngx-gauge  *ngIf=\"showTrendChart == false && gaugeValue >0\" [type]=\"gaugeType\"\n           [value]=\"gaugeValue\"\n           [label]=\"gaugeLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"productionGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          \n\n          <div *ngIf=\"showTrendChart == true && dentistProductionTrendLabels.length >0\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"dentistProdTrend\" [labels]=\"dentistProductionTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n      </div>\n      \n       <div *ngIf=\"dentistProductionTrendLabels.length <= 0 && gaugeValue<=0 && buildChartDentistLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValue >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotal| number:'1.0-0'}}</h3>\n                         <small *ngIf=\"currentText != ''\">{{currentText}} Total</small>\n                        <small *ngIf=\"currentText == ''\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionTotalAverage| number:'1.0-0'}}</h3>\n                        <small *ngIf=\"trendText != ''\">{{trendText}} Average</small>\n                        <small *ngIf=\"trendText == ''\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{productionGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n     <div *ngIf=\"buildChartLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n      <div *ngIf=\"buildChartDentistLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div>\n      </div>\n      <div *ngIf=\"dentistProductionTrendLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg \">\n    <mat-card  class=\"treatmentPlan\">\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : $ {{planTotalPrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{planTotalTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Treatment Plan Average Cost\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n                    <div fxLayout=\"row wrap\" class=\"treatment_cost sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn tcmain1 active\" (click) = \"changeTreatmentCost('1')\">Proposed Fees</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn tcmain2\" (click) = \"changeTreatmentCost('2')\">Completed Fees</small>\n                    </div>\n                </div>\n         \n\n        <div style=\"height: 250px\" *ngIf=\"planChartLabels1.length > 0\" >\n        <canvas #myCanvas *ngIf=\"tcmain == 1\"  baseChart class=\"chart\"\n          [datasets]=\"planChartDataP\"\n          [labels]=\"planChartLabels1\"\n          [options]=\"barChartOptionsTC\"\n          [legend]=\"false\"\n          [chartType]=\"barChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"lineChartColors\"></canvas>\n          <canvas #myCanvas *ngIf=\"tcmain == 2\" baseChart class=\"chart\"\n          [datasets]=\"planChartDataC\"\n          [labels]=\"planChartLabels2\"\n          [options]=\"barChartOptionsTC\"\n          [legend]=\"false\"\n          [chartType]=\"barChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"lineChartColors\"></canvas>\n        </div>\n        \n\n         <div *ngIf=\"planChartLabels1.length <= 0 && buildChartTreatmentLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && planChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalAverage | number:'1.0-0'}}</h3>\n                         <small *ngIf=\"currentText != ''\">{{currentText}} Average</small>\n                        <small *ngIf=\"currentText == ''\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalPrev | number:'1.0-0'}}</h3>\n                        <small *ngIf=\"trendText != ''\">{{trendText}} Average</small>\n                        <small *ngIf=\"trendText == ''\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"treatmentPlanSingle\" [style.display]=\"'none'\">\n      <mat-card-content class=\"sa_matcard_content\">\n   \n          <mat-card-title class=\"text-center\">Treatment Plan Average Cost\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div fxLayout=\"row wrap\" class=\"treatment_cost sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn tcmain1 active\" (click) = \"changeTreatmentCostSingle('1')\">Proposed Fees</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn tcmain2\" (click) = \"changeTreatmentCostSingle('2')\">Completed Fees</small>\n                    </div>\n                </div>\n          \n\n         <ngx-gauge *ngIf=\"showTrendChart == false && gaugeValueTreatment >0\" [type]=\"gaugeType\"\n           [value]=\"gaugeValueTreatment\"\n           [label]=\"gaugeLabelTreatment\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [cap] =\"cap\"\n             [max] = \"planTotalGoal\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && treatmentPlanTrendLabels.length > 0\" style=\"height: 250px\">\n              <canvas #myCanvas baseChart [datasets]=\"treatPlanTrend\" [labels]=\"treatmentPlanTrendLabels\"  [legend]=\"barChartLegend\"\n              [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n              </canvas>\n          </div>\n\n          <div *ngIf=\"treatmentPlanTrendLabels.length <= 0 && gaugeValueTreatment<=0 && buildChartTreatmentDentistLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValueTreatment >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{gaugeValueTreatment | number:'1.0-0' }}</h3>\n                        <small *ngIf=\"currentText != ''\">{{currentText}} Average</small>\n                        <small *ngIf=\"currentText == ''\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalPrev | number:'1.0-0' }}</h3>\n                        <small *ngIf=\"trendText != ''\">{{trendText}} Average</small>\n                        <small *ngIf=\"trendText == ''\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{planTotalGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n     <div *ngIf=\"buildChartTreatmentLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n     <div *ngIf=\"buildChartTreatmentDentistLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n  </div>\n  <!-- Column-->\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"noPatients sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} :  {{doughnutTotalPrev}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{doughnutTotalTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">No. Patient Complaints\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n         \n        <div class=\"chart\" *ngIf=\"doughnutChartLabels.length > 0\">\n          <div *ngIf=\"showTrendChart == false\" style=\"height: 250px\">\n        <canvas #myCanvas baseChart class=\"chart\"\n        [data]=\"doughnutChartData\"\n          [labels]=\"doughnutChartLabels\"\n          [legend]=\"true\"\n          [options]=\"doughnutChartOptions\"\n          [chartType]=\"doughnutChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"doughnutChartColors\"></canvas>\n        </div>\n        </div>\n         \n          <div *ngIf=\"doughnutChartLabels.length <= 0 && buildChartNopatientsLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && doughnutChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotal| number:'1.0-0'}}</h3>\n                       <small *ngIf=\"currentText == ''\">{{currentText}}</small>\n                        <small *ngIf=\"currentText == ''\">Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotalPrev| number:'1.0-0'}}</h3>\n                         <small *ngIf=\"trendText != ''\">{{trendText}}</small>\n                        <small *ngIf=\"trendText == ''\">Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light typext-center\">{{doughnutGoals| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"noPatientsSingle sa_no_tabs_area\" [style.display]=\"'none'\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">No. Patient Complaints\n\n          <!--     <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n\n\n        <div class=\"chart\">\n         <ngx-gauge *ngIf=\"showTrendChart == false && gaugeValuePatients >0\" [type]=\"gaugeType\"\n           [value]=\"gaugeValuePatients\"\n           [label]=\"gaugeLabelPatients\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"doughnutGoals\"\n           [cap] =\"cap\"\n           [size] = \"size\"\n           [duration]= \"gaugeDuration\">\n          </ngx-gauge>\n\n          <div *ngIf=\"showTrendChart == true && patientComplaintsTrendLabels.length>0\" style=\"height: 250px\">\n              <canvas #myCanvas baseChart [datasets]=\"patientComplaintTrend\" [labels]=\"patientComplaintsTrendLabels\"  [legend]=\"barChartLegend\"\n              [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionstrend\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n              </canvas>\n          </div>\n        \n           <div *ngIf=\"patientComplaintsTrendLabels.length <= 0 && gaugeValuePatients<=0 && buildChartNopatientsDentistLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n        </div>\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && gaugeValuePatients >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotal| number:'1.0-0'}}</h3>\n                       <small *ngIf=\"currentText == ''\">{{currentText}}</small>\n                        <small *ngIf=\"currentText == ''\">Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutTotalPrev| number:'1.0-0'}}</h3>\n                         <small *ngIf=\"trendText != ''\">{{trendText}}</small>\n                        <small *ngIf=\"trendText == ''\">Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{doughnutGoals| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n     <div *ngIf=\"buildChartNopatientsLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n          <div *ngIf=\"buildChartNopatientsDentistLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n           <div *ngIf=\"patientComplaintsTrendLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n  </div>\n   \n   <!-- Column-->\n  <div fxFlex.lg=\"66\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"66\" class=\"sa_flexbg\">\n    <mat-card  class=\"newPatients sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n      <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} :  {{newPatientTotalPrev}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{newPatientTotalTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">No. New Patients\n\n             <!--  <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          \n\n        <div class=\"chart\" *ngIf=\"newPatientsDataMax > 0\">\n          <div *ngIf=\"showTrendChart == false\" style=\"height: 250px\">\n        <canvas #myCanvas baseChart class=\"chart\"\n        [data]=\"newPatientChartData\"\n          [labels]=\"newPatientChartLabels\"\n          [legend]=\"true\"\n          [options]=\"doughnutChartOptions\"\n          [chartType]=\"doughnutChartType\"\n          (chartHover)=\"chartHovered($event)\"\n          (chartClick)=\"chartClicked($event)\" [colors]=\"doughnutChartColors\"></canvas>\n        </div>\n        </div>\n         \n          <div *ngIf=\"newPatientsDataMax <= 0 && buildChartNewpatientsLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && newPatientsDataMax <= 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{newPatientTotalAverage| number:'1.0-0'}}</h3>\n                         <small *ngIf=\"currentText == ''\">{{currentText}}</small>\n                        <small *ngIf=\"currentText == ''\">Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{newPatientTotalPrev| number:'1.0-0'}}</h3>\n                        <small *ngIf=\"trendText != ''\">{{trendText}}</small>\n                        <small *ngIf=\"trendText == ''\">Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light typext-center\">{{newPatientGoals| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n    <mat-card class=\"newPatientsSingle sa_no_tabs_area\" [style.display]=\"'none'\">\n      <mat-card-content class=\"sa_matcard_content\">\n          <mat-card-title class=\"text-center\">No. New Patients\n\n\n          <!--     <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n<div fxLayout=\"row wrap\" class=\"row_Patients\">\n  <div *ngIf=\"newPatientsChartTrendLabels.length <= 0 && newPatientPercent<=0 && buildChartNewpatientsDentistLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n          <div fxFlex.lg=\"49\" fxFlex.md=\"49\" fxFlex.sm=\"49\" fxFlex.xs=\"49\" fxFlex=\"49\" class=\"text-center\">\n\n   <div class=\"sa_new_patients\" *ngIf=\"showTrendChart == false && newPatientPercent >0\"><strong>{{newPatientValuePatients}}</strong>\n<span class=\"sa_new_patients_text\">New Patients</span>\n          </div>\n</div><div fxFlex.lg=\"49\" fxFlex.md=\"49\" fxFlex.sm=\"49\" fxFlex.xs=\"49\" fxFlex=\"49\">\n        <div class=\"chart\">\n         \n         <ngx-gauge *ngIf=\"showTrendChart == false && newPatientPercent >0\" [type]=\"gaugeType\"\n           [value]=\"newPatientPercent\"\n           [label]=\"newPatientLabelPatients\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"newPatientGoals\"\n           [cap] =\"cap\"\n           [append] =\"gaugeAppendText\"\n           [size] = \"size\"\n           [duration]= \"gaugeDuration\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && newPatientsChartTrendLabels.length>0\" style=\"height: 250px\">\n              <canvas #myCanvas baseChart [datasets]=\"newPatientsChartTrend\" [labels]=\"newPatientsChartTrendLabels\"  [legend]=\"barChartLegend\"\n              [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionstrend\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n              </canvas>\n          </div>\n        \n           \n\n        </div>\n      </div></div>\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && newPatientPercent >0 && newPatientsChartTrendLabels.length>0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{newPatientTotalAverage| number:'1.0-0'}}</h3>\n                        <small *ngIf=\"currentText == ''\">{{currentText}}</small>\n                        <small *ngIf=\"currentText == ''\">Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{newPatientTotalPrev| number:'1.0-0'}}</h3>\n                         <small *ngIf=\"trendText != ''\">{{trendText}}</small>\n                        <small *ngIf=\"trendText == ''\">Previous</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{newPatientGoals| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n     <div *ngIf=\"buildChartNewpatientsLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n          <div *ngIf=\"buildChartNewpatientsDentistLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n          <div *ngIf=\"fdnewPatientsRateTrendLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n  </div>\n<div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg last\">\n    <mat-card  class=\"recallPrebook\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{recallChartAveragePrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{recallChartTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Recall Prebook Rate\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n          <div fxLayout=\"row wrap\" class=\"prebook_rate sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn pr_recall active\" (click) = \"changePrebookRate('recall')\">Recall Prebook Rate</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn pr_treatment\" (click) = \"changePrebookRate('treatment')\">Treatment\nPrebook Rate</small>\n                    </div>\n                </div>\n          \n\n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"recallChartLabels.length > 0 && prebook=='recall' \" #myCanvas baseChart [datasets]=\"recallChartData\" [labels]=\"recallChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsRP\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n\n        <canvas *ngIf=\"treatmentPreChartLabels.length > 0 && prebook=='treatment'\" #myCanvas baseChart [datasets]=\"treatmentPreChartData\" [labels]=\"treatmentPreChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsRP\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"recallChartLabels.length <= 0 && prebook=='recall' && recallPrebookLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n        <div *ngIf=\"treatmentPreChartLabels.length <= 0 && prebook=='treatment' && treatmentPrebookLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"recallChartLabels.length > 0 && prebook=='recall'\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 *ngIf=\"recallChartAverage > 0\" class=\"m-0 font-light text-center\">{{recallChartAverage}}%</h3>\n                         <h3 *ngIf=\"recallChartAverage <= 0\" class=\"m-0 font-light text-center\">{{recallChartAverage| number:'0.0-0'}}%</h3>\n                        <small *ngIf=\"currentText != ''\">{{currentText}} Average</small>\n                        <small *ngIf=\"currentText == ''\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallChartAveragePrev}}%</h3>\n                        <small *ngIf=\"trendText != ''\">{{trendText}} Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallChartGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n  <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"treatmentPreChartLabels.length > 0 && prebook=='treatment'\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                         <h3 *ngIf=\"treatmentPreChartAverage > 0\" class=\"m-0 font-light text-center\">{{treatmentPreChartAverage}}%</h3>\n                         <h3 *ngIf=\"treatmentPreChartAverage <= 0\" class=\"m-0 font-light text-center\">{{treatmentPreChartAverage| number:'0.0-0'}}%</h3>\n                         <small *ngIf=\"currentText != ''\">{{currentText}} Average</small>\n                        <small *ngIf=\"currentText == ''\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentPreChartAveragePrev}}%</h3>\n                        <small *ngIf=\"trendText != ''\">{{trendText}} Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentPreChartGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"recallPrebookSingle\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Recall Prebook Rate\n        \n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n          <div fxLayout=\"row wrap\" class=\"prebook_rate sa_tabs_main_sec\">\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                      <small class=\"sa_tab_btn pr_recall active\" (click) = \"changePrebookRate('recall')\">Recall Prebook Rate</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">\n                        <small class=\"sa_tab_btn pr_treatment\" (click) = \"changePrebookRate('treatment')\">Treatment\nPrebook Rate</small>\n                    </div>\n                </div>\n\n         <ngx-gauge  *ngIf=\"showTrendChart == false && recallValue >0 && prebook=='recall'\" [type]=\"gaugeType\"\n           [value]=\"recallValue\"\n           [label]=\"recallLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"recallGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [append]=\"gaugeAppendText\"\n           [size] = \"size\">\n          </ngx-gauge>\n                <ngx-gauge  *ngIf=\"showTrendChart == false && treatmentPreValue >0 && prebook=='treatment'\" [type]=\"gaugeType\"\n           [value]=\"treatmentPreValue\"\n           [label]=\"treatmentPreLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"recallGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [append]=\"gaugeAppendText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && recallPrebookChartTrendLabels.length >0  && prebook=='recall' && recallPrebookDentistLoader == false\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"recallPrebookChartTrend\" [labels]=\"recallPrebookChartTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsPercent\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n          </canvas>\n      </div>\n      <div *ngIf=\"showTrendChart == true && treatmentPrebookChartTrendLabels.length >0 && prebook=='treatment' && treatmentPrebookDentistLoader == false\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"treatmentPrebookChartTrend\" [labels]=\"treatmentPrebookChartTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsPercent\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n          </canvas>\n      </div>\n       <div *ngIf=\"patientComplaintsTrendLabels.length <= 0 && recallValue<=0  && prebook=='recall'\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n           <div *ngIf=\"patientComplaintsTrendLabels.length <= 0 && treatmentPreValue<=0  && prebook=='treatment'\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && recallValue >0 && prebook=='recall'\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallValue}}%</h3>\n                        <small *ngIf=\"currentText != ''\">{{currentText}} Total</small>\n                        <small *ngIf=\"currentText == ''\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallChartAverage}}%</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{recallGoal}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && treatmentPreValue >0 && prebook=='treatment'\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentPreValue}}%</h3>\n                         <small *ngIf=\"currentText != ''\">{{currentText}} Total</small>\n                        <small *ngIf=\"currentText == ''\">Total</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentPreChartAverage}}%</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentPreGoal}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n\n      </mat-card-content>\n    </mat-card>\n    <div *ngIf=\"recallPrebookLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n        <div *ngIf=\"recallPrebookDentistLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n          <div *ngIf=\"fdRecallPrebookRateTrendLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n  </div>\n\n<div fxFlex.lg=\"50\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"sa_flexbg\">\n    <mat-card  class=\"hourlyRate sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{hourlyRateChartAveragePrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{hourlyRateChartTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Hourly Rate\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n          <div class=\"relative\">\n           <div class=\"settingsBtn\"><button class=\"mat-raised-button mat-green-button sa_smtable_btn\" mat-raised-button (click)=\"ngxSmartModalService.getModal('myModal').open()\">Settings</button></div>\n\n\n         \n\n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"hourlyRateChartLabels.length > 0\" #myCanvas baseChart [datasets]=\"hourlyRateChartData\" [labels]=\"hourlyRateChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsHR\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"hourlyRateChartLabels.length <= 0 && hourlyRateChartLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n      </div>\n    </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"recallChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{hourlyRateChartAverage}}</h3>\n                        <small *ngIf=\"currentText != ''\">{{currentText}} Average</small>\n                        <small *ngIf=\"currentText == ''\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{hourlyRateChartAveragePrev}}</h3>\n                        <small class=\"text-center\">Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{hourlyRateChartGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"hourlyRateSingle sa_no_tabs_area\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Hourly Rate\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n\n\n         <ngx-gauge  *ngIf=\"showTrendChart == false && hourlyValue >0\" [type]=\"gaugeType\"\n           [value]=\"hourlyValue\"\n           [label]=\"hourlyLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"hourlyGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [prepend]=\"gaugePrependText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && hourlyRateChartTrendLabels.length >0\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"hourlyRateChartTrend\" [labels]=\"hourlyRateChartTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptions\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n          </canvas>\n      </div>\n\n       <div *ngIf=\"patientComplaintsTrendLabels.length <= 0 && hourlyValue<=0 && hourlyRateDentistLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && hourlyValue >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{hourlyValue}}</h3>\n                         <small *ngIf=\"currentText != ''\">{{currentText}}</small>\n                        <small *ngIf=\"currentText == ''\">Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentChartAverage}}</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{hourlyGoal}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n    <div *ngIf=\"hourlyRateChartLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n          <div *ngIf=\"hourlyRateDentistLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n          <div *ngIf=\"fdhourlyRateRateTrendLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n  </div>\n  <div fxFlex.lg=\"49\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\" class=\"sa_flexbg last\">\n    <mat-card  class=\"treatmentPlanRate sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n        <span class=\"predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow\" mat-icon-button matTooltip=\"{{trendText}} : {{treatmentChartAveragePrev| number:'1.0-0'}}\"><img class=\"trend_ico\" src=\"../assets/images/trend_{{treatmentChartTooltip}}.png\"></span>\n          <mat-card-title class=\"text-center\">Treatment Plan Completion Rate (%)\n            <!--   <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n          </mat-card-title>\n          \n\n        <div  style=\"height: 250px\">\n        <canvas *ngIf=\"treatmentChartLabels.length > 0\" #myCanvas baseChart [datasets]=\"treatmentChartData\" [labels]=\"treatmentChartLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsTP\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n        </canvas>\n        <div *ngIf=\"treatmentChartLabels.length <= 0 && treatmentPlanRateLoader == false\" class=\"sa_nodata_div\">\n            <h4>No Data</h4>\n            <p>Oops! Looks like we don't have any data to show you</p>\n        </div>\n\n      </div>\n          <div fxLayout=\"row wrap\" class=\"m-t-40 sa_chart_details_sec\" *ngIf=\"recallChartLabels.length > 0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                      <h3 *ngIf=\"treatmentChartAverage > 0\" class=\"m-0 font-light text-center\">{{treatmentChartAverage}}%</h3>\n                         <h3 *ngIf=\"treatmentChartAverage <= 0\" class=\"m-0 font-light text-center\">{{treatmentChartAverage| number:'0.0-0'}}%</h3>\n                        <small *ngIf=\"currentText != ''\">{{currentText}} Average</small>\n                        <small *ngIf=\"currentText == ''\">Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentChartAveragePrev}}%</h3>\n                        <small class=\"text-center\">Previous Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">{{treatmentChartGoal| number:'1.0-0'}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n\n     <mat-card class=\"treatmentPlanRateSingle sa_no_tabs_area\" [style.display]=\"'none'\" >\n      <mat-card-content class=\"sa_matcard_content\">\n\n          <mat-card-title class=\"text-center\">Treatment Plan Completion Rate (%)\n\n              <!-- <div class=\"sa_box_title_right_buttons\">\n                  <button mat-icon-button ><i class=\"fas fa-expand\"></i></button>\n                  <button mat-icon-button [matMenuTriggerFor]=\"menu\"><i class=\"fas fa-ellipsis-h\"></i></button>\n                  <mat-menu #menu=\"matMenu\">\n                      <button mat-menu-item>Item 1</button>\n                      <button mat-menu-item>Item 2</button>\n                  </mat-menu>\n              </div> -->\n\n          </mat-card-title>\n\n\n         <ngx-gauge  *ngIf=\"showTrendChart == false && treatmentPlanValue >0\" [type]=\"gaugeType\"\n           [value]=\"treatmentPlanValue\"\n           [label]=\"treatmentPlanLabel\"\n           [thick]=\"gaugeThick\"\n           [foregroundColor]=\"foregroundColor\"\n           [max] = \"treatmentPlanGoal\"\n           [cap] =\"cap\"\n           [duration]= \"gaugeDuration\"\n           [append]=\"gaugeAppendText\"\n           [size] = \"size\">\n          </ngx-gauge>\n          <div *ngIf=\"showTrendChart == true && treatmentPlanChartTrendLabels.length >0\" style=\"height: 250px\">\n          <canvas  #myCanvas baseChart [datasets]=\"treatmentPlanChartTrend\" [labels]=\"treatmentPlanChartTrendLabels\"  [legend]=\"barChartLegend\"\n          [chartType]=\"barChartType\" (chartHover)=\"chartHovered($event)\" [options]=\"barChartOptionsPercent\" [colors]=\"lineChartColors\" (chartClick)=\"chartClicked($event)\">\n          </canvas>\n      </div>\n\n       <div *ngIf=\"treatmentPlanChartTrendLabels.length <= 0 && treatmentPlanValue<=0 && treatmentPlanRateDentistLoader == false\" class=\"sa_nodata_div\">\n              <h4>No Data</h4>\n              <p>Oops! Looks like we don't have any data to show you</p>\n          </div>\n\n          <div fxLayout=\"row wrap\" class=\"sa_chart_details_sec\" *ngIf=\"showTrendChart == false && treatmentPlanValue >0\">\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentPlanValue}}%</h3>\n                        <small *ngIf=\"currentText != ''\">{{currentText}}</small>\n                        <small *ngIf=\"currentText == ''\">Current</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentChartAverage}}%</h3>\n                        <small class=\"text-center\">Practice Average</small>\n                    </div>\n                    <div fxFlex.gt-sm=\"33.33%\" fxFlex.gt-xs=\"33.33%\" fxFlex=\"100\" class=\"text-center\">\n                        <h3 class=\"m-0 font-light text-center\">${{treatmentPlanGoal}}</h3>\n                        <small class=\"text-center\">Goal</small>\n                    </div>\n                </div>\n      </mat-card-content>\n    </mat-card>\n    <div *ngIf=\"treatmentPlanRateLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n          <div *ngIf=\"treatmentPlanRateDentistLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n          <div *ngIf=\"fdtreatmentPlanRateTrendLoader == true\" class=\"loader_container loader_container_middle\"><img class=\"loader_ico\" src=\"../assets/images/720.gif\"><div class=\"loader-text\">Calculating...</div></div>\n  </div>\n</div>\n</div>\n</div> <canvas #myCanvas baseChart [style.display]=\"'none'\"></canvas>\n  <ngx-smart-modal #myModal identifier=\"myModal\">\n  <h3 class=\"datamapping-heading\">Data Mapping</h3>\n <div fxFlex.lg=\"100\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"100\" class=\"modal-popup-mapping sa_flexbg referral_clinicians\">   \n  <div *ngFor=\"let acntngDentist of accountingDentist\">\n    <span fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\">{{acntngDentist.name}}<span class=\"name_arrow\"><i class=\"fas fa-caret-right\"></i></span></span>\n   <select fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"sa_select internal_dentist\" name=\"dentistMap_{{acntngDentist.provider_id}}\" id=\"dentistMap_{{acntngDentist.provider_id}}\">\n      <option value =\"\">Select Dentist</option>\n      <option *ngFor=\"let statDentist of statusDentist\" value =\"{{statDentist.book_desc}}\" [attr.selected] = \"statDentist.provider_id == acntngDentist.provider_id ? 'selected' : null\"\n      >{{statDentist.book_desc}}</option>\n   </select> \n   </div>\n   \n </div>\n <div class=\"modal-footer-mapping\"><button class=\"mat-raised-button mat-gray\" mat-raised-button (click)=\"save_mapping()\">Save Mapping</button></div>\n\n  <button (click)=\"myModal.close()\" class=\"close_modal\" style=\"display:none\">Close</button>\n</ngx-smart-modal>"
+module.exports = "<!-- ============================================================== -->\n<!-- Grid-->\n<!-- ============================================================== -->\n<!-- <div fxLayout=\"row wrap\">\n    <div class=\"sa_heading_bar\">\n        <div fxFlex.gt-sm=\"85\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <h4><span class=\"page_title\">Clinician Procedures &#38; Referrals</span></h4>\n        </div>\n        <app-headerright class=\"app-headerright\"></app-headerright>\n\n        <div fxFlex.gt-sm=\"18\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"\">\n            <div class=\"vertical_center_header_content\">\n                <div class=\"sa_select_outer\">\n                    <select class=\"sa_select\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n                        <option value =\"all\">All Dentist( {{dentistCount}} )</option>\n                        <option *ngFor=\"let dentist of dentists\" [value]=\"dentist.providerId\"> {{dentist.name}}</option>\n                    </select>\n                </div>\n            </div>\n        </div>\n    </div>\n</div> -->\n\n<div class=\"sa_dashboard_inner_content\">\n   <div class=\"sa_card gridshadow\">\n    <div fxLayout=\"row wrap\">\n\n        <div fxFlex.lg=\"100\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"100\">\n             <div class=\"sa_tabs_design\">\n              <div class=\"custom_date\">\n              <input class=\"filter_custom filter sa_datepicker\" id='sa_datepicker' value=\"\" (click)=\"filterDate('custom')\" />\n              <ngx-daterangepicker-material (rangeClicked)=\"rangeClicked($event)\" class=\"customRange\"  id=\"customRange\" (choosedDate)=\"choosedDate($event)\" [style.display]=\"'none'\"></ngx-daterangepicker-material></div>\n            </div>\n        </div>\n  </div>\n</div>\n\n<div class=\"sa_dentist_graphs_area sa_health_screen_area\">\n  <div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg sa_designbg\">\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n       \n          <mat-card-title class=\"text-center\">Total Members (active)\n          </mat-card-title>\n         <span>{{totalMembers}}</span>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg sa_designbg\">\n\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n       \n          <mat-card-title class=\"text-center\">New Members this month\n          </mat-card-title>\n          <span>{{newMembersThisMonth}}</span>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg sa_designbg\">\n\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n       \n          <mat-card-title class=\"text-center\">Total Fees Collected\n          </mat-card-title>\n          <span>${{totalFees}}</span>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>\n<div fxLayout=\"row wrap\" >\n  <div fxFlex.lg=\"24\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"24\" class=\"sa_flexbg\">\n\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n       \n          <mat-card-title class=\"text-center\">Fees Collected this month\n          </mat-card-title>\n          <span>${{totalFeesThisMonth}}</span>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"24\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"24\" class=\"sa_flexbg\">\n\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n       \n          <mat-card-title class=\"text-center\">Conversion Rate (invites sent vs accepted as percentage)\n          </mat-card-title>\n          <span>{{conversionRate}}</span>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"24\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"24\" class=\"sa_flexbg\">\n\n     <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n       \n          <mat-card-title class=\"text-center\">Total Plans (active)</mat-card-title>\n          <span>{{totalPlans}}</span>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"24\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"24\" class=\"sa_flexbg\">\n\n     <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n       \n          <mat-card-title class=\"text-center\">New Plans this month</mat-card-title>\n          <span>{{newPlansThisMonth}}</span>\n      </mat-card-content>\n    </mat-card>\n  </div>\n\n</div>\n<div fxLayout=\"row wrap\" >\n  \n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg\">\n\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n       \n          <mat-card-title class=\"text-center\">Total Fees Collected</mat-card-title>\n          <span>${{totalFeesInoffice}}</span>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"32\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"32\" class=\"sa_flexbg\">\n\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n       \n          <mat-card-title class=\"text-center\">Fees Collected this month</mat-card-title>\n          <span>${{totalFeesInofficeMonth}}</span>\n      </mat-card-content>\n    </mat-card>\n  </div>\n  <div fxFlex.lg=\"33\" fxFlex.md=\"100\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"33\" class=\"sa_flexbg\">\n\n    <mat-card  class=\"dentistProduction sa_no_tabs_area\">\n      <mat-card-content class=\"sa_matcard_content\">\n       \n          <mat-card-title class=\"text-center\">Overdue Plans</mat-card-title>\n          <span>{{totalPlansOverdue}}</span>\n      </mat-card-content>\n    </mat-card>\n  </div>\n\n</div>\n\n</div>\n</div> "
 
 /***/ }),
 
-/***/ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.ts":
-/*!*****************************************************************************!*\
-  !*** ./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.ts ***!
-  \*****************************************************************************/
-/*! exports provided: ClinicianAnalysisComponent */
+/***/ "./src/app/dashboards/dashboards.component.ts":
+/*!****************************************************!*\
+  !*** ./src/app/dashboards/dashboards.component.ts ***!
+  \****************************************************/
+/*! exports provided: DashboardsComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClinicianAnalysisComponent", function() { return ClinicianAnalysisComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DashboardsComponent", function() { return DashboardsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cliniciananalysis.service */ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.service.ts");
-/* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! chartjs-plugin-style */ "./node_modules/chartjs-plugin-style/dist/chartjs-plugin-style.js");
-/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../layouts/full/header/header.service */ "./src/app/layouts/full/header/header.service.ts");
-/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
-/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ng2-charts */ "./node_modules/ng2-charts/index.js");
-/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(ng2_charts__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var ngx_smart_modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ngx-smart-modal */ "./node_modules/ngx-smart-modal/esm5/ngx-smart-modal.js");
+/* harmony import */ var _dashboards_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dashboards.service */ "./src/app/dashboards/dashboards.service.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! chartjs-plugin-style */ "./node_modules/chartjs-plugin-style/dist/chartjs-plugin-style.js");
+/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../layouts/full/header/header.service */ "./src/app/layouts/full/header/header.service.ts");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ng2-charts */ "./node_modules/ng2-charts/index.js");
+/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ng2_charts__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var ngx_smart_modal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ngx-smart-modal */ "./node_modules/ngx-smart-modal/esm5/ngx-smart-modal.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6659,11 +6658,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
-var ClinicianAnalysisComponent = /** @class */ (function () {
-    function ClinicianAnalysisComponent(cliniciananalysisService, dentistService, datePipe, route, headerService, _cookieService, router, ngxSmartModalService) {
-        this.cliniciananalysisService = cliniciananalysisService;
-        this.dentistService = dentistService;
+var DashboardsComponent = /** @class */ (function () {
+    function DashboardsComponent(dashboardsService, datePipe, route, headerService, _cookieService, router, ngxSmartModalService) {
+        this.dashboardsService = dashboardsService;
         this.datePipe = datePipe;
         this.route = route;
         this.headerService = headerService;
@@ -6684,6 +6681,15 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         this.averagechecked = false;
         this.childid = '';
         this.user_type = '';
+        this.newMembersThisMonth = 0;
+        this.totalFees = 0;
+        this.totalFeesThisMonth = 0;
+        this.conversionRate = 0;
+        this.totalPlans = 0;
+        this.newPlansThisMonth = 0;
+        this.totalFeesInoffice = 0;
+        this.totalFeesInofficeMonth = 0;
+        this.totalPlansOverdue = 0;
         this.dentists = [
             { providerId: 'all', name: 'All Dentists' },
         ];
@@ -7019,257 +7025,18 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                 position: 'right'
             }
         };
-        this.dentistVal = 'all';
-        this.accountingDentist = [];
-        this.statusDentist = [];
-        this.final_map = {};
         this.productionTooltip = 'down';
         this.barChartOptionsDP = this.barChartOptions;
-        this.recallChartData = [
-            { data: [], shadowOffsetX: 3,
-                shadowOffsetY: 3,
-                shadowBlur: 5,
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.recallChartTooltip = 'down';
-        this.barChartOptionsRP = this.barChartOptionsPercent;
-        this.treatmentPreChartData = [
-            { data: [], shadowOffsetX: 3,
-                shadowOffsetY: 3,
-                shadowBlur: 5,
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.treatmentPreChartTooltip = 'down';
-        this.barChartOptionsTPB = this.barChartOptionstrend;
-        this.prebook = 'recall';
-        this.treatmentChartData = [
-            { data: [], shadowOffsetX: 3,
-                shadowOffsetY: 3,
-                shadowBlur: 5,
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.treatmentChartTooltip = 'down';
-        this.barChartOptionsTP = this.barChartOptionsPercent;
-        this.treatmentPlanValue = 0;
-        this.treatmentPlanLabel = '';
-        this.planTotalTooltip = 'down';
-        this.planAllTotal = 0;
-        this.planAllTotalTrend = 0;
-        this.planChartLabels2 = [];
-        this.barChartOptionsTC = this.barChartOptions;
-        this.gaugeValueTreatmentP = 0;
-        this.gaugeValueTreatmentC = 0;
-        this.doughnutTotalTooltip = 'down';
-        this.doughnutTotalPrev = 0;
-        this.newPatientTotalTooltip = 'down';
-        this.newPatientTotalPrev = 0;
-        this.newPatientPercent = 0;
-        this.hourlyRateChartData = [
-            { data: [], shadowOffsetX: 3,
-                shadowOffsetY: 3,
-                shadowBlur: 5,
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.hourlyRateChartLabels1 = [];
-        this.hourlyRateChartTooltip = 'down';
-        this.barChartOptionsHR = this.barChartOptions;
-        this.hourlyValue = 0;
-        this.hourlyLabel = '';
-        this.toggleChecked = false;
-        this.trendValue = '';
-        this.isDisabled = true;
-        this.isChecked = true;
-        this.dentistProdTrend = [
-            { data: [], label: '', shadowOffsetX: 3,
-                shadowOffsetY: 2,
-                shadowBlur: 3,
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.dentistProductionTrend1 = [];
-        this.dentistProductionTrendLabels = [];
-        this.dentistProductionTrendLabels1 = [];
-        this.treatPlanTrend = [
-            { data: [], label: '', shadowOffsetX: 3,
-                shadowOffsetY: 2,
-                shadowBlur: 3,
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.treatmentPlanTrend1 = [];
-        this.treatmentPlanTrendLabels = [];
-        this.treatmentPlanTrendLabels1 = [];
-        this.patientComplaintTrend = [
-            { data: [], label: '', shadowOffsetX: 3,
-                shadowOffsetY: 2,
-                shadowBlur: 3,
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.patientComplaintsTrend1 = [];
-        this.patientComplaintsTrendLabels = [];
-        this.patientComplaintsTrendLabels1 = [];
-        this.recallPrebookChartTrend = [
-            { data: [], label: '', shadowOffsetX: 3,
-                shadowOffsetY: 2,
-                shadowBlur: 3,
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.recallPrebookChartTrend1 = [];
-        this.recallPrebookChartTrendLabels = [];
-        this.recallPrebookChartTrendLabels1 = [];
-        this.treatmentPrebookChartTrend = [
-            { data: [], label: '', shadowOffsetX: 3,
-                shadowOffsetY: 2,
-                shadowBlur: 3,
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.treatmentPrebookChartTrend1 = [];
-        this.treatmentPrebookChartTrendLabels = [];
-        this.treatmentPrebookChartTrendLabels1 = [];
-        this.hourlyRateChartTrend = [
-            { data: [], label: '', shadowOffsetX: 3,
-                shadowOffsetY: 2,
-                shadowBlur: 3,
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.hourlyRateChartTrend1 = [];
-        this.hourlyRateChartTrendLabels = [];
-        this.hourlyRateChartTrendLabels1 = [];
-        this.newPatientsChartTrend = [
-            { data: [], label: '', shadowOffsetX: 3,
-                shadowOffsetY: 2,
-                shadowBlur: 3,
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.newPatientsChartTrend1 = [];
-        this.newPatientsChartTrendLabels = [];
-        this.newPatientsChartTrendLabels1 = [];
-        this.treatmentPlanChartTrend = [
-            { data: [], label: '', shadowOffsetX: 3,
-                shadowOffsetY: 2,
-                shadowBlur: 3,
-                shadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointBevelWidth: 2,
-                pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-                pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-                pointShadowOffsetX: 3,
-                pointShadowOffsetY: 3,
-                pointShadowBlur: 10,
-                pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-                backgroundOverlayMode: 'multiply' }
-        ];
-        this.treatmentPlanChartTrend1 = [];
-        this.treatmentPlanChartTrendLabels = [];
-        this.treatmentPlanChartTrendLabels1 = [];
     }
-    ClinicianAnalysisComponent.prototype.ngAfterViewInit = function () {
+    DashboardsComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
         this.route.params.subscribe(function (params) {
             _this.clinic_id = _this.route.snapshot.paramMap.get("id");
-            _this.getDentists();
-            _this.changeLoginStatus();
-            _this.user_type = _this._cookieService.get("user_type");
-            if (_this._cookieService.get("childid"))
-                _this.childid = _this._cookieService.get("childid");
-            //   $('.external_dentist').val('all');
-            $('#title').html('Clinician Analysis');
+            $('.header_filters').removeClass('hide_header');
             $('.external_clinic').show();
-            $('.dentist_dropdown').show();
-            $('.header_filters').removeClass('flex_direct_mar');
-            if ($('body').find('span#currentDentist').length > 0) {
-                var did = $('body').find('span#currentDentist').attr('did');
-                $('.external_dentist').val(did);
-            }
-            else {
-                $('.external_dentist').val('all');
-            }
-            _this.filterDate('cytd');
+            $('.dentist_dropdown').hide();
+            $('.header_filters').addClass('flex_direct_mar');
+            $('#title').html('Dashboard - Membership Plans');
             $(document).on('click', function (e) {
                 if ($(document.activeElement).attr('id') == 'sa_datepicker') {
                     $('.customRange').show();
@@ -7281,8 +7048,8 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
                     $('.customRange').hide();
                 }
             });
+            _this.loadAnalytics();
         });
-        //this.canvas = (<HTMLElement>document.getElementById('#'))
         var gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
         gradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
         gradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
@@ -7323,1609 +7090,63 @@ var ClinicianAnalysisComponent = /** @class */ (function () {
         //this.recallChartTreatment();
     };
     // events
-    ClinicianAnalysisComponent.prototype.chartClicked = function (e) {
+    DashboardsComponent.prototype.chartClicked = function (e) {
         console.log(e);
     };
-    ClinicianAnalysisComponent.prototype.chartHovered = function (e) {
+    DashboardsComponent.prototype.chartHovered = function (e) {
         console.log(e);
     };
-    ClinicianAnalysisComponent.prototype.changeLoginStatus = function () {
+    DashboardsComponent.prototype.loadAnalytics = function () {
         var _this = this;
-        this.cliniciananalysisService.changeLoginStatus().subscribe(function (data) {
+        this.dashboardsService.loadAnalytics(this.startDate, this.endDate).subscribe(function (data) {
             if (data.message == 'success') {
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.loadDentist = function (newValue) {
-        $('#title').html('Clinician Analysis ' + this.datePipe.transform(this.startDate, 'MMM d yyyy') + '-' + this.datePipe.transform(this.endDate, 'MMM d yyyy') + '');
-        this.getAccountingDentist();
-        this.getStatusDentist();
-        this.changePrebookRate('recall');
-        if (newValue == 'all') {
-            this.dentistVal = 'all';
-            this.showTrend = false;
-            this.buildChartNopatients();
-            this.buildChart();
-            this.buildChartTreatment();
-            this.recallPrebook();
-            this.treatmentPlanRate();
-            this.treatmentPrePrebook();
-            this.buildChartNewpatients();
-            this.hourlyRateChart();
-            document.querySelector('.dentistProductionSingle').style.display = 'none';
-            document.querySelector('.dentistProduction').style.display = 'block';
-            document.querySelector('.treatmentPlanSingle').style.display = 'none';
-            document.querySelector('.treatmentPlan').style.display = 'block';
-            document.querySelector('.noPatientsSingle').style.display = 'none';
-            document.querySelector('.noPatients').style.display = 'block';
-            document.querySelector('.newPatientsSingle').style.display = 'none';
-            document.querySelector('.newPatients').style.display = 'block';
-            document.querySelector('.recallPrebookSingle').style.display = 'none';
-            document.querySelector('.recallPrebook').style.display = 'block';
-            document.querySelector('.treatmentPlanRateSingle').style.display = 'none';
-            document.querySelector('.treatmentPlanRate').style.display = 'block';
-            document.querySelector('.hourlyRateSingle').style.display = 'none';
-            document.querySelector('.hourlyRate').style.display = 'block';
-        }
-        else {
-            this.dentistVal = newValue;
-            this.showTrend = true;
-            this.selectedDentist = newValue;
-            this.buildChartDentist();
-            document.querySelector('.dentistProductionSingle').style.display = 'block';
-            document.querySelector('.dentistProduction').style.display = 'none';
-            this.buildChartTreatmentDentist();
-            document.querySelector('.treatmentPlanSingle').style.display = 'block';
-            document.querySelector('.treatmentPlan').style.display = 'none';
-            this.buildChartNopatientsDentist();
-            document.querySelector('.noPatientsSingle').style.display = 'block';
-            document.querySelector('.noPatients').style.display = 'none';
-            this.recallPrebookDentist();
-            this.treatmentPrePrebookDentist();
-            document.querySelector('.recallPrebookSingle').style.display = 'block';
-            document.querySelector('.recallPrebook').style.display = 'none';
-            this.treatmentPlanRateDentist();
-            document.querySelector('.treatmentPlanRateSingle').style.display = 'block';
-            document.querySelector('.treatmentPlanRate').style.display = 'none';
-            this.buildChartNewpatientsDentist();
-            document.querySelector('.newPatientsSingle').style.display = 'block';
-            document.querySelector('.newPatients').style.display = 'none';
-            this.hourlyRateDentist();
-            document.querySelector('.hourlyRateSingle').style.display = 'block';
-            document.querySelector('.hourlyRate').style.display = 'none';
-        }
-    };
-    ClinicianAnalysisComponent.prototype.getAccountingDentist = function () {
-        var _this = this;
-        this.cliniciananalysisService.getAccountingDentist(this.clinic_id).subscribe(function (data) {
-            if (data.message == 'success') {
-                data.data.forEach(function (res) {
-                    var temp = [];
-                    temp['provider_id'] = res.provider_id;
-                    temp['name'] = res.name;
-                    _this.accountingDentist.push(temp);
-                });
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.getStatusDentist = function () {
-        var _this = this;
-        this.cliniciananalysisService.getStatusDentist(this.clinic_id).subscribe(function (data) {
-            if (data.message == 'success') {
-                data.data.forEach(function (res) {
-                    var temp = [];
-                    temp['book_desc'] = res.app_book_description;
-                    temp['provider_id'] = res.provider_id;
-                    _this.statusDentist.push(temp);
-                });
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.save_mapping = function () {
-        var _this = this;
-        var i = 0;
-        this.accountingDentist.forEach(function (res) {
-            var id = res.provider_id;
-            if ($("#dentistMap_" + id).val() != '') {
-                var temp = {};
-                temp['id'] = id;
-                temp['book_desc'] = $("#dentistMap_" + id).val();
-                _this.final_map[i] = JSON.stringify(temp);
-                i++;
+                if (data.data.totalMembers != null)
+                    _this.totalMembers = data.data.totalMembers;
+                if (data.data.newMembersThisMonth != null)
+                    _this.newMembersThisMonth = data.data.newMembersThisMonth;
+                if (data.data.totalFees.total != null)
+                    _this.totalFees = data.data.totalFees.total;
+                if (data.data.totalFeesThisMonth.total != null)
+                    _this.totalFeesThisMonth = data.data.totalFeesThisMonth.total;
+                if (data.data.conversionRate != null)
+                    _this.conversionRate = data.data.conversionRate;
+                if (data.data.totalPlans != null)
+                    _this.totalPlans = data.data.totalPlans;
+                if (data.data.newPlansThisMonth != null)
+                    _this.newPlansThisMonth = data.data.newPlansThisMonth;
+                if (data.data.totalFeesInoffice.total != null)
+                    _this.totalFeesInoffice = data.data.totalFeesInoffice.total;
+                if (data.data.totalFeesInofficeMonth.total != null)
+                    _this.totalFeesInofficeMonth = data.data.totalFeesInofficeMonth.total;
+                if (data.data.totalPlansOverdue != null)
+                    _this.totalPlansOverdue = data.data.totalPlansOverdue;
             }
         });
-        var myJsonString = JSON.stringify(this.final_map);
-        this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe(function (res) {
-            if (res.data.message == 'success') {
-                alert('Mapping Saved!');
-                $('.nsm-dialog-btn-close').click();
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
     };
-    ClinicianAnalysisComponent.prototype.changeTreatmentCost = function (val) {
-        $('.treatmentPlan .treatment_cost .sa_tab_btn').removeClass('active');
-        $('.treatmentPlan .tcmain' + val).addClass('active');
-        this.planTotalTooltip = 'down';
-        this.tcmain = val;
-        if (val == '1') {
-            this.planTotalAverage = this.planAllTotal;
-            this.planTotalPrev = this.planAllTotalTrend;
-        }
-        else {
-            this.planTotalAverage = this.planCompletedTotal;
-            this.planTotalPrev = this.planCompletedTotalTrend;
-        }
-        if (this.planTotalAverage >= this.planTotalPrev)
-            this.planTotalTooltip = 'up';
-        if (this.goalchecked == 'average') {
-            this.barChartOptionsTC.annotation.annotations[0].value = this.planTotalAverage;
-        }
-        if (this.goalchecked == 'goal') {
-            this.barChartOptionsTC.annotation.annotations[0].value = this.planTotalGoal;
-        }
-    };
-    ClinicianAnalysisComponent.prototype.changeTreatmentCostSingle = function (val) {
-        $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
-        $('.treatmentPlanSingle .tcmain' + val).addClass('active');
-        this.tcmain = val;
-        if (val == '1') {
-            this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentP);
-        }
-        else {
-            this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentC);
-        }
-        //   this.predictedMax = Math.max(...this.predictedChartData[0]['data']);
-    };
-    //Dentist Production Chart
-    ClinicianAnalysisComponent.prototype.buildChart = function () {
-        var _this = this;
-        this.buildChartLoader = true;
-        this.barChartData1 = [];
-        this.barChartLabels1 = [];
-        this.productionTotal = 0;
-        this.barChartLabels = [];
-        this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.buildChartLoader = false;
-                _this.productionTooltip = 'down';
-                var i = 0;
-                data.data.forEach(function (res) {
-                    _this.barChartData1.push(res.total);
-                    var name = res.name;
-                    if (res.name != null && res.name != 'Anonymous') {
-                        name = res.name.split(')');
-                        if (name.length > 0 && name[1] != '') {
-                            name = name[1].split(',');
-                            if (name.length > 0)
-                                name = name[1] + " " + name[0];
-                        }
-                        _this.barChartLabels1.push(name);
-                        _this.dentistKey = i;
-                    }
-                    else
-                        _this.barChartLabels1.push(res.firstname);
-                    if (res.total != null)
-                        _this.productionTotal = _this.productionTotal + parseInt(res.total);
-                    i++;
-                });
-                if (_this.user_type == '4' && _this.childid != '') {
-                    _this.barChartColors[0].backgroundColor[_this.dentistKey] = 'red';
-                    _this.DPcolors = _this.barChartColors;
-                }
-                else
-                    _this.DPcolors = _this.lineChartColors;
-                _this.barChartData[0]['data'] = _this.barChartData1;
-                _this.barChartLabels = _this.barChartLabels1;
-                _this.productionTotalAverage = Math.floor(data.total_average);
-                _this.productionTotalPrev = data.total_ta;
-                _this.productionGoal = data.goals;
-                if (_this.productionTotalAverage >= _this.productionTotalPrev)
-                    _this.productionTooltip = 'up';
-                _this.barChartOptionsDP.annotation = [];
-                if (_this.goalchecked == 'average') {
-                    _this.barChartOptionsDP.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.productionTotalAverage,
-                                borderColor: '#0e3459',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-                else if (_this.goalchecked == 'goal') {
-                    _this.barChartOptionsDP.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.productionGoal,
-                                borderColor: 'red',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    //Individual Dentist Production Chart
-    ClinicianAnalysisComponent.prototype.buildChartDentist = function () {
-        var _this = this;
-        this.buildChartDentistLoader = true;
-        this.barChartOptionsDP.annotation = [];
-        this.productionTotal = 0;
-        this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.buildChartDentistLoader = false;
-                _this.gaugeValue = '0';
-                if (data.data != null) {
-                    _this.gaugeValue = data.data.total;
-                    _this.gaugeLabel = data.data.name;
-                    var name = data.data.name;
-                    if (name != null) {
-                        name = name.split(')');
-                        if (name.length > 0 && name[1] != '') {
-                            name = name[1].split(',');
-                            if (name.length > 0)
-                                name = name[1] + " " + name[0];
-                        }
-                        _this.gaugeLabel = name;
-                    }
-                    else
-                        _this.gaugeLabel = data.data.firstname;
-                    _this.productionTotal = data.data.total;
-                    _this.productionGoal = data.goals;
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.recallPrebook = function () {
-        var _this = this;
-        this.recallPrebookLoader = true;
-        this.recallChartData1 = [];
-        this.recallChartLabels1 = [];
-        this.productionTotal = 0;
-        this.recallChartLabels = [];
-        this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.recallPrebookLoader = false;
-                _this.productionTooltip = 'down';
-                data.data.forEach(function (res) {
-                    _this.recallChartData1.push(Math.abs(res.percent).toFixed(1));
-                    _this.recallChartLabels1.push(res.provider);
-                });
-                _this.recallChartData[0]['data'] = _this.recallChartData1;
-                _this.recallChartLabels = _this.recallChartLabels1;
-                _this.recallChartAverage = Math.abs(data.total).toFixed(1);
-                _this.recallChartAveragePrev = data.total_ta;
-                _this.recallChartGoal = data.goals;
-                if (_this.recallChartAverage >= _this.recallChartAveragePrev)
-                    _this.recallChartTooltip = 'up';
-                _this.barChartOptionsDP.annotation = [];
-                if (_this.goalchecked == 'average') {
-                    _this.barChartOptionsRP.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.recallChartAverage,
-                                borderColor: '#0e3459',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-                else if (_this.goalchecked == 'goal') {
-                    _this.barChartOptionsRP.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.recallChartGoal,
-                                borderColor: 'red',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    //Individual Dentist Production Chart
-    ClinicianAnalysisComponent.prototype.recallPrebookDentist = function () {
-        var _this = this;
-        this.recallPrebookDentistLoader = true;
-        this.recallValue = 0;
-        this.cliniciananalysisService.RecallPrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.recallPrebookDentistLoader = false;
-                _this.recallValue = '0';
-                if (data.data.length > 0) {
-                    _this.recallValue = data.data[0].percent;
-                    _this.recallLabel = data.data[0].provider;
-                    _this.recallGoal = data.goals;
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.treatmentPrePrebook = function () {
-        var _this = this;
-        this.treatmentPreChartData1 = [];
-        this.treatmentPreChartLabels1 = [];
-        this.productionTotal = 0;
-        this.treatmentPrebookLoader = true;
-        this.treatmentPreChartLabels = [];
-        this.cliniciananalysisService.treatmentPrePrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.treatmentPrebookLoader = false;
-                _this.productionTooltip = 'down';
-                data.data.forEach(function (res) {
-                    _this.treatmentPreChartData1.push(Math.abs(res.percent).toFixed(1));
-                    _this.treatmentPreChartLabels1.push(res.provider);
-                });
-                _this.treatmentPreChartData[0]['data'] = _this.treatmentPreChartData1;
-                _this.treatmentPreChartLabels = _this.treatmentPreChartLabels1;
-                _this.treatmentPreChartAverage = Math.abs(data.total).toFixed(1);
-                _this.treatmentPreChartAveragePrev = data.total_ta;
-                _this.treatmentPreChartGoal = data.goals;
-                if (_this.treatmentPreChartAverage >= _this.treatmentPreChartAveragePrev)
-                    _this.treatmentPreChartTooltip = 'up';
-                _this.barChartOptionsTPB.annotation = [];
-                if (_this.goalchecked == 'average') {
-                    _this.barChartOptionsTPB.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.treatmentPreChartAverage,
-                                borderColor: '#0e3459',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-                else if (_this.goalchecked == 'goal') {
-                    _this.barChartOptionsTPB.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.treatmentPreChartGoal,
-                                borderColor: 'red',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    //Individual Dentist Production Chart
-    ClinicianAnalysisComponent.prototype.treatmentPrePrebookDentist = function () {
-        var _this = this;
-        this.treatmentPrebookDentistLoader = true;
-        this.treatmentPreValue = '0';
-        this.cliniciananalysisService.treatmentPrePrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.treatmentPrebookDentistLoader = false;
-                if (data.data.length > 0) {
-                    _this.treatmentPreValue = data.data[0].percent;
-                    _this.treatmentPreLabel = data.data[0].provider;
-                    _this.treatmentPreGoal = data.goals;
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.treatmentPlanRate = function () {
-        var _this = this;
-        this.treatmentChartData1 = [];
-        this.treatmentChartLabels1 = [];
-        this.treatmentPlanRateLoader = true;
-        this.productionTotal = 0;
-        this.treatmentChartLabels = [];
-        this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.treatmentPlanRateLoader = false;
-                _this.productionTooltip = 'down';
-                data.data.forEach(function (res) {
-                    _this.treatmentChartData1.push(Math.abs(res.percent).toFixed(2));
-                    var name = res.provider;
-                    if (res.provider != null) {
-                        name = res.provider.split(',');
-                        if (name.length > 0)
-                            name = name[1] + " " + name[0];
-                        _this.treatmentChartLabels1.push(name);
-                    }
-                    else
-                        _this.treatmentChartLabels1.push(res.provider);
-                });
-                _this.treatmentChartData[0]['data'] = _this.treatmentChartData1;
-                _this.treatmentChartLabels = _this.treatmentChartLabels1;
-                _this.treatmentChartAverage = Math.abs(data.total).toFixed(2);
-                _this.treatmentChartAveragePrev = data.total_ta;
-                _this.treatmentChartGoal = data.goals;
-                if (_this.treatmentChartAverage >= _this.treatmentChartAveragePrev)
-                    _this.treatmentChartTooltip = 'up';
-                _this.barChartOptionsDP.annotation = [];
-                if (_this.goalchecked == 'average') {
-                    _this.barChartOptionsTP.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.treatmentChartAverage,
-                                borderColor: '#0e3459',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-                else if (_this.goalchecked == 'goal') {
-                    _this.barChartOptionsTP.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.treatmentChartGoal,
-                                borderColor: 'red',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    //Individual Dentist Production Chart
-    ClinicianAnalysisComponent.prototype.treatmentPlanRateDentist = function () {
-        var _this = this;
-        this.treatmentPlanRateDentistLoader = true;
-        this.treatmentPlanValue = '0';
-        this.cliniciananalysisService.TreatmentPlanRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.treatmentPlanRateDentistLoader = false;
-                _this.treatmentPlanValue = '0';
-                if (data.data.length > 0) {
-                    _this.treatmentPlanValue = Math.abs(data.data[0].percent).toFixed(2);
-                    _this.treatmentPlanLabel = data.data[0].provider;
-                    var name = data.data[0].provider;
-                    if (data.data[0].provider != null) {
-                        name = data.data[0].provider.split(',');
-                        if (name.length > 0)
-                            name = name[1] + " " + name[0];
-                        _this.treatmentPlanLabel = name;
-                    }
-                    else
-                        _this.treatmentPlanLabel = data.data[0].provider;
-                    _this.treatmentPlanGoal = data.goals;
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    //Treatment Plan Average Cost
-    ClinicianAnalysisComponent.prototype.buildChartTreatment = function () {
-        var _this = this;
-        this.buildChartTreatmentLoader = true;
-        $('.treatment_cost .sa_tab_btn').removeClass('active');
-        $('.tcmain1').addClass('active');
-        this.tcmain = 1;
-        this.planChartData1 = [];
-        this.planChartData2 = [];
-        this.planChartLabels1 = [];
-        this.planChartLabels2 = [];
-        this.planTotal = 0;
-        this.planChartLabels = [];
-        this.cliniciananalysisService.TreatmentPlan(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.buildChartTreatmentLoader = false;
-                _this.planTotalTooltip = 'down';
-                data.data.plan_fee_all.forEach(function (res) {
-                    _this.planChartData1.push(Math.abs(res.average_cost_all).toFixed(1));
-                    _this.planChartLabels1.push(res.provider);
-                });
-                _this.planAllTotal = data.total_all;
-                _this.planAllTotalTrend = data.total_ta_all;
-                data.data.plan_fee_completed.forEach(function (res) {
-                    _this.planChartData2.push(Math.abs(res.average_cost_completed).toFixed(1));
-                    _this.planChartLabels2.push(res.provider);
-                });
-                _this.planCompletedTotal = data.total_completed;
-                _this.planCompletedTotalTrend = data.total_ta_completed;
-                _this.planChartDataP[0]['data'] = _this.planChartData1;
-                _this.planChartDataC[0]['data'] = _this.planChartData2;
-                //  this.planChartData[1]['data'] = this.planChartData2;
-                _this.planChartDataP[0]['label'] = 'Proposed Fees';
-                _this.planChartDataC[0]['label'] = 'Completed Fees';
-                _this.planChartLabels = _this.planChartLabels1;
-                _this.planTotalAverage = _this.planAllTotal;
-                _this.planTotalGoal = data.goals;
-                _this.planTotalPrev = _this.planAllTotalTrend;
-                if (_this.planTotalAverage >= _this.planTotalPrev)
-                    _this.planTotalTooltip = 'up';
-                var index = 0;
-                _this.barChartOptionsTC.annotation = [];
-                if (_this.goalchecked == 'average') {
-                    _this.barChartOptionsTC.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.planTotalAverage,
-                                borderColor: '#0e3459',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-                else if (_this.goalchecked == 'goal') {
-                    _this.barChartOptionsTC.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.planTotalGoal,
-                                borderColor: 'red',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    //Individual Treatment Plan Average Cost
-    ClinicianAnalysisComponent.prototype.buildChartTreatmentDentist = function () {
-        var _this = this;
-        $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
-        $('.treatmentPlanSingle .tcmain1').addClass('active');
-        this.buildChartTreatmentDentistLoader = true;
-        this.gaugeValueTreatment = 0;
-        this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.buildChartTreatmentDentistLoader = false;
-                _this.gaugeValueTreatmentP = 0;
-                _this.gaugeValueTreatmentC = 0;
-                _this.gaugeValueTreatment = 0;
-                if (data.data != null) {
-                    if (data.data.plan_fee_completed.average_cost_completed != undefined)
-                        _this.gaugeValueTreatmentC = Math.floor(data.data.plan_fee_completed.average_cost_completed);
-                    if (data.data.plan_fee_all.average_cost_all != undefined)
-                        _this.gaugeValueTreatmentP = Math.floor(data.data.plan_fee_all.average_cost_all);
-                    _this.gaugeLabelTreatment = data.data.plan_fee_all.provider;
-                    _this.planTotal = data.data.total_all;
-                    _this.planTotalAverage = _this.planTotal;
-                }
-                else {
-                    _this.gaugeValueTreatmentP = 0;
-                    _this.gaugeValueTreatmentC = 0;
-                    _this.gaugeLabelTreatment = "";
-                    _this.planTotal = 0;
-                    _this.planTotalAverage = 0;
-                }
-                _this.gaugeValueTreatment = _this.gaugeValueTreatmentP;
-                _this.planTotalGoal = data.goals;
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    //treatmentPre Prebook Rate
-    ClinicianAnalysisComponent.prototype.recallChartTreatment = function () {
-        var _this = this;
-        this.planTotal = 0;
-        this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                data.data.forEach(function (res) {
-                    _this.planChartData1.push(parseInt(res.average_cost));
-                    _this.planChartLabels1.push(res.provider);
-                    _this.planTotal = _this.planTotal + parseInt(res.average_cost);
-                });
-                _this.planChartData[0]['data'] = _this.planChartData1;
-                _this.planChartLabels = _this.planChartLabels1;
-                _this.planTotalAverage = _this.planTotal / _this.planChartData1.length;
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.buildChartNopatients = function () {
-        var _this = this;
-        this.buildChartNopatientsLoader = true;
-        this.doughnutChartData1 = [];
-        this.doughnutChartLabels1 = [];
-        this.doughnutTotal = 0;
-        this.doughnutChartLabels = [];
-        this.cliniciananalysisService.NoPatients(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.buildChartNopatientsLoader = false;
-                _this.doughnutTotalTooltip = 'down';
-                data.data.forEach(function (res) {
-                    _this.doughnutChartData1.push(parseInt(res.treat_item));
-                    _this.doughnutChartLabels1.push(res.provider);
-                    _this.doughnutTotal = _this.doughnutTotal + parseInt(res.treat_item);
-                });
-                _this.doughnutChartData = _this.doughnutChartData1;
-                _this.doughnutChartLabels = _this.doughnutChartLabels1;
-                _this.doughnutTotalAverage = data.total;
-                _this.doughnutTotalPrev = data.total_ta;
-                _this.doughnutGoals = data.goals;
-                if (_this.doughnutTotalAverage >= _this.doughnutTotalPrev)
-                    _this.doughnutTotalTooltip = 'up';
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.buildChartNopatientsDentist = function () {
-        var _this = this;
-        this.buildChartNopatientsDentistLoader = true;
-        this.doughnutTotal = 0;
-        this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.buildChartNopatientsDentistLoader = false;
-                if (data.data != null) {
-                    _this.gaugeValuePatients = data.data.treat_item;
-                    _this.gaugeLabelPatients = data.data.provider;
-                    _this.doughnutTotal = data.data.treat_item;
-                    _this.doughnutTotalAverage = _this.doughnutTotal;
-                    _this.doughnutTotalPrev = data.total_ta;
-                }
-                else {
-                    _this.gaugeValuePatients = 0;
-                    _this.gaugeLabelPatients = "";
-                    _this.doughnutTotal = 0;
-                    _this.doughnutTotalAverage = 0;
-                }
-                _this.doughnutGoals = data.goals;
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.buildChartNewpatients = function () {
-        var _this = this;
-        this.newPatientChartData1 = [];
-        this.newPatientChartLabels1 = [];
-        this.newPatientTotal = 0;
-        this.buildChartNewpatientsLoader = true;
-        this.newPatientChartLabels = [];
-        this.newPatientsDataMax = 0;
-        this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.buildChartNewpatientsLoader = false;
-                _this.newPatientTotalTooltip = 'down';
-                data.data.forEach(function (res) {
-                    _this.newPatientChartData1.push(parseInt(res.getX));
-                    _this.newPatientChartLabels1.push(res.provider);
-                });
-                _this.newPatientChartData = _this.newPatientChartData1;
-                _this.newPatientChartLabels = _this.newPatientChartLabels1;
-                _this.newPatientTotalAverage = data.total;
-                _this.newPatientTotalPrev = data.total_ta;
-                _this.newPatientGoals = data.goals;
-                if (_this.newPatientTotalAverage >= _this.newPatientTotalPrev)
-                    _this.newPatientTotalTooltip = 'up';
-                _this.newPatientsDataMax = Math.max.apply(Math, _this.newPatientChartData);
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.buildChartNewpatientsDentist = function () {
-        var _this = this;
-        this.buildChartNewpatientsDentistLoader = true;
-        this.newPatientPercent = 0;
-        this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.buildChartNewpatientsDentistLoader = false;
-                if (data.data != null && data.data[0].getX != undefined) {
-                    _this.newPatientValuePatients = data.data[0].getX;
-                    _this.newPatientLabelPatients = data.data[0].provider;
-                    _this.newPatientPercent = data.data[0].percent;
-                    _this.newPatientTotalAverage = data.total;
-                    _this.newPatientTotalPrev = data.total_ta;
-                }
-                else {
-                    _this.newPatientValuePatients = 0;
-                    _this.newPatientLabelPatients = "";
-                    _this.newPatientTotalPrev = 0;
-                    _this.newPatientTotalAverage = 0;
-                }
-                _this.newPatientGoals = data.goals;
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.hourlyRateChart = function () {
-        var _this = this;
-        this.hourlyRateChartLoader = true;
-        this.hourlyRateChartData1 = [];
-        this.hourlyRateChartLabels1 = [];
-        this.productionTotal = 0;
-        this.hourlyRateChartLabels = [];
-        this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.hourlyRateChartLoader = false;
-                _this.productionTooltip = 'down';
-                data.data.forEach(function (res) {
-                    _this.hourlyRateChartData1.push(Math.abs(res.hourlyRate).toFixed(2));
-                    var name = res.provider;
-                    if (res.provider != null) {
-                        name = res.provider.split(')');
-                        if (name.length > 0 && name[1] != undefined) {
-                            name = name[1].split(',');
-                            if (name.length > 0)
-                                name = name[1] + " " + name[0];
-                        }
-                        _this.hourlyRateChartLabels1.push(name);
-                    }
-                    else
-                        _this.hourlyRateChartLabels1.push(res.provider);
-                });
-                _this.hourlyRateChartData[0]['data'] = _this.hourlyRateChartData1;
-                _this.hourlyRateChartLabels = _this.hourlyRateChartLabels1;
-                _this.hourlyRateChartAverage = Math.floor(data.total);
-                _this.hourlyRateChartAveragePrev = Math.floor(data.total_ta);
-                _this.hourlyRateChartGoal = data.goals;
-                if (_this.hourlyRateChartAverage >= _this.hourlyRateChartAveragePrev)
-                    _this.hourlyRateChartTooltip = 'up';
-                _this.barChartOptionsDP.annotation = [];
-                if (_this.goalchecked == 'average') {
-                    _this.barChartOptionsHR.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.hourlyRateChartAverage,
-                                borderColor: '#0e3459',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-                else if (_this.goalchecked == 'goal') {
-                    _this.barChartOptionsHR.annotation = { annotations: [{
-                                type: 'line',
-                                drawTime: 'afterDatasetsDraw',
-                                mode: 'horizontal',
-                                scaleID: 'y-axis-0',
-                                value: _this.hourlyRateChartGoal,
-                                borderColor: 'red',
-                                borderWidth: 2,
-                                borderDash: [2, 2],
-                                borderDashOffset: 0,
-                            },
-                        ]
-                    };
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    //Individual Dentist Production Chart
-    ClinicianAnalysisComponent.prototype.hourlyRateDentist = function () {
-        var _this = this;
-        this.hourlyRateDentistLoader = true;
-        this.hourlyValue = '0';
-        this.cliniciananalysisService.hourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.hourlyRateDentistLoader = false;
-                _this.hourlyValue = '0';
-                if (data.data.length > 0) {
-                    _this.hourlyValue = Math.floor(data.data[0].hourlyRate);
-                    var name = data.data[0].provider;
-                    if (name != null) {
-                        name = name.split(')');
-                        if (name.length > 0 && name[1] != undefined) {
-                            name = name[1].split(',');
-                            if (name.length > 0)
-                                name = name[1] + " " + name[0];
-                        }
-                        _this.hourlyLabel = name;
-                    }
-                    else
-                        _this.hourlyLabel = data.data[0].provider;
-                    _this.hourlyGoal = data.goals;
-                }
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    // Get Dentist
-    ClinicianAnalysisComponent.prototype.getDentists = function () {
-        var _this = this;
-        this.dentistService.getDentists(this.clinic_id).subscribe(function (res) {
-            if (res.message == 'success') {
-                _this.dentists = res.data;
-                _this.dentistCount = res.data.length;
-            }
-            else if (res.status == '401') {
-                _this._cookieService.put("username", '');
-                _this._cookieService.put("email", '');
-                _this._cookieService.put("token", '');
-                _this._cookieService.put("userid", '');
-                _this.router.navigateByUrl('/login');
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    // Filter By Date
-    ClinicianAnalysisComponent.prototype.filterDate = function (duration) {
-        $('.customRange').css('display', 'none');
-        this.showTrendChart = false;
-        var dentistVal;
-        if ($('.internal_dentist').val())
-            dentistVal = $('.internal_dentist').val();
-        else
-            dentistVal = $('.external_dentist').val();
-        this.duration = duration;
-        if (duration == 'w') {
-            this.trendText = 'Last Week';
-            this.currentText = 'This Week';
-            var now = new Date();
-            var first = now.getDate() - now.getDay();
-            var last = first + 6;
-            this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'yyyy-MM-dd');
-            var end = new Date();
-            end.setFullYear(now.getFullYear());
-            end.setMonth(now.getMonth() + 1);
-            end.setDate(last);
-            this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'yyyy-MM-dd');
-            this.loadDentist(dentistVal);
-        }
-        else if (duration == 'm') {
-            this.trendText = 'Last Month';
-            this.currentText = 'This Month';
-            var date = new Date();
-            this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
-            this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'yyyy-MM-dd');
-            this.loadDentist(dentistVal);
-        }
-        else if (duration == 'q') {
-            this.trendText = 'Last Quarter';
-            this.currentText = 'This Quarter';
-            var now = new Date();
-            var cmonth = now.getMonth() + 1;
-            var cyear = now.getFullYear();
-            if (cmonth >= 1 && cmonth <= 3) {
-                this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
-                this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd');
-            }
-            else if (cmonth >= 4 && cmonth <= 6) {
-                this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
-                this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd');
-            }
-            else if (cmonth >= 7 && cmonth <= 9) {
-                this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
-                this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd');
-            }
-            else if (cmonth >= 10 && cmonth <= 12) {
-                1;
-                this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'yyyy-MM-dd');
-                this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'yyyy-MM-dd');
-            }
-            this.loadDentist(dentistVal);
-        }
-        else if (duration == 'lq') {
-            this.trendText = 'Previous Quarter';
-            this.currentText = 'Last Quarter';
-            var now = new Date();
-            var cmonth = now.getMonth() + 1;
-            var cyear = now.getFullYear();
-            if (cmonth >= 1 && cmonth <= 3) {
-                this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'yyyy-MM-dd');
-                this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'yyyy-MM-dd');
-            }
-            else if (cmonth >= 4 && cmonth <= 6) {
-                this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
-                this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd');
-            }
-            else if (cmonth >= 7 && cmonth <= 9) {
-                this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
-                this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd');
-            }
-            else if (cmonth >= 10 && cmonth <= 12) {
-                this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
-                this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd');
-            }
-            this.loadDentist(dentistVal);
-        }
-        else if (duration == 'cytd') {
-            this.trendText = 'Last Year';
-            this.currentText = 'This Year';
-            var date = new Date();
-            this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'yyyy-MM-dd');
-            this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-            this.loadDentist(dentistVal);
-        }
-        else if (duration == 'fytd') {
-            this.trendText = 'Last Financial Year';
-            this.currentText = 'This Financial Year';
-            var date = new Date();
-            this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 3, 1), 'yyyy-MM-dd');
-            this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-            this.loadDentist(dentistVal);
-        }
-        else if (duration == 'custom') {
-            this.trendText = '';
-            this.currentText = '';
-            $('.customRange').css('display', 'block');
-        }
-        $('.filter').removeClass('active');
-        $('.filter_' + duration).addClass("active");
-        $('.filter_custom').val(this.startDate + " - " + this.endDate);
-    };
-    ClinicianAnalysisComponent.prototype.initiate_dentist = function () {
-        var val = $('.internal_dentist').val();
-        this.loadDentist(val);
-    };
-    ClinicianAnalysisComponent.prototype.choosedDate = function (val) {
+    DashboardsComponent.prototype.choosedDate = function (val) {
         val = (val.chosenLabel);
         var val = val.toString().split(' - ');
         this.startDate = this.datePipe.transform(val[0], 'yyyy-MM-dd');
         this.endDate = this.datePipe.transform(val[1], 'yyyy-MM-dd');
-        this.loadDentist('all');
+        this.loadAnalytics();
         $('.filter_custom').val(this.startDate + " - " + this.endDate);
         $('.customRange').css('display', 'none');
-    };
-    ClinicianAnalysisComponent.prototype.toggleFilter = function (val) {
-        $('.target_filter').removeClass('mat-button-toggle-checked');
-        $('.target_' + val).addClass('mat-button-toggle-checked');
-        $('.filter').removeClass('active');
-        if (val == 'current') {
-            this.toggleChecked = true;
-            this.showTrendChart = true;
-            this.trendValue = 'c';
-            this.toggleChangeProcess();
-        }
-        else if (val == 'historic') {
-            this.toggleChecked = true;
-            this.trendValue = 'h';
-            this.showTrendChart = true;
-            this.toggleChangeProcess();
-        }
-        else if (val == 'off') {
-            this.filterDate('cytd');
-            this.toggleChecked = false;
-            this.showTrendChart = false;
-        }
-    };
-    ClinicianAnalysisComponent.prototype.dentistProductionTrend = function () {
-        var _this = this;
-        this.dentistProductionTrendLoader = true;
-        this.dentistProductionTrendLabels1 = [];
-        this.dentistProductionTrend1 = [];
-        this.dentistProductionTrendLabels = [];
-        var user_id;
-        var clinic_id;
-        this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.dentistProductionTrendLoader = false;
-                data.data.forEach(function (res) {
-                    _this.dentistProductionTrend1.push(res.val.total);
-                    if (_this.trendValue == 'c')
-                        _this.dentistProductionTrendLabels1.push(_this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                        _this.dentistProductionTrendLabels1.push(res.duration);
-                });
-                _this.dentistProdTrend[0]['data'] = _this.dentistProductionTrend1;
-                _this.dentistProductionTrendLabels = _this.dentistProductionTrendLabels1;
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.treatmentPlanTrend = function () {
-        var _this = this;
-        this.treatmentPlanTrendLoader = true;
-        this.treatmentPlanTrendLabels1 = [];
-        this.treatmentPlanTrendLabels = [];
-        this.treatmentPlanTrend1 = [];
-        var user_id;
-        var clinic_id;
-        this.cliniciananalysisService.caTreatmentPlanAverageCostTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.treatmentPlanTrendLoader = false;
-                data.data.forEach(function (res) {
-                    _this.treatmentPlanTrend1.push(res.val.average_cost);
-                    if (_this.trendValue == 'c')
-                        _this.treatmentPlanTrendLabels1.push(_this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                        _this.treatmentPlanTrendLabels1.push(res.duration);
-                });
-                _this.treatPlanTrend[0]['data'] = _this.treatmentPlanTrend1;
-                _this.treatmentPlanTrendLabels = _this.treatmentPlanTrendLabels1;
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.patientComplaintsTrend = function () {
-        var _this = this;
-        this.patientComplaintsTrendLoader = true;
-        this.patientComplaintsTrendLabels1 = [];
-        this.patientComplaintsTrendLabels = [];
-        this.patientComplaintsTrend1 = [];
-        var user_id;
-        var clinic_id;
-        this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.patientComplaintsTrendLoader = false;
-                data.data.forEach(function (res) {
-                    _this.patientComplaintsTrend1.push(res.val.treat_item);
-                    if (_this.trendValue == 'c')
-                        _this.patientComplaintsTrendLabels1.push(_this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                        _this.patientComplaintsTrendLabels1.push(res.duration);
-                });
-                _this.patientComplaintTrend[0]['data'] = _this.patientComplaintsTrend1;
-                _this.patientComplaintsTrendLabels = _this.patientComplaintsTrendLabels1;
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.fdRecallPrebookRateTrend = function () {
-        this.fdRecallPrebookRateTrendLoader = true;
-        this.recallPrebookChartTrendLabels = [];
-    };
-    ClinicianAnalysisComponent.prototype.fdTreatmentPrebookRateTrend = function () {
-        this.fdTreatmentPrebookRateTrendLoader = true;
-        this.treatmentPrebookChartTrendLabels = [];
-    };
-    ClinicianAnalysisComponent.prototype.fdhourlyRateRateTrend = function () {
-        var _this = this;
-        this.fdhourlyRateRateTrendLoader = true;
-        this.hourlyRateChartTrendLabels = [];
-        var user_id;
-        var clinic_id;
-        this.cliniciananalysisService.cahourlyRateRateTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.fdhourlyRateRateTrendLoader = false;
-                _this.hourlyRateChartTrendLabels1 = [];
-                _this.hourlyRateChartTrend1 = [];
-                data.data.forEach(function (res) {
-                    _this.hourlyRateChartTrend1.push(res.val.hourlyRate.toFixed(2));
-                    if (_this.trendValue == 'c')
-                        _this.hourlyRateChartTrendLabels1.push(_this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                        _this.hourlyRateChartTrendLabels1.push(res.duration);
-                });
-                _this.hourlyRateChartTrend[0]['data'] = _this.hourlyRateChartTrend1;
-                _this.hourlyRateChartTrendLabels = _this.hourlyRateChartTrendLabels1;
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.fdnewPatientsRateTrend = function () {
-        var _this = this;
-        this.fdnewPatientsRateTrendLoader = true;
-        this.newPatientsChartTrendLabels = [];
-        var user_id;
-        var clinic_id;
-        this.cliniciananalysisService.canewPatientsRateTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.fdnewPatientsRateTrendLoader = false;
-                _this.newPatientsChartTrendLabels1 = [];
-                _this.newPatientsChartTrend1 = [];
-                data.data.forEach(function (res) {
-                    if (res.val.getX)
-                        _this.newPatientsChartTrend1.push(res.val.getX.toFixed(2));
-                    else
-                        _this.newPatientsChartTrend1.push(0);
-                    if (_this.trendValue == 'c')
-                        _this.newPatientsChartTrendLabels1.push(_this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                        _this.newPatientsChartTrendLabels1.push(res.duration);
-                });
-                _this.newPatientsChartTrend[0]['data'] = _this.newPatientsChartTrend1;
-                _this.newPatientsChartTrendLabels = _this.newPatientsChartTrendLabels1;
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.fdtreatmentPlanRateTrend = function () {
-        var _this = this;
-        this.fdtreatmentPlanRateTrendLoader = true;
-        this.treatmentPlanChartTrendLabels = [];
-        var user_id;
-        var clinic_id;
-        this.cliniciananalysisService.catreatmentPlanRateTrend(this.clinic_id, this.trendValue).subscribe(function (data) {
-            if (data.message == 'success') {
-                _this.fdtreatmentPlanRateTrendLoader = false;
-                _this.treatmentPlanChartTrendLabels1 = [];
-                _this.treatmentPlanChartTrend1 = [];
-                data.data.forEach(function (res) {
-                    _this.treatmentPlanChartTrend1.push(res.val.percent.toFixed(2));
-                    if (_this.trendValue == 'c')
-                        _this.treatmentPlanChartTrendLabels1.push(_this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                        _this.treatmentPlanChartTrendLabels1.push(res.duration);
-                });
-                _this.treatmentPlanChartTrend[0]['data'] = _this.treatmentPlanChartTrend1;
-                _this.treatmentPlanChartTrendLabels = _this.treatmentPlanChartTrendLabels1;
-            }
-        }, function (error) {
-            _this.warningMessage = "Please Provide Valid Inputs!";
-        });
-    };
-    ClinicianAnalysisComponent.prototype.toggleChangeProcess = function () {
-        if (this.toggleChecked) {
-            $('.filter').removeClass('active');
-            this.dentistProductionTrend();
-            this.treatmentPlanTrend();
-            this.patientComplaintsTrend();
-            this.fdRecallPrebookRateTrend();
-            this.fdTreatmentPrebookRateTrend();
-            this.fdhourlyRateRateTrend();
-            this.fdnewPatientsRateTrend();
-            this.fdtreatmentPlanRateTrend();
-        }
-    };
-    ClinicianAnalysisComponent.prototype.goalToggle = function (val) {
-        this.goalchecked = val;
-        this.buildChart();
-        this.buildChartTreatment();
-        this.recallPrebook();
-        this.treatmentPlanRate();
-        this.treatmentPrePrebook();
-        this.hourlyRateChart();
-    };
-    ClinicianAnalysisComponent.prototype.changePrebookRate = function (val) {
-        $('.prebook_rate .sa_tab_btn').removeClass('active');
-        this.prebook = val;
-        $('.prebook_rate .pr_' + val).addClass('active');
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])("myCanvas"),
         __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])
-    ], ClinicianAnalysisComponent.prototype, "canvas", void 0);
+    ], DashboardsComponent.prototype, "canvas", void 0);
     __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(ng2_charts__WEBPACK_IMPORTED_MODULE_8__["BaseChartDirective"]),
-        __metadata("design:type", ng2_charts__WEBPACK_IMPORTED_MODULE_8__["BaseChartDirective"])
-    ], ClinicianAnalysisComponent.prototype, "chart", void 0);
-    ClinicianAnalysisComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(ng2_charts__WEBPACK_IMPORTED_MODULE_7__["BaseChartDirective"]),
+        __metadata("design:type", ng2_charts__WEBPACK_IMPORTED_MODULE_7__["BaseChartDirective"])
+    ], DashboardsComponent.prototype, "chart", void 0);
+    DashboardsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
-            template: __webpack_require__(/*! ./cliniciananalysis.component.html */ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.html")
+            template: __webpack_require__(/*! ./dashboards.component.html */ "./src/app/dashboards/dashboards.component.html")
         }),
-        __metadata("design:paramtypes", [_cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_1__["ClinicianAnalysisService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_2__["DentistService"], _angular_common__WEBPACK_IMPORTED_MODULE_3__["DatePipe"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"], _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_6__["HeaderService"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_7__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], ngx_smart_modal__WEBPACK_IMPORTED_MODULE_9__["NgxSmartModalService"]])
-    ], ClinicianAnalysisComponent);
-    return ClinicianAnalysisComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.service.ts":
-/*!***************************************************************************!*\
-  !*** ./src/app/dashboards/cliniciananalysis/cliniciananalysis.service.ts ***!
-  \***************************************************************************/
-/*! exports provided: ClinicianAnalysisService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ClinicianAnalysisService", function() { return ClinicianAnalysisService; });
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
-/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../environments/environment */ "./src/environments/environment.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-var ClinicianAnalysisService = /** @class */ (function () {
-    function ClinicianAnalysisService(http, _cookieService) {
-        this.http = http;
-        this._cookieService = _cookieService;
-        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
-        //append headers
-        this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
-        this.headers.append("Content-Type", 'application/json');
-        this.headers.append("Access-Control-Allow-Origin", "*");
-        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
-        this.headers.append("Token", this._cookieService.get("token"));
-    }
-    // Dentist Production Service
-    ClinicianAnalysisService.prototype.DentistProduction = function (clinic_id, startDate, endDate, duration, user_type, clinician, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_type === void 0) { user_type = ''; }
-        if (clinician === void 0) { clinician = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caDentistProtection?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration + "&user_type=" + user_type + "&clinician=" + clinician, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Service
-    ClinicianAnalysisService.prototype.changeLoginStatus = function (user_id, token) {
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/users/changeLoginStatus?user_id=" + user_id, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Single Service
-    ClinicianAnalysisService.prototype.DentistProductionSingle = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caDentistProtection?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Single Service
-    ClinicianAnalysisService.prototype.caDentistProtectionTrend = function (dentist_id, clinic_id, mode, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (mode === void 0) { mode = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caDentistProtectionTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    //Treatment Plan Average Cost service
-    ClinicianAnalysisService.prototype.TreatmentPlan = function (clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    //Treatment Plan Average Cost Single service
-    ClinicianAnalysisService.prototype.TreatmentPlanDentist = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&provider_id=" + dentist_id + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Single Service
-    ClinicianAnalysisService.prototype.caNumberPatientComplaintsTrend = function (dentist_id, clinic_id, mode, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (mode === void 0) { mode = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNumberPatientComplaintsTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Single Service
-    ClinicianAnalysisService.prototype.caTreatmentPlanAverageCostTrend = function (dentist_id, clinic_id, mode, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (mode === void 0) { mode = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCostTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    //Recall Prebook Rate service
-    /*    RecallPrebook(clinic_id='1', startDate = '', endDate = '', duration='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token") ): Observable<any> {
-            return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: this.headers })
-            .pipe(map((response: Response) => {
-                            return response;
-                        })
-            );
-        } */
-    //Hourly Rate service
-    ClinicianAnalysisService.prototype.NoPatients = function (clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNumberPatientComplaints?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    //Hourly Rate service
-    ClinicianAnalysisService.prototype.NoPatientsDentist = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNumberPatientComplaints?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Service
-    ClinicianAnalysisService.prototype.RecallPrebook = function (clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpRecallPrebookRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Service
-    ClinicianAnalysisService.prototype.RecallPrebookSingle = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpRecallPrebookRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Service
-    ClinicianAnalysisService.prototype.treatmentPrePrebook = function (clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpTreatmentPrebookRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Service
-    ClinicianAnalysisService.prototype.treatmentPrePrebookSingle = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpTreatmentPrebookRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Service
-    ClinicianAnalysisService.prototype.TreatmentPlanRate = function (clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpTreatmentPlanRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Service
-    ClinicianAnalysisService.prototype.TreatmentPlanRateSingle = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpTreatmentPlanRate?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    //Hourly Rate service
-    ClinicianAnalysisService.prototype.NewPatients = function (clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNoNewPatients?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    ClinicianAnalysisService.prototype.NewPatientsDentist = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caNoNewPatients?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    ClinicianAnalysisService.prototype.hourlyRateChart = function (clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caHourlyRateChart?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Single Service
-    ClinicianAnalysisService.prototype.cahourlyRateRateTrend = function (clinic_id, mode, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (mode === void 0) { mode = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caHourlyRateChartTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Single Service
-    ClinicianAnalysisService.prototype.canewPatientsRateTrend = function (clinic_id, mode, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (mode === void 0) { mode = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/canewPatientsRateTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    // Dentist Production Single Service
-    ClinicianAnalysisService.prototype.catreatmentPlanRateTrend = function (clinic_id, mode, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (mode === void 0) { mode = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/cpTreatmentPlanRateTrend?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&mode=" + mode, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    //Treatment Plan Average Cost service
-    ClinicianAnalysisService.prototype.hourlyRateSingle = function (dentist_id, clinic_id, startDate, endDate, duration, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (startDate === void 0) { startDate = ''; }
-        if (endDate === void 0) { endDate = ''; }
-        if (duration === void 0) { duration = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/caHourlyRateChart?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&provider_id=" + dentist_id + "&start_date=" + startDate + "&end_date=" + endDate + "&duration=" + duration, { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    ClinicianAnalysisService.prototype.getAccountingDentist = function (clinic_id, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/getAccountingDentist?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    ClinicianAnalysisService.prototype.getStatusDentist = function (clinic_id, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = '1'; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/getStatusDentist?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    ClinicianAnalysisService.prototype.saveDentistMapping = function (data, clinic_id, user_id, token) {
-        if (clinic_id === void 0) { clinic_id = ''; }
-        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
-        if (token === void 0) { token = this._cookieService.get("token"); }
-        var formData = new FormData();
-        formData.append('dentistData', data);
-        formData.append('user_id', user_id);
-        formData.append('clinic_id', clinic_id);
-        formData.append('token', token);
-        return this.http.post(this.apiUrl + "/AccountingInvoicesAndReceipts/saveDentistMapping/", formData)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    ClinicianAnalysisService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-            providedIn: 'root'
-        }),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"]])
-    ], ClinicianAnalysisService);
-    return ClinicianAnalysisService;
+        __metadata("design:paramtypes", [_dashboards_service__WEBPACK_IMPORTED_MODULE_1__["DashboardsService"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["DatePipe"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"], _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_5__["HeaderService"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_6__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"], ngx_smart_modal__WEBPACK_IMPORTED_MODULE_8__["NgxSmartModalService"]])
+    ], DashboardsComponent);
+    return DashboardsComponent;
 }());
 
 
@@ -8957,27 +7178,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _dashboards_routing__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./dashboards.routing */ "./src/app/dashboards/dashboards.routing.ts");
 /* harmony import */ var ng_chartist__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ng-chartist */ "./node_modules/ng-chartist/dist/ng-chartist.js");
 /* harmony import */ var ng_chartist__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(ng_chartist__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _cliniciananalysis_cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./cliniciananalysis/cliniciananalysis.service */ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.service.ts");
-/* harmony import */ var _cliniciananalysis_cliniciananalysis_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./cliniciananalysis/cliniciananalysis.component */ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.ts");
-/* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
-/* harmony import */ var ngx_gauge__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ngx-gauge */ "./node_modules/ngx-gauge/fesm5/ngx-gauge.js");
-/* harmony import */ var ngx_daterangepicker_material__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ngx-daterangepicker-material */ "./node_modules/ngx-daterangepicker-material/fesm5/ngx-daterangepicker-material.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @swimlane/ngx-charts */ "./node_modules/@swimlane/ngx-charts/release/index.js");
-/* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_18__);
-/* harmony import */ var angular_gauge_chart__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! angular-gauge-chart */ "./node_modules/angular-gauge-chart/fesm5/angular-gauge-chart.js");
-/* harmony import */ var primeng_autocomplete__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! primeng/autocomplete */ "./node_modules/primeng/autocomplete.js");
-/* harmony import */ var primeng_autocomplete__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(primeng_autocomplete__WEBPACK_IMPORTED_MODULE_20__);
-/* harmony import */ var ngx_smart_modal__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ngx-smart-modal */ "./node_modules/ngx-smart-modal/esm5/ngx-smart-modal.js");
-/* harmony import */ var chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! chartjs-plugin-annotation */ "./node_modules/chartjs-plugin-annotation/src/index.js");
-/* harmony import */ var chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_22___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_22__);
+/* harmony import */ var _dashboards_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./dashboards.service */ "./src/app/dashboards/dashboards.service.ts");
+/* harmony import */ var _dashboards_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./dashboards.component */ "./src/app/dashboards/dashboards.component.ts");
+/* harmony import */ var ngx_gauge__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ngx-gauge */ "./node_modules/ngx-gauge/fesm5/ngx-gauge.js");
+/* harmony import */ var ngx_daterangepicker_material__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ngx-daterangepicker-material */ "./node_modules/ngx-daterangepicker-material/fesm5/ngx-daterangepicker-material.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @swimlane/ngx-charts */ "./node_modules/@swimlane/ngx-charts/release/index.js");
+/* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var angular_gauge_chart__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! angular-gauge-chart */ "./node_modules/angular-gauge-chart/fesm5/angular-gauge-chart.js");
+/* harmony import */ var primeng_autocomplete__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! primeng/autocomplete */ "./node_modules/primeng/autocomplete.js");
+/* harmony import */ var primeng_autocomplete__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(primeng_autocomplete__WEBPACK_IMPORTED_MODULE_19__);
+/* harmony import */ var ngx_smart_modal__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ngx-smart-modal */ "./node_modules/ngx-smart-modal/esm5/ngx-smart-modal.js");
+/* harmony import */ var chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! chartjs-plugin-annotation */ "./node_modules/chartjs-plugin-annotation/src/index.js");
+/* harmony import */ var chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_annotation__WEBPACK_IMPORTED_MODULE_21__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-
 
 
 
@@ -9016,16 +7235,16 @@ var DashboardsModule = /** @class */ (function () {
                 _angular_cdk_table__WEBPACK_IMPORTED_MODULE_6__["CdkTableModule"],
                 ng_chartist__WEBPACK_IMPORTED_MODULE_11__["ChartistModule"],
                 ng2_charts__WEBPACK_IMPORTED_MODULE_7__["ChartsModule"],
-                _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_18__["NgxChartsModule"],
-                ngx_gauge__WEBPACK_IMPORTED_MODULE_15__["NgxGaugeModule"],
-                primeng_autocomplete__WEBPACK_IMPORTED_MODULE_20__["AutoCompleteModule"],
-                ngx_daterangepicker_material__WEBPACK_IMPORTED_MODULE_16__["NgxDaterangepickerMd"].forRoot(),
-                _angular_material__WEBPACK_IMPORTED_MODULE_17__["MatButtonToggleModule"], _angular_material__WEBPACK_IMPORTED_MODULE_17__["MatIconModule"],
-                angular_gauge_chart__WEBPACK_IMPORTED_MODULE_19__["GaugeChartModule"],
-                ngx_smart_modal__WEBPACK_IMPORTED_MODULE_21__["NgxSmartModalModule"].forRoot()
+                _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_17__["NgxChartsModule"],
+                ngx_gauge__WEBPACK_IMPORTED_MODULE_14__["NgxGaugeModule"],
+                primeng_autocomplete__WEBPACK_IMPORTED_MODULE_19__["AutoCompleteModule"],
+                ngx_daterangepicker_material__WEBPACK_IMPORTED_MODULE_15__["NgxDaterangepickerMd"].forRoot(),
+                _angular_material__WEBPACK_IMPORTED_MODULE_16__["MatButtonToggleModule"], _angular_material__WEBPACK_IMPORTED_MODULE_16__["MatIconModule"],
+                angular_gauge_chart__WEBPACK_IMPORTED_MODULE_18__["GaugeChartModule"],
+                ngx_smart_modal__WEBPACK_IMPORTED_MODULE_20__["NgxSmartModalModule"].forRoot()
             ],
-            providers: [_cliniciananalysis_cliniciananalysis_service__WEBPACK_IMPORTED_MODULE_12__["ClinicianAnalysisService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_14__["DentistService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["DatePipe"]],
-            declarations: [_cliniciananalysis_cliniciananalysis_component__WEBPACK_IMPORTED_MODULE_13__["ClinicianAnalysisComponent"]]
+            providers: [_dashboards_service__WEBPACK_IMPORTED_MODULE_12__["DashboardsService"], _angular_common__WEBPACK_IMPORTED_MODULE_4__["DatePipe"]],
+            declarations: [_dashboards_component__WEBPACK_IMPORTED_MODULE_13__["DashboardsComponent"]]
         })
     ], DashboardsModule);
     return DashboardsModule;
@@ -9045,19 +7264,83 @@ var DashboardsModule = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DashboardsRoutes", function() { return DashboardsRoutes; });
-/* harmony import */ var _cliniciananalysis_cliniciananalysis_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cliniciananalysis/cliniciananalysis.component */ "./src/app/dashboards/cliniciananalysis/cliniciananalysis.component.ts");
+/* harmony import */ var _dashboards_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dashboards.component */ "./src/app/dashboards/dashboards.component.ts");
 
 var DashboardsRoutes = [
     {
         path: '',
-        children: [
-            {
-                path: 'cliniciananalysis/:id',
-                component: _cliniciananalysis_cliniciananalysis_component__WEBPACK_IMPORTED_MODULE_0__["ClinicianAnalysisComponent"]
-            }
-        ]
+        component: _dashboards_component__WEBPACK_IMPORTED_MODULE_0__["DashboardsComponent"],
+        data: {
+            title: 'Members Dashboard'
+        }
     }
 ];
+
+
+/***/ }),
+
+/***/ "./src/app/dashboards/dashboards.service.ts":
+/*!**************************************************!*\
+  !*** ./src/app/dashboards/dashboards.service.ts ***!
+  \**************************************************/
+/*! exports provided: DashboardsService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DashboardsService", function() { return DashboardsService; });
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var DashboardsService = /** @class */ (function () {
+    function DashboardsService(http, _cookieService) {
+        this.http = http;
+        this._cookieService = _cookieService;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
+        //append headers
+        this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        this.headers.append("Content-Type", 'application/json');
+        this.headers.append("Access-Control-Allow-Origin", "*");
+        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        this.headers.append("Token", this._cookieService.get("token"));
+    }
+    // Dentist Production Service
+    DashboardsService.prototype.loadAnalytics = function (startDate, endDate, user_id, token) {
+        if (startDate === void 0) { startDate = ''; }
+        if (endDate === void 0) { endDate = ''; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Users/loadAnalytics?user_id=" + user_id + "&token=" + this._cookieService.get("token") + "&start_date=" + startDate + "&end_date=" + endDate, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    DashboardsService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"]])
+    ], DashboardsService);
+    return DashboardsService;
+}());
+
 
 
 /***/ })

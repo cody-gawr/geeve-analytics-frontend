@@ -2,24 +2,20 @@
 <div mat-dialog-content>
 
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.planName" placeholder="Member Plan"  class="form-control-dialog" required="true">
 
+    <input matInput tabindex="1" [(ngModel)]="data.planName" placeholder="Member Plan"  class="form-control-dialog" required="true">
+   
   </mat-form-field>
+  <input matInput style="color: #FF0000;" tabindex="1" *ngIf="valplans" [(ngModel)]="valplans" required="true">
 
       <mat-form-field>
-        <mat-select placeholder="Treatments" [formControl]="data.treat" multiple >
-          <mat-select-trigger >
-          {{data.treat.value ?  data.treat.value[0].treatmentName: ''}}
-            <span *ngIf="data.treat.value?.length > 1" class="example-additional-selection">
-          (+{{data.treat.value.length - 1}} {{data.treat.value?.length === 2 ? 'other' : 'others'}})   
-            </span>
-          </mat-select-trigger>
+        <mat-select placeholder="Treatments" tabindex="1" [formControl]="data.treat" multiple >
           <mat-option *ngFor="let treatment of data.treatmentdata" [value]="treatment">{{treatment.treatmentName}}</mat-option>
         </mat-select>
       </mat-form-field>
   <mat-form-field>
     <mat-label>Duration</mat-label> 
-    <mat-select name ="value" tabindex="1" [(ngModel)]= "data.planLength"  class="form-control-dialog" required="true">
+    <mat-select tabindex="1" [(ngModel)]= "data.planLength" required="true">
       <mat-option value="MONTHLY">MONTHLY</mat-option>
       <mat-option value="YEARLY">YEARLY</mat-option>
     </mat-select>

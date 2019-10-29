@@ -61,7 +61,7 @@
          <span>
            {{value}}
          </span>
-         <input autofocus (blur)="updateValue($event, 'phoneNo', rowIndex)" *ngIf="editing[rowIndex+ '-phoneNo']" type="text" [value]="value"
+         <input autofocus (blur)="updateValue($event, 'phoneNo', rowIndex)" *ngIf="editing[rowIndex+ '-phoneNo']" type="text" [value]="value" oninput="this.value = this.value.slice(0,10);"
          />
        </ng-template>
      </ngx-datatable-column>
@@ -80,6 +80,9 @@
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
           <a [routerLink]="['/clinic-settings',value]" class="action_btn golden" title= 'Clinic Settings'><i class="ti-settings  m-r-10"></i></a>
+         
+          <a [routerLink]="['/subscription',value,user_id]" class="action_btn golden" title= 'Subscription Detail'><i class="ti-eye  m-r-10"></i></a>
+
           <button class="action_btn danger" mat-menu-item (click) = "deleteClinic(rowIndex)">
          <i class="ti-trash text-danger m-r-10"></i></button>
         </ng-template>

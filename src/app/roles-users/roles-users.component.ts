@@ -5,6 +5,7 @@ import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
+import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -29,6 +30,18 @@ show_dentist = false;
       if(val == '4')
         this.show_dentist = true;
     }
+     save(data) {
+
+   $('.form-control-dialog').each(function(){
+      var likeElement = $(this).click();
+   });
+  if(data.display_name != undefined && data.email != undefined  && data.user_type != undefined ){
+      this.dialogRef.close(data);
+  }else{
+    return false;
+   }
+ }
+
 }
 
 @Component({
@@ -68,6 +81,7 @@ const data: any = require('assets/company.json');
 export class RolesUsersComponent implements AfterViewInit {
   display_name: string;
   email: string;
+   notifier:any;
   user_type='';
   fileInput: any ;
   public clinic_id;
@@ -75,8 +89,7 @@ export class RolesUsersComponent implements AfterViewInit {
 password:string;
 dentists:any=[];
   ngAfterViewInit() {
-    $('.header_filters').removeClass('hide_header'); 
-    $('.header_filters').removeClass('flex_direct_mar'); 
+ $('.header_filters').addClass('hide_header');
     
     this.getUsers();
     this.getRoles();
@@ -97,7 +110,8 @@ dentists:any=[];
   columns = [{ prop: 'sr' }, { name: 'displayName' }, { name: 'email' }, { name: 'usertype' }, { name: 'created' }];
 
   @ViewChild(RolesUsersComponent) table: RolesUsersComponent;
-  constructor(private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService) {
+  constructor(notifierService: NotifierService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService) {
+    this.notifier = notifierService;
     this.rows = data;
     this.temp = [...data];
     setTimeout(() => {
@@ -118,7 +132,7 @@ dentists:any=[];
            if(res.data <=0)
            this.add_user(result.display_name, result.email, result.user_type, 'jeeveanalytics',this.clinic_id,result.dentist_id);
             else
-            alert("Email Already Exists!");
+            this.notifier.notify( 'success', 'Email Already Exists!' ,'vertical');
            }
         }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -139,20 +153,22 @@ dentists:any=[];
       this.roles.forEach(res1 => {
           var checkedRoles1='';
           var checkedRoles =[];
-          if(result.selectedRole['dashboard1_'+res1.id])
-            checkedRoles.push('dashboard1');
-           if(result.selectedRole['dashboard2_'+res1.id])
-            checkedRoles.push('dashboard2');
-           if(result.selectedRole['dashboard3_'+res1.id])
-            checkedRoles.push('dashboard3');
-           if(result.selectedRole['dashboard4_'+res1.id])
-            checkedRoles.push('dashboard4');
-           if(result.selectedRole['dashboard5_'+res1.id])
-            checkedRoles.push('dashboard5');
+          if(result.selectedRole['clinics_'+res1.id])
+            checkedRoles.push('clinics');
+           if(result.selectedRole['roles_'+res1.id])
+            checkedRoles.push('roles');
+           if(result.selectedRole['settings_'+res1.id])
+            checkedRoles.push('settings');
+           if(result.selectedRole['plans_'+res1.id])
+            checkedRoles.push('plans');
+          if(result.selectedRole['treatments_'+res1.id])
+            checkedRoles.push('treatments');
+           if(result.selectedRole['inoffice_'+res1.id])
+            checkedRoles.push('inoffice');
             var checkedRoles1 = checkedRoles.join();
               this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
                  if(res.message == 'success'){
-                  alert('Permissions Saved!');
+                this.notifier.notify( 'success', 'Permissions Saved!' ,'vertical');
                   this.getRoles();
                  }
               }, error => {
@@ -163,7 +179,7 @@ dentists:any=[];
     });
   }
     // Get Dentist
-    getDentists() {
+ getDentists() {
       this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
            if(res.message == 'success'){
             res.data.forEach(result => {
@@ -182,9 +198,13 @@ dentists:any=[];
   add_user(display_name, email, user_type, password,clinic_id,dentist_id) {
   if(dentist_id =='' || dentist_id == undefined)
     dentist_id ='';
+      $('.ajax-loader').show();      
+
   this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
+      $('.ajax-loader').hide();      
+
        //if(res.message == 'success'){
-        alert('User Added');
+        this.notifier.notify( 'success', 'User Added' ,'vertical');
         this.getUsers();
      //  }
     }, error => {
@@ -214,13 +234,11 @@ dentists:any=[];
        if(res.message == 'success'){ 
         this.roles=[];
          res.data.forEach(result => {
-          if(result.id != '1' && result.id != '2') {
-          this.selectedRole['dashboard1_'+result.id] = false;
-          this.selectedRole['dashboard2_'+result.id] = false;
-          this.selectedRole['dashboard3_'+result.id] = false;
-          this.selectedRole['dashboard4_'+result.id] = false;
-          this.selectedRole['dashboard5_'+result.id] = false;
-
+          this.selectedRole['clinics_'+result.id] = false;
+          this.selectedRole['plans_'+result.id] = false;
+          this.selectedRole['roles_'+result.id] = false;
+          this.selectedRole['settings_'+result.id] = false;
+          this.selectedRole['inoffice_'+result.id] = false;
             var temp=[];
             temp['id'] = result.id;
             temp['role'] = result.role;
@@ -230,7 +248,6 @@ dentists:any=[];
             dashboards.forEach(results=>{
                this.selectedRole[results+'_'+result.id] = true;
             })
-          }
          });
        }
     }, error => {
@@ -244,7 +261,7 @@ dentists:any=[];
     if(this.rows[row]['id']) {
   this.rolesUsersService.deleteUser(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
-        alert('User Removed');
+        this.notifier.notify( 'success', 'User Removed' ,'vertical');
           this.getUsers();
        }
     }, error => {
@@ -254,8 +271,7 @@ dentists:any=[];
     }
     else {
       this.rows.splice(row, 1);
-    this.rows = [...this.rows];
-
+      this.rows = [...this.rows];
     }
   }
   }
@@ -296,7 +312,8 @@ dentists:any=[];
     this.rows[rowIndex][cell] = event.target.value;
     this.rolesUsersService.updateRoleUser(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
        if(res.message == 'success'){
-        alert('User Details Updated');
+        this.notifier.notify( 'success', 'User Details Updated' ,'vertical');
+
          // this.getDentists();
        }
     }, error => {

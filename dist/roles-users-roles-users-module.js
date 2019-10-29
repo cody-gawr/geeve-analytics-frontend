@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"AddUserPopup\"> \n<h1 mat-dialog-title>Add User</h1>\n<div mat-dialog-content>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.display_name\" placeholder=\"Display Name\">\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.email\" placeholder=\"Email\">\n  </mat-form-field>\n  <div class=\"selectIcon\">\n     <select fxFlex.gt-sm=\"50%\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"sa_select form-control\" name=\"user_type\" [(ngModel)]=\"data.user_type\" (ngModelChange)=\"loadDentist($event)\">\n      <option value =\"\" selected>Select User Type</option>\n      <option value =\"1\">Employee</option>\n      <option value =\"2\">Receptionist</option>\n   </select> \n </div>\n <div class=\"selectIcon\" *ngIf=\"show_dentist == true\">\n  <select class=\"sa_select sa_select_set_roles form-control\" name=\"dentist_id\" [(ngModel)]=\"data.dentist_id\" >\n      <option value =\"\" selected=\"true\">Select Dentist</option>\n      <option *ngFor=\"let dentist of data.dentists\" value =\"{{dentist.providerId}}\">{{dentist.name}}</option>\n   </select> \n </div>\n   <input type='hidden' tabindex=\"1\" [(ngModel)]=\"data.password\"  placeholder=\"Email\">\n  <!--  <input type=\"file\" (change)=\"onChange($event)\"> -->\n</div>\n<div mat-dialog-actions>\n  <button mat-button [mat-dialog-close]=\"data\"  tabindex=\"2\" class=\"mat-raised-button mat-dc\">Ok</button>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" class=\"mat-raised-button mat-gray\">No Thanks</button>\n</div>\n</div>"
+module.exports = "<div class=\"AddUserPopup\"> \n<h1 mat-dialog-title>Add User</h1>\n<div mat-dialog-content>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" class=\"form-control-dialog\" required=\"true\" [(ngModel)]=\"data.display_name\" placeholder=\"Display Name\">\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" class=\"form-control-dialog\" required=\"true\" [(ngModel)]=\"data.email\" placeholder=\"Email\">\n  </mat-form-field>\n  <div class=\"selectIcon\">\n     <select fxFlex.gt-sm=\"50%\" class=\"form-control-dialog\" required=\"true\" fxFlex.gt-xs=\"50%\" fxFlex=\"100\" class=\"sa_select form-control\" name=\"user_type\" [(ngModel)]=\"data.user_type\" (ngModelChange)=\"loadDentist($event)\">\n      <option value =\"\" selected>Select User Type</option>\n      <option value =\"3\">Receptionist</option>\n   </select> \n </div>\n <div class=\"selectIcon\" *ngIf=\"show_dentist == true\">\n  <select class=\"sa_select sa_select_set_roles form-control\" name=\"dentist_id\" [(ngModel)]=\"data.dentist_id\" >\n      <option value =\"\" selected=\"true\">Select Dentist</option>\n      <option *ngFor=\"let dentist of data.dentists\" value =\"{{dentist.providerId}}\">{{dentist.name}}</option>\n   </select> \n </div>\n   <input type='hidden' tabindex=\"1\" [(ngModel)]=\"data.password\"  placeholder=\"Email\">\n  <!--  <input type=\"file\" (change)=\"onChange($event)\"> -->\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"save(data)\"   tabindex=\"2\" class=\"mat-raised-button mat-dc\">Ok</button>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" class=\"mat-raised-button mat-gray\">No Thanks</button>\n</div>\n</div>"
 
 /***/ }),
 
@@ -18,7 +18,7 @@ module.exports = "<div class=\"AddUserPopup\"> \n<h1 mat-dialog-title>Add User</
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"SetRolesPopup_outer\">\n<h1 mat-dialog-title>Set Roles</h1>\n<div class=\"SetRolesPopup\">\n  <div class=\"selectIcon\">\n  <select class=\"sa_select sa_select_set_roles form-control\" name=\"user_type\" [(ngModel)]=\"data.user_type\" (ngModelChange)=\"loadPermisions($event)\">\n      <option value =\"\" selected=\"true\">Select User Type</option>\n      <option *ngFor=\"let role of data.roles\" value =\"{{role.id}}\">{{role.role}}</option>\n   </select> \n </div>\n  <div class=\"SetRoles_checkbox\">\n    <mat-checkbox class=\"role_permissions\" *ngIf=\"selected_id <=4\" [(ngModel)]=\"data.selectedRole['dashboard1_'+selected_id]\">Dashboard 1</mat-checkbox>\n    <mat-checkbox class=\"role_permissions\" *ngIf=\"selected_id <=4\" [(ngModel)]=\"data.selectedRole['dashboard2_'+selected_id]\">Dashboard 2</mat-checkbox>\n    <mat-checkbox class=\"role_permissions\" *ngIf=\"selected_id <4\" [(ngModel)]=\"data.selectedRole['dashboard3_'+selected_id]\">Dashboard 3</mat-checkbox>\n    <mat-checkbox class=\"role_permissions\" *ngIf=\"selected_id <4\" [(ngModel)]=\"data.selectedRole['dashboard4_'+selected_id]\">Dashboard 4</mat-checkbox>\n    <mat-checkbox class=\"role_permissions\" *ngIf=\"selected_id != 3 && selected_id != 4 && selected_id >= 1\" [(ngModel)]=\"data.selectedRole['dashboard5_'+selected_id]\">Dashboard 5</mat-checkbox>\n  </div>\n\n  <!--  <input type=\"file\" (change)=\"onChange($event)\"> -->\n</div>\n<div mat-dialog-actions>\n  <button mat-button [mat-dialog-close]=\"data\"  tabindex=\"2\" class=\"mat-raised-button mat-dc\">Ok</button>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" class=\"mat-raised-button mat-gray\">No Thanks</button>\n</div>\n</div>"
+module.exports = "<div class=\"SetRolesPopup_outer\">\n<h1 mat-dialog-title>Set Roles</h1>\n<div class=\"SetRolesPopup\">\n  <div class=\"selectIcon\">\n  <select class=\"sa_select sa_select_set_roles form-control\" name=\"user_type\" [(ngModel)]=\"data.user_type\" (ngModelChange)=\"loadPermisions($event)\">\n      <option value =\"\" selected=\"true\">Select User Type</option>\n      <option *ngFor=\"let role of data.roles\" value =\"{{role.id}}\">{{role.role}}</option>\n   </select> \n </div>\n  <div class=\"SetRoles_checkbox\">\n    <mat-checkbox class=\"role_permissions\" [(ngModel)]=\"data.selectedRole['clinics_'+selected_id]\">Clinics</mat-checkbox>\n    <mat-checkbox class=\"role_permissions\" [(ngModel)]=\"data.selectedRole['plans_'+selected_id]\">Plans</mat-checkbox>\n    <mat-checkbox class=\"role_permissions\" [(ngModel)]=\"data.selectedRole['treatments_'+selected_id]\">Treatments</mat-checkbox>\n    <mat-checkbox class=\"role_permissions\" [(ngModel)]=\"data.selectedRole['roles_'+selected_id]\">Roles</mat-checkbox>\n    <mat-checkbox class=\"role_permissions\" [(ngModel)]=\"data.selectedRole['settings_'+selected_id]\">Settings</mat-checkbox>\n    <mat-checkbox class=\"role_permissions\" [(ngModel)]=\"data.selectedRole['inoffice_'+selected_id]\">Inoffice</mat-checkbox>\n  </div>\n  <!--  <input type=\"file\" (change)=\"onChange($event)\"> -->\n</div>\n<div mat-dialog-actions>\n  <button mat-button [mat-dialog-close]=\"data\" tabindex=\"2\" class=\"mat-raised-button mat-dc\">Ok</button>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" class=\"mat-raised-button mat-gray\">No Thanks</button>\n</div>\n</div>"
 
 /***/ }),
 
@@ -63,6 +63,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -75,6 +76,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+
 
 
 
@@ -96,6 +98,17 @@ var DialogOverviewExampleDialogComponent = /** @class */ (function () {
     DialogOverviewExampleDialogComponent.prototype.loadDentist = function (val) {
         if (val == '4')
             this.show_dentist = true;
+    };
+    DialogOverviewExampleDialogComponent.prototype.save = function (data) {
+        $('.form-control-dialog').each(function () {
+            var likeElement = $(this).click();
+        });
+        if (data.display_name != undefined && data.email != undefined && data.user_type != undefined) {
+            this.dialogRef.close(data);
+        }
+        else {
+            return false;
+        }
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
@@ -146,7 +159,7 @@ var RolesOverviewExampleDialogComponent = /** @class */ (function () {
 
 var data = __webpack_require__(/*! assets/company.json */ "./src/assets/company.json");
 var RolesUsersComponent = /** @class */ (function () {
-    function RolesUsersComponent(rolesUsersService, dialog, _cookieService, router, route, dentistService) {
+    function RolesUsersComponent(notifierService, rolesUsersService, dialog, _cookieService, router, route, dentistService) {
         var _this = this;
         this.rolesUsersService = rolesUsersService;
         this.dialog = dialog;
@@ -166,6 +179,7 @@ var RolesUsersComponent = /** @class */ (function () {
         this.roles = [];
         this.abc = true;
         this.selectedRole = [];
+        this.notifier = notifierService;
         this.rows = data;
         this.temp = data.slice();
         setTimeout(function () {
@@ -174,8 +188,7 @@ var RolesUsersComponent = /** @class */ (function () {
     }
     RolesUsersComponent_1 = RolesUsersComponent;
     RolesUsersComponent.prototype.ngAfterViewInit = function () {
-        $('.header_filters').removeClass('hide_header');
-        $('.header_filters').removeClass('flex_direct_mar');
+        $('.header_filters').addClass('hide_header');
         this.getUsers();
         this.getRoles();
         this.getDentists();
@@ -198,7 +211,7 @@ var RolesUsersComponent = /** @class */ (function () {
                         if (res.data <= 0)
                             _this.add_user(result.display_name, result.email, result.user_type, 'jeeveanalytics', _this.clinic_id, result.dentist_id);
                         else
-                            alert("Email Already Exists!");
+                            _this.notifier.notify('success', 'Email Already Exists!', 'vertical');
                     }
                 }, function (error) {
                     _this.warningMessage = "Please Provide Valid Inputs!";
@@ -220,20 +233,22 @@ var RolesUsersComponent = /** @class */ (function () {
                 _this.roles.forEach(function (res1) {
                     var checkedRoles1 = '';
                     var checkedRoles = [];
-                    if (result.selectedRole['dashboard1_' + res1.id])
-                        checkedRoles.push('dashboard1');
-                    if (result.selectedRole['dashboard2_' + res1.id])
-                        checkedRoles.push('dashboard2');
-                    if (result.selectedRole['dashboard3_' + res1.id])
-                        checkedRoles.push('dashboard3');
-                    if (result.selectedRole['dashboard4_' + res1.id])
-                        checkedRoles.push('dashboard4');
-                    if (result.selectedRole['dashboard5_' + res1.id])
-                        checkedRoles.push('dashboard5');
+                    if (result.selectedRole['clinics_' + res1.id])
+                        checkedRoles.push('clinics');
+                    if (result.selectedRole['roles_' + res1.id])
+                        checkedRoles.push('roles');
+                    if (result.selectedRole['settings_' + res1.id])
+                        checkedRoles.push('settings');
+                    if (result.selectedRole['plans_' + res1.id])
+                        checkedRoles.push('plans');
+                    if (result.selectedRole['treatments_' + res1.id])
+                        checkedRoles.push('treatments');
+                    if (result.selectedRole['inoffice_' + res1.id])
+                        checkedRoles.push('inoffice');
                     var checkedRoles1 = checkedRoles.join();
                     _this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe(function (res) {
                         if (res.message == 'success') {
-                            alert('Permissions Saved!');
+                            _this.notifier.notify('success', 'Permissions Saved!', 'vertical');
                             _this.getRoles();
                         }
                     }, function (error) {
@@ -263,9 +278,11 @@ var RolesUsersComponent = /** @class */ (function () {
         var _this = this;
         if (dentist_id == '' || dentist_id == undefined)
             dentist_id = '';
+        $('.ajax-loader').show();
         this.rolesUsersService.addRoleUser(display_name, email, user_type, password, clinic_id, dentist_id).subscribe(function (res) {
+            $('.ajax-loader').hide();
             //if(res.message == 'success'){
-            alert('User Added');
+            _this.notifier.notify('success', 'User Added', 'vertical');
             _this.getUsers();
             //  }
         }, function (error) {
@@ -290,22 +307,20 @@ var RolesUsersComponent = /** @class */ (function () {
             if (res.message == 'success') {
                 _this.roles = [];
                 res.data.forEach(function (result) {
-                    if (result.id != '1' && result.id != '2') {
-                        _this.selectedRole['dashboard1_' + result.id] = false;
-                        _this.selectedRole['dashboard2_' + result.id] = false;
-                        _this.selectedRole['dashboard3_' + result.id] = false;
-                        _this.selectedRole['dashboard4_' + result.id] = false;
-                        _this.selectedRole['dashboard5_' + result.id] = false;
-                        var temp = [];
-                        temp['id'] = result.id;
-                        temp['role'] = result.role;
-                        temp['permisions'] = result.permisions;
-                        _this.roles.push(temp);
-                        var dashboards = result.permisions.split(',');
-                        dashboards.forEach(function (results) {
-                            _this.selectedRole[results + '_' + result.id] = true;
-                        });
-                    }
+                    _this.selectedRole['clinics_' + result.id] = false;
+                    _this.selectedRole['plans_' + result.id] = false;
+                    _this.selectedRole['roles_' + result.id] = false;
+                    _this.selectedRole['settings_' + result.id] = false;
+                    _this.selectedRole['inoffice_' + result.id] = false;
+                    var temp = [];
+                    temp['id'] = result.id;
+                    temp['role'] = result.role;
+                    temp['permisions'] = result.permisions;
+                    _this.roles.push(temp);
+                    var dashboards = result.permisions.split(',');
+                    dashboards.forEach(function (results) {
+                        _this.selectedRole[results + '_' + result.id] = true;
+                    });
                 });
             }
         }, function (error) {
@@ -318,7 +333,7 @@ var RolesUsersComponent = /** @class */ (function () {
             if (this.rows[row]['id']) {
                 this.rolesUsersService.deleteUser(this.rows[row]['id']).subscribe(function (res) {
                     if (res.message == 'success') {
-                        alert('User Removed');
+                        _this.notifier.notify('success', 'User Removed', 'vertical');
                         _this.getUsers();
                     }
                 }, function (error) {
@@ -364,7 +379,7 @@ var RolesUsersComponent = /** @class */ (function () {
             this.rows[rowIndex][cell] = event.target.value;
             this.rolesUsersService.updateRoleUser(this.rows[rowIndex]['id'], this.rows[rowIndex][cell], cell).subscribe(function (res) {
                 if (res.message == 'success') {
-                    alert('User Details Updated');
+                    _this.notifier.notify('success', 'User Details Updated', 'vertical');
                     // this.getDentists();
                 }
             }, function (error) {
@@ -388,7 +403,7 @@ var RolesUsersComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./roles-users.component.html */ "./src/app/roles-users/roles-users.component.html"),
             styles: [__webpack_require__(/*! ./roles-users.component.scss */ "./src/app/roles-users/roles-users.component.scss")]
         }),
-        __metadata("design:paramtypes", [_roles_users_service__WEBPACK_IMPORTED_MODULE_1__["RolesUsersService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_5__["DentistService"]])
+        __metadata("design:paramtypes", [angular_notifier__WEBPACK_IMPORTED_MODULE_6__["NotifierService"], _roles_users_service__WEBPACK_IMPORTED_MODULE_1__["RolesUsersService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_5__["DentistService"]])
     ], RolesUsersComponent);
     return RolesUsersComponent;
 }());

@@ -10,9 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardsRoutes } from './dashboards.routing';
 import { ChartistModule } from 'ng-chartist';
-import { ClinicianAnalysisService } from './cliniciananalysis/cliniciananalysis.service';
-import { ClinicianAnalysisComponent } from './cliniciananalysis/cliniciananalysis.component';
-import { DentistService } from '../dentist/dentist.service';
+import { DashboardsService } from './dashboards.service';
+import { DashboardsComponent } from './dashboards.component';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { MatButtonToggleModule, MatIconModule } from '@angular/material';
@@ -42,7 +41,7 @@ import 'chartjs-plugin-annotation';
     GaugeChartModule,
     NgxSmartModalModule.forRoot()
   ],
-  providers: [ ClinicianAnalysisService,DentistService,DatePipe],
-  declarations: [ClinicianAnalysisComponent]
+  providers: [ DashboardsService,DatePipe],
+  declarations: [DashboardsComponent]
 })
 export class DashboardsModule {}

@@ -1,8 +1,10 @@
 <!-- ============================================================== -->
 <!-- Card Grid-->
 <!-- ============================================================== -->
+
 <div fxLayout="row wrap">
-  <div fxFlex.gt-sm="100" fxFlex="100">
+  <!--div fxFlex.gt-sm="100" fxFlex="100"-->
+   <div fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" fxFlex.xs="100" fxFlex="50">
     <mat-card>
       <mat-card-content>
           <div class="basic_details_form">
@@ -39,7 +41,7 @@
                                   <div fxFlex.gt-md="100" fxFlex="100">
                                     
                                         <label>Phone Number</label>
-                                      <input matInput type="number" placeholder="" [formControl]="form.controls['phoneNo']" [(ngModel)]="phoneNo">
+                                      <input matInput type="number" placeholder="" [formControl]="form.controls['phoneNo']" oninput="this.value = this.value.slice(0,10);"  [(ngModel)]="phoneNo">
                                     
                                   </div>
 
@@ -58,9 +60,9 @@
                                   </div>
 
                                   
-                                  <mat-card-title>Clinic Profile</mat-card-title>
+                                  <mat-card-title style="width:100%;">Clinic Profile</mat-card-title>
                                         <div class="clinic_logo"><img src="{{imageURL}}" height="150" width="150" *ngIf="imageURL != '' && imageURL != 'undefined'" >
-                                  </div>
+                                         </div>
                                   <div class="bd_UpoadImage" fxFlex.gt-md="100" fxFlex="100">
                                       <div class="upload-btn">
                                         <span>Choose file</span>
@@ -84,4 +86,140 @@
       </mat-card-content>
     </mat-card>
   </div>
+     <div fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="100" fxFlex.xs="100" fxFlex="50">
+
+          <mat-card>
+          <mat-card-content>
+              <div class="basic_details_form">
+                 <form [formGroup]="formLanding" class="basic-form" (ngSubmit)="onSettingsSubmit()" id="landingPageForm">
+            <mat-card-title>Landing Page Settings</mat-card-title>
+
+
+            <div fxLayout="row wrap">
+          
+            <div fxFlex.gt-sm="100%" fxFlex="100">
+              
+                    <div fxLayout="row wrap">
+                      <!-- column -->
+                      <div fxFlex.gt-md="100" fxFlex="100">
+                          <label>Header Title</label>
+                          <input matInput placeholder="" [formControl]="formLanding.controls['headerTitle']" [(ngModel)]="headerTitle" required="true">
+                        
+                      </div>
+                       <div fxFlex.gt-md="100" fxFlex="100">
+                          <label>Header Description</label>
+                          <input matInput placeholder="" [formControl]="formLanding.controls['headerDescription']" [(ngModel)]="headerDescription" required="true">
+                        
+                      </div>
+                       <div fxFlex.gt-md="100" fxFlex="100">
+                            <div class="header_main_image"><img src="{{headerImageURL}}" height="150" width="150" *ngIf="headerImageURL != '' && headerImageURL != 'undefined'" >
+                             </div>
+
+                          <div class="upload-btn" style="margin-bottom: 20px;">
+                            <span>Choose file</span>
+                            <input class="" type="file" placeholder="" name= "headerFile" id="headerFile" (change)="uploadLandingPageImage($event.target.files)">
+                            <input type='hidden'  placeholder="" id="headerImageURL" >
+                          </div>
+                          
+                       </div>                            
+
+                     </div> 
+           
+             </div>
+
+                  <!-- Social Icon Starts-->
+         <mat-card-title>Social Icons Settings</mat-card-title>
+                   
+            <div fxFlex.gt-sm="100%" fxFlex="100">
+              
+                    <div fxLayout="row wrap">
+                      <!-- column -->
+                      <div fxFlex.gt-md="100" fxFlex="100">
+                          <label>Facebook</label>
+                          <input matInput placeholder="" [formControl]="formLanding.controls['facebook']" [(ngModel)]="facebook">
+                        
+                      </div>
+                       <div fxFlex.gt-md="100" fxFlex="100">
+                          <label>Twitter</label>
+                          <input matInput placeholder="" [formControl]="formLanding.controls['twitter']" [(ngModel)]="twitter">
+                        
+                      </div>
+                        <div fxFlex.gt-md="100" fxFlex="100">
+                          <label>LinkedIn</label>
+                          <input matInput placeholder="" [formControl]="formLanding.controls['linkedin']" [(ngModel)]="linkedin">
+                        
+                      </div>
+                        <div fxFlex.gt-md="100" fxFlex="100">
+                          <label>Instagram</label>
+                          <input matInput placeholder="" [formControl]="formLanding.controls['instagram']" [(ngModel)]="instagram">
+                        
+                      </div>
+                                                
+
+                     </div> 
+           
+             </div>
+
+
+
+           </div> <!--Row Wrap -->
+
+           <mat-card-actions>
+              <button mat-raised-button color="primary" type="submit">Submit</button>
+            </mat-card-actions>
+                      <!-- column -->
+          </form> <!--Form Close -->
+
+
+        </div> <!--Basic Form Details Div -->
+
+          </mat-card-content>
+        </mat-card>
+
+     </div>
+
+
+    <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100">
+
+       <mat-card>
+        <mat-card-content>
+          <div class="basic_details_form">
+                   
+          <div fxFlex.gt-sm="100%" fxFlex="100">
+          
+            <div fxFlex.gt-sm="50%" fxFlex="50">
+               <mat-card-title> Slider  Settings</mat-card-title>
+                          <div class="sa_afu-dragndrop-box"><angular-file-uploader #fileList1
+                           [config]="afuConfig"
+                           [resetUpload]=resetVar
+                           (ApiResponse)="SliderImagesUpload($event)"> 
+                           </angular-file-uploader></div>
+             </div>
+             <div fxFlex.gt-sm="50%" fxFlex="50">
+
+                 <mat-card-title>Image</mat-card-title>
+ 
+
+             
+               <div fxLayout="row wrap" fxLayoutGap="2%">
+                <div fxFlex.gt-md="48%" fxFlex="48%" *ngFor="let sliderImage of sliderImages; index as i" class="sa_grid_image">
+                    <div class="sa_imagesz"><img src="{{sliderImage.file}}" class="slider_image" style="width :400px; height :200px;">
+                      <i class="fas fa-times-circle fa_delete" (click)="removeSliderImage(sliderImage.file,i)"></i></div>
+                 </div>
+               </div>
+               
+
+              <mat-card-actions>
+                <button mat-raised-button color="primary" type="button" (click)="saveSliderImages()" >Submit</button>
+               </mat-card-actions>
+             </div>
+          </div>
+       </div>
+     </mat-card-content>
+   </mat-card>
+ </div>
+
+
 </div>
+
+

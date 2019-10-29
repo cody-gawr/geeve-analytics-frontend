@@ -86,7 +86,6 @@ export class PatientsDetailService {
         return this.http.post(this.apiUrl +"/InviteMember/add/", formData)
         .pipe(map((response: Response) => {
                      return response;
-                     console.log(response);
                     })
         );
     }
@@ -112,6 +111,37 @@ export class PatientsDetailService {
                         return response;
                     })
 
+        );
+    }
+    updatePatientsDetails(patient_name, patient_address,patient_dob,patient_age,patient_gender,patient_phone_no,patient_home_phno,patient_status,patient_id,token =this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        
+        formData.append('patient_name', patient_name);
+        formData.append('patient_address', patient_address);
+        formData.append('patient_dob',patient_dob);
+        formData.append('patient_age', patient_age);
+        formData.append('patient_gender', patient_gender);
+        formData.append('patient_phone_no',patient_phone_no);
+        formData.append('patient_home_phno', patient_home_phno);
+        formData.append('patient_status', patient_status);
+        formData.append('patient_id', patient_id);
+        formData.append('token', token);
+       
+
+            return this.http.post(this.apiUrl +"/InofficePayments/updatePatientsDetails/", formData)
+            .pipe(map((response: Response) => {
+                console.log(response);
+                            return response;
+            })
+            );
+        }
+
+    getInofficeMembersByID(patient_id,clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Patients/getAllPatientByID?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                return response;
+         
+                })
         );
     }
 }

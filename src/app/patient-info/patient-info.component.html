@@ -5,7 +5,8 @@
     <div fxFlex.gt-sm="100" fxFlex="100">
         <mat-card>
             <mat-card-content>
-                Patient Plan Details
+               
+                <mat-card-title> Patient Plan Details | {{mainpatientname | titlecase}}</mat-card-title>
                <!-- ============================================================== -->
                 <!-- column -->
                 <!-- ============================================================== -->
@@ -27,7 +28,7 @@
                                         <tr>
                                             <th>No. of Members</th>
                                             <td>&nbsp;&nbsp;</td>
-                                            <td>{{total_subpatient +1}}</td>
+                                            <td>{{total_subpatient}}</td>
                                           </tr>
                                     <tr>
                                       <th>Payment Amount</th>
@@ -42,7 +43,7 @@
                                 </form>
 
                                    
-                                  <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                         <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
                                   [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
                              <ngx-datatable-column prop="sr" name="sr">
                                <ng-template let-column="column" ngx-datatable-header-template>
@@ -95,55 +96,87 @@
                             </mat-tab>
 
                         <!-- Benefits Used tab -->
-                                <mat-tab label="Benefits Used">
-  
-                                  <div class="responsive-table">
-                                        <mat-table #table [dataSource]="dataSource">
+                          <mat-tab label="Benefits Used">
 
-                                          <ng-container matColumnDef="position">
-                                            <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
-                                            <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-                                          </ng-container>
+                              <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                                      [rowHeight]="'auto'" [limit]="10" [rows]='benefit'>
+                                 <ngx-datatable-column prop="sr" name="sr">
+                                   <ng-template let-column="column" ngx-datatable-header-template>
+                                  <span>Id</span>
+                                </ng-template>
+                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                    <span>
+                                      {{rowIndex + 1}}
+                                    </span>
+                                  </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column prop="treatmentName" name="treatmentName">
+                                   <ng-template let-column="column" ngx-datatable-header-template>
+                                  <span>Treatment Name</span>
+                                </ng-template>
+                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                    <span >
+                                      {{value}}
+                                    </span>
+                                        </ng-template>
+                                </ngx-datatable-column>
+                          
+                                 <ngx-datatable-column prop="percentage" name="percentage">
+                                   <ng-template let-column="column" ngx-datatable-header-template>
+                                  <span>Percentage</span>
+                                </ng-template>
+                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                    <span >
+                                      {{value}} %
+                                    </span>
+                                   
+                                    <mat-progress-bar mode="determinate" value={{value}}></mat-progress-bar>
+                                  </ng-template>
+                                </ngx-datatable-column>
+                          
+                                <ngx-datatable-column prop="percentage" name="percentage">
+                                  <ng-template let-column="column" ngx-datatable-header-template>
+                                 <span>Status</span>
+                               </ng-template>
+                                 <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                   <span *ngIf="value=='100.00'" >
+                                    Completed
+                                   </span>
+                                   <span *ngIf="value!=='100.00'" >
+                                    In-Process
+                                   </span>
+                                  
+                                  
+                                 </ng-template>
+                               </ngx-datatable-column>
+                          
+                               <ngx-datatable-column prop="performed_date" name="performed_date">
+                                <ng-template let-column="column" ngx-datatable-header-template>
+                               <span>Completion Date</span>
+                             </ng-template>
+                               <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
                               
-
-                                          <ng-container matColumnDef="name">
-                                            <mat-header-cell *matHeaderCellDef> Benefits </mat-header-cell>
-                                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                                          </ng-container>
-                              
-                                          <ng-container matColumnDef="age">
-                                            
-                                            <mat-header-cell *matHeaderCellDef> Progress %age </mat-header-cell>
-                                            <!-- <mat-cell *matCellDef="let element"> {{element.age}} </mat-cell> -->
-                                            <mat-cell>
-                                                <mat-progress-bar style="width:20%" *matCellDef="let element" mode="determinate" value="40"></mat-progress-bar>
-                                              </mat-cell>
-                                           </ng-container>
-                              
-                                          <ng-container matColumnDef="gender">
-                                            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-                                            <mat-cell *matCellDef="let element"> {{element.gender}} </mat-cell>
-                                          </ng-container>
+                                <span>
+                                   {{value | date: 'dd-MM-yyyy'}}
+                                 </span>
                                 
-                                          <ng-container matColumnDef="action">
-                                              <mat-header-cell *matHeaderCellDef>Action </mat-header-cell>
-                                              <!-- <mat-cell *matCellDef="let element"> {{element.action}} </mat-cell> -->
-                                              <a class="action_btn golden mat-raised-button" mat-raised-button *matCellDef="let element" title= 'action' (click)="openDialog()"><i class="ti-settings  m-r-10"></i></a>
+                               </ng-template>
 
-                                              <!-- <button class="mat-raised-button ti-settings  m-r-10" *matCellDef="let element" mat-raised-button ></button> -->
-                                            </ng-container>
+                             </ngx-datatable-column>
+                            
+                             <ngx-datatable-column name="id">
+                              <ng-template let-column="column" ngx-datatable-header-template>
+                             <span>Actions</span>
+                           </ng-template>
+                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
+                               <a class="action_btn golden" (click)="openDialog(rowIndex)" title= 'Patients Details'><i class="ti-settings  m-r-10"></i></a>
+                               <button class="action_btn danger" mat-menu-item (click) = "deleteBenefitsUsed(rowIndex)">
+                              <i class="ti-trash text-danger m-r-10"></i></button>
+                             </ng-template>
+                           </ngx-datatable-column>
 
-                                          <ng-container matColumnDef="completiondate">
-                                              <mat-header-cell *matHeaderCellDef> Completion Date </mat-header-cell>
-                                              <mat-cell *matCellDef="let element"> {{element.gender}} </mat-cell>
-                                            </ng-container>
-                                                          
-
-
-                                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                                          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                                        </mat-table>
-                                      </div>
+                              </ngx-datatable>
+    
                                 </mat-tab>
 
                       <!-- Contract Upload tab -->
@@ -172,45 +205,94 @@
 
                     <!-- Payment History tab -->
 
-                                <mat-tab label="Payment History">
+                          <mat-tab label="Payment History">
                                  
-                                                        
-                                    <div class="responsive-table">
-                                        <mat-table #table [dataSource]="dataSource">
-                                     
-                                          <ng-container matColumnDef="position">
-                                            <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
-                                            <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-                                          </ng-container>
-                              
-                                       
-                                          <ng-container matColumnDef="name">
-                                            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                                          </ng-container>
-                              
-                                         
-                                          <ng-container matColumnDef="age">
-                                            <mat-header-cell *matHeaderCellDef> Age </mat-header-cell>
-                                            <mat-cell *matCellDef="let element"> {{element.age}} </mat-cell>
-                                            
-                                          </ng-container>
+                           <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                                  [rowHeight]="'auto'" [limit]="10" [rows]='payment'>
+                             <ngx-datatable-column prop="sr" name="sr">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Id</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                <span>
+                                  {{rowIndex + 1}}
+                                </span>
+                              </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column prop="customer_id" name="customer_id">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Customer ID</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                <span >
+                                  {{value}}
+                                </span>
+                                    </ng-template>
+                            </ngx-datatable-column>
 
-                                        
-                                          <ng-container matColumnDef="gender">
-                                            <mat-header-cell *matHeaderCellDef> Gender </mat-header-cell>
-                                            <mat-cell *matCellDef="let element"> {{element.gender}} </mat-cell>
-                                          </ng-container>
+                            <ngx-datatable-column prop="subscr_id" name="subscr_id">
+                              <ng-template let-column="column" ngx-datatable-header-template>
+                             <span>Subscriber ID</span>
+                           </ng-template>
+                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                               <span >
+                                 {{value}}
+                               </span>
+                                   </ng-template>
+                           </ngx-datatable-column>
+
+                             <ngx-datatable-column prop="invoice_date" name="invoice_date">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Invoice Date</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                <span >
+                                  {{value | date: 'dd-MM-yyyy'}}
+                                </span>
+                               
+                              </ng-template>
+                            </ngx-datatable-column>
+                      
+                            <ngx-datatable-column prop="payment_plan_name" name="payment_plan_name">
+                              <ng-template let-column="column" ngx-datatable-header-template>
+                             <span>Plan </span>
+                           </ng-template>
+                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                               <span >
+                                 {{payment_plan_name}}
+                               </span>
                               
-                                          <ng-container matColumnDef="action">
-                                              <mat-header-cell *matHeaderCellDef>Action </mat-header-cell>
-                                              <mat-cell *matCellDef="let element"> {{element.action}} </mat-cell>
-                                            </ng-container>
-                                            
-                                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                                          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                                        </mat-table>
-                                      </div>
+                             </ng-template>
+                           </ngx-datatable-column>
+
+
+                            <ngx-datatable-column prop="amount" name="amount">
+                              <ng-template let-column="column" ngx-datatable-header-template>
+                             <span>Amount</span>
+                           </ng-template>
+                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                               <span >
+                                 {{value}}
+                               </span>
+                              
+                             </ng-template>
+                           </ngx-datatable-column>
+                      
+
+                            <ngx-datatable-column prop="payment_status" name="payment_status">
+                              <ng-template let-column="column" ngx-datatable-header-template>
+                             <span>Payment Status</span>
+                           </ng-template>
+                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                               <span >
+                                 {{value}}
+                               </span>
+                              
+                             </ng-template>
+                           </ngx-datatable-column>
+                      
+                        
+                          </ngx-datatable>
 
                                 </mat-tab>
 
@@ -222,3 +304,4 @@
         </mat-card>
     </div>
 </div>
+ 

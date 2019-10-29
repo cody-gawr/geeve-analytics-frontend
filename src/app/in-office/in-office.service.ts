@@ -1,0 +1,122 @@
+
+import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Response } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { Observable } from 'rxjs';
+import { CookieService } from "angular2-cookie/core";
+import { environment } from "../../environments/environment";
+
+
+@Injectable()
+export class InOfficeService {
+
+   public token: string;
+   public api_url: string;
+    private headers: HttpHeaders;
+    private apiUrl = environment.apiUrl;
+
+    constructor(private http: HttpClient,private _cookieService: CookieService) {
+        
+        //append headers
+        this.headers = new HttpHeaders();
+        this.headers.append("Content-Type", 'application/json');
+        this.headers.append("Access-Control-Allow-Origin", "*");
+        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+   }
+
+
+
+       // Delete Clinic
+    deletePlan(id,clinic_id,user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+    const formData = new FormData();
+    formData.append('patient_id', id);
+    formData.append('clinic_id', clinic_id);
+    formData.append('user_id', user_id);
+    formData.append('token', token);
+
+        return this.http.post(this.apiUrl +"/InofficePayments/deleteInofficeMembers/", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+  
+
+    addPaymentPlans(patient_name, patient_email,plan_name,plan_description,clinic_id,total_amount,setup_fee,deposite_amount,balance_amount,payment_frequency,duration,monthly_weekly_payment,start_date,due_date,token =this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        formData.append('patient_name', patient_name);
+        formData.append('patient_email', patient_email);
+        formData.append('plan_name',plan_name);
+        formData.append('plan_description', plan_description);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('clinic_id', clinic_id);
+        formData.append('total_amount',total_amount);
+        formData.append('setup_fee', setup_fee);
+        formData.append('deposite_amount',deposite_amount );
+        formData.append('balance_amount',balance_amount );
+        formData.append('payment_frequency',payment_frequency );
+        formData.append('duration',duration );
+        formData.append('monthly_weekly_payment',monthly_weekly_payment );
+        formData.append('start_date',start_date );
+        formData.append('due_date',due_date );
+        formData.append('token', token);
+
+            return this.http.post(this.apiUrl +"/InofficePayments/addPaymentPlans/", formData)
+            .pipe(map((response: Response) => {
+                // console.log(response);
+                            return response;
+            })
+            );
+        }
+
+    getInofficeMembers(clinic_id,token = this._cookieService.get("token"),user_id = this._cookieService.get("userid")): 
+    Observable<any> {
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeMembers?token="+this._cookieService.get("token")+"&clinic_id="+clinic_id+"&user_id="+this._cookieService.get("userid"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+            // console.log(response);
+                    return response;
+                })
+        );
+    }
+    updatePatientsDetails(patient_name, patient_address,patient_dob,patient_age,patient_gender,patient_phone_no,patient_home_phno,patient_id,token =this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        formData.append('patient_name', patient_name);
+        formData.append('patient_address', patient_address);
+        formData.append('patient_dob',patient_dob);
+        formData.append('patient_age', patient_age);
+        formData.append('patient_gender', patient_gender);
+        formData.append('patient_phone_no',patient_phone_no);
+        formData.append('patient_home_phno', patient_home_phno);
+        formData.append('patient_id', patient_id);
+        formData.append('token', token);
+       
+            return this.http.post(this.apiUrl +"/InofficePayments/updatePatientsDetails/", formData)
+            .pipe(map((response: Response) => {
+
+                            return response;
+            })
+            );
+        }
+
+    getInofficeMembersByID(patient_id,clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeMembersByID?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                return response;
+                })
+        );
+    }
+
+    getemailvalidation(patient_email,clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Patients/getemailvalidation?patient_email="+patient_email+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                return response;
+                })
+        );
+    }
+   
+   
+    
+}
+

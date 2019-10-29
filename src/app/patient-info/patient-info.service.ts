@@ -72,6 +72,71 @@ export class PatientInfoService {
                 })
     );
     }
+
+    getBenefitsUsed(patient_id,member_plan_id, token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"PatientsBenefits/getBenefitsUsed?patient_id="+patient_id+"&member_plan_id="+member_plan_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                return response;
+                    })
+        );
+    }
+
+    addBenefits(patient_id,member_plan_id,member_treatment_id,patients_sittings,sitting,token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+    
+        formData.append('patients_id', patient_id);
+        formData.append('member_plan_id',member_plan_id);
+        formData.append('member_treatment_id', member_treatment_id);
+        formData.append('patients_sittings',patients_sittings);
+        formData.append('sitting',sitting);
+        formData.append('token', token);
+       
+            return this.http.post(this.apiUrl +"/PatientsBenefits/addBenefits/", formData)
+            .pipe(map((response: Response) => {
+          //      console.log(response);
+                return response;
+            })
+            );
+    }
+
+    updateSittingStatus(patient_id,member_plan_id,sitting_id,sitting_status,performed_date,token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+    
+        formData.append('patients_id', patient_id);
+        formData.append('member_plan_id',member_plan_id);
+        formData.append('sitting_id', sitting_id);
+        formData.append('sitting_status',sitting_status);
+        formData.append('performed_date', performed_date);
+        formData.append('token', token);
+       
+            return this.http.post(this.apiUrl +"/PatientsBenefits/updateSittingStatus/", formData)
+            .pipe(map((response: Response) => {
+          //      console.log(response);
+                            return response;
+                        })
+            );
+    }
+    getPaymentHistory(patient_id,member_plan_id,user_id,clinic_id, token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"PaymentHistory/getPaymentHistory?patient_id="+patient_id+"&member_plan_id="+member_plan_id+"&user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                return response;
+                console.log(response);
+                    })
+        );
+    }
+
+    deleteBenefitsUsed(patient_id,token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+    
+        formData.append('patients_benefits_id', patient_id);
+        formData.append('token', token);
+       
+            return this.http.post(this.apiUrl +"/PatientsBenefits/deleteBenefitsUsed/", formData)
+            .pipe(map((response: Response) => {
+          //      console.log(response);
+                            return response;
+                        })
+            );
+    }
        
 }
-

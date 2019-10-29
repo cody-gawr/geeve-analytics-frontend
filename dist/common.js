@@ -79,6 +79,33 @@ var LoginService = /** @class */ (function () {
             return response;
         }));
     };
+    // Items Predictor Analysis 
+    LoginService.prototype.createSubscription = function (token, plan_id, user_id) {
+        var formData = new FormData();
+        formData.append('token', token.id);
+        formData.append('email', token.email);
+        formData.append('plan_id', plan_id);
+        formData.append('user_id', user_id);
+        return this.http.post(this.apiUrl + "/users/createSubscription", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Items Predictor Analysis 
+    LoginService.prototype.autoLogin = function (user_id) {
+        var formData = new FormData();
+        formData.append('user_id', user_id);
+        return this.http.post(this.apiUrl + "/users/autologin", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    LoginService.prototype.getPlans = function () {
+        return this.http.get(this.apiUrl + "/plans/getPlans")
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
     LoginService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])

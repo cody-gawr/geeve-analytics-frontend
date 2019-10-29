@@ -151,7 +151,7 @@ this.table = data;
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.dentistService.updateDentists(this.rows[rowIndex]['providerId'], this.rows[rowIndex][cell],this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
+      if(res.message == 'success'){
         alert('Dentist Updated');
           this.getDentists();
        }

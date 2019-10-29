@@ -1,0 +1,52 @@
+<h1 mat-dialog-title>Update Patient Details</h1>
+<div mat-dialog-content>
+
+  <mat-form-field>
+
+    <input matInput tabindex="1" [(ngModel)]="data.patient_name" placeholder="Patient Name"  class="form-control-dialog" required="true">
+   
+  </mat-form-field>
+ 
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.patient_address" placeholder="Patient Address" class="form-control-dialog" required="true">
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput tabindex="1" type="date" [(ngModel)]="data.patient_dob" placeholder="Patient Dob" class="form-control-dialog" required="true">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput tabindex="1" type="number" min="0" [(ngModel)]="data.patient_age" placeholder="Patient Age" class="form-control-dialog" required="true">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Gender</mat-label> 
+      <mat-select name ="value" tabindex="1" [(ngModel)]= "data.patient_gender"  class="form-control-dialog" required="true">
+        <mat-option value="MALE">MALE</mat-option>
+        <mat-option value="FEMALE">FEMALE</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field>
+        <input matInput tabindex="1" type="number" min="0" [(ngModel)]="data.patient_phone_no" placeholder="Phone Number" class="form-control-dialog" oninput="this.value = this.value.slice(0,10);" required="true">
+      </mat-form-field>
+
+
+    <mat-form-field>
+        <input matInput tabindex="1" type="number" min="0" [(ngModel)]="data.patient_home_phno" placeholder="Home Phone Number" class="form-control-dialog" oninput="this.value = this.value.slice(0,10);" required="true">
+     </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Status</mat-label> 
+      <mat-select name ="value" tabindex="1" [(ngModel)]= "data.patient_status"  class="form-control-dialog" required="true">
+        <mat-option value="ACTIVE">ACTIVE</mat-option>
+        <mat-option value="INACTIVE">INACTIVE</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="update(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+</div>

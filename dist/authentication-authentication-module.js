@@ -207,7 +207,7 @@ var ErrorComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sa_login_blur\" style=\"background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; height: 100vh;\ndisplay: flex;\nbackground-size: cover;\nalign-items: center;\"></div>\n<img class=\"login_abso_logo\" src=\"../assets/images/logo-white.png\">   \n<div class=\"login-register\" style=\"background-image:url(assets/images/background/login-register.jpg);\">\n    <div class=\"login-register-box\">\n    <mat-card>\n      <mat-card-content>\n        <form [formGroup]=\"form\" (ngSubmit)=\"onSubmit()\">\n          <div class=\"text-center\">\n            <img alt=\"homepage\" src=\"../assets/images/logo-icon.gif\">\n            <h4 class=\"m-t-0\">Recover Password</h4>\n          </div>\n          <p class=\"text-center font-14\">Enter your email and we'll send you the password reset link.</p>\n\n          <div fxLayout=\"column\" fxLayoutAlign=\"space-around\">\n            <div class=\"pb-1\">\n              <mat-form-field style=\"width: 100%\">\n                <input matInput placeholder=\"Email address\" type=\"email\" [formControl]=\"form.controls['email']\">\n              </mat-form-field>\n              <small *ngIf=\"form.controls['email'].hasError('required') && form.controls['email'].touched\" class=\"text-danger support-text\">You must include an email address.</small>\n              <small *ngIf=\"form.controls['email'].errors?.email && form.controls['email'].touched\" class=\"text-danger support-text\">You must include a valid email address.</small>\n              <small *ngIf=\"errorLogin ==true && errorLoginText != ''\" class=\"text-danger support-text\">{{errorLoginText}}</small>\n               <small *ngIf=\"successLogin ==true && successLoginText != ''\" class=\"text-success support-text\">{{successLoginText}}</small>\n            </div>\n            <button mat-raised-button color=\"primary\" type=\"submit\" class=\"btn-block btn-lg m-t-20\" [disabled]=\"!form.valid\">Submit</button>\n          </div>\n        </form>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>"
+module.exports = "<div class=\"sa_login_blur\" style=\"background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; height: 100vh;\ndisplay: flex;\nbackground-size: cover;\nalign-items: center;\"></div>\n<img class=\"login_abso_logo\" src=\"../assets/images/logo-text.png\">   \n<div class=\"login-register\" style=\"background-image:url(assets/images/background/login-register.jpg);\">\n    <div class=\"login-register-box\">\n    <mat-card>\n      <mat-card-content>\n        <form [formGroup]=\"form\" (ngSubmit)=\"onSubmit()\">\n          <div class=\"text-center\">\n            <img alt=\"homepage\" src=\"../assets/images/logo-icon.gif\">\n            <h4 class=\"m-t-0\">Recover Password</h4>\n          </div>\n          <p class=\"text-center font-14\">Enter your email and we'll send you the password reset link.</p>\n\n          <div fxLayout=\"column\" fxLayoutAlign=\"space-around\">\n            <div class=\"pb-1\">\n              <mat-form-field style=\"width: 100%\">\n                <input matInput placeholder=\"Email address\" type=\"email\" [formControl]=\"form.controls['email']\">\n              </mat-form-field>\n              <small *ngIf=\"form.controls['email'].hasError('required') && form.controls['email'].touched\" class=\"text-danger support-text\">You must include an email address.</small>\n              <small *ngIf=\"form.controls['email'].errors?.email && form.controls['email'].touched\" class=\"text-danger support-text\">You must include a valid email address.</small>\n              <small *ngIf=\"errorLogin ==true && errorLoginText != ''\" class=\"text-danger support-text\">{{errorLoginText}}</small>\n               <small *ngIf=\"successLogin ==true && successLoginText != ''\" class=\"text-success support-text\">{{successLoginText}}</small>\n            </div>\n            <button mat-raised-button color=\"primary\" type=\"submit\" class=\"btn-block btn-lg m-t-20\" [disabled]=\"!form.valid\">Submit</button>\n          </div>\n        </form>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -587,7 +587,7 @@ var RegisterComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sa_login_blur\" style=\"background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; height: 100vh;\ndisplay: flex;\nbackground-size: cover;\nalign-items: center;\"></div>\n<img class=\"login_abso_logo\" src=\"../assets/images/logo-white.png\">   \n<div class=\"login-register\" style=\"background-image:url(assets/images/background/login-register.jpg);\">\n    <div class=\"login-register-box\">\n    <mat-card>\n      <mat-card-content>\n        <form [formGroup]=\"form\" (ngSubmit)=\"onSubmit()\">\n          <div class=\"text-center\">\n            <img alt=\"homepage\" src=\"../assets/images/logo-icon.gif\">\n            <h4 class=\"m-t-0\">Reset Password</h4>\n          </div>\n          <p class=\"text-center font-14\">Enter new Password.</p>\n          <div fxLayout=\"column\" fxLayoutAlign=\"space-around\">\n            <div class=\"pb-1\">\n              <mat-form-field style=\"width: 100%\">\n                <input matInput placeholder=\"Password\" type=\"password\" [formControl]=\"form.controls['password']\">\n              </mat-form-field>\n                <mat-form-field style=\"width: 100%\">\n                <input matInput placeholder=\"Confirm Password\" type=\"password\" [formControl]=\"form.controls['cpassword']\">\n              </mat-form-field>\n              <small *ngIf=\"form.controls['password'].value !=  form.controls['cpassword'].value\" class=\"text-danger support-text\">Password and Confirm Password does not match.</small>\n              <small *ngIf=\"errorLogin ==true && errorLoginText != ''\" class=\"text-danger support-text\">{{errorLoginText}}</small>\n               <small *ngIf=\"successLogin ==true && successLoginText != ''\" class=\"text-success support-text\">{{successLoginText}}</small>\n            </div>\n            <button mat-raised-button color=\"primary\" type=\"submit\" class=\"btn-block btn-lg m-t-20\" [disabled]=\"!form.valid\">Submit</button>\n          </div>\n        </form>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>"
+module.exports = "<div class=\"sa_login_blur\" style=\"background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; height: 100vh;\ndisplay: flex;\nbackground-size: cover;\nalign-items: center;\"></div>\n<img class=\"login_abso_logo\" src=\"../assets/images/logo-text.png\">   \n<div class=\"login-register\" style=\"background-image:url(assets/images/background/login-register.jpg);\">\n    <div class=\"login-register-box\">\n    <mat-card>\n      <mat-card-content>\n        <form [formGroup]=\"form\" (ngSubmit)=\"onSubmit()\">\n          <div class=\"text-center\">\n            <img alt=\"homepage\" src=\"../assets/images/logo-icon.gif\">\n            <h4 class=\"m-t-0\">Reset Password</h4>\n          </div>\n                  <div fxLayout=\"column\" fxLayoutAlign=\"space-around\">\n            <div class=\"pb-1\">\n              <mat-form-field style=\"width: 100%\">\n                <input matInput placeholder=\"Password\" type=\"password\" [formControl]=\"form.controls['password']\">\n              </mat-form-field>\n                <mat-form-field style=\"width: 100%\">\n                <input matInput placeholder=\"Confirm Password\" type=\"password\" [formControl]=\"form.controls['cpassword']\">\n              </mat-form-field>\n              <small *ngIf=\"form.controls['password'].value !=  form.controls['cpassword'].value\" class=\"text-danger support-text\">Password and Confirm Password does not match.</small>\n              <small *ngIf=\"errorLogin ==true && errorLoginText != ''\" class=\"text-danger support-text\">{{errorLoginText}}</small>\n               <small *ngIf=\"successLogin ==true && successLoginText != ''\" class=\"text-success support-text\">{{successLoginText}}</small>\n            </div>\n            \n            <button mat-raised-button color=\"primary\" type=\"submit\" class=\"btn-block btn-lg m-t-20\" [disabled]=\"!form.valid\">Submit</button>\n            <a [routerLink]=\"['/login']\" class=\"text-info link\" align=\"center\">Login</a>\n          </div>\n        </form>\n      </mat-card-content>\n    </mat-card>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -654,21 +654,23 @@ var ResetComponent = /** @class */ (function () {
     };
     ResetComponent.prototype.onSubmit = function () {
         var _this = this;
-        this.loginService.resetPassword(this.form.value.password, this.id).subscribe(function (res) {
-            _this.errorLogin = false;
-            _this.errorLoginText = '';
-            _this.successLogin = false;
-            _this.successLoginText = '';
-            if (res.message == 'success') {
-                _this.successLogin = true;
-                _this.successLoginText = res.data;
-            }
-            else if (res.message == 'error') {
-                _this.errorLogin = true;
-                _this.errorLoginText = res.data;
-            }
-        }, function (error) {
-        });
+        if (this.form.value.password == this.form.value.cpassword) {
+            this.loginService.resetPassword(this.form.value.password, this.id).subscribe(function (res) {
+                _this.errorLogin = false;
+                _this.errorLoginText = '';
+                _this.successLogin = false;
+                _this.successLoginText = '';
+                if (res.message == 'success') {
+                    _this.successLogin = true;
+                    _this.successLoginText = res.data;
+                }
+                else if (res.message == 'error') {
+                    _this.errorLogin = true;
+                    _this.errorLoginText = res.data;
+                }
+            }, function (error) {
+            });
+        }
         //  this.router.navigate(['/login']);
     };
     ResetComponent = __decorate([

@@ -8,7 +8,7 @@ import {
   FormControl
 } from '@angular/forms';
 import { PaymentPatientService } from './payment-patient.service';
-// import { StripeService, StripeCardComponent, ElementOptions, ElementsOptions } from "@nomadreservations/ngx-stripe";
+import { StripeService, StripeCardComponent, ElementOptions, ElementsOptions } from "@nomadreservations/ngx-stripe";
 import { LoginService } from '../login/login.service';
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -60,6 +60,7 @@ export class PaymentPatientComponent implements OnInit {
         patientArray['sub_patients_name'] = res.data[0]['patient_name'];
         patientArray['sub_patients_age'] = res.data[0]['patient_age'];
         patientArray['sub_patients_gender'] = res.data[0]['patient_gender'];
+        patientArray['sub_patients_amount'] = res.data[0]['member_plan']['totalAmount'];
         this.total_subpatient=res.data[0]['sub_patients'].length;
         this.rows = res.data[0]['sub_patients'];
         var sub_patient_length = this.rows.length;
@@ -68,108 +69,99 @@ export class PaymentPatientComponent implements OnInit {
         this.discount = res.data[0]['member_plan']['discount']; 
         this.member_plan_id= res.data[0]['member_plan_id'];
         this.plan_name=res.data[0]['member_plan']['planName'];
+        this.user_id=res.data[0]['user_id'];
+        this.stripe_plan_id =  this.plan_name.replace('',' ');
+
         }
         else if(res.status == '401'){
               this._cookieService.put("username",'');
               this._cookieService.put("email",'');
               this._cookieService.put("token",'');
               this._cookieService.put("userid",'');
-              // this.router.navigateByUrl('/login');
         }
+        else {
+        var patientArray ={};
+        patientArray['sub_patients_name'] = res.data[0]['patient_name'];
+        patientArray['sub_patients_age'] = res.data[0]['patient_age'];
+        patientArray['sub_patients_gender'] = res.data[0]['patient_gender'];
+        patientArray['sub_patients_amount'] = res.data[0]['member_plan']['totalAmount'];   
+            var sub_patient_length = this.rows.length;
+        this.rows[sub_patient_length] = patientArray;
+        }
+        console.log(this.rows);
+
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
   }
 
-// onSubmit() {
-//   this.errorLogin  =false;
-//     this.paymentPatientService.addSubPatients(this.form.value.name,this.form.value.age,this.form.value.gender,this.id).subscribe((res) => {
-//        if(res.message == 'success'){
-//         this.getSubPatients();
-//         this.patient_amount = this.patient_amount - Math.floor(this.discount/this.patient_amount*100);
-//        }
-//        else if(res.message == 'error'){
-//           this.errorLogin  =true;
-//        }
-//     }, error => {
-//     });
-//   }
+onSubmit() {
+  this.errorLogin  =false;
+  var count_patient = this.rows.length;
+  if(this.rows.length>1)
+    var patient_amount = this.rows[count_patient -2]['sub_patients_amount'];
+  else
+    var patient_amount = this.rows[0]['sub_patients_amount'];
+  if(count_patient < 4)
+    patient_amount = patient_amount - Math.floor(this.discount/patient_amount*100);
+    this.patient_amount =this.patient_amount+ patient_amount;
+      $('.ajax-loader').show();      
 
-  // openCheckout() {
-  //   var handler = (<any>window).StripeCheckout.configure({
-  //     key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
-  //     locale: 'auto',
-  //     token: token => {
-  //          this.loginService.createSubscription(token,this.stripe_plan_id,this.user_id).subscribe((res) => {
-  //          if(res.message == 'success'){
-  //           this.successMessage = 'Payment Completed Successfully! You will be logged in to the account!';
+    this.paymentPatientService.addSubPatients(this.form.value.name,this.form.value.age,this.form.value.gender,patient_amount,this.id).subscribe((res) => {
+      $('.ajax-loader').hide();      
 
-  //     setTimeout(() => 
-  //     {
-  //       this.loginService.autoLogin(this.user_id).subscribe((res) => {
-  //       if(res.message == 'success'){
-  //       var datares = [];
-  //       datares['username'] = res.data.data.username;
-  //       datares['email'] = res.data.data.email;
-  //       datares['token'] = res.data.data.token;        
-  //       datares['userid'] = res.data.data.id;      
-  //       datares['parentid'] = res.data.data.parent_id;   
-  //       datares['user_type'] = res.data.data.user_type;       
-  //       datares['user_image'] = res.data.data.user_image;        
+       if(res.message == 'success'){
+        this.updatePatients('INACTIVE');
+       }
+       else if(res.message == 'error'){
+          this.errorLogin  =true;
+       }
+    }, error => {
+    });
+  }
 
-  //       datares['login_status'] = res.data.data.login_status;        
-  //       datares['display_name'] = res.data.data.display_name;  
-  //       datares['dentistid'] = res.data.data.dentist_id;        
+updatePatients(status) { 
+      $('.ajax-loader').show();      
 
-  //       let opts: CookieOptionsArgs = {
-  //           expires: new Date('2030-07-19')
-  //       };
-  //       this._cookieService.put("userid", '', opts);
-  //       this._cookieService.put("childid", '', opts);
-  //       this._cookieService.put("dentistid", '', opts);
+    this.paymentPatientService.updatePatients(this.patient_amount,status, this.id).subscribe((res) => {
+      $('.ajax-loader').hide();      
+       if(res.message == 'success'){
+        this.getSubPatients();
+       }
+       else if(res.message == 'error'){
+          this.errorLogin  =true;
+       }
+    }, error => {
+    });
+  }
 
-  //       this._cookieService.put("username", datares['username'], opts);
-  //       this._cookieService.put("email", datares['email'], opts);
-  //       this._cookieService.put("token", datares['token'], opts);
-  //       this._cookieService.put("user_type", datares['user_type'], opts);
-       
-  //       this._cookieService.put("login_status", datares['login_status'], opts);
-  //       this._cookieService.put("display_name", datares['display_name'], opts);
-  //       this._cookieService.put("user_image", datares['user_image'], opts);
+  openCheckout() {
+    var handler = (<any>window).StripeCheckout.configure({
+      key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
+      locale: 'auto',
+      token: token => {
+           this.paymentPatientService.createSubscription(token,this.stripe_plan_id,this.id, this.patient_amount, this.member_plan_id, this.user_id).subscribe((res) => {
+           if(res.message == 'success'){
+              this.updatePatients('ACTIVE');
 
-  //       if(datares['user_type'] == '1') {
-  //       this.router.navigate(['/users']);
-  //        this._cookieService.put("userid", datares['userid'], opts);
-  //     }
-  //       else if(datares['user_type'] == '2') {
-  //        this._cookieService.put("userid", datares['userid'], opts);
+            alert('Payment Completed Successfully!');  
+             this.router.navigate(['/']);
+           }
+           else if(res.message == 'error'){
+              this.errorLogin  =true;
+           }
+          }, error => {
+          });
+      }
+     });
 
-  //       this.router.navigate(['/dashboards/cliniciananalysis/1']);
-  //              }
-  //              else if(res.message == 'error'){
-  //                 this.errorLogin  =true;
-  //              }
-  //            }
-  //             }, error => {
-  //             });
-  //           },
-  //           5000);    
-  //          }
-  //          else if(res.message == 'error'){
-  //             this.errorLogin  =true;
-  //          }
-  //         }, error => {
-  //         });
-  //     }
-  //    });
-
-  //   handler.open({      
-  //     name:  this.planName,
-  //     amount: this.amount
-  //   });
+    handler.open({      
+      name:  this.planName,
+      amount: this.amount
+    });
  
-  // }
+  }
 
  // getPlans() {
  //  this.errorLogin  =false;

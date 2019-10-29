@@ -37,9 +37,11 @@ export class DialogOverviewExampleDialogComponent {
 //     event.stopImmediatePropagation();
 //     //(... rest of your JS code)
 // });
+
     $('.form-control-dialog').each(function(){
     var likeElement = $(this).click();
   });
+  console.log(data)
     if(data.name != undefined && data.address != undefined  && data.contact_name != undefined && data.phone_no != undefined){
         this.dialogRef.close(data);
       }
@@ -70,7 +72,7 @@ export class ClinicComponent implements AfterViewInit {
   publishable_key: string;
   secret_key: string;
   clinic_logo: string;
-
+  user_id:any;
   fileInput: any ;
 
 
@@ -79,7 +81,7 @@ export class ClinicComponent implements AfterViewInit {
         $('#title').html('Clinics');
         //$('.header_filters').hide();
         $('.header_filters').addClass('hide_header');
-        this.notifier.notify( 'success', 'You are awesome! I mean it!' ,'vertical');
+        // this.notifier.notify( 'success', 'You are awesome! I mean it!' ,'vertical');
   }
   editing = {};
   rows = [];
@@ -110,7 +112,6 @@ export class ClinicComponent implements AfterViewInit {
     });
     
     const sub = dialogRef.componentInstance.onAdd.subscribe((val) => {
-      console.log(val);
       let formData = new FormData();
       formData.append('file', val, val.name);
       this.clinicService.logoUpload(formData).subscribe((res) => {
@@ -121,10 +122,12 @@ export class ClinicComponent implements AfterViewInit {
       });
      
   dialogRef.afterClosed().subscribe(result => {
+    //  $('.ajax-loader').show();
   this.clinicService.addClinic(result.name, result.address, result.contact_name,result.phone_no,result.publishable_key,result.secret_key, this.imageURL).subscribe((res) => {
+        //  $('.ajax-loader').hide();
        if(res.message == 'success'){
-        alert('Clinic Added');
-          this.getClinics();
+        this.notifier.notify( 'success', 'Clinic Added' ,'vertical');
+                this.getClinics();
           console.log(res);
        }
     }, error => {
@@ -139,6 +142,7 @@ export class ClinicComponent implements AfterViewInit {
     this.clinicService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
           this.rows = res.data;
+          this.user_id= res.data[0]['user_id']
           this.temp = [...res.data];        
           this.table = data;
 
@@ -161,7 +165,7 @@ export class ClinicComponent implements AfterViewInit {
     if(this.rows[row]['id']) {
   this.clinicService.deleteClinic(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
-        alert('Clinic Removed');
+         this.notifier.notify( 'success', 'Clinic Removed' ,'vertical');
           this.getClinics();
        }
     }, error => {
@@ -202,12 +206,15 @@ export class ClinicComponent implements AfterViewInit {
     this.table = data;
   }
   updateValue(event, cell, rowIndex) {
+      $('.ajax-loader').show();
 
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.clinicService.updateClinic(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
+      $('.ajax-loader').hide();
+      
        if(res.message == 'success'){
-        alert('Clinic Updated');
+        this.notifier.notify( 'success', 'Clinic Updated' ,'vertical');
           this.getClinics();
        }
     }, error => {

@@ -8,17 +8,17 @@
    </select> 
  </div>
   <div class="SetRoles_checkbox">
-    <mat-checkbox class="role_permissions" *ngIf="selected_id <=4" [(ngModel)]="data.selectedRole['dashboard1_'+selected_id]">Dashboard 1</mat-checkbox>
-    <mat-checkbox class="role_permissions" *ngIf="selected_id <=4" [(ngModel)]="data.selectedRole['dashboard2_'+selected_id]">Dashboard 2</mat-checkbox>
-    <mat-checkbox class="role_permissions" *ngIf="selected_id <4" [(ngModel)]="data.selectedRole['dashboard3_'+selected_id]">Dashboard 3</mat-checkbox>
-    <mat-checkbox class="role_permissions" *ngIf="selected_id <4" [(ngModel)]="data.selectedRole['dashboard4_'+selected_id]">Dashboard 4</mat-checkbox>
-    <mat-checkbox class="role_permissions" *ngIf="selected_id != 3 && selected_id != 4 && selected_id >= 1" [(ngModel)]="data.selectedRole['dashboard5_'+selected_id]">Dashboard 5</mat-checkbox>
+    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['clinics_'+selected_id]">Clinics</mat-checkbox>
+    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['plans_'+selected_id]">Plans</mat-checkbox>
+    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['treatments_'+selected_id]">Treatments</mat-checkbox>
+    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['roles_'+selected_id]">Roles</mat-checkbox>
+    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['settings_'+selected_id]">Settings</mat-checkbox>
+    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['inoffice_'+selected_id]">Inoffice</mat-checkbox>
   </div>
-
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data"  tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
 </div>
 </div>

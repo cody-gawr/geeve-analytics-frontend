@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Clinics  <button class=\"sa-pull-right mat-raised-button mat-gray\" mat-raised-button (click)=\"openDialog()\">Add Clinic</button></mat-card-title>\n\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter Clinic name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material responsive-datatable' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n       <ngx-datatable-column name=\"Sr\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Id</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span>\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"clinicName\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Clinic Name</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'clinicName')\" *ngIf=\"!editing[rowIndex + '-clinicName']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'clinicName', rowIndex)\" *ngIf=\"editing[rowIndex+ '-clinicName']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n       <ngx-datatable-column name=\"Address\">\n       \n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'address')\" *ngIf=\"!editing[rowIndex + '-address']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'address', rowIndex)\" *ngIf=\"editing[rowIndex+ '-address']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n       <ngx-datatable-column name=\"ContactName\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Contact Name</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'contactName')\" *ngIf=\"!editing[rowIndex + '-contactName']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'contactName', rowIndex)\" *ngIf=\"editing[rowIndex+ '-contactName']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n\n      <ngx-datatable-column name=\"PhoneNo\">\n        <ng-template let-column=\"column\" ngx-datatable-header-template>\n       <span>Phone Number</span>\n     </ng-template>\n       <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n         <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'phoneNo')\" *ngIf=\"!editing[rowIndex + '-phoneNo']\">\n           {{value}}\n         </span>\n         <input autofocus (blur)=\"updateValue($event, 'phoneNo', rowIndex)\" *ngIf=\"editing[rowIndex+ '-phoneNo']\" type=\"text\" [value]=\"value\"\n         />\n       </ng-template>\n     </ngx-datatable-column>\n\n\n      <ngx-datatable-column name=\"Created\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n            {{value| date}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"id\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Actions</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\" style=\"width:266px!important;\">\n          <a [routerLink]=\"['/clinic-settings',value]\" class=\"action_btn golden\" title= 'Clinic Settings'><i class=\"ti-settings  m-r-10\"></i></a>\n          <button class=\"action_btn danger\" mat-menu-item (click) = \"deleteClinic(rowIndex)\">\n         <i class=\"ti-trash text-danger m-r-10\"></i></button>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
+module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Clinics  <button class=\"sa-pull-right mat-raised-button mat-gray\" mat-raised-button (click)=\"openDialog()\">Add Clinic</button></mat-card-title>\n\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter Clinic name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material responsive-datatable' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n       <ngx-datatable-column name=\"Sr\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Id</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span>\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"clinicName\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Clinic Name</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'clinicName', rowIndex)\" *ngIf=\"editing[rowIndex+ '-clinicName']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n       <ngx-datatable-column name=\"Address\">\n       \n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'address', rowIndex)\" *ngIf=\"editing[rowIndex+ '-address']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n       <ngx-datatable-column name=\"ContactName\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Contact Name</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'contactName', rowIndex)\" *ngIf=\"editing[rowIndex+ '-contactName']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n\n      <ngx-datatable-column name=\"PhoneNo\">\n        <ng-template let-column=\"column\" ngx-datatable-header-template>\n       <span>Phone Number</span>\n     </ng-template>\n       <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n         <span>\n           {{value}}\n         </span>\n         <input autofocus (blur)=\"updateValue($event, 'phoneNo', rowIndex)\" *ngIf=\"editing[rowIndex+ '-phoneNo']\" type=\"text\" [value]=\"value\" oninput=\"this.value = this.value.slice(0,10);\"\n         />\n       </ng-template>\n     </ngx-datatable-column>\n\n  \n      <ngx-datatable-column name=\"Created\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n            {{value| date}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"id\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Actions</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\" style=\"width:266px!important;\">\n          <a [routerLink]=\"['/clinic-settings',value]\" class=\"action_btn golden\" title= 'Clinic Settings'><i class=\"ti-settings  m-r-10\"></i></a>\n         \n          <a [routerLink]=\"['/subscription',value,user_id]\" class=\"action_btn golden\" title= 'Subscription Detail'><i class=\"ti-eye  m-r-10\"></i></a>\n\n          <button class=\"action_btn danger\" mat-menu-item (click) = \"deleteClinic(rowIndex)\">\n         <i class=\"ti-trash text-danger m-r-10\"></i></button>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
 
 /***/ }),
 
@@ -39,6 +39,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -51,6 +52,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+
 
 
 
@@ -70,12 +72,25 @@ var DialogOverviewExampleDialogComponent = /** @class */ (function () {
         this.fileToUpload = files.item(0);
         this.onAdd.emit(this.fileToUpload);
     };
+    DialogOverviewExampleDialogComponent.prototype.save = function (data) {
+        //     $(".form-control-dialog").on('click', function(event){
+        //     event.stopPropagation();
+        //     event.stopImmediatePropagation();
+        //     //(... rest of your JS code)
+        // });
+        $('.form-control-dialog').each(function () {
+            var likeElement = $(this).click();
+        });
+        console.log(data);
+        if (data.name != undefined && data.address != undefined && data.contact_name != undefined && data.phone_no != undefined) {
+            this.dialogRef.close(data);
+        }
+    };
     DialogOverviewExampleDialogComponent.prototype.onChange = function (event) {
         var eventObj = event;
         var target = eventObj.target;
         var files = target.files;
         this.file = files[0];
-        console.log(this.file);
         //  this.filedata =this.file;
     };
     __decorate([
@@ -95,7 +110,7 @@ var DialogOverviewExampleDialogComponent = /** @class */ (function () {
 
 var data = __webpack_require__(/*! assets/company.json */ "./src/assets/company.json");
 var ClinicComponent = /** @class */ (function () {
-    function ClinicComponent(clinicService, dialog, _cookieService, router) {
+    function ClinicComponent(notifierService, clinicService, dialog, _cookieService, router) {
         var _this = this;
         this.clinicService = clinicService;
         this.dialog = dialog;
@@ -107,6 +122,7 @@ var ClinicComponent = /** @class */ (function () {
         this.loadingIndicator = true;
         this.reorderable = true;
         this.columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
+        this.notifier = notifierService;
         this.rows = data;
         this.temp = data.slice();
         setTimeout(function () {
@@ -118,18 +134,16 @@ var ClinicComponent = /** @class */ (function () {
         this.getClinics();
         $('#title').html('Clinics');
         //$('.header_filters').hide();
-        $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
-        $('.header_filters').addClass('flex_direct_mar');
+        $('.header_filters').addClass('hide_header');
+        // this.notifier.notify( 'success', 'You are awesome! I mean it!' ,'vertical');
     };
     ClinicComponent.prototype.openDialog = function () {
         var _this = this;
         var dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
             width: '250px',
-            data: { name: this.name, address: this.address, contact_name: this.contact_name, phone_no: this.phone_no }
+            data: { name: this.name, address: this.address, contact_name: this.contact_name, phone_no: this.phone_no, publishable_key: this.publishable_key, secret_key: this.secret_key }
         });
         var sub = dialogRef.componentInstance.onAdd.subscribe(function (val) {
-            console.log(val);
             var formData = new FormData();
             formData.append('file', val, val.name);
             _this.clinicService.logoUpload(formData).subscribe(function (res) {
@@ -139,9 +153,11 @@ var ClinicComponent = /** @class */ (function () {
             });
         });
         dialogRef.afterClosed().subscribe(function (result) {
-            _this.clinicService.addClinic(result.name, result.address, result.contact_name, result.phone_no, _this.imageURL).subscribe(function (res) {
+            //  $('.ajax-loader').show();
+            _this.clinicService.addClinic(result.name, result.address, result.contact_name, result.phone_no, result.publishable_key, result.secret_key, _this.imageURL).subscribe(function (res) {
+                //  $('.ajax-loader').hide();
                 if (res.message == 'success') {
-                    alert('Clinic Added');
+                    _this.notifier.notify('success', 'Clinic Added', 'vertical');
                     _this.getClinics();
                     console.log(res);
                 }
@@ -156,6 +172,7 @@ var ClinicComponent = /** @class */ (function () {
         this.clinicService.getClinics().subscribe(function (res) {
             if (res.message == 'success') {
                 _this.rows = res.data;
+                _this.user_id = res.data[0]['user_id'];
                 _this.temp = res.data.slice();
                 _this.table = data;
             }
@@ -172,11 +189,11 @@ var ClinicComponent = /** @class */ (function () {
     };
     ClinicComponent.prototype.deleteClinic = function (row) {
         var _this = this;
-        if (confirm("Are you sure to delete Clinic?")) {
+        if (confirm("Are you sure want to delete this Clinic?")) {
             if (this.rows[row]['id']) {
                 this.clinicService.deleteClinic(this.rows[row]['id']).subscribe(function (res) {
                     if (res.message == 'success') {
-                        alert('Clinic Removed');
+                        _this.notifier.notify('success', 'Clinic Removed', 'vertical');
                         _this.getClinics();
                     }
                 }, function (error) {
@@ -213,18 +230,20 @@ var ClinicComponent = /** @class */ (function () {
     };
     ClinicComponent.prototype.updateValue = function (event, cell, rowIndex) {
         var _this = this;
+        $('.ajax-loader').show();
         this.editing[rowIndex + '-' + cell] = false;
         this.rows[rowIndex][cell] = event.target.value;
         this.clinicService.updateClinic(this.rows[rowIndex]['id'], this.rows[rowIndex][cell], cell).subscribe(function (res) {
+            $('.ajax-loader').hide();
             if (res.message == 'success') {
-                alert('Dentist Updated');
+                _this.notifier.notify('success', 'Clinic Updated', 'vertical');
                 _this.getClinics();
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
         this.rows = this.rows.slice();
-        console.log('UPDATED!', this.rows[rowIndex][cell]);
+        //  console.log('UPDATED!', this.rows[rowIndex][cell]);
     };
     ClinicComponent.prototype.enableEditing = function (rowIndex, cell) {
         this.editing[rowIndex + '-' + cell] = true;
@@ -240,7 +259,7 @@ var ClinicComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./clinic.component.html */ "./src/app/clinic/clinic.component.html"),
             styles: [__webpack_require__(/*! ./clinic.component.scss */ "./src/app/clinic/clinic.component.scss")]
         }),
-        __metadata("design:paramtypes", [_clinic_service__WEBPACK_IMPORTED_MODULE_1__["ClinicService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]])
+        __metadata("design:paramtypes", [angular_notifier__WEBPACK_IMPORTED_MODULE_5__["NotifierService"], _clinic_service__WEBPACK_IMPORTED_MODULE_1__["ClinicService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]])
     ], ClinicComponent);
     return ClinicComponent;
 }());
@@ -297,7 +316,7 @@ var ClinicModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatInputModule"],
                 _swimlane_ngx_datatable__WEBPACK_IMPORTED_MODULE_5__["NgxDatatableModule"],
                 _demo_material_module__WEBPACK_IMPORTED_MODULE_4__["DemoMaterialModule"],
-                _angular_forms__WEBPACK_IMPORTED_MODULE_9__["FormsModule"]
+                _angular_forms__WEBPACK_IMPORTED_MODULE_9__["FormsModule"],
             ],
             providers: [
                 _clinic_service__WEBPACK_IMPORTED_MODULE_6__["ClinicService"]
@@ -416,13 +435,15 @@ var ClinicService = /** @class */ (function () {
         }));
     };
     // Update Clinic
-    ClinicService.prototype.addClinic = function (name, address, contact_name, phone_no, clinic_logo, token) {
+    ClinicService.prototype.addClinic = function (name, address, contact_name, phone_no, publishable_key, secret_key, clinic_logo, token) {
         if (token === void 0) { token = this._cookieService.get("token"); }
         var formData = new FormData();
         formData.append('clinicName', name);
         formData.append('address', address);
         formData.append('contactName', contact_name);
         formData.append('phoneNo', phone_no);
+        formData.append('publishable_key', publishable_key);
+        formData.append('secret_key', secret_key);
         formData.append('logo', clinic_logo);
         formData.append('user_id', this._cookieService.get("userid"));
         formData.append('token', token);
@@ -460,7 +481,7 @@ var ClinicService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 mat-dialog-title>Add Clinic</h1>\n<div mat-dialog-content>\n \n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.name\" placeholder=\"Clinic Name\">\n  </mat-form-field>\n\n  \n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.address\" placeholder=\"Address\">\n  </mat-form-field>\n\n  \n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.contact_name\" placeholder=\"Contact Name\">\n  </mat-form-field>\n\n    \n  <mat-form-field>\n    <input matInput tabindex=\"1\" type=\"number\" [(ngModel)]=\"data.phone_no\" placeholder=\"Phone No\">\n  </mat-form-field>\n\n\n  <input class=\"form-control b-b\" type=\"file\" name= \"file\" id=\"file\" (change)=\"uploadImage($event.target.files)\">\n\n\n</div>\n<div mat-dialog-actions>\n  <button mat-button [mat-dialog-close]=\"data\" tabindex=\"2\" class=\"mat-raised-button mat-dc\">Ok</button>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" class=\"mat-raised-button mat-gray\">No Thanks</button>\n</div>"
+module.exports = "<h1 mat-dialog-title>Add Clinic</h1>\n<div mat-dialog-content>\n \n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.name\" placeholder=\"Clinic Name\" class=\"form-control-dialog\" required=\"true\">\n  </mat-form-field>\n\n  \n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.address\" placeholder=\"Address\" class=\"form-control-dialog\" required=\"true\">\n  </mat-form-field>\n\n  \n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.contact_name\" placeholder=\"Contact Name\" class=\"form-control-dialog\" required=\"true\">\n  </mat-form-field>\n\n    \n  <mat-form-field>\n    <input matInput tabindex=\"1\" type=\"number\" [(ngModel)]=\"data.phone_no\" placeholder=\"Phone No\" class=\"form-control-dialog\" required=\"true\" oninput=\"this.value = this.value.slice(0,10);\">\n  </mat-form-field>\n    \n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.publishable_key\" placeholder=\"Publishable Key\"  class=\"form-control-dialog\" required=\"true\">\n  </mat-form-field>\n\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.secret_key\" placeholder=\"Secret Key\"  class=\"form-control-dialog\" required=\"true\">\n  </mat-form-field>\n\n  <input class=\"form-control b-b\" type=\"file\" name= \"file\" id=\"file\" (change)=\"uploadImage($event.target.files)\">\n\n\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"save(data)\" tabindex=\"2\" class=\"mat-raised-button mat-dc\">Ok</button>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" class=\"mat-raised-button mat-gray\">No Thanks</button>\n</div>"
 
 /***/ })
 

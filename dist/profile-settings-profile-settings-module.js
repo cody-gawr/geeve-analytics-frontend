@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Card Grid-->\n<!-- ============================================================== -->\n\n        <!-- <mat-card-title>Profile Settings</mat-card-title> -->\n\n        <!-- ============================================================== -->\n        <!-- column -->\n        <!-- ============================================================== -->\n       <div class=\"sa_dentist_graphs_area sa_profile_setting\">\n  <div fxLayout=\"row wrap\" >\n        <!-- Card column -->\n        <div fxFlex.lg=\"50\" fxFlex.md=\"50\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\">\n          <mat-card>\n      <mat-card-content>\n          <div class=\"basic_details_form\">\n            <mat-card-title>Basic Details</mat-card-title>\n                          <!--  <form [formGroup]=\"form\" class=\"basic-form\"> -->\n\n                                <div fxLayout=\"row wrap\">\n                                  <!-- column -->\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                        <label>Display Name</label>\n                                      <input matInput placeholder=\"\" id=\"displayName\" [(ngModel)]= \"displayName\">\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                        <label>Email</label>\n                                      <input matInput placeholder=\"\" id=\"email\" [(ngModel)]=\"email\">\n                                  </div>\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <label>Contact No.</label>\n                                    <input matInput placeholder=\"\" id=\"PhoneNo\" type=\"number\" pattern=\"\\d{3}[\\-]\\d{3}[\\-]\\d{4}\" max=\"10\" required [(ngModel)]= \"PhoneNo\">\n                                  </div>\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                      <label>Address</label>\n                                      <input matInput placeholder=\"\" id=\"Address\" [(ngModel)]= \"Address\">\n                                  </div>\n\n                                  <mat-form-field fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-label>Gender</mat-label>\n                                    <mat-select #gender name =\"value\" id=\"Gender\" [(ngModel)]= \"Gender\">\n                                      <mat-option value=\"MALE\">MALE</mat-option>\n                                      <mat-option value=\"FEMALE\">FEMALE</mat-option>\n                                    </mat-select>\n                                  </mat-form-field>\n\n\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                      <label>Specialties</label>\n                                      <input matInput placeholder=\"\" id=\"Specialties\" [(ngModel)]= \"Specialties\">\n                                  </div>\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                      <label>Education</label>\n                                      <input matInput placeholder=\"\" id=\"Education\" [(ngModel)]= \"Education\">\n                                  </div>\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <label>Practice</label>\n                                    <input matInput placeholder=\"\" id=\"practiceDesc\" [(ngModel)]= \"practiceDesc\">\n                                 </div>\n                                 <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                  <label>Website</label>\n                                  <input matInput placeholder=\"\" id=\"Website\" [(ngModel)]= \"Website\">\n                               </div>\n\n                               <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                <label>Publishable Key</label>\n                                <input matInput placeholder=\"\" id=\"publishableKey\" [(ngModel)]= \"publishableKey\">\n                             </div>\n\n                             <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                              <label>Secret Key</label>\n                              <input matInput placeholder=\"\" id=\"secretKey\" [(ngModel)]= \"secretKey\">\n                           </div>\n\n\n                                <div class=\"bd_UpoadImage\" fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                                        <label>Upload Image</label><br>\n                                                        <div class=\"upload-btn\">\n                              <span>Choose file</span>\n                              <input class=\"\" type=\"file\" placeholder=\"\" name= \"file\" id=\"file\" (change)=\"uploadImage($event.target.files)\" >\n                                                      <input type='hidden'  placeholder=\"\" id=\"imageURL\" [(ngModel)]=\"imageURL\">\n                            </div>\n                                                    \n                                  </div>\n                                 </div> \n                                  <mat-card-actions>\n                                    <button mat-raised-button color=\"dc\" type=\"button\"  (click)=\"onSubmitBasic()\">Submit</button>\n                                  </mat-card-actions>\n                                  <!-- column -->\n                            <!--   </form> -->\n                          </div>\n                        </mat-card-content></mat-card>\n        </div>\n                <div fxFlex.lg=\"49\" fxFlex.md=\"49\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\">\n                  <mat-card>\n      <mat-card-content>\n                  <div class=\"ChangePassword-section\">\n                     <mat-card-title class=\"mat-card-title\">Change Password</mat-card-title>\n\n                           <form [formGroup]=\"form\" class=\"basic-form change-password-form\" (ngSubmit)=\"onSubmitPassword()\">\n\n                                <div fxLayout=\"row wrap\">\n                                  <!-- column -->\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <label>Current Password</label>\n                                      <input matInput type=\"password\" placeholder=\"\" [formControl]=\"form.controls['currentPassword']\" [(ngModel)]= \"currentPassword\">\n                                    </mat-form-field>\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <label>New Password</label>\n                                      <input matInput type=\"password\" placeholder=\"\" [formControl]=\"form.controls['newPassword']\" [(ngModel)]=\"newPassword\">\n                                    </mat-form-field>\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <label>Repeat Password</label>\n                                      <input matInput type=\"password\" placeholder=\"\" [formControl]=\"form.controls['repeatPassword']\" [(ngModel)]=\"repeatPassword\">\n                                    </mat-form-field>\n                                  </div>                   \n                                 </div> \n                                  <mat-card-actions>\n                                    <button mat-raised-button color=\"dc\" type=\"submit\">Submit</button>\n                                  </mat-card-actions>\n                                  <small *ngIf=\"errorLogin\" class=\"text-danger support-text\">{{errortext}}</small>\n                                  <small  class=\"text-success support-text\">{{successtext}}</small>\n\n                                  <!-- column -->\n                              </form>  </div>\n                            </mat-card-content></mat-card>\n        </div>\n      </div></div>\n \n      "
+module.exports = "<!-- ============================================================== -->\n<!-- Card Grid-->\n<!-- ============================================================== -->\n\n       <div class=\"sa_dentist_graphs_area sa_profile_setting\">\n  <div fxLayout=\"row wrap\" >\n        <!-- Card column -->\n        <div fxFlex.lg=\"50\" fxFlex.md=\"50\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"50\">\n          <mat-card>\n      <mat-card-content>\n          <div class=\"basic_details_form\">\n            <mat-card-title>Basic Details</mat-card-title>\n                          <!--  <form [formGroup]=\"form\" class=\"basic-form\"> -->\n\n                                <div fxLayout=\"row wrap\">\n                                  <!-- column -->\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                        <label>Display Name</label>\n                                      <input matInput placeholder=\"\" id=\"displayName\" [(ngModel)]= \"displayName\">\n                                  </div>\n                                  \n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                        <label>Email</label>\n                                      <input matInput placeholder=\"\" id=\"email\" [(ngModel)]=\"email\">\n                                  </div>\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <label>Contact No.</label>\n                                    <input matInput placeholder=\"\" id=\"PhoneNo\" type=\"number\" oninput=\"this.value = this.value.slice(0,10);\"  [(ngModel)]= \"PhoneNo\">\n                                  </div>\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                      <label>Address</label>\n                                      <input matInput placeholder=\"\" id=\"Address\" [(ngModel)]= \"Address\">\n                                  </div>\n\n                                  <mat-form-field fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-label>Gender</mat-label>\n                                    <mat-select #gender name =\"value\" id=\"Gender\" [(ngModel)]= \"Gender\">\n                                      <mat-option value=\"MALE\">MALE</mat-option>\n                                      <mat-option value=\"FEMALE\">FEMALE</mat-option>\n                                    </mat-select>\n                                  </mat-form-field>\n\n\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                      <label>Specialties</label>\n                                      <input matInput placeholder=\"\" id=\"Specialties\" [(ngModel)]= \"Specialties\">\n                                  </div>\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                      <label>Education</label>\n                                      <input matInput placeholder=\"\" id=\"Education\" [(ngModel)]= \"Education\">\n                                  </div>\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <label>Practice</label>\n                                    <input matInput placeholder=\"\" id=\"practiceDesc\" [(ngModel)]= \"practiceDesc\">\n                                 </div>\n                                 <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                  <label>Website</label>\n                                  <input matInput placeholder=\"\" id=\"Website\" [(ngModel)]= \"Website\">\n                               </div>\n\n                               <!-- <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                <label>Publishable Key</label>\n                                <input matInput placeholder=\"\" id=\"publishableKey\" [(ngModel)]= \"publishableKey\">\n                             </div>\n\n                             <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                              <label>Secret Key</label>\n                              <input matInput placeholder=\"\" id=\"secretKey\" [(ngModel)]= \"secretKey\">\n                           </div> -->\n\n\n                                <div class=\"bd_UpoadImage\" fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                                        <label>Upload Image</label><br>\n                                                        \n                                                        <div class=\"upload-btn\">\n                              <span>Choose file</span>\n                              <input class=\"\" type=\"file\" placeholder=\"\" name= \"file\" id=\"file\" (change)=\"uploadImage($event.target.files)\" >\n                              <input type='hidden'  placeholder=\"\" id=\"imageURL\" [(ngModel)]= \"imageURL\" >\n                            </div>\n                                           <div class=\"profie_logo\"><img src=\"{{imageURL}}\"  width=\"200\" height=\"200\"></div>     \n                                  </div>\n                                 </div> \n                                  <mat-card-actions>\n                                    <button mat-raised-button color=\"dc\" type=\"button\"  (click)=\"onSubmitBasic()\">Submit</button>\n                                  </mat-card-actions>\n                                  <!-- column -->\n                            <!--   </form> -->\n                          </div>\n                        </mat-card-content></mat-card>\n        </div>\n                <div fxFlex.lg=\"49\" fxFlex.md=\"49\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" fxFlex=\"49\">\n                  <mat-card>\n      <mat-card-content>\n                  <div class=\"ChangePassword-section\">\n                     <mat-card-title class=\"mat-card-title\">Change Password</mat-card-title>\n\n                           <form [formGroup]=\"form\" class=\"basic-form change-password-form\" (ngSubmit)=\"onSubmitPassword()\">\n\n                                <div fxLayout=\"row wrap\">\n                                  <!-- column -->\n                                  <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <label>Current Password</label>\n                                      <input matInput type=\"password\" placeholder=\"\" [formControl]=\"form.controls['currentPassword']\" [(ngModel)]= \"currentPassword\">\n                                    </mat-form-field>\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <label>New Password</label>\n                                      <input matInput type=\"password\" placeholder=\"\" [formControl]=\"form.controls['newPassword']\" [(ngModel)]=\"newPassword\">\n                                    </mat-form-field>\n                                  </div>\n                                   <div fxFlex.gt-md=\"100\" fxFlex=\"100\">\n                                    <mat-form-field>\n                                        <label>Repeat Password</label>\n                                      <input matInput type=\"password\" placeholder=\"\" [formControl]=\"form.controls['repeatPassword']\" [(ngModel)]=\"repeatPassword\">\n                                    </mat-form-field>\n                                  </div>                   \n                                 </div> \n                                  <mat-card-actions>\n                                    <button mat-raised-button color=\"dc\" type=\"submit\">Submit</button>\n                                  </mat-card-actions>\n                                  <small *ngIf=\"errorLogin\" class=\"text-danger support-text\">{{errortext}}</small>\n                                  <small  class=\"text-success support-text\">{{successtext}}</small>\n\n                                  <!-- column -->\n                              </form>  </div>\n                            </mat-card-content></mat-card>\n        </div>\n      </div></div>\n \n      "
 
 /***/ }),
 
@@ -38,6 +38,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -53,8 +54,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ProfileSettingsComponent = /** @class */ (function () {
-    function ProfileSettingsComponent(_cookieService, fb, profileSettingsService, route) {
+    function ProfileSettingsComponent(notifierService, _cookieService, fb, profileSettingsService, route) {
         this._cookieService = _cookieService;
         this.fb = fb;
         this.profileSettingsService = profileSettingsService;
@@ -74,6 +76,7 @@ var ProfileSettingsComponent = /** @class */ (function () {
         this.errortext = "";
         this.successLogin = false;
         this.successtext = "";
+        this.notifier = notifierService;
         this.options = fb.group({
             hideRequired: false,
             floatLabel: 'auto'
@@ -85,11 +88,10 @@ var ProfileSettingsComponent = /** @class */ (function () {
             _this.id = _this.route.snapshot.paramMap.get("id");
             _this.displayName = _this._cookieService.get("display_name");
             _this.email = _this._cookieService.get("email");
+            _this.imageURL = _this._cookieService.get("user_image");
             _this.getprofileSettings();
             $('#title').html('Profile Settings');
-            $('.external_clinic').hide();
-            $('.dentist_dropdown').hide();
-            $('.header_filters').addClass('flex_direct_mar');
+            $('.header_filters').addClass('hide_header');
             // this.checkXeroStatus();
         });
         this.form = this.fb.group({
@@ -111,19 +113,25 @@ var ProfileSettingsComponent = /** @class */ (function () {
                 _this.Education = res.data[0].education;
                 _this.practiceDesc = res.data[0].practice_desc;
                 _this.Website = res.data[0].website;
-                _this.publishableKey = res.data[0].publishable_key;
-                _this.secretKey = res.data[0].secret_key;
+                // this.publishableKey = res.data[0].publishable_key;
+                // this.secretKey = res.data[0].secret_key;
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
     };
+    // public publishableKey;
+    // public publishable_key;
+    // public secretKey;
+    // public secret_key;
     ProfileSettingsComponent.prototype.onSubmitBasic = function () {
         var _this = this;
         this.displayName = $("#displayName").val();
         this.email = $("#email").val();
         this.imageURL = $("#imageURL").val();
-        this.profileSettingsService.updateprofileSettings(this.displayName, this.email, this.PhoneNo, this.Address, this.Gender, this.Specialties, this.Education, this.practiceDesc, this.Website, this.publishableKey, this.secretKey, this.imageURL).subscribe(function (res) {
+        $('.ajax-loader').show();
+        this.profileSettingsService.updateprofileSettings(this.displayName, this.email, this.PhoneNo, this.Address, this.Gender, this.Specialties, this.Education, this.practiceDesc, this.Website, this.imageURL).subscribe(function (res) {
+            $('.ajax-loader').hide();
             if (res.message == 'success') {
                 var opts = {
                     expires: new Date('2030-07-19')
@@ -139,9 +147,9 @@ var ProfileSettingsComponent = /** @class */ (function () {
                 _this.education = _this.Education;
                 _this.practice_desc = _this.practiceDesc;
                 _this.website = _this.Website;
-                _this.publishable_key = _this.publishableKey;
-                _this.secret_key = _this.secretKey;
-                alert('Profile Settings Updated');
+                // this.publishable_key = this.publishableKey;
+                // this.secret_key = this.secretKey;
+                _this.notifier.notify('success', 'Profile Settings Updated', 'vertical');
             }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
@@ -181,7 +189,9 @@ var ProfileSettingsComponent = /** @class */ (function () {
         this.fileToUpload = files.item(0);
         var formData = new FormData();
         formData.append('file', this.fileToUpload, this.fileToUpload.name);
+        $('.ajax-loader').show();
         this.profileSettingsService.logoUpload(formData).subscribe(function (res) {
+            $('.ajax-loader').hide();
             if (res.message == 'success') {
                 _this.imageURL = res.data;
             }
@@ -193,7 +203,7 @@ var ProfileSettingsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./profile-settings.component.html */ "./src/app/profile-settings/profile-settings.component.html"),
             styles: [__webpack_require__(/*! ./profile-settings.component.scss */ "./src/app/profile-settings/profile-settings.component.scss")]
         }),
-        __metadata("design:paramtypes", [angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__["CookieService"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], _profile_settings_service__WEBPACK_IMPORTED_MODULE_2__["ProfileSettingsService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [angular_notifier__WEBPACK_IMPORTED_MODULE_5__["NotifierService"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_4__["CookieService"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], _profile_settings_service__WEBPACK_IMPORTED_MODULE_2__["ProfileSettingsService"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"]])
     ], ProfileSettingsComponent);
     return ProfileSettingsComponent;
 }());
@@ -359,7 +369,7 @@ var ProfileSettingsService = /** @class */ (function () {
         }));
     };
     // Get updateprofileSettings
-    ProfileSettingsService.prototype.updateprofileSettings = function (displayName, email, PhoneNo, Address, Gender, Specialties, Education, practiceDesc, Website, publishableKey, secretKey, imageURL, token) {
+    ProfileSettingsService.prototype.updateprofileSettings = function (displayName, email, PhoneNo, Address, Gender, Specialties, Education, practiceDesc, Website, imageURL, token) {
         if (token === void 0) { token = this._cookieService.get("token"); }
         var formData = new FormData();
         formData.append('displayName', displayName);
@@ -371,8 +381,8 @@ var ProfileSettingsService = /** @class */ (function () {
         formData.append('Education', Education);
         formData.append('practiceDesc', practiceDesc);
         formData.append('Website', Website);
-        formData.append('publishableKey', publishableKey);
-        formData.append('secretKey', secretKey);
+        // formData.append('publishableKey', publishableKey);
+        // formData.append('secretKey', secretKey);
         formData.append('user_image', imageURL);
         if (this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')
             formData.append('id', this._cookieService.get("childid"));

@@ -32,6 +32,7 @@
     "@swimlane/ngx-charts": "^7.4.0",
     "@swimlane/ngx-datatable": "^11.1.5",
     "angular-calendar": "0.25.2",
+    "angular-file-uploader": "^5.0.2",
     "angular-fusioncharts": "^3.0.2",
     "angular-gauge-chart": "^0.6.0",
     "angular-notifier": "^4.1.1",

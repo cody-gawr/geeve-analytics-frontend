@@ -1,0 +1,67 @@
+<h1 mat-dialog-title>Add In-Office Plan Details</h1>
+<div mat-dialog-content>
+
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.plan_name" placeholder="Plan Name" class="form-control-dialog" required="true">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.plan_description" placeholder="Plan Description"
+
+    class="form-control-dialog" required="true">
+  </mat-form-field>
+
+
+
+  <mat-form-field>
+      <input matInput tabindex="1" id="total_amount" [(ngModel)]="data.total_amount" type="number" min="0"  placeholder="Plan Fee" class="form-control-dialog" (change)="deposite_amount(data.deposite_amount)" required="true">
+    </mat-form-field>
+
+
+  <mat-form-field>
+      <input matInput tabindex="1" type="number" min="0" [(ngModel)]="data.setup_fee" placeholder="Setup Fee" class="form-control-dialog" required="true">
+   </mat-form-field>
+
+
+  <mat-form-field>
+      <input matInput tabindex="1" id="deposite_amount" type="number" min="0"  (change)="deposite_amount(data.deposite_amount)" [(ngModel)]="data.deposite_amount" placeholder="Deposited Amount" class="form-control-dialog" required="true">
+  </mat-form-field>
+
+
+  <mat-form-field>
+      <input matInput tabindex="1" id="balance_amount" type="number" min="0" [(ngModel)]="data.balance_amount" placeholder="Balance Amount" class="form-control-dialog" readonly>
+    </mat-form-field>
+      
+    <mat-form-field>
+      <mat-label>Frequency of payments</mat-label> 
+      <mat-select tabindex="1" [(ngModel)]= "data.payment_frequency" required="true">
+        <mat-option value="MONTHLY">MONTHLY</mat-option>
+        <mat-option value="WEEKLY">WEEKLY</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+      <mat-form-field>
+          <input matInput tabindex="1" id="duration" type="number" min="0" [(ngModel)]="data.duration" placeholder="Duration (Period of Loan)" (change)="durationcal(data.duration)" class="form-control-dialog" required="true">
+        </mat-form-field>
+
+        
+        <mat-form-field>
+            <input matInput tabindex="1" type="number" step=".01" min="0" [(ngModel)]="data.monthly_weekly_payment" placeholder="Monthly/Weekly Payment" class="form-control-dialog" readonly>
+          </mat-form-field>
+    
+          <mat-form-field>
+              <input matInput tabindex="1" type="date" [(ngModel)]="data.start_date" placeholder="Start Date" class="form-control-dialog" required="true">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput tabindex="1" type="date" [(ngModel)]="data.due_date"  placeholder="Due Date" class="form-control-dialog" required="true">
+              </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+</div>
+
+

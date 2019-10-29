@@ -289,7 +289,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 var map = {
 	"./apps/apps.module": [
 		"./src/app/apps/apps.module.ts",
-		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-pati~899b3ce9",
+		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history~006e9b8f",
 		"common",
 		"apps-apps-module"
 	],
@@ -308,14 +308,14 @@ var map = {
 	],
 	"./clinic-settings/clinic-settings.module": [
 		"./src/app/clinic-settings/clinic-settings.module.ts",
-		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-pati~899b3ce9",
-		"default~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-patient-info-module~p~cf61284d",
+		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history~006e9b8f",
+		"default~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history-in-office-histor~4efd304c",
 		"common",
 		"clinic-settings-clinic-settings-module"
 	],
 	"./clinic/clinic.module": [
 		"./src/app/clinic/clinic.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~pages-pages-module~~fcc0e02c",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
 		"common",
 		"clinic-clinic-module"
 	],
@@ -334,23 +334,43 @@ var map = {
 	],
 	"./datatables/datatables.module": [
 		"./src/app/datatables/datatables.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~pages-pages-module~~fcc0e02c",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
 		"common",
 		"datatables-datatables-module"
 	],
+	"./defaulters/defaulters.module": [
+		"./src/app/defaulters/defaulters.module.ts",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
+		"common",
+		"defaulters-defaulters-module"
+	],
 	"./dentist/dentist.module": [
 		"./src/app/dentist/dentist.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~pages-pages-module~~fcc0e02c",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
 		"common",
 		"dentist-dentist-module"
 	],
 	"./forms/forms.module": [
 		"./src/app/forms/forms.module.ts",
-		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-pati~899b3ce9",
-		"default~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-patient-info-module~p~cf61284d",
+		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history~006e9b8f",
+		"default~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history-in-office-histor~4efd304c",
 		"default~authentication-authentication-module~forms-forms-module~subscription-subscription-module",
 		"common",
 		"forms-forms-module"
+	],
+	"./in-office-history/in-office-history.module": [
+		"./src/app/in-office-history/in-office-history.module.ts",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
+		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history~006e9b8f",
+		"default~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history-in-office-histor~4efd304c",
+		"common",
+		"in-office-history-in-office-history-module"
+	],
+	"./in-office/in-office.module": [
+		"./src/app/in-office/in-office.module.ts",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
+		"common",
+		"in-office-in-office-module"
 	],
 	"./layouts/full/header/header.module": [
 		"./src/app/layouts/full/header/header.module.ts",
@@ -371,47 +391,55 @@ var map = {
 	],
 	"./pages/pages.module": [
 		"./src/app/pages/pages.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~pages-pages-module~~fcc0e02c",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
 		"common",
 		"pages-pages-module"
 	],
 	"./patient-info/patient-info.module": [
 		"./src/app/patient-info/patient-info.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~pages-pages-module~~fcc0e02c",
-		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-pati~899b3ce9",
-		"default~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-patient-info-module~p~cf61284d",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
+		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history~006e9b8f",
+		"default~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history-in-office-histor~4efd304c",
 		"common",
 		"patient-info-patient-info-module"
 	],
 	"./patients-detail/patients-detail.module": [
 		"./src/app/patients-detail/patients-detail.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~pages-pages-module~~fcc0e02c",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
 		"common",
 		"patients-detail-patients-detail-module"
 	],
+	"./payment-patient/payment-patient.module": [
+		"./src/app/payment-patient/payment-patient.module.ts",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
+		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history~006e9b8f",
+		"default~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history-in-office-histor~4efd304c",
+		"common",
+		"payment-patient-payment-patient-module"
+	],
 	"./plans/plans.module": [
 		"./src/app/plans/plans.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~pages-pages-module~~fcc0e02c",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
 		"common",
 		"plans-plans-module"
 	],
 	"./profile-settings/profile-settings.module": [
 		"./src/app/profile-settings/profile-settings.module.ts",
-		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-pati~899b3ce9",
-		"default~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-patient-info-module~p~cf61284d",
+		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history~006e9b8f",
+		"default~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history-in-office-histor~4efd304c",
 		"common",
 		"profile-settings-profile-settings-module"
 	],
 	"./roles-users/roles-users.module": [
 		"./src/app/roles-users/roles-users.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~pages-pages-module~~fcc0e02c",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
 		"common",
 		"roles-users-roles-users-module"
 	],
 	"./roles/roles.module": [
 		"./src/app/roles/roles.module.ts",
-		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-pati~899b3ce9",
-		"default~clinic-settings-clinic-settings-module~forms-forms-module~patient-info-patient-info-module~p~cf61284d",
+		"default~apps-apps-module~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history~006e9b8f",
+		"default~clinic-settings-clinic-settings-module~forms-forms-module~in-office-history-in-office-histor~4efd304c",
 		"common",
 		"roles-roles-module"
 	],
@@ -426,9 +454,15 @@ var map = {
 		"common",
 		"tables-tables-module"
 	],
+	"./treatments/treatments.module": [
+		"./src/app/treatments/treatments.module.ts",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
+		"common",
+		"treatments-treatments-module"
+	],
 	"./users/users.module": [
 		"./src/app/users/users.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~pages-pages-module~~fcc0e02c",
+		"default~clinic-clinic-module~datatables-datatables-module~defaulters-defaulters-module~dentist-denti~1144e735",
 		"common",
 		"users-users-module"
 	],
@@ -477,7 +511,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Main wrapper - style you can find in pages.scss -->\n<!-- ============================================================== -->\n<router-outlet>\n    <app-spinner></app-spinner>\n</router-outlet>"
+module.exports = "<!-- ============================================================== -->\n<!-- Main wrapper - style you can find in pages.scss -->\n<!-- ============================================================== -->\n<router-outlet>\n    <app-spinner></app-spinner><notifier-container></notifier-container>\n</router-outlet>"
 
 /***/ }),
 
@@ -551,6 +585,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./layouts/full/header/header.service */ "./src/app/layouts/full/header/header.service.ts");
 /* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
 /* harmony import */ var _layouts_full_headerright_headerright_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./layouts/full/headerright/headerright.component */ "./src/app/layouts/full/headerright/headerright.component.ts");
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -582,6 +617,47 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
+var customNotifierOptions = {
+    position: {
+        horizontal: {
+            position: 'right',
+            distance: 12
+        },
+        vertical: {
+            position: 'top',
+            distance: 12,
+            gap: 10
+        }
+    },
+    theme: 'material',
+    behaviour: {
+        autoHide: 5000,
+        onClick: 'hide',
+        onMouseover: 'pauseAutoHide',
+        showDismissButton: true,
+        stacking: 4
+    },
+    animations: {
+        enabled: true,
+        show: {
+            preset: 'slide',
+            speed: 300,
+            easing: 'ease'
+        },
+        hide: {
+            preset: 'fade',
+            speed: 300,
+            easing: 'ease',
+            offset: 50
+        },
+        shift: {
+            speed: 300,
+            easing: 'ease'
+        },
+        overlap: 150
+    }
+};
 var DEFAULT_PERFECT_SCROLLBAR_CONFIG = {
     suppressScrollX: true,
     wheelSpeed: 2,
@@ -612,7 +688,8 @@ var AppModule = /** @class */ (function () {
                 _shared_shared_module__WEBPACK_IMPORTED_MODULE_16__["SharedModule"],
                 _angular_http__WEBPACK_IMPORTED_MODULE_19__["HttpModule"],
                 ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_14__["NgMultiSelectDropDownModule"].forRoot(),
-                _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(_app_routing__WEBPACK_IMPORTED_MODULE_5__["AppRoutes"])
+                _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(_app_routing__WEBPACK_IMPORTED_MODULE_5__["AppRoutes"]),
+                angular_notifier__WEBPACK_IMPORTED_MODULE_24__["NotifierModule"].withConfig(customNotifierOptions)
             ],
             providers: [
                 _auth_authguard_service__WEBPACK_IMPORTED_MODULE_20__["AuthGuard"],
@@ -697,6 +774,16 @@ var AppRoutes = [
                 canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
             },
             {
+                path: 'in-office',
+                loadChildren: './in-office/in-office.module#InOfficeModule',
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+            },
+            {
+                path: 'in-office-history/:id',
+                loadChildren: './in-office-history/in-office-history.module#InOfficeHistoryModule',
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+            },
+            {
                 path: 'dentist/:id',
                 loadChildren: './dentist/dentist.module#DentistModule',
                 canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
@@ -757,6 +844,15 @@ var AppRoutes = [
                 loadChildren: './patient-info/patient-info.module#PatientInfoModule',
                 canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
             },
+            {
+                path: 'treatments/:id',
+                loadChildren: './treatments/treatments.module#TreatmentsModule'
+            },
+            {
+                path: 'defaulters',
+                loadChildren: './defaulters/defaulters.module#DefaultersModule',
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+            },
         ]
     },
     {
@@ -786,13 +882,11 @@ var AppRoutes = [
             {
                 path: 'subscription/:clinic_id/:user_id',
                 loadChildren: './subscription/subscription.module#SubscriptionModule'
+            },
+            {
+                path: 'payment-patient/:id',
+                loadChildren: './payment-patient/payment-patient.module#PaymentPatientModule',
             }
-            // ,
-            // {
-            //   path: 'payment-patient/:id',
-            //   loadChildren: './payment-patient/payment-patient.module#PaymentPatientModule',
-            //   canActivate: [AuthGuard]
-            // }
         ]
     },
     {
@@ -1498,7 +1592,7 @@ var HeaderService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n    <div fxLayout=\"row wrap\" class=\"header_filters\" >\n\n        <div fxFlex.lg=\"48\" fxFlex.xs=\"100\" fxFlex=\"48\" class=\"header_first_select\">\n\n              <div class=\"vertical_center_header_content\">\n\n                  <div class=\"sa_mat_select_topbar\">\n\n                    <mat-form-field>\n                    \n                            <mat-select class=\"external_clinic\"  [value] =\"selectedClinic\" [(ngModel)]=\"selectedClinic\" (ngModelChange)=\"loadClinicid($event)\">\n                                \n                                <mat-option *ngFor=\"let clinicData of clinicsData\" [value]=\"clinicData.id\">\n                               \n                                    {{clinicData.clinicName}}\n\n                                </mat-option>\n\n                            </mat-select>\n\n                        </mat-form-field>\n\n                  </div>\n              </div>\n          </div>\n            <div fxFlex.lg=\"50\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"dentist_dropdown\">\n\n                <div class=\"vertical_center_header_content\">\n\n                    <div class=\"sa_mat_select_topbar\">\n\n                        <mat-form-field>\n\n                            <mat-select [value] =\"selectedDentist\" class=\"external_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n\n                                <mat-option value=\"all\">All Dentists</mat-option>\n\n                                <mat-option *ngFor=\"let dentist of dentists\"  [value]=\"dentist.providerId\">\n\n                                    {{dentist.name}}\n\n                                </mat-option>\n\n                            </mat-select>\n\n                        </mat-form-field>\n\n                    </div>\n\n                </div>\n\n            </div>\n\n\n       </div>\n     "
+module.exports = "\n    <div fxLayout=\"row wrap\" class=\"header_filters\" >\n\n        <div fxFlex.lg=\"48\" fxFlex.xs=\"100\" fxFlex=\"48\" class=\"header_first_select\">\n\n              <div class=\"vertical_center_header_content\">\n\n                  <div class=\"sa_mat_select_topbar\">\n\n                    <mat-form-field>\n                    \n                            <mat-select class=\"external_clinic\"  [value] =\"selectedClinic\" [(ngModel)]=\"selectedClinic\" (ngModelChange)=\"loadClinicid($event)\">\n                                \n                                <mat-option *ngFor=\"let clinicData of clinicsData\" [value]=\"clinicData.id\">\n                               \n                                    {{clinicData.clinicName}}\n\n                                </mat-option>\n\n                            </mat-select>\n\n                        </mat-form-field>\n\n                  </div>\n              </div>\n          </div>\n       </div>\n     "
 
 /***/ }),
 
@@ -2206,13 +2300,35 @@ var MENUITEMS = [
         role: ['2']
     },
     {
-        state: 'roles-users',
-        name: 'Roles Management',
+        state: 'in-office',
+        name: 'In office Plans',
+        type: 'link-noparam',
+        icon: 'fas fa-receipt',
+        role: ['2']
+    },
+    {
+        state: 'defaulters',
+        name: 'Defaulters',
+        type: 'link-noparam',
+        icon: 'fas fa-user-tag',
+        role: ['2']
+    },
+    {
+        state: 'treatments',
+        name: 'Treatments',
         type: 'link',
         icon: 'fas fa-user-tag',
         param: '1',
         role: ['2']
     },
+    // {
+    //   state: 'roles-users',
+    //   name: 'Roles Management',
+    //   type: 'link',
+    //   icon: 'fas fa-user-tag',
+    //   param: '1',
+    //   role:['2']
+    // },
     {
         state: '',
         name: 'Goals',
@@ -2227,7 +2343,7 @@ var MENUITEMS = [
     },
     {
         state: 'profile-settings',
-        name: 'Profile Settings',
+        name: 'Settings',
         type: 'link',
         icon: 'fas fa-user-cog',
         param: '1',
@@ -2237,29 +2353,20 @@ var MENUITEMS = [
 var MenuItems = /** @class */ (function () {
     function MenuItems(rolesUsersService) {
         this.rolesUsersService = rolesUsersService;
-        this.dashboard1role = ['1', '2'];
-        this.dashboard2role = ['1', '2'];
-        this.dashboard3role = ['1', '2'];
-        this.dashboard4role = ['1', '2'];
-        this.dashboard5role = ['1', '2'];
         this.menu = [
-            // {
-            //   state: 'dashboards',
-            //   name: 'Dashboards',
-            //   type: 'sub-dashboards',
-            //   icon: 'fas fa-chart-area',
-            //   children: [
-            //     { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param : '1', role:this.dashboard1role}
-            //   ],
-            //   param: '1',
-            //   role:['1','2','3','4','5']
-            // },  
+            {
+                state: 'dashboards',
+                name: 'Dashboards',
+                type: 'link-noparam',
+                icon: 'fas fa-chart-area',
+                role: ['1', '2', '3', '4', '5']
+            },
             {
                 state: 'clinic',
                 name: 'Clinics',
                 type: 'link-noparam',
                 icon: 'fas fa-home',
-                role: ['2']
+                role: ['2', '3']
             },
             // {
             //   state: 'dentist',
@@ -2283,49 +2390,48 @@ var MenuItems = /** @class */ (function () {
                 icon: 'fas fa-receipt',
                 role: ['2']
             },
-            // {
-            //   state: 'roles-users',
-            //   name: 'Roles Management',
-            //   type: 'link',
-            //   icon: 'fas fa-user-tag',
-            //   param: '1',
-            //   role:['2']
-            // },
+            {
+                state: 'in-office',
+                name: 'In office Plans',
+                type: 'link-noparam',
+                icon: 'fas fa-file-invoice',
+                role: ['2']
+            },
+            {
+                state: 'defaulters',
+                name: 'Defaulters',
+                type: 'link-noparam',
+                icon: 'fas fa-user-times',
+                role: ['2']
+            },
+            {
+                state: 'roles-users',
+                name: 'Roles Management',
+                type: 'link',
+                icon: 'fas fa-user-tag',
+                param: '1',
+                role: ['2']
+            },
+            {
+                state: 'treatments',
+                name: 'Treatments',
+                type: 'link',
+                icon: 'fas fa-hospital',
+                param: '1',
+                role: ['2', '3']
+            },
             {
                 state: 'profile-settings',
-                name: 'Profile Settings',
+                name: 'Settings',
                 type: 'link',
                 icon: 'fas fa-user-cog',
                 param: '1',
-                role: ['1', '2', '3', '4', '5']
+                role: ['2', '3']
             },
         ];
-        this.getRoles();
     }
     MenuItems.prototype.getMenuitem = function () {
         return this.menu;
-    };
-    MenuItems.prototype.getRoles = function () {
-        var _this = this;
-        this.rolesUsersService.getRoles().subscribe(function (res) {
-            if (res.message == 'success') {
-                res.data.forEach(function (result) {
-                    1;
-                    var dashboards = result.permisions.split(',');
-                    if (dashboards.includes("dashboard1"))
-                        _this.dashboard1role.push(result.id.toString());
-                    if (dashboards.includes("dashboard2"))
-                        _this.dashboard2role.push(result.id.toString());
-                    if (dashboards.includes("dashboard3"))
-                        _this.dashboard3role.push(result.id.toString());
-                    if (dashboards.includes("dashboard4"))
-                        _this.dashboard4role.push(result.id.toString());
-                    if (dashboards.includes("dashboard5"))
-                        _this.dashboard5role.push(result.id.toString());
-                });
-            }
-        }, function (error) {
-        });
     };
     MenuItems = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -2476,7 +2582,7 @@ __webpack_require__.r(__webpack_exports__);
 var environment = {
     production: true,
     apiUrl: "https://staging-members-api.jeeve.com.au:3443/",
-    homeUrl: "https://staging-members.jeeve.com.au:3443/"
+    homeUrl: "https://staging-members.jeeve.com.au/"
 };
 
 

@@ -7,11 +7,12 @@ import { Observable } from 'rxjs';
 import { CookieService } from "angular2-cookie/core";
 import { environment } from "../../environments/environment";
 
+
 @Injectable()
 export class ClinicSettingsService {
 
 
-   public token: string;
+    public token: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
 
@@ -32,9 +33,20 @@ export class ClinicSettingsService {
                     })
         );
     }
+    
+       // Get ClinicSettings
+  getClinicLandingPageSettings(clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"Clinics/getClinicInfo?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+
        // Get ClinicSettings
     updateClinicSettings(clinic_id, name, address, contact_name,phone_no,publishable_key,secret_key, imageURL, user_id = '23', token = this._cookieService.get("token")): Observable<any> {
-            const formData = new FormData();
+    const formData = new FormData();
 
     formData.append('clinicName', name);
     formData.append('address', address);
@@ -47,15 +59,63 @@ export class ClinicSettingsService {
 
     formData.append('id', clinic_id);
 
-     formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);
 
-        return this.http.post(this.apiUrl +"/Practices/update/", formData)
+    return this.http.post(this.apiUrl +"/Practices/update/", formData)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
+   updateLandingPageSettings(clinic_id,headerInfo,socialInfo,token = this._cookieService.get("token")): Observable<any> {
+    const formData = new FormData();
+    formData.append('header_info', headerInfo);
+    formData.append('social_info', socialInfo);
+    formData.append('id', clinic_id);
+    formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('token', token); 
+
+    return this.http.post(this.apiUrl +"/Practices/update/", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        ); 
+    }
+
+updateSliderImagesSettings(clinic_id,sliderInfo,token = this._cookieService.get("token")): Observable<any> {
+    
+    const formData = new FormData();
+    formData.append('slider_info', sliderInfo);
+    formData.append('id', clinic_id);
+    formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('token', token);
+    console.log(formData);
+    return this.http.post(this.apiUrl +"/Practices/update/", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+}
+
+removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token")): Observable<any> {
+    const formData = new FormData();
+    formData.append('keyUrl', keyUrl);
+    formData.append('id', clinic_id);
+    formData.append('index', index);
+    formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('token', token);
+    console.log(formData);
+    return this.http.post(this.apiUrl +"/Practices/removeSliderImage/", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+}
+
+
+
+
     logoUpload( formData): Observable<any> {
         if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
         formData.append('id', this._cookieService.get("childid"));
@@ -69,6 +129,21 @@ export class ClinicSettingsService {
                     return response;
                 })
     );
+    }
+
+    landingImageUpload(formData): Observable<any> {
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        formData.append('id', this._cookieService.get("childid"));
+        else
+        formData.append('id', this._cookieService.get("userid"));
+
+        formData.append('token', this._cookieService.get("token"));
+
+        return this.http.post(this.apiUrl +"/Practices/landingImageUpload/", formData)
+         .pipe(map((response: Response) => {
+                    return response;
+                })
+           );
     }
        
 }

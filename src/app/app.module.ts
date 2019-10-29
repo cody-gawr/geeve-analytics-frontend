@@ -103,7 +103,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot(AppRoutes),
     NotifierModule.withConfig(customNotifierOptions)
-    
   ],
   providers: [
     AuthGuard, 

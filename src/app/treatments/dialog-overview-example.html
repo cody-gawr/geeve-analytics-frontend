@@ -1,0 +1,21 @@
+<div class="AddUserPopup"> 
+<h1 mat-dialog-title>Add Treatment</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.treatmentName" placeholder="Treatment Name" required="true">
+  </mat-form-field>
+  <span class="treatNameError"></span>
+
+   <mat-form-field>
+    <mat-label>Treatment Status</mat-label> 
+    <mat-select name ="value" tabindex="1" [(ngModel)]= "data.treatmentStatus"  class="form-control-dialog" required="true">
+      <mat-option value="1">ACTIVE</mat-option>
+      <mat-option value="2">INACTIVE</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+</div>
+</div>

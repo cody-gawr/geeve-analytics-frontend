@@ -2,54 +2,70 @@
 <div mat-dialog-content>
 
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.name" placeholder="Benefits">
+    <input matInput tabindex="1" [(ngModel)]="data.treatmentName" placeholder="Benefits">
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput tabindex="1" type="number" [(ngModel)]="data.age" placeholder="No. of sittings">
+    <input matInput tabindex="1" type="number" id="totalsittings" min="0" (change)="totalsittings(data.totalsitting)" [(ngModel)]="data.totalsitting" placeholder="No. of sittings">
   </mat-form-field>
 
-                     
-  <div class="responsive-table">
-    <mat-table #table [dataSource]="dataSource">
- 
-      <ng-container matColumnDef="position">
-        <mat-header-cell *matHeaderCellDef> S.No. </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{data.position}} </mat-cell>
-      </ng-container>
+  <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='data.sittings'>
+   
+    <ngx-datatable-column prop="sr" name="sr">
+          <ng-template let-column="column" ngx-datatable-header-template>
+        <span>Sittings</span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          <span>
+            Sittings {{rowIndex + 1}}
+          </span>
+        </ng-template>
 
+    </ngx-datatable-column>
+      <ngx-datatable-column prop="sitting_status" name="sitting_status">
+          <ng-template let-column="column" ngx-datatable-header-template>
+        <span>Sitting status</span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span >
+            <mat-checkbox checked="true" *ngIf="value=='ACTIVE'" (change)="statusupdate(rowIndex,$event)">
 
-      <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{data.name}} </mat-cell>
-      </ng-container>
-
+            </mat-checkbox>
+            <mat-checkbox  *ngIf="value=='INACTIVE'" (change)="statusupdate(rowIndex,$event)">
      
-      <ng-container matColumnDef="age">
-        <mat-header-cell *matHeaderCellDef> Age </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{data.age}} </mat-cell>
-        
-      </ng-container>
+            </mat-checkbox>
+          </span>
+            </ng-template>
+      </ngx-datatable-column>
+    
+    <ngx-datatable-column prop="performed_date" name="performed_date">
+        <ng-template let-column="column" ngx-datatable-header-template>
+      <span>Performed Date</span>
+    </ng-template>
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex"   let-row="row" let-value="value">
+        <span *ngIf="value !=='NULL'" >
+          {{value | date: 'dd-MM-yyyy'}}
+        </span>
+            </ng-template>
+    </ngx-datatable-column>
+    
+    <ngx-datatable-column prop="id" name="id">
+      <ng-template let-column="column" ngx-datatable-header-template>
+    <span>Action</span>
+  </ng-template>
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+      <span >
+        <button mat-button tabindex="-1"  *ngIf="value==''" (click)="deleterow(rowIndex)"  class="mat-raised-button mat-gray">Delete</button>
+      </span>
+          </ng-template>
+  </ngx-datatable-column>
 
-     
-      <ng-container matColumnDef="gender">
-        <mat-header-cell *matHeaderCellDef> Gender </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{data.gender}} </mat-cell>
-      </ng-container>
+  </ngx-datatable>
 
-      <ng-container matColumnDef="action">
-          <mat-header-cell *matHeaderCellDef>Action </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{data.action}} </mat-cell>
-        </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-  </div>
-
-  <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
 <div mat-dialog-actions>
   <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
 </div>
+
+

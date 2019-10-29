@@ -16,6 +16,11 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ClinicSettingsComponent } from './clinic-settings.component';
 
 import { ClinicSettingsService } from './clinic-settings.service';
+
+import { AngularFileUploaderModule } from "angular-file-uploader";
+
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +33,8 @@ import { ClinicSettingsService } from './clinic-settings.service';
     FileUploadModule,
     MatTreeModule,
     MatDatepickerModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    AngularFileUploaderModule,
   ],
   providers: [
     ClinicSettingsService
@@ -37,4 +43,7 @@ import { ClinicSettingsService } from './clinic-settings.service';
     ClinicSettingsComponent
   ]
 })
+
+
+
 export class ClinicSettingsModule {}

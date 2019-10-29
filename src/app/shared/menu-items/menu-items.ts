@@ -107,14 +107,40 @@ const MENUITEMS = [
 
   },
   {
-    state: 'roles-users',
-    name: 'Roles Management',
+    state: 'in-office',
+    name: 'In office Plans',
+    type: 'link-noparam',
+    icon: 'fas fa-receipt',
+    role:['2']
+
+  },
+  {
+
+    state: 'defaulters',
+    name: 'Defaulters',
+    type: 'link-noparam',
+    icon: 'fas fa-user-tag',
+    role:['2']
+
+  },
+   {
+    state: 'treatments',
+    name: 'Treatments',
     type: 'link',
     icon: 'fas fa-user-tag',
     param: '1',
     role:['2']
 
   },
+  // {
+  //   state: 'roles-users',
+  //   name: 'Roles Management',
+  //   type: 'link',
+  //   icon: 'fas fa-user-tag',
+  //   param: '1',
+  //   role:['2']
+
+  // },
   {
     state: '',
     name: 'Goals',
@@ -301,39 +327,27 @@ const MENUITEMS = [
 
 @Injectable()
 export class MenuItems {
-  constructor(private rolesUsersService: RolesUsersService) {
-
-    this.getRoles();
-  }
+  constructor(private rolesUsersService: RolesUsersService) {}
   getMenuitem(): Menu[] {
     return this.menu;
   }
   public MENUITEMS;
-  public dashboard1role=['1','2'];
- public dashboard2role=['1','2'];
- public dashboard3role=['1','2'];
- public dashboard4role=['1','2'];
- public dashboard5role=['1','2'];
   public menu = [
   
-  // {
-  //   state: 'dashboards',
-  //   name: 'Dashboards',
-  //   type: 'sub-dashboards',
-  //   icon: 'fas fa-chart-area',
-  //   children: [
-  //     { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param : '1', role:this.dashboard1role}
-  //   ],
-  //   param: '1',
-  //   role:['1','2','3','4','5']
+  {
+    state: 'dashboards',
+    name: 'Dashboards',
+    type: 'link-noparam',
+    icon: 'fas fa-chart-area',
+    role:['1','2','3','4','5']
 
-  // },  
+  },  
   {
     state: 'clinic',
     name: 'Clinics',
     type: 'link-noparam',
     icon: 'fas fa-home',
-    role:['2']
+    role:['2','3']
   },
   // {
   //   state: 'dentist',
@@ -360,44 +374,51 @@ export class MenuItems {
     role:['2']
 
   },
-  // {
-  //   state: 'roles-users',
-  //   name: 'Roles Management',
-  //   type: 'link',
-  //   icon: 'fas fa-user-tag',
-  //   param: '1',
-  //   role:['2']
 
-  // },
+  {
+    state: 'in-office',
+    name: 'In office Plans',
+    type: 'link-noparam',
+
+    icon: 'fas fa-file-invoice',
+    role:['2']
+
+  },
+  {
+
+    state: 'defaulters',
+    name: 'Defaulters',
+    type: 'link-noparam',
+    icon: 'fas fa-user-times',
+    role:['2']
+    },
+  {
+
+    state: 'roles-users',
+    name: 'Roles Management',
+    type: 'link',
+    icon: 'fas fa-user-tag',
+    param: '1',
+    role:['2']
+
+  },
+    {
+    state: 'treatments',
+    name: 'Treatments',
+    type: 'link',
+    icon: 'fas fa-hospital',
+    param: '1',
+    role:['2','3']
+
+  },
   {
     state: 'profile-settings',
     name: 'Settings',
     type: 'link',
     icon: 'fas fa-user-cog',
     param : '1',
-    role:['1','2','3','4','5']
+    role:['2','3']
   },
 ];
-  getRoles() {      
-   this.rolesUsersService.getRoles().subscribe((res) => {
-       if(res.message == 'success'){ 
-         res.data.forEach(result => {1
-            var dashboards = result.permisions.split(',');
-            if(dashboards.includes("dashboard1")) 
-              this.dashboard1role.push(result.id.toString());
-            if(dashboards.includes("dashboard2")) 
-              this.dashboard2role.push(result.id.toString());
-            if(dashboards.includes("dashboard3")) 
-              this.dashboard3role.push(result.id.toString());
-            if(dashboards.includes("dashboard4")) 
-              this.dashboard4role.push(result.id.toString());
-            if(dashboards.includes("dashboard5")) 
-              this.dashboard5role.push(result.id.toString());
-         });
-       }
-    }, error => {
-    });
-
-  }
 
 }

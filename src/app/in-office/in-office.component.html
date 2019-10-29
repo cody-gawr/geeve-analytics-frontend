@@ -1,0 +1,100 @@
+
+<input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
+
+<mat-card>
+    <mat-card-content>
+        <mat-card-title>In-Office Payment Plans <button class="sa-pull-right mat-raised-button mat-gray" mat-raised-button (click)="openDialog()">Add In-Office Plan</button></mat-card-title>
+
+        <mat-form-field>
+            <input matInput type='text' class="form-control" placeholder='Type to filter Plan name...' (keyup)='updateFilter($event)'
+            />
+        </mat-form-field>
+        <ngx-datatable #table class='material' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+            [rowHeight]="'auto'" [limit]="10" [rows]='rows' >
+       <ngx-datatable-column name="Id">
+         <ng-template let-column="column" ngx-datatable-header-template>
+        <span>Id</span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          <span>
+            {{rowIndex+1}} 
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="patient_name" name="patient_name">
+         <ng-template let-column="column" ngx-datatable-header-template>
+        <span>Patient Name</span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+             {{value}}
+     </ng-template>
+    </ngx-datatable-column>
+       <ngx-datatable-column prop="patient_email" name="patient_email">
+         <ng-template let-column="column" ngx-datatable-header-template>
+        <span>Email</span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+           {{value}}
+      </ng-template>
+
+    </ngx-datatable-column>
+
+
+    <!-- <ngx-datatable-column prop="plan_name" name="plan_name">
+        <ng-template let-column="column" ngx-datatable-header-template>
+       <span>Plan Name</span>
+     </ng-template>
+       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+         <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'plan_name')" *ngIf="!editing[rowIndex + '-plan_name'] && value != ''">
+           {{value}}
+         </span>
+         
+       </ng-template>
+     </ngx-datatable-column> -->
+
+
+       <ngx-datatable-column prop="amount_owing" name="amount_owing">
+        <ng-template let-column="column" ngx-datatable-header-template>
+       <span>Amount Owing</span>
+     </ng-template>
+       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          $ {{value}}
+        </ng-template>
+     </ngx-datatable-column>
+
+
+     <ngx-datatable-column prop="amount_paid" name="amount_paid">
+      <ng-template let-column="column" ngx-datatable-header-template>
+     <span>Amount Paid</span>
+   </ng-template>
+     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          $ {{value}}
+      </ng-template>
+   </ngx-datatable-column>
+   
+      
+   <ngx-datatable-column prop="total_amount" name="total_amount">
+      <ng-template let-column="column" ngx-datatable-header-template>
+     <span>Total Amount</span>
+   </ng-template>
+     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+        $ {{value}}
+      </ng-template>
+   </ngx-datatable-column>
+
+      <ngx-datatable-column name="id">
+         <ng-template let-column="column" ngx-datatable-header-template>
+        <span>Actions </span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
+            <a [routerLink]="['/in-office-history',value]" class="action_btn golden" title= 'In-office History'><i class="ti-eye  m-r-10"></i></a>{{rows.clinic_id}}
+            <a class="action_btn golden" (click)="openUpdateDialog(value)" title= 'Update Patient'><i class="ti-settings  m-r-10"></i></a>
+
+          <button class="action_btn danger" mat-menu-item (click) = "deletePlan(rowIndex)">
+         
+         <i class="ti-trash text-danger m-r-10"></i></button>
+        </ng-template>
+      </ngx-datatable-column>
+        </ngx-datatable>
+    </mat-card-content>
+</mat-card>

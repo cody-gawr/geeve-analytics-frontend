@@ -48,7 +48,9 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    $('.ajax-loader').show();
     this.registerService.checkPatientEmailExists(this.form.value.patient_email,this.defaults.clinic_id,this.defaults.user_id).subscribe((res) => {
+      $('.ajax-loader').hide();
           this.errorLogin = false;
           this.errorLoginText = '';
           this.successLogin = false;
@@ -60,7 +62,7 @@ export class RegisterComponent implements OnInit {
                     this.successLogin = false;
                     this.successLoginText = '';
                      if(res.message == 'success'){
-                          this.successLogin  =true;
+                          this.successLogin = true;
                           alert('Please confirm your mail and complete the payment!');
                       }
                      else if(res.message == 'error'){

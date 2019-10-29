@@ -13,6 +13,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { DatePipe } from '@angular/common';
 
 import { PatientInfoComponent,DialogOverviewExampleDialogComponent } from './patient-info.component';
 
@@ -34,7 +35,8 @@ import { PatientInfoService } from './patient-info.service';
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
-    PatientInfoService
+    PatientInfoService,
+    DatePipe
   ],
   entryComponents: [DialogOverviewExampleDialogComponent],
   declarations: [

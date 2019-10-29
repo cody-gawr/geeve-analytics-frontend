@@ -4,6 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ProfileSettingsService } from './profile-settings.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-formlayout',
@@ -11,6 +12,7 @@ import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
   styleUrls: ['./profile-settings.component.scss']
 })
 export class ProfileSettingsComponent implements OnInit {
+  private readonly notifier: NotifierService;
    public form: FormGroup;
 
    public clinic_id:any ={};
@@ -29,7 +31,8 @@ export class ProfileSettingsComponent implements OnInit {
           public email;
           public user_image;
           public imageURL:any;
-  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute) {
+  constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute) {
+    this.notifier = notifierService;
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -44,9 +47,7 @@ export class ProfileSettingsComponent implements OnInit {
     this.getprofileSettings();
 
           $('#title').html('Profile Settings');
-        $('.external_clinic').hide();
-          $('.dentist_dropdown').hide();
-          $('.header_filters').addClass('flex_direct_mar'); 
+ $('.header_filters').addClass('hide_header');
          
          // this.checkXeroStatus();
      });
@@ -124,8 +125,11 @@ public website;
   this.displayName = $("#displayName").val();
   this.email = $("#email").val();
   this.imageURL = $("#imageURL").val();
+      $('.ajax-loader').show();      
 
    this.profileSettingsService.updateprofileSettings(this.displayName, this.email,this.PhoneNo,this.Address,this.Gender,this.Specialties,this.Education,this.practiceDesc,this.Website,this.imageURL).subscribe((res) => {
+      $('.ajax-loader').hide();      
+       
        if(res.message == 'success'){
         let opts: CookieOptionsArgs = {
             expires: new Date('2030-07-19')
@@ -143,8 +147,8 @@ public website;
         this.website = this.Website;
         // this.publishable_key = this.publishableKey;
         // this.secret_key = this.secretKey;
-
-        alert('Profile Settings Updated');
+        this.notifier.notify( 'success', 'Profile Settings Updated' ,'vertical');
+    
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -194,7 +198,11 @@ public fileToUpload;
     this.fileToUpload = files.item(0);
     let formData = new FormData();
     formData.append('file', this.fileToUpload, this.fileToUpload.name);
+      $('.ajax-loader').show();      
+
     this.profileSettingsService.logoUpload(formData).subscribe((res) => {
+      $('.ajax-loader').hide();      
+
       if(res.message == 'success'){
         this.imageURL= res.data;
       }

@@ -2,9 +2,12 @@ import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
 import { PatientsDetailService } from './patients-detail.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from "angular2-cookie/core";
+import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, Validators } from '@angular/forms';
 import { EventEmitter , Output, Input} from '@angular/core';
+import { NotifierService } from 'angular-notifier';
+
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -26,12 +29,11 @@ export class DialogOverviewExampleDialogComponent {
   email = new FormControl('', [Validators.required, Validators.email]);
 
   getErrorMessage() {
+       this.emailval.emit(this.email);
     return this.email.hasError('required')
       ? 'You must enter a value'
-      : this.email.hasError('email')
-        ? 'Not a valid email'
-        : '';
-        this.emailval.emit(this.email);
+      : this.email.hasError('email');
+     
   }
 
   @Output() public emailval: EventEmitter<any> = new EventEmitter();
@@ -46,6 +48,15 @@ export class DialogOverviewExampleDialogComponent {
     this.onAdd.emit(this.fileToUpload);
   }
 
+  save(data) {
+    $('.form-control-dialog').each(function(){
+    var likeElement = $(this).click();
+  });
+    if(data.invite_member_name != undefined && data.invite_member_email != undefined ){
+        this.dialogRef.close(data);
+      }
+    }
+
 
   file: File;
   onChange(event: EventTarget) {
@@ -53,8 +64,34 @@ export class DialogOverviewExampleDialogComponent {
         let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
         let files: FileList = target.files;
         this.file = files[0];
-        console.log(this.file);
-      //  this.filedata =this.file;
+  }
+}
+@Component({
+  selector: 'app-update-patient-dialog',
+  templateUrl: './update-patient.html',
+})
+export class UpdatePatientDialogComponent {
+
+
+  constructor( public dialogUpdateRef: MatDialogRef<UpdatePatientDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+    ) {}
+
+    update(data) {
+         
+      $('.form-control-dialog').each(function(){
+      var likeElement = $(this).click();
+    });
+    console.log(data);
+  
+      if(data.patient_name != undefined && data.patient_address != undefined  && data.patient_dob != undefined && data.patient_age != undefined && data.patient_gender != undefined && data.patient_phone_no != undefined && data.patient_home_phno != undefined){
+
+          this.dialogUpdateRef.close(data);
+       }
+     }
+    
+    onNoClick(): void {
+    this.dialogUpdateRef.close();
   }
 }
 
@@ -66,7 +103,9 @@ const data: any = [];
   styleUrls: ['./patients-detail.component.scss']
 })
 export class PatientsDetailComponent implements AfterViewInit {
+  private readonly notifier: NotifierService;
   public id:any ={};
+  public planname;
   invite_member_name: string;
   invite_member_email: string;
   membersplan:any={};
@@ -75,7 +114,7 @@ export class PatientsDetailComponent implements AfterViewInit {
   member_plan_id :any;
   clinic_id: any;
   public clinic_name:any ={};
-
+  public patientdob;
   ngAfterViewInit() {
 
     this.id = this.route.snapshot.paramMap.get("id");
@@ -83,15 +122,15 @@ export class PatientsDetailComponent implements AfterViewInit {
     this.getPlans();
     this.getPatients();
 
-        $('#title').html('Patients Listing');
-        //$('.header_filters').hide();
-             $('.header_filters').addClass('hide_header');
+    $('#title').html('Patients Listing');
+    $('.header_filters').addClass('hide_header');
     this.getClinincname();
  
         
   }
   editing = {};
   rows = [];
+
   temp = [...data];
 
   loadingIndicator = true;
@@ -100,7 +139,8 @@ export class PatientsDetailComponent implements AfterViewInit {
   columns = [{ prop: 'id' }, { name: 'planName' }, { name: 'member_plan_id' }, { name: 'patient_address' }, { name: 'patient_age' }, { name: 'patient_dob' }, { name: 'patient_email' }, { name: 'patient_gender' }, { name: 'patient_home_phno' }, { name: 'patient_name' }, { name: 'patient_phone_no' }, { name: 'patient_status' }];
 
   @ViewChild(PatientsDetailComponent) table: PatientsDetailComponent;
-  constructor(private patientsdetailService: PatientsDetailService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router ,private route: ActivatedRoute) {
+  constructor(notifierService: NotifierService,private patientsdetailService: PatientsDetailService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router ,private route: ActivatedRoute,private datePipe: DatePipe) {
+    this.notifier = notifierService;
     this.rows = data;
     this.temp = [...data];
     setTimeout(() => {
@@ -121,27 +161,61 @@ export class PatientsDetailComponent implements AfterViewInit {
     
    
   dialogRef.afterClosed().subscribe(result => {
-  
+    if(result != undefined) {
+  $('.ajax-loader').show();
     this.clinic_id = $('#currentClinicid').attr('cid');
+    console.log(this.clinic_id)
     this.patientsdetailService.inviteMember(this.clinic_id,result.invite_member_name, result.invite_member_email).subscribe((res) => {
+      $('.ajax-loader').hide();
     if(res.message == 'success'){
-        alert('Member has been Invited');
+        this.notifier.notify( 'success', 'Member has been Invited' ,'vertical');
           this.getPatients();
+       }
+       else{
+        this.notifier.notify( 'success', res.data.message ,'vertical');
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
+  }
     });
   }
+  openUpdateDialog(patientid): void {
 
+    this.patientsdetailService.getInofficeMembersByID(patientid,this.clinic_id).subscribe(updateres => {
+console.log(updateres);
+    this.patientdob = this.datePipe.transform(updateres.data[0].patient_dob , 'yyyy-MM-dd');
+
+    const dialogUpdateRef = this.dialog.open(UpdatePatientDialogComponent, {
+     width: '250px',
+     data: {patient_name: updateres.data[0].patient_name ,patient_address: updateres.data[0].patient_address,patient_dob: this.patientdob,patient_age:updateres.data[0].patient_age,patient_gender:updateres.data[0].patient_gender,patient_phone_no:updateres.data[0].patient_phone_no,patient_home_phno:updateres.data[0].patient_home_phno,patient_status:updateres.data[0].patient_status,patient_id:patientid}
+ 
+     });
+    
+
+  dialogUpdateRef.afterClosed().subscribe(result => {
+
+    this.patientsdetailService.updatePatientsDetails(result.patient_name,result.patient_address,result.patient_dob,result.patient_age,result.patient_gender,result.patient_phone_no,result.patient_home_phno,result.patient_status,result.patient_id).subscribe((res) => {
+   
+   if(res.message == 'success'){
+    this.getPatients();
+            this.notifier.notify( 'success', 'Patient Updated' ,'vertical');
+             }
+        }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        }
+        );  
+        });
+      });
+  }
   private getPatients() {
  
     this.patientsdetailService.getPatients(this.id).subscribe((res) => {
       if(res.message == 'success'){
         this.rows = res.data;
-        // console.log(this.rows );
-    
+        this.planname = res.data[0]['planName'];
+        
         this.temp = [...res.data];    
         // console.log(this.temp )
         this.table = data;
@@ -153,7 +227,10 @@ export class PatientsDetailComponent implements AfterViewInit {
               this._cookieService.put("token", '');
               this._cookieService.put("userid", '');
                this.router.navigateByUrl('/login');
-           }
+             }else if(res.status == '400'){
+              this.rows = [];
+           } 
+        
    
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -166,6 +243,8 @@ export class PatientsDetailComponent implements AfterViewInit {
     this.patientsdetailService.getClinincname(this.id).subscribe((res) => {
        if(res.message == 'success'){
         this.clinic_name = res.data[0]['clinic']['clinicName'];
+        this.clinic_id =res.data[0]['clinic_id'];
+
         $('#title').html('Patients Listing - '+ this.clinic_name);
     
             }    
@@ -187,17 +266,20 @@ export class PatientsDetailComponent implements AfterViewInit {
     if(this.rows[row]['id']) {
       this.patientsdetailService.deletePatients(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
-        alert('Patient Removed');
-          this.getPatients();
-       }
+        this.notifier.notify( 'success', 'Patient Removed' ,'vertical');
+            this.getPatients();
+             }
+      
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
     }
     else {
+      
       this.rows.splice(row, 1);
     this.rows = [...this.rows];
+    this.getPatients();
     }
   }
   }
@@ -236,7 +318,7 @@ export class PatientsDetailComponent implements AfterViewInit {
 
     this.patientsdetailService.updatePatients(this.rows[rowIndex]['id'],this.rows[rowIndex]['member_plan_id'],this.rows[rowIndex]['patient_status']).subscribe((res) => {
        if(res.message == 'success'){
-        alert('patient Updated');
+        this.notifier.notify( 'success', 'Patient Updated' ,'vertical');
           this.getPatients();
        }
     }, error => {

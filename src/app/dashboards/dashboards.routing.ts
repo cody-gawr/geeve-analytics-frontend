@@ -1,14 +1,11 @@
 import { Routes } from '@angular/router';
 
-import { ClinicianAnalysisComponent } from './cliniciananalysis/cliniciananalysis.component';
+import { DashboardsComponent } from './dashboards.component';
 export const DashboardsRoutes: Routes = [
   {
     path: '',
-    children: [
-      {
-        path: 'cliniciananalysis/:id',
-        component: ClinicianAnalysisComponent
-      }
-     ]
-  }
+    component: DashboardsComponent,
+    data: {
+      title: 'Members Dashboard'
+    }  }
 ];
