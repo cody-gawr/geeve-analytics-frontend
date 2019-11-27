@@ -105,6 +105,9 @@ export class PatientInfoComponent implements OnInit {
   constructor(notifierService: NotifierService,private fb: FormBuilder,public dialog: MatDialog,  private patientInfoService: PatientInfoService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,breakpointObserver: BreakpointObserver) {
     this.notifier = notifierService;
     }
+   goBack() {
+      window.history.back();
+   }
 
    openDialog(treatmentIndex,): void {
     this.getBenefitsUsed();
@@ -160,6 +163,8 @@ export class PatientInfoComponent implements OnInit {
         
         });
 
+
+
         
     const sub = dialogRef.componentInstance.sittingsUpdate.subscribe((settingstatus,sittingsIndex) => {
       this.getBenefitsUsed();   
@@ -183,6 +188,7 @@ export class PatientInfoComponent implements OnInit {
                }
       });
       });
+
 
     dialogRef.afterClosed().subscribe(result => {
       // var sitting =JSON.stringify(this.sittings);
@@ -248,7 +254,7 @@ export class PatientInfoComponent implements OnInit {
          console.log(res.data);
         var patientArray ={};
         patientArray['sub_patients_name'] = res.data[0]['patient_name'];
-        patientArray['sub_patients_age'] = res.data[0]['patient_age'];
+        patientArray['sub_patients_dob'] = res.data[0]['patient_dob'];
         patientArray['sub_patients_gender'] = res.data[0]['patient_gender'];
         patientArray['sub_patients_amount'] = res.data[0]['member_plan']['totalAmount'];
 
@@ -256,9 +262,13 @@ export class PatientInfoComponent implements OnInit {
         var sub_patient_length = this.rows.length;
         this.rows[sub_patient_length] = patientArray;
         this.patient_amount=res.data[0]['total_amount'];
+        this.patient_status=res.data[0]['patient_status'];
+        this.created=res.data[0]['created'];
+        this.totalAmount=res.data[0]['member_plan']['totalAmount'];
         this.total_subpatient=res.data[0]['sub_patients'].length;
         this.member_plan_id= res.data[0]['member_plan_id'];
         this.plan_name=res.data[0]['member_plan']['planName'];
+        this.planLength=res.data[0]['member_plan']['planLength'];
         this.clinic_id=res.data[0]['clinic_id'];
         this.user_id=res.data[0]['user_id'];
         this.mainpatientname = res.data[0]['patient_name'];

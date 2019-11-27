@@ -33,9 +33,10 @@ export class ProfileSettingsService {
         );
     }
        // Get updateprofileSettings
-    updateprofileSettings(displayName,email,PhoneNo,Address,Gender,Specialties,Education,practiceDesc,Website,imageURL, token = this._cookieService.get("token")): Observable<any> {
+    updateprofileSettings(displayName,description,email,PhoneNo,Address,Gender,Specialties,Education,practiceDesc,Website,imageURL, token = this._cookieService.get("token")): Observable<any> {
             const formData = new FormData();
             formData.append('displayName', displayName);
+            formData.append('description', description);            
             formData.append('email', email);
             formData.append('PhoneNo', PhoneNo);
             formData.append('Address', Address);
@@ -98,6 +99,24 @@ export class ProfileSettingsService {
 
     clearSession( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
         return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+           // Get updatePassword
+    updateTerms(terms, token = this._cookieService.get("token")): Observable<any> {
+            const formData = new FormData();
+            formData.append('terms', terms);            
+            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')         
+            formData.append('id', this._cookieService.get("childid"));
+            else
+            formData.append('id', this._cookieService.get("userid"));
+
+            formData.append('token', token);
+
+        return this.http.post(this.apiUrl +"/Users/updateTerms/", formData)
         .pipe(map((response: Response) => {
                         return response;
                     })

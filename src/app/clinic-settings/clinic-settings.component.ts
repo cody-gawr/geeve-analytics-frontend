@@ -7,6 +7,8 @@ import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import { NotifierService } from 'angular-notifier';
 import {forwardRef, Input, ViewChild, ElementRef } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
+import { environment } from "../../environments/environment";
+
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-settings.component.html',
@@ -16,6 +18,7 @@ import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } fro
 
 
 export class ClinicSettingsComponent implements OnInit {
+ private apiUrl = environment.apiUrl;
 
 
 afuConfig = {
@@ -23,7 +26,7 @@ afuConfig = {
     formatsAllowed: ".jpg,.png,.jpeg",
     maxSize: "1",
     uploadAPI:  {
-      url:"http://localhost/jeevemembers/server/Practices/uploadSliderImages",
+      url:this.apiUrl+"/Practices/uploadSliderImages",
     },
     theme: "dragNDrop",
     hideProgressBar: false,
@@ -45,7 +48,7 @@ afuConfig = {
    public formLanding: FormGroup;
    public errorLogin = false;
    public clinic_id:any ={};
-
+   private homeUrl = environment.homeUrl;
 
   private warningMessage: string;
   public id:any ={};
@@ -70,12 +73,18 @@ afuConfig = {
   public instagram:string;
   public social_info:any ={};
   public sliderImages = [];
-
-
+  public clinicTagLine:any;
+  public DefaultLogo :any;
+  public DefaultHeaderImage :any;
+  public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
   // public practice_size:any ={};
   options: FormGroup;
   constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute) {
     this.notifier = notifierService;
+    this.DefaultLogo=this.homeUrl+"src/assets/img/logo.png";
+    this.DefaultHeaderImage=this.homeUrl+"src/assets/img/headimage.jpg";
+    console.log(this.DefaultLogo);
+    
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -86,9 +95,8 @@ afuConfig = {
       this.id = this.route.snapshot.paramMap.get("id");
       this.getClinicSettings();
       this.getClinicLandingPageSettings();
-      http://localhost/jeevemembers/server/Clinics/getClinicInfo?token=8ea56ecf9b5e77ca4cde3c70474c1218&user_id=40&clinic_id=32 (GET)
       $('#title').html('Clinic Settings');
-       $('.header_filters').addClass('hide_header');
+      $('.header_filters').addClass('hide_header');
        
 
      });
@@ -101,6 +109,7 @@ afuConfig = {
       publishable_key: [null, Validators.compose([Validators.required])],
       secret_key: [null, Validators.compose([Validators.required])],
       // practice_size: [null, Validators.compose([Validators.required])]
+
     
 
     });
@@ -108,14 +117,18 @@ afuConfig = {
      this.formLanding = this.fb.group({
       headerTitle: [null, Validators.compose([Validators.required])],
       headerDescription: [null, Validators.compose([Validators.required])],
-      facebook: [null, Validators.compose([Validators.required])],
-      twitter: [null, Validators.compose([Validators.required])],
-      linkedin: [null, Validators.compose([Validators.required])],
-      instagram: [null, Validators.compose([Validators.required])],
+      facebook: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
+      twitter: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
+      linkedin: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
+      instagram: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
+      clinicTagLine :[null, Validators.compose([Validators.required])]
 
     });
 
 
+  }
+  goBack() {
+      window.history.back();
   }
   // For form validator
   email = new FormControl('', [Validators.required, Validators.email]);
@@ -133,7 +146,9 @@ afuConfig = {
   }
   
   getClinicSettings() {
+    $('.ajax-loader').show(); 
   this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
+    $('.ajax-loader').hide(); 
        if(res.message == 'success'){
         this.clinicName = res.data[0].clinicName;
         this.contactName = res.data[0].contactName;
@@ -143,7 +158,12 @@ afuConfig = {
         this.secret_key = res.data[0].secret_key;
          // console.log(res);
         // this.practice_size = res.data[0].practice_size;
-        this.imageURL = res.data[0].logo;
+        if(res.data[0].logo!=""){
+          this.imageURL = res.data[0].logo;  
+        }else{
+           this.imageURL = this.DefaultLogo ; //Default Logo
+        }
+        
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -151,7 +171,7 @@ afuConfig = {
     );
   }
   getClinicLandingPageSettings() {
-
+     
     this.clinicSettingsService.getClinicLandingPageSettings(this.id).subscribe((res) => {
 
      if(res.message == 'success'){
@@ -159,7 +179,12 @@ afuConfig = {
          const headingSettings=JSON.parse(res.data[0].header_info);
          this.headerTitle = headingSettings.headerTitle;
          this.headerDescription = headingSettings.headerDescription;
-         this.headerImageURL = headingSettings.image;
+         if(headingSettings.image!=""){
+            this.headerImageURL = headingSettings.image;
+         }else{
+           this.headerImageURL = this.DefaultHeaderImage; //Default Header Image 
+         }
+         
         }
         if(res.data[0].social_info!=null){
          const socialSettings=JSON.parse(res.data[0].social_info);
@@ -169,10 +194,11 @@ afuConfig = {
          this.instagram =socialSettings.instagram;
         }
         if(res.data[0].slider_info!=null){
-         const sliderImagesData=res.data[0].slider_info;
-         this.sliderImages =JSON.parse(sliderImagesData);
+          const sliderImagesData=res.data[0].slider_info;
+          this.sliderImages =JSON.parse(sliderImagesData);
          }
-
+         this.clinicTagLine =res.data[0].clinicTagLine;
+        
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -185,10 +211,7 @@ afuConfig = {
   this.contactName = this.form.value.contactName;
   this.address = this.form.value.address;
   this.phoneNo = this.form.value.phoneNo;
-      $('.ajax-loader').show();
-
-  // this.practice_size = this.form.value.practice_size;
-
+  $('.ajax-loader').show();
    this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName,this.phoneNo,this.publishable_key,this.secret_key,this.imageURL).subscribe((res) => {
       $('.ajax-loader').hide();
     
@@ -202,12 +225,7 @@ afuConfig = {
   }
 
   onSettingsSubmit() {
-
- /* alert(this.formLanding.value.headerTitle);
-  if(this.formLanding.value.headerTitle=="")
-  {
-    return false;
-  } */
+  $('.ajax-loader').show();   
   this.header_info ={};
   this.header_info.headerTitle=this.formLanding.value.headerTitle;
   this.header_info.headerDescription=this.formLanding.value.headerDescription;
@@ -217,9 +235,10 @@ afuConfig = {
   this.social_info.twitter  = this.formLanding.value.twitter;
   this.social_info.linkedin = this.formLanding.value.linkedin;
   this.social_info.instagram = this.formLanding.value.instagram;
-
-
-  this.clinicSettingsService.updateLandingPageSettings(this.id,JSON.stringify(this.header_info),JSON.stringify(this.social_info)).subscribe((res) => {
+  this.clinicTagLine = this.formLanding.value.clinicTagLine;
+ 
+  this.clinicSettingsService.updateLandingPageSettings(this.id,JSON.stringify(this.header_info),JSON.stringify(this.social_info),this.clinicTagLine).subscribe((res) => {
+    $('.ajax-loader').hide(); 
        if(res.message == 'success'){
         this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
        }
@@ -230,7 +249,9 @@ afuConfig = {
   }
 
  saveSliderImages(){
+  $('.ajax-loader').show(); 
  this.clinicSettingsService.updateSliderImagesSettings(this.id,JSON.stringify(this.sliderImages)).subscribe((res) => {
+  $('.ajax-loader').hide(); 
        if(res.message == 'success'){
         this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
        }
@@ -245,6 +266,20 @@ afuConfig = {
   public fileToUpload;
  uploadImage(files: FileList) {
     this.fileToUpload = files.item(0);
+    /* First check for file type then check for size .*/
+   if(this.fileToUpload.type=='image/png' || this.fileToUpload.type=='image/jpg' || this.fileToUpload.type=='image/jpeg') //10000 bytes means 10 kb
+    {
+    }else{
+        alert("Invalid image. Allowed file types are jpg, jpeg and png only .");
+        return false;
+    }
+
+    if(this.fileToUpload.size/1024/1024 > 2) //10000 bytes means 10 kb
+    {
+         alert("Logo image should not be greater than 2 MB .");
+         return false;
+    }
+
     let formData = new FormData();
     formData.append('file', this.fileToUpload, this.fileToUpload.name);
     this.clinicSettingsService.logoUpload(formData).subscribe((res) => {
@@ -257,6 +292,23 @@ afuConfig = {
  public landingfileToUpload;
  uploadLandingPageImage(files: FileList) {
     this.landingfileToUpload = files.item(0);
+
+      /* First check for file type then check for size .*/
+   if(this.landingfileToUpload.type=='image/png' || this.landingfileToUpload.type=='image/jpg' || this.landingfileToUpload.type=='image/jpeg') //10000 bytes means 10 kb
+    {
+        
+    }else{
+        alert("Invalid image. Allowed file types are jpg, jpeg and png only .");
+        return false;
+    }
+
+    if(this.landingfileToUpload.size/1024/1024 > 4) //10000 bytes means 10 kb
+    {
+         alert("Header image should not be greater than 4 MB .");
+         return false;
+    }
+
+
     let formData = new FormData();
     formData.append('file', this.landingfileToUpload, this.landingfileToUpload.name);
     this.clinicSettingsService.landingImageUpload(formData).subscribe((res) => {
@@ -294,13 +346,14 @@ removeSliderImage(keyUrl,index){
 
     if(confirm("Are you sure you want to remove this image from slider ?"))
     {
-      console.log(this.sliderImages.length);
+      
       if(this.sliderImages.length==1){
-         alert("This image can't be deleted as atleast one image is required .")
+         alert("This image can't be deleted as atleast one image is required to run the slider.")
          return false; 
        }
-       
+        $('.ajax-loader').show(); 
        this.clinicSettingsService.removeSliderImage(this.id,keyUrl,index).subscribe((res) => {
+         $('.ajax-loader').hide(); 
         this.getClinicLandingPageSettings();
        if(res.message == 'success'){
        

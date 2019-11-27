@@ -81,16 +81,12 @@
                     </mat-list-item>
                 </mat-nav-list>
             </mat-list-item>
-
-        </mat-nav-list>
-
-        
+        </mat-nav-list>        
         <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'link-healthscreen' && menuitem.role.indexOf(user_type) !== -1" [routerLink]="['/',  menuitem.param2, menuitem.state, menuitem.param1]">
             <i class="{{menuitem.icon}}"></i>
             <span>{{ menuitem.name }}</span>
             <span fxFlex></span>
-            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
-          
+            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>          
         </a>
         <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'sub-child' && menuitem.role.indexOf(user_type) !== -1" >
             <i class="{{menuitem.icon}}"></i>
@@ -101,7 +97,11 @@
         </a>
         <mat-nav-list class="sub-item" *ngIf="menuitem.type === 'sub-child' && menuitem.role.indexOf(user_type) !== -1">
             <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="selected">
-                <a [routerLink]="['/', childitem.state, childitem.param ]" *ngIf="childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1" class="relative"
+                <a [routerLink]="['/', childitem.state, childitem.param ]" *ngIf="childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1 && childitem.param != ''" class="relative"
+                    routerLinkActive="selected"><i class="{{childitem.icon}}"></i>{{ childitem.name}}</a>
+
+
+                    <a [routerLink]="['/', childitem.state ]" *ngIf="childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1 && childitem.param == ''" class="relative"
                     routerLinkActive="selected"><i class="{{childitem.icon}}"></i>{{ childitem.name}}</a>
             </mat-list-item>
             <mat-list-item *ngFor="let childitem of menuitem.children">
@@ -143,7 +143,6 @@
                     </mat-list-item>
                 </mat-nav-list>
             </mat-list-item>
-
         </mat-nav-list>
         <div class="saperator text-muted" *ngIf="menuitem.type === 'saperator' && menuitem.role.indexOf(user_type) !== -1">
             <span>{{ menuitem.name }}</span>

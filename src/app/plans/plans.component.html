@@ -3,7 +3,7 @@
 
 <mat-card>
     <mat-card-content>
-        <mat-card-title>Member Plans <button class="sa-pull-right mat-raised-button mat-gray" mat-raised-button (click)="openDialog()">Add Member Plan</button></mat-card-title>
+        <mat-card-title>Member Plans <button class="sa-pull-right mat-raised-button mat-gray mr-15" mat-raised-button (click)="openDialog()">Add Member Plan</button></mat-card-title>
 
         <mat-form-field>
             <input matInput type='text' class="form-control" placeholder='Type to filter Plan name...' (keyup)='updateFilter($event)'
@@ -21,9 +21,20 @@
           </span>
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="planName">
-         <ng-template let-column="column" ngx-datatable-header-template>
+
+     <ngx-datatable-column name="planName">
+      <ng-template let-column="column" ngx-datatable-header-template>
         <span>Member Plan</span>
+      </ng-template>
+       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+            {{value}}
+       </ng-template>
+        
+      </ngx-datatable-column>
+
+        <ngx-datatable-column name="planOrder">
+         <ng-template let-column="column" ngx-datatable-header-template>
+        <span>Plan Order</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
             {{value}}
@@ -48,11 +59,9 @@
 
         </ng-template>
       </ngx-datatable-column>
-
-
        <ngx-datatable-column name="totalAmount">
          <ng-template let-column="column" ngx-datatable-header-template>
-        <span>Total Amount</span>
+        <span>Total Amount ($)</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
             $ {{value}}
@@ -69,18 +78,14 @@
            {{value}} %
        </ng-template>
      </ngx-datatable-column>
-
-
      <ngx-datatable-column name="treatments">
       <ng-template let-column="column" ngx-datatable-header-template>
      <span>Treatment Name</span>
    </ng-template>
      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-         {{value}}
-    
+        <span class="setColumnValueWidth">{{value}}</span>
      </ng-template>
    </ngx-datatable-column>
-   
       
    <ngx-datatable-column name="description">
       <ng-template let-column="column" ngx-datatable-header-template>
@@ -96,11 +101,11 @@
         <span>Actions</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
-            <a [routerLink]="['/patients-detail',value]" class="action_btn golden" title= 'Patients Detail'><i class="ti-eye  m-r-10"></i></a>
-            <a class="action_btn golden" (click)="openUpdateDialog(rowIndex)" title= 'Update Patient'><i class="ti-settings  m-r-10"></i></a>
+            <a [routerLink]="['/patients-detail',value]" class="action_btn golden" title= 'Plan Details'><i class="ti-eye "></i></a>
+            <a class="action_btn golden" (click)="openUpdateDialog(rowIndex)" title= 'Update Plan'><i class="ti-settings "></i></a>
           <button class="action_btn danger" mat-menu-item (click) = "deletePlan(rowIndex)">
          
-         <i class="ti-trash text-danger m-r-10"></i></button>
+         <i class="ti-trash text-danger" title= 'Delete Plan'></i></button>
         </ng-template>
       </ngx-datatable-column>
         </ngx-datatable>

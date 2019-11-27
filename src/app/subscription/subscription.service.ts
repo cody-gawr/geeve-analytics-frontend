@@ -32,6 +32,36 @@ export class SubscriptionService {
             );
     }
 
+    getClinicSettings( clinic_id='1', user_id = this._cookieService.get("userid")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Practices/getPracticesFrontend?user_id="+user_id+"&clinic_id="+clinic_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    sendContactUsMail(userName,userEmail,userPhone,userMessage,clinicEmail): Observable<any> {
+        console.log(clinicEmail);
+    const formData = new FormData();
+
+    formData.append('userName', userName);
+    formData.append('userEmail', userEmail);
+    formData.append('userPhone', userPhone);
+    formData.append('userMessage', userMessage);
+    formData.append('clinicEmail', clinicEmail);
+    formData.append('user_id', this._cookieService.get("userid"));
+
+    return this.http.post(this.apiUrl +"/Practices/sendContactEmail/", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+
+
+
+
 }
 
 

@@ -8,6 +8,7 @@ import { InOfficeService } from './in-office.service';
 import { InOfficeComponent,DialogOverviewExampleDialogComponent,UpdateInOfficeDialogComponent  } from './in-office.component';
 import { InOfficeRoutes } from './in-office.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DemoMaterialModule,
     ReactiveFormsModule,
     FormsModule,
+    FlexLayoutModule
   ],
   providers: [
     InOfficeService

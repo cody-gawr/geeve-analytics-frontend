@@ -6,18 +6,20 @@
         <mat-card>
             <mat-card-content>
                
-                <mat-card-title> Patient Plan Details | {{mainpatientname | titlecase}}</mat-card-title>
+                <mat-card-title> Patient Plan Details | {{mainpatientname | titlecase}}  <button class="sa-pull-right mat-raised-button sa-pull-right mat-gray" (click) = "goBack()">Back</button></mat-card-title>
                <!-- ============================================================== -->
                 <!-- column -->
                 <!-- ============================================================== -->
                 <div fxLayout="row wrap">
+
                     <!-- Card column -->
                     <div fxFlex.gt-sm="100%" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
-
+                      
                             <mat-tab-group dynamicHeight>
                          
                         <!-- Plan Details tab -->
                               <mat-tab label="Plan Details">
+                                    <div fxFlex.gt-sm="50%" fxFlex="50" class="sa_mattabs_design sa_matforms_design">
                                 <form>                                
                                   <table>
                                       <tr>
@@ -30,31 +32,40 @@
                                             <td>&nbsp;&nbsp;</td>
                                             <td>{{total_subpatient}}</td>
                                           </tr>
-                                    <tr>
-                                      <th>Payment Amount</th>
-                                      <td>&nbsp;&nbsp;</td>
-                                      <td>${{patient_amount}}</td>
-                                    </tr>
-                                  
+                                          <tr>
+                                            <th>Status</th>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>{{patient_status}}</td>
+                                          </tr>
+                                           <tr>
+                                            <th>Preventative Appointments</th>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>{{total_subpatient}}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Amount Paid</th>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>$ {{patient_amount}}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Plan Cost</th>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>$ {{totalAmount}}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Payment Period</th>
+                                            <td>&nbsp;&nbsp;</td>
+                                            <td>{{planLength}}</td>
+                                          </tr>
                                     <tr>
                                       <th>&nbsp;</th>
                                      </tr>
                                    </table>
                                 </form>
 
-                                   
+                                <h3>Plan Members</h3>
                          <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
                                   [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
-                             <ngx-datatable-column prop="sr" name="sr">
-                               <ng-template let-column="column" ngx-datatable-header-template>
-                              <span>Id</span>
-                            </ng-template>
-                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                                <span>
-                                  {{rowIndex + 1}}
-                                </span>
-                              </ng-template>
-                            </ngx-datatable-column>
                             <ngx-datatable-column prop="sub_patients_name" name="sub_patients_name">
                                <ng-template let-column="column" ngx-datatable-header-template>
                               <span>Name</span>
@@ -66,13 +77,13 @@
                                     </ng-template>
                             </ngx-datatable-column>
                       
-                             <ngx-datatable-column prop="sub_patients_age" name="sub_patients_age">
+                             <ngx-datatable-column prop="sub_patients_dob" name="sub_patients_dob">
                                <ng-template let-column="column" ngx-datatable-header-template>
-                              <span>Age</span>
+                              <span>Date of Birth</span>
                             </ng-template>
                               <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
                                 <span >
-                                  {{value}}
+                                  {{value| date:'dd-mm-y'}}
                                 </span>
                                
                               </ng-template>
@@ -88,125 +99,70 @@
                                </span>
                               
                              </ng-template>
-                           </ngx-datatable-column>
-                      
-                        
+                           </ngx-datatable-column>                        
                           </ngx-datatable>
-
+                        </div>
                             </mat-tab>
+                             <mat-tab label="Patient Details">
+                                    <div fxFlex.gt-sm="50%" fxFlex="50" class="sa_mattabs_design sa_matforms_design">
+                                <h1 mat-dialog-title>Update Patient Details</h1>
+                        <div mat-dialog-content>
+                        <form [formGroup]="formSettings"  (ngSubmit)="onSubmitBasic()">
+                        <mat-form-field>
 
-                        <!-- Benefits Used tab -->
-                          <mat-tab label="Benefits Used">
+                          <input matInput tabindex="1" [(ngModel)]="data.patient_name" placeholder="Patient Name"  class="form-control-dialog" required="true">
+                         
+                        </mat-form-field>
+                       
+                        <mat-form-field>
+                          <input matInput tabindex="1" [(ngModel)]="data.patient_address" placeholder="Patient Address" class="form-control-dialog" required="true">
+                        </mat-form-field>
 
-                              <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-                                      [rowHeight]="'auto'" [limit]="10" [rows]='benefit'>
-                                 <ngx-datatable-column prop="sr" name="sr">
-                                   <ng-template let-column="column" ngx-datatable-header-template>
-                                  <span>Id</span>
-                                </ng-template>
-                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                                    <span>
-                                      {{rowIndex + 1}}
-                                    </span>
-                                  </ng-template>
-                                </ngx-datatable-column>
-                                <ngx-datatable-column prop="treatmentName" name="treatmentName">
-                                   <ng-template let-column="column" ngx-datatable-header-template>
-                                  <span>Treatment Name</span>
-                                </ng-template>
-                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                                    <span >
-                                      {{value}}
-                                    </span>
-                                        </ng-template>
-                                </ngx-datatable-column>
-                          
-                                 <ngx-datatable-column prop="percentage" name="percentage">
-                                   <ng-template let-column="column" ngx-datatable-header-template>
-                                  <span>Percentage</span>
-                                </ng-template>
-                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                                    <span >
-                                      {{value}} %
-                                    </span>
-                                   
-                                    <mat-progress-bar mode="determinate" value={{value}}></mat-progress-bar>
-                                  </ng-template>
-                                </ngx-datatable-column>
-                          
-                                <ngx-datatable-column prop="percentage" name="percentage">
-                                  <ng-template let-column="column" ngx-datatable-header-template>
-                                 <span>Status</span>
-                               </ng-template>
-                                 <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                                   <span *ngIf="value=='100.00'" >
-                                    Completed
-                                   </span>
-                                   <span *ngIf="value!=='100.00'" >
-                                    In-Process
-                                   </span>
-                                  
-                                  
-                                 </ng-template>
-                               </ngx-datatable-column>
-                          
-                               <ngx-datatable-column prop="performed_date" name="performed_date">
-                                <ng-template let-column="column" ngx-datatable-header-template>
-                               <span>Completion Date</span>
-                             </ng-template>
-                               <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                              
-                                <span>
-                                   {{value | date: 'dd-MM-yyyy'}}
-                                 </span>
-                                
-                               </ng-template>
+                        <mat-form-field>
+                            <input matInput tabindex="1" type="date" [(ngModel)]="data.patient_dob" placeholder="Patient Dob" class="form-control-dialog" required="true">
+                          </mat-form-field>
 
-                             </ngx-datatable-column>
-                            
-                             <ngx-datatable-column name="id">
-                              <ng-template let-column="column" ngx-datatable-header-template>
-                             <span>Actions</span>
-                           </ng-template>
-                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
-                               <a class="action_btn golden" (click)="openDialog(rowIndex)" title= 'Patients Details'><i class="ti-settings  m-r-10"></i></a>
-                               <button class="action_btn danger" mat-menu-item (click) = "deleteBenefitsUsed(rowIndex)">
-                              <i class="ti-trash text-danger m-r-10"></i></button>
-                             </ng-template>
-                           </ngx-datatable-column>
+                          <mat-form-field>
+                            <input matInput tabindex="1" type="number" min="0" [(ngModel)]="data.patient_age" placeholder="Patient Age" class="form-control-dialog" required="true">
+                          </mat-form-field>
 
-                              </ngx-datatable>
-    
-                                </mat-tab>
+                          <mat-form-field>
+                            <mat-label>Gender</mat-label> 
+                            <mat-select name ="value" tabindex="1" [(ngModel)]= "data.patient_gender"  class="form-control-dialog" required="true">
+                              <mat-option value="MALE">MALE</mat-option>
+                              <mat-option value="FEMALE">FEMALE</mat-option>
+                            </mat-select>
+                          </mat-form-field>
 
-                      <!-- Contract Upload tab -->
-                                <mat-tab label="Contract Upload">
-                             
-                                  <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
-                                    <div class="bd_UpoadImage" fxFlex.gt-md="100" fxFlex="100">
-                                        <label>Upload Agreement</label><br>
-                                        <div class="upload-btn">
-                                            <span>Choose file</span>
-                                            <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)">
-                                            <input type='hidden'  placeholder="" id="imageURL" >
-                                        </div>
-                                                          
-                                     </div>
-                               
-                                   <p>
-                                      <button mat-raised-button color="dc">Save</button>
-                                   </p>
-                                   </form>
-                                  <p *ngIf="contract_url; else empty">
-                                    Download Agreement
-                                    <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{contract_url}}">Download</a>
-                                </p>
-                                </mat-tab>
 
+                          <mat-form-field>
+                              <input matInput tabindex="1" type="number" min="0" [(ngModel)]="data.patient_phone_no" placeholder="Phone Number" class="form-control-dialog" oninput="this.value = this.value.slice(0,10);" required="true">
+                            </mat-form-field>
+
+
+                          <mat-form-field>
+                              <input matInput tabindex="1" type="number" min="0" [(ngModel)]="data.patient_home_phno" placeholder="Home Phone Number" class="form-control-dialog" oninput="this.value = this.value.slice(0,10);" required="true">
+                           </mat-form-field>
+
+                          <mat-form-field>
+                            <mat-label>Status</mat-label> 
+                            <mat-select name ="value" tabindex="1" [(ngModel)]= "data.patient_status"  class="form-control-dialog" required="true">
+                              <mat-option value="ACTIVE">ACTIVE</mat-option>
+                              <mat-option value="INACTIVE">INACTIVE</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                      </div>
+                      <div mat-dialog-actions>
+                        <button mat-button (click)="update(data)" tabindex="2" class="mat-raised-button mat-dc">OK</button>
+                        <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+                      </div>
+                    </form>
+                        </div>
+                            </mat-tab>
                     <!-- Payment History tab -->
 
                           <mat-tab label="Payment History">
-                                 
                            <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
                                   [rowHeight]="'auto'" [limit]="10" [rows]='payment'>
                              <ngx-datatable-column prop="sr" name="sr">

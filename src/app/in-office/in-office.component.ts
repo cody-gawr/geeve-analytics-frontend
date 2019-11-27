@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, FormGroupDirective,  NgForm,  Validators} from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { empty } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 declare var require: any;
 const data: any = [];
@@ -13,6 +14,7 @@ const data: any = [];
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
+  providers: [DatePipe]
 })
 
 export class DialogOverviewExampleDialogComponent {
@@ -25,12 +27,31 @@ export class DialogOverviewExampleDialogComponent {
   public balanceamt;
   public monthlyweeklyamt;
   public durationval;
-  constructor(
-    
+  public deposit_amount;
+  public deposite_percentage;
+  public minDate: any =  new Date();
+  public setup_amount;
+  public patient_dob;
+  public patient_phone_no;
+  public durationPaymentPlaceholder ="Duration(Period of Loan)";
+  public MonthlyWeeklyPlaceholder ="Monthly/Weekly Payment"
+
+  constructor(private datePipe: DatePipe,
     private inofficeService: InOfficeService,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-    ) {}
+    ) {
+      this.minDate = this.datePipe.transform(this.minDate, 'yyyy-MM-dd');
+    }
+  /* To allow only numbers */
+    numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+
+  }
 
 
      save(data) {
@@ -38,15 +59,12 @@ export class DialogOverviewExampleDialogComponent {
 
       this.inofficeService.getemailvalidation(data.patient_email,this.clinic_id).subscribe((res) => {
     
-        if(res.message == 'error'){
-        this.valplans=res.data['message'];
-        $('#email').focus();
-        return false;
-
-//            $('#email').first().focus();
-
+           if(res.message == 'error'){
+                this.valplans=res.data['message'];
+                $('#email').focus();
+                return false;
             }else{
-              if(data.patient_name != undefined && data.patient_email != undefined  && data.plan_name != undefined && data.plan_description != undefined && data.total_amount != undefined && data.setup_fee != undefined && data.deposite_amount != undefined && data.balance_amount != undefined && data.payment_frequency != undefined && data.duration != undefined && data.monthly_weekly_payment != undefined && data.start_date != undefined && data.due_date != undefined){
+              if(data.patient_name != undefined && data.patient_email != undefined  && data.plan_name != undefined && data.plan_description != undefined && data.total_amount != undefined && data.setup_fee != undefined && data.deposit_amount != undefined && data.balance_amount != undefined && data.payment_frequency != undefined && data.duration != undefined && data.monthly_weekly_payment != undefined && data.start_date != undefined ){
                 this.dialogRef.close(data);
               }
             }
@@ -54,24 +72,70 @@ export class DialogOverviewExampleDialogComponent {
         this.warningMessage = "Please Provide Valid Inputs!";
         return false;
       }    
-      ); 
-      
+      );  
           $('.form-control-dialog').each(function(){
           var likeElement = $(this).click();
-        });
-       // console.log(data)
-     
-         }
-
-
-         
-  deposite_amount(depositeamount){
+        });    
+     }
+  updateDurationLabel(paymentFrequency)
+  {
+    console.log(paymentFrequency);
+    if(paymentFrequency=="MONTHLY")
+    {
+      this.durationPaymentPlaceholder="Number of Months .";
+      this.MonthlyWeeklyPlaceholder ="Monthly Payment";
+    }else{
+      this.durationPaymentPlaceholder="Number of weeks .";
+      this.MonthlyWeeklyPlaceholder ="Weekly Payment";
+    }
+  }
+  deposite_amount(depositepercentage){
+        if(parseInt(depositepercentage) >100)
+       {
+         alert("Percentage should not be greater than 100 .");
+         this.data.deposit_amount ='';
+         this.data.balance_amount ='';
+         return false;
+       }
       this.totalAmount = $('#total_amount').val();
-      this.balanceamt = this.totalAmount-depositeamount;       
+      this.setup_amount = $('#setup_amount').val();
+      /* For Deposit Amount */
+      const finalAmount = parseInt(this.totalAmount) + parseInt(this.setup_amount);
+      const depositAmount = depositepercentage/100 * finalAmount;
+      this.data.deposit_amount =depositAmount;
+      /* For Balance Amount */
+      this.balanceamt = (parseInt(this.totalAmount)+parseInt(this.setup_amount))-depositAmount;       
       this.data.balance_amount = this.balanceamt;
       this.durationcal(this.durationval);
       
       }
+
+  updatePercentageByAmount(amountDeposited,total_amount){
+    if(parseInt(amountDeposited) > parseInt(total_amount)){
+      alert("Amount deposited cannot be greater than total amount .");
+      this.data.deposit_amount ='';
+      this.data.balance_amount ='';
+      return false;
+    }
+
+      this.totalAmount = $('#total_amount').val();
+      this.setup_amount = $('#setup_amount').val();
+      /* For Deposit Amount */
+      const finalAmount = parseInt(this.totalAmount) + parseInt(this.setup_amount);
+      const depositPercentage = amountDeposited/finalAmount*100;
+
+      this.data.deposite_percentage =depositPercentage.toFixed(2);
+      //console.log(this.data.deposite_percentage); return false;
+      /* For Balance Amount */ 
+      this.balanceamt = (parseInt(this.totalAmount)+parseInt(this.setup_amount))-amountDeposited;       
+      this.data.balance_amount = this.balanceamt;
+      this.durationcal(this.durationval);
+
+
+
+
+
+  }
   public durationcal(durationval){
     this.durationval= durationval;
         this.monthlyweeklyamt =this.balanceamt/this.durationval;
@@ -105,15 +169,14 @@ export class UpdateInOfficeDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
     ) {}
 
+
     update(data) {
          
       $('.form-control-dialog').each(function(){
       var likeElement = $(this).click();
     });
-    // console.log(data);
   
       if(data.patient_name != undefined && data.patient_address != undefined  && data.patient_dob != undefined && data.patient_age != undefined && data.patient_gender != undefined && data.patient_phone_no != undefined && data.patient_home_phno != undefined){
-
           this.dialogUpdateRef.close(data);
        }
      }
@@ -135,7 +198,6 @@ export class InOfficeComponent implements AfterViewInit {
   contact_name: string;
   fileInput: any ;
   clinic_id: any;
-
   treat = new FormControl();
 
   ngAfterViewInit() {
@@ -147,6 +209,10 @@ export class InOfficeComponent implements AfterViewInit {
         $('.header_filters').addClass('flex_direct_mar');
   
   }
+
+
+
+
   editing = {};
   rows = [];
  
@@ -185,6 +251,12 @@ export class InOfficeComponent implements AfterViewInit {
       this.loadingIndicator = false;
     }, 1500);
   }
+
+  goBack() {
+      window.history.back();
+  }
+
+
   private warningMessage: string;
 
   initiate_clinic(){  
@@ -208,41 +280,41 @@ export class InOfficeComponent implements AfterViewInit {
       }, error => {
         this.warningMessage = "Please Provide Valid Inputs!";
       }    
-      );
-  
+      );  
     }
 
-    openDialog(): void {
-    
+    openDialog(): void {    
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '250px',
-      data: { patient_name: this.patient_name, patient_email: this.patient_email, plan_name: this.plan_name ,plan_description: this.plan_description , clinic_id: this.clinic_id,total_amount:this.total_amount,setup_fee:this.setup_fee,deposite_amount:this.deposite_amount,balance_amount:this.balance_amount,payment_frequency:this.payment_frequency,duration:this.duration,monthly_weekly_payment:this.monthly_weekly_payment,start_date:this.start_date,due_date:this.due_date   }
-
+      data: { patient_name: this.patient_name, patient_email: this.patient_email, plan_name: this.plan_name ,plan_description: this.plan_description , clinic_id: this.clinic_id,total_amount:this.total_amount,setup_fee:this.setup_fee,deposite_amount:this.deposite_amount,balance_amount:this.balance_amount,payment_frequency:this.payment_frequency,duration:this.duration,monthly_weekly_payment:this.monthly_weekly_payment,start_date:this.start_date  }
+     , panelClass: 'addinoffice-modalbox'
     });
-   
     dialogRef.afterClosed().subscribe(result => {
-   this.inofficeService.addPaymentPlans(result.patient_name, result.patient_email, result.plan_name,result.plan_description,result.clinic_id,result.total_amount,result.setup_fee,result.deposite_amount,result.balance_amount,result.payment_frequency,result.duration,result.monthly_weekly_payment,result.start_date,result.due_date).subscribe((res) => {
-
-   if(res.message == 'success'){
+      console.log("clinic id");
+      console.log(result.clinic_id);
     
+      if(result) {
+      $('.ajax-loader').show();     
+     this.inofficeService.addPaymentPlans(result.patient_name, result.patient_email,result.patient_dob,result.patient_phone_no, result.plan_name,result.plan_description,result.clinic_id,result.total_amount,result.setup_fee,result.deposite_percentage,result.deposit_amount,result.balance_amount,result.payment_frequency,result.duration,result.monthly_weekly_payment,result.start_date).subscribe((res) => {
+        $('.ajax-loader').hide();    
+        if(res.message == 'success'){
             this.notifier.notify( 'success', 'New Patient Added' ,'vertical');
             this.getInofficeMembers();
            }
         }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
         }
-        );  
-        });
+        ); 
+      }
+      });
   }
 
   openUpdateDialog(patientid): void {
-   
     this.inofficeService.getInofficeMembersByID(patientid,this.clinic_id).subscribe(updateres => {
 
     const dialogUpdateRef = this.dialog.open(UpdateInOfficeDialogComponent, {
      width: '250px',
      data: {patient_name: updateres.data[0].patient_name ,patient_address: updateres.data[0].patient_address,patient_dob: updateres.data[0].patient_dob,patient_age:updateres.data[0].patient_age,patient_gender:updateres.data[0].patient_gender,patient_phone_no:updateres.data[0].patient_phone_no,patient_home_phno:updateres.data[0].patient_home_phno,patient_id:patientid}
- 
      });
     
 
@@ -285,7 +357,6 @@ export class InOfficeComponent implements AfterViewInit {
   }
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
-
       // filter our data
     const temp = this.temp.filter(function(d) {    
       return d.patient_name.toLowerCase().indexOf(val) !== -1 || !val;
@@ -297,7 +368,6 @@ export class InOfficeComponent implements AfterViewInit {
   }
 
   enableEditing(rowIndex, cell) {
-
     this.editing[rowIndex + '-' + cell] = true;
 //console.log(this.editing);
   }

@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProfileSettingsComponent } from './profile-settings.component';
 import { ProfileSettingsService } from './profile-settings.service';
-
+import { NgxEditorModule } from 'ngx-editor';
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +26,8 @@ import { ProfileSettingsService } from './profile-settings.service';
     FileUploadModule,
     MatTreeModule,
     MatDatepickerModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    NgxEditorModule
   ],
   providers: [
     ProfileSettingsService

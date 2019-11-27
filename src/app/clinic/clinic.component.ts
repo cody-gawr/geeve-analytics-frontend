@@ -102,38 +102,49 @@ export class ClinicComponent implements AfterViewInit {
     }, 1500);
   }
   private warningMessage: string;
+     public disabled = false;
 
 
   public imageURL:any;
+
+  goBack() {
+      window.history.back();
+  }
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '250px',
-      data: { name: this.name, address: this.address, contact_name: this.contact_name ,phone_no: this.phone_no,publishable_key: this.publishable_key,secret_key: this.secret_key }
+      data: { name: this.name, address: this.address, contact_name: this.contact_name ,phone_no: this.phone_no,publishable_key: this.publishable_key,secret_key: this.secret_key ,disabled:this.disabled}
     });
     
     const sub = dialogRef.componentInstance.onAdd.subscribe((val) => {
+      $('.ajax-loader').show();
       let formData = new FormData();
       formData.append('file', val, val.name);
       this.clinicService.logoUpload(formData).subscribe((res) => {
+      $('.ajax-loader').hide();
+      
         if(res.message == 'success'){
                  this.imageURL= res.data;
-               }
+        this.notifier.notify( 'success', 'Logo Uploaded' ,'vertical');
+
+        }
       });
       });
      
   dialogRef.afterClosed().subscribe(result => {
-    //  $('.ajax-loader').show();
+    if(result) {
+      $('.ajax-loader').show();
   this.clinicService.addClinic(result.name, result.address, result.contact_name,result.phone_no,result.publishable_key,result.secret_key, this.imageURL).subscribe((res) => {
-        //  $('.ajax-loader').hide();
+      $('.ajax-loader').hide();
        if(res.message == 'success'){
         this.notifier.notify( 'success', 'Clinic Added' ,'vertical');
                 this.getClinics();
-          console.log(res);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );  
+}
     });
   }
 

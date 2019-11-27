@@ -26,8 +26,8 @@ export class PatientsDetailService {
 
 
    // Get Dentist
-    getPatients(memberid, token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Patients/getAllPatient?member_plan_id="+memberid+"&token="+this._cookieService.get("token"), { headers: this.headers })
+    getPatients(token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Patients/getAllPatient?token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })

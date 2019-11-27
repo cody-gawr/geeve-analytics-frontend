@@ -1,22 +1,24 @@
 <mat-card>
     <mat-card-content>
-        <mat-card-title>Patients Listing | {{planname | titlecase}}<button class="sa-pull-right mat-raised-button mat-gray" mat-raised-button (click)="openDialog()">Invite New Member</button></mat-card-title>
+        <mat-card-title>Patients Listing   <button class="sa-pull-right mat-raised-button sa-pull-right mat-gray" (click) = "goBack()">Back</button><button class="sa-pull-right mat-raised-button mat-gray mr-15" mat-raised-button (click)="openDialog()">Invite New Member</button></mat-card-title>
 
         <mat-form-field>
             <input matInput type='text' class="form-control" placeholder='Type to filter Patient name...' (keyup)='updateFilter($event)'
             />
         </mat-form-field>
-        <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-            [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
-   
+        <ngx-datatable #table class='material responsive-datatable'  [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
+   <a href="abcdtesting">
        <ngx-datatable-column prop="id" name="id">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Id</span>
       </ng-template>
+
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+     
           <span >
                {{rowIndex+1}}
           </span>
+  
         </ng-template>
       </ngx-datatable-column>
 
@@ -31,17 +33,17 @@
               </ng-template>
       </ngx-datatable-column>
 
-
+</a>
   <ngx-datatable-column prop="planName" name="planName">
          <ng-template let-column="column" ngx-datatable-header-template>
-        <span>Patient Name</span>
+        <span>Plan Name</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span >
             {{value}}
           </span>
               </ng-template>
-      </ngx-datatable-column>
+  </ngx-datatable-column>
 
 <!-- CODE FOR CHANGE PLAN NAME -->
 
@@ -64,7 +66,7 @@
       </ngx-datatable-column> -->
 
 
-       <ngx-datatable-column prop="patient_address" name="patient_address">
+  <!--      <ngx-datatable-column prop="patient_address" name="patient_address">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Address</span>
       </ng-template>
@@ -74,9 +76,9 @@
           </span>
          
         </ng-template>
-      </ngx-datatable-column>
+      </ngx-datatable-column> -->
 
-      <ngx-datatable-column prop="patient_dob" name="patient_dob">
+     <!--  <ngx-datatable-column prop="patient_dob" name="patient_dob">
         <ng-template let-column="column" ngx-datatable-header-template>
        <span>DOB</span>
      </ng-template>
@@ -86,7 +88,7 @@
          </span>
         
        </ng-template>
-     </ngx-datatable-column>
+     </ngx-datatable-column> -->
 
   
           <ngx-datatable-column prop="patient_age" name="patient_age">
@@ -126,7 +128,7 @@
             </ng-template>
             </ngx-datatable-column>
 
-
+<!-- 
         <ngx-datatable-column prop="patient_phone_no" name="patient_phone_no">
           <ng-template let-column="column" ngx-datatable-header-template>
         <span>Phone No.</span>
@@ -137,9 +139,9 @@
           </span>
          
         </ng-template>
-        </ngx-datatable-column>
+        </ngx-datatable-column> -->
 
-
+<!-- 
         <ngx-datatable-column prop="patient_home_phno" name="patient_home_phno">
           <ng-template let-column="column" ngx-datatable-header-template>
         <span>Home Phone No.</span>
@@ -149,11 +151,11 @@
             {{value}}
           </span>
              </ng-template>
-        </ngx-datatable-column>
+        </ngx-datatable-column> -->
 
       <ngx-datatable-column prop="patient_status" name="patient_status">
         <ng-template let-column="column" ngx-datatable-header-template>
-      <span>Status</span>
+      <span>Subscription Status</span>
       </ng-template>
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
         <!-- <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'patient_status')" *ngIf="!editing[rowIndex + '-patient_status']"> -->

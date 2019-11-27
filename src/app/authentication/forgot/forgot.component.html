@@ -24,6 +24,7 @@ align-items: center;"></div>
               <small *ngIf="errorLogin ==true && errorLoginText != ''" class="text-danger support-text">{{errorLoginText}}</small>
                <small *ngIf="successLogin ==true && successLoginText != ''" class="text-success support-text">{{successLoginText}}</small>
             </div>
+             <a [routerLink]="['/login']" class="text-info link" align="center">Login</a>
             <button mat-raised-button color="primary" type="submit" class="btn-block btn-lg m-t-20" [disabled]="!form.valid">Submit</button>
           </div>
         </form>

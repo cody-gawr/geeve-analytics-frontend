@@ -6,9 +6,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.plan_description" placeholder="Plan Description"
-
-    class="form-control-dialog" required="true">
+    <input matInput tabindex="1" [(ngModel)]="data.plan_description" placeholder="Plan Description" class="form-control-dialog" required="true">
   </mat-form-field>
 
 
@@ -19,12 +17,15 @@
 
 
   <mat-form-field>
-      <input matInput tabindex="1" type="number" min="0" [(ngModel)]="data.setup_fee" placeholder="Setup Fee" class="form-control-dialog" required="true">
-   </mat-form-field>
-
+      <input matInput tabindex="1" type="number" min="0" id="setup_amount" [(ngModel)]="data.setup_fee" placeholder="Setup Fee" (change)="deposite_amount(data.deposite_amount)" class="form-control-dialog" required="true">
+  </mat-form-field>
+  
+  <mat-form-field> 
+    <input matInput tabindex="1" id="deposite_percentage" type="number" min="0" max ="100"  (change)="deposite_amount(data.deposite_percentage)" [(ngModel)]="data.deposite_percentage" placeholder="Deposited Percentage ($)" class="form-control-dialog" required="true">     
+  </mat-form-field>
 
   <mat-form-field>
-      <input matInput tabindex="1" id="deposite_amount" type="number" min="0"  (change)="deposite_amount(data.deposite_amount)" [(ngModel)]="data.deposite_amount" placeholder="Deposited Amount" class="form-control-dialog" required="true">
+      <input matInput tabindex="1" id="deposit_amount" type="number" min="0"  [(ngModel)]="data.deposit_amount" placeholder="Deposited Amount"  (change)="updatePercentageByAmount(data.deposit_amount,data.total_amount)" class="form-control-dialog" required="true" >
   </mat-form-field>
 
 
@@ -34,34 +35,34 @@
       
     <mat-form-field>
       <mat-label>Frequency of payments</mat-label> 
-      <mat-select tabindex="1" [(ngModel)]= "data.payment_frequency" required="true">
+      <mat-select tabindex="1" [(ngModel)]= "data.payment_frequency" (ngModelChange)="updateDurationLabel(data.payment_frequency)" required="true">
         <mat-option value="MONTHLY">MONTHLY</mat-option>
         <mat-option value="WEEKLY">WEEKLY</mat-option>
       </mat-select>
     </mat-form-field>
 
 
-      <mat-form-field>
-          <input matInput tabindex="1" id="duration" type="number" min="0" [(ngModel)]="data.duration" placeholder="Duration (Period of Loan)" (change)="durationcal(data.duration)" class="form-control-dialog" required="true">
-        </mat-form-field>
+       <mat-form-field>
+          <input matInput tabindex="1" id="duration" type="number" min="0" [(ngModel)]="data.duration" placeholder="{{durationPaymentPlaceholder}}" (change)="durationcal(data.duration)" class="form-control-dialog" required="true">
+       </mat-form-field>
 
         
         <mat-form-field>
-            <input matInput tabindex="1" type="number" step=".01" min="0" [(ngModel)]="data.monthly_weekly_payment" placeholder="Monthly/Weekly Payment" class="form-control-dialog" readonly>
+            <input matInput tabindex="1" type="number" step=".01" min="0" [(ngModel)]="data.monthly_weekly_payment" placeholder="{{MonthlyWeeklyPlaceholder}}" class="form-control-dialog" readonly>
           </mat-form-field>
     
           <mat-form-field>
-              <input matInput tabindex="1" type="date" [(ngModel)]="data.start_date" placeholder="Start Date" class="form-control-dialog" required="true">
+              <input matInput tabindex="1" type="date" [(ngModel)]="data.start_date" placeholder="Start Date" class="form-control-dialog" required="true" [min]="minDate">
             </mat-form-field>
 
-            <mat-form-field>
+            <!--mat-form-field>
                 <input matInput tabindex="1" type="date" [(ngModel)]="data.due_date"  placeholder="Due Date" class="form-control-dialog" required="true">
-              </mat-form-field>
+              </mat-form-field-->
 
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">OK</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
 </div>
 
 

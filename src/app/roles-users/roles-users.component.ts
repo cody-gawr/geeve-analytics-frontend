@@ -35,6 +35,12 @@ show_dentist = false;
    $('.form-control-dialog').each(function(){
       var likeElement = $(this).click();
    });
+   var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if(!data.email.match(mailformat) && data.email != '')
+  {
+  alert('Please enter a valid Email.');
+   return false;
+  }
   if(data.display_name != undefined && data.email != undefined  && data.user_type != undefined ){
       this.dialogRef.close(data);
   }else{
@@ -119,6 +125,9 @@ dentists:any=[];
     }, 1500);
   }
   private warningMessage: string;
+  goBack() {
+      window.history.back();
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
@@ -277,14 +286,12 @@ dentists:any=[];
   }
 
   addDentist() {
-    console.log(this.rows);
     var temp ={};
     temp['providerId'] ='Enter Provider Id';
     temp['name'] ='Enter Name';
     var length = this.rows.length;
     this.editing[length + '-providerId'] = true;
     this.editing[length + '-name'] = true;
-    
     this.rows.push(temp);
     this.table =data;
   }

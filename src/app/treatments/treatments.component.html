@@ -1,6 +1,6 @@
 <mat-card class="roles_users">
     <mat-card-content>
-        <mat-card-title>Treatments <div class="sa-pull-right"><button class="mat-raised-button mat-gray" mat-raised-button (click)="openDialog()">Add Treatment</button></div>
+        <mat-card-title>Treatments <div class="sa-pull-right"><button class="mat-raised-button mat-gray mr-15" mat-raised-button (click)="openDialog()">Add Treatment</button></div>
         </mat-card-title>
 
         <mat-form-field>
@@ -66,9 +66,9 @@
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
            
-          <a mat-raised-button (click)="openupdateDialog(rowIndex)" data-id={{value}} class="action_btn golden" title= 'Edit Treatment Details'><i class="ti-eye  m-r-10"></i></a>
+          <a mat-raised-button (click)="openupdateDialog(rowIndex)" data-id={{value}} class="action_btn golden" title= 'Edit Treatment Details'><i class="ti-eye "></i></a>
           <button class="action_btn danger" mat-menu-item (click) = "deleteTreatment(rowIndex)">
-         <i class="ti-trash text-danger m-r-10"></i></button>
+         <i class="ti-trash text-danger"></i></button>
         </ng-template>
       </ngx-datatable-column>
         </ngx-datatable>

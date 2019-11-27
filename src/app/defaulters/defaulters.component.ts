@@ -69,6 +69,9 @@ export class DefaultersComponent implements AfterViewInit {
       this.getInofficeDefaultersMembers();
     }
     
+  goBack() {
+      window.history.back();
+  }
   private getInofficeDefaultersMembers() {
   this.rows=[];
   this.defaultersService.getInofficeDefaultersMembers(this.clinic_id).subscribe((res) => {

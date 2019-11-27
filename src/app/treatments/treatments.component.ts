@@ -28,7 +28,9 @@ export class DialogOverviewExampleDialogComponent {
    $('.form-control-dialog').each(function(){
       var likeElement = $(this).click();
    });
-  if(data.treatmentName != undefined && data.treatmentStatus != undefined ){
+  if($.trim(data.treatmentName) != undefined  && $.trim(data.treatmentName) != '' && data.treatmentStatus != undefined ){
+   console.log($.trim(data.treatmentName));
+   
       this.treatmentsService.checkTreatmentName(data.treatmentName).subscribe((res) => {
        if($.trim(res.message)==$.trim('success') && $.trim(res.status)==$.trim('exist')){
          $(".treatNameError").text("");
@@ -82,8 +84,7 @@ export class UpdateDialogOverviewExampleDialogComponent {
       var likeElement = $(this).click();
    });
 
-   console.log(data);
-  if(data.treatmentName != "" && data.treatmentStatus !="" && data.treatmentId!=""){
+  if($.trim(data.treatmentName) != "" && data.treatmentStatus !="" && data.treatmentId!=""){
       this.treatmentsService.checkTreatmentNameForUpdate(data.treatmentName,data.treatmentId).subscribe((res) => {
        if($.trim(res.message)==$.trim('success') && $.trim(res.status)==$.trim('exist')){
          $(".treatNameError").text("");
@@ -97,7 +98,6 @@ export class UpdateDialogOverviewExampleDialogComponent {
       }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
-
   }else{
     return false;
    }
@@ -107,7 +107,6 @@ export class UpdateDialogOverviewExampleDialogComponent {
   onNoClick(): void {
     this.dialogRefUpdate.close();
   }
-
 
    @Output() public onAdd: EventEmitter<any> = new EventEmitter();
    public selected_id;
@@ -163,6 +162,10 @@ dentists:any=[];
     }, 1500);
   }
   private warningMessage: string;
+
+  goBack() {
+      window.history.back();
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {

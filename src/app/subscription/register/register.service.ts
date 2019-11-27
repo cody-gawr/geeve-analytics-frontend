@@ -58,6 +58,14 @@ export class RegisterService {
         );
     }
 
+        getTerms(user_id): Observable<any> {
+        return this.http.get(this.apiUrl +"/Users/getupdateprofiledata?user_id="+user_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
 }
 
 

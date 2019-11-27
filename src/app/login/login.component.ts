@@ -8,7 +8,6 @@ import {
   FormControl
 } from '@angular/forms';
 import { LoginService } from './login.service';
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,6 +16,7 @@ import { LoginService } from './login.service';
 export class LoginComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
+
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService) {}
 
   ngOnInit() {

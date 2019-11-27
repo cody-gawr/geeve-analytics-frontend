@@ -367,25 +367,22 @@ export class MenuItems {
   },
 
   {
-    state: 'plans',
-    name: 'Member Plans',
+    state: 'patients-detail',
+    name: 'Memberships', //Member Plans
     type: 'link-noparam',
     icon: 'fas fa-receipt',
     role:['2']
 
   },
-
   {
     state: 'in-office',
-    name: 'In office Plans',
+    name: 'Payment Plans', //In office Plans
     type: 'link-noparam',
-
     icon: 'fas fa-file-invoice',
     role:['2']
 
   },
   {
-
     state: 'defaulters',
     name: 'Defaulters',
     type: 'link-noparam',
@@ -409,16 +406,27 @@ export class MenuItems {
     icon: 'fas fa-hospital',
     param: '1',
     role:['2','3']
-
   },
+  // {
+  //   state: 'profile-settings',
+  //   name: 'Settings',
+  //   type: 'link',
+  //   icon: 'fas fa-user-cog',
+  //   param : '1',
+  //   role:['2','3']
+  // },
   {
-    state: 'profile-settings',
+     state: 'profile-settings',
     name: 'Settings',
-    type: 'link',
+    type: 'sub-child',
     icon: 'fas fa-user-cog',
-    param : '1',
-    role:['2','3']
-  },
+    children: [
+      { state: 'profile-settings', name: 'Settings', type: 'link',param : '1'},
+      { state: 'plans', name: 'Member Plans', type: 'link',param : ''}
+    ],
+    role:['1','2']
+
+  }
 ];
 
 }

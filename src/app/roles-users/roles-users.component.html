@@ -1,6 +1,6 @@
 <mat-card class="roles_users">
     <mat-card-content>
-        <mat-card-title>Users <div class="sa-pull-right"><button class="mat-raised-button mat-gray mr-15" mat-raised-button (click)="openRoleDialog()">Set Roles</button><button class="mat-raised-button mat-gray" mat-raised-button (click)="openDialog()">Add User</button></div>
+        <mat-card-title>Users <div class="sa-pull-right"><button class="mat-raised-button mat-gray mr-15" mat-raised-button (click)="openRoleDialog()">Set Roles</button><button class="mat-raised-button mat-gray mr-15" mat-raised-button (click)="openDialog()">Add User</button></div>
         </mat-card-title>
 
         <mat-form-field>
@@ -68,7 +68,7 @@
            
         <!--   <a [routerLink]="['/importcsv',value]" class="action_btn golden" title= 'Import CSV'><i class="ti-pencil  m-r-10"></i></a> -->
           <button class="action_btn danger" mat-menu-item (click) = "deleteUser(rowIndex)">
-         <i class="ti-trash text-danger m-r-10"></i></button>
+         <i class="ti-trash text-danger"></i></button>
         </ng-template>
       </ngx-datatable-column>
         </ngx-datatable>

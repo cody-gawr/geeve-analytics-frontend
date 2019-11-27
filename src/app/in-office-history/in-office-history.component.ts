@@ -25,29 +25,90 @@ export class DialogOverviewExampleDialogComponent {
   public balanceamt;
   public monthlyweeklyamt;
   public durationval;
-
-  constructor(
+  public deposit_amount;
+  public minDate: any =  new Date();
+  public setup_amount;
+  public durationPaymentPlaceholder ="Duration(Period of Loan)";
+  public MonthlyWeeklyPlaceholder ="Monthly/Weekly Payment"
+  constructor(private datePipe: DatePipe,
      public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-    ) {}
+    ) {
+       this.minDate = this.datePipe.transform(this.minDate, 'yyyy-MM-dd');
+     }
  
+
   save(data) {
          
     $('.form-control-dialog').each(function(){
     var likeElement = $(this).click();
   });
   console.log(data)
-    if(data.plan_name != undefined && data.plan_description != undefined && data.total_amount != undefined && data.setup_fee != undefined && data.deposite_amount != undefined && data.balance_amount != undefined && data.payment_frequency != undefined && data.duration != undefined && data.monthly_weekly_payment != undefined && data.start_date != undefined && data.due_date != undefined){
+    if(data.plan_name != undefined && data.plan_description != undefined &&  data.total_amount != undefined && data.setup_fee != undefined && data.deposit_amount != undefined && data.balance_amount != undefined && data.payment_frequency != undefined && data.duration != undefined && data.monthly_weekly_payment != undefined && data.start_date != undefined){
         this.dialogRef.close(data);
      }
    }
-    deposite_amount(depositeamount){
-    this.totalAmount = $('#total_amount').val();
-    this.balanceamt = this.totalAmount-depositeamount;       
-    this.data.balance_amount = this.balanceamt;
-    this.durationcal(this.durationval);
 
-    }
+
+      deposite_amount(depositepercentage){
+       if(parseInt(depositepercentage) >100)
+       {
+         alert("Percentage should not be greater than 100 .");
+         this.data.deposit_amount ='';
+         this.data.balance_amount ='';
+         return false;
+       }
+       this.totalAmount = $('#total_amount').val();
+       this.setup_amount= $('#setup_amount').val();
+       /* For Deposit Amount */
+       const finalAmount = parseInt(this.totalAmount) + parseInt(this.setup_amount);
+       const depositAmount = depositepercentage/100 * finalAmount;
+       this.data.deposit_amount =depositAmount;
+       /* For Balance Amount */
+       this.balanceamt = (parseInt(this.totalAmount)+parseInt(this.setup_amount))-depositAmount;       
+       this.data.balance_amount = this.balanceamt;
+       this.durationcal(this.durationval);
+      
+      }
+  /* If amount will change. update percentage and balance amount*/
+   updatePercentageByAmount(amountDeposited,total_amount){
+    console.log("hereee");
+     if(parseInt(amountDeposited) > parseInt(total_amount)){
+       alert("Amount deposited cannot be greater than total amount .");
+       this.data.deposit_amount ='';
+       this.data.balance_amount ='';
+       return false;
+      }
+
+      this.totalAmount = $('#total_amount').val();
+      this.setup_amount = $('#setup_amount').val();
+      /* For Deposit Amount */
+      const finalAmount = parseInt(this.totalAmount) + parseInt(this.setup_amount);
+      const depositPercentage = amountDeposited/finalAmount*100;
+
+      this.data.deposite_percentage =depositPercentage.toFixed(2);
+      //console.log(this.data.deposite_percentage); return false;
+      /* For Balance Amount */ 
+      this.balanceamt = (parseInt(this.totalAmount)+parseInt(this.setup_amount))-amountDeposited;       
+      this.data.balance_amount = this.balanceamt;
+      this.durationcal(this.durationval);
+
+  }
+
+
+
+     updateDurationLabel(paymentFrequency)
+    {
+      console.log(paymentFrequency);
+      if(paymentFrequency=="MONTHLY")
+      {
+        this.durationPaymentPlaceholder="Number of Months .";
+       this.MonthlyWeeklyPlaceholder ="Monthly Payment";
+      }else{
+       this.durationPaymentPlaceholder="Number of weeks .";
+       this.MonthlyWeeklyPlaceholder ="Weekly Payment";
+     }
+  }
     public durationcal(durationval){
     this.durationval= durationval;
       this.monthlyweeklyamt =this.balanceamt/this.durationval;
@@ -132,24 +193,25 @@ export class InOfficeHistoryComponent implements AfterViewInit {
       this.loadingIndicator = false;
     }, 1500);
     }
+    
+  goBack() {
+      window.history.back();
+  }
 
    openDialog(): void {
    
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
      width: '250px',
-     data: {plan_name: this.plan_name ,plan_description: this.plan_description,clinic_id: this.clinic_id,total_amount:this.total_amount,setup_fee:this.setup_fee,deposite_amount:this.deposite_amount,balance_amount:this.balance_amount,payment_frequency:this.payment_frequency,duration:this.duration,monthly_weekly_payment:this.monthly_weekly_payment,start_date:this.start_date,due_date:this.due_date   }
+     data: {plan_name: this.plan_name ,plan_description: this.plan_description,clinic_id: this.clinic_id,total_amount:this.total_amount,setup_fee:this.setup_fee,deposite_amount:this.deposite_amount,balance_amount:this.balance_amount,payment_frequency:this.payment_frequency,duration:this.duration,monthly_weekly_payment:this.monthly_weekly_payment,start_date:this.start_date}
  
     });
     
  
 
   dialogRef.afterClosed().subscribe(result => {
-  
-   this.inOfficeHistoryService.addPaymentPlans(this.patientname,this.patientemail, result.plan_name,result.plan_description,result.clinic_id,result.total_amount,result.setup_fee,result.deposite_amount,result.balance_amount,result.payment_frequency,result.duration,result.monthly_weekly_payment,result.start_date,result.due_date).subscribe((res) => {
-   
 
+   this.inOfficeHistoryService.addPaymentPlans(this.patientname,this.patientemail, result.plan_name,result.plan_description,result.clinic_id,result.total_amount,result.setup_fee,result.deposite_percentage,result.deposit_amount,result.balance_amount,result.payment_frequency,result.duration,result.monthly_weekly_payment,result.start_date).subscribe((res) => {
    if(res.message == 'success'){
-    
             this.notifier.notify( 'success', 'New Plan Added' ,'vertical');
             this.getInofficeMembersByID();
            }
@@ -168,7 +230,6 @@ export class InOfficeHistoryComponent implements AfterViewInit {
     console.log(this.invoicedata);
     const dialogRef2 = this.dialog.open(InvoiceDetailsDialogComponent, {
     width: '250px',
-  
     data: {invoicedata: this.invoicedata ,}
     });
     
@@ -183,19 +244,17 @@ export class InOfficeHistoryComponent implements AfterViewInit {
     $('nb.header_filters').removeClass('flex_direct_mar'); 
     $('.header_filters').addClass('hide_header');
       this.route.params.subscribe(params =>  {
-        // this.getClinicGoals();
         $('#title').html('In-office Payment Plans');
      });
     this.form = this.fb.group({
     });
      }
-
   
   //  initiate_clinic(){  
   //     this.clinic_id = $('#currentClinicid').attr('cid');
   //   if(this.clinic_id)
   //   this.getInofficeMembersByID();
-  //     }
+  //  }
 
     
     getInofficeMembersByID(){
@@ -318,9 +377,8 @@ export class InOfficeHistoryComponent implements AfterViewInit {
        );
        }
        else {
-        
-         this.rows.splice(row, 1);
-       this.rows = [...this.rows];
+          this.rows.splice(row, 1);
+          this.rows = [...this.rows];
        }
      }
 }

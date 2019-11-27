@@ -4,7 +4,7 @@
   <div class="selectIcon">
   <select class="sa_select sa_select_set_roles form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadPermisions($event)">
       <option value ="" selected="true">Select User Type</option>
-      <option *ngFor="let role of data.roles" value ="{{role.id}}">{{role.role}}</option>
+      <option value ="3">Receptionist</option>
    </select> 
  </div>
   <div class="SetRoles_checkbox">
@@ -18,7 +18,7 @@
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc">OK</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
 </div>
 </div>

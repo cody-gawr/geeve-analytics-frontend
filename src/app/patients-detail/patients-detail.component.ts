@@ -116,15 +116,12 @@ export class PatientsDetailComponent implements AfterViewInit {
   public clinic_name:any ={};
   public patientdob;
   ngAfterViewInit() {
-
-    this.id = this.route.snapshot.paramMap.get("id");
-    
     this.getPlans();
     this.getPatients();
 
     $('#title').html('Patients Listing');
     $('.header_filters').addClass('hide_header');
-    this.getClinincname();
+ //   this.getClinincname();
  
         
   }
@@ -152,6 +149,9 @@ export class PatientsDetailComponent implements AfterViewInit {
   private warningMessage: string;
 
   public imageURL:any;
+  goBack() {
+   window.history.back();
+  }
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '250px',
@@ -164,7 +164,6 @@ export class PatientsDetailComponent implements AfterViewInit {
     if(result != undefined) {
   $('.ajax-loader').show();
     this.clinic_id = $('#currentClinicid').attr('cid');
-    console.log(this.clinic_id)
     this.patientsdetailService.inviteMember(this.clinic_id,result.invite_member_name, result.invite_member_email).subscribe((res) => {
       $('.ajax-loader').hide();
     if(res.message == 'success'){
@@ -184,7 +183,6 @@ export class PatientsDetailComponent implements AfterViewInit {
   openUpdateDialog(patientid): void {
 
     this.patientsdetailService.getInofficeMembersByID(patientid,this.clinic_id).subscribe(updateres => {
-console.log(updateres);
     this.patientdob = this.datePipe.transform(updateres.data[0].patient_dob , 'yyyy-MM-dd');
 
     const dialogUpdateRef = this.dialog.open(UpdatePatientDialogComponent, {
@@ -211,7 +209,7 @@ console.log(updateres);
   }
   private getPatients() {
  
-    this.patientsdetailService.getPatients(this.id).subscribe((res) => {
+    this.patientsdetailService.getPatients().subscribe((res) => {
       if(res.message == 'success'){
         this.rows = res.data;
         this.planname = res.data[0]['planName'];
@@ -235,29 +233,6 @@ console.log(updateres);
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }   
-    );
-  }
-
-  private getClinincname() {
- 
-    this.patientsdetailService.getClinincname(this.id).subscribe((res) => {
-       if(res.message == 'success'){
-        this.clinic_name = res.data[0]['clinic']['clinicName'];
-        this.clinic_id =res.data[0]['clinic_id'];
-
-        $('#title').html('Patients Listing - '+ this.clinic_name);
-    
-            }    
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
     );
   }
 
@@ -303,7 +278,7 @@ console.log(updateres);
 
     // filter our data
     const temp = this.temp.filter(function(d) {
-      return d.patient_name.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.patient_name.toLowerCase().indexOf(val) !== -1 || d.patient_gender.toLowerCase().indexOf(val) !== -1 || d.patient_email.toLowerCase().indexOf(val) !== -1 || !val;
     });
     // update the rows
     this.rows = temp;

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SubscriptionComponent} from './subscription.component';
+
 import {
   MatIconModule,
   MatCardModule,
@@ -14,8 +15,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { SubscriptionRoutes } from './subscription.routing';
 import { SubscriptionService } from './subscription.service';
-import {MatDialogModule} from '@angular/material';
+import { MatDialogModule} from '@angular/material';
 import { RegisterModule } from './register/register.module';
+import { ClinicSettingsService } from '../clinic-settings/clinic-settings.service';
+//import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { SlickModule } from 'ngx-slick';
+
+ 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -29,11 +36,14 @@ import { RegisterModule } from './register/register.module';
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    RegisterModule
+    RegisterModule,
+    SlickModule.forRoot()
   ],
   providers: [
-    SubscriptionService
+    SubscriptionService,
+    ClinicSettingsService
   ],
+  bootstrap: [SubscriptionComponent],
   declarations: [SubscriptionComponent],
   exports: [SubscriptionComponent]
 

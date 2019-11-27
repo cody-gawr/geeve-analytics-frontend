@@ -2,10 +2,12 @@
 <div mat-dialog-content>
 
   <mat-form-field>
-
     <input matInput tabindex="1" [(ngModel)]="data.planName" placeholder="Member Plan"  class="form-control-dialog" required="true">
-   
   </mat-form-field>
+    <mat-form-field>
+       <input matInput tabindex="1" [(ngModel)]="data.planOrder" placeholder="Plan order"  class="form-control-dialog" required="true">
+  </mat-form-field>
+
   <input matInput style="color: #FF0000;" tabindex="1" *ngIf="valplans" [(ngModel)]="valplans" required="true">
 
  <mat-form-field>
@@ -26,15 +28,18 @@
   </mat-form-field>
 
   <mat-form-field>
+
       <input matInput tabindex="1" type="number" [(ngModel)]="data.discount" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder="Discount %"  class="form-control-dialog" required="true">
-    </mat-form-field>
+  </mat-form-field>
   
     <mat-form-field>
         <input matInput tabindex="1" [(ngModel)]="data.description" placeholder="Description" class="form-control-dialog" required="true">
       </mat-form-field>
-  <!--  <input type="file" (change)="onChange($event)"> -->
+       <mat-checkbox  [(ngModel)]="data.isFeatured" class = "example-margin"> 
+         <label>Featured Plan </label> 
+       </mat-checkbox>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="update(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
+  <button mat-button (click)="update(data)" tabindex="2" class="mat-raised-button mat-dc">OK</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">CANCEL</button>
 </div>

@@ -30,10 +30,10 @@ export class PaymentPatientService {
         );
     }
 
-    addSubPatients(name,age,gender,patient_amount,id): Observable<any> {
+    addSubPatients(name,dob,gender,patient_amount,id): Observable<any> {
             const formData = new FormData();
             formData.append('sub_patients_name', name);
-            formData.append('sub_patients_age', age);
+            formData.append('sub_patients_dob', dob);
             formData.append('sub_patients_gender', gender);
             formData.append('sub_patients_amount', patient_amount);
             formData.append('patients_id', id);
@@ -115,7 +115,7 @@ export class PaymentPatientService {
             );
     }
              // Items Predictor Analysis 
-    createSubscription(token:any,plan_id, patient_id,amount,member_plan_id, user_id): Observable<any> {
+    createSubscription(token:any,plan_id, patient_id,amount,member_plan_id, user_id,patient_name, patient_email): Observable<any> {
             const formData = new FormData();
             formData.append('token', token.id);
             formData.append('email', token.email);
@@ -126,6 +126,8 @@ export class PaymentPatientService {
             formData.append('user_id', user_id);
             formData.append('amount', amount);
             formData.append('member_plan_id', member_plan_id);
+            formData.append('patient_name', patient_email);
+            formData.append('patient_email', patient_email);
             return this.http.post(this.apiUrl +"/Patients/createSubscription", formData)
             .pipe(map((response: Response) => {
                             return response;

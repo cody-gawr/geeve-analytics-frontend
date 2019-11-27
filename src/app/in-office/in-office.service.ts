@@ -44,23 +44,25 @@ export class InOfficeService {
 
   
 
-    addPaymentPlans(patient_name, patient_email,plan_name,plan_description,clinic_id,total_amount,setup_fee,deposite_amount,balance_amount,payment_frequency,duration,monthly_weekly_payment,start_date,due_date,token =this._cookieService.get("token")): Observable<any> {
+    addPaymentPlans(patient_name, patient_email,patient_dob,patient_phone_no,plan_name,plan_description,clinic_id,total_amount,setup_fee,deposite_percentage,deposite_amount,balance_amount,payment_frequency,duration,monthly_weekly_payment,start_date,token =this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
         formData.append('patient_name', patient_name);
         formData.append('patient_email', patient_email);
         formData.append('plan_name',plan_name);
         formData.append('plan_description', plan_description);
+        formData.append('patient_dob',patient_dob );
+        formData.append('patient_phone_no',patient_phone_no);
         formData.append('user_id', this._cookieService.get("userid"));
         formData.append('clinic_id', clinic_id);
         formData.append('total_amount',total_amount);
         formData.append('setup_fee', setup_fee);
-        formData.append('deposite_amount',deposite_amount );
+        formData.append('deposite_percentage',deposite_percentage);
+        formData.append('deposite_amount',deposite_amount);
         formData.append('balance_amount',balance_amount );
         formData.append('payment_frequency',payment_frequency );
         formData.append('duration',duration );
         formData.append('monthly_weekly_payment',monthly_weekly_payment );
         formData.append('start_date',start_date );
-        formData.append('due_date',due_date );
         formData.append('token', token);
 
             return this.http.post(this.apiUrl +"/InofficePayments/addPaymentPlans/", formData)
@@ -101,7 +103,7 @@ export class InOfficeService {
         }
 
     getInofficeMembersByID(patient_id,clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeMembersByID?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeMembersByIDAll?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
                 return response;
                 })

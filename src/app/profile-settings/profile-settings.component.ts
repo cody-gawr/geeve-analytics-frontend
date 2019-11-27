@@ -15,14 +15,19 @@ export class ProfileSettingsComponent implements OnInit {
   private readonly notifier: NotifierService;
    public form: FormGroup;
 
+   public formSettings: FormGroup;
+   public formTerms: FormGroup;
    public clinic_id:any ={};
 
           private warningMessage: string;
           public id:any ={};
           public clinicName:any =0;
           public contactName =0;
+          public description;
+            
           // public chartData: any[] = [];
      //      public address:any = {};
+          
           public practice_size:any ={};
           options: FormGroup;
           public xero_link;
@@ -31,6 +36,8 @@ export class ProfileSettingsComponent implements OnInit {
           public email;
           public user_image;
           public imageURL:any;
+          public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+
   constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute) {
     this.notifier = notifierService;
     this.options = fb.group({
@@ -46,8 +53,8 @@ export class ProfileSettingsComponent implements OnInit {
     this.imageURL = this._cookieService.get("user_image");
     this.getprofileSettings();
 
-          $('#title').html('Profile Settings');
- $('.header_filters').addClass('hide_header');
+    $('#title').html('Profile Settings');
+    $('.header_filters').addClass('hide_header');
          
          // this.checkXeroStatus();
      });
@@ -58,28 +65,54 @@ export class ProfileSettingsComponent implements OnInit {
       newPassword: [null, Validators.compose([Validators.required])],
       repeatPassword: [null, Validators.compose([Validators.required])]      
     });
+    /* this.formSettings = new FormGroup({
+       email: new FormControl('', [
+          Validators.required,
+           Validators.pattern("[^ @]*@[^ @]*")
+          ]),
+        Website: new FormControl('', [
+         Validators.required,
+         Validators.pattern(this.urlPattern)
+        ]),
+         displayName: [null, Validators.compose([Validators.required])],
+
+    }); */
+
+     this.formSettings = this.fb.group({
+      email: [null, Validators.compose([Validators.required])],
+      displayName: [null, Validators.compose([Validators.required])],
+      Website: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
+      PhoneNo: [null, Validators.compose([Validators.required])],
+      Address: [null, Validators.compose([Validators.required])],
+      Specialties: [null, Validators.compose([Validators.required])],
+      practiceDesc: [null, Validators.compose([Validators.required])]
+    
+
+    });
+  this.formTerms = new FormGroup({
+       terms: new FormControl()
+    });
+
+
   }
 
   // Sufix and prefix
   hide = true;
-
-
   getprofileSettings() {
   this.profileSettingsService.getprofileSettings().subscribe((res) => {
        if(res.message == 'success'){
         // this.displayName = res.data[0].displayName;
         // this.email = res.data[0].email;
         this.PhoneNo = res.data[0].phone_no;
+        this.description = res.data[0].description;
         this.Address = res.data[0].address;
         this.Gender = res.data[0].gender;
         this.Specialties = res.data[0].specialties;
         this.Education = res.data[0].education;
         this.practiceDesc = res.data[0].practice_desc;
         this.Website = res.data[0].website;
-       
-        
-        // this.publishableKey = res.data[0].publishable_key;
-        // this.secretKey = res.data[0].secret_key;
+        this.terms = res.data[0].terms;
+
 
        }
     }, error => {
@@ -119,7 +152,9 @@ public website;
 
 // public secretKey;
 // public secret_key;
-
+  goBack() {
+      window.history.back();
+  }
 
   onSubmitBasic() {
   this.displayName = $("#displayName").val();
@@ -127,7 +162,7 @@ public website;
   this.imageURL = $("#imageURL").val();
       $('.ajax-loader').show();      
 
-   this.profileSettingsService.updateprofileSettings(this.displayName, this.email,this.PhoneNo,this.Address,this.Gender,this.Specialties,this.Education,this.practiceDesc,this.Website,this.imageURL).subscribe((res) => {
+   this.profileSettingsService.updateprofileSettings(this.displayName, this.description, this.email,this.PhoneNo,this.Address,this.Gender,this.Specialties,this.Education,this.practiceDesc,this.Website,this.imageURL).subscribe((res) => {
       $('.ajax-loader').hide();      
        
        if(res.message == 'success'){
@@ -193,6 +228,7 @@ onSubmitPassword() {
   this.errortext ="Password doesn't Match!";
  }
   } 
+  
 public fileToUpload;
  uploadImage(files: FileList) {
     this.fileToUpload = files.item(0);
@@ -203,9 +239,34 @@ public fileToUpload;
     this.profileSettingsService.logoUpload(formData).subscribe((res) => {
       $('.ajax-loader').hide();      
 
-      if(res.message == 'success'){
+      if(res.message == 'success'){ 
         this.imageURL= res.data;
       }
     });
   }
+
+public terms;
+public errorTermstext;
+public successTermstext;
+onSubmitTerms() {
+  this.errorLogin = false;
+  this.errorTermstext ="";
+  this.successLogin = false;
+  this.successTermstext ="";
+  this.terms =this.formTerms.value.terms;
+  this.profileSettingsService.updateTerms(this.terms).subscribe((res) => {
+       if(res.message == 'success'){
+        this.successTermstext = res.data;
+       }                                              
+       else{
+          this.errorTermstext = res.data;
+        }
+    }, error => {
+      this.errorLogin = true;
+      this.errortext = "Please Provide Valid Inputs!";
+    }    
+    );
+
+  } 
+
 }

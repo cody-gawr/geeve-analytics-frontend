@@ -12,9 +12,9 @@ import { DashboardsRoutes } from './dashboards.routing';
 import { ChartistModule } from 'ng-chartist';
 import { DashboardsService } from './dashboards.service';
 import { DashboardsComponent } from './dashboards.component';
-import { NgxGaugeModule } from 'ngx-gauge';
+// import { NgxGaugeModule } from 'ngx-gauge';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import { MatButtonToggleModule, MatIconModule } from '@angular/material';
+import { MatButtonModule,MatCardModule,MatMenuModule,MatToolbarModule,MatIconModule,MatSelectModule ,MatButtonToggleModule} from '@angular/material';
 import { NgxChartsModule } from '@swimlane/ngx-charts';               
 import { GaugeChartModule } from 'angular-gauge-chart';
 import {AutoCompleteModule} from 'primeng/autocomplete';
@@ -34,12 +34,12 @@ import 'chartjs-plugin-annotation';
     ChartistModule,
     ChartsModule,
     NgxChartsModule,
-    NgxGaugeModule,
-    AutoCompleteModule,                                                                                                                 
+    // NgxGaugeModule,
+    AutoCompleteModule,                                                                                                   
     NgxDaterangepickerMd.forRoot(),
     MatButtonToggleModule, MatIconModule,
     GaugeChartModule,
-    NgxSmartModalModule.forRoot()
+    NgxSmartModalModule.forRoot(),
   ],
   providers: [ DashboardsService,DatePipe],
   declarations: [DashboardsComponent]

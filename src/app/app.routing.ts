@@ -116,7 +116,7 @@ export const AppRoutes: Routes = [
         loadChildren: './multi-dropdown/multi-dd.module#MultiModule',
       },
       {
-        path: 'patients-detail/:id',
+        path: 'patients-detail',
         loadChildren: './patients-detail/patients-detail.module#PatientsDetailModule',
         canActivate: [AuthGuard]
       },
@@ -170,9 +170,18 @@ export const AppRoutes: Routes = [
           './subscription/subscription.module#SubscriptionModule'
       },
       {
+        path: 'terms/:id',
+        loadChildren: './terms/terms.module#TermsModule'
+      },
+      
+      {
         path: 'payment-patient/:id',
         loadChildren: './payment-patient/payment-patient.module#PaymentPatientModule',
        
+      },
+      {
+        path: 'inoffice-payment/:id',
+        loadChildren: './inoffice-payment/inoffice-payment.module#InofficePaymentModule',       
       }
     ]
   },

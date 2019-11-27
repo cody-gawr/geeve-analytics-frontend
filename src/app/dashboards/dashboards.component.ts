@@ -22,9 +22,60 @@ export interface Dentist {
   name: string;
 }
 declare var Chart: any; 
+
+
+// for date picker
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatDatepicker} from '@angular/material/datepicker';
+
+// Depending on whether rollup is used, moment needs to be imported differently.
+// Since Moment.js doesn't have a default export, we normally need to import using the `* as`
+// syntax. However, rollup creates a synthetic default module and we thus need to import it using
+// the `default as` syntax.
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment, Moment} from 'moment';
+
+const moment = _rollupMoment || _moment;
+
+// See the Moment.js docs for the meaning of these formats:
+// https://momentjs.com/docs/#/displaying/format/
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
+
+
+
 @Component({
-  templateUrl: './dashboards.component.html'
+  templateUrl: './dashboards.component.html',
+  providers: [
+    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+    // application's root module. We provide it at the component level here, due to limitations of
+    // our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
+
 })
+
+
+
+
 export class DashboardsComponent implements AfterViewInit {
    @ViewChild("myCanvas") canvas: ElementRef;
 @ViewChild(BaseChartDirective) chart: BaseChartDirective;
@@ -49,16 +100,66 @@ export class DashboardsComponent implements AfterViewInit {
 public newMembersThisMonth=0;
 public totalFees=0;
 public totalFeesThisMonth=0;
-public conversionRate=0;
+public conversionRateActive=0;
+public conversionRateInactive=0;
+
 public totalPlans=0;
 public newPlansThisMonth=0;
 public totalFeesInoffice=0;
 public totalFeesInofficeMonth=0;
 public totalPlansOverdue=0;
+public conversionPercentage  =0; 
+public mlist :any;
+public selectedMonthYear : string;
 
-  constructor(private dashboardsService: DashboardsService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService ){
-  }
+
+constructor(private dashboardsService: DashboardsService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService ){
+ const myDate = new Date();
+ console.log("const called");
+ const monthname =this.getMonthName(myDate.getMonth());
+ this.selectedMonthYear = monthname+" "+(myDate.getFullYear().toString()).slice(-2);
+}
   private warningMessage: string;
+
+ //For date picker
+   date = new FormControl(moment());
+   date2 = new FormControl(moment());
+
+ getMonthName(monthno){
+   this.mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+     return this.mlist[monthno];
+};
+
+  chosenYearHandler(normalizedYear: Moment) {
+    const ctrlValue = this.date.value;
+    ctrlValue.year(normalizedYear.year());
+    this.date.setValue(ctrlValue);
+  }
+
+  chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = this.date.value;
+    ctrlValue.year(normalizedMonth.year());
+    ctrlValue.month(normalizedMonth.month())
+    const monthname =this.getMonthName(normalizedMonth.month());
+    this.selectedMonthYear = monthname+" "+(normalizedMonth.year().toString()).slice(-2);
+    console.log(this.selectedMonthYear);
+    const selectedyear = normalizedMonth.year();
+    const selectedmonth = normalizedMonth.month() + 1;
+
+    const finalStartDate = selectedyear+"-"+selectedmonth+"-"+"01";
+    const finalEndDate = selectedyear+"-"+selectedmonth+"-"+"30";
+
+    this.startDate = this.datePipe.transform(finalStartDate, 'yyyy-MM-dd');
+    this.endDate = this.datePipe.transform(finalEndDate, 'yyyy-MM-dd');
+     
+    this.loadAnalytics();      
+    $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+
+    this.date.setValue(ctrlValue);
+    datepicker.close();
+  }
+
+
   ngAfterViewInit() {   
     this.route.params.subscribe(params => {
       this.clinic_id = this.route.snapshot.paramMap.get("id");
@@ -102,7 +203,6 @@ gradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
 
 
 
-
 this.lineChartColors = [
   {
     backgroundColor: gradient,
@@ -116,12 +216,12 @@ this.lineChartColors = [
   }
 ];
       let doughnutGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
-      doughnutGradient.addColorStop(0, 'rgba(104, 255, 249, 1)');
+      doughnutGradient.addColorStop(0, '#00A289');
       doughnutGradient.addColorStop(1, 'rgba(28, 164, 159, 1)');
       let doughnutGradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-      doughnutGradient2.addColorStop(1, '#4FC1D1');
+      doughnutGradient2.addColorStop(1, '#003858');
       doughnutGradient2.addColorStop(0,  '#BFE8EE');
-      this.doughnutChartColors = [{backgroundColor: [doughnutGradient,doughnutGradient2, '#dadada']}];
+      this.doughnutChartColors = [{backgroundColor: [doughnutGradient,doughnutGradient2]}];
 
     //this.recallChartTreatment();
   }
@@ -155,7 +255,7 @@ this.lineChartColors = [
   public newPatientChartLabels1: string[] = [];
   public doughnutChartType:string = 'doughnut';
   public hourlyRateChartLabels: string[] = []; 
-public hourlyRatePreChartLabels1: string[] = [];
+  public hourlyRatePreChartLabels1: string[] = [];
 
   //data
   public barChartData: any[] = [
@@ -322,7 +422,6 @@ public barChartOptions: any = {
                      if (Math.floor(label) === label) {
                          return '$'+label;
                      }
-
                  },
             }, 
             }],
@@ -335,7 +434,6 @@ public barChartOptions: any = {
               else
                 return "$"+tooltipItems.yLabel;
      },
-     
   }
 },
          legend: {
@@ -486,6 +584,11 @@ public barChartOptions: any = {
             position:'right'
          }
   };
+
+     
+
+  public conversionRateData=[];
+  public conversionRateLabels=['Accepted','Pending'];
   public loadAnalytics() {
    this.dashboardsService.loadAnalytics(this.startDate,this.endDate).subscribe((data) => {
       if(data.message == 'success'){
@@ -501,8 +604,18 @@ public barChartOptions: any = {
         if(data.data.totalFeesThisMonth.total != null)
         this.totalFeesThisMonth = data.data.totalFeesThisMonth.total;
 
-        if(data.data.conversionRate != null)
-        this.conversionRate = data.data.conversionRate;
+        if(data.data.conversionRate != null) {
+        this.conversionRateActive = data.data.conversionRate.active;
+        this.conversionRateInactive = data.data.conversionRate.inactive;
+        this.conversionPercentage = this.conversionRateActive / (this.conversionRateActive + this.conversionRateInactive) * 100;
+        console.log(this.conversionPercentage);
+        if(isNaN(this.conversionPercentage)){
+          this.conversionPercentage =0;
+        }
+        
+        this.conversionRateData= [this.conversionRateActive,this.conversionRateInactive];
+        this.conversionRateLabels=['Accepted','Pending'];
+      }
 
         if(data.data.totalPlans != null)
         this.totalPlans = data.data.totalPlans;
@@ -523,9 +636,12 @@ public barChartOptions: any = {
    });
   }
     choosedDate(val) {
+     
     val = (val.chosenLabel);
+     console.log(val);
     var val= val.toString().split(' - ');
       this.startDate = this.datePipe.transform(val[0], 'yyyy-MM-dd');
+      console.log(this.startDate);
       this.endDate = this.datePipe.transform(val[1], 'yyyy-MM-dd');
       this.loadAnalytics();      
       $('.filter_custom').val(this.startDate+ " - "+this.endDate);

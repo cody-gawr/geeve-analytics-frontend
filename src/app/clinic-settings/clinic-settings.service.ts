@@ -33,6 +33,15 @@ export class ClinicSettingsService {
                     })
         );
     }
+
+       // Get ClinicSettings
+    getClinicSettingsForSubscription( clinic_id='1', user_id = this._cookieService.get("userid")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Practices/getPracticesForSubscription?user_id="+user_id+"&clinic_id="+clinic_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
     
        // Get ClinicSettings
   getClinicLandingPageSettings(clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
@@ -45,7 +54,7 @@ export class ClinicSettingsService {
 
 
        // Get ClinicSettings
-    updateClinicSettings(clinic_id, name, address, contact_name,phone_no,publishable_key,secret_key, imageURL, user_id = '23', token = this._cookieService.get("token")): Observable<any> {
+    updateClinicSettings(clinic_id, name, address, contact_name,phone_no,publishable_key,secret_key, imageURL, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('clinicName', name);
@@ -68,11 +77,12 @@ export class ClinicSettingsService {
                     })
         );
     }
-   updateLandingPageSettings(clinic_id,headerInfo,socialInfo,token = this._cookieService.get("token")): Observable<any> {
+   updateLandingPageSettings(clinic_id,headerInfo,socialInfo,clinicTagLine,token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
     formData.append('header_info', headerInfo);
     formData.append('social_info', socialInfo);
     formData.append('id', clinic_id);
+    formData.append('clinicTagLine', clinicTagLine);
     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token); 
 

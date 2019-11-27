@@ -1,6 +1,8 @@
-import { Component, OnInit , ViewEncapsulation, Inject , ViewChild, AfterViewInit} from '@angular/core';
+import { Component, OnInit , ViewEncapsulation, Inject , ViewChild, AfterViewInit, ElementRef} from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
+import { NotifierService } from 'angular-notifier';
+import { ClinicSettingsService } from '../clinic-settings/clinic-settings.service';
 import {
   FormBuilder,
   FormGroup,
@@ -12,6 +14,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatInputModule } from '@angula
 import { CustomValidators } from 'ng2-validation';
 import { EventEmitter , Output, Input} from '@angular/core';
 import { RegisterComponent } from './register/register.component';
+import { environment } from "../../environments/environment";
 
 @Component({
   selector: 'app-subscription',
@@ -20,38 +23,142 @@ import { RegisterComponent } from './register/register.component';
    encapsulation: ViewEncapsulation.None
 })
 export class SubscriptionComponent implements OnInit {
+
+  private readonly notifier: NotifierService;
   public form: FormGroup;
+  public contactusForm: FormGroup;
   public errorLogin = false;
   public plans:any =[];
   clinic_id: any;
   user_id: any;
-    display_name: string;
+  display_name: string;
   email: string;
   user_type: string;
   fileInput: any ;
-password:string;
+  password:string;
+  
+  sliderimages:any;
+  private warningMessage: string;
+
+  public headerTitle:string;
+  public headerDescription:string;
+  public headerImageURL:any;
+  public header_info:any;
+  public social_info:any;
+  public slider_info:any;
+  private homeUrl = environment.homeUrl;
+
+  public clinicName:string;
+  public clinicAddress:string;
+  public clinicContactNo:any;
+
+  public facebookUrl :string;
+  public twitterUrl :string;
+  public linkedinUrl :string;
+  public instagramUrl :string;
+  public clinicLogo :any;
+  public imageSliderConfig :any;
+  public planSliderConfig:any;
+
+  public DoctorName: string;
+  public DoctorPractice: string;
+  public DoctorDescription : any;
+  public ClinicAbout : any;
+  public practiceOwnerEmail :string;
+
+
+  public contactuser_name: any;
+  public contactuser_email: any;
+  public contactuser_phone: any;
+  public contactuser_message: any;
+  public clinicEmail :any;
+  public clinicTagline:any;
+  public DefaultLogo :any;
+  public DefaultHeaderImage :any;
+  public sampleplan =false;;
+
+  options: FormGroup;
   @ViewChild(SubscriptionComponent) table: SubscriptionComponent;
-  constructor(private fb: FormBuilder, private router: Router, private subscriptionService: SubscriptionService,private _cookieService: CookieService,private route: ActivatedRoute, public dialog: MatDialog) {}
+  constructor(notifierService: NotifierService,private elementRef: ElementRef, private fb: FormBuilder, private router: Router, private subscriptionService: SubscriptionService,private ClinicSettingsService:ClinicSettingsService,private _cookieService: CookieService,private route: ActivatedRoute, public dialog: MatDialog) {
+     this.notifier = notifierService;
+     this.DefaultLogo=this.homeUrl+"src/assets/img/logo.png";
+     this.DefaultHeaderImage=this.homeUrl+"src/assets/img/headimage.jpg";
+    this.options = fb.group({
+      hideRequired: false,
+      floatLabel: 'auto'
+    });
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("clinic_id");
     this.user_id = this.route.snapshot.paramMap.get("user_id");
+    this.getClinicSettings();
     });
 
-     $(window).scroll(function(){
+  $(window).scroll(function(){
     if ($(window).scrollTop() >= 20) {
-       $('#header').addClass('minheader');
-       $('.rg-logo').addClass('minlogo');
+        
+       $('.sa-main-header').addClass('minheader');
+      
        $('.min_header_hide').addClass('hide');
+      
     }
     else {
-      $('#header').removeClass('minheader');
-      $('.rg-logo').removeClass('minlogo');
-      $('.min_header_hide').removeClass('hide');      
+      
+        $('.sa-main-header').removeClass('minheader');
+      
+       $('.min_header_hide').removeClass('hide');
+      
     }
   });
-      $(window).scroll(function () {
+    $('.inr-link').click(function(){
+      $('html, body').animate({
+        scrollTop: $( $(this).attr('href') ).offset().top
+      }, 1000);
+      return false;
+    }); 
+    
+    
+    $('.sa_navclk').click(function() {
+      $('.nav-sec').addClass('open');
+      $('html').addClass('shownav');
+      //$('html').addClass('noscroll');
+    });
+    
+    $('.sa_navclose').click(function() {
+      $('.nav-sec').removeClass('open');
+      $('html').removeClass('shownav');
+      //$('html').removeClass('noscroll');
+    });
+    
+    
+    $('.mobile_category_btn').click(function() {
+      
+      if ($(this).hasClass('active')) {
+        $(this).removeClass('active');
+        $("#sa_category_mobile").removeClass('sa_category_open');
+        $('.mobile_category_over').addClass('sa_hide');
+        $('html').removeClass('noscroll');
+      } else {
+        $(this).addClass('active');
+        $("#sa_category_mobile").addClass('sa_category_open');
+        $('.mobile_category_over').removeClass('sa_hide');
+        $('html').addClass('noscroll');
+        
+      }
+      
+    });
+    
+    
+    $('.mobile_category_over').click(function() {
+      $('.mobile_category_btn').removeClass('active');
+      $("html").removeClass('noscroll');
+      $("#sa_category_mobile").removeClass('sa_category_open');
+      $('.mobile_category_over').addClass('sa_hide');
+    });
+    
+    $(window).scroll(function () {
       if($(this).scrollTop() > 1) {
         $('.sa-gotop').css({
           opacity: 1
@@ -63,15 +170,44 @@ password:string;
       }
     });
     $(document).on('click','.sa-gotop',function(){
+    
       $('html, body').animate({
         scrollTop: '0px'
       }, 800);
       return false;
     });
     this.getPlans();
+    this.planSliderConfig  = {
+      "slidesToShow": 4, "slidesToScroll": 1,autoplay: true, dots:true,
+      'responsive': [
+       {
+        'breakpoint': 767,
+        'settings': {
+        'slidesToShow': 1
+       }
+       }
+      ]
+    };
+    this.imageSliderConfig = {"slidesToShow": 1,"slidesToScroll": 1, autoplay: true,"dots":true};
+
+
+    this.contactusForm=this.fb.group({
+          contactuser_name:[null, Validators.compose([Validators.required])],
+          contactuser_email:[null, Validators.compose([Validators.required])],
+          contactuser_phone:[null, Validators.compose([Validators.required])],
+          contactuser_message:[null, Validators.compose([Validators.required])],
+          clinicEmail:[null, Validators.compose([Validators.required])],
+         })
+
   }
+
+
   
 openDialog(id,amount) {
+  if(id=="sampleplan1"){
+    alert("This is the sample plan only for viewing . We will be back with our live plans soon. ");
+    return false;
+  }
     this.dialog.open(RegisterComponent, {
       width: '250px',
        data: {
@@ -100,21 +236,34 @@ openDialog(id,amount) {
       //    this.errorLogin  =false;
      
   this.subscriptionService.getPlans(this.clinic_id,this.user_id).subscribe((res) => {
-  //  console.log(res);
 
        if(res.message == 'success'){
+
         res.data.forEach((res,key) => {
-          var temp= {planName:'',planLength:'',totalAmount:'',treatments:'',description:'',id:''};
+          var temp= {planName:'',planLength:'',totalAmount:'',treatments:'',description:'',isFeatured:'',id:''};
           temp.id =res.id;          
           temp.planName =res.planName;
           temp.planLength =res.planLength;  
           temp.totalAmount =res.totalAmount;  
           temp.treatments =res.treatments; 
-          temp.description =res.description; 
+          temp.description =res.description;
+          temp.isFeatured = res.isFeatured; 
           this.plans.push(temp);
         });
+
        }
        else if(res.message == 'error'){
+         var temp= {planName:'',planLength:'',totalAmount:'',treatments:'',description:'',isFeatured:'',id:'',sampleplan : false};
+          temp.id ="sampleplan101";          
+          temp.planName ="Sample Plan";
+          temp.planLength ="Annually";  
+          temp.totalAmount ="1000";  
+          temp.treatments = "Cleaning, ECG"; 
+          temp.description ="This is the sample description";
+          temp.isFeatured = "true"; 
+          temp.sampleplan = true;
+          this.plans.push(temp);
+
           this.errorLogin  =true;
        }
        console.log(this.plans);
@@ -122,6 +271,109 @@ openDialog(id,amount) {
     }    
     );
   }
+
+
+
+  // Get Clinic Settings
+  getClinicSettings() {
+     this.subscriptionService.getClinicSettings(this.clinic_id,this.user_id).subscribe((res) => {
+
+
+       if(res.message == 'success'){
+          const finalData = res.data;
+          if(finalData[0].header_info!="" && finalData[0].header_info!=null)
+          {
+           this.header_info = JSON.parse(finalData[0].header_info);  
+           this.headerTitle = this.header_info.headerTitle;
+           this.headerDescription = this.header_info.headerDescription;
+           //this.headerImageURL = this.header_info.image;
+
+           if(this.header_info.image!=""){
+              this.headerImageURL = this.header_info.image;
+            }else{
+              this.headerImageURL = this.DefaultHeaderImage; //Default Header Image 
+            }
+
+          }else{
+            /* To load default content for first time */
+            this.headerTitle = "Wanna Checkup Your Smiling Teeth";
+            this.headerDescription = "The phrasal sequence of the Lorem Ipsum text is now so widespread and commonplace that many DTP programmes can generate dummy text using the starting sequence. The phrasal sequence of the Lorem Ipsum text is now so widespread and commonplace that many DTP programmes can generate dummy text using the starting sequence";
+            this.headerImageURL = "https://staging-analytics.jeeve.com.au/assets/uploads/headimage.jpg";
+
+          }
+          if(finalData[0].social_info!="" && finalData[0].social_info!=null)
+          {
+            this.social_info = JSON.parse(finalData[0].social_info);
+            this.facebookUrl = this.social_info.facebook;
+            this.twitterUrl = this.social_info.twitter;
+            this.linkedinUrl = this.social_info.linkedin;
+            this.instagramUrl = this.social_info.instagram;
+          }
+          if(finalData[0].slider_info!="" && finalData[0].social_info!=null)
+          {
+            this.sliderimages = JSON.parse(finalData[0].slider_info);
+          }else{
+            /*  Load Default Single Image*/
+            const defaultSlideImage = "http://localhost/jeevemembers/client2/src/assets/img/slide1.jpg"
+            this.sliderimages =[{"file":defaultSlideImage}];
+          } 
+
+          this.clinicName =(finalData[0].clinicName!="") ? finalData[0].clinicName : "Clinic Name";
+          this.clinicAddress =(finalData[0].address!="") ? finalData[0].address : "Default Lane 2, High Street, New York .";
+          this.clinicContactNo =(finalData[0].phoneNo!="") ? finalData[0].phoneNo : "+123456789";
+          console.log("test");
+          console.log(finalData);
+          console.log(finalData[0].logo);
+          if(finalData[0].logo!="undefined")
+          {
+            console.log("h 1");
+            this.clinicLogo =finalData[0].logo;  
+          }else{
+            console.log("h 2");
+            this.clinicLogo =this.DefaultLogo;
+          }
+          
+
+          this.DoctorName = (finalData[0].Users.display_name!="") ? finalData[0].Users.display_name : "Doctor Name";
+          this.DoctorPractice = (finalData[0].UserDetails.practice_desc!="") ? finalData[0].UserDetails.practice_desc : "Doctor Practice";
+          this.DoctorDescription = (finalData[0].UserDetails.description!="") ? finalData[0].UserDetails.description : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum";
+          this.ClinicAbout = (finalData[0].description!=null) ? finalData[0].description :"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum";
+          this.practiceOwnerEmail = (finalData[0].Users.email!="") ? finalData[0].Users.email : "admin@jeevemembers.com" ; // For display only
+          this.clinicEmail = (finalData[0].Users.email !="") ? finalData[0].Users.email :"admin@jeevemembers.com"; // Used for sending email of contact us form 
+    
+          this.clinicTagline = (finalData[0].clinicTagLine!=null) ? finalData[0].clinicTagLine : "Our <i class='fas fa-smile'></i> Are Valley Wide"; 
+          
+          // Used for sending email of contact us form 
+
+
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+  }
+
+ scroll(sectionId) {
+    document.querySelector('#'+sectionId).scrollIntoView({ behavior: 'smooth', block: 'center' });
+ }
+ submitContactForm($event){
+  const formData=this.contactusForm.value;
+
+this.subscriptionService.sendContactUsMail(formData.contactuser_name, formData.contactuser_email,formData.contactuser_phone,formData.contactuser_message,formData.clinicEmail).subscribe((res) => {
+       if(res.message == 'success'){
+       this.notifier.notify( 'success', 'You request has been sent to clinic owner successfully .' ,'vertical');
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );  
+
+
+
+ }
+
+
+
 
 
   

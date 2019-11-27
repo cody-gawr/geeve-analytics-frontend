@@ -38,6 +38,8 @@ export class PaymentPatientComponent implements OnInit {
   public plan_name:any;
   public warningMessage;
   public discount;
+  public patient_name;
+  public patient_email;
   constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private paymentPatientService: PaymentPatientService,private _cookieService: CookieService, private route: ActivatedRoute) {}
 
    ngOnInit() {
@@ -47,7 +49,7 @@ export class PaymentPatientComponent implements OnInit {
     this.getSubPatients();
     this.form = this.fb.group({
       name: [null, Validators.compose([Validators.required])],
-      age: [null, Validators.compose([Validators.required])],
+      dob: [null, Validators.compose([Validators.required])],
       gender: [null, Validators.compose([Validators.required])]
     });
   }
@@ -58,7 +60,7 @@ export class PaymentPatientComponent implements OnInit {
         this.rows = res.data[0]['sub_patients'];
         var patientArray ={};
         patientArray['sub_patients_name'] = res.data[0]['patient_name'];
-        patientArray['sub_patients_age'] = res.data[0]['patient_age'];
+        patientArray['sub_patients_dob'] = res.data[0]['patient_dob'];
         patientArray['sub_patients_gender'] = res.data[0]['patient_gender'];
         patientArray['sub_patients_amount'] = res.data[0]['member_plan']['totalAmount'];
         this.total_subpatient=res.data[0]['sub_patients'].length;
@@ -66,12 +68,13 @@ export class PaymentPatientComponent implements OnInit {
         var sub_patient_length = this.rows.length;
         this.rows[sub_patient_length] = patientArray;
         this.patient_amount=res.data[0]['total_amount'];
+        this.patient_name=res.data[0]['patient_name'];
+        this.patient_email=res.data[0]['patient_email'];
         this.discount = res.data[0]['member_plan']['discount']; 
         this.member_plan_id= res.data[0]['member_plan_id'];
         this.plan_name=res.data[0]['member_plan']['planName'];
         this.user_id=res.data[0]['user_id'];
         this.stripe_plan_id =  this.plan_name.replace('',' ');
-
         }
         else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -82,18 +85,16 @@ export class PaymentPatientComponent implements OnInit {
         else {
         var patientArray ={};
         patientArray['sub_patients_name'] = res.data[0]['patient_name'];
-        patientArray['sub_patients_age'] = res.data[0]['patient_age'];
+        patientArray['sub_patients_dob'] = res.data[0]['patient_dob'];
         patientArray['sub_patients_gender'] = res.data[0]['patient_gender'];
         patientArray['sub_patients_amount'] = res.data[0]['member_plan']['totalAmount'];   
             var sub_patient_length = this.rows.length;
         this.rows[sub_patient_length] = patientArray;
         }
         console.log(this.rows);
-
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
+    });
   }
 
 onSubmit() {
@@ -104,13 +105,11 @@ onSubmit() {
   else
     var patient_amount = this.rows[0]['sub_patients_amount'];
   if(count_patient < 4)
-    patient_amount = patient_amount - Math.floor(this.discount/patient_amount*100);
+    patient_amount = patient_amount - Math.floor((this.discount/100)*patient_amount);
     this.patient_amount =this.patient_amount+ patient_amount;
       $('.ajax-loader').show();      
-
-    this.paymentPatientService.addSubPatients(this.form.value.name,this.form.value.age,this.form.value.gender,patient_amount,this.id).subscribe((res) => {
+    this.paymentPatientService.addSubPatients(this.form.value.name,this.form.value.dob,this.form.value.gender,patient_amount,this.id).subscribe((res) => {
       $('.ajax-loader').hide();      
-
        if(res.message == 'success'){
         this.updatePatients('INACTIVE');
        }
@@ -121,7 +120,7 @@ onSubmit() {
     });
   }
 
-updatePatients(status) { 
+  updatePatients(status) { 
       $('.ajax-loader').show();      
 
     this.paymentPatientService.updatePatients(this.patient_amount,status, this.id).subscribe((res) => {
@@ -141,11 +140,11 @@ updatePatients(status) {
       key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
       locale: 'auto',
       token: token => {
-           this.paymentPatientService.createSubscription(token,this.stripe_plan_id,this.id, this.patient_amount, this.member_plan_id, this.user_id).subscribe((res) => {
+           this.paymentPatientService.createSubscription(token,this.stripe_plan_id,this.id, this.patient_amount, this.member_plan_id, this.user_id,this.patient_name,this.patient_email).subscribe((res) => {
            if(res.message == 'success'){
               this.updatePatients('ACTIVE');
 
-            alert('Payment Completed Successfully!');  
+            alert('Payment Completed Successfully, Your Subscription is active now!');  
              this.router.navigate(['/']);
            }
            else if(res.message == 'error'){
@@ -155,12 +154,10 @@ updatePatients(status) {
           });
       }
      });
-
     handler.open({      
       name:  this.planName,
       amount: this.amount
     });
- 
   }
 
  // getPlans() {
