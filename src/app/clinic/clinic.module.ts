@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { DemoMaterialModule } from '../demo-material-module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ClinicService } from './clinic.service';
@@ -13,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
+    FlexLayoutModule,
     RouterModule.forChild(ClinicRoutes),
     MatInputModule,
     NgxDatatableModule,

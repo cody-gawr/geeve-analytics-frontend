@@ -1,36 +1,56 @@
+
+
 <h1 mat-dialog-title>Add Clinic</h1>
-<div mat-dialog-content>
+<div mat-dialog-content class="sa_forms_design">
  
-  <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.name" placeholder="Clinic Name" class="form-control-dialog" required="true">
-  </mat-form-field>
 
-  
-  <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.address" placeholder="Address" class="form-control-dialog" required="true">
-  </mat-form-field>
+ <div fxLayout="row wrap" fxLayoutGap="2%">
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+        <label>Clinic Name</label>
+         <input tabindex="1" [(ngModel)]="data.name" placeholder="" class="form-control-dialog" required="true">
 
-  
-  <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.contact_name" placeholder="Contact Name" class="form-control-dialog" required="true">
-  </mat-form-field>
+    </div>
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+         <label>Clinic Logo</label>
+        <input class="form-control b-b" type="file" name= "file" id="file" (change)="uploadImage($event.target.files)">
+    </div>
 
-    
-  <mat-form-field>
-    <input matInput tabindex="1" type="number" [(ngModel)]="data.phone_no" placeholder="Phone No" class="form-control-dialog" required="true" oninput="this.value = this.value.slice(0,10);">
-  </mat-form-field>
-    
-  <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.publishable_key" placeholder="Stripe Publishable Key"  class="form-control-dialog" required="true">
-  </mat-form-field>
+   </div>
 
-  <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.secret_key" placeholder="Stripe Secret Key"  class="form-control-dialog" required="true">
-  </mat-form-field>
 
-  <input class="form-control b-b" type="file" name= "file" id="file" (change)="uploadImage($event.target.files)">
+
+   <div fxLayout="row wrap" fxLayoutGap="2%">
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+        <label>Contact Name</label>
+          <input tabindex="1" [(ngModel)]="data.contact_name" placeholder="" class="form-control-dialog" required="true">
+
+    </div>
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+        <label>Phone No</label>
+        <input tabindex="1" type="number" [(ngModel)]="data.phone_no" placeholder="" class="form-control-dialog" required="true" oninput="this.value = this.value.slice(0,10);">
+
+    </div>
+   </div>
+
+   <div fxLayout="row wrap" fxLayoutGap="2%">
+
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+        <label>Address</label>
+       <textarea tabindex="1" [(ngModel)]="data.address" placeholder="" class="form-control-dialog" required="true"> </textarea>
+    </div>
+
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+        <label>Stripe Publishable Key</label>
+    <input tabindex="1" [(ngModel)]="data.publishable_key" placeholder=""  class="form-control-dialog" required="true">
+
+        <label>Stripe Secret Key</label>
+    <input tabindex="1" [(ngModel)]="data.secret_key" placeholder=""  class="form-control-dialog" required="true">
+    </div>
+   </div>
+
+
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc ok_btn">OK</button>
+<div mat-dialog-actions class="sa-pull-right">
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc ok_btn">Submit</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
 </div>

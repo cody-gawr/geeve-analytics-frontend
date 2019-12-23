@@ -65,7 +65,6 @@
         <span>Actions</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
-           
           <a mat-raised-button (click)="openupdateDialog(rowIndex)" data-id={{value}} class="action_btn golden" title= 'Edit Treatment Details'><i class="ti-eye "></i></a>
           <button class="action_btn danger" mat-menu-item (click) = "deleteTreatment(rowIndex)">
          <i class="ti-trash text-danger"></i></button>

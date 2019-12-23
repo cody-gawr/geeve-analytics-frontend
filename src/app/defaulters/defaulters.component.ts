@@ -34,6 +34,7 @@ export class DefaultersComponent implements AfterViewInit {
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
+        $('.sa_heading_bar').show();
   
   }
   editing = {};

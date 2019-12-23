@@ -1,49 +1,104 @@
 <h1 mat-dialog-title>Add Member Plan</h1>
-<div mat-dialog-content>
+<div mat-dialog-content class="sa_forms_design" >
 
-  <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.planName" placeholder="Member Plan"  class="form-control-dialog" required="true">
-  </mat-form-field>
+   <div fxLayout="row wrap" fxLayoutGap="2%">
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+        <label>Member Plan</label>
+         <input matInput tabindex="1" [(ngModel)]="data.planName" placeholder=""  class="form-control-dialog" required="true">
 
-    <mat-form-field>
-       <input matInput tabindex="1" [(ngModel)]="data.planOrder" placeholder="Plan order"  class="form-control-dialog" required="true">
-  </mat-form-field>
-  <input matInput style="color: #FF0000;" tabindex="1" *ngIf="valplans" [(ngModel)]="valplans" required="true">
+         <!--   <mat-form-field>
+          <input matInput tabindex="1" [(ngModel)]="data.planOrder" placeholder="Plan order"  class="form-control-dialog"      required="true">
+        </mat-form-field> -->
+      <input matInput style="color: #FF0000;" tabindex="1" *ngIf="valplans" [(ngModel)]="valplans" required="true">
+    </div>
 
-      <mat-form-field>
-        <mat-select placeholder="Treatments" tabindex="1" [formControl]="data.treat" multiple >
-          <mat-option *ngFor="let treatment of data.treatmentdata" [value]="treatment">{{treatment.treatmentName}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-  <mat-form-field>
-    <mat-label>Duration</mat-label> 
-    <mat-select tabindex="1" [(ngModel)]= "data.planLength" required="true">
-      <mat-option value="MONTHLY">MONTHLY</mat-option>
-      <mat-option value="YEARLY">YEARLY</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput tabindex="1" type="number" [(ngModel)]="data.totalAmount" placeholder="Total Amount ($)"  class="form-control-dialog" required="true">
-  </mat-form-field>
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+      <div class="duration width-full">
+       <label>Duration</label>
+         <div class="btn-group sa-pull-left">
+          <span class="position-relative btn-switch">
+           <input type="radio" id="same1" name="planLength" [(ngModel)]="data.planLength" value="MONTHLY">
+          <label class="active-duration" for="same1">Monthly</label>
+           </span>
+           <span class="position-relative btn-switch">
+          <input type="radio" id="same2" name="planLength" [(ngModel)]="data.planLength"  value="YEARLY">
+            <label class="active-duration" for="same2">Yearly</label>
+          </span>
+         </div>
+      </div>
+    </div>
 
-  <mat-form-field>
-      <input matInput tabindex="1" type="number" [(ngModel)]="data.discount" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder="Discount %"  class="form-control-dialog" required="true">
-    </mat-form-field>
-  
-    <mat-form-field>
-        <input matInput tabindex="1" [(ngModel)]="data.description" placeholder="Description" class="form-control-dialog" required="true">
-    </mat-form-field>
-    
-
-       <mat-checkbox [checked]= "data.isFeatured" [(ngModel)]="data.isFeatured" class = "example-margin"> 
-         <label>Featured Plan </label> 
-       </mat-checkbox>
-   
+   </div>
 
 
+
+   <div fxLayout="row wrap" fxLayoutGap="2%">
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+      <div class="width-full">
+         <label>Preventative Plan inclusions</label> 
+         <angular2-multiselect [data]="data.preventative_plan" [(ngModel)]="data.preventative_plan_selected" [settings]="data.dropdownSettings"></angular2-multiselect>
+      </div>
+    </div>
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+         <label>Preventative Plan Frequency</label>
+         <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_frequency" class="form-control" min="1" max="100" placeholder=""  class="form-control-dialog" required="true">
+    </div>
+   </div>
+
+
+   <div fxLayout="row wrap" fxLayoutGap="2%">
+    <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
+      <div class="width-full">
+         <label>Treatment Inclusions</label> 
+        <angular2-multiselect [data]="data.treatment_inclusions" [(ngModel)]="data.treatment_inclusions_selected"   
+    [settings]="data.dropdownSettings"    (onSelect)="onItemSelect($event,'inclusions',data)" 
+    (onDeSelect)="OnItemDeSelect($event,'inclusions',data)"></angular2-multiselect>
+      </div>
+    </div>
+  </div>
+    <div fxLayout="row wrap" fxLayoutGap="2%">
+    <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
+         <div class="width-full">
+         <label>Treatment Exclusions</label> 
+        <angular2-multiselect [data]="data.treatment_inclusions" [(ngModel)]="data.treatment_exclusions_selected"   
+    [settings]="data.dropdownSettings"  (onSelect)="onItemSelect($event,'exclusions',data)" 
+    (onDeSelect)="OnItemDeSelect($event,'exclusions',data)"></angular2-multiselect>
+      </div>
+    </div>
+   </div>
+
+
+  <div fxLayout="row wrap" fxLayoutGap="2%">
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+         <label>Discount on Treatment included %</label> 
+         <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_discount" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true">
+    </div>
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+         <label>Total Amount ($)</label>
+         <input matInput tabindex="1" type="number" [(ngModel)]="data.totalAmount" placeholder=""  class="form-control-dialog" required="true">
+    </div>
+   </div>
+
+     
+    <div fxLayout="row wrap" fxLayoutGap="2%">
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+         <label>Discount %</label> 
+         <input matInput tabindex="1" type="number" [(ngModel)]="data.discount" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true">
+    </div>
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+         <label>Description</label>
+         <input matInput tabindex="1" [(ngModel)]="data.description" placeholder="" class="form-control-dialog" required="true">
+    </div>
+   </div>
+
+    <div fxLayout="row wrap" fxLayoutGap="2%">
+    <mat-checkbox [checked]= "data.isFeatured" [(ngModel)]="data.isFeatured" class = "example-margin"> 
+    Featured Plan 
+    </mat-checkbox>
+  </div>
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions class="sa-pull-right">
   <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">OK</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
 </div>

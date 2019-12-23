@@ -1,0 +1,35 @@
+
+                                                    <h1 mat-dialog-title class="addmember_title">Add Member</h1>
+                                                    <div mat-dialog-content class="sa_forms_design">
+                                                        
+
+
+                                                <div fxLayout="row wrap" fxLayoutGap="2%">
+                                                <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                                                  <label>Name</label>  
+                                                  <input  tabindex="1" class="form-control-dialog" [(ngModel)]="data.subPatientName" placeholder="">
+                                                </div>
+                                                <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                                                <label>Date of Birth</label>
+                                                <input  tabindex="1" type="date" [(ngModel)]="data.subPatientDob" placeholder="" class="form-control-dialog">
+                                                  </div>
+                                                </div>
+                                                       <div fxLayout="row wrap" fxLayoutGap="2%">
+                                                <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">  
+                                                        <mat-radio-group class="gender"  [(ngModel)]="data.subPatientGender" class="form-control-dialog">
+                                                            <mat-radio-button class="gender mr15" value="male">
+                                                                Male
+                                                            </mat-radio-button>
+                                                            <mat-radio-button class="gender" value="female">
+                                                                Female 
+                                                            </mat-radio-button>
+                                                        </mat-radio-group>
+
+                                                    </div>
+                                                </div>
+                                                        <!--  <input type="file" (change)="onChange($event)"> -->
+                                                    </div>
+                                                    <div mat-dialog-actions class="sa-pull-right " style="text-align: right;">
+                                                          <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">OK</button>
+                                                    </div>
+                                            

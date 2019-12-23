@@ -30,9 +30,7 @@ export class DialogOverviewExampleDialogComponent {
 
   getErrorMessage() {
        this.emailval.emit(this.email);
-    return this.email.hasError('required')
-      ? 'You must enter a value'
-      : this.email.hasError('email');
+    return 'You must enter an email';
      
   }
 
@@ -116,15 +114,27 @@ export class PatientsDetailComponent implements AfterViewInit {
   public clinic_name:any ={};
   public patientdob;
   ngAfterViewInit() {
+      this.initiate_clinic();
     this.getPlans();
-    this.getPatients();
 
     $('#title').html('Patients Listing');
-    $('.header_filters').addClass('hide_header');
+        $('.header_filters').removeClass('hide_header');
+        $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
+        $('.sa_heading_bar').show();
+        
  //   this.getClinincname();
  
         
   }
+
+  initiate_clinic(){  
+    this.clinic_id = $('#currentClinicid').attr('cid');
+  if(this.clinic_id)
+    this.getPatients();
+    }
+    
   editing = {};
   rows = [];
 
@@ -207,17 +217,14 @@ export class PatientsDetailComponent implements AfterViewInit {
         });
       });
   }
+
   private getPatients() {
- 
-    this.patientsdetailService.getPatients().subscribe((res) => {
+    this.patientsdetailService.getPatients(this.clinic_id).subscribe((res) => {
       if(res.message == 'success'){
         this.rows = res.data;
-        this.planname = res.data[0]['planName'];
-        
-        this.temp = [...res.data];    
-        // console.log(this.temp )
+        this.planname = res.data[0]['planName'];        
+        this.temp = [...res.data];
         this.table = data;
-
        }    
         else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -228,30 +235,44 @@ export class PatientsDetailComponent implements AfterViewInit {
              }else if(res.status == '400'){
               this.rows = [];
            } 
-        
-   
+        this.getInviteMembers();
+           
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
-    }   
-    );
+    });
   }
 
+  public getInviteMembers() {
+  this.patientsdetailService.getInviteMembers(this.clinic_id).subscribe((res) => {
+      if(res.message == 'success'){
+        var count = this.rows.length;
+        res.data.forEach(res => {
+          var temp=[];
+          temp['patient_name'] = res.invite_member_name;
+          temp['patient_email'] = res.invite_member_email;
+          temp['patient_status'] = 'INACTIVE';
+          this.rows.push(temp);
+        });
+       }    
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  } 
+
   private deletePatients(row) {
-           if(confirm("Are you sure to delete Patient?")) {
+  if(confirm("Are you sure to delete Patient?")) {
     if(this.rows[row]['id']) {
       this.patientsdetailService.deletePatients(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
         this.notifier.notify( 'success', 'Patient Removed' ,'vertical');
             this.getPatients();
-             }
-      
+             }      
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
     }
-    else {
-      
+    else {      
       this.rows.splice(row, 1);
     this.rows = [...this.rows];
     this.getPatients();

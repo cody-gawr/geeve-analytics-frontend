@@ -65,13 +65,13 @@ export class LoginComponent implements OnInit {
        //  window.location.href = '/assets/stepper/index.html';
        //  else
         // this.router.navigate(['/dashboards/cliniciananalysis/1']);
-        this.router.navigate(['/clinic']);
+        this.router.navigate(['/dashboards']);
       }
       else{
          this._cookieService.put("userid", datares['parentid'], opts);
          this._cookieService.put("childid", datares['userid'], opts);
 
-        this.router.navigate(['/profile-settings/1']);
+        this.router.navigate(['/dashboards']);
       }
 
        }

@@ -1,18 +1,30 @@
 <div class="AddUserPopup"> 
 <h1 mat-dialog-title>Add User</h1>
-<div mat-dialog-content>
-  <mat-form-field>
-    <input matInput tabindex="1" class="form-control-dialog" required="true" [(ngModel)]="data.display_name" placeholder="Display Name">
-  </mat-form-field>
-  <mat-form-field>
-    <input matInput tabindex="1" class="form-control-dialog" required="true" [(ngModel)]="data.email" placeholder="Email">
-  </mat-form-field>
+<div mat-dialog-content class="sa_forms_design">
+  
+
+
+
+ <div fxLayout="row wrap" fxLayoutGap="2%">
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+        <label>Display Name</label>
+         <input tabindex="1" class="form-control-dialog" required="true" [(ngModel)]="data.display_name" placeholder="">
+    </div>
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+         <label>Email</label>
+    <input tabindex="1" class="form-control-dialog" required="true" [(ngModel)]="data.email" placeholder="">
+    </div>
+
+   </div>
+
   <div class="selectIcon">
-     <select fxFlex.gt-sm="50%" class="form-control-dialog" required="true" fxFlex.gt-xs="50%" fxFlex="100" class="sa_select form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
+     <select fxFlex.gt-sm="100%" class="form-control-dialog" required="true" fxFlex.gt-xs="100%" fxFlex="100" class="sa_select form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
       <option value ="" selected>Select User Type</option>
       <option value ="3">Receptionist</option>
    </select> 
  </div>
+
+
  <div class="selectIcon" *ngIf="show_dentist == true">
   <select class="sa_select sa_select_set_roles form-control" name="dentist_id" [(ngModel)]="data.dentist_id" >
       <option value ="" selected="true">Select Dentist</option>
@@ -22,7 +34,7 @@
    <input type='hidden' tabindex="1" [(ngModel)]="data.password"  placeholder="Email">
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions class="sa-pull-right">
   <button mat-button (click)="save(data)"   tabindex="2" class="mat-raised-button mat-dc">OK</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
 </div>

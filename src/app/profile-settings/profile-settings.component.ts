@@ -55,6 +55,7 @@ export class ProfileSettingsComponent implements OnInit {
 
     $('#title').html('Profile Settings');
     $('.header_filters').addClass('hide_header');
+        $('.sa_heading_bar').show();
          
          // this.checkXeroStatus();
      });
@@ -65,18 +66,7 @@ export class ProfileSettingsComponent implements OnInit {
       newPassword: [null, Validators.compose([Validators.required])],
       repeatPassword: [null, Validators.compose([Validators.required])]      
     });
-    /* this.formSettings = new FormGroup({
-       email: new FormControl('', [
-          Validators.required,
-           Validators.pattern("[^ @]*@[^ @]*")
-          ]),
-        Website: new FormControl('', [
-         Validators.required,
-         Validators.pattern(this.urlPattern)
-        ]),
-         displayName: [null, Validators.compose([Validators.required])],
 
-    }); */
 
      this.formSettings = this.fb.group({
       email: [null, Validators.compose([Validators.required])],
@@ -92,8 +82,6 @@ export class ProfileSettingsComponent implements OnInit {
   this.formTerms = new FormGroup({
        terms: new FormControl()
     });
-
-
   }
 
   // Sufix and prefix
@@ -101,8 +89,6 @@ export class ProfileSettingsComponent implements OnInit {
   getprofileSettings() {
   this.profileSettingsService.getprofileSettings().subscribe((res) => {
        if(res.message == 'success'){
-        // this.displayName = res.data[0].displayName;
-        // this.email = res.data[0].email;
         this.PhoneNo = res.data[0].phone_no;
         this.description = res.data[0].description;
         this.Address = res.data[0].address;
@@ -112,8 +98,6 @@ export class ProfileSettingsComponent implements OnInit {
         this.practiceDesc = res.data[0].practice_desc;
         this.Website = res.data[0].website;
         this.terms = res.data[0].terms;
-
-
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

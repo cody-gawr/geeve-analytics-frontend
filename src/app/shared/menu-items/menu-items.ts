@@ -327,11 +327,20 @@ const MENUITEMS = [
 
 @Injectable()
 export class MenuItems {
-  constructor(private rolesUsersService: RolesUsersService) {}
+  constructor(private rolesUsersService: RolesUsersService) {
+    this.getRoles();
+  }
   getMenuitem(): Menu[] {
     return this.menu;
   }
-  public MENUITEMS;
+   public MENUITEMS;
+   public clinic=['2'];
+   public memberships=['2'];
+   public paymentplans=['2'];
+   public defaulters=['2'];
+
+   public rolesusers=['2'];
+   public profilesettings=['2'];
   public menu = [
   
   {
@@ -339,7 +348,7 @@ export class MenuItems {
     name: 'Dashboards',
     type: 'link-noparam',
     icon: 'fas fa-chart-area',
-    role:['1','2','3','4','5']
+    role:['1','2']
 
   },  
   {
@@ -347,7 +356,7 @@ export class MenuItems {
     name: 'Clinics',
     type: 'link-noparam',
     icon: 'fas fa-home',
-    role:['2','3']
+    role:this.clinic
   },
   // {
   //   state: 'dentist',
@@ -371,23 +380,30 @@ export class MenuItems {
     name: 'Memberships', //Member Plans
     type: 'link-noparam',
     icon: 'fas fa-receipt',
-    role:['2']
+    role:this.memberships
 
   },
+  // {
+  //   state: 'purchase-plan',
+  //    name: 'Purchase Plan',
+  //   type: 'link',
+  //   icon: 'fas fa-user-tag',
+  //   param: '1',
+  //   role:['2']
+  // },
   {
     state: 'in-office',
     name: 'Payment Plans', //In office Plans
     type: 'link-noparam',
     icon: 'fas fa-file-invoice',
-    role:['2']
-
+    role:this.paymentplans
   },
   {
     state: 'defaulters',
     name: 'Defaulters',
     type: 'link-noparam',
     icon: 'fas fa-user-times',
-    role:['2']
+    role:this.defaulters
     },
   {
 
@@ -396,17 +412,16 @@ export class MenuItems {
     type: 'link',
     icon: 'fas fa-user-tag',
     param: '1',
-    role:['2']
-
+    role:this.rolesusers
   },
-    {
-    state: 'treatments',
-    name: 'Treatments',
-    type: 'link',
-    icon: 'fas fa-hospital',
-    param: '1',
-    role:['2','3']
-  },
+  //   {
+  //   state: 'treatments',
+  //   name: 'Treatments',
+  //   type: 'link',
+  //   icon: 'fas fa-hospital',
+  //   param: '1',
+  //   role:['2','3']
+  // },
   // {
   //   state: 'profile-settings',
   //   name: 'Settings',
@@ -424,9 +439,33 @@ export class MenuItems {
       { state: 'profile-settings', name: 'Settings', type: 'link',param : '1'},
       { state: 'plans', name: 'Member Plans', type: 'link',param : ''}
     ],
-    role:['1','2']
+    role:this.profilesettings
 
   }
 ];
+  getRoles() {      
+   this.rolesUsersService.getRoles().subscribe((res) => {
+       if(res.message == 'success'){ 
+         res.data.forEach(result => {
+          if(result.id != '1') {
+            var roles = result.permisions.split(',');
+            if(roles.includes("clinics")) 
+              this.clinic.push(result.id.toString());
+            if(roles.includes("roles")) 
+              this.rolesusers.push(result.id.toString());
+            if(roles.includes("paymentplans")) 
+              this.paymentplans.push(result.id.toString());
+            if(roles.includes("memberships")) 
+              this.memberships.push(result.id.toString());
+            if(roles.includes("defaulters")) 
+              this.defaulters.push(result.id.toString());
+            if(roles.includes("settings")) 
+              this.profilesettings.push(result.id.toString());
+          }
+         });
+       }
+    }, error => {
+    });
 
+  }
 }

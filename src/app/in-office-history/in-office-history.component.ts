@@ -72,7 +72,6 @@ export class DialogOverviewExampleDialogComponent {
       }
   /* If amount will change. update percentage and balance amount*/
    updatePercentageByAmount(amountDeposited,total_amount){
-    console.log("hereee");
      if(parseInt(amountDeposited) > parseInt(total_amount)){
        alert("Amount deposited cannot be greater than total amount .");
        this.data.deposit_amount ='';

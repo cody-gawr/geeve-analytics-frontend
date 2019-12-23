@@ -6,10 +6,10 @@
 export const environment = {
   production: true,
 
- // apiUrl : "https://staging-members-api.jeeve.com.au:3443/",
- //  homeUrl:"https://staging-members.jeeve.com.au/"
+  apiUrl :"https://staging-members-api.jeeve.com.au:3443/",
+  homeUrl:"https://staging-members.jeeve.com.au/"
 
-  apiUrl : "http://localhost/jeevemembers/server/",
-  homeUrl:"http://localhost/jeevemembers/client2/"
+   // apiUrl : "http://localhost/jeevemembers/server/",
+   // homeUrl:"http://localhost/jeevemembers/client2/"
 
 };

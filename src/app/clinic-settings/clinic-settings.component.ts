@@ -20,7 +20,7 @@ import { environment } from "../../environments/environment";
 export class ClinicSettingsComponent implements OnInit {
  private apiUrl = environment.apiUrl;
 
-
+ public formTerms: FormGroup;
 afuConfig = {
     multiple: true,
     formatsAllowed: ".jpg,.png,.jpeg",
@@ -55,8 +55,8 @@ afuConfig = {
   public clinicName:any =0;
   public contactName =0;
   public phoneNo:any ={};
-  public publishable_key:any ={};
-  public secret_key:any={};
+  public publishable_key:any ='';
+  public secret_key:any='';
   public logo;
   public imageURL:any;
   // public chartData: any[] = [];
@@ -83,7 +83,6 @@ afuConfig = {
     this.notifier = notifierService;
     this.DefaultLogo=this.homeUrl+"src/assets/img/logo.png";
     this.DefaultHeaderImage=this.homeUrl+"src/assets/img/headimage.jpg";
-    console.log(this.DefaultLogo);
     
     this.options = fb.group({
       hideRequired: false,
@@ -103,7 +102,7 @@ afuConfig = {
     
      this.form = this.fb.group({
       clinicName: [null, Validators.compose([Validators.required])],
-      contactName: [null, Validators.compose([Validators.required])],
+      // contactName: [null, Validators.compose([Validators.required])],
       phoneNo: [null, Validators.compose([Validators.required])],
       address: [null, Validators.compose([Validators.required])],
       publishable_key: [null, Validators.compose([Validators.required])],
@@ -121,11 +120,13 @@ afuConfig = {
       twitter: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       linkedin: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       instagram: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
-      clinicTagLine :[null, Validators.compose([Validators.required])]
+      // clinicTagLine :[null, Validators.compose([Validators.required])]
 
     });
 
-
+  this.formTerms = new FormGroup({
+       terms: new FormControl()
+    });
   }
   goBack() {
       window.history.back();
@@ -144,7 +145,28 @@ afuConfig = {
         ? 'Not a valid email'
         : '';
   }
-  
+  public terms;
+public errorTermstext;
+public successTermstext;
+public errortext;
+onSubmitTerms() {
+  this.errorTermstext ="";
+  this.successTermstext ="";
+  this.terms =this.formTerms.value.terms;
+  this.clinicSettingsService.updateTerms(this.id, this.terms).subscribe((res) => {
+       if(res.message == 'success'){
+        this.successTermstext = res.data;
+       }                                              
+       else{
+          this.errorTermstext = res.data;
+        }
+    }, error => {
+      this.errortext = "Please Provide Valid Inputs!";
+    }    
+    );
+
+  } 
+
   getClinicSettings() {
     $('.ajax-loader').show(); 
   this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
@@ -154,8 +176,8 @@ afuConfig = {
         this.contactName = res.data[0].contactName;
         this.address = res.data[0].address;
         this.phoneNo = res.data[0].phoneNo;
-        this.publishable_key = res.data[0].publishable_key;
-        this.secret_key = res.data[0].secret_key;
+        // this.publishable_key = res.data[0].publishable_key;
+        // this.secret_key = res.data[0].secret_key;
          // console.log(res);
         // this.practice_size = res.data[0].practice_size;
         if(res.data[0].logo!=""){
@@ -173,10 +195,11 @@ afuConfig = {
   getClinicLandingPageSettings() {
      
     this.clinicSettingsService.getClinicLandingPageSettings(this.id).subscribe((res) => {
+      console.log(res);
 
      if(res.message == 'success'){
-        if(res.data[0].header_info!=null){
-         const headingSettings=JSON.parse(res.data[0].header_info);
+        if(res.data.header_info!=null){
+         const headingSettings=JSON.parse(res.data.header_info);
          this.headerTitle = headingSettings.headerTitle;
          this.headerDescription = headingSettings.headerDescription;
          if(headingSettings.image!=""){
@@ -186,18 +209,19 @@ afuConfig = {
          }
          
         }
-        if(res.data[0].social_info!=null){
-         const socialSettings=JSON.parse(res.data[0].social_info);
+        if(res.data.social_info!=null){
+         const socialSettings=JSON.parse(res.data.social_info);
          this.facebook =socialSettings.facebook;
          this.twitter  =socialSettings.twitter;
          this.linkedin =socialSettings.linkedin;
          this.instagram =socialSettings.instagram;
+         this.terms= res.data.terms;
         }
-        if(res.data[0].slider_info!=null){
-          const sliderImagesData=res.data[0].slider_info;
+        if(res.data.slider_info!=null){
+          const sliderImagesData=res.data.slider_info;
           this.sliderImages =JSON.parse(sliderImagesData);
          }
-         this.clinicTagLine =res.data[0].clinicTagLine;
+         this.clinicTagLine =res.data.clinicTagLine;
         
        }
     }, error => {

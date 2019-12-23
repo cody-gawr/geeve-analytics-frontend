@@ -61,21 +61,12 @@ export class RegisterComponent implements OnInit {
         Validators.pattern("^[0-9]*$")])
       ]
     });
-    this.getTerms();
+    this.terms= this.defaults.terms.replace(/<(.|\n)*?>/g, '');
 
   }
   public terms;
   public warningMessage;
-  getTerms() {
-     this.registerService.getTerms(this.defaults.user_id).subscribe((res) => {
-       if(res.message == 'success'){
-        this.terms = res.data[0].terms;
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
-  }
+
   public visible=true;
   loadTerms() {
     this.visible=false;
@@ -101,7 +92,6 @@ export class RegisterComponent implements OnInit {
                      if(res.message == 'success'){
                           this.successLogin = true;
                            window.location.href = res.data.url;
-                          //alert('Please confirm your mail and complete the payment!');
                       }
                      else if(res.message == 'error'){
                         this.errorLogin  =true;

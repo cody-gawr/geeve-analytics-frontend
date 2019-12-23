@@ -1,44 +1,24 @@
 <!-- ============================================================== -->
 <!-- Grid-->
 <!-- ============================================================== -->
-<!-- <div fxLayout="row wrap">
-    <div class="sa_heading_bar">
-        <div fxFlex.gt-sm="85" fxFlex.gt-xs="100" fxFlex="100" class="">
-            <h4><span class="page_title">Clinician Procedures &#38; Referrals</span></h4>
-        </div>
-        <app-headerright class="app-headerright"></app-headerright>
 
-        <div fxFlex.gt-sm="18" fxFlex.gt-xs="100" fxFlex="100" class="">
-            <div class="vertical_center_header_content">
-                <div class="sa_select_outer">
-                    <select class="sa_select"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
-                        <option value ="all">All Dentist( {{dentistCount}} )</option>
-                        <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
+
 <div class="sa_dashboard_inner_content">
    <div class="">
-      
-
 <div class="sa_dentist_graphs_area sa_health_screen_area">
     
     <div class="heading_section" style="padding:10px 0 0; width:100%;">
   <div fxLayout="row wrap" fxLayoutGap="1%">
         <div fxFlex.lg="38" fxFlex.md="38" fxFlex.sm="100" fxFlex.xs="100" fxFlex="38" >
-            <div class="dashboard_title2" style="margin-top:16px; margin-bottom:0;"><i class="fas fa-user-tie"></i>&nbsp;&nbsp;Membership Plans</div>
+            <div class="dashboard_title2" style="margin-top:16px;"><i class="fas fa-user-tie"></i>&nbsp;&nbsp;Membership Plans</div>
          </div>
-          
          <div fxFlex.lg="20" fxFlex.md="20" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20" >
              <div class="custom_date2">
                  <mat-form-field>
-                  <input matInput [matDatepicker]="dp" placeholder="Month and Year" [formControl]="date">
+                  <input matInput [matDatepicker]="dp" [formControl]="date">
                   <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                    <mat-datepicker #dp
-                     startView="multi-year"
+                     startView="multi-year" startView="year"
                      (yearSelected)="chosenYearHandler($event)"
                      (monthSelected)="chosenMonthHandler($event, dp)"
                      panelClass="example-month-picker">
@@ -48,13 +28,11 @@
 
              </div>
          </div>
-
-         
  </div>
     <div fxLayout="row wrap" >
 
 
-  <div fxFlex.lg="32" fxFlex.md="32" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg sa_designbg">
+  <div fxFlex.lg="49" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="49" class="sa_flexbg sa_designbg">
     <mat-card  class="dentistProduction sa_no_tabs_area">
       <mat-card-content class="sa_matcard_content">
           <div class="sa_grid_ico">
@@ -66,10 +44,7 @@
           </div>
       </mat-card-content>
     </mat-card>
-  </div>
-  <div fxFlex.lg="32" fxFlex.md="32" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg sa_designbg">
-
-    <mat-card  class="dentistProduction sa_no_tabs_area">
+   <mat-card  class="dentistProduction sa_no_tabs_area">
       <mat-card-content class="sa_matcard_content">
         
           <div class="sa_grid_ico">
@@ -82,8 +57,7 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div fxFlex.lg="34" fxFlex.md="34" fxFlex.sm="100" fxFlex.xs="100" fxFlex="34" class="sa_flexbg sa_designbg" style="margin-right:0;">
-
+  <div fxFlex.lg="50" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="50" class="sa_flexbg sa_designbg" style="margin-right:0;">
     <mat-card  class="dentistProduction sa_no_tabs_area">
       <mat-card-content class="sa_matcard_content">
        
@@ -91,28 +65,24 @@
               <i class="fas fa-dollar-sign"></i>
           </div>
           <div class="sa_grid_text">
-              <span class="grid_title">${{totalFees}}</span>
+              <span class="grid_title">${{totalFees| number:'1.0-2'}}</span>
               <span class="grid_title2">Total Fees Collected</span>
           </div>
       </mat-card-content>
     </mat-card>
-  </div>
-
-  <div fxFlex.lg="32" fxFlex.md="32" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg sa_designbg">
-
-      <mat-card  class="dentistProduction sa_no_tabs_area">
+     <mat-card class="dentistProduction sa_no_tabs_area">
         <mat-card-content class="sa_matcard_content">
             <div class="sa_grid_ico">
                 <i class="fas fa-coins"></i>
             </div>
             <div class="sa_grid_text">
-                <span class="grid_title">${{totalFeesThisMonth}}</span>
+                <span class="grid_title">${{totalFeesThisMonth| number:'1.0-2'}}</span>
                 <span class="grid_title2">Fees Collected {{selectedMonthYear}}</span>
             </div>
         </mat-card-content>
       </mat-card>
     </div>
-    <div fxFlex.lg="67" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="67" class="sa_flexbg sa_invitation" style="margin-right:0;">
+    <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" class="sa_flexbg sa_invitation" style="margin-right:0;">
         <mat-card  class="dentistProduction sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
             <div fxLayout="row wrap" >
@@ -127,37 +97,33 @@
                             </div>
                             <div class="graph_lastline">
 
-                                <span class="graph_text">Conversion Rate : {{conversionPercentage}} %</span>
-                                <span class="graph_help_text">invites sent vs accepted as percentage</span> 
+                                <span class="graph_text">Conversion Rate : {{conversionPercentage| number:'1.0-0'}} %</span>
                             </div>
                         </div>
                 </div>
                 <div fxFlex.lg="50" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="50" >
                     Total Invites Sent  {{conversionRateActive+conversionRateInactive}}
-   <div style="height: 250px">
+                  <div style="height: 250px">
                     <canvas #myCanvas baseChart class="chart"
-        [data]="conversionRateData"
-          [labels]="conversionRateLabels"
-          [legend]="false"
-          [options]="doughnutChartOptions"
-          [chartType]="doughnutChartType"
-          (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)" [colors]="doughnutChartColors"></canvas>
-        </div>
+                    [data]="conversionRateData"
+                      [labels]="conversionRateLabels"
+                      [legend]="false"
+                      [options]="doughnutChartOptions"
+                      [chartType]="doughnutChartType"
+                      (chartHover)="chartHovered($event)"
+                      (chartClick)="chartClicked($event)" [colors]="doughnutChartColors"></canvas>
+                    </div>
                 </div>
             </div>
           </mat-card-content>
         </mat-card>
       </div>
 </div>
-
-
 <div fxLayout="row wrap" >
     <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" >
         <div class="dashboard_title2"><i class="fas fa-dollar-sign"></i>&nbsp;&nbsp;Payment Plans</div>
     </div>
-
-    <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg sa_designbg v2">
+    <div fxFlex.lg="49" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="49" class="sa_flexbg sa_designbg v2">
         <mat-card  class="dentistProduction sa_no_tabs_area">
             <mat-card-content class="sa_matcard_content">
                 <div class="sa_grid_ico2">
@@ -169,9 +135,6 @@
                 </div>
             </mat-card-content>
         </mat-card>
-    </div>
-
-    <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg sa_designbg v2">
             <mat-card  class="dentistProduction sa_no_tabs_area">
                 <mat-card-content class="sa_matcard_content">
                     <div class="sa_grid_ico2">
@@ -185,7 +148,7 @@
             </mat-card>
      </div>
 
-     <div fxFlex.lg="34" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="34" class="sa_flexbg sa_designbg v2" style="margin-right:0;">
+     <div fxFlex.lg="50" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="50" class="sa_flexbg sa_designbg v2" style="margin-right:0;">
             <mat-card  class="dentistProduction sa_no_tabs_area">
                 <mat-card-content class="sa_matcard_content">
                     <div class="sa_grid_ico2">
@@ -197,8 +160,6 @@
                     </div>
                 </mat-card-content>
             </mat-card>
-     </div>
-     <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg sa_designbg v2" >
             <mat-card  class="dentistProduction sa_no_tabs_area">
                 <mat-card-content class="sa_matcard_content">
                     <div class="sa_grid_ico2">
@@ -212,7 +173,7 @@
             </mat-card>
      </div>
      
-     <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg sa_designbg v2" style="margin-right:0;">
+     <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg sa_designbg v2 single-mat-card" style="margin-right:0;">
             <mat-card  class="dentistProduction sa_no_tabs_area">
                 <mat-card-content class="sa_matcard_content">
                     <div class="sa_grid_ico2">
@@ -225,8 +186,6 @@
                 </mat-card-content>
             </mat-card>
      </div>
-
 </div>
-
 </div>
 </div> 

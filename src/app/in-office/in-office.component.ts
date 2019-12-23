@@ -35,7 +35,6 @@ export class DialogOverviewExampleDialogComponent {
   public patient_phone_no;
   public durationPaymentPlaceholder ="Duration(Period of Loan)";
   public MonthlyWeeklyPlaceholder ="Monthly/Weekly Payment"
-
   constructor(private datePipe: DatePipe,
     private inofficeService: InOfficeService,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
@@ -50,24 +49,18 @@ export class DialogOverviewExampleDialogComponent {
       return false;
     }
     return true;
-
   }
-
-
      save(data) {
+      var patient_id;
       this.clinic_id = $('#currentClinicid').attr('cid');
 
       this.inofficeService.getemailvalidation(data.patient_email,this.clinic_id).subscribe((res) => {
-    
-           if(res.message == 'error'){
-                this.valplans=res.data['message'];
-                $('#email').focus();
-                return false;
-            }else{
+          data.patient_id = res.id;
+          console.log(data);
               if(data.patient_name != undefined && data.patient_email != undefined  && data.plan_name != undefined && data.plan_description != undefined && data.total_amount != undefined && data.setup_fee != undefined && data.deposit_amount != undefined && data.balance_amount != undefined && data.payment_frequency != undefined && data.duration != undefined && data.monthly_weekly_payment != undefined && data.start_date != undefined ){
                 this.dialogRef.close(data);
               }
-            }
+            
       }, error => {
         this.warningMessage = "Please Provide Valid Inputs!";
         return false;
@@ -117,7 +110,6 @@ export class DialogOverviewExampleDialogComponent {
       this.data.balance_amount ='';
       return false;
     }
-
       this.totalAmount = $('#total_amount').val();
       this.setup_amount = $('#setup_amount').val();
       /* For Deposit Amount */
@@ -130,11 +122,6 @@ export class DialogOverviewExampleDialogComponent {
       this.balanceamt = (parseInt(this.totalAmount)+parseInt(this.setup_amount))-amountDeposited;       
       this.data.balance_amount = this.balanceamt;
       this.durationcal(this.durationval);
-
-
-
-
-
   }
   public durationcal(durationval){
     this.durationval= durationval;
@@ -144,6 +131,8 @@ export class DialogOverviewExampleDialogComponent {
       }
 
       email = new FormControl('', [Validators.required, Validators.email]);
+      patient_name = new FormControl('', [Validators.required]);
+
 
       getErrorMessage() {
         return this.email.hasError('required')
@@ -152,9 +141,10 @@ export class DialogOverviewExampleDialogComponent {
             ? 'Not a valid email'
             : '';
         }
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
+
+      onNoClick(): void {
+        this.dialogRef.close();
+      }
 
 }
 @Component({
@@ -162,14 +152,10 @@ export class DialogOverviewExampleDialogComponent {
   templateUrl: './update-in-office.html',
 })
 export class UpdateInOfficeDialogComponent {
-
-
   constructor(private inofficeService: InOfficeService,
     public dialogUpdateRef: MatDialogRef<UpdateInOfficeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
     ) {}
-
-
     update(data) {
          
       $('.form-control-dialog').each(function(){
@@ -199,6 +185,7 @@ export class InOfficeComponent implements AfterViewInit {
   fileInput: any ;
   clinic_id: any;
   treat = new FormControl();
+public StatusSelected ='';
 
   ngAfterViewInit() {
     this.initiate_clinic();
@@ -209,10 +196,6 @@ export class InOfficeComponent implements AfterViewInit {
         $('.header_filters').addClass('flex_direct_mar');
   
   }
-
-
-
-
   editing = {};
   rows = [];
  
@@ -258,22 +241,31 @@ export class InOfficeComponent implements AfterViewInit {
 
 
   private warningMessage: string;
+statusFilter() {
+  const val =this.StatusSelected;
+      // filter our data
 
+    const temp = this.temp.filter(function(d) {    
+      return d.patient_status.indexOf(val) == 0 || !val;
+    });
+
+    // update the rows
+    this.rows = temp;
+    // Whenever the filter changes, always go back to the first page
+
+    this.table = data;
+}
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
-  if(this.clinic_id)
+    if(this.clinic_id)
       this.getInofficeMembers();
     }
     
-    
     private getInofficeMembers() {
     this.rows=[];
-    this.inofficeService.getInofficeMembers(this.clinic_id).subscribe((res) => {
-    
+    this.inofficeService.getInofficeMembers(this.clinic_id).subscribe((res) => {    
          if(res.message == 'success'){
           this.rows = res.data;
-          // console.log(this.rows);
-
           this.temp = [...res.data];        
           this.table = data;
          }
@@ -290,12 +282,11 @@ export class InOfficeComponent implements AfterViewInit {
      , panelClass: 'addinoffice-modalbox'
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log("clinic id");
-      console.log(result.clinic_id);
     
       if(result) {
-      $('.ajax-loader').show();     
-     this.inofficeService.addPaymentPlans(result.patient_name, result.patient_email,result.patient_dob,result.patient_phone_no, result.plan_name,result.plan_description,result.clinic_id,result.total_amount,result.setup_fee,result.deposite_percentage,result.deposit_amount,result.balance_amount,result.payment_frequency,result.duration,result.monthly_weekly_payment,result.start_date).subscribe((res) => {
+      $('.ajax-loader').show(); 
+
+     this.inofficeService.addPaymentPlans(result.patient_name, result.patient_email,result.patient_dob,result.patient_phone_no, result.plan_name,result.plan_description,result.clinic_id,result.total_amount,result.setup_fee,result.deposite_percentage,result.deposit_amount,result.balance_amount,result.payment_frequency,result.duration,result.monthly_weekly_payment,result.start_date,result.patient_id).subscribe((res) => {
         $('.ajax-loader').hide();    
         if(res.message == 'success'){
             this.notifier.notify( 'success', 'New Patient Added' ,'vertical');
@@ -351,7 +342,7 @@ export class InOfficeComponent implements AfterViewInit {
               else {
                 this.getInofficeMembers();
                 this.rows.splice(row, 1);
-              this.rows = [...this.rows];
+                this.rows = [...this.rows];
               }
             }
   }

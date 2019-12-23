@@ -45,7 +45,8 @@ export class ClinicSettingsService {
     
        // Get ClinicSettings
   getClinicLandingPageSettings(clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"Clinics/getClinicInfo?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+    console.log('dsf');
+        return this.http.get(this.apiUrl +"/Clinics/getClinicInfo?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -154,6 +155,22 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
                     return response;
                 })
            );
+    }
+
+
+           // Get updatePassword
+    updateTerms(clinic_id, terms, token = this._cookieService.get("token")): Observable<any> {
+            const formData = new FormData();
+            formData.append('id', clinic_id); 
+
+            formData.append('terms', terms); 
+            formData.append('token', token);
+
+        return this.http.post(this.apiUrl +"/Practices/updateTerms/", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
     }
        
 }

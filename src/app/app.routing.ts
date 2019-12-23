@@ -51,7 +51,6 @@ export const AppRoutes: Routes = [
         loadChildren: './plans/plans.module#PlansModule',
         canActivate: [AuthGuard]
       },
-
       {
         path: 'in-office',
         loadChildren: './in-office/in-office.module#InOfficeModule',
@@ -124,12 +123,11 @@ export const AppRoutes: Routes = [
         path: 'patient-info/:id',
         loadChildren: './patient-info/patient-info.module#PatientInfoModule',
         canActivate: [AuthGuard]
-        
-      },
-       {
-        path: 'treatments/:id',
-        loadChildren: './treatments/treatments.module#TreatmentsModule'
-      },
+       },
+      //  {
+      //   path: 'treatments/:id',
+      //   loadChildren: './treatments/treatments.module#TreatmentsModule'
+      // },
       {
         path: 'defaulters',
         loadChildren: './defaulters/defaulters.module#DefaultersModule',
@@ -182,6 +180,16 @@ export const AppRoutes: Routes = [
       {
         path: 'inoffice-payment/:id',
         loadChildren: './inoffice-payment/inoffice-payment.module#InofficePaymentModule',       
+      },
+      {
+        path: 'purchase-plan/:id',
+        loadChildren: './purchase-plan/purchase-plan.module#PurchasePlanModule',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'thank-you',
+        loadChildren: './thank-you/thank-you.module#ThankYouModule',
+        canActivate: [AuthGuard]
       }
     ]
   },

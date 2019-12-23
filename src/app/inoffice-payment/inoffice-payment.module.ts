@@ -37,7 +37,6 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     FormsModule,
     ReactiveFormsModule,
     DemoMaterialModule,
-    FlexLayoutModule,
     FormsModule,
     QuillModule,
     MatInputModule,

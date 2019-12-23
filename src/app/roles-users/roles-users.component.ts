@@ -105,6 +105,8 @@ dentists:any=[];
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
+        $('.sa_heading_bar').show();
+        
   }
   editing = {};
   rows = [];
@@ -168,12 +170,12 @@ dentists:any=[];
             checkedRoles.push('roles');
            if(result.selectedRole['settings_'+res1.id])
             checkedRoles.push('settings');
-           if(result.selectedRole['plans_'+res1.id])
-            checkedRoles.push('plans');
-          if(result.selectedRole['treatments_'+res1.id])
-            checkedRoles.push('treatments');
-           if(result.selectedRole['inoffice_'+res1.id])
-            checkedRoles.push('inoffice');
+           if(result.selectedRole['memberships_'+res1.id])
+            checkedRoles.push('memberships');
+          if(result.selectedRole['paymentplans_'+res1.id])
+            checkedRoles.push('paymentplans');
+           if(result.selectedRole['defaulters_'+res1.id])
+            checkedRoles.push('defaulters');
             var checkedRoles1 = checkedRoles.join();
               this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
                  if(res.message == 'success'){
@@ -244,10 +246,12 @@ dentists:any=[];
         this.roles=[];
          res.data.forEach(result => {
           this.selectedRole['clinics_'+result.id] = false;
-          this.selectedRole['plans_'+result.id] = false;
+          this.selectedRole['memberships_'+result.id] = false;
           this.selectedRole['roles_'+result.id] = false;
           this.selectedRole['settings_'+result.id] = false;
-          this.selectedRole['inoffice_'+result.id] = false;
+          this.selectedRole['paymentplans_'+result.id] = false;
+          this.selectedRole['defaulters_'+result.id] = false;
+          
             var temp=[];
             temp['id'] = result.id;
             temp['role'] = result.role;

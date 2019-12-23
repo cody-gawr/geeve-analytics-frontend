@@ -1,0 +1,243 @@
+<div class="sa_login_blur" style="background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; min-height: 100vh;
+display: flex;
+background-size: cover;
+align-items: center;"></div>
+
+
+<div class="sa_internal_header">
+        <img class="" src="../assets/images/logo-text.png"> 
+    </div>
+
+<img class="login_abso_logo" src="../assets/images/logo-text-white.png">
+<div class="login-register sa_forms_design patient_details_form" style="background-image:url(assets/images/background/login-register.jpg); height:auto; min-height:100vh;  padding:20px; ">
+
+        <mat-card style="margin:10px auto; max-width:1040px;  width:100%;">
+            <mat-card-content style="padding:0;">
+                <h4 _ngcontent-c2="" class="spl_headings" style="margin-bottom:20px;">Patient Details</h4>
+                <!-- ============================================================== -->
+                <!-- column -->
+                <!-- ============================================================== -->
+                    <!-- Card column -->
+                     <div fxLayout="row wrap" >
+                            <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" class="">
+                               
+                         <mat-tab-group dynamicHeight [selectedIndex]="selectedIndex">
+                          <mat-tab class="step1" label="Your Details">
+                          <div class="register_form" *ngIf="visible" [@slideIn]>
+                              <form class="sa_custom_focus" [formGroup]="form" (ngSubmit)="onSubmit()">
+                          <div fxLayout="row wrap" fxLayoutGap="2%">
+                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                               <mat-label>Name</mat-label>
+                                  <mat-form-field style="width: 100%">
+                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_name']">
+                                  </mat-form-field>
+                                  <small *ngIf="form.controls['patient_name'].hasError('required') && form.controls['patient_name'].touched" class="text-danger support-text">You must include name.</small>
+                             </div>
+                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                                  <mat-label>Email address</mat-label>
+                                  <mat-form-field style="width: 100%">
+                                    <input matInput placeholder="" type="email" [formControl]="form.controls['patient_email']"  [(ngModel)]="patient_email">
+                                  </mat-form-field>
+                                  <small *ngIf="form.controls['patient_email'].hasError('required') && form.controls['patient_email'].touched" class="text-danger support-text">You must include an email address.</small>   
+                             </div>
+
+                           </div>
+
+                             <div fxLayout="row wrap" fxLayoutGap="2%">
+                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                                <mat-label>Date of Birth</mat-label>
+                                  <mat-form-field style="width: 100%">
+                                    <input matInput placeholder="" type="date" [formControl]="form.controls['patient_dob']">
+                                  </mat-form-field>
+                                  <small *ngIf="form.controls['patient_dob'].hasError('required') && form.controls['patient_dob'].touched" class="text-danger support-text">You must include Date of Birth.</small>  
+                             </div>
+                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                                <mat-label>Contact No.</mat-label> 
+                                  <mat-form-field style="width: 100%">
+                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,10);">
+                                  </mat-form-field>
+                                  <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched  && form.controls['patient_phone_no'].hasError('pattern')"  class="text-danger support-text">You must include a valid phone number.</small> 
+                             </div>
+                           </div>
+                           <div fxLayout="row wrap">
+                                                         <!-- col full-->
+                                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                                   <small *ngIf="errorLogin ==true && errorLoginText != ''" class="text-danger support-text">{{errorLoginText}}</small>
+                                   <small *ngIf="successLogin ==true && successLoginText != ''" class="text-success support-text">{{successLoginText}}</small>
+                                </div>
+                                </div>
+                             <div fxLayout="row wrap" fxLayoutGap="2%">
+                               <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                                 <mat-checkbox color="primary" [formControl]="form.controls['termsCond']">I agree to all the <a target="_blank" (click) ="loadTerms()">Terms</a></mat-checkbox>
+                               </div>
+                             </div>
+                                <!-- col full-->
+                              
+                                <div mat-dialog-actions class="sa-pull-right">
+                                <button class="sa-pull-right mat-raised-button mat-green" type="submit" [disabled]="!form.valid">Register</button>
+                                </div>                              
+                            </form>
+                          </div>
+                          <div class="termsContent" *ngIf="!visible" [@slideIn]>
+                          <div fxLayout="row wrap" fxLayoutGap="0%" class="text-center">
+                          <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
+                            <h3 class="m-0">Terms & Conditions</h3>
+                          </div>
+                          <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group" id="termsTextqq" [innerHTML] = "termsText">
+                             {{termsText}}
+                           </div>
+                          </div>
+                          <div fxLayout="row wrap" fxLayoutGap="0%" class="sa-pull-right">
+                            <a class="mat-raised-button mat-dc ok_btn " target="_blank" (click) ="loadForm()">Back</a>
+                          </div>
+                          </div>
+                          </mat-tab>
+                           <mat-tab #tab class="step2" label="Plan Details" [disabled]='!tabActive1'>
+                            <div fxLayout="row wrap" fxLayoutGap="2%">
+                              <div fxFlex.gt-md="39" fxFlex="100">
+                                <img src="assets/images/plandetail-img.png">
+                              </div>
+                               <div fxFlex.gt-md="59" fxFlex="100">
+
+                            <table width="100%">
+                              <tr>
+                                <td class="font-weight500">Selected Plan</td>
+                              </tr>
+
+                              <tr>
+                                <td class="pb10">{{planName}}</td>
+                              </tr>
+
+                              <tr>
+                                <td class="font-weight500">Member Details:</td>
+                              </tr>
+
+                               <tr>
+                                <td> 
+                                 <ngx-datatable #table class='material responsive-datatable sa_userstable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                                                           [rowHeight]="'auto'" [limit]="10" [rows]='patientData'>
+                                                <ngx-datatable-column prop="discount" name="discount">
+                                                    <ng-template let-column="column" ngx-datatable-header-template>
+                                                    </ng-template>
+                                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                <span *ngIf="value != ''">
+                                                  <i class="fas fa-times link_btn" (click) = "deletesubPatient(rowIndex)"></i>
+                                                </span>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column prop="name" name="name">
+                                                    <ng-template let-column="column" ngx-datatable-header-template>
+                                                    </ng-template>
+                                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                                   <span >
+                                                      {{value}} {{rowIndex.dob}}
+                                                   </span>
+                                                 </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column prop="dob" name="dob">
+                                                    <ng-template let-column="column" ngx-datatable-header-template>
+                                                    </ng-template>
+                                                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                                <span >
+                                                  {{value}}
+                                                </span>
+                                              </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column prop="amount" name="amount">
+                                                    <ng-template let-column="column" ngx-datatable-header-template>
+                                                    </ng-template>
+                                                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                                <span >
+                                                 $ {{value}}
+                                                </span>
+                                              </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column prop="discount" name="discount" *ngIf="value != ''">
+                                                    <ng-template let-column="column" ngx-datatable-header-template>
+                                                    </ng-template>
+                                                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+
+                                                <span class="off-label" *ngIf="value != ''">
+
+                                                  {{value}} %
+                                                </span>
+                                              </ng-template>
+                                    </ngx-datatable-column>
+                                  </ngx-datatable></td>
+                                  
+                              </tr>
+                              <tr>
+                                <td class="font-weight500 text-right">Monthly Total</td>
+
+                              </tr>
+                              <tr>
+                                <td class="text-right">$ {{totalAmountPatients}}</td>
+                                  
+                              </tr>
+                            </table>
+                          </div>
+                          </div>
+
+                               <div style="width:100%; float:left;">      
+                                <div mat-dialog-actions class="sa-pull-right" style="width:100%;">
+                                <div style="width:100%;" class="sa-form-group text-right" style="position:relative; width:100%;">
+                                <button class="mat-raised-button mat-gray "  (click)="openaddDialog()">Add Family Member <span class="btn-off-label">{{discount}}% off</span></button>
+                                </div>
+                                <div style="width:100%;" class="sa-form-group text-right">
+                                 <button class="mat-raised-button mat-gray mr15" (click) ="changeTab(0)">Back</button>
+                                 <button class="mat-raised-button mat-dc ok_btn" (click) ="paymentStripe()">Pay Now</button>
+                                </div>
+                              </div>
+                            </div>
+
+                          </mat-tab>
+
+                           <mat-tab class="step3" label="Payment" >
+
+
+        <!-- <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions" (change)="cardUpdated($event)"></ngx-stripe-card>
+         <button mat-raised-button  color="primary" >Get Card Token</button> -->
+                             <form method="POST" id="payment-form"  [formGroup]="formStripe"  (submit)="getToken()">
+                             
+
+                          <div fxLayout="row wrap" fxLayoutGap="2%">
+                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                               <label>Card Number</label>
+                               <input [(ngModel)]="cardNumber" [formControl]="formStripe.controls['cardNumber']"  required name="card-number" type="text" size="20" data-stripe="number">
+                               <small *ngIf="formStripe.controls['cardNumber'].hasError('required') && formStripe.controls['cardNumber'].touched" class="text-danger support-text">You must include card Number.</small>   
+                             </div>
+                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                             <label>Expiration (MM/YY)</label>
+
+                             <div fxLayout="row wrap" fxLayoutGap="2%">
+                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                             <input [(ngModel)]="expiryMonth" [formControl]="formStripe.controls['expiryMonth']"   required name="expiry-month" type="text" size="2" data-stripe="exp_month">
+                             <small *ngIf="formStripe.controls['expiryMonth'].hasError('required') && formStripe.controls['expiryMonth'].touched" class="text-danger support-text">You must enter expiry month.</small>   
+                             </div>
+                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                             <input [(ngModel)]="expiryYear" [formControl]="formStripe.controls['expiryYear']"  required name="expiry-year" type="text" size="2" data-stripe="exp_year"> 
+                             <small *ngIf="formStripe.controls['expiryYear'].hasError('required') && formStripe.controls['expiryYear'].touched" class="text-danger support-text">You must enter expiry year.</small>   
+                             </div>
+                             </div>
+                             </div>
+                           </div>
+                            <div fxLayout="row wrap" fxLayoutGap="2%">
+                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                               <label>CVC</label>
+                                  <input [(ngModel)]="cvc" [formControl]="formStripe.controls['cvc']"  required name="cvc" type="text" size="4" data-stripe="cvc">
+                                  <small *ngIf="formStripe.controls['cvc'].hasError('required') && formStripe.controls['cvc'].touched" class="text-danger support-text">You must enter expiry cvc.</small>   
+                             </div>
+                            </div>
+                             <div mat-dialog-actions class="sa-pull-right">
+                              <input class="mat-raised-button mat-dc ok_btn" type="submit" value="Submit Payment">
+                             </div>
+                            </form> 
+                          </mat-tab>
+                         </mat-tab-group>
+                       </div>
+                     </div>
+            </mat-card-content>
+        </mat-card>
+</div>
+
+

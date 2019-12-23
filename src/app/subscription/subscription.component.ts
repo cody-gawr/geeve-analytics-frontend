@@ -75,8 +75,7 @@ export class SubscriptionComponent implements OnInit {
   public clinicTagline:any;
   public DefaultLogo :any;
   public DefaultHeaderImage :any;
-  public sampleplan =false;;
-
+  public sampleplan =false;
   options: FormGroup;
   @ViewChild(SubscriptionComponent) table: SubscriptionComponent;
   constructor(notifierService: NotifierService,private elementRef: ElementRef, private fb: FormBuilder, private router: Router, private subscriptionService: SubscriptionService,private ClinicSettingsService:ClinicSettingsService,private _cookieService: CookieService,private route: ActivatedRoute, public dialog: MatDialog) {
@@ -93,6 +92,11 @@ export class SubscriptionComponent implements OnInit {
     this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("clinic_id");
     this.user_id = this.route.snapshot.paramMap.get("user_id");
+    var data =this.user_id.split("&");
+    this.user_id = data[0];
+    if(data[1]) {
+    this.email = data[1];
+    }
     this.getClinicSettings();
     });
 
@@ -207,22 +211,28 @@ openDialog(id,amount) {
   if(id=="sampleplan1"){
     alert("This is the sample plan only for viewing . We will be back with our live plans soon. ");
     return false;
-  }
-    this.dialog.open(RegisterComponent, {
-      width: '250px',
-       data: {
-        clinic_id: this.clinic_id,
-        user_id:this.user_id,
-        plan_id:id,
-        plan_amount:amount
-      }
-    }).afterClosed().subscribe(resp => {
-      if (resp) {
-        // const index = this.customers.findIndex((existingCustomer) => existingCustomer.id === resp.id);
-        // this.customers[index] = new Customer(resp);
-        // this.subject$.next(this.customers);
-      }
-    });
+    }
+    if(this.email)
+    this.router.navigate(['/purchase-plan/'+id+'&'+this.email]);      
+      else
+    this.router.navigate(['/purchase-plan/'+id]);
+
+    // this.dialog.open(RegisterComponent, {
+    //   width: '250px',
+    //    data: {
+    //     clinic_id: this.clinic_id,
+    //     user_id:this.user_id,
+    //     terms:this.terms,
+    //     plan_id:id,
+    //     plan_amount:amount
+    //   }
+    // }).afterClosed().subscribe(resp => {
+    //   if (resp) {
+    //     // const index = this.customers.findIndex((existingCustomer) => existingCustomer.id === resp.id);
+    //     // this.customers[index] = new Customer(resp);
+    //     // this.subject$.next(this.customers);
+    //   }
+    // });
   }
 
   openNav() {
@@ -230,24 +240,41 @@ openDialog(id,amount) {
   }
   closeNav() {
       $("#myNav").css('width','0%');
-
   }
+  public load_id;
+  public load_preventative_plan;
+  public load_treatment_inclusions;
+  public load_treatment_exclusions;
+  public load_totalAmount;
+  loadDesc(id, preventative_plan, treatment_inclusions, treatment_exclusions, totalAmount) {
+    $(".treatment_content").show();
+    this.load_id= id;
+    this.load_preventative_plan = preventative_plan;
+    this.load_treatment_inclusions =treatment_inclusions;
+    this.load_treatment_exclusions = treatment_exclusions;
+    this.load_totalAmount = totalAmount;
+  }
+
   getPlans() {
       //    this.errorLogin  =false;
      
   this.subscriptionService.getPlans(this.clinic_id,this.user_id).subscribe((res) => {
 
        if(res.message == 'success'){
-
         res.data.forEach((res,key) => {
-          var temp= {planName:'',planLength:'',totalAmount:'',treatments:'',description:'',isFeatured:'',id:''};
+          var temp= {planName:'',planLength:'',totalAmount:'',treatments:'',description:'',isFeatured:'',preventative_discount:'',treatment_inclusions:'',id:'',discount:'',preventative_frequency:'',preventative_plan:'',treatment_exclusions:''};
           temp.id =res.id;          
           temp.planName =res.planName;
           temp.planLength =res.planLength;  
-          temp.totalAmount =res.totalAmount;  
-          temp.treatments =res.treatments; 
+          temp.totalAmount =res.totalAmount; 
           temp.description =res.description;
           temp.isFeatured = res.isFeatured; 
+          temp.preventative_discount =res.preventative_discount; 
+          temp.discount =res.discount; 
+          temp.preventative_frequency = res.preventative_frequency; 
+          temp.preventative_plan = JSON.parse(res.preventative_plan); 
+          temp.treatment_inclusions = JSON.parse(res.treatment_inclusions); 
+          temp.treatment_exclusions = JSON.parse(res.treatment_exclusions); 
           this.plans.push(temp);
         });
 
@@ -263,22 +290,18 @@ openDialog(id,amount) {
           temp.isFeatured = "true"; 
           temp.sampleplan = true;
           this.plans.push(temp);
-
           this.errorLogin  =true;
        }
-       console.log(this.plans);
     }, error => {
     }    
     );
   }
 
 
-
+public terms;
   // Get Clinic Settings
   getClinicSettings() {
      this.subscriptionService.getClinicSettings(this.clinic_id,this.user_id).subscribe((res) => {
-
-
        if(res.message == 'success'){
           const finalData = res.data;
           if(finalData[0].header_info!="" && finalData[0].header_info!=null)
@@ -286,7 +309,6 @@ openDialog(id,amount) {
            this.header_info = JSON.parse(finalData[0].header_info);  
            this.headerTitle = this.header_info.headerTitle;
            this.headerDescription = this.header_info.headerDescription;
-           //this.headerImageURL = this.header_info.image;
 
            if(this.header_info.image!=""){
               this.headerImageURL = this.header_info.image;
@@ -321,15 +343,11 @@ openDialog(id,amount) {
           this.clinicName =(finalData[0].clinicName!="") ? finalData[0].clinicName : "Clinic Name";
           this.clinicAddress =(finalData[0].address!="") ? finalData[0].address : "Default Lane 2, High Street, New York .";
           this.clinicContactNo =(finalData[0].phoneNo!="") ? finalData[0].phoneNo : "+123456789";
-          console.log("test");
-          console.log(finalData);
-          console.log(finalData[0].logo);
+
           if(finalData[0].logo!="undefined")
           {
-            console.log("h 1");
             this.clinicLogo =finalData[0].logo;  
           }else{
-            console.log("h 2");
             this.clinicLogo =this.DefaultLogo;
           }
           
@@ -342,7 +360,7 @@ openDialog(id,amount) {
           this.clinicEmail = (finalData[0].Users.email !="") ? finalData[0].Users.email :"admin@jeevemembers.com"; // Used for sending email of contact us form 
     
           this.clinicTagline = (finalData[0].clinicTagLine!=null) ? finalData[0].clinicTagLine : "Our <i class='fas fa-smile'></i> Are Valley Wide"; 
-          
+          this.terms= finalData[0].terms;
           // Used for sending email of contact us form 
 
 

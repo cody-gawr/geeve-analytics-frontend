@@ -19,7 +19,7 @@ import { ClinicSettingsService } from './clinic-settings.service';
 
 import { AngularFileUploaderModule } from "angular-file-uploader";
 
-
+import { NgxEditorModule } from 'ngx-editor';
 
 @NgModule({
   imports: [
@@ -35,6 +35,7 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     MatDatepickerModule,
     NgMultiSelectDropDownModule.forRoot(),
     AngularFileUploaderModule,
+    NgxEditorModule
   ],
   providers: [
     ClinicSettingsService

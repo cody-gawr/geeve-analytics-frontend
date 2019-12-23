@@ -10,7 +10,7 @@ import { DatePipe,formatDate } from '@angular/common';
 
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { empty } from 'rxjs';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -64,7 +64,7 @@ const data: any = [];
 })
 export class PatientInfoComponent implements OnInit {
   private readonly notifier: NotifierService;
-
+  public formPatient: FormGroup;
   color = 'primary';
   mode = 'determinate';
   value = 50;
@@ -96,13 +96,28 @@ export class PatientInfoComponent implements OnInit {
   public membertreatmentid:any={};
   public payment_plan_name:any ={};
   public mainpatientname;
+  public patient_status;
+  public created;
+  public totalAmount;
+  public planLength;
   rows = [];
+  rowsAppointments =[];
   benefit =[];
   payment=[];
   editing ={};
- 
+ public patient_id;
+public patient_address;
+public patientdob;
+public patient_age;
+public patient_gender;
+public patient_phone_no;
+public patient_home_phno;
+public patient_name;
+public patient_dob;
+public preventative_frequency;
+public preventative_count;
 
-  constructor(notifierService: NotifierService,private fb: FormBuilder,public dialog: MatDialog,  private patientInfoService: PatientInfoService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,breakpointObserver: BreakpointObserver) {
+  constructor(notifierService: NotifierService,private fb: FormBuilder,public dialog: MatDialog,  private patientInfoService: PatientInfoService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,breakpointObserver: BreakpointObserver,private datePipe: DatePipe) {
     this.notifier = notifierService;
     }
    goBack() {
@@ -144,28 +159,15 @@ export class PatientInfoComponent implements OnInit {
        });
 
        const sub2 = dialogRef.componentInstance.deletesittingid.subscribe((deleteindex) => {
-        // var ar = this.sittings;
-        // delete ar[deleteindex];
-        // this.sittings.shift(deleteindex);
-        
-        // console.log(ar);
-
         var my_array = this.sittings;
         var start_index = deleteindex
         var number_of_elements_to_remove = deleteindex;
         var removed_elements = my_array.splice(start_index, number_of_elements_to_remove);
         this.totalsitting = this.sittings.length;
 
-         $("#totalsittings").val(this.totalsitting);
-        console.log(this.totalsitting)
-        console.log(removed_elements);
-        console.log(my_array);
-        
+         $("#totalsittings").val(this.totalsitting);        
         });
 
-
-
-        
     const sub = dialogRef.componentInstance.sittingsUpdate.subscribe((settingstatus,sittingsIndex) => {
       this.getBenefitsUsed();   
       this.benefit_patient_id = this.benefit[treatmentIndex]['patient_id'];
@@ -173,14 +175,6 @@ export class PatientInfoComponent implements OnInit {
       this.sitting_id = this.benefit[treatmentIndex]['sittinginfo'][settingstatus['sittingIndex']]['id'];
       this.sitting_status = settingstatus['settingstatus'];
       this.performed_date = formatDate(new Date(), 'yyyy-MM-dd', 'en');
-
-
-     //  console.log(this.sitting_id);
-     // console.log( treatmentIndex);
-     // console.log(this.sitting_status);
-     // console.log(settingstatus['sittingIndex']);
-     
-
       this.patientInfoService.updateSittingStatus(this.benefit_patient_id, this.benefit_planid,this.sitting_id,this.sitting_status,this.performed_date).subscribe((res) => {
         if(res.message == 'success'){
           this.getBenefitsUsed();
@@ -204,8 +198,6 @@ export class PatientInfoComponent implements OnInit {
         sittingUpdated[index] = temp;
     }
     var sittingUpdatedString =JSON.stringify(sittingUpdated); 
-    console.log(sittingUpdatedString);
-
        var totalsiting =this.sittings.length;
       this.getBenefitsUsed();
       this.patientInfoService.addBenefits(this.id, this.memberplanid,this.membertreatmentid,totalsiting,sittingUpdatedString).subscribe((res) => {
@@ -228,30 +220,45 @@ export class PatientInfoComponent implements OnInit {
     this.getSubPatients();
     this.getPatientContract();
    
-    $('.header_filters').removeClass('hide_header'); 
-    $('nb.header_filters').removeClass('flex_direct_mar'); 
-      $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
-        $('.header_filters').addClass('flex_direct_mar');
+    // $('.header_filters').removeClass('hide_header');
       this.route.params.subscribe(params =>  {
-    
-       // this.getClinicGoals();
         $('#title').html('Patient Plan Detail');
      });
 
-     this.form = this.fb.group({
-     
+     this.formPatient = this.fb.group({
+          patient_name: [null, Validators.compose([Validators.required])],
+      patient_address: [Validators.compose([Validators.required])],
+      patient_dob: [null, Validators.compose([Validators.required])],
+       // patient_age: [null, Validators.compose([Validators.required])],
+      patient_gender: [null, Validators.compose([Validators.required])],
+      patient_phone_no: [null, Validators.compose([Validators.required])],
+       patient_home_phno: [null, Validators.compose([Validators.required])],
+      patient_status: [null, Validators.compose([Validators.required])]
     });
     
       }
-   
+
+    private deletePatients() {
+           if(confirm("Are you sure to delete Patient?")) {
+    if(this.id) {
+      this.patientInfoService.deletePatients(this.id).subscribe((res) => {
+       if(res.message == 'success'){
+        this.notifier.notify( 'success', 'Patient Removed' ,'vertical');
+        this.router.navigate(['/patients-detail']);
+             }
+      
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+    }
+  }
+  } 
   getSubPatients() {
 
     this.patientInfoService.getSubPatients(this.id).subscribe((res) => {
   
        if(res.message == 'success'){
-
-         console.log(res.data);
         var patientArray ={};
         patientArray['sub_patients_name'] = res.data[0]['patient_name'];
         patientArray['sub_patients_dob'] = res.data[0]['patient_dob'];
@@ -261,8 +268,19 @@ export class PatientInfoComponent implements OnInit {
         this.rows = res.data[0]['sub_patients'];
         var sub_patient_length = this.rows.length;
         this.rows[sub_patient_length] = patientArray;
+        this.patient_id=res.data[0]['id'];
+        this.patient_name=res.data[0]['patient_name'];
+        this.patient_address=res.data[0]['patient_address'];
+        //this.patient_dob=res.data[0]['patient_dob'];
+        this.patient_dob = this.datePipe.transform(res.data[0]['patient_dob'],'yyyy-MM-dd');
+        this.patient_age=res.data[0]['patient_age'];
+        this.patient_gender=res.data[0]['patient_gender'];
+        this.patient_phone_no=res.data[0]['patient_phone_no'];
+        this.patient_home_phno=res.data[0]['patient_home_phno'];
+        this.patient_status=res.data[0]['patient_status'];
         this.patient_amount=res.data[0]['total_amount'];
         this.patient_status=res.data[0]['patient_status'];
+        this.preventative_frequency= res.data[0]['member_plan']['preventative_frequency'];
         this.created=res.data[0]['created'];
         this.totalAmount=res.data[0]['member_plan']['totalAmount'];
         this.total_subpatient=res.data[0]['sub_patients'].length;
@@ -274,6 +292,8 @@ export class PatientInfoComponent implements OnInit {
         this.mainpatientname = res.data[0]['patient_name'];
         this.getBenefitsUsed();
         this.getPaymentHistory();
+    this.getAppointments();
+
        }
         else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -287,12 +307,68 @@ export class PatientInfoComponent implements OnInit {
     }    
     );
   }
-  getPaymentHistory() {
 
+  getAppointments() {
+       this.patientInfoService.getAppointments(this.patient_id,this.member_plan_id).subscribe((res) => {   
+         if(res.message == 'success'){
+          this.rowsAppointments = res.data;
+             }
+             else{
+          this.rowsAppointments = [];
+
+             }
+          this.preventative_count = this.rowsAppointments.length;
+
+        }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        });
+  }
+
+  deleteAppointment(id) {
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete the logged Appointement?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+            this.patientInfoService.deleteAppointment(id).subscribe((res) => {   
+         if(res.message == 'success'){
+        this.notifier.notify( 'success', 'Appointement Removed' ,'vertical');
+          
+          }
+          this.getAppointments();
+        }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        });
+      } 
+    })
+
+
+ 
+  }
+
+  onSubmitPatientDetails() {
+    if(this.formPatient.valid) {
+        this.patientInfoService.updatePatientsDetails(this.patient_name,this.patient_address,this.patient_dob,this.patient_age,this.patient_gender,this.patient_phone_no,this.patient_home_phno,this.patient_status,this.patient_id).subscribe((res) => {   
+         if(res.message == 'success'){
+                this.notifier.notify( 'success', 'Patient Details Updated' ,'vertical');
+          }
+            }, error => {
+              this.warningMessage = "Please Provide Valid Inputs!";
+            });
+    }
+  }
+
+
+  getPaymentHistory() {
     this.patientInfoService.getPaymentHistory(this.id,this.member_plan_id,this.user_id,this.clinic_id).subscribe((res) => {
-  
        if(res.message == 'success'){
         this.payment = res.data;
+        if(res.data[0])
         this.payment_plan_name=res.data[0]['member_plan']['planName'];
         }
         else if(res.status == '401'){
@@ -300,13 +376,27 @@ export class PatientInfoComponent implements OnInit {
               this._cookieService.put("email", '');
               this._cookieService.put("token", '');
               this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
+              this.router.navigateByUrl('/login');
            }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
   }
+
+
+  log_appointment() {
+    this.patientInfoService.log_appointment(this.patient_id,this.member_plan_id).subscribe((res) => {   
+        if(res.message == 'success'){
+            this.notifier.notify( 'success', 'Appointment Logged' ,'vertical');
+    this.getAppointments();
+
+             }
+        }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        });
+  }
+
   getPatientContract(){
       this.patientInfoService.getPatientContract(this.id).subscribe((res) => {
           if(res.message == 'success'){
@@ -324,9 +414,7 @@ export class PatientInfoComponent implements OnInit {
      );
     }
 
-
-
-  onSubmit() {
+    onSubmit() {
     if(this.imageURL == undefined){
       alert("Please Upload file");
     
@@ -347,6 +435,7 @@ export class PatientInfoComponent implements OnInit {
            );
         }
       }
+
   public fileToUpload;
   uploadImage(files: FileList) {
     this.fileToUpload = files.item(0);
@@ -356,14 +445,11 @@ export class PatientInfoComponent implements OnInit {
       return null;
     }else
     {
-      $('.ajax-loader').show();      
-
+      $('.ajax-loader').show();  
       let formData = new FormData();
     formData.append('file', this.fileToUpload, this.fileToUpload.name);
-
     this.patientInfoService.contractUpload(formData).subscribe((res) => {
       $('.ajax-loader').hide();      
-
         if(res.message == 'success'){
         this.imageURL= res.data;
           }

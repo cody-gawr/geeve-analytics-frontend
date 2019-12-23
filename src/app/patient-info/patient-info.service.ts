@@ -32,6 +32,50 @@ export class PatientInfoService {
         );
     }
 
+
+    getAppointments(patient_id, member_plan_id, token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Patients/getAppointments?patient_id="+patient_id+"&member_plan_id="+member_plan_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                return response;
+                    })
+        );
+    }
+
+    log_appointment( patient_id, member_plan_id): Observable<any> { 
+    const formData = new FormData();      
+        formData.append('patient_id', patient_id);
+        formData.append('member_plan_id', member_plan_id);
+        formData.append('token', this._cookieService.get("token"));
+
+        return this.http.post(this.apiUrl +"/Patients/logAppointment/", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    deleteAppointment(id, token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Patients/deleteAppointment?id="+id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                return response;
+                    })
+        );
+    }
+
+       // Delete Clinic
+    deletePatients(patient_id, token = this._cookieService.get("token")): Observable<any> {
+    const formData = new FormData();
+
+    formData.append('patient_id', patient_id);
+    formData.append('token', token);
+
+        return this.http.post(this.apiUrl +"/Patients/deletePatientByID", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
     getPatientContract(patient_id, token = this._cookieService.get("token")): Observable<any> {
         return this.http.get(this.apiUrl +"/Patients/getPatientContract?patient_id="+patient_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
@@ -138,5 +182,27 @@ export class PatientInfoService {
                         })
             );
     }
+
+        updatePatientsDetails(patient_name, patient_address,patient_dob,patient_age,patient_gender,patient_phone_no,patient_home_phno,patient_status,patient_id,token =this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        
+        formData.append('patient_name', patient_name);
+        formData.append('patient_address', patient_address);
+        formData.append('patient_dob',patient_dob);
+        formData.append('patient_age', patient_age);
+        formData.append('patient_gender', patient_gender);
+        formData.append('patient_phone_no',patient_phone_no);
+        formData.append('patient_home_phno', patient_home_phno);
+        formData.append('patient_status', patient_status);
+        formData.append('patient_id', patient_id);
+        formData.append('token', token);
+       
+
+            return this.http.post(this.apiUrl +"/Patients/updatePatientDetails/", formData)
+            .pipe(map((response: Response) => {
+                            return response;
+            })
+            );
+        }
        
 }

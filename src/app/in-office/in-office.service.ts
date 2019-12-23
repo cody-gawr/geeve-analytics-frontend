@@ -44,7 +44,7 @@ export class InOfficeService {
 
   
 
-    addPaymentPlans(patient_name, patient_email,patient_dob,patient_phone_no,plan_name,plan_description,clinic_id,total_amount,setup_fee,deposite_percentage,deposite_amount,balance_amount,payment_frequency,duration,monthly_weekly_payment,start_date,token =this._cookieService.get("token")): Observable<any> {
+    addPaymentPlans(patient_name, patient_email,patient_dob,patient_phone_no,plan_name,plan_description,clinic_id,total_amount,setup_fee,deposite_percentage,deposite_amount,balance_amount,payment_frequency,duration,monthly_weekly_payment,start_date,patient_id,token =this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
         formData.append('patient_name', patient_name);
         formData.append('patient_email', patient_email);
@@ -63,6 +63,8 @@ export class InOfficeService {
         formData.append('duration',duration );
         formData.append('monthly_weekly_payment',monthly_weekly_payment );
         formData.append('start_date',start_date );
+        formData.append('patient_id',patient_id );
+        
         formData.append('token', token);
 
             return this.http.post(this.apiUrl +"/InofficePayments/addPaymentPlans/", formData)

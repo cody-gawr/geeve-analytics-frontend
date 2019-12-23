@@ -40,6 +40,11 @@ export class PaymentPatientComponent implements OnInit {
   public discount;
   public patient_name;
   public patient_email;
+  cardNumber: string;
+  expiryMonth: string;
+  expiryYear: string;
+  cvc: string;
+  message: string;
   constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private paymentPatientService: PaymentPatientService,private _cookieService: CookieService, private route: ActivatedRoute) {}
 
    ngOnInit() {
@@ -48,12 +53,12 @@ export class PaymentPatientComponent implements OnInit {
     });
     this.getSubPatients();
     this.form = this.fb.group({
-      name: [null, Validators.compose([Validators.required])],
-      dob: [null, Validators.compose([Validators.required])],
-      gender: [null, Validators.compose([Validators.required])]
+        name: [null, Validators.compose([Validators.required])],
+        dob: [null, Validators.compose([Validators.required])],
+        gender: [null, Validators.compose([Validators.required])]
     });
   }
-
+ 
   getSubPatients() {
     this.paymentPatientService.getSubPatients(this.id).subscribe((res) => {  
        if(res.message == 'success'){
@@ -91,34 +96,34 @@ export class PaymentPatientComponent implements OnInit {
             var sub_patient_length = this.rows.length;
         this.rows[sub_patient_length] = patientArray;
         }
-        console.log(this.rows);
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
 
-onSubmit() {
-  this.errorLogin  =false;
-  var count_patient = this.rows.length;
-  if(this.rows.length>1)
-    var patient_amount = this.rows[count_patient -2]['sub_patients_amount'];
-  else
-    var patient_amount = this.rows[0]['sub_patients_amount'];
-  if(count_patient < 4)
-    patient_amount = patient_amount - Math.floor((this.discount/100)*patient_amount);
-    this.patient_amount =this.patient_amount+ patient_amount;
-      $('.ajax-loader').show();      
-    this.paymentPatientService.addSubPatients(this.form.value.name,this.form.value.dob,this.form.value.gender,patient_amount,this.id).subscribe((res) => {
-      $('.ajax-loader').hide();      
-       if(res.message == 'success'){
-        this.updatePatients('INACTIVE');
-       }
-       else if(res.message == 'error'){
-          this.errorLogin  =true;
-       }
-    }, error => {
-    });
-  }
+    onSubmit() {
+      this.errorLogin  =false;
+      var count_patient = this.rows.length;
+      if(this.rows.length>1)
+        var patient_amount = this.rows[count_patient -2]['sub_patients_amount'];
+      else
+        var patient_amount = this.rows[0]['sub_patients_amount'];
+      if(count_patient < 4)
+        patient_amount = patient_amount - Math.floor((this.discount/100)*patient_amount);
+        this.patient_amount =this.patient_amount+ patient_amount;
+          $('.ajax-loader').show();      
+        this.paymentPatientService.addSubPatients(this.form.value.name,this.form.value.dob,this.form.value.gender,patient_amount,this.id).subscribe((res) => {
+          $('.ajax-loader').hide();      
+           if(res.message == 'success'){
+            this.form.reset();
+            this.updatePatients('INACTIVE');
+           }
+           else if(res.message == 'error'){
+              this.errorLogin  =true;
+           }
+        }, error => {
+        });
+      }
 
   updatePatients(status) { 
       $('.ajax-loader').show();      

@@ -61,25 +61,7 @@ export class PlansService {
         );
     }
 
-    
-    // updateUser(memberid,clinic_id, value, column, token = this._cookieService.get("token")): Observable<any> {
-    // const formData = new FormData();
-
-    // formData.append('id', memberid);
-    // formData.append('clinic_id', clinic_id);
-    //  formData.append(column, value);
-    //  formData.append('user_id', this._cookieService.get("userid"));
-    //  formData.append('token', token);
-    
-    //     return this.http.post(this.apiUrl +"/MemberPlan/updateMemberplan/", formData)
-    //     .pipe(map((response: Response) => {
-    //                     return response;
-    //                 })
-    //     );
-    // }
-
-
-    updateUser(memberid,clinic_id,planName,planOrder,planLength,totalAmount,discount,treatment_id,description,isFeatured,token = this._cookieService.get("token")): Observable<any> {
+    updateUser(memberid,clinic_id,planName,planOrder,planLength,totalAmount,discount,description,isFeatured,preventative_plan,preventative_frequency,treatment_inclusions,treatment_exclusions,preventative_discount,token = this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
     
         formData.append('id', memberid);
@@ -89,9 +71,13 @@ export class PlansService {
         formData.append('planLength', planLength);
         formData.append('totalAmount', totalAmount);
         formData.append('discount', discount);
-        formData.append('treatment_id', treatment_id);
         formData.append('description', description);
         formData.append('isFeatured', isFeatured);
+        formData.append('preventative_plan',preventative_plan);
+        formData.append('preventative_frequency', preventative_frequency);
+        formData.append('treatment_inclusions',treatment_inclusions );
+        formData.append('treatment_exclusions',treatment_exclusions);
+        formData.append('preventative_discount',preventative_discount);
         formData.append('user_id', this._cookieService.get("userid"));
         formData.append('token', token);
         
@@ -105,7 +91,7 @@ export class PlansService {
 
 
     // Update Clinic
-    addPlans(planName,planOrder,planLength,totalAmount,discount, description,clinic_id,treat,isFeatured,token =this._cookieService.get("token")): Observable<any> {
+    addPlans(planName,planOrder,planLength,totalAmount,discount, description,clinic_id,isFeatured,preventative_plan,preventative_frequency,treatment_inclusions,treatment_exclusions,preventative_discount,token =this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('clinic_id', clinic_id);
@@ -115,8 +101,12 @@ export class PlansService {
     formData.append('discount',discount);
     formData.append('totalAmount',totalAmount);
     formData.append('description', description);
-    formData.append('treatment_id',treat );
     formData.append('isFeatured',isFeatured);
+    formData.append('preventative_plan',preventative_plan);
+    formData.append('preventative_frequency', preventative_frequency);
+    formData.append('treatment_inclusions',treatment_inclusions );
+    formData.append('treatment_exclusions',treatment_exclusions);
+    formData.append('preventative_discount',preventative_discount);
     
     formData.append('token', token);
 
@@ -126,9 +116,9 @@ export class PlansService {
         })
         );
     }/*Also checking planorder */
-    getPlannamevalidation(planName,clinic_id,planOrder,token = this._cookieService.get("token"),user_id = this._cookieService.get("userid")): 
+    getPlannamevalidation(planName,clinic_id,token = this._cookieService.get("token"),user_id = this._cookieService.get("userid")): 
     Observable<any> {
-        return this.http.get(this.apiUrl +"/MemberPlan/getPlannamevalidation?token="+this._cookieService.get("token")+"&planName="+planName+"&clinic_id="+clinic_id+"&user_id="+this._cookieService.get("userid")+"&planOrder="+planOrder, { headers: this.headers })
+        return this.http.get(this.apiUrl +"/MemberPlan/getPlannamevalidation?token="+this._cookieService.get("token")+"&planName="+planName+"&clinic_id="+clinic_id+"&user_id="+this._cookieService.get("userid"), { headers: this.headers })
         .pipe(map((response: Response) => {
             // console.log(response);
                     return response;

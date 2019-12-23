@@ -1,11 +1,11 @@
 
 
-<div id="sa-container" class="sa-container">
+<div id="sa-container" class="sa-container subscription-main">
       <div class="sa-pull-left sa-col-12 sa-main-header sa-ste">
         <div class="container sa-c">
           <a class="sa-logo sa-ste" href="index.html">
             <!--img class="sa-main-logo-txt sa-ste" src="../../assets/img/logo.png"-->
-            <img class="sa-main-logo-txt sa-ste" src="{{clinicLogo}}">
+            <img class="sa-ste sa-main-logo-txt sa-ste" src="{{clinicLogo}}">
           </a>
           <div id="nav_main" class="pull-right sa-navigation">
                 
@@ -55,49 +55,85 @@
                 <h1>{{headerTitle}}</h1>
                 <p>{{headerDescription}}</p>
               <a href="#" class="btn btn-lg btn-theme btn-rounded">Contact Now</a>
-            </div>
-            
-          
-            
+            </div>            
           </div>
         </div>
         
       </section>
       
-      <section class="sa-pull-left sa-col-12 pricing-section" id="offers_packages">
+      <section class="sa-pull-left sa-col-12 pricing-section" id="offers_packages" style="margin-bottom:100px;">
         <div class="container sa-c">
           <div class="row justify-content-center align-items-center">
             <div class="col-md-12">
               <h2 class="section_title">Offers & Packages</h2>
               <div class="owl-carousel price_slide">
-           
            <ngx-slick class="carousel" #slickModal="slick-modal" [config]="planSliderConfig" responsive="breakpoints">
            <div ngxSlickItem *ngFor="let plan of plans;i as index" class="slide"  [ngClass]="{'featuredPlan': plan.isFeatured==='true'}">
-
             <div class="pricing_area sa-ste">
              <img class="star_image" src="assets/img/star.png">
              <h4>{{plan.planName}}</h4>
              <span class="price_spacer"></span>
              <span class="price_value">${{plan.totalAmount}}</span>
-             <span class="price_limit">{{plan.planLength}}</span>
-             <div class="packgae_list"  *ngFor="let service of plan.treatments?.split(',')">
-               <span>{{service}}</span>
+              <span class="price_limit">{{plan.planLength}}</span>
+             <div class="packgae_list_main">
+            
+              <div class="packgae_list" >
+             <span>{{plan.preventative_frequency}} FREE CHCEKUPS PER ANNUM *</span>
+             <span>{{plan.preventative_discount}}% OFF SELECTED TREATMENTS *</span>
+             <span>{{plan.discount}}% OFF FOR ADDITIONAL FAMILY MEMBERS</span>
+           </div>
+             <span (click) ="loadDesc(plan.id, plan.preventative_plan, plan.treatment_inclusions, plan.treatment_exclusions, plan.totalAmount)" class="learn_more {{plan.id}}">Learn More</span>
+           <!--   <div class="treatment_content {{plan.id}}" [style.display]="'none'">
+             <h5>Preventative Plan inclusions</h5>
+             <div class="packgae_list"  *ngFor="let service of plan.preventative_plan">
+               <span>{{service.itemName}}</span>
               </div>
-
+              <h5>Treatment Inclusions</h5>
+             <div class="packgae_list"  *ngFor="let service of plan.treatment_inclusions">
+               <span>{{service.itemName}}</span>
+              </div>
+              <h5>Treatment Exclusions</h5>
+             <div class="packgae_list"  *ngFor="let service of plan.treatment_exclusions">
+               <span>{{service.itemName}}</span>
+              </div>
+            </div> -->
+           </div>
              <a class="btn btn-theme no-radius btn-block pricing_btn" [ngClass]="{'disabled': plan.id=='sampleplan101'}" (click)="openDialog(plan.id,plan.totalAmount)">Buy Now</a> 
            </div>
           </div>
          </ngx-slick>
+              </div>  
 
-              </div>
-              
+            <div class="treatment_content {{load_id}}" [style.display]="'none'">
+                 <h2 class="srvc_maintitle">Test12 Details</h2>
+                 <div class="treatment_sec">
+                    <h5 class="srvc_title">Preventative Plan inclusions</h5>
+                   <div class="packgae_list"  *ngFor="let service of load_preventative_plan">
+                     <span class="srvc_pck">{{service.itemName}}</span>
+                    </div>
+                    <h5 class="srvc_title" >Treatment Inclusions</h5>
+                   <div class="packgae_list"  *ngFor="let service of load_treatment_inclusions">
+                     <span class="srvc_pck">{{service.itemName}}</span>
+                    </div>
+                    <h5 class="srvc_title">Treatment Exclusions</h5>
+                   <div class="packgae_list"  *ngFor="let service of load_treatment_exclusions">
+                     <span class="srvc_pck">{{service.itemName}}</span>
+                    </div>
+                  </div>
+                  <div class="srvc_btn">
+                    <a class="btn btn-theme no-radius btn-block" [ngClass]="{'disabled': load_id=='sampleplan101'}" (click)="openDialog(load_id,load_totalAmount)">Buy Now</a>
+                  </div>
+            </div>
+
+
             </div>
           </div>
         </div>
       </section>
       
+
       
-     <section class="sa-pull-left sa-col-12 slider-section">
+     <section class="sa-pull-left sa-col-12 slider-section d-none">
       <div class="container sa-c">   
         <div class="sa_slide_main">
           <ngx-slick class="carousel" #slickModal="slick-modal" [config]="imageSliderConfig">
@@ -105,7 +141,6 @@
              <img src="{{ slide.file }}" alt="" width="100%">
            </div>
           </ngx-slick>
-
             <img class="slide_shape" src="assets/img/slide_shape.png"/>
             <img class="slide_shape2" src="assets/img/slide_shape2.png"/>
             
@@ -134,7 +169,7 @@
 
 
       
- <section class="sa-pull-left sa-col-12 doctor-section">
+ <section class="sa-pull-left sa-col-12 doctor-section d-none">
         <div class="container sa-c">
         
           <div class="doctor_text">
@@ -169,7 +204,7 @@
         
       </section>
       
-      <section class="sa-pull-left sa-col-12 treatments-section">
+      <section class="sa-pull-left sa-col-12 treatments-section d-none">
         <div class="container sa-c">
         
           <div class="doctor_text">
@@ -208,7 +243,7 @@
         
       </section>
       
-      <section class="sa-pull-left sa-col-12 smile-section">
+      <section class="sa-pull-left sa-col-12 smile-section d-none">
         <div class="smile_image">
           <!--h4>Our <i class="fas fa-smile"></i> Are Valley Wide</h4-->
           <h4 [innerHTML]="clinicTagline"></h4>
@@ -216,7 +251,7 @@
         </div>  
       </section>
       
-      <section class="sa-pull-left sa-col-12 message-section" id="message_section">
+      <section class="sa-pull-left sa-col-12 message-section d-none" id="message_section ">
         <div class="container sa-c">
           <h2 class="section_title">Drop Us a Message</h2>
           <div class="">
@@ -258,8 +293,6 @@
           </div>
         </div>
       </section>
-      
-      
       
       <footer class="sa-pull-left sa-col-12 sa-footer-area">
         <div class="container sa-c">

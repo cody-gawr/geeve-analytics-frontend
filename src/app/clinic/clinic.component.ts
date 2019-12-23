@@ -81,6 +81,8 @@ export class ClinicComponent implements AfterViewInit {
         $('#title').html('Clinics');
         //$('.header_filters').hide();
         $('.header_filters').addClass('hide_header');
+        $('.sa_heading_bar').show();
+
         // this.notifier.notify( 'success', 'You are awesome! I mean it!' ,'vertical');
   }
   editing = {};

@@ -43,10 +43,10 @@ const moment = _rollupMoment || _moment;
 // https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
   parse: {
-    dateInput: 'MM/YYYY',
+    dateInput: 'MMMM YYYY',
   },
   display: {
-    dateInput: 'MM/YYYY',
+    dateInput: 'MMMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY',
@@ -117,7 +117,7 @@ constructor(private dashboardsService: DashboardsService, private datePipe: Date
  const myDate = new Date();
  console.log("const called");
  const monthname =this.getMonthName(myDate.getMonth());
- this.selectedMonthYear = monthname+" "+(myDate.getFullYear().toString()).slice(-2);
+ this.selectedMonthYear = monthname+" "+(myDate.getFullYear().toString()).slice();
 }
   private warningMessage: string;
 
@@ -130,11 +130,11 @@ constructor(private dashboardsService: DashboardsService, private datePipe: Date
      return this.mlist[monthno];
 };
 
-  chosenYearHandler(normalizedYear: Moment) {
-    const ctrlValue = this.date.value;
-    ctrlValue.year(normalizedYear.year());
-    this.date.setValue(ctrlValue);
-  }
+  // chosenMonthHandler(normalizedYear: Moment) {
+  //   const ctrlValue = this.date.value;
+  //   ctrlValue.year(normalizedYear.year());
+  //   this.date.setValue(ctrlValue);
+  // }
 
   chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.date.value;
@@ -158,16 +158,26 @@ constructor(private dashboardsService: DashboardsService, private datePipe: Date
     this.date.setValue(ctrlValue);
     datepicker.close();
   }
-
+  demo() {
+    alert('sdf');
+  }
 
   ngAfterViewInit() {   
     this.route.params.subscribe(params => {
       this.clinic_id = this.route.snapshot.paramMap.get("id");
-              $('.header_filters').removeClass('hide_header');
+        $('.header_filters').addClass('hide_header');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
-    $('#title').html('Dashboard - Membership Plans');
+        $('.sa_heading_bar').hide();       
+        $('#title').html('');
+        $(".demo").click(function(){
+             $('.mat-calendar-period-button').attr('disabled','true');
+          alert("The paragraph was clicked.");
+        });
+         $('.mat-datepicker-toggle').on('click', function(e) {
+             $('.mat-calendar-period-button').attr('disabled','true');
+          });
        $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();
@@ -590,6 +600,7 @@ public barChartOptions: any = {
   public conversionRateData=[];
   public conversionRateLabels=['Accepted','Pending'];
   public loadAnalytics() {
+    this.totalFeesThisMonth = 0;
    this.dashboardsService.loadAnalytics(this.startDate,this.endDate).subscribe((data) => {
       if(data.message == 'success'){
         if(data.data.totalMembers != null)
@@ -608,7 +619,6 @@ public barChartOptions: any = {
         this.conversionRateActive = data.data.conversionRate.active;
         this.conversionRateInactive = data.data.conversionRate.inactive;
         this.conversionPercentage = this.conversionRateActive / (this.conversionRateActive + this.conversionRateInactive) * 100;
-        console.log(this.conversionPercentage);
         if(isNaN(this.conversionPercentage)){
           this.conversionPercentage =0;
         }

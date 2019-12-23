@@ -26,8 +26,17 @@ export class PatientsDetailService {
 
 
    // Get Dentist
-    getPatients(token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Patients/getAllPatient?token="+this._cookieService.get("token"), { headers: this.headers })
+    getPatients(clinic_id,token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Patients/getAllPatient?clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+       // Get Dentist
+    getInviteMembers(clinic_id,token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Patients/getInviteMembers?clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
