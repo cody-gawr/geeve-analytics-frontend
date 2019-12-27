@@ -1,24 +1,18 @@
 <h1 mat-dialog-title>Invite New Member</h1>
 <div mat-dialog-content class="sa_forms_design">
- 
-
-
- <div fxLayout="row wrap" fxLayoutGap="2%">
+  <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Name</label>
+        <label>Patient Name</label>
         <input tabindex="1" [(ngModel)]="data.invite_member_name" placeholder="" class="form-control-dialog" required="true">
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-         <label>Enter your email</label>
+         <label>Patient Email Address</label>
         <input tabindex="1" placeholder="" [(ngModel)]="data.invite_member_email"  [formControl]="email" class="form-control-dialog" required="true">
     	<span *ngIf="email.invalid" class="error-message">{{getErrorMessage()}}</span>
     </div>
-
    </div>
-
-
 </div>
 <div mat-dialog-actions class="sa-pull-right">
-  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">OK</button>
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Send Invite</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
 </div>

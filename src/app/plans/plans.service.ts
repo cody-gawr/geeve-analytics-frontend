@@ -53,6 +53,7 @@ export class PlansService {
     const formData = new FormData();
     formData.append('id', id);
     formData.append('token', token);
+    formData.append('user_id', this._cookieService.get("userid"));
 
         return this.http.post(this.apiUrl +"/MemberPlan/deleteMemberplan", formData)
         .pipe(map((response: Response) => {
@@ -107,6 +108,7 @@ export class PlansService {
     formData.append('treatment_inclusions',treatment_inclusions );
     formData.append('treatment_exclusions',treatment_exclusions);
     formData.append('preventative_discount',preventative_discount);
+    formData.append('user_id', this._cookieService.get("userid"));
     
     formData.append('token', token);
 

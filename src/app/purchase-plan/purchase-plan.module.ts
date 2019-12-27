@@ -12,7 +12,6 @@ import { PurchasePlanComponent,
   DialogOverviewExampleDialogComponent } from './purchase-plan.component';
 
 import { LoginService } from '../login/login.service';
-import { NgxStripeModule } from '@nomadreservations/ngx-stripe';
 import { PurchasePlanService } from './purchase-plan.service';
 import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +22,7 @@ import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material';
+import { NgxStripeModule } from 'ngx-stripe';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 @NgModule({
   imports: [

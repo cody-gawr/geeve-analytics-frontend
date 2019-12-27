@@ -66,8 +66,6 @@
          />
        </ng-template>
      </ngx-datatable-column>
-
-  
       <ngx-datatable-column name="Created">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span>
@@ -80,10 +78,7 @@
         <span>Actions</span>
       </ng-template>
         <ng-template class="actionThree" ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;" >
-          <a [routerLink]="['/clinic-settings',value]" class="action_btn golden" title= 'Clinic Settings'><i class="ti-settings"></i></a>
-         
-          <a [routerLink]="['/subscription',value,user_id]" target="_blank" class="action_btn golden" title= 'Subscription Detail'><i class="ti-eye"></i></a>
-
+          <a [routerLink]="['/clinic-settings',value]" class="textonly action_btn golden" title= 'Clinic Settings'>Edit</a>
           <button class="action_btn danger" mat-menu-item (click) = "deleteClinic(rowIndex)">
          <i class="ti-trash text-danger"></i></button>
         </ng-template>

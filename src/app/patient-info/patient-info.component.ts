@@ -125,7 +125,7 @@ public preventative_count;
    }
 
    openDialog(treatmentIndex,): void {
-    this.getBenefitsUsed();
+   // this.getBenefitsUsed();
     this.treatmentName = this.benefit[treatmentIndex]['treatmentName'];
     this.totalsitting= this.benefit[treatmentIndex]['patients_sittings'];
     if(this.benefit[treatmentIndex]['sittinginfo'])
@@ -169,7 +169,7 @@ public preventative_count;
         });
 
     const sub = dialogRef.componentInstance.sittingsUpdate.subscribe((settingstatus,sittingsIndex) => {
-      this.getBenefitsUsed();   
+     // this.getBenefitsUsed();   
       this.benefit_patient_id = this.benefit[treatmentIndex]['patient_id'];
       this.benefit_planid = this.benefit[treatmentIndex]['member_plan_id'];
       this.sitting_id = this.benefit[treatmentIndex]['sittinginfo'][settingstatus['sittingIndex']]['id'];
@@ -177,7 +177,7 @@ public preventative_count;
       this.performed_date = formatDate(new Date(), 'yyyy-MM-dd', 'en');
       this.patientInfoService.updateSittingStatus(this.benefit_patient_id, this.benefit_planid,this.sitting_id,this.sitting_status,this.performed_date).subscribe((res) => {
         if(res.message == 'success'){
-          this.getBenefitsUsed();
+         // this.getBenefitsUsed();
           this.notifier.notify( 'success', 'Sittings Updated' ,'vertical');
                }
       });
@@ -199,7 +199,7 @@ public preventative_count;
     }
     var sittingUpdatedString =JSON.stringify(sittingUpdated); 
        var totalsiting =this.sittings.length;
-      this.getBenefitsUsed();
+     // this.getBenefitsUsed();
       this.patientInfoService.addBenefits(this.id, this.memberplanid,this.membertreatmentid,totalsiting,sittingUpdatedString).subscribe((res) => {
         this.getBenefitsUsed();
             if(res.message == 'success'){
@@ -290,7 +290,7 @@ public preventative_count;
         this.clinic_id=res.data[0]['clinic_id'];
         this.user_id=res.data[0]['user_id'];
         this.mainpatientname = res.data[0]['patient_name'];
-        this.getBenefitsUsed();
+       // this.getBenefitsUsed();
         this.getPaymentHistory();
     this.getAppointments();
 
@@ -483,7 +483,7 @@ public preventative_count;
           if(res.message == 'success'){
    
            this.notifier.notify( 'success', 'Plan Removed' ,'vertical');
-             this.getBenefitsUsed();
+         //    this.getBenefitsUsed();
           }
        }, error => {
          this.warningMessage = "Please Provide Valid Inputs!";
@@ -491,7 +491,7 @@ public preventative_count;
        );
        }
        else {
-         this.getBenefitsUsed();
+       //  this.getBenefitsUsed();
          this.rows.splice(row, 1);
        this.rows = [...this.rows];
        }

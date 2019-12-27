@@ -40,6 +40,7 @@ export class ClinicService {
 
     formData.append('id', clinic_id);
     formData.append('token', token);
+     formData.append('user_id', this._cookieService.get("userid"));
 
         return this.http.post(this.apiUrl +"/Practices/delete", formData)
         .pipe(map((response: Response) => {

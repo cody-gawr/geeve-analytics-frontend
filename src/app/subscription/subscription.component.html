@@ -105,24 +105,53 @@
               </div>  
 
             <div class="treatment_content {{load_id}}" [style.display]="'none'">
-                 <h2 class="srvc_maintitle">Test12 Details</h2>
-                 <div class="treatment_sec">
-                    <h5 class="srvc_title">Preventative Plan inclusions</h5>
-                   <div class="packgae_list"  *ngFor="let service of load_preventative_plan">
-                     <span class="srvc_pck">{{service.itemName}}</span>
-                    </div>
-                    <h5 class="srvc_title" >Treatment Inclusions</h5>
-                   <div class="packgae_list"  *ngFor="let service of load_treatment_inclusions">
-                     <span class="srvc_pck">{{service.itemName}}</span>
-                    </div>
-                    <h5 class="srvc_title">Treatment Exclusions</h5>
-                   <div class="packgae_list"  *ngFor="let service of load_treatment_exclusions">
-                     <span class="srvc_pck">{{service.itemName}}</span>
-                    </div>
-                  </div>
-                  <div class="srvc_btn">
-                    <a class="btn btn-theme no-radius btn-block" [ngClass]="{'disabled': load_id=='sampleplan101'}" (click)="openDialog(load_id,load_totalAmount)">Buy Now</a>
-                  </div>
+                <div class="treatment_content_inner">
+                     <h2 class="srvc_maintitle">Test12 Details</h2>
+                     <div class="treatment_sec">
+                        <h5 class="srvc_title">Preventative Plan inclusions</h5>
+
+                      <div class="sa-pull-left sa-col-12">
+                          <div class="row">
+                              <div class="col-md-6" *ngFor="let service of load_preventative_plan">
+                                  <div class="packgae_list">
+                                      <span class="srvc_pck">-  {{service.itemName}}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                        <h5 class="srvc_title" >Treatment Inclusions</h5>
+
+                         <div class="sa-pull-left sa-col-12">
+                             <div class="row">
+                                 <div class="col-md-6" *ngFor="let service of load_treatment_inclusions">
+                                     <div class="packgae_list"  >
+                                         <span class="srvc_pck">-  {{service.itemName}}</span>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+
+
+
+                        <h5 class="srvc_title">Treatment Exclusions</h5>
+
+
+                         <div class="sa-pull-left sa-col-12">
+                             <div class="row">
+                                 <div class="col-md-6" *ngFor="let service of load_treatment_exclusions">
+                                     <div class="packgae_list"  >
+                                         <span class="srvc_pck">-  {{service.itemName}}</span>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+
+                      </div>
+                      <div class="srvc_btn">
+                        <a class="btn btn-theme no-radius btn-block" [ngClass]="{'disabled': load_id=='sampleplan101'}" (click)="openDialog(load_id,load_totalAmount)">Buy Now</a>
+                      </div>
+                </div>
             </div>
 
 

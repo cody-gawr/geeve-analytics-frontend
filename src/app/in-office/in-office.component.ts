@@ -72,13 +72,12 @@ export class DialogOverviewExampleDialogComponent {
      }
   updateDurationLabel(paymentFrequency)
   {
-    console.log(paymentFrequency);
     if(paymentFrequency=="MONTHLY")
     {
-      this.durationPaymentPlaceholder="Number of Months .";
+      this.durationPaymentPlaceholder="Number of Months.";
       this.MonthlyWeeklyPlaceholder ="Monthly Payment";
     }else{
-      this.durationPaymentPlaceholder="Number of weeks .";
+      this.durationPaymentPlaceholder="Number of weeks.";
       this.MonthlyWeeklyPlaceholder ="Weekly Payment";
     }
   }
@@ -213,7 +212,7 @@ public StatusSelected ='';
   public setup_fee;
   public deposite_amount;
   public balance_amount;
-  public payment_frequency;
+  public payment_frequency = 'MONTHLY';
   public duration;
   public monthly_weekly_payment;
   public start_date;
@@ -275,7 +274,7 @@ statusFilter() {
       );  
     }
 
-    openDialog(): void {    
+    openDialog(): void {   
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '250px',
       data: { patient_name: this.patient_name, patient_email: this.patient_email, plan_name: this.plan_name ,plan_description: this.plan_description , clinic_id: this.clinic_id,total_amount:this.total_amount,setup_fee:this.setup_fee,deposite_amount:this.deposite_amount,balance_amount:this.balance_amount,payment_frequency:this.payment_frequency,duration:this.duration,monthly_weekly_payment:this.monthly_weekly_payment,start_date:this.start_date  }

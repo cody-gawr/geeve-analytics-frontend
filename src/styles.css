@@ -71,9 +71,15 @@
 .ng-hide{display:none;}
 .file-upload-filename{padding:0 6px 0 15px;}
 .mat-flat-button.mat-dc, .mat-raised-button.mat-dc, .mat-fab.mat-dc, .mat-mini-fab.mat-dc{background:#18a689 !important; color:#fff;}
-.action_btn{width:27px!important; border:none; cursor:pointer; height:27px!important;color:#fff!important; border-radius:4px!important; text-align:center!important; float:left; line-height:30px!important; padding:0!important; margin:0 4px 4px!important; display:inline-block!important;}
+.action_btn{min-width:27px!important; border:none; cursor:pointer; height:27px!important;color:#fff!important; border-radius:4px!important; text-align:center!important; float:left; line-height:30px!important; padding:0!important; margin:0 4px 4px!important; display:inline-block!important;}
 .action_btn i{color:#fff!important;}
 .action_btn:hover{opacity:0.7;}
+
+
+.action_btn.textonly{padding: 0 10px !important;
+    width: auto !important;
+    line-height: 25px !important;}
+
 .danger{background:#dc3545!important;}
 .golden{background:#18A689!important;}  
 
@@ -131,7 +137,7 @@ border-top: 5px solid;
 margin: 0 4px; color:rgba(0, 0, 0, 0.54)} 
 
 .sa_heading_bar{width:100%; color:#424242; padding:7px 14px 3px;}
-.sa_heading_bar h4{margin:0; padding:8px 4px 6px 0px;}
+.sa_heading_bar h4{margin:0; padding:8px 4px 6px 35%;}
 .sepr_icon{color:rgba(255,255,255,0.4); padding:0 9px 0 6px}
 .page_title{font-size:16px;} 
 .sa_forwhite_label{color:#424242; float:left; padding:4px 0;}
@@ -1182,9 +1188,7 @@ z-index: 0 !important;
     font-size: 18px;
     line-height: 34px;}
         .sa_blogs_inner_text{text-align:center; padding: 9px;}
-.patient_detail_edit {
-    min-width: 50px !important;
-}
+
 
 .datatable-header-cell {
     cursor: pointer;
@@ -1388,12 +1392,37 @@ line-height: 36px;padding: 4px 16px; border:none; border-radius:4px; color:#fff;
 .mat-raised-button{min-width:10px!important;}
 .mat-blue{background:#003858!important; color:#fff!important;}
 .datatable-header-cell {color:#18a689!important; font-weight:500!important; font-size:14px!important;}
-.sa_internal_header{background:rgba(255,255,255,0.99); padding:6px 20px 2px; min-height:48px; position:relative; top:0; width:100%; z-index:999; box-shadow:0 1px 15px 9px rgba(62,57,107,.07)!important;}
-.sa_internal_header img{width:100px;}
+.sa_internal_header{background:rgba(255,255,255,0.99); padding:6px 20px 2px; min-height:50px; position:relative; top:0; width:100%; z-index:999; box-shadow:0 1px 15px 9px rgba(62,57,107,.07)!important;}
+.sa_internal_header img{width:115px;}
 img{max-width:100%;}
 .sa_payment_left_area{min-height:250px; padding:60px 10px;}
 .sa_payment_form{padding:20px;}
-.spl_headings{background:#18a689; padding:8px 12px; border-radius:4px; width:250px; float:none; margin:0 auto;  text-align:center; color:#fff; font-weight:500; margin-top:-15px!important;}
+.spl_headings{
+    padding: 8px 12px;
+    border-radius: 150px;
+    width: 250px;
+    float: none;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+    color:
+    #fff;
+    font-weight: 500;
+    margin-top: -50px !important;
+    border: 4px solid
+    rgba(255,255,255,0.5);
+
+    background: rgba(0,141,163,1);
+    background: -moz-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,141,163,1)), color-stop(100%, rgba(1,106,122,1)));
+    background: -webkit-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
+    background: -o-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
+    background: -ms-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
+    background: linear-gradient(to right, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008da3', endColorstr='#016a7a', GradientType=1 );
+
+}
 .btn-round{border-radius:150px!important; margin:15px auto 10px!important; cursor:pointer; display:inline-block!important; padding:8px 20px!important; float:none!important;}
 .sa_add_members{padding:10px 15px;}
 .sa_add_members_inner{padding: 10px 18px 10px!important;border: 4px solid #f2f2f2!important;margin-bottom: 13px;border-radius: 12px;}
@@ -1417,6 +1446,8 @@ img{max-width:100%;}
 .mat-flat-button.mat-.basic_details_form .mat-card-title, .mat-raised-button.mat-green, .mat-fab.mat-green, .mat-mini-fab.mat-green{background:#18a689; color:#fff;}
 .sa-image_upload_area{text-align:center;background:#DDEBE9;padding: 15px;border-radius:4px;}
 .sa-image_upload_area img{border-radius:4px; padding:4px; background:rgba(255,255,255,0.8); border-radius:4px;object-fit: cover;}
+
+.mat-flat-button.mat-.basic_details_form .mat-card-title:disabled, .mat-raised-button.mat-green:disabled, .mat-fab.mat-green:disabled, .mat-mini-fab.mat-green:disabled{background:#76dbc5!important; color:#18a689!important;}
 
 
 
@@ -1449,7 +1480,7 @@ img{max-width:100%;}
 .patient_details_form .mat-tab-label-container .mat-tab-label{position: relative;opacity: 1;} 
 .patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(2) ,.mat-tab-label-container .mat-tab-label:nth-child(3){margin-left: 50px;overflow: initial !important;} 
 .patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(2)::before ,
-.patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(3)::before {position: absolute;content: '';left: -70px;height: 1px;width: 50px; background-color: #d4d4d4;}
+.patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(3)::before {position: absolute;content: '';left: -70px;height: 0px;width: 50px; background-color: #d4d4d4;}
 .patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(2)::after {content: '2';}
 .patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(3)::after {content:'3'; }
 .patient_details_form .mat-tab-label::after {    position: absolute;    content: '1';    left: 0px;    padding: 3px 0 0;    border-radius: 40px;    background-color: #b1b1b1;    color: #fff;    height: 25px;    width: 28px;}
@@ -1465,7 +1496,7 @@ img{max-width:100%;}
 .packgae_list_main::-webkit-scrollbar-thumb {background: #cdcdcd;}
 /* Handle on hover */
 .packgae_list_main::-webkit-scrollbar-thumb:hover {background: #a6a6a6;}
-.action_btn i{margin-right: 2px;}
+.action_btn i{}
 .position-relative {position: relative;}
 .duration mat-label{float: left;width: 100%;}
 .btn-switch input {visibility:hidden !important;left:0 !important;position: absolute;}
@@ -1491,7 +1522,17 @@ img{max-width:100%;}
 .patient_details_form .mat-dialog-actions{margin-bottom: 0px !important;}
 
  .mat-radio-button .mat-radio-label-content{line-height: 20px !important;vertical-align: top;}
-span.btn-off-label {position: absolute; top: -17px; right: 4px; background-color: #ea2268; line-height: 24px; padding: 0 10px; border-radius: 24px; min-width: 24px; height: 24px; }
+span.btn-off-label {position: absolute;
+    top: 0;
+    right: 5px;
+    background-color:
+    #ea2268;
+    line-height: 35px;
+    padding: 0px 10px;
+    border-radius: 4px 20px;
+    min-width: 24px;
+    height: 36px;
+}
 .font-weight500{ font-weight: 500; }
 .off-label {background-color:#ea2268;line-height:24px;padding:0 7px;border-radius: 50px;color: #fff;}
 
@@ -1600,3 +1641,79 @@ span.datatableEmail {display: block; word-break: break-all; line-height: 20px; }
 }
 
 
+.selected_plan_area{text-align:center;}
+.selected_plan_image{width:150px; margin:10px auto 0;}
+.selected_plan_detail h4{color: #003858; margin-top:4px;
+    text-transform: uppercase !important;
+    margin-bottom: 0 !important;}
+.selected_plan_detail p{color: #424242;
+    font-size: 18px; font-weight:400;
+    margin: 15px 0;
+    background: #18A689;
+    width: auto;
+    display: inline-block;
+    padding: 5px 20px;
+    color: #fff;
+    border-radius: 4px;}
+
+.plan_table_design h3{margin: 0 0 10px;
+    font-size: 17px;}
+
+.plan_button_area{border-top:3px solid #f2f2f2;
+ display:block;
+    width: 100%; padding:28px 5px 0px;
+    margin-top: 5px;}
+
+.monthly_total{text-align: right;
+    padding: 10px 0;
+    font-weight: 500;
+    color:
+    #424242; }
+
+.mat-lblue{background:#25629e!important; color:#fff!important;}
+
+.ngx-datatable.material .datatable-footer .page-count{line-height: 50px;
+    height: 50px;
+    padding: 0 1.2rem;
+    color:
+    #424242;
+    font-weight: 500;}
+
+.plan_table_design .ngx-datatable.material .datatable-footer{border-color:#ccc!important}
+.plan_table_design .ngx-datatable.material .datatable-header{border-color:#ccc!important}
+.plan_table_design .ngx-datatable.material{border-color:#ccc!important}
+
+.invitation_title_area{text-align:center; width:100%;}
+.invitation_title_area span{width: 100%;
+    padding-bottom: 20px;
+    font-weight: 500;
+    font-size: 16px;
+    text-align: center;
+    display: block;
+    border-bottom: 1px solid
+    #ccc; padding-top:15px;
+    margin-bottom: 17px;}
+
+.patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(2), .mat-tab-label-container .mat-tab-label:nth-child(3){margin-left:0px!important;}
+.clinic_logo_patientdetail{width:100%; text-align:center; margin-bottom:30px;}
+.clinic_logo_patientdetail img{max-width:170px; }
+
+
+.green_table{background:
+#fff;
+    border: 5px solid
+    #c7dbd8;
+    border-radius: 5px;}
+.sa_table_evenodd tr:nth-child(2n){background:#DDEBE9;}
+
+
+.gradient_bg{background: rgba(0,141,163,1);
+    background: -moz-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,141,163,1)), color-stop(100%, rgba(1,106,122,1)));
+    background: -webkit-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
+    background: -o-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
+    background: -ms-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
+    background: linear-gradient(to right, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008da3', endColorstr='#016a7a', GradientType=1 ); padding:8px!important; border-radius:12px; }
+
+.gradient_inner{background:#fff; padding:20px; border-radius:12px;}

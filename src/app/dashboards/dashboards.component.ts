@@ -54,8 +54,6 @@ export const MY_FORMATS = {
 };
 
 
-
-
 @Component({
   templateUrl: './dashboards.component.html',
   providers: [
@@ -82,6 +80,7 @@ export class DashboardsComponent implements AfterViewInit {
   lineChartColors;
   subtitle: string;
   public id:any ={};
+  public clinicsData:any[] = [];
   public clinic_id:any ={};
   public UrlSegment:any ={};
   public dentistCount:any ={};
@@ -115,7 +114,6 @@ public selectedMonthYear : string;
 
 constructor(private dashboardsService: DashboardsService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService ){
  const myDate = new Date();
- console.log("const called");
  const monthname =this.getMonthName(myDate.getMonth());
  this.selectedMonthYear = monthname+" "+(myDate.getFullYear().toString()).slice();
 }
@@ -129,12 +127,6 @@ constructor(private dashboardsService: DashboardsService, private datePipe: Date
    this.mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
      return this.mlist[monthno];
 };
-
-  // chosenMonthHandler(normalizedYear: Moment) {
-  //   const ctrlValue = this.date.value;
-  //   ctrlValue.year(normalizedYear.year());
-  //   this.date.setValue(ctrlValue);
-  // }
 
   chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.date.value;
@@ -158,21 +150,19 @@ constructor(private dashboardsService: DashboardsService, private datePipe: Date
     this.date.setValue(ctrlValue);
     datepicker.close();
   }
-  demo() {
-    alert('sdf');
-  }
 
   ngAfterViewInit() {   
+    this.getClinics();
     this.route.params.subscribe(params => {
       this.clinic_id = this.route.snapshot.paramMap.get("id");
-        $('.header_filters').addClass('hide_header');
+   //     $('.header_filters').addClass('hide_header');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
         $('.sa_heading_bar').hide();       
         $('#title').html('');
         $(".demo").click(function(){
-             $('.mat-calendar-period-button').attr('disabled','true');
+        $('.mat-calendar-period-button').attr('disabled','true');
           alert("The paragraph was clicked.");
         });
          $('.mat-datepicker-toggle').on('click', function(e) {
@@ -189,7 +179,12 @@ constructor(private dashboardsService: DashboardsService, private datePipe: Date
             $('.customRange').hide();
         }
     })
-    this.loadAnalytics();
+    var d = new Date();
+    var currentMonth= d.getMonth()+1;
+    const finalStartDate = d.getFullYear()+"-"+currentMonth+"-"+"01";
+    const finalEndDate = d.getFullYear()+"-"+currentMonth+"-"+"30";
+    this.startDate = this.datePipe.transform(finalStartDate, 'yyyy-MM-dd');
+    this.endDate = this.datePipe.transform(finalEndDate, 'yyyy-MM-dd');
     }); 
 
 let gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
@@ -232,9 +227,25 @@ this.lineChartColors = [
       doughnutGradient2.addColorStop(1, '#003858');
       doughnutGradient2.addColorStop(0,  '#BFE8EE');
       this.doughnutChartColors = [{backgroundColor: [doughnutGradient,doughnutGradient2]}];
-
     //this.recallChartTreatment();
   }
+
+  public selectedClinic;
+     private getClinics() { 
+  this.headerService.getClinics().subscribe((res) => {
+       if(res.message == 'success'){
+        this.clinicsData = res.data;
+        this.selectedClinic = res.data[0].id;
+    this.loadAnalytics();
+       }
+    }, error => {
+     // this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+
+  }
+
+
   dentists: Dentist[] = [
    { providerId: 'all', name: 'All Dentists' },
   ];
@@ -349,7 +360,7 @@ this.lineChartColors = [
   public planChartData1: any[] = [];
   public planChartData2: any[] = [];  
   public recallChartData1: any[] = [];  
-    public treatmentPreChartData1: any[] = [];    
+  public treatmentPreChartData1: any[] = [];    
   public treatmentChartData1: any[] = [];
    public hourlyRateChartData1: any[] = [];
   public doughnutChartData1: number[] = [];   
@@ -487,7 +498,7 @@ public barChartOptions: any = {
               userCallback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
-                         return label+ ' %';
+                         return label+ '%';
                      }
 
                  },
@@ -524,7 +535,10 @@ public barChartOptions: any = {
       }  , 
   };
 
-
+  loadClinicid(clinicValue){ 
+     this.selectedClinic = clinicValue;
+    this.loadAnalytics();
+  }
   public barChartOptionstrend: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
@@ -595,14 +609,16 @@ public barChartOptions: any = {
          }
   };
 
-     
-
   public conversionRateData=[];
   public conversionRateLabels=['Accepted','Pending'];
   public loadAnalytics() {
-    this.totalFeesThisMonth = 0;
-   this.dashboardsService.loadAnalytics(this.startDate,this.endDate).subscribe((data) => {
+   this.dashboardsService.loadAnalytics(this.startDate,this.endDate,this.selectedClinic).subscribe((data) => {
       if(data.message == 'success'){
+        this.totalFeesThisMonth = 0;
+        this.totalFeesInoffice = 0;
+        this.totalFeesInofficeMonth = 0;
+        this.totalPlansOverdue = 0;
+        this.totalFees =0;
         if(data.data.totalMembers != null)
         this.totalMembers = data.data.totalMembers;
 
@@ -615,6 +631,7 @@ public barChartOptions: any = {
         if(data.data.totalFeesThisMonth.total != null)
         this.totalFeesThisMonth = data.data.totalFeesThisMonth.total;
 
+
         if(data.data.conversionRate != null) {
         this.conversionRateActive = data.data.conversionRate.active;
         this.conversionRateInactive = data.data.conversionRate.inactive;
@@ -622,18 +639,16 @@ public barChartOptions: any = {
         if(isNaN(this.conversionPercentage)){
           this.conversionPercentage =0;
         }
-        
         this.conversionRateData= [this.conversionRateActive,this.conversionRateInactive];
         this.conversionRateLabels=['Accepted','Pending'];
-      }
-
+        }
         if(data.data.totalPlans != null)
         this.totalPlans = data.data.totalPlans;
 
         if(data.data.newPlansThisMonth != null)
         this.newPlansThisMonth = data.data.newPlansThisMonth;
 
-        if(data.data.totalFeesInoffice.total != null)
+         if(data.data.totalFeesInoffice.total != null)
         this.totalFeesInoffice = data.data.totalFeesInoffice.total;
 
         if(data.data.totalFeesInofficeMonth.total != null)
@@ -641,17 +656,13 @@ public barChartOptions: any = {
 
         if(data.data.totalPlansOverdue != null)
         this.totalPlansOverdue = data.data.totalPlansOverdue;
-
       }
    });
   }
     choosedDate(val) {
-     
     val = (val.chosenLabel);
-     console.log(val);
     var val= val.toString().split(' - ');
       this.startDate = this.datePipe.transform(val[0], 'yyyy-MM-dd');
-      console.log(this.startDate);
       this.endDate = this.datePipe.transform(val[1], 'yyyy-MM-dd');
       this.loadAnalytics();      
       $('.filter_custom').val(this.startDate+ " - "+this.endDate);

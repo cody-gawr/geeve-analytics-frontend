@@ -34,6 +34,7 @@ export class InOfficeService {
     formData.append('clinic_id', clinic_id);
     formData.append('user_id', user_id);
     formData.append('token', token);
+formData.append('user_id', this._cookieService.get("userid"));
 
         return this.http.post(this.apiUrl +"/InofficePayments/deleteInofficeMembers/", formData)
         .pipe(map((response: Response) => {
@@ -64,6 +65,7 @@ export class InOfficeService {
         formData.append('monthly_weekly_payment',monthly_weekly_payment );
         formData.append('start_date',start_date );
         formData.append('patient_id',patient_id );
+formData.append('user_id', this._cookieService.get("userid"));
         
         formData.append('token', token);
 
@@ -95,6 +97,7 @@ export class InOfficeService {
         formData.append('patient_home_phno', patient_home_phno);
         formData.append('patient_id', patient_id);
         formData.append('token', token);
+formData.append('user_id', this._cookieService.get("userid"));
        
             return this.http.post(this.apiUrl +"/InofficePayments/updatePatientsDetails/", formData)
             .pipe(map((response: Response) => {

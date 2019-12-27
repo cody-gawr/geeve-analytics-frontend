@@ -26,8 +26,8 @@ export class DashboardsService {
    }
 
     // Dentist Production Service
-    loadAnalytics(startDate = '', endDate = '', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/Users/loadAnalytics?user_id="+user_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate, { headers: this.headers })
+    loadAnalytics(startDate = '', endDate = '',clinic_id='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        return this.http.get(this.apiUrl +"/Users/loadAnalytics?user_id="+user_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&clinic_id="+clinic_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })

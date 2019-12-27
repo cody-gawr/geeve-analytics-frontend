@@ -5,8 +5,8 @@
     <div fxFlex.gt-sm="100" fxFlex="100">
         <mat-card>
             <mat-card-content>
-               
-                <mat-card-title> Patient Plan Details | {{mainpatientname | titlecase}}   
+
+                <mat-card-title> Patient Plan Details | {{mainpatientname | titlecase}}
          <button class="sa-pull-right mat-raised-button mat-gray" (click) = "goBack()">Back</button>
          <button class="sa-pull-right mat-raised-button danger" mat-menu-item (click) = "deletePatients()">Delete</button></mat-card-title>
                <!-- ============================================================== -->
@@ -16,44 +16,44 @@
 
                     <!-- Card column -->
                     <div fxFlex.gt-sm="100" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
-                      
+
                             <mat-tab-group dynamicHeight>
-                         
+
                         <!-- Plan Details tab -->
                               <mat-tab label="Plan Details">
                                    <div fxLayout="row wrap" class="row-tablePD" fxLayoutGap="2%" >
 
                                     <div fxFlex.gt-sm="49" fxFlex class="sa_mattabs_design sa_matforms_design sa_table_evenodd">
-                                <form>                                
-                                  <table>
+                                <form>
+                                  <table class="green_table">
                                       <tr>
                                           <th>Plan</th>
-                                         
+
                                           <td>{{plan_name}}</td>
                                         </tr>
                                         <tr>
                                             <th>No. of Members</th>
-                                          
+
                                             <td>{{total_subpatient}}</td>
                                           </tr>
                                           <tr>
                                             <th>Status</th>
-                                          
+
                                             <td>{{patient_status}}</td>
                                           </tr>
                                            <tr>
                                             <th>Preventative Appointments</th>
-                                            
+
                                             <td>{{preventative_frequency}}</td>
                                           </tr>
                                           <tr>
                                             <th>Amount Paid</th>
-                                           
+
                                             <td>$ {{patient_amount}}</td>
                                           </tr>
                                           <tr>
                                             <th>Plan Cost</th>
-                            
+
                                             <td>$ {{totalAmount}}</td>
                                           </tr>
                                           <tr>
@@ -76,7 +76,7 @@
                                 </span>
                                     </ng-template>
                             </ngx-datatable-column>
-                      
+
                              <ngx-datatable-column prop="sub_patients_dob" name="sub_patients_dob">
                                <ng-template let-column="column" ngx-datatable-header-template>
                               <span>Date of Birth</span>
@@ -85,10 +85,10 @@
                                 <span >
                                   {{value| date:'dd-mm-y'}}
                                 </span>
-                               
+
                               </ng-template>
                             </ngx-datatable-column>
-                      
+
                             <ngx-datatable-column prop="sub_patients_gender" name="sub_patients_gender">
                               <ng-template let-column="column" ngx-datatable-header-template>
                              <span>Gender</span>
@@ -97,17 +97,20 @@
                                <span >
                                  {{value}}
                                </span>
-                              
+
                              </ng-template>
-                           </ngx-datatable-column>                        
+                           </ngx-datatable-column>
                           </ngx-datatable>
                         </div>
 
 
 
                      <div fxFlex.gt-sm="49" fxFlex class="sa_mattabs_design sa_matforms_design">
-     <h3 style="margin-top:0;" class="sb_title">Benefits Used<input type ="button" value="Log Appointment" class="sa-pull-right mat-raised-button sa-pull-right mat-green" (click)="log_appointment()" *ngIf="preventative_count<preventative_frequency">
-      <span *ngIf="preventative_count>=preventative_frequency" class="sa-pull-right mat-raised-button golden mat-menu-item">All Preventative Appointments have been Used</span></h3>
+
+                         <input type ="button" value="Log Appointment" class="sa-pull-right mat-raised-button sa-pull-right mat-green" (click)="log_appointment()" *ngIf="preventative_count<preventative_frequency">
+                         <div style="color:#fff;" *ngIf="preventative_count>=preventative_frequency" class="sa-pull-right mat-raised-button golden mat-menu-item">All Preventative Appointments have been Used</div>
+
+                         <h3 style="float:left; margin-top:15px; display:block; width:100%;" class="sb_title">Benefits Used</h3>
                          <ngx-datatable #table class='material responsive-datatable appointment_logintable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
                                   [rowHeight]="'auto'" [limit]="10" [rows]='rowsAppointments'>
                             <ngx-datatable-column >
@@ -127,7 +130,7 @@
                               <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
                                 <span >
                                   {{value}}
-                                </span>                               
+                                </span>
                               </ng-template>
                             </ngx-datatable-column>
                             <ngx-datatable-column  prop="id" name="id">
@@ -135,11 +138,11 @@
                               <span>Action</span>
                              </ng-template>
                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                               <span>
-                                <i style="color:red;" class="fas fa-times link_btn" (click) ="deleteAppointment(value)"></i>
+                               <span class="action_btn danger">
+                                <i class="fas fa-times link_btn" (click) ="deleteAppointment(value)"></i>
                                </span>
                              </ng-template>
-                           </ngx-datatable-column>                        
+                           </ngx-datatable-column>
                           </ngx-datatable>
                         </div>
                         </div>
@@ -159,7 +162,7 @@
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                   <label>Patient Address</label>
                                    <input tabindex="1" [(ngModel)]="patient_address" [formControl]="formPatient.controls['patient_address']" placeholder="" class="form-control-dialog" required="true">
-                                  <small *ngIf="formPatient.controls['patient_address'].hasError('required') && formPatient.controls['patient_address'].touched" class="text-danger support-text">Patient Address is required.</small> 
+                                  <small *ngIf="formPatient.controls['patient_address'].hasError('required') && formPatient.controls['patient_address'].touched" class="text-danger support-text">Patient Address is required.</small>
                              </div>
                            </div>
 
@@ -167,7 +170,7 @@
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                <label>Patient Dob</label>
                                    <input tabindex="1" type="date" [(ngModel)]="patient_dob" [formControl]="formPatient.controls['patient_dob']" placeholder="" class="form-control-dialog" required="true">
-                                 
+
                                  <small *ngIf="formPatient.controls['patient_dob'].hasError('required') && formPatient.controls['patient_dob'].touched" class="text-danger support-text">Patient DOB is required.</small>
                              </div>
                               <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
@@ -181,30 +184,30 @@
                           <!--    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                   <label>Patient Age</label>
                                   <input tabindex="1" type="number" min="0" [(ngModel)]="patient_age" [formControl]="formPatient.controls['patient_age']" placeholder="" class="form-control-dialog" required="true">
-                                  
+
                                   <small *ngIf="formPatient.controls['patient_age'].hasError('required') && formPatient.controls['patient_age'].touched" class="text-danger support-text">Patient Age is required.</small>
                              </div> -->
                            </div>
 
                           <div fxLayout="row wrap" fxLayoutGap="2%">
-                            
+
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                   <label>Phone Number</label>
-                                 
+
                                   <input tabindex="1" type="number" min="0" [(ngModel)]="patient_phone_no" [formControl]="formPatient.controls['patient_phone_no']" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,10);" required="true">
-                                
+
                                   <small *ngIf="formPatient.controls['patient_phone_no'].hasError('required') && formPatient.controls['patient_phone_no'].touched" class="text-danger support-text">Patient Phone No is required.</small>
                              </div>
                               <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                <label>Home Phone Number</label>
                                  <input tabindex="1" type="number" min="0" [(ngModel)]="patient_home_phno"  [formControl]="formPatient.controls['patient_home_phno']" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,10);" required="true">
-                                
+
                                  <small *ngIf="formPatient.controls['patient_home_phno'].hasError('required') && formPatient.controls['patient_home_phno'].touched" class="text-danger support-text">Patient Home No is required.</small>
                              </div>
                            </div>
 
                           <div fxLayout="row wrap" fxLayoutGap="2%">
-                            
+
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                   <label>Status</label>
                                   <mat-select name ="value" tabindex="1" [(ngModel)]= "patient_status" [formControl]="formPatient.controls['patient_status']" class="form-control-dialog" required="true">
@@ -266,10 +269,10 @@
                                 <span >
                                   {{value | date: 'dd-MM-yyyy'}}
                                 </span>
-                               
+
                               </ng-template>
                             </ngx-datatable-column>
-                      
+
                             <ngx-datatable-column prop="payment_plan_name" name="payment_plan_name">
                               <ng-template let-column="column" ngx-datatable-header-template>
                              <span>Plan </span>
@@ -278,7 +281,7 @@
                                <span >
                                  {{payment_plan_name}}
                                </span>
-                              
+
                              </ng-template>
                            </ngx-datatable-column>
 
@@ -291,10 +294,10 @@
                                <span >
                                  {{value}}
                                </span>
-                              
+
                              </ng-template>
                            </ngx-datatable-column>
-                      
+
 
                             <ngx-datatable-column prop="payment_status" name="payment_status">
                               <ng-template let-column="column" ngx-datatable-header-template>
@@ -303,9 +306,9 @@
                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
                                <span >
                                  {{value}}
-                               </span>                              
+                               </span>
                              </ng-template>
-                           </ngx-datatable-column>                        
+                           </ngx-datatable-column>
                           </ngx-datatable>
                                 </mat-tab>
                             </mat-tab-group>
@@ -315,4 +318,3 @@
         </mat-card>
     </div>
 </div>
- 

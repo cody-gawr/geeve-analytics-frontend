@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, Validators } from '@angular/forms';
 import { EventEmitter , Output, Input} from '@angular/core';
 import { NotifierService } from 'angular-notifier';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -54,8 +54,6 @@ export class DialogOverviewExampleDialogComponent {
         this.dialogRef.close(data);
       }
     }
-
-
   file: File;
   onChange(event: EventTarget) {
         let eventObj: MSInputMethodContext = <MSInputMethodContext> event;
@@ -69,8 +67,6 @@ export class DialogOverviewExampleDialogComponent {
   templateUrl: './update-patient.html',
 })
 export class UpdatePatientDialogComponent {
-
-
   constructor( public dialogUpdateRef: MatDialogRef<UpdatePatientDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
     ) {}
@@ -83,7 +79,6 @@ export class UpdatePatientDialogComponent {
     console.log(data);
   
       if(data.patient_name != undefined && data.patient_address != undefined  && data.patient_dob != undefined && data.patient_age != undefined && data.patient_gender != undefined && data.patient_phone_no != undefined && data.patient_home_phno != undefined){
-
           this.dialogUpdateRef.close(data);
        }
      }
@@ -234,7 +229,7 @@ export class PatientsDetailComponent implements AfterViewInit {
                this.router.navigateByUrl('/login');
              }else if(res.status == '400'){
               this.rows = [];
-           } 
+             } 
         this.getInviteMembers();
            
     }, error => {
@@ -248,17 +243,36 @@ export class PatientsDetailComponent implements AfterViewInit {
         var count = this.rows.length;
         res.data.forEach(res => {
           var temp=[];
+          temp['invite_id'] = res.id;
           temp['patient_name'] = res.invite_member_name;
           temp['patient_email'] = res.invite_member_email;
           temp['patient_status'] = 'INACTIVE';
           this.rows.push(temp);
+    this.rows = [...this.rows];
+
         });
        }    
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   } 
-
+delete_invite(id)
+{
+ Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete the logged Appointement?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+  this.patientsdetailService.deleteInviteMembers(id).subscribe((res) => {
+      if(res.message == 'success'){
+        this.getPatients();
+      }
+    });
+  })
+}
   private deletePatients(row) {
   if(confirm("Are you sure to delete Patient?")) {
     if(this.rows[row]['id']) {
@@ -291,7 +305,6 @@ export class PatientsDetailComponent implements AfterViewInit {
         this.warningMessage = "Please Provide Valid Inputs!";
       }    
       );
-  
     }
  
   updateFilter(event) {
@@ -322,13 +335,10 @@ export class PatientsDetailComponent implements AfterViewInit {
     }    
     );  
     this.rows = [...this.rows];
-    console.log('UPDATED!', this.rows[rowIndex][cell]);
-
   }
 
   enableEditing(rowIndex, cell) {
     this.editing[rowIndex + '-' + cell] = true;
-
   }
   
 

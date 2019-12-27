@@ -187,7 +187,7 @@ export const AppRoutes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'thank-you',
+        path: 'thank-you/:id',
         loadChildren: './thank-you/thank-you.module#ThankYouModule',
         canActivate: [AuthGuard]
       }

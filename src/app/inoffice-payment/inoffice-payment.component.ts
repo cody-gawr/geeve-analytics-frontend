@@ -58,6 +58,7 @@ public payment_frequency;
     this.inofficePaymentService.getInofficePlanDetails(this.id).subscribe((res) => {  
        if(res.message == 'success'){
         this.patient_id = res.data[0].patient_id;
+        this.getClinic(this.patient_id);
         this.plan_name = res.data[0].plan_name;
         this.plan_description = res.data[0].plan_description;
         this.total_amount = res.data[0].total_amount;
@@ -71,7 +72,17 @@ public payment_frequency;
     }    
     );
   }
-
+  public clinic_id;
+getClinic(patient_id) {
+      this.inofficePaymentService.getClinic(patient_id).subscribe((res) => {  
+       if(res.message == 'success'){
+        this.clinic_id= res.data[0]['clinic_id'];
+        }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+}
 onSubmit() {
   this.errorLogin  =false;
   var count_patient = this.rows.length;
@@ -113,17 +124,15 @@ updatePatients(status) {
   openCheckout() {
     var handler = (<any>window).StripeCheckout.configure({
       key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
-      locale: 'auto',
+      locale: 'auto',                                                                                                 
       token: token => {
         console.log(token);
       $('.ajax-loader').show();
-
            this.inofficePaymentService.createInofficeSubscription(token,this.plan_name,this.monthly_weekly_payment,this.duration,this.id,this.patient_id).subscribe((res) => {
-      $('.ajax-loader').hide();
+           $('.ajax-loader').hide();
            if(res.message == 'success'){
                 this.updatePatients('ACTIVE');
-                alert('Payment Completed Successfully!');  
-                this.router.navigate(['/']);
+             window.location.href = '/thank-you/'+this.clinic_id; 
            }
            else if(res.message == 'error'){
               this.errorLogin  =true;
@@ -143,10 +152,10 @@ updatePatients(status) {
  //  this.errorLogin  =false;
  //  this.loginService.getPlans().subscribe((res) => {
  //       if(res.message == 'success'){
- //        res.data.forEach((res,key) => {
+ //        res.data.forEach((res,key) => {                                                  
  //          var temp= {plan:'',allowedClinics:'',description:'',amount:'',discount:'',id:''};
  //          if(res.id== this.plan_id) {
- //            this.amount = res.amount;
+ //            this.amount =                                                                                                      res.amount;
  //            this.stripe_plan_id = res.stripe_plan_id;
  //            this.planName = res.plan;
  //          }

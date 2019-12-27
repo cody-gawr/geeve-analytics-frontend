@@ -20,6 +20,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ClinicSettingsService } from '../clinic-settings/clinic-settings.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -44,6 +45,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     MatTreeModule,
     MatDatepickerModule,
     NgMultiSelectDropDownModule.forRoot()
+  ],
+  providers: [
+    ClinicSettingsService
   ],
   declarations: [
     ThankYouComponent,

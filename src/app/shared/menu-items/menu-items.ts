@@ -351,13 +351,13 @@ export class MenuItems {
     role:['1','2']
 
   },  
-  {
-    state: 'clinic',
-    name: 'Clinics',
-    type: 'link-noparam',
-    icon: 'fas fa-home',
-    role:this.clinic
-  },
+  // {
+  //   state: 'clinic',
+  //   name: 'Clinics',
+  //   type: 'link-noparam',
+  //   icon: 'fas fa-home',
+  //   role:this.clinic
+  // },
   // {
   //   state: 'dentist',
   //   name: 'Dentists',
@@ -383,14 +383,6 @@ export class MenuItems {
     role:this.memberships
 
   },
-  // {
-  //   state: 'purchase-plan',
-  //    name: 'Purchase Plan',
-  //   type: 'link',
-  //   icon: 'fas fa-user-tag',
-  //   param: '1',
-  //   role:['2']
-  // },
   {
     state: 'in-office',
     name: 'Payment Plans', //In office Plans
@@ -437,7 +429,9 @@ export class MenuItems {
     icon: 'fas fa-user-cog',
     children: [
       { state: 'profile-settings', name: 'Settings', type: 'link',param : '1'},
-      { state: 'plans', name: 'Member Plans', type: 'link',param : ''}
+      { state: 'plans', name: 'Member Plans', type: 'link',param : ''},
+      { state: 'clinic', name: 'Clinics', type: 'link',param : '',role:this.clinic}
+
     ],
     role:this.profilesettings
 

@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { StripeService, StripeCardComponent, ElementOptions, ElementsOptions } from "@nomadreservations/ngx-stripe";
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-
+import { ClinicSettingsService } from '../clinic-settings/clinic-settings.service';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 @Component({
   selector: 'app-thank-you',
@@ -43,18 +43,27 @@ export class ThankYouComponent implements OnInit {
   expiryYear: string;
   cvc: string;
   message: string;
-  constructor( private fb: FormBuilder, private router: Router,private _cookieService: CookieService, private route: ActivatedRoute) {}
+  constructor( private fb: FormBuilder, private router: Router,private _cookieService: CookieService, private route: ActivatedRoute,  private clinicSettingsService: ClinicSettingsService) {}
 
    ngOnInit() {
      this.route.params.subscribe(params => {
       this.id = this.route.snapshot.paramMap.get("id");
+      this.getClinicInfo();
     });
+
     this.form = this.fb.group({
         name: [null, Validators.compose([Validators.required])],
         dob: [null, Validators.compose([Validators.required])],
         gender: [null, Validators.compose([Validators.required])]
     });
   }
- 
+  public clinicName;
+  public getClinicInfo(){
+    this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
+    if(res.message == 'success'){
+      this.clinicName= res.data[0].clinicName;
+    }
+    });
+  }
 
 }

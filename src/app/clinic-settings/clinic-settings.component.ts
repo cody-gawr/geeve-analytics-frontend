@@ -166,12 +166,14 @@ onSubmitTerms() {
     );
 
   } 
-
+public user_id;
   getClinicSettings() {
     $('.ajax-loader').show(); 
   this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
     $('.ajax-loader').hide(); 
        if(res.message == 'success'){
+        this.clinic_id = res.data[0].id;
+        this.user_id = res.data[0].user_id;
         this.clinicName = res.data[0].clinicName;
         this.contactName = res.data[0].contactName;
         this.address = res.data[0].address;

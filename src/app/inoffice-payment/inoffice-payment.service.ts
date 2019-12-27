@@ -30,6 +30,14 @@ export class InofficePaymentService {
         );
     }
 
+    getClinic(patient_id): Observable<any> {
+        return this.http.get(this.apiUrl +"/Patients/getClinicId?patient_id="+patient_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                return response;
+                    })
+        );
+    }
+
     addSubPatients(name,age,gender,patient_amount,id): Observable<any> {
             const formData = new FormData();
             formData.append('sub_patients_name', name);

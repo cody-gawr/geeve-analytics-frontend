@@ -8,13 +8,13 @@ import {
   FormControl
 } from '@angular/forms';
 import { PurchasePlanService } from './purchase-plan.service';
-import { StripeService, StripeCardComponent, ElementOptions, ElementsOptions } from "@nomadreservations/ngx-stripe";
 import { LoginService } from '../login/login.service';
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CustomValidators } from 'ng2-validation';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { EventEmitter , Output, Input,Inject} from '@angular/core';
-import {ChangeDetectorRef} from '@angular/core'
+import {ChangeDetectorRef} from '@angular/core';
+import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example-dialog.html',
@@ -73,6 +73,15 @@ export class DialogOverviewExampleDialogComponent {
   styleUrls: ['./purchase-plan.component.scss']
 })
 export class PurchasePlanComponent implements OnInit {
+  elements: Elements;
+  card: StripeElement;
+ 
+  // optional parameters
+  elementsOptions: ElementsOptions = {
+    locale: 'es'
+  };
+ 
+  stripeTest: FormGroup;
   public form: FormGroup;
   public formStripe: FormGroup;
 
@@ -111,9 +120,38 @@ export class PurchasePlanComponent implements OnInit {
   public subPatientGender;
 public totalAmountPatients =0;
 public email;
-  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private PurchasePlanService: PurchasePlanService,private _cookieService: CookieService, private route: ActivatedRoute, public dialog: MatDialog, private ref: ChangeDetectorRef) {}
+  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private PurchasePlanService: PurchasePlanService,private _cookieService: CookieService, private route: ActivatedRoute, public dialog: MatDialog, private ref: ChangeDetectorRef, private stripeService: StripeService) {}
 
    ngOnInit() {
+
+     this.stripeTest = this.fb.group({
+      name: ['', [Validators.required]]
+    });
+    this.stripeService.elements(this.elementsOptions)
+      .subscribe(elements => {
+        this.elements = elements;
+        // Only mount the element the first time
+        if (!this.card) {
+          this.card = this.elements.create('card', {
+            style: {
+              base: {
+                iconColor: '#666EE8',
+                color: '#31325F',
+                lineHeight: '40px',
+                fontWeight: 300,
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSize: '18px',
+                '::placeholder': {
+                  color: '#CFD7E0'
+                }
+              }
+            }
+          });
+          this.card.mount('#card-element');
+        }
+      });
+
+
      this.route.params.subscribe(params => {
       this.plan_id = this.route.snapshot.paramMap.get("id");
        var data =this.plan_id.split("&");
@@ -166,6 +204,24 @@ public email;
       ]
     });
   }
+
+
+buy() {
+    const name = this.stripeTest.get('name').value;
+    this.stripeService
+      .createToken(this.card, { name })
+      .subscribe(result => {
+        if (result.token) {
+          // Use the token to create a charge or a customer
+          // https://stripe.com/docs/charges
+          console.log(result.token);
+        } else if (result.error) {
+          // Error creating the token
+          console.log(result.error.message);
+        }
+      });
+  }
+
 
   public termsText='sdfs';
 
@@ -268,6 +324,8 @@ public patient_id;
           });
   }
 
+  public clinic_logo;
+
   getPlanDetail() {
     this.PurchasePlanService.getPlanDetail(this.plan_id).subscribe((res) => {
        if(res.message == 'success'){
@@ -278,12 +336,8 @@ public patient_id;
           this.planName = res.data[0].planName;
           this.discount = res.data[0].discount;
           this.amount = res.data[0].totalAmount;
-    this.ref.detectChanges();
-
-          console.log(this.termsText);
-         // $('#termsText').html(this.terms);
-          //console.log(this.terms);
-  //  this.terms= this.terms.replace(/<(.|\n)*?>/g, '');
+          this.clinic_logo = res.data[0].clinic.logo;
+          this.ref.detectChanges();
         }
         }, error => {
     });
@@ -326,6 +380,7 @@ public patient_id;
              temp['amount'] = this.amount;
              this.totalAmountPatients = this.amount;
              this.patientData.push(temp);
+             this.patientData = [...this.patientData];
              this.countPatientData = this.patientData.length;
              if(this.countPatientData>0)
               this.tabActive1 = true;
@@ -347,9 +402,10 @@ public patient_id;
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
        if(result != undefined) {
+        this.patientData = result.patientData;
+             this.patientData = [...this.patientData];
 
         this.totalAmountPatients = result.totalAmountPatients;
-
       }
     });
   }
@@ -403,7 +459,7 @@ public patient_id;
       $('.ajax-loader').hide();      
        if(res.message == 'success'){
              $('.ajax-loader').hide(); 
-             window.location.href = '/thank-you'; 
+             window.location.href = '/thank-you/'+this.clinic_id; 
             // this.router.navigate(['/thank-you']);
        }
        else if(res.message == 'error'){

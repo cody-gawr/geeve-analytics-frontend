@@ -1,5 +1,5 @@
 
-<h1 mat-dialog-title>Add In-Office Plan</h1>
+<h1 mat-dialog-title>Add Payment Plan</h1>
 <div mat-dialog-content class="sa_forms_design">
 
 
@@ -32,7 +32,6 @@
     </div>
    </div>
 
-
 <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Plan Name</label>
@@ -44,7 +43,6 @@
     </div>
    </div>
 
-
 <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Plan Fee ($)</label>
@@ -55,7 +53,6 @@
        <input matInput tabindex="1" id="setup_amount" type="number" min="0" (change)="deposite_amount(data.deposite_percentage)" [(ngModel)]="data.setup_fee" placeholder="" class="form-control-dialog" required="true">
     </div>
    </div>
-
 
 <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
@@ -73,12 +70,28 @@
         <label>Balance Amount ($)</label>
          <input matInput tabindex="1" id="balance_amount" type="number" min="0" [(ngModel)]="data.balance_amount" placeholder="" class="form-control-dialog" readonly>
     </div>
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Frequency of payments</label>
+<!--     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+        <label>Duration</label>
        <mat-select tabindex="1" [(ngModel)]= "data.payment_frequency" required="true" (ngModelChange)="updateDurationLabel(data.payment_frequency)" >
               <mat-option value="MONTHLY">MONTHLY</mat-option>
               <mat-option value="WEEKLY">WEEKLY</mat-option>
             </mat-select>
+    </div> -->
+
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+      <div class="duration width-full">
+       <label>Duration</label>
+         <div class="btn-group sa-pull-left">
+          <span class="position-relative btn-switch">
+           <input type="radio" id="same1" name="planLength" [(ngModel)]="data.payment_frequency" (ngModelChange)="updateDurationLabel(data.payment_frequency)" value="MONTHLY">
+          <label class="active-duration" for="same1">Monthly</label>
+           </span>
+           <span class="position-relative btn-switch">
+          <input type="radio" id="same2" name="planLength" [(ngModel)]="data.payment_frequency" (ngModelChange)="updateDurationLabel(data.payment_frequency)" value="WEEKLY">
+            <label class="active-duration" for="same2">WEEKLY</label>
+          </span>
+         </div>
+      </div>
     </div>
    </div>
    <div fxLayout="row wrap" fxLayoutGap="2%">
@@ -93,10 +106,10 @@
    </div>
     <div fxLayout="row wrap" fxLayoutGap="2%" >
    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Balance Amount ($)</label>
+        <label>Start Date</label>
           <input matInput tabindex="1" type="date" [(ngModel)]="data.start_date" placeholder="Start Date" class="form-control-dialog" required="true" [min]="minDate">
     </div>
-          </div>
+ </div>
 </div>
 <div mat-dialog-actions class="sa-pull-right">
   <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">OK</button>

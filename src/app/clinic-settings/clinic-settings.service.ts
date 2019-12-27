@@ -165,6 +165,7 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
 
             formData.append('terms', terms); 
             formData.append('token', token);
+     formData.append('user_id', this._cookieService.get("userid"));
 
         return this.http.post(this.apiUrl +"/Practices/updateTerms/", formData)
         .pipe(map((response: Response) => {
