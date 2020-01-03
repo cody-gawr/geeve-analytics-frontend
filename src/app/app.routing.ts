@@ -124,6 +124,11 @@ export const AppRoutes: Routes = [
         loadChildren: './patient-info/patient-info.module#PatientInfoModule',
         canActivate: [AuthGuard]
        },
+      {
+        path: 'patient-paymentinfo/:id',
+        loadChildren: './patient-paymentinfo/patient-paymentinfo.module#PatientPaymentinfoModule',
+        canActivate: [AuthGuard]
+       },
       //  {
       //   path: 'treatments/:id',
       //   loadChildren: './treatments/treatments.module#TreatmentsModule'

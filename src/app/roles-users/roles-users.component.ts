@@ -164,8 +164,8 @@ dentists:any=[];
       this.roles.forEach(res1 => {
           var checkedRoles1='';
           var checkedRoles =[];
-          if(result.selectedRole['clinics_'+res1.id])
-            checkedRoles.push('clinics');
+          if(result.selectedRole['dashboards_'+res1.id])
+            checkedRoles.push('dashboards');
            if(result.selectedRole['roles_'+res1.id])
             checkedRoles.push('roles');
            if(result.selectedRole['settings_'+res1.id])
@@ -245,7 +245,7 @@ dentists:any=[];
        if(res.message == 'success'){ 
         this.roles=[];
          res.data.forEach(result => {
-          this.selectedRole['clinics_'+result.id] = false;
+          this.selectedRole['dashboards_'+result.id] = false;
           this.selectedRole['memberships_'+result.id] = false;
           this.selectedRole['roles_'+result.id] = false;
           this.selectedRole['settings_'+result.id] = false;

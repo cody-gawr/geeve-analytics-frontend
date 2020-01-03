@@ -13,6 +13,7 @@ export class ProfileSettingsService {
    public token: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
+    public token_id;
 
     constructor(private http: HttpClient,private _cookieService: CookieService) {
         //append headers
@@ -20,13 +21,17 @@ export class ProfileSettingsService {
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
    }
 
 
    // Get profileSettings
     getprofileSettings(user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): 
     Observable<any> {
-      return this.http.get(this.apiUrl +"/Users/getupdateprofiledata?user_id="+user_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+      return this.http.get(this.apiUrl +"/Users/getupdateprofiledata?user_id="+this.token_id+"&token_id="+this.token_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -49,12 +54,9 @@ export class ProfileSettingsService {
             // formData.append('secretKey', secretKey);
            
             formData.append('user_image', imageURL);   
-            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')         
-            formData.append('id', this._cookieService.get("childid"));
-            else
-            formData.append('id', this._cookieService.get("userid"));
-
-            formData.append('token', token);
+             formData.append('id',  this.token_id);
+    formData.append('token', this._cookieService.get("token"));
+     formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Users/updateprofileSettings/", formData)
         .pipe(map((response: Response) => {
@@ -68,12 +70,9 @@ export class ProfileSettingsService {
             formData.append('oldpassword', currentPassword);
             formData.append('password', newPassword);
             formData.append('confirm_password', newPassword);            
-            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')         
-            formData.append('id', this._cookieService.get("childid"));
-            else
-            formData.append('id', this._cookieService.get("userid"));
-
-            formData.append('token', token);
+            formData.append('user_id',  this.token_id);
+    formData.append('token', this._cookieService.get("token"));
+     formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Users/changePasswordApi/", formData)
         .pipe(map((response: Response) => {
@@ -83,12 +82,9 @@ export class ProfileSettingsService {
     }
 
     logoUpload( formData): Observable<any> {
-            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
-            formData.append('id', this._cookieService.get("childid"));
-            else
-            formData.append('id', this._cookieService.get("userid"));
-
-            formData.append('token', this._cookieService.get("token"));
+             formData.append('user_id',  this.token_id);
+    formData.append('token', this._cookieService.get("token"));
+     formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Users/logoUpload/", formData)
         .pipe(map((response: Response) => {
@@ -98,7 +94,7 @@ export class ProfileSettingsService {
     }
 
     clearSession( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -109,12 +105,9 @@ export class ProfileSettingsService {
     updateTerms(terms, token = this._cookieService.get("token")): Observable<any> {
             const formData = new FormData();
             formData.append('terms', terms);            
-            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')         
-            formData.append('id', this._cookieService.get("childid"));
-            else
-            formData.append('id', this._cookieService.get("userid"));
-
-            formData.append('token', token);
+             formData.append('user_id',  this.token_id);
+    formData.append('token', this._cookieService.get("token"));
+     formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Users/updateTerms/", formData)
         .pipe(map((response: Response) => {

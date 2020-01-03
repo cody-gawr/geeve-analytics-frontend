@@ -14,6 +14,7 @@ export class ClinicService {
    public api_url: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
+    public token_id;
 
     constructor(private http: HttpClient,private _cookieService: CookieService) {
         
@@ -22,12 +23,16 @@ export class ClinicService {
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
    }
 
 
    // Get Dentist
     getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+user_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -40,7 +45,8 @@ export class ClinicService {
 
     formData.append('id', clinic_id);
     formData.append('token', token);
-     formData.append('user_id', this._cookieService.get("userid"));
+     formData.append('user_id', this._cookieService.get("user_id"));
+     formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Practices/delete", formData)
         .pipe(map((response: Response) => {
@@ -55,8 +61,9 @@ export class ClinicService {
 
     formData.append('id', clinic_id);
     formData.append(column, value);
-     formData.append('user_id', this._cookieService.get("userid"));
+     formData.append('user_id', this._cookieService.get("user_id"));
     formData.append('clinic_id', '1');
+     formData.append('token_id', this.token_id);
 
     formData.append('token', token);
     
@@ -78,8 +85,9 @@ export class ClinicService {
     formData.append('publishable_key', publishable_key);
     formData.append('secret_key', secret_key);
     formData.append('logo', clinic_logo);
-    formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('user_id', this._cookieService.get("user_id"));
     formData.append('token', token);
+    formData.append('token_id', this.token_id);
     
         return this.http.post(this.apiUrl +"/Practices/add/", formData)
         .pipe(map((response: Response) => {
@@ -87,13 +95,10 @@ export class ClinicService {
                     })
         );
     }
-    logoUpload( formData): Observable<any> {
-        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
-        formData.append('id', this._cookieService.get("childid"));
-        else
-        formData.append('id', this._cookieService.get("userid"));
-
-        formData.append('token', this._cookieService.get("token"));
+    logoUpload( formData): Observable<any> {                 
+    formData.append('user_id', this._cookieService.get("user_id"));
+    formData.append('token', this._cookieService.get("token"));
+    formData.append('token_id', this.token_id);
 
     return this.http.post(this.apiUrl +"/Practices/logoUpload/", formData)
     .pipe(map((response: Response) => {

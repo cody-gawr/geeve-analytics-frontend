@@ -5,10 +5,12 @@
   <select class="sa_select sa_select_set_roles form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadPermisions($event)">
       <option value ="" selected="true">Select User Type</option>
       <option value ="3">Receptionist</option>
+      <option value ="4">Manager</option>
+
    </select> 
  </div>
   <div class="SetRoles_checkbox">
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['clinics_'+selected_id]">Clinics</mat-checkbox>
+    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['dashboards_'+selected_id]">Dashboards</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['memberships_'+selected_id]">Memberships</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['paymentplans_'+selected_id]">Payment Plans</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['roles_'+selected_id]">Roles</mat-checkbox>

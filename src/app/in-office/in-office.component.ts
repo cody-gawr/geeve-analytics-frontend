@@ -27,12 +27,12 @@ export class DialogOverviewExampleDialogComponent {
   public balanceamt;
   public monthlyweeklyamt;
   public durationval;
-  public deposit_amount;
-  public deposite_percentage;
+//  public deposit_amount;
+//  public deposite_percentage;
   public minDate: any =  new Date();
   public setup_amount;
-  public patient_dob;
-  public patient_phone_no;
+//  public patient_dob;
+//  public patient_phone_no;
   public durationPaymentPlaceholder ="Duration(Period of Loan)";
   public MonthlyWeeklyPlaceholder ="Monthly/Weekly Payment"
   constructor(private datePipe: DatePipe,
@@ -131,8 +131,16 @@ export class DialogOverviewExampleDialogComponent {
 
       email = new FormControl('', [Validators.required, Validators.email]);
       patient_name = new FormControl('', [Validators.required]);
-
-
+      patient_dob = new FormControl('', [Validators.required]);
+      patient_phone_no = new FormControl('', [Validators.required]);
+      plan_name = new FormControl('', [Validators.required]);
+      plan_description = new FormControl('', [Validators.required]);
+      total_amount = new FormControl('', [Validators.required]);
+      setup_fee = new FormControl('', [Validators.required]);
+      deposite_percentage = new FormControl('', [Validators.required]);
+      deposit_amount = new FormControl('', [Validators.required]);
+      balance_amount = new FormControl('', [Validators.required]);
+      duration = new FormControl('', [Validators.required]);
       getErrorMessage() {
         return this.email.hasError('required')
           ? 'You must enter a value'
@@ -267,6 +275,8 @@ statusFilter() {
           this.rows = res.data;
           this.temp = [...res.data];        
           this.table = data;
+    console.log(this.rows);
+          
          }
       }, error => {
         this.warningMessage = "Please Provide Valid Inputs!";

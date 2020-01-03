@@ -23,6 +23,7 @@ export class AppHeaderComponent {
         this._cookieService.put("email", '');
         this._cookieService.put("token", '');
         this._cookieService.put("userid", '');
+        this._cookieService.put("childid", '');
 
         this.router.navigate(['/login']);
        }

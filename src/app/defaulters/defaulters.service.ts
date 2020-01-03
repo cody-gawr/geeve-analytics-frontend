@@ -15,6 +15,7 @@ export class DefaultersService {
    public api_url: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
+    public user_id;
 
     constructor(private http: HttpClient,private _cookieService: CookieService) {
         
@@ -23,13 +24,17 @@ export class DefaultersService {
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.user_id = this._cookieService.get("childid");
+        else
+        this.user_id= this._cookieService.get("userid");
    }
 
 
    // Get Dentist
    getInofficeDefaultersMembers(clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): 
     Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeDefaultersMembers?token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id, { headers: this.headers })
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeDefaultersMembers?token="+this._cookieService.get("token")+"&user_id="+this.user_id+"&clinic_id="+clinic_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                     return response;
                 })

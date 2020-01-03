@@ -232,6 +232,7 @@ this.lineChartColors = [
 
   public selectedClinic;
      private getClinics() { 
+      console.log('sdfds');
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;

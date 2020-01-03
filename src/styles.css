@@ -333,13 +333,12 @@ padding: 10px 15px;}
 .frv{float:right; font-size:14px;  font-weight:400;}
 .sa_list_show{padding:1px 0; float:left; width:100%;}
 
-.sa_clr_box{width: 13px;
-    height: 13px;
-    border-radius: 4px;
-    background: #ccc;
-    margin-right: 8px;
-    float: left;
-    margin-top: 6px;}
+.sa_clr_box{width: 11px;
+height: 11px;
+margin-right: 5px;
+border-radius: 2px;
+margin-top: 3px;
+display: inline-block;}
 
 
 
@@ -882,14 +881,15 @@ a:hover{text-decoration:none;}
 }
 .sa_invitation{padding:30px; position:relative;}
 .sa_invitation mat-card{margin:0!important}
-.graph_values{padding:6px 0; width:100%; float:left; font-size:14px;}
-.graph_clr{width: 25px;
-    height: 16px;
-    float: left;
+.graph_values{padding:6px 0; width:100%; float:left; font-size:14px;  text-align:center;}
+.graph_clr{width: 12px;
+    height: 11px;
+    display: inline-block;
     margin-right: 5px;
     border-radius: 2px;
-    margin-top: 3px;}
-.graph_title{font-size: 20px;
+    margin-top: 3px;
+}
+.graph_title{font-size: 20px; 
     color: #424242;
     width: 100%; font-weight:400;
     float: left; margin-bottom:32px}
@@ -1470,6 +1470,7 @@ img{max-width:100%;}
 .btn-theme.pricing_btn {background:transparent;color:#7c7c7c!important;border:none;border-top:3px solid #ccc;}
 .btn-theme.pricing_btn:hover {color:#fff !important;border-top:2px solid #fff;}
 .mat-dialog-container {min-width:800px !important;}
+.full-screen .mat-dialog-container {min-width:400px !important;}
 .mat-dialog-title::after {position:absolute;content:"";height:40px;width:8px;background-color:#25a689;left:-25px;top:-4px;}
 .mat-dialog-title {position:relative;}
 .mat-dialog-container .mat-dialog-actions {padding:20px 0 ;}

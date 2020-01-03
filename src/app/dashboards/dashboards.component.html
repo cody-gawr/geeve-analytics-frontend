@@ -6,10 +6,10 @@
 <div class="sa_dashboard_inner_content">
    <div class="">
 <div class="sa_dentist_graphs_area sa_health_screen_area">    
-    <div class="heading_section" style="padding:10px 0 0; width:100%;">
+    <div class="heading_section" style="padding:0; width:100%;">
   <div fxLayout="row wrap" fxLayoutGap="1%">
          <div fxFlex.lg="38" fxFlex.md="38" fxFlex.sm="100" fxFlex.xs="100" fxFlex="38" >
-            <div class="dashboard_title2" style="margin-top:16px;"><i class="fas fa-user-tie"></i>&nbsp;&nbsp;Membership Plans</div>
+            <div class="dashboard_title2" style="margin-top:12px; "><i class="fas fa-user-tie"></i>&nbsp;&nbsp;Membership Plans</div>
          </div>
          <div fxFlex.lg="20" fxFlex.md="20" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20"  >
              <div class="custom_date2">
@@ -25,8 +25,12 @@
                     </mat-form-field>
                 </div>
              </div>
-         
-         <div class="sa_mat_select_topbar sa_pull-right">
+               <div fxFlex.lg="18" fxFlex.md="18" fxFlex.sm="100" fxFlex.xs="100" fxFlex="18"  >
+
+              </div>
+               
+              <div fxFlex.lg="20" fxFlex.md="20" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20"  >
+                 <div class="sa_mat_select_topbar sa_pull-right" style="margin-top:12px; margin-bottom:20px;">
 
                     <mat-form-field>
                             <mat-select class="external_clinic"  [value] ="selectedClinic" [(ngModel)]="selectedClinic" (ngModelChange)="loadClinicid($event)">
@@ -42,7 +46,9 @@
                         </mat-form-field>
 
                   </div> 
-                  </div>
+              </div>
+
+                </div>
  </div>
     <div fxLayout="row wrap" >
       <div fxFlex.lg="70" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70" >
@@ -112,10 +118,10 @@
                             </div>
                             <!--span class="graph_title">Invitation</span-->
                             <div class="graph_values">
-                                <span class="graph_clr" style="background:#00A289"></span><span class="graph_text">{{conversionRateActive}} Accepted </span>
+                               <span class="graph_text"> <span class="graph_clr" style="background:#00A289"></span>{{conversionRateActive}} Accepted </span>
                             </div>
                             <div class="graph_values">
-                                <span class="graph_clr" style="background:#003858"></span><span class="graph_text">{{conversionRateInactive}} Pending </span>
+                               <span class="graph_text"> <span class="graph_clr" style="background:#003858"></span>{{conversionRateInactive}} Pending </span>
                             </div>
                             <div class="graph_lastline" style="margin-bottom:30px;">
                                 <span class="graph_text"><b>Conversion Rate : {{conversionPercentage| number:'1.0-0'}} % </b></span>

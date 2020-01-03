@@ -14,6 +14,7 @@ export class InofficePaymentService {
      public token: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
+    public token_id;
 
     constructor(private http: HttpClient,private _cookieService: CookieService) {
         //append headers
@@ -21,9 +22,14 @@ export class InofficePaymentService {
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+         if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
+        
    }
     getInofficePlanDetails(payment_id): Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/getInofficePlanDetails?payment_id="+payment_id, { headers: this.headers })
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficePlanDetails?payment_id="+payment_id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                 return response;
                     })
@@ -31,7 +37,7 @@ export class InofficePaymentService {
     }
 
     getClinic(patient_id): Observable<any> {
-        return this.http.get(this.apiUrl +"/Patients/getClinicId?patient_id="+patient_id, { headers: this.headers })
+        return this.http.get(this.apiUrl +"/Patients/getClinicId?patient_id="+patient_id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                 return response;
                     })
@@ -45,6 +51,9 @@ export class InofficePaymentService {
             formData.append('sub_patients_gender', gender);
             formData.append('sub_patients_amount', patient_amount);
             formData.append('patients_id', id);
+             formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
             return this.http.post(this.apiUrl +"/SubPatients/addSubpatients", formData)
             .pipe(map((response: Response) => {
                             return response;
@@ -55,7 +64,10 @@ export class InofficePaymentService {
             const formData = new FormData();
             formData.append('total_amount', patient_amount);
             formData.append('patient_status', status);            
-            formData.append('id', id);            
+            formData.append('id', id);         
+             formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);   
             return this.http.post(this.apiUrl +"/Patients/updatePatient", formData)
             .pipe(map((response: Response) => {
                             return response;
@@ -68,6 +80,9 @@ export class InofficePaymentService {
 
             formData.append('email', uname);
             formData.append('password', password);
+             formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
             return this.http.post(this.apiUrl +"/users/applogin", formData)
             .pipe(map((response: Response) => {
                             return response;
@@ -79,6 +94,9 @@ export class InofficePaymentService {
             const formData = new FormData();
 
             formData.append('email', email);
+             formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
             return this.http.post(this.apiUrl +"/users/forgotPasswordApi", formData)
             .pipe(map((response: Response) => {
                             return response;
@@ -91,6 +109,9 @@ export class InofficePaymentService {
             formData.append('password', password);
             formData.append('confirm_password', password);
             formData.append('id', id);
+             formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
             return this.http.post(this.apiUrl +"/users/resetPasswordApi", formData)
             .pipe(map((response: Response) => {
                             return response;
@@ -101,6 +122,9 @@ export class InofficePaymentService {
     checkEmailExists(email): Observable<any> {
             const formData = new FormData();
             formData.append('email', email);
+             formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
             return this.http.post(this.apiUrl +"/users/checkEmailExists", formData)
             .pipe(map((response: Response) => {
                             return response;
@@ -115,7 +139,9 @@ export class InofficePaymentService {
             formData.append('user_type', user_type);           
             formData.append('plan_id', plan_id);  
             formData.append('status', '0');            
-
+ formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
             return this.http.post(this.apiUrl +"/users/addPracticeOwner", formData)
             .pipe(map((response: Response) => {
                             return response;
@@ -133,7 +159,9 @@ export class InofficePaymentService {
             formData.append('amount', monthly_weekly_payment);
             formData.append('duration', duration);
             formData.append('patient_id', patient_id);
-
+ formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
             return this.http.post(this.apiUrl +"/Patients/createInofficeSubscription", formData)
             .pipe(map((response: Response) => {
                             return response;

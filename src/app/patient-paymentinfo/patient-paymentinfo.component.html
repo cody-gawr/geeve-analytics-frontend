@@ -1,0 +1,158 @@
+<!-- ============================================================== -->
+<!-- Card Grid-->
+<!-- ============================================================== -->
+<div fxLayout="row wrap">
+    <div fxFlex.gt-sm="100" fxFlex="100">
+        <mat-card>
+            <mat-card-content>
+
+                <mat-card-title> Patient Plan Details | {{mainpatientname | titlecase}}
+<!--          <button class="sa-pull-right mat-raised-button mat-gray" (click) = "goBack()">Back</button>
+         <button class="sa-pull-right mat-raised-button danger" mat-menu-item (click) = "deletePatients()">Delete</button> --></mat-card-title>
+               <!-- ============================================================== -->
+                <!-- column -->
+                <!-- ============================================================== -->
+                <div fxLayout="row wrap" style="width:100%;">
+
+                    <!-- Card column -->
+                    <div fxFlex.gt-sm="100" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
+
+                            <mat-tab-group dynamicHeight>
+
+                        <!-- Plan Details tab -->
+                              <mat-tab label="Plan Details">
+                                   <div fxLayout="row wrap" class="row-tablePD" fxLayoutGap="2%" >
+
+                                    <div fxFlex.gt-sm="49" fxFlex class="sa_mattabs_design sa_matforms_design sa_table_evenodd">
+                                <form>
+                                  <table class="green_table">
+                                      <tr>
+                                          <th>Plan</th>
+
+                                          <td>{{plan_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Plan Description</th>
+
+                                            <td>{{plan_description}}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Total Amount</th>
+
+                                            <td>$ {{total_amount}}</td>
+                                          </tr>
+                                           <tr>
+                                            <th>Setup Fee</th>
+
+                                            <td>{{setup_fee}}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Deposited Amount</th>
+
+                                            <td>$ {{deposite_amount}}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Outstanding Payment</th>
+
+                                            <td>$ {{balance_amount}}</td>
+                                          </tr>
+                                          <tr>
+                                            <th>Payment Frequency</th>
+                                            <td>{{payment_frequency}}</td>
+                                          </tr>
+                                             <tr>
+                                            <th>Payment Duration</th>
+                                            <td>{{duration}}</td>
+                                          </tr>
+
+                                   </table>
+                                </form>
+                        </div>
+                        </div>
+                            </mat-tab>
+                    
+                    <!-- Payment History tab -->
+
+                          <mat-tab label="Payment History">
+                           <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                                  [rowHeight]="'auto'" [limit]="10" [rows]='payment'>
+                             <ngx-datatable-column prop="sr" name="sr">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Id</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                <span>
+                                  {{rowIndex + 1}}
+                                </span>
+                              </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column prop="customer_id" name="customer_id">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Customer ID</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                <span >
+                                  {{value}}
+                                </span>
+                                    </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column prop="subscriptionId" name="subscriptionId">
+                              <ng-template let-column="column" ngx-datatable-header-template>
+                             <span>Subscriber ID</span>
+                           </ng-template>
+                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                               <span >
+                                 {{value}}
+                               </span>
+                                   </ng-template>
+                           </ngx-datatable-column>
+
+                             <ngx-datatable-column prop="payment_date" name="payment_date">
+                               <ng-template let-column="column" ngx-datatable-header-template>
+                              <span>Invoice Date</span>
+                            </ng-template>
+                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                                <span >
+                                  {{value | date: 'dd-MM-yyyy'}}
+                                </span>
+
+                              </ng-template>
+                            </ngx-datatable-column>
+
+
+                            <ngx-datatable-column prop="total_paid" name="total_paid">
+                              <ng-template let-column="column" ngx-datatable-header-template>
+                             <span>Total Paid</span>
+                           </ng-template>
+                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                               <span >
+                                $ {{value}}
+                               </span>
+
+                             </ng-template>
+                           </ngx-datatable-column>
+
+
+                            <ngx-datatable-column prop="payment_status" name="payment_status">
+                              <ng-template let-column="column" ngx-datatable-header-template>
+                             <span>Payment Status</span>
+                           </ng-template>
+                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                               <span *ngIf="value">
+                                 ACTIVE
+                               </span>
+                               <span *ngIf="!value">
+                                 INACTIVE
+                               </span>
+                             </ng-template>
+                           </ngx-datatable-column>
+                          </ngx-datatable>
+                                </mat-tab>
+                            </mat-tab-group>
+                       </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

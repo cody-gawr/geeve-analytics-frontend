@@ -329,12 +329,14 @@ const MENUITEMS = [
 export class MenuItems {
   constructor(private rolesUsersService: RolesUsersService) {
     this.getRoles();
+    console.log(this.menu);
+    
   }
   getMenuitem(): Menu[] {
     return this.menu;
   }
    public MENUITEMS;
-   public clinic=['2'];
+   public dashboards=['2'];
    public memberships=['2'];
    public paymentplans=['2'];
    public defaulters=['2'];
@@ -348,25 +350,9 @@ export class MenuItems {
     name: 'Dashboards',
     type: 'link-noparam',
     icon: 'fas fa-chart-area',
-    role:['1','2']
+    role:this.dashboards
 
   },  
-  // {
-  //   state: 'clinic',
-  //   name: 'Clinics',
-  //   type: 'link-noparam',
-  //   icon: 'fas fa-home',
-  //   role:this.clinic
-  // },
-  // {
-  //   state: 'dentist',
-  //   name: 'Dentists',
-  //   type: 'link',
-  //   icon: 'fas fa-tooth',
-  //   param : '1',
-  //   role:['2']
-  // },
-
   {
     state: 'users',
     name: 'Registered Users',
@@ -406,22 +392,6 @@ export class MenuItems {
     param: '1',
     role:this.rolesusers
   },
-  //   {
-  //   state: 'treatments',
-  //   name: 'Treatments',
-  //   type: 'link',
-  //   icon: 'fas fa-hospital',
-  //   param: '1',
-  //   role:['2','3']
-  // },
-  // {
-  //   state: 'profile-settings',
-  //   name: 'Settings',
-  //   type: 'link',
-  //   icon: 'fas fa-user-cog',
-  //   param : '1',
-  //   role:['2','3']
-  // },
   {
      state: 'profile-settings',
     name: 'Settings',
@@ -443,8 +413,8 @@ export class MenuItems {
          res.data.forEach(result => {
           if(result.id != '1') {
             var roles = result.permisions.split(',');
-            if(roles.includes("clinics")) 
-              this.clinic.push(result.id.toString());
+            if(roles.includes("dashboards")) 
+              this.dashboards.push(result.id.toString());
             if(roles.includes("roles")) 
               this.rolesusers.push(result.id.toString());
             if(roles.includes("paymentplans")) 

@@ -191,16 +191,16 @@
                           </mat-tab>
 
                            <mat-tab class="step3" label="Payment" >
-        <!--         <form novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
+                <form novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
                   <input type="text" formControlName="name" placeholder="Jane Doe">
                   <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
                   <button type="submit">
                     BUY
                   </button>
-                </form> -->
+                </form>
 
-        <!-- <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions" (change)="cardUpdated($event)"></ngx-stripe-card>
-         <button mat-raised-button  color="primary" >Get Card Token</button> -->
+        <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions" (change)="cardUpdated($event)"></ngx-stripe-card>
+         <button mat-raised-button  color="primary" >Get Card Token</button>
                              <form method="POST" id="payment-form"  [formGroup]="formStripe"  (submit)="getToken()">
 
 

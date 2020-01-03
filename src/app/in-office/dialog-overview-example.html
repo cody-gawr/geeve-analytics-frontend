@@ -24,11 +24,14 @@
         <label>Patient DOB</label>
            
        <input matInput type="date" tabindex="1" [(ngModel)]="data.patient_dob" placeholder=""  class="form-control-dialog" required="true"  max="{{minDate}}">
+    <span class="error-message" *ngIf="patient_dob.invalid">Please enter Patient Name</span>
 
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Patient Phone No</label>
           <input matInput tabindex="1" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="data.patient_phone_no" placeholder=""  class="form-control-dialog" required="true">
+    <span class="error-message" *ngIf="patient_phone_no.invalid">Please enter Patient Name</span>
+
     </div>
    </div>
 
@@ -36,10 +39,14 @@
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Plan Name</label>
         <input matInput tabindex="1" [(ngModel)]="data.plan_name" placeholder="" class="form-control-dialog" required="true">
+    <span class="error-message" *ngIf="plan_name.invalid">Please enter Patient Name</span>
+
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Plan Description</label>
         <input matInput tabindex="1" [(ngModel)]="data.plan_description" placeholder="" class="form-control-dialog" required="true">
+    <span class="error-message" *ngIf="plan_description.invalid">Please enter Patient Name</span>
+
     </div>
    </div>
 
@@ -47,10 +54,14 @@
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Plan Fee ($)</label>
         <input matInput tabindex="1" id="total_amount"  [(ngModel)]="data.total_amount"  type="number" min="0"  placeholder="" class="form-control-dialog" (change)="deposite_amount(data.deposite_percentage)" required="true">
+    <span class="error-message" *ngIf="total_amount.invalid">Please enter Patient Name</span>
+  
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Setup Fee ($)</label>
        <input matInput tabindex="1" id="setup_amount" type="number" min="0" (change)="deposite_amount(data.deposite_percentage)" [(ngModel)]="data.setup_fee" placeholder="" class="form-control-dialog" required="true">
+    <span class="error-message" *ngIf="setup_fee.invalid">Please enter Patient Name</span>
+  
     </div>
    </div>
 
@@ -58,10 +69,14 @@
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Deposited Percentage (%)</label>
          <input matInput tabindex="1" id="deposite_percentage" type="number" min="0" max ="100"  (change)="deposite_amount(data.deposite_percentage)" [(ngModel)]="data.deposite_percentage" placeholder="" class="form-control-dialog" required="true" readOnly>
+    <span class="error-message" *ngIf="deposite_percentage.invalid">Please enter Patient Name</span>
+
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Deposited Amount ($)</label>
        <input matInput tabindex="1" id="deposit_amount" type="number" min="0"  (change)="updatePercentageByAmount(data.deposit_amount,data.total_amount)" [(ngModel)]="data.deposit_amount" placeholder="" class="form-control-dialog" required="true">
+    <span class="error-message" *ngIf="deposit_amount.invalid">Please enter Patient Name</span>
+
     </div>
    </div>
 
@@ -69,6 +84,8 @@
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Balance Amount ($)</label>
          <input matInput tabindex="1" id="balance_amount" type="number" min="0" [(ngModel)]="data.balance_amount" placeholder="" class="form-control-dialog" readonly>
+    <span class="error-message" *ngIf="balance_amount.invalid">Please enter Patient Name</span>
+         
     </div>
 <!--     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Duration</label>

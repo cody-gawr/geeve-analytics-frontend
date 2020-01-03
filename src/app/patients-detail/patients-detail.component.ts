@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
+  styleUrls: ['./patients-detail.component.scss']
 })
 
 
@@ -65,6 +66,7 @@ export class DialogOverviewExampleDialogComponent {
 @Component({
   selector: 'app-update-patient-dialog',
   templateUrl: './update-patient.html',
+  styleUrls: ['./patients-detail.component.scss'],
 })
 export class UpdatePatientDialogComponent {
   constructor( public dialogUpdateRef: MatDialogRef<UpdatePatientDialogComponent>,
@@ -159,8 +161,9 @@ export class PatientsDetailComponent implements AfterViewInit {
   }
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-      width: '250px',
-      data: {invite_member_name: this.invite_member_name, address: this.invite_member_email }
+      width: '400px',
+      data: {invite_member_name: this.invite_member_name, address: this.invite_member_email },
+      panelClass: 'full-screen'
 
     });
     

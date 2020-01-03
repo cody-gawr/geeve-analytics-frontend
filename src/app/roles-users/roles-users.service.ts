@@ -15,6 +15,7 @@ export class RolesUsersService {
    public api_url: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
+    public token_id;
 
     constructor(private http: HttpClient,private _cookieService: CookieService) {
         
@@ -23,12 +24,19 @@ export class RolesUsersService {
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+       if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
+
    }
 
 
    // Get Dentist
     getUsers(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Users/getRolesUsers?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+
+
+        return this.http.get(this.apiUrl +"/Users/getRolesUsers?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -37,7 +45,12 @@ export class RolesUsersService {
 
        // Get Dentist
     getRoles(token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Roles/getRoles?token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid"), { headers: this.headers })
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        var id = this._cookieService.get("childid");
+        else
+        var id= this._cookieService.get("userid");
+
+        return this.http.get(this.apiUrl +"/Roles/getRoles?token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -46,7 +59,7 @@ export class RolesUsersService {
 
        // checkUserEmail
     checkUserEmail( email, token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Users/checkUserEmail?email="+email+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/Users/checkUserEmail?email="+email+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
          })
@@ -58,8 +71,9 @@ export class RolesUsersService {
     const formData = new FormData();
 
     formData.append('id', user_id);
-    formData.append('token', token);
-formData.append('user_id', this._cookieService.get("userid"));
+   formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Users/delete", formData)
         .pipe(map((response: Response) => {
@@ -74,8 +88,9 @@ formData.append('user_id', this._cookieService.get("userid"));
 
     formData.append('id', role_id);
     formData.append('permisions', checkedRoles);
-    formData.append('token', token);    
-formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
     
         return this.http.post(this.apiUrl +"/Roles/saveRoles/", formData)
         .pipe(map((response: Response) => {
@@ -96,8 +111,8 @@ formData.append('user_id', this._cookieService.get("userid"));
     formData.append('dentist_id', dentist_id);
 
     formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', token);
-formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
     
         return this.http.post(this.apiUrl +"/Users/addRoleUser/", formData)
         .pipe(map((response: Response) => {
@@ -110,10 +125,11 @@ formData.append('user_id', this._cookieService.get("userid"));
     updateRoleUser(user_id, value, column, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
-    formData.append('id', user_id);
     formData.append(column, value);
 
-    formData.append('token', token);
+    formData.append('id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
     
         return this.http.post(this.apiUrl +"/Users/updateUser/", formData)
         .pipe(map((response: Response) => {

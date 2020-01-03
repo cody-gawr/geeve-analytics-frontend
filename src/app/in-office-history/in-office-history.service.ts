@@ -13,6 +13,7 @@ export class InOfficeHistoryService {
    public token: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
+    public token_id;
 
     constructor(private http: HttpClient,private _cookieService: CookieService) {
         //append headers
@@ -20,10 +21,15 @@ export class InOfficeHistoryService {
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
+        
    }
   
     getPatientContract(patient_id, token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Patients/getPatientContract?patient_id="+patient_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/Patients/getPatientContract?patient_id="+patient_id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                 return response;
                     })
@@ -35,7 +41,9 @@ export class InOfficeHistoryService {
     
         formData.append('patient_id', patient_id);
         formData.append('contract_upload', contract_upload);
+        formData.append('user_id', this._cookieService.get("userid"));
         formData.append('token', token);
+        formData.append('token_id', this.token_id);
        
             return this.http.post(this.apiUrl +"/InofficePayments/UploadContract/", formData)
             .pipe(map((response: Response) => {
@@ -46,8 +54,9 @@ export class InOfficeHistoryService {
     }
     contractUpload( formData): Observable<any> {
        
-        formData.append('id', this._cookieService.get("userid"));
+        formData.append('user_id', this._cookieService.get("userid"));
         formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
 
     return this.http.post(this.apiUrl +"/Patients/logoUpload/", formData)
     .pipe(map((response: Response) => {
@@ -62,7 +71,9 @@ export class InOfficeHistoryService {
     
         formData.append('patient_id', patient_id);
         formData.append('inoffice_payment_id', inoffice_payment_id);
+        formData.append('user_id', this._cookieService.get("userid"));
         formData.append('token', token);
+        formData.append('token_id', this.token_id);
        
             return this.http.post(this.apiUrl +"/InofficePayments/deleteInofficeMembersPlan/", formData)
             .pipe(map((response: Response) => {
@@ -73,7 +84,7 @@ export class InOfficeHistoryService {
     }
 
     getInofficeMembersByID(patient_id,clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeMembersByID?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeMembersByID?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                 // console.log(response);
                 return response;
@@ -101,6 +112,7 @@ export class InOfficeHistoryService {
         formData.append('start_date',start_date );
         //formData.append('due_date',due_date );
         formData.append('token', token);
+        formData.append('token_id', this.token_id);
 
             return this.http.post(this.apiUrl +"/InofficePayments/addPaymentPlans/", formData)
             .pipe(map((response: Response) => {
@@ -109,14 +121,14 @@ export class InOfficeHistoryService {
             );
         }
     getInofficeMembersPlanInvoices(patient_id,inoffice_payment_id, token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeMembersPlanInvoices?patient_id="+patient_id+"&inoffice_payment_id="+inoffice_payment_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeMembersPlanInvoices?patient_id="+patient_id+"&inoffice_payment_id="+inoffice_payment_id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                 return response;
                 })
         );
     }
     getClinicPatientsbyId(patient_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Patients/getClinicPatientsbyId?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/Patients/getClinicPatientsbyId?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                 return response;
                 })
