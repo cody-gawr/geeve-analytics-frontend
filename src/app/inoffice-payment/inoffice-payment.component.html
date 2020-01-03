@@ -1,20 +1,18 @@
-
-
-<div class="sa_login_blur" style="background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; min-height: 100vh;
-display: flex;
-background-size: cover;
-align-items: center;"></div>
-
 <div class="sa_internal_header">
-    <img class="" src="../assets/images/logo-text.png"> 
+        <img class="" src="../assets/images/logo-text.png"> 
 </div>
-
-
 <img class="login_abso_logo" src="../assets/images/logo-text-white.png">
-<div class="login-register" style="background-image:url(assets/images/background/login-register.jpg); height:auto; min-height:100vh;  padding:20px; ">
 
-        <mat-card style="margin:10px auto; max-width:800px;  width:100%;">
-            <mat-card-content style="padding:0;">
+
+
+<div class="login-register sa_forms_design patient_details_form " style=" height:auto; min-height:100vh;  padding:20px; ">
+    <div style="width:100%; float:left">
+  <div style="width:100%; float:left"><div class="clinic_logo_patientdetail"> <img src={{clinic_logo}}></div></div>
+
+    <div style="width:100%; float:left; display:flex;">
+    <mat-card style="margin:10px auto; max-width:1040px; float:left; width:100%; background:transparent!important;">
+            <mat-card-content  class="gradient_bg">
+                <div class="gradient_inner">
                 <!-- ============================================================== -->
                 <!-- column -->
                 <!-- ============================================================== -->
@@ -45,7 +43,7 @@ align-items: center;"></div>
                                                 <td>{{duration}}</td>
                                             </tr>
                                             <tr>
-                                                <th>Monthly/Annual Payment</th>
+                                                <th>{{payment_frequency}} Payment</th>
                                                 <td>${{monthly_weekly_payment}}</td>
                                             </tr>
                                             
@@ -53,7 +51,7 @@ align-items: center;"></div>
                                            
                                         </table>
                                         <div style="text-align:center">
-                                            <a (click)="openCheckout()" class="btn-round mat-raised-button mat-dc">Pay ${{monthly_weekly_payment}}</a>
+                                            <a (click)="openCheckout()" class="btn-round mat-raised-button mat-dc">Start Payment Plan</a>
                                          </div>
                                     </div>
                                 </div>
@@ -63,9 +61,11 @@ align-items: center;"></div>
                     </div>
 
 
-
+</div>
             </mat-card-content>
         </mat-card>
+        </div>
+        </div>
 </div>
 
 

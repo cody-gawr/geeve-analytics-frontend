@@ -212,9 +212,9 @@ openDialog(id,amount) {
     alert("This is the sample plan only for viewing . We will be back with our live plans soon. ");
     return false;
     }
-    if(this.email)
-    this.router.navigate(['/purchase-plan/'+id+'&'+this.email]);      
-      else
+    if(this.email) 
+    this.router.navigate(['/purchase-plan/'+id+'&'+this.email]);     
+      else 
     this.router.navigate(['/purchase-plan/'+id]);
 
     // this.dialog.open(RegisterComponent, {

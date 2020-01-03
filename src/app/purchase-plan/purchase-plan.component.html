@@ -170,7 +170,6 @@
                            </div>
                           </div>
                           </div>
-
                                <div class="plan_button_area">
                                 <div mat-dialog-actions class="sa-pull-right" style="width:100%;">
                                 <div style="width:100%;" class="sa-form-group text-right">
@@ -191,7 +190,7 @@
                           </mat-tab>
 
                            <mat-tab class="step3" label="Payment" >
-                <form novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
+           <!--      <form novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
                   <input type="text" formControlName="name" placeholder="Jane Doe">
                   <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
                   <button type="submit">
@@ -199,7 +198,7 @@
                   </button>
                 </form>
 
-        <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions" (change)="cardUpdated($event)"></ngx-stripe-card>
+        <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions" (change)="cardUpdated($event)"></ngx-stripe-card> -->
          <button mat-raised-button  color="primary" >Get Card Token</button>
                              <form method="POST" id="payment-form"  [formGroup]="formStripe"  (submit)="getToken()">
 

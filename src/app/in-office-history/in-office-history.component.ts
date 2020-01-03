@@ -204,8 +204,6 @@ export class InOfficeHistoryComponent implements AfterViewInit {
      data: {plan_name: this.plan_name ,plan_description: this.plan_description,clinic_id: this.clinic_id,total_amount:this.total_amount,setup_fee:this.setup_fee,deposite_amount:this.deposite_amount,balance_amount:this.balance_amount,payment_frequency:this.payment_frequency,duration:this.duration,monthly_weekly_payment:this.monthly_weekly_payment,start_date:this.start_date}
  
     });
-    
- 
 
   dialogRef.afterClosed().subscribe(result => {
 

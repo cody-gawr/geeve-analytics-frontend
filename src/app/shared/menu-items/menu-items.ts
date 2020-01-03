@@ -400,7 +400,7 @@ export class MenuItems {
     children: [
       { state: 'profile-settings', name: 'Settings', type: 'link',param : '1'},
       { state: 'plans', name: 'Member Plans', type: 'link',param : ''},
-      { state: 'clinic', name: 'Clinics', type: 'link',param : '',role:this.clinic}
+      { state: 'clinic', name: 'Clinics', type: 'link',param : ''}
 
     ],
     role:this.profilesettings

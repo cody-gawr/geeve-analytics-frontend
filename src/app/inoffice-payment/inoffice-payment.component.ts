@@ -63,7 +63,9 @@ public payment_frequency;
         this.plan_description = res.data[0].plan_description;
         this.total_amount = res.data[0].total_amount;
         this.balance_amount = res.data[0].balance_amount;
+        this.payment_frequency = res.data[0].payment_frequency;
         this.monthly_weekly_payment = res.data[0].monthly_weekly_payment;
+        
         this.duration = res.data[0].duration;
         this.payment_frequency = res.data[0].payment_frequency;
         }

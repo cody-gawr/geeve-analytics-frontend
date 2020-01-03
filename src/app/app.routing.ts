@@ -188,8 +188,7 @@ export const AppRoutes: Routes = [
       },
       {
         path: 'purchase-plan/:id',
-        loadChildren: './purchase-plan/purchase-plan.module#PurchasePlanModule',
-        canActivate: [AuthGuard]
+        loadChildren: './purchase-plan/purchase-plan.module#PurchasePlanModule'
       },
       {
         path: 'thank-you/:id',
