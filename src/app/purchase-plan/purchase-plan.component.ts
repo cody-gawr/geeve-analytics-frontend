@@ -15,6 +15,8 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { EventEmitter , Output, Input,Inject} from '@angular/core';
 import {ChangeDetectorRef} from '@angular/core';
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
+import { Http} from '@angular/http';
+import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example-dialog.html',
@@ -73,12 +75,11 @@ export class DialogOverviewExampleDialogComponent {
   styleUrls: ['./purchase-plan.component.scss']
 })
 export class PurchasePlanComponent implements OnInit {
-  elements: Elements;
+ elements: Elements;
   card: StripeElement;
- 
+
   // optional parameters
   elementsOptions: ElementsOptions = {
-    locale: 'es'
   };
  
   stripeTest: FormGroup;
@@ -110,7 +111,7 @@ export class PurchasePlanComponent implements OnInit {
   public successLoginText = '';
   public clinic_id;
   public plan_amount;
-  public selectedIndex =0 ;
+  public selectedIndex =2;
   public patientData =[];
   public countPatientData = 0;
   public tabActive1= false;
@@ -118,40 +119,42 @@ export class PurchasePlanComponent implements OnInit {
   public subPatientName;
   public subPatientDob;
   public subPatientGender;
-public totalAmountPatients =0;
-public email;
-  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private PurchasePlanService: PurchasePlanService,private _cookieService: CookieService, private route: ActivatedRoute, public dialog: MatDialog, private ref: ChangeDetectorRef, private stripeService: StripeService) {}
+  public totalAmountPatients =0;
+  public email;
+  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private PurchasePlanService: PurchasePlanService,private _cookieService: CookieService, private route: ActivatedRoute, public dialog: MatDialog, private ref: ChangeDetectorRef, private stripeService: StripeService, private http : Http,private stripeSerivce: StripeService) {}
 
    ngOnInit() {
+    
+    this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
 
-     this.stripeTest = this.fb.group({
-      name: ['', [Validators.required]]
-    });
-    this.stripeService.elements(this.elementsOptions)
-      .subscribe(elements => {
-        this.elements = elements;
-        // Only mount the element the first time
-        if (!this.card) {
-          this.card = this.elements.create('card', {
+            this.stripeTest = this.fb.group({
+            name: ['', [Validators.required]]
+            });
+
+            this.stripeService.elements(this.elementsOptions)
+            .subscribe(elements => {
+            this.elements = elements;
+            // Only mount the element the first time
+            if (!this.card) {
+            this.card = this.elements.create('card', {
             style: {
-              base: {
-                iconColor: '#666EE8',
-                color: '#31325F',
-                lineHeight: '40px',
-                fontWeight: 300,
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSize: '18px',
-                '::placeholder': {
-                  color: '#CFD7E0'
-                }
+           base: {
+               iconColor: '#424242',
+               color: '#424242',
+               lineHeight: '40px',
+               fontWeight: 400,
+               fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+               fontSize: '18px',
+               '::placeholder': {
+                   color: '#424242'
+               }
               }
             }
-          });
-          this.card.mount('#card-element');
-        }
-      });
-
-
+            });
+            this.card.mount('#card-element');
+            this.changeTab(0);
+            }
+            });
      this.route.params.subscribe(params => {
       this.plan_id = this.route.snapshot.paramMap.get("id");
        var data =this.plan_id.split("&");
@@ -188,7 +191,6 @@ public email;
     this.formStripe = this.fb.group({
       cardNumber: [
         null
-        // Validators.compose([Validators.required])
       ],
       expiryMonth: [
         null,
@@ -206,22 +208,60 @@ public email;
   }
 
 
-buy() {
+    buy() {
     const name = this.stripeTest.get('name').value;
     this.stripeService
-      .createToken(this.card, { name })
-      .subscribe(result => {
-        if (result.token) {
-          // Use the token to create a charge or a customer
-          // https://stripe.com/docs/charges
-          console.log(result.token);
-        } else if (result.error) {
-          // Error creating the token
-          console.log(result.error.message);
-        }
-      });
-  }
+    .createToken(this.card, { name })
+    .subscribe(obj => {
+    if (obj) {
+    console.log("Token is --> ",obj.token.id);
+ this.token = obj.token.id;
+   this.PurchasePlanService.addPatient(this.form.value.patient_email,this.form.value.patient_name,this.form.value.patient_phone_no,this.clinic_id,this.user_id,this.plan_id,this.totalAmountPatients).subscribe((res) => {
+                    this.errorLogin = false;
+                    this.errorLoginText = '';
+                    this.successLogin = false;
+                    this.successLoginText = '';
+                     if(res.message == 'success'){
+                      this.patient_id = res.data.id;
+                      if( this.patientData.length>1) {
+                        var i=0;
+                          this.patientData.forEach(res => {
+                            if(i>0) {
+                              this.PurchasePlanService.addSubPatients(res.name,res.dob,res.gender,res.amount,this.patient_id).subscribe((res) => {
+                                   if(res.message == 'success'){
+                                    //this.form.reset();
+                                    if(i == this.patientData.length)
+                                      this.createSubscription(this.token);
+                                   }
+                                   else if(res.message == 'error'){
+                                  $('.ajax-loader').hide(); 
+                                      this.errorLogin  =true;
+                                   }
+                                }, error => {
+                                });
+                             }
+                              i++;
+                          });
+                          }
+                          else {
+                            this.createSubscription(this.token);
 
+                          }
+                      }
+                     else if(res.message == 'error'){
+                                  $('.ajax-loader').hide(); 
+                        this.errorLogin  =true;
+                        this.errorLoginText  =res.data;
+                     }
+                  }, error => {
+              });
+        //this.message = 'Success! Card token ${response.card.id}.`;
+    } else {
+    // Error creating the token
+    console.log("Error comes ");
+    }
+    });
+    }
 
   public termsText='sdfs';
 
@@ -291,7 +331,6 @@ public patient_id;
                           }
                           else {
                             this.createSubscription(this.token);
-
                           }
                       }
                      else if(res.message == 'error'){
@@ -311,7 +350,7 @@ public patient_id;
 
   createSubscription(token) {
     this.stripe_plan_id =  this.planName.replace('',' ');
-      this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.patient_id, this.totalAmountPatients, this.plan_id, this.user_id,this.form.value.patient_name,this.form.value.patient_email).subscribe((res) => {
+      this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.patient_id, this.totalAmountPatients, this.plan_id, this.user_id,this.form.value.patient_name,this.form.value.patient_email,this.clinic_id).subscribe((res) => {
            if(res.message == 'success'){
               this.updatePatients('ACTIVE');
            }
@@ -319,8 +358,7 @@ public patient_id;
               this.errorLogin  =true;
            }
           }, error => {
-      $('.ajax-loader').hide();      
-
+      $('.ajax-loader').hide();
           });
   }
 
@@ -345,23 +383,24 @@ public patient_id;
   deletesubPatient(id){
     var tempArray= [];
     var totalAmount =0;
+    this.patientData.splice(id, 1);
     var countPatient = this.patientData.length;
-     this.patientData.splice(id, 1);
      var i=0;
      this.patientData.forEach(res => {
       var temp=[];
           temp=res;
-            if(countPatient<3 && countPatient>0)
-             temp['amount'] = res['amount'] - Math.floor((this.discount/100)*this.patientData[i-1]['amount']);
-              else
+            if((i<3) && (i>0) ) 
+             temp['amount'] = this.patientData[i-1]['amount'] - Math.floor((this.discount/100)*this.patientData[i-1]['amount']);
+            else
              temp['amount'] =  res['amount'];
+
+
              tempArray.push(temp);
              totalAmount = totalAmount + temp['amount'];
              i++;
  });
      this.patientData = tempArray;
      this.totalAmountPatients = totalAmount;
-          
   }
 
   onSubmit() {
@@ -475,7 +514,7 @@ public patient_id;
       key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
       locale: 'auto',
       token: token => {
-           this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.id, this.patient_amount, this.member_plan_id, this.user_id,this.patient_name,this.patient_email).subscribe((res) => {
+           this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.id, this.patient_amount, this.member_plan_id, this.user_id,this.patient_name,this.patient_email,this.clinic_id).subscribe((res) => {
            if(res.message == 'success'){
               this.updatePatients('ACTIVE');
             alert('Payment Completed Successfully, Your Subscription is active now!');  

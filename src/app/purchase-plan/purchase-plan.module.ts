@@ -28,7 +28,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
   imports: [
     CommonModule,
     RouterModule.forChild(PurchasePlanRoutes),    
-    NgxStripeModule.forRoot('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc'),
+    NgxStripeModule.forRoot(''),
     MatIconModule,
     MatCardModule,
     MatInputModule,

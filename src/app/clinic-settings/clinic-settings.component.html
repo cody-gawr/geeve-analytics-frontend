@@ -5,9 +5,11 @@
 <div fxLayout="row wrap" class="sa_forms_design">
     <!--div fxFlex.gt-sm="100" fxFlex="100"-->
     <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100">
+
         <button class="sa_back_button_custom mat-raised-button sa-pull-right mat-gray" (click) = "goBack()">Back</button>
         <mat-card>
             <mat-card-content>
+                <div class="warning_message">Your stripe account is not connected</div>
                 <div class="basic_details_form">
 
                     <!-- ============================================================== -->
@@ -35,10 +37,13 @@
                                     </div>
 
                                     <div  fxFlex>
+                                        <button mat-raised-button color="green" class="sa-pull-right" type="button" (click)="connectStripe()" *ngIf="!connectedStripe">Connect To Stripe</button>
+                                        <button mat-raised-button color="green" class="sa-pull-right" type="button" (click)="disconnectStripe()" *ngIf="connectedStripe">Disconnect Stripe</button>
                                         <mat-card-title>Clinic Settings </mat-card-title>
 
                                         <!-- column -->
                                         <div fxLayout="row wrap" fxLayoutGap="2%">
+
                                             <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
                                                 <label>Clinic Name*</label>
                                                 <input placeholder="" [formControl]="form.controls['clinicName']" [(ngModel)]= "clinicName">
@@ -213,7 +218,7 @@
                                <mat-card-actions>
                                <button mat-raised-button color="green" class="sa-pull-right" type="submit" [disabled]="!formLanding.valid">Submit</button>
 
-                                <a [routerLink]="['/subscription',clinic_id,user_id]" target="_blank" mat-raised-button color="green" class="sa-pull-right" title= 'Subscription Detail'>Preview Landing Page</a>
+                                <a [routerLink]="['/subscription',clinic_id,user_id]" target="_blank" mat-raised-button color="green" class="sa-pull-right" title= 'Subscription Detail' *ngIf="connectedStripe">Preview Landing Page</a>
                                </mat-card-actions>
                                         <!-- column -->
                             </div>

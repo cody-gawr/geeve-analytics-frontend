@@ -237,7 +237,7 @@ html .page-wrapper{height:100vh!important}
 .sa_header_icons{position: relative;
     margin-right: 10px; min-width:96px; float:left; margin-bottom:2px; }
 
-.mat-drawer-container{background:#DDEBE9!important; }
+.mat-drawer-container{background:#fff!important; }
 
 .sa_expand_area{float:left; }
 .sa_expand_area .mat-icon{margin-left:8px;}
@@ -1458,17 +1458,17 @@ img{max-width:100%;}
 .sa_dentist_graphs_area .sa_flexbg.sa_designbg .mat-card .sa_grid_ico2{margin:auto;}
 .sa_dentist_graphs_area .sa_flexbg.sa_designbg{padding-left: 0px;padding-right:0px;}
 .sa_dentist_graphs_area .sa_flexbg.sa_designbg.single-mat-card .mat-card {width:100%;border:none;}
-.packgae_list_main {height: 175px;overflow-y: auto;scrollbar-width: thin;margin:0 -5px;}
+.packgae_list_main {}
 .btn-group {border:1px solid #ddd;}
 .width-full{float:left;width: 100%;}
-.featuredPlan .preventative_discount , .featuredPlan .preventative_frequency , .featuredPlan .discount , .featuredPlan .packgae_list span {color:#138da2;}
-.packgae_list_main p ,.packgae_list_main  .packgae_list span {line-height:20px;font-size:14px;margin-bottom:10px;border-bottom:1px solid #eee;
-   padding-bottom:10px;font-weight:500;letter-spacing:0.4px;}
-.featuredPlan .price_spacer{background-color:transparent;}
-
-.featuredPlan .btn-theme.pricing_btn {background:#1593A8;color:#fff!important;border:none;}
-.btn-theme.pricing_btn {background:transparent;color:#7c7c7c!important;border:none;border-top:3px solid #ccc;}
-.btn-theme.pricing_btn:hover {color:#fff !important;border-top:2px solid #fff;}
+.featuredPlan .preventative_discount , .featuredPlan .preventative_frequency , .featuredPlan .discount , .featuredPlan .packgae_list span {}
+.packgae_list_main p ,.packgae_list_main  .packgae_list span {line-height:20px;font-size:14px ;margin-bottom:10px; text-align:center;
+   padding-bottom:10px;font-weight:500;letter-spacing:0.4px;  position:relative;}
+.featuredPlan .price_spacer{}
+.packgae_list_main p ,.packgae_list_main  .packgae_list span i{ margin-right:9px; color:#00A289; margin-top:3px;}
+.featuredPlan .btn-theme.pricing_btn {background:#00A289;color:#fff!important; border-color:#00A289;}
+.btn-theme.pricing_btn {background:transparent; color:#7c7c7c!important;border:none; border:3px solid #ccc;}
+.btn-theme.pricing_btn:hover {background:#00A289;color:#fff!important; border-color:#00A289;}
 .mat-dialog-container {min-width:800px !important;}
 .full-screen .mat-dialog-container {min-width:400px !important;}
 .mat-dialog-title::after {position:absolute;content:"";height:40px;width:8px;background-color:#25a689;left:-25px;top:-4px;}
@@ -1525,7 +1525,7 @@ img{max-width:100%;}
  .mat-radio-button .mat-radio-label-content{line-height: 20px !important;vertical-align: top;}
 span.btn-off-label {position: absolute;
     top: 0;
-    right: 5px;
+    right: 0px; color:#fff;
     background-color:
     #ea2268;
     line-height: 35px;
@@ -1540,8 +1540,7 @@ span.btn-off-label {position: absolute;
 .subscription-main .sa-main-header {/*background: linear-gradient(0deg, transparent ,#fff 63%); */}
 
 button.sa-pull-right.mat-raised-button.danger.mat-menu-item {margin-right: 15px;color: #fff;}
-.learn_more {    background-color: #1593a7;    padding: 3px 11px;    font-size: 13px;    cursor: pointer;    color: #fff;
-    border-radius: 20px; margin-top:20px; display:inline-block;}
+.learn_more { width:100%; padding: 3px 11px; font-size: 15px; cursor: pointer;    color: #424242; margin-top:20px; display:inline-block; margin-bottom:6px;}
 
 .appointment_logintable .fa-times{cursor:pointer;}
 
@@ -1571,6 +1570,7 @@ border-radius: 4px; margin-bottom:10px;}
 .packgae_list span{margin-bottom:0!important; padding-left:8px!important; padding-right:8px!important; padding-bottom:4px!important;}
 .packgae_list_main h5{font-size:15px; padding:6px 8px!important; color:#0091A7!important;}
 .featuredPlan h5{color:#424242!important;}
+.featuredPlan .price_value{font-weight:500;}
 .price_limit{padding-bottom: 30px;
 color:
     #424242 !important;
@@ -1718,3 +1718,12 @@ span.datatableEmail {display: block; word-break: break-all; line-height: 20px; }
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008da3', endColorstr='#016a7a', GradientType=1 ); padding:8px!important; border-radius:12px; }
 
 .gradient_inner{background:#fff; padding:20px; border-radius:12px;}
+
+.warning_message{color:
+#721c24;
+    background-color:
+    #f8d7da;
+    border-color:
+    #f5c6cb; padding:8px 15px; border-radius:4px; margin-bottom:20px;}
+.iframe_border{border:1px solid #ccc!important; padding:6px 10px!important; border-radius:4px!important;}
+.link_btn{cursor: pointer;}

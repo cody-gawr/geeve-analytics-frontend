@@ -19,7 +19,7 @@ import { environment } from "../../environments/environment";
 
 export class ClinicSettingsComponent implements OnInit {
  private apiUrl = environment.apiUrl;
-
+public connectedStripe=false;
  public formTerms: FormGroup;
 afuConfig = {
     multiple: true,
@@ -94,6 +94,7 @@ afuConfig = {
       this.id = this.route.snapshot.paramMap.get("id");
       this.getClinicSettings();
       this.getClinicLandingPageSettings();
+      this.getStripeAuthorization();
       $('#title').html('Clinic Settings');
       $('.header_filters').addClass('hide_header');
        
@@ -145,7 +146,27 @@ afuConfig = {
         ? 'Not a valid email'
         : '';
   }
-  public terms;
+
+  connectStripe() {
+      var win = window.open(this.linkStripe, "MsgWindow", "width=600,height=400");
+      var self = this;
+      var timer = setInterval(function() { 
+        if(win.closed) {
+            self.connectedStripe=true;
+            clearTimeout(timer);            
+        }
+      }, 1000);
+  }
+disconnectStripe() {
+    this.clinicSettingsService.disconnectStripe(this.id).subscribe((res) => {
+       if(res.message == 'success'){
+       this.connectedStripe=false;
+       } 
+    }, error => {
+      this.errortext = "Please Provide Valid Inputs!";
+    });
+}
+public terms;
 public errorTermstext;
 public successTermstext;
 public errortext;
@@ -162,10 +183,9 @@ onSubmitTerms() {
         }
     }, error => {
       this.errortext = "Please Provide Valid Inputs!";
-    }    
-    );
-
+    });
   } 
+public stripe_account_id;
 public user_id;
   getClinicSettings() {
     $('.ajax-loader').show(); 
@@ -178,10 +198,9 @@ public user_id;
         this.contactName = res.data[0].contactName;
         this.address = res.data[0].address;
         this.phoneNo = res.data[0].phoneNo;
-        // this.publishable_key = res.data[0].publishable_key;
-        // this.secret_key = res.data[0].secret_key;
-         // console.log(res);
-        // this.practice_size = res.data[0].practice_size;
+        this.stripe_account_id = res.data[0].stripe_account_id;
+        if(this.stripe_account_id)
+          this.connectedStripe = true;
         if(res.data[0].logo!=""){
           this.imageURL = res.data[0].logo;  
         }else{
@@ -347,7 +366,6 @@ public user_id;
 /*After Successfully Uploading files, Handle response*/
 SliderImagesUpload(files:any)
 { 
-
   const responseStatus =files.status;
   if(responseStatus==200)
   {
@@ -372,7 +390,6 @@ removeSliderImage(keyUrl,index){
 
     if(confirm("Are you sure you want to remove this image from slider ?"))
     {
-      
       if(this.sliderImages.length==1){
          alert("This image can't be deleted as atleast one image is required to run the slider.")
          return false; 
@@ -382,9 +399,7 @@ removeSliderImage(keyUrl,index){
          $('.ajax-loader').hide(); 
         this.getClinicLandingPageSettings();
        if(res.message == 'success'){
-       
-        this.notifier.notify( 'success', 'Removed Slider Image' ,'vertical');
-        
+        this.notifier.notify( 'success', 'Removed Slider Image' ,'vertical');        
        }
      }, error => {
        this.warningMessage = "Please Provide Valid Inputs!";
@@ -397,7 +412,17 @@ removeSliderImage(keyUrl,index){
     } 
 
 }
+public linkStripe;
+getStripeAuthorization(){ 
+ this.clinicSettingsService.getStripeAuthorization(this.id).subscribe((res) => {
+       if(res.message == 'success'){
+        this.linkStripe = res.data;
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    ); 
 
-
+ }
 
 }

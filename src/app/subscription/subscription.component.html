@@ -1,383 +1,390 @@
 
+<div class="gray_shape02"></div>
+<section id="sa-container" class="sa-container subscription-main ">
+    <div class="sa-pull-left sa-col-12 sa-main-header sa-ste">
+        <div class="container ">
+            <a class="sa-logo sa-ste" href="index.html">
+                <!--img class="sa-main-logo-txt sa-ste" src="../../assets/img/logo.png"-->
+                <img class="sa-ste sa-main-logo-txt sa-ste" src="{{clinicLogo}}">
+            </a>
+            <div id="nav_main" class="pull-right sa-navigation">
 
-<div id="sa-container" class="sa-container subscription-main">
-      <div class="sa-pull-left sa-col-12 sa-main-header sa-ste">
-        <div class="container sa-c">
-          <a class="sa-logo sa-ste" href="index.html">
-            <!--img class="sa-main-logo-txt sa-ste" src="../../assets/img/logo.png"-->
-            <img class="sa-ste sa-main-logo-txt sa-ste" src="{{clinicLogo}}">
-          </a>
-          <div id="nav_main" class="pull-right sa-navigation">
-                
-            <div class="nv-ico">
-              <div class="sa-mobile-nav sa_navclk">
-                <button class="navbar-toggler navbar-toggler-mob" type="button" onclick="openNav()"><div class="openMenu"> <span class="navbar-toggler-line line-first"></span> <span class="navbar-toggler-line line-second"></span> <span class="navbar-toggler-line line-third"></span></div></button>
-              </div>
+                <div class="nv-ico">
+                    <div class="sa-mobile-nav sa_navclk">
+                        <button class="navbar-toggler navbar-toggler-mob" type="button" onclick="openNav()"><div class="openMenu"> <span class="navbar-toggler-line line-first"></span> <span class="navbar-toggler-line line-second"></span> <span class="navbar-toggler-line line-third"></span></div></button>
+                    </div>
+                </div>
+                <div class="menu pull-right nav-sec sa-ste">
+                    <div class="sa_navclose"><i class="fas fa-times"></i></div>
+                    <ul class="pull-left">
+                        <li class="sa-ste">
+                            <a class="active" (click)="scroll('about_text')">About Us</a>
+                        </li>
+                        <li class="sa-ste">
+                            <a class="" (click)="scroll('offers_packages')">Offers & Packages</a>
+                        </li>
+                        <li class="sa-ste">
+                            <a (click)="scroll('message_section')">Contact</a>
+                        </li>
+                    </ul>
+
+                    <div class="pull-left sa_header_number sa-ste">
+                        {{clinicContactNo}}
+                    </div>
+                </div>
             </div>
-            <div class="menu pull-right nav-sec sa-ste">
-              <div class="sa_navclose"><i class="fas fa-times"></i></div>
-              <ul class="pull-left">          
-                <li class="sa-ste">
-                  <a class="active" (click)="scroll('about_text')">About Us</a>
-                </li>
-                <li class="sa-ste">
-                  <a class="" (click)="scroll('offers_packages')">Offers & Packages</a>
-                </li>
-                <li class="sa-ste">
-                  <a (click)="scroll('message_section')">Contact</a>
-                </li>
-              </ul>
-              
-              <div class="pull-left sa_header_number sa-ste">
-                {{clinicContactNo}}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      <section class="sa-pull-left sa-col-12 sa-slide-section" id="header_section">
-        <div class="container sa-c">
-          <div class="headimage_main">
-            
-            <div class="headimage_area">
-              <div class="shape1">
-                <div class="shape_image">
-                  <img src="{{headerImageURL}}">
-                </div>
-              </div>
+     
+    </section>
+    <section class="sa-pull-left sa-col-12 sa-slide-section" id="header_section">
+        <div class="container">
 
-              <div class="shape2"><img id="shape2" src="assets/img/shape2.svg"></div>
-            </div>
-            
-            <div class="head_sec_text pull-left">
-              <!--h1>Wanna Checkup Your Smiling Teeth!</h1>
-              <p>The phrasal sequence of the Lorem Ipsum text is now so widespread and commonplace that many DTP programmes can generate dummy text using the starting sequence. The phrasal sequence of the Lorem Ipsum text is now so widespread and commonplace that many DTP programmes can generate dummy text using the starting sequence</p-->
-                <h1>{{headerTitle}}</h1>
-                <p>{{headerDescription}}</p>
-              <a href="#" class="btn btn-lg btn-theme btn-rounded">Contact Now</a>
-            </div>            
-          </div>
-        </div>
-        
-      </section>
-      
-      <section class="sa-pull-left sa-col-12 pricing-section" id="offers_packages" style="margin-bottom:100px;">
-        <div class="container sa-c">
-          <div class="row justify-content-center align-items-center">
-            <div class="col-md-12">
-              <h2 class="section_title">Offers & Packages</h2>
-              <div class="owl-carousel price_slide">
-           <ngx-slick class="carousel" #slickModal="slick-modal" [config]="planSliderConfig" responsive="breakpoints">
-           <div ngxSlickItem *ngFor="let plan of plans;i as index" class="slide"  [ngClass]="{'featuredPlan': plan.isFeatured==='true'}">
-            <div class="pricing_area sa-ste">
-             <img class="star_image" src="assets/img/star.png">
-             <h4>{{plan.planName}}</h4>
-             <span class="price_spacer"></span>
-             <span class="price_value">${{plan.totalAmount}}</span>
-              <span class="price_limit">{{plan.planLength}}</span>
-             <div class="packgae_list_main">
-            
-              <div class="packgae_list" >
-             <span>{{plan.preventative_frequency}} FREE CHCEKUPS PER ANNUM *</span>
-             <span>{{plan.preventative_discount}}% OFF SELECTED TREATMENTS *</span>
-             <span>{{plan.discount}}% OFF FOR ADDITIONAL FAMILY MEMBERS</span>
-           </div>
-             <span (click) ="loadDesc(plan.id, plan.preventative_plan, plan.treatment_inclusions, plan.treatment_exclusions, plan.totalAmount)" class="learn_more {{plan.id}}">Learn More</span>
-           <!--   <div class="treatment_content {{plan.id}}" [style.display]="'none'">
-             <h5>Preventative Plan inclusions</h5>
-             <div class="packgae_list"  *ngFor="let service of plan.preventative_plan">
-               <span>{{service.itemName}}</span>
-              </div>
-              <h5>Treatment Inclusions</h5>
-             <div class="packgae_list"  *ngFor="let service of plan.treatment_inclusions">
-               <span>{{service.itemName}}</span>
-              </div>
-              <h5>Treatment Exclusions</h5>
-             <div class="packgae_list"  *ngFor="let service of plan.treatment_exclusions">
-               <span>{{service.itemName}}</span>
-              </div>
-            </div> -->
-           </div>
-             <a class="btn btn-theme no-radius btn-block pricing_btn" [ngClass]="{'disabled': plan.id=='sampleplan101'}" (click)="openDialog(plan.id,plan.totalAmount)">Buy Now</a> 
-           </div>
-          </div>
-         </ngx-slick>
-              </div>  
 
-            <div class="treatment_content {{load_id}}" [style.display]="'none'">
-                <div class="treatment_content_inner">
-                     <h2 class="srvc_maintitle">Test12 Details</h2>
-                     <div class="treatment_sec">
-                        <h5 class="srvc_title">Preventative Plan inclusions</h5>
+                <div class="row">
+                      <div class="col-md-7">
 
-                      <div class="sa-pull-left sa-col-12">
-                          <div class="row">
-                              <div class="col-md-6" *ngFor="let service of load_preventative_plan">
-                                  <div class="packgae_list">
-                                      <span class="srvc_pck">-  {{service.itemName}}</span>
-                                  </div>
-                              </div>
+                          <div class="head_sec_text pull-left">
+                              <!--h1>Wanna Checkup Your Smiling Teeth!</h1>
+                              <p>The phrasal sequence of the Lorem Ipsum text is now so widespread and commonplace that many DTP programmes can generate dummy text using the starting sequence. The phrasal sequence of the Lorem Ipsum text is now so widespread and commonplace that many DTP programmes can generate dummy text using the starting sequence</p-->
+                              <h1>{{headerTitle}}</h1>
+                              <p>{{headerDescription}}</p>
+                              <a href="#" class="btn btn-lg btn-theme btn-rounded">Join Now</a>
+
                           </div>
-                      </div>
 
-                        <h5 class="srvc_title" >Treatment Inclusions</h5>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="headimage_area">
+                                 <img src="{{headerImageURL}}">
+                            </div>
 
-                         <div class="sa-pull-left sa-col-12">
-                             <div class="row">
-                                 <div class="col-md-6" *ngFor="let service of load_treatment_inclusions">
-                                     <div class="packgae_list"  >
-                                         <span class="srvc_pck">-  {{service.itemName}}</span>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
+                        </div>
+                    </div>
 
-
-
-                        <h5 class="srvc_title">Treatment Exclusions</h5>
-
-
-                         <div class="sa-pull-left sa-col-12">
-                             <div class="row">
-                                 <div class="col-md-6" *ngFor="let service of load_treatment_exclusions">
-                                     <div class="packgae_list"  >
-                                         <span class="srvc_pck">-  {{service.itemName}}</span>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-
-                      </div>
-                      <div class="srvc_btn">
-                        <a class="btn btn-theme no-radius btn-block" [ngClass]="{'disabled': load_id=='sampleplan101'}" (click)="openDialog(load_id,load_totalAmount)">Buy Now</a>
-                      </div>
-                </div>
-            </div>
-
-
-            </div>
-          </div>
         </div>
-      </section>
-      
 
-      
-     <section class="sa-pull-left sa-col-12 slider-section d-none">
-      <div class="container sa-c">   
-        <div class="sa_slide_main">
-          <ngx-slick class="carousel" #slickModal="slick-modal" [config]="imageSliderConfig">
-           <div ngxSlickItem *ngFor="let slide of sliderimages" class="slide">
-             <img src="{{ slide.file }}" alt="" width="100%">
-           </div>
-          </ngx-slick>
-            <img class="slide_shape" src="assets/img/slide_shape.png"/>
-            <img class="slide_shape2" src="assets/img/slide_shape2.png"/>
-            
-            <!-- <div class="owl-carousel slider_sec">
-              <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-              <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-              <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-              <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-              <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-              <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-            </div-->
-          </div>
-          <div class="about_text" id="about_text">
+    </section>
+
+    <section class="sa-pull-left sa-col-12 pricing-section" id="offers_packages" >
+        <div class="container">
             <div class="row justify-content-center align-items-center">
-              <div class="col-md-10">
-                <img class="about_text_image" src="assets/img/about_text.png"/>
-                <p>{{ClinicAbout}}</p>
-              </div>
-            </div>
-          </div>
-          
-        </div>
-        
-        
-      </section>
+                <div class="col-md-12">
+                    <h2 class="section_title">Our <b>MEMBERSHIP</b></h2>
+                    <div class="owl-carousel price_slide">
+                        <ngx-slick class="carousel" #slickModal="slick-modal" [config]="planSliderConfig" responsive="breakpoints">
+                            <div ngxSlickItem *ngFor="let plan of plans;i as index" class="slide"  [ngClass]="{'featuredPlan': plan.isFeatured==='true'}">
+                                <div class="pricing_area sa-ste">
+                                    <div class="ribbon-banner-main"><span class=ribbon-banner>MOST POPULAR</span></div>
+                                    <h4>{{plan.planName}}</h4>
+                                    <span class="price_spacer"></span>
+                                    <span class="price_value">${{plan.totalAmount}}</span>
+                                    <span class="price_limit">{{plan.planLength}}</span>
+                                    <div class="packgae_list_main">
+
+                                        <div class="packgae_list" >
+                                            <span><i class="fas fa-check"></i>{{plan.preventative_frequency}} FREE CHCEKUPS PER ANNUM *</span>
+                                            <span><i class="fas fa-check"></i>{{plan.preventative_discount}}% OFF SELECTED TREATMENTS *</span>
+                                            <span><i class="fas fa-check"></i>{{plan.discount}}% OFF FOR ADDITIONAL FAMILY MEMBERS</span>
+                                        </div>
 
 
-      
- <section class="sa-pull-left sa-col-12 doctor-section d-none">
-        <div class="container sa-c">
-        
-          <div class="doctor_text">
-            <div class="row justify-content-center">
-              <div class="col-md-3">
-                <div class="doctor_image">
-                  <img src="assets/img/banner_doctor.png" alt=""/>
+                                        <!--   <div class="treatment_content {{plan.id}}" [style.display]="'none'">
+                                          <h5>Preventative Plan inclusions</h5>
+                                          <div class="packgae_list"  *ngFor="let service of plan.preventative_plan">
+                                            <span>{{service.itemName}}</span>
+                                           </div>
+                                           <h5>Treatment Inclusions</h5>
+                                          <div class="packgae_list"  *ngFor="let service of plan.treatment_inclusions">
+                                            <span>{{service.itemName}}</span>
+                                           </div>
+                                           <h5>Treatment Exclusions</h5>
+                                          <div class="packgae_list"  *ngFor="let service of plan.treatment_exclusions">
+                                            <span>{{service.itemName}}</span>
+                                           </div>
+                                         </div> -->
+                                    </div>
+                                    <div class="plan_abso_btns">
+                                        <a class="btn btn-theme no-radius pricing_btn" [ngClass]="{'disabled': plan.id=='sampleplan101'}" (click)="openDialog(plan.id,plan.totalAmount)">Buy Now</a>
+                                          <span (click) ="loadDesc(plan.id, plan.preventative_plan, plan.treatment_inclusions, plan.treatment_exclusions, plan.totalAmount,plan.planName,plan.planLength)" class="learn_more {{plan.id}}">Learn More</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </ngx-slick>
+                    </div>
+
+
+
                 </div>
-              </div>
-              <div class="col-md-7">
-                <div class="sa_doctor_detail">
-                  <h5>{{DoctorName}}</h5>
-                  <span class="doctor_des">{{DoctorPractice}}</span>
-                  <p>{{DoctorDescription}}</p>
-                </div>
-                <div class="clinic_detail_main">
-                  <div class="clinic_logo">
-                    <img src="{{clinicLogo}}" alt=""/>
-                  </div>
-                  <div class="clinic_detail">
-                    <span class="clinic_n">{{clinicName}}</span>
-                    <span>{{clinicAddress}}</span>
-                    <span>{{clinicContactNo}}</span>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
-          
         </div>
-        
-        
-      </section>
-      
-      <section class="sa-pull-left sa-col-12 treatments-section d-none">
-        <div class="container sa-c">
-        
-          <div class="doctor_text">
-            <div class="row justify-content-center ">
-              <div class="col-md-12">
-                <div class="treatments_image">
-                  <div class="treatments_image_overlay"></div>
-                  <img src="assets/img/secimg.jpg" alt=""/>
+    </section>
+
+    <section class="sa-pull-left sa-col-12 gray_shape01" >
+        <div class="container">
+            <div class=" treatment_content {{load_id}}" [style.display]="'none'">
+                <h2 class="section_title">Plan <b>DETAILS</b></h2>
+
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-10">
+
+                        <div class="treatment_content_inner sacol01">
+
+                            <div class="row ">
+                                <div class="col-md-4 treatment_plan_bg">
+                                    <div class="treatment_plan_side">
+                                        <h4>{{load_planName}}</h4>
+                                        <span class="price_value">${{load_totalAmount}}</span>
+                                        <span class="price_limit">{{load_planLength}}</span>
+                                        <div class="srvc_btn">
+                                            <a class="btn btn-white no-radius btn-block" [ngClass]="{'disabled': load_id=='sampleplan101'}" (click)="openDialog(load_id,load_totalAmount)">Buy Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="treatment_sec">
+                                        <h5 class="srvc_title"><i class="far fa-star"></i> Preventative Plan inclusions</h5>
+                                        <div class="sa-pull-left sa-col-12 spnlast">
+                                            <span *ngFor="let service of load_preventative_plan">{{service.itemName}} <span>,</span></span>
+                                        </div>
+
+                                        <h5 class="srvc_title" ><i class="far fa-star"></i> Treatment Inclusions</h5>
+                                        <div class="sa-pull-left sa-col-12 spnlast">
+                                            <span *ngFor="let service of load_treatment_inclusions"> {{service.itemName}} <span>,</span></span>
+                                        </div>
+
+                                        <h5 class="srvc_title"><i class="far fa-star"></i> Treatment Exclusions</h5>
+                                        <div class="sa-pull-left sa-col-12 spnlast">
+                                            <span *ngFor="let service of load_treatment_exclusions"> {{service.itemName}} <span>,</span></span>
+                                        </div>
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
-                <h2 class="section_title">Treatments</h2>
-                <div class="treatment_types">
-                  <div class="row justify-content-center">
-                    <div class="col-md-12 text-center">
-                      <div class="icon_bg_main">
-                        <div class="icon_bg ib1 sa-ste"><img src="assets/img/01.png"/></div>
-                        <div class="icon_bg ib2 sa-ste"><img src="assets/img/02.png"/></div>
-                        <div class="icon_bg ib3 sa-ste"><img src="assets/img/03.png"/></div>
-                        <div class="icon_bg ib4 sa-ste"><img src="assets/img/04.png"/></div>
-                        
-                      </div>
+
+            </div>
+         </div>
+    </section>
+
+
+
+
+    <section class="sa-pull-left sa-col-12 slider-section d-none">
+        <div class="container">
+            <div class="sa_slide_main">
+                <ngx-slick class="carousel" #slickModal="slick-modal" [config]="imageSliderConfig">
+                    <div ngxSlickItem *ngFor="let slide of sliderimages" class="slide">
+                        <img src="{{ slide.file }}" alt="" width="100%">
+                    </div>
+                </ngx-slick>
+                <img class="slide_shape" src="assets/img/slide_shape.png"/>
+                <img class="slide_shape2" src="assets/img/slide_shape2.png"/>
+
+                <!-- <div class="owl-carousel slider_sec">
+                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
+                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
+                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
+                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
+                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
+                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
+                </div-->
+            </div>
+            <div class="about_text" id="about_text">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-10">
+                        <img class="about_text_image" src="assets/img/about_text.png"/>
+                        <p>{{ClinicAbout}}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <section class="sa-pull-left sa-col-12 doctor-section d-none">
+        <div class="container">
+
+            <div class="doctor_text">
+                <div class="row justify-content-center">
+                    <div class="col-md-3">
+                        <div class="doctor_image">
+                            <img src="assets/img/banner_doctor.png" alt=""/>
+                        </div>
                     </div>
                     <div class="col-md-7">
-                      <div class="iconbg_text">
-                        Perfect Solutions to all your Dental Problems
-                      </div>
+                        <div class="sa_doctor_detail">
+                            <h5>{{DoctorName}}</h5>
+                            <span class="doctor_des">{{DoctorPractice}}</span>
+                            <p>{{DoctorDescription}}</p>
+                        </div>
+                        <div class="clinic_detail_main">
+                            <div class="clinic_logo">
+                                <img src="{{clinicLogo}}" alt=""/>
+                            </div>
+                            <div class="clinic_detail">
+                                <span class="clinic_n">{{clinicName}}</span>
+                                <span>{{clinicAddress}}</span>
+                                <span>{{clinicContactNo}}</span>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-              
             </div>
-          </div>
-          
-        </div>
-        
-        
-      </section>
-      
-      <section class="sa-pull-left sa-col-12 smile-section d-none">
-        <div class="smile_image">
-          <!--h4>Our <i class="fas fa-smile"></i> Are Valley Wide</h4-->
-          <h4 [innerHTML]="clinicTagline"></h4>
-          <div class="smile_image_overlay"></div>
-        </div>  
-      </section>
-      
-      <section class="sa-pull-left sa-col-12 message-section d-none" id="message_section ">
-        <div class="container sa-c">
-          <h2 class="section_title">Drop Us a Message</h2>
-          <div class="">
-            <form action="#"  [formGroup]="contactusForm" id="contactUs_form">
-              <div class="row justify-content-center">
-                <div class="col-lg-5 sa_forms">
-                  <div class="form-group">
-                    <input type="text" class="form-control"  name="contactuser_name" id="contactuser_name" placeholder="Your Name" [formControl]="contactusForm.controls['contactuser_name']" [(ngModel)]="contactuser_name">
-                    <small *ngIf="contactusForm.controls['contactuser_name'].hasError('required') && contactusForm.controls['contactuser_name'].touched" class="text-danger support-text">Name is required.</small>
-                  </div>
-                  <div class="form-group">
-                    <input type="email" class="form-control" name="contactuser_email" id="contactuser_email" placeholder="Your Email" [formControl]="contactusForm.controls['contactuser_email']" [(ngModel)]="contactuser_email">
-                     <small *ngIf="contactusForm.controls['contactuser_email'].hasError('required') && contactusForm.controls['contactuser_email'].touched" class="text-danger support-text">Email is required.</small>
-                  </div>
-                  <div class="form-group">
-                    <input type="text" class="form-control"  name="contactuser_phone" id="contactuser_phone" placeholder="Phone" [formControl]="contactusForm.controls['contactuser_phone']" [(ngModel)]="contactuser_phone">
-                    <small *ngIf="contactusForm.controls['contactuser_phone'].hasError('required') && contactusForm.controls['contactuser_phone'].touched" class="text-danger support-text">Phone is required.</small>
-                  </div>
-                </div>
-                <div class="col-lg-5 sa_forms">
-                  <div class="form-group">
-                    <textarea type="text" class="form-control" name="contactuser_message" id="contactuser_message" placeholder="Message" [formControl]="contactusForm.controls['contactuser_message']" [(ngModel)]="contactuser_message"></textarea>
 
-                    <small *ngIf="contactusForm.controls['contactuser_message'].hasError('required') && contactusForm.controls['contactuser_message'].touched" class="text-danger support-text">Message is required.</small>
-                  </div>
-                </div>
-                <!--input type="hidden" name="clinicEmail" id="clinicEmail" [formControl]="contactusForm.controls['clinicEmail']" [(ngModel)]="clinicEmail" value={{clinicEmail}}-->
-                <input type="hidden" name="clinicEmail" id="clinicEmail" [formControl]="contactusForm.controls['clinicEmail']" [(ngModel)]="clinicEmail" value={{clinicEmail}}>
-                <div class="col-lg-10 ">
-                    <div class="submit_btn_area ">
-                      <div class="form-group text-center">
-                        <button type="submit" name="btnSubmit" class="btn btn-lg btn-theme btn-rounded" (click)="submitContactForm($event);" [disabled]="!contactusForm.valid" >Send Message</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-              
-            </form> 
-          </div>
         </div>
-      </section>
-      
-      <footer class="sa-pull-left sa-col-12 sa-footer-area">
-        <div class="container sa-c">
-          <div class="row justify-content-md-center">
-              
-                <div class="col-lg-3">
-                  <div class="logo_footer_withtext">
-                    <a class="sa-ste" href="index.html">
-                      <img class="sa-footer-logo sa-ste" src="{{clinicLogo}}">
-                    </a>
-                  </div>
+
+
+    </section>
+
+    <section class="sa-pull-left sa-col-12 treatments-section d-none">
+        <div class="container">
+
+            <div class="doctor_text">
+                <div class="row justify-content-center ">
+                    <div class="col-md-12">
+                        <div class="treatments_image">
+                            <div class="treatments_image_overlay"></div>
+                            <img src="assets/img/secimg.jpg" alt=""/>
+                        </div>
+                        <h2 class="section_title">Treatments</h2>
+                        <div class="treatment_types">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 text-center">
+                                    <div class="icon_bg_main">
+                                        <div class="icon_bg ib1 sa-ste"><img src="assets/img/01.png"/></div>
+                                        <div class="icon_bg ib2 sa-ste"><img src="assets/img/02.png"/></div>
+                                        <div class="icon_bg ib3 sa-ste"><img src="assets/img/03.png"/></div>
+                                        <div class="icon_bg ib4 sa-ste"><img src="assets/img/04.png"/></div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="iconbg_text">
+                                        Perfect Solutions to all your Dental Problems
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                
-              
-                <div class="col-lg-3">
-                  <h6>Quick Views</h6>
-                  <div class="sa-links-area">
-                    <a class="sa-ste"(click)="scroll('header_section')"><i class="fas fa-hand-point-right"></i>Home</a>
-                    <a class="sa-ste" (click)="scroll('about_text')"><i class="fas fa-hand-point-right"></i>About</a>
-                    <a class="sa-ste" (click)="scroll('offers_packages')"><i class="fas fa-hand-point-right"></i>Offers & Packages</a>
-                    <a class="sa-ste" (click)="scroll('message_section')"><i class="fas fa-hand-point-right"></i>Contact us</a>
-                  </div>
-                </div>
-                
+            </div>
+
+        </div>
+
+
+    </section>
+
+    <section class="sa-pull-left sa-col-12 smile-section d-none">
+        <div class="smile_image">
+            <!--h4>Our <i class="fas fa-smile"></i> Are Valley Wide</h4-->
+            <h4 [innerHTML]="clinicTagline"></h4>
+            <div class="smile_image_overlay"></div>
+        </div>
+    </section>
+
+    <section class="sa-pull-left sa-col-12 message-section d-none" id="message_section ">
+        <div class="container">
+            <h2 class="section_title">Drop Us a Message</h2>
+            <div class="">
+                <form action="#"  [formGroup]="contactusForm" id="contactUs_form">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5 sa_forms">
+                            <div class="form-group">
+                                <input type="text" class="form-control"  name="contactuser_name" id="contactuser_name" placeholder="Your Name" [formControl]="contactusForm.controls['contactuser_name']" [(ngModel)]="contactuser_name">
+                                <small *ngIf="contactusForm.controls['contactuser_name'].hasError('required') && contactusForm.controls['contactuser_name'].touched" class="text-danger support-text">Name is required.</small>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" name="contactuser_email" id="contactuser_email" placeholder="Your Email" [formControl]="contactusForm.controls['contactuser_email']" [(ngModel)]="contactuser_email">
+                                <small *ngIf="contactusForm.controls['contactuser_email'].hasError('required') && contactusForm.controls['contactuser_email'].touched" class="text-danger support-text">Email is required.</small>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control"  name="contactuser_phone" id="contactuser_phone" placeholder="Phone" [formControl]="contactusForm.controls['contactuser_phone']" [(ngModel)]="contactuser_phone">
+                                <small *ngIf="contactusForm.controls['contactuser_phone'].hasError('required') && contactusForm.controls['contactuser_phone'].touched" class="text-danger support-text">Phone is required.</small>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 sa_forms">
+                            <div class="form-group">
+                                <textarea type="text" class="form-control" name="contactuser_message" id="contactuser_message" placeholder="Message" [formControl]="contactusForm.controls['contactuser_message']" [(ngModel)]="contactuser_message"></textarea>
+
+                                <small *ngIf="contactusForm.controls['contactuser_message'].hasError('required') && contactusForm.controls['contactuser_message'].touched" class="text-danger support-text">Message is required.</small>
+                            </div>
+                        </div>
+                        <!--input type="hidden" name="clinicEmail" id="clinicEmail" [formControl]="contactusForm.controls['clinicEmail']" [(ngModel)]="clinicEmail" value={{clinicEmail}}-->
+                        <input type="hidden" name="clinicEmail" id="clinicEmail" [formControl]="contactusForm.controls['clinicEmail']" [(ngModel)]="clinicEmail" value={{clinicEmail}}>
+                        <div class="col-lg-10 ">
+                            <div class="submit_btn_area ">
+                                <div class="form-group text-center">
+                                    <button type="submit" name="btnSubmit" class="btn btn-lg btn-theme btn-rounded" (click)="submitContactForm($event);" [disabled]="!contactusForm.valid" >Send Message</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="sa-pull-left sa-col-12 sa-footer-area">
+        <div class="container">
+            <div class="row justify-content-md-center">
+
+
                 <div class="col-lg-4">
-                  <div class="sa-pull-left sa-col-12">
-                    <h6>Contact Us</h6>
-                    <div class="sa-address-area">
-                      <span>Phone:{{clinicContactNo}}</span>
-                      <span>Email: {{practiceOwnerEmail}}</span>
+                    <h6>Navigation</h6>
+                    <div class="sa-links-area">
+                        <a class="sa-ste"(click)="scroll('header_section')"><i class="fas fa-chevron-right"></i>Home</a>
+                        <a class="sa-ste" (click)="scroll('about_text')"><i class="fas fa-chevron-right"></i>About</a>
+                        <a class="sa-ste" (click)="scroll('offers_packages')"><i class="fas fa-chevron-right"></i>Offers & Packages</a>
+                        <a class="sa-ste" (click)="scroll('message_section')"><i class="fas fa-chevron-right"></i>Contact us</a>
                     </div>
-                  </div>
                 </div>
-                
-                <div class="col-lg-2">
-                  <div class="sa-pull-left sa-col-12">
-                    <h6>Social</h6>
-                    <div class="sa-social-area">
-                      <a class="sa-ste" *ngIf='facebookUrl !="" && facebookUrl != null' href="{{facebookUrl}}" target="_blank"><i class="fab fa-facebook"></i></a>
-                      <a class="sa-ste" *ngIf='twitterUrl !="" && twitterUrl != null'  href="{{twitterUrl}}" target="_blank"><i class="fab fa-twitter"></i></a>
-                      <a class="sa-ste" *ngIf='linkedinUrl !="" && linkedinUrl != null' href="{{linkedinUrl}}" target="_blank"><i class="fab fa-linkedin"></i></a>
-                      <a class="sa-ste" *ngIf='instagramUrl!="" && instagramUrl != null'href="{{instagramUrl}}" target="_blank"><i class="fab fa-instagram"></i></a>
+
+                <div class="col-lg-4">
+                    <div class="sa-pull-left sa-col-12">
+                        <h6>Contact Us</h6>
+                        <div class="sa-address-area">
+                            <span><i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;Sed ut perspiciatis unde omnis, MS 00201 USA</span>
+                            <span><i class="fas fa-mobile-alt"></i>&nbsp;&nbsp;{{clinicContactNo}}</span>
+                            <span><i class="fas fa-envelope"></i>&nbsp;&nbsp;{{practiceOwnerEmail}}</span>
+                        </div>
+                        <div class="social-icon">
+                            <a class="icoFacebook" target="_blank" href="http://www.facebook.com"><i class="fab fa-facebook-f"></i></a>
+                            <a class="icoTwitter" target="_blank" href="http://www.twitter.com"><i class="fab fa-twitter"></i></a>
+                            <a class="icoGoogle" target="_blank" href="http://in.linkedin.com"><i class="fab fa-linkedin"></i></a>
+                            <a class="icoLinkedin" target="_blank" href="http://pinterest.com"><i class="fab fa-pinterest"></i></a>
+                        </div>
+
+
                     </div>
-                  </div>
                 </div>
-                              
-              
-          
-          </div>
-          
+
+
+
+
+
+            </div>
+
         </div>
 
 
         <div class="sa-end-footer" style="margin-top:40px;">
-          <p>&copy; 2019 Building Virtually, All Rights Reserved.</p>
+            <p>&copy; 2019 Jeeve Solutions - 2018 All right Reserved</p>
         </div>
-        
-      </footer>
+
+    </footer>
       

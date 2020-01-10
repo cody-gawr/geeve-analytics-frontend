@@ -7,10 +7,10 @@ import {
   Validators,
   FormControl
 } from '@angular/forms';
-import { StripeService, StripeCardComponent, ElementOptions, ElementsOptions } from "@nomadreservations/ngx-stripe";
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ClinicSettingsService } from '../clinic-settings/clinic-settings.service';
+import { ThankYouService } from './thank-you.service';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Http} from '@angular/http';
 @Component({
   selector: 'app-thank-you',
   templateUrl: './thank-you.component.html',
@@ -43,7 +43,7 @@ export class ThankYouComponent implements OnInit {
   expiryYear: string;
   cvc: string;
   message: string;
-  constructor( private fb: FormBuilder, private router: Router,private _cookieService: CookieService, private route: ActivatedRoute,  private clinicSettingsService: ClinicSettingsService) {}
+  constructor( private http : Http,private fb: FormBuilder, private router: Router,private _cookieService: CookieService, private route: ActivatedRoute,  private ThankYouService: ThankYouService) {}
 
    ngOnInit() {
      this.route.params.subscribe(params => {
@@ -59,7 +59,7 @@ export class ThankYouComponent implements OnInit {
   }
   public clinicName;
   public getClinicInfo(){
-    this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
+    this.ThankYouService.getClinicSettings(this.id).subscribe((res) => {
     if(res.message == 'success'){
       this.clinicName= res.data[0].clinicName;
     }

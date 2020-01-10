@@ -8,7 +8,6 @@ import {
   FormControl
 } from '@angular/forms';
 import { PaymentPatientService } from './payment-patient.service';
-import { StripeService, StripeCardComponent, ElementOptions, ElementsOptions } from "@nomadreservations/ngx-stripe";
 import { LoginService } from '../login/login.service';
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 

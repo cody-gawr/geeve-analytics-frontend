@@ -152,19 +152,20 @@ export class InofficePaymentService {
             );
     }
              // Items Predictor Analysis 
-    createInofficeSubscription(token:any,plan_name, monthly_weekly_payment,duration,id,patient_id): Observable<any> {
+    createInofficeSubscription(token,plan_name, monthly_weekly_payment,duration,id,patient_id,clinic_id): Observable<any> {
             const formData = new FormData();
-            formData.append('token', token.id);
-            formData.append('email', token.email);
+            formData.append('token', token);
             formData.append('inoffice_id', id);
             
             formData.append('plan_name', plan_name);
             formData.append('amount', monthly_weekly_payment);
             formData.append('duration', duration);
             formData.append('patient_id', patient_id);
- formData.append('user_id', this._cookieService.get("userid"));
-        formData.append('token', this._cookieService.get("token"));
-        formData.append('token_id', this.token_id);
+            formData.append('user_id', this._cookieService.get("userid"));
+           // formData.append('token', this._cookieService.get("token"));
+            formData.append('token_id', this.token_id);
+            formData.append('clinic_id', clinic_id);
+
             return this.http.post(this.apiUrl +"/Patients/createInofficeSubscription", formData)
             .pipe(map((response: Response) => {
                             return response;

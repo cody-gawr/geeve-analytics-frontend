@@ -18,50 +18,64 @@
                 <!-- ============================================================== -->
                     <!-- Card column -->
                     <h4 _ngcontent-c2="" class="spl_headings">Patient Plan Details</h4>
-                
-                    <div fxLayout="row wrap" >
-                         <div fxFlex.lg="40" fxFlex.md="50" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" class="sa_payment_left_area">
-                            <img src="../assets/images/payment2.png">
-                         </div>
-                        <div fxFlex.lg="60" fxFlex.md="50" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100">
-                                
-                                <div class="sa_mattabs_design sa_matforms_design sa_payment_form">
-                                      
-                                    <div fxLayout="row wrap" fxLayoutGap="2%">
-                                    <div fxFlex.gt-sm="100" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
-                                        <table class="sa_plan_show">
-                                            <tr>
-                                                <th>Plan</th>
-                                                <td>{{plan_name}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Total Outstanding Amount</th>
-                                                <td>${{balance_amount}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Number of Instalments</th>
-                                                <td>{{duration}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>{{payment_frequency}} Payment</th>
-                                                <td>${{monthly_weekly_payment}}</td>
-                                            </tr>
-                                            
-                                           
-                                           
-                                        </table>
-                                        <div style="text-align:center">
-                                            <a (click)="openCheckout()" class="btn-round mat-raised-button mat-dc">Start Payment Plan</a>
-                                         </div>
+
+                        <div fxLayout="row wrap ">
+                        <div fxFlex="100" class="">
+                        <mat-tab-group dynamicHeight [selectedIndex]="selectedIndex">
+                          <mat-tab class="step1" label="Your Details">
+                         <div>
+                             <div fxLayout="row wrap"  fxLayoutGap="2%">
+                                 <div fxFlex.gt-lg="30" fxFlex.gt-md="30"  fxFlex="100">
+                                     <div class="sa_payment_left_area">
+                                        <img src="../assets/images/payment2.png">
+                                     </div>
+                                 </div>
+                                <div fxFlex.gt-lg="68" fxFlex.gt-md="68" fxFlex="100">
+
+                                        <div class="sa_mattabs_design sa_matforms_design sa_payment_form">
+
+                                            <div fxLayout="row wrap" fxLayoutGap="2%">
+                                            <div fxFlex.gt-sm="100" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
+                                                <table class="sa_plan_show">
+                                                    <tr>
+                                                        <th>Plan</th>
+                                                        <td>{{plan_name}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Total Outstanding Amount</th>
+                                                        <td>${{balance_amount}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Number of Instalments</th>
+                                                        <td>{{duration}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{payment_frequency}} Payment</th>
+                                                        <td>${{monthly_weekly_payment}}</td>
+                                                    </tr>
+                                                </table>
+                                                <div style="text-align:center">
+                                                    <a (click)="startPayment()" class="btn-round mat-raised-button mat-dc">Start Payment Plan</a>
+                                                 </div>
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
-
                         </div>
+                        </mat-tab>
+                        <mat-tab class="step2" label="Payment" [disabled]='!tabActive1'>
+                            <div id="card-element" class="field iframe_border"></div>
+                          <button mat-raised-button color="green" style="margin-top: 15px" class="sa-pull-right" type="submit" (click)="buy()">
+                          BUY
+                          </button>
+                            </mat-tab>
+                        </mat-tab-group>
+
                     </div>
-
-
-</div>
+                    </div>
+                    </div>
             </mat-card-content>
         </mat-card>
         </div>

@@ -11,7 +11,6 @@ import { PaymentPatientRoutes } from './payment-patient.routing';
 import { PaymentPatientComponent } from './payment-patient.component';
 
 import { LoginService } from '../login/login.service';
-import { NgxStripeModule } from '@nomadreservations/ngx-stripe';
 import { PaymentPatientService } from './payment-patient.service';
 import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,7 +26,6 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
   imports: [
     CommonModule,
     RouterModule.forChild(PaymentPatientRoutes),    
-    NgxStripeModule.forRoot('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc'),
     MatIconModule,
     MatCardModule,
     MatInputModule,

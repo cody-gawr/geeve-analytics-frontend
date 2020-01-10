@@ -112,13 +112,12 @@
                                                            [rowHeight]="'auto'" [limit]="10" [rows]='patientData'>
                                                 <ngx-datatable-column prop="discount" name="discount">
                                                     <ng-template let-column="column" ngx-datatable-header-template>
-                                                        Sr. No
                                                     </ng-template>
                                                     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                                                 <span *ngIf="value != ''">
                                                   <i class="fas fa-times link_btn" (click) = "deletesubPatient(rowIndex)"></i>
                                                 </span>
-                                                        1
+                                                       
                                                     </ng-template>
                                                 </ngx-datatable-column>
                                                 <ngx-datatable-column prop="name" name="name">
@@ -162,11 +161,9 @@
                                               </ng-template>
                                     </ngx-datatable-column>
                                   </ngx-datatable>
-
                                <div class="monthly_total">
-                                   Monthly Total :  {{totalAmountPatients}}
+                                   Monthly Total :  ${{totalAmountPatients}}
                                </div>
-
                            </div>
                           </div>
                           </div>
@@ -176,65 +173,21 @@
 
                                  <button class="mat-raised-button mat-gray mr15" (click) ="changeTab(0)">Back</button>
 
-                                 <button class="mat-raised-button mat-dc ok_btn" (click) ="paymentStripe()">Next</button>
-
-
+                                 <button class="mat-raised-button mat-dc ok_btn" style="margin-left:8px;" (click) ="paymentStripe()">Next</button>
                                     <div class="" style="position:relative; float:left; width: 247px; text-align: left;">
-                                        <button class="mat-raised-button mat-lblue "  (click)="openaddDialog()"><i clas="fas fa-users"></i>Add Family Member <span class="btn-off-label">{{discount}}% off</span></button>
+                                        <span class="btn-off-label">{{discount}}% off</span>
+                                        <button class="mat-raised-button mat-lblue "  (click)="openaddDialog()"><i clas="fas fa-users"></i>Add Family Member </button>
                                     </div>
 
                                 </div>
                               </div>
                             </div>
-
                           </mat-tab>
-
-                           <mat-tab class="step3" label="Payment" >
-           <!--      <form novalidate (ngSubmit)="buy()" [formGroup]="stripeTest">
-                  <input type="text" formControlName="name" placeholder="Jane Doe">
-                  <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
-                  <button type="submit">
-                    BUY
-                  </button>
-                </form>
-
-        <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions" (change)="cardUpdated($event)"></ngx-stripe-card> -->
-         <button mat-raised-button  color="primary" >Get Card Token</button>
-                             <form method="POST" id="payment-form"  [formGroup]="formStripe"  (submit)="getToken()">
-
-
-                          <div fxLayout="row wrap" fxLayoutGap="2%">
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                               <label>Card Number</label>
-                               <input [(ngModel)]="cardNumber" [formControl]="formStripe.controls['cardNumber']"  required name="card-number" type="text" size="20" data-stripe="number">
-                               <small *ngIf="formStripe.controls['cardNumber'].hasError('required') && formStripe.controls['cardNumber'].touched" class="text-danger support-text">You must include card Number.</small>
-                             </div>
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                             <label>Expiration (MM/YY)</label>
-
-                             <div fxLayout="row wrap" fxLayoutGap="2%">
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                             <input [(ngModel)]="expiryMonth" [formControl]="formStripe.controls['expiryMonth']"   required name="expiry-month" type="text" size="2" data-stripe="exp_month">
-                             <small *ngIf="formStripe.controls['expiryMonth'].hasError('required') && formStripe.controls['expiryMonth'].touched" class="text-danger support-text">You must enter expiry month.</small>
-                             </div>
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                             <input [(ngModel)]="expiryYear" [formControl]="formStripe.controls['expiryYear']"  required name="expiry-year" type="text" size="2" data-stripe="exp_year">
-                             <small *ngIf="formStripe.controls['expiryYear'].hasError('required') && formStripe.controls['expiryYear'].touched" class="text-danger support-text">You must enter expiry year.</small>
-                             </div>
-                             </div>
-                             </div>
-                           </div>
-                            <div fxLayout="row wrap" fxLayoutGap="2%">
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                               <label>CVC</label>
-                                  <input [(ngModel)]="cvc" [formControl]="formStripe.controls['cvc']"  required name="cvc" type="text" size="4" data-stripe="cvc">
-                                  <small *ngIf="formStripe.controls['cvc'].hasError('required') && formStripe.controls['cvc'].touched" class="text-danger support-text">You must enter expiry cvc.</small>
-                             </div>
-                            </div>
-                             <div mat-dialog-actions class="sa-pull-right">
-                              <input class="mat-raised-button mat-dc ok_btn" type="submit" value="Submit Payment">
-                             </div>
-                            </form>
+                           <mat-tab class="step3" label="Payment" [disabled]='!tabActive2'>
+                          <div id="card-element" class="field iframe_border"></div>
+                          <button mat-raised-button color="green" style="margin-top: 15px" class="sa-pull-right" type="submit" (click)="buy()">
+                          BUY
+                          </button>
                           </mat-tab>
                          </mat-tab-group>
                        </div>

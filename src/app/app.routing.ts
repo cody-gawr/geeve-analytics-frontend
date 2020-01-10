@@ -160,6 +160,11 @@ export const AppRoutes: Routes = [
         path: 'login',
         loadChildren:
           './login/login.module#LoginModule'
+      },
+       {
+        path: 'test',
+        loadChildren:
+          './test/test.module#TestModule'
       }
     ]
   },
@@ -193,7 +198,6 @@ export const AppRoutes: Routes = [
       {
         path: 'thank-you/:id',
         loadChildren: './thank-you/thank-you.module#ThankYouModule',
-        canActivate: [AuthGuard]
       }
     ]
   },

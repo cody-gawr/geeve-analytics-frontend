@@ -108,7 +108,7 @@
                                    </ng-template>
                            </ngx-datatable-column>
 
-                             <ngx-datatable-column prop="payment_date" name="payment_date">
+                             <ngx-datatable-column prop="created_at" name="created_at">
                                <ng-template let-column="column" ngx-datatable-header-template>
                               <span>Invoice Date</span>
                             </ng-template>
@@ -134,16 +134,16 @@
                            </ngx-datatable-column>
 
 
-                            <ngx-datatable-column prop="payment_status" name="payment_status">
+                            <ngx-datatable-column prop="paid" name="paid">
                               <ng-template let-column="column" ngx-datatable-header-template>
                              <span>Payment Status</span>
                            </ng-template>
                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
                                <span *ngIf="value">
-                                 ACTIVE
+                                 PAID
                                </span>
                                <span *ngIf="!value">
-                                 INACTIVE
+                                 UNPAID
                                </span>
                              </ng-template>
                            </ngx-datatable-column>

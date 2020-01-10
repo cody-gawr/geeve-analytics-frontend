@@ -38,6 +38,14 @@ export class PurchasePlanService {
         );
     }
 
+    getPublishableKey(): Observable<any> {
+        return this.http.get(this.apiUrl +"/Patients/getPublishableKey", { headers: this.headers })
+        .pipe(map((response: Response) => {
+                return response;
+          })
+        );
+    }
+
     getPlanDetail(plan_id): Observable<any> {
         return this.http.get(this.apiUrl +"/MemberPlan/getPlanDetail?plan_id="+plan_id, { headers: this.headers })
         .pipe(map((response: Response) => {
@@ -178,19 +186,19 @@ export class PurchasePlanService {
             );
     }
              // Items Predictor Analysis 
-    createSubscription(token:any,plan_id, patient_id,amount,member_plan_id, user_id,patient_name, patient_email): Observable<any> {
+    createSubscription(token:any,plan_id, patient_id,amount,member_plan_id, user_id,patient_name, patient_email,clinic_id): Observable<any> {
             const formData = new FormData();
             formData.append('token', token);
-            formData.append('email', patient_email);
-            
+            formData.append('email', patient_email);            
             formData.append('plan_id', plan_id);
             formData.append('patient_id', patient_id);
-            
             formData.append('user_id', user_id);
             formData.append('amount', amount);
             formData.append('member_plan_id', member_plan_id);
             formData.append('patient_name', patient_email);
             formData.append('patient_email', patient_email);
+            formData.append('clinic_id', clinic_id);
+
             return this.http.post(this.apiUrl +"/Patients/createSubscription", formData)
             .pipe(map((response: Response) => {
                             return response;

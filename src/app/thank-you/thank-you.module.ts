@@ -9,7 +9,7 @@ import {
 } from '@angular/material';
 import { ThankYouRoutes } from './thank-you.routing';
 import { ThankYouComponent } from './thank-you.component';
-import { NgxStripeModule } from '@nomadreservations/ngx-stripe';
+import { ThankYouService } from './thank-you.service';
 import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -25,7 +25,6 @@ import { ClinicSettingsService } from '../clinic-settings/clinic-settings.servic
   imports: [
     CommonModule,
     RouterModule.forChild(ThankYouRoutes),    
-    NgxStripeModule.forRoot('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc'),
     MatIconModule,
     MatCardModule,
     MatInputModule,
@@ -47,7 +46,7 @@ import { ClinicSettingsService } from '../clinic-settings/clinic-settings.servic
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
-    ClinicSettingsService
+    ThankYouService
   ],
   declarations: [
     ThankYouComponent,

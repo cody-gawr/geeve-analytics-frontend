@@ -180,6 +180,21 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
                     })
         );
     }
+
+    getStripeAuthorization(clinic_id, user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Clinics/getStripeAuthorization?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&clinic_id="+clinic_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+     disconnectStripe(clinic_id, user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Clinics/disconnectStripe?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&clinic_id="+clinic_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
        
 }
 

@@ -90,11 +90,11 @@
         {{value | date:'dd-MM-yyyy'}}
       </ng-template>
    </ngx-datatable-column>
-      <ngx-datatable-column name="id">
+      <ngx-datatable-column name="id" [width] ="200">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Actions </span>
       </ng-template>
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" >
             <a [routerLink]="['/patient-paymentinfo',rows[rowIndex].inoffice_paymentID]" class="action_btn golden sa-pull-right mat-gray patient_detail_edit textonly" title= 'In-office History'>View</a>
           <!--   <a class="action_btn golden" (click)="openUpdateDialog(value)" title= 'Update Patient'><i class="ti-settings "></i></a> -->
           <button class="action_btn danger" mat-menu-item (click) = "deletePlan(rowIndex)">

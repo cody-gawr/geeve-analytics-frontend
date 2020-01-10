@@ -11,7 +11,6 @@ import { InofficePaymentRoutes } from './inoffice-payment.routing';
 import { InofficePaymentComponent } from './inoffice-payment.component';
 
 import { LoginService } from '../login/login.service';
-import { NgxStripeModule } from '@nomadreservations/ngx-stripe';
 import { InofficePaymentService } from './inoffice-payment.service';
 import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,11 +22,11 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgxStripeModule } from 'ngx-stripe';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(InofficePaymentRoutes),    
-    NgxStripeModule.forRoot('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc'),
     MatIconModule,
     MatCardModule,
     MatInputModule,
@@ -45,6 +44,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     FileUploadModule,
     MatTreeModule,
     MatDatepickerModule,
+    NgxStripeModule.forRoot(''),
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [

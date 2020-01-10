@@ -636,11 +636,11 @@ public barChartOptions: any = {
         if(data.data.conversionRate != null) {
         this.conversionRateActive = data.data.conversionRate.active;
         this.conversionRateInactive = data.data.conversionRate.inactive;
-        this.conversionPercentage = this.conversionRateActive / (this.conversionRateActive + this.conversionRateInactive) * 100;
+        this.conversionPercentage = this.conversionRateInactive / (this.conversionRateActive + this.conversionRateInactive) * 100;
         if(isNaN(this.conversionPercentage)){
           this.conversionPercentage =0;
         }
-        this.conversionRateData= [this.conversionRateActive,this.conversionRateInactive];
+        this.conversionRateData= [this.conversionRateInactive,this.conversionRateActive];
         this.conversionRateLabels=['Accepted','Pending'];
         }
         if(data.data.totalPlans != null)
@@ -676,92 +676,5 @@ public barChartOptions: any = {
   public buildChartLoader:any;
   public dentistKey;
   public DPcolors:any;
-  //Dentist Production Chart
-  // private buildChart() {
-  //   this.buildChartLoader =true;
-  //   this.barChartData1 =[];
-  //   this.barChartLabels1 =[];
-  //   this.productionTotal =0;
-  //   this.barChartLabels = [];
-
-  //   this.dashboardsService.DentistProduction(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
-  //      if(data.message == 'success'){
-  //       this.buildChartLoader =false;
-  //       this.productionTooltip = 'down';
-  //       var i=0;
-  //       data.data.forEach(res => {
-  //          this.barChartData1.push(res.total);
-  //          var name = res.name;
-  //          if(res.name != null && res.name !='Anonymous') {
-  //            name = res.name.split(')');
-  //           if(name.length >0 && name[1] != '')
-  //           {
-  //             name = name[1].split(',');
-  //             if(name.length>0)
-  //               name =name[1]+ " "+ name[0];
-  //           }
-  //          this.barChartLabels1.push(name);
-  //          this.dentistKey = i;
-  //        }
-  //          else
-  //          this.barChartLabels1.push(res.firstname);
-
-  //          if(res.total != null)
-  //          this.productionTotal = this.productionTotal + parseInt(res.total);
-  //        i++;
-  //       });
-
-  //       if(this.user_type == '4' && this.childid != '') {
-  //       this.barChartColors[0].backgroundColor[this.dentistKey] = 'red';
-  //       this.DPcolors= this.barChartColors;
-  //     }
-  //     else
-  //       this.DPcolors= this.lineChartColors;
-
-
-  //        this.barChartData[0]['data'] = this.barChartData1;
-  //        this.barChartLabels = this.barChartLabels1;
-  //        this.productionTotalAverage =Math.floor(data.total_average);
-  //        this.productionTotalPrev =data.total_ta;
-  //        this.productionGoal = data.goals;
-  //        if(this.productionTotalAverage>=this.productionTotalPrev)
-  //         this.productionTooltip = 'up';
-  //         this.barChartOptionsDP.annotation =[];
-  //         if(this.goalchecked == 'average') {
-  //          this.barChartOptionsDP.annotation = {annotations: [{
-  //             type: 'line',
-  //             drawTime: 'afterDatasetsDraw',
-  //             mode: 'horizontal',
-  //             scaleID: 'y-axis-0',
-  //             value: this.productionTotalAverage,
-  //             borderColor: '#0e3459',
-  //             borderWidth: 2,
-  //             borderDash: [2, 2],
-  //             borderDashOffset: 0,
-  //         },
-  //        ]
-  //       }
-  //      }
-  //      else if(this.goalchecked == 'goal') {
-  //          this.barChartOptionsDP.annotation = {annotations: [{
-  //             type: 'line',
-  //             drawTime: 'afterDatasetsDraw',
-  //             mode: 'horizontal',
-  //             scaleID: 'y-axis-0',
-  //             value: this.productionGoal,
-  //             borderColor: 'red',
-  //             borderWidth: 2,
-  //             borderDash: [2, 2],
-  //             borderDashOffset: 0,
-  //         },
-  //        ]
-  //       }
-  //      }
-
-  //      }
-  //   }, error => {
-  //     this.warningMessage = "Please Provide Valid Inputs!";
-  //   }
-  //   );
-  //        }
+  
 }

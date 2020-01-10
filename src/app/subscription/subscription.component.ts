@@ -246,13 +246,19 @@ openDialog(id,amount) {
   public load_treatment_inclusions;
   public load_treatment_exclusions;
   public load_totalAmount;
-  loadDesc(id, preventative_plan, treatment_inclusions, treatment_exclusions, totalAmount) {
+  public load_planName;
+  public load_planLength;
+  
+  loadDesc(id, preventative_plan, treatment_inclusions, treatment_exclusions, totalAmount,planName, planLength) {
     $(".treatment_content").show();
     this.load_id= id;
     this.load_preventative_plan = preventative_plan;
     this.load_treatment_inclusions =treatment_inclusions;
     this.load_treatment_exclusions = treatment_exclusions;
     this.load_totalAmount = totalAmount;
+    this.load_planName = planName;
+    this.load_planLength = planLength;
+
   }
 
   getPlans() {
