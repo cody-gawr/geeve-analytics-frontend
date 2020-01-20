@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
 import { NotifierService } from 'angular-notifier';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -270,7 +271,15 @@ dentists:any=[];
   }
 
   private deleteUser(row) {
-           if(confirm("Are you sure to delete User?")) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete User?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if(result.value){
     if(this.rows[row]['id']) {
   this.rolesUsersService.deleteUser(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
@@ -286,7 +295,8 @@ dentists:any=[];
       this.rows.splice(row, 1);
       this.rows = [...this.rows];
     }
-  }
+ }
+});
   }
 
   addDentist() {

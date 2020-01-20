@@ -63,15 +63,14 @@ export class ClinicSettingsService {
 
 
        // Get ClinicSettings
-    updateClinicSettings(clinic_id, name, address, contact_name,phone_no,publishable_key,secret_key, imageURL, token = this._cookieService.get("token")): Observable<any> {
+    updateClinicSettings(clinic_id, name, address, contact_name,phone_no,clinicEmail, imageURL, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('clinicName', name);
     formData.append('address', address);
     formData.append('contactName', contact_name);
     formData.append('phoneNo', phone_no);
-    formData.append('publishable_key', publishable_key);
-    formData.append('secret_key', secret_key);
+    formData.append('clinicEmail', clinicEmail);
     // formData.append('practice_size', practice_size);
     formData.append('logo', imageURL);   
 
@@ -153,8 +152,8 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
 
     landingImageUpload(formData): Observable<any> {
          formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', this._cookieService.get("token"));
-     formData.append('token_id', this.token_id);
+         formData.append('token', this._cookieService.get("token"));
+         formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Practices/landingImageUpload/", formData)
          .pipe(map((response: Response) => {
@@ -163,16 +162,14 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
            );
     }
 
-
-           // Get updatePassword
+    // Get updatePassword
     updateTerms(clinic_id, terms, token = this._cookieService.get("token")): Observable<any> {
             const formData = new FormData();
             formData.append('id', clinic_id); 
-
             formData.append('terms', terms); 
             formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', token);
-     formData.append('token_id', this.token_id);
+            formData.append('token', token);
+            formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Practices/updateTerms/", formData)
         .pipe(map((response: Response) => {

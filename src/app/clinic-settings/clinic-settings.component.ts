@@ -103,15 +103,9 @@ afuConfig = {
     
      this.form = this.fb.group({
       clinicName: [null, Validators.compose([Validators.required])],
-      // contactName: [null, Validators.compose([Validators.required])],
       phoneNo: [null, Validators.compose([Validators.required])],
       address: [null, Validators.compose([Validators.required])],
-      publishable_key: [null, Validators.compose([Validators.required])],
-      secret_key: [null, Validators.compose([Validators.required])],
-      // practice_size: [null, Validators.compose([Validators.required])]
-
-    
-
+      clinicEmail: [null, Validators.compose([Validators.required])],      
     });
 
      this.formLanding = this.fb.group({
@@ -152,7 +146,7 @@ afuConfig = {
       var self = this;
       var timer = setInterval(function() { 
         if(win.closed) {
-            self.connectedStripe=true;
+            self.getClinicSettings();
             clearTimeout(timer);            
         }
       }, 1000);
@@ -176,7 +170,7 @@ onSubmitTerms() {
   this.terms =this.formTerms.value.terms;
   this.clinicSettingsService.updateTerms(this.id, this.terms).subscribe((res) => {
        if(res.message == 'success'){
-        this.successTermstext = res.data;
+        this.notifier.notify( 'success', 'Content Updated successfully' ,'vertical');
        }                                              
        else{
           this.errorTermstext = res.data;
@@ -187,6 +181,8 @@ onSubmitTerms() {
   } 
 public stripe_account_id;
 public user_id;
+public clinicEmail;
+
   getClinicSettings() {
     $('.ajax-loader').show(); 
   this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
@@ -196,6 +192,7 @@ public user_id;
         this.user_id = res.data[0].user_id;
         this.clinicName = res.data[0].clinicName;
         this.contactName = res.data[0].contactName;
+        this.clinicEmail = res.data[0].clinicEmail;
         this.address = res.data[0].address;
         this.phoneNo = res.data[0].phoneNo;
         this.stripe_account_id = res.data[0].stripe_account_id;
@@ -256,8 +253,10 @@ public user_id;
   this.contactName = this.form.value.contactName;
   this.address = this.form.value.address;
   this.phoneNo = this.form.value.phoneNo;
+  this.clinicEmail = this.form.value.clinicEmail;
+
   $('.ajax-loader').show();
-   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName,this.phoneNo,this.publishable_key,this.secret_key,this.imageURL).subscribe((res) => {
+   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName,this.phoneNo,this.clinicEmail,this.imageURL).subscribe((res) => {
       $('.ajax-loader').hide();
     
        if(res.message == 'success'){
@@ -286,6 +285,7 @@ public user_id;
     $('.ajax-loader').hide(); 
        if(res.message == 'success'){
         this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
+        this.getClinicLandingPageSettings();
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -353,7 +353,6 @@ public user_id;
          return false;
     }
 
-
     let formData = new FormData();
     formData.append('file', this.landingfileToUpload, this.landingfileToUpload.name);
     this.clinicSettingsService.landingImageUpload(formData).subscribe((res) => {
@@ -373,16 +372,13 @@ SliderImagesUpload(files:any)
     /*Save In Db under slider_info */
     if(finalResp.data)
     {
-     console.log(this.sliderImages);
      if(this.sliderImages==null)
      {
        this.sliderImages= finalResp.data;
      }else{
        this.sliderImages =this.sliderImages.concat(finalResp.data); 
-     }
-     
+     }     
     }
-
   }
 
 }

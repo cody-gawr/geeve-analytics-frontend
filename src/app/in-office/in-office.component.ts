@@ -18,8 +18,6 @@ const data: any = [];
 })
 
 export class DialogOverviewExampleDialogComponent {
-
-
   public clinic_id:any ={};
   private warningMessage: string;
   public valplans;
@@ -55,9 +53,9 @@ export class DialogOverviewExampleDialogComponent {
       this.clinic_id = $('#currentClinicid').attr('cid');
 
       this.inofficeService.getemailvalidation(data.patient_email,this.clinic_id).subscribe((res) => {
+        console.log(data);
           data.patient_id = res.id;
-          console.log(data);
-              if(data.patient_name != undefined && data.patient_email != undefined  && data.plan_name != undefined && data.plan_description != undefined && data.total_amount != undefined && data.setup_fee != undefined && data.deposit_amount != undefined && data.balance_amount != undefined && data.payment_frequency != undefined && data.duration != undefined && data.monthly_weekly_payment != undefined && data.start_date != undefined ){
+              if(data.patient_name != undefined && data.patient_email != undefined  && data.plan_description != undefined && data.total_amount != undefined && data.setup_fee != undefined && data.deposit_amount != undefined && data.balance_amount != undefined && data.payment_frequency != undefined && data.duration != undefined && data.monthly_weekly_payment != undefined ){
                 this.dialogRef.close(data);
               }
             
@@ -94,10 +92,11 @@ export class DialogOverviewExampleDialogComponent {
       /* For Deposit Amount */
       const finalAmount = parseInt(this.totalAmount) + parseInt(this.setup_amount);
       const depositAmount = depositepercentage/100 * finalAmount;
-      this.data.deposit_amount =depositAmount;
+      this.data.deposited_amount =depositAmount;
       /* For Balance Amount */
       this.balanceamt = (parseInt(this.totalAmount)+parseInt(this.setup_amount))-depositAmount;       
       this.data.balance_amount = this.balanceamt;
+      this.data.total_payable = finalAmount;
       this.durationcal(this.durationval);
       
       }
@@ -123,10 +122,9 @@ export class DialogOverviewExampleDialogComponent {
       this.durationcal(this.durationval);
   }
   public durationcal(durationval){
-    this.durationval= durationval;
+    this.durationval=$('#duration').val();
         this.monthlyweeklyamt =this.balanceamt/this.durationval;
         this.data.monthly_weekly_payment= this.monthlyweeklyamt.toFixed(2);
-        // alert(this.monthlyweeklyamt);
       }
 
       email = new FormControl('', [Validators.required, Validators.email]);
@@ -221,6 +219,7 @@ public StatusSelected ='';
   public deposite_amount;
   public balance_amount;
   public payment_frequency = 'MONTHLY';
+  public depositType = 'PERCENT';
   public duration;
   public monthly_weekly_payment;
   public start_date;
@@ -264,8 +263,12 @@ statusFilter() {
 }
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
-    if(this.clinic_id)
+    if(this.clinic_id!= "undefined")
       this.getInofficeMembers();
+    else{
+            $('.header_filters').addClass('hide_header');
+        $('.external_clinic').hide();
+    }
     }
     
     private getInofficeMembers() {
@@ -275,8 +278,6 @@ statusFilter() {
           this.rows = res.data;
           this.temp = [...res.data];        
           this.table = data;
-    console.log(this.rows);
-          
          }
       }, error => {
         this.warningMessage = "Please Provide Valid Inputs!";
@@ -287,11 +288,10 @@ statusFilter() {
     openDialog(): void {   
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '250px',
-      data: { patient_name: this.patient_name, patient_email: this.patient_email, plan_name: this.plan_name ,plan_description: this.plan_description , clinic_id: this.clinic_id,total_amount:this.total_amount,setup_fee:this.setup_fee,deposite_amount:this.deposite_amount,balance_amount:this.balance_amount,payment_frequency:this.payment_frequency,duration:this.duration,monthly_weekly_payment:this.monthly_weekly_payment,start_date:this.start_date  }
+      data: { patient_name: this.patient_name, patient_email: this.patient_email, plan_name: this.plan_name ,plan_description: this.plan_description , clinic_id: this.clinic_id,total_amount:this.total_amount,setup_fee:this.setup_fee,deposite_amount:this.deposite_amount,balance_amount:this.balance_amount,payment_frequency:this.payment_frequency,depositType:this.depositType,duration:this.duration,monthly_weekly_payment:this.monthly_weekly_payment,start_date:this.start_date  }
      , panelClass: 'addinoffice-modalbox'
     });
     dialogRef.afterClosed().subscribe(result => {
-    
       if(result) {
       $('.ajax-loader').show(); 
 
@@ -311,12 +311,10 @@ statusFilter() {
 
   openUpdateDialog(patientid): void {
     this.inofficeService.getInofficeMembersByID(patientid,this.clinic_id).subscribe(updateres => {
-
     const dialogUpdateRef = this.dialog.open(UpdateInOfficeDialogComponent, {
      width: '250px',
      data: {patient_name: updateres.data[0].patient_name ,patient_address: updateres.data[0].patient_address,patient_dob: updateres.data[0].patient_dob,patient_age:updateres.data[0].patient_age,patient_gender:updateres.data[0].patient_gender,patient_phone_no:updateres.data[0].patient_phone_no,patient_home_phno:updateres.data[0].patient_home_phno,patient_id:patientid}
-     });
-    
+     });    
 
   dialogUpdateRef.afterClosed().subscribe(result => {
     if(result) {
@@ -339,7 +337,6 @@ statusFilter() {
               if(this.rows[row]['id']) {
                 this.inofficeService.deletePlan(this.rows[row]['id'],this.clinic_id).subscribe((res) => {
                  if(res.message == 'success'){
-          
                   this.notifier.notify( 'success', 'Plan Removed' ,'vertical');
                     this.getInofficeMembers();
                  }
@@ -355,21 +352,19 @@ statusFilter() {
               }
             }
   }
+
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
       // filter our data
     const temp = this.temp.filter(function(d) {    
       return d.patient_name.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    // update the rows
+    }); 
     this.rows = temp;
-    // Whenever the filter changes, always go back to the first page
     this.table = data;
   }
 
   enableEditing(rowIndex, cell) {
     this.editing[rowIndex + '-' + cell] = true;
-//console.log(this.editing);
   }
 
 }

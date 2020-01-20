@@ -66,8 +66,12 @@ export class DefaultersComponent implements AfterViewInit {
 
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
-  if(this.clinic_id)
+  if(this.clinic_id!= "undefined")
       this.getInofficeDefaultersMembers();
+    else{
+            $('.header_filters').addClass('hide_header');
+        $('.external_clinic').hide();
+    }
     }
     
   goBack() {

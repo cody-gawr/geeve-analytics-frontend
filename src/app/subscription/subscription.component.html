@@ -14,20 +14,20 @@
                         <button class="navbar-toggler navbar-toggler-mob" type="button" onclick="openNav()"><div class="openMenu"> <span class="navbar-toggler-line line-first"></span> <span class="navbar-toggler-line line-second"></span> <span class="navbar-toggler-line line-third"></span></div></button>
                     </div>
                 </div>
+
                 <div class="menu pull-right nav-sec sa-ste">
                     <div class="sa_navclose"><i class="fas fa-times"></i></div>
                     <ul class="pull-left">
                         <li class="sa-ste">
-                            <a class="active" (click)="scroll('about_text')">About Us</a>
+                            <a class="active" (click)="scroll('sa-container')">HOME</a>
                         </li>
                         <li class="sa-ste">
-                            <a class="" (click)="scroll('offers_packages')">Offers & Packages</a>
+                            <a class="" (click)="scroll('offers_packages')">MEMBERSHIPS</a>
                         </li>
                         <li class="sa-ste">
-                            <a (click)="scroll('message_section')">Contact</a>
+                            <a (click)="scroll('footer')">Contact</a>
                         </li>
                     </ul>
-
                     <div class="pull-left sa_header_number sa-ste">
                         {{clinicContactNo}}
                     </div>
@@ -39,20 +39,15 @@
     </section>
     <section class="sa-pull-left sa-col-12 sa-slide-section" id="header_section">
         <div class="container">
-
-
                 <div class="row">
-                      <div class="col-md-7">
-
-                          <div class="head_sec_text pull-left">
-                              <!--h1>Wanna Checkup Your Smiling Teeth!</h1>
-                              <p>The phrasal sequence of the Lorem Ipsum text is now so widespread and commonplace that many DTP programmes can generate dummy text using the starting sequence. The phrasal sequence of the Lorem Ipsum text is now so widespread and commonplace that many DTP programmes can generate dummy text using the starting sequence</p-->
+                        <div class="col-md-7">
+                          <div class="head_sec_text pull-left">                              
                               <h1>{{headerTitle}}</h1>
-                              <p>{{headerDescription}}</p>
-                              <a href="#" class="btn btn-lg btn-theme btn-rounded">Join Now</a>
-
+                              <p [innerHTML] = "headerDescription"></p>
+                              <div class="pull-right">
+                              <a class="btn btn-lg btn-theme btn-rounded" (click)="scroll('offers_packages')">Join Now</a>
                           </div>
-
+                          </div>
                         </div>
                         <div class="col-md-5">
                             <div class="headimage_area">
@@ -61,16 +56,14 @@
 
                         </div>
                     </div>
-
         </div>
-
     </section>
 
     <section class="sa-pull-left sa-col-12 pricing-section" id="offers_packages" >
         <div class="container">
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-12">
-                    <h2 class="section_title">Our <b>MEMBERSHIP</b></h2>
+                    <h2 class="section_title">Our <b>MEMBERSHIPS</b></h2>
                     <div class="owl-carousel price_slide">
                         <ngx-slick class="carousel" #slickModal="slick-modal" [config]="planSliderConfig" responsive="breakpoints">
                             <div ngxSlickItem *ngFor="let plan of plans;i as index" class="slide"  [ngClass]="{'featuredPlan': plan.isFeatured==='true'}">
@@ -79,43 +72,26 @@
                                     <h4>{{plan.planName}}</h4>
                                     <span class="price_spacer"></span>
                                     <span class="price_value">${{plan.totalAmount}}</span>
-                                    <span class="price_limit">{{plan.planLength}}</span>
+                                    <span class="price_limit" *ngIf="plan.planLength == 'MONTHLY'">per month</span>
+                                    <span class="price_limit" *ngIf="plan.planLength == 'YEARLY'">per year</span>
+
                                     <div class="packgae_list_main">
 
                                         <div class="packgae_list" >
-                                            <span><i class="fas fa-check"></i>{{plan.preventative_frequency}} FREE CHCEKUPS PER ANNUM *</span>
-                                            <span><i class="fas fa-check"></i>{{plan.preventative_discount}}% OFF SELECTED TREATMENTS *</span>
-                                            <span><i class="fas fa-check"></i>{{plan.discount}}% OFF FOR ADDITIONAL FAMILY MEMBERS</span>
+                                            <span *ngIf="plan.preventative_frequency"><i class="fas fa-check" ></i>{{plan.preventative_frequency}} FREE CHECKUPS PER ANNUM *</span>
+                                            <span *ngIf="plan.preventative_discount"><i class="fas fa-check" ></i>{{plan.preventative_discount}}% OFF SELECTED TREATMENTS *</span>
+                                            <span *ngIf="plan.discount"><i class="fas fa-check" ></i>{{plan.discount}}% OFF FOR ADDITIONAL FAMILY MEMBERS</span>
                                         </div>
 
-
-                                        <!--   <div class="treatment_content {{plan.id}}" [style.display]="'none'">
-                                          <h5>Preventative Plan inclusions</h5>
-                                          <div class="packgae_list"  *ngFor="let service of plan.preventative_plan">
-                                            <span>{{service.itemName}}</span>
-                                           </div>
-                                           <h5>Treatment Inclusions</h5>
-                                          <div class="packgae_list"  *ngFor="let service of plan.treatment_inclusions">
-                                            <span>{{service.itemName}}</span>
-                                           </div>
-                                           <h5>Treatment Exclusions</h5>
-                                          <div class="packgae_list"  *ngFor="let service of plan.treatment_exclusions">
-                                            <span>{{service.itemName}}</span>
-                                           </div>
-                                         </div> -->
                                     </div>
                                     <div class="plan_abso_btns">
                                         <a class="btn btn-theme no-radius pricing_btn" [ngClass]="{'disabled': plan.id=='sampleplan101'}" (click)="openDialog(plan.id,plan.totalAmount)">Buy Now</a>
                                           <span (click) ="loadDesc(plan.id, plan.preventative_plan, plan.treatment_inclusions, plan.treatment_exclusions, plan.totalAmount,plan.planName,plan.planLength)" class="learn_more {{plan.id}}">Learn More</span>
-
                                     </div>
                                 </div>
                             </div>
                         </ngx-slick>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
@@ -146,17 +122,17 @@
                                     <div class="treatment_sec">
                                         <h5 class="srvc_title"><i class="far fa-star"></i> Preventative Plan inclusions</h5>
                                         <div class="sa-pull-left sa-col-12 spnlast">
-                                            <span *ngFor="let service of load_preventative_plan">{{service.itemName}} <span>,</span></span>
+                                            <span *ngFor="let service of load_preventative_plan">{{service.itemName}} <span>, </span></span>
                                         </div>
 
                                         <h5 class="srvc_title" ><i class="far fa-star"></i> Treatment Inclusions</h5>
                                         <div class="sa-pull-left sa-col-12 spnlast">
-                                            <span *ngFor="let service of load_treatment_inclusions"> {{service.itemName}} <span>,</span></span>
+                                            <span *ngFor="let service of load_treatment_inclusions"> {{service.itemName}} <span>, </span></span>
                                         </div>
 
                                         <h5 class="srvc_title"><i class="far fa-star"></i> Treatment Exclusions</h5>
                                         <div class="sa-pull-left sa-col-12 spnlast">
-                                            <span *ngFor="let service of load_treatment_exclusions"> {{service.itemName}} <span>,</span></span>
+                                            <span *ngFor="let service of load_treatment_exclusions"> {{service.itemName}} <span>, </span></span> 
                                         </div>
 
 
@@ -189,14 +165,6 @@
                 <img class="slide_shape" src="assets/img/slide_shape.png"/>
                 <img class="slide_shape2" src="assets/img/slide_shape2.png"/>
 
-                <!-- <div class="owl-carousel slider_sec">
-                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-                  <div class="slide_area_rep" style="background:url(assets/img/slide1.jpg);"></div>
-                </div-->
             </div>
             <div class="about_text" id="about_text">
                 <div class="row justify-content-center align-items-center">
@@ -339,7 +307,7 @@
         </div>
     </section>
 
-    <footer class="sa-pull-left sa-col-12 sa-footer-area">
+    <footer class="sa-pull-left sa-col-12 sa-footer-area" id="footer">
         <div class="container">
             <div class="row justify-content-md-center">
 
@@ -358,32 +326,25 @@
                     <div class="sa-pull-left sa-col-12">
                         <h6>Contact Us</h6>
                         <div class="sa-address-area">
-                            <span><i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;Sed ut perspiciatis unde omnis, MS 00201 USA</span>
+                            <span><i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{clinicAddress}}</span>
                             <span><i class="fas fa-mobile-alt"></i>&nbsp;&nbsp;{{clinicContactNo}}</span>
-                            <span><i class="fas fa-envelope"></i>&nbsp;&nbsp;{{practiceOwnerEmail}}</span>
+                            <span><i class="fas fa-envelope"></i>&nbsp;&nbsp;{{clinicEmail}}</span>
                         </div>
                         <div class="social-icon">
-                            <a class="icoFacebook" target="_blank" href="http://www.facebook.com"><i class="fab fa-facebook-f"></i></a>
-                            <a class="icoTwitter" target="_blank" href="http://www.twitter.com"><i class="fab fa-twitter"></i></a>
-                            <a class="icoGoogle" target="_blank" href="http://in.linkedin.com"><i class="fab fa-linkedin"></i></a>
-                            <a class="icoLinkedin" target="_blank" href="http://pinterest.com"><i class="fab fa-pinterest"></i></a>
+                            <a class="icoFacebook" target="_blank" href="{{facebookUrl}}" *ngIf="facebookUrl"><i class="fab fa-facebook-f"></i></a>
+                            <a class="icoTwitter" target="_blank" href="{{twitterUrl}}" *ngIf="twitterUrl"><i class="fab fa-twitter"></i></a>
+                            <a class="icoGoogle" target="_blank" href="{{linkedinUrl}}" *ngIf="linkedinUrl"><i class="fab fa-linkedin"></i></a>
+                            <a class="icoInstagram" target="_blank" href="{{instagramUrl}}" *ngIf="instagramUrl"><i class="fab fa-instagram"></i></a>
                         </div>
-
-
                     </div>
                 </div>
-
-
-
-
-
             </div>
 
         </div>
 
 
         <div class="sa-end-footer" style="margin-top:40px;">
-            <p>&copy; 2019 Jeeve Solutions - 2018 All right Reserved</p>
+            <p>&copy; {{date| date:'yyyy'}} Jeeve Solutions</p>
         </div>
 
     </footer>

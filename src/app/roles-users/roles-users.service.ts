@@ -52,7 +52,6 @@ export class RolesUsersService {
         this.token_id = this._cookieService.get("childid");
         else
         this.token_id= this._cookieService.get("userid");
-    console.log(this.token_id);
         return this.http.get(this.apiUrl +"/Roles/getRoles?token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;

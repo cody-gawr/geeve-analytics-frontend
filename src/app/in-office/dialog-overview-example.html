@@ -2,132 +2,109 @@
 <h1 mat-dialog-title>Add Payment Plan</h1>
 <div mat-dialog-content class="sa_forms_design">
 
-
-
+    <h6 class="form_sub_title">Patient Details</h6>
    <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Patient Name</label>
            <input matInput tabindex="1" [(ngModel)]="data.patient_name" placeholder="" [formControl]="patient_name" class="form-control-dialog" required="true">
     <span class="error-message" *ngIf="patient_name.invalid">Please enter Patient Name</span>
-
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Email</label>
-           <input matInput tabindex="1" [(ngModel)]="data.patient_email" placeholder="" id="email" [formControl]="email" class="form-control-dialog" required="true">
-           <input matInput style="color: #FF0000;" tabindex="1" *ngIf="valplans" [(ngModel)]="valplans" required="true" readonly>
-    <span class="error-message" *ngIf="email.invalid">{{getErrorMessage()}}</span>
+        <label>Date Of Birth</label>
+        <input matInput type="date" tabindex="1" [(ngModel)]="data.patient_dob" placeholder=""  class="form-control-dialog" required="true"  max="{{minDate}}">
     </div>
    </div>
-
  <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Patient DOB</label>
-           
-       <input matInput type="date" tabindex="1" [(ngModel)]="data.patient_dob" placeholder=""  class="form-control-dialog" required="true"  max="{{minDate}}">
-
-
+        <label>Email</label>
+        <input matInput tabindex="1" [(ngModel)]="data.patient_email" placeholder="" id="email" [formControl]="email" class="form-control-dialog" required="true">
+        <input matInput style="color: #FF0000;" tabindex="1" *ngIf="valplans" [(ngModel)]="valplans" required="true" readonly>
+        <span class="error-message" *ngIf="email.invalid">{{getErrorMessage()}}</span>
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Patient Phone No</label>
-          <input matInput tabindex="1" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="data.patient_phone_no" placeholder=""  class="form-control-dialog" required="true">
-
-
+        <label>Phone Number</label>
+          <input matInput tabindex="1" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="data.patient_phone_no" placeholder=""  class="form-control-dialog" required="true" type="number">
     </div>
    </div>
-
+    <h6 class="form_sub_title">Payment Plan Details</h6>
 <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Plan Name</label>
-        <input matInput tabindex="1" [(ngModel)]="data.plan_name" placeholder="" class="form-control-dialog" required="true">
-
-    </div>
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+    <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
         <label>Plan Description</label>
         <input matInput tabindex="1" [(ngModel)]="data.plan_description" placeholder="" class="form-control-dialog" required="true">
-
-
     </div>
    </div>
-
 <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Plan Fee ($)</label>
+    <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
+        <label>Plan Amount ($)</label>
         <input matInput tabindex="1" id="total_amount"  [(ngModel)]="data.total_amount"  type="number" min="0"  placeholder="" class="form-control-dialog" (change)="deposite_amount(data.deposite_percentage)" required="true">
-
-  
     </div>
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+    <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
         <label>Setup Fee ($)</label>
        <input matInput tabindex="1" id="setup_amount" type="number" min="0" (change)="deposite_amount(data.deposite_percentage)" [(ngModel)]="data.setup_fee" placeholder="" class="form-control-dialog" required="true">
-  
-  
     </div>
-   </div>
+    <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
+        <label>Total Amount ($)</label>
+        <input matInput tabindex="1" id="total_payable" type="number" min="0" [(ngModel)]="data.total_payable" placeholder="" class="form-control-dialog" required="true">
+    </div>
+</div>
 
+    <div fxLayout="row wrap" fxLayoutGap="2%">
+        <div fxFlex.gt-md="38" fxFlex="100" class="sa-form-group">
+            <label>Deposit</label>
+             <input matInput tabindex="1" id="deposite_percentage" type="number" min="0" max ="100"  (change)="deposite_amount(data.deposite_percentage)" [(ngModel)]="data.deposite_percentage" *ngIf="data.depositType == 'PERCENT'" placeholder="" class="form-control-dialog" required="true" readOnly>
+             <input matInput tabindex="1" id="deposit_amount" type="number" min="0"  (change)="updatePercentageByAmount(data.deposit_amount,data.total_amount)" [(ngModel)]="data.deposit_amount" *ngIf="data.depositType == 'DOLLAR'" placeholder="" class="form-control-dialog" required="true">
+        </div>
+
+        <div fxFlex.gt-md="20" fxFlex="100" class="sa-form-group">
+            <div class="duration width-full">
+                <label>&nbsp; <span *ngIf= "data.depositType == 'PERCENT' && (data.total_amount != '' && data.deposite_percentage != '')">{{data.deposite_percentage}}% Deposit = ${{data.deposited_amount}}</span></label>
+                <div class="btn-group sa-pull-left w100"  >
+                  <span class="position-relative btn-switch w50" >
+                  <input type="radio" id="value2" name="depositType" [(ngModel)]="data.depositType" value="PERCENT">
+                    <label class="active-duration" for="value2">%</label>
+                  </span>
+                  <span class="position-relative btn-switch w50">
+                   <input type="radio" id="value1" name="depositType" [(ngModel)]="data.depositType" value="DOLLAR">
+                  <label class="active-duration" for="value1">$</label>
+                   </span>
+                </div>
+            </div>
+        </div>
+        <div fxFlex.gt-md="38" fxFlex="100" class="sa-form-group">
+            <label>Outstanding Amount ($)</label>
+            <input matInput tabindex="1" id="balance_amount" type="number" min="0" [(ngModel)]="data.balance_amount" placeholder="" class="form-control-dialog" readonly>
+        </div>
+    </div>
 <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Deposited Percentage (%)</label>
-         <input matInput tabindex="1" id="deposite_percentage" type="number" min="0" max ="100"  (change)="deposite_amount(data.deposite_percentage)" [(ngModel)]="data.deposite_percentage" placeholder="" class="form-control-dialog" required="true" readOnly>
-
-
-    </div>
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Deposited Amount ($)</label>
-       <input matInput tabindex="1" id="deposit_amount" type="number" min="0"  (change)="updatePercentageByAmount(data.deposit_amount,data.total_amount)" [(ngModel)]="data.deposit_amount" placeholder="" class="form-control-dialog" required="true">
-  
-
-    </div>
-   </div>
-
-<div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Balance Amount ($)</label>
-         <input matInput tabindex="1" id="balance_amount" type="number" min="0" [(ngModel)]="data.balance_amount" placeholder="" class="form-control-dialog" readonly>
-  
-         
-    </div>
-<!--     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Duration</label>
-       <mat-select tabindex="1" [(ngModel)]= "data.payment_frequency" required="true" (ngModelChange)="updateDurationLabel(data.payment_frequency)" >
-              <mat-option value="MONTHLY">MONTHLY</mat-option>
-              <mat-option value="WEEKLY">WEEKLY</mat-option>
-            </mat-select>
-    </div> -->
 
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
       <div class="duration width-full">
-       <label>Duration</label>
-         <div class="btn-group sa-pull-left">
-          <span class="position-relative btn-switch">
+       <label>Payment Frequency</label>
+         <div class="btn-group sa-pull-left w100">
+          <span class="position-relative btn-switch w50">
            <input type="radio" id="same1" name="planLength" [(ngModel)]="data.payment_frequency" (ngModelChange)="updateDurationLabel(data.payment_frequency)" value="MONTHLY">
-          <label class="active-duration" for="same1">Monthly</label>
+            <label class="active-duration" for="same1">Monthly</label>
            </span>
-           <span class="position-relative btn-switch">
+           <span class="position-relative btn-switch w50">
           <input type="radio" id="same2" name="planLength" [(ngModel)]="data.payment_frequency" (ngModelChange)="updateDurationLabel(data.payment_frequency)" value="WEEKLY">
             <label class="active-duration" for="same2">WEEKLY</label>
           </span>
          </div>
       </div>
     </div>
+
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+        <label>Number of Instalments</label>
+        <input matInput tabindex="1" id="duration" type="number" min="0" [(ngModel)]="data.duration" placeholder="{{durationPaymentPlaceholder}}" (keyup)="durationcal(data.duration)" class="form-control-dialog" required="true">
+    </div>
    </div>
    <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Frequency of payments</label>
-          <input matInput tabindex="1" id="duration" type="number" min="0" [(ngModel)]="data.duration" placeholder="{{durationPaymentPlaceholder}}" (change)="durationcal(data.duration)" class="form-control-dialog" required="true">
-    </div>
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Balance Amount ($)</label>
-        <input matInput tabindex="1" type="number" step=".01" min="0" [(ngModel)]="data.monthly_weekly_payment" placeholder="{{MonthlyWeeklyPlaceholder}}" class="form-control-dialog" readonly>
-    </div>
+       <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group" *ngIf="data.monthly_weekly_payment != 'NaN' && data.monthly_weekly_payment != '' && data.monthly_weekly_payment != 'Infinity'">
+           <div class="value_label">Instalment Amount <b> ${{data.monthly_weekly_payment}}</b></div>
+       </div>
    </div>
-    <div fxLayout="row wrap" fxLayoutGap="2%" >
-   <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Start Date</label>
-          <input matInput tabindex="1" type="date" [(ngModel)]="data.start_date" placeholder="Start Date" class="form-control-dialog" required="true" [min]="minDate">
-    </div>
- </div>
 </div>
 <div mat-dialog-actions class="sa-pull-right">
-  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">OK</button>
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
 </div>

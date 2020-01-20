@@ -47,7 +47,7 @@ export class ClinicService {
 
     formData.append('id', clinic_id);
     formData.append('token', token);
-     formData.append('user_id', this._cookieService.get("user_id"));
+     formData.append('user_id', this._cookieService.get("userid"));
      formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Practices/delete", formData)
@@ -63,7 +63,7 @@ export class ClinicService {
 
     formData.append('id', clinic_id);
     formData.append(column, value);
-     formData.append('user_id', this._cookieService.get("user_id"));
+     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('clinic_id', '1');
      formData.append('token_id', this.token_id);
 
@@ -84,10 +84,8 @@ export class ClinicService {
     formData.append('address', address);
     formData.append('contactName', contact_name);
     formData.append('phoneNo', phone_no);
-    formData.append('publishable_key', publishable_key);
-    formData.append('secret_key', secret_key);
     formData.append('logo', clinic_logo);
-    formData.append('user_id', this._cookieService.get("user_id"));
+    formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);
     formData.append('token_id', this.token_id);
     
@@ -98,7 +96,7 @@ export class ClinicService {
         );
     }
     logoUpload( formData): Observable<any> {                 
-    formData.append('user_id', this._cookieService.get("user_id"));
+    formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', this._cookieService.get("token"));
     formData.append('token_id', this.token_id);
 

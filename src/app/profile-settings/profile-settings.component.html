@@ -16,7 +16,7 @@
                     <div fxLayout="row wrap" fxLayoutGap="2%">
                            <div fxFlex.gt-md="190px" fxFlex="100" class="">
                                         <div fxLayout="row wrap" class="sa-image_upload_area bd_UpoadImage" >
-                                            <div class="clinic_logo"><img  src="{{imageURL}}"  width="150" height="150"> </div>
+                                            <div class="clinic_logo"><img  src="{{imageURL}}"  width="150" height="150" *ngIf="imageURL"><img  src="/assets/images/gPZwCbdS.jpg"  width="150" height="150" *ngIf="!imageURL"> </div>
                                             <div class="bd_UpoadImage" fxFlex.gt-md="100" fxFlex="100">
                                                 <div class="upload-btn" style="background:#18a689; color:#fff; border-radius:4px; font-weight:500;">
                                                     <span>Choose file</span>
@@ -48,8 +48,8 @@
 
                                                  <label>Contact No.</label>
                                               <!--input  placeholder="" id="PhoneNo" type="text" oninput="this.value = this.value.slice(0,10);"  [ngModelOptions]="{standalone: true}" [(ngModel)]= "PhoneNo"-->
-                                              <input  placeholder="" id="PhoneNo" formControlName="PhoneNo" type="text" [(ngModel)]= "PhoneNo" [formControl]="formSettings.controls['PhoneNo']">
-                                              <small *ngIf="formSettings.controls['PhoneNo'].hasError('required') && formSettings.controls['PhoneNo'].touched" class="text-danger support-text">Contact No Is Required.</small>
+                                              <input  placeholder="" id="PhoneNo" formControlName="PhoneNo" type="number" [(ngModel)]= "PhoneNo" [formControl]="formSettings.controls['PhoneNo']" oninput="this.value = this.value.slice(0,10);">
+                                              <small *ngIf="formSettings.controls['PhoneNo'].hasError('required') && formSettings.controls['PhoneNo'].touched" class="text-danger support-text" >Contact No Is Required.</small>
                                             </div>
                                         </div>
 
@@ -168,23 +168,7 @@
                               </form>  </div>
                             </mat-card-content></mat-card>
         </div>
-<!--  <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100">
-       <mat-card>
-      <mat-card-content style="min-height:100px;">
-                  <div class="ChangePassword-section">
-                     <mat-card-title class="mat-card-title">Terms & Conditions</mat-card-title>
-                        <form [formGroup]="formTerms" class="basic-form" (ngSubmit)="onSubmitTerms()">
-                        <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="terms" [formControl]="formTerms.controls['terms']"  height="300px" minHeight="50px"></app-ngx-editor>
-                        <mat-card-actions>
-                          <button mat-raised-button color="dc" type="submit">Submit</button>
-                        </mat-card-actions>
-                      </form>
-                       <small *ngIf="errorTermstext" class="text-danger support-text">{{errorTermstext}}</small>
-                         <small  class="text-success support-text">{{successTermstext}}</small>
-                  </div>
-      </mat-card-content>
-    </mat-card>
-        </div> -->
+
       </div>
     </div>
  

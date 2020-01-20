@@ -162,23 +162,30 @@
                                     </ngx-datatable-column>
                                   </ngx-datatable>
                                <div class="monthly_total">
-                                   Monthly Total :  ${{totalAmountPatients}}
+                                   {{planLength}} Total :  ${{totalAmountPatients}}
                                </div>
                            </div>
                           </div>
                           </div>
-                               <div class="plan_button_area">
-                                <div mat-dialog-actions class="sa-pull-right" style="width:100%;">
-                                <div style="width:100%;" class="sa-form-group text-right">
+                               <div class="plan_button_area" >
 
+                                  <div mat-dialog-actions class="sa-pull-right" style="width:100%; margin-bottom:10px!important;">
+
+                                    <div style="width:100%;" class="sa-form-group text-right">
+                                    <div class="" style="position:relative; float:right; width: 247px; text-align: left;">
+                                          <span class="btn-off-label">{{discount}}% off</span>
+                                          <button class="mat-raised-button mat-green "  (click)="openaddDialog()"><i clas="fas fa-users"></i>Add Family Member </button>
+                                      </div>
+                                  </div>
+                                </div>
+
+                                 <div class="plan_button_area"> 
+                                  <div mat-dialog-actions class="sa-pull-right" style="width:100%;">
+                                <div style="width:100%;" class="sa-form-group text-right">
                                  <button class="mat-raised-button mat-gray mr15" (click) ="changeTab(0)">Back</button>
 
                                  <button class="mat-raised-button mat-dc ok_btn" style="margin-left:8px;" (click) ="paymentStripe()">Next</button>
-                                    <div class="" style="position:relative; float:left; width: 247px; text-align: left;">
-                                        <span class="btn-off-label">{{discount}}% off</span>
-                                        <button class="mat-raised-button mat-lblue "  (click)="openaddDialog()"><i clas="fas fa-users"></i>Add Family Member </button>
-                                    </div>
-
+                                </div>
                                 </div>
                               </div>
                             </div>
@@ -192,11 +199,9 @@
                          </mat-tab-group>
                        </div>
                      </div>
-           </div>
+                  </div>
             </mat-card-content>
         </mat-card>
         </div>
         </div>
 </div>
-
-

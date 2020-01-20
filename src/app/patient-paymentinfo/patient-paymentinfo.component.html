@@ -8,7 +8,9 @@
 
                 <mat-card-title> Patient Plan Details | {{mainpatientname | titlecase}}
 <!--          <button class="sa-pull-right mat-raised-button mat-gray" (click) = "goBack()">Back</button>
-         <button class="sa-pull-right mat-raised-button danger" mat-menu-item (click) = "deletePatients()">Delete</button> --></mat-card-title>
+         <button class="sa-pull-right mat-raised-button danger" mat-menu-item (click) = "deletePatients()">Delete</button> -->
+           
+         </mat-card-title>
                <!-- ============================================================== -->
                 <!-- column -->
                 <!-- ============================================================== -->
@@ -38,7 +40,6 @@
                                           </tr>
                                           <tr>
                                             <th>Total Amount</th>
-
                                             <td>$ {{total_amount}}</td>
                                           </tr>
                                            <tr>
@@ -63,6 +64,10 @@
                                              <tr>
                                             <th>Payment Duration</th>
                                             <td>{{duration}}</td>
+                                          </tr>
+                                            <tr>
+                                            <th>{{payment_frequency}} Payment</th>
+                                            <td>$ {{monthly_weekly_payment}}</td>
                                           </tr>
 
                                    </table>
@@ -148,6 +153,25 @@
                              </ng-template>
                            </ngx-datatable-column>
                           </ngx-datatable>
+                                </mat-tab>
+                                     <mat-tab label="Contract Upload">                             
+                                  <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
+                                    <div class="bd_UpoadImage" fxFlex.gt-md="100" fxFlex="100">
+                                        <label>Upload Agreement</label><br>
+                                        <div class="upload-btn">
+                                            <span>Choose file</span>
+                                            <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)">
+                                            <input type='hidden'  placeholder="" id="imageURL" >
+                                        </div>         
+                                     </div>                               
+                                   <p>
+                                      <button mat-raised-button color="dc">Save</button>
+                                   </p>
+                                   </form>
+                                  <p *ngIf="imageURL; else empty">
+                                    Download Agreement
+                                    <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{imageURL}}">Download</a>
+                                </p>
                                 </mat-tab>
                             </mat-tab-group>
                        </div>

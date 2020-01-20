@@ -73,10 +73,8 @@
         <span>Actions</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
-          <!--   <a [routerLink]="['/patients-detail',value]" class="action_btn golden" title= 'Plan Details'><i class="ti-eye "></i></a> -->
-            <a class="action_btn golden" (click)="openUpdateDialog(rowIndex)" title= 'Update Plan'><i class="ti-settings "></i></a>
-          <button class="action_btn danger" mat-menu-item (click) = "deletePlan(rowIndex)">
-         
+            <a class="action_btn golden sa-pull-right mat-gray patient_detail_edit textonly" (click)="openUpdateDialog(rowIndex)" title= 'Update Plan'>Edit</a>
+          <button class="action_btn danger" mat-menu-item (click) = "deletePlan(rowIndex)">         
          <i class="ti-trash text-danger" title= 'Delete Plan'></i></button>
         </ng-template>
       </ngx-datatable-column>

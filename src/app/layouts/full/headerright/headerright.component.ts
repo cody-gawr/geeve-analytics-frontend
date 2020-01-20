@@ -42,8 +42,10 @@ export class AppHeaderrightComponent implements AfterViewInit  {
    private getClinics() { 
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
+        if(res.data.length>0) {
         this.clinicsData = res.data;
         this.selectedClinic = res.data[0].id;
+      }
         this.loadClinicid(this.selectedClinic);
 
           this.title = $('#page_title').val();

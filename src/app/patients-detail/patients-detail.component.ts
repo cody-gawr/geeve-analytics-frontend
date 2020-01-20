@@ -32,7 +32,6 @@ export class DialogOverviewExampleDialogComponent {
   getErrorMessage() {
        this.emailval.emit(this.email);
     return 'You must enter an email';
-     
   }
 
   @Output() public emailval: EventEmitter<any> = new EventEmitter();
@@ -48,9 +47,9 @@ export class DialogOverviewExampleDialogComponent {
   }
 
   save(data) {
-    $('.form-control-dialog').each(function(){
-    var likeElement = $(this).click();
-  });
+  //   $('.form-control-dialog').each(function(){
+  //   var likeElement = $(this).click();
+  // });
     if(data.invite_member_name != undefined && data.invite_member_email != undefined ){
         this.dialogRef.close(data);
       }
@@ -63,6 +62,8 @@ export class DialogOverviewExampleDialogComponent {
         this.file = files[0];
   }
 }
+
+
 @Component({
   selector: 'app-update-patient-dialog',
   templateUrl: './update-patient.html',
@@ -75,10 +76,9 @@ export class UpdatePatientDialogComponent {
 
     update(data) {
          
-      $('.form-control-dialog').each(function(){
-      var likeElement = $(this).click();
-    });
-    console.log(data);
+    //   $('.form-control-dialog').each(function(){
+    //   var likeElement = $(this).click();
+    // });
   
       if(data.patient_name != undefined && data.patient_address != undefined  && data.patient_dob != undefined && data.patient_age != undefined && data.patient_gender != undefined && data.patient_phone_no != undefined && data.patient_home_phno != undefined){
           this.dialogUpdateRef.close(data);
@@ -119,18 +119,18 @@ export class PatientsDetailComponent implements AfterViewInit {
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
-        $('.sa_heading_bar').show();
-        
- //   this.getClinincname();
- 
-        
+        $('.sa_heading_bar').show();     
   }
 
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
-  if(this.clinic_id)
+  if(this.clinic_id != "undefined")
     this.getPatients();
+  else{
+        $('.header_filters').addClass('hide_header');
+        $('.external_clinic').hide();
     }
+  }
     
   editing = {};
   rows = [];
@@ -164,10 +164,7 @@ export class PatientsDetailComponent implements AfterViewInit {
       width: '400px',
       data: {invite_member_name: this.invite_member_name, address: this.invite_member_email },
       panelClass: 'full-screen'
-
     });
-    
-   
   dialogRef.afterClosed().subscribe(result => {
     if(result != undefined) {
   $('.ajax-loader').show();
@@ -195,8 +192,7 @@ export class PatientsDetailComponent implements AfterViewInit {
 
     const dialogUpdateRef = this.dialog.open(UpdatePatientDialogComponent, {
      width: '250px',
-     data: {patient_name: updateres.data[0].patient_name ,patient_address: updateres.data[0].patient_address,patient_dob: this.patientdob,patient_age:updateres.data[0].patient_age,patient_gender:updateres.data[0].patient_gender,patient_phone_no:updateres.data[0].patient_phone_no,patient_home_phno:updateres.data[0].patient_home_phno,patient_status:updateres.data[0].patient_status,patient_id:patientid}
- 
+     data: {patient_name: updateres.data[0].patient_name ,patient_address: updateres.data[0].patient_address,patient_dob: this.patientdob,patient_age:updateres.data[0].patient_age,patient_gender:updateres.data[0].patient_gender,patient_phone_no:updateres.data[0].patient_phone_no,patient_home_phno:updateres.data[0].patient_home_phno,patient_status:updateres.data[0].patient_status,patient_id:patientid} 
      });
     
 
@@ -251,7 +247,7 @@ export class PatientsDetailComponent implements AfterViewInit {
           temp['patient_email'] = res.invite_member_email;
           temp['patient_status'] = 'INACTIVE';
           this.rows.push(temp);
-    this.rows = [...this.rows];
+          this.rows = [...this.rows];
 
         });
        }    
@@ -259,21 +255,24 @@ export class PatientsDetailComponent implements AfterViewInit {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   } 
+
 delete_invite(id)
 {
  Swal.fire({
       title: 'Are you sure?',
-      text: 'You want to delete the logged Appointement?',
+      text: 'You want to delete Member?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
     }).then((result) => {
+      if(result.value) {
   this.patientsdetailService.deleteInviteMembers(id).subscribe((res) => {
       if(res.message == 'success'){
         this.getPatients();
       }
     });
+}
   })
 }
   private deletePatients(row) {

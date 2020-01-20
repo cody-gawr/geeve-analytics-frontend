@@ -45,5 +45,35 @@ export class PatientPaymentinfoService {
                     })
         );
     }
+
+    updatePayment(payment_id,contract_upload,token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+    
+        formData.append('payment_id',payment_id);
+        formData.append('contract_upload', contract_upload);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
+       
+            return this.http.post(this.apiUrl +"/InofficePayments/UploadContract/", formData)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
+
+
+    contractUpload( formData): Observable<any> {
+       
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
+
+    return this.http.post(this.apiUrl +"/InofficePayments/logoUpload/", formData)
+    .pipe(map((response: Response) => {
+                    return response;
+                })
+    );
+    }
        
 }

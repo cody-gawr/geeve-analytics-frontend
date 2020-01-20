@@ -229,7 +229,6 @@ public preventative_count;
           patient_name: [null, Validators.compose([Validators.required])],
       patient_address: [Validators.compose([Validators.required])],
       patient_dob: [null, Validators.compose([Validators.required])],
-       // patient_age: [null, Validators.compose([Validators.required])],
       patient_gender: [null, Validators.compose([Validators.required])],
       patient_phone_no: [null, Validators.compose([Validators.required])],
        patient_home_phno: [null, Validators.compose([Validators.required])],
@@ -239,7 +238,15 @@ public preventative_count;
       }
 
     private deletePatients() {
-           if(confirm("Are you sure to delete Patient?")) {
+     Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete member?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
     if(this.id) {
       this.patientInfoService.deletePatients(this.id).subscribe((res) => {
        if(res.message == 'success'){
@@ -253,6 +260,7 @@ public preventative_count;
     );
     }
   }
+});
   } 
   getSubPatients() {
 
@@ -328,7 +336,7 @@ public preventative_count;
 
     Swal.fire({
       title: 'Are you sure?',
-      text: 'You want to delete the logged Appointement?',
+      text: 'You want to delete the logged Appointment?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
@@ -356,7 +364,7 @@ public preventative_count;
         this.patientInfoService.updatePatientsDetails(this.patient_name,this.patient_address,this.patient_dob,this.patient_age,this.patient_gender,this.patient_phone_no,this.patient_home_phno,this.patient_status,this.patient_id).subscribe((res) => {   
          if(res.message == 'success'){
                 this.notifier.notify( 'success', 'Patient Details Updated' ,'vertical');
-          }
+              }
             }, error => {
               this.warningMessage = "Please Provide Valid Inputs!";
             });
@@ -443,7 +451,7 @@ public preventative_count;
     if(extension !== "pdf"){
       alert('Please Upload PDF file');
       return null;
-    }else
+    } else
     {
       $('.ajax-loader').show();  
       let formData = new FormData();

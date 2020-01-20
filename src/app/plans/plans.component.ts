@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, FormGroupDirective,  NgForm,  Validators} from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { empty } from 'rxjs';
-
+import Swal from 'sweetalert2';
 
 declare var require: any;
 const data: any = [];
@@ -204,7 +204,6 @@ export class PlansComponent implements AfterViewInit {
             {"id":2,"itemName":"Extractions"},
             {"id":3,"itemName":"Wisdom teeth removal"},
             {"id":4,"itemName":"Orthodontics"},
-            {"id":5,"itemName":"Extractions"},
             {"id":6,"itemName":"Intraoral Xrays"},
             {"id":7,"itemName":"Opgs"},
             {"id":8,"itemName":"Cbct"},
@@ -219,7 +218,7 @@ export class PlansComponent implements AfterViewInit {
             {"id":16,"itemName":"Implants"},
             {"id":17,"itemName":"Dentures"},
             {"id":18,"itemName":"Occlusal Splints"},
-                 {"id":19,"itemName":"Any Treatment referred to a Specialist Referrals"},
+                 {"id":19,"itemName":"Any Treatment referred to a Specialist"},
             {"id":20,"itemName":"Any Treatment performed under General Anaesthetic"},
             {"id":21,"itemName":"Any Treatment performed under IV Sedation"}
         ];
@@ -233,7 +232,6 @@ export class PlansComponent implements AfterViewInit {
             {"id":2,"itemName":"Extractions"},
             {"id":3,"itemName":"Wisdom teeth removal"},
             {"id":4,"itemName":"Orthodontics"},
-            {"id":5,"itemName":"Extractions"},
             {"id":6,"itemName":"Intraoral Xrays"},
             {"id":7,"itemName":"Opgs"},
             {"id":8,"itemName":"Cbct"},
@@ -250,12 +248,12 @@ export class PlansComponent implements AfterViewInit {
             {"id":18,"itemName":"Occlusal Splints"}
         ];
         this.treatment_exclusions_selected=[
-             {"id":19,"itemName":"Any Treatment referred to a Specialist Referrals"},
+             {"id":19,"itemName":"Any Treatment referred to a Specialist"},
             {"id":20,"itemName":"Any Treatment performed under General Anaesthetic"},
             {"id":21,"itemName":"Any Treatment performed under IV Sedation"}
         ];
         this.treatment_exclusions = [
-                                {"id":1,"itemName":"Any Treatment referred to a Specialist Referrals"},
+                                {"id":1,"itemName":"Any Treatment referred to a Specialist"},
                                 {"id":2,"itemName":"Any Treatment performed under General Anaesthetic"},
                                 {"id":3,"itemName":"Any Treatment performed under IV Sedation"}
                             ];                            
@@ -303,8 +301,12 @@ export class PlansComponent implements AfterViewInit {
 
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
-  if(this.clinic_id)
+  if(this.clinic_id!= "undefined")
       this.getPlans();
+     else{
+            $('.header_filters').addClass('hide_header');
+        $('.external_clinic').hide();
+    }
     }
     goBack() {
       window.history.back();
@@ -380,7 +382,15 @@ export class PlansComponent implements AfterViewInit {
     }
 
   public deletePlan(row) {
-           if(confirm("Are you sure to delete this plan?")) {
+            Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete Plan?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if(result.value){
               if(this.rows[row]['id']) {
                 this.plansService.deletePlan(this.rows[row]['id']).subscribe((res) => {
                  if(res.message == 'success'){
@@ -399,6 +409,7 @@ export class PlansComponent implements AfterViewInit {
               this.rows = [...this.rows];
               }
             }
+          });
   }
   updateFilter(event) {
     const val = event.target.value.toLowerCase();

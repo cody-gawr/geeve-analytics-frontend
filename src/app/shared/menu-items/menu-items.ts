@@ -329,7 +329,6 @@ const MENUITEMS = [
 export class MenuItems {
   constructor(private rolesUsersService: RolesUsersService) {
     this.getRoles();
-    console.log(this.menu);
     
   }
   getMenuitem(): Menu[] {
@@ -386,7 +385,7 @@ export class MenuItems {
   {
 
     state: 'roles-users',
-    name: 'Roles Management',
+    name: 'Users',
     type: 'link',
     icon: 'fas fa-user-tag',
     param: '1',

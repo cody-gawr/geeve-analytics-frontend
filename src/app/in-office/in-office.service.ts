@@ -59,7 +59,6 @@ export class InOfficeService {
         const formData = new FormData();
         formData.append('patient_name', patient_name);
         formData.append('patient_email', patient_email);
-        formData.append('plan_name',plan_name);
         formData.append('plan_description', plan_description);
         formData.append('patient_dob',patient_dob );
         formData.append('patient_phone_no',patient_phone_no);
@@ -73,7 +72,6 @@ export class InOfficeService {
         formData.append('payment_frequency',payment_frequency );
         formData.append('duration',duration );
         formData.append('monthly_weekly_payment',monthly_weekly_payment );
-        formData.append('start_date',start_date );
         formData.append('patient_id',patient_id );
         formData.append('user_id', this._cookieService.get("userid"));
         formData.append('token', token);

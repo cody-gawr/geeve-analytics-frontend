@@ -36,7 +36,7 @@ export class SubscriptionComponent implements OnInit {
   user_type: string;
   fileInput: any ;
   password:string;
-  
+  date = new Date();
   sliderimages:any;
   private warningMessage: string;
 
@@ -251,6 +251,9 @@ openDialog(id,amount) {
   
   loadDesc(id, preventative_plan, treatment_inclusions, treatment_exclusions, totalAmount,planName, planLength) {
     $(".treatment_content").show();
+    $('html, body').animate({
+        scrollTop: $(".treatment_content").offset().top
+    }, 2000);
     this.load_id= id;
     this.load_preventative_plan = preventative_plan;
     this.load_treatment_inclusions =treatment_inclusions;
@@ -349,6 +352,7 @@ public terms;
           this.clinicName =(finalData[0].clinicName!="") ? finalData[0].clinicName : "Clinic Name";
           this.clinicAddress =(finalData[0].address!="") ? finalData[0].address : "Default Lane 2, High Street, New York .";
           this.clinicContactNo =(finalData[0].phoneNo!="") ? finalData[0].phoneNo : "+123456789";
+          this.clinicEmail =(finalData[0].clinicEmail!="") ? finalData[0].clinicEmail : "test@gmail.com";
 
           if(finalData[0].logo!="undefined")
           {
@@ -363,7 +367,7 @@ public terms;
           this.DoctorDescription = (finalData[0].UserDetails.description!="") ? finalData[0].UserDetails.description : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum";
           this.ClinicAbout = (finalData[0].description!=null) ? finalData[0].description :"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum";
           this.practiceOwnerEmail = (finalData[0].Users.email!="") ? finalData[0].Users.email : "admin@jeevemembers.com" ; // For display only
-          this.clinicEmail = (finalData[0].Users.email !="") ? finalData[0].Users.email :"admin@jeevemembers.com"; // Used for sending email of contact us form 
+       //   this.clinicEmail = (finalData[0].Users.email !="") ? finalData[0].Users.email :"admin@jeevemembers.com"; // Used for sending email of contact us form 
     
           this.clinicTagline = (finalData[0].clinicTagLine!=null) ? finalData[0].clinicTagLine : "Our <i class='fas fa-smile'></i> Are Valley Wide"; 
           this.terms= finalData[0].terms;

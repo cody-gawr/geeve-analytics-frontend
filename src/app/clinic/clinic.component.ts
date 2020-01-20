@@ -5,6 +5,7 @@ import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
 import { NotifierService } from 'angular-notifier';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -25,23 +26,12 @@ export class DialogOverviewExampleDialogComponent {
 
   public fileToUpload;
  
-  uploadImage(files: FileList) {
-     
+  uploadImage(files: FileList) {     
     this.fileToUpload = files.item(0);
     this.onAdd.emit(this.fileToUpload);
   }
 
    save(data) {
-//     $(".form-control-dialog").on('click', function(event){
-//     event.stopPropagation();
-//     event.stopImmediatePropagation();
-//     //(... rest of your JS code)
-// });
-
-    $('.form-control-dialog').each(function(){
-    var likeElement = $(this).click();
-  });
-  console.log(data)
     if(data.name != undefined && data.address != undefined  && data.contact_name != undefined && data.phone_no != undefined){
         this.dialogRef.close(data);
       }
@@ -124,11 +114,9 @@ export class ClinicComponent implements AfterViewInit {
       formData.append('file', val, val.name);
       this.clinicService.logoUpload(formData).subscribe((res) => {
       $('.ajax-loader').hide();
-      
         if(res.message == 'success'){
                  this.imageURL= res.data;
         this.notifier.notify( 'success', 'Logo Uploaded' ,'vertical');
-
         }
       });
       });
@@ -149,16 +137,21 @@ export class ClinicComponent implements AfterViewInit {
 }
     });
   }
-
+public clinicscount=0;
+public createdClinicsCount=0;
   private getClinics() {
     this.rows=[];
     this.clinicService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
           this.rows = res.data;
-          this.user_id= res.data[0]['user_id']
+          if(res.data.length >0) {
+          this.user_id= res.data[0]['user_id'];
+          this.clinicscount= res.data[0]['Users'].clinics_count;
+          console.log(this.clinicscount);
+          this.createdClinicsCount = res.data.length;
           this.temp = [...res.data];        
           this.table = data;
-
+        }
        }
         else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -173,8 +166,17 @@ export class ClinicComponent implements AfterViewInit {
     );
 
   }
+
   private deleteClinic(row) {
-           if(confirm("Are you sure want to delete this Clinic?")) {
+     Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete Clinic?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if(result.value){
     if(this.rows[row]['id']) {
   this.clinicService.deleteClinic(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
@@ -191,17 +193,17 @@ export class ClinicComponent implements AfterViewInit {
     this.rows = [...this.rows];
 
     }
+    }
+   })
   }
-  }
+
   addDentist() {
-    console.log(this.rows);
     var temp ={};
     temp['providerId'] ='Enter Provider Id';
     temp['name'] ='Enter Name';
     var length = this.rows.length;
     this.editing[length + '-providerId'] = true;
     this.editing[length + '-name'] = true;
-    
     this.rows.push(temp);
     this.table =data;
   }
@@ -235,7 +237,6 @@ export class ClinicComponent implements AfterViewInit {
     }    
     );  
     this.rows = [...this.rows];
-  //  console.log('UPDATED!', this.rows[rowIndex][cell]);
 
   }
 

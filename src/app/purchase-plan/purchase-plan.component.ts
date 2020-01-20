@@ -121,16 +121,17 @@ export class PurchasePlanComponent implements OnInit {
   public subPatientGender;
   public totalAmountPatients =0;
   public email;
-  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private PurchasePlanService: PurchasePlanService,private _cookieService: CookieService, private route: ActivatedRoute, public dialog: MatDialog, private ref: ChangeDetectorRef, private stripeService: StripeService, private http : Http,private stripeSerivce: StripeService) {}
+  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private PurchasePlanService: PurchasePlanService,private _cookieService: CookieService, private route: ActivatedRoute, public dialog: MatDialog, private ref: ChangeDetectorRef, private stripeService: StripeService, private http : Http,private stripeSerivce: StripeService) {
 
-   ngOnInit() {
-    
-    this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
+  }
 
-            this.stripeTest = this.fb.group({
+   ngOnInit() {    
+    this.stripeService.setKey('22');
+  this.PurchasePlanService.getPublishableKey().subscribe((res) => {
+    this.stripeService.setKey(res.key);
+       this.stripeTest = this.fb.group({
             name: ['', [Validators.required]]
             });
-
             this.stripeService.elements(this.elementsOptions)
             .subscribe(elements => {
             this.elements = elements;
@@ -155,6 +156,9 @@ export class PurchasePlanComponent implements OnInit {
             this.changeTab(0);
             }
             });
+       }, error => {
+    });
+         
      this.route.params.subscribe(params => {
       this.plan_id = this.route.snapshot.paramMap.get("id");
        var data =this.plan_id.split("&");
@@ -214,7 +218,7 @@ export class PurchasePlanComponent implements OnInit {
     .createToken(this.card, { name })
     .subscribe(obj => {
     if (obj) {
-    console.log("Token is --> ",obj.token.id);
+    $('.ajax-loader').show(); 
  this.token = obj.token.id;
    this.PurchasePlanService.addPatient(this.form.value.patient_email,this.form.value.patient_name,this.form.value.patient_phone_no,this.clinic_id,this.user_id,this.plan_id,this.totalAmountPatients).subscribe((res) => {
                     this.errorLogin = false;
@@ -361,9 +365,8 @@ public patient_id;
       $('.ajax-loader').hide();
           });
   }
-
+public planLength;
   public clinic_logo;
-
   getPlanDetail() {
     this.PurchasePlanService.getPlanDetail(this.plan_id).subscribe((res) => {
        if(res.message == 'success'){
@@ -372,6 +375,7 @@ public patient_id;
           this.user_id = res.data[0].user_id;
           this.termsText = res.data[0].clinic.terms;
           this.planName = res.data[0].planName;
+              this.planLength = res.data[0].planLength;
           this.discount = res.data[0].discount;
           this.amount = res.data[0].totalAmount;
           this.clinic_logo = res.data[0].clinic.logo;

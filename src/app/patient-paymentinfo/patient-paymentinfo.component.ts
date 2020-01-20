@@ -21,6 +21,8 @@ const data: any = [];
 export class PatientPaymentinfoComponent implements OnInit {
   private readonly notifier: NotifierService;
   public formPatient: FormGroup;
+  public form: FormGroup;
+
   color = 'primary';
   mode = 'determinate';
   value = 50;
@@ -32,7 +34,6 @@ export class PatientPaymentinfoComponent implements OnInit {
   public total_subpatient:any;
   public contract_url:any;
   public plan_name:any;
-  public form: FormGroup;
   options: FormGroup;
   public treatmentdata;
   private warningMessage: string;
@@ -98,9 +99,51 @@ public preventative_count;
        patient_home_phno: [null, Validators.compose([Validators.required])],
       patient_status: [null, Validators.compose([Validators.required])]
     });
+
+     this.form = this.fb.group({
+     
+    });
+      }
+  onSubmit() {
+    if(this.imageURL == undefined){
+      alert("Please Upload file");
     
+    }else{
+      $('.ajax-loader').show();      
+        this.patientPaymentinfoService.updatePayment(this.id,this.imageURL).subscribe((res) => {
+      $('.ajax-loader').hide();      
+          if(res.message == 'success'){
+            this.notifier.notify( 'success', 'Document Uploaded' ,'vertical');
+               this.getInofficePlan();
+            }
+           }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+            }   
+           );
+        }
       }
 
+      public fileToUpload;
+  uploadImage(files: FileList) {
+    this.fileToUpload = files.item(0);
+    const extension = this.fileToUpload.name.split('.')[1].toLowerCase();
+    if(extension !== "pdf"){
+      alert('Please Upload PDF file');
+      return null;
+    }else
+    {
+      $('.ajax-loader').show();  
+      let formData = new FormData();
+    formData.append('file', this.fileToUpload, this.fileToUpload.name);
+    this.patientPaymentinfoService.contractUpload(formData).subscribe((res) => {
+      $('.ajax-loader').hide();      
+
+        if(res.message == 'success'){
+        this.imageURL= res.data;
+          }
+        });
+      }
+  }
 
 //public plan_name;
 public plan_description;
@@ -127,6 +170,8 @@ public start_date;
         this.monthly_weekly_payment=res.data[0]['monthly_weekly_payment'];
         this.duration=res.data[0]['duration'];
         this.start_date=res.data[0]['start_date'];
+        this.imageURL=res.data[0]['contract'];
+
         this.getPaymentHistory();
        }
         else if(res.status == '401'){

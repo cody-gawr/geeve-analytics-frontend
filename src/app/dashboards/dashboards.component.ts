@@ -95,7 +95,7 @@ export class DashboardsComponent implements AfterViewInit {
   public averagechecked= false;
   public childid:string='';
   public user_type:string='';
-  public totalMembers;
+  public totalMembers=0;
 public newMembersThisMonth=0;
 public totalFees=0;
 public totalFeesThisMonth=0;
@@ -168,6 +168,10 @@ constructor(private dashboardsService: DashboardsService, private datePipe: Date
          $('.mat-datepicker-toggle').on('click', function(e) {
              $('.mat-calendar-period-button').attr('disabled','true');
           });
+
+         $('.mat-icon-button').on('click', function(e) {
+             $('.mat-calendar-period-button').attr('disabled','true');
+          });
        $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();
@@ -228,6 +232,12 @@ this.lineChartColors = [
       doughnutGradient2.addColorStop(0,  '#BFE8EE');
       this.doughnutChartColors = [{backgroundColor: [doughnutGradient,doughnutGradient2]}];
     //this.recallChartTreatment();
+  }
+
+
+  demo()
+  {
+    alert('asd');
   }
 
   public selectedClinic;
@@ -620,6 +630,7 @@ public barChartOptions: any = {
         this.totalFeesInofficeMonth = 0;
         this.totalPlansOverdue = 0;
         this.totalFees =0;
+        this.totalMembers=0;
         if(data.data.totalMembers != null)
         this.totalMembers = data.data.totalMembers;
 

@@ -1413,14 +1413,13 @@ img{max-width:100%;}
     border: 4px solid
     rgba(255,255,255,0.5);
 
-    background: rgba(0,141,163,1);
-    background: -moz-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
-    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,141,163,1)), color-stop(100%, rgba(1,106,122,1)));
-    background: -webkit-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
-    background: -o-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
-    background: -ms-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
-    background: linear-gradient(to right, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008da3', endColorstr='#016a7a', GradientType=1 );
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#18a689+0,0e725b+100,1a9377+100 */
+background: #18a689; /* Old browsers */
+background: -moz-linear-gradient(top,  #18a689 0%, #0e725b 100%, #1a9377 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #18a689 0%,#0e725b 100%,#1a9377 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #18a689 0%,#0e725b 100%,#1a9377 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', endColorstr='#1a9377',GradientType=0 ); /* IE6-9 */
+
 
 }
 .btn-round{border-radius:150px!important; margin:15px auto 10px!important; cursor:pointer; display:inline-block!important; padding:8px 20px!important; float:none!important;}
@@ -1449,7 +1448,12 @@ img{max-width:100%;}
 
 .mat-flat-button.mat-.basic_details_form .mat-card-title:disabled, .mat-raised-button.mat-green:disabled, .mat-fab.mat-green:disabled, .mat-mini-fab.mat-green:disabled{background:#76dbc5!important; color:#18a689!important;}
 
-
+.gradient_inner .mat-green:disabled{color:
+#fff!important;
+background-color:
+#6c757d!important;
+border-color:
+#6c757d!important; opacity:.65;}
 
 /******new-changes******/
 .sa_afu-dragndrop-box .afu-select-btn {float:none;width:auto;display:inline-block;background-color: #25A689;}
@@ -1459,7 +1463,7 @@ img{max-width:100%;}
 .sa_dentist_graphs_area .sa_flexbg.sa_designbg{padding-left: 0px;padding-right:0px;}
 .sa_dentist_graphs_area .sa_flexbg.sa_designbg.single-mat-card .mat-card {width:100%;border:none;}
 .packgae_list_main {}
-.btn-group {border:1px solid #ddd;}
+.btn-group {border:1px solid #ddd; border-radius:4px;}
 .width-full{float:left;width: 100%;}
 .featuredPlan .preventative_discount , .featuredPlan .preventative_frequency , .featuredPlan .discount , .featuredPlan .packgae_list span {}
 .packgae_list_main p ,.packgae_list_main  .packgae_list span {line-height:20px;font-size:14px ;margin-bottom:10px; text-align:center;
@@ -1499,11 +1503,15 @@ img{max-width:100%;}
 .packgae_list_main::-webkit-scrollbar-thumb:hover {background: #a6a6a6;}
 .action_btn i{}
 .position-relative {position: relative;}
-.duration mat-label{float: left;width: 100%;}
-.btn-switch input {visibility:hidden !important;left:0 !important;position: absolute;}
+.duration mat-label{float: left;width: 100%; text-align:center;}
+.btn-switch input {visibility:hidden !important;left:0 !important;position: absolute; }
+.w100{width:100%;}
+.w50{width:50%;}
+.value_label{font-size:18px; color:#424242; padding-top:20px; }
+.value_label b{font-weight:600;}
 .duration span label::before ,.duration span label::after{display: none !important;}
 [type="radio"]:checked + .active-duration {background-color: #25a689 !important;color:#fff !important;transition: ease 0.8s all !important;}
-.duration span label{cursor: pointer;padding: 7px 20px;margin-bottom: 0px;font-size: 15px;font-weight: 400;letter-spacing: 0.5px;display:inline-block;}
+.duration span label{text-align:center; cursor: pointer;padding: 7px 20px;margin-bottom: 0px;font-size: 15px;font-weight: 400;letter-spacing: 0.5px;display:inline-block;}
 .selected-list .c-list .c-token {color: #fff;background-color: #25a689; padding:4px 8px 4px 22px !important;margin-top:2px !important;margin-bottom:2px;font-size: 12px;}
 .selected-list .c-list .c-token .c-remove {left: 8px; right:auto;}
 .cuppa-dropdown {background-color: #f2f2f2;padding: 0px 0;border-radius: 4px;margin-top: 0px;}
@@ -1708,14 +1716,17 @@ span.datatableEmail {display: block; word-break: break-all; line-height: 20px; }
 .sa_table_evenodd tr:nth-child(2n){background:#DDEBE9;}
 
 
-.gradient_bg{background: rgba(0,141,163,1);
-    background: -moz-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
-    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(0,141,163,1)), color-stop(100%, rgba(1,106,122,1)));
-    background: -webkit-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
-    background: -o-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
-    background: -ms-linear-gradient(left, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
-    background: linear-gradient(to right, rgba(0,141,163,1) 0%, rgba(1,106,122,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008da3', endColorstr='#016a7a', GradientType=1 ); padding:8px!important; border-radius:12px; }
+.gradient_bg{
+
+
+/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#18a689+0,0e725b+100,1a9377+100 */
+background: #18a689; /* Old browsers */
+background: -moz-linear-gradient(top,  #18a689 0%, #0e725b 100%, #1a9377 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #18a689 0%,#0e725b 100%,#1a9377 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #18a689 0%,#0e725b 100%,#1a9377 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', endColorstr='#1a9377',GradientType=0 ); /* IE6-9 */
+
+    padding:8px!important; border-radius:12px; }
 
 .gradient_inner{background:#fff; padding:20px; border-radius:12px;}
 
@@ -1725,5 +1736,14 @@ span.datatableEmail {display: block; word-break: break-all; line-height: 20px; }
     #f8d7da;
     border-color:
     #f5c6cb; padding:8px 15px; border-radius:4px; margin-bottom:20px;}
+
+
+.iframe_border{border:1px solid #ccc!important; padding:6px 10px!important; border-radius:4px!important;}
+
 .iframe_border{border:1px solid #ccc!important; padding:6px 10px!important; border-radius:4px!important;}
 .link_btn{cursor: pointer;}
+
+.form_sub_title{margin: 16px 0 !important; font-size: 17px; color:#18a689;}
+.c-remove.clear-all.ng-star-inserted {
+    display: none;
+}
