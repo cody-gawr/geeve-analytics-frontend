@@ -53,7 +53,6 @@ export class ClinicSettingsService {
     
        // Get ClinicSettings
   getClinicLandingPageSettings(clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-    console.log('dsf');
         return this.http.get(this.apiUrl +"/Clinics/getClinicInfo?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;

@@ -1,36 +1,35 @@
 <div class="AddUserPopup"> 
 <h1 mat-dialog-title>Add User</h1>
 <div mat-dialog-content class="sa_forms_design">
-  
-
-
 
  <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Display Name</label>
-         <input tabindex="1" class="form-control-dialog" required="true" [(ngModel)]="data.display_name" placeholder="">
+         <input tabindex="1" class="form-control-dialog" (keypress)="omit_special_char($event)" [formControl]="form.controls['display_name']" [(ngModel)]="data.display_name" placeholder="">
+         <small *ngIf="form.controls['display_name'].hasError('required') && form.controls['display_name'].touched" class="text-danger support-text">Display Name is Required.</small>
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
          <label>Email</label>
-    <input tabindex="1" class="form-control-dialog" required="true" [(ngModel)]="data.email" placeholder="">
+    <input tabindex="1" class="form-control-dialog" [(ngModel)]="data.email" placeholder="" [formControl]="form.controls['email']">
+     <small *ngIf="form.controls['email'].errors?.email && form.controls['email'].touched" class="text-danger support-text">You must include a valid email address.</small>
     </div>
 
    </div>
 
   <div class="selectIcon">
-     <select fxFlex.gt-sm="100%" class="form-control-dialog" required="true" fxFlex.gt-xs="100%" fxFlex="100" class="sa_select form-control" name="user_type" [(ngModel)]="data.user_type">
+     <select fxFlex.gt-sm="100%" class="form-control-dialog" required="true" fxFlex.gt-xs="100%" fxFlex="100" class="sa_select form-control" name="user_type" [(ngModel)]="data.user_type" [formControl]="form.controls['user_type']">
       <option value ="" selected>Select User Type</option>
       <option value ="3">Receptionist</option>
       <option value ="4">Manager</option>
-
    </select> 
  </div>
+ <small *ngIf="form.controls['user_type'].hasError('required') && form.controls['user_type'].touched" class="text-danger support-text">User Type is Required.</small>
 
    <input type='hidden' tabindex="1" [(ngModel)]="data.password"  placeholder="Email">
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
 <div mat-dialog-actions class="sa-pull-right">
-  <button mat-button (click)="save(data)"   tabindex="2" class="mat-raised-button mat-dc">OK</button>
+  <button mat-button (click)="save(data)"   tabindex="2" class="mat-raised-button mat-dc" [disabled]="!form.valid">OK</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
 </div>
 </div>

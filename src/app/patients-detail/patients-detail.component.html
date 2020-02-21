@@ -2,83 +2,118 @@
 <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
 <mat-card>
     <mat-card-content>
-        <mat-card-title><span class="main-title">Patients Listing</span>  
-         <!-- <button class="sa-pull-right mat-raised-button sa-pull-right mat-gray" (click) = "goBack()">Back</button> -->
-         <button class="sa-pull-right mat-raised-button mat-gray mr-15" mat-raised-button (click)="openDialog()" *ngIf="clinic_id > 0">Invite New Member  </button></mat-card-title>
+        <div class="main_title_outer" style="margin-bottom:0;">
+            <div class="main_title_withbtn">
+                <mat-card-title><span class="main-title">Patients Listing</span></mat-card-title>
+            </div>
+            <div class="title_btn" style="margin-bottom:10px;">
+                <div fxLayout="row wrap" fxLayoutGap="2%">
 
-        <mat-form-field>
-            <input matInput type='text' class="form-control" placeholder='Type to filter Patient name...' (keyup)='updateFilter($event)'
-            />
-        </mat-form-field>
-        
-        <ngx-datatable #table class='material responsive-datatable'  [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="20" [rows]='rows' (onRowClick)="_onRowClick($event)">
+                    <div fxFlex.gt-xs="340px" fxFlex="100"  style="text-align:right;" >
+                        <button style="margin-bottom:10px;" class="mat-raised-button mat-gray" mat-raised-button (click)="openExportDialog()" *ngIf="clinic_id > 0">Export Payments</button>
+
+                        <button style="margin-bottom:10px;"  class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()" *ngIf="clinic_id > 0 && connectedStripe">Invite New Member </button>
+                    </div>
+                </div>
+            </div>
+         </div>
+         <div fxLayout="row wrap" fxLayoutGap="2%">            
+                 <div fxFlex.gt-xs="25" fxFlex="100" >
+                        <div class="filter_status">
+                            <mat-form-field >
+                                <mat-label>Filter by Status</mat-label>
+                                <mat-select [(ngModel)]="StatusSelected" (ngModelChange)="statusFilter()">
+                                    <mat-option  value="">Select All</mat-option>
+                                    <mat-option  value="ACTIVE">Active</mat-option>
+                                    <mat-option  value="INACTIVE">Inactive</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                  </div>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="2%">
+            <div fxFlex.gt-xs="25" fxFlex="100" >
+                <mat-form-field style="margin-top:2px;">
+                    <input matInput type='text' class="form-control" placeholder='Type to filter Patient name...' (keyup)='updateFilter($event)'
+                           autocomplete="off"/>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="ngx_datatable_scroll_div">
+        <ngx-datatable #table class='material responsive-datatable rdt_1600px'  [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (onRowClick)="_onRowClick($event)">
       <ngx-datatable-column prop="patient_name" name="patient_name">
          <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
         <span (click)="sort()">Patient Name</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span >
-            {{value}}
+            <span class="datatable_label">Patient Name : </span>{{value}}
           </span>
-              </ng-template>
+        </ng-template>
       </ngx-datatable-column>
-   <ngx-datatable-column prop="planName" name="planName">
+       <ngx-datatable-column prop="additional_members" name="additional_members" [width] = "250">
          <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
-        <span (click)="sort()">Plan Name</span>
+        <span (click)="sort()">Additional Family Members</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span >
-            {{value}}
+            <span class="datatable_label">Additional Family Members : </span>{{value}}
+          </span>
+              </ng-template>
+      </ngx-datatable-column>
+        <ngx-datatable-column prop="planName" name="planName">
+        <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
+        <span (click)="sort()">Plan Name</span>
+        </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span>
+            <span class="datatable_label">Plan Name : </span>{{value}}
           </span>
       </ng-template>
-  </ngx-datatable-column>
+      </ngx-datatable-column>
           <ngx-datatable-column prop="patient_dob" name="patient_dob" [sortable]="true">
             <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
           <span (click)="sort()">Date Of Birth</span>
         </ng-template>
           <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
             <span >
-              {{value}}
+              <span class="datatable_label">Date Of Birth : </span>{{value}}
             </span>
-           
+
           </ng-template>
         </ngx-datatable-column>
-
-
             <ngx-datatable-column prop="patient_email" name="patient_email" [width] = "220">
               <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
             <span (click)="sort()">Email</span>
             </ng-template>
             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
               <span class="datatableEmail">
-                {{value}}
+                <span class="datatable_label">Email : </span>{{value}}
               </span>
             </ng-template>
             </ngx-datatable-column>
-
       <ngx-datatable-column  prop="patient_status" name="patient_status">
         <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
       <span class="subStatus" (click)="sort()">Status</span>
       </ng-template>
       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-        <!-- <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'patient_status')" *ngIf="!editing[rowIndex + '-patient_status']"> -->
-          {{value}}
-        <!-- </span> -->
-        <!-- <select id="statusFilter" *ngIf="editing[rowIndex+ '-patient_status']" (change)="updateValue($event, 'patient_status', rowIndex)">
-         <option value="ACTIVE" [selected]="row.patient_status =='ACTIVE' ? true : null" >ACTIVE</option>
-          <option value="INACTIVE" [selected]="row.patient_status =='INACTIVE' ? true : null">INACTIVE</option>
-        </select> -->
+          <mat-chip-list >
+            <mat-chip color="primary" selected *ngIf="rows[rowIndex]['patient_status'] == 'ACTIVE'">{{value}}</mat-chip>
+            <mat-chip color="warn" selected *ngIf="rows[rowIndex]['patient_status'] == 'INACTIVE'">{{value}}</mat-chip> 
+          </mat-chip-list>
        </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="id" >
+      <ngx-datatable-column name="id" [width] = "257">
          <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
         <span (click)="sort()">Actions</span>
       </ng-template>
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" >
           <a [routerLink]="['/patient-info',value]" class="action_btn golden sa-pull-right mat-gray patient_detail_edit textonly" title='Patients Details'  *ngIf="value != ''"> Edit </a>
-          <a  class="action_btn danger sa-pull-right mat-gray patient_detail_edit textonly" title= 'Patients Details' (click) = "delete_invite(rows[rowIndex]['invite_id'])" *ngIf="value == ''"> Delete </a>
+          <a class="action_btn danger sa-pull-right mat-gray patient_detail_edit textonly" title= 'Patients Details' (click) = "delete_invite(rows[rowIndex]['invite_id'])" *ngIf="value == ''"> Delete </a>
+          <a class="action_btn golden sa-pull-right mat-gray patient_detail_edit textonly" title= 'Patients Details' (click) = "resend_invite(rows[rowIndex]['patient_name'],rows[rowIndex]['patient_email'])" *ngIf="value == ''"> Resend invite </a>
         </ng-template>
-      </ngx-datatable-column>      
+      </ngx-datatable-column>
         </ngx-datatable>
+        </div>
     </mat-card-content>
 </mat-card>

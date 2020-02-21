@@ -1,6 +1,14 @@
 <mat-card>
     <mat-card-content>
-        <mat-card-title>Users  <button class="sa-pull-right mat-raised-button mat-gray" mat-raised-button (click)="openDialog()"disabled ="true ">Add User</button></mat-card-title>
+
+        <div class="main_title_outer">
+            <div class="main_title_withbtn">
+                <mat-card-title>Users</mat-card-title>
+            </div>
+            <div class="title_btn" style="margin-bottom:10px;">
+                <button class="mat-raised-button mat-gray" mat-raised-button (click)="openDialog()"disabled ="true ">Add User</button>
+            </div>
+        </div>
 
         <mat-form-field>
             <input matInput type='text' class="form-control" placeholder='Type to filter User name...' (keyup)='updateFilter($event)'
@@ -51,7 +59,7 @@
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'usertype')" *ngIf="!editing[rowIndex + '-usertype']">
-          &nbsp;&nbsp;  {{value}}  
+          &nbsp;&nbsp;  {{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'usertype', rowIndex)" *ngIf="editing[rowIndex+ '-usertype']" type="text" [value]="value"
           />

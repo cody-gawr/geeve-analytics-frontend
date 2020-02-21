@@ -5,6 +5,7 @@ import { ProfileSettingsService } from './profile-settings.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import { NotifierService } from 'angular-notifier';
+import { Router, NavigationEnd, Event  } from '@angular/router';
 
 @Component({
   selector: 'app-formlayout',
@@ -18,7 +19,6 @@ export class ProfileSettingsComponent implements OnInit {
    public formSettings: FormGroup;
    public formTerms: FormGroup;
    public clinic_id:any ={};
-
           private warningMessage: string;
           public id:any ={};
           public clinicName:any =0;
@@ -38,7 +38,7 @@ export class ProfileSettingsComponent implements OnInit {
           public imageURL:any;
           public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
 
-  constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute) {
+  constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute, private router: Router) {
     this.notifier = notifierService;
     this.options = fb.group({
       hideRequired: false,
@@ -53,7 +53,7 @@ export class ProfileSettingsComponent implements OnInit {
     this.imageURL = this._cookieService.get("user_image");
     this.getprofileSettings();
 
-    $('#title').html('Profile Settings');
+    $('#title').html('Profile');
     $('.header_filters').addClass('hide_header');
         $('.sa_heading_bar').show();
          
@@ -63,7 +63,7 @@ export class ProfileSettingsComponent implements OnInit {
 
       this.form = this.fb.group({
       currentPassword: [null, Validators.compose([Validators.required])],
-      newPassword: [null, Validators.compose([Validators.required])],
+      newPassword: [null, Validators.compose([Validators.required, Validators.minLength(10),Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')])],
       repeatPassword: [null, Validators.compose([Validators.required])]      
     });
 
@@ -71,12 +71,11 @@ export class ProfileSettingsComponent implements OnInit {
      this.formSettings = this.fb.group({
       email: [null, Validators.compose([Validators.required])],
       displayName: [null, Validators.compose([Validators.required])],
-      Website: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
-      PhoneNo: [null, Validators.compose([Validators.required])],
-      Address: [null, Validators.compose([Validators.required])],
-      Specialties: [null, Validators.compose([Validators.required])],
-      practiceDesc: [null, Validators.compose([Validators.required])]
-    
+      // Website: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
+      // PhoneNo: [null, Validators.compose([Validators.required])],
+      // Address: [null, Validators.compose([Validators.required])],
+      // Specialties: [null, Validators.compose([Validators.required])],
+      // practiceDesc: [null, Validators.compose([Validators.required])]   
 
     });
   this.formTerms = new FormGroup({
@@ -99,6 +98,13 @@ export class ProfileSettingsComponent implements OnInit {
         this.Website = res.data[0].website;
         this.terms = res.data[0].terms;
        }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -169,6 +175,13 @@ public website;
         this.notifier.notify( 'success', 'Profile Settings Updated' ,'vertical');
     
        }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -216,6 +229,23 @@ onSubmitPassword() {
 public fileToUpload;
  uploadImage(files: FileList) {
     this.fileToUpload = files.item(0);
+
+      /* First check for file type then check for size .*/
+   if(this.fileToUpload.type=='image/png' || this.fileToUpload.type=='image/jpg' || this.fileToUpload.type=='image/jpeg') //10000 bytes means 10 kb
+    {
+        
+    }else{
+        alert("Invalid image. Allowed file types are jpg, jpeg and png only .");
+        return false;
+    }
+
+    if(this.fileToUpload.size/1024/1024 > 2) //10000 bytes means 10 kb
+    {
+         alert("Header image should not be greater than 2 MB .");
+         return false;
+    }
+
+
     let formData = new FormData();
     formData.append('file', this.fileToUpload, this.fileToUpload.name);
       $('.ajax-loader').show();      

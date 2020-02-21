@@ -7,6 +7,13 @@ import { EventEmitter , Output, Input} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
 import { NotifierService } from 'angular-notifier';
 import Swal from 'sweetalert2';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl
+} from '@angular/forms';
+import { CustomValidators } from 'ng2-validation';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -15,12 +22,21 @@ import Swal from 'sweetalert2';
 
 export class DialogOverviewExampleDialogComponent {
    public clinic_id:any ={};
+   public form: FormGroup;
+
 show_dentist = false;
 
-  constructor(
+  constructor(private fb: FormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+
+     this.form = this.fb.group({
+      display_name: [null, Validators.compose([Validators.required])],
+      email: [null, Validators.compose([Validators.required, CustomValidators.email])],
+      user_type: [null, Validators.compose([Validators.required])],
+    });
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -31,23 +47,31 @@ show_dentist = false;
       if(val == '4')
         this.show_dentist = true;
     }
+
+      omit_special_char(event)
+      {   
+         var k;  
+         k = event.charCode;  //         k = event.keyCode;  (Both can be used)
+         return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+      }
+
      save(data) {
 
-   $('.form-control-dialog').each(function(){
-      var likeElement = $(this).click();
-   });
-   var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  if(!data.email.match(mailformat) && data.email != '')
-  {
-  alert('Please enter a valid Email.');
-   return false;
-  }
-  if(data.display_name != undefined && data.email != undefined  && data.user_type != undefined ){
-      this.dialogRef.close(data);
-  }else{
-    return false;
-   }
- }
+       $('.form-control-dialog').each(function(){
+          var likeElement = $(this).click();
+       });
+       var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if(!data.email.match(mailformat) && data.email != '')
+      {
+      alert('Please enter a valid Email.');
+       return false;
+      }
+      if(data.display_name != undefined && data.email != undefined  && data.user_type != undefined ){
+          this.dialogRef.close(data);
+      }else{
+        return false;
+       }
+     }
 
 }
 
@@ -62,8 +86,15 @@ export class RolesOverviewExampleDialogComponent {
   constructor(
     public rolesRef: MatDialogRef<RolesOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
-
+  ) {
+      
+  }
+  omit_special_char(event)
+{   
+   var k;  
+   k = event.charCode;  //         k = event.keyCode;  (Both can be used)
+   return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+}
   onNoClick(): void {
     this.rolesRef.close();
   }
@@ -201,6 +232,13 @@ dentists:any=[];
             this.dentists.push(temp);
             });
            }
+            else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
         }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
         }    
@@ -231,6 +269,13 @@ dentists:any=[];
         this.temp = [...res.data];        
         this.table = data;
        }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
@@ -264,6 +309,13 @@ dentists:any=[];
             })
          });
        }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
@@ -286,6 +338,13 @@ dentists:any=[];
         this.notifier.notify( 'success', 'User Removed' ,'vertical');
           this.getUsers();
        }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    

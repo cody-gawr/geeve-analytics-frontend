@@ -25,14 +25,12 @@
                     </mat-form-field>
                 </div>
              </div>
-               <div fxFlex.lg="18" fxFlex.md="18" fxFlex.sm="100" fxFlex.xs="100" fxFlex="18"  >
-
+               <div fxFlex.lg="18" fxFlex.md="18" fxFlex.sm="100" fxFlex.xs="100" fxFlex="18">
               </div>
               <div fxFlex.lg="20" fxFlex.md="20" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20"  *ngIf="clinicsData.length>0">
                  <div class="sa_mat_select_topbar sa_pull-right" style="margin-top:12px; margin-bottom:20px;">
-                    <mat-form-field>
+                                              <mat-form-field>
                             <mat-select class="external_clinic"  [value] ="selectedClinic" [(ngModel)]="selectedClinic" (ngModelChange)="loadClinicid($event)">
-                                
                                 <mat-option *ngFor="let clinicData of clinicsData" [value]="clinicData.id">
                                
                                     {{clinicData.clinicName}}
@@ -94,9 +92,7 @@
                       </div>
                   </mat-card-content>
               </mat-card>
-
           </div>
-
   </div>
 
     <div fxFlex.lg="30" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="30" class="sa_flexbg sa_invitation" style="margin-right:0;">
@@ -132,7 +128,7 @@
                       [chartType]="doughnutChartType"
                       (chartHover)="chartHovered($event)"
                       (chartClick)="chartClicked($event)" [colors]="doughnutChartColors"></canvas>
-                    </div>
+                    </div> 
                 </div>
             </div>
           </mat-card-content>
@@ -152,6 +148,7 @@
                 <div class="sa_grid_text">
                     <span class="grid_titlem">{{totalPlans}}</span>
                     <span class="grid_title2">Total Active Plans</span>
+                    
                 </div>
             </mat-card-content>
         </mat-card>

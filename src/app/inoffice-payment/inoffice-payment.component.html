@@ -1,9 +1,7 @@
-<div class="sa_internal_header">
+<!-- <div class="sa_internal_header">
         <img class="" src="../assets/images/logo-text.png"> 
-</div>
-<img class="login_abso_logo" src="../assets/images/logo-text-white.png">
-
-
+</div> -->
+<!-- <img class="login_abso_logo" src="../assets/images/logo-text-white.png"> -->
 
 <div class="login-register sa_forms_design patient_details_form " style=" height:auto; min-height:100vh;  padding:20px; ">
     <div style="width:100%; float:left">
@@ -50,7 +48,7 @@
                                                         <td>{{duration}}</td>
                                                     </tr>
                                                     <tr>
-                                                        <th>{{payment_frequency}} Payment</th>
+                                                        <th>{{payment_frequency | titlecase}} Payment</th>
                                                         <td>${{monthly_weekly_payment}}</td>
                                                     </tr>
                                                 </table>
@@ -60,19 +58,31 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                         </mat-tab>
+                        
                         <mat-tab class="step2" label="Payment" [disabled]='!tabActive1'>
-                            <div id="card-element" class="field iframe_border"></div>
-                          <button mat-raised-button color="green" style="margin-top: 15px" class="sa-pull-right" type="submit" (click)="buy()">
-                          BUY
-                          </button>
+                            <mat-card-content class="Payment-info">
+                                <div class="cc_total_amountarea"><span class="" *ngIf="payment_frequency =='MONTHLY'"><b>Total Charges :  ${{monthly_weekly_payment}} per Month</b></span><span class="" *ngIf="payment_frequency =='FORTNIGHTLY'"><b>Total Charges :  ${{monthly_weekly_payment}} every 2 weeks</b></span></div>
+                                <div class="cell example example3" id="example-3">
+                                    <div class="iframe_main">
+                                      <div class="fieldset">
+                                        <div id="example3-card-number" class="field empty iframe_design"></div>
+                                        <div class="two_iframe_areas"> 
+                                          <div id="example3-card-expiry" class="field empty third-width iframe_design "></div>
+                                          <div id="example3-card-cvc" class="field empty third-width iframe_design"></div>
+                                        </div>
+                                         <div class="fieldset text-center">  
+                                             <button type="button" mat-raised-button style="margin-top: 15px" class="btn btn-primary mat-dc"  (click) = "buy()">Pay Now</button>
+                                        </div>
+                                      </div>
+                                    </div>      
+                                </div>                                 
+                                </mat-card-content>
                             </mat-tab>
                         </mat-tab-group>
-
                     </div>
                     </div>
                     </div>

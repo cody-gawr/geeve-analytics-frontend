@@ -77,11 +77,12 @@ export class SubscriptionComponent implements OnInit {
   public DefaultHeaderImage :any;
   public sampleplan =false;
   options: FormGroup;
+  public name;
   @ViewChild(SubscriptionComponent) table: SubscriptionComponent;
   constructor(notifierService: NotifierService,private elementRef: ElementRef, private fb: FormBuilder, private router: Router, private subscriptionService: SubscriptionService,private ClinicSettingsService:ClinicSettingsService,private _cookieService: CookieService,private route: ActivatedRoute, public dialog: MatDialog) {
      this.notifier = notifierService;
-     this.DefaultLogo=this.homeUrl+"src/assets/img/logo.png";
-     this.DefaultHeaderImage=this.homeUrl+"src/assets/img/headimage.jpg";
+     this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
+     this.DefaultHeaderImage=this.homeUrl+"/assets/img/headimage.jpg";
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -97,29 +98,26 @@ export class SubscriptionComponent implements OnInit {
     if(data[1]) {
     this.email = data[1];
     }
+     if(data[2]) {
+    this.name = data[2];
+    }
     this.getClinicSettings();
     });
 
   $(window).scroll(function(){
-    if ($(window).scrollTop() >= 20) {
-        
-       $('.sa-main-header').addClass('minheader');
-      
-       $('.min_header_hide').addClass('hide');
-      
+    if ($(window).scrollTop() >= 20) {        
+       $('.sa-main-header').addClass('minheader');      
+       $('.min_header_hide').addClass('hide');      
     }
-    else {
-      
-        $('.sa-main-header').removeClass('minheader');
-      
-       $('.min_header_hide').removeClass('hide');
-      
+    else {      
+        $('.sa-main-header').removeClass('minheader');      
+       $('.min_header_hide').removeClass('hide');     
     }
   });
     $('.inr-link').click(function(){
       $('html, body').animate({
         scrollTop: $( $(this).attr('href') ).offset().top
-      }, 1000);
+      }, 2000);
       return false;
     }); 
     
@@ -137,8 +135,7 @@ export class SubscriptionComponent implements OnInit {
     });
     
     
-    $('.mobile_category_btn').click(function() {
-      
+    $('.mobile_category_btn').click(function() {      
       if ($(this).hasClass('active')) {
         $(this).removeClass('active');
         $("#sa_category_mobile").removeClass('sa_category_open');
@@ -148,10 +145,8 @@ export class SubscriptionComponent implements OnInit {
         $(this).addClass('active');
         $("#sa_category_mobile").addClass('sa_category_open');
         $('.mobile_category_over').removeClass('sa_hide');
-        $('html').addClass('noscroll');
-        
-      }
-      
+        $('html').addClass('noscroll');        
+      }      
     });
     
     
@@ -202,18 +197,15 @@ export class SubscriptionComponent implements OnInit {
           contactuser_message:[null, Validators.compose([Validators.required])],
           clinicEmail:[null, Validators.compose([Validators.required])],
          })
-
   }
-
-
   
 openDialog(id,amount) {
   if(id=="sampleplan1"){
     alert("This is the sample plan only for viewing . We will be back with our live plans soon. ");
     return false;
     }
-    if(this.email) 
-    this.router.navigate(['/purchase-plan/'+id+'&'+this.email]);     
+    if(this.email&&this.name) 
+    this.router.navigate(['/purchase-plan/'+id+'&'+this.email+'&'+this.name]);     
       else 
     this.router.navigate(['/purchase-plan/'+id]);
 
@@ -253,7 +245,7 @@ openDialog(id,amount) {
     $(".treatment_content").show();
     $('html, body').animate({
         scrollTop: $(".treatment_content").offset().top
-    }, 2000);
+    }, 800);
     this.load_id= id;
     this.load_preventative_plan = preventative_plan;
     this.load_treatment_inclusions =treatment_inclusions;
@@ -289,11 +281,14 @@ openDialog(id,amount) {
 
        }
        else if(res.message == 'error'){
-         var temp= {planName:'',planLength:'',totalAmount:'',treatments:'',description:'',isFeatured:'',id:'',sampleplan : false};
+          var temp= {planName:'',planLength:'',totalAmount:'',treatments:'',description:'',isFeatured:'',preventative_discount:'',treatment_inclusions:'',id:'',discount:'',preventative_frequency:'',preventative_plan:'',treatment_exclusions:'','sampleplan':false};
           temp.id ="sampleplan101";          
           temp.planName ="Sample Plan";
-          temp.planLength ="Annually";  
-          temp.totalAmount ="1000";  
+          temp.planLength ="MONTHLY";  
+          temp.totalAmount ="100";            
+          temp.preventative_frequency ='2';
+          temp.preventative_discount ='15';  
+          temp.discount ='10';  
           temp.treatments = "Cleaning, ECG"; 
           temp.description ="This is the sample description";
           temp.isFeatured = "true"; 

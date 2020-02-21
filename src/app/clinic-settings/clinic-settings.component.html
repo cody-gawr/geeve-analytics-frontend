@@ -7,7 +7,7 @@
     <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100">
 
         <button class="sa_back_button_custom mat-raised-button sa-pull-right mat-gray" (click) = "goBack()">Back</button>
-        <mat-card>
+        <mat-card class="sa_back_button_custom_spacer">
             <mat-card-content>
                 <div class="warning_message" *ngIf="!connectedStripe">Your stripe account is not connected</div>
                 <div class="basic_details_form">
@@ -20,15 +20,17 @@
                         <div fxFlex.gt-sm="100%" fxFlex="100" >
 
                             <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
-                                <div fxLayout="row wrap" fxLayoutGap="2%">
-                                    <div fxFlex.gt-md="190px" fxFlex="100" class="">
+                                <div fxLayout="row wrap" fxLayoutGap.gt-md="2%">
+                                    <div fxFlex.gt-md="210px" fxFlex="100" class="">
                                         <div fxLayout="row wrap" class="sa-image_upload_area" >
-                                            <div class="clinic_logo"><img src="{{imageURL}}" height="150" width="150" *ngIf="imageURL != '' && imageURL != 'undefined'" >
+                                            <div class="clinic_logo">
+                                                <img src="{{imageURL}}" height="150" width="150" *ngIf="imageURL != '' && imageURL != 'undefined'" >
+                                                <img src="../assets/img/logo.png" height="150" width="150" *ngIf="imageURL == null || imageURL == 'undefined'" >
                                             </div>
                                             <div class="bd_UpoadImage" fxFlex.gt-md="100" fxFlex="100">
                                                 <div class="upload-btn" style="background:#18a689; color:#fff; border-radius:4px; font-weight:500;">
-                                                    <span>Choose file</span>
-                                                    <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)">
+                                                    <span>Choose Clinic Logo</span>
+                                                    <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
                                                     <input type='hidden'  placeholder="" id="imageURL" >
                                                 </div>
                                             </div>
@@ -37,39 +39,31 @@
                                     </div>
 
                                     <div  fxFlex>
-                                        <button mat-raised-button color="green" class="sa-pull-right" type="button" (click)="connectStripe()" *ngIf="!connectedStripe">Connect To Stripe</button>
-                                        <button mat-raised-button color="green" class="sa-pull-right" type="button" (click)="disconnectStripe()" *ngIf="connectedStripe">Disconnect Stripe</button>
-                                        <mat-card-title>Clinic Settings </mat-card-title>
+                                        <div fxLayout="row wrap" fxLayoutGap="2%">
+                                        <mat-card-title fxFlex>Clinic Settings
+                                            <div class="stripe_button_connect sa-pull-right">
+                                                <button mat-raised-button color="green" class="" type="button" (click)="connectStripe()" *ngIf="!connectedStripe">Connect To Stripe</button>
+                                                <button mat-raised-button color="green" class="" type="button" (click)="disconnectStripe()" *ngIf="connectedStripe">Disconnect Stripe</button></div>
 
+                                        </mat-card-title>
+                                        </div>
                                         <!-- column -->
                                         <div fxLayout="row wrap" fxLayoutGap="2%">
-
                                             <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
                                                 <label>Clinic Name*</label>
                                                 <input placeholder="" [formControl]="form.controls['clinicName']" [(ngModel)]= "clinicName">
                                                 <small *ngIf="form.controls['clinicName'].hasError('required') && form.controls['clinicName'].touched" class="text-danger support-text">Clinic name is required.</small>
-
                                             </div>
-                                           <!--  <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
-
-                                                <label>Contact Name*</label>
-                                                <input  placeholder="" [formControl]="form.controls['contactName']" [(ngModel)]="contactName">
-                                                <small *ngIf="form.controls['contactName'].hasError('required') && form.controls['contactName'].touched" class="text-danger support-text">Contact name is required.</small>
-
-                                            </div> -->
                                             <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
-
                                                 <label>Address*</label>
                                                 <input  placeholder="" [formControl]="form.controls['address']" [(ngModel)]="address">
                                                 <small *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched" class="text-danger support-text">Address is required.</small>
 
                                             </div>
                                              <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
-
                                                 <label>Phone Number*</label>
                                                 <input  type="text" placeholder="" [formControl]="form.controls['phoneNo']" oninput="this.value = this.value.slice(0,10);"  [(ngModel)]="phoneNo">
                                                 <small *ngIf="form.controls['phoneNo'].hasError('required') && form.controls['phoneNo'].touched" class="text-danger support-text">Phone is required.</small>
-
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="2%">
@@ -77,13 +71,7 @@
                                                 <label>Clinic Email*</label>
                                                 <input   placeholder="" [formControl]="form.controls['clinicEmail']" [(ngModel)]="clinicEmail">
                                                 <small *ngIf="form.controls['clinicEmail'].hasError('required') && form.controls['clinicEmail'].touched" class="text-danger support-text">Clinic Email is required.</small>
-                                            </div>
-                                          <!--   <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
-                                                <label>Stripe Secret Key*</label>
-                                                <input  placeholder="" [formControl]="form.controls['secret_key']" [(ngModel)]="secret_key">
-                                                <small *ngIf="form.controls['secret_key'].hasError('required') && form.controls['secret_key'].touched" class="text-danger support-text">Secret Key is required.</small>
-
-                                            </div> -->
+                                            </div>                                         
                                         </div>
                                     </div>
 
@@ -110,7 +98,6 @@
         </mat-card>
     </div>
     <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100">
-
         <mat-card>
             <mat-card-content>
                 <div class="basic_details_form">
@@ -122,16 +109,16 @@
                                     <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
                                         <mat-card-title>Landing Page Settings</mat-card-title>
                                     </div>
-                                    <div fxFlex.gt-md="190px" fxFlex="100" class="sa-form-group">
+                                    <div fxFlex.gt-md="210px" fxFlex="100" class="sa-form-group">
                                         <div class="sa-image_upload_area">
                                             <div class="header_main_image">
-                                                <img src="{{headerImageURL}}" height="150" width="150" *ngIf="headerImageURL != ''" >
+                                                <img src="{{headerImageURL}}" height="150" width="150" *ngIf="headerImageURL" >
 
-                                                <img src="../assets/images/image1.jpg" height="150" width="150" *ngIf="headerImageURL == ''" >
+                                                <img src="../assets/uploads/headimage.jpg" height="150" width="150" *ngIf="headerImageURL == null" >
                                             </div>
                                             <div class="upload-btn" style="background:#18a689; color:#fff; border-radius:4px; font-weight:500; margin-top:5px;">
-                                                <span>Choose file</span>
-                                                <input class="" type="file" placeholder="" name= "headerFile" id="headerFile" (change)="uploadLandingPageImage($event.target.files)">
+                                                <span>Change Main Image</span>
+                                                <input class="" type="file" placeholder="" name= "headerFile" id="headerFile" (change)="uploadLandingPageImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
                                                 <input type='hidden'  placeholder="" id="headerImageURL" >
                                             </div>
                                         </div>
@@ -146,19 +133,15 @@
                                             </div>
                                             <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
                                                 <label>Header Description*</label>
-                                                
                                                  <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="headerDescription" [formControl]="formLanding.controls['headerDescription']"  height="300px" minHeight="50px"></app-ngx-editor>
                                                 <small *ngIf="formLanding.controls['headerDescription'].hasError('required') && formLanding.controls['headerDescription'].touched" class="text-danger support-text">Header Description is required.</small>
-
                                             </div>
-                                     
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Social Icon Starts-->
-
 
                             <div fxFlex.gt-sm="41" fxFlex="100">
 
@@ -196,15 +179,13 @@
                             </div>
 
                         </div> <!--Row Wrap -->
-
                        
                                 <div fxLayout="row wrap" fxLayoutGap="20px">
                             <div fxFlex.gt-md="100" fxFlex="100" class="">
-
                                <mat-card-actions>
                                <button mat-raised-button color="green" class="sa-pull-right" type="submit" [disabled]="!formLanding.valid">Submit</button>
 
-                                <a [routerLink]="['/subscription',clinic_id,user_id]" target="_blank" mat-raised-button color="green" class="sa-pull-right" title= 'Subscription Detail' *ngIf="connectedStripe">Preview Landing Page</a>
+                                <a [routerLink]="['/subscription',clinic_id,user_id]" target="_blank" mat-raised-button color="green" class="sa-pull-right" title= 'Subscription Detail'>Preview Landing Page</a>
                                </mat-card-actions>
                                         <!-- column -->
                             </div>
@@ -212,10 +193,7 @@
 
                         <!-- column -->
                     </form> <!--Form Close -->
-
-
                 </div> <!--Basic Form Details Div -->
-
             </mat-card-content>
         </mat-card>
     </div>
@@ -224,11 +202,11 @@
        <mat-card>
       <mat-card-content style="min-height:100px;">
                   <div class="ChangePassword-section">
-                     <mat-card-title class="mat-card-title">Terms & Conditions</mat-card-title>
+                   <mat-card-title style="margin-bottom:15px;" class="mat-card-title">Terms & Conditions</mat-card-title>
                         <form [formGroup]="formTerms" class="basic-form" (ngSubmit)="onSubmitTerms()">
                         <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="terms" [formControl]="formTerms.controls['terms']"  height="300px" minHeight="50px"></app-ngx-editor>
-                        <mat-card-actions>
-                          <button mat-raised-button color="dc" type="submit">Submit</button>
+                        <mat-card-actions class="text-right">
+                          <button class="" mat-raised-button color="dc" type="submit">Submit</button>
                         </mat-card-actions>
                       </form>
                        <small *ngIf="errorTermstext" class="text-danger support-text">{{errorTermstext}}</small>

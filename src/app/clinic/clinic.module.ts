@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgxDatatableModule,
     DemoMaterialModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     ClinicService

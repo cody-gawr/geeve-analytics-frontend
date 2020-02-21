@@ -116,6 +116,13 @@ public preventative_count;
             this.notifier.notify( 'success', 'Document Uploaded' ,'vertical');
                this.getInofficePlan();
             }
+             else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
            }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
             }   
@@ -155,11 +162,11 @@ public payment_frequency;
 public monthly_weekly_payment;
 public duration;
 public start_date;
+public due_date;
   getInofficePlan() {
-
     this.patientPaymentinfoService.getInofficePlan(this.id).subscribe((res) => {
        if(res.message == 'success'){
-
+        this.patient_name=res.data[0]['patient']['patient_name'];
         this.plan_name=res.data[0]['plan_name'];
         this.plan_description=res.data[0]['plan_description'];
         this.total_amount=res.data[0]['total_amount'];
@@ -170,8 +177,8 @@ public start_date;
         this.monthly_weekly_payment=res.data[0]['monthly_weekly_payment'];
         this.duration=res.data[0]['duration'];
         this.start_date=res.data[0]['start_date'];
+        this.due_date=res.data[0]['due_date'];        
         this.imageURL=res.data[0]['contract'];
-
         this.getPaymentHistory();
        }
         else if(res.status == '401'){
@@ -191,11 +198,15 @@ public start_date;
     this.patientPaymentinfoService.getPaymentHistory(this.id).subscribe((res) => {
        if(res.message == 'success'){
         this.payment = res.data;
-        if(res.data[0])
-        this.payment_plan_name=res.data[0]['member_plan']['planName'];
+        // if(res.data)
+        // this.payment_plan_name=res.data['member_plan']['planName'];
         }
         else if(res.status == '401'){
-             this.payment = [];
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
            }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

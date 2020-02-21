@@ -4,34 +4,73 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from "angular2-cookie/core";
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormControl, Validators } from '@angular/forms';
 import { EventEmitter , Output, Input} from '@angular/core';
 import { NotifierService } from 'angular-notifier';
 import Swal from 'sweetalert2';
+import { CustomValidators } from 'ng2-validation';
+import { Angular5Csv } from 'angular5-csv/dist/Angular5-csv';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl
+} from '@angular/forms';
+import {MatChipsModule} from '@angular/material/chips';
+
 @Component({
-  selector: 'app-dialog-overview-example-dialog',
-  templateUrl: './dialog-overview-example.html',
+  selector: 'app-dialog-overview-export-dialog',
+  templateUrl: './dialog-overview-export.html',
   styleUrls: ['./patients-detail.component.scss']
 })
-
-
-export class DialogOverviewExampleDialogComponent {
+ 
+export class DialogOverviewExportDialogComponent {
   public clinic_id:any ={};
+  public formInvite: FormGroup;
 
-  constructor(
+  constructor(private fb: FormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  email = new FormControl('', [Validators.required, Validators.email]);
+  save(data) {
+        this.dialogRef.close(data);
+    }
+}
 
-  getErrorMessage() {
-       this.emailval.emit(this.email);
-    return 'You must enter an email';
+@Component({
+  selector: 'app-dialog-overview-example-dialog',
+  templateUrl: './dialog-overview-example.html',
+  styleUrls: ['./patients-detail.component.scss']
+})
+ 
+export class DialogOverviewExampleDialogComponent {
+  public clinic_id:any ={};
+  public formInvite: FormGroup;
+
+  constructor(private fb: FormBuilder,
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.formInvite = this.fb.group({
+      invite_member_name: [null, Validators.compose([Validators.required])],
+      invite_member_email: [null, Validators.compose([Validators.required, CustomValidators.email])]
+    });
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  omit_special_char(event)
+  {   
+     var k;  
+     k = event.charCode;  //
+     return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
   }
 
   @Output() public emailval: EventEmitter<any> = new EventEmitter();
@@ -41,15 +80,11 @@ export class DialogOverviewExampleDialogComponent {
   public fileToUpload;
  
   uploadImage(files: FileList) {
-     
     this.fileToUpload = files.item(0);
     this.onAdd.emit(this.fileToUpload);
   }
 
   save(data) {
-  //   $('.form-control-dialog').each(function(){
-  //   var likeElement = $(this).click();
-  // });
     if(data.invite_member_name != undefined && data.invite_member_email != undefined ){
         this.dialogRef.close(data);
       }
@@ -63,7 +98,6 @@ export class DialogOverviewExampleDialogComponent {
   }
 }
 
-
 @Component({
   selector: 'app-update-patient-dialog',
   templateUrl: './update-patient.html',
@@ -75,10 +109,6 @@ export class UpdatePatientDialogComponent {
     ) {}
 
     update(data) {
-         
-    //   $('.form-control-dialog').each(function(){
-    //   var likeElement = $(this).click();
-    // });
   
       if(data.patient_name != undefined && data.patient_address != undefined  && data.patient_dob != undefined && data.patient_age != undefined && data.patient_gender != undefined && data.patient_phone_no != undefined && data.patient_home_phno != undefined){
           this.dialogUpdateRef.close(data);
@@ -110,9 +140,13 @@ export class PatientsDetailComponent implements AfterViewInit {
   clinic_id: any;
   public clinic_name:any ={};
   public patientdob;
+  public start_date;
+  public end_date;
+   minDate = new Date('1990-01-01');
+   maxDate = new Date();
   ngAfterViewInit() {
       this.initiate_clinic();
-    this.getPlans();
+      this.getPlans();
 
     $('#title').html('Patients Listing');
         $('.header_filters').removeClass('hide_header');
@@ -125,25 +159,74 @@ export class PatientsDetailComponent implements AfterViewInit {
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
   if(this.clinic_id != "undefined")
-    this.getPatients();
+   { this.getPatients();
+    this.getClinicSettings();
+   }
   else{
         $('.header_filters').addClass('hide_header');
         $('.external_clinic').hide();
     }
   }
+
+  public connectedStripe =false;
+public stripe_account_id;
+ getClinicSettings() {
+    $('.ajax-loader').show(); 
+  this.patientsdetailService.getClinicSettings(this.clinic_id).subscribe((res) => {
+    $('.ajax-loader').hide(); 
+       if(res.message == 'success'){
+        this.stripe_account_id = res.data[0].stripe_account_id;
+        if(this.stripe_account_id)
+          this.connectedStripe = true;        
+       }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+  }
+
+
+  // chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+  //   const ctrlValue = this.date.value;
+  //   ctrlValue.year(normalizedMonth.year());
+  //   ctrlValue.month(normalizedMonth.month())
+  //   const monthname =this.getMonthName(normalizedMonth.month());
+  //   this.selectedMonthYear = monthname+" "+(normalizedMonth.year().toString()).slice(-2);
+  //   console.log(this.selectedMonthYear);
+  //   const selectedyear = normalizedMonth.year();
+  //   const selectedmonth = normalizedMonth.month() + 1;
+
+  //   const finalStartDate = selectedyear+"-"+selectedmonth+"-"+"01";
+  //   const finalEndDate = selectedyear+"-"+selectedmonth+"-"+"30";
+
+  //   this.startDate = this.datePipe.transform(finalStartDate, 'yyyy-MM-dd');
+  //   this.endDate = this.datePipe.transform(finalEndDate, 'yyyy-MM-dd');
+     
+  //   this.loadAnalytics();      
+  //   $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+
+  //   this.date.setValue(ctrlValue);
+  //   datepicker.close();
+  // }
     
   editing = {};
   rows = [];
-
   temp = [...data];
 
   loadingIndicator = true;
   reorderable = true;
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
   columns = [{ prop: 'id' }, { name: 'planName' }, { name: 'member_plan_id' }, { name: 'patient_address' }, { name: 'patient_age' }, { name: 'patient_dob' }, { name: 'patient_email' }, { name: 'patient_gender' }, { name: 'patient_home_phno' }, { name: 'patient_name' }, { name: 'patient_phone_no' }, { name: 'patient_status' }];
 
   @ViewChild(PatientsDetailComponent) table: PatientsDetailComponent;
-  constructor(notifierService: NotifierService,private patientsdetailService: PatientsDetailService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router ,private route: ActivatedRoute,private datePipe: DatePipe) {
+  constructor(notifierService: NotifierService,private  patientsdetailService: PatientsDetailService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router ,private route: ActivatedRoute,private datePipe: DatePipe) {
     this.notifier = notifierService;
     this.rows = data;
     this.temp = [...data];
@@ -152,9 +235,7 @@ export class PatientsDetailComponent implements AfterViewInit {
     }, 1500);
   }
 
-
   private warningMessage: string;
-
   public imageURL:any;
   goBack() {
    window.history.back();
@@ -169,7 +250,7 @@ export class PatientsDetailComponent implements AfterViewInit {
     if(result != undefined) {
   $('.ajax-loader').show();
     this.clinic_id = $('#currentClinicid').attr('cid');
-    this.patientsdetailService.inviteMember(this.clinic_id,result.invite_member_name, result.invite_member_email).subscribe((res) => {
+    this.patientsdetailService.inviteMember(this.clinic_id,result.invite_member_name, result.invite_member_email,'new').subscribe((res) => {
       $('.ajax-loader').hide();
     if(res.message == 'success'){
         this.notifier.notify( 'success', 'Member has been Invited' ,'vertical');
@@ -185,6 +266,51 @@ export class PatientsDetailComponent implements AfterViewInit {
   }
     });
   }
+
+
+  openExportDialog(): void {
+    const dialogRef = this.dialog.open(DialogOverviewExportDialogComponent, {
+      width: '400px',
+      data: {start_date: this.start_date, end_date: this.end_date,minDate: this.minDate, maxDate: this.maxDate },
+      panelClass: 'full-screen'
+    });
+  dialogRef.afterClosed().subscribe(result => {
+      if(result.start_date == undefined || result.end_date ==undefined){
+
+          Swal.fire('', 'Please select Date Range', 'error');
+      }
+      else if(this.start_date>this.end_date){
+          Swal.fire('', 'Please select valid Dates', 'error');
+      }
+       else {
+         result.start_date = this.datePipe.transform(result.start_date, 'yyyy-MM-dd');
+         result                                                                                                                                                                                                                                                                     .end_date = this.datePipe.transform(result.end_date, 'yyyy-MM-dd');
+     
+        this.patientsdetailService.getexportData(this.clinic_id, result.start_date, result.end_date).subscribe((res) => {    
+         if(res.message == 'success'){
+            var data = res.data;
+            if(data.length >0){
+             this.exportPayments(data);  
+            }else{
+              Swal.fire('', 'No data found to export!', 'error')
+            }            
+         }
+          else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+              this.router.navigateByUrl('/login');
+           }
+      }, error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }    
+      ); 
+      }
+    });
+  }
+
+
   openUpdateDialog(patientid): void {
 
     this.patientsdetailService.getInofficeMembersByID(patientid,this.clinic_id).subscribe(updateres => {
@@ -204,6 +330,13 @@ export class PatientsDetailComponent implements AfterViewInit {
     this.getPatients();
             this.notifier.notify( 'success', 'Patient Updated' ,'vertical');
              }
+              else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
         }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
         }
@@ -248,9 +381,17 @@ export class PatientsDetailComponent implements AfterViewInit {
           temp['patient_status'] = 'INACTIVE';
           this.rows.push(temp);
           this.rows = [...this.rows];
+        this.temp = [...this.rows];
 
         });
        }    
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
@@ -272,15 +413,29 @@ delete_invite(id)
         this.getPatients();
       }
     });
-}
+    }
   })
 }
-  private deletePatients(row) {
+
+resend_invite(name,email)
+{
+  $('.ajax-loader').show();
+    this.patientsdetailService.inviteMember(this.clinic_id,name, email,'resend').subscribe((res) => {
+      if(res.message == 'success'){
+      $('.ajax-loader').hide();
+        this.notifier.notify( 'success', 'Invite Sent' ,'vertical');        
+        this.getPatients();
+      }
+    });
+}
+
+
+private deletePatients(row) {
   if(confirm("Are you sure to delete Patient?")) {
     if(this.rows[row]['id']) {
       this.patientsdetailService.deletePatients(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
-        this.notifier.notify( 'success', 'Patient Removed' ,'vertical');
+        this.notifier.notify('success', 'Patient Removed' ,'vertical');
             this.getPatients();
              }      
     }, error => {
@@ -297,24 +452,43 @@ delete_invite(id)
   }
  
   private getPlans() {
-
     this.patientsdetailService.getPlans().subscribe((res) => {
         if(res.message == 'success'){
            this.membersplan= res.data;
            this.clinic_id = $('#currentClinicid').attr('cid');
         }
+         else if(res.status == '401'){
+            this._cookieService.put("username",'');
+            this._cookieService.put("email", '');
+            this._cookieService.put("token", '');
+            this._cookieService.put("userid", '');
+            this.router.navigateByUrl('/login');
+           }
       }, error => {
         this.warningMessage = "Please Provide Valid Inputs!";
       }    
       );
     }
- 
+    public StatusSelected;
+ statusFilter() {
+  const val =this.StatusSelected;
+    const temp = this.temp.filter(function(d) {    
+      return d.patient_status.indexOf(val) == 0 || !val;
+    });
+
+    // update the rows
+    this.rows = temp;
+    // Whenever the filter changes, always go back to the first page
+
+    this.table = data;
+}
+
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
-
     // filter our data
     const temp = this.temp.filter(function(d) {
-      return d.patient_name.toLowerCase().indexOf(val) !== -1 || d.patient_gender.toLowerCase().indexOf(val) !== -1 || d.patient_email.toLowerCase().indexOf(val) !== -1 || !val;
+      console.log(d.additional_members);
+      return d.patient_name.toLowerCase().indexOf(val) !== -1 || (d.additional_members != null && d.additional_members.toLowerCase().indexOf(val) !== -1) || !val;
     });
     // update the rows
     this.rows = temp;
@@ -338,9 +512,60 @@ delete_invite(id)
     );  
     this.rows = [...this.rows];
   }
-
   enableEditing(rowIndex, cell) {
     this.editing[rowIndex + '-' + cell] = true;
+  }
+
+
+   getexportData(){
+    if(this.start_date == undefined || this.end_date ==undefined){
+
+          Swal.fire('', 'Please select Date Range', 'error');
+      }
+      else if(this.start_date>this.end_date){
+          Swal.fire('', 'Please select valid Dates', 'error');
+      }
+       else {
+         this.start_date = this.datePipe.transform(this.start_date, 'yyyy-MM-dd');
+         this.end_date = this.datePipe.transform(this.end_date, 'yyyy-MM-dd');
+     
+        this.patientsdetailService.getexportData(this.clinic_id, this.start_date, this.end_date).subscribe((res) => {    
+         if(res.message == 'success'){
+            var data = res.data;
+            if(data.length >0){
+             this.exportPayments(data);  
+            }else{
+              Swal.fire('', 'No data found to export!', 'error')
+            }            
+         }
+          else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+              this.router.navigateByUrl('/login');
+           }
+      }, error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }    
+      ); 
+      }
+      
+  }
+
+  exportPayments(data){
+    var options = { 
+     fieldSeparator: ',',
+     quoteStrings: '"',
+     decimalseparator: '.',
+     showLabels: true, 
+     showTitle: false,
+     title: 'Export Payments',
+     useBom: true,
+     noDownload: false,
+     headers: ["Payment Date","Payment Amount","Payment Status","Patient Name","Patient Email","Patient DOB","Membership Plan","Stripe Cust ID"]
+   };
+    new Angular5Csv(data, 'Membership Plans',options);
   }
   
 

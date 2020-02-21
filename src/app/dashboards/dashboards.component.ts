@@ -249,6 +249,13 @@ this.lineChartColors = [
         this.selectedClinic = res.data[0].id;
     this.loadAnalytics();
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
      // this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -669,6 +676,13 @@ public barChartOptions: any = {
         if(data.data.totalPlansOverdue != null)
         this.totalPlansOverdue = data.data.totalPlansOverdue;
       }
+       else if(data.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
    });
   }
     choosedDate(val) {

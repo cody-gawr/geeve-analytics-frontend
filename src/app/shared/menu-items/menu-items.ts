@@ -107,7 +107,7 @@ const MENUITEMS = [
 
   },
   {
-    state: 'in-office',
+    state: 'payment-plan',
     name: 'In office Plans',
     type: 'link-noparam',
     icon: 'fas fa-receipt',
@@ -158,7 +158,7 @@ const MENUITEMS = [
 
   {
     state: 'profile-settings',
-    name: 'Settings',
+    name: 'Profile',
     type: 'link',
     icon: 'fas fa-user-cog',
     param : '1',
@@ -369,7 +369,7 @@ export class MenuItems {
 
   },
   {
-    state: 'in-office',
+    state: 'payment-plan',
     name: 'Payment Plans', //In office Plans
     type: 'link-noparam',
     icon: 'fas fa-file-invoice',
@@ -392,18 +392,16 @@ export class MenuItems {
     role:this.rolesusers
   },
   {
-     state: 'profile-settings',
+    state: 'profile-settings',
     name: 'Settings',
     type: 'sub-child',
     icon: 'fas fa-user-cog',
     children: [
-      { state: 'profile-settings', name: 'Settings', type: 'link',param : '1'},
-      { state: 'plans', name: 'Member Plans', type: 'link',param : ''},
+      { state: 'profile-settings', name: 'Profile', type: 'link',param : '1'},
+      { state: 'plans', name: 'Membership Plans', type: 'link',param : ''},
       { state: 'clinic', name: 'Clinics', type: 'link',param : ''}
-
     ],
     role:this.profilesettings
-
   }
 ];
   getRoles() {      

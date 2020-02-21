@@ -3,11 +3,12 @@ import { PlansService } from './plans.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormControl, FormGroupDirective,  NgForm,  Validators} from '@angular/forms';
+import { FormControl, FormGroupDirective,  NgForm,  Validators,FormBuilder, FormGroup} from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { empty } from 'rxjs';
 import Swal from 'sweetalert2';
 
+import { CustomValidators } from 'ng2-validation';
 declare var require: any;
 const data: any = [];
 @Component({
@@ -20,14 +21,27 @@ export class DialogOverviewExampleDialogComponent {
   private warningMessage: string;
   public valplans;
   public planOrder;
-
-  constructor(
+  public form: FormGroup;
+  constructor(private fb: FormBuilder,
     private plansService: PlansService,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
     ) {
+     this.form = this.fb.group({
+      planName: [null, Validators.compose([Validators.required])],
+      description: [null, Validators.compose([Validators.required])],
+      totalAmount: [null, Validators.compose([Validators.required])],
+      preventative_discount: [null, Validators.compose([Validators.required])],
+      preventative_frequency: [null, Validators.compose([Validators.required])],
+      discount: [null, Validators.compose([Validators.required])]     
+    });
   }
-
+ omit_special_char(event)
+  {   
+     var k;  
+     k = event.charCode;  //
+     return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+  }
    onItemSelect(item:any,type,data){
       if(type=='inclusions'){  
         var index;
@@ -55,6 +69,7 @@ export class DialogOverviewExampleDialogComponent {
       }
     }
   save(data) {
+    console.log(data);
       this.clinic_id = $('#currentClinicid').attr('cid');  
       this.plansService.getPlannamevalidation(data.planName,this.clinic_id).subscribe((res) => {
             if(res.message == 'error'){
@@ -95,10 +110,19 @@ export class UpdatePlanDialogComponent {
   public valplans;
   public memberid;
   public isFeatured :any;
-  constructor( private plansService: PlansService,
+   public form: FormGroup;
+  constructor( private fb: FormBuilder,private plansService: PlansService,
     public dialogUpdateRef: MatDialogRef<UpdatePlanDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-    ) {  }
+    ) { 
+    this.form = this.fb.group({
+      planName: [null, Validators.compose([Validators.required])],
+      description: [null, Validators.compose([Validators.required])],
+      totalAmount: [null, Validators.compose([Validators.required])],
+      preventative_discount: [null, Validators.compose([Validators.required])],
+      preventative_frequency: [null, Validators.compose([Validators.required])],
+      discount: [null, Validators.compose([Validators.required])]     
+    }); }
    onItemSelect(item:any,type,data){
       if(type=='inclusions'){  
         var index;
@@ -115,6 +139,14 @@ export class UpdatePlanDialogComponent {
         data.treatment_inclusions_selected.splice(index, 1);
       }
     }
+
+     omit_special_char(event)
+  {   
+     var k;  
+     k = event.charCode;  //
+     return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+  }
+  
   OnItemDeSelect(item:any,type,data){
        if(type=='inclusions'){  
         var index;
@@ -135,8 +167,7 @@ export class UpdatePlanDialogComponent {
                   }
                   else{
               if(data.planName != undefined && this.valplans != '' && data.planLength != undefined && data.totalAmount != undefined && data.discount != undefined && data.description != undefined && data.planOrder !=undefined){
-                      this.dialogUpdateRef.close(data);
-                    
+                      this.dialogUpdateRef.close(data);                    
                     }
                   }
         }, error => {
@@ -148,7 +179,6 @@ export class UpdatePlanDialogComponent {
     $('.form-control-dialog').each(function(){
       $(this).click();
     });
-    console.log(this.valplans)
      }
 
    
@@ -183,7 +213,7 @@ export class PlansComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.initiate_clinic();
     this.getTreatments();
-        $('#title').html('Members Plan');
+        $('#title').html('Membership Plans');
         $('.header_filters').removeClass('hide_header');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
@@ -318,7 +348,25 @@ export class PlansComponent implements AfterViewInit {
         this.rows = res.data;
         this.temp = [...res.data];        
         this.table = data;
+          if(this.rows.length <=0) {
+              this.plansService.addPlans('Sample Plan',1,'MONTHLY', 100,10,'',this.clinic_id,'true',JSON.stringify(this.preventative_plan_selected),2,JSON.stringify(this.treatment_inclusions_selected),JSON.stringify(this.treatment_exclusions_selected),10).subscribe((res) => {
+            $('.ajax-loader').hide();  
+            if(res.message == 'success'){           
+                this.notifier.notify( 'success', 'New Plan Added' ,'vertical');
+                 this.getPlans();
+               }
+            }, error => {
+              this.warningMessage = "Please Provide Valid Inputs!";
+            });  
+          }
         }
+         else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
@@ -368,13 +416,19 @@ export class PlansComponent implements AfterViewInit {
         });
   }
 
-
   private getTreatments() {
     this.plansService.getTreatments().subscribe((res) => {
           if(res.message == 'success'){
            this.treatmentdata = res.data;
            this.treat;
          }
+          else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
       }, error => {
         this.warningMessage = "Please Provide Valid Inputs!";
       }    

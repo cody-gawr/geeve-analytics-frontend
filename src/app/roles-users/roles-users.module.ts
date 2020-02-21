@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgxDatatableModule,
     FlexLayoutModule,
     DemoMaterialModule,
+    ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule
   ],

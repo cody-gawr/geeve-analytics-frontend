@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PatientInfoRoutes } from './patient-info.routing';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { MatTableModule } from '@angular/material/table';
 import { QuillModule } from 'ngx-quill';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { MatTreeModule } from '@angular/material/tree';
@@ -28,6 +29,7 @@ import { PatientInfoService } from './patient-info.service';
     QuillModule,
     MatInputModule,
     NgxDatatableModule,
+    MatTableModule,
     ReactiveFormsModule,
     FileUploadModule,
     MatTreeModule,

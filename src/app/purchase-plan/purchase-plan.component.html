@@ -1,8 +1,8 @@
-<div class="sa_internal_header">
+<!-- <div class="sa_internal_header">
         <img class="" src="../assets/images/logo-text.png"> 
 </div>
 <img class="login_abso_logo" src="../assets/images/logo-text-white.png">
-
+ -->
 
 
 <div class="login-register sa_forms_design patient_details_form " style=" height:auto; min-height:100vh;  padding:20px; ">
@@ -11,15 +11,14 @@
 
     <div style="width:100%; float:left; display:flex;">
     <mat-card style="margin:10px auto; max-width:1040px; float:left; width:100%; background:transparent!important;">
-            <mat-card-content  class="gradient_bg">
-           <div class="gradient_inner">
-                <h4 _ngcontent-c2="" class="spl_headings" style="margin-bottom:20px;">Patient Details</h4>
+            <mat-card-content  class="gradient_bg relative">
+             <h4 _ngcontent-c2="" class="spl_headings" style="margin-bottom:20px;">Patient Details</h4>
+           <div class="gradient_inner overflow_hidden spl_case_purplan">
                 <!-- ============================================================== -->
                 <!-- column -->
                 <!-- ============================================================== -->
                     <!-- Card column -->
-                     <div fxLayout="row wrap" >
-
+                     <div fxLayout="row wrap">
                             <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" class="">
                          <mat-tab-group dynamicHeight [selectedIndex]="selectedIndex">
                           <mat-tab class="step1" label="Your Details">
@@ -29,36 +28,39 @@
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                <mat-label>Name</mat-label>
                                   <mat-form-field style="width: 100%">
-                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_name']">
+                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_name']" (keypress)="omit_special_char($event)" [(ngModel)]="patient_name">
                                   </mat-form-field>
-                                  <small *ngIf="form.controls['patient_name'].hasError('required') && form.controls['patient_name'].touched" class="text-danger support-text">You must include name.</small>
+                                  <small *ngIf="form.controls['patient_name'].hasError('required') && form.controls['patient_name'].touched" class="text-danger support-text">Patient Name is Required.</small>
                              </div>
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                   <mat-label>Email address</mat-label>
                                   <mat-form-field style="width: 100%">
                                     <input matInput placeholder="" type="email" [formControl]="form.controls['patient_email']"  [(ngModel)]="patient_email">
                                   </mat-form-field>
-                                  <small *ngIf="form.controls['patient_email'].hasError('required') && form.controls['patient_email'].touched" class="text-danger support-text">You must include an email address.</small>
+                                  <small *ngIf="form.controls['patient_email'].errors?.email && form.controls['patient_email'].touched" class="text-danger support-text">You must include an email address.</small>
                              </div>
                            </div>
                              <div fxLayout="row wrap" fxLayoutGap="2%">
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                 <mat-label>Date of Birth</mat-label>
                                   <mat-form-field style="width: 100%">
-                                    <input matInput placeholder="" type="date" [formControl]="form.controls['patient_dob']">
+                                    <input matInput placeholder="" type="date" [formControl]="form.controls['patient_dob']"  max="{{maxDate| date: 'yyyy-MM-dd'}}" min="{{minDate| date: 'yyyy-MM-dd'}}">
                                   </mat-form-field>
                                   <small *ngIf="form.controls['patient_dob'].hasError('required') && form.controls['patient_dob'].touched" class="text-danger support-text">You must include Date of Birth.</small>
                              </div>
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                 <mat-label>Contact No.</mat-label>
                                   <mat-form-field style="width: 100%">
-                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,10);">
+                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="patient_phone_no">
                                   </mat-form-field>
-                                  <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched  && form.controls['patient_phone_no'].hasError('pattern')"  class="text-danger support-text">You must include a valid phone number.</small>
+                          <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched" class="text-danger support-text">You must include Phone No.</small>
+
+                          <small *ngIf="form.controls['patient_phone_no'].hasError('minlength')" class="text-danger support-text">You must include valid Phone No.</small>
+
+                          <small *ngIf="form.controls['patient_phone_no'].hasError('pattern')" class="text-danger support-text">You must include valid Phone No.</small>
                              </div>
                            </div>
                            <div fxLayout="row wrap">
-                                                         <!-- col full-->
                                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                                    <small *ngIf="errorLogin ==true && errorLoginText != ''" class="text-danger support-text">{{errorLoginText}}</small>
                                    <small *ngIf="successLogin ==true && successLoginText != ''" class="text-success support-text">{{successLoginText}}</small>
@@ -72,10 +74,8 @@
                                 <!-- col full-->
 
                                 <div mat-dialog-actions class="sa-pull-right">
-
                                 <button class="sa-pull-right mat-raised-button mat-green" type="submit" [disabled]="!form.valid">Next</button>
-                                </div>                              
-
+                                </div>  
                             </form>
                           </div>
                           <div class="termsContent" *ngIf="!visible" [@slideIn]>
@@ -107,83 +107,47 @@
                               </div>
                                <div fxFlex.gt-md="68" fxFlex="100">
                            <div class="plan_table_design">
-                               <h3>Member Details:</h3>
-                                 <ngx-datatable #table class='material responsive-datatable sa_userstable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-                                                           [rowHeight]="'auto'" [limit]="10" [rows]='patientData'>
-                                                <ngx-datatable-column prop="discount" name="discount">
-                                                    <ng-template let-column="column" ngx-datatable-header-template>
-                                                    </ng-template>
-                                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                                                <span *ngIf="value != ''">
-                                                  <i class="fas fa-times link_btn" (click) = "deletesubPatient(rowIndex)"></i>
-                                                </span>
-                                                       
-                                                    </ng-template>
-                                                </ngx-datatable-column>
-                                                <ngx-datatable-column prop="name" name="name">
-                                                    <ng-template let-column="column" ngx-datatable-header-template>
-                                                        Plan Name
-                                                    </ng-template>
-                                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                                                   <span >
-                                                      {{value}} {{rowIndex.dob}}
-                                                   </span>
-                                                 </ng-template>
-                                                </ngx-datatable-column>
-                                                <ngx-datatable-column prop="dob" name="dob">
-                                                    <ng-template let-column="column" ngx-datatable-header-template>
-                                                        DOB
-                                                    </ng-template>
-                                                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                                                <span >
-                                                  {{value}}
-                                                </span>
-                                              </ng-template>
-                                    </ngx-datatable-column>
-                                    <ngx-datatable-column prop="amount" name="amount">
-                                                    <ng-template let-column="column" ngx-datatable-header-template>
-                                                        Amount
-                                                    </ng-template>
-                                                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                                                <span >
-                                                 $ {{value}}
-                                                </span>
-                                              </ng-template>
-                                    </ngx-datatable-column>
-                                    <ngx-datatable-column prop="discount" name="discount" *ngIf="value != ''">
-                                                    <ng-template let-column="column" ngx-datatable-header-template>
-                                                        Value %
-                                                    </ng-template>
-                                                <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                                                <span class="off-label" *ngIf="value != ''">
-                                                  {{value}} %
-                                                </span>
-                                              </ng-template>
-                                    </ngx-datatable-column>
-                                  </ngx-datatable>
-                               <div class="monthly_total">
-                                   {{planLength}} Total :  ${{totalAmountPatients}}
+                               <h3>Member Details: </h3>
+
+                               <div class="custom_cart_area">
+                                   <table style="width:100%">
+                                       <thead>
+                                           <tr>
+                                               <th></th>                                               
+                                               <th>Patient Name</th>
+                                               <th>DOB</th>
+                                               <th>Amount</th>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           <tr *ngFor ="let data of patientData; let i = index">
+                                               <td> <span *ngIf="data.discount">
+                                                <i class="fas fa-times link_btn" (click) = "deletesubPatient(i)"></i>
+                                                </span></td> 
+                                               <td><span class="cc_table_label">Name :</span>{{data.name}}</td>
+                                               <td><span class="cc_table_label">DOB :</span>{{data.dob | date:'dd-MM-y'}}</td>
+                                               <td><span class="cc_table_label">Amount :</span><span *ngIf="data.discount" class="percent_value2">{{data.discount}}% off</span>$ {{data.amount}}</td>
+                                           </tr>                                          
+                                       </tbody>
+                                   </table>
                                </div>
+                               <div class="cc_total_value">Total {{planLength | titlecase}} Price  : ${{totalAmountPatients}}</div>
                            </div>
                           </div>
                           </div>
                                <div class="plan_button_area" >
-
-                                  <div mat-dialog-actions class="sa-pull-right" style="width:100%; margin-bottom:10px!important;">
-
+                                  <div  class="sa-pull-right" style="width:100%; margin-bottom:10px!important;">
                                     <div style="width:100%;" class="sa-form-group text-right">
-                                    <div class="" style="position:relative; float:right; width: 247px; text-align: left;">
-                                          <span class="btn-off-label">{{discount}}% off</span>
+                                    <div class="" style="position:relative; float:right; text-align: left;">
+                                          <span class="btn-off-label" *ngIf="discount>0">{{discount}}% off</span>
                                           <button class="mat-raised-button mat-green "  (click)="openaddDialog()"><i clas="fas fa-users"></i>Add Family Member </button>
                                       </div>
                                   </div>
                                 </div>
-
-                                 <div class="plan_button_area"> 
-                                  <div mat-dialog-actions class="sa-pull-right" style="width:100%;">
+                                 <div class="">
+                                  <div  class="sa-pull-right" style="width:100%;">
                                 <div style="width:100%;" class="sa-form-group text-right">
-                                 <button class="mat-raised-button mat-gray mr15" (click) ="changeTab(0)">Back</button>
-
+                                 <button class="mat-raised-button mat-gray mr15" (click) ="changeTab(0)" >Back</button>
                                  <button class="mat-raised-button mat-dc ok_btn" style="margin-left:8px;" (click) ="paymentStripe()">Next</button>
                                 </div>
                                 </div>
@@ -191,10 +155,24 @@
                             </div>
                           </mat-tab>
                            <mat-tab class="step3" label="Payment" [disabled]='!tabActive2'>
-                          <div id="card-element" class="field iframe_border"></div>
-                          <button mat-raised-button color="green" style="margin-top: 15px" class="sa-pull-right" type="submit" (click)="buy()">
-                          BUY
-                          </button>
+                              <mat-card-content class="Payment-info">
+                                <div class="cc_total_amountarea"><span class="" *ngIf="planLength =='MONTHLY'"><b>Total Charges :  ${{totalAmountPatients}} per Month</b></span><span class="" *ngIf="planLength =='YEARLY'"><b>Total Charges :  ${{totalAmountPatients}} per Year</b></span></div>
+                                <div class="cell example example3" id="example-3">
+                                    <div class="iframe_main">
+                                      <div class="fieldset">
+                                        <div id="example3-card-number" class="field empty iframe_design"></div>
+                                        <div class="two_iframe_areas"> 
+                                          <div id="example3-card-expiry" class="field empty third-width iframe_design "></div>
+                                          <div id="example3-card-cvc" class="field empty third-width iframe_design"></div>
+                                        </div>
+                                         <div class="fieldset text-center">  
+                                             <button type="button" mat-raised-button style="margin-top: 15px" class="btn btn-primary mat-dc"  (click) = "buy()">Pay Now</button>
+                                        </div>
+                                      </div>
+                                    </div>      
+                                </div>                                 
+                                </mat-card-content>
+                             <button class="mat-raised-button mat-gray mr15" (click) ="changeTab(1)" style="margin-top: 15px">Back</button>
                           </mat-tab>
                          </mat-tab-group>
                        </div>

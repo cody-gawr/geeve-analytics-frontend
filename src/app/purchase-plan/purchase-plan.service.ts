@@ -186,7 +186,7 @@ export class PurchasePlanService {
             );
     }
              // Items Predictor Analysis 
-    createSubscription(token:any,plan_id, patient_id,amount,member_plan_id, user_id,patient_name, patient_email,clinic_id): Observable<any> {
+    createSubscription(token:any,plan_id, patient_id,amount,member_plan_id, user_id,patient_name, patient_email,clinic_id,planLength): Observable<any> {
             const formData = new FormData();
             formData.append('token', token);
             formData.append('email', patient_email);            
@@ -198,6 +198,7 @@ export class PurchasePlanService {
             formData.append('patient_name', patient_email);
             formData.append('patient_email', patient_email);
             formData.append('clinic_id', clinic_id);
+            formData.append('planLength', planLength);
 
             return this.http.post(this.apiUrl +"/Patients/createSubscription", formData)
             .pipe(map((response: Response) => {

@@ -3,11 +3,12 @@
 <!-- ============================================================== -->
 
        <div class="sa_dentist_graphs_area sa_profile_setting">
-  <div fxLayout="row wrap" class="sa_forms_design">
+           <mat-card >
+           <div fxLayout="row wrap" class="sa_forms_design" fxLayoutGap="2%">
         <!-- Card column -->
-        <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100">
-          <mat-card>
-      <mat-card-content>
+        <div fxFlex.gt-xs="49" fxFlex="100" >
+
+      <mat-card-content >
           <div class="basic_details_form">
 
          <div fxLayout="row wrap">
@@ -20,45 +21,43 @@
                                             <div class="bd_UpoadImage" fxFlex.gt-md="100" fxFlex="100">
                                                 <div class="upload-btn" style="background:#18a689; color:#fff; border-radius:4px; font-weight:500;">
                                                     <span>Choose file</span>
-                                                    <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)" >
+                                                    <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)"  accept=".png, .jpg, .jpeg,.gif">
                                           <input type='hidden'  placeholder="" id="imageURL" [(ngModel)]= "imageURL" [ngModelOptions]="{standalone: true}">
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
 
                                   <div fxFlex>
                                         <mat-card-title>Basic Details</mat-card-title>
-
                                         <!-- column -->
-                                        <div fxLayout="row wrap" fxLayoutGap="2%">
-                                            <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
+                                        <div fxLayout="coloum wrap">
+                                            <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group" style="margin-right:0px!important;">
                                                 <label>Display Name</label>
                                                 <input formControlName="displayName" placeholder="" id="displayName" [(ngModel)]= "displayName" [formControl]="formSettings.controls['displayName']">
                                                 <small *ngIf="formSettings.controls['displayName'].hasError('required') && formSettings.controls['displayName'].touched" class="text-danger support-text">Display Name Is Required.</small>
                                             </div>
-                                            <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
+                                            <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
 
                                                 <label>Email</label>
                                                 <input formControlName="email" placeholder="" id="email" [formControl]="formSettings.controls['email']" [(ngModel)]= "email" [readonly]="true" class="readonly_form">
                                                 <small *ngIf="formSettings.controls['email'].hasError('pattern') && formSettings.controls['email'].touched" class="text-danger support-text">Please enter valid email.</small>
                                             </div>
-                                            <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
+                                        <!--     <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
 
                                                  <label>Contact No.</label>
                                               <!--input  placeholder="" id="PhoneNo" type="text" oninput="this.value = this.value.slice(0,10);"  [ngModelOptions]="{standalone: true}" [(ngModel)]= "PhoneNo"-->
-                                              <input  placeholder="" id="PhoneNo" formControlName="PhoneNo" type="number" [(ngModel)]= "PhoneNo" [formControl]="formSettings.controls['PhoneNo']" oninput="this.value = this.value.slice(0,10);">
+                                             <!--  <input  placeholder="" id="PhoneNo" formControlName="PhoneNo" type="number" [(ngModel)]= "PhoneNo" [formControl]="formSettings.controls['PhoneNo']" oninput="this.value = this.value.slice(0,10);">
                                               <small *ngIf="formSettings.controls['PhoneNo'].hasError('required') && formSettings.controls['PhoneNo'].touched" class="text-danger support-text" >Contact No Is Required.</small>
-                                            </div>
+                                            </div> --> 
                                         </div>
 
                                          <!-- column -->
-                                        <div fxLayout="row wrap" fxLayoutGap="2%">
+                                        <!-- <div fxLayout="row wrap" fxLayoutGap="2%">
                                             <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
                                                   <label>Address</label>
                                                 <!--input  placeholder="" id="Address" [ngModelOptions]="{standalone: true}" [(ngModel)]= "Address"-->
-                                                <input  placeholder="" id="Address" formControlName="Address" [(ngModel)]= "Address" [formControl]="formSettings.controls['Address']">
+                                             <!--    <input  placeholder="" id="Address" formControlName="Address" [(ngModel)]= "Address" [formControl]="formSettings.controls['Address']">
                                                 <small *ngIf="formSettings.controls['Address'].hasError('required') && formSettings.controls['Address'].touched" class="text-danger support-text">Address Is Required.</small>
                                             </div>
                                             <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
@@ -73,13 +72,13 @@
                                             <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
                                                <label>Specialties</label>
                                                 <!--input  placeholder="" id="Specialties" [ngModelOptions]="{standalone: true}" [(ngModel)]= "Specialties"-->
-                                                <input  placeholder="" id="Specialties" formControlName="Specialties" [(ngModel)]= "Specialties" [formControl]="formSettings.controls['Specialties']">
+                                              <!--   <input  placeholder="" id="Specialties" formControlName="Specialties" [(ngModel)]= "Specialties" [formControl]="formSettings.controls['Specialties']">
                                                 <small *ngIf="formSettings.controls['Specialties'].hasError('required') && formSettings.controls['Specialties'].touched" class="text-danger support-text">Speciality Is Required.</small>
                                             </div>
-                                        </div>
+                                        </div>  -->
 
                                        <!-- column -->
-                                        <div fxLayout="row wrap" fxLayoutGap="2%">
+                                        <!-- <div fxLayout="row wrap" fxLayoutGap="2%">
                                             <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
                                                  <label>Education</label>
                                                 <input  placeholder="" id="Education" [ngModelOptions]="{standalone: true}" [(ngModel)]= "Education">
@@ -88,7 +87,7 @@
 
                                                <label>Practice</label>
                                               <!--input  placeholder="" id="practiceDesc" [ngModelOptions]="{standalone: true}" [(ngModel)]= "practiceDesc"-->
-                                              <input  placeholder="" id="practiceDesc" formControlName="practiceDesc" [(ngModel)]= "practiceDesc" [formControl]="formSettings.controls['practiceDesc']">
+                                              <!-- <input  placeholder="" id="practiceDesc" formControlName="practiceDesc" [(ngModel)]= "practiceDesc" [formControl]="formSettings.controls['practiceDesc']">
 
                                             </div>
                                             <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
@@ -96,7 +95,7 @@
                                             <input  placeholder="" id="Website" [formControl]="formSettings.controls['Website']" [(ngModel)]= "Website">
                                             <small *ngIf="formSettings.controls['Website'].hasError('required') && formSettings.controls['Website'].touched" class="text-danger support-text">Please enter valid Url.</small>
                                             </div>
-                                        </div>
+                                        </div> --> 
 
                                           </div>
                               </div>
@@ -119,44 +118,52 @@
                             </div>
                               </div>
                           </div>
-                        </mat-card-content></mat-card>
+                        </mat-card-content>
         </div>
-      <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100">
-       <mat-card>
+      <div fxFlex.gt-xs="49" fxFlex="100" >
+
       <mat-card-content style="min-height:100px;">
                   <div class="ChangePassword-section">
-                     <mat-card-title class="mat-card-title">Change Password</mat-card-title>
+                     <mat-card-title class="mat-card-title" style="margin:10px 0">Change Password</mat-card-title>
 
                            <form [formGroup]="form" class="basic-form change-password-form" (ngSubmit)="onSubmitPassword()">
 
+                               <div fxLayout="row wrap" >
+                                   <div class="sa-form-group" fxFlex="100" style="margin-right:0;">
+                                       <label>Current Password</label>
+                                       <input  type="password" placeholder="" [formControl]="form.controls['currentPassword']" [(ngModel)]= "currentPassword">
+                                   </div>
+                               </div>
+
                                 <div fxLayout="row wrap" fxLayoutGap="2%">
                                   <!-- column -->
-                                  <div class="sa-form-group" fxFlex.gt-md="31" fxFlex="100">
-                                    
-                                        <label>Current Password</label>
-                                      <input  type="password" placeholder="" [formControl]="form.controls['currentPassword']" [(ngModel)]= "currentPassword">
-                                   
-                                  </div>
-                                   <div class="sa-form-group" fxFlex.gt-md="31" fxFlex="100">
-                                    
+
+
+                                   <div class="sa-form-group" fxFlex.gt-md="49" fxFlex="100">
+
                                         <label>New Password</label>
                                       <input  type="password" placeholder="" [formControl]="form.controls['newPassword']" [(ngModel)]="newPassword">
-                                  
+
+                                        <small *ngIf="form.controls['newPassword'].hasError('required') && form.controls['newPassword'].touched" class="text-danger support-text">You must include password.</small>
+              <small *ngIf="form.controls['newPassword'].hasError('minlength') && form.controls['newPassword'].touched" class="text-danger support-text">Password should contain minimum 10 characters.</small>
+              <small *ngIf="form.controls['newPassword'].hasError('pattern') && form.controls['newPassword'].touched" class="text-danger support-text">Password must contain one lowercase letter,one uppercase letter, alphanumeric and one special character.</small>
+
+
                                   </div>
-                                   <div class="sa-form-group" fxFlex.gt-md="33" fxFlex="100">
-                                    
+                                   <div class="sa-form-group" fxFlex.gt-md="49" fxFlex="100">
+
                                         <label>Repeat Password</label>
                                       <input  type="password" placeholder="" [formControl]="form.controls['repeatPassword']" [(ngModel)]="repeatPassword">
-                                    
-                                  </div>                   
-                                 </div> 
+
+                                  </div>
+                                 </div>
 
 
-                                  <div fxLayout="row wrap" fxLayoutGap="20px">
+                                  <div fxLayout="row wrap" fxLayoutGap="20px" style="margin-top:30px;">
 
-                                    <div fxFlex.gt-md="100" fxFlex="100" class="">
+                                    <div fxFlex.gt-md="100" fxFlex="100" >
                                   <mat-card-actions class="sa-pull-right">
-                                    <button mat-raised-button color="dc" type="submit">Submit</button>
+                                    <button mat-raised-button color="dc" type="submit" [disabled]="!form.valid">Submit</button>
                                   </mat-card-actions>
 
                                  </div>
@@ -166,10 +173,11 @@
                                   <small  class="text-success support-text">{{successtext}}</small>
                                   <!-- column -->
                               </form>  </div>
-                            </mat-card-content></mat-card>
+                            </mat-card-content>
         </div>
 
       </div>
+           </mat-card>
     </div>
  
       

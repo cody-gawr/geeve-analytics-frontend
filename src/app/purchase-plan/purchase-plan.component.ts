@@ -17,44 +17,70 @@ import {ChangeDetectorRef} from '@angular/core';
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
 import { Http} from '@angular/http';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
+
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example-dialog.html',
 })
 
-
 export class DialogOverviewExampleDialogComponent {
    public clinic_id:any ={}; 
    show_dentist = false;
+ public minDate: any =  new Date("1990-01-01");
+  public maxDate: any = new Date();
 
-  constructor(private PurchasePlanService: PurchasePlanService,
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
+  form:FormGroup;
+
+  constructor(private fb: FormBuilder,private PurchasePlanService: PurchasePlanService,
+        public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+
+    this.form = this.fb.group({
+      subPatientDob: [
+        null,
+        Validators.compose([Validators.required])
+      ],
+      subPatientName: [
+        null,
+        Validators.compose([Validators.required])
+      ]
+    });
+  }
 
   private warningMessage: string;
-
+  omit_special_char(event)
+{   
+   var k;  
+   k = event.charCode;  //         k = event.keyCode;  (Both can be used)
+   return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+}
   save(data) {
    $('.form-control-dialog').each(function(){
       var likeElement = $(this).click();
    });
-  if($.trim(data.subPatientName) != undefined  && $.trim(data.subPatientDob) != '' && data.subPatientGender != undefined ){   var temp=[];
+  if($.trim(data.subPatientName) != undefined  && $.trim(data.subPatientDob) != '' && data.subPatientGender != undefined ){   
+              var temp=[];
               var countPatient = data.patientData.length-1;
              temp['name'] =data.subPatientName;
              temp['dob'] = data.subPatientDob;
              temp['gender'] = data.subPatientGender;
              temp['discount'] = data.discount;
              if(countPatient<3)
-             temp['amount'] =  data.patientData[countPatient]['amount'] - Math.floor((data.discount/100)*data.patientData[countPatient]['amount']);
-              else
+             temp['amount'] =  data.patientData[0]['amount'] - Math.floor((data.discount/100)*data.patientData[0]['amount']);
+             else
              temp['amount'] =  data.patientData[countPatient]['amount'];
              data.patientData.push(temp);
-             data.totalAmountPatients = data.totalAmountPatients +  temp['amount'];
+             data.totalAmountPatients = data.totalAmountPatients +  this.toTrunc(temp['amount'],2);
              this.dialogRef.close(data);          
   }else{
     return false;
    }
  }
+
+toTrunc(value,n){  
+    return Math.floor(value*Math.pow(10,n))/(Math.pow(10,n));
+}
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -66,8 +92,7 @@ export class DialogOverviewExampleDialogComponent {
       if(val == '4')
         this.show_dentist = true;
     }
-}
-
+} 
 
 @Component({
   selector: 'app-purchase-plan',
@@ -77,7 +102,9 @@ export class DialogOverviewExampleDialogComponent {
 export class PurchasePlanComponent implements OnInit {
  elements: Elements;
   card: StripeElement;
-
+public cardNumber;
+public cardExpiry;
+public cardCvc;
   // optional parameters
   elementsOptions: ElementsOptions = {
   };
@@ -85,7 +112,6 @@ export class PurchasePlanComponent implements OnInit {
   stripeTest: FormGroup;
   public form: FormGroup;
   public formStripe: FormGroup;
-
   public errorLogin = false;
   public plans =[];
   public plan_id;
@@ -121,9 +147,113 @@ export class PurchasePlanComponent implements OnInit {
   public subPatientGender;
   public totalAmountPatients =0;
   public email;
+  public minDate: any =  new Date("1990-01-01");
+  public maxDate: any = new Date();
+  public name;
   constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private PurchasePlanService: PurchasePlanService,private _cookieService: CookieService, private route: ActivatedRoute, public dialog: MatDialog, private ref: ChangeDetectorRef, private stripeService: StripeService, private http : Http,private stripeSerivce: StripeService) {
 
   }
+  omit_special_char(event)
+{   
+   var k;  
+   k = event.charCode;  //         k = event.keyCode;  (Both can be used)
+   return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+}
+
+  public cardStyle = {
+    base: {
+      color: '#424242',
+      fontWeight: 400,
+      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+      padding:'10px',
+
+      ':focus': {
+        color: '#424242',
+      },
+
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+
+      ':focus::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+    invalid: {
+      color: '#a94442',
+      ':focus': {
+        color: '#a94442',
+      },
+      '::placeholder': {
+        color: '#a94442',
+      },
+    },
+  };
+
+
+  public expStyle = {
+    base: {
+      color: '#424242',
+      fontWeight: 400,
+      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+
+      ':focus': {
+        color: '#424242',
+      },
+
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+
+      ':focus::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+    invalid: {
+      color: '#a94442',
+      ':focus': {
+        color: '#a94442',
+      },
+      '::placeholder': {
+        color: '#a94442',
+      },
+    },
+  };
+
+public cvcStyle = {
+    base: {
+      color: '#424242',
+      fontWeight: 400,
+      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+
+      ':focus': {
+        color: '#424242',
+      },
+
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+
+      ':focus::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+    invalid: {
+      color: '#a94442',
+      ':focus': {
+        color: '#a94442',
+      },
+      '::placeholder': {
+        color: '#a94442',
+      },
+    },
+  };
 
    ngOnInit() {    
     this.stripeService.setKey('22');
@@ -137,40 +267,42 @@ export class PurchasePlanComponent implements OnInit {
             this.elements = elements;
             // Only mount the element the first time
             if (!this.card) {
-            this.card = this.elements.create('card', {
-            style: {
-           base: {
-               iconColor: '#424242',
-               color: '#424242',
-               lineHeight: '40px',
-               fontWeight: 400,
-               fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-               fontSize: '18px',
-               '::placeholder': {
-                   color: '#424242'
-               }
-              }
-            }
-            });
-            this.card.mount('#card-element');
+
+              this.cardNumber = this.elements.create('cardNumber', {
+            style: this.cardStyle
+          });
+          this.cardExpiry = this.elements.create('cardExpiry', {
+            style: this.expStyle
+          });
+
+            this.cardCvc = this.elements.create('cardCvc', {
+            style: this.cvcStyle
+          });
+             this.cardNumber.mount('#example3-card-number');
+             this.cardExpiry.mount('#example3-card-expiry');
+             this.cardCvc.mount('#example3-card-cvc');
+           //  this.card = this.elements.create('card', {
+           //  style: {
+           // base: {
+           //     iconColor: '#424242',
+           //     color: '#424242',
+           //     lineHeight: '40px',
+           //     fontWeight: 400,
+           //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+           //     fontSize: '18px',
+           //     '::placeholder': {
+           //         color: '#424242'
+           //     }
+           //    }
+           //  }
+           //  });
+           // this.card.mount('#card-element');
             this.changeTab(0);
             }
             });
        }, error => {
     });
-         
-     this.route.params.subscribe(params => {
-      this.plan_id = this.route.snapshot.paramMap.get("id");
-       var data =this.plan_id.split("&");
-        this.plan_id = data[0];
-        if(data[1]) {
-        this.email = data[1];
-        this.patient_email=this.email;
-        }
-    });
-     this.getPlanDetail();
-    this.getSubPatients();
-        this.form = this.fb.group({
+           this.form = this.fb.group({
       patient_email: [
         null,
         Validators.compose([Validators.required, CustomValidators.email])
@@ -189,9 +321,26 @@ export class PurchasePlanComponent implements OnInit {
       ],patient_phone_no: [
         null,
         Validators.compose([Validators.required,
+        Validators.minLength(6),
         Validators.pattern("^[0-9]*$")])
       ]
     });
+     this.route.params.subscribe(params => {
+      this.plan_id = this.route.snapshot.paramMap.get("id");
+       var data =this.plan_id.split("&");
+        this.plan_id = data[0];
+        if(data[1]) {
+        this.email = data[1];
+        this.patient_email=this.email;
+        }
+        if(data[2]) {
+        this.name = data[2];
+        this.patient_name=this.name;
+        }
+    });
+     this.getPlanDetail();
+    this.getSubPatients();
+      
     this.formStripe = this.fb.group({
       cardNumber: [
         null
@@ -211,11 +360,10 @@ export class PurchasePlanComponent implements OnInit {
     });
   }
 
-
     buy() {
     const name = this.stripeTest.get('name').value;
     this.stripeService
-    .createToken(this.card, { name })
+    .createToken(this.cardNumber, { name })
     .subscribe(obj => {
     if (obj) {
     $('.ajax-loader').show(); 
@@ -249,7 +397,6 @@ export class PurchasePlanComponent implements OnInit {
                           }
                           else {
                             this.createSubscription(this.token);
-
                           }
                       }
                      else if(res.message == 'error'){
@@ -273,31 +420,34 @@ export class PurchasePlanComponent implements OnInit {
   loadTerms() {
     this.visible=false;
     this.termsText = this.termsText;
-    this.ref.detectChanges();
-    
+    this.ref.detectChanges();  
   }
+
    loadForm() {
     this.visible=true;
   }
 
   changeTab(index){
-             this.selectedIndex =index;
-
+    this.selectedIndex =index;
   }
+
   paymentStripe(){
-    this.selectedIndex =2;
+    this.selectedIndex = 2;
     this.tabActive2 = true;
   }
+
+  toTrunc(value,n){  
+    return Math.floor(value*Math.pow(10,n))/(Math.pow(10,n));
+}
+
   public message;
- public  cardNumber;
-public expiryMonth;
-public expiryYear;
-public cvc;
-public patient_id;
+  public expiryMonth;
+  public expiryYear;
+  public cvc;
+  public patient_id;
    getToken() {
     this.message = 'Loading...';
     $('.ajax-loader').show();
-
     (<any>window).Stripe.card.createToken({
       number: this.cardNumber,
       exp_month: this.expiryMonth,
@@ -354,7 +504,7 @@ public patient_id;
 
   createSubscription(token) {
     this.stripe_plan_id =  this.planName.replace('',' ');
-      this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.patient_id, this.totalAmountPatients, this.plan_id, this.user_id,this.form.value.patient_name,this.form.value.patient_email,this.clinic_id).subscribe((res) => {
+      this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.patient_id, this.totalAmountPatients, this.plan_id, this.user_id,this.form.value.patient_name,this.form.value.patient_email,this.clinic_id,this.planLength).subscribe((res) => {
            if(res.message == 'success'){
               this.updatePatients('ACTIVE');
            }
@@ -363,8 +513,9 @@ public patient_id;
            }
           }, error => {
       $('.ajax-loader').hide();
-          });
+      });
   }
+  
 public planLength;
   public clinic_logo;
   getPlanDetail() {
@@ -375,26 +526,29 @@ public planLength;
           this.user_id = res.data[0].user_id;
           this.termsText = res.data[0].clinic.terms;
           this.planName = res.data[0].planName;
-              this.planLength = res.data[0].planLength;
+          this.planLength = res.data[0].planLength;
           this.discount = res.data[0].discount;
           this.amount = res.data[0].totalAmount;
           this.clinic_logo = res.data[0].clinic.logo;
+          if(this.clinic_logo == 'undefined')
+            this.clinic_logo="../assets/img/logo.png";
           this.ref.detectChanges();
         }
         }, error => {
     });
   }
   deletesubPatient(id){
+    alert(id);
     var tempArray= [];
     var totalAmount =0;
     this.patientData.splice(id, 1);
     var countPatient = this.patientData.length;
      var i=0;
      this.patientData.forEach(res => {
-      var temp=[];
+     var temp=[];
           temp=res;
             if((i<3) && (i>0) ) 
-             temp['amount'] = this.patientData[i-1]['amount'] - Math.floor((this.discount/100)*this.patientData[i-1]['amount']);
+             temp['amount'] = this.patientData[0]['amount'] - Math.floor((this.discount/100)*this.patientData[0]['amount']);
             else
              temp['amount'] =  res['amount'];
 
@@ -404,11 +558,12 @@ public planLength;
              i++;
  });
      this.patientData = tempArray;
-     this.totalAmountPatients = totalAmount;
+     this.totalAmountPatients = this.toTrunc(totalAmount,2);
   }
 
   onSubmit() {
     $('.ajax-loader').show();
+    this.patientData=[];
     this.PurchasePlanService.checkPatientEmailExists(this.form.value.patient_email,this.clinic_id,this.user_id).subscribe((res) => {
           this.errorLogin = false;
           this.errorLoginText = '';
@@ -421,7 +576,7 @@ public planLength;
              temp['name'] =this.form.value.patient_name;
              temp['dob'] = this.form.value.patient_dob;
              temp['amount'] = this.amount;
-             this.totalAmountPatients = this.amount;
+             this.totalAmountPatients = this.toTrunc(this.amount,2);
              this.patientData.push(temp);
              this.patientData = [...this.patientData];
              this.countPatientData = this.patientData.length;
@@ -429,7 +584,7 @@ public planLength;
               this.tabActive1 = true;
             }
            else if(res.message == 'error'){
-             $('.ajax-loader').hide();
+           $('.ajax-loader').hide();
               this.errorLogin  =true;
               this.errorLoginText  ='Email already Exists!';
            }
@@ -518,7 +673,8 @@ public planLength;
       key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
       locale: 'auto',
       token: token => {
-           this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.id, this.patient_amount, this.member_plan_id, this.user_id,this.patient_name,this.patient_email,this.clinic_id).subscribe((res) => {
+        console.log(this.planLength);
+           this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.id, this.patient_amount, this.member_plan_id, this.user_id,this.patient_name,this.patient_email,this.clinic_id,this.planLength).subscribe((res) => {
            if(res.message == 'success'){
               this.updatePatients('ACTIVE');
             alert('Payment Completed Successfully, Your Subscription is active now!');  

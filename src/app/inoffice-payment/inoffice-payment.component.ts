@@ -14,12 +14,108 @@ import { StripeService, Elements, Element as StripeElement, ElementsOptions } fr
 import { Http} from '@angular/http';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { environment } from "../../environments/environment";
 @Component({
   selector: 'app-inoffice-payment',
   templateUrl: './inoffice-payment.component.html',
   styleUrls: ['./inoffice-payment.component.scss']
 })
 export class InofficePaymentComponent implements OnInit {
+  public cardStyle = {
+    base: {
+      color: '#424242',
+      fontWeight: 400,
+      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+      padding:'10px',
+
+      ':focus': {
+        color: '#424242',
+      },
+
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+
+      ':focus::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+    invalid: {
+      color: '#a94442',
+      ':focus': {
+        color: '#a94442',
+      },
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+  };
+
+
+  public expStyle = {
+    base: {
+      color: '#424242',
+      fontWeight: 400,
+      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+
+      ':focus': {
+        color: '#424242',
+      },
+
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+
+      ':focus::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+    invalid: {
+      color: '#a94442',
+      ':focus': {
+        color: '#a94442',
+      },
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+  };
+
+public cvcStyle = {
+    base: {
+      color: '#424242',
+      fontWeight: 400,
+      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+
+      ':focus': {
+        color: '#424242',
+      },
+
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+
+      ':focus::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+    invalid: {
+      color: '#a94442',
+      ':focus': {
+        color: '#a94442',
+      },
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+  };
+
    stripeTest: FormGroup;
   public form: FormGroup;
   public errorLogin = false;
@@ -41,17 +137,26 @@ export class InofficePaymentComponent implements OnInit {
   public warningMessage;
   public discount;
   public patient_id;
-public plan_description;
-public total_amount;
-public balance_amount;
-public monthly_weekly_payment;
-public duration;
-public payment_frequency;
+  public plan_description;
+  public total_amount;
+  public balance_amount;
+  public monthly_weekly_payment;
+  public duration;
+  public payment_frequency;
+  public cardNumber;
+  public cardExpiry;
+  public cardCvc;
+  private homeUrl = environment.homeUrl;
+ public DefaultLogo;
+  public clinic_logo;
     elementsOptions: ElementsOptions = {
     };
     elements: Elements;
     card: StripeElement;
-  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private inofficePaymentService: InofficePaymentService,private _cookieService: CookieService, private route: ActivatedRoute, private stripeService: StripeService, private http : Http) {}
+
+  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private inofficePaymentService: InofficePaymentService,private _cookieService: CookieService, private route: ActivatedRoute, private stripeService: StripeService, private http : Http) {
+    this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
+  }
 
    ngOnInit() {
     this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
@@ -64,27 +169,26 @@ public payment_frequency;
             this.elements = elements;
             // Only mount the element the first time
             if (!this.card) {
-            this.card = this.elements.create('card', {
-            style: {
-           base: {
-                iconColor: '#424242',
-                color: '#424242',
-                lineHeight: '40px',
-                fontWeight: 400,
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSize: '18px',
-                '::placeholder': {
-                  color: '#424242'
-                }
-              }
-            }
-            });
-            this.card.mount('#card-element');
+              this.cardNumber = this.elements.create('cardNumber', {
+            style: this.cardStyle
+          });
+          this.cardExpiry = this.elements.create('cardExpiry', {
+            style: this.expStyle
+          });
+
+            this.cardCvc = this.elements.create('cardCvc', {
+            style: this.cvcStyle
+          });
+
+             this.cardNumber.mount('#example3-card-number');
+             this.cardExpiry.mount('#example3-card-expiry');
+             this.cardCvc.mount('#example3-card-cvc');            
             this.selectedIndex =0;;
             }
             });
      this.route.params.subscribe(params => {
       this.id = this.route.snapshot.paramMap.get("id");
+    this.checkInvoiceStatus();      
     });
     this.getInofficePlanDetails();
   }
@@ -92,12 +196,12 @@ public payment_frequency;
     buy() {
     const name = this.stripeTest.get('name').value;
     this.stripeService
-    .createToken(this.card, { name })
+    .createToken(this.cardNumber, { name })
     .subscribe(obj => {
     if (obj) {
  this.token = obj.token.id;
       $('.ajax-loader').show();
-    this.inofficePaymentService.createInofficeSubscription(this.token,this.plan_name,this.monthly_weekly_payment,this.duration,this.id,this.patient_id, this.clinic_id).subscribe((res) => {
+    this.inofficePaymentService.createInofficeSubscription(this.token,this.plan_description,this.monthly_weekly_payment,this.duration,this.id,this.patient_id, this.clinic_id, this.payment_frequency, this.balance_amount).subscribe((res) => {
            if(res.message == 'success'){
               this.updatePatients('ACTIVE');
            }
@@ -111,7 +215,6 @@ public payment_frequency;
     }
     });
     }
-
 
   getInofficePlanDetails() {
     this.inofficePaymentService.getInofficePlanDetails(this.id).subscribe((res) => {  
@@ -127,17 +230,55 @@ public payment_frequency;
         this.duration = res.data[0].duration;
         this.payment_frequency = res.data[0].payment_frequency;
         }
+         else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
   }
   public clinic_id;
+
+
+  checkInvoiceStatus() {
+      this.inofficePaymentService.checkInvoiceStatus(this.id).subscribe((res) => {  
+       if(res.message == 'success'){
+          if(res.data[0]['status'] == 'ACTIVE')
+             this.router.navigateByUrl('/login');            
+        }
+         else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );    
+}
+
 getClinic(patient_id) {
       this.inofficePaymentService.getClinic(patient_id).subscribe((res) => {  
        if(res.message == 'success'){
-        this.clinic_id= res.data[0]['clinic_id'];
+          this.clinic_id= res.data[0]['clinic']['id'];
+          this.clinic_logo= res.data[0]['clinic']['logo'];
+          if(this.clinic_logo == "undefined")
+            this.clinic_logo = this.DefaultLogo;
         }
+         else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -155,8 +296,7 @@ onSubmit() {
     this.patient_amount =this.patient_amount+ patient_amount;
       $('.ajax-loader').show();  
     this.inofficePaymentService.addSubPatients(this.form.value.name,this.form.value.age,this.form.value.gender,patient_amount,this.id).subscribe((res) => {
-      $('.ajax-loader').hide();      
-
+      $('.ajax-loader').hide();     
        if(res.message == 'success'){
         this.updatePatients('INACTIVE');
        }
@@ -185,9 +325,8 @@ onSubmit() {
       key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
       locale: 'auto',                                                                                                 
       token: token => {
-        console.log(token);
       $('.ajax-loader').show();
-           this.inofficePaymentService.createInofficeSubscription(token,this.plan_name,this.monthly_weekly_payment,this.duration,this.id,this.patient_id,this.clinic_id).subscribe((res) => {
+           this.inofficePaymentService.createInofficeSubscription(token,this.plan_name,this.monthly_weekly_payment,this.duration,this.id,this.patient_id,this.clinic_id,this.payment_frequency, this.balance_amount).subscribe((res) => {
            $('.ajax-loader').hide();
            if(res.message == 'success'){
                 this.updatePatients('ACTIVE');
@@ -209,41 +348,8 @@ onSubmit() {
 public tabActive1= false;
 public selectedIndex=1;
   startPayment() {
-this.tabActive1= true;
-this.selectedIndex=1;
+    this.tabActive1= true;
+    this.selectedIndex=1;
   }
-
- // getPlans() {
- //  this.errorLogin  =false;
- //  this.loginService.getPlans().subscribe((res) => {
- //       if(res.message == 'success'){
- //        res.data.forEach((res,key) => {                                                  
- //          var temp= {plan:'',allowedClinics:'',description:'',amount:'',discount:'',id:''};
- //          if(res.id== this.plan_id) {
- //            this.amount =                                                                                                      res.amount;
- //            this.stripe_plan_id = res.stripe_plan_id;
- //            this.planName = res.plan;
- //          }
- //          temp.id =res.id;          
- //          temp.plan =res.plan;
- //          temp.allowedClinics =res.allowedClinics;  
- //          temp.description =res.description;  
- //          temp.amount =res.amount;  
- //          temp.discount =res.discount; 
- //          this.plans.push(temp);
- //        });
- //       }
- //       else if(res.message == 'error'){
- //          this.errorLogin  =true;
- //       }
- //    }, error => {
- //    }    
- //    );
- //  }
- //  get_amount() {
- //    let id:any =  $('#plans').val();
- //    this.amount= this.plans[id].amount;
- //    this.stripe_plan_id = this.plans[id].stripe_plan_id;
- //  }
 
 }

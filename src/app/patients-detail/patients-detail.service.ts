@@ -31,6 +31,13 @@ export class PatientsDetailService {
         this.token_id= this._cookieService.get("userid");
         });
    }
+    getClinicSettings( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 
 
    // Get Dentist
@@ -88,7 +95,6 @@ export class PatientsDetailService {
        // Delete Clinic
     deletePatients(patient_id, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
-
     formData.append('patient_id', patient_id);
     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);
@@ -103,13 +109,15 @@ export class PatientsDetailService {
 
 
         // Update Clinic
-    inviteMember(clinic_id,invite_member_name, invite_member_email,token = this._cookieService.get("token")): Observable<any> {
+    inviteMember(clinic_id,invite_member_name, invite_member_email,type,token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('clinic_id', clinic_id);
     formData.append('invite_member_name', invite_member_name);
     formData.append('invite_member_email', invite_member_email);
     formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('type', type);
+
     formData.append('token', token);
      formData.append('token_id', this.token_id);
     
@@ -158,11 +166,10 @@ export class PatientsDetailService {
         formData.append('patient_status', patient_status);
         formData.append('patient_id', patient_id);
         formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', token);
-     formData.append('token_id', this.token_id);
+        formData.append('token', token);
+        formData.append('token_id', this.token_id);
        
-
-            return this.http.post(this.apiUrl +"/InofficePayments/updatePatientsDetails/", formData)
+        return this.http.post(this.apiUrl +"/InofficePayments/updatePatientsDetails/", formData)
             .pipe(map((response: Response) => {
                 console.log(response);
                             return response;
@@ -173,8 +180,17 @@ export class PatientsDetailService {
     getInofficeMembersByID(patient_id,clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         return this.http.get(this.apiUrl +"/Patients/getAllPatientByID?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
-                return response;
-         
+                return response;         
+                })
+        );
+    }
+
+    getexportData(clinic_id,start_date,end_date, token = this._cookieService.get("token"),user_id = this._cookieService.get("userid")):
+    Observable<any> {
+        return this.http.get(this.apiUrl +"/Patients/getExportData?token="+this._cookieService.get("token")+"&clinic_id="+clinic_id+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id+"&start_date="+start_date+"&end_date="+end_date, { headers: this.headers })
+        .pipe(map((response: Response) => {
+            // console.log(response);
+                    return response;
                 })
         );
     }

@@ -6,17 +6,39 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
 import { NotifierService } from 'angular-notifier';
 import Swal from 'sweetalert2';
+import { CustomValidators } from 'ng2-validation';
+import { FormControl, FormGroupDirective,  NgForm,  Validators,FormBuilder, FormGroup} from '@angular/forms';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
 })
 
-
 export class DialogOverviewExampleDialogComponent {
-  constructor(
+  public form: FormGroup;
+  public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+
+  constructor( private fb: FormBuilder,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.form = this.fb.group({
+      name: [null, Validators.compose([Validators.required])],
+      phone_no: [null, Validators.compose([Validators.required])],
+      clinicEmail: [null, Validators.compose([Validators.required, CustomValidators.email])],
+      address: [null, Validators.compose([Validators.required])],  
+       facebook: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
+      twitter: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
+      linkedin: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
+      instagram: [null, Validators.compose([Validators.pattern(this.urlPattern)])]    
+    });
+  }
+
+  omit_special_char(event)
+  {   
+     var k;  
+     k = event.charCode;  //
+     return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -28,11 +50,27 @@ export class DialogOverviewExampleDialogComponent {
  
   uploadImage(files: FileList) {     
     this.fileToUpload = files.item(0);
+
+      /* First check for file type then check for size .*/
+   if(this.fileToUpload.type=='image/png' || this.fileToUpload.type=='image/jpg' || this.fileToUpload.type=='image/jpeg')
+    {
+        
+    }else{
+        alert("Invalid image. Allowed file types are jpg, jpeg and png only .");
+        return false;
+    }
+
+    if(this.fileToUpload.size/1024/1024 > 2) //10000 bytes means 10 kb
+    {
+         alert("Header image should not be greater than 4 MB .");
+         return false;
+    }
+
     this.onAdd.emit(this.fileToUpload);
   }
 
    save(data) {
-    if(data.name != undefined && data.address != undefined  && data.contact_name != undefined && data.phone_no != undefined){
+    if(data.name != undefined && data.address != undefined && data.phone_no != undefined){
         this.dialogRef.close(data);
       }
     }
@@ -63,10 +101,12 @@ export class ClinicComponent implements AfterViewInit {
   secret_key: string;
   clinic_logo: string;
   user_id:any;
-  fileInput: any ;
+  fileInput: any;
 
 
   ngAfterViewInit() {
+    this.getUserDetails();
+
     this.getClinics();
         $('#title').html('Clinics');
         //$('.header_filters').hide();
@@ -81,7 +121,11 @@ export class ClinicComponent implements AfterViewInit {
 
   loadingIndicator = true;
   reorderable = true;
-
+  facebook ='http://facebook.com/';
+  twitter ='http://twitter.com/';
+  linkedin='http://linkedin.com/';
+  instagram='http://instagram.com/';
+  clinicEmail;
   columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
 
   @ViewChild(ClinicComponent) table: ClinicComponent;
@@ -94,8 +138,7 @@ export class ClinicComponent implements AfterViewInit {
     }, 1500);
   }
   private warningMessage: string;
-     public disabled = false;
-
+  public disabled = false;
 
   public imageURL:any;
 
@@ -105,7 +148,7 @@ export class ClinicComponent implements AfterViewInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '250px',
-      data: { name: this.name, address: this.address, contact_name: this.contact_name ,phone_no: this.phone_no,publishable_key: this.publishable_key,secret_key: this.secret_key ,disabled:this.disabled}
+      data: { name: this.name, address: this.address, contact_name: this.contact_name ,phone_no: this.phone_no,clinicEmail: this.clinicEmail, facebook: this.facebook, twitter: this.twitter ,linkedin: this.linkedin,instagram:this.instagram}
     });
     
     const sub = dialogRef.componentInstance.onAdd.subscribe((val) => {
@@ -115,21 +158,35 @@ export class ClinicComponent implements AfterViewInit {
       this.clinicService.logoUpload(formData).subscribe((res) => {
       $('.ajax-loader').hide();
         if(res.message == 'success'){
-                 this.imageURL= res.data;
-        this.notifier.notify( 'success', 'Logo Uploaded' ,'vertical');
+          this.imageURL= res.data;
+          this.notifier.notify( 'success', 'Logo Uploaded' ,'vertical');
         }
+         else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
       });
       });
      
   dialogRef.afterClosed().subscribe(result => {
     if(result) {
       $('.ajax-loader').show();
-  this.clinicService.addClinic(result.name, result.address, result.contact_name,result.phone_no,result.publishable_key,result.secret_key, this.imageURL).subscribe((res) => {
+  this.clinicService.addClinic(result.name, result.address, result.contact_name,result.phone_no,result.facebook, result.twitter, result.linkedin,result.instagram,result.clinicEmail, this.imageURL).subscribe((res) => {
       $('.ajax-loader').hide();
        if(res.message == 'success'){
         this.notifier.notify( 'success', 'Clinic Added' ,'vertical');
                 this.getClinics();
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -147,10 +204,32 @@ public createdClinicsCount=0;
           if(res.data.length >0) {
           this.user_id= res.data[0]['user_id'];
           this.clinicscount= res.data[0]['Users'].clinics_count;
-          console.log(this.clinicscount);
           this.createdClinicsCount = res.data.length;
           this.temp = [...res.data];        
           this.table = data;
+        }
+       }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+
+  }
+
+
+  private getUserDetails() {
+    this.rows=[];
+    this.clinicService.getUserDetails().subscribe((res) => {
+       if(res.message == 'success'){
+          if(res.data) {
+          this.clinicscount= res.data.clinics_count;
         }
        }
         else if(res.status == '401'){
@@ -183,6 +262,13 @@ public createdClinicsCount=0;
          this.notifier.notify( 'success', 'Clinic Removed' ,'vertical');
           this.getClinics();
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -232,6 +318,13 @@ public createdClinicsCount=0;
         this.notifier.notify( 'success', 'Clinic Updated' ,'vertical');
           this.getClinics();
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    

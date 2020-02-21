@@ -1,31 +1,32 @@
 <mat-card>
     <mat-card-content>
         <mat-card-title><span class="main-title">Clinics</span>
- <button class="sa-pull-right mat-raised-button mat-gray mr-15" mat-raised-button (click)="openDialog()" *ngIf= "clinicscount>=createdClinicsCount">Add Clinic</button>
+ <button class="sa-pull-right mat-raised-button mat-gray mr-15" mat-raised-button (click)="openDialog()" *ngIf= "clinicscount>createdClinicsCount">Add Clinic</button>
         </mat-card-title>
         <mat-form-field>
             <input matInput type='text' class="form-control" placeholder='Type to filter Clinic name...' (keyup)='updateFilter($event)'
             />
         </mat-form-field>
-        <ngx-datatable #table class='material responsive-datatable action-three' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+        <div class="ngx_datatable_scroll_div">
+        <ngx-datatable #table class='material responsive-datatable rdt_1600px action-three' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
             [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
-       <ngx-datatable-column name="Sr">
+   <!--     <ngx-datatable-column name="Sr">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Id</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
           <span>
-            {{rowIndex+1}}
+             <span class="datatable_label">Id : </span>{{rowIndex+1}}
           </span>
         </ng-template>
-      </ngx-datatable-column>
+      </ngx-datatable-column> -->
       <ngx-datatable-column name="clinicName"  prop="clinicName">
          <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn" >
         <span (click)="sort()">Clinic Name</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span title="Double click to edit">
-            {{value}}
+             <span class="datatable_label">Clinic Name : </span>{{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'clinicName', rowIndex)" *ngIf="editing[rowIndex+ '-clinicName']" type="text" [value]="value"
           />
@@ -35,32 +36,19 @@
        
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span>
-            {{value}}
+             <span class="datatable_label">Address : </span>{{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'address', rowIndex)" *ngIf="editing[rowIndex+ '-address']" type="text" [value]="value"
           />
         </ng-template>
       </ngx-datatable-column>
-       <ngx-datatable-column name="ContactName">
-         <ng-template let-column="column" ngx-datatable-header-template>
-        <span>Contact Name</span>
-      </ng-template>
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span>
-            {{value}}
-          </span>
-          <input autofocus (blur)="updateValue($event, 'contactName', rowIndex)" *ngIf="editing[rowIndex+ '-contactName']" type="text" [value]="value"
-          />
-        </ng-template>
-      </ngx-datatable-column>
-
       <ngx-datatable-column name="PhoneNo">
         <ng-template let-column="column" ngx-datatable-header-template>
        <span>Phone Number</span>
      </ng-template>
        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
          <span>
-           {{value}}
+            <span class="datatable_label">Phone Number : </span>{{value}}
          </span>
          <input autofocus (blur)="updateValue($event, 'phoneNo', rowIndex)" *ngIf="editing[rowIndex+ '-phoneNo']" type="text" [value]="value" oninput="this.value = this.value.slice(0,10);"
          />
@@ -69,7 +57,7 @@
       <ngx-datatable-column name="Created">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span>
-            {{value| date}}
+             <span class="datatable_label">Created : </span>{{value| date}}
           </span>
         </ng-template>
       </ngx-datatable-column>
@@ -84,5 +72,6 @@
         </ng-template>
       </ngx-datatable-column>
         </ngx-datatable>
+            </div>
     </mat-card-content>
 </mat-card>

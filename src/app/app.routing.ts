@@ -52,7 +52,7 @@ export const AppRoutes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'in-office',
+        path: 'payment-plan',
         loadChildren: './in-office/in-office.module#InOfficeModule',
         canActivate: [AuthGuard]
       },

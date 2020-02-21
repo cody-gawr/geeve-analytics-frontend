@@ -27,16 +27,15 @@ export class DefaultersComponent implements AfterViewInit {
   treat = new FormControl();
 
   ngAfterViewInit() {
-    this.initiate_clinic();
-   
+        this.initiate_clinic();
         $('#title').html('Defaulters');
         $('.header_filters').removeClass('hide_header');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
-        $('.sa_heading_bar').show();
-  
+        $('.sa_heading_bar').show();  
   }
+
   editing = {};
   rows = [];
  
@@ -53,7 +52,6 @@ export class DefaultersComponent implements AfterViewInit {
   public treatmentdata;
   public memberplan_id;
 
-  
   constructor(notifierService: NotifierService,private defaultersService: DefaultersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
     this.notifier = notifierService;
     this.rows = data;
@@ -66,49 +64,85 @@ export class DefaultersComponent implements AfterViewInit {
 
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
-  if(this.clinic_id!= "undefined")
+  if(this.clinic_id != "undefined")
       this.getInofficeDefaultersMembers();
+     // this.getDefaultersMembers();
+
     else{
-            $('.header_filters').addClass('hide_header');
+        $('.header_filters').addClass('hide_header');
         $('.external_clinic').hide();
     }
-    }
+  }
     
   goBack() {
       window.history.back();
   }
+
   private getInofficeDefaultersMembers() {
   this.rows=[];
-  this.defaultersService.getInofficeDefaultersMembers(this.clinic_id).subscribe((res) => {
-  
+  this.defaultersService.getInofficeDefaultersMembers(this.clinic_id).subscribe((res) => {  
+        if(res.message == 'success'){
+        this.rows = res.data;
+        this.temp = [...res.data];        
+        this.table = data;
+        }
+         else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+  }
+
+private getDefaultersMembers() {
+  this.rows=[];
+  this.defaultersService.getDefaultersMembers(this.clinic_id).subscribe((res) => {  
         if(res.message == 'success'){
         this.rows = res.data;
         // console.log(this.rows);
         this.temp = [...res.data];        
         this.table = data;
         }
+         else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
   }
+
   private sendDefaultersemail(rowIndex) {
-    // console.log(rowIndex)
     var defaulter_name =  this.rows[rowIndex]['patient_name'];
     var defaulter_email = this.rows[rowIndex]['patient_email'];
     this.defaultersService.sendDefaultersemail(defaulter_name,defaulter_email).subscribe((res) => {
-    
           if(res.message == 'success'){
             this.notifier.notify( 'success', 'Payment Reminder Send' ,'vertical');
           }
+           else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
       }, error => {
         this.warningMessage = "Please Provide Valid Inputs!";
       }    
       );
     }
+
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
-console.log(event.target.value);
       // filter our data
     const temp = this.temp.filter(function(d) {
     
@@ -116,15 +150,12 @@ console.log(event.target.value);
     });
     // update the rows
     this.rows = temp;
-
     // Whenever the filter changes, always go back to the first page
     this.table = data;
   }
 
   enableEditing(rowIndex, cell) {
-
     this.editing[rowIndex + '-' + cell] = true;
-//console.log(this.editing);
   }
 
 }

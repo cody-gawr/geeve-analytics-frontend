@@ -7,10 +7,10 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { DatePipe,formatDate } from '@angular/common';
-
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { empty } from 'rxjs';
 import Swal from 'sweetalert2';
+import {MatChipsModule} from '@angular/material/chips';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -26,34 +26,9 @@ export class DialogOverviewExampleDialogComponent {
     onNoClick(): void {
     this.dialogRef.close();
   }
-  @Output() public sittingsUpdate: EventEmitter<any> = new EventEmitter();
-  @Output() public getSittings: EventEmitter<any> = new EventEmitter();
-  @Output() public deletesittingid: EventEmitter<any> = new EventEmitter();
-  statusupdate(sittingIndex,event){
-    
-    if(event.checked==true){
-      event.checked ='ACTIVE';
-    }else{
-      event.checked==false
-      event.checked ='INACTIVE';
+  log_appointment(data) {
+        this.dialogRef.close(data);      
     }
-
-   var settingstatus = event.checked;
-    // console.log(settingstatus);
-
-    this.sittingsUpdate.emit({settingstatus:settingstatus, sittingIndex: sittingIndex},);
-  }
-  totalsittings(gettotalsittings){
-
-    console.log(gettotalsittings);
-    this.getSittings.emit(gettotalsittings);
-  }
-
-  deleterow(deleteindex){
-    // console.log(deleteindex);
-   this.deletesittingid.emit(deleteindex);
-  }
-
  }
 
 const data: any = [];
@@ -116,7 +91,8 @@ public patient_name;
 public patient_dob;
 public preventative_frequency;
 public preventative_count;
-
+public patientLog;
+public user_type = this._cookieService.get("user_type");
   constructor(notifierService: NotifierService,private fb: FormBuilder,public dialog: MatDialog,  private patientInfoService: PatientInfoService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,breakpointObserver: BreakpointObserver,private datePipe: DatePipe) {
     this.notifier = notifierService;
     }
@@ -124,93 +100,41 @@ public preventative_count;
       window.history.back();
    }
 
-   openDialog(treatmentIndex,): void {
-   // this.getBenefitsUsed();
-    this.treatmentName = this.benefit[treatmentIndex]['treatmentName'];
-    this.totalsitting= this.benefit[treatmentIndex]['patients_sittings'];
-    if(this.benefit[treatmentIndex]['sittinginfo'])
-    this.sittings= this.benefit[treatmentIndex]['sittinginfo'];
-
-    this.memberplanid = this.benefit[treatmentIndex]['member_plan_id'];
-    this.patientid = this.benefit[treatmentIndex]['patient_id'];
-    this.membertreatmentid = this.benefit[treatmentIndex]['member_treatment_id'];
-    
+   openDialog(): void {
+   // this.getBenefitsUsed();     
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
      width: '250px',
-      data: { treatmentName: this.treatmentName, totalsitting: this.totalsitting, sitting_status: this.sitting_status , sitting_id: this.sitting_id ,sittings: this.sittings ,memberplanid: this.memberplanid}
+      data: { patientsAppointmentData: this.patientsAppointmentData,patientLog:this.patientLog}
       });
-    
-    const sub1 = dialogRef.componentInstance.getSittings.subscribe((gettotalsittings) => {
-      //  console.log(gettotalsittings)
-      // console.log(this.sittings)
-      // console.log(gettotalsittings);
-    
-      var sittingscount = this.sittings.length;
-
-       if(sittingscount==0){
-        for (let index = 0; index < gettotalsittings; index++) {
-          this.sittings[index]= {id:"",patient_id:this.id, sitting_status: "" };
-           } 
-      }else{
-           for (let index = sittingscount; index < gettotalsittings; index++) {
-            this.sittings[index]= {id:"",patient_id:this.id, sitting_status: "" };
-            } 
-       }
-       });
-
-       const sub2 = dialogRef.componentInstance.deletesittingid.subscribe((deleteindex) => {
-        var my_array = this.sittings;
-        var start_index = deleteindex
-        var number_of_elements_to_remove = deleteindex;
-        var removed_elements = my_array.splice(start_index, number_of_elements_to_remove);
-        this.totalsitting = this.sittings.length;
-
-         $("#totalsittings").val(this.totalsitting);        
-        });
-
-    const sub = dialogRef.componentInstance.sittingsUpdate.subscribe((settingstatus,sittingsIndex) => {
-     // this.getBenefitsUsed();   
-      this.benefit_patient_id = this.benefit[treatmentIndex]['patient_id'];
-      this.benefit_planid = this.benefit[treatmentIndex]['member_plan_id'];
-      this.sitting_id = this.benefit[treatmentIndex]['sittinginfo'][settingstatus['sittingIndex']]['id'];
-      this.sitting_status = settingstatus['settingstatus'];
-      this.performed_date = formatDate(new Date(), 'yyyy-MM-dd', 'en');
-      this.patientInfoService.updateSittingStatus(this.benefit_patient_id, this.benefit_planid,this.sitting_id,this.sitting_status,this.performed_date).subscribe((res) => {
-        if(res.message == 'success'){
-         // this.getBenefitsUsed();
-          this.notifier.notify( 'success', 'Sittings Updated' ,'vertical');
-               }
-      });
-      });
-
-
     dialogRef.afterClosed().subscribe(result => {
-      // var sitting =JSON.stringify(this.sittings);
-      var sittingUpdated ={};
-      for (let index = 0; index < this.sittings.length; index++) {
-        var element = this.sittings[index];
-        var temp = {};
-        temp['sitting_id'] = element['id'];
-        temp['patient_id'] = element['patient_id'];
-        temp['sitting_status'] = element['sitting_status'];
-        temp['performed_date'] = element['performed_date'];
-
-        sittingUpdated[index] = temp;
-    }
-    var sittingUpdatedString =JSON.stringify(sittingUpdated); 
-       var totalsiting =this.sittings.length;
-     // this.getBenefitsUsed();
-      this.patientInfoService.addBenefits(this.id, this.memberplanid,this.membertreatmentid,totalsiting,sittingUpdatedString).subscribe((res) => {
-        this.getBenefitsUsed();
+      if(result != undefined) {
+      if(result.patientLog) {
+        this.patientInfoService.log_appointment(this.patient_id,this.member_plan_id,result.patientLog).subscribe((res) => {   
             if(res.message == 'success'){
-              console.log(res);
-               this.notifier.notify( 'success', 'Sittings Updated' ,'vertical');
-                }
-      }, error => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+                this.notifier.notify( 'success', 'Appointment Logged' ,'vertical');
+                this.getAppointments();
+                 }
+                  else if(res.status == '401'){
+                  this._cookieService.put("username",'');
+                  this._cookieService.put("email", '');
+                  this._cookieService.put("token", '');
+                  this._cookieService.put("userid", '');
+                  this.router.navigateByUrl('/login');
+               }
+            }, error => {
+              this.warningMessage = "Please Provide Valid Inputs!";
+            });
       }
-      );
-      });
+      else{
+        Swal.fire(
+          '',
+          'Please select Patient name',
+          'error'
+        )
+      }
+
+    }
+    });
 
   }
   
@@ -219,22 +143,16 @@ public preventative_count;
     this.id = this.route.snapshot.paramMap.get("id");
     this.getSubPatients();
     this.getPatientContract();
-   
-    // $('.header_filters').removeClass('hide_header');
       this.route.params.subscribe(params =>  {
         $('#title').html('Patient Plan Detail');
      });
-
-     this.formPatient = this.fb.group({
+         this.formPatient = this.fb.group({
           patient_name: [null, Validators.compose([Validators.required])],
-      patient_address: [Validators.compose([Validators.required])],
-      patient_dob: [null, Validators.compose([Validators.required])],
-      patient_gender: [null, Validators.compose([Validators.required])],
-      patient_phone_no: [null, Validators.compose([Validators.required])],
-       patient_home_phno: [null, Validators.compose([Validators.required])],
-      patient_status: [null, Validators.compose([Validators.required])]
-    });
-    
+          patient_address: [null, Validators.compose([Validators.required])],
+          patient_dob: [null, Validators.compose([Validators.required])],
+          patient_gender: [null, Validators.compose([Validators.required])],
+          patient_phone_no: [null, Validators.compose([Validators.required])],
+        });    
       }
 
     private deletePatients() {
@@ -248,12 +166,11 @@ public preventative_count;
     }).then((result) => {
       if (result.value) {
     if(this.id) {
-      this.patientInfoService.deletePatients(this.id).subscribe((res) => {
+      this.patientInfoService.deletePatients(this.id,this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
         this.notifier.notify( 'success', 'Patient Removed' ,'vertical');
         this.router.navigate(['/patients-detail']);
-             }
-      
+       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -263,23 +180,25 @@ public preventative_count;
 });
   } 
   getSubPatients() {
-
-    this.patientInfoService.getSubPatients(this.id).subscribe((res) => {
-  
+    this.patientInfoService.getSubPatients(this.id).subscribe((res) => {  
        if(res.message == 'success'){
         var patientArray ={};
+        patientArray['id'] = res.data[0]['id'];        
+        patientArray['sub_patients_name'] = res.data[0]['patient_name'];        
         patientArray['sub_patients_name'] = res.data[0]['patient_name'];
         patientArray['sub_patients_dob'] = res.data[0]['patient_dob'];
         patientArray['sub_patients_gender'] = res.data[0]['patient_gender'];
+        patientArray['sub_patients_type'] = 'main';
         patientArray['sub_patients_amount'] = res.data[0]['member_plan']['totalAmount'];
-
         this.rows = res.data[0]['sub_patients'];
         var sub_patient_length = this.rows.length;
         this.rows[sub_patient_length] = patientArray;
+
         this.patient_id=res.data[0]['id'];
         this.patient_name=res.data[0]['patient_name'];
         this.patient_address=res.data[0]['patient_address'];
-        //this.patient_dob=res.data[0]['patient_dob'];
+        if(this.patient_address == null)
+          this.patient_address ='';
         this.patient_dob = this.datePipe.transform(res.data[0]['patient_dob'],'yyyy-MM-dd');
         this.patient_age=res.data[0]['patient_age'];
         this.patient_gender=res.data[0]['patient_gender'];
@@ -288,20 +207,18 @@ public preventative_count;
         this.patient_status=res.data[0]['patient_status'];
         this.patient_amount=res.data[0]['total_amount'];
         this.patient_status=res.data[0]['patient_status'];
-        this.preventative_frequency= res.data[0]['member_plan']['preventative_frequency'];
+        this.preventative_frequency= res.data[0]['preventative_frequency'];
         this.created=res.data[0]['created'];
-        this.totalAmount=res.data[0]['member_plan']['totalAmount'];
+        this.totalAmount=res.data[0]['plan_cost'];
         this.total_subpatient=res.data[0]['sub_patients'].length;
         this.member_plan_id= res.data[0]['member_plan_id'];
         this.plan_name=res.data[0]['member_plan']['planName'];
-        this.planLength=res.data[0]['member_plan']['planLength'];
+        this.planLength=res.data[0]['planLength'];
         this.clinic_id=res.data[0]['clinic_id'];
         this.user_id=res.data[0]['user_id'];
         this.mainpatientname = res.data[0]['patient_name'];
-       // this.getBenefitsUsed();
         this.getPaymentHistory();
-    this.getAppointments();
-
+        this.getAppointments();
        }
         else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -315,25 +232,47 @@ public preventative_count;
     }    
     );
   }
-
-  getAppointments() {
-       this.patientInfoService.getAppointments(this.patient_id,this.member_plan_id).subscribe((res) => {   
+public patientsAppointmentData =[];
+  getAppointments() {    
+       this.patientInfoService.getAppointments(this.patient_id,this.member_plan_id).subscribe((res) => {
+       this.patientsAppointmentData==[];   
          if(res.message == 'success'){
-          this.rowsAppointments = res.data;
+            this.rowsAppointments = res.data;
              }
              else{
-          this.rowsAppointments = [];
-
+              this.rowsAppointments = [];
              }
-          this.preventative_count = this.rowsAppointments.length;
+          this.patientsAppointmentData=Object.assign([],this.rows);   
+          this.getAppointmentsCount();
 
         }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
         });
   }
+  public patientsAppointmentCount =[];  
+    getAppointmentsCount() {    
+       this.patientInfoService.getAppointmentsCount(this.patient_id,this.member_plan_id).subscribe((res) => {   
+             if(res.message == 'success'){               
+             res.data.forEach(res => {
+              if(res.count>= this.preventative_frequency){
+                  this.patientsAppointmentData.forEach((data,index,object)=>{
+                    if(res.patient_id == data.id  && res.patient_name == data.sub_patients_name){
+                    this.patientsAppointmentData.splice(index,1);
+                    }
+                  })
+              }
+             });
+             }
+             else{
+              this.rowsAppointments = [];
+             } 
+        }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        });
+    }
+
 
   deleteAppointment(id) {
-
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete the logged Appointment?',
@@ -344,19 +283,15 @@ public preventative_count;
     }).then((result) => {
       if (result.value) {
             this.patientInfoService.deleteAppointment(id).subscribe((res) => {   
-         if(res.message == 'success'){
-        this.notifier.notify( 'success', 'Appointement Removed' ,'vertical');
-          
-          }
-          this.getAppointments();
+            if(res.message == 'success'){
+              this.notifier.notify( 'success', 'Appointment Removed' ,'vertical');          
+            }
+           this.getAppointments();
         }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
         });
       } 
     })
-
-
- 
   }
 
   onSubmitPatientDetails() {
@@ -371,13 +306,19 @@ public preventative_count;
     }
   }
 
-
+public start_date;
+public renew_date;
+public next_date;
   getPaymentHistory() {
     this.patientInfoService.getPaymentHistory(this.id,this.member_plan_id,this.user_id,this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
         this.payment = res.data;
-        if(res.data[0])
-        this.payment_plan_name=res.data[0]['member_plan']['planName'];
+        if(res.data[0]) {
+          this.payment_plan_name=res.data[0]['member_plan']['planName'];
+          this.start_date=new Date(res.data[0]['invoice_date']);
+          this.renew_date=this.datePipe.transform(new Date(this.start_date.getFullYear()+1,this.start_date.getMonth(),this.start_date.getDate()), 'dd-MM-y');
+          this.next_date=this.datePipe.transform(new Date(this.start_date.getFullYear(),this.start_date.getMonth()+1,this.start_date.getDate()), 'dd-MM-y');
+        }
         }
         else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -392,17 +333,32 @@ public preventative_count;
     );
   }
 
-
   log_appointment() {
-    this.patientInfoService.log_appointment(this.patient_id,this.member_plan_id).subscribe((res) => {   
+    this.patientLog = this.rows[0]['id']+"_"+this.rows[0]['sub_patients_name'];
+    if(this.patientLog) {
+    this.patientInfoService.log_appointment(this.patient_id,this.member_plan_id,this.patientLog).subscribe((res) => {   
         if(res.message == 'success'){
             this.notifier.notify( 'success', 'Appointment Logged' ,'vertical');
-    this.getAppointments();
-
+            this.getAppointments();
              }
+              else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+              this.router.navigateByUrl('/login');
+           }
         }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
         });
+  }
+  else{
+    Swal.fire(
+      '',
+      'Please select Patient name',
+      'error'
+    )
+  }
   }
 
   getPatientContract(){
@@ -424,19 +380,22 @@ public preventative_count;
 
     onSubmit() {
     if(this.imageURL == undefined){
-      alert("Please Upload file");
-    
+      alert("Please Upload file");    
     }else{
-      $('.ajax-loader').show();      
-
+      $('.ajax-loader').show();     
         this.patientInfoService.updatePatients(this.id,this.member_plan_id,this.imageURL).subscribe((res) => {
-      $('.ajax-loader').hide();      
-      
-        // console.log(this.imageURL);
+      $('.ajax-loader').hide();    
           if(res.message == 'success'){
             this.notifier.notify( 'success', 'Document Uploaded' ,'vertical');
                this.getPatientContract();
             }
+             else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
            }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
             }   
@@ -464,13 +423,11 @@ public preventative_count;
         });
       }
   }
-  getBenefitsUsed(){
 
+  getBenefitsUsed(){
     this.patientInfoService.getBenefitsUsed(this.id,this.member_plan_id).subscribe((res) => {
-  
       if(res.message == 'success'){
-        this.benefit = res.data;
-       
+        this.benefit = res.data;       
           }
        else if(res.status == '401'){
              this._cookieService.put("username",'');
@@ -484,6 +441,7 @@ public preventative_count;
    }    
    );
   }
+
   public deleteBenefitsUsed(row) {
     if(confirm("Are you sure to delete this plan?")) {
        if(this.benefit[row]['patients_benefits_id']) {
@@ -499,11 +457,9 @@ public preventative_count;
        );
        }
        else {
-       //  this.getBenefitsUsed();
          this.rows.splice(row, 1);
        this.rows = [...this.rows];
        }
      }
 }
-
 }

@@ -41,6 +41,17 @@ export class ClinicService {
         );
     }
 
+
+ // Get Dentist
+    getUserDetails(user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/users/userInfo?id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+
        // Delete Clinic
     deleteClinic(clinic_id, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
@@ -77,13 +88,18 @@ export class ClinicService {
     }
 
         // Update Clinic
-    addClinic(name, address, contact_name,phone_no,publishable_key,secret_key,clinic_logo, token = this._cookieService.get("token")): Observable<any> {
+    addClinic(name, address, contact_name,phone_no,facebook, twitter, linkedin,instagram,clinicEmail,clinic_logo, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('clinicName', name);
     formData.append('address', address);
     formData.append('contactName', contact_name);
     formData.append('phoneNo', phone_no);
+    formData.append('facebook', facebook);
+    formData.append('twitter', twitter);
+    formData.append('linkedin', linkedin);
+    formData.append('instagram', instagram);
+    formData.append('clinicEmail', clinicEmail);    
     formData.append('logo', clinic_logo);
     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);

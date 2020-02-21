@@ -43,16 +43,15 @@ export class ProfileSettingsService {
        // Get updateprofileSettings
     updateprofileSettings(displayName,description,email,PhoneNo,Address,Gender,Specialties,Education,practiceDesc,Website,imageURL, token = this._cookieService.get("token")): Observable<any> {
             const formData = new FormData();
-            formData.append('displayName', displayName);
-            formData.append('description', description);            
+            formData.append('displayName', displayName);           
             formData.append('email', email);
-            formData.append('PhoneNo', PhoneNo);
-            formData.append('Address', Address);
-            formData.append('Gender', Gender);
-            formData.append('Specialties', Specialties);
-            formData.append('Education', Education);
-            formData.append('practiceDesc', practiceDesc);
-            formData.append('Website', Website);
+            // formData.append('PhoneNo', PhoneNo);
+            // formData.append('Address', Address);
+            // formData.append('Gender', Gender);
+            // formData.append('Specialties', Specialties);
+            // formData.append('Education', Education);
+            // formData.append('practiceDesc', practiceDesc);
+            // formData.append('Website', Website);
             // formData.append('publishableKey', publishableKey);
             // formData.append('secretKey', secretKey);
            

@@ -1,11 +1,13 @@
+
 <h1 mat-dialog-title>Update Member Plan</h1>
 <div mat-dialog-content class="sa_forms_design" >
 
 
 <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Member Name</label>
-         <input matInput tabindex="1" [(ngModel)]="data.planName" placeholder=""  class="form-control-dialog" required="true">
+        <label>Member Plan Name</label>
+         <input matInput tabindex="1" [(ngModel)]="data.planName" (keypress)="omit_special_char($event)" placeholder="" [formControl]="form.controls['planName']"  class="form-control-dialog" required="true">
+         <small *ngIf="form.controls['planName'].hasError('required') && form.controls['planName'].touched" class="text-danger support-text">Member Plan Name is Required.</small>
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>&nbsp;</label>
@@ -18,18 +20,18 @@
     <div fxLayout="row wrap" fxLayoutGap="0">
         <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
             <label>Description</label>
-            <input matInput tabindex="1" [(ngModel)]="data.description" placeholder="" class="form-control-dialog" required="true">
+            <input matInput tabindex="1" [(ngModel)]="data.description" (keypress)="omit_special_char($event)" placeholder="" [formControl]="form.controls['description']" placeholder="" class="form-control-dialog" required="true">
+             <small *ngIf="form.controls['description'].hasError('required') && form.controls['description'].touched" class="text-danger support-text">Description is Required.</small>
         </div>
 
     </div>
 
     <div fxLayout="row wrap" fxLayoutGap="2%">
-
         <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
             <label>Membership Cost ($)</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.totalAmount" placeholder=""  class="form-control-dialog" required="true" style="max-width:180px;">
+            <input matInput tabindex="1" type="text" [(ngModel)]="data.totalAmount" placeholder=""  class="form-control-dialog" required="true" style="max-width:180px;" [formControl]="form.controls['totalAmount']" step="0.01">
+             <small *ngIf="form.controls['totalAmount'].hasError('required') && form.controls['totalAmount'].touched" class="text-danger support-text">Membership Cost is Required.</small>
         </div>
-
         <div fxFlex.gt-md="28" fxFlex="100" class="sa-form-group">
             <div class="duration width-full ">
                 <label>&nbsp;</label>
@@ -45,10 +47,10 @@
                </div>
             </div>
         </div>
-
         <div fxFlex.gt-md="36" fxFlex="100" class="sa-form-group">
             <label>Discount for family members %</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.discount" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px;">
+            <input matInput tabindex="1" type="number" [(ngModel)]="data.discount" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px;" [formControl]="form.controls['preventative_discount']">
+             <small *ngIf="form.controls['preventative_discount'].hasError('required') && form.controls['preventative_discount'].touched" class="text-danger support-text">Discount for family members is Required.</small>
         </div>
 
     </div>
@@ -57,12 +59,14 @@
 
         <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
             <label>#Free Preventative Appts</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_frequency" class="form-control" min="1" max="100" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px; float:left; margin-right:10px;"> <span style="float:left; margin-top:7px;">Per year</span>
+            <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_frequency" class="form-control" min="1" max="100" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px; float:left; margin-right:10px;" [formControl]="form.controls['preventative_frequency']"> <span style="float:left; margin-top:7px;">Per year</span>
+             <small *ngIf="form.controls['preventative_frequency'].hasError('required') && form.controls['preventative_frequency'].touched" class="text-danger support-text">Preventative Frequency is Required.</small>
         </div>
 
         <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
             <label>Treatment Discount %</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_discount" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px;">
+            <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_discount" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px;" [formControl]="form.controls['discount']">
+            <small *ngIf="form.controls['discount'].hasError('required') && form.controls['discount'].touched" class="text-danger support-text">Treatment Discount is Required.</small>
         </div>
 
 
@@ -105,7 +109,7 @@
 
         <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
             <label>Display Order</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_frequency" class="form-control"  placeholder=""  class="form-control-dialog" required="true" style="max-width:80px; ">
+            <input matInput tabindex="1" type="number" [(ngModel)]="data.planOrder" class="form-control"  placeholder=""  class="form-control-dialog" required="true" style="max-width:80px; ">
         </div>
 
     </div>
@@ -117,4 +121,5 @@
 <div mat-dialog-actions class="sa-pull-right">
   <button mat-button (click)="update(data)" tabindex="2" class="mat-raised-button mat-dc">OK</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">CANCEL</button>
+
 </div>

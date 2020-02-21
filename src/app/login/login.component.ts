@@ -38,9 +38,9 @@ export class LoginComponent implements OnInit {
         datares['parentid'] = res.data.data.parent_id;   
         datares['user_type'] = res.data.data.user_type;       
         datares['user_image'] = res.data.data.user_image;        
-
         datares['login_status'] = res.data.data.login_status;        
-        datares['display_name'] = res.data.data.display_name;        
+        datares['display_name'] = res.data.data.display_name;       
+
 
         let opts: CookieOptionsArgs = {
             expires: new Date('2030-07-19')

@@ -3,31 +3,84 @@
 <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
 <mat-card>
     <mat-card-content>
-        <mat-card-title><span class="main-title">In-Office Payment Plans</span>
-          <button class="sa-pull-right mat-raised-button mat-gray mr-15" mat-raised-button (click)="openDialog()" *ngIf="clinic_id > 0">Add Payment Plan</button></mat-card-title>
-           <div class="filter_status">
-          <mat-form-field>
-            <mat-label>Filter by Status</mat-label>
-            <mat-select [(ngModel)]="StatusSelected" (ngModelChange)="statusFilter()">
-              <mat-option  value="">Select All</mat-option>
-              <mat-option  value="ACTIVE">Active</mat-option>
-              <mat-option  value="INACTIVE">Inactive</mat-option>
-              <mat-option  value="COMPLETED">Completed</mat-option>
-              <mat-option  value="OVERDUE">Overdue</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="main_title_outer">
+            <div class="main_title_withbtn">
+                <mat-card-title><span class="main-title">Payment Plans</span></mat-card-title>
+            </div>
+             <div class="title_btn" style="margin-bottom:10px;">
+                <div fxLayout="row wrap" fxLayoutGap="2%">
+                    <!-- <div fxFlex.gt-xs="20"  fxFlex="100" >
+                        <div class="start_date">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="dp" [(ngModel)]="start_date"  [min]="minDate" [max]="maxDate">
+                                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                                <mat-datepicker #dp (click)="demo()"
+                                                startView="multi-year" startView="year"
+                                                panelClass="example-month-picker">
+                                </mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxFlex.gt-xs="20"  fxFlex="100" >
+                        <div class="due_date">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="dp1" [(ngModel)]="end_date" [min]="minDate" [max]="maxDate">
+                                <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                                <mat-datepicker #dp1 (click)="demo()"
+                                                startView="multi-year" startView="year"
+                                                panelClass="example-month-picker">
+                                </mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div> -->
+                    <div fxFlex.gt-xs="340px" fxFlex="100" style="text-align:right;" >
+                        <button style="margin-bottom:10px;" class="mat-raised-button mat-gray" mat-raised-button (click)="openExportDialog()" *ngIf="clinic_id > 0">Export Payments</button>
+                        <button style="margin-bottom:10px;" class="mat-raised-button mat-gray" mat-raised-button (click)="openDialog()" *ngIf="clinic_id > 0 && connectedStripe">Add Payment Plan</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <mat-form-field>
-          <input matInput type='text' class="form-control" placeholder='Type to filter by Patient name...' (keyup)='updateFilter($event)'/>
-        </mat-form-field>
-        <ngx-datatable #table class='material responsive-datatable responsive-datatableH'  [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+        <div fxLayout="row wrap" fxLayoutGap="2%">            
+                 <div fxFlex.gt-xs="25" fxFlex="100" >
+                        <div class="filter_status">
+                            <mat-form-field >
+                                <mat-label>Filter by Status</mat-label>
+                                <mat-select [(ngModel)]="StatusSelected" (ngModelChange)="statusFilter()">
+                                   <mat-option  value="">Select All</mat-option>
+                            <mat-option  value="ACTIVE">Active</mat-option>
+                            <mat-option  value="INACTIVE">Inactive</mat-option>
+                            <mat-option  value="COMPLETED">Completed</mat-option>
+                            <mat-option  value="OVERDUE">Overdue</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+          </div>
+            <div fxLayout="row wrap" fxLayoutGap="2%">
+            <div fxFlex.gt-xs="25" fxFlex="100" >
+                <mat-form-field style="margin-top:2px;">
+                    <input matInput type='text' class="form-control" placeholder='Type to filter Patient name...' (keyup)='updateFilter($event)'
+                           autocomplete="off"/>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="ngx_datatable_scroll_div">
+        <ngx-datatable #table class='material responsive-datatable rdt_1600px'  [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
             [rowHeight]="'auto'" [limit]="10" [rows]='rows' >
       <ngx-datatable-column  name="patient_name"  prop="patient_name">
          <ng-template let-column="column" ngx-datatable-header-template let-sort="sortFn">
         <span (click)="sort()">Patient Name</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-             {{value}}
+            <span class="datatable_label">Patient Name : </span>{{value}}
+     </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column  name="plan_description"  prop="plan_description">
+         <ng-template let-column="column" ngx-datatable-header-template let-sort="sortFn">
+        <span (click)="sort()">Plan Description</span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+            <span class="datatable_label">Plan Description : </span>{{value}}
      </ng-template>
     </ngx-datatable-column>
     <ngx-datatable-column prop="patient_email" name="patient_email" class="minemail" [width] = "240">
@@ -35,7 +88,7 @@
         <span (click)="sort()">Email</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-           <span class="setColumnValueWidth">{{value}}</span>
+           <span class="setColumnValueWidth"><span class="datatable_label">Email : </span>{{value}}</span>
       </ng-template>
     </ngx-datatable-column>
      <ngx-datatable-column prop="total_amount" name="total_amount">
@@ -43,7 +96,7 @@
      <span (click)="sort()">Total Amount</span>
    </ng-template> 
      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          $ {{value}}
+         <span class="datatable_label">Total Amount : </span> $ {{value}}
       </ng-template>
    </ngx-datatable-column>
        <ngx-datatable-column prop="balance_amount" name="balance_amount">
@@ -51,15 +104,19 @@
            <span (click)="sort()">Outstanding Amount</span>
         </ng-template>
        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          $ {{value}}
+           <span class="datatable_label">Outstanding Amount : </span> $ {{value}}
         </ng-template>
      </ngx-datatable-column>
-      <ngx-datatable-column prop="patient_status" name="patient_status">
+      <ngx-datatable-column prop="payment_status" name="payment_status">
       <ng-template let-column="column" ngx-datatable-header-template let-sort="sortFn">
      <span (click)="sort()">Status</span>
    </ng-template>
      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-        {{value}}
+         <span class="datatable_label">Status : </span> 
+         <mat-chip-list>
+            <mat-chip color="primary" selected *ngIf="rows[rowIndex]['payment_status'] == 'ACTIVE'">{{value}}</mat-chip>
+            <mat-chip color="warn" selected *ngIf="rows[rowIndex]['payment_status'] == 'INACTIVE'">{{value}}</mat-chip> 
+         </mat-chip-list>
       </ng-template>
    </ngx-datatable-column>
       <ngx-datatable-column name="id" [width] ="200">
@@ -73,5 +130,6 @@
         </ng-template>
       </ngx-datatable-column>
         </ngx-datatable>
+            </div>
     </mat-card-content>
 </mat-card>

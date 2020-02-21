@@ -43,6 +43,16 @@ export class DefaultersService {
                 })
         );
     }
+
+       // Get Dentist
+   getDefaultersMembers(clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): 
+    Observable<any> {
+        return this.http.get(this.apiUrl +"/MemberPlan/getDefaultersMembers?token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token_id="+this.token_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                    return response;
+                })
+        );
+    }
   
 
     // Update Clinic

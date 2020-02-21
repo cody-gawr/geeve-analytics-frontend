@@ -25,7 +25,7 @@ import { SpinnerComponent } from './shared/spinner.component';
 import { CookieService } from "angular2-cookie/services/cookies.service";
 import { HttpModule } from '@angular/http'; 
 import { AuthGuard } from './auth/authguard.service';
-
+import { AuthService } from './auth/auth.service';
 import { HeaderService } from './layouts/full/header/header.service';
 import { Globals } from 'globals';
 import { DentistService } from './dentist/dentist.service';
@@ -106,6 +106,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   providers: [
     AuthGuard, 
+    AuthService,
     HeaderService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

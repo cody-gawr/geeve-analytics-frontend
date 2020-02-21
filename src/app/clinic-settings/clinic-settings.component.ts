@@ -8,7 +8,7 @@ import { NotifierService } from 'angular-notifier';
 import {forwardRef, Input, ViewChild, ElementRef } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
 import { environment } from "../../environments/environment";
-
+import { Router, NavigationEnd, Event  } from '@angular/router';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-settings.component.html',
@@ -79,10 +79,10 @@ afuConfig = {
   public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
   // public practice_size:any ={};
   options: FormGroup;
-  constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute) {
+  constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
     this.notifier = notifierService;
-    this.DefaultLogo=this.homeUrl+"src/assets/img/logo.png";
-    this.DefaultHeaderImage=this.homeUrl+"src/assets/img/headimage.jpg";
+    this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
+    this.DefaultHeaderImage=this.homeUrl+"/assets/img/headimage.jpg";
     
     this.options = fb.group({
       hideRequired: false,
@@ -142,7 +142,7 @@ afuConfig = {
   }
 
   connectStripe() {
-      var win = window.open(this.linkStripe, "MsgWindow", "width=600,height=400");
+      var win = window.open(this.linkStripe, "MsgWindow", "width=600,height=600");
       var self = this;
       var timer = setInterval(function() { 
         if(win.closed) {
@@ -205,6 +205,13 @@ public clinicEmail;
         }
         
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -224,8 +231,11 @@ public clinicEmail;
             this.headerImageURL = headingSettings.image;
          }else{
            this.headerImageURL = this.DefaultHeaderImage; //Default Header Image 
-         }
-         
+         }        
+        }
+        else{
+          this.headerTitle ='Wanna Checkup Your Smiling Teeth';
+          this.headerDescription = 'The phrasal sequence of the Lorem Ipsum text is now so widespread and commonplace that many DTP programmes can generate dummy text using the starting sequence. The phrasal sequence of the Lorem Ipsum text is now so widespread and commonplace that many DTP programmes can generate dummy text using the starting sequence';
         }
         if(res.data.social_info!=null){
          const socialSettings=JSON.parse(res.data.social_info);
@@ -242,6 +252,13 @@ public clinicEmail;
          this.clinicTagLine =res.data.clinicTagLine;
         
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -262,6 +279,13 @@ public clinicEmail;
        if(res.message == 'success'){
         this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -287,6 +311,13 @@ public clinicEmail;
         this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
         this.getClinicLandingPageSettings();
        }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -406,8 +437,8 @@ removeSliderImage(keyUrl,index){
       
       return false;
     } 
-
 }
+
 public linkStripe;
 getStripeAuthorization(){ 
  this.clinicSettingsService.getStripeAuthorization(this.id).subscribe((res) => {

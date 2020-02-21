@@ -1,5 +1,5 @@
 
-                                                    <h1 mat-dialog-title class="addmember_title">Add Member</h1>
+                                                    <h1 mat-dialog-title class="addmember_title">Add Family Member</h1>
                                                     <div mat-dialog-content class="sa_forms_design">
                                                         
 
@@ -7,11 +7,13 @@
                                                 <div fxLayout="row wrap" fxLayoutGap="2%">
                                                 <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                                   <label>Name</label>  
-                                                  <input  tabindex="1" class="form-control-dialog" [(ngModel)]="data.subPatientName" placeholder="">
+                                                  <input  tabindex="1" class="form-control-dialog" [(ngModel)]="data.subPatientName" placeholder=""  [formControl]="form.controls['subPatientName']" (keypress)="omit_special_char($event)">
+                                                  <small *ngIf="form.controls['subPatientName'].hasError('required') && form.controls['subPatientName'].touched" class="text-danger support-text">Patient Name is Required.</small>
                                                 </div>
                                                 <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                                 <label>Date of Birth</label>
-                                                <input  tabindex="1" type="date" [(ngModel)]="data.subPatientDob" placeholder="" class="form-control-dialog">
+                                                <input  tabindex="1" type="date" [(ngModel)]="data.subPatientDob" placeholder="" class="form-control-dialog"  [formControl]="form.controls['subPatientDob']" min="{{minDate| date: 'yyyy-MM-dd'}}" max="{{maxDate| date: 'yyyy-MM-dd'}}">
+                                                <small *ngIf="form.controls['subPatientDob'].hasError('required') && form.controls['subPatientDob'].touched" class="text-danger support-text">Patient DOB is Required.</small>
                                                   </div>
                                                 </div>
                                                        <div fxLayout="row wrap" fxLayoutGap="2%">
@@ -24,12 +26,12 @@
                                                                 Female 
                                                             </mat-radio-button>
                                                         </mat-radio-group>
-
                                                     </div>
                                                 </div>
                                                         <!--  <input type="file" (change)="onChange($event)"> -->
                                                     </div>
                                                     <div mat-dialog-actions class="sa-pull-right " style="text-align: right;">
-                                                          <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">OK</button>
+                                                          <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc" [disabled]="!form.valid">OK</button>
+                                                            <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
                                                     </div>
                                             
