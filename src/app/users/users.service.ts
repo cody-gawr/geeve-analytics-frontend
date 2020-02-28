@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "angular2-cookie/core";
 import { environment } from "../../environments/environment";
-
+import { Router, NavigationEnd, Event  } from '@angular/router';
 
 @Injectable()
 export class UsersService {
@@ -15,20 +15,27 @@ export class UsersService {
    public api_url: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
+    public token_id;
 
-    constructor(private http: HttpClient,private _cookieService: CookieService) {
+    constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {
         
         //append headers
         this.headers = new HttpHeaders();
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        this.router.events.subscribe(event => {
+         if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
+        });
    }
 
 
    // Get Dentist
     getUsers(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Users/getPracticeOwners?token="+this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/Users/getPracticeOwners?token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -40,6 +47,7 @@ export class UsersService {
     const formData = new FormData();
     formData.append('id', user_id);
     formData.append('token', token);
+    formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Users/delete", formData)
         .pipe(map((response: Response) => {
@@ -56,6 +64,7 @@ export class UsersService {
     formData.append(column, value);
      formData.append('user_id', this._cookieService.get("userid"));
     formData.append('clinic_id', '1');
+    formData.append('token_id', this.token_id);
 
     formData.append('token', token);
     
@@ -73,8 +82,8 @@ export class UsersService {
     formData.append('clinicName', name);
     formData.append('address', address);
     formData.append('contactName', contact_name);
-
-     formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('token_id', this.token_id);
+    formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);
     
         return this.http.post(this.apiUrl +"/Practices/add/", formData)

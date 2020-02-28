@@ -7,11 +7,22 @@ import { Observable } from 'rxjs';
 import { CookieService } from "angular2-cookie/core";
 
 import { environment } from "../../environments/environment";
+import { Router, NavigationEnd, Event  } from '@angular/router';
 
 @Injectable()
 export class ImportcsvService {
+    public token_id;
 
-  constructor(private http: HttpClient,private _cookieService: CookieService){}
+  constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router){
+
+    this.router.events.subscribe(event => {
+         if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
+        });
+
+  }
     private apiUrl = environment.apiUrl;
 
 
@@ -24,6 +35,7 @@ export class ImportcsvService {
     formData.append('target', 'webroot/uploads/');
     formData.append('file_input', 'file');
     formData.append('token', this._cookieService.get("token"));
+    formData.append('token_id', this.token_id);
 
    // console.log(formData);
   return this.http.post(this.apiUrl +"/AccountingInvoicesAndReceipts/uploadFile", formData)
@@ -32,10 +44,9 @@ export class ImportcsvService {
                     })
         );
   }
-
    // Get Logs
     getLogs(clinic_id='1',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/logs/getUploadedCsvLogs?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { })
+        return this.http.get(this.apiUrl +"/logs/getUploadedCsvLogs?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -43,7 +54,7 @@ export class ImportcsvService {
     }
    // Process All Files
     processAllFiles(clinic_id='1',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/processAllCsv?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { })
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/processAllCsv?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { })
         .pipe(map((response: Response) => {
                         return response;
                     })

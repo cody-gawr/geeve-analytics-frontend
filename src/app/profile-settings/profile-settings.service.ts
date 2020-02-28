@@ -6,26 +6,34 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "angular2-cookie/core";
 import { environment } from "../../environments/environment";
-
+import { Router, NavigationEnd, Event  } from '@angular/router';
 @Injectable()
 export class ProfileSettingsService {
 
    public token: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
+    public token_id;
 
-    constructor(private http: HttpClient,private _cookieService: CookieService) {
+    constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {
         //append headers
         this.headers = new HttpHeaders();
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        this.router.events.subscribe(event => {
+         if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
+        });
+
    }
 
 
    // Get profileSettings
     getprofileSettings( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Users/getPractices?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/Users/getPractices?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -43,6 +51,7 @@ export class ProfileSettingsService {
             formData.append('id', this._cookieService.get("userid"));
 
             formData.append('token', token);
+    formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Users/updateprofileSettings/", formData)
         .pipe(map((response: Response) => {
@@ -62,7 +71,7 @@ export class ProfileSettingsService {
             formData.append('id', this._cookieService.get("userid"));
 
             formData.append('token', token);
-
+            formData.append('token_id', this.token_id);
         return this.http.post(this.apiUrl +"/Users/changePasswordApi/", formData)
         .pipe(map((response: Response) => {
                         return response;
@@ -77,6 +86,7 @@ export class ProfileSettingsService {
             formData.append('id', this._cookieService.get("userid"));
 
             formData.append('token', this._cookieService.get("token"));
+            formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Users/logoUpload/", formData)
         .pipe(map((response: Response) => {
@@ -86,7 +96,7 @@ export class ProfileSettingsService {
     }
 
     clearSession( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })

@@ -9,7 +9,7 @@
 
                     <mat-form-field>
 
-                            <mat-select [value] ="1" class="external_clinic">
+                            <mat-select [value] ="1" class="external_clinic" [(ngModel)]="selectedClinic"  (ngModelChange)="loadClinic($event)">
 
                                 <mat-option *ngFor="let clinicData of clinicsData" [value]="clinicData.id">
 

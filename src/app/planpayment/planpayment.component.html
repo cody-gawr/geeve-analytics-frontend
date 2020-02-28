@@ -12,13 +12,16 @@ align-items: center;"></div>
                         <h4 class="m-t-0">Proceed to Payment</h4>
                     </div>
 
-                    <div fxLayout="row wrap">
+                    <div class="proceed-payment-content">
                         <!-- col full-->
+
+                        <div class="selectIcon">
                         <select class="sa_select plan" id="plans" (change) = "get_amount()">
                              <option value ="all">Select Plan</option>
                             <option *ngFor="let plan of plans;let i = index" [value]="i" [attr.selected] = "plan.id == plan_id ? 'selected' : null"> {{plan.plan}}</option>
                         </select> 
-                        
+                        </div>
+
                         <!-- col full-->
                         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center">
                             <span> 

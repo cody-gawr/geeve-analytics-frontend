@@ -32,7 +32,8 @@ export class DialogOverviewExampleDialogComponent {
    save(data) {
     $('.form-control').click();
      const {value, valid} = this.form;
-    if(data.allowedClinics != undefined && data.amount != undefined  && data.description != undefined  && data.discount != undefined && data.plan != undefined ){
+     console.log(data);
+    if(data.allowedClinics != undefined && data.amount != undefined  && data.description != undefined && data.plan != undefined && data.allowedClinics != '' && data.amount != ''  && data.description != '' && data.plan != ''  ){
         this.dialogRef.close(data);
       }
     }
@@ -40,6 +41,7 @@ export class DialogOverviewExampleDialogComponent {
         this.dialogRef.close();
     }
 }
+
 
 @Component({
   selector: 'app-table-filter',
@@ -51,7 +53,6 @@ export class PlansComponent implements AfterViewInit {
   address: string;
   contact_name: string;
   fileInput: any ;
-
 
   ngAfterViewInit() {
     this.getPlans();
@@ -69,7 +70,7 @@ public allowedClinics;
 public description;
 public amount;
 public discount;
-  columns = [{ prop: 'id' }, { name: 'plan' }, { name: 'allowedClinics' }, { name: 'description' }, { name: 'amount' }, { name: 'discount' }];
+  columns = [{ prop: 'sr' }, { name: 'plan' }, { name: 'allowedClinics' }, { name: 'description' }, { name: 'amount' }, { name: 'discount' }];
 
   constructor(private plansService: PlansService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
     this.rows = data;
@@ -155,29 +156,48 @@ public discount;
     // Whenever the filter changes, always go back to the first page
     this.table = data;
   }
-  updateValue(event, cell, rowIndex) {
-    this.editing[rowIndex + '-' + cell] = false;
-    if(event.target.value == '')
-      alert('Value cannot be empty!');
-    else {
-    this.rows[rowIndex][cell] = event.target.value;
-    this.plansService.updateUser(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
-       if(res.message == 'success'){
-        alert('Plan Updated');
-          this.getPlans();
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );  
-    this.rows = [...this.rows];
-  }
-  }
+  // updateValue(event, cell, rowIndex) {
+  //   this.editing[rowIndex + '-' + cell] = false;
+  //   if(event.target.value == '')
+  //     alert('Value cannot be empty!');
+  //   else {
+  //   this.rows[rowIndex][cell] = event.target.value;
+  //   this.plansService.updatePlan(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
+  //      if(res.message == 'success'){
+  //       alert('Plan Updated');
+  //         this.getPlans();
+  //      }
+  //   }, error => {
+  //     this.warningMessage = "Please Provide Valid Inputs!";
+  //   }    
+  //   );  
+  //   this.rows = [...this.rows];
+  // }
+  // }
 
   enableEditing(rowIndex, cell) {
 
     this.editing[rowIndex + '-' + cell] = true;
 
   }
+    updatePlan(row): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+      width: '250px',
+      data: { plan: this.rows[row]['plan'], allowedClinics: this.rows[row]['allowedClinics'], description: this.rows[row]['description'], amount: this.rows[row]['amount'], discount: this.rows[row]['discount'] }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result != undefined) {
+     this.plansService.updatePlan(this.rows[row]['id'], result.plan, result.allowedClinics, result.description,result.amount).subscribe((res) => {
+           if(res.message == 'success'){
+            alert('Plan Updated Successfully!');  
+            this.getPlans();
+           }
+        }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+   }
+    });
+  }
+
 
 }

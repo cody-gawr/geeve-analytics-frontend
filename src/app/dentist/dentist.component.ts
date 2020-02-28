@@ -22,7 +22,12 @@ export class DialogOverviewExampleDialogComponent {
   //     dentist_name: [null, Validators.compose([Validators.required])]
   //   });
 
-
+    save(data) {
+    $('.mat-form-control').click();
+    if(data.provider_id != undefined && data.dentist_name != undefined  ){
+        this.dialogRef.close(data);
+      }
+    }
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -60,7 +65,7 @@ export class DentistComponent implements AfterViewInit {
   loadingIndicator = true;
   reorderable = true;
 
-  columns = [{ prop: 'sr' }, { name: 'name' }, { name: 'Action' }];
+  columns = [{ prop: 'sr' },{ prop: 'providerId' }, { name: 'name' }, { name: 'Action' }];
 
   @ViewChild(DentistComponent) table: DentistComponent;
   constructor(private dentistService: DentistService, public dialog: MatDialog, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
@@ -76,7 +81,8 @@ export class DentistComponent implements AfterViewInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-      width: '250px',
+      width: '300px',
+      height: '300px',
       data: { dentist_name: this.dentist_name, provider_id: this.provider_id }
     });
 

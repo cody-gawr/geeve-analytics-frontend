@@ -150,6 +150,11 @@ export const AppRoutes: Routes = [
           './xero/xero.module#XeroModule'
       },
       {
+        path: 'support',
+        loadChildren:
+          './support/support.module#SupportModule'
+      },
+      {
         path: 'subscription',
         loadChildren:
           './subscription/subscription.module#SubscriptionModule'

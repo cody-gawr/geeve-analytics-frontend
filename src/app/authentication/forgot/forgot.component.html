@@ -2,7 +2,7 @@
 display: flex;
 background-size: cover;
 align-items: center;"></div>
-<img class="login_abso_logo" src="../assets/images/logo-white.png">   
+<img class="login_abso_logo" src="../assets/images/logo-text-white.png">   
 <div class="login-register" style="background-image:url(assets/images/background/login-register.jpg);">
     <div class="login-register-box">
     <mat-card>
@@ -19,10 +19,15 @@ align-items: center;"></div>
               <mat-form-field style="width: 100%">
                 <input matInput placeholder="Email address" type="email" [formControl]="form.controls['email']">
               </mat-form-field>
-              <small *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched" class="text-danger support-text">You must include an email address.</small>
-              <small *ngIf="form.controls['email'].errors?.email && form.controls['email'].touched" class="text-danger support-text">You must include a valid email address.</small>
+              <small *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched" class="text-danger support-text">Please enter registered email address.</small>
+              <small *ngIf="form.controls['email'].errors?.email && form.controls['email'].touched" class="text-danger support-text">Please enter registered email address.</small>
               <small *ngIf="errorLogin ==true && errorLoginText != ''" class="text-danger support-text">{{errorLoginText}}</small>
                <small *ngIf="successLogin ==true && successLoginText != ''" class="text-success support-text">{{successLoginText}}</small>
+            </div>
+            <div class="text-right" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+              <span>
+                <a [routerLink]="['/login']" class="link text-info"> Login</a>
+              </span>
             </div>
             <button mat-raised-button color="primary" type="submit" class="btn-block btn-lg m-t-20" [disabled]="!form.valid">Submit</button>
           </div>

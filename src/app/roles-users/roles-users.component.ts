@@ -29,6 +29,12 @@ show_dentist = false;
       if(val == '4')
         this.show_dentist = true;
     }
+    save(data) {
+    $('.mat-form-control').click();
+    if(data.display_name != undefined && data.email != undefined && data.user_type != ''  ){
+        this.dialogRef.close(data);
+      }
+    }
 }
 
 @Component({
@@ -183,17 +189,17 @@ dentists:any=[];
   if(dentist_id =='' || dentist_id == undefined)
     dentist_id ='';
   this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
-       //if(res.message == 'success'){
-        alert('User Added');
+       if(res.message == 'success'){
+        alert('User has been added successfully!');
         this.getUsers();
-     //  }
+       }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+       alert('Please Provide Valid Inputs!');
     });
   }
 
   private getUsers() {
-  this.rolesUsersService.getUsers().subscribe((res) => {
+    this.rolesUsersService.getUsers().subscribe((res) => {
        if(res.message == 'success'){
         this.rows = res.data;
         this.temp = [...res.data];        
@@ -257,7 +263,7 @@ dentists:any=[];
     this.rows = [...this.rows];
 
     }
-  }
+    }
   }
 
   addDentist() {

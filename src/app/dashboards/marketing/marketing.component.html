@@ -125,17 +125,9 @@
          <span *ngIf="showTrend == false" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
         <mat-card-title class="text-center">No. New Patients
             <div class="sa_box_title_right_buttons">
-                <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
-                <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
-                <mat-menu #menu="matMenu">
-                   <button mat-menu-item>Save Image</button>
-                    <button mat-menu-item>Download PDF</button>
-                </mat-menu> -->
             </div>  
         </mat-card-title>
           <div class="chart py-2">
-          
-
           <div *ngIf="showTrend == false && visitsTotal>0" style="height: 190px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newPatientsTotal" 
@@ -146,7 +138,6 @@
            [size] = "size">
           </ngx-gauge>
       </div>
-
          <div *ngIf="showTrend == false && newPatientsTotal<=0 && fdnewPatientsRatioLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p>Oops! Looks like we don't have any data to show you</p>
@@ -180,7 +171,8 @@
                 </div>       
       </mat-card-content>
     </mat-card>
-    <div *ngIf="fdnewPatientsRatioLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
+    <div *ngIf="fdnewPatientsRatioLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div>
+    </div>
   </div>
   <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg referral_clinicians">
     <mat-card>
@@ -188,19 +180,13 @@
          <span *ngIf="showTrend == false" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
         <mat-card-title class="text-center">Cost of New Patient Acquisition
             <div class="sa_box_title_right_buttons">
-                <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
-                <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
-                <mat-menu #menu="matMenu">
-                   <button mat-menu-item>Save Image</button>
-                    <button mat-menu-item>Download PDF</button>
-                </mat-menu> -->
+  
             </div>  
         </mat-card-title>
           <div class="chart py-2">
           <div>  
             <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-raised-button mat-gray mat-green-button" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Set Categories</button></div>
           <div  *ngIf="showTrend == false && newAcqValue>0" style="height: 200px">
-         
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newAcqValue" 
            [thick]="gaugeThick"  

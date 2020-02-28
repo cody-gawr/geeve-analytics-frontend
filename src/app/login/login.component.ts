@@ -66,10 +66,10 @@ export class LoginComponent implements OnInit {
         else if(datares['user_type'] == '2') {
          this._cookieService.put("userid", datares['userid'], opts);
 
-       if(datares['login_status'] == 0)
-        window.location.href = '/assets/stepper/index.html';
-        else
-        this.router.navigate(['/dashboards/cliniciananalysis/1']);
+       // if(datares['login_status'] == 0)
+       //  window.location.href = '/assets/stepper/index.html';
+       //  else
+        this.router.navigate(['/dashboards/healthscreen/1']);
       }
       else{
          this._cookieService.put("userid", datares['parentid'], opts);

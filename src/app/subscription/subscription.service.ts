@@ -15,7 +15,7 @@ export class SubscriptionService {
 
     // Items Predictor Analysis 
     getPlans(): Observable<any> {
-            return this.http.get(this.apiUrl +"/plans/getPlans")
+            return this.http.get(this.apiUrl +"/plans/getPlansFrontend")
             .pipe(map((response: Response) => {
                             return response;
                         })

@@ -23,7 +23,7 @@ declare var Chart: any;
 @Component({
   templateUrl: './cliniciananalysis.component.html'
 })
-export class ClinicianAnalysisComponent implements AfterViewInit {
+export class ClinicianAnalysisComponentold implements AfterViewInit {
    @ViewChild("myCanvas") canvas: ElementRef;
 
   lineChartColors;

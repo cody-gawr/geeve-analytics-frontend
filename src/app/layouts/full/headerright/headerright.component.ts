@@ -16,7 +16,7 @@ export interface Dentist {
   styleUrls: []
 })
 export class AppHeaderrightComponent implements AfterViewInit  {   
-  constructor(private _cookieService: CookieService,  private route: Router, private headerService: HeaderService, private dentistService: DentistService) {}
+  constructor(private _cookieService: CookieService,  private route: Router, private headerService: HeaderService, private dentistService: DentistService,private router: Router) {}
 
  ngAfterViewInit() {
     this.clinic_id = '1';
@@ -41,6 +41,13 @@ export class AppHeaderrightComponent implements AfterViewInit  {
         this.clinicsData = res.data;
         this.title = $('#page_title').val();
        }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
      // this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -55,16 +62,29 @@ export class AppHeaderrightComponent implements AfterViewInit  {
               this.dentistCount= res.data.length;
 
            }
+            else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
         }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
         }    
         );
   }
-  
- private loadClinic(value) {
-  this.finalUrl =this.route.url.substring(0, this.route.url.lastIndexOf('/') + 1);
-  this.route.navigate([this.finalUrl+value]);
-  //this.location.go(this.finalUrl+value);
+  public  selectedClinic =1;
+ private loadClinic(newValue) {
+ if($('body').find('span#currentClinic').length <= 0){
+    $('body').append('<span id="currentClinic" style="display:none" did="'+newValue+'"></span>');
+  }
+  else{
+    $('#currentClinic').attr('cid',newValue);
+  }
+    this.selectedClinic = newValue;
+    $('.internal_clinic').val(newValue);
+    $('#clinic_initiate').click();
  }
 /*  logout() {
       this.headerrightService.logout(this._cookieService.get("userid")).subscribe((res) => {

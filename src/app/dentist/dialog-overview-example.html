@@ -2,14 +2,14 @@
 <div mat-dialog-content>
 
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.provider_id" placeholder="Provider ID" required>
+    <input matInput tabindex="1" [(ngModel)]="data.provider_id" class="mat-form-control" required="true" placeholder="Provider ID" required>
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.dentist_name" placeholder="Dentist Name" required>
+    <input matInput tabindex="1" [(ngModel)]="data.dentist_name" class="mat-form-control" required="true" placeholder="Dentist Name" required>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
 </div>

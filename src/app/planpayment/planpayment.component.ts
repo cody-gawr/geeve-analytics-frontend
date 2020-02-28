@@ -66,11 +66,11 @@ checkString() {
            if(res.message == 'success'){
             this.successMessage = 'Payment Completed Successfully! You will be logged in to the account!';
 
-setTimeout(() => 
-{
-              this.loginService.autoLogin(this.user_id).subscribe((res) => {
-               if(res.message == 'success'){
-      var datares = [];
+      setTimeout(() => 
+      {
+        this.loginService.autoLogin(this.user_id).subscribe((res) => {
+        if(res.message == 'success'){
+        var datares = [];
         datares['username'] = res.data.data.username;
         datares['email'] = res.data.data.email;
         datares['token'] = res.data.data.token;        
@@ -114,8 +114,8 @@ setTimeout(() =>
              }
               }, error => {
               });
-},
-5000);    
+            },
+            5000);    
            }
            else if(res.message == 'error'){
               this.errorLogin  =true;

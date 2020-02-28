@@ -139,7 +139,6 @@ const MENUITEMS = [
     ],
     param: '1',
     role:['1','2']
-
   },
   {
     state: 'importcsv',
@@ -376,7 +375,7 @@ export class MenuItems {
   },
   {
     state: 'users',
-    name: 'Registered Users',
+    name: 'Registered Clinic Owners',
     type: 'link-noparam',
     icon: 'fas fa-users',
     role:['1']

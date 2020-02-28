@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ClinicSettingsService } from './clinic-settings.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
-
+import { Router, NavigationEnd, Event  } from '@angular/router';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-settings.component.html',
@@ -26,7 +26,7 @@ export class ClinicSettingsComponent implements OnInit {
           public xero_link;
           public xeroConnect = false;
           public xeroOrganization='';
-  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute) {
+  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -49,9 +49,9 @@ export class ClinicSettingsComponent implements OnInit {
       contactName: [null, Validators.compose([Validators.required])],
       address: [null, Validators.compose([Validators.required])],
       practice_size: [null, Validators.compose([Validators.required])]
-
     });
   }
+
   // For form validator
   email = new FormControl('', [Validators.required, Validators.email]);
 
@@ -73,8 +73,14 @@ export class ClinicSettingsComponent implements OnInit {
         this.contactName = res.data[0].contactName;
         this.address = res.data[0].address;
         this.practice_size = res.data[0].practice_size;
-
        }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+            this._cookieService.put("email", '');
+            this._cookieService.put("token", '');
+            this._cookieService.put("userid", '');
+            this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -86,10 +92,17 @@ export class ClinicSettingsComponent implements OnInit {
   this.contactName = this.form.value.contactName;
   this.address = this.form.value.address;
   this.practice_size = this.form.value.practice_size;
-   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.contactName,  this.address,this.practice_size ).subscribe((res) => {
+   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size ).subscribe((res) => {
        if(res.message == 'success'){
         alert('Clinic Settings Updated');
        }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -99,8 +112,15 @@ export class ClinicSettingsComponent implements OnInit {
   getXeroLink(){
     this.clinicSettingsService.getXeroLink(this.id).subscribe((res) => {
        if(res.message == 'success'){
-        this.xero_link = res.data.button_link;
+        this.xero_link = res.data;
        }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
@@ -109,6 +129,7 @@ export class ClinicSettingsComponent implements OnInit {
 
   public openXero(){
       var success;
+      console.log(this.xero_link);
       var win = window.open(this.xero_link, "MsgWindow", "width=400,height=400");
       var self = this;
      var timer = setInterval(function() { 
@@ -119,23 +140,21 @@ export class ClinicSettingsComponent implements OnInit {
       }, 1000);
   }
   public checkXeroStatus(){
-        this.clinicSettingsService.checkXeroStatus(this.id).subscribe((res) => {
+    this.clinicSettingsService.checkXeroStatus(this.id).subscribe((res) => {
        if(res.message == 'success'){
         if(res.data.xero_connect == 1) {
-        this.xeroConnect = true;
-        this.xeroOrganization = res.data.Name;
-      }
+          this.xeroConnect = true;
+          this.xeroOrganization = res.data.Name;
+        }
         else {
           this.xeroConnect = false;
            this.xeroOrganization = '';          
           this.disconnectXero();
-      }
+        }
        }
        else {
-        //alert('Error Connecting Xero!!');
         this.xeroConnect = false;
-           this.xeroOrganization = '';          
-
+           this.xeroOrganization = ''; 
           this.disconnectXero();
 
       }
@@ -146,14 +165,11 @@ export class ClinicSettingsComponent implements OnInit {
  public disconnectXero() {
     this.clinicSettingsService.clearSession(this.id).subscribe((res) => {
        if(res.message == 'success'){
-      //  alert('Xero Account Disconnected');
-        this.xeroConnect = false;
-           this.xeroOrganization = '';          
-        
-         this.getXeroLink();
+          this.xeroConnect = false;
+          this.xeroOrganization = '';   
+          this.getXeroLink();
        }
        else {
-      //  alert('Error Disonnecting Xero!!');
         this.xeroConnect = true;
       }
     }, error => {

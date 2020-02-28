@@ -159,11 +159,11 @@ this.lineChartColors = [
   public doughnutChartLabels: string[] =  [];
   public doughnutChartLabels1: string[] = [];
 
-    public newPatientChartLabels: string[] =  [];
+  public newPatientChartLabels: string[] =  [];
   public newPatientChartLabels1: string[] = [];
   public doughnutChartType:string = 'doughnut';
   public hourlyRateChartLabels: string[] = []; 
-public hourlyRatePreChartLabels1: string[] = [];
+  public hourlyRatePreChartLabels1: string[] = [];
 
   //data
   public barChartData: any[] = [
@@ -575,6 +575,13 @@ changeLoginStatus(){
             this.accountingDentist.push(temp);
          });
        }
+        else if(data.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!"; 
     });
@@ -593,6 +600,13 @@ changeLoginStatus(){
             this.statusDentist.push(temp);
          });
        }
+        else if(data.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!"; 
     }
@@ -756,6 +770,13 @@ changeLoginStatus(){
        }
 
        }
+        else if(data.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -795,6 +816,13 @@ public buildChartDentistLoader:any;
         }
 
        }
+        else if(data.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!"; 
     }
@@ -916,6 +944,13 @@ private recallPrebook() {
           this.recallGoal = data.goals;
         }
        }
+        else if(data.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!"; 
     }

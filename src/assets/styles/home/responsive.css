@@ -13,6 +13,9 @@
 .description-hero-section { font-size: 20px; margin-bottom: 36px;}
 .btn-watch-demo { font-size: 20px;}
 .circles-point { right: 120px;}
+.paragraph-line { font-size: 18px;}
+.xero-plus-jeeve-rightImg::after {background-size: 530px;}
+.xero-plus-jeeve-contnt .btn { font-size: 18px; min-width: 180px;}
 }
 @media (min-width:1441px) { 
 .container-fluid.sa-cf { max-width: 1720px !important; }
@@ -27,6 +30,13 @@
 @media (min-width:992px) and (max-width:1199px) {
 .banner-white-img { right: -355px; }
 .circles-point { right: 15px;}
+.plus-sign{ margin-left: 6px; }
+.xero-plus-jeeve-rightImg::after {
+    width: 532px;
+    height: 415px;
+    left: 12%;
+    background-size: 370px;
+}
 }
 @media (min-width:992px) { 
 .navbar-brand.logo { margin-left: 2%; }
@@ -46,6 +56,7 @@
     .what-is-xero .box-text {padding: 15px;min-height: 280px;margin: 30px;}
     .conections .inner-box {margin: 0px;}
     .video-section {padding:60px 0;overflow:hidden;}
+  .xero-plus-jeeve-rightImg { padding-left: 0px; }
 }
 @media (max-width:991px) {
 body{ font-size: 16px; }
@@ -59,7 +70,7 @@ body{ font-size: 16px; }
 .minheader .navbar-nav.navbar-nav-main.ml-auto{ box-shadow: none; }
 .navbar-expand-lg.navbar-main .navbar-nav .nav-link{ text-shadow: none; color: #ffffff !important; font-size: 20px; padding: 20px 0; }
 .navbar-expand-lg.navbar-main .navbar-nav .nav-link:hover, .navbar-expand-lg.navbar-main .navbar-nav .nav-link.btn-login:hover{color: #1ab394 !important; }
-.main-layout .navbar-expand-lg.navbar-main .navbar-nav .nav-link.btn-login {
+.navbar-expand-lg.navbar-main .navbar-nav .nav-link.btn-login {
     background-color: transparent; border: none; font-size: 20px;}
 .navbar-nav-main li.nav-item:last-child { margin-left: 1rem; margin-right: 1rem;}
 .list-testimonial-img { max-width: 430px; height: 100%; min-height: 250px; margin: auto; margin-bottom: 60px;}
@@ -80,7 +91,7 @@ ul.list-circles-point.list-unstyled { position: relative; top: auto; transform: 
 .list-circles-point li { display: inline-block; margin: 4px 10px 0; }
 .list-circles-point li a { margin-bottom: 0px;}
 
-.main-layout .overlay {height: 100%; width: 0; position: fixed; z-index: 1; top: 0; left: 0; background-color: rgb(18,55,92); background-color: rgba(18,55,92, 0.9);
+.overlay {height: 100%; width: 0; position: fixed; z-index: 1; top: 0; left: 0; background-color: rgb(18,55,92); background-color: rgba(18,55,92, 0.9);
   overflow-x: hidden; transition: 0.5s; display: block; }
 .overlay-content { position: relative; top: 4%; width: 100%; text-align: center; margin-top: 30px; }
 .overlay a { padding: 8px; text-decoration: none; font-size: 36px;  color: #818181;  display: block;  transition: 0.3s; }
@@ -96,6 +107,8 @@ ul.list-circles-point.list-unstyled { position: relative; top: auto; transform: 
 .features::after {bottom: -28px;}
 h2 {font-size: 26px;}
 .get-started {padding: 55px 0px;}
+.xero-plus-jeeve-rightImg {margin: 110px 0 60px; }
+.plus-sign{ margin-left: 6px; }
 }
 @media (min-width:768px) and (max-width:991px) {
 .hero-section { min-height: auto;}
@@ -128,7 +141,7 @@ h2 {font-size: 26px;}
 .what-is-xero .box-text {min-height: 150px;margin-left: 20px;margin-right: 20px;padding: 30px;}
 .conections .graphs {border-radius:15px 15px 0px 0px;width:100%;padding:25px;}
 .text-conections {width:100%;padding:25px;}
-
+.xero-plus-jeeve-rightImg::after { top: -62px; left: 18%; background-size: 310px; }
 }
 @media (min-width:576px) and (max-width:767px) {
 	.left-hero-section { padding-bottom: 110px;}
@@ -155,7 +168,14 @@ body { font-size: 14px; }
 
 /**inner-page**/
 .bg-round::after {height: 200px;width:200px;left:30px;top: -50px;}
-
+.xero-plus-jeeve-rightImg { text-align: center; }
+.col-sm-6.col-sm-6-left, .col-sm-6.col-sm-6-right{ padding-left:15px; padding-right:15px; }
+.leftScreenshot, .rightScreenshot { max-width: 300px; width: 100%; margin: 0; }
+.xero-plus-jeeve-rightImg { margin: 110px 0 0px; }
+.col-sm-6.col-sm-6-left{ margin-bottom: 90px; }
+.plus-sign {
+    margin-left: 0;
+}
 }
 @media (max-width:480px) {
 .list-testimonial-img {min-height: 200px; max-width: 300px; margin-bottom: 30px;}

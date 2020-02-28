@@ -20,7 +20,7 @@ export class UsersComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getUsers();
-        $('#title').html('Practice Owners');
+        $('#title').html('Registered Clinic Owners');
          // $('.external_clinic').hide();
          //  $('.dentist_dropdown').hide();
           $('.header_filters').addClass('hide_header'); 
@@ -42,7 +42,7 @@ export class UsersComponent implements AfterViewInit {
   loadingIndicator = true;
   reorderable = true;
 
-  columns = [{ prop: 'id' }, { name: 'username' }, { name: 'email' }, { name: 'plan' }, { name: 'user_type' }, { name: 'created' }];
+  columns = [{ prop: 'sr' }, { name: 'username' }, { name: 'email' }, { name: 'plan' }, { name: 'user_type' }, { name: 'created' }];
 
   constructor(private usersService: UsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
     this.rows = data;
