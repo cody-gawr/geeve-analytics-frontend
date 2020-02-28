@@ -2,11 +2,10 @@
 <div mat-dialog-content>
 
   <div fxFlex class="">
-                                   <mat-select style="border:1px solid #ccc; padding: 5px 11px; border-radius: 4px;" [(ngModel)]="data.patientLog"  *ngIf="data.patientsAppointmentData.length>0">
-                                      <mat-option value="">Select All</mat-option>
-                                      <mat-option *ngFor="let data of data.patientsAppointmentData" value="{{data.id}}_{{data.sub_patients_name}}" >{{data.sub_patients_name}}</mat-option>
-                                  </mat-select> 
-                              </div>
+        <mat-select style="border:1px solid #ccc; padding: 5px 11px; border-radius: 4px;" [(ngModel)]="data.patientLog"  *ngIf="data.patientsAppointmentData.length>0">
+		<mat-option *ngFor="let data of data.patientsAppointmentData;" value="{{data.id}}_{{data.sub_patients_type}}" selected>{{data.sub_patients_name}}</mat-option>
+        </mat-select> 
+</div>
 
 </div>
 <div mat-dialog-actions> 

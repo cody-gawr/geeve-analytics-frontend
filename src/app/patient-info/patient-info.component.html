@@ -78,7 +78,7 @@
                                           </tr>
                                           <tr>
                                               <td>Amount Paid</td>
-                                              <td>$ {{patient_amount}}</td>
+                                              <td><span *ngIf="isDecimal(patient_amount)"> {{patient_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(patient_amount)">{{patient_amount| currency: 'USD':true:'1.0'}}</span></td>
                                           </tr>
                                           <tr>
                                               <td>Plan Cost</td>
@@ -125,10 +125,10 @@
                                     <tbody>
                                     <tr *ngFor="let data of rowsAppointments">
                                         <td><span class="res_table_label">Treatment : </span> Preventative Appointment</td>
-                                        <td><span class="res_table_label">Patient Name :</span> {{data.patient_log }}</td>
-                                        <td><span class="res_table_label">Completion Date :</span> {{data.completion_date| date:'dd-mm-y'}}</td>
+                                        <td><span class="res_table_label">Patient Name :</span> {{data.patient_name }}</td>
+                                        <td><span class="res_table_label">Completion Date :</span> {{data.completion_date| date:'dd-MM-y'}}</td>
                                         <td>
-                                          <span class="action_btn danger" (click) ="deleteAppointment(data.id)">
+                                          <span class="action_btn danger appt_btn" (click) ="deleteAppointment(data.id)">
                                           <i class="fas fa-times link_btn" ></i>
                                          </span></td>
                                     </tr>
@@ -237,9 +237,9 @@
                                     <tr *ngFor="let data of payment">
                                         <td><span class="res_table_label">Customer ID : </span> {{data.customer_id}}</td>
                                         <td><span class="res_table_label">Subscriber ID : </span> {{data.subscr_id}}</td>
-                                        <td><span class="res_table_label">Invoice Date : </span> {{data.invoice_date| date:'dd-mm-y'}}</td>
+                                        <td><span class="res_table_label">Invoice Date : </span> {{data.invoice_date| date:'dd-MM-y'}}</td>
                                         <td><span class="res_table_label">Plan : </span> {{data.payment_plan_name}}</td>
-                                        <td><span class="res_table_label">Amount : </span> {{data.amount}}</td>
+                                        <td><span class="res_table_label">Amount : </span><span *ngIf="isDecimal(data.amount)"> {{data.amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.amount)">{{data.amount| currency: 'USD':true:'1.0'}}</span></td>
                                         <td><span class="res_table_label">Payment Status : </span> 
                                         <mat-chip-list>
                                           <mat-chip color="primary" selected *ngIf="data.payment_status == 'PAID'">{{data.payment_status}}</mat-chip>

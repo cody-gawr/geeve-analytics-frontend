@@ -36,7 +36,6 @@ import {MatDatepicker} from '@angular/material/datepicker';
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment, Moment} from 'moment';
-
 const moment = _rollupMoment || _moment;
 
 // See the Moment.js docs for the meaning of these formats:
@@ -70,9 +69,6 @@ export const MY_FORMATS = {
   ],
 
 })
-
-
-
 
 export class DashboardsComponent implements AfterViewInit {
    @ViewChild("myCanvas") canvas: ElementRef;

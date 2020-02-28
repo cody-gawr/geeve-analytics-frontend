@@ -65,8 +65,7 @@ export class DefaultersComponent implements AfterViewInit {
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
   if(this.clinic_id != "undefined")
-      this.getInofficeDefaultersMembers();
-     // this.getDefaultersMembers();
+      this.getDefaultersMembers();
 
     else{
         $('.header_filters').addClass('hide_header');
@@ -76,27 +75,6 @@ export class DefaultersComponent implements AfterViewInit {
     
   goBack() {
       window.history.back();
-  }
-
-  private getInofficeDefaultersMembers() {
-  this.rows=[];
-  this.defaultersService.getInofficeDefaultersMembers(this.clinic_id).subscribe((res) => {  
-        if(res.message == 'success'){
-        this.rows = res.data;
-        this.temp = [...res.data];        
-        this.table = data;
-        }
-         else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
   }
 
 private getDefaultersMembers() {
@@ -114,7 +92,7 @@ private getDefaultersMembers() {
               this._cookieService.put("token", '');
               this._cookieService.put("userid", '');
                this.router.navigateByUrl('/login');
-           }
+        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    

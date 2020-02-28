@@ -5,7 +5,7 @@
     <div fxFlex.gt-sm="100" fxFlex="100">
         <mat-card>
             <mat-card-content>
-                <mat-card-title> Patient Plan Details > {{plan_description | titlecase}}
+                <mat-card-title> Payment Plans > {{plan_description | titlecase}}
 <!--     <button class="sa-pull-right mat-raised-button mat-gray" (click) = "goBack()">Back</button>
          <button class="sa-pull-right mat-raised-button danger" mat-menu-item (click) = "deletePatients()">Delete</button> -->
          </mat-card-title>
@@ -29,23 +29,23 @@
                                           </tr>
                                           <tr>
                                             <th>Plan Amount</th>
-                                            <td>$ {{total_amount}}</td>
+                                            <td><span *ngIf="isDecimal(total_amount)"> {{total_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(total_amount)">{{total_amount| currency: 'USD':true:'1.0'}}</span></td>
                                           </tr>
                                            <tr>
                                             <th>Setup Fee</th>
-                                            <td>$ {{setup_fee}}</td>
+                                            <td><span *ngIf="isDecimal(setup_fee)"> {{setup_fee  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(setup_fee)">{{setup_fee| currency: 'USD':true:'1.0'}}</span></td>
                                           </tr>
                                            <tr>
                                             <th>Total Amount</th>
-                                            <td>$ {{total_amount + setup_fee}}</td>
+                                            <td><span *ngIf="isDecimal(total_amount + setup_fee)"> {{total_amount + setup_fee  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(total_amount + setup_fee)">{{total_amount + setup_fee| currency: 'USD':true:'1.0'}}</span></td>
                                           </tr>
                                           <tr>
                                             <th>Deposited Amount</th>
-                                            <td>$ {{deposite_amount}}</td>
+                                            <td><span *ngIf="isDecimal(deposite_amount)"> {{deposite_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(deposite_amount)">{{deposite_amount| currency: 'USD':true:'1.0'}}</span></td>
                                           </tr>
                                           <tr>
                                             <th>Outstanding Payment</th>
-                                            <td>$ {{balance_amount}}</td>
+                                            <td><span *ngIf="isDecimal(balance_amount)"> {{balance_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(balance_amount)">{{balance_amount| currency: 'USD':true:'1.0'}}</span></td>
                                           </tr>
                                           <tr>
                                             <th>Payment Frequency</th>
@@ -57,7 +57,7 @@
                                           </tr>
                                             <tr>
                                             <th>{{payment_frequency| titlecase}} Payment</th>
-                                            <td>$ {{monthly_weekly_payment}}</td>
+                                            <td><span *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</span></td>
                                           </tr>
                                           <tr>
                                             <th>Start Date</th>
@@ -113,9 +113,7 @@
                              <span>Total Paid</span>
                            </ng-template>
                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                               <span >
-                                $ {{value}}
-                               </span>
+                               <span *ngIf="isDecimal(value)"> {{value  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(value)">{{value| currency: 'USD':true:'1.0'}}</span>
                              </ng-template>
                            </ngx-datatable-column>
                             <ngx-datatable-column prop="paid" name="paid">

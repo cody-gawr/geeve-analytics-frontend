@@ -177,8 +177,8 @@ export class PatientInfoService {
         formData.append('sitting_status',sitting_status);
         formData.append('performed_date', performed_date);
         formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', token);
-     formData.append('token_id', this.token_id);
+        formData.append('token', token);
+        formData.append('token_id', this.token_id);
             return this.http.post(this.apiUrl +"/PatientsBenefits/updateSittingStatus/", formData)
             .pipe(map((response: Response) => {
           //      console.log(response);
@@ -190,7 +190,6 @@ export class PatientInfoService {
         return this.http.get(this.apiUrl +"PaymentHistory/getPaymentHistory?patient_id="+patient_id+"&member_plan_id="+member_plan_id+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                 return response;
-                console.log(response);
                     })
         );
     }

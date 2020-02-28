@@ -126,12 +126,12 @@
                                                 </span></td> 
                                                <td><span class="cc_table_label">Name :</span>{{data.name}}</td>
                                                <td><span class="cc_table_label">DOB :</span>{{data.dob | date:'dd-MM-y'}}</td>
-                                               <td><span class="cc_table_label">Amount :</span><span *ngIf="data.discount" class="percent_value2">{{data.discount}}% off</span>$ {{data.amount}}</td>
+                                               <td><span class="cc_table_label">Amount :</span><span *ngIf="data.discount" class="percent_value2">{{data.discount}}% off</span><span *ngIf="isDecimal(data.amount)"> {{data.amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.amount)">{{data.amount| currency: 'USD':true:'1.0'}}</span></td>
                                            </tr>                                          
                                        </tbody>
                                    </table>
                                </div>
-                               <div class="cc_total_value">Total {{planLength | titlecase}} Price  : ${{totalAmountPatients}}</div>
+                               <div class="cc_total_value">Total {{planLength | titlecase}} Price  : <span *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</span></div>
                            </div>
                           </div>
                           </div>
@@ -156,7 +156,7 @@
                           </mat-tab>
                            <mat-tab class="step3" label="Payment" [disabled]='!tabActive2'>
                               <mat-card-content class="Payment-info">
-                                <div class="cc_total_amountarea"><span class="" *ngIf="planLength =='MONTHLY'"><b>Total Charges :  ${{totalAmountPatients}} per Month</b></span><span class="" *ngIf="planLength =='YEARLY'"><b>Total Charges :  ${{totalAmountPatients}} per Year</b></span></div>
+                                <div class="cc_total_amountarea"><span class="" *ngIf="planLength =='MONTHLY'"><b>Total Charges :  <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</b> per Month</b></span><span class="" *ngIf="planLength =='YEARLY'"><b>Total Charges : <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</b> per Year</b></span></div>
                                 <div class="cell example example3" id="example-3">
                                     <div class="iframe_main">
                                       <div class="fieldset">

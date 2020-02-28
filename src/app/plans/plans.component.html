@@ -58,7 +58,7 @@
         <span>Total <span class="nowrap">Amount ($)</span></span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-            <span class="datatable_label">Total Amount ($) : </span>$ {{value}}
+            <span class="datatable_label">Total Amount ($) : </span><span *ngIf="isDecimal(value)"> {{value  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(value)">{{value| currency: 'USD':true:'1.0'}}</span>
        </ng-template>
       </ngx-datatable-column>
        <ngx-datatable-column name="discount">

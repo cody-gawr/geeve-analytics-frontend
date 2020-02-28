@@ -75,11 +75,14 @@
 
 
 
-.action_btn{min-width:30px!important; border:none; cursor:pointer; min-height:30px!important;color:#fff!important; border-radius:4px!important; text-align:center!important;float:left; line-height:30px!important; padding:0!important; margin:0 4px 4px!important; display:inline-block!important;}
+.action_btn{min-width:30px!important; border:none; cursor:pointer; color:#fff!important; border-radius:4px!important; text-align:center!important;float:left;  padding:0!important;  display:inline-block!important;line-height: 30px !important; margin: 0 4px 4px !important;}
 .action_btn i{color:#fff!important;}
 .action_btn:hover{opacity:0.7;}
 
-
+.action_btn.danger.appt_btn {
+    line-height: unset !important;
+    margin: 0px auto !important;
+}
 .action_btn.textonly{padding: 0 10px !important;
     width: auto !important;
     line-height: 30px !important;}
@@ -1423,7 +1426,7 @@ line-height: 36px;padding: 4px 16px; border:none; border-radius:4px; color:#fff;
 .mat-dialog-title{margin-bottom:10px!important;}
 .mat-raised-button{min-width:10px!important;}
 .mat-blue{background:#003858!important; color:#fff!important;}
-.datatable-header-cell {color:#18a689!important; font-weight:500!important; font-size:14px!important;}
+.datatable-header-cell {color:#0E3459!important; font-weight:500!important; font-size:14px!important;}
 .sa_internal_header{background:rgba(255,255,255,0.99); padding:8px 20px 4px; min-height:50px; position:relative; top:0; width:100%; z-index:999; box-shadow:0 1px 15px 9px rgba(62,57,107,.07)!important;}
 .sa_internal_header img{width:135px;}
 img{max-width:100%;}
@@ -1887,7 +1890,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', end
 .tabs_table th, .tabs_table td{border:1px solid rgba(120, 130, 140, 0.15)!important; }
 .tabs_table thead tr{}
 .tabs_table th{padding:7px 12px;
-    color:#18a689 !important;
+    color:#0E3459 !important;
     font-weight: 500 !important;
     font-size: 14px!important;
 }

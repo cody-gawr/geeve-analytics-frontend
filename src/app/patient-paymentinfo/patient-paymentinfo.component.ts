@@ -104,6 +104,14 @@ public preventative_count;
      
     });
       }
+
+isDecimal(value) {
+ if(typeof value != 'undefined')
+  {
+    if(String(value).includes("."))
+    return true;
+  }
+}
   onSubmit() {
     if(this.imageURL == undefined){
       alert("Please Upload file");

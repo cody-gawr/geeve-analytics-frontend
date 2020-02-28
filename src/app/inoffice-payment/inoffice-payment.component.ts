@@ -15,6 +15,7 @@ import { Http} from '@angular/http';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { environment } from "../../environments/environment";
+import {ChangeDetectorRef} from '@angular/core';
 @Component({
   selector: 'app-inoffice-payment',
   templateUrl: './inoffice-payment.component.html',
@@ -154,7 +155,7 @@ public cvcStyle = {
     elements: Elements;
     card: StripeElement;
 
-  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private inofficePaymentService: InofficePaymentService,private _cookieService: CookieService, private route: ActivatedRoute, private stripeService: StripeService, private http : Http) {
+  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private inofficePaymentService: InofficePaymentService,private _cookieService: CookieService, private route: ActivatedRoute, private stripeService: StripeService, private http : Http, private ref: ChangeDetectorRef) {
     this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
   }
 
@@ -215,7 +216,13 @@ public cvcStyle = {
     }
     });
     }
-
+  isDecimal(value) {
+ if(typeof value != 'undefined')
+  {
+    if(String(value).includes("."))
+    return true;
+  }
+}
   getInofficePlanDetails() {
     this.inofficePaymentService.getInofficePlanDetails(this.id).subscribe((res) => {  
        if(res.message == 'success'){
@@ -348,8 +355,10 @@ onSubmit() {
 public tabActive1= false;
 public selectedIndex=1;
   startPayment() {
+    if(!this.tabActive1)
     this.tabActive1= true;
-    this.selectedIndex=1;
+    this.selectedIndex=this.selectedIndex +1;
+     this.ref.detectChanges();
   }
 
 }

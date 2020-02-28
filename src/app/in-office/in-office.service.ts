@@ -43,7 +43,7 @@ export class InOfficeService {
     }
 
        // Delete Clinic
-    deletePlan(id,clinic_id,user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+    deletePlan(id,clinic_id,plan_id,user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
     formData.append('patient_id', id);
     formData.append('clinic_id', clinic_id);
@@ -51,6 +51,7 @@ export class InOfficeService {
     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);
      formData.append('token_id', this.token_id);
+     formData.append('inoffice_payment_id', plan_id);
 
         return this.http.post(this.apiUrl +"/InofficePayments/deleteInofficeMembers/", formData)
         .pipe(map((response: Response) => {

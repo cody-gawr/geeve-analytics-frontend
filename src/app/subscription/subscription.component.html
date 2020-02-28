@@ -69,7 +69,7 @@
                                     <div class="ribbon-banner-main"><span class=ribbon-banner>MOST POPULAR</span></div>
                                     <h4>{{plan.planName}}</h4>
                                     <span class="price_spacer"></span>
-                                    <span class="price_value">${{plan.totalAmount}}</span>
+                                    <span class="price_value"><span *ngIf="isDecimal(plan.totalAmount)"> {{plan.totalAmount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(plan.totalAmount)">{{plan.totalAmount| currency: 'USD':true:'1.0'}}</span></span>
                                     <span class="price_limit" *ngIf="plan.planLength == 'MONTHLY'">per month</span>
                                     <span class="price_limit" *ngIf="plan.planLength == 'YEARLY'">per year</span>
 
@@ -107,10 +107,10 @@
                                 <div class="col-md-4 treatment_plan_bg">
                                     <div class="treatment_plan_side">
                                         <h4>{{load_planName}}</h4>
-                                        <span class="price_value">${{load_totalAmount}}</span>
+                                        <span class="price_value"><span *ngIf="isDecimal(load_totalAmount)"> {{load_totalAmount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(load_totalAmount)">{{load_totalAmount| currency: 'USD':true:'1.0'}}</span></span>
                                         <span class="price_limit">{{load_planLength}}</span>
                                         <div class="srvc_btn">
-                                            <a class="btn btn-white no-radius btn-block" [ngClass]="{'disabled': load_id=='sampleplan101'}" (click)="openDialog(load_id,load_totalAmount)">Buy Now</a>
+                                            <a class="btn btn-white no-radius btn-block" (click)="openDialog(load_id,load_totalAmount)">Buy Now</a>
                                         </div>
                                     </div>
                                 </div>
@@ -120,12 +120,10 @@
                                         <div class="sa-pull-left sa-col-12 spnlast">
                                             <span *ngFor="let service of load_preventative_plan">{{service.itemName}}<span>, </span></span>
                                         </div>
-
                                         <h5 class="srvc_title" ><i class="far fa-star"></i> Treatment Inclusions</h5>
                                         <div class="sa-pull-left sa-col-12 spnlast">
                                             <span *ngFor="let service of load_treatment_inclusions"> {{service.itemName}}<span>, </span></span>
                                         </div>
-
                                         <h5 class="srvc_title"><i class="far fa-star"></i> Treatment Exclusions</h5>
                                         <div class="sa-pull-left sa-col-12 spnlast">
                                             <span *ngFor="let service of load_treatment_exclusions"> {{service.itemName}}<span>, </span></span> 

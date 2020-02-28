@@ -16,11 +16,46 @@ import {
 import { CustomValidators } from 'ng2-validation';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatDatepicker} from '@angular/material/datepicker';
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+// Depending on whether rollup is used, moment needs to be imported differently.
+// Since Moment.js doesn't have a default export, we normally need to import using the `* as`
+// syntax. However, rollup creates a synthetic default module and we thus need to import it using
+// the `default as` syntax.
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment, Moment} from 'moment';
+const moment = _rollupMoment || _moment;
+
+// See the Moment.js docs for the meaning of these formats:
+// https://momentjs.com/docs/#/displaying/format/
+
 declare var require: any;
 const data: any = [];
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+     dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 @Component({
   selector: 'app-dialog-overview-export-dialog',
   templateUrl: './dialog-overview-export.html',
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
 })
  
 export class DialogOverviewExportDialogComponent {
@@ -41,8 +76,6 @@ export class DialogOverviewExportDialogComponent {
         this.dialogRef.close(data);
     }
 }
-
-
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -77,12 +110,7 @@ isNaN: Function = Number.isNaN;
       patient_name: [null, Validators.compose([Validators.required])],
       patient_email: [null, Validators.compose([Validators.required, CustomValidators.email])],
       patient_dob: [null, Validators.compose([Validators.required])],
-      patient_phone_no: [
-        null,
-        Validators.compose([Validators.required,
-        Validators.minLength(6),
-        Validators.pattern("^[0-9]*$")])
-      ],
+      patient_phone_no: ['', [Validators.required, Validators.minLength(8)]],
       plan_description: [null, Validators.compose([Validators.required  ])],
       total_amount: [null, Validators.compose([Validators.required])],
       setup_fee: [null, Validators.compose([Validators.required])],
@@ -102,6 +130,13 @@ isNumber(value) {
     return Number.isNaN(value);
   else
     return true;
+}
+isDecimal(value) {
+ if(typeof value != 'undefined')
+  {
+    if(String(value).includes("."))
+    return true;
+  }
 }
 
 toTrunc(value,n){  
@@ -141,12 +176,12 @@ toTrunc(value,n){
       this.durationPaymentPlaceholder="Number of Months.";
       this.MonthlyWeeklyPlaceholder ="Monthly Payment";
     }else{
-      this.durationPaymentPlaceholder="Number of weeks.";
+      this.durationPaymentPlaceholder="Number of fortnights.";
       this.MonthlyWeeklyPlaceholder ="Weekly Payment";
     }
   }
   deposite_amount(depositepercentage){
-        if(parseInt(depositepercentage) >100)
+       if(parseInt(depositepercentage) >100)
        {
          alert("Percentage should not be greater than 100 .");
          this.data.deposit_amount ='';
@@ -161,7 +196,7 @@ toTrunc(value,n){
       this.data.deposited_amount = depositAmount;
       /* For Balance Amount */
       this.balanceamt = (parseInt(this.totalAmount)+parseInt(this.setup_amount))-depositAmount;       
-      this.data.balance_amount = this.balanceamt;
+      this.data.balance_amount = this.toTrunc(this.balanceamt,2);
       this.data.total_payable = finalAmount;
       this.durationcal(this.durationval);
       
@@ -170,8 +205,8 @@ assignVal(val1,type) {
   if(type == 'PERCENT')
     this.data.deposite_percentage=val1;
   else if(type=='DOLLAR')
-  this.data.deposit_amount =val1;
-this.calculate_outstanding(val1,type);
+    this.data.deposit_amount =val1;
+    this.calculate_outstanding(val1,type);
 }
 
 calculate_outstanding(val,type) {
@@ -180,14 +215,13 @@ calculate_outstanding(val,type) {
   const finalAmount = parseInt(this.totalAmount) + parseInt(this.setup_amount);
   var amountDeduction=0;
   if(type == 'PERCENT'){
-    amountDeduction =val/100*finalAmount;
-
-    this.data.deposited_amount =this.toTrunc(amountDeduction,2);
+      amountDeduction =val/100*finalAmount;
+      this.data.deposited_amount =this.toTrunc(amountDeduction,2);
   }
   else if(type=='DOLLAR')
       amountDeduction =  val;
       this.balanceamt =  finalAmount- amountDeduction;       
-      this.data.balance_amount = this.balanceamt;
+      this.data.balance_amount = this.toTrunc(this.balanceamt,2);
       this.data.total_payable = finalAmount;
       this.durationcal(this.durationval);
 }
@@ -208,7 +242,7 @@ calculate_outstanding(val,type) {
       this.data.deposite_percentage =this.toTrunc(depositPercentage,2);
       /* For Balance Amount */ 
       this.balanceamt = (parseInt(this.totalAmount)+parseInt(this.setup_amount))-amountDeposited;       
-      this.data.balance_amount = this.balanceamt;
+      this.data.balance_amount = this.toTrunc(this.balanceamt,2);
       this.durationcal(this.durationval);
   }
 
@@ -267,6 +301,13 @@ export class UpdateInOfficeDialogComponent {
     onNoClick(): void {
     this.dialogUpdateRef.close();
   }
+isDecimal(value) {
+ if(typeof value != 'undefined')
+  {
+    if(String(value).includes("."))
+    return true;
+  }
+}
 }
 
 @Component({
@@ -339,7 +380,10 @@ public StatusSelected ='';
       window.history.back();
   }
 
-
+isDecimal(value) {
+  if(value.includes("."))
+  return true;
+}
   private warningMessage: string;
 statusFilter() {
   const val =this.StatusSelected;
@@ -476,7 +520,7 @@ public stripe_account_id;
    openExportDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExportDialogComponent, {
       width: '400px',
-      data: {start_date: this.start_date, end_date: this.end_date,minDate: this.minDate, maxDate: this.maxDate },
+      data: {start_date: new Date(new Date().getFullYear(), 0, 1), end_date: new Date(),minDate: this.minDate, maxDate: this.maxDate },
       panelClass: 'full-screen'
     });
   dialogRef.afterClosed().subscribe(result => {
@@ -526,7 +570,7 @@ public stripe_account_id;
     }).then((result) => {
       if(result.value){
               if(this.rows[row]['id']) {
-                this.inofficeService.deletePlan(this.rows[row]['id'],this.clinic_id).subscribe((res) => {
+                this.inofficeService.deletePlan(this.rows[row]['id'],this.clinic_id,this.rows[row]['inoffice_paymentID']).subscribe((res) => {
                  if(res.message == 'success'){
                   this.notifier.notify( 'success', 'Plan Removed' ,'vertical');
                     this.getInofficeMembers();
@@ -606,7 +650,7 @@ public stripe_account_id;
      noDownload: false,
      headers: ["Date","Plan Amount","Payment Status","Patient Name","Patient Email","DOB","Plan/Membership","Stripe Cust ID"]
    };
-    new Angular5Csv(data, 'In Office Payments',options);
+    new Angular5Csv(data, 'Payments Plans',options);
   }
 
 }

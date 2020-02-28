@@ -59,7 +59,7 @@
         <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
             <label>#Free Preventative Appts</label>
             <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_frequency" [formControl]="form.controls['preventative_frequency']" class="form-control" min="1" max="100" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px; float:left; margin-right:10px;"> <span style="float:left; margin-top:7px;">Per year</span>
-             <small *ngIf="form.controls['preventative_frequency'].hasError('required') && form.controls['preventative_frequency'].touched" class="text-danger support-text">Preventative Frequency is Required.</small>
+             <small *ngIf="form.controls['preventative_frequency'].hasError('required') && form.controls['preventative_frequency'].touched" class="text-danger support-text">Free Preventative Appts is Required.</small>
         </div>
         <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
             <label>Treatment Discount %</label>

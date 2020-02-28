@@ -30,7 +30,6 @@
             <span class="datatable_label">Patient Name : </span>{{value}}
        </ng-template>
       </ngx-datatable-column>
-
        <ngx-datatable-column prop="patient_email" name="patient_email">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Patient Email</span>
@@ -38,8 +37,7 @@
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
             <span class="datatable_label">Patient Email : </span>{{value}}
           </ng-template>
-      </ngx-datatable-column>
-      
+      </ngx-datatable-column>      
        <ngx-datatable-column prop="patient_phone_no" name="patient_phone_no">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Contact Number</span>
@@ -48,36 +46,22 @@
             <span class="datatable_label">Contact Number : </span>{{value}}
        </ng-template>
       </ngx-datatable-column>
-
-
-       <ngx-datatable-column prop="plan_name" name="plan_name">
+       <ngx-datatable-column prop="plan_type" name="plan_type">
         <ng-template let-column="column" ngx-datatable-header-template>
        <span>Plan</span>
      </ng-template>
        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-           <span class="datatable_label">Plan : </span>{{value}}
+           <span class="datatable_label">Plan : </span><span *ngIf="value=='inoffice'">Payment Plan</span><span *ngIf="value=='manual'">Membership Plan</span>
        </ng-template>
      </ngx-datatable-column>
-
-
-     <ngx-datatable-column prop="amount_owing" name="amount_owing">
-      <ng-template let-column="column" ngx-datatable-header-template>
-     <span>Owning Amount</span>
-   </ng-template>
-     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-         <span class="datatable_label">Owning Amount : </span>{{value}}
-   
-     </ng-template>
-   </ngx-datatable-column>
-
-      <ngx-datatable-column  name="id">
+      <!-- <ngx-datatable-column  name="id">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Actions</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
           <a class="action_btn golden" (click)="sendDefaultersemail(rowIndex)" title= 'Update Patient'><i class="ti-email"></i></a>
         </ng-template>
-      </ngx-datatable-column>
+      </ngx-datatable-column> -->
         </ngx-datatable>
             </div>
     </mat-card-content>

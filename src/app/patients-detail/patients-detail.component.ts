@@ -16,11 +16,49 @@ import {
   FormControl
 } from '@angular/forms';
 import {MatChipsModule} from '@angular/material/chips';
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatDatepicker} from '@angular/material/datepicker';
+
+// Depending on whether rollup is used, moment needs to be imported differently.
+// Since Moment.js doesn't have a default export, we normally need to import using the `* as`
+// syntax. However, rollup creates a synthetic default module and we thus need to import it using
+// the `default as` syntax.
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment, Moment} from 'moment';
+const moment = _rollupMoment || _moment;
+
+// See the Moment.js docs for the meaning of these formats:
+// https://momentjs.com/docs/#/displaying/format/
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD-MM-YYYY',
+  },
+  display: {
+     dateInput: 'DD-MM-YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-dialog-overview-export-dialog',
   templateUrl: './dialog-overview-export.html',
-  styleUrls: ['./patients-detail.component.scss']
+  styleUrls: ['./patients-detail.component.scss'],
+  providers: [
+    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+    // application's root module. We provide it at the component level here, due to limitations of
+    // our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
 })
  
 export class DialogOverviewExportDialogComponent {
@@ -140,14 +178,14 @@ export class PatientsDetailComponent implements AfterViewInit {
   clinic_id: any;
   public clinic_name:any ={};
   public patientdob;
-  public start_date;
-  public end_date;
+   public end_date ;
+  public start_date; 
+ 
    minDate = new Date('1990-01-01');
    maxDate = new Date();
   ngAfterViewInit() {
       this.initiate_clinic();
       this.getPlans();
-
     $('#title').html('Patients Listing');
         $('.header_filters').removeClass('hide_header');
         $('.external_clinic').show();
@@ -267,11 +305,10 @@ public stripe_account_id;
     });
   }
 
-
   openExportDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExportDialogComponent, {
       width: '400px',
-      data: {start_date: this.start_date, end_date: this.end_date,minDate: this.minDate, maxDate: this.maxDate },
+      data: {start_date: new Date(new Date().getFullYear(), 0, 1), end_date: new Date(),minDate: this.minDate, maxDate: this.maxDate },
       panelClass: 'full-screen'
     });
   dialogRef.afterClosed().subscribe(result => {

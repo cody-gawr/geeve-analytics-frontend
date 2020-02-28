@@ -341,6 +341,14 @@ export class PlansComponent implements AfterViewInit {
     goBack() {
       window.history.back();
 }
+
+isDecimal(value) {
+ if(typeof value != 'undefined')
+  {
+    if(String(value).includes("."))
+    return true;
+  }
+}
   private getPlans() {
   this.rows=[];
   this.plansService.getPlans(this.clinic_id).subscribe((res) => {

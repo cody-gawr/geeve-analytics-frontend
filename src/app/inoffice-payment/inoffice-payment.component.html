@@ -41,7 +41,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th>Total Outstanding Amount</th>
-                                                        <td>${{balance_amount}}</td>
+                                                        <td><span *ngIf="isDecimal(balance_amount)"> {{balance_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(balance_amount)">{{balance_amount| currency: 'USD':true:'1.0'}}</span></td>
                                                     </tr>
                                                     <tr>
                                                         <th>Number of Instalments</th>
@@ -49,7 +49,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th>{{payment_frequency | titlecase}} Payment</th>
-                                                        <td>${{monthly_weekly_payment}}</td>
+                                                        <td><span *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</span></td>
                                                     </tr>
                                                 </table>
                                                 <div style="text-align:center">
@@ -65,7 +65,7 @@
                         
                         <mat-tab class="step2" label="Payment" [disabled]='!tabActive1'>
                             <mat-card-content class="Payment-info">
-                                <div class="cc_total_amountarea"><span class="" *ngIf="payment_frequency =='MONTHLY'"><b>Total Charges :  ${{monthly_weekly_payment}} per Month</b></span><span class="" *ngIf="payment_frequency =='FORTNIGHTLY'"><b>Total Charges :  ${{monthly_weekly_payment}} every 2 weeks</b></span></div>
+                                <div class="cc_total_amountarea"><span class="" *ngIf="payment_frequency =='MONTHLY'"><b>Total Charges :  <b *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</b> per Month</b></span><span class="" *ngIf="payment_frequency =='FORTNIGHTLY'"><b>Total Charges :  <b *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</b> every 2 weeks</b></span></div>
                                 <div class="cell example example3" id="example-3">
                                     <div class="iframe_main">
                                       <div class="fieldset">

@@ -198,7 +198,13 @@ export class SubscriptionComponent implements OnInit {
           clinicEmail:[null, Validators.compose([Validators.required])],
          })
   }
-  
+  isDecimal(value) {
+ if(typeof value != 'undefined')
+  {
+    if(String(value).includes("."))
+    return true;
+  }
+}
 openDialog(id,amount) {
   if(id=="sampleplan1"){
     alert("This is the sample plan only for viewing . We will be back with our live plans soon. ");

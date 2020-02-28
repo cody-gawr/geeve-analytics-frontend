@@ -21,12 +21,12 @@
         <label>Email</label>
         <input matInput tabindex="1" [(ngModel)]="data.patient_email" placeholder="" id="email" [formControl]="form.controls['patient_email']" class="form-control-dialog" >
         <input matInput style="color: #FF0000;" tabindex="1" *ngIf="valplans" [(ngModel)]="valplans"  readonly>
-       <small *ngIf="form.controls['patient_email'].errors?.email && form.controls['patient_email'].touched" class="text-danger support-text">You must include a valid email address.</small>
+       <small *ngIf="(form.controls['patient_email'].errors?.email && form.controls['patient_email'].touched)||(form.controls['patient_email'].hasError('required') && form.controls['patient_email'].touched)" class="text-danger support-text">You must include a valid email address.</small>
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Phone Number</label>
           <input matInput tabindex="1" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="data.patient_phone_no" placeholder="" class="form-control-dialog"  type="number" [formControl]="form.controls['patient_phone_no']">
-           <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched" class="text-danger support-text">Patient Phone Number is Required.</small>
+           <small *ngIf="form.controls['patient_phone_no'].hasError('required')" class="text-danger support-text">You must include valid Phone No.</small>
     </div>
    </div>
     <h6 class="form_sub_title">Payment Plan Details</h6>
@@ -75,7 +75,7 @@
                   <label class="active-duration" for="value1">$</label>
                    </span>
                 </div>
-                <small *ngIf= "data.depositType == 'PERCENT' && !isNumber(data.deposited_amount)  && data.deposited_amount != null " class="support-text">{{data.deposite_percentage}}% Deposit = ${{data.deposited_amount}}</small>
+                <small *ngIf= "data.depositType == 'PERCENT' && !isNumber(data.deposited_amount)  && data.deposited_amount != null " class="support-text">{{data.deposite_percentage}}% Deposit = <span *ngIf="isDecimal(data.deposited_amount)"> {{data.deposited_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.deposited_amount)">{{data.deposited_amount| currency: 'USD':true:'1.0'}}</span></small>
             </div>
         </div>
         <div fxFlex.gt-md="38" fxFlex="100" class="sa-form-group">
@@ -109,7 +109,7 @@
    </div>
    <div fxLayout="row wrap" fxLayoutGap="2%">
        <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group" *ngIf="data.monthly_weekly_payment != '' && !isNumber(data.monthly_weekly_payment) && data.monthly_weekly_payment != 'Infinity'">
-           <div class="value_label">Instalment Amount <b> ${{data.monthly_weekly_payment}}</b></div>
+           <div class="value_label">Instalment Amount <b> <span *ngIf="isDecimal(data.monthly_weekly_payment)"> {{data.monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.monthly_weekly_payment)">{{data.monthly_weekly_payment| currency: 'USD':true:'1.0'}}</span></b></div>
        </div>
    </div>
 </div>

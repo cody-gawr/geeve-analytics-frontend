@@ -101,10 +101,11 @@ public user_type = this._cookieService.get("user_type");
    }
 
    openDialog(): void {
-   // this.getBenefitsUsed();     
+    this.patientLog =  this.patientsAppointmentData[0].id+"_"+this.patientsAppointmentData[0].sub_patients_type;
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
      width: '250px',
-      data: { patientsAppointmentData: this.patientsAppointmentData,patientLog:this.patientLog}
+      data: { patientsAppointmentData: this.patientsAppointmentData,patientLog:this.patientLog},
+        panelClass: 'full-screen'
       });
     dialogRef.afterClosed().subscribe(result => {
       if(result != undefined) {
@@ -131,15 +132,12 @@ public user_type = this._cookieService.get("user_type");
           'Please select Patient name',
           'error'
         )
-      }
-
+      }           
     }
     });
-
   }
-  
-  ngOnInit() {
-   
+
+  ngOnInit() {   
     this.id = this.route.snapshot.paramMap.get("id");
     this.getSubPatients();
     this.getPatientContract();
@@ -154,6 +152,13 @@ public user_type = this._cookieService.get("user_type");
           patient_phone_no: [null, Validators.compose([Validators.required])],
         });    
       }
+isDecimal(value) {
+ if(typeof value != 'undefined')
+  {
+    if(String(value).includes("."))
+    return true;
+  }
+}
 
     private deletePatients() {
      Swal.fire({
@@ -183,21 +188,25 @@ public user_type = this._cookieService.get("user_type");
     this.patientInfoService.getSubPatients(this.id).subscribe((res) => {  
        if(res.message == 'success'){
         var patientArray ={};
-        patientArray['id'] = res.data[0]['id'];        
-        patientArray['sub_patients_name'] = res.data[0]['patient_name'];        
+        patientArray['id'] = res.data[0]['id'];           
         patientArray['sub_patients_name'] = res.data[0]['patient_name'];
         patientArray['sub_patients_dob'] = res.data[0]['patient_dob'];
         patientArray['sub_patients_gender'] = res.data[0]['patient_gender'];
         patientArray['sub_patients_type'] = 'main';
         patientArray['sub_patients_amount'] = res.data[0]['member_plan']['totalAmount'];
-        this.rows = res.data[0]['sub_patients'];
+        this.rows =[];
+        res.data[0]['sub_patients'].forEach(res => {
+          var temp ={'sub_patients_type':''};
+          temp = res;
+          temp.sub_patients_type = 'sub';
+          this.rows.push(temp);
+        });
         var sub_patient_length = this.rows.length;
         this.rows[sub_patient_length] = patientArray;
-
         this.patient_id=res.data[0]['id'];
         this.patient_name=res.data[0]['patient_name'];
         this.patient_address=res.data[0]['patient_address'];
-        if(this.patient_address == null)
+        if(this.patient_address == 'NULL')
           this.patient_address ='';
         this.patient_dob = this.datePipe.transform(res.data[0]['patient_dob'],'yyyy-MM-dd');
         this.patient_age=res.data[0]['patient_age'];
@@ -237,7 +246,16 @@ public patientsAppointmentData =[];
        this.patientInfoService.getAppointments(this.patient_id,this.member_plan_id).subscribe((res) => {
        this.patientsAppointmentData==[];   
          if(res.message == 'success'){
-            this.rowsAppointments = res.data;
+              this.rowsAppointments = res.data;
+              var temp=[];
+               this.rowsAppointments.forEach((appt,indexappt) => {
+                  this.rows.forEach((res,indexres) => {
+                    if(appt.sub_patient_id == res.id)
+                      appt.patient_name = res.sub_patients_name;   
+                 });
+                    temp.push(appt);        
+               });
+              this.rowsAppointments=temp;
              }
              else{
               this.rowsAppointments = [];
@@ -256,7 +274,7 @@ public patientsAppointmentData =[];
              res.data.forEach(res => {
               if(res.count>= this.preventative_frequency){
                   this.patientsAppointmentData.forEach((data,index,object)=>{
-                    if(res.patient_id == data.id  && res.patient_name == data.sub_patients_name){
+                    if(res.patient_id == data.id  && res.patient_type == data.sub_patients_type){
                     this.patientsAppointmentData.splice(index,1);
                     }
                   })
@@ -334,14 +352,14 @@ public next_date;
   }
 
   log_appointment() {
-    this.patientLog = this.rows[0]['id']+"_"+this.rows[0]['sub_patients_name'];
+    this.patientLog = this.rows[0]['id']+"_"+this.rows[0]['sub_patients_type'];
     if(this.patientLog) {
     this.patientInfoService.log_appointment(this.patient_id,this.member_plan_id,this.patientLog).subscribe((res) => {   
         if(res.message == 'success'){
-            this.notifier.notify( 'success', 'Appointment Logged' ,'vertical');
-            this.getAppointments();
+              this.notifier.notify( 'success', 'Appointment Logged' ,'vertical');
+              this.getAppointments();
              }
-              else if(res.status == '401'){
+             else if(res.status == '401'){
               this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("token", '');
@@ -376,7 +394,7 @@ public next_date;
        this.warningMessage = "Please Provide Valid Inputs!";
      }    
      );
-    }
+  }
 
     onSubmit() {
     if(this.imageURL == undefined){

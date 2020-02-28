@@ -3,6 +3,7 @@
 <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
 <mat-card>
     <mat-card-content>
+         <div class="warning_message" *ngIf="!connectedStripe">Your stripe account is not connected</div>
         <div class="main_title_outer">
             <div class="main_title_withbtn">
                 <mat-card-title><span class="main-title">Payment Plans</span></mat-card-title>
@@ -35,7 +36,7 @@
                     </div> -->
                     <div fxFlex.gt-xs="340px" fxFlex="100" style="text-align:right;" >
                         <button style="margin-bottom:10px;" class="mat-raised-button mat-gray" mat-raised-button (click)="openExportDialog()" *ngIf="clinic_id > 0">Export Payments</button>
-                        <button style="margin-bottom:10px;" class="mat-raised-button mat-gray" mat-raised-button (click)="openDialog()" *ngIf="clinic_id > 0 && connectedStripe">Add Payment Plan</button>
+                        <button style="margin-bottom:10px;" class="mat-raised-button mat-gray" mat-raised-button (click)="openDialog()"[disabled]="!connectedStripe">Add Payment Plan</button>
                     </div>
                 </div>
             </div>
@@ -96,7 +97,7 @@
      <span (click)="sort()">Total Amount</span>
    </ng-template> 
      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-         <span class="datatable_label">Total Amount : </span> $ {{value}}
+         <span class="datatable_label">Total Amount : </span> <span *ngIf="isDecimal(value)"> {{value  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(value)">{{value| currency: 'USD':true:'1.0'}}</span>
       </ng-template>
    </ngx-datatable-column>
        <ngx-datatable-column prop="balance_amount" name="balance_amount">
@@ -104,7 +105,7 @@
            <span (click)="sort()">Outstanding Amount</span>
         </ng-template>
        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-           <span class="datatable_label">Outstanding Amount : </span> $ {{value}}
+           <span class="datatable_label">Outstanding Amount : </span><span *ngIf="isDecimal(value)"> {{value  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(value)">{{value| currency: 'USD':true:'1.0'}}</span>
         </ng-template>
      </ngx-datatable-column>
       <ngx-datatable-column prop="payment_status" name="payment_status">

@@ -65,7 +65,7 @@
       <ngx-datatable-column name="Created">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span>
-            <span class="datatable_label">Created : </span>  {{value| date}}
+            <span class="datatable_label">Created : </span>  {{value| date:'dd-MM-y'}}
           </span>
         </ng-template>
       </ngx-datatable-column>
