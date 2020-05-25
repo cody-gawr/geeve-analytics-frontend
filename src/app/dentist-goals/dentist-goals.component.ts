@@ -5,6 +5,7 @@ import { DentistGoalsService } from './dentist-goals.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DentistService } from '../dentist/dentist.service';
 import { CookieService } from "angular2-cookie/core";
+import { NotifierService } from 'angular-notifier';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -15,6 +16,7 @@ export interface Dentist {
   styleUrls: ['./dentist-goals.component.scss']
 })
 export class DentistGoalsComponent implements OnInit {
+       private readonly notifier: NotifierService;
    public clinic_id:any ={};
    public dentistCount:any ={};
     dentists: Dentist[] = [
@@ -71,29 +73,29 @@ export class DentistGoalsComponent implements OnInit {
           public user_id;
   options: FormGroup;
 
-  constructor(private fb: FormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute, private dentistService: DentistService,private _cookieService: CookieService, private router: Router) {
+  constructor(notifierService: NotifierService,private fb: FormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute, private dentistService: DentistService,private _cookieService: CookieService, private router: Router) {
+  this.notifier = notifierService;
     this.clinic_id = this.route.snapshot.paramMap.get("id");
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
     });
   }
-
+     initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+    this.clinic_id = val;
+          this.getDentistGoals();
+          this.getDentists();
+  }
   ngOnInit() {
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
     
     this.user_id = this._cookieService.get("userid");
      this.route.params.subscribe(params => {
-          if(this._cookieService.get("userid") != '1'){
-            this.clinic_id = this.route.snapshot.paramMap.get("id");
-          }
-          else
-          {
-            this.clinic_id = '';
-          }
-          this.getDentistGoals();
-          this.getDentists(); 
+     this.initiate_clinic(); 
+          
+         
           if(this.user_id == '1') 
           {
              $('.header_filters').addClass('hide_header'); 
@@ -272,7 +274,7 @@ export class DentistGoalsComponent implements OnInit {
   console.log(myJsonString);
    this.dentistGoalsService.updateDentistGoals(myJsonString, this.clinic_id, this.dentist_id).subscribe((res) => {
        if(res.message == 'success'){
-        alert('Dentist Goals Updated');
+          this.notifier.notify( 'success', 'Dentist Goals Updated' ,'vertical');
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

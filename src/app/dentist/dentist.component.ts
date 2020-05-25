@@ -33,7 +33,7 @@ export class DialogOverviewExampleDialogComponent {
   }
 }
 declare var require: any;
-const data: any = require('assets/company.json');
+const data: any =[];
 @Component({
   selector: 'app-table-filter',
   templateUrl: './dentist.component.html',
@@ -43,14 +43,20 @@ export class DentistComponent implements AfterViewInit {
   provider_id: string;
   dentist_name: string;
    public clinic_id:any ={};
-
+   initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+    this.clinic_id = val;
+  this.getDentists();
+  }
   ngAfterViewInit() {
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
     
      this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
-      this.getDentists();
+      
+      this.initiate_clinic();
+
           $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
@@ -104,7 +110,6 @@ export class DentistComponent implements AfterViewInit {
   }
 
   private getDentists() {
-    console.log(this.rows);
   this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
         this.rows = res.data;

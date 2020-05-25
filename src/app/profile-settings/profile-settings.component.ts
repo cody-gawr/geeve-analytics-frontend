@@ -4,6 +4,10 @@ import { FormControl, Validators } from '@angular/forms';
 import { ProfileSettingsService } from './profile-settings.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
+import { Router, NavigationEnd, Event  } from '@angular/router';
+import { StripeInstance, StripeFactoryService } from "ngx-stripe";
+import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formlayout',
@@ -11,8 +15,111 @@ import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
   styleUrls: ['./profile-settings.component.scss']
 })
 export class ProfileSettingsComponent implements OnInit {
-   public form: FormGroup;
+   elementsOptions: ElementsOptions = {
+    };
+    elements: Elements;
+    card: StripeElement;
 
+  public cardStyle = {
+    base: {
+      color: '#424242',
+      fontWeight: 400,
+      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+      padding:'10px',
+
+      ':focus': {
+        color: '#424242',
+      },
+
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+
+      ':focus::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+    invalid: {
+      color: '#a94442',
+      ':focus': {
+        color: '#a94442',
+      },
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+  };
+
+
+  public expStyle = {
+    base: {
+      color: '#424242',
+      fontWeight: 400,
+      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+
+      ':focus': {
+        color: '#424242',
+      },
+
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+
+      ':focus::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+    invalid: {
+      color: '#a94442',
+      ':focus': {
+        color: '#a94442',
+      },
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+  };
+
+public cvcStyle = {
+    base: {
+      color: '#424242',
+      fontWeight: 400,
+      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+
+      ':focus': {
+        color: '#424242',
+      },
+
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+
+      ':focus::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+    invalid: {
+      color: '#a94442',
+      ':focus': {
+        color: '#a94442',
+      },
+      '::placeholder': {
+        color: '#9e9e9e',
+      },
+    },
+  };
+ public token;
+   stripeTest: FormGroup;
+   public form: FormGroup;
+  public cardNumber;
+  public cardExpiry;
+  public cardCvc;
    public clinic_id:any ={};
 
           private warningMessage: string;
@@ -27,7 +134,7 @@ export class ProfileSettingsComponent implements OnInit {
           public xeroConnect = false;
           public xeroOrganization='';
           public email;
-  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute) {
+  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute,private stripeService: StripeService, private router: Router) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -35,9 +142,34 @@ export class ProfileSettingsComponent implements OnInit {
   }
   ngOnInit() {
       this.route.params.subscribe(params => {
-    this.id = this.route.snapshot.paramMap.get("id");
-    this.displayName = this._cookieService.get("display_name");
-    this.email = this._cookieService.get("email");
+      this.id = this.route.snapshot.paramMap.get("id");
+      this.displayName = this._cookieService.get("display_name");
+      this.email = this._cookieService.get("email");
+        this.getPaymentDetails();
+        this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
+            this.stripeTest = this.fb.group({
+            name: ['', [Validators.required]]
+            });
+            this.stripeService.elements(this.elementsOptions)
+            .subscribe(elements => {
+            this.elements = elements;
+            // Only mount the element the first time
+            if (!this.card) {
+              this.cardNumber = this.elements.create('cardNumber', {
+            style: this.cardStyle
+          });
+          this.cardExpiry = this.elements.create('cardExpiry', {
+            style: this.expStyle
+          });
+
+            this.cardCvc = this.elements.create('cardCvc', {
+            style: this.cvcStyle
+          });
+             this.cardNumber.mount('#example3-card-number');
+             this.cardExpiry.mount('#example3-card-expiry');
+             this.cardCvc.mount('#example3-card-cvc');   
+            }
+            });
     //  this.getprofileSettings();
           $('#title').html('Profile Settings');
       $('.header_filters').addClass('hide_header'); 
@@ -54,8 +186,99 @@ export class ProfileSettingsComponent implements OnInit {
 
   // Sufix and prefix
   hide = true;
+public customer_id;
+  public last_invoic_id;
+   buy() {
+    const name = this.stripeTest.get('name').value;
+    this.stripeService
+    .createToken(this.cardNumber, { name })
+    .subscribe(obj => {
+    if (obj.token) {
+ this.token = obj.token.id;
+      $('.ajax-loader').show();
+    this.profileSettingsService.updateCardRetryPayment(this.token, this.customer_id,this.last_invoic_id).subscribe((res) => {
+      $('.ajax-loader').hide();
+           if(res.message == 'success'){
+            this.getPaymentDetails();
+            if(res.data == 'Payment Generated Successfully!') {
+             Swal.fire(
+                  '',
+                  'Payment Generated Succesfully!',
+                  'success'
+                )
+            }
+            else if(res.data == 'Card Updated Successfully!') {
+                Swal.fire(
+                  '',
+                  'Card Updated Successfully!',
+                  'success'
+                )
+            }
+           }
+           else if(res.message == 'error'){
+              Swal.fire(
+                  '',
+                  'Some issue with your card, Please try again!',
+                  'error'
+                )
+           }
+          }, error => {
+          });
+    } else {
+      console.log("Error comes ");
+    }
+    });
+    }
 
 
+  retryPayment() {
+      $('.ajax-loader').show();
+      this.profileSettingsService.retryPayment(this.customer_id,this.last_invoic_id).subscribe((res) => {
+             $('.ajax-loader').hide();
+             if(res.message == 'success'){
+            this.getPaymentDetails();              
+              Swal.fire(
+                  '',
+                  'Payment Generated Succesfully!',
+                  'success'
+                )
+             }
+             else if(res.message == 'error'){
+                Swal.fire(
+                  '',
+                  'Your card is declined, Please change your card Details.',
+                  'error'
+                )
+             }
+            }, error => {
+     });
+  }
+
+   getPaymentDetails() {
+  this.profileSettingsService.getPaymentDetails().subscribe((res) => {
+       if(res.message == 'success'){
+        this.last_invoic_id = res.data.lastinvoiceid;
+        this.customer_id = res.data.customer_id; 
+        if(!this.last_invoic_id){
+          let opts: CookieOptionsArgs = {
+            expires: new Date('2030-07-19')
+        };
+        this._cookieService.put("login_status", '1', opts);
+        }
+       }
+        else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+  }
+public last4;
   getprofileSettings() {
   this.profileSettingsService.getprofileSettings(this.id).subscribe((res) => {
        if(res.message == 'success'){

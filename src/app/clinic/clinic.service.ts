@@ -83,11 +83,19 @@ export class ClinicService {
     formData.append('address', address);
     formData.append('contactName', contact_name);
 
-     formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);
     formData.append('token_id', this.token_id);
     
         return this.http.post(this.apiUrl +"/Practices/add/", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    getUserDetails(user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/users/userInfo?id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })

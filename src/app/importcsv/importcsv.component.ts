@@ -147,14 +147,18 @@ const data: any = [
 })
 export class ImportcsvComponent implements AfterViewInit {
    public clinic_id:any ={};
-
+    initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+    this.clinic_id = val;
+       this.getLogs();
+  }
   ngAfterViewInit() {
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
-    
+    this.initiate_clinic();
      this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
-        this.getLogs();
+       
           $('#title').html('Data Upload');
        $('.external_clinic').show();
         $('.dentist_dropdown').hide();

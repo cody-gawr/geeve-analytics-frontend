@@ -33,23 +33,23 @@ export class HealthScreenService {
    }
 
     // Dentist Production Service
-    healthCheckStats( clinic_id='1', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+    healthCheckStats( clinic_id, user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         return this.http.get(this.apiUrl +"/HealthChecks/healthCheckStats?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
-   hourlyRateChart( clinic_id='1', startDate = '', endDate = '', duration='', user_type='',clinician='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token"),limit=3 ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caHourlyRateChart?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date=2019-01-01&end_date=2019-01-31&duration="+duration+"&user_type="+user_type+"&clinician="+clinician+"&limit="+limit+"&token_id="+this.token_id, { headers: this.headers })
+   hourlyRateChart( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token"),limit=5 ): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caHourlyRateChart?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician+"&limit=5&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
             return response;
                     })
         );
     }
         // Items Predictor Analysis 
-    mkNewPatientsByReferral(clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token"),limit=3  ): Observable<any> {
-        return this.http.get(this.apiUrl +"/Marketings/mkNewPatientsByReferral?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date=2019-01-01&end_date=2019-01-31&duration="+duration+"&limit="+limit+"&token_id="+this.token_id, { headers: this.headers })
+    mkNewPatientsByReferral(clinic_id, startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token"),limit=5  ): Observable<any> {
+        return this.http.get(this.apiUrl +"/Marketings/mkNewPatientsByReferral?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&limit="+limit+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })

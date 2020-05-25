@@ -1,3 +1,5 @@
+ <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
+
 <mat-card>
     <mat-card-content>
         <mat-card-title class="ImportCSV-outer"><div class="ImportCSV">Import CSV<img alt="homepage" src="assets/images/loading-gif-transparent-4.gif" height="20px" width="20px" class="ng-hide" id="processLoader"> &nbsp;&nbsp;&nbsp;  <i class="fas fa-info-circle text-inspinia m-r-10" matTooltip="File to be uploaded should have the same defined name."></i></div> <input type='button'  class="sa-pull-right mat-raised-button mat-gray" value="Process Files" (click) = "processAllFiles()"></mat-card-title>

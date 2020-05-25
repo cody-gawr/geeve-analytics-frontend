@@ -12,27 +12,27 @@ export const DashboardsRoutes: Routes = [
     path: '',
     children: [
       {
-        path: 'cliniciananalysis/:id',
+        path: 'cliniciananalysis',
         component: ClinicianAnalysisComponent
       },
       {
-        path: 'clinicianproceedures/:id',
+        path: 'clinicianproceedures',
         component: ClinicianProceeduresComponent
       },
       {
-        path: 'frontdesk/:id',
+        path: 'frontdesk',
         component: FrontDeskComponent
       },
       {
-        path: 'marketing/:id',
+        path: 'marketing',
         component: MarketingComponent
       },
       {
-        path: 'finances/:id',
+        path: 'finances',
         component: FinancesComponent
       },
       {
-        path: 'healthscreen/:id',
+        path: 'healthscreen',
         component: HealthScreenComponent
       }
     ]

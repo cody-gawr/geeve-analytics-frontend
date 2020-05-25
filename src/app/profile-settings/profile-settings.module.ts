@@ -10,12 +10,14 @@ import { QuillModule } from 'ngx-quill';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
+import { NotifierService } from 'angular-notifier';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { ProfileSettingsComponent } from './profile-settings.component';
 
 import { ProfileSettingsService } from './profile-settings.service';
+import { NgxStripeModule } from 'ngx-stripe';
+import { NgxEditorModule } from 'ngx-editor';
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +30,9 @@ import { ProfileSettingsService } from './profile-settings.service';
     FileUploadModule,
     MatTreeModule,
     MatDatepickerModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgxEditorModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    NgxStripeModule.forRoot(''),
   ],
   providers: [
     ProfileSettingsService

@@ -4,12 +4,14 @@ import { FormControl, Validators } from '@angular/forms';
 import { ClinicGoalsService } from './clinic-goals.service';
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-goals.component.html',
   styleUrls: ['./clinic-goals.component.scss']
 })
 export class ClinicGoalsComponent implements OnInit {
+     private readonly notifier: NotifierService;
    public clinic_id:any ={};
 
    public form: FormGroup;
@@ -62,13 +64,18 @@ export class ClinicGoalsComponent implements OnInit {
 
   options: FormGroup;
 
-  constructor(private fb: FormBuilder,  private clinicGoalsService: ClinicGoalsService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
+  constructor(notifierService: NotifierService,private fb: FormBuilder,  private clinicGoalsService: ClinicGoalsService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
 //  this.clinic_id = this.route.snapshot.paramMap.get("id");
-
+this.notifier = notifierService;
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
     });
+  }
+     initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+    this.clinic_id = val;
+        this.getClinicGoals();
   }
   ngOnInit() {
     $('.header_filters').removeClass('hide_header'); 
@@ -78,15 +85,14 @@ export class ClinicGoalsComponent implements OnInit {
         $('.header_filters').addClass('flex_direct_mar');
       this.route.params.subscribe(params =>  {
       if(this._cookieService.get("userid") != '1'){
-     this.clinic_id = this.route.snapshot.paramMap.get("id");
-     
+     this.clinic_id = this.route.snapshot.paramMap.get("id");    
+     this.initiate_clinic(); 
   }
   else
   {
     this.clinic_id = '';
      $('.header_filters').addClass('hide_header'); 
   }
-        this.getClinicGoals();
         $('#title').html('Clinics Goals');
      });
 
@@ -250,7 +256,7 @@ export class ClinicGoalsComponent implements OnInit {
   var myJsonString = JSON.stringify(this.chartData);
    this.clinicGoalsService.updateClinicGoals(myJsonString, this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
-        alert('Clinic Goals Updated');
+          this.notifier.notify( 'success', 'Clinic Goals Updated' ,'vertical');
        }
         else if(res.status == '401'){
             this._cookieService.put("username",'');

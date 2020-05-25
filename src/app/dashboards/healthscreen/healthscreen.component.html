@@ -20,7 +20,9 @@
             <img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="production_dif > 0">
             <img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="production_dif <= 0"> 
             Production
-              <div class="change_value"> <span class="range_icon"><i class="fa fa-plus" *ngIf="production_dif > 0"></i></span><span class="range_icon" *ngIf="production_dif <= 0"><i class="fa fa-minus"></i></span> $ {{production_dif| number:'1.0-0'}}</div> </mat-card-title>
+              <div class="change_value"> <span class="range_icon"><i class="fa fa-plus" *ngIf="production_dif > 0"></i></span>
+                <span class="range_icon" *ngIf="production_dif < 0"><i class="fa fa-minus"></i></span>
+                 $ {{production_dif| number:'1.0-0'}}</div> </mat-card-title>
           <div class="ttl_value">$ {{production_c| number:'1.0-0'}}</div>
       </mat-card-content>
 
@@ -84,7 +86,7 @@
 
           <div class="user_rate_listing">
               <ul>
-
+                <div *ngIf="maxHourlyRate > 0">
                   <li *ngFor="let hourlyRateChartD of hourlyRateChartData; let i = index">
                       <div class="ur_users">
                           <div class="ur_rank">{{i+1}}</div>
@@ -99,6 +101,7 @@
                           </div>
                       </div>
                   </li>
+                </div>
                 <li *ngIf="maxHourlyRate == 0">No Top Leaders Yet!</li>
 
               </ul>
@@ -126,14 +129,22 @@
             </div>
          <div *ngIf="maxNewPatients == 0">No Top Referrals Yet!</div> -->
 
-          <div >
-              <div fxLayout="row wrap" fxLayoutGap="2%" >
-                  <div fxFlex.lg="23" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="23" class="" *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
-                      <div class="top_ref_grid">
+          <div>
+              <div fxLayout="row wrap" class="top_referal">
+                <ng-container *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
+                  <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="" *ngIf="i<3">
+                      <div class="top_ref_grid" >
                           <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
                           <span class="top_ref_value">{{newPatientsTimeD}}</span>
                       </div>
                   </div>
+                   <div fxFlex.lg="48" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="48" class="" *ngIf="i>=3">
+                      <div class="top_ref_grid" >
+                          <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
+                          <span class="top_ref_value">{{newPatientsTimeD}}</span>
+                      </div>
+                  </div>
+                </ng-container>
                   <div *ngIf="maxNewPatients == 0">No Top Referrals Yet!</div>
               </div>
           </div>
@@ -187,7 +198,7 @@
     [canvasWidth]="canvasWidth"
     [needleValue]="unscheduled_production_f"
     [options]="optionsunscheduled"
-    [bottomLabel]="unscheduled_production_f | currency:'USD':'symbol':'3.0'"></rg-gauge-chart>
+    [bottomLabel]="unscheduled_production_f| number:'1.0-0'"></rg-gauge-chart>
         </div>
       </mat-card-content>
     </mat-card>

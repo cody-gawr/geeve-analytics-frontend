@@ -29,6 +29,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   public user_type;
   public display_name;
   public user_image;
+  public login_status;
   clickEvent() {
     this.status = !this.status;
   }
@@ -57,6 +58,8 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
      this.user_type = this._cookieService.get("user_type");
      this.display_name = this._cookieService.get("display_name");
      this.user_image = this._cookieService.get("user_image");
+     this.login_status = this._cookieService.get("login_status");
+     console.log(this.login_status);
      if(!this._cookieService.get("user_image"))
       this.user_image = 'assets/images/gPZwCbdS.jpg';
 

@@ -1428,20 +1428,3 @@ border-radius: 5px !important;
     padding: 5px 50px !important;
 }
 }
-
-
-
-/**New added CSS**/
-
-.top_referal {
-    justify-content: space-between;
-}
-.top_referal  .top_ref_grid {
-	margin-bottom: 15px;
-}
- ul {
-    margin: 0px !important;
-}
-.sa_scnd_section .green_title {
-    margin-left: 0;
-}

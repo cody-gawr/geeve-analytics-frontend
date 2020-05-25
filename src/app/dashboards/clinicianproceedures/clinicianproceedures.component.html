@@ -8,6 +8,7 @@
                     <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
                 </select> 
                 <input type="button" id="dentist_initiate" (click) = "initiate_dentist()"  [style.display]="'none'">
+                 <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
                 <input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
 <div class="sa_dashboard_inner_content">
    <div class="sa_card gridshadow">

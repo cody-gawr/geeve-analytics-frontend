@@ -92,13 +92,15 @@ customOptions: OwlOptions = {
   constructor(private healthscreenService: HealthScreenService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){   
   }
   private warningMessage: string;
-  ngAfterViewInit() {   
-    this.route.params.subscribe(params => {
-      this.clinic_id = this.route.snapshot.paramMap.get("id");
+  ngAfterViewInit() {  
+      this.initiate_clinic();
+
+      
  //   $('.external_dentist').val('all');
     $('#title').html('Health Check Screen');
        $('.external_clinic').show();
         $('.dentist_dropdown').hide();
+        $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
          if($('body').find('span#currentClinic').length > 0){
              var cid= $('body').find('span#currentClinic').attr('cid');
@@ -122,17 +124,19 @@ customOptions: OwlOptions = {
             $('.customRange').hide();
         }
       })
-        this.loadHealthScreen();
-    }); 
+       // this.loadHealthScreen();
+    
   }
   initiate_clinic() {
-    var val = $('#currentClinic').attr('cid');
+    var val = $('#currentClinic').attr('cid');    
+    if(val != undefined) {
     this.clinic_id = val;
     this.loadHealthScreen();
   }
+  }
   public loadHealthScreen() {
        var date = new Date();
-     this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
+     this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth()-1, 1), 'yyyy-MM-dd');
       this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'yyyy-MM-dd');
          this.healthCheckStats();
         this.hourlyRateChart();
@@ -174,7 +178,7 @@ customOptions: OwlOptions = {
   public profit_p;
   public visits_p;
   public visits_f;
-  public utilisation_rate_f;0
+  public utilisation_rate_f;
   public unscheduled_production_f;
   public profit_g;
   public visits_g;
@@ -194,7 +198,7 @@ customOptions: OwlOptions = {
           this.profit_p = data.data.profit_p;
           this.visits_p = data.data.visits_p;
           this.visits_f = data.data.visits_f;
-          this.utilisation_rate_f = data.data.utilisation_rate_f.toFixed(2);
+          this.utilisation_rate_f = data.data.utilisation_rate_f;
           this.unscheduled_production_f = data.data.unscheduled_production_f; 
 
           this.profit_g = data.data.profit_g;          
@@ -210,9 +214,9 @@ customOptions: OwlOptions = {
          //  this.options_utilisation.arcDelimiters[1] = this.utilisation_rate_f_g;
         //  this.options_utilisation.arcDelimiters[0] = Math.floor(this.utilisation_rate_f_g/2);
 
-          this.production_dif = this.production_c - this.production_p;
-          this.profit_dif = this.profit_c - this.profit_p;
-          this.visits_dif = this.visits_c - this.visits_p;
+          this.production_dif = Math.abs(this.production_c - this.production_p);
+          this.profit_dif =Math.abs(this.profit_c - this.profit_p);
+          this.visits_dif = Math.abs(this.visits_c - this.visits_p);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -283,14 +287,20 @@ public maxNewPatients =0;
     var clinic_id;
     this.healthscreenService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
-    this.mkNewPatientsByReferralLoader = false;
+         this.newPatientsTimeData =[];
+            this.newPatientsTimeLabels =[];
+            this.mkNewPatientsByReferralLoader = false;
             this.newPatientsTimeData1 =[];
             this.newPatientsTimeLabelsl2 =[];
             this.newPatientsTimeLabels1 =[];
             if(data.data.patients_reftype.length >0) {
               var i=0;
+              if(this.clinic_id =='all')
+                var limit=5;
+              else
+                var limit =3;
              data.data.patients_reftype.forEach(res => {
-               if(i<10) {
+               if(i<limit) {
                this.newPatientsTimeData.push(res.patients_visits);
                this.newPatientsTimeLabels.push(res.reftype_code);
                 i++;
@@ -304,8 +314,11 @@ public maxNewPatients =0;
 
        }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!                                                           ";
+      this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
   }
+
+
+
 }

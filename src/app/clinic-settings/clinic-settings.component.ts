@@ -5,6 +5,7 @@ import { ClinicSettingsService } from './clinic-settings.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import { Router, NavigationEnd, Event  } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-settings.component.html',
@@ -14,7 +15,7 @@ export class ClinicSettingsComponent implements OnInit {
    public form: FormGroup;
    public errorLogin = false;
    public clinic_id:any ={};
-
+        private readonly notifier: NotifierService;
           private warningMessage: string;
           public id:any ={};
           public clinicName:any =0;
@@ -26,7 +27,8 @@ export class ClinicSettingsComponent implements OnInit {
           public xero_link;
           public xeroConnect = false;
           public xeroOrganization='';
-  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
+  constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
+   this.notifier = notifierService;
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -94,7 +96,7 @@ export class ClinicSettingsComponent implements OnInit {
   this.practice_size = this.form.value.practice_size;
    this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size ).subscribe((res) => {
        if(res.message == 'success'){
-        alert('Clinic Settings Updated');
+          this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
        }
         else if(res.status == '401'){
             this._cookieService.put("username",'');

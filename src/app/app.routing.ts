@@ -19,7 +19,7 @@ export const AppRoutes: Routes = [
         loadChildren: './dashboard/dashboard.module#DashboardModule'
       },
       {
-        path: 'importcsv/:id',
+        path: 'importcsv',
         loadChildren: './importcsv/importcsv.module#ImportcsvModule',
         canActivate: [AuthGuard]
       },
@@ -33,11 +33,11 @@ export const AppRoutes: Routes = [
         loadChildren: './layouts/full/header/header.module#HeaderModule'
       },
       {
-        path: 'roles/:id',
+        path: 'roles',
         loadChildren: './roles/roles.module#RolesModule'
       },
       {
-        path: 'roles-users/:id',
+        path: 'roles-users',
         loadChildren: './roles-users/roles-users.module#RolesUsersModule'
       },
       {
@@ -56,12 +56,12 @@ export const AppRoutes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'dentist/:id',
+        path: 'dentist',
         loadChildren: './dentist/dentist.module#DentistModule',
         canActivate: [AuthGuard]
       },
       {
-        path: 'clinic-goals/:id',
+        path: 'clinic-goals',
         loadChildren: './clinic-goals/clinic-goals.module#ClinicGoalsModule',
         canActivate: [AuthGuard]
       },
@@ -71,12 +71,12 @@ export const AppRoutes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'profile-settings/:id',
+        path: 'profile-settings',
         loadChildren: './profile-settings/profile-settings.module#ProfileSettingsModule',
         canActivate: [AuthGuard]
       },
       {
-        path: 'dentist-goals/:id',
+        path: 'dentist-goals',
         loadChildren: './dentist-goals/dentist-goals.module#DentistGoalsModule',
         canActivate: [AuthGuard]
       },
@@ -165,7 +165,7 @@ export const AppRoutes: Routes = [
           './payment/payment.module#PaymentModule'
       },
       {
-        path: 'planpayment/:id',
+        path: 'planpayment',
         loadChildren:
           './planpayment/planpayment.module#PlanpaymentModule'
       }

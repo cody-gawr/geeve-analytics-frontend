@@ -43,11 +43,23 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
   }
   private warningMessage: string;
  private myTemplate: any = "";
+
+  initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+     if(val != undefined && val !='all') {
+    this.clinic_id = val;
+    this.getDentists();
+     this.filterDate('cytd');
+   }
+  }
+
   ngAfterViewInit() {
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
     this.user_type = this._cookieService.get("user_type");
-        this.getDentists(); 
+     //   this.getDentists(); 
+      this.initiate_clinic();
+        
            if( this._cookieService.get("childid")) {
              this.childid = this._cookieService.get("childid");
              this.dentistid = this._cookieService.get("dentistid");
@@ -60,10 +72,11 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
           else {
              $('.external_dentist').val('all');
           }        
-        this.filterDate('cytd');
+        //this.filterDate('cytd');
         this.getClinics();
         $('.dentist_dropdown').show();
         $('.header_filters').removeClass('flex_direct_mar');
+        $('.header_filters').removeClass('hide_header');
         $('#title').html('Clinician Procedures & Referrals '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');        
         $('.external_clinic').show();
         $('.external_dentist').show();

@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
         datares['user_type'] = res.data.data.user_type;       
         datares['user_image'] = res.data.data.user_image;        
 
-        datares['login_status'] = res.data.data.login_status;        
+        datares['login_status'] = res.data.data.status;        
         datares['display_name'] = res.data.data.display_name;  
         datares['dentistid'] = res.data.data.dentist_id;        
 
@@ -58,8 +58,11 @@ export class LoginComponent implements OnInit {
         this._cookieService.put("login_status", datares['login_status'], opts);
         this._cookieService.put("display_name", datares['display_name'], opts);
         this._cookieService.put("user_image", datares['user_image'], opts);
-
-        if(datares['user_type'] == '1') {
+      if(datares['login_status'] == '5') {
+        this.router.navigate(['/profile-settings']);
+         this._cookieService.put("userid", datares['userid'], opts);
+      }
+      else if(datares['user_type'] == '1') {
         this.router.navigate(['/users']);
          this._cookieService.put("userid", datares['userid'], opts);
       }
@@ -69,13 +72,13 @@ export class LoginComponent implements OnInit {
        // if(datares['login_status'] == 0)
        //  window.location.href = '/assets/stepper/index.html';
        //  else
-        this.router.navigate(['/dashboards/healthscreen/1']);
+        this.router.navigate(['/dashboards/healthscreen']);
       }
       else{
          this._cookieService.put("userid", datares['parentid'], opts);
          this._cookieService.put("childid", datares['userid'], opts);
          this._cookieService.put("dentistid", datares['dentistid'], opts);
-         this.router.navigate(['/profile-settings/1']);
+         this.router.navigate(['/profile-settings']);
       }
        }
        else if(res.message == 'error'){

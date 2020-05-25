@@ -80,13 +80,18 @@ export class RolesUsersComponent implements AfterViewInit {
   dentist_id = '';
 password:string;
 dentists:any=[];
+initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+    this.clinic_id = val;
+     this.getUsers();
+    this.getRoles();
+    this.getDentists();
+  }
   ngAfterViewInit() {
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
-    
-    this.getUsers();
-    this.getRoles();
-    this.getDentists();
+    this.initiate_clinic();
+
     this.clinic_id = this.route.snapshot.paramMap.get("id");
         $('#title').html('Users');
         $('.external_clinic').show();
@@ -199,7 +204,8 @@ dentists:any=[];
   }
 
   private getUsers() {
-    this.rolesUsersService.getUsers().subscribe((res) => {
+    this.rolesUsersService.getUsers(this.clinic_id).subscribe((res) => {
+      this.rows=[];
        if(res.message == 'success'){
         this.rows = res.data;
         this.temp = [...res.data];        
@@ -216,7 +222,7 @@ dentists:any=[];
 
   public selected_id:any;
   private getRoles() {      
-  this.rolesUsersService.getRoles().subscribe((res) => {
+  this.rolesUsersService.getRoles(this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){ 
         this.roles=[];
          res.data.forEach(result => {

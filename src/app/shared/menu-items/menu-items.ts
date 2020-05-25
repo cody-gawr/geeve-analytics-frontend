@@ -72,7 +72,6 @@ const MENUITEMS = [
     icon: 'fas fa-home',
     role:['2'],
     param2 : 'dashboards',
-    param1 : '1'
   },
   {
     state: 'dashboards',
@@ -80,11 +79,11 @@ const MENUITEMS = [
     type: 'sub-dashboards',
     icon: 'fas fa-chart-area',
     children: [
-      { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param : '1'},
-      { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', param : '1'},
-      { state: 'frontdesk', name: 'Front Desk', type: 'link', param : '1'}, 
-      { state: 'marketing', name: 'Marketing', type: 'link', param : '1'}, 
-      { state: 'finances', name: 'Finances', type: 'link', param : '1' , icon: ''}
+      { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link'},
+      { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link'},
+      { state: 'frontdesk', name: 'Front Desk', type: 'link'}, 
+      { state: 'marketing', name: 'Marketing', type: 'link'}, 
+      { state: 'finances', name: 'Finances', type: 'link' , icon: ''}
     ],
     param: '1'
   },  
@@ -100,7 +99,6 @@ const MENUITEMS = [
     name: 'Dentists',
     type: 'link',
     icon: 'fas fa-tooth',
-    param : '1',
     role:['2']
   },
   {
@@ -123,7 +121,6 @@ const MENUITEMS = [
     name: 'Roles Management',
     type: 'link',
     icon: 'fas fa-user-tag',
-    param: '1',
     role:['2']
 
   },
@@ -133,11 +130,10 @@ const MENUITEMS = [
     type: 'sub-child',
     icon: 'fas fa-medal',
     children: [
-      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link', param : '1'},
-      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link', param : '1' }
+      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
+      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link' }
 
     ],
-    param: '1',
     role:['1','2']
   },
   {
@@ -145,7 +141,6 @@ const MENUITEMS = [
     name: 'Data Upload',
     type: 'link',
     icon: 'fas fa-upload',
-    param : '1',
     role:['2']
   },
   {
@@ -153,7 +148,6 @@ const MENUITEMS = [
     name: 'Profile Settings',
     type: 'link',
     icon: 'fas fa-user-cog',
-    param : '1',
     role:['1','2']
 
   },
@@ -340,7 +334,6 @@ export class MenuItems {
     icon: 'fas fa-home',
     role:['2'],
     param2 : 'dashboards',
-    param1 : '1'
   },
   {
     state: 'dashboards',
@@ -348,13 +341,12 @@ export class MenuItems {
     type: 'sub-dashboards',
     icon: 'fas fa-chart-area',
     children: [
-      { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param : '1', role:this.dashboard1role},
-      { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', param : '1', role:this.dashboard2role},
-      { state: 'frontdesk', name: 'Front Desk', type: 'link', param : '1', role:this.dashboard3role}, 
-      { state: 'marketing', name: 'Marketing', type: 'link', param : '1', role:this.dashboard4role}, 
-      { state: 'finances', name: 'Finances', type: 'link', param : '1' , icon: '', role:this.dashboard5role}
+      { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', role:this.dashboard1role},
+      { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', role:this.dashboard2role},
+      { state: 'frontdesk', name: 'Front Desk', type: 'link', role:this.dashboard3role}, 
+      { state: 'marketing', name: 'Marketing', type: 'link', role:this.dashboard4role}, 
+      { state: 'finances', name: 'Finances', type: 'link' , icon: '', role:this.dashboard5role}
     ],
-    param: '1',
     role:['2','3','4','5']
 
   },  
@@ -368,9 +360,8 @@ export class MenuItems {
   {
     state: 'dentist',
     name: 'Dentists',
-    type: 'link',
+    type: 'link-noparam',
     icon: 'fas fa-tooth',
-    param : '1',
     role:['2']
   },
   {
@@ -393,7 +384,6 @@ export class MenuItems {
     name: 'Roles Management',
     type: 'link',
     icon: 'fas fa-user-tag',
-    param: '1',
     role:['2']
 
   },
@@ -403,28 +393,25 @@ export class MenuItems {
     type: 'sub-child',
     icon: 'fas fa-medal',
     children: [
-      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link', param : '1'},
-      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link', param : '1' }
+      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
+      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link'}
 
     ],
-    param: '1',
     role:['1','2']
 
   },
   {
     state: 'importcsv',
     name: 'Data Upload',
-    type: 'link',
+    type: 'link-noparam',
     icon: 'fas fa-upload',
-    param : '1',
     role:['2']
   },
   {
     state: 'profile-settings',
     name: 'Profile Settings',
-    type: 'link',
+    type: 'link-noparam',
     icon: 'fas fa-user-cog',
-    param : '1',
     role:['1','2','3','4','5']
 
   },

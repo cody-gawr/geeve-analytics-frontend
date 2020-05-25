@@ -16,14 +16,22 @@ export interface Dentist {
   styleUrls: []
 })
 export class AppHeaderrightComponent implements AfterViewInit  {   
-  constructor(private _cookieService: CookieService,  private route: Router, private headerService: HeaderService, private dentistService: DentistService,private router: Router) {}
+  constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router) {
+    
+
+    this.router.events.subscribe(event => {
+       this.route = router.url; 
+       if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
+         this.getClinics();
+        });
+  }
 
  ngAfterViewInit() {
-    this.clinic_id = '1';
+  //  this.clinic_id = '1';
      this.getClinics();
-        this.getDentists(); 
       
   }
+  public route:any;
   public title;
    public clinicsData:any[] = [];
   public config: PerfectScrollbarConfigInterface = {};
@@ -35,18 +43,32 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   ];
    private warningMessage: string;
    public finalUrl:string;
+   public selectedClinic;
    private getClinics() { 
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;
+        if(res.data.length>0) {
+        if(this.route == '/dashboards/healthscreen'){
+          this.clinic_id ='all';
+          this.selectedClinic ='all';
+        }
+        else  
+        {
+          this.clinic_id = res.data[0].id;
+          this.selectedClinic = res.data[0].id;
+        }
+
         this.title = $('#page_title').val();
+        this.loadClinic(this.selectedClinic);
+    }
        }
         else if(res.status == '401'){
             this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
+            this._cookieService.put("email", '');
+            this._cookieService.put("token", '');
+            this._cookieService.put("userid", '');
+            this.router.navigateByUrl('/login');
            }
     }, error => {
      // this.warningMessage = "Please Provide Valid Inputs!";
@@ -74,33 +96,22 @@ export class AppHeaderrightComponent implements AfterViewInit  {
         }    
         );
   }
-  public  selectedClinic =1;
  private loadClinic(newValue) {
+ if(newValue != 'undefined') {
  if($('body').find('span#currentClinic').length <= 0){
-    $('body').append('<span id="currentClinic" style="display:none" did="'+newValue+'"></span>');
+    $('body').append('<span id="currentClinic" style="display:none" cid="'+newValue+'"></span>');
   }
   else{
     $('#currentClinic').attr('cid',newValue);
   }
     this.selectedClinic = newValue;
+    this.clinic_id = this.selectedClinic;
+    this.getDentists(); 
     $('.internal_clinic').val(newValue);
     $('#clinic_initiate').click();
+  }
  }
-/*  logout() {
-      this.headerrightService.logout(this._cookieService.get("userid")).subscribe((res) => {
-       console.log(res);
-       if(res.message == 'success'){
-        this._cookieService.put("username",'');
-        this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
-        this._cookieService.put("userid", '');
 
-        this.router.navigate(['/login']);
-       }
-    }, error => {
-    }    
-    );
-  }*/
   
   loadDentist(newValue){
     if($('body').find('span#currentDentist').length <= 0){

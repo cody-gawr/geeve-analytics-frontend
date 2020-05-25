@@ -79,11 +79,56 @@
                                   </mat-card-actions>
                                   <small *ngIf="errorLogin" class="text-danger support-text">{{errortext}}</small>
                                   <small  class="text-success support-text">{{successtext}}</small>
-
                                   <!-- column -->
                               </form>  </div>
                             </mat-card-content></mat-card>
         </div>
-      </div></div>
+      </div>
+
+      <mat-card>
+  <div fxLayout="column"  class="sa_forms_design payment_full_info" fxLayoutGap="2%">
+         <div fxFlex.gt-sm="100%" fxFlex="100" >
+       <mat-card-title class="mat-card-title text-center" style="margin:10px 0">Update Card Details</mat-card-title>
+            <mat-card-content fxLayout.lt-lg="column" style="min-height:100px;">
+        
+        <div fxFlex.gt-sm="35" fxFlex="100" class="update_card_sec " >  
+                 <div  class="last_payment_sec">
+           <div class="detail_last_payment" *ngIf="last_invoic_id">
+            <strong><i class="fas fa-exclamation-triangle"></i> Failed Invoice ID :</strong> {{last_invoic_id}}
+          </div>
+          <div class="detail_last_payment">
+            <strong><i class="far fa-credit-card"></i> Current Card :</strong> xxxx-xxxx-xxxx-{{last4}}</div>
+          </div>
+               </div>
+         
+        <div fxFlex.gt-sm="30" fxFlex.gt-sm="30" fxFlex="100" class="cart_button text-center" >
+                  <div class="sa_payment_left_area">
+                     <a (click)="retryPayment()" class="btn-round mat-raised-button mat-dc" *ngIf="last_invoic_id">Retry Payment </a>
+                     <span  class="btn-round mat-raised-button mat-dc" *ngIf="!last_invoic_id">No Pending Invoices </span>
+                  </div>
+               </div>
+         
+               
+               <div fxFlex.gt-sm="35" fxFlex="100" class="card_fields">
+                  <div class="sa_mattabs_design sa_matforms_design sa_payment_form">
+                     <div class="iframe_main">
+                        <div class="fieldset">
+                           <div id="example3-card-number" class="field empty iframe_design"></div>
+                           <div class="two_iframe_areas">
+                              <div id="example3-card-expiry" class="field empty third-width iframe_design "></div>
+                              <div id="example3-card-cvc" class="field empty third-width iframe_design"></div>
+                           </div>
+                           <div class="fieldset text-center">  
+                              <button type="button" mat-raised-button style="margin-top: 15px" class="btn btn-primary mat-dc"  (click) = "buy()">Pay Now</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </mat-card-content>
+         </div>
+      </div>
+    </mat-card>
+    </div>
  
       

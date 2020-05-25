@@ -1,6 +1,8 @@
 <!-- ============================================================== -->
 <!-- Card Grid-->
 <!-- ============================================================== -->
+ <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
+
 <div fxLayout="row wrap">
     <div fxFlex.gt-sm="100" fxFlex="100">
          <div *ngIf="user_id != '1'">

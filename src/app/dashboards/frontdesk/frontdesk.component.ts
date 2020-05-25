@@ -41,17 +41,27 @@ export class FrontDeskComponent implements AfterViewInit {
   }
   private warningMessage: string; 
  private myTemplate: any = "";
+    initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+      if(val != undefined && val !='all') {
+    this.clinic_id = val;
+   // this.getDentists();
+     this.filterDate('cytd');
+   }
+  }
   ngAfterViewInit() {
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
-         this.filterDate('cytd');
+     //    this.filterDate('cytd');
         this.getClinics();
+      this.initiate_clinic();
+        
    $('#title').html('Front Desk '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
         
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
-
+        $('.header_filters').removeClass('hide_header');
         $('#title').html('Front Desk');
         $('.external_clinic').show();
         $('.external_dentist').show();

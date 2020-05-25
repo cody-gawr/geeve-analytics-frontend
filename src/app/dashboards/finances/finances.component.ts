@@ -78,15 +78,24 @@ single = [
   constructor(private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
   }
   private warningMessage: string;
+   initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+      if(val != undefined && val !='all') {
+    this.clinic_id = val;
+    this.getDentists();
+     this.filterDate('cytd');
+   }
+  }
   ngAfterViewInit() {
-  this.route.params.subscribe(params => {
-    this.clinic_id = this.route.snapshot.paramMap.get("id");
-        this.filterDate('cytd');
-        this.getDentists(); 
+        //this.filterDate('cytd');
+      //  this.getDentists(); 
+      this.initiate_clinic();
+        
         $('#title').html('Finances '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
+        $('.header_filters').removeClass('hide_header');
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();
@@ -98,7 +107,6 @@ single = [
             $('.customRange').hide();
         }
         })
-     });
       let gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
       gradient.addColorStop(0, '#17a2a6');
       gradient.addColorStop(1, '#17a2a6');
@@ -484,13 +492,13 @@ public labelBarPercentOptions: any = {
             display: true,
              position:'right'
          },
-              tooltips: {
-  callbacks: {
-    label: function(tooltipItem, data) {
-      return data['labels'][tooltipItem['index']] +": "+data['datasets'][0]['data'][tooltipItem['index']]+ "%";
-    }
-  }
-}
+        tooltips: {
+        callbacks: {
+          label: function(tooltipItem, data) {
+            return data['labels'][tooltipItem['index']] +": "+data['datasets'][0]['data'][tooltipItem['index']]+ "%";
+          }
+        }
+      }
   };
 
       public pieChartOptions2: any = {
@@ -508,7 +516,7 @@ public labelBarPercentOptions: any = {
   }
 }
   };
-      public pieChartOptions1: any = {
+  public pieChartOptions1: any = {
     responsive: true,
     maintainAspectRatio: false,
     legend: {
@@ -544,7 +552,7 @@ public labelBarPercentOptions: any = {
           var ci = this.chart; 
           if(index ==0)
           {
-                (<HTMLElement>document.querySelector('.predicted1')).style.display = 'flex';                
+                (<HTMLElement>document.querySelector('.predicted1')).style.display = 'flex';
                 (<HTMLElement>document.querySelector('.predicted2')).style.display = 'none';
                 (<HTMLElement>document.querySelector('.predicted3')).style.display = 'none';
                 ci.getDatasetMeta(1).hidden = true;
@@ -560,10 +568,9 @@ public labelBarPercentOptions: any = {
                 ci.getDatasetMeta(index).hidden = false;
           } 
           else if(index== 2) {
-            (<HTMLElement>document.querySelector('.predicted1')).style.display = 'none';
+                (<HTMLElement>document.querySelector('.predicted1')).style.display = 'none';
                 (<HTMLElement>document.querySelector('.predicted2')).style.display = 'none';
                 (<HTMLElement>document.querySelector('.predicted3')).style.display = 'flex';
-
                 ci.getDatasetMeta(0).hidden = true;
                 ci.getDatasetMeta(1).hidden = true;
                 ci.getDatasetMeta(index).hidden = false;
@@ -571,18 +578,17 @@ public labelBarPercentOptions: any = {
           ci.update();
         },
       }     
-          };
-
+    };
 
   public proceedureChartOptions: any = {
     scaleShowVerticalLines: false,
            responsive: true,
     maintainAspectRatio: false,
     barThickness: 10,
-      animation: {
-        duration: 1500,
-        easing: 'easeOutSine'
-      },
+        animation: {
+          duration: 1500,
+          easing: 'easeOutSine'
+        },
         scales: {
           xAxes: [{ 
             ticks: {
@@ -591,11 +597,10 @@ public labelBarPercentOptions: any = {
             }],
           yAxes: [{  
             ticks: {
-             
             }, 
-            }],
-        },
-         legend: {
+        }],
+      },
+      legend: {
         position: 'top',
       },
       tooltips: {
@@ -614,19 +619,15 @@ public labelBarPercentOptions: any = {
   public showInternal: boolean = true;
   public showExternal: boolean = false;
   public showCombined: boolean = false;
-
   public stackedChartType = 'bar';
   public stackedChartTypeHorizontal = 'horizontalBar';
-
   public stackedChartLegend = true;
 
   //labels
   public stackedChartLabels: string[] = [];  
   public stackedChartLabels1: string[] = [];
-
   public predictedChartLabels: string[] = [];
   public predictedChartLabels1: string[] = [];
-
   public proceedureChartLabels: string[] = [];
   public proceedureChartLabels1: string[] = [];
   public proceedureDentistChartLabels: string[] = [];

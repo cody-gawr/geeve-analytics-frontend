@@ -47,23 +47,25 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public averagechecked= false;
   public childid:string='';
   public user_type:string='';
-
+  public flag= false;
   constructor(private cliniciananalysisService: ClinicianAnalysisService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService, private frontdeskService: FrontDeskService){
   }
   private warningMessage: string;
   ngAfterViewInit() {   
-    this.route.params.subscribe(params => {
-      this.clinic_id = this.route.snapshot.paramMap.get("id");
-      this.getDentists();
-      this.changeLoginStatus();
+
+     // this.clinic_id = this.route.snapshot.paramMap.get("id");
+    //  this.getDentists();
+     // this.changeLoginStatus();
+      this.initiate_clinic();
       this.user_type = this._cookieService.get("user_type");
       if( this._cookieService.get("childid"))
          this.childid = this._cookieService.get("childid");
  //   $('.external_dentist').val('all');
-    $('#title').html('Clinician Analysis');
-      $('.external_clinic').show();
+        $('#title').html('Clinician Analysis');
+        $('.external_clinic').show();
         $('.dentist_dropdown').show();
         $('.header_filters').removeClass('flex_direct_mar');
+        $('.header_filters').removeClass('hide_header');
         if(this.childid != ''){
           $('.dentist_dropdown').hide();
           $('.header_filters').addClass('flex_direct_mar'); 
@@ -75,7 +77,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           else {
              $('.external_dentist').val('all');
           }
-        this.filterDate('cytd');
+      //  this.filterDate('cytd');
 
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
@@ -88,7 +90,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             $('.customRange').hide();
         }
     })
-    }); 
+
   //this.canvas = (<HTMLElement>document.getElementById('#'))
 
 let gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
@@ -113,28 +115,38 @@ gradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
 
 
 
-this.lineChartColors = [
-  {
-    backgroundColor: gradient,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F'
-  },
-   {
-    backgroundColor: gradient2,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F'
-  }
-];
-      let doughnutGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
+  this.lineChartColors = [
+    {
+      backgroundColor: gradient,
+      hoverBorderWidth: 2,
+      hoverBorderColor: '#1CA49F'
+    },
+     {
+      backgroundColor: gradient2,
+      hoverBorderWidth: 2,
+      hoverBorderColor: '#1CA49F'
+    }
+  ]; 
+
+  let doughnutGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
       doughnutGradient.addColorStop(0, 'rgba(104, 255, 249, 1)');
       doughnutGradient.addColorStop(1, 'rgba(28, 164, 159, 1)');
       let doughnutGradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
       doughnutGradient2.addColorStop(1, '#4FC1D1');
       doughnutGradient2.addColorStop(0,  '#BFE8EE');
       this.doughnutChartColors = [{backgroundColor: [doughnutGradient,doughnutGradient2, '#dadada']}];
-
-    //this.recallChartTreatment();
   }
+
+
+ initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+    if(val != undefined && val !='all') {
+     this.clinic_id = val;
+     this.getDentists();
+     this.filterDate('cytd');
+   }
+  }
+
   dentists: Dentist[] = [
    { providerId: 'all', name: 'All Dentists' },
   ];
@@ -644,7 +656,6 @@ changeLoginStatus(){
     $('.treatmentPlan .tcmain'+val).addClass('active');
     this.planTotalTooltip = 'down';
     this.tcmain =val;
-    console.log(this.barChartOptionsTC);
     if(val == '1'){
       this.planTotalAverage = this.planAllTotal;
       this.planTotalPrev = this.planAllTotalTrend;
@@ -661,7 +672,6 @@ changeLoginStatus(){
     if(this.goalchecked == 'goal') {
       this.barChartOptionsTC.annotation.annotations[0].value =this.planTotalGoal;
     }
-    console.log(this.barChartOptionsTC);
     
   }
 
@@ -728,8 +738,6 @@ changeLoginStatus(){
       }
       else
         this.DPcolors= this.lineChartColors;
-
-
          this.barChartData[0]['data'] = this.barChartData1;
          this.barChartLabels = this.barChartLabels1;
          this.productionTotalAverage =Math.floor(data.total_average);
@@ -1620,7 +1628,6 @@ public newPatientPercent=0;
          this.hourlyRateChartAveragePrev =Math.floor(data.total_ta);
          this.hourlyRateChartGoal = data.goals;
          if(this.user_type == '4' && this.childid != '') {
-          console.log(this.hrKey);
                     this.barChartColors = [
                       { backgroundColor: [] }
                     ];
@@ -1716,6 +1723,7 @@ public newPatientPercent=0;
            if(res.message == 'success'){
               this.dentists= res.data;
               this.dentistCount= res.data.length;
+
            }
            else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -1735,6 +1743,7 @@ public currentText;
 
  // Filter By Date
   filterDate(duration) {
+    if(this.clinic_id != undefined && this.clinic_id !='all') {
     $('.customRange').css('display','none');
     this.showTrendChart= false;
     var dentistVal;
@@ -1842,7 +1851,7 @@ public currentText;
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
       $('.filter_custom').val(this.startDate+ " - "+this.endDate);
-
+}
   }
     initiate_dentist() {
     var val = $('.internal_dentist').val();

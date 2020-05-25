@@ -2,21 +2,25 @@
 <div mat-dialog-content>
  
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.name" placeholder="Clinic Name" required>
+    <input matInput tabindex="1" [(ngModel)]="data.name" [formControl]="form.controls['name']" class="form-control-dialog" placeholder="Clinic Name" required>
+    
   </mat-form-field>
-
+<small *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched" class="text-danger support-text">Name is Required.</small>
   
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.address" placeholder="Address" required>
-  </mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.address" [formControl]="form.controls['address']" class="form-control-dialog" placeholder="Address" required>
 
+  </mat-form-field>
+    <small *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched" class="text-danger support-text">Address is Required.</small>
   
   <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.contact_name" placeholder="Contact Name" required>
+    <input matInput tabindex="1" [(ngModel)]="data.contact_name" [formControl]="form.controls['contact_name']" class="form-control-dialog"  placeholder="Contact Name" required>
+
   </mat-form-field>
+      <small *ngIf="form.controls['contact_name'].hasError('required') && form.controls['contact_name'].touched" class="text-danger support-text">Contact Name is Required.</small>
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+   <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Ok</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
 </div>

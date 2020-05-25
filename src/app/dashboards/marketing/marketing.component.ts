@@ -49,14 +49,24 @@ export class MarketingComponent implements AfterViewInit {
   }
   private warningMessage: string; 
   private myTemplate: any = "";
+     initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+      if(val != undefined && val !='all') {
+    this.clinic_id = val;
+     this.filterDate('cytd');
+   }
+  }
   ngAfterViewInit() {
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
-         this.filterDate('cytd');
+       //  this.filterDate('cytd');
         this.getClinics();
+      this.initiate_clinic();
+        
        $('#title').html('Marketing');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
+        $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
   $('#title').html('Marketing '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
         
