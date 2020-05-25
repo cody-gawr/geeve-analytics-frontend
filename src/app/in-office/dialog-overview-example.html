@@ -1,20 +1,59 @@
-
-
-<h1 mat-dialog-title>Add Payment Plan</h1>
-<div mat-dialog-content class="sa_forms_design">
+<div class="">
+ <mat-tab-group dynamicHeight [(selectedIndex)]="this.selectedIndex" >
+ <!-- Plan Details tab -->
+        <mat-tab label="Add Payment Plan">
+ <div mat-dialog-content class="sa_forms_design">
 
     <h6 class="form_sub_title">Patient Details</h6>
    <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+        <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group patient_name">
         <label>Patient Name</label>
            <input matInput tabindex="1" [(ngModel)]="data.patient_name" (keypress)="omit_special_char($event)" placeholder="" [formControl]="form.controls['patient_name']" class="form-control-dialog" >
-    <small *ngIf="form.controls['patient_name'].hasError('required') && form.controls['patient_name'].touched" class="text-danger support-text">Patient Name is Required.</small>
-    </div>
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+           <small *ngIf="form.controls['patient_name'].hasError('required') && form.controls['patient_name'].touched" class="text-danger support-text">Patient Name is Required.</small>
+       </div>
+
+      <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+            <label>Patient DOB</label>   
+             <div fxLayout="row wrap" fxLayoutGap="2%">         
+            <select fxFlex.gt-md="30%" fxFlex="100" class="form-control-dialog" required="true"  class="sa_select form-control" [(ngModel)]="data.dob_date" [formControl]="form.controls['dob_date']" (change) ="checkDob(data,'date')" tabindex="1">
+            <option value="">Day</option>
+            <option *ngFor="let date of dates" value="{{date}}">{{date}}</option>
+           </select>
+         
+            <select fxFlex.gt-md="30%" fxFlex="100" class="form-control-dialog" required="true"  class="sa_select form-control" [(ngModel)]="data.dob_month" [formControl]="form.controls['dob_month']" (change) ="checkDob(data,'month')" tabindex="1">
+            <option value="">Month</option>
+            <option *ngFor="let month of months" value="{{month.key}}">{{month.value}}</option>
+           </select>
+            <select fxFlex.gt-md="30%" fxFlex="100"class="form-control-dialog" required="true"  class="sa_select form-control" [(ngModel)]="data.dob_year" [formControl]="form.controls['dob_year']" (change) ="checkDob(data,'year')" tabindex="1">
+
+            <option value="">Year</option>
+            <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
+           </select> 
+       
+           <!--small *ngIf="(form.controls['dob_year'].hasError('required') && form.controls['dob_year'].touched)" class="text-danger support-text">Patient Dob is Required.</small-->
+
+            <small *ngIf="(form.controls['dob_date'].hasError('required') && form.controls['dob_date'].touched) || (form.controls['dob_month'].hasError('required') && form.controls['dob_month'].touched) || (form.controls['dob_year'].hasError('required') && form.controls['dob_year'].touched)" class="text-danger support-text">Patient Dob is Required.</small>
+          </div>
+         </div>
+
+    <!--div fxFlex.gt-md="100"  class="sa-form-group">
+       <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group dob_field">
+               <label>Patient DOB</label>
+				<div class="input_field" fxFlex="100">
+
+				</div>
+				
+             <small *ngIf="(form.controls['dob_date'].hasError('required') && form.controls['dob_date'].touched) || (form.controls['dob_month'].hasError('required') && form.controls['dob_month'].touched) || (form.controls['dob_year'].hasError('required') && form.controls['dob_year'].touched)" class="text-danger support-text">Patient Dob is Required.</small>
+        </div>
+            
+
+        
+
         <label>Date Of Birth</label>
-        <input matInput type="date" tabindex="1" [(ngModel)]="data.patient_dob" placeholder=""  class="form-control-dialog"   max="{{minDate}}" [formControl]="form.controls['patient_dob']" >
+        <input matInput type="text" tabindex="1" [(ngModel)]="data.patient_dob" placeholder=""  class="form-control-dialog" max="{{minDate}}" [formControl]="form.controls['patient_dob']" (keyup) ="checkDob(data)" placeholder="dd/mm/yyyy">
+        <small *ngIf="invalid_dob" class="text-danger support-text">Patient Dob is Invalid.</small>
          <small *ngIf="form.controls['patient_dob'].hasError('required') && form.controls['patient_dob'].touched" class="text-danger support-text">Patient Dob is Required.</small>
-    </div>
+    </div-->
    </div>
  <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
@@ -25,8 +64,9 @@
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Phone Number</label>
-          <input matInput tabindex="1" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="data.patient_phone_no" placeholder="" class="form-control-dialog"  type="number" [formControl]="form.controls['patient_phone_no']">
-           <small *ngIf="form.controls['patient_phone_no'].hasError('required')" class="text-danger support-text">You must include valid Phone No.</small>
+          <input matInput tabindex="1" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="data.patient_phone_no" placeholder="" class="form-control-dialog"  type="text" [formControl]="form.controls['patient_phone_no']" (keypress)="numberOnly($event)">
+           <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched" class="text-danger support-text">You must include valid Phone No.</small>
+            <small *ngIf="form.controls['patient_phone_no'].hasError('minlength') && form.controls['patient_phone_no'].touched" class="text-danger support-text">Phone No Should be of minimum 8 digits in length.</small>
     </div>
    </div>
     <h6 class="form_sub_title">Payment Plan Details</h6>
@@ -58,13 +98,11 @@
         <div fxFlex.gt-md="38" fxFlex="100" class="sa-form-group">
             <label>Deposit</label>
              <input matInput tabindex="1" id="deposite_percentage" type="number" min="0" max ="100"  (keyup)="calculate_outstanding(data.deposite_percentage,'PERCENT')" [(ngModel)]="data.deposite_percentage" *ngIf="data.depositType == 'PERCENT'" placeholder="" class="form-control-dialog"  readOnly>
-
              <input matInput tabindex="1" id="deposit_amount" type="number" min="0"  (change)="calculate_outstanding(data.deposit_amount,'DOLLAR')" [(ngModel)]="data.deposit_amount" *ngIf="data.depositType == 'DOLLAR'" placeholder="" class="form-control-dialog" >
         </div>
-
         <div fxFlex.gt-md="20" fxFlex="100" class="sa-form-group">
             <div class="duration width-full">
-                <label>&nbsp; </label>
+                <label>&nbsp;</label>
                 <div class="btn-group sa-pull-left w100"  >
                   <span class="position-relative btn-switch w50" >
                   <input type="radio" id="value2" name="depositType" [(ngModel)]="data.depositType" (click)="assignVal(data.deposit_amount,'PERCENT')" value="PERCENT">
@@ -75,16 +113,21 @@
                   <label class="active-duration" for="value1">$</label>
                    </span>
                 </div>
-                <small *ngIf= "data.depositType == 'PERCENT' && !isNumber(data.deposited_amount)  && data.deposited_amount != null " class="support-text">{{data.deposite_percentage}}% Deposit = <span *ngIf="isDecimal(data.deposited_amount)"> {{data.deposited_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.deposited_amount)">{{data.deposited_amount| currency: 'USD':true:'1.0'}}</span></small>
+                <small *ngIf= "data.depositType == 'PERCENT' && !isNumber(data.deposited_amount)  && data.deposited_amount != null " class="support-text">
+                   <span *ngIf="isDecimal(data.deposite_percentage)"> {{data.deposite_percentage  | currency: 'USD':true:'1.2-2'}} </span>
+                 <span  *ngIf="!isDecimal(data.deposite_percentage)">{{data.deposite_percentage| currency: 'USD':true:'1.0'}}</span>% Deposit = 
+                  <span *ngIf="isDecimal(data.deposited_amount)"> {{data.deposited_amount  | currency: 'USD':true:'1.2-2'}} </span>
+                 <span  *ngIf="!isDecimal(data.deposited_amount)">{{data.deposited_amount| currency: 'USD':true:'1.0'}}</span></small>
             </div>
         </div>
         <div fxFlex.gt-md="38" fxFlex="100" class="sa-form-group">
             <label>Outstanding Amount ($)</label>
+
             <input matInput tabindex="1" id="balance_amount" type="number" min="0" [(ngModel)]="data.balance_amount" placeholder="" class="form-control-dialog" readonly>
         </div>
     </div>
-<div fxLayout="row wrap" fxLayoutGap="2%">
 
+<div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
       <div class="duration width-full">
        <label>Payment Frequency</label>
@@ -114,7 +157,88 @@
    </div>
 </div>
 <div mat-dialog-actions class="sa-pull-right">
-  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Ok</button>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+  <!--button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Ok</button!-->
+ <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+ <button mat-button (click)="next(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Next</button>
+</div>
+</mat-tab>
+
+ <mat-tab label="Contract Upload"  [disabled]='this.contractTabDisable'>
+<div class="pop_content">
+<div fxLayout="row wrap">
+	<div fxFlex.gt-md="50" fxFlex="100" class="top_download_Agreement">
+		 <p>
+		  Download Agreement <br>
+		 <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{downloadcontractURL}}">Download</a>
+	  </p>
+	</div>
+
+	<div fxFlex.gt-md="50" fxFlex="100" class="form_div_sec">
+		  <form [formGroup]="form" class="basic-form contract_up" (ngSubmit)="onSubmit()">
+		   <div class="bd_UpoadImage uploadsignedContract" fxFlex.gt-md="100" fxFlex="100">
+    	<div class="error_msg_file_type error_msg" style="display:none">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+    	   	<strong class="error_text"></strong>
+      </div>
+			 <label>Upload Agreement</label>
+			   <div class="upload-btn">
+				 <span>Choose file</span>
+				   <input class="contractFile" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files,data)">
+				   <input type='hidden'  placeholder="" id="contractURL" value="{{contractURL}}" >
+				 </div>         
+				</div>                               
+			  <p>
+			<!--button mat-raised-button color="dc" (click)="saveSignedContract(data)">Save</button-->
+		  </p>
+		</form> 
+	  <p *ngIf="uploadedSignedContract; else empty">
+		  Download Signed Contract <br>
+		  
+		 <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{uploadedSignedContract}}">Download</a>
+     <span class="material-icons" (click)="deleteSignedDocImage()">delete_forever</span>
+		</p>
+	</div>
+
+    <!-- For Docs pdf and doc -->
+  <!--div fxFlex.gt-md="100" fxFlex="100" class="top_download_Agreement">
+     <p>
+      Download Signed Contract <br>
+      <span class="material-icons" (click)="deleteSignedDocImage()">delete_forever</span>
+     <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{contractURL}}">Download</a>
+    </p>
+  </div-->
+
+
+  <!--div fxFlex.gt-md="49" fxFlex="100" class="top_download_Agreement" *ngIf="(signedFileType=='jpg' || signedFileType=='jpeg' || signedFileType=='png')">
+     <p *ngIf="contractURL; else empty">
+      Download Signed Contract <br>
+         <span class="material-icons" (click)="deleteSignedDocImage()">delete_forever</span>
+     <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{contractURL}}">
+       <img src="{{contractURL}}" style="height:100px; width:100px" />
+     </a>
+    </p>
+  </div-->
+
+
+
+	
+	
+	 <div fxFlex.gt-md="100" fxFlex="100" class="text-center bottom_btns_center">
+		<div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+		  <button mat-button (click)="uploadlater(data)" class="mat-raised-button mat-dc">Upload Later</button>
+		  <button mat-button (click)="saveData(data)"  class="mat-raised-button mat-gray" [disabled]="this.contractsave || contractURL==''">Save</button>
+		</div>
+	</div>
+</div>
+
 
 </div>
+ 
+
+        
+  </mat-tab>
+</mat-tab-group>
+
+</div>
+

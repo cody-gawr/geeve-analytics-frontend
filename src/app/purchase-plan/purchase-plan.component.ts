@@ -17,7 +17,6 @@ import {ChangeDetectorRef} from '@angular/core';
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
 import { Http} from '@angular/http';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
-
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example-dialog.html',
@@ -26,40 +25,107 @@ import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 export class DialogOverviewExampleDialogComponent {
    public clinic_id:any ={}; 
    show_dentist = false;
- public minDate: any =  new Date("1990-01-01");
+  public minDate: any =  new Date("1900-01-01");
   public maxDate: any = new Date();
 
   form:FormGroup;
-
+  public dob_date;
+public dob_month;
+public dob_year;
+public dates =['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
+public months =[
+{key:'01',value:"January"},{key:'02',value:"February"},{key:'03',value:"March"},
+{key:'04',value:"April"},{key:'05',value:"May"},{key:'06',value:"June"},
+{key:'07',value:"July"},{key:'08',value:"August"},{key:'09',value:"September"},
+{key:'10',value:"October"},{key:'11',value:"November"},{key:'12',value:"December"}
+];
+public max_days =31;
+public years:any = [];
   constructor(private fb: FormBuilder,private PurchasePlanService: PurchasePlanService,
         public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
+     var start_year =new Date().getFullYear();
+     for (var i = start_year; i > start_year - 100; i--) {
+      this. years.push(i);
+     }
+      data.dob_date='';
+     data.dob_month='';
+     data.dob_year='';
     this.form = this.fb.group({
       subPatientDob: [
-        null,
-        Validators.compose([Validators.required])
+        null
+       // Validators.compose([Validators.required])
       ],
       subPatientName: [
         null,
         Validators.compose([Validators.required])
-      ]
+      ],
+      dob_date: [
+        null,
+        Validators.compose([Validators.required])
+      ],
+      dob_month: [
+        null,
+        Validators.compose([Validators.required])
+      ],
+      dob_year: [
+        null,
+        Validators.compose([Validators.required])
+      ],
+      subPatientGender: [
+        null,
+        Validators.compose([Validators.required])
+      ],
     });
+
+   
   }
+
+public invalid_dob = false;
+checkDob(data,control) {
+data.subPatientDob =  data.dob_year+"-"+data.dob_month+"-"+data.dob_date;
+var input = data.subPatientDob;
+var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
+  if(!pattern.test(input) || input.substring(0, 4)<'1900') {
+  this.invalid_dob = true;
+  }
+  else {
+  this.invalid_dob=false;  
+  }
+
+ if(control=='month' || control=='year'){
+   this.max_days = this.getDaysInMonth(data.dob_year,data.dob_month);
+   let a = Array(this.max_days).fill(0).map((i,idx) => idx +1);
+   this.dates =a.map(this.updateDates);
+   if(data.dob_month=="02" && data.dob_date > a.length){
+     this.form.controls['dob_date'].setValue(a.length); 
+   }
+   
+ }
+
+}
+updateDates(date){
+  let newDate =date < 10 ? "0"+date : date ;
+  return newDate.toString();
+
+}
+getDaysInMonth(year: number, month: number) {
+  return 32 - new Date(year, month - 1, 32).getDate();
+}
 
   private warningMessage: string;
   omit_special_char(event)
 {   
    var k;  
    k = event.charCode;  //         k = event.keyCode;  (Both can be used)
-   return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+   return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57) || k==45); 
 }
   save(data) {
    $('.form-control-dialog').each(function(){
       var likeElement = $(this).click();
    });
-  if($.trim(data.subPatientName) != undefined  && $.trim(data.subPatientDob) != '' && data.subPatientGender != undefined ){   
+  if($.trim(data.subPatientName) != undefined  && $.trim(data.subPatientDob) != '' && data.subPatientGender != undefined){   
               var temp=[];
               var countPatient = data.patientData.length-1;
              temp['name'] =data.subPatientName;
@@ -67,11 +133,12 @@ export class DialogOverviewExampleDialogComponent {
              temp['gender'] = data.subPatientGender;
              temp['discount'] = data.discount;
              if(countPatient<3)
-             temp['amount'] =  data.patientData[0]['amount'] - Math.floor((data.discount/100)*data.patientData[0]['amount']);
+             temp['amount'] =  data.patientData[0]['amount'] - (data.discount/100)*data.patientData[0]['amount'];
              else
              temp['amount'] =  data.patientData[countPatient]['amount'];
              data.patientData.push(temp);
-             data.totalAmountPatients = data.totalAmountPatients +  this.toTrunc(temp['amount'],2);
+             console.log(data, temp);
+             data.totalAmountPatients = data.totalAmountPatients +  temp['amount'];
              this.dialogRef.close(data);          
   }else{
     return false;
@@ -147,17 +214,39 @@ public cardCvc;
   public subPatientGender;
   public totalAmountPatients =0;
   public email;
-  public minDate: any =  new Date("1990-01-01");
+  public minDate: any =  new Date("1900-01-01");
   public maxDate: any = new Date();
   public name;
+  public patient_dob;
+public dob_date;
+public dob_month;
+public dob_year;
+public dates =['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
+public months =[
+{key:'01',value:"January"},{key:'02',value:"February"},{key:'03',value:"March"},
+{key:'04',value:"April"},{key:'05',value:"May"},{key:'06',value:"June"},
+{key:'07',value:"July"},{key:'08',value:"August"},{key:'09',value:"Sept"},
+{key:'10',value:"October"},{key:'11',value:"November"},{key:'12',value:"December"}
+];
+public years:any = [];
+public max_days =31;
   constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private PurchasePlanService: PurchasePlanService,private _cookieService: CookieService, private route: ActivatedRoute, public dialog: MatDialog, private ref: ChangeDetectorRef, private stripeService: StripeService, private http : Http,private stripeSerivce: StripeService) {
+    var start_year =new Date().getFullYear();
+     for (var i = start_year; i > start_year - 100; i--) {
+      this. years.push(i);
+     }
+     this.dob_date='';
+     this.dob_month='';
+     this.dob_year='';
+     this.patient_dob = this.dob_year+"-"+this.dob_month+"-"+this.dob_date;
+
 
   }
   omit_special_char(event)
 {   
    var k;  
    k = event.charCode;  //         k = event.keyCode;  (Both can be used)
-   return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+   return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57) || k==45); 
 }
 isDecimal(value) {
  if(typeof value != 'undefined')
@@ -262,9 +351,9 @@ public cvcStyle = {
   };
 
    ngOnInit() {    
-    this.stripeService.setKey('22');
+    this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
   this.PurchasePlanService.getPublishableKey().subscribe((res) => {
-    this.stripeService.setKey(res.key);
+ //   this.stripeService.setKey(res.key);
        this.stripeTest = this.fb.group({
             name: ['', [Validators.required]]
             });
@@ -318,8 +407,8 @@ public cvcStyle = {
         Validators.compose([Validators.required])
       ],
       patient_dob: [
-        null,
-        Validators.compose([Validators.required])
+        null
+     //  Validators.compose([Validators.required])
       ],
       termsCond: [
          null,
@@ -327,9 +416,12 @@ public cvcStyle = {
       ],patient_phone_no: [
         null,
         Validators.compose([Validators.required,
-        Validators.minLength(6),
+        Validators.minLength(8),
         Validators.pattern("^[0-9]*$")])
-      ]
+      ],
+      dob_date: [null,Validators.compose([Validators.required])],
+      dob_month: [null,Validators.compose([Validators.required])],
+      dob_year: [null,Validators.compose([Validators.required]) ],
     });
      this.route.params.subscribe(params => {
       this.plan_id = this.route.snapshot.paramMap.get("id");
@@ -371,15 +463,18 @@ public cvcStyle = {
     this.stripeService
     .createToken(this.cardNumber, { name })
     .subscribe(obj => {
-    if (obj) {
+    if (obj.token) {
     $('.ajax-loader').show(); 
- this.token = obj.token.id;
-   this.PurchasePlanService.addPatient(this.form.value.patient_email,this.form.value.patient_name,this.form.value.patient_phone_no,this.clinic_id,this.user_id,this.plan_id,this.totalAmountPatients).subscribe((res) => {
+    this.token = obj.token.id;
+   this.PurchasePlanService.addPatient(this.form.value.patient_email,this.form.value.patient_name,this.patient_dob,this.form.value.patient_phone_no,this.clinic_id,this.user_id,this.plan_id,this.totalAmountPatients).subscribe((res) => {
                     this.errorLogin = false;
                     this.errorLoginText = '';
                     this.successLogin = false;
                     this.successLoginText = '';
                      if(res.message == 'success'){
+                      this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
                       this.patient_id = res.data.id;
                       if( this.patientData.length>1) {
                         var i=0;
@@ -406,7 +501,10 @@ public cvcStyle = {
                           }
                       }
                      else if(res.message == 'error'){
-                                  $('.ajax-loader').hide(); 
+                                  $('.ajax-loader').hide();
+                                  this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear(); 
                         this.errorLogin  =true;
                         this.errorLoginText  =res.data;
                      }
@@ -414,6 +512,7 @@ public cvcStyle = {
               });
         //this.message = 'Success! Card token ${response.card.id}.`;
     } else {
+      
     // Error creating the token
     console.log("Error comes ");
     }
@@ -435,11 +534,14 @@ public cvcStyle = {
 
   changeTab(index){
     this.selectedIndex =index;
+     this.ref.detectChanges();
   }
 
   paymentStripe(){
     this.selectedIndex = 2;
     this.tabActive2 = true;
+    $(".mat-tab-label-active").siblings('.mat-tab-label').click();
+     this.ref.detectChanges();
   }
 
   toTrunc(value,n){  
@@ -462,7 +564,7 @@ public cvcStyle = {
     }, (status: number, response: any) => {
       if (status === 200) {
         this.token = response.id;
-   this.PurchasePlanService.addPatient(this.form.value.patient_email,this.form.value.patient_name,this.form.value.patient_phone_no,this.clinic_id,this.user_id,this.plan_id,this.totalAmountPatients).subscribe((res) => {
+   this.PurchasePlanService.addPatient(this.form.value.patient_email,this.form.value.patient_name,this.form.value.patient_dob,this.form.value.patient_phone_no,this.clinic_id,this.user_id,this.plan_id,this.totalAmountPatients).subscribe((res) => {
                     this.errorLogin = false;
                     this.errorLoginText = '';
                     this.successLogin = false;
@@ -499,13 +601,13 @@ public cvcStyle = {
                         this.errorLoginText  =res.data;
                      }
                   }, error => {
+                       $('.ajax-loader').hide(); 
               });
         this.message = `Success! Card token ${response.card.id}.`;
       } else {
         this.message = response.error.message;
       }
-    });
-  
+    });  
   }
 
   createSubscription(token) {
@@ -543,8 +645,41 @@ public planLength;
         }, error => {
     });
   }
+
+public invalid_dob = false;
+
+checkDob(control) {
+this.patient_dob = this.form.value.dob_year+"-"+this.form.value.dob_month+"-"+this.form.value.dob_date;
+var input = this.patient_dob;
+var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
+  if(!pattern.test(input) || input.substring(0, 4)<'1900') {
+  this.invalid_dob = true;
+  }
+  else {
+  this.invalid_dob=false;  
+  }
+ if(control=='month' || control=='year'){
+   this.max_days = this.getDaysInMonth(this.form.value.dob_year,this.form.value.dob_month);
+   let a = Array(this.max_days).fill(0).map((i,idx) => idx +1)
+   this.dates =a.map(this.updateDates);
+   if(this.form.value.dob_month=="02" && this.form.value.dob_date > a.length){
+     this.form.controls['dob_date'].setValue(a.length); 
+  }
+   
+ }
+}
+
+updateDates(date){
+  let newDate =date < 10 ? "0"+date : date ;
+  return newDate.toString();
+
+}
+getDaysInMonth(year: number, month: number) {
+  return 32 - new Date(year, month - 1, 32).getDate();
+}
+
+
   deletesubPatient(id){
-    alert(id);
     var tempArray= [];
     var totalAmount =0;
     this.patientData.splice(id, 1);
@@ -553,14 +688,13 @@ public planLength;
      this.patientData.forEach(res => {
      var temp=[];
           temp=res;
+          console.log(this.discount);
             if((i<3) && (i>0) ) 
-             temp['amount'] = this.patientData[0]['amount'] - Math.floor((this.discount/100)*this.patientData[0]['amount']);
+             temp['amount'] = this.patientData[0]['amount'] - (this.discount/100)*this.patientData[0]['amount'];
             else
              temp['amount'] =  res['amount'];
-
-
              tempArray.push(temp);
-             totalAmount = totalAmount + temp['amount'];
+             totalAmount = totalAmount + this.toTrunc(temp['amount'],2);
              i++;
  });
      this.patientData = tempArray;
@@ -568,6 +702,7 @@ public planLength;
   }
 
   onSubmit() {
+    if(!this.invalid_dob){
     $('.ajax-loader').show();
     this.patientData=[];
     this.PurchasePlanService.checkPatientEmailExists(this.form.value.patient_email,this.clinic_id,this.user_id).subscribe((res) => {
@@ -575,12 +710,12 @@ public planLength;
           this.errorLoginText = '';
           this.successLogin = false;
           this.successLoginText = '';
-           if(res.message == 'success'){  
+           if(res.message == 'success'){ 
             $('.ajax-loader').hide();
              this.selectedIndex =1;
              var temp=[];
              temp['name'] =this.form.value.patient_name;
-             temp['dob'] = this.form.value.patient_dob;
+             temp['dob'] =  this.form.value.dob_year+"-"+this.form.value.dob_month+"-"+this.form.value.dob_date;
              temp['amount'] = this.amount;
              this.totalAmountPatients = this.toTrunc(this.amount,2);
              this.patientData.push(temp);
@@ -588,6 +723,8 @@ public planLength;
              this.countPatientData = this.patientData.length;
              if(this.countPatientData>0)
               this.tabActive1 = true;
+            $(".mat-tab-label-active").siblings('.mat-tab-label').click();
+             this.ref.detectChanges();
             }
            else if(res.message == 'error'){
            $('.ajax-loader').hide();
@@ -597,23 +734,23 @@ public planLength;
         }, error => {
     });
   }
+  }
 
    openaddDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-      width: '250px',
+      width: '120px',
+       panelClass: 'add_members',
       data: { subPatientName: this.subPatientName, subPatientDob: this.subPatientDob, subPatientGender: this.subPatientGender,patientData:this.patientData,discount:this.discount,totalAmountPatients:this.totalAmountPatients}
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
        if(result != undefined) {
         this.patientData = result.patientData;
-             this.patientData = [...this.patientData];
-
+        this.patientData = [...this.patientData];
         this.totalAmountPatients = result.totalAmountPatients;
       }
     });
   }
-
+  
   getSubPatients() {
     this.PurchasePlanService.getSubPatients(this.id).subscribe((res) => {  
        if(res.message == 'success'){
@@ -652,7 +789,8 @@ public planLength;
         this.rows[sub_patient_length] = patientArray; 
         }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+         $('.ajax-loader').hide(); 
+       
     });
   }
 
@@ -662,9 +800,9 @@ public planLength;
     this.PurchasePlanService.updatePatients(this.totalAmountPatients,status, this.patient_id,this.form.value.patient_email).subscribe((res) => {
       $('.ajax-loader').hide();      
        if(res.message == 'success'){
+
              $('.ajax-loader').hide(); 
              window.location.href = '/thank-you/'+this.clinic_id; 
-            // this.router.navigate(['/thank-you']);
        }
        else if(res.message == 'error'){
             $('.ajax-loader').hide();
@@ -679,7 +817,6 @@ public planLength;
       key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
       locale: 'auto',
       token: token => {
-        console.log(this.planLength);
            this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.id, this.patient_amount, this.member_plan_id, this.user_id,this.patient_name,this.patient_email,this.clinic_id,this.planLength).subscribe((res) => {
            if(res.message == 'success'){
               this.updatePatients('ACTIVE');

@@ -191,6 +191,35 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
                     })
         );
     }
+
+contractUpload(clinic_id,formData): Observable<any> {
+  console.log("heree");  
+    formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('clinic_id', clinic_id);
+    formData.append('token', this._cookieService.get("token"));
+    formData.append('token_id', this.token_id);
+    return this.http.post(this.apiUrl +"/Clinics/uploaddefaultcontract/", formData)
+     .pipe(map((response: Response) => {
+         return response;
+      })
+     ); 
+
+}
+
+  updateContract(clinic_id,clinicContract,token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        formData.append('clinicContract', clinicContract);
+        formData.append('clinic_id', clinic_id);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
+               
+        return this.http.post(this.apiUrl +"/Clinics/savedefaultcontract/", formData)
+         .pipe(map((response: Response) => {
+             return response;
+          })
+        );
+    }
        
 }
 

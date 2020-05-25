@@ -133,7 +133,7 @@ export class PurchasePlanService {
     }
 
        // Items Predictor Analysis 
-    addPatient(email,name,phone_no, clinic_id,user_id,plan_id,plan_amount): Observable<any> {
+    addPatient(email,name,dob,phone_no, clinic_id,user_id,plan_id,plan_amount): Observable<any> {
 
          const formData = new FormData();
 
@@ -145,7 +145,7 @@ export class PurchasePlanService {
         formData.append('patient_name', name);
         formData.append('patient_phone_no', phone_no);
         formData.append('patient_address', 'NULL');
-        formData.append('patient_dob', '2018-02-01');
+        formData.append('patient_dob', dob);
         formData.append('patient_age', '12');
         formData.append('patient_gender', 'MALE');
         formData.append('patient_home_phno', 'NULL');

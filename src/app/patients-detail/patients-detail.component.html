@@ -5,12 +5,12 @@
        <div class="warning_message" *ngIf="!connectedStripe">Your stripe account is not connected</div>
         <div class="main_title_outer" style="margin-bottom:0;">
             <div class="main_title_withbtn">
-                <mat-card-title><span class="main-title">Patients Listing</span></mat-card-title>
+                <mat-card-title><span class="main-title">Memberships</span></mat-card-title>
             </div>
             <div class="title_btn" style="margin-bottom:10px;">
                 <div fxLayout="row wrap" fxLayoutGap="2%">
 
-                    <div fxFlex.gt-xs="340px" fxFlex="100"  style="text-align:right;" >
+                    <div fxFlex.gt-xs="360px" fxFlex="100"  style="text-align:right;" >
                         <button style="margin-bottom:10px;" class="mat-raised-button mat-gray" mat-raised-button (click)="openExportDialog()" *ngIf="clinic_id > 0">Export Payments</button>
 
                         <button style="margin-bottom:10px;"  class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()" [disabled]="!connectedStripe">Invite New Member </button>
@@ -27,6 +27,7 @@
                                     <mat-option  value="">Select All</mat-option>
                                     <mat-option  value="ACTIVE">Active</mat-option>
                                     <mat-option  value="INACTIVE">Inactive</mat-option>
+                                    <mat-option  value="CANCELLED">Cancelled</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -40,8 +41,8 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="ngx_datatable_scroll_div">
-        <ngx-datatable #table class='material responsive-datatable rdt_1600px'  [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (onRowClick)="_onRowClick($event)">
+      <div class="ngx_datatable_scroll_div mat-table">
+        <ngx-datatable #table class='material responsive-datatable datatable-middle rdt_1600px'  [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (onRowClick)="_onRowClick($event)" [reorderable]="true" [messages]="{emptyMessage: 'You have no members',totalMessage: 'total'}">
       <ngx-datatable-column prop="patient_name" name="patient_name">
          <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
         <span (click)="sort()">Patient Name</span>
@@ -78,7 +79,7 @@
         </ng-template>
           <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
             <span >
-              <span class="datatable_label">Date Of Birth : </span>{{value| date:'dd-MM-y'}}
+              <span class="datatable_label">Date Of Birth : </span>{{value| date:'dd-MM-y':'UTC +10'}}
             </span>
 
           </ng-template>
@@ -93,28 +94,33 @@
               </span>
             </ng-template>
             </ngx-datatable-column>
-      <ngx-datatable-column  prop="patient_status" name="patient_status">
-        <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
-      <span class="subStatus" (click)="sort()">Status</span>
+      <ngx-datatable-column  prop="patient_status">
+        <ng-template let-column="column" ngx-datatable-header-template let-row="row" let-rowIndex="rowIndex" let-sort="sortFn" let-sortDir="sortDir">
+      <span class="subStatus" (click)="sort($event, sortDir, sortFn)">Status</span>
+
       </ng-template>
-      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <mat-chip-list >
-            <mat-chip color="primary" selected *ngIf="rows[rowIndex]['patient_status'] == 'ACTIVE'">{{value}}</mat-chip>
-            <mat-chip color="warn" selected *ngIf="rows[rowIndex]['patient_status'] == 'INACTIVE'">{{value}}</mat-chip> 
-          </mat-chip-list>
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex"  let-row="row" let-value="value">
+
+       <span class="datatable_label">Status : </span> 
+         <mat-chip-list>
+            <mat-chip color="primary" selected *ngIf="value == 'ACTIVE'">{{value}}</mat-chip>
+            <mat-chip color="warn" selected *ngIf="value == 'INACTIVE'">{{value}}</mat-chip> 
+            <mat-chip color="warn" selected *ngIf="value == 'CANCELLED'">{{value}}</mat-chip> 
+         </mat-chip-list>
+
        </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="id" [width] = "257">
+      <ngx-datatable-column name="id" >
          <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
         <span (click)="sort()">Actions</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" >
-          <a [routerLink]="['/patient-info',value]" class="action_btn golden sa-pull-right mat-gray patient_detail_edit textonly" title='Patients Details'  *ngIf="value != ''"> Edit </a>
-          <a class="action_btn danger sa-pull-right mat-gray patient_detail_edit textonly" title= 'Patients Details' (click) = "delete_invite(rows[rowIndex]['invite_id'])" *ngIf="value == ''"> Delete </a>
-          <a class="action_btn golden sa-pull-right mat-gray patient_detail_edit textonly" title= 'Patients Details' (click) = "resend_invite(rows[rowIndex]['patient_name'],rows[rowIndex]['patient_email'])" *ngIf="value == ''"> Resend invite </a>
+          <a [routerLink]="['/members-details',value]" class="action_btn sa-pull-right patient_detail_edit textonly" title='View Patients Details'  *ngIf="value != ''"> <span class="material-icons">edit</span> </a>
+          <a class="action_btn text-danger sa-pull-right patient_detail_edit textonly" title= 'Delete Patient' (click) = "delete_invite(rows[rowIndex]['invite_id'])" *ngIf="value == ''">  <span class="material-icons">delete</span> </a>
+          <a class="action_btn sa-pull-right patient_detail_edit textonly" title= 'Resend Invite' (click) = "resend_invite(rows[rowIndex]['patient_name'],rows[rowIndex]['patient_email'])" *ngIf="value == ''"> <span class="material-icons">restore_page</span></a>
         </ng-template>
       </ngx-datatable-column>
         </ngx-datatable>
-        </div>
+    </div>
     </mat-card-content>
 </mat-card>

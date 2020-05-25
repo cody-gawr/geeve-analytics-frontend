@@ -1,14 +1,157 @@
-import { Component,OnInit, AfterViewInit  } from '@angular/core';
+import { Component,OnInit, AfterViewInit,Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ClinicSettingsService } from './clinic-settings.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import {forwardRef, Input, ViewChild, ElementRef } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NgForm } from '@angular/forms';
 import { environment } from "../../environments/environment";
 import { Router, NavigationEnd, Event  } from '@angular/router';
+import Swal from 'sweetalert2';
+
+import { ToastrService } from 'ngx-toastr';
+
+
+@Component({
+  selector: 'app-dialog-overview-example-dialog',
+  templateUrl: './dialog-overview-example.html'
+})
+
+export class DialogOverviewExampleDialogComponent {
+  public contractURL:any;
+  private apiUrl = environment.apiUrl;
+  private readonly notifier: NotifierService;
+  public token_id;
+  constructor(notifierService: NotifierService,private toastr: ToastrService,private fb: FormBuilder, private clinicSettingsService: ClinicSettingsService,
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,private _cookieService: CookieService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+    ) {
+        this.contractURL="";
+        this.notifier = notifierService;
+         if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
+      }
+
+  save(data) {
+   const currentclinicId = $(".currentclinicId").val();
+          if(data.patient_name != undefined){
+           $('.ajax-loader').show(); 
+           this.clinicSettingsService.contractUpload(currentclinicId,this.contractURL).subscribe((res) => {
+           $('.ajax-loader').hide();    
+           if(res.message == 'success'){
+            this.contractURL = res.data;
+              //this.clinicContract= res.data;
+            }  else if(res.status == '401'){
+             // this._cookieService.put("username",'');
+             // this._cookieService.put("email", '');
+              //this._cookieService.put("token", '');
+              //this._cookieService.put("userid", '');
+              //this.router.navigateByUrl('/login');
+           }
+        }, error => {
+            $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+        }
+        ); 
+    
+     }
+}
+
+  onSubmit() {
+     const currentclinicId = $(".currentclinicId").val();
+    if(this.contractURL == undefined || this.contractURL==""){
+      Swal.fire('Please upload valid file.');
+      return false;
+    }else{
+      $('.ajax-loader').show();      
+      this.clinicSettingsService.updateContract(currentclinicId,this.contractURL).subscribe((res) => {
+      $('.ajax-loader').hide();      
+          if(res.message == 'success'){
+            this.toastr.success('Contract saved successfully .');
+            this.dialogRef.close();
+            //this.clinicContract= res.data;
+          //   this.getClinicSettings();
+
+            }
+             else if(res.status == '401'){
+            /*  this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login'); */
+           }
+           }, error => {
+           $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+            }   
+           ); 
+        }
+      }
+      public uploadedContract;
+  public fileToUpload;
+  uploadImage(files: FileList) {
+    const currentclinicId = $(".currentclinicId").val();
+    this.fileToUpload = files.item(0);
+    const extension = this.fileToUpload.name.split('.')[1].toLowerCase();
+    if(extension.trim() == "pdf" || extension.trim() == "doc" || extension.trim() == "jpg" || extension.trim() == "jpeg" || extension.trim() == "png" ){
+      if(this.fileToUpload.size/1024/1024 > 4) //10000 bytes means 10 kb
+     {
+       $(".error_msg_file_type").children(".error_text").text("File too large. Document should not be greater than 4 MB.");
+       $(".error_msg_file_type").show();
+       $(".error_msg_file_type").fadeOut(10000);
+       return false;
+     }
+     $(".error_msg_file_type").hide();
+     $('.ajax-loader').show();  
+     let formData = new FormData();
+     formData.append('file', this.fileToUpload, this.fileToUpload.name);
+      this.clinicSettingsService.contractUpload(currentclinicId,formData).subscribe((res) => {
+       $('.ajax-loader').hide();
+       if(res.message == 'success'){
+           this.contractURL= res.data;
+           this.uploadedContract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.contractURL));
+           $(".uploadsignedContract").hide();
+           //this.clinicContract= res.data;
+         }
+      });
+       
+    }else
+    {
+      $(".error_msg_file_type").children(".error_text").text("Invalid file type. Allowed files are pdf, doc, jpg, jpeg and png only.");
+      $(".error_msg_file_type").show();
+      $(".error_msg_file_type").fadeOut(10000);
+      return null;
+ 
+    }
+  }
+
+deleteSignedDocImage(){
+  this.contractURL="";
+  $(".contractFile").val('');
+  $(".uploadsignedContract").show();
+}
+
+}
+
+
+
+
+const getMonth = (idx) => {
+  var objDate = new Date();
+  objDate.setDate(1);
+  objDate.setMonth(idx-1);
+  var locale = "en-us",
+  month = objDate.toLocaleString(locale, { month: "long" });
+  return month;
+}
+
+
+
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-settings.component.html',
@@ -16,12 +159,11 @@ import { Router, NavigationEnd, Event  } from '@angular/router';
 })
 
 
-
 export class ClinicSettingsComponent implements OnInit {
- private apiUrl = environment.apiUrl;
-public connectedStripe=false;
- public formTerms: FormGroup;
-afuConfig = {
+  private apiUrl = environment.apiUrl;
+  public connectedStripe=true;
+  public formTerms: FormGroup;
+ afuConfig = {
     multiple: true,
     formatsAllowed: ".jpg,.png,.jpeg",
     maxSize: "1",
@@ -75,15 +217,20 @@ afuConfig = {
   public sliderImages = [];
   public clinicTagLine:any;
   public DefaultLogo :any;
+  public clinicContract:any;
   public DefaultHeaderImage :any;
   public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
   // public practice_size:any ={};
   options: FormGroup;
-  constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,public dialog: MatDialog,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
+
     this.notifier = notifierService;
     this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
     this.DefaultHeaderImage=this.homeUrl+"/assets/img/headimage.jpg";
-    
+     if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -98,8 +245,7 @@ afuConfig = {
       $('#title').html('Clinic Settings');
       $('.header_filters').addClass('hide_header');
        
-
-     });
+    });
     
      this.form = this.fb.group({
       clinicName: [null, Validators.compose([Validators.required])],
@@ -125,6 +271,14 @@ afuConfig = {
   }
   goBack() {
       window.history.back();
+  }
+
+  numberOnly(event): boolean {
+   const charCode = (event.which) ? event.which : event.keyCode;
+   if (charCode > 32 && (charCode < 48 || charCode > 57)) {
+     return false;
+   }
+   return true;
   }
   // For form validator
   email = new FormControl('', [Validators.required, Validators.email]);
@@ -156,8 +310,10 @@ disconnectStripe() {
        if(res.message == 'success'){
        this.connectedStripe=false;
        } 
+       else
+        this.connectedStripe =true;
     }, error => {
-      this.errortext = "Please Provide Valid Inputs!";
+         $('.ajax-loader').hide(); 
     });
 }
 public terms;
@@ -170,24 +326,26 @@ onSubmitTerms() {
   this.terms =this.formTerms.value.terms;
   this.clinicSettingsService.updateTerms(this.id, this.terms).subscribe((res) => {
        if(res.message == 'success'){
-        this.notifier.notify( 'success', 'Content Updated successfully' ,'vertical');
+         this.toastr.success('Clinic Settings Updated .');
        }                                              
        else{
           this.errorTermstext = res.data;
         }
     }, error => {
-      this.errortext = "Please Provide Valid Inputs!";
+              this.toastr.error('Some Error Occured, Please try Again.');
     });
   } 
 public stripe_account_id;
 public user_id;
 public clinicEmail;
-
-  getClinicSettings() {
+public Contract;
+public token_id;
+  getClinicSettings() {  
     $('.ajax-loader').show(); 
   this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
     $('.ajax-loader').hide(); 
-       if(res.message == 'success'){
+       if(res.message == 'success' && res.data[0].id){
+        console.log(res);
         this.clinic_id = res.data[0].id;
         this.user_id = res.data[0].user_id;
         this.clinicName = res.data[0].clinicName;
@@ -196,8 +354,14 @@ public clinicEmail;
         this.address = res.data[0].address;
         this.phoneNo = res.data[0].phoneNo;
         this.stripe_account_id = res.data[0].stripe_account_id;
+        this.clinicContract = res.data[0].contract;
+
+        this.Contract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.clinicContract));
         if(this.stripe_account_id)
           this.connectedStripe = true;
+        else
+          this.connectedStripe = false;
+
         if(res.data[0].logo!=""){
           this.imageURL = res.data[0].logo;  
         }else{
@@ -205,23 +369,23 @@ public clinicEmail;
         }
         
        }
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
+        else if(res.status == '401' || res.message == 'error'){
+          this._cookieService.removeAll();
+               this.router.navigateByUrl('/login');
+           }
+           else{
+            this._cookieService.removeAll();
                this.router.navigateByUrl('/login');
            }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+        $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
     }    
     );
   }
   getClinicLandingPageSettings() {
      
     this.clinicSettingsService.getClinicLandingPageSettings(this.id).subscribe((res) => {
-      console.log(res);
-
      if(res.message == 'success'){
         if(res.data.header_info!=null){
          const headingSettings=JSON.parse(res.data.header_info);
@@ -260,7 +424,8 @@ public clinicEmail;
                this.router.navigateByUrl('/login');
            }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+        $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
     }    
     );
   }
@@ -271,13 +436,17 @@ public clinicEmail;
   this.address = this.form.value.address;
   this.phoneNo = this.form.value.phoneNo;
   this.clinicEmail = this.form.value.clinicEmail;
+  var re = new RegExp('</div>', 'g');
+  this.address = this.address.replace(re, "<br>");
+   var re = new RegExp('<div>', 'g');
+  this.address = this.address.replace(re, "");
 
   $('.ajax-loader').show();
    this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName,this.phoneNo,this.clinicEmail,this.imageURL).subscribe((res) => {
       $('.ajax-loader').hide();
     
        if(res.message == 'success'){
-        this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
+        this.toastr.success('Clinic Settings Updated');
        }
         else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -287,7 +456,8 @@ public clinicEmail;
                this.router.navigateByUrl('/login');
            }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+        $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
     }    
     );
   }
@@ -308,7 +478,8 @@ public clinicEmail;
   this.clinicSettingsService.updateLandingPageSettings(this.id,JSON.stringify(this.header_info),JSON.stringify(this.social_info),this.clinicTagLine).subscribe((res) => {
     $('.ajax-loader').hide(); 
        if(res.message == 'success'){
-        this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
+
+        this.toastr.success('Clinic Settings Updated .');
         this.getClinicLandingPageSettings();
        }
         else if(res.status == '401'){
@@ -319,7 +490,8 @@ public clinicEmail;
                this.router.navigateByUrl('/login');
            }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+        $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
     }    
     ); 
   }
@@ -329,10 +501,11 @@ public clinicEmail;
  this.clinicSettingsService.updateSliderImagesSettings(this.id,JSON.stringify(this.sliderImages)).subscribe((res) => {
   $('.ajax-loader').hide(); 
        if(res.message == 'success'){
-        this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
+        this.toastr.success('Clinic Settings Updated .');
        }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+        $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
     }    
     ); 
 
@@ -425,11 +598,12 @@ removeSliderImage(keyUrl,index){
        this.clinicSettingsService.removeSliderImage(this.id,keyUrl,index).subscribe((res) => {
          $('.ajax-loader').hide(); 
         this.getClinicLandingPageSettings();
-       if(res.message == 'success'){
-        this.notifier.notify( 'success', 'Removed Slider Image' ,'vertical');        
+       if(res.message == 'success'){ 
+         this.toastr.success('Removed Slider Image.');        
        }
      }, error => {
-       this.warningMessage = "Please Provide Valid Inputs!";
+         $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
       }    
      );
 
@@ -446,10 +620,26 @@ getStripeAuthorization(){
         this.linkStripe = res.data;
        }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+        $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
     }    
     ); 
 
  }
+
+ openDialog(): void {   
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+      width: '250px',
+      data: {abc:'abc'}
+    });
+    dialogRef.afterClosed().subscribe(result => {   
+      this.getClinicSettings();
+     if(result) { 
+        
+     }
+    
+
+  });
+  }
 
 }

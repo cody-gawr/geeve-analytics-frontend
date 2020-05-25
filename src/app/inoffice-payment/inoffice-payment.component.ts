@@ -7,6 +7,7 @@ import {
   Validators,
   FormControl
 } from '@angular/forms';
+import { DatePipe } from '@angular/common';
   import { InofficePaymentService } from './inoffice-payment.service';
 import { LoginService } from '../login/login.service';
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -16,12 +17,41 @@ import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { environment } from "../../environments/environment";
 import {ChangeDetectorRef} from '@angular/core';
+import * as _moment from 'moment';
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment, Moment} from 'moment';
+const moment = _rollupMoment || _moment;
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'DD/MM/YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'DD/MM/YYYY',
+  },
+};
+
 @Component({
   selector: 'app-inoffice-payment',
   templateUrl: './inoffice-payment.component.html',
-  styleUrls: ['./inoffice-payment.component.scss']
+  styleUrls: ['./inoffice-payment.component.scss'],
+  providers: [DatePipe,{
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},]
 })
 export class InofficePaymentComponent implements OnInit {
+  public dates =[];
+public months:any =[];
+public max_days =31;
+public years:any = [];
   public cardStyle = {
     base: {
       color: '#424242',
@@ -155,29 +185,49 @@ public cvcStyle = {
     elements: Elements;
     card: StripeElement;
 
-  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private inofficePaymentService: InofficePaymentService,private _cookieService: CookieService, private route: ActivatedRoute, private stripeService: StripeService, private http : Http, private ref: ChangeDetectorRef) {
+  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private inofficePaymentService: InofficePaymentService,private _cookieService: CookieService, private route: ActivatedRoute, private stripeService: StripeService, private http : Http, private ref: ChangeDetectorRef,private datePipe: DatePipe) {
     this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
+   
+  }
+  todayDate:Date = new Date();
+
+ date = new FormControl(moment());
+public start_date;
+public dob_year='';
+public dob_month='';
+public dob_date='';
+public dob_error='';
+  schedule(){
+    this.dob_error = '';
+    if(this.date.value) {
+    this.start_date = this.datePipe.transform(this.date.value, 'dd-MM-yyyy');
+     this.selectedIndex=this.selectedIndex +1;
+     this.tabActive2= true;
+     this.ref.detectChanges();
+   }
+   else {
+    this.dob_error= 'Please select date to schedule Payment Plan.'
+   }
   }
 
-   ngOnInit() {
+  ngOnInit() {
     this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
             this.stripeTest = this.fb.group({
             name: ['', [Validators.required]]
             });
-
             this.stripeService.elements(this.elementsOptions)
             .subscribe(elements => {
             this.elements = elements;
             // Only mount the element the first time
-            if (!this.card) {
+            if(!this.card) {
               this.cardNumber = this.elements.create('cardNumber', {
-            style: this.cardStyle
+              style: this.cardStyle
           });
           this.cardExpiry = this.elements.create('cardExpiry', {
-            style: this.expStyle
+              style: this.expStyle
           });
 
-            this.cardCvc = this.elements.create('cardCvc', {
+          this.cardCvc = this.elements.create('cardCvc', {
             style: this.cvcStyle
           });
 
@@ -199,14 +249,20 @@ public cvcStyle = {
     this.stripeService
     .createToken(this.cardNumber, { name })
     .subscribe(obj => {
-    if (obj) {
+    if (obj.token) {
  this.token = obj.token.id;
       $('.ajax-loader').show();
-    this.inofficePaymentService.createInofficeSubscription(this.token,this.plan_description,this.monthly_weekly_payment,this.duration,this.id,this.patient_id, this.clinic_id, this.payment_frequency, this.balance_amount).subscribe((res) => {
+    this.inofficePaymentService.createInofficeSubscription(this.token,this.plan_description,this.monthly_weekly_payment,this.duration,this.id,this.patient_id, this.clinic_id, this.payment_frequency, this.balance_amount,this.start_date).subscribe((res) => {
            if(res.message == 'success'){
+            this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
               this.updatePatients('ACTIVE');
            }
            else if(res.message == 'error'){
+            this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
               this.errorLogin  =true;
            }
           }, error => {
@@ -223,11 +279,26 @@ public cvcStyle = {
     return true;
   }
 }
+ addMonths(date, months) {
+    var d = date.getDate();
+    date.setMonth(date.getMonth() + +months);
+    if (date.getDate() != d) {
+      date.setDate(0);
+    }
+    return date;
+}
+ addDays(date, days) {
+  date.setDate( date.getDate() + days );
+  return date;
+}
+public maxDate;
   getInofficePlanDetails() {
+   // console.log(this.addMonths(new Date(),1));
+        console.log(this.addDays(new Date(),14));
     this.inofficePaymentService.getInofficePlanDetails(this.id).subscribe((res) => {  
        if(res.message == 'success'){
         this.patient_id = res.data[0].patient_id;
-        this.getClinic(this.patient_id);
+        this.getClinic(this.patient_id)
         this.plan_name = res.data[0].plan_name;
         this.plan_description = res.data[0].plan_description;
         this.total_amount = res.data[0].total_amount;
@@ -236,6 +307,21 @@ public cvcStyle = {
         this.monthly_weekly_payment = res.data[0].monthly_weekly_payment;
         this.duration = res.data[0].duration;
         this.payment_frequency = res.data[0].payment_frequency;
+         var today = new Date();
+            var minYear = today.getFullYear();
+            var minMonth = today.getMonth()+1
+            var minDay = today.getDate();
+            var months = [ "January", "February", "March", "April", "May", "June", 
+           "July", "August", "September", "October", "November", "December" ];
+
+        if(this.payment_frequency == 'MONTHLY') {
+           this.maxDate = this.addMonths(new Date(),1);
+          } else if(this.payment_frequency == 'FORTNIGHTLY') {
+            this.maxDate = this.addDays(new Date(),14);
+          }
+        
+
+          
         }
          else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -326,14 +412,16 @@ onSubmit() {
     }, error => {
     });
   }
+checkDob(){
 
+}
   openCheckout() {
     var handler = (<any>window).StripeCheckout.configure({
       key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
       locale: 'auto',                                                                                                 
       token: token => {
       $('.ajax-loader').show();
-           this.inofficePaymentService.createInofficeSubscription(token,this.plan_name,this.monthly_weekly_payment,this.duration,this.id,this.patient_id,this.clinic_id,this.payment_frequency, this.balance_amount).subscribe((res) => {
+           this.inofficePaymentService.createInofficeSubscription(token,this.plan_name,this.monthly_weekly_payment,this.duration,this.id,this.patient_id,this.clinic_id,this.payment_frequency, this.balance_amount,  this.start_date).subscribe((res) => {
            $('.ajax-loader').hide();
            if(res.message == 'success'){
                 this.updatePatients('ACTIVE');
@@ -353,7 +441,8 @@ onSubmit() {
  
   }
 public tabActive1= false;
-public selectedIndex=1;
+public tabActive2= false;
+public selectedIndex=2;
   startPayment() {
     if(!this.tabActive1)
     this.tabActive1= true;

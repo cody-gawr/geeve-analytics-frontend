@@ -36,6 +36,16 @@ export class LoginService {
                         })
             );
     }
+        checkValidString(id): Observable<any> {
+            const formData = new FormData();
+
+            formData.append('id', id);
+            return this.http.post(this.apiUrl +"/users/checkValidString", formData)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
          // resetPassword 
     resetPassword(password,id): Observable<any> {
             const formData = new FormData();

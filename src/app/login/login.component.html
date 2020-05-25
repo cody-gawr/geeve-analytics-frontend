@@ -32,6 +32,7 @@ align-items: center;"></div>
                          <!-- col full-->
                          <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                             <small *ngIf="errorLogin" class="text-danger support-text">Incorrect Email or Password.</small>
+                            <small *ngIf="errorDeactivate" class="text-danger support-text">Your account has been suspended, please contact support@jeeve.com.au.</small>
                                <button mat-raised-button color="dc" class="btn-block btn-lg m-t-20 m-b-20" type="submit" [disabled]="!form.valid">Login</button>
                            </div>
                         <!-- col half-->

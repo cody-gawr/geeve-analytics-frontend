@@ -2,6 +2,7 @@ import { Component,OnInit,Inject, EventEmitter,Output, AfterViewInit  } from '@a
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { PatientInfoService } from './patient-info.service';
+import { DefaultersService } from '../defaulters/defaulters.service';
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -11,11 +12,13 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { empty } from 'rxjs';
 import Swal from 'sweetalert2';
 import {MatChipsModule} from '@angular/material/chips';
+
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
 })
-
 
 export class DialogOverviewExampleDialogComponent {
 
@@ -89,12 +92,31 @@ public patient_phone_no;
 public patient_home_phno;
 public patient_name;
 public patient_dob;
+public dob_date;
+public dob_month;
+public dob_year;
+public dates =['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
+months =[
+{key:'01',value:"January"},{key:'02',value:"February"},{key:'03',value:"March"},
+{key:'04',value:"April"},{key:'05',value:"May"},{key:'06',value:"June"},
+{key:'07',value:"July"},{key:'08',value:"August"},{key:'09',value:"September"},
+{key:'10',value:"October"},{key:'11',value:"November"},{key:'12',value:"December"}
+];
+public years:any = [];
 public preventative_frequency;
 public preventative_count;
 public patientLog;
 public user_type = this._cookieService.get("user_type");
-  constructor(notifierService: NotifierService,private fb: FormBuilder,public dialog: MatDialog,  private patientInfoService: PatientInfoService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,breakpointObserver: BreakpointObserver,private datePipe: DatePipe) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private defaultersService: DefaultersService,private fb: FormBuilder,public dialog: MatDialog,  private patientInfoService: PatientInfoService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,breakpointObserver: BreakpointObserver,private datePipe: DatePipe) {
     this.notifier = notifierService;
+    var start_year =new Date().getFullYear();
+     for (var i = start_year; i > start_year - 100; i--) {
+      this. years.push(i);
+     }
+     this.dob_date='';
+     this.dob_month='';
+     this.dob_year='';
+     this.patient_dob = this.dob_year+"-"+this.dob_month+"-"+this.dob_date;
     }
    goBack() {
       window.history.back();
@@ -102,28 +124,43 @@ public user_type = this._cookieService.get("user_type");
 
    openDialog(): void {
     this.patientLog =  this.patientsAppointmentData[0].id+"_"+this.patientsAppointmentData[0].sub_patients_type;
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+  if(this.patientsAppointmentData.length ==1){
+    this.patientInfoService.log_appointment(this.patient_id,this.member_plan_id,this.patientLog).subscribe((res) => {   
+     if(res.message == 'success'){
+       this.toastr.success('Appointment Logged .');
+       this.getAppointments();
+     }
+     else if(res.status == '401' || res.message == 'error'){
+      this._cookieService.removeAll();
+     this.router.navigateByUrl('/login');
+               }
+    }, error => {
+        $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+    });
+  
+  }else{
+
+   const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
      width: '250px',
       data: { patientsAppointmentData: this.patientsAppointmentData,patientLog:this.patientLog},
         panelClass: 'full-screen'
       });
-    dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().subscribe(result => {
       if(result != undefined) {
       if(result.patientLog) {
         this.patientInfoService.log_appointment(this.patient_id,this.member_plan_id,result.patientLog).subscribe((res) => {   
-            if(res.message == 'success'){
-                this.notifier.notify( 'success', 'Appointment Logged' ,'vertical');
+            if(res.message =='success'){
+                this.toastr.success('Appointment Logged .');
                 this.getAppointments();
                  }
                   else if(res.status == '401'){
-                  this._cookieService.put("username",'');
-                  this._cookieService.put("email", '');
-                  this._cookieService.put("token", '');
-                  this._cookieService.put("userid", '');
+                 this._cookieService.removeAll();
                   this.router.navigateByUrl('/login');
                }
             }, error => {
-              this.warningMessage = "Please Provide Valid Inputs!";
+                 $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
             });
       }
       else{
@@ -136,22 +173,28 @@ public user_type = this._cookieService.get("user_type");
     }
     });
   }
+  }
 
   ngOnInit() {   
     this.id = this.route.snapshot.paramMap.get("id");
     this.getSubPatients();
     this.getPatientContract();
+    $('.header_filters').addClass('hide_header');
       this.route.params.subscribe(params =>  {
-        $('#title').html('Patient Plan Detail');
+        $('#title').html('Membership Details');
      });
          this.formPatient = this.fb.group({
           patient_name: [null, Validators.compose([Validators.required])],
-          patient_address: [null, Validators.compose([Validators.required])],
-          patient_dob: [null, Validators.compose([Validators.required])],
+        patient_email: [null, Validators.compose([Validators.required])],
+          patient_address: [null],
+          dob_date: [null],
+          dob_month: [null],
+          dob_year: [null],
           patient_gender: [null, Validators.compose([Validators.required])],
           patient_phone_no: [null, Validators.compose([Validators.required])],
         });    
-      }
+  }
+
 isDecimal(value) {
  if(typeof value != 'undefined')
   {
@@ -172,18 +215,58 @@ isDecimal(value) {
       if (result.value) {
     if(this.id) {
       this.patientInfoService.deletePatients(this.id,this.clinic_id).subscribe((res) => {
-       if(res.message == 'success'){
-        this.notifier.notify( 'success', 'Patient Removed' ,'vertical');
-        this.router.navigate(['/patients-detail']);
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
-    }
-  }
-});
+           if(res.message == 'success'){
+            this.toastr.success( 'Patient Deleted');
+            this.router.navigate(['/members']);
+           }
+        }, error => {
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+        }    
+        );
+        }
+      }
+    });
   } 
+
+public invalid_dob = false;
+checkDob() {
+this.patient_dob = this.dob_year+"-"+this.dob_month+"-"+this.dob_date;
+var input = this.patient_dob;
+var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
+  if(!pattern.test(input) || input.substring(0, 4)<'1990') {
+  this.invalid_dob = true;
+  }else {
+  this.invalid_dob=false;  
+  }
+}
+
+ private cancelSubscription() {
+     Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to Cancel Subscription?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+    if(this.id) {
+      this.patientInfoService.cancelSubscription(this.id,this.clinic_id).subscribe((res) => {
+           if(res.message == 'success'){
+            this.toastr.success('Membership Cancelled .');
+            this.router.navigate(['/members']);
+           }
+        }, error => {
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+        }    
+        );
+        }
+      }
+    });
+  } 
+  public patient_email;
   getSubPatients() {
     this.patientInfoService.getSubPatients(this.id).subscribe((res) => {  
        if(res.message == 'success'){
@@ -205,10 +288,16 @@ isDecimal(value) {
         this.rows[sub_patient_length] = patientArray;
         this.patient_id=res.data[0]['id'];
         this.patient_name=res.data[0]['patient_name'];
+        this.patient_email=res.data[0]['patient_email'];
         this.patient_address=res.data[0]['patient_address'];
         if(this.patient_address == 'NULL')
-          this.patient_address ='';
+        this.patient_address ='';
         this.patient_dob = this.datePipe.transform(res.data[0]['patient_dob'],'yyyy-MM-dd');
+        var dobsplit = this.patient_dob.split("-");
+        this.dob_date=dobsplit[2].replace('"','');
+        this.dob_month=dobsplit[1];
+        this.dob_year=dobsplit[0].replace('"','');
+
         this.patient_age=res.data[0]['patient_age'];
         this.patient_gender=res.data[0]['patient_gender'];
         this.patient_phone_no=res.data[0]['patient_phone_no'];
@@ -219,7 +308,7 @@ isDecimal(value) {
         this.preventative_frequency= res.data[0]['preventative_frequency'];
         this.created=res.data[0]['created'];
         this.totalAmount=res.data[0]['plan_cost'];
-        this.total_subpatient=res.data[0]['sub_patients'].length;
+        this.total_subpatient=this.rows.length;
         this.member_plan_id= res.data[0]['member_plan_id'];
         this.plan_name=res.data[0]['member_plan']['planName'];
         this.planLength=res.data[0]['planLength'];
@@ -229,15 +318,13 @@ isDecimal(value) {
         this.getPaymentHistory();
         this.getAppointments();
        }
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
+        else if(res.status == '401' || res.message == 'error'){
+               this._cookieService.removeAll();
                this.router.navigateByUrl('/login');
-           }
+        }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+         $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
     }    
     );
   }
@@ -264,7 +351,8 @@ public patientsAppointmentData =[];
           this.getAppointmentsCount();
 
         }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
         });
   }
   public patientsAppointmentCount =[];  
@@ -285,10 +373,10 @@ public patientsAppointmentData =[];
               this.rowsAppointments = [];
              } 
         }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
         });
     }
-
 
   deleteAppointment(id) {
     Swal.fire({
@@ -300,26 +388,31 @@ public patientsAppointmentData =[];
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.value) {
+            $('.ajax-loader').show();
             this.patientInfoService.deleteAppointment(id).subscribe((res) => {   
-            if(res.message == 'success'){
-              this.notifier.notify( 'success', 'Appointment Removed' ,'vertical');          
+            if(res.message=='success'){
+              $('.ajax-loader').hide();
+              this.toastr.success('Appointment Removed .');
+              this.getAppointments(); return false;         
             }
-           this.getAppointments();
+           
         }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
         });
       } 
     })
   }
 
   onSubmitPatientDetails() {
-    if(this.formPatient.valid) {
-        this.patientInfoService.updatePatientsDetails(this.patient_name,this.patient_address,this.patient_dob,this.patient_age,this.patient_gender,this.patient_phone_no,this.patient_home_phno,this.patient_status,this.patient_id).subscribe((res) => {   
+    if(this.formPatient.valid && !this.invalid_dob) {
+        this.patientInfoService.updatePatientsDetails(this.patient_name,this.patient_address,this.patient_dob,this.patient_age,this.patient_gender,this.patient_phone_no,this.patient_home_phno,this.patient_status,this.patient_email,this.patient_id).subscribe((res) => {   
          if(res.message == 'success'){
-                this.notifier.notify( 'success', 'Patient Details Updated' ,'vertical');
+               this.toastr.success('Patient Details Updated');
               }
             }, error => {
-              this.warningMessage = "Please Provide Valid Inputs!";
+                 $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
             });
     }
   }
@@ -334,19 +427,23 @@ public next_date;
         if(res.data[0]) {
           this.payment_plan_name=res.data[0]['member_plan']['planName'];
           this.start_date=new Date(res.data[0]['invoice_date']);
-          this.renew_date=this.datePipe.transform(new Date(this.start_date.getFullYear()+1,this.start_date.getMonth(),this.start_date.getDate()), 'dd-MM-y');
-          this.next_date=this.datePipe.transform(new Date(this.start_date.getFullYear(),this.start_date.getMonth()+1,this.start_date.getDate()), 'dd-MM-y');
+          if(this.planLength == 'MONTHLY') {
+            this.renew_date=this.datePipe.transform(new Date(this.start_date.getFullYear()+1,this.start_date.getMonth(),this.start_date.getDate()), 'dd-MM-y');
+            this.next_date=this.datePipe.transform(new Date(this.start_date.getFullYear(),this.start_date.getMonth()+1,this.start_date.getDate()), 'dd-MM-y');
+          }
+          else if(this.planLength == 'YEARLY'){
+            this.renew_date=this.datePipe.transform(new Date(this.start_date.getFullYear()+1,this.start_date.getMonth(),this.start_date.getDate()), 'dd-MM-y');
+            this.next_date=this.datePipe.transform(new Date(this.start_date.getFullYear()+1,this.start_date.getMonth(),this.start_date.getDate()), 'dd-MM-y');
+          }
+         }
         }
-        }
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
+        else if(res.status == '401'  || res.message == 'error'){
+              this._cookieService.removeAll();
               this.router.navigateByUrl('/login');
            }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+         $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
     }    
     );
   }
@@ -354,20 +451,20 @@ public next_date;
   log_appointment() {
     this.patientLog = this.rows[0]['id']+"_"+this.rows[0]['sub_patients_type'];
     if(this.patientLog) {
+     $('.ajax-loader').show();
     this.patientInfoService.log_appointment(this.patient_id,this.member_plan_id,this.patientLog).subscribe((res) => {   
         if(res.message == 'success'){
-              this.notifier.notify( 'success', 'Appointment Logged' ,'vertical');
-              this.getAppointments();
-             }
-             else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-              this.router.navigateByUrl('/login');
-           }
+          $('.ajax-loader').hide();
+           this.toastr.success('Appointment Logged .');
+           this.getAppointments();
+          }
+          else if(res.status == '401'  || res.message == 'error'){
+            this._cookieService.removeAll();
+           this.router.navigateByUrl('/login');
+          }
         }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
         });
   }
   else{
@@ -382,16 +479,15 @@ public next_date;
   getPatientContract(){
       this.patientInfoService.getPatientContract(this.id).subscribe((res) => {
           if(res.message == 'success'){
-         this.contract_url = res.data['contract_upload'];
-          }
-        
-         else if(res.status == '401'){
-               this._cookieService.put("token", '');
-               this._cookieService.put("userid", '');
+            this.contract_url = res.data['contract_upload'];
+          }      
+         else if(res.status == '401'  || res.message == 'error'){
+               this._cookieService.removeAll();
                 this.router.navigateByUrl('/login');
             }
      }, error => {
-       this.warningMessage = "Please Provide Valid Inputs!";
+          $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
      }    
      );
   }
@@ -404,18 +500,16 @@ public next_date;
         this.patientInfoService.updatePatients(this.id,this.member_plan_id,this.imageURL).subscribe((res) => {
       $('.ajax-loader').hide();    
           if(res.message == 'success'){
-            this.notifier.notify( 'success', 'Document Uploaded' ,'vertical');
+            this.toastr.success( 'Document Uploaded');
                this.getPatientContract();
             }
-             else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
+            else if(res.status == '401' || res.message == 'error'){
+               this._cookieService.removeAll();
                this.router.navigateByUrl('/login');
            }
            }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
             }   
            );
         }
@@ -447,15 +541,13 @@ public next_date;
       if(res.message == 'success'){
         this.benefit = res.data;       
           }
-       else if(res.status == '401'){
-             this._cookieService.put("username",'');
-             this._cookieService.put("email", '');
-             this._cookieService.put("token", '');
-             this._cookieService.put("userid", '');
+       else if(res.status == '401' || res.message == 'error'){
+             this._cookieService.removeAll();
               this.router.navigateByUrl('/login');
           }
    }, error => {
-     this.warningMessage = "Please Provide Valid Inputs!";
+        $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
    }    
    );
   }
@@ -465,19 +557,41 @@ public next_date;
        if(this.benefit[row]['patients_benefits_id']) {
          this.patientInfoService.deleteBenefitsUsed(this.benefit[row]['patients_benefits_id']).subscribe((res) => {
           if(res.message == 'success'){
-   
-           this.notifier.notify( 'success', 'Plan Removed' ,'vertical');
+
+           //this.notifier.notify( 'success', 'Plan Removed' ,'vertical');
+           this.toastr.success('Plan Removed.');
          //    this.getBenefitsUsed();
           }
        }, error => {
-         this.warningMessage = "Please Provide Valid Inputs!";
+            $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
        }    
        );
        }
        else {
          this.rows.splice(row, 1);
-       this.rows = [...this.rows];
+         this.rows = [...this.rows];
        }
      }
 }
+
+private sendDefaultersemail(defaulter_name, defaulter_email,defaulter_id) {
+$('.ajax-loader').show();  
+    this.defaultersService.sendDefaultersemail(defaulter_id,defaulter_name,defaulter_email).subscribe((res) => {
+          $('.ajax-loader').hide();  
+          if(res.message == 'success'){
+            this.toastr.success('Update Card Link Sent.');
+          }
+           else if(res.status == '401' || res.message == 'error'){
+              this._cookieService.removeAll();
+              this.router.navigateByUrl('/login');
+           }
+      }, error => {
+           $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+      }    
+      );
+    }
+
+
 }

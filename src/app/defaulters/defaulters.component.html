@@ -11,17 +11,8 @@
         </mat-form-field>
         <div class="ngx_datatable_scroll_div">
         <ngx-datatable #table class='material responsive-datatable rdt_1600px' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-            [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
-       <ngx-datatable-column name="Id">
-         <ng-template let-column="column" ngx-datatable-header-template>
-        <span>Id</span>
-      </ng-template>
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-          <span>
-            <span class="datatable_label">Id : </span>{{rowIndex+1}}
-          </span>
-        </ng-template>
-      </ngx-datatable-column>
+            [rowHeight]="'auto'" [limit]="10" [rows]='rows'  [messages]="{emptyMessage: 'You have no defaulters.',totalMessage: 'total'}">
+
       <ngx-datatable-column  prop="patient_name" name="patient_name">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Patient Name</span>
@@ -54,14 +45,23 @@
            <span class="datatable_label">Plan : </span><span *ngIf="value=='inoffice'">Payment Plan</span><span *ngIf="value=='manual'">Membership Plan</span>
        </ng-template>
      </ngx-datatable-column>
-      <!-- <ngx-datatable-column  name="id">
-         <ng-template let-column="column" ngx-datatable-header-template>
-        <span>Actions</span>
-      </ng-template>
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
-          <a class="action_btn golden" (click)="sendDefaultersemail(rowIndex)" title= 'Update Patient'><i class="ti-email"></i></a>
-        </ng-template>
-      </ngx-datatable-column> -->
+     <ngx-datatable-column prop="reminder_date" name="reminder_date">
+        <ng-template let-column="column" ngx-datatable-header-template>
+       <span>Reminder Sent on:</span>
+     </ng-template>
+       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+           <span>{{value| date:'dd-MM-y'}}</span>
+       </ng-template>
+     </ngx-datatable-column>
+       <ngx-datatable-column prop="reminder_date" name="reminder_date">
+        <ng-template let-column="column" ngx-datatable-header-template>
+       <span>Actions</span>
+     </ng-template>
+       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <i _ngcontent-c15="" class="ti-email" (click) = "sendDefaultersemail(rowIndex)"></i>
+       </ng-template>
+     </ngx-datatable-column>
+
         </ngx-datatable>
             </div>
     </mat-card-content>

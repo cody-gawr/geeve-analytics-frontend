@@ -34,6 +34,10 @@ export class ClinicService {
 
    // Get Dentist
     getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+                 if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
         return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
@@ -86,7 +90,16 @@ export class ClinicService {
                     })
         );
     }
-
+    updateStepperStatus(): Observable<any> {
+            const formData = new FormData();
+            formData.append('user_id', this._cookieService.get("userid"));
+            formData.append('stepper_status', this._cookieService.get("stepper"));
+            return this.http.post(this.apiUrl +"/users/updateStepperStatus", formData)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
         // Update Clinic
     addClinic(name, address, contact_name,phone_no,facebook, twitter, linkedin,instagram,clinicEmail,clinic_logo, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
@@ -121,6 +134,17 @@ export class ClinicService {
                     return response;
                 })
     );
+    }
+    getDefaultContract(clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
+        return this.http.get(this.apiUrl +"/Clinics/getDefaultContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&clinicid="+clinic_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
     }
 }
 

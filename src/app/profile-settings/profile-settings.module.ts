@@ -11,9 +11,10 @@ import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { ProfileSettingsComponent } from './profile-settings.component';
+import { ProfileSettingsComponent,DialogOverviewExampleDialogComponent } from './profile-settings.component';
 import { ProfileSettingsService } from './profile-settings.service';
 import { NgxEditorModule } from 'ngx-editor';
+import { NgxStripeModule } from 'ngx-stripe';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,13 +28,16 @@ import { NgxEditorModule } from 'ngx-editor';
     MatTreeModule,
     MatDatepickerModule,
     NgMultiSelectDropDownModule.forRoot(),
-    NgxEditorModule
+    NgxEditorModule,
+    NgxStripeModule.forRoot(''),
   ],
   providers: [
-    ProfileSettingsService
+    ProfileSettingsService,DialogOverviewExampleDialogComponent
   ],
   declarations: [
-    ProfileSettingsComponent
-  ]
+    ProfileSettingsComponent,DialogOverviewExampleDialogComponent
+  ],
+    entryComponents: [DialogOverviewExampleDialogComponent],
+
 })
 export class ProfileSettingsModule {}

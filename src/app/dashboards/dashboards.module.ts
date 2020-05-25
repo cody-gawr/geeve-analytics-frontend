@@ -11,7 +11,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardsRoutes } from './dashboards.routing';
 import { ChartistModule } from 'ng-chartist';
 import { DashboardsService } from './dashboards.service';
-import { DashboardsComponent } from './dashboards.component';
+import { DashboardsComponent,DialogOverviewExampleDialogComponent } from './dashboards.component';
 // import { NgxGaugeModule } from 'ngx-gauge';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { MatButtonModule,MatCardModule,MatMenuModule,MatToolbarModule,MatIconModule,MatSelectModule ,MatButtonToggleModule} from '@angular/material';
@@ -42,6 +42,7 @@ import 'chartjs-plugin-annotation';
     NgxSmartModalModule.forRoot(),
   ],
   providers: [ DashboardsService,DatePipe],
-  declarations: [DashboardsComponent]
+  declarations: [DashboardsComponent,DialogOverviewExampleDialogComponent],
+  entryComponents: [DialogOverviewExampleDialogComponent]
 })
 export class DashboardsModule {}

@@ -18,6 +18,8 @@ import { DatePipe } from '@angular/common';
 import { PatientPaymentinfoComponent} from './patient-paymentinfo.component';
 
 import { PatientPaymentinfoService } from './patient-paymentinfo.service';
+
+import { DefaultersService } from '../defaulters/defaulters.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -36,6 +38,7 @@ import { PatientPaymentinfoService } from './patient-paymentinfo.service';
   ],
   providers: [
     PatientPaymentinfoService,
+    DefaultersService,
     DatePipe
   ],
   declarations: [

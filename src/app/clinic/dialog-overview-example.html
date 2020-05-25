@@ -3,7 +3,6 @@
 <h1 mat-dialog-title>Add Clinic</h1>
 <div mat-dialog-content class="sa_forms_design">
  
-
  <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Clinic Name</label>
@@ -18,7 +17,7 @@
    <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Phone No</label>
-        <input tabindex="1" type="number" [(ngModel)]="data.phone_no" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,10);" [formControl]="form.controls['phone_no']">
+        <input tabindex="1" type="text" [(ngModel)]="data.phone_no" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,12);" (keypress)="numberOnly($event)" [formControl]="form.controls['phone_no']">
         <small *ngIf="form.controls['phone_no'].hasError('required') && form.controls['phone_no'].touched" class="text-danger support-text">Phone No is Required.</small>
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">

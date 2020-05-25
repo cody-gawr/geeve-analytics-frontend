@@ -29,6 +29,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   public user_type;
   public display_name;
   public user_image;
+  public login_status;
   clickEvent() {
     this.status = !this.status;
   }
@@ -55,6 +56,8 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
     // This is for the topbar search
      this.getClinics();
      this.user_type = this._cookieService.get("user_type");
+     this.login_status = this._cookieService.get("login_status");
+
      this.display_name = this._cookieService.get("display_name");
      this.user_image = this._cookieService.get("user_image");
      if(!this._cookieService.get("user_image"))
@@ -68,13 +71,8 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   }
       logout() {
       this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
-       console.log(res);
        if(res.message == 'success'){
-        this._cookieService.put("username",'');
-        this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
-        this._cookieService.put("userid", '');
-        this._cookieService.put("childid", '');
+      this._cookieService.removeAll();
         this.router.navigate(['/login']);
        }
     }, error => {

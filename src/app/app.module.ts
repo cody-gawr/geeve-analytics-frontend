@@ -9,9 +9,12 @@ import { AppComponent } from './app.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FullComponent } from './layouts/full/full.component';
+import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
+import { StepperSidebarComponent } from './layouts/stepper/sidebar/sidebar.component';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './demo-material-module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -27,11 +30,20 @@ import { HttpModule } from '@angular/http';
 import { AuthGuard } from './auth/authguard.service';
 import { AuthService } from './auth/auth.service';
 import { HeaderService } from './layouts/full/header/header.service';
+import { StepperHeaderService } from './layouts/stepper/header/header.service';
+import { StepperHeaderrightService } from './layouts/stepper/headerright/headerright.service';
+
+
 import { Globals } from 'globals';
 import { DentistService } from './dentist/dentist.service';
 
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
+import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
+
+
+import { ToastrModule } from 'ngx-toastr';
+
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -83,11 +95,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   declarations: [
     AppComponent,
     FullComponent,
+    StepperComponent,
     AppHeaderComponent,
     SpinnerComponent,
     AppBlankComponent,
     AppSidebarComponent,
     AppHeaderrightComponent,
+    StepperSidebarComponent,
+    StepperHeaderrightComponent
 
   ],
   imports: [
@@ -102,12 +117,22 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpModule,   
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot(AppRoutes),
-    NotifierModule.withConfig(customNotifierOptions)
+    NotifierModule.withConfig(customNotifierOptions),
+    ToastrModule.forRoot({ 
+    timeOut: 2000,
+    positionClass: 'toast-top-right',
+    preventDuplicates: true,
+    closeButton :true,
+    progressBar :true
+    //tapToDismiss:false
+  })
   ],
   providers: [
     AuthGuard, 
     AuthService,
     HeaderService,
+    StepperHeaderService,
+    StepperHeaderrightService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
+import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AuthGuard } from './auth/authguard.service';
 
@@ -75,7 +76,7 @@ export const AppRoutes: Routes = [
       {
         path: 'profile-settings/:id',
         loadChildren: './profile-settings/profile-settings.module#ProfileSettingsModule',
-        canActivate: [AuthGuard]
+      //  canActivate: [AuthGuard]
       },
       {
         path: 'material',
@@ -115,12 +116,12 @@ export const AppRoutes: Routes = [
         loadChildren: './multi-dropdown/multi-dd.module#MultiModule',
       },
       {
-        path: 'patients-detail',
+        path: 'members',
         loadChildren: './patients-detail/patients-detail.module#PatientsDetailModule',
         canActivate: [AuthGuard]
       },
       {
-        path: 'patient-info/:id',
+        path: 'members-details/:id',
         loadChildren: './patient-info/patient-info.module#PatientInfoModule',
         canActivate: [AuthGuard]
        },
@@ -141,14 +142,17 @@ export const AppRoutes: Routes = [
    
     ]
   },
+ 
   {
     path: '',
-    component: AppBlankComponent,
+    component: StepperComponent,
     children: [
       {
-        path: 'authentication',
+       path: 'setup',
         loadChildren:
-          './authentication/authentication.module#AuthenticationModule'
+          './setup/setup.module#SetupModule',
+        canActivate: [AuthGuard]
+          
       }
     ]
   },
@@ -173,6 +177,17 @@ export const AppRoutes: Routes = [
     component: AppBlankComponent,
     children: [
       {
+        path: 'authentication',
+        loadChildren:
+          './authentication/authentication.module#AuthenticationModule'
+      }
+    ]
+  },
+  {
+    path: '',
+    component: AppBlankComponent,
+    children: [
+      {
         path: 'subscription/:clinic_id/:user_id',
         loadChildren:
           './subscription/subscription.module#SubscriptionModule'
@@ -180,12 +195,14 @@ export const AppRoutes: Routes = [
       {
         path: 'terms/:id',
         loadChildren: './terms/terms.module#TermsModule'
-      },
-      
+      },      
       {
         path: 'payment-patient/:id',
-        loadChildren: './payment-patient/payment-patient.module#PaymentPatientModule',
-       
+        loadChildren: './payment-patient/payment-patient.module#PaymentPatientModule',      
+      },      
+      {
+        path: 'update-card/:subscr',
+        loadChildren: './update-card/update-card.module#UpdateCardModule', 
       },
       {
         path: 'inoffice-payment/:id',

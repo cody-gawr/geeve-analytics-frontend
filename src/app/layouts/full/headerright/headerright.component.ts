@@ -73,7 +73,6 @@ export class AppHeaderrightComponent implements AfterViewInit  {
  private loadClinic(value) {
   this.finalUrl =this.route.url.substring(0, this.route.url.lastIndexOf('/') + 1);
   this.route.navigate([this.finalUrl+value]);
-  //this.location.go(this.finalUrl+value);
  }
 /*  logout() {
       this.headerrightService.logout(this._cookieService.get("userid")).subscribe((res) => {

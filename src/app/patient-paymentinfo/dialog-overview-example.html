@@ -27,7 +27,7 @@
         <span>Sitting status</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span >
+          <span>
             <mat-checkbox checked="true" *ngIf="value=='ACTIVE'" (change)="statusupdate(rowIndex,$event)">
 
             </mat-checkbox>
@@ -35,7 +35,7 @@
      
             </mat-checkbox>
           </span>
-            </ng-template>
+        </ng-template>
       </ngx-datatable-column>
     
     <ngx-datatable-column prop="performed_date" name="performed_date">

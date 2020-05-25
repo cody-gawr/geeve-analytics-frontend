@@ -5,12 +5,15 @@
     <div fxFlex.gt-sm="100" fxFlex="100">
         <mat-card>
             <mat-card-content>
+                <div class="warning_message" *ngIf="patient_status == 'CANCELLED'">Membership has been cancelled</div>
                <div class="main_title_outer">
                    <div class="main_title_withbtn">
-                       <mat-card-title> Patient Plan Details | {{mainpatientname | titlecase}} </mat-card-title>
+                       <mat-card-title> Membership Details | {{mainpatientname | titlecase}} </mat-card-title>
                    </div>
                    <div class="title_btn" style="margin-bottom:10px;">
                        <button class="mat-raised-button mat-gray" (click) = "goBack()">Back</button>
+                        <button class="mat-raised-button danger" mat-menu-item (click) = "cancelSubscription()" *ngIf="user_type !=3 && user_type !=4 && patient_status != 'CANCELLED'">Cancel Subscription</button>
+                        <button class="mat-raised-button mat-gray"  (click) = "sendDefaultersemail(patient_name,patient_email,patient_id)" *ngIf="patient_status=='ACTIVE'">Generate Update Card Link </button>
                        <button class="mat-raised-button danger" mat-menu-item (click) = "deletePatients()" *ngIf="user_type !=3 && user_type !=4">Delete</button>
                    </div>
                </div>
@@ -26,9 +29,7 @@
 
                         <!-- Plan Details tab -->
                               <mat-tab label="Plan Details">                                
-
                                    <div fxLayout="row wrap" class="row-tablePD" fxLayoutGap="2%" >
-
                                     <div fxFlex.gt-sm="49" fxFlex class="sa_mattabs_design sa_matforms_design sa_table_evenodd">
                                 <form>
                                   <h3 style="margin-top:0px;" class="sb_title">Plan Members</h3>
@@ -44,7 +45,7 @@
                                     <tbody>
                                     <tr *ngFor="let data of rows">
                                         <td><span class="res_table_label">Name : </span> {{data.sub_patients_name}}</td>
-                                        <td><span class="res_table_label">Date of Birth : </span> {{data.sub_patients_dob| date:'dd-MM-y'}}</td>
+                                        <td><span class="res_table_label">Date of Birth : </span> {{data.sub_patients_dob| date:'dd-MM-y':'UTC +10'}}</td>
                                         <td><span class="res_table_label">Gender : </span> {{data.sub_patients_gender}}</td>
                                     </tr>
                                     </tbody>
@@ -77,39 +78,36 @@
                                               <td>{{preventative_frequency}}</td>
                                           </tr>
                                           <tr>
-                                              <td>Amount Paid</td>
-                                              <td><span *ngIf="isDecimal(patient_amount)"> {{patient_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(patient_amount)">{{patient_amount| currency: 'USD':true:'1.0'}}</span></td>
-                                          </tr>
-                                          <tr>
                                               <td>Plan Cost</td>
-                                              <td>$ {{totalAmount}} / per <span *ngIf="planLength == 'MONTHLY'">month</span><span *ngIf="planLength == 'YEARLY'">year</span> </td>
+                                              <td><span *ngIf="isDecimal(patient_amount)"> {{patient_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(patient_amount)">{{patient_amount| currency: 'USD':true:'1.0'}}</span> per <span *ngIf="planLength == 'MONTHLY'">month</span><span *ngIf="planLength == 'YEARLY'">year</span> </td>
                                           </tr>
                                           <tr>
                                               <td>Start Date</td>
-                                              <td>{{this.start_date| date:'dd-MM-y'}}</td>
+                                              <td>{{start_date| date:'dd-MM-y':'UTC +10'}}</td>
                                           </tr>
                                           <tr>
                                               <td>Renewal Date for Membership</td>
-                                              <td>{{this.renew_date}}</td>
+                                              <td *ngIf="patient_status != 'CANCELLED'">{{renew_date}}</td>
+                                              <td *ngIf="patient_status == 'CANCELLED'">Membership Cancelled</td>
                                           </tr>
                                           <tr>
                                               <td>Next Payment Date</td>
-                                              <td>{{this.next_date}}</td>
+                                              <td *ngIf="patient_status != 'CANCELLED'">{{next_date}}</td>
+                                              <td *ngIf="patient_status == 'CANCELLED'">Membership Cancelled</td>
                                           </tr>
                                           <tr>
                                               <td>Payment Period</td>
                                               <td>{{planLength | titlecase}}</td>
                                           </tr>
-
                                       </tbody>
                                    </table>
                                   </div>
                                 </form>                                
                         </div>
                      <div fxFlex.gt-sm="49" fxFlex class="sa_mattabs_design sa_matforms_design">
-
+                        <!-- {{preventative_count}} ------ {{preventative_frequency}}
                          <input type ="button" value="Log Appointment" class="sa-pull-right mat-raised-button sa-pull-right mat-green" (click)="log_appointment()" *ngIf="preventative_count<preventative_frequency">
-                         <div style="color:#fff;" *ngIf="preventative_count>=preventative_frequency" class="sa-pull-right mat-raised-button golden mat-menu-item">All Preventative Appointments have been Used</div>
+                         <div style="color:#fff;" *ngIf="preventative_count>=preventative_frequency" class="sa-pull-right mat-raised-button golden mat-menu-item">All Preventative Appointments have been Used</div> -->
 
                          <h3 style="float:left; margin-top:0px; display:block; width:100%;" class="sb_title">Benefits Used</h3>
                          <div class="responsive_table_main">
@@ -126,18 +124,17 @@
                                     <tr *ngFor="let data of rowsAppointments">
                                         <td><span class="res_table_label">Treatment : </span> Preventative Appointment</td>
                                         <td><span class="res_table_label">Patient Name :</span> {{data.patient_name }}</td>
-                                        <td><span class="res_table_label">Completion Date :</span> {{data.completion_date| date:'dd-MM-y'}}</td>
+                                        <td><span class="res_table_label">Completion Date :</span> {{data.completion_date| date:'dd-MM-y':'UTC +10'}}</td>
                                         <td>
-                                          <span class="action_btn danger appt_btn" (click) ="deleteAppointment(data.id)">
-                                          <i class="fas fa-times link_btn" ></i>
+                                          <span class="action_btn text-danger appt_btn" (click) ="deleteAppointment(data.id)">
+                                          <span class="material-icons">delete</span>
                                          </span></td>
                                     </tr>
-                                    <tr *ngIf="rowsAppointments.length==0||rowsAppointments.length==''"><td colspan="3">No Data to Display</td></tr>
+                                    <tr *ngIf="rowsAppointments.length==0||rowsAppointments.length==''"><td colspan="4">No Data to Display</td></tr>
                                     </tbody>
                                 </table>
                              </div>
-                             <div fxLayout.gt-md="row wrap" class="row-tablePD" fxLayoutAlign="end" fxLayoutGap.sm="2%" style="margin-bottom:15px;" >
-                                      
+                             <div fxLayout.gt-md="row wrap" class="row-tablePD" fxLayoutAlign="end" fxLayoutGap.sm="2%" style="margin-bottom:15px;">                                      
                               <div fxFlex class="">
                                    <mat-select style="border:1px solid #ccc; padding: 5px 11px; border-radius: 4px;display:none" [(ngModel)]="patientLog"  *ngIf="patientsAppointmentData.length>0">
                                       <mat-option value="">Select All</mat-option>
@@ -146,15 +143,14 @@
                                   
                               </div>
                                <div fxFlex style="padding-top:20px; text-align:right;" class="log_btns">
-                                  <input type ="button" *ngIf="patientsAppointmentData.length>0 && rows.length>1 " value="Log Appointment" class="mat-raised-button mat-green" (click)="openDialog()" >
-                                   <input type ="button" *ngIf="patientsAppointmentData.length>0 && rows.length==1 " value="Log Appointment" class="mat-raised-button mat-green" (click)="log_appointment()" >
-                                   <div style="color:#fff;" *ngIf="patientsAppointmentData.length<=0" class="mat-raised-button golden mat-menu-item">All Preventative Appointments have been Used</div>
+                                  <input type ="button" *ngIf="patientsAppointmentData.length>0 && rows.length>=1 && preventative_frequency>0" value="Log Appointment" class="mat-raised-button mat-green" (click)="openDialog()" [ngClass]="{'disabled': patient_status =='CANCELLED'}">
+                                   <div style="color:#fff;" *ngIf="patientsAppointmentData.length<=0 || preventative_frequency<=0" class="mat-raised-button golden mat-menu-item">All Preventative Appointments have been Used</div>
                              </div>
                             </div>
                         </div>
                         </div>
-                            </mat-tab>
-                        <mat-tab label="Patient Details ">
+                        </mat-tab>
+                        <mat-tab label="Patient Details">
                         <div fxFlex.gt-sm="100%" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
                                 <h1 mat-dialog-title>Update Patient Details</h1>
                         <form [formGroup]="formPatient"  (ngSubmit)="onSubmitPatientDetails()">
@@ -166,53 +162,61 @@
                                  <small *ngIf="formPatient.controls['patient_name'].hasError('required') && formPatient.controls['patient_name'].touched" class="text-danger support-text">Patient Name is required.</small>
                              </div>
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                                  <label>Patient Address</label>
-                                   <input tabindex="1" [(ngModel)]="patient_address" [formControl]="formPatient.controls['patient_address']" placeholder="" class="form-control-dialog" required="true">
-                                  <small *ngIf="formPatient.controls['patient_address'].hasError('required') && formPatient.controls['patient_address'].touched" class="text-danger support-text">Patient Address is required.</small>
-                             </div>
-                           </div>
-                          <div fxLayout="row wrap" fxLayoutGap="2%">
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                               <label>Patient DOB</label>
-                                   <input tabindex="1" type="date" [(ngModel)]="patient_dob" [formControl]="formPatient.controls['patient_dob']" placeholder="" class="form-control-dialog" required="true">
-                                 <small *ngIf="formPatient.controls['patient_dob'].hasError('required') && formPatient.controls['patient_dob'].touched" class="text-danger support-text">Patient DOB is required.</small>
-                             </div>
-                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                <label>Gender</label>
                                   <mat-select name ="value" tabindex="1" [(ngModel)]= "patient_gender" [formControl]="formPatient.controls['patient_gender']" class="form-control-dialog" required="true">
                                   <mat-option value="MALE">MALE</mat-option>
                                   <mat-option value="FEMALE">FEMALE</mat-option>
                                   </mat-select>
                                  <small *ngIf="formPatient.controls['patient_gender'].hasError('required') && formPatient.controls['patient_gender'].touched" class="text-danger support-text">Patient Gender is required.</small>
-                             </div>                         
+                             </div>
+                             
                            </div>
                           <div fxLayout="row wrap" fxLayoutGap="2%">
-
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+							 
+                               <label>Patient DOB</label>
+								<div class="input_field_dob">
+                                 <select fxFlex.gt-sm="32%" class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_date" [formControl]="formPatient.controls['dob_date']" (change) ="checkDob()">
+                                    <option value="">Select Date</option>
+                                    <option *ngFor="let date of dates" value="{{date}}">{{date}}</option>
+                                 </select>
+                                  <select fxFlex.gt-sm="32%"  class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_month" [formControl]="formPatient.controls['dob_month']" (change) ="checkDob()">
+                                    <option value="">Select Month</option>
+                                    <option *ngFor="let month of months" value="{{month.key}}">{{month.value}}</option>
+                                 </select> 
+                                    <select fxFlex.gt-sm="32%"  class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_year" [formControl]="formPatient.controls['dob_year']" (change) ="checkDob()">
+                                    <option value="">Select Year</option>
+                                    <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
+                                 </select> 
+								 </div>
+                                 <small *ngIf="(formPatient.controls['dob_date'].hasError('required') && formPatient.controls['dob_date'].touched) || (formPatient.controls['dob_month'].hasError('required') && formPatient.controls['dob_month'].touched) || (formPatient.controls['dob_year'].hasError('required') && formPatient.controls['dob_year'].touched)" class="text-danger support-text">Patient DOB is required.</small>
+                                   <!--input tabindex="1" type="text" [(ngModel)]="patient_dob" [formControl]="formPatient.controls['patient_dob']" placeholder="" class="form-control-dialog" required="true"  (keyup) ="checkDob()" placeholder="yyyy-mm-dd">
+                                   <small *ngIf="invalid_dob" class="text-danger support-text">Patient Dob is Invalid.</small>
+                                 <small *ngIf="formPatient.controls['patient_dob'].hasError('required') && formPatient.controls['patient_dob'].touched" class="text-danger support-text">Patient DOB is required.</small-->
+                             </div>
+                                 <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                                  <label>Email</label>
+
+                                  <input tabindex="1" type="email" min="0" [(ngModel)]="patient_email" [formControl]="formPatient.controls['patient_email']" placeholder="" class="form-control-dialog"  required="true">
+
+                                  <small *ngIf="formPatient.controls['patient_email'].hasError('required') && formPatient.controls['patient_email'].touched" class="text-danger support-text">Email is required.</small>
+                             </div>                  
+                           </div>
+                          <div fxLayout="row wrap" fxLayoutGap="2%">
+                               <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                                   <label>Phone Number</label>
 
-                                  <input tabindex="1" type="number" min="0" [(ngModel)]="patient_phone_no" [formControl]="formPatient.controls['patient_phone_no']" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,10);" required="true">
+                                  <input tabindex="1" type="tel" pattern="[0-9]*" [(ngModel)]="patient_phone_no" [formControl]="formPatient.controls['patient_phone_no']" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,11);" required="true">
 
                                   <small *ngIf="formPatient.controls['patient_phone_no'].hasError('required') && formPatient.controls['patient_phone_no'].touched" class="text-danger support-text">Patient Phone No is required.</small>
                              </div>
-                            <!--   <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                               <label>Home Phone Number</label>
-                                 <input tabindex="1" type="number" min="0" [(ngModel)]="patient_home_phno"  [formControl]="formPatient.controls['patient_home_phno']" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,10);" required="true">
-
-                                 <small *ngIf="formPatient.controls['patient_home_phno'].hasError('required') && formPatient.controls['patient_home_phno'].touched" class="text-danger support-text">Patient Home No is required.</small>
-                             </div> -->
+                         <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                                  <label>Notes</label>
+                                   <textarea tabindex="1" [(ngModel)]="patient_address" [formControl]="formPatient.controls['patient_address']" placeholder="" class="form-control-dialog">
+                                   </textarea>
+             
+                             </div> 
                            </div>
-<!-- 
-                          <div fxLayout="row wrap" fxLayoutGap="2%">
-
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                                  <label>Status</label>
-                                  <mat-select name ="value" tabindex="1" [(ngModel)]= "patient_status" [formControl]="formPatient.controls['patient_status']" class="form-control-dialog" required="true">
-                                  <mat-option value="ACTIVE">ACTIVE</mat-option>
-                                  <mat-option value="INACTIVE">INACTIVE</mat-option>
-                                  </mat-select>
-                             </div>
-                           </div> -->
                       </div>
                       <div mat-dialog-actions class="sa-pull-right">
                        <button mat-raised-button color="green" class="m-t-20 m-b-20" [disabled]="!formPatient.valid" type="submit" >Submit</button>
@@ -228,7 +232,6 @@
                                             <th>Customer ID</th>
                                             <th>Subscriber ID</th>
                                             <th>Invoice Date</th>
-                                            <th>Plan</th>
                                             <th>Amount</th>
                                             <th>Payment Status</th>
                                         </tr>
@@ -237,8 +240,7 @@
                                     <tr *ngFor="let data of payment">
                                         <td><span class="res_table_label">Customer ID : </span> {{data.customer_id}}</td>
                                         <td><span class="res_table_label">Subscriber ID : </span> {{data.subscr_id}}</td>
-                                        <td><span class="res_table_label">Invoice Date : </span> {{data.invoice_date| date:'dd-MM-y'}}</td>
-                                        <td><span class="res_table_label">Plan : </span> {{data.payment_plan_name}}</td>
+                                        <td><span class="res_table_label">Invoice Date : </span> {{data.invoice_date| date:'dd-MM-y':'UTC +10'}}</td>
                                         <td><span class="res_table_label">Amount : </span><span *ngIf="isDecimal(data.amount)"> {{data.amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.amount)">{{data.amount| currency: 'USD':true:'1.0'}}</span></td>
                                         <td><span class="res_table_label">Payment Status : </span> 
                                         <mat-chip-list>
@@ -247,7 +249,7 @@
                                         </mat-chip-list>
                                         </td>
                                     </tr>
-                                    <tr *ngIf="payment.length==0||payment.length==''"><td colspan="3">No Data to Display</td></tr>
+                                    <tr *ngIf="payment.length==0||payment.length==''"><td colspan="6">No Data to Display</td></tr>
                                     </tbody>
                                 </table>
                                </div>

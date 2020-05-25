@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material';
 import { DemoMaterialModule } from '../demo-material-module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { InOfficeService } from './in-office.service';
+import { ClinicService } from '../clinic/clinic.service';
 import { InOfficeComponent,DialogOverviewExampleDialogComponent,UpdateInOfficeDialogComponent,DialogOverviewExportDialogComponent  } from './in-office.component';
 import { InOfficeRoutes } from './in-office.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,7 +23,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FlexLayoutModule
   ],
   providers: [
-    InOfficeService,DatePipe
+    InOfficeService,DatePipe,ClinicService
   ],
   entryComponents: [DialogOverviewExampleDialogComponent,UpdateInOfficeDialogComponent,DialogOverviewExportDialogComponent],
   declarations: [ InOfficeComponent,DialogOverviewExampleDialogComponent,UpdateInOfficeDialogComponent,DialogOverviewExportDialogComponent ]

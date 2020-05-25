@@ -1,14 +1,17 @@
-import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, Pipe, PipeTransform, ViewChild, ElementRef  } from '@angular/core';
+import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, Pipe, PipeTransform, ViewChild, ElementRef,Inject } from '@angular/core';
 import { DashboardsService } from './dashboards.service';
 import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe } from '@angular/common';
 import {
+  FormBuilder,
   FormControl,
   FormGroupDirective,
+  FormGroup,
   NgForm,
   Validators
 } from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import 'chartjs-plugin-style';
 import { HeaderService } from '../layouts/full/header/header.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -51,6 +54,65 @@ export const MY_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
+
+
+/*@Component({
+  selector: 'stepper-vertical-example',
+  templateUrl: 'stepper-vertical-example.html',
+  styleUrls: ['stepper-vertical-example.css']
+})
+export class StepperVerticalExample implements OnInit {
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+
+  constructor(private _formBuilder: FormBuilder) {}
+
+  ngOnInit() {
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
+  }
+} */
+
+
+
+
+@Component({
+  selector: 'app-dialog-overview-example-dialog',
+  templateUrl: './dialog-overview-example.html',
+  providers: [DatePipe]
+})
+
+export class DialogOverviewExampleDialogComponent {
+   isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+   color: 'green';
+  constructor(private fb: FormBuilder,private datePipe: DatePipe,
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
+    private _formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: any
+    ) {
+         
+
+
+      }
+
+   ngOnInit() {
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
+  }
+
+}
+
 
 
 @Component({
@@ -108,10 +170,11 @@ public mlist :any;
 public selectedMonthYear : string;
 
 
-constructor(private dashboardsService: DashboardsService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService ){
+constructor(private dashboardsService: DashboardsService, private datePipe: DatePipe,public dialog: MatDialog, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService ){
  const myDate = new Date();
  const monthname =this.getMonthName(myDate.getMonth());
- this.selectedMonthYear = monthname+" "+(myDate.getFullYear().toString()).slice();
+ this.selectedMonthYear = monthname+" "+(myDate.getFullYear().toString()).slice(-2);
+// this.openDialog();
 }
   private warningMessage: string;
 
@@ -146,8 +209,25 @@ constructor(private dashboardsService: DashboardsService, private datePipe: Date
     this.date.setValue(ctrlValue);
     datepicker.close();
   }
+   private checkPermission(role) { 
+  this.headerService.checkPermission(role).subscribe((res) => {
+       if(res.message == 'success'){
+       }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+     // this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
 
-  ngAfterViewInit() {   
+  }
+  ngAfterViewInit() {  
+  this.checkPermission('dashboards'); 
     this.getClinics();
     this.route.params.subscribe(params => {
       this.clinic_id = this.route.snapshot.paramMap.get("id");
@@ -238,11 +318,11 @@ this.lineChartColors = [
 
   public selectedClinic;
      private getClinics() { 
-      console.log('sdfds');
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;
         this.selectedClinic = res.data[0].id;
+        
     this.loadAnalytics();
        }
         else if(res.status == '401'){
@@ -640,11 +720,11 @@ public barChartOptions: any = {
         if(data.data.newMembersThisMonth != null)  
         this.newMembersThisMonth = data.data.newMembersThisMonth;
 
-        if(data.data.totalFees.total != null)
-        this.totalFees = data.data.totalFees.total;
+        if(data.data.totalFees[0].total != null)
+        this.totalFees = data.data.totalFees[0].total;
 
-        if(data.data.totalFeesThisMonth.total != null)
-        this.totalFeesThisMonth = data.data.totalFeesThisMonth.total;
+        if(data.data.totalFeesThisMonth[0].total != null)
+        this.totalFeesThisMonth = data.data.totalFeesThisMonth[0].total;
 
 
         if(data.data.conversionRate != null) {
@@ -697,5 +777,22 @@ public barChartOptions: any = {
   public buildChartLoader:any;
   public dentistKey;
   public DPcolors:any;
+
+
+    openDialog(): void {   
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+      width: '250px',
+      data: {  }
+     , panelClass: 'addinoffice-modalbox'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
+
+
+      });
+  }
+
+
+
   
 }

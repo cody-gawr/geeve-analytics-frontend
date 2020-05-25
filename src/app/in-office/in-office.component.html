@@ -10,31 +10,8 @@
             </div>
              <div class="title_btn" style="margin-bottom:10px;">
                 <div fxLayout="row wrap" fxLayoutGap="2%">
-                    <!-- <div fxFlex.gt-xs="20"  fxFlex="100" >
-                        <div class="start_date">
-                            <mat-form-field>
-                                <input matInput [matDatepicker]="dp" [(ngModel)]="start_date"  [min]="minDate" [max]="maxDate">
-                                <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                                <mat-datepicker #dp (click)="demo()"
-                                                startView="multi-year" startView="year"
-                                                panelClass="example-month-picker">
-                                </mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div fxFlex.gt-xs="20"  fxFlex="100" >
-                        <div class="due_date">
-                            <mat-form-field>
-                                <input matInput [matDatepicker]="dp1" [(ngModel)]="end_date" [min]="minDate" [max]="maxDate">
-                                <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
-                                <mat-datepicker #dp1 (click)="demo()"
-                                                startView="multi-year" startView="year"
-                                                panelClass="example-month-picker">
-                                </mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                    </div> -->
-                    <div fxFlex.gt-xs="340px" fxFlex="100" style="text-align:right;" >
+                   
+                    <div fxFlex.gt-xs="360px" fxFlex="100" style="text-align:right;" >
                         <button style="margin-bottom:10px;" class="mat-raised-button mat-gray" mat-raised-button (click)="openExportDialog()" *ngIf="clinic_id > 0">Export Payments</button>
                         <button style="margin-bottom:10px;" class="mat-raised-button mat-gray" mat-raised-button (click)="openDialog()"[disabled]="!connectedStripe">Add Payment Plan</button>
                     </div>
@@ -48,10 +25,10 @@
                                 <mat-label>Filter by Status</mat-label>
                                 <mat-select [(ngModel)]="StatusSelected" (ngModelChange)="statusFilter()">
                                    <mat-option  value="">Select All</mat-option>
-                            <mat-option  value="ACTIVE">Active</mat-option>
-                            <mat-option  value="INACTIVE">Inactive</mat-option>
-                            <mat-option  value="COMPLETED">Completed</mat-option>
-                            <mat-option  value="OVERDUE">Overdue</mat-option>
+                                  <mat-option  value="ACTIVE">Active</mat-option>
+                                  <mat-option  value="INACTIVE">Inactive</mat-option>
+                                  <mat-option  value="COMPLETED">Completed</mat-option>
+                                  <mat-option  value="OVERDUE">Overdue</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -66,8 +43,8 @@
             </div>
         </div>
         <div class="ngx_datatable_scroll_div">
-        <ngx-datatable #table class='material responsive-datatable rdt_1600px'  [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-            [rowHeight]="'auto'" [limit]="10" [rows]='rows' >
+        <ngx-datatable #table class='material datatable-middle responsive-datatable rdt_1600px'  [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+            [rowHeight]="'auto'" [limit]="10" [rows]='rows' [messages]="{emptyMessage: 'You have no payment plans',totalMessage: 'total'}">
       <ngx-datatable-column  name="patient_name"  prop="patient_name">
          <ng-template let-column="column" ngx-datatable-header-template let-sort="sortFn">
         <span (click)="sort()">Patient Name</span>
@@ -112,25 +89,26 @@
       <ng-template let-column="column" ngx-datatable-header-template let-sort="sortFn">
      <span (click)="sort()">Status</span>
    </ng-template>
-     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+<ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
          <span class="datatable_label">Status : </span> 
          <mat-chip-list>
-            <mat-chip color="primary" selected *ngIf="rows[rowIndex]['payment_status'] == 'ACTIVE'">{{value}}</mat-chip>
-            <mat-chip color="warn" selected *ngIf="rows[rowIndex]['payment_status'] == 'INACTIVE'">{{value}}</mat-chip> 
+           <mat-chip color="primary" selected *ngIf="value == 'COMPLETED'">{{value}}</mat-chip>
+            <mat-chip color="primary" selected *ngIf="value == 'ACTIVE'">{{value}}</mat-chip>
+            <mat-chip color="warn" selected *ngIf="value == 'INACTIVE'">{{value}}</mat-chip> 
          </mat-chip-list>
       </ng-template>
    </ngx-datatable-column>
       <ngx-datatable-column name="id" [width] ="200">
-         <ng-template let-column="column" ngx-datatable-header-template>
+      <ng-template let-column="column" ngx-datatable-header-template>
         <span>Actions </span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" >
-            <a [routerLink]="['/patient-paymentinfo',rows[rowIndex].inoffice_paymentID]" class="action_btn golden sa-pull-right mat-gray patient_detail_edit textonly" title= 'In-office History'>View</a>
-          <button class="action_btn danger" mat-menu-item (click) = "deletePlan(rowIndex)">
-         <i class="ti-trash text-danger"></i></button>
+            <a [routerLink]="['/patient-paymentinfo',rows[rowIndex].inoffice_paymentID]" class="action_btn sa-pull-right patient_detail_edit textonly" title= 'In-office History'><span class="material-icons">visibility</span></a>
+          <button class="action_btn text-danger" mat-menu-item (click) = "deletePlan(rowIndex)" *ngIf="user_type !=3 && user_type !=4" title= 'Delete Plan'> 
+         <span class="material-icons">delete</span></button>
         </ng-template>
       </ngx-datatable-column>
-        </ngx-datatable>
-            </div>
+    </ngx-datatable>
+    </div>
     </mat-card-content>
 </mat-card>

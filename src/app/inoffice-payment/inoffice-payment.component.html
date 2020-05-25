@@ -10,7 +10,7 @@
     <div style="width:100%; float:left; display:flex;">
     <mat-card style="margin:10px auto; max-width:1040px; float:left; width:100%; background:transparent!important;">
             <mat-card-content  class="gradient_bg">
-                <div class="gradient_inner">
+                <div class="gradient_inner inoffice_payment">
                 <!-- ============================================================== -->
                 <!-- column -->
                 <!-- ============================================================== -->
@@ -18,17 +18,17 @@
                     <h4 _ngcontent-c2="" class="spl_headings">Patient Plan Details</h4>
 
                         <div fxLayout="row wrap ">
-                        <div fxFlex="100" class="">
+                        <div fxFlex="100" class=""> 
                         <mat-tab-group dynamicHeight [selectedIndex]="selectedIndex">
                           <mat-tab class="step1" label="Your Details">
                          <div>
                              <div fxLayout="row wrap"  fxLayoutGap="2%">
-                                 <div fxFlex.gt-lg="30" fxFlex.gt-md="30"  fxFlex="100">
+                                 <div fxFlex.gt-sm="30" fxFlex.gt-md="30"  fxFlex="100">
                                      <div class="sa_payment_left_area">
                                         <img src="../assets/images/payment2.png">
                                      </div>
                                  </div>
-                                <div fxFlex.gt-lg="68" fxFlex.gt-md="68" fxFlex="100">
+                                <div fxFlex.gt-sm="68" fxFlex.gt-md="68" fxFlex="100">
 
                                         <div class="sa_mattabs_design sa_matforms_design sa_payment_form">
 
@@ -52,7 +52,7 @@
                                                         <td><span *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</span></td>
                                                     </tr>
                                                 </table>
-                                                <div style="text-align:center">
+                                                <div style="text-align:left">
                                                     <a (click)="startPayment()" class="btn-round mat-raised-button mat-dc">Start Payment Plan</a>
                                                  </div>
                                             </div>
@@ -62,10 +62,45 @@
                             </div>
                         </div>
                         </mat-tab>
-                        
-                        <mat-tab class="step2" label="Payment" [disabled]='!tabActive1'>
+                        <mat-tab class="step2" label="Schedule Payment" [disabled]='!tabActive1'>
+                            <mat-card-content class="Payment-info payment-schedule">
+                                 <div fxLayout="row wrap">
+									 <div fxFlex.gt-sm="30" fxFlex.gt-md="30"  fxFlex="100">
+										 <div class="sa_payment_left_area">
+											<img src="../assets/img/oayment_schedule.png">
+										 </div>
+									 </div>
+                                    <div fxFlex.gt-sm="68" fxFlex="100" class="sa-form-group right_payment_schedule">
+										  <h4>Schedule Payment</h4>
+										  <b>Please select the date of your first payment. You will be automatically billed {{payment_frequency |lowercase}} starting on this date.</b><br>
+										 <div class="input_field_patient">
+											<mat-form-field>
+											  <mat-label>Choose a date</mat-label>
+											  <input matInput [matDatepicker]="picker"  [formControl]="date" [min]="todayDate" [max]="maxDate" autocomplete="off">
+											  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+											  <mat-datepicker #picker></mat-datepicker>
+											</mat-form-field>                         
+									   </div>
+									   <div>
+										  <small *ngIf="dob_error" class="text-danger support-text"> {{dob_error}}</small>
+										</div>
+										<div class="next_btn_Sec">
+											<button type="button" mat-raised-button  class="btn btn-primary mat-dc"  (click) = "schedule()">Next</button>
+										 </div>
+									 </div> 
+                                    
+								</div>
+                                                    
+                                </mat-card-content>
+                            </mat-tab>
+                        <mat-tab class="step3" label="Payment" [disabled]='!tabActive2'>
                             <mat-card-content class="Payment-info">
-                                <div class="cc_total_amountarea"><span class="" *ngIf="payment_frequency =='MONTHLY'"><b>Total Charges :  <b *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</b> per Month</b></span><span class="" *ngIf="payment_frequency =='FORTNIGHTLY'"><b>Total Charges :  <b *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</b> every 2 weeks</b></span></div>
+                                <div class="cc_total_amountarea"><span class="" *ngIf="payment_frequency =='MONTHLY'"><b>Total Charges :  <b *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </b>
+                                 <b  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</b> per Month for {{duration}} Months</b></span>
+                                 <span class="" *ngIf="payment_frequency =='FORTNIGHTLY'">
+                                    <b>Total Charges :  <b *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </b> 
+                                    <b  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</b> every fortnight for {{duration}} Fortnights</b></span></div>
+ <!-- <div class="cc_total_amountarea"><span class="" *ngIf="start_date"><b>Schedule Payment on :  {{start_date}}  </b></span></div> -->
                                 <div class="cell example example3" id="example-3">
                                     <div class="iframe_main">
                                       <div class="fieldset">

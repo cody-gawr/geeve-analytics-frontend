@@ -7,6 +7,7 @@ import { FormControl, FormGroupDirective,  NgForm,  Validators,FormBuilder, Form
 import { NotifierService } from 'angular-notifier';
 import { empty } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 import { CustomValidators } from 'ng2-validation';
 declare var require: any;
@@ -23,6 +24,7 @@ export class DialogOverviewExampleDialogComponent {
   public planOrder;
   public form: FormGroup;
   constructor(private fb: FormBuilder,
+    private toastr: ToastrService,
     private plansService: PlansService,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -83,7 +85,8 @@ export class DialogOverviewExampleDialogComponent {
                     }
                   }
         }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
           return false;
         }    
         ); 
@@ -111,7 +114,7 @@ export class UpdatePlanDialogComponent {
   public memberid;
   public isFeatured :any;
    public form: FormGroup;
-  constructor( private fb: FormBuilder,private plansService: PlansService,
+  constructor( private fb: FormBuilder,private plansService: PlansService,private toastr: ToastrService,
     public dialogUpdateRef: MatDialogRef<UpdatePlanDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
     ) { 
@@ -171,7 +174,8 @@ export class UpdatePlanDialogComponent {
                     }
                   }
         }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
           return false;
         }    
         ); 
@@ -214,10 +218,7 @@ export class PlansComponent implements AfterViewInit {
     this.initiate_clinic();
     this.getTreatments();
         $('#title').html('Membership Plans');
-        $('.header_filters').removeClass('hide_header');
-        $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
-        $('.header_filters').addClass('flex_direct_mar');
+        
          this.preventative_plan = [
          {"id":1,"itemName":"Exam"},
           {"id":2,"itemName":"Fluoride"},
@@ -309,17 +310,17 @@ export class PlansComponent implements AfterViewInit {
   public planLength ="MONTHLY";
   public totalAmount;
   public description;
-  public discount;
+  public discount=10;
   public treatmentdata;
   public memberplan_id;
   public planOrder;
   public isFeatured;
-  public preventative_frequency;
-  public preventative_discount;
+  public preventative_frequency=2;
+  public preventative_discount=10;
 
   columns = [{ prop: 'id' }, { name: 'planName' }, { name: 'planLength' }, { name: 'totalAmount' }, { name: 'discount' }, { name: 'description' } ];
 
-  constructor(notifierService: NotifierService,private plansService: PlansService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private plansService: PlansService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
     this.notifier = notifierService;
     this.rows = data;
     this.temp = [...data];
@@ -331,27 +332,34 @@ export class PlansComponent implements AfterViewInit {
 
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
-  if(this.clinic_id!= "undefined")
+    if(this.clinic_id!= "undefined") {
       this.getPlans();
-     else{
-            $('.header_filters').addClass('hide_header');
-        $('.external_clinic').hide();
+      $('.header_filters').removeClass('hide_header');
+        $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
     }
+    else{
+        $('.header_filters').addClass('hide_header');
+        $('.external_clinic').hide();
+     }
     }
     goBack() {
       window.history.back();
-}
+    }
 
-isDecimal(value) {
- if(typeof value != 'undefined')
-  {
-    if(String(value).includes("."))
-    return true;
+  isDecimal(value) {
+    if(typeof value != 'undefined')
+    {
+      if(String(value).includes("."))
+      return true;
+    }
   }
-}
+
   private getPlans() {
-  this.rows=[];
-  this.plansService.getPlans(this.clinic_id).subscribe((res) => {
+
+    this.rows=[];
+    this.plansService.getPlans(this.clinic_id).subscribe((res) => {
         if(res.message == 'success'){
         this.rows = res.data;
         this.temp = [...res.data];        
@@ -360,27 +368,30 @@ isDecimal(value) {
               this.plansService.addPlans('Sample Plan',1,'MONTHLY', 100,10,'',this.clinic_id,'true',JSON.stringify(this.preventative_plan_selected),2,JSON.stringify(this.treatment_inclusions_selected),JSON.stringify(this.treatment_exclusions_selected),10).subscribe((res) => {
             $('.ajax-loader').hide();  
             if(res.message == 'success'){           
-                this.notifier.notify( 'success', 'New Plan Added' ,'vertical');
-                 this.getPlans();
+              // this.notifier.notify( 'success', 'New Plan Added' ,'vertical');
+                this.toastr.success('New Plan Added .');
+                this.getPlans();
                }
             }, error => {
-              this.warningMessage = "Please Provide Valid Inputs!";
+                 $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
             });  
           }
         }
          else if(res.status == '401'){
             this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
+            this._cookieService.put("email", '');
+            this._cookieService.put("token", '');
+            this._cookieService.put("userid", '');
+            this.router.navigateByUrl('/login');
            }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+         $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
     });
   }
 
-    openDialog(): void {
+  openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '250px',
       data: { planName: this.planName, planLength: this.planLength, totalAmount: this.totalAmount ,discount: this.discount , description: this.description,treatmentdata:this.treatmentdata,treat:this.treat,planOrder:this.planOrder,preventative_plan:this.preventative_plan,preventative_frequency:this.preventative_frequency , treatment_inclusions:this.treatment_inclusions,treatment_exclusions:this.treatment_exclusions,preventative_discount:this.preventative_discount,dropdownSettings:this.dropdownSettings,preventative_plan_selected:this.preventative_plan_selected,treatment_inclusions_selected:this.treatment_inclusions_selected, treatment_exclusions_selected:this.treatment_exclusions_selected }    
@@ -392,11 +403,12 @@ isDecimal(value) {
       this.plansService.addPlans(result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,this.clinic_id,result.isFeatured,JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount).subscribe((res) => {
       $('.ajax-loader').hide();  
       if(res.message == 'success'){           
-          this.notifier.notify( 'success', 'New Plan Added' ,'vertical');
-             this.getPlans();
+           this.toastr.success('New Plan Added .');
+           this.getPlans();
          }
       }, error => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+           $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
       });  
       }
       });
@@ -415,10 +427,12 @@ isDecimal(value) {
     this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount).subscribe((res) => {
          if(res.message == 'success'){
             this.getPlans()
-            this.notifier.notify( 'success', 'Plan Updated' ,'vertical');
+            this.toastr.success('Plan Updated .');
+
              }
         }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
         }); 
         }         
         });
@@ -438,7 +452,8 @@ isDecimal(value) {
                this.router.navigateByUrl('/login');
            }
       }, error => {
-        this.warningMessage = "Please Provide Valid Inputs!";
+           $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
       }    
       );
     }
@@ -457,11 +472,13 @@ isDecimal(value) {
                 this.plansService.deletePlan(this.rows[row]['id']).subscribe((res) => {
                  if(res.message == 'success'){
           
-                  this.notifier.notify( 'success', 'Plan Removed' ,'vertical');
-                    this.getPlans();
+                   //this.notifier.notify( 'success', 'Plan Removed' ,'vertical');
+                   this.toastr.success('Plan Removed .');
+                   this.getPlans();
                  }
               }, error => {
-                this.warningMessage = "Please Provide Valid Inputs!";
+                   $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
               }    
               );
               }

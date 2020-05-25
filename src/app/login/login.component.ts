@@ -25,9 +25,11 @@ export class LoginComponent implements OnInit {
       password: [null, Validators.compose([Validators.required])]
     });
   }
+  
+  public errorDeactivate;
   onSubmit() {
           this.errorLogin  =false;
-
+          this.errorDeactivate = false;
   this.loginService.login(this.form.value.uname, this.form.value.password).subscribe((res) => {
        if(res.message == 'success'){
         var datares = [];
@@ -38,44 +40,46 @@ export class LoginComponent implements OnInit {
         datares['parentid'] = res.data.data.parent_id;   
         datares['user_type'] = res.data.data.user_type;       
         datares['user_image'] = res.data.data.user_image;        
-        datares['login_status'] = res.data.data.login_status;        
-        datares['display_name'] = res.data.data.display_name;       
-
-
+        datares['login_status'] = res.data.data.status;        
+        datares['display_name'] = res.data.data.display_name; 
+         datares['stepper_status'] = res.data.data.stepper_status;          
         let opts: CookieOptionsArgs = {
-            expires: new Date('2030-07-19')
+            expires: new Date('2035-07-19')
         };
         this._cookieService.put("username", datares['username'], opts);
         this._cookieService.put("email", datares['email'], opts);
         this._cookieService.put("token", datares['token'], opts);
-        this._cookieService.put("user_type", datares['user_type'], opts);
-       
+        this._cookieService.put("user_type", datares['user_type'], opts);       
         this._cookieService.put("login_status", datares['login_status'], opts);
         this._cookieService.put("display_name", datares['display_name'], opts);
         this._cookieService.put("user_image", datares['user_image'], opts);
-
-        if(datares['user_type'] == '1') {
-        this.router.navigate(['/users']);
+        if(datares['login_status'] == '5') {
+         this.router.navigate(['/profile-settings/1']);
+         this._cookieService.put("userid", datares['userid'], opts);          
+        }
+        else if(datares['user_type'] == '1') {
+           this._cookieService.put("userid", datares['userid'], opts);
+            this.router.navigate(['/users']);           
+        }
+        else if(datares['user_type'] == '2' && datares['stepper_status'] != '0') {          
+         this._cookieService.put("stepper", datares['stepper_status'], opts);
          this._cookieService.put("userid", datares['userid'], opts);
-      }
+         this.router.navigate(['/setup']);
+        }
         else if(datares['user_type'] == '2') {
-         this._cookieService.put("userid", datares['userid'], opts);
-
-       // if(datares['login_status'] == 0)
-       //  window.location.href = '/assets/stepper/index.html';
-       //  else
-        // this.router.navigate(['/dashboards/cliniciananalysis/1']);
-        this.router.navigate(['/dashboards']);
-      }
-      else{
-         this._cookieService.put("userid", datares['parentid'], opts);
-         this._cookieService.put("childid", datares['userid'], opts);
-
-        this.router.navigate(['/dashboards']);
-      }
-
+           this._cookieService.put("userid", datares['userid'], opts);
+          this.router.navigate(['/dashboards']);
+        }
+        else{
+           this._cookieService.put("userid", datares['parentid'], opts);
+           this._cookieService.put("childid", datares['userid'], opts);
+          this.router.navigate(['/dashboards']);
+        }
        }
-       else if(res.message == 'error'){
+       else if(res.status == '500'){
+          this.errorDeactivate  =true;
+       }
+       else if(res.status == '401'){
           this.errorLogin  =true;
        }
     }, error => {

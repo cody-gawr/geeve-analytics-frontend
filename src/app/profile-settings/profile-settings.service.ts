@@ -14,6 +14,7 @@ export class ProfileSettingsService {
    public token: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
+    private solutionsUrl = environment.solutionsUrl;
     public token_id;
 
     constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {
@@ -55,10 +56,10 @@ export class ProfileSettingsService {
             // formData.append('publishableKey', publishableKey);
             // formData.append('secretKey', secretKey);
            
-            formData.append('user_image', imageURL);   
-             formData.append('id',  this.token_id);
-    formData.append('token', this._cookieService.get("token"));
-     formData.append('token_id', this.token_id);
+           formData.append('user_image', imageURL);   
+           formData.append('id',  this.token_id);
+           formData.append('token', this._cookieService.get("token"));
+           formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Users/updateprofileSettings/", formData)
         .pipe(map((response: Response) => {
@@ -95,6 +96,20 @@ export class ProfileSettingsService {
         );
     }
 
+
+    getPaymentDetails(): Observable<any> {
+     const formData = new FormData();
+     formData.append('user_id',  this.token_id);
+     formData.append('type', "members");
+
+        return this.http.post(this.solutionsUrl +"/users/getUserPaymentData", formData)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+
     clearSession( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
         return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
@@ -107,9 +122,9 @@ export class ProfileSettingsService {
     updateTerms(terms, token = this._cookieService.get("token")): Observable<any> {
             const formData = new FormData();
             formData.append('terms', terms);            
-             formData.append('user_id',  this.token_id);
-    formData.append('token', this._cookieService.get("token"));
-     formData.append('token_id', this.token_id);
+            formData.append('user_id',  this.token_id);
+            formData.append('token', this._cookieService.get("token"));
+            formData.append('token_id', this.token_id);
 
         return this.http.post(this.apiUrl +"/Users/updateTerms/", formData)
         .pipe(map((response: Response) => {
@@ -117,6 +132,66 @@ export class ProfileSettingsService {
                     })
         );
     }
+         updateCardRetryPayment(token:any,customer_id,last_invoic_id): Observable<any> {
+            const formData = new FormData();
+            formData.append('token', token);
+            formData.append('customer_id', customer_id);
+            formData.append('last_invoic_id', last_invoic_id);
+
+            return this.http.post(this.apiUrl +"/Users/updateCardRetryPayment", formData)
+            .pipe(map((response: Response) => {
+                   return response;
+               })
+            );
+    }
+
+         retryPayment(customer_id,last_invoic_id): Observable<any> {
+            const formData = new FormData();
+            formData.append('customer_id', customer_id);
+            formData.append('last_invoic_id', last_invoic_id);
+
+            return this.http.post(this.apiUrl +"/Users/retryPayment", formData)
+            .pipe(map((response: Response) => {
+                   return response;
+               })
+            );
+    }
+         getCardDetails(customer_id): Observable<any> {
+            const formData = new FormData();
+            formData.append('customer_id', customer_id);
+            return this.http.post(this.apiUrl +"/users/getCardDetails", formData)
+            .pipe(map((response: Response) => {
+                   return response;
+               })
+            );
+    }
+  contractUpload(formData): Observable<any> {
+  console.log("heree");  
+    formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('token', this._cookieService.get("token"));
+    formData.append('token_id', this.token_id);
+    return this.http.post(this.apiUrl +"/users/uploaddefaultcontract/", formData)
+     .pipe(map((response: Response) => {
+         return response;
+      })
+     ); 
+
+    }
+
+  updateContract(defaultContract,token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        formData.append('defaultContract', defaultContract);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
+               
+        return this.http.post(this.apiUrl +"/users/savedefaultcontract/", formData)
+         .pipe(map((response: Response) => {
+             return response;
+          })
+        );
+    }
+
        
 }
 

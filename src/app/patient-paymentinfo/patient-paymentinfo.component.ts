@@ -2,15 +2,17 @@ import { Component,OnInit,Inject, EventEmitter,Output, AfterViewInit  } from '@a
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { PatientPaymentinfoService } from './patient-paymentinfo.service';
+import { DefaultersService } from '../defaulters/defaulters.service';
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { DatePipe,formatDate } from '@angular/common';
-
+import { environment } from "../../environments/environment";
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { empty } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 const data: any = [];
 @Component({
@@ -22,13 +24,14 @@ export class PatientPaymentinfoComponent implements OnInit {
   private readonly notifier: NotifierService;
   public formPatient: FormGroup;
   public form: FormGroup;
-
+  private apiUrl = environment.apiUrl;
   color = 'primary';
   mode = 'determinate';
   value = 50;
   bufferValue = 75;
   public id:any ={};
   public imageURL:any;
+  public imagepreviewURL:any;
   public patient_amount : any;
   public member_plan_id:any;
   public total_subpatient:any;
@@ -74,12 +77,15 @@ public patient_dob;
 public preventative_frequency;
 public preventative_count;
 
-  constructor(notifierService: NotifierService,private fb: FormBuilder,public dialog: MatDialog,  private patientPaymentinfoService: PatientPaymentinfoService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,breakpointObserver: BreakpointObserver,private datePipe: DatePipe) {
-    this.notifier = notifierService;
-    }
-  
+constructor(private toastr: ToastrService,notifierService: NotifierService, private defaultersService: DefaultersService, private fb: FormBuilder,public dialog: MatDialog,  private patientPaymentinfoService: PatientPaymentinfoService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,breakpointObserver: BreakpointObserver,private datePipe: DatePipe) {
+  this.notifier = notifierService;
+   if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
+        this.token_id = this._cookieService.get("childid");
+        else
+        this.token_id= this._cookieService.get("userid");
+  }
+
   ngOnInit() {
-   
     this.id = this.route.snapshot.paramMap.get("id");
     this.getInofficePlan();
     this.getPaymentHistory();
@@ -90,20 +96,21 @@ public preventative_count;
      });
 
      this.formPatient = this.fb.group({
-          patient_name: [null, Validators.compose([Validators.required])],
+      patient_name: [null, Validators.compose([Validators.required])],
       patient_address: [Validators.compose([Validators.required])],
       patient_dob: [null, Validators.compose([Validators.required])],
-       // patient_age: [null, Validators.compose([Validators.required])],
+      // patient_age: [null, Validators.compose([Validators.required])],
       patient_gender: [null, Validators.compose([Validators.required])],
       patient_phone_no: [null, Validators.compose([Validators.required])],
-       patient_home_phno: [null, Validators.compose([Validators.required])],
+      patient_home_phno: [null, Validators.compose([Validators.required])],
       patient_status: [null, Validators.compose([Validators.required])]
     });
 
      this.form = this.fb.group({
      
     });
-      }
+   }
+
 
 isDecimal(value) {
  if(typeof value != 'undefined')
@@ -113,52 +120,68 @@ isDecimal(value) {
   }
 }
   onSubmit() {
-    if(this.imageURL == undefined){
-      alert("Please Upload file");
+    if(this.imagepreviewURL == undefined){
+      Swal.fire("","Please upload file .");
     
     }else{
       $('.ajax-loader').show();      
-        this.patientPaymentinfoService.updatePayment(this.id,this.imageURL).subscribe((res) => {
+        this.patientPaymentinfoService.updatePayment(this.id,this.imagepreviewURL).subscribe((res) => {
       $('.ajax-loader').hide();      
           if(res.message == 'success'){
-            this.notifier.notify( 'success', 'Document Uploaded' ,'vertical');
-               this.getInofficePlan();
+              this.toastr.success('Document Uploaded .');
+              this.getInofficePlan();
             }
              else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
+               this._cookieService.removeAll();
+              this.router.navigateByUrl('/login');
            }
            }, error => {
-          this.warningMessage = "Please Provide Valid Inputs!";
+              $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
             }   
            );
         }
       }
 
       public fileToUpload;
+      public previewSignedContract;
   uploadImage(files: FileList) {
     this.fileToUpload = files.item(0);
     const extension = this.fileToUpload.name.split('.')[1].toLowerCase();
-    if(extension !== "pdf"){
-      alert('Please Upload PDF file');
-      return null;
+   if(extension.trim() == "pdf" || extension.trim() == "doc" || extension.trim() == "jpg" || extension.trim() == "jpeg" || extension.trim() == "png" ){
+    if(this.fileToUpload.size/1024/1024 > 4) //10000 bytes means 10 kb
+    {
+         Swal.fire('File too large.','Document should not be greater than 4 MB..');
+         return false;
+    }
+
+    $('.ajax-loader').show();  
+    let formData = new FormData();
+    formData.append('file', this.fileToUpload, this.fileToUpload.name);
+    formData.append('clinic_id', this.clinic_id);
+
+    this.patientPaymentinfoService.contractUpload(formData).subscribe((res) => {
+    $('.ajax-loader').hide();      
+
+     if(res.message == 'success'){
+        this.imagepreviewURL= res.data;
+        this.previewSignedContract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.imagepreviewURL));
+        $(".uploadsignedContract").hide();
+      }
+    });
     }else
     {
-      $('.ajax-loader').show();  
-      let formData = new FormData();
-    formData.append('file', this.fileToUpload, this.fileToUpload.name);
-    this.patientPaymentinfoService.contractUpload(formData).subscribe((res) => {
-      $('.ajax-loader').hide();      
+      Swal.fire('Invalid file type.','Allowed files are pdf, doc, jpg, jpeg and png only.');
+      return null;
 
-        if(res.message == 'success'){
-        this.imageURL= res.data;
-          }
-        });
-      }
+     }
   }
+
+deleteSignedDocImage(){
+  this.imagepreviewURL="";
+  $(".contractFile").val('');
+  $(".uploadsignedContract").show();
+}
 
 //public plan_name;
 public plan_description;
@@ -171,10 +194,20 @@ public monthly_weekly_payment;
 public duration;
 public start_date;
 public due_date;
+public uploadedSignedContract='';
+public token_id;
+public patient_email :any;
+
   getInofficePlan() {
+  
     this.patientPaymentinfoService.getInofficePlan(this.id).subscribe((res) => {
        if(res.message == 'success'){
+      
         this.patient_name=res.data[0]['patient']['patient_name'];
+        this.patient_id=res.data[0]['patient']['id'];
+        this.patient_email=res.data[0]['patient']['patient_email'];
+        this.patient_status=res.data[0]['patient']['patient_status'];
+        this.clinic_id=res.data[0]['patient']['clinic_id'];
         this.plan_name=res.data[0]['plan_name'];
         this.plan_description=res.data[0]['plan_description'];
         this.total_amount=res.data[0]['total_amount'];
@@ -185,23 +218,46 @@ public due_date;
         this.monthly_weekly_payment=res.data[0]['monthly_weekly_payment'];
         this.duration=res.data[0]['duration'];
         this.start_date=res.data[0]['start_date'];
-        this.due_date=res.data[0]['due_date'];        
+        this.due_date=res.data[0]['due_date'];  
+
         this.imageURL=res.data[0]['contract'];
+
+        this.uploadedSignedContract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.imageURL));
+        if(this.imageURL=="" || this.imageURL==null){
+          //alert("here");
+           this.getContract();
+        }
         this.getPaymentHistory();
        }
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
+        else if(res.status == '401'  || res.message == 'error'){
+               this._cookieService.removeAll();
+              this.router.navigateByUrl('/login');
            }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
+         $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+    });
   }
 
+ getContract(){
+      this.patientPaymentinfoService.getContract(this.id).subscribe((res) => {
+       $('.ajax-loader').hide();     
+          if(res.message == 'success'){
+              this.imageURL =res.contract;
+        
+              this.uploadedSignedContract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.imageURL));
+          } else if(res.status == '401'){
+             /* this._cookieService.put("username",'');
+               this._cookieService.put("email", '');
+               this._cookieService.put("token", '');
+               this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login'); */
+           } 
+          }, error => {
+           //      $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+          });
+  }
   getPaymentHistory() {
     this.patientPaymentinfoService.getPaymentHistory(this.id).subscribe((res) => {
        if(res.message == 'success'){
@@ -210,16 +266,36 @@ public due_date;
         // this.payment_plan_name=res.data['member_plan']['planName'];
         }
         else if(res.status == '401'){
-            this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
+          this._cookieService.put("username",'');
+          this._cookieService.put("email", '');
+          this._cookieService.put("token", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+      }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+         $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
     }    
     );
   }
+
+private sendDefaultersemail(defaulter_name, defaulter_email,defaulter_id) {
+
+    this.defaultersService.sendDefaultersemail(defaulter_id,defaulter_name,defaulter_email).subscribe((res) => {
+      console.log(res);
+          if(res.message == 'success'){
+
+             this.toastr.success('Update Card Link Sent.');
+          }
+           else if(res.status == '401'){
+               this._cookieService.removeAll();
+              this.router.navigateByUrl('/login');
+           }
+      }, error => {
+           $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+      }    
+      );
+    }
 
 }

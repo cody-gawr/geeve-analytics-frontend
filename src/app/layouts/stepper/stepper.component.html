@@ -1,0 +1,115 @@
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div class="main-container" [dir]="dir" [ngClass]="{'minisidebar': minisidebar, 'boxed': boxed, 'danger': danger, 'blue': blue, 'green': green, 'dark': dark }">
+    <!-- ============================================================== -->
+    <!-- Topbar - style you can find in header.scss -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- End Topbar - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0"
+        [ngClass]="{'minisidebar': minisidebar}">
+        <!-- ============================================================== -->
+        <!-- Sidebar - style you can find in sidebar.scss -->
+        <!-- ============================================================== -->
+     <!--    <mat-sidenav #snav id="snav" class="pl-xs" [mode]="mobileQuery.matches ? 'side' : 'over'" fixedTopGap="0"
+            [opened]="mobileQuery.matches" [disableClose]="mobileQuery.matches" (open)="sidebarOpened = true" (close)="sidebarOpened = false"
+            [perfectScrollbar]="config">
+            <app-stepper-sidebar class="app-sidebar"></app-stepper-sidebar>
+        </mat-sidenav> -->
+        <!-- ============================================================== -->
+        <!-- Sidebar - style you can find in sidebar.scss -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right Sidebar - style you can find in rightsidebar.component.scss -->
+        <!-- ============================================================== -->
+        <mat-sidenav #end position="end" class="chat-panel" mode="over" opened="false">
+            <div class="scroll">
+                <mat-nav-list>
+                    <h3 mat-subheader class="text-uppercase font-weight-bold">Settings</h3>
+                    <mat-list-item>
+                        <mat-slide-toggle color="warn" (change)="dir = (dir == 'rtl' ? 'ltr' : 'rtl')">RTL</mat-slide-toggle>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-slide-toggle color="warn" [(ngModel)]="boxed">Boxed Layout</mat-slide-toggle>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <h3 mat-subheader class="text-uppercase font-weight-bold">Colors</h3>
+                    <mat-list-item>
+                        <mat-checkbox color="warn" [(ngModel)]="danger" (change)="green = blue = false" class="text-danger">Red</mat-checkbox>
+                    </mat-list-item>
+                    <mat-list-item>
+                    <mat-checkbox color="warn" [(ngModel)]="green" (change)="danger = blue = false" class="text-megna">Teal Green</mat-checkbox>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-checkbox color="warn" [(ngModel)]="blue" (change)="green = danger = false" class="text-info">Blue</mat-checkbox>
+                    </mat-list-item>
+                    <mat-list-item> 
+                        <mat-checkbox color="warn" [(ngModel)]="dark" (change)="green = blue = danger = false">Dark</mat-checkbox>
+                    </mat-list-item>
+                </mat-nav-list>
+            </div>
+        </mat-sidenav>
+        <!-- ============================================================== -->
+        <!-- Page container - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <mat-sidenav-content class="page-wrapper">
+                <div class="sa_mobile_header">
+                    <div class="sa_mobile_logo_area">
+                        <div class="sa_header_icons">
+                            <button class="sa_mat_menu_icon sa_backslide_area hamburger_menu" mat-icon-button (click)="snav.toggle()" value="sidebarclosed">
+                                <mat-icon class="sa_ico1 sa_mobile_menu_ico">menu</mat-icon>
+                                <mat-icon class="sa_ico2 sa_mobile_menu_ico">menu</mat-icon>
+                            </button>
+                        </div>
+						
+                        <div class="sa_sidebar_logo_main">
+                            <div class="sa_sidebar_logo"><img src="assets/images/logo-text.png" alt="homepage" class=""></div>
+                        </div>
+                    </div>
+                </div>
+                <!--div class="sa_heading_bar">
+                    <div fxLayout="row wrap">
+                        <div fxFlex.lg="70" fxFlex.md="60" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70" class="sa_mobile_heading">
+                            <div class="sa_header_icons">
+                            <!--<button class="sa_mat_menu_icon sa_backslide_area hamburger_menu" mat-icon-button (click)="snav.toggle()" value="sidebarclosed">
+                                    <mat-icon class="sa_ico1">arrow_back_ios</mat-icon>
+                                    <mat-icon class="sa_ico2">arrow_forward_ios</mat-icon>
+                                </button>
+                                <button class="sa_mat_menu_icon sa_expand_area hamburger_menu fullscreen" mat-icon-button (click) ="fullScreen()" >
+                                    <mat-icon class="sa_ico1" >fullscreen</mat-icon>
+                                    <mat-icon class="sa_ico2" (click) ="closeFullscreen()">fullscreen_exit</mat-icon>
+                                </button> -->
+                            <!--/div>
+                            <h4><span class="page_title" id="title"></span></h4>
+                        </div>
+                        <div fxFlex.lg="30" fxFlex.md="40" fxFlex.sm="100" fxFlex.xs="100" fxFlex="30" class="">
+                         <!--app-headerright class="app-headerright"></app-headerright-->
+                        <!--/div>
+                    </div>
+                </div-->
+
+
+                <div class="page-content stepper_content"> 
+					<div class="logo_jeeve">
+							<img src="assets/img/jeeve_logo.png" alt=" " />
+						</div>
+					<div class="stepper_innner">   
+						<div class="cross_icon_top">
+							<div (click) = "logout()"><i class="fas fa-power-off"></i>Sign Out</div>
+						</div>  
+						<router-outlet>	
+							<app-spinner></app-spinner>
+						</router-outlet>
+					</div>
+                </div>
+            
+        </mat-sidenav-content>
+        <!-- ============================================================== -->
+        <!-- Page container - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+    </mat-sidenav-container>
+</div>
+
+

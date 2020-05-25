@@ -19,6 +19,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MatDatepicker} from '@angular/material/datepicker';
+import { HeaderService } from '../layouts/full/header/header.service';
 
 // Depending on whether rollup is used, moment needs to be imported differently.
 // Since Moment.js doesn't have a default export, we normally need to import using the `* as`
@@ -28,6 +29,8 @@ import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment, Moment} from 'moment';
 const moment = _rollupMoment || _moment;
+
+import { ToastrService } from 'ngx-toastr';
 
 // See the Moment.js docs for the meaning of these formats:
 // https://momentjs.com/docs/#/displaying/format/
@@ -91,6 +94,7 @@ export class DialogOverviewExampleDialogComponent {
   public formInvite: FormGroup;
 
   constructor(private fb: FormBuilder,
+    private toastr: ToastrService,
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -107,8 +111,9 @@ export class DialogOverviewExampleDialogComponent {
   omit_special_char(event)
   {   
      var k;  
-     k = event.charCode;  //
-     return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+     k = event.charCode; 
+     console.log(k); //
+     return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57) || k ==45); 
   }
 
   @Output() public emailval: EventEmitter<any> = new EventEmitter();
@@ -178,35 +183,66 @@ export class PatientsDetailComponent implements AfterViewInit {
   clinic_id: any;
   public clinic_name:any ={};
   public patientdob;
-   public end_date ;
+  public end_date ;
   public start_date; 
  
-   minDate = new Date('1990-01-01');
-   maxDate = new Date();
+  minDate = new Date('1990-01-01');
+  maxDate = new Date();
+  private checkPermission(role) { 
+  this.headerService.checkPermission(role).subscribe((res) => {
+       if(res.message == 'success'){
+       } else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+              this.router.navigateByUrl('/login');
+          }
+    }, error => {
+     // this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+
+  }
   ngAfterViewInit() {
+    this.checkPermission('memberships');
       this.initiate_clinic();
+      $('.sa_heading_bar').show();           
       this.getPlans();
-    $('#title').html('Patients Listing');
-        $('.header_filters').removeClass('hide_header');
-        $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
-        $('.header_filters').addClass('flex_direct_mar');
+    $('#title').html('Memberships');
         $('.sa_heading_bar').show();     
   }
 
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
   if(this.clinic_id != "undefined")
-   { this.getPatients();
+   {
+      $('.header_filters').removeClass('hide_header');
+        $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
+
+    this.getPatients();
     this.getClinicSettings();
+    this.getPlans();    
    }
   else{
+    console.log(this.clinic_id+ 'b');
+
         $('.header_filters').addClass('hide_header');
         $('.external_clinic').hide();
     }
   }
 
-  public connectedStripe =false;
+
+ getRowClass = (row) => { 
+   return {
+     'row-color1': row.gender == "Male",
+     'row-color2': row.gender == "Female",
+   };
+  }
+
+  public connectedStripe =true;
 public stripe_account_id;
  getClinicSettings() {
     $('.ajax-loader').show(); 
@@ -215,8 +251,11 @@ public stripe_account_id;
        if(res.message == 'success'){
         this.stripe_account_id = res.data[0].stripe_account_id;
         if(this.stripe_account_id)
-          this.connectedStripe = true;        
-       }
+            this.connectedStripe = true;        
+        else {
+          this.connectedStripe = false;        
+        }
+       }       
         else if(res.status == '401'){
               this._cookieService.put("username",'');
               this._cookieService.put("email", '');
@@ -225,9 +264,9 @@ public stripe_account_id;
                this.router.navigateByUrl('/login');
            }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
+       $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+    });
   }
 
 
@@ -264,7 +303,7 @@ public stripe_account_id;
   columns = [{ prop: 'id' }, { name: 'planName' }, { name: 'member_plan_id' }, { name: 'patient_address' }, { name: 'patient_age' }, { name: 'patient_dob' }, { name: 'patient_email' }, { name: 'patient_gender' }, { name: 'patient_home_phno' }, { name: 'patient_name' }, { name: 'patient_phone_no' }, { name: 'patient_status' }];
 
   @ViewChild(PatientsDetailComponent) table: PatientsDetailComponent;
-  constructor(notifierService: NotifierService,private  patientsdetailService: PatientsDetailService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router ,private route: ActivatedRoute,private datePipe: DatePipe) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private  patientsdetailService: PatientsDetailService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router ,private route: ActivatedRoute,private datePipe: DatePipe,  private headerService: HeaderService) {
     this.notifier = notifierService;
     this.rows = data;
     this.temp = [...data];
@@ -291,14 +330,14 @@ public stripe_account_id;
     this.patientsdetailService.inviteMember(this.clinic_id,result.invite_member_name, result.invite_member_email,'new').subscribe((res) => {
       $('.ajax-loader').hide();
     if(res.message == 'success'){
-        this.notifier.notify( 'success', 'Member has been Invited' ,'vertical');
+        this.toastr.success('Member has been Invited .');
           this.getPatients();
        }
        else{
-        this.notifier.notify( 'success', res.data.message ,'vertical');
+        this.toastr.success(res.data.message);
        }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
   }
@@ -308,7 +347,7 @@ public stripe_account_id;
   openExportDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExportDialogComponent, {
       width: '400px',
-      data: {start_date: new Date(new Date().getFullYear(), 0, 1), end_date: new Date(),minDate: this.minDate, maxDate: this.maxDate },
+      data: {start_date: new Date(new Date().getFullYear(), new Date().getMonth(), 1), end_date: new Date(),minDate: this.minDate, maxDate: this.maxDate },
       panelClass: 'full-screen'
     });
   dialogRef.afterClosed().subscribe(result => {
@@ -365,7 +404,8 @@ public stripe_account_id;
    
    if(res.message == 'success'){
     this.getPatients();
-            this.notifier.notify( 'success', 'Patient Updated' ,'vertical');
+     
+            this.toastr.success('Patient Updated.');
              }
               else if(res.status == '401'){
             this._cookieService.put("username",'');
@@ -460,7 +500,7 @@ resend_invite(name,email)
     this.patientsdetailService.inviteMember(this.clinic_id,name, email,'resend').subscribe((res) => {
       if(res.message == 'success'){
       $('.ajax-loader').hide();
-        this.notifier.notify( 'success', 'Invite Sent' ,'vertical');        
+        this.toastr.success('Invite Sent.');       
         this.getPatients();
       }
     });
@@ -472,7 +512,8 @@ private deletePatients(row) {
     if(this.rows[row]['id']) {
       this.patientsdetailService.deletePatients(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
-        this.notifier.notify('success', 'Patient Removed' ,'vertical');
+        
+        this.toastr.success('Patient Removed.');       
             this.getPatients();
              }      
     }, error => {
@@ -540,7 +581,7 @@ private deletePatients(row) {
 
     this.patientsdetailService.updatePatients(this.rows[rowIndex]['id'],this.rows[rowIndex]['member_plan_id'],this.rows[rowIndex]['patient_status']).subscribe((res) => {
        if(res.message == 'success'){
-        this.notifier.notify( 'success', 'Patient Updated' ,'vertical');
+        this.toastr.success('Patient Updated.');
           this.getPatients();
        }
     }, error => {

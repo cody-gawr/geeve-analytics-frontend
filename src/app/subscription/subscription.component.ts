@@ -66,7 +66,7 @@ export class SubscriptionComponent implements OnInit {
   public ClinicAbout : any;
   public practiceOwnerEmail :string;
 
-
+  public stripeConnected = false;
   public contactuser_name: any;
   public contactuser_email: any;
   public contactuser_phone: any;
@@ -83,6 +83,7 @@ export class SubscriptionComponent implements OnInit {
      this.notifier = notifierService;
      this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
      this.DefaultHeaderImage=this.homeUrl+"/assets/img/headimage.jpg";
+
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -312,15 +313,20 @@ public terms;
   // Get Clinic Settings
   getClinicSettings() {
      this.subscriptionService.getClinicSettings(this.clinic_id,this.user_id).subscribe((res) => {
-       if(res.message == 'success'){
+             if(res.message == 'success'){
           const finalData = res.data;
+           if(finalData[0].stripe_account_id)
+           {
+            this.stripeConnected = true;
+           }
+
           if(finalData[0].header_info!="" && finalData[0].header_info!=null)
           {
            this.header_info = JSON.parse(finalData[0].header_info);  
            this.headerTitle = this.header_info.headerTitle;
            this.headerDescription = this.header_info.headerDescription;
-
-           if(this.header_info.image!=""){
+          
+           if(this.header_info.image!="" && this.header_info.image!='NULL' && this.header_info.image!='undefined' && this.header_info.image!=undefined){
               this.headerImageURL = this.header_info.image;
             }else{
               this.headerImageURL = this.DefaultHeaderImage; //Default Header Image 
@@ -352,17 +358,18 @@ public terms;
 
           this.clinicName =(finalData[0].clinicName!="") ? finalData[0].clinicName : "Clinic Name";
           this.clinicAddress =(finalData[0].address!="") ? finalData[0].address : "Default Lane 2, High Street, New York .";
+          this.clinicAddress = '<i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;'+this.clinicAddress
           this.clinicContactNo =(finalData[0].phoneNo!="") ? finalData[0].phoneNo : "+123456789";
           this.clinicEmail =(finalData[0].clinicEmail!="") ? finalData[0].clinicEmail : "test@gmail.com";
-
-          if(finalData[0].logo!="undefined")
+          
+          if(finalData[0].logo!="undefined" && finalData[0].logo!="" && finalData[0].logo!=undefined && finalData[0].logo!="NULL")
           {
             this.clinicLogo =finalData[0].logo;  
           }else{
             this.clinicLogo =this.DefaultLogo;
           }
           
-
+      
           this.DoctorName = (finalData[0].Users.display_name!="") ? finalData[0].Users.display_name : "Doctor Name";
           this.DoctorPractice = (finalData[0].UserDetails.practice_desc!="") ? finalData[0].UserDetails.practice_desc : "Doctor Practice";
           this.DoctorDescription = (finalData[0].UserDetails.description!="") ? finalData[0].UserDetails.description : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum";

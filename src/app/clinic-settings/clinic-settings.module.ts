@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
-import { ClinicSettingsComponent } from './clinic-settings.component';
+import { ClinicSettingsComponent,DialogOverviewExampleDialogComponent } from './clinic-settings.component';
 
 import { ClinicSettingsService } from './clinic-settings.service';
 
@@ -38,11 +38,12 @@ import { NgxEditorModule } from 'ngx-editor';
     NgxEditorModule
   ],
   providers: [
-    ClinicSettingsService
+    ClinicSettingsService,DialogOverviewExampleDialogComponent
   ],
   declarations: [
-    ClinicSettingsComponent
-  ]
+    ClinicSettingsComponent,DialogOverviewExampleDialogComponent
+  ],
+  entryComponents: [DialogOverviewExampleDialogComponent]
 })
 
 

@@ -6,7 +6,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, FormGroupDirective,  NgForm,  Validators} from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { empty } from 'rxjs';
-
+import { HeaderService } from '../layouts/full/header/header.service';
+import { ToastrService } from 'ngx-toastr';
 declare var require: any;
 const data: any = [];
 
@@ -25,14 +26,28 @@ export class DefaultersComponent implements AfterViewInit {
   public selectedtreat;
 
   treat = new FormControl();
+  private checkPermission(role) { 
+  this.headerService.checkPermission(role).subscribe((res) => {
+       if(res.message == 'success'){
+       }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+     // this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
 
+  }
   ngAfterViewInit() {
+    this.checkPermission('defaulters');
         this.initiate_clinic();
         $('#title').html('Defaulters');
-        $('.header_filters').removeClass('hide_header');
-        $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
-        $('.header_filters').addClass('flex_direct_mar');
+
         $('.sa_heading_bar').show();  
   }
 
@@ -52,7 +67,7 @@ export class DefaultersComponent implements AfterViewInit {
   public treatmentdata;
   public memberplan_id;
 
-  constructor(notifierService: NotifierService,private defaultersService: DefaultersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private defaultersService: DefaultersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router,  private headerService: HeaderService) {
     this.notifier = notifierService;
     this.rows = data;
     this.temp = [...data];
@@ -64,9 +79,13 @@ export class DefaultersComponent implements AfterViewInit {
 
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
-  if(this.clinic_id != "undefined")
+  if(this.clinic_id != "undefined"){
+           $('.header_filters').removeClass('hide_header');
+        $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
       this.getDefaultersMembers();
-
+  }
     else{
         $('.header_filters').addClass('hide_header');
         $('.external_clinic').hide();
@@ -102,16 +121,17 @@ private getDefaultersMembers() {
   private sendDefaultersemail(rowIndex) {
     var defaulter_name =  this.rows[rowIndex]['patient_name'];
     var defaulter_email = this.rows[rowIndex]['patient_email'];
-    this.defaultersService.sendDefaultersemail(defaulter_name,defaulter_email).subscribe((res) => {
+    var defaulter_id = this.rows[rowIndex]['id'];
+    this.defaultersService.sendDefaultersemail(defaulter_id,defaulter_name,defaulter_email).subscribe((res) => {
           if(res.message == 'success'){
-            this.notifier.notify( 'success', 'Payment Reminder Send' ,'vertical');
+            this.toastr.success('Payment Reminder Send .');
           }
            else if(res.status == '401'){
               this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("token", '');
               this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
+              this.router.navigateByUrl('/login');
            }
       }, error => {
         this.warningMessage = "Please Provide Valid Inputs!";

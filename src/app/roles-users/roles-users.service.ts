@@ -129,7 +129,7 @@ export class RolesUsersService {
 
     formData.append(column, value);
 
-    formData.append('id', this._cookieService.get("userid"));
+    formData.append('id', user_id);
         formData.append('token', this._cookieService.get("token"));
         formData.append('token_id', this.token_id);
     

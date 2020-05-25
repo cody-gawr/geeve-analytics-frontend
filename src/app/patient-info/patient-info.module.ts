@@ -19,6 +19,9 @@ import { DatePipe } from '@angular/common';
 import { PatientInfoComponent,DialogOverviewExampleDialogComponent } from './patient-info.component';
 
 import { PatientInfoService } from './patient-info.service';
+
+import { DefaultersService } from '../defaulters/defaulters.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -38,6 +41,7 @@ import { PatientInfoService } from './patient-info.service';
   ],
   providers: [
     PatientInfoService,
+    DefaultersService,
     DatePipe
   ],
   entryComponents: [DialogOverviewExampleDialogComponent],

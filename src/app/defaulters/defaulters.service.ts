@@ -56,8 +56,9 @@ export class DefaultersService {
   
 
     // Update Clinic
-    sendDefaultersemail(defaulter_name, defaulter_email,token =this._cookieService.get("token")): Observable<any> {
+    sendDefaultersemail(defaulter_id,defaulter_name, defaulter_email,token =this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
+    formData.append('defaulter_id', defaulter_id); 
     formData.append('defaulter_name', defaulter_name);
     formData.append('defaulter_email', defaulter_email);
     formData.append('token', token);

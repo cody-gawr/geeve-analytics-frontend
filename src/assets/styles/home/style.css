@@ -197,7 +197,7 @@ margin-left: 12px;}
 .headimage_area{position:relative; float:right; border-radius:12px; }
 .headimage_area img{border-radius:12px; overflow:hidden; }
 
-.head_sec_text{padding-top:80px; max-width:620px;}
+.head_sec_text{padding-top:80px; max-width:620px; word-wrap: break-word;}
 .head_sec_text h1{font-size:45px; color:#424242; font-weight:600;}
 
 /* pricing-section area */
@@ -614,4 +614,6 @@ left:0; position:absolute; content:''; width:100%; height:100%; z-index:-9; opac
     white;
     z-index: 500;
  }
-
+.text-success {
+    color: #25AD90 !important;
+}

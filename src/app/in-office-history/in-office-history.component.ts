@@ -93,9 +93,6 @@ export class DialogOverviewExampleDialogComponent {
       this.durationcal(this.durationval);
 
   }
-
-
-
      updateDurationLabel(paymentFrequency)
     {
       console.log(paymentFrequency);

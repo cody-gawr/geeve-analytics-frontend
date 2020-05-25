@@ -2,156 +2,169 @@
 <!-- Card Grid-->
 <!-- ============================================================== -->
 <div fxLayout="row wrap">
-    <div fxFlex.gt-sm="100" fxFlex="100">
-        <mat-card>
-            <mat-card-content>
-                <mat-card-title> Payment Plans > {{plan_description | titlecase}}
-<!--     <button class="sa-pull-right mat-raised-button mat-gray" (click) = "goBack()">Back</button>
+ <div fxFlex.gt-sm="100" fxFlex="100">
+  <mat-card>
+  <mat-card-content>
+  <mat-card-title> Payment Plans > {{plan_description | titlecase}}
+   <!--     <button class="sa-pull-right mat-raised-button mat-gray" (click) = "goBack()">Back</button>
          <button class="sa-pull-right mat-raised-button danger" mat-menu-item (click) = "deletePatients()">Delete</button> -->
-         </mat-card-title>
+
+<button class="sa-pull-right mat-raised-button mat-gray"  (click) = "sendDefaultersemail(patient_name,patient_email,patient_id)" *ngIf="patient_status=='ACTIVE'"> Generate Update Card Link </button>
+     
+  </mat-card-title>
                <!-- ============================================================== -->
                 <!-- column -->
                 <!-- ============================================================== -->
-                <div fxLayout="row wrap" style="width:100%;">
+<div fxLayout="row wrap" style="width:100%;">
                     <!-- Card column -->
-                    <div fxFlex.gt-sm="100" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
-                            <mat-tab-group dynamicHeight>
+ <div fxFlex.gt-sm="100" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
+ <mat-tab-group dynamicHeight>
                         <!-- Plan Details tab -->
-                              <mat-tab label="Plan Details">
-                                   <div fxLayout="row wrap" class="row-tablePD" fxLayoutGap="2%" >
-                                    <div fxFlex.gt-sm="49" fxFlex class="sa_mattabs_design sa_matforms_design sa_table_evenodd">
-                                <form>
-                                  <h3 style="margin-top:0px;" class="sb_title">Plan Details</h3>
-                                  <table class="green_table">
+    <mat-tab label="Plan Details">
+         <div fxLayout="row wrap" class="row-tablePD" fxLayoutGap="2%" >
+          <div fxFlex.gt-sm="49" fxFlex class="sa_mattabs_design sa_matforms_design sa_table_evenodd">
+      <form>
+        <h3 style="margin-top:0px;" class="sb_title">Plan Details</h3>
+        <table class="green_table">
+              <tr>
+                  <th>Patient Name</th>
+                  <td>{{patient_name}}</td>
+                </tr>
+                <tr>
+                  <th>Patient Email</th>
+                  <td>{{patient_email}}</td>
+                </tr>
+                <tr>
+                  <th>Plan Description</th>
+                  <td>{{plan_description}}</td>
+                </tr>
+                <tr>
+                  <th>Plan Amount</th>
+                  <td><span *ngIf="isDecimal(total_amount)"> {{total_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(total_amount)">{{total_amount| currency: 'USD':true:'1.0'}}</span></td>
+                </tr>
+                 <tr>
+                  <th>Setup Fee</th>
+                  <td><span *ngIf="isDecimal(setup_fee)"> {{setup_fee  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(setup_fee)">{{setup_fee| currency: 'USD':true:'1.0'}}</span></td>
+                </tr>
+                 <tr>
+                  <th>Total Amount</th>
+                  <td><span *ngIf="isDecimal(total_amount + setup_fee)"> {{total_amount + setup_fee  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(total_amount + setup_fee)">{{total_amount + setup_fee| currency: 'USD':true:'1.0'}}</span></td>
+                </tr>
+                <tr>
+                  <th>Deposited Amount</th>
+                  <td><span *ngIf="isDecimal(deposite_amount)"> {{deposite_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(deposite_amount)">{{deposite_amount| currency: 'USD':true:'1.0'}}</span></td>
+                </tr>
+                <tr>
+                  <th>Outstanding Amount</th>
+                  <td><span *ngIf="isDecimal(balance_amount)"> {{balance_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(balance_amount)">{{balance_amount| currency: 'USD':true:'1.0'}}</span></td>
+                </tr>
+                <tr>
+                  <th>Payment Frequency</th>
+                  <td>{{payment_frequency|titlecase}}</td>
+                </tr>
+                   <tr>
+                  <th>Payment Duration</th>
+                  <td>{{duration}}</td>
+                </tr>
+                  <tr>
+                  <th>{{payment_frequency| titlecase}} Payment</th>
+                  <td><span *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</span></td>
+                </tr>
+                <tr>
+                  <th>Start Date</th>
+                  <td><span *ngIf="start_date">{{start_date | date:'dd-MM-y':'UTC +10'}}</span><span *ngIf="!start_date">Plan Not Started</span></td>
+                </tr>
+                <tr>
+                  <th>Next Payment Date</th>
+                  <td><span *ngIf="start_date">{{due_date | date:'dd-MM-y':'UTC +10'}}</span><span *ngIf="!start_date">Plan Not Started</span></td>
+                </tr>
+         </table>
+      </form>
+ </div>
+ </div>
+</mat-tab>
+<!-- Payment History tab -->
+
+  <mat-tab label="Payment History">
+
+     <table class="tabs_table responsive_table">
+                                    <thead>
                                         <tr>
-                                            <th>Plan Description</th>
-                                            <td>{{plan_description}}</td>
-                                          </tr>
-                                          <tr>
-                                            <th>Plan Amount</th>
-                                            <td><span *ngIf="isDecimal(total_amount)"> {{total_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(total_amount)">{{total_amount| currency: 'USD':true:'1.0'}}</span></td>
-                                          </tr>
-                                           <tr>
-                                            <th>Setup Fee</th>
-                                            <td><span *ngIf="isDecimal(setup_fee)"> {{setup_fee  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(setup_fee)">{{setup_fee| currency: 'USD':true:'1.0'}}</span></td>
-                                          </tr>
-                                           <tr>
-                                            <th>Total Amount</th>
-                                            <td><span *ngIf="isDecimal(total_amount + setup_fee)"> {{total_amount + setup_fee  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(total_amount + setup_fee)">{{total_amount + setup_fee| currency: 'USD':true:'1.0'}}</span></td>
-                                          </tr>
-                                          <tr>
-                                            <th>Deposited Amount</th>
-                                            <td><span *ngIf="isDecimal(deposite_amount)"> {{deposite_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(deposite_amount)">{{deposite_amount| currency: 'USD':true:'1.0'}}</span></td>
-                                          </tr>
-                                          <tr>
-                                            <th>Outstanding Payment</th>
-                                            <td><span *ngIf="isDecimal(balance_amount)"> {{balance_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(balance_amount)">{{balance_amount| currency: 'USD':true:'1.0'}}</span></td>
-                                          </tr>
-                                          <tr>
-                                            <th>Payment Frequency</th>
-                                            <td>{{payment_frequency|titlecase}}</td>
-                                          </tr>
-                                             <tr>
-                                            <th>Payment Duration</th>
-                                            <td>{{duration}}</td>
-                                          </tr>
-                                            <tr>
-                                            <th>{{payment_frequency| titlecase}} Payment</th>
-                                            <td><span *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</span></td>
-                                          </tr>
-                                          <tr>
-                                            <th>Start Date</th>
-                                            <td><span *ngIf="start_date">{{start_date | date:'dd-MM-y'}}</span><span *ngIf="!start_date">Plan Not Started</span></td>
-                                          </tr>
-                                          <tr>
-                                            <th>Next Payment Date</th>
-                                            <td><span *ngIf="start_date">{{due_date | date:'dd-MM-y'}}</span><span *ngIf="!start_date">Plan Not Started</span></td>
-                                          </tr>
-                                   </table>
-                                </form>
-                        </div>
-                        </div>
-                            </mat-tab>
-                    <!-- Payment History tab -->
+                                            <th>Customer ID</th>
+                                            <th>Subscriber ID</th>
+                                            <th>Invoice Date</th>
+                                            <th>Total Paid</th>
+                                            <th>Payment Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let data of payment">
+                                        <td><span class="res_table_label">Customer ID : </span> {{data.customer_id}}</td>
+                                        <td><span class="res_table_label">Subscriber ID : </span> {{data.subscriptionId}}</td>
+                                        <td><span class="res_table_label">Invoice Date : </span> {{data.created_at| date:'dd-MM-y':'UTC +10'}}</td>
+                                        <td><span class="res_table_label">Amount : </span><span *ngIf="isDecimal(data.total_paid)"> {{data.total_paid  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.total_paid)">{{data.total_paid| currency: 'USD':true:'1.0'}}</span></td>
+                                        <td><span class="res_table_label">Payment Status : </span> 
+                                        <mat-chip-list>
+                                          <mat-chip color="primary" selected *ngIf="data.paid">PAID</mat-chip>
+                                          <mat-chip color="warn" selected *ngIf="!data.paid">PENDING</mat-chip> 
+                                        </mat-chip-list>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="payment.length==0||payment.length==''"><td colspan="6">No Data to Display</td></tr>
+                                    </tbody>
+                                </table>
 
-                          <mat-tab label="Payment History">
-                           <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-                                  [rowHeight]="'auto'" [limit]="10" [rows]='payment'>
-                            <ngx-datatable-column prop="customer_id" name="customer_id">
-                               <ng-template let-column="column" ngx-datatable-header-template>
-                              <span>Customer ID</span>
-                            </ng-template>
-                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                                <span >
-                                  {{value}}
-                                </span>
-                              </ng-template>
-                            </ngx-datatable-column>
 
-                            <ngx-datatable-column prop="subscriptionId" name="subscriptionId">
-                              <ng-template let-column="column" ngx-datatable-header-template>
-                             <span>Subscriber ID</span>
-                           </ng-template>
-                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                               <span >
-                                 {{value}}
-                               </span>
-                                   </ng-template>
-                           </ngx-datatable-column>
-                             <ngx-datatable-column prop="created_at" name="created_at">
-                               <ng-template let-column="column" ngx-datatable-header-template>
-                              <span>Invoice Date</span>
-                            </ng-template>
-                              <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                                <span >
-                                  {{value | date: 'dd-MM-yyyy'}}
-                                </span>
-                              </ng-template>
-                            </ngx-datatable-column>
-                            <ngx-datatable-column prop="total_paid" name="total_paid">
-                              <ng-template let-column="column" ngx-datatable-header-template>
-                             <span>Total Paid</span>
-                           </ng-template>
-                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                               <span *ngIf="isDecimal(value)"> {{value  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(value)">{{value| currency: 'USD':true:'1.0'}}</span>
-                             </ng-template>
-                           </ngx-datatable-column>
-                            <ngx-datatable-column prop="paid" name="paid">
-                              <ng-template let-column="column" ngx-datatable-header-template>
-                             <span>Payment Status</span>
-                           </ng-template>
-                             <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                                <mat-chip-list>
-                                  <mat-chip color="primary" selected *ngIf="value">PAID</mat-chip>
-                                  <mat-chip color="warn" selected *ngIf="!value">PENDING</mat-chip> 
-                                </mat-chip-list>
-                             </ng-template>
-                           </ngx-datatable-column>
-                          </ngx-datatable>
-                                </mat-tab>
-                                     <mat-tab label="Contract Upload">                             
-                                  <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
-                                    <div class="bd_UpoadImage" fxFlex.gt-md="100" fxFlex="100">
-                                        <label>Upload Agreement</label><br>
-                                        <div class="upload-btn">
-                                            <span>Choose file</span>
-                                            <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)">
-                                            <input type='hidden'  placeholder="" id="imageURL" >
-                                        </div>         
-                                     </div>                               
-                                   <p>
-                                      <button mat-raised-button color="dc">Save</button>
-                                   </p>
-                                   </form>
-                                  <p *ngIf="imageURL; else empty">
-                                    Download Agreement
-                                    <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{imageURL}}">Download</a>
-                                </p>
-                                </mat-tab>
-                            </mat-tab-group>
+         
+</mat-tab>
+<mat-tab label="Contract Upload">                 
+  <div fxLayout="column"  class="sa_forms_design payment_full_info" fxLayoutGap="2%">
+         <div fxFlex.gt-sm="100%" fxFlex="100" class="payment_contract_responsive" >
+
+                     <div fxFlex.gt-sm="100%" fxFlex="50" class="payment_info_screen">
+
+                    <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
+                      <div class="bd_UpoadImage uploadsignedContract" fxFlex.gt-md="100" fxFlex="100">
+                          <label>Upload Agreement</label>
+                          <div class="upload-btn">
+                              <span>Choose file</span>
+                              <input class="contractFile" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)">
+                              <input type='hidden'  placeholder="" id="imageURL" >
+                          </div>         
                        </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
+
+                   <div class="preview" fxFlex.gt-sm="100%" fxFlex="25">
+                 <p *ngIf="previewSignedContract; else empty">
+                    <a mat-raised-button class="contractupload" color="dc" target="_blank" href="{{previewSignedContract}}">Preview Uploaded Contract</a>
+                    <span class="material-icons" (click)="deleteSignedDocImage()">delete_forever</span>
+                   </p>
+               </div> 
+
+                  <button mat-raised-button color="dc" class="sa-pull-right" [disabled]="imagepreviewURL=='' || imagepreviewURL==null">Save</button>
+                
+            </form>
+          </div>
+
+            <div fxFlex.gt-sm="100%" fxFlex="50" class="display_50">
+              <div fxFlex="25" class="download">
+              </div>
+
+                <div fxFlex="25" class="download">
+                 <p *ngIf="uploadedSignedContract; else empty">
+                    <a mat-raised-button class="contractupload" color="dc" target="_blank" href="{{uploadedSignedContract}}">Download Contract</a>
+                   </p>
+               </div>
+            
+
+             </div>
+               
+           </div>
+        </div>     
+      </mat-tab>
+     </mat-tab-group>
     </div>
+   </div>
+  </mat-card-content>
+ </mat-card>
+</div>
 </div>

@@ -14,6 +14,10 @@
         <mat-checkbox [checked]= "data.isFeatured" [(ngModel)]="data.isFeatured" class = "example-margin" style="margin-top:-4px!important;">
             Featured Plan
         </mat-checkbox>
+         <label>&nbsp;</label>
+        <mat-checkbox [checked]= "data.hidden" [(ngModel)]="data.hidden" class = "example-margin" style="margin-top:-4px!important;">
+           Hide Plan
+        </mat-checkbox>
     </div>
    </div>
 
@@ -50,8 +54,8 @@
 
         <div fxFlex.gt-md="36" fxFlex="100" class="sa-form-group">
             <label>Discount for family members %</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_discount" [formControl]="form.controls['preventative_discount']" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px;">
-            <small *ngIf="form.controls['preventative_discount'].hasError('required') && form.controls['preventative_discount'].touched" class="text-danger support-text">Discount for family members is Required.</small>
+            <input matInput tabindex="1" type="number" [(ngModel)]="data.discount" [formControl]="form.controls['discount']" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px;">
+            <small *ngIf="form.controls['discount'].hasError('required') && form.controls['discount'].touched" class="text-danger support-text">Discount for family members is Required.</small>
         </div>
     </div>
 
@@ -63,8 +67,8 @@
         </div>
         <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
             <label>Treatment Discount %</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.discount" [formControl]="form.controls['discount']" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px;">
-            <small *ngIf="form.controls['discount'].hasError('required') && form.controls['discount'].touched" class="text-danger support-text">Treatment Discount is Required.</small>
+            <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_discount" [formControl]="form.controls['preventative_discount']" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px;">
+            <small *ngIf="form.controls['preventative_discount'].hasError('required') && form.controls['preventative_discount'].touched" class="text-danger support-text">Treatment Discount is Required.</small>
         </div>
     </div>
 

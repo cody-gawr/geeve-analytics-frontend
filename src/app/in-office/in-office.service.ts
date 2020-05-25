@@ -50,8 +50,8 @@ export class InOfficeService {
     formData.append('user_id', this.user_id);
     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);
-     formData.append('token_id', this.token_id);
-     formData.append('inoffice_payment_id', plan_id);
+    formData.append('token_id', this.token_id);
+    formData.append('inoffice_payment_id', plan_id);
 
         return this.http.post(this.apiUrl +"/InofficePayments/deleteInofficeMembers/", formData)
         .pipe(map((response: Response) => {
@@ -84,10 +84,10 @@ export class InOfficeService {
         formData.append('token', token);
         formData.append('token_id', this.token_id);
 
-            return this.http.post(this.apiUrl +"/InofficePayments/addPaymentPlans/", formData)
+         return this.http.post(this.apiUrl +"/InofficePayments/addPaymentPlans/", formData)
             .pipe(map((response: Response) => {
                 // console.log(response);
-                            return response;
+                 return response;
             })
             );
         }
@@ -150,7 +150,34 @@ export class InOfficeService {
                 })
         );
     }
-   
+
+   contractUpload( formData): Observable<any> {  
+    formData.append('user_id', this._cookieService.get("userid"));
+    formData.append('token', this._cookieService.get("token"));
+    formData.append('token_id', this.token_id);
+    return this.http.post(this.apiUrl +"/InofficePayments/signedcontractUpload/", formData)
+     .pipe(map((response: Response) => {
+         return response;
+      })
+     ); 
+
+    }
+
+  updateContract(inoffice_planId,signedContract,token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        formData.append('inoffice_planId',inoffice_planId);
+        formData.append('signedContract', signedContract);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
+       
+        return this.http.post(this.apiUrl +"/InofficePayments/savesignedcontract/", formData)
+         .pipe(map((response: Response) => {
+             return response;
+          })
+        );
+    }
+
    
     
 }

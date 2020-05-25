@@ -359,14 +359,12 @@ export class MenuItems {
     icon: 'fas fa-users',
     role:['1']
   },
-
   {
-    state: 'patients-detail',
+    state: 'members',
     name: 'Memberships', //Member Plans
     type: 'link-noparam',
     icon: 'fas fa-receipt',
     role:this.memberships
-
   },
   {
     state: 'payment-plan',
@@ -404,6 +402,7 @@ export class MenuItems {
     role:this.profilesettings
   }
 ];
+
   getRoles() {      
    this.rolesUsersService.getRoles().subscribe((res) => {
        if(res.message == 'success'){ 
@@ -427,6 +426,5 @@ export class MenuItems {
        }
     }, error => {
     });
-
   }
 }

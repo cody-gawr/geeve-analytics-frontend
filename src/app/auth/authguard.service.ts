@@ -15,11 +15,14 @@
   next: ActivatedRouteSnapshot,
   state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | 
   boolean {
-        if (this._cookieService.get("token")) {
+    if(this._cookieService.get("login_status")=='5') {
+          this.router.navigateByUrl('/profile-settings/1');
+       }
+      else if (this._cookieService.get("token")) {
             return true;
-       } else {
+       } 
+       else {
            this.router.navigateByUrl('/login');
-          //this.snackBar.open('Please Login to Continue');
        }
     }
 }

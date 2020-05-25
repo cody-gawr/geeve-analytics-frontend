@@ -37,27 +37,46 @@
                                   <mat-form-field style="width: 100%">
                                     <input matInput placeholder="" type="email" [formControl]="form.controls['patient_email']"  [(ngModel)]="patient_email">
                                   </mat-form-field>
-                                  <small *ngIf="form.controls['patient_email'].errors?.email && form.controls['patient_email'].touched" class="text-danger support-text">You must include an email address.</small>
+                                  <small *ngIf="(form.controls['patient_email'].errors?.email && form.controls['patient_email'].touched) || (form.controls['patient_email'].hasError('required') && form.controls['patient_email'].touched) " class="text-danger support-text">You must include an email address.</small>
                              </div>
                            </div>
                              <div fxLayout="row wrap" fxLayoutGap="2%">
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                                <mat-label>Date of Birth</mat-label>
+							 <mat-label>Date of birth</mat-label>
+							 <div class="input_field_patient">
+                               <select fxFlex.gt-sm="32%" class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_date" [formControl]="form.controls['dob_date']" (change) ="checkDob('date')">
+                                    <option value="">Day</option>
+                                    <option *ngFor="let date of dates" value="{{date}}">{{date}}</option>
+                                 </select>
+                                <select fxFlex.gt-sm="32%" class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_month" [formControl]="form.controls['dob_month']" (change) ="checkDob('month')">
+                                    <option value="">Month</option>
+                                    <option *ngFor="let month of months" value="{{month.key}}">{{month.value}}</option>
+                                 </select> 
+                                 <select fxFlex.gt-sm="32%" class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_year" [formControl]="form.controls['dob_year']" (change) ="checkDob('year')">
+                                    <option value="">Year</option>
+                                    <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
+                                 </select> 
+								  </div>
+                  <small *ngIf="(form.controls['dob_date'].hasError('required') && form.controls['dob_date'].touched) || (form.controls['dob_month'].hasError('required') && form.controls['dob_month'].touched) || (form.controls['dob_year'].hasError('required') && form.controls['dob_year'].touched) " class="text-danger support-text">Please select complete dob from the list . </small>
+                                <!--mat-label>Date of Birth</mat-label>
                                   <mat-form-field style="width: 100%">
-                                    <input matInput placeholder="" type="date" [formControl]="form.controls['patient_dob']"  max="{{maxDate| date: 'yyyy-MM-dd'}}" min="{{minDate| date: 'yyyy-MM-dd'}}">
+                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_dob']"  max="{{maxDate| date: 'yyyy-MM-dd'}}" min="{{minDate| date: 'yyyy-MM-dd'}}" (keyup) ="checkDob(data)" autocomplete="off" placeholder="yyyy-mm-dd">
                                   </mat-form-field>
-                                  <small *ngIf="form.controls['patient_dob'].hasError('required') && form.controls['patient_dob'].touched" class="text-danger support-text">You must include Date of Birth.</small>
-                             </div>
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-                                <mat-label>Contact No.</mat-label>
-                                  <mat-form-field style="width: 100%">
-                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="patient_phone_no">
-                                  </mat-form-field>
+                                  <small *ngIf="invalid_dob" class="text-danger support-text">Patient Dob is Invalid.</small>
+                                  <small *ngIf="form.controls['patient_dob'].hasError('required') && form.controls['patient_dob'].touched" class="text-danger support-text">You must include Date of Birth.</small-->
+              </div>
+              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                <mat-label>Contact No.</mat-label>
+                            <mat-form-field style="width: 100%">
+                             <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="patient_phone_no">
+                            </mat-form-field>
                           <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched" class="text-danger support-text">You must include Phone No.</small>
 
-                          <small *ngIf="form.controls['patient_phone_no'].hasError('minlength')" class="text-danger support-text">You must include valid Phone No.</small>
-
                           <small *ngIf="form.controls['patient_phone_no'].hasError('pattern')" class="text-danger support-text">You must include valid Phone No.</small>
+
+                          <small *ngIf="form.controls['patient_phone_no'].hasError('minlength') && !form.controls['patient_phone_no'].hasError('pattern')" class="text-danger support-text">Phone number should be minimum 8 digits in length.</small>
+
+                          
                              </div>
                            </div>
                            <div fxLayout="row wrap">
@@ -83,7 +102,7 @@
                           <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
                             <h3 class="m-0">Terms & Conditions</h3>
                           </div>
-                          <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group" id="termsTextqq" [innerHTML] = "termsText">
+                          <div class="sa-form-group terms_condition_area" id="termsTextqq" [innerHTML] = "termsText">
                              {{termsText}}
                            </div>
                           </div>
@@ -97,7 +116,7 @@
                               <div fxFlex.gt-md="30" fxFlex="100">
                                   <div class="selected_plan_area">
                                       <div class="selected_plan_image">
-                                          <img src="assets/images/plan_selected.svg">
+                                          <img src="assets/images/plan_selected.svg"> 
                                       </div>
                                      <div class="selected_plan_detail">
                                          <h4>Selected Plan</h4>
