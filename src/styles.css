@@ -3874,3 +3874,9 @@ span.update_card {
     float: left;
     margin-bottom: 10px;
 }
+.slide.hidden {
+    display: none !important;
+}
+.hide-row{
+    display: none;
+}

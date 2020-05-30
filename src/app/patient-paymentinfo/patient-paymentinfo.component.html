@@ -98,7 +98,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <tr *ngFor="let data of payment">
+                                    <tr *ngFor="let data of payment" [ngClass]="{'hide-row': data.total_paid<=0}" >
                                         <td><span class="res_table_label">Customer ID : </span> {{data.customer_id}}</td>
                                         <td><span class="res_table_label">Subscriber ID : </span> {{data.subscriptionId}}</td>
                                         <td><span class="res_table_label">Invoice Date : </span> {{data.created_at| date:'dd-MM-y':'UTC +10'}}</td>

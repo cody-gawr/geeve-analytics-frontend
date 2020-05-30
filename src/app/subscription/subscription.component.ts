@@ -92,16 +92,19 @@ export class SubscriptionComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-    this.clinic_id = this.route.snapshot.paramMap.get("clinic_id");
-    this.user_id = this.route.snapshot.paramMap.get("user_id");
+    this.clinic_id = atob(this.route.snapshot.paramMap.get("clinic_id"));
+    this.user_id = atob(this.route.snapshot.paramMap.get("user_id"));
+    //alert(this.clinic_id+"===="+this.user_id);
     var data =this.user_id.split("&");
     this.user_id = data[0];
+
     if(data[1]) {
     this.email = data[1];
     }
      if(data[2]) {
     this.name = data[2];
     }
+
     this.getClinicSettings();
     });
 
@@ -211,10 +214,13 @@ openDialog(id,amount) {
     alert("This is the sample plan only for viewing . We will be back with our live plans soon. ");
     return false;
     }
-    if(this.email&&this.name) 
-    this.router.navigate(['/purchase-plan/'+id+'&'+this.email+'&'+this.name]);     
-      else 
-    this.router.navigate(['/purchase-plan/'+id]);
+    if(this.email&&this.name) {
+      let urlStr = id+'&'+this.email+'&'+this.name;
+      this.router.navigate(['/purchase-plan/'+btoa(urlStr)]);       
+    }else{
+      this.router.navigate(['/purchase-plan/'+btoa(id)]);  
+    } 
+    
 
     // this.dialog.open(RegisterComponent, {
     //   width: '250px',
@@ -270,13 +276,14 @@ openDialog(id,amount) {
 
        if(res.message == 'success'){
         res.data.forEach((res,key) => {
-          var temp= {planName:'',planLength:'',totalAmount:'',treatments:'',description:'',isFeatured:'',preventative_discount:'',treatment_inclusions:'',id:'',discount:'',preventative_frequency:'',preventative_plan:'',treatment_exclusions:''};
+          var temp= {planName:'',planLength:'',totalAmount:'',treatments:'',description:'',isFeatured:'',preventative_discount:'',treatment_inclusions:'',id:'',discount:'',preventative_frequency:'',preventative_plan:'',treatment_exclusions:'',hidden:''};
           temp.id =res.id;          
           temp.planName =res.planName;
           temp.planLength =res.planLength;  
           temp.totalAmount =res.totalAmount; 
           temp.description =res.description;
           temp.isFeatured = res.isFeatured; 
+          temp.hidden = res.hidden; 
           temp.preventative_discount =res.preventative_discount; 
           temp.discount =res.discount; 
           temp.preventative_frequency = res.preventative_frequency; 
@@ -312,6 +319,7 @@ openDialog(id,amount) {
 public terms;
   // Get Clinic Settings
   getClinicSettings() {
+   
      this.subscriptionService.getClinicSettings(this.clinic_id,this.user_id).subscribe((res) => {
              if(res.message == 'success'){
           const finalData = res.data;
@@ -371,7 +379,7 @@ public terms;
           
       
           this.DoctorName = (finalData[0].Users.display_name!="") ? finalData[0].Users.display_name : "Doctor Name";
-          this.DoctorPractice = (finalData[0].UserDetails.practice_desc!="") ? finalData[0].UserDetails.practice_desc : "Doctor Practice";
+          this.DoctorPractice = "Doctor Practice";
           this.DoctorDescription = (finalData[0].UserDetails.description!="") ? finalData[0].UserDetails.description : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum";
           this.ClinicAbout = (finalData[0].description!=null) ? finalData[0].description :"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum";
           this.practiceOwnerEmail = (finalData[0].Users.email!="") ? finalData[0].Users.email : "admin@jeevemembers.com" ; // For display only

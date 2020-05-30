@@ -238,9 +238,10 @@ public dob_error='';
             }
             });
      this.route.params.subscribe(params => {
-      this.id = this.route.snapshot.paramMap.get("id");
-    this.checkInvoiceStatus();      
-    });
+      this.id = atob(this.route.snapshot.paramMap.get("id"));
+      this.checkInvoiceStatus();      
+     });
+
     this.getInofficePlanDetails();
   }
 

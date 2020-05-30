@@ -133,6 +133,8 @@ public years:any = [];
 public token_id;
 public token;
 public downloadcontractURL:any;
+public dob_larger_error="";
+
   private apiUrl = environment.apiUrl;
   constructor(private toastr: ToastrService,private _cookieService: CookieService,notifierService: NotifierService,private fb: FormBuilder,private datePipe: DatePipe,
     private inofficeService: InOfficeService,
@@ -197,16 +199,20 @@ isDecimal(value) {
   }
 }
 public invalid_dob = false;
+public currentDate = new Date();
+
 checkDob(data,control) {
+
 data.patient_dob = data.dob_year+"-"+data.dob_month+"-"+data.dob_date;
 var input = data.patient_dob;
 var pattern =/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
-  if(!pattern.test(input) || input.slice(input.length - 4)<'1990') {
-  this.invalid_dob = true;
-  }
-  else {
-  this.invalid_dob=false;  
-  }
+if(!pattern.test(input) || input.slice(input.length - 4)<'1990') {
+ this.invalid_dob = true;
+}
+else {
+ this.invalid_dob=false;  
+}
+
  
 if(control=='month' || control=='year'){
    this.max_days = this.getDaysInMonth(data.dob_year,data.dob_month);
@@ -218,7 +224,43 @@ if(control=='month' || control=='year'){
    
  }
 
+if(data.dob_year!="" && data.dob_month!="" && data.dob_date!=""){
+
+   this.compareDateWithToday(data.dob_year,data.dob_month,data.dob_date);
 }
+
+
+}
+
+compareDateWithToday(year,month,date){
+ let mi = month.split('');
+  if(mi[0]==='0'){
+    month = Number(mi[1]) - 1;  month = "0"+month;
+  }else{
+    month = month -1;;
+  }
+  let selectedDate = new Date(year, month, date);  let Today = new Date();
+
+   if(selectedDate > Today){
+         //select current date and month with message
+      let currentMonth :any = Today.getMonth().toString();
+      if(currentMonth.length==1){
+        currentMonth =Today.getMonth() + 1;
+        currentMonth = "0"+currentMonth;
+      }
+     this.data.dob_date = Today.getDate();
+     this.data.dob_month = currentMonth;
+     this.data.dob_year = Today.getFullYear();
+
+     //show message
+     this.dob_larger_error ="Dob cannot be greater than today's date .";
+    
+   }else{
+    this.dob_larger_error ="";
+   }
+
+}
+
 updateDates(date){
   let newDate =date < 10 ? "0"+date : date ;
   return newDate.toString();

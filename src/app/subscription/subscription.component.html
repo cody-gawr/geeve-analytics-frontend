@@ -63,8 +63,8 @@
                     <h2 class="section_title">Our <b>MEMBERSHIPS</b></h2>
                     <div class="owl-carousel price_slide">
                         <ngx-slick class="carousel" #slickModal="slick-modal" [config]="planSliderConfig" responsive="breakpoints">
-                            <div ngxSlickItem *ngFor="let plan of plans;i as index" class="slide"  [ngClass]="{'featuredPlan': plan.isFeatured==='true'}">
-                                <div class="pricing_area sa-ste">
+                            <div ngxSlickItem *ngFor="let plan of plans;i as index" class="slide"  [ngClass]="{'featuredPlan': plan.isFeatured==='true', 'hidden': plan.hidden==='true'}"> 
+                                <div class="pricing_area sa-ste" >
                                     <div class="ribbon-banner-main"><span class=ribbon-banner>MOST POPULAR</span></div>
                                     <h4>{{plan.planName}}</h4>
                                     <span class="price_spacer"></span>
@@ -77,10 +77,9 @@
                                             <span *ngIf="plan.preventative_discount"><i class="fas fa-check" ></i>{{plan.preventative_discount}}% OFF SELECTED TREATMENTS *</span>
                                             <span *ngIf="plan.discount"><i class="fas fa-check" ></i>{{plan.discount}}% OFF FOR ADDITIONAL FAMILY MEMBERS</span>
                                         </div>          
-                                    </div>
-                         
+                                    </div>                         
                                     <div class="plan_abso_btns">
-                                        <a class="btn btn-theme no-radius pricing_btn" (click)="openDialog(plan.id,plan.totalAmount)" [ngClass]="{'disabled': plan.sampleplan || stripeConnected==false}" >Buy Now</a>
+                                        <a class="btn btn-theme no-radius pricing_btn" (click)="openDialog(plan.id,plan.totalAmount)" [ngClass]="{'disabled': plan.sampleplan || stripeConnected==false}" >Buy Now </a>
                                           <span (click) ="loadDesc(plan.id, plan.preventative_plan, plan.treatment_inclusions, plan.treatment_exclusions, plan.totalAmount,plan.planName,plan.planLength)" class="learn_more {{plan.id}}">Learn More</span>
                                     </div>
                                 </div>

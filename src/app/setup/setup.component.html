@@ -70,12 +70,11 @@
     </div>
       <div fxFlex.gt-sm="16" fxFlex="100" fxLayoutGap="0%" class="right_upload_btn">
        <input class="form-control b-b" type="file" name= "file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
-
-       <div class="upload_logo" *ngIf="imageURL == 'undefined'">
+       <div class="upload_logo" *ngIf="imageURL == 'undefined' || !imageURL">
         <img src="assets/img/upload_icon.png" alt=" " />
         <p>Upload Logo</p>
        </div>
-       <div class="upload_logo" *ngIf="imageURL != 'undefined'">
+       <div class="upload_logo" *ngIf="imageURL != 'undefined' && imageURL">
         <img [src]="imageURL" alt=" " />
         <p>Upload Logo</p>
        </div>

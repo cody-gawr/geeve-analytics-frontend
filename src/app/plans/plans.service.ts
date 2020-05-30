@@ -71,7 +71,7 @@ export class PlansService {
         );
     }
 
-    updateUser(memberid,clinic_id,planName,planOrder,planLength,totalAmount,discount,description,isFeatured,preventative_plan,preventative_frequency,treatment_inclusions,treatment_exclusions,preventative_discount,token = this._cookieService.get("token")): Observable<any> {
+    updateUser(memberid,clinic_id,planName,planOrder,planLength,totalAmount,discount,description,isFeatured,hidden,preventative_plan,preventative_frequency,treatment_inclusions,treatment_exclusions,preventative_discount,token = this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
     
         formData.append('id', memberid);
@@ -83,6 +83,8 @@ export class PlansService {
         formData.append('discount', discount);
         formData.append('description', description);
         formData.append('isFeatured', isFeatured);
+        formData.append('hidden', hidden);
+        
         formData.append('preventative_plan',preventative_plan);
         formData.append('preventative_frequency', preventative_frequency);
         formData.append('treatment_inclusions',treatment_inclusions );

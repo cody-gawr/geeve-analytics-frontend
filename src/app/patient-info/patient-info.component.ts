@@ -107,6 +107,8 @@ public preventative_frequency;
 public preventative_count;
 public patientLog;
 public user_type = this._cookieService.get("user_type");
+public max_days =31;
+public dob_larger_error="";
   constructor(private toastr: ToastrService,notifierService: NotifierService,private defaultersService: DefaultersService,private fb: FormBuilder,public dialog: MatDialog,  private patientInfoService: PatientInfoService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,breakpointObserver: BreakpointObserver,private datePipe: DatePipe) {
     this.notifier = notifierService;
     var start_year =new Date().getFullYear();
@@ -230,7 +232,7 @@ isDecimal(value) {
   } 
 
 public invalid_dob = false;
-checkDob() {
+checkDob(control) {
 this.patient_dob = this.dob_year+"-"+this.dob_month+"-"+this.dob_date;
 var input = this.patient_dob;
 var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
@@ -239,7 +241,62 @@ var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
   }else {
   this.invalid_dob=false;  
   }
+
+  if(control=='month' || control=='year'){
+   this.max_days = this.getDaysInMonth(this.dob_year,this.dob_month);
+   let a = Array(this.max_days).fill(0).map((i,idx) => idx +1);
+   this.dates =a.map(this.updateDates);
+   if(this.dob_month=="02" && this.dob_date > a.length){
+     this.form.controls['dob_date'].setValue(a.length); 
+   }
+   
+ }
+
+ if(this.dob_year!="" && this.dob_month!="" && this.dob_date!=""){
+    this.compareDateWithToday(this.dob_year,this.dob_month,this.dob_date);
+ }
 }
+
+updateDates(date){
+  let newDate =date < 10 ? "0"+date : date ;
+  return newDate.toString();
+
+}
+getDaysInMonth(year: number, month: number) {
+  return 32 - new Date(year, month - 1, 32).getDate();
+}
+
+
+compareDateWithToday(year,month,date){
+ let mi = month.split('');
+  if(mi[0]==='0'){
+    month = Number(mi[1]) - 1;  month = "0"+month;
+  }else{
+    month = month -1;;
+  }
+  let selectedDate = new Date(year, month, date);  let Today = new Date();
+
+   if(selectedDate > Today){
+         //select current date and month with message
+      let currentMonth :any = Today.getMonth().toString();
+      if(currentMonth.length==1){
+        currentMonth =Today.getMonth() + 1;
+        currentMonth = "0"+currentMonth;
+      }
+     this.dob_date = Today.getDate();
+     this.dob_month = currentMonth;
+     this.dob_year = Today.getFullYear();
+
+     //show message
+     this.dob_larger_error ="Dob cannot be greater than today's date .";
+    
+   }else{
+     this.dob_larger_error = "";
+   }
+
+}
+
+
 
  private cancelSubscription() {
      Swal.fire({
@@ -268,6 +325,7 @@ var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
   } 
   public patient_email;
   getSubPatients() {
+
     this.patientInfoService.getSubPatients(this.id).subscribe((res) => {  
        if(res.message == 'success'){
         var patientArray ={};
@@ -294,10 +352,11 @@ var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
         this.patient_address ='';
         this.patient_dob = this.datePipe.transform(res.data[0]['patient_dob'],'yyyy-MM-dd');
         var dobsplit = this.patient_dob.split("-");
+
         this.dob_date=dobsplit[2].replace('"','');
         this.dob_month=dobsplit[1];
         this.dob_year=dobsplit[0].replace('"','');
-
+        this.checkDob('month');
         this.patient_age=res.data[0]['patient_age'];
         this.patient_gender=res.data[0]['patient_gender'];
         this.patient_phone_no=res.data[0]['patient_phone_no'];

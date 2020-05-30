@@ -170,13 +170,14 @@ export class UpdatePlanDialogComponent {
                   }
                   else{
               if(data.planName != undefined && this.valplans != '' && data.planLength != undefined && data.totalAmount != undefined && data.discount != undefined && data.description != undefined && data.planOrder !=undefined){
+                console.log(data);
                       this.dialogUpdateRef.close(data);                    
                     }
                   }
         }, error => {
-             $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
-          return false;
+              $('.ajax-loader').hide(); 
+              this.toastr.error('Some Error Occured, Please try Again.');
+              return false;
         }    
         ); 
       
@@ -357,7 +358,7 @@ export class PlansComponent implements AfterViewInit {
   }
 
   private getPlans() {
-
+if(this.clinic_id != undefined) {
     this.rows=[];
     this.plansService.getPlans(this.clinic_id).subscribe((res) => {
         if(res.message == 'success'){
@@ -390,6 +391,7 @@ export class PlansComponent implements AfterViewInit {
         this.toastr.error('Some Error Occured, Please try Again.');
     });
   }
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
@@ -419,15 +421,25 @@ export class PlansComponent implements AfterViewInit {
 
     const dialogUpdateRef = this.dialog.open(UpdatePlanDialogComponent, {
      width: '250px',
-     data: {planName: this.rows[rowIndex]['planName'],planOrder: this.rows[rowIndex]['planOrder'], planLength: this.rows[rowIndex]['planLength'], totalAmount: this.rows[rowIndex]['totalAmount'] ,discount: this.rows[rowIndex]['discount'] , description: this.rows[rowIndex]['description'],isFeatured:(this.rows[rowIndex]['isFeatured']=='true') ? true :false ,treatmentdata:this.treatmentdata,treat:this.treat,memberplan_id:this.memberplan_id,preventative_plan_selected:JSON.parse(this.rows[rowIndex]['preventative_plan']),preventative_frequency:this.rows[rowIndex]['preventative_frequency'] , treatment_inclusions_selected:JSON.parse(this.rows[rowIndex]['treatment_inclusions']),treatment_exclusions_selected:JSON.parse(this.rows[rowIndex]['treatment_exclusions']),preventative_discount:this.rows[rowIndex]['preventative_discount'], treatment_inclusions:this.treatment_inclusions,treatment_exclusions:this.treatment_exclusions,dropdownSettings:this.dropdownSettings,preventative_plan:this.preventative_plan}
+     data: {planName: this.rows[rowIndex]['planName'],planOrder: this.rows[rowIndex]['planOrder'], planLength: this.rows[rowIndex]['planLength'], totalAmount: this.rows[rowIndex]['totalAmount'] ,discount: this.rows[rowIndex]['discount'] , description: this.rows[rowIndex]['description'],isFeatured:(this.rows[rowIndex]['isFeatured']=='true') ? true :false,hidden:(this.rows[rowIndex]['hidden']=='true') ? true :false ,treatmentdata:this.treatmentdata,treat:this.treat,memberplan_id:this.memberplan_id,preventative_plan_selected:JSON.parse(this.rows[rowIndex]['preventative_plan']),preventative_frequency:this.rows[rowIndex]['preventative_frequency'] , treatment_inclusions_selected:JSON.parse(this.rows[rowIndex]['treatment_inclusions']),treatment_exclusions_selected:JSON.parse(this.rows[rowIndex]['treatment_exclusions']),preventative_discount:this.rows[rowIndex]['preventative_discount'], treatment_inclusions:this.treatment_inclusions,treatment_exclusions:this.treatment_exclusions,dropdownSettings:this.dropdownSettings,preventative_plan:this.preventative_plan}
     });  
 
   dialogUpdateRef.afterClosed().subscribe(result => {
    if(result) {
-    this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount).subscribe((res) => {
+    if((this.rows[rowIndex]['treatment_inclusions'] != JSON.stringify(result.treatment_inclusions_selected))  || (this.rows[rowIndex]['treatment_exclusions'] != JSON.stringify(result.treatment_exclusions_selected)) || (this.rows[rowIndex]['preventative_discount'] != result.preventative_discount)){
+          Swal.fire({
+              text: 'Plan not changed.'
+            })
+    }
+    else if((this.rows[rowIndex]['totalAmount'] != result.totalAmount ) || (this.rows[rowIndex]['discount'] != result.discount)){
+  Swal.fire({
+              text: 'Plan changed.'
+            })
+    }
+    this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,result.hidden,JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount).subscribe((res) => {
          if(res.message == 'success'){
             this.getPlans()
-            this.toastr.success('Plan Updated .');
+            this.toastr.success('Plan Updated.');
 
              }
         }, error => {
@@ -435,7 +447,7 @@ export class PlansComponent implements AfterViewInit {
         this.toastr.error('Some Error Occured, Please try Again.');
         }); 
         }         
-        });
+    });
   }
 
   private getTreatments() {
@@ -445,11 +457,11 @@ export class PlansComponent implements AfterViewInit {
            this.treat;
          }
           else if(res.status == '401'){
-            this._cookieService.put("username",'');
+              this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("token", '');
               this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
+              this.router.navigateByUrl('/login');
            }
       }, error => {
            $('.ajax-loader').hide(); 
@@ -475,6 +487,11 @@ export class PlansComponent implements AfterViewInit {
                    //this.notifier.notify( 'success', 'Plan Removed' ,'vertical');
                    this.toastr.success('Plan Removed .');
                    this.getPlans();
+                 }
+                 else if (res.message=='patient_exist'){
+                    Swal.fire({
+              text: 'There are active Members associated with this plan. Please use hide plan option.'
+            })
                  }
               }, error => {
                    $('.ajax-loader').hide(); 
@@ -511,3 +528,5 @@ export class PlansComponent implements AfterViewInit {
   }
 
 }
+
+6

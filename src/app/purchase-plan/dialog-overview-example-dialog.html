@@ -27,9 +27,7 @@
      </select> 
 </div>
 <small *ngIf="(form.controls['dob_date'].hasError('required') && form.controls['dob_date'].touched) || (form.controls['dob_month'].hasError('required') && form.controls['dob_month'].touched) || (form.controls['dob_year'].hasError('required') && form.controls['dob_year'].touched)" class="text-danger support-text">Please select complete Date of Birth from the list . </small>
-<!--input  tabindex="1" type="text" [(ngModel)]="data.subPatientDob" placeholder="" class="form-control-dialog"  [formControl]="form.controls['subPatientDob']" min="{{minDate| date: 'yyyy-MM-dd'}}" max="{{maxDate| date: 'yyyy-MM-dd'}}" (keyup) ="checkDob(data)" placeholder="yyyy-mm-dd">
-<small *ngIf="invalid_dob" class="text-danger support-text">Patient Dob is Invalid.</small>
-<small *ngIf="form.controls['subPatientDob'].hasError('required') && form.controls['subPatientDob'].touched" class="text-danger support-text">Patient DOB is Required.</small-->
+<small *ngIf ="dob_larger_pop_error!=''" class="text-danger support-text">{{dob_larger_pop_error}}</small>
 </div>
 </div>
 <div fxLayout="row wrap" fxLayoutGap="2%">
@@ -45,7 +43,7 @@
                  <small *ngIf="form.controls['subPatientGender'].hasError('required') && form.controls['subPatientGender'].touched" class="text-danger support-text">Gender Is Required.</small>
       </mat-radio-group>
 	   <div mat-dialog-actions class="sa-pull-right ok_cancel_btn " style="text-align: right;">
-        <button mat-button (click)="save(data)" tabindex="0" class="mat-raised-button mat-dc" [disabled]="!form.valid">OK</button>
+        <button mat-button (click)="save(data)" tabindex="0" class="mat-raised-button mat-dc" [disabled]="(!form.valid || dob_larger_pop_error != '')">OK</button>
           <button mat-button (click)="onNoClick()" tabindex="0" class="mat-raised-button mat-gray">Cancel</button>
   </div>
   </div> 

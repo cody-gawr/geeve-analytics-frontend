@@ -58,12 +58,7 @@
                                  </select> 
 								  </div>
                   <small *ngIf="(form.controls['dob_date'].hasError('required') && form.controls['dob_date'].touched) || (form.controls['dob_month'].hasError('required') && form.controls['dob_month'].touched) || (form.controls['dob_year'].hasError('required') && form.controls['dob_year'].touched) " class="text-danger support-text">Please select complete dob from the list . </small>
-                                <!--mat-label>Date of Birth</mat-label>
-                                  <mat-form-field style="width: 100%">
-                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_dob']"  max="{{maxDate| date: 'yyyy-MM-dd'}}" min="{{minDate| date: 'yyyy-MM-dd'}}" (keyup) ="checkDob(data)" autocomplete="off" placeholder="yyyy-mm-dd">
-                                  </mat-form-field>
-                                  <small *ngIf="invalid_dob" class="text-danger support-text">Patient Dob is Invalid.</small>
-                                  <small *ngIf="form.controls['patient_dob'].hasError('required') && form.controls['patient_dob'].touched" class="text-danger support-text">You must include Date of Birth.</small-->
+           <small *ngIf ="dob_larger_error!=''" class="text-danger support-text">{{dob_larger_error}}</small>
               </div>
               <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                 <mat-label>Contact No.</mat-label>
@@ -93,7 +88,7 @@
                                 <!-- col full-->
 
                                 <div mat-dialog-actions class="sa-pull-right">
-                                <button class="sa-pull-right mat-raised-button mat-green" type="submit" [disabled]="!form.valid">Next</button>
+                                <button class="sa-pull-right mat-raised-button mat-green" type="submit" [disabled]="(!form.valid || dob_larger_error)">Next</button>
                                 </div>  
                             </form>
                           </div>

@@ -41,6 +41,7 @@ public months =[
 ];
 public max_days =31;
 public years:any = [];
+public dob_larger_pop_error="";
   constructor(private fb: FormBuilder,private PurchasePlanService: PurchasePlanService,
         public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -104,7 +105,49 @@ var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
    
  }
 
+ if(data.dob_year!="" && data.dob_month!="" && data.dob_date!=""){
+
+   this.compareDateWithToday(data.dob_year,data.dob_month,data.dob_date);
 }
+
+}
+
+compareDateWithToday(year,month,date){
+ let mi = month.split('');
+  if(mi[0]==='0'){
+    month = Number(mi[1]) - 1;  month = "0"+month;
+  }else{
+    month = month -1;;
+  }
+  let selectedDate = new Date(year, month, date);  let Today = new Date();
+
+   if(selectedDate > Today){
+         //select current date and month with message
+      let currentMonth :any = Today.getMonth().toString();
+      if(currentMonth.length==1){
+        currentMonth =Today.getMonth() + 1;
+        currentMonth = "0"+currentMonth;
+      }
+     this.data.dob_date = Today.getDate();
+     this.data.dob_month = currentMonth;
+     this.data.dob_year = Today.getFullYear();
+
+     //show message
+     this.dob_larger_pop_error ="Dob cannot be greater than today's date .";
+    
+   }else{
+     this.dob_larger_pop_error = "";
+   }
+
+}
+
+
+
+
+
+
+
+
 updateDates(date){
   let newDate =date < 10 ? "0"+date : date ;
   return newDate.toString();
@@ -230,10 +273,11 @@ public months =[
 ];
 public years:any = [];
 public max_days =31;
+public dob_larger_error="";
   constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private PurchasePlanService: PurchasePlanService,private _cookieService: CookieService, private route: ActivatedRoute, public dialog: MatDialog, private ref: ChangeDetectorRef, private stripeService: StripeService, private http : Http,private stripeSerivce: StripeService) {
     var start_year =new Date().getFullYear();
      for (var i = start_year; i > start_year - 100; i--) {
-      this. years.push(i);
+      this.years.push(i);
      }
      this.dob_date='';
      this.dob_month='';
@@ -424,7 +468,7 @@ public cvcStyle = {
       dob_year: [null,Validators.compose([Validators.required]) ],
     });
      this.route.params.subscribe(params => {
-      this.plan_id = this.route.snapshot.paramMap.get("id");
+      this.plan_id = atob(this.route.snapshot.paramMap.get("id"));
        var data =this.plan_id.split("&");
         this.plan_id = data[0];
         if(data[1]) {
@@ -667,6 +711,42 @@ var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
   }
    
  }
+
+ if(this.form.value.dob_year!="" && this.form.value.dob_month!="" && this.form.value.dob_date!=""){
+
+   this.compareDateWithToday(this.form.value.dob_year,this.form.value.dob_month,this.form.value.dob_date);
+}
+
+
+}
+
+compareDateWithToday(year,month,date){
+ let mi = month.split('');
+  if(mi[0]==='0'){
+    month = Number(mi[1]) - 1;  month = "0"+month;
+  }else{
+    month = month -1;;
+  }
+  let selectedDate = new Date(year, month, date);  let Today = new Date();
+
+   if(selectedDate > Today){
+         //select current date and month with message
+      let currentMonth :any = Today.getMonth().toString();
+      if(currentMonth.length==1){
+        currentMonth =Today.getMonth() + 1;
+        currentMonth = "0"+currentMonth;
+      }
+     this.dob_date = Today.getDate();
+     this.dob_month = currentMonth;
+     this.dob_year = Today.getFullYear();
+
+     //show message
+     this.dob_larger_error ="Dob cannot be greater than today's date .";
+    
+   }else{
+      this.dob_larger_error = "";
+   }
+
 }
 
 updateDates(date){

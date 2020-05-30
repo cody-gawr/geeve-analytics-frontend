@@ -33,6 +33,7 @@
            <!--small *ngIf="(form.controls['dob_year'].hasError('required') && form.controls['dob_year'].touched)" class="text-danger support-text">Patient Dob is Required.</small-->
 
             <small *ngIf="(form.controls['dob_date'].hasError('required') && form.controls['dob_date'].touched) || (form.controls['dob_month'].hasError('required') && form.controls['dob_month'].touched) || (form.controls['dob_year'].hasError('required') && form.controls['dob_year'].touched)" class="text-danger support-text">Patient Dob is Required.</small>
+            <small *ngIf ="dob_larger_error!=''" class="text-danger support-text">{{dob_larger_error}}</small>
           </div>
          </div>
 

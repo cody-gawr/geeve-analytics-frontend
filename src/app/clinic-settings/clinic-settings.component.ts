@@ -340,6 +340,8 @@ public user_id;
 public clinicEmail;
 public Contract;
 public token_id;
+public clinic_id_encoded;
+public user_id_encoded;
   getClinicSettings() {  
     $('.ajax-loader').show(); 
   this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
@@ -347,7 +349,11 @@ public token_id;
        if(res.message == 'success' && res.data[0].id){
         console.log(res);
         this.clinic_id = res.data[0].id;
+        this.clinic_id_encoded = btoa(res.data[0].id);
+
         this.user_id = res.data[0].user_id;
+        this.user_id_encoded = btoa(res.data[0].user_id);
+
         this.clinicName = res.data[0].clinicName;
         this.contactName = res.data[0].contactName;
         this.clinicEmail = res.data[0].clinicEmail;
