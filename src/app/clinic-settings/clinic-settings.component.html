@@ -42,13 +42,39 @@
                                         <mat-card-title>Practice Size</mat-card-title>
                                       <input matInput placeholder="" [formControl]="form.controls['practice_size']" [(ngModel)]="practice_size">
                                     </mat-form-field>
-                                  </div>
-                                   
+                                  </div>            
+
+
+                                <div fxFlex.gt-md="100" fxFlex="100">
+                                  <mat-card-title>Clinic Working Days</mat-card-title>
+                                </div>              
+                                <div fxFlex.gt-md="50" fxFlex="100">
+                                   <mat-slide-toggle checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Sunday</mat-slide-toggle>
+                                 </div>
+                                <div fxFlex.gt-md="50" fxFlex="100">                     
+                                   <mat-slide-toggle checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Monday</mat-slide-toggle>
+                                 </div>  
+                                 <div fxFlex.gt-md="50" fxFlex="100">                     
+                                   <mat-slide-toggle checked="{{ workingDays.tuesday }}" name="tuesday" (change)="toggle($event)">Tuesday</mat-slide-toggle>
+                                   </div>  
+                                 <div fxFlex.gt-md="50" fxFlex="100">
+                                   <mat-slide-toggle checked="{{ workingDays.wednesday }}" name="wednesday" (change)="toggle($event)">Wednesday</mat-slide-toggle>
+                                 </div>
+                                <div fxFlex.gt-md="50" fxFlex="100">
+                                   <mat-slide-toggle checked="{{ workingDays.thursday }}" name="thursday" (change)="toggle($event)">Thursday</mat-slide-toggle>
+                                   </div>  
+                                 <div fxFlex.gt-md="50" fxFlex="100">
+                                   <mat-slide-toggle checked="{{ workingDays.friday }}" name="friday" (change)="toggle($event)">Friday</mat-slide-toggle>
+                                   </div>  
+                                 <div fxFlex.gt-md="50" fxFlex="100">
+                                   <mat-slide-toggle checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
+                                   </div> 
                                  </div> 
                                   <mat-card-actions>
-                                    <button mat-raised-button color="primary" type="submit">Submit</button>
+                                    <button mat-raised-button color="primary" type="submit">Save</button>
                                   </mat-card-actions>
                                   <!-- column -->
+                                 
 
                               </form>
 

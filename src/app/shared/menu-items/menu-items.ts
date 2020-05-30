@@ -73,6 +73,14 @@ const MENUITEMS = [
     role:['2'],
     param2 : 'dashboards',
   },
+   {
+    state: 'morning-huddle',
+    name: 'Morning Huddle',
+    type: 'link-morning-huddle',
+    icon: 'fas fa-sun',
+    role:['2'],
+     param2 : 'dashboards',
+  },
   {
     state: 'dashboards',
     name: 'Dashboards',
@@ -334,6 +342,14 @@ export class MenuItems {
     icon: 'fas fa-home',
     role:['2'],
     param2 : 'dashboards',
+  },
+  {
+    state: 'morning-huddle',
+    name: 'Morning Huddle',
+    type: 'link-morning-huddle',
+    icon: 'fas fa-sun',
+    role:['2'],
+     param2 : 'dashboards',
   },
   {
     state: 'dashboards',

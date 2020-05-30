@@ -6,6 +6,7 @@ import { FinancesComponent } from './finances/finances.component';
 import { FrontDeskComponent } from './frontdesk/frontdesk.component';
 import { MarketingComponent } from './marketing/marketing.component';
 import { HealthScreenComponent } from './healthscreen/healthscreen.component';
+import { MorningHuddleComponent } from './morning-huddle/morning-huddle.component';
 
 export const DashboardsRoutes: Routes = [
   {
@@ -34,6 +35,10 @@ export const DashboardsRoutes: Routes = [
       {
         path: 'healthscreen',
         component: HealthScreenComponent
+      },
+      {
+        path: 'morning-huddle',
+        component: MorningHuddleComponent
       }
     ]
   }

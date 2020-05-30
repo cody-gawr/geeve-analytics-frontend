@@ -6,6 +6,7 @@ import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import { Router, NavigationEnd, Event  } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-settings.component.html',
@@ -27,6 +28,7 @@ export class ClinicSettingsComponent implements OnInit {
           public xero_link;
           public xeroConnect = false;
           public xeroOrganization='';
+          public workingDays = {sunday: false,monday: false,tuesday: false,wednesday: false,thursday: false,friday: false,saturday: false};
   constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
    this.notifier = notifierService;
     this.options = fb.group({
@@ -70,11 +72,14 @@ export class ClinicSettingsComponent implements OnInit {
 
   getClinicSettings() {
   this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
+
        if(res.message == 'success'){
         this.clinicName = res.data[0].clinicName;
         this.contactName = res.data[0].contactName;
         this.address = res.data[0].address;
         this.practice_size = res.data[0].practice_size;
+        this.workingDays = JSON.parse(res.data[0].days);
+        console.log(this.workingDays,'&&&&&');
        }
         else if(res.status == '401'){
             this._cookieService.put("username",'');
@@ -94,7 +99,8 @@ export class ClinicSettingsComponent implements OnInit {
   this.contactName = this.form.value.contactName;
   this.address = this.form.value.address;
   this.practice_size = this.form.value.practice_size;
-   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size ).subscribe((res) => {
+  let days = JSON.stringify(this.workingDays);
+   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size,days ).subscribe((res) => {
        if(res.message == 'success'){
           this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
        }
@@ -178,4 +184,37 @@ export class ClinicSettingsComponent implements OnInit {
       this.warningMessage = "Please Provide Valid Inputs!";
     });   
  }
+
+public toggle(event){
+  if(event.source.name == 'sunday'){
+
+    this.workingDays.sunday = event.checked;
+
+  } else if(event.source.name == 'monday'){
+
+    this.workingDays.monday = event.checked;
+
+  } else if(event.source.name == 'tuesday'){
+
+    this.workingDays.tuesday = event.checked;
+
+  } else if(event.source.name == 'wednesday'){
+
+    this.workingDays.wednesday = event.checked;
+
+  } else if(event.source.name == 'thursday'){
+
+    this.workingDays.thursday = event.checked;
+
+  } else if(event.source.name == 'friday'){
+
+    this.workingDays.friday = event.checked;
+
+  } else if(event.source.name == 'saturday'){
+
+    this.workingDays.saturday = event.checked;
+
+  }
+}
+
 }

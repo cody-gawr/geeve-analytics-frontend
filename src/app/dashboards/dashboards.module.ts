@@ -13,6 +13,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardsRoutes } from './dashboards.routing';
 import { ChartistModule } from 'ng-chartist';
 import { ClinicianAnalysisService } from './cliniciananalysis/cliniciananalysis.service';
+import { MorningHuddleService } from './morning-huddle/morning-huddle.service';
 import { ClinicianAnalysisComponent } from './cliniciananalysis/cliniciananalysis.component';
 import { ClinicianProceeduresService } from './clinicianproceedures/clinicianproceedures.service';
 import { ClinicianProceeduresComponent } from './clinicianproceedures/clinicianproceedures.component';
@@ -34,6 +35,7 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import 'chartjs-plugin-annotation';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { MorningHuddleComponent } from './morning-huddle/morning-huddle.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -55,7 +57,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     NgxSmartModalModule.forRoot(),
     CarouselModule
   ],
-  providers: [ ClinicianAnalysisService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, HealthScreenService],
-  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent]
+  providers: [ ClinicianAnalysisService,MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, HealthScreenService],
+  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, MorningHuddleComponent]
 })
 export class DashboardsModule {}
