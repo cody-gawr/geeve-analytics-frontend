@@ -65,7 +65,7 @@
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Phone Number</label>
-          <input matInput tabindex="1" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="data.patient_phone_no" placeholder="" class="form-control-dialog"  type="text" [formControl]="form.controls['patient_phone_no']" (keypress)="numberOnly($event)">
+          <input matInput tabindex="1" oninput="this.value = this.value.slice(0,11);" [(ngModel)]="data.patient_phone_no" placeholder="" class="form-control-dialog"  type="text" [formControl]="form.controls['patient_phone_no']" (keypress)="numberOnly($event)">
            <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched" class="text-danger support-text">You must include valid Phone No.</small>
             <small *ngIf="form.controls['patient_phone_no'].hasError('minlength') && form.controls['patient_phone_no'].touched" class="text-danger support-text">Phone No Should be of minimum 8 digits in length.</small>
     </div>
@@ -147,7 +147,7 @@
 
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Number of Instalments</label>
-        <input matInput tabindex="1" id="duration" type="number" min="0" [(ngModel)]="data.duration" placeholder="{{durationPaymentPlaceholder}}" (keyup)="durationcal(data.duration)" class="form-control-dialog" [formControl]="form.controls['duration']">
+        <input matInput tabindex="1" id="duration" type="number" min="1" [(ngModel)]="data.duration" placeholder="{{durationPaymentPlaceholder}}" (keyup)="durationcal(data.duration)" class="form-control-dialog" [formControl]="form.controls['duration']">
          <small *ngIf="form.controls['duration'].hasError('required') && form.controls['duration'].touched" class="text-danger support-text">Number of Instalments is Required.</small> 
     </div>
    </div>
@@ -160,7 +160,7 @@
 <div mat-dialog-actions class="sa-pull-right">
   <!--button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Ok</button!-->
  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
- <button mat-button (click)="next(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Next</button>
+ <button mat-button (click)="next(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid || data.duration== 0">Next</button>
 </div>
 </mat-tab>
 

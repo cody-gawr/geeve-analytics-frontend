@@ -45,6 +45,15 @@ export class PlansService {
     }
 
 
+    getPatientsonPlan(memberplan_id, user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): 
+    Observable<any> {
+        return this.http.get(this.apiUrl +"/MemberPlan/getPatientsonPlan?token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id+"&id="+memberplan_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                    return response;
+                })
+        );
+    }
+
     getTreatments(user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): 
     Observable<any> {
         return this.http.get(this.apiUrl +"/Treatments/getTreatments?token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
@@ -71,7 +80,8 @@ export class PlansService {
         );
     }
 
-    updateUser(memberid,clinic_id,planName,planOrder,planLength,totalAmount,discount,description,isFeatured,hidden,preventative_plan,preventative_frequency,treatment_inclusions,treatment_exclusions,preventative_discount,token = this._cookieService.get("token")): Observable<any> {
+
+    updateUser(memberid,clinic_id,planName,planOrder,planLength,totalAmount,discount,description,isFeatured,hidden,preventative_plan,preventative_frequency,treatment_inclusions,treatment_exclusions,preventative_discount,sendMail, updateUser,token = this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
     
         formData.append('id', memberid);
@@ -84,7 +94,7 @@ export class PlansService {
         formData.append('description', description);
         formData.append('isFeatured', isFeatured);
         formData.append('hidden', hidden);
-        
+
         formData.append('preventative_plan',preventative_plan);
         formData.append('preventative_frequency', preventative_frequency);
         formData.append('treatment_inclusions',treatment_inclusions );
@@ -93,6 +103,8 @@ export class PlansService {
          formData.append('user_id', this._cookieService.get("userid"));
         formData.append('token', token);
         formData.append('token_id', this.token_id);
+         formData.append('sendMail', sendMail);
+        formData.append('updateUser', updateUser);
         
         return this.http.post(this.apiUrl +"/MemberPlan/updateMemberplan/", formData)
          .pipe(map((response: Response) => {

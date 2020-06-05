@@ -177,6 +177,23 @@ export class PatientsDetailService {
             );
         }
 
+        changeMemberPlan(patient_id, plan_id,token =this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        
+        formData.append('patient_id', patient_id);
+        formData.append('plan_id', plan_id);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', token);
+        formData.append('token_id', this.token_id);
+       
+        return this.http.post(this.apiUrl +"/MemberPlan/changeMemberPlan/", formData)
+            .pipe(map((response: Response) => {
+                console.log(response);
+                            return response;
+            })
+            );
+        }
+
     getInofficeMembersByID(patient_id,clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         return this.http.get(this.apiUrl +"/Patients/getAllPatientByID?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {

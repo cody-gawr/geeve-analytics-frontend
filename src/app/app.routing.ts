@@ -213,7 +213,7 @@ export const AppRoutes: Routes = [
         loadChildren: './purchase-plan/purchase-plan.module#PurchasePlanModule'
       },
       {
-        path: 'thank-you/:id',
+        path: 'thank-you/:id/:patientId',
         loadChildren: './thank-you/thank-you.module#ThankYouModule',
       }
     ]

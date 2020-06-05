@@ -32,7 +32,6 @@
                     <div fxLayout="row wrap" >
                         <!-- Card column -->
                         <div fxFlex.gt-sm="100%" fxFlex="100" >
-
                             <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
                                 <div fxLayout="row wrap" fxLayoutGap.gt-md="2%">
                                     <div fxFlex.gt-md="210px" fxFlex="100" class="">
@@ -65,7 +64,8 @@
                                        
                                              <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
                                                 <label>Phone Number*</label>
-                                                <input  type="text" placeholder="" [formControl]="form.controls['phoneNo']" (keypress)="numberOnly($event)" oninput="this.value = this.value.slice(0,12);"  [(ngModel)]="phoneNo">
+
+                                                <input  type="text" placeholder="" [formControl]="form.controls['phoneNo']" (keypress)="numberOnly($event)" oninput="this.value = this.value.slice(0,13);"  [(ngModel)]="phoneNo">
                                                 <small *ngIf="form.controls['phoneNo'].hasError('required') && form.controls['phoneNo'].touched" class="text-danger support-text">Phone is required.</small>
                                             </div>
                                              <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
@@ -223,7 +223,6 @@
                             <div fxFlex.gt-md="100" fxFlex="100" class="">
                                <mat-card-actions>
                                <button mat-raised-button color="green" class="sa-pull-right" type="submit" [disabled]="!formLanding.valid">Submit</button>
-
                                 <a [routerLink]="['/subscription',clinic_id_encoded,user_id_encoded]" target="_blank" mat-raised-button color="green" class="sa-pull-right" title= 'Subscription Detail'>Preview Landing Page</a>
                                </mat-card-actions>
                                         <!-- column -->

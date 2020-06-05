@@ -350,10 +350,8 @@ public user_id_encoded;
         console.log(res);
         this.clinic_id = res.data[0].id;
         this.clinic_id_encoded = btoa(res.data[0].id);
-
         this.user_id = res.data[0].user_id;
         this.user_id_encoded = btoa(res.data[0].user_id);
-
         this.clinicName = res.data[0].clinicName;
         this.contactName = res.data[0].contactName;
         this.clinicEmail = res.data[0].clinicEmail;

@@ -92,8 +92,10 @@ export class SubscriptionComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-    this.clinic_id = atob(this.route.snapshot.paramMap.get("clinic_id"));
-    this.user_id = atob(this.route.snapshot.paramMap.get("user_id"));
+     let uid = this.route.snapshot.paramMap.get("user_id");
+       this.clinic_id = atob(this.route.snapshot.paramMap.get("clinic_id"));
+       this.user_id = atob(this.route.snapshot.paramMap.get("user_id")); 
+    
     //alert(this.clinic_id+"===="+this.user_id);
     var data =this.user_id.split("&");
     this.user_id = data[0];
@@ -217,7 +219,7 @@ openDialog(id,amount) {
     if(this.email&&this.name) {
       let urlStr = id+'&'+this.email+'&'+this.name;
       this.router.navigate(['/purchase-plan/'+btoa(urlStr)]);       
-    }else{
+    }else{                
       this.router.navigate(['/purchase-plan/'+btoa(id)]);  
     } 
     

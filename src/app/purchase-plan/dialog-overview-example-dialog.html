@@ -43,6 +43,7 @@
                  <small *ngIf="form.controls['subPatientGender'].hasError('required') && form.controls['subPatientGender'].touched" class="text-danger support-text">Gender Is Required.</small>
       </mat-radio-group>
 	   <div mat-dialog-actions class="sa-pull-right ok_cancel_btn " style="text-align: right;">
+
         <button mat-button (click)="save(data)" tabindex="0" class="mat-raised-button mat-dc" [disabled]="(!form.valid || dob_larger_pop_error != '')">OK</button>
           <button mat-button (click)="onNoClick()" tabindex="0" class="mat-raised-button mat-gray">Cancel</button>
   </div>

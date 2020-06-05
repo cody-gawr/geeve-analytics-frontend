@@ -217,7 +217,8 @@ public patient_email :any;
         this.payment_frequency=res.data[0]['payment_frequency'];
         this.monthly_weekly_payment=res.data[0]['monthly_weekly_payment'];
         this.duration=res.data[0]['duration'];
-        this.start_date=res.data[0]['start_date'];
+        //this.start_date=res.data[0]['start_date'];
+        this.start_date=res.data[0]['created'];
         this.due_date=res.data[0]['due_date'];  
 
         this.imageURL=res.data[0]['contract'];

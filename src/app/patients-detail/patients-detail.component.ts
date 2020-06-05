@@ -142,6 +142,44 @@ export class DialogOverviewExampleDialogComponent {
 }
 
 @Component({
+  selector: 'app-dialog-overview-update-dialog',
+  templateUrl: './dialog-overview-update.html',
+  styleUrls: ['./patients-detail.component.scss']
+})
+ 
+export class DialogOverviewUpdateDialogComponent {
+  public clinic_id:any ={};
+  public formInvite: FormGroup;
+
+  constructor(private fb: FormBuilder,
+    private toastr: ToastrService,
+    public dialogChangePlanRef: MatDialogRef<DialogOverviewUpdateDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    console.log(data);
+  }
+  save(data) {
+     Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to assign new plan to this Member?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+        this.dialogChangePlanRef.close(data);
+    });
+  }
+
+  
+  
+  onNoClick(): void {
+    this.dialogChangePlanRef.close();
+  }
+
+}
+
+@Component({
   selector: 'app-update-patient-dialog',
   templateUrl: './update-patient.html',
   styleUrls: ['./patients-detail.component.scss'],
@@ -149,7 +187,9 @@ export class DialogOverviewExampleDialogComponent {
 export class UpdatePatientDialogComponent {
   constructor( public dialogUpdateRef: MatDialogRef<UpdatePatientDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-    ) {}
+    ) {
+    console.log(data);
+  }
 
     update(data) {
   
@@ -359,8 +399,8 @@ public stripe_account_id;
           Swal.fire('', 'Please select valid Dates', 'error');
       }
        else {
-         result.start_date = this.datePipe.transform(result.start_date, 'yyyy-MM-dd');
-         result                                                                                                                                                                                                                                                                     .end_date = this.datePipe.transform(result.end_date, 'yyyy-MM-dd');
+        result.start_date = this.datePipe.transform(result.start_date, 'yyyy-MM-dd');
+        result.end_date = this.datePipe.transform(result.end_date, 'yyyy-MM-dd');
      
         this.patientsdetailService.getexportData(this.clinic_id, result.start_date, result.end_date).subscribe((res) => {    
          if(res.message == 'success'){
@@ -385,7 +425,38 @@ public stripe_account_id;
       }
     });
   }
+  
+  change_plan(patientid,plan_id): void {
+    
 
+    const dialogChangePlanRef = this.dialog.open(DialogOverviewUpdateDialogComponent, {
+      width: '400px',
+      data: {plans: this.membersplan, patientid: patientid,plan_id: plan_id},
+      panelClass: 'full-screen'
+    });
+  dialogChangePlanRef.afterClosed().subscribe(result => {  
+  $('.ajax-loader').show();
+
+        this.patientsdetailService.changeMemberPlan(patientid, result.plan_selected).subscribe((res) => {    
+  $('.ajax-loader').hide();
+
+         if(res.message == 'success'){
+             this.getPatients();     
+            this.toastr.success('Patient Plan Updated.');          
+         }
+          else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+              this.router.navigateByUrl('/login');
+           }
+      }, error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }    
+      ); 
+    });
+  }
 
   openUpdateDialog(patientid): void {
 

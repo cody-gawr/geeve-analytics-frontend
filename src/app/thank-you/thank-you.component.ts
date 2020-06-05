@@ -22,6 +22,8 @@ export class ThankYouComponent implements OnInit {
   public plans =[];
   public plan_id;
   public id;
+  public memberPlanId;
+  public patientId;
   public amount;
   public token;
   public user_id;
@@ -48,6 +50,8 @@ export class ThankYouComponent implements OnInit {
    ngOnInit() {
      this.route.params.subscribe(params => {
       this.id = this.route.snapshot.paramMap.get("id");
+      this.memberPlanId = this.route.snapshot.paramMap.get("memberPlanId");
+      this.patientId = this.route.snapshot.paramMap.get("patientId");
       this.getClinicInfo();
     });
 
@@ -59,10 +63,16 @@ export class ThankYouComponent implements OnInit {
   }
   public clinicName;
   public getClinicInfo(){
-    this.ThankYouService.getClinicSettings(this.id).subscribe((res) => {
-    if(res.message == 'success'){
-      this.clinicName= res.data[0].clinicName;
-    }
+    this.ThankYouService.getClinicSettings(this.id,this.patientId).subscribe((res) => {
+     if(res.status =='401'){
+           window.location.href = '/authentication/404'; 
+
+     }else{
+        if(res.message == 'success'){
+          this.clinicName= res.data[0].clinicName;
+        }
+
+     }
     });
   }
 

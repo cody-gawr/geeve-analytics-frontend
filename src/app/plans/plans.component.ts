@@ -170,14 +170,13 @@ export class UpdatePlanDialogComponent {
                   }
                   else{
               if(data.planName != undefined && this.valplans != '' && data.planLength != undefined && data.totalAmount != undefined && data.discount != undefined && data.description != undefined && data.planOrder !=undefined){
-                console.log(data);
                       this.dialogUpdateRef.close(data);                    
                     }
                   }
         }, error => {
-              $('.ajax-loader').hide(); 
-              this.toastr.error('Some Error Occured, Please try Again.');
-              return false;
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+          return false;
         }    
         ); 
       
@@ -359,6 +358,7 @@ export class PlansComponent implements AfterViewInit {
 
   private getPlans() {
 if(this.clinic_id != undefined) {
+
     this.rows=[];
     this.plansService.getPlans(this.clinic_id).subscribe((res) => {
         if(res.message == 'success'){
@@ -415,6 +415,9 @@ if(this.clinic_id != undefined) {
       }
       });
   }
+  public sendMail;
+  public updatePlan
+
   openUpdateDialog(rowIndex): void {
     
     this.memberplan_id =this.rows[rowIndex]['id'];
@@ -426,25 +429,42 @@ if(this.clinic_id != undefined) {
 
   dialogUpdateRef.afterClosed().subscribe(result => {
    if(result) {
-    if((this.rows[rowIndex]['treatment_inclusions'] != JSON.stringify(result.treatment_inclusions_selected))  || (this.rows[rowIndex]['treatment_exclusions'] != JSON.stringify(result.treatment_exclusions_selected)) || (this.rows[rowIndex]['preventative_discount'] != result.preventative_discount)){
-          Swal.fire({
-              text: 'Plan not changed.'
-            })
-    }
-    else if((this.rows[rowIndex]['totalAmount'] != result.totalAmount ) || (this.rows[rowIndex]['discount'] != result.discount)){
-  Swal.fire({
-              text: 'Plan changed.'
-            })
-    }
-    this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,result.hidden,JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount).subscribe((res) => {
+      this.sendMail = false;
+      this.updatePlan= false;
+      this.plansService.getPatientsonPlan(this.memberplan_id).subscribe((res) => {
          if(res.message == 'success'){
+            if(res.data>0){
+          if((this.rows[rowIndex]['treatment_inclusions'] != JSON.stringify(result.treatment_inclusions_selected))  || (this.rows[rowIndex]['treatment_exclusions'] != JSON.stringify(result.treatment_exclusions_selected)) || (this.rows[rowIndex]['preventative_discount'] != result.preventative_discount)){
+                Swal.fire({
+                    text: 'These Changes will be reflected on '+res.data+' patients who have subscribed to this plan.'
+                  })
+                this.sendMail = true;
+                this.updatePlan= false;
+          }
+          else if((this.rows[rowIndex]['totalAmount'] != result.totalAmount ) || (this.rows[rowIndex]['discount'] != result.discount)){
+              Swal.fire({
+                    text: 'These Changes will update costs for '+res.data+' patients who have subscribed to this plan.'
+                  })
+              this.sendMail = true;
+              this.updatePlan= true;
+          }
+        }
+ $('.ajax-loader').show(); 
+         this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,result.hidden,JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount,this.sendMail,this.updatePlan).subscribe((res) => {
+         if(res.message == 'success'){
+          $('.ajax-loader').hide(); 
             this.getPlans()
             this.toastr.success('Plan Updated.');
-
-             }
+          }
         }, error => {
              $('.ajax-loader').hide(); 
         this.toastr.error('Some Error Occured, Please try Again.');
+        }); 
+
+       }
+        }, error => {
+             $('.ajax-loader').hide(); 
+            this.toastr.error('Some Error Occured, Please try Again.');
         }); 
         }         
     });
@@ -483,8 +503,7 @@ if(this.clinic_id != undefined) {
               if(this.rows[row]['id']) {
                 this.plansService.deletePlan(this.rows[row]['id']).subscribe((res) => {
                  if(res.message == 'success'){
-          
-                   //this.notifier.notify( 'success', 'Plan Removed' ,'vertical');
+                             //this.notifier.notify( 'success', 'Plan Removed' ,'vertical');
                    this.toastr.success('Plan Removed .');
                    this.getPlans();
                  }
@@ -512,21 +531,16 @@ if(this.clinic_id != undefined) {
       // filter our data
     const temp = this.temp.filter(function(d) {
     
-      return d.planName.toLowerCase().indexOf(val) !== -1 || d.treatments.toLowerCase().indexOf(val) !== -1 || d.planLength.toLowerCase().indexOf(val) !== -1 || d.description.toLowerCase().indexOf(val) !== -1 || !val;
+    return d.planName.toLowerCase().indexOf(val) !== -1 || d.treatments.toLowerCase().indexOf(val) !== -1 || d.planLength.toLowerCase().indexOf(val) !== -1 || d.description.toLowerCase().indexOf(val) !== -1 || !val;
     });
     // update the rows
     this.rows = temp;
-
     // Whenever the filter changes, always go back to the first page
     this.table = data;
   }
 
   enableEditing(rowIndex, cell) {
-
     this.editing[rowIndex + '-' + cell] = true;
-//console.log(this.editing);
   }
 
 }
-
-6

@@ -452,7 +452,7 @@ public memberplan_id;
 
   dialogUpdateRef.afterClosed().subscribe(result => {
    if(result) {
-    this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,'',JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount).subscribe((res) => {
+    this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,'',JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount,true,true).subscribe((res) => {
          if(res.message == 'success'){
             this.getPlans()
                   this.toastr.success('Plan Updated.');

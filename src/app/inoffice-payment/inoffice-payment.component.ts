@@ -255,10 +255,10 @@ public dob_error='';
       $('.ajax-loader').show();
     this.inofficePaymentService.createInofficeSubscription(this.token,this.plan_description,this.monthly_weekly_payment,this.duration,this.id,this.patient_id, this.clinic_id, this.payment_frequency, this.balance_amount,this.start_date).subscribe((res) => {
            if(res.message == 'success'){
-            this.cardNumber.clear();
-                      this.cardCvc.clear();
-                      this.cardExpiry.clear();
-              this.updatePatients('ACTIVE');
+             this.cardNumber.clear();
+             this.cardCvc.clear();
+              this.cardExpiry.clear();
+              this.updatePatientsOnPayment('ACTIVE',res.patientId);
            }
            else if(res.message == 'error'){
             this.cardNumber.clear();
@@ -405,7 +405,20 @@ onSubmit() {
     this.inofficePaymentService.updatePatients(this.patient_amount,status, this.id).subscribe((res) => {
       $('.ajax-loader').hide();      
        if(res.message == 'success'){
-              window.location.href = '/thank-you/'+this.clinic_id; 
+
+          window.location.href = '/thank-you/'+this.clinic_id; 
+       }
+       else if(res.message == 'error'){
+          this.errorLogin  =true;
+       }
+    }, error => {
+    });
+  }
+    updatePatientsOnPayment(status,patientId) { 
+    this.inofficePaymentService.updatePatients(this.patient_amount,status, this.id).subscribe((res) => {
+      $('.ajax-loader').hide();      
+       if(res.message == 'success'){
+          window.location.href = '/thank-you/'+this.clinic_id+'/'+patientId; 
        }
        else if(res.message == 'error'){
           this.errorLogin  =true;
@@ -425,7 +438,7 @@ checkDob(){
            this.inofficePaymentService.createInofficeSubscription(token,this.plan_name,this.monthly_weekly_payment,this.duration,this.id,this.patient_id,this.clinic_id,this.payment_frequency, this.balance_amount,  this.start_date).subscribe((res) => {
            $('.ajax-loader').hide();
            if(res.message == 'success'){
-                this.updatePatients('ACTIVE');
+               this.updatePatients('ACTIVE');
               window.location.href = '/thank-you/'+this.clinic_id; 
            }
            else if(res.message == 'error'){

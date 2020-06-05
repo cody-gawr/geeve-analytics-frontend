@@ -879,10 +879,9 @@ getDaysInMonth(year: number, month: number) {
       $('.ajax-loader').show(); 
     this.PurchasePlanService.updatePatients(this.totalAmountPatients,status, this.patient_id,this.form.value.patient_email).subscribe((res) => {
       $('.ajax-loader').hide();      
-       if(res.message == 'success'){
-
+       if(res.message == 'success'){         
              $('.ajax-loader').hide(); 
-             window.location.href = '/thank-you/'+this.clinic_id; 
+             window.location.href = '/thank-you/'+this.clinic_id+'/'+this.patient_id; 
        }
        else if(res.message == 'error'){
             $('.ajax-loader').hide();

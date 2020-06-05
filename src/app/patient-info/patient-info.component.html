@@ -150,7 +150,7 @@
                         </div>
                         </div>
                         </mat-tab>
-                        <mat-tab label="Patient Details">
+                      <mat-tab label="Patient Details">
                         <div fxFlex.gt-sm="100%" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
                                 <h1 mat-dialog-title>Update Patient Details</h1>
                         <form [formGroup]="formPatient"  (ngSubmit)="onSubmitPatientDetails()">
@@ -173,24 +173,23 @@
                            </div>
                           <div fxLayout="row wrap" fxLayoutGap="2%">
                              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-							 
+               
                                <label>Patient DOB</label>
-								<div class="input_field_dob">
-                                 <select fxFlex.gt-sm="32%" class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_date" [formControl]="formPatient.controls['dob_date']" (change) ="checkDob('date')">
+                <div class="input_field_dob">
+                                 <select fxFlex.gt-sm="32%" class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_date" [formControl]="formPatient.controls['dob_date']" (change) ="checkDob()">
                                     <option value="">Select Date</option>
                                     <option *ngFor="let date of dates" value="{{date}}">{{date}}</option>
                                  </select>
-                                  <select fxFlex.gt-sm="32%"  class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_month" [formControl]="formPatient.controls['dob_month']" (change) ="checkDob('month')">
+                                  <select fxFlex.gt-sm="32%"  class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_month" [formControl]="formPatient.controls['dob_month']" (change) ="checkDob()">
                                     <option value="">Select Month</option>
                                     <option *ngFor="let month of months" value="{{month.key}}">{{month.value}}</option>
                                  </select> 
-                                    <select fxFlex.gt-sm="32%"  class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_year" [formControl]="formPatient.controls['dob_year']" (change) ="checkDob('year')">
+                                    <select fxFlex.gt-sm="32%"  class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_year" [formControl]="formPatient.controls['dob_year']" (change) ="checkDob()">
                                     <option value="">Select Year</option>
                                     <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
                                  </select> 
-								 </div>
+                 </div>
                                  <small *ngIf="(formPatient.controls['dob_date'].hasError('required') && formPatient.controls['dob_date'].touched) || (formPatient.controls['dob_month'].hasError('required') && formPatient.controls['dob_month'].touched) || (formPatient.controls['dob_year'].hasError('required') && formPatient.controls['dob_year'].touched)" class="text-danger support-text">Patient DOB is required.</small>
-                                  <small *ngIf ="dob_larger_error!=''" class="text-danger support-text">{{dob_larger_error}}</small>
                                    <!--input tabindex="1" type="text" [(ngModel)]="patient_dob" [formControl]="formPatient.controls['patient_dob']" placeholder="" class="form-control-dialog" required="true"  (keyup) ="checkDob()" placeholder="yyyy-mm-dd">
                                    <small *ngIf="invalid_dob" class="text-danger support-text">Patient Dob is Invalid.</small>
                                  <small *ngIf="formPatient.controls['patient_dob'].hasError('required') && formPatient.controls['patient_dob'].touched" class="text-danger support-text">Patient DOB is required.</small-->

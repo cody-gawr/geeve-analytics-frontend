@@ -91,26 +91,25 @@ export class DialogOverviewExampleDialogComponent {
       this.balanceamt = (parseInt(this.totalAmount)+parseInt(this.setup_amount))-amountDeposited;       
       this.data.balance_amount = this.balanceamt;
       this.durationcal(this.durationval);
-
   }
-     updateDurationLabel(paymentFrequency)
-    {
-      console.log(paymentFrequency);
+
+  updateDurationLabel(paymentFrequency)
+  {
       if(paymentFrequency=="MONTHLY")
       {
-        this.durationPaymentPlaceholder="Number of Months .";
-       this.MonthlyWeeklyPlaceholder ="Monthly Payment";
-      }else{
-       this.durationPaymentPlaceholder="Number of weeks .";
-       this.MonthlyWeeklyPlaceholder ="Weekly Payment";
+        this.durationPaymentPlaceholder="Number of Months.";
+        this.MonthlyWeeklyPlaceholder ="Monthly Payment";
+      } else {
+         this.durationPaymentPlaceholder="Number of weeks.";
+         this.MonthlyWeeklyPlaceholder ="Weekly Payment";
      }
   }
-    public durationcal(durationval){
+
+  public durationcal(durationval){
     this.durationval= durationval;
       this.monthlyweeklyamt =this.balanceamt/this.durationval;
       this.data.monthly_weekly_payment= this.monthlyweeklyamt;
-      // alert(this.monthlyweeklyamt);
-    }
+  }
       
     onNoClick(): void {
       this.dialogRef.close();
@@ -131,7 +130,6 @@ export class InvoiceDetailsDialogComponent {
       this.dialogRef2.close();
     }
  }
-
 
 @Component({
   selector: 'app-formlayout',

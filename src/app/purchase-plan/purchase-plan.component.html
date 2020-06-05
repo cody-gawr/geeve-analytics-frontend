@@ -63,7 +63,7 @@
               <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
                 <mat-label>Contact No.</mat-label>
                             <mat-form-field style="width: 100%">
-                             <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="patient_phone_no">
+            <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,11);" [(ngModel)]="patient_phone_no">
                             </mat-form-field>
                           <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched" class="text-danger support-text">You must include Phone No.</small>
 
@@ -89,6 +89,7 @@
 
                                 <div mat-dialog-actions class="sa-pull-right">
                                 <button class="sa-pull-right mat-raised-button mat-green" type="submit" [disabled]="(!form.valid || dob_larger_error)">Next</button>
+
                                 </div>  
                             </form>
                           </div>

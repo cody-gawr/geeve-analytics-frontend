@@ -33,7 +33,7 @@ export class SubscriptionService {
     }
 
     getClinicSettings( clinic_id='1', user_id = this._cookieService.get("userid")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Practices/getPracticesFrontend?user_id="+user_id+"&clinic_id="+clinic_id, { headers: this.headers })
+        return this.http.get(this.apiUrl +"/Practices/getPracticesFrontendSubscription?user_id="+user_id+"&clinic_id="+clinic_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
