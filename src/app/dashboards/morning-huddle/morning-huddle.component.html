@@ -1,41 +1,41 @@
-<div class="sa_dashboard_inner_content">
-    <div class="sa_first_section">
+<div class="sa_dashboard_inner_content morning-huddle">
 
 <mat-tab-group>
 
 	<!-- Dentist Performance Tab --> 	
 	<mat-tab label="Dentist Performance">
  		<input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
- 			<div fxLayout="row wrap" >
-				<div fxFlex.lg="33" fxFlex.md="33" fxFlex.sm="50" fxFlex.xs="50" fxFlex="33" class="sa_flexbg" [ngClass]="">
- 					<div class="mat-form-field-infix">
- 						<input class="mat-input-element mat-form-field-autofill-control cdk-text-field-autofill-monitored ng-untouched ng-pristine ng-valid" matinput="" placeholder="" type="number" max="7" min="1" value="1"  id="setPreviousDay">
- 					</div>
- 				</div>
- 				<div fxFlex.lg="33" fxFlex.md="33" fxFlex.sm="50" fxFlex.xs="50" fxFlex="33" class="sa_flexbg" [ngClass]="">
- 					<mat-card-actions class="mat-card-actions">
- 						<button  color="primary"  type="submit" class="mat-raised-button mat-primary" (click) = "initiate_clinic()">
- 							<span class="mat-button-wrapper">Search</span>
- 						</button>
- 					</mat-card-actions>
- 				</div>
- 				<div fxFlex.lg="33" fxFlex.md="33" fxFlex.sm="50" fxFlex.xs="50" fxFlex="33" class="sa_flexbg" [ngClass]="">
+ 			<div class="morning-huddle-date">
+				 					<mat-form-field>
+  <mat-label>Select Date</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let food of foods" [value]="food.value">
+      {{food.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+ 				
  					<strong> {{ production.date | date: 'fullDate' }} </strong>
- 				</div>
+ 				
  			</div>
 		<!-- Top Cards -->
 		<div>
 
-			<div class="sa_dentist_graphs_area sa_profit_bar">
-				<div fxLayout="row wrap" >
-					<div fxFlex.lg="33" fxFlex.md="33" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg" [ngClass]="">
+			<div class="sa_dentist_graphs_area sa_profit_bar dentist-performance">
+				<div fxLayout="row wrap" fxLayoutGap="20px">
+					<div fxFlex="calc(33% - 10px)" class="sa_flexbg mh-matcard mh-matcard-down" [ngClass]="">
 						<mat-card class="dentistProduction sa_hccard">
 							<mat-card-content class="sa_matcard_content">
+								<div class="card-icon"><span class="material-icons">room_preferences</span></div>
 								<mat-card-title class="">
-									<img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="production.goal < production.total" >
-									<img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="production.goal > production.total">  
+									 <div class="ttl_value">${{ production.total}}</div>
+								<!-- <div class="ttl_value_left">$ {{ production.goal}}</div> -->
 									Production
-									<div class="change_value">
+								</mat-card-title>
+							</mat-card-content>
+						</mat-card>
+						<div class="graph_image" >
+							<div class="change_value">
 										<span class="range_icon" *ngIf="production.goal < production.total">
 											<i class="fa fa-plus"></i>
 										</span>
@@ -43,58 +43,56 @@
 											<i class="fa fa-minus"></i>
 										</span>${{ getdifference(production.total,production.goal) }}
 									</div>
-								</mat-card-title>
-								<div class="ttl_value">${{ production.total}}</div>
-								<!-- <div class="ttl_value_left">$ {{ production.goal}}</div> -->
-							</mat-card-content>
-						</mat-card>
-						<div class="graph_image" ></div>
+							</div>
 					</div>
 
-					<div fxFlex.lg="32" fxFlex.md="32" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg" [ngClass]="" >
+					<div fxFlex="calc(33% - 10px)" class="sa_flexbg mh-matcard mh-matcard-down" [ngClass]="" >
 						<mat-card  class="treatmentPlan sa_hccard">
 							<mat-card-content class="sa_matcard_content">
+								<div class="card-icon"><i class="fab fa-rev"></i></div>
 								<mat-card-title class="text-center">
-									<img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="recallRate.goal < recallRate.rate">
-									 <img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="recallRate.goal > recallRate.rate">
+									<div class="ttl_value">{{ recallRate.rate}}%</div>
+								<!--	<img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="recallRate.goal < recallRate.rate">
+									 <img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="recallRate.goal > recallRate.rate"> -->
 									 Rebook Recall Rate
-									<div class="change_value">
+								</mat-card-title>
+								<!-- <div class="ttl_value_left">{{ recallRate.goal}}%</div> -->
+							</mat-card-content>
+						</mat-card>
+						<div class="graph_image" >
+							<div class="change_value">
 										<span class="range_icon" *ngIf="recallRate.goal < recallRate.rate">
 											<i class="fa fa-plus"></i>
 										</span>
 										<span class="range_icon" *ngIf="recallRate.goal > recallRate.rate">
 											<i class="fa fa-minus"></i>
 										</span>{{ getdifference(recallRate.rate,recallRate.goal) }}%
-									</div>
-								</mat-card-title>
-								<div class="ttl_value">{{ recallRate.rate}}%</div>
-								<!-- <div class="ttl_value_left">{{ recallRate.goal}}%</div> -->
-							</mat-card-content>
-						</mat-card>
-						<div class="graph_image" ></div>
+							</div>
+						</div>
 					</div>
 
-					<div fxFlex.lg="33" fxFlex.md="33" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg last"  [ngClass]="">
+					<div fxFlex="calc(33% - 10px)" class="sa_flexbg last mh-matcard mh-matcard-up"  [ngClass]="">
 						<mat-card  class="noPatients sa_hccard">
 							<mat-card-content class="sa_matcard_content">
+								<div class="card-icon"><span class="material-icons">medical_services</span></div>
 								<mat-card-title class="text-center">
-									<img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="treatmentRate.goal < treatmentRate.total">
-									<img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="treatmentRate.goal > treatmentRate.total">
+								<div class="ttl_value">{{ treatmentRate.total}}%</div>
 									Rebook Treatment Rate
-									<div class="change_value">
+								</mat-card-title>
+								
+							<!-- 	<div class="ttl_value_left">${{ treatmentRate.goal}}</div> -->
+							</mat-card-content>
+						</mat-card>
+						<div class="graph_image" >
+							<div class="change_value">
 										<span class="range_icon" *ngIf="treatmentRate.goal < treatmentRate.total">
 											<i class="fa fa-plus"></i>
 										</span>
 										<span class="range_icon" *ngIf="treatmentRate.goal > treatmentRate.total">
 											<i class="fa fa-minus"></i>
 										</span> {{ getdifference(treatmentRate.total, treatmentRate.goal) }}%
-									</div>
-								</mat-card-title>
-								<div class="ttl_value">{{ treatmentRate.total}}%</div>
-							<!-- 	<div class="ttl_value_left">${{ treatmentRate.goal}}</div> -->
-							</mat-card-content>
-						</mat-card>
-						<div class="graph_image" ></div>
+							</div>
+						</div>
 					</div>
 				</div>                                                                                                        
 			</div>
@@ -103,12 +101,52 @@
 
 		<!-- Dentist List -->
 
-				
+<div class="DentistListSecRow mh-table">
+<table mat-table [dataSource]="dentistList" class="mat-elevation-z8">
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="production">
+    <th mat-header-cell *matHeaderCellDef> Production Total </th>
+    <td mat-cell *matCellDef="let element"> ${{element.production.total}} 
+    <span class="goal">Goal: ${{ element.production.goal}}</span> </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="recall">
+    <th mat-header-cell *matHeaderCellDef> Recall Rate </th>
+    <td mat-cell *matCellDef="let element"> {{element.recall.rate}}% 
+    <span class="goal">Goal: ${{ element.recall.goal}}</span>
+</td>
+  </ng-container>
+ <ng-container matColumnDef="treatment">
+    <th mat-header-cell *matHeaderCellDef> Recall Rate </th>
+    <td mat-cell *matCellDef="let element"> {{element.treatment.total}}%
+    <span class="goal">Goal: ${{ element.treatment.goal}}</span>
+     </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
 
 
-						
-				<div class="DentistListSecRow" >
-					<table>
+
+
+
+
+
+
+					<!-- <table class="table">
 						<thead>
 							<tr>
 								<th>Doctor Name</th>
@@ -123,16 +161,13 @@
 								<span class="title">{{ getFirstLetter(dentist.value.name) }}</span>									
 								<span class="name">{{ dentist.value.name }}</span></td>
 							<td>
-								<h5>Production</h5>
 								<span class="gotMark">${{ dentist.value.production.total}}</span>									
 								<span class="goal">Goal: ${{ dentist.value.production.goal}}</span>	</td>
 							<td>
-								<h5>Recall Rate</h5>
 								<span class="gotMark">{{ dentist.value.recall.rate}}%</span>									
 								<span class="goal">Goal: {{ dentist.value.recall.goal}}%</span>	
 							</td>
 							<td>
-									<h5>Prebook Rate</h5>
 									<span class="gotMark">{{ dentist.value.treatment.total}}%</span>								
 									<span class="goal">Goal: {{ dentist.value.treatment.goal}}%</span>	
 							</td>
@@ -140,7 +175,7 @@
 						</tr>
 						</tbody>
 					</table>
-
+ -->
 					<!-- 	<div class="cardsCon"  >
 						<mat-card  class="noPatients sa_hccard">
 							<mat-card-content class="sa_matcard_content">
@@ -166,8 +201,7 @@
 						</mat-card>
 					</div>	 -->						
 				</div>	
-	
-		
+
 
 	</mat-tab>
 	<!-- Dentist Performance Tab -->
@@ -175,24 +209,36 @@
 
 	<!-- Dentist Performance Tab --> 	
 	<mat-tab label="Patient Schedule">
-
+		Tab 2
 	</mat-tab>
 	<!-- Dentist Performance Tab -->
 
 
 	<!-- Dentist Performance Tab --> 	
 	<mat-tab label="Front Desk">
-
+		Tab 3
 	</mat-tab>
 	<!-- Dentist Performance Tab -->
 
 
 	<!-- Dentist Performance Tab --> 	
-	<mat-tab label="Actions">
+	<mat-tab label="Reminders">
 
+Tab 4
 	</mat-tab>
 	<!-- Dentist Performance Tab -->
 
+
+
+	<mat-tab label="Followups">
+		Tab 5
+	</mat-tab>
+	<!-- Dentist Performance Tab -->
+
+
+
+
 </mat-tab-group>
 
-</div></div>
+
+</div>

@@ -23,12 +23,13 @@ export class ClinicSettingsComponent implements OnInit {
           public contactName =0;
           // public chartData: any[] = [];
           public address:any = {};
+          public post_op_calls:any = '';
           public practice_size:any ={};
           options: FormGroup;
           public xero_link;
           public xeroConnect = false;
           public xeroOrganization='';
-          public workingDays = {sunday: false,monday: false,tuesday: false,wednesday: false,thursday: false,friday: false,saturday: false};
+          public workingDays:any = {sunday: false,monday: false,tuesday: false,wednesday: false,thursday: false,friday: false,saturday: false};       
   constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
    this.notifier = notifierService;
     this.options = fb.group({
@@ -52,7 +53,8 @@ export class ClinicSettingsComponent implements OnInit {
       clinicName: [null, Validators.compose([Validators.required])],
       contactName: [null, Validators.compose([Validators.required])],
       address: [null, Validators.compose([Validators.required])],
-      practice_size: [null, Validators.compose([Validators.required])]
+      practice_size: [null, Validators.compose([Validators.required])],
+      post_op_calls: [null, Validators.compose([Validators.required])]
     });
   }
 
@@ -78,8 +80,8 @@ export class ClinicSettingsComponent implements OnInit {
         this.contactName = res.data[0].contactName;
         this.address = res.data[0].address;
         this.practice_size = res.data[0].practice_size;
-        this.workingDays = JSON.parse(res.data[0].days);
-        console.log(this.workingDays,'&&&&&');
+        this.post_op_calls = res.data[0].post_op_calls;        
+        this.workingDays = JSON.parse(res.data[0].days);        
        }
         else if(res.status == '401'){
             this._cookieService.put("username",'');
@@ -99,8 +101,9 @@ export class ClinicSettingsComponent implements OnInit {
   this.contactName = this.form.value.contactName;
   this.address = this.form.value.address;
   this.practice_size = this.form.value.practice_size;
+  this.post_op_calls = this.form.value.post_op_calls;
   let days = JSON.stringify(this.workingDays);
-   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size,days ).subscribe((res) => {
+   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size,days,this.post_op_calls ).subscribe((res) => {
        if(res.message == 'success'){
           this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
        }
@@ -121,8 +124,7 @@ export class ClinicSettingsComponent implements OnInit {
     this.clinicSettingsService.getXeroLink(this.id).subscribe((res) => {
        if(res.message == 'success'){
         this.xero_link = res.data;
-       }
-        else if(res.status == '401'){
+       } else if(res.status == '401'){
             this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("token", '');
@@ -164,7 +166,6 @@ export class ClinicSettingsComponent implements OnInit {
         this.xeroConnect = false;
            this.xeroOrganization = ''; 
           this.disconnectXero();
-
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

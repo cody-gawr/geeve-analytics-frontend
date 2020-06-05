@@ -39,7 +39,7 @@ export class ClinicSettingsService {
         );
     }
        // Get ClinicSettings
-    updateClinicSettings(clinic_id, name, address, contact_name, practice_size,workingDays, user_id = '23', token = this._cookieService.get("token")): Observable<any> {
+    updateClinicSettings(clinic_id, name, address, contact_name, practice_size,workingDays,postOpCalls, user_id = '23', token = this._cookieService.get("token")): Observable<any> {
 
         console.log(workingDays,'***');
     const formData = new FormData();
@@ -53,6 +53,7 @@ export class ClinicSettingsService {
     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('token', token);
     formData.append('days', workingDays);
+    formData.append('post_op_calls', postOpCalls);
     return this.http.post(this.apiUrl +"/Practices/update/", formData)
         .pipe(map((response: Response) => {
                         return response;
