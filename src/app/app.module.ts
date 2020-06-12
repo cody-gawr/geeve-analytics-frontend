@@ -32,6 +32,7 @@ import { DentistService } from './dentist/dentist.service';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
+import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 const customNotifierOptions: NotifierOptions = {
   position: {
     horizontal: {
@@ -87,6 +88,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppBlankComponent,
     AppSidebarComponent,
     AppHeaderrightComponent,
+    LostOpportunityComponent,
   ],
   imports: [
     BrowserModule,

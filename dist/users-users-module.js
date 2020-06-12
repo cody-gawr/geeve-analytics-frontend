@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Users  <button class=\"sa-pull-right mat-raised-button mat-gray\" mat-raised-button (click)=\"openDialog()\"disabled =\"true \">Add User</button></mat-card-title>\n\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter User name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n       <ngx-datatable-column name=\"Id\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Id</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span>\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Username\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>User Name</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'username')\" *ngIf=\"!editing[rowIndex + '-username'] && value != ''\">\n            {{value}}\n          </span>\n           <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'username')\" *ngIf=\"!editing[rowIndex + '-username'] && value == ''\">\n            Enter Username\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'username', rowIndex)\" *ngIf=\"editing[rowIndex+ '-username']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n       <ngx-datatable-column name=\"Email\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'email')\" *ngIf=\"!editing[rowIndex + '-email'] && value != ''\">\n            {{value}}\n          </span>\n           <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'email')\" *ngIf=\"!editing[rowIndex + '-email'] && value == ''\">\n            Enter Email\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'email', rowIndex)\" *ngIf=\"editing[rowIndex+ '-email']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"usertype\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>User Type</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'usertype')\" *ngIf=\"!editing[rowIndex + '-usertype']\">\n          &nbsp;&nbsp;  {{value}}  \n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'usertype', rowIndex)\" *ngIf=\"editing[rowIndex+ '-usertype']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Created\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n            {{value| date}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"id\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Actions</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\" style=\"width:266px!important;\">\n       \n          <button class=\"action_btn danger\" mat-menu-item (click) = \"deleteUsers(rowIndex)\">\n         <i class=\"ti-trash text-danger m-r-10\"></i></button>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
+module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Users  <!-- <button class=\"sa-pull-right mat-raised-button mat-gray\" mat-raised-button (click)=\"openDialog()\">Add User</button> --></mat-card-title>\n\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter User name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n       <ngx-datatable-column name=\"Sr\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Sr</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span>\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Username\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>User Name</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span >\n            {{value}}\n          </span>\n           <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'username')\" *ngIf=\"!editing[rowIndex + '-username'] && value == ''\">\n            Enter Username\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'username', rowIndex)\" *ngIf=\"editing[rowIndex+ '-username']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n       <ngx-datatable-column name=\"Email\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n            {{value}}\n          </span>\n           <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'email')\" *ngIf=\"!editing[rowIndex + '-email'] && value == ''\">\n            Enter Email\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'email', rowIndex)\" *ngIf=\"editing[rowIndex+ '-email']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n             <ngx-datatable-column name=\"Plans\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'email', rowIndex)\" *ngIf=\"editing[rowIndex+ '-email']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"usertype\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>User Type</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n          &nbsp;&nbsp;  {{value}}  \n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'usertype', rowIndex)\" *ngIf=\"editing[rowIndex+ '-usertype']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Created\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span>\n            {{value| date}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"id\">\n         <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Actions</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\" style=\"width:266px!important;\">\n       \n          <button class=\"action_btn danger\" mat-menu-item (click) = \"deleteUsers(rowIndex)\">\n         <i class=\"ti-trash text-danger m-r-10\"></i></button>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
 
 /***/ }),
 
@@ -18,7 +18,7 @@ module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Us
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".lds-roller div::after {\n  background: black; }\n\n.spinner {\n  position: relative;\n  background: none; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi92YXIvd3d3L2h0bWwvamVldmVhbmFseXRpY3MvY2xpZW50Mi9zcmMvYXBwL3VzZXJzL3VzZXJzLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksa0JBQWlCLEVBQ3BCOztBQUNEO0VBQ0ksbUJBQWtCO0VBQ2xCLGlCQUFnQixFQUNuQiIsImZpbGUiOiJzcmMvYXBwL3VzZXJzL3VzZXJzLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmxkcy1yb2xsZXIgZGl2OjphZnRlciB7XG4gICAgYmFja2dyb3VuZDogYmxhY2s7XG59XG4uc3Bpbm5lciB7XG4gICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgIGJhY2tncm91bmQ6IG5vbmU7XG59Il19 */"
+module.exports = ".lds-roller div::after {\n  background: black; }\n\n.spinner {\n  position: relative;\n  background: none; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvdXNlcnMvQzpcXHhhbXBwXFxodGRvY3NcXGplZXZlYW5hbHl0aWNzXFxjbGllbnQyL3NyY1xcYXBwXFx1c2Vyc1xcdXNlcnMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxrQkFBaUIsRUFDcEI7O0FBQ0Q7RUFDSSxtQkFBa0I7RUFDbEIsaUJBQWdCLEVBQ25CIiwiZmlsZSI6InNyYy9hcHAvdXNlcnMvdXNlcnMuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubGRzLXJvbGxlciBkaXY6OmFmdGVyIHtcbiAgICBiYWNrZ3JvdW5kOiBibGFjaztcbn1cbi5zcGlubmVyIHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgYmFja2dyb3VuZDogbm9uZTtcbn0iXX0= */"
 
 /***/ }),
 
@@ -73,7 +73,7 @@ var UsersComponent = /** @class */ (function () {
         this.temp = data.slice();
         this.loadingIndicator = true;
         this.reorderable = true;
-        this.columns = [{ prop: 'id' }, { name: 'username' }, { name: 'email' }, { name: 'user_type' }, { name: 'created' }];
+        this.columns = [{ prop: 'sr' }, { name: 'username' }, { name: 'email' }, { name: 'plan' }, { name: 'user_type' }, { name: 'created' }];
         this.rows = data;
         this.temp = data.slice();
         setTimeout(function () {
@@ -82,8 +82,11 @@ var UsersComponent = /** @class */ (function () {
     }
     UsersComponent.prototype.ngAfterViewInit = function () {
         this.getUsers();
-        $('#title').html('Users');
-        $('.header_filters').hide();
+        $('#title').html('Registered Clinic Owners');
+        // $('.external_clinic').hide();
+        //  $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('hide_header');
+        // $('.header_filters').hide();
     };
     UsersComponent.prototype.getUsers = function () {
         var _this = this;
@@ -277,6 +280,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -291,23 +295,32 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var UsersService = /** @class */ (function () {
-    function UsersService(http, _cookieService) {
+    function UsersService(http, _cookieService, router) {
+        var _this = this;
         this.http = http;
         this._cookieService = _cookieService;
+        this.router = router;
         this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
         //append headers
         this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        this.router.events.subscribe(function (event) {
+            if (_this._cookieService.get("user_type") != '1' && _this._cookieService.get("user_type") != '2')
+                _this.token_id = _this._cookieService.get("childid");
+            else
+                _this.token_id = _this._cookieService.get("userid");
+        });
     }
     // Get Dentist
     UsersService.prototype.getUsers = function (user_id, clinic_id, token) {
         if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/Users/getPracticeOwners?token=" + this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl + "/Users/getPracticeOwners?token=" + this._cookieService.get("token") + "&token_id=" + this.token_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -318,6 +331,7 @@ var UsersService = /** @class */ (function () {
         var formData = new FormData();
         formData.append('id', user_id);
         formData.append('token', token);
+        formData.append('token_id', this.token_id);
         return this.http.post(this.apiUrl + "/Users/delete", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
@@ -331,6 +345,7 @@ var UsersService = /** @class */ (function () {
         formData.append(column, value);
         formData.append('user_id', this._cookieService.get("userid"));
         formData.append('clinic_id', '1');
+        formData.append('token_id', this.token_id);
         formData.append('token', token);
         return this.http.post(this.apiUrl + "/Users/edit/", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
@@ -344,6 +359,7 @@ var UsersService = /** @class */ (function () {
         formData.append('clinicName', name);
         formData.append('address', address);
         formData.append('contactName', contact_name);
+        formData.append('token_id', this.token_id);
         formData.append('user_id', this._cookieService.get("userid"));
         formData.append('token', token);
         return this.http.post(this.apiUrl + "/Practices/add/", formData)
@@ -353,7 +369,7 @@ var UsersService = /** @class */ (function () {
     };
     UsersService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
     ], UsersService);
     return UsersService;
 }());

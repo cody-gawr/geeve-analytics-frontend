@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Dentist  <button class=\"sa-pull-right mat-raised-button mat-gray\" mat-raised-button (click)=\"openDialog()\">Add Dentist</button></mat-card-title>\n\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter dentist name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n            <ngx-datatable-column name=\"Sr\">\n                <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Provider Id</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span title=\"Double click to edit\" (dblclick)=\"editing[rowIndex + '-providerId'] = true\" *ngIf=\"!editing[rowIndex + '-providerId']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'providerId', rowIndex)\" *ngIf=\"editing[rowIndex+ '-providerId']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Name\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'name')\" *ngIf=\"!editing[rowIndex + '-name']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'name', rowIndex)\" *ngIf=\"editing[rowIndex+ '-name']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Action\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n           <button class=\"action_btn danger\" mat-menu-item (click) = \"deleteDentists(rowIndex)\">\n         <i class=\"ti-trash text-danger m-r-10\"></i></button>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
+module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Dentist  <button class=\"sa-pull-right mat-raised-button mat-gray\" mat-raised-button (click)=\"openDialog()\">Add Dentist</button></mat-card-title>\n <input type=\"button\" id=\"clinic_initiate\" (click) = \"initiate_clinic()\"  [style.display]=\"'none'\">\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter dentist name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material dentist-datatable' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n            <ngx-datatable-column name=\"Sr\">\n                <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Sr</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span title=\"Double click to edit\" (dblclick)=\"editing[rowIndex + '-providerId'] = true\" *ngIf=\"!editing[rowIndex + '-providerId']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'providerId', rowIndex)\" *ngIf=\"editing[rowIndex+ '-providerId']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"providerId\">\n                <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Provider Id</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          <span title=\"Double click to edit\" (dblclick)=\"editing[rowIndex + '-providerId'] = true\" *ngIf=\"!editing[rowIndex + '-providerId']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'providerId', rowIndex)\" *ngIf=\"editing[rowIndex+ '-providerId']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Name\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" (dblclick)=\"enableEditing(rowIndex,'name')\" *ngIf=\"!editing[rowIndex + '-name']\">\n            {{value}}\n          </span>\n          <input autofocus (blur)=\"updateValue($event, 'name', rowIndex)\" *ngIf=\"editing[rowIndex+ '-name']\" type=\"text\" [value]=\"value\"\n          />\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Action\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n           <button class=\"action_btn danger\" mat-menu-item (click) = \"deleteDentists(rowIndex)\">\n         <i class=\"ti-trash text-danger m-r-10\"></i></button>\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
 
 /***/ }),
 
@@ -18,7 +18,7 @@ module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>De
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".lds-roller div::after {\n  background: black; }\n\n.spinner {\n  position: relative;\n  background: none; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi92YXIvd3d3L2h0bWwvamVldmVhbmFseXRpY3MvY2xpZW50Mi9zcmMvYXBwL2RlbnRpc3QvZGVudGlzdC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLGtCQUFpQixFQUNwQjs7QUFDRDtFQUNJLG1CQUFrQjtFQUNsQixpQkFBZ0IsRUFDbkIiLCJmaWxlIjoic3JjL2FwcC9kZW50aXN0L2RlbnRpc3QuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubGRzLXJvbGxlciBkaXY6OmFmdGVyIHtcbiAgICBiYWNrZ3JvdW5kOiBibGFjaztcbn1cbi5zcGlubmVyIHtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7IFxuICAgIGJhY2tncm91bmQ6IG5vbmU7XG59Il19 */"
+module.exports = ".lds-roller div::after {\n  background: black; }\n\n.spinner {\n  position: relative;\n  background: none; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZGVudGlzdC9DOlxceGFtcHBcXGh0ZG9jc1xcamVldmVhbmFseXRpY3NcXGNsaWVudDIvc3JjXFxhcHBcXGRlbnRpc3RcXGRlbnRpc3QuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxrQkFBaUIsRUFDcEI7O0FBQ0Q7RUFDSSxtQkFBa0I7RUFDbEIsaUJBQWdCLEVBQ25CIiwiZmlsZSI6InNyYy9hcHAvZGVudGlzdC9kZW50aXN0LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmxkcy1yb2xsZXIgZGl2OjphZnRlciB7XG4gICAgYmFja2dyb3VuZDogYmxhY2s7XG59XG4uc3Bpbm5lciB7XG4gICAgcG9zaXRpb246IHJlbGF0aXZlOyBcbiAgICBiYWNrZ3JvdW5kOiBub25lO1xufSJdfQ== */"
 
 /***/ }),
 
@@ -57,11 +57,22 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 
 
 var DialogOverviewExampleDialogComponent = /** @class */ (function () {
+    // public form: FormGroup;
     function DialogOverviewExampleDialogComponent(dialogRef, data) {
         this.dialogRef = dialogRef;
         this.data = data;
         this.clinic_id = {};
     }
+    // this.form = this.fb.group({
+    //     provider_id: [null, Validators.compose([Validators.required])],
+    //     dentist_name: [null, Validators.compose([Validators.required])]
+    //   });
+    DialogOverviewExampleDialogComponent.prototype.save = function (data) {
+        $('.mat-form-control').click();
+        if (data.provider_id != undefined && data.dentist_name != undefined) {
+            this.dialogRef.close(data);
+        }
+    };
     DialogOverviewExampleDialogComponent.prototype.onNoClick = function () {
         this.dialogRef.close();
     };
@@ -76,7 +87,7 @@ var DialogOverviewExampleDialogComponent = /** @class */ (function () {
     return DialogOverviewExampleDialogComponent;
 }());
 
-var data = __webpack_require__(/*! assets/company.json */ "./src/assets/company.json");
+var data = [];
 var DentistComponent = /** @class */ (function () {
     function DentistComponent(dentistService, dialog, route, _cookieService, router) {
         var _this = this;
@@ -91,7 +102,7 @@ var DentistComponent = /** @class */ (function () {
         this.temp = data.slice();
         this.loadingIndicator = true;
         this.reorderable = true;
-        this.columns = [{ prop: 'sr' }, { name: 'name' }, { name: 'Action' }];
+        this.columns = [{ prop: 'sr' }, { prop: 'providerId' }, { name: 'name' }, { name: 'Action' }];
         this.clinic_id = this.route.snapshot.paramMap.get("id");
         this.rows = data;
         this.temp = data.slice();
@@ -100,11 +111,18 @@ var DentistComponent = /** @class */ (function () {
         }, 1500);
     }
     DentistComponent_1 = DentistComponent;
+    DentistComponent.prototype.initiate_clinic = function () {
+        var val = $('#currentClinic').attr('cid');
+        this.clinic_id = val;
+        this.getDentists();
+    };
     DentistComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
+        $('.header_filters').removeClass('hide_header');
+        $('.header_filters').removeClass('flex_direct_mar');
         this.route.params.subscribe(function (params) {
             _this.clinic_id = _this.route.snapshot.paramMap.get("id");
-            _this.getDentists();
+            _this.initiate_clinic();
             $('.external_clinic').show();
             $('.dentist_dropdown').hide();
             $('.header_filters').addClass('flex_direct_mar');
@@ -114,7 +132,8 @@ var DentistComponent = /** @class */ (function () {
     DentistComponent.prototype.openDialog = function () {
         var _this = this;
         var dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-            width: '250px',
+            width: '300px',
+            height: '300px',
             data: { dentist_name: this.dentist_name, provider_id: this.provider_id }
         });
         dialogRef.afterClosed().subscribe(function (result) {
@@ -134,7 +153,6 @@ var DentistComponent = /** @class */ (function () {
     };
     DentistComponent.prototype.getDentists = function () {
         var _this = this;
-        console.log(this.rows);
         this.dentistService.getDentists(this.clinic_id).subscribe(function (res) {
             if (res.message == 'success') {
                 _this.rows = res.data;
@@ -324,7 +342,7 @@ var DentistRoutes = [
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 mat-dialog-title>Add Dentist</h1>\n<div mat-dialog-content>\n\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.provider_id\" placeholder=\"Provider ID\">\n  </mat-form-field>\n\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.dentist_name\" placeholder=\"Dentist Name\">\n  </mat-form-field>\n</div>\n<div mat-dialog-actions>\n  <button mat-button [mat-dialog-close]=\"data\" tabindex=\"2\" class=\"mat-raised-button mat-dc\">Ok</button>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" class=\"mat-raised-button mat-gray\">No Thanks</button>\n</div>"
+module.exports = "<h1 mat-dialog-title>Add Dentist</h1>\n<div mat-dialog-content>\n\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.provider_id\" class=\"mat-form-control\" required=\"true\" placeholder=\"Provider ID\" required>\n  </mat-form-field>\n\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"data.dentist_name\" class=\"mat-form-control\" required=\"true\" placeholder=\"Dentist Name\" required>\n  </mat-form-field>\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"save(data)\" tabindex=\"2\" class=\"mat-raised-button mat-dc\">Ok</button>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" class=\"mat-raised-button mat-gray\">No Thanks</button>\n</div>"
 
 /***/ })
 

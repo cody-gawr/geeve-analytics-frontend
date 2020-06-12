@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
+import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 import { AuthGuard } from './auth/authguard.service';
 
 export const AppRoutes: Routes = [
@@ -10,6 +11,7 @@ export const AppRoutes: Routes = [
     component: FullComponent,
     children: [
       {
+      
         path: '',
         redirectTo: '/home',
         pathMatch: 'full'
@@ -63,6 +65,11 @@ export const AppRoutes: Routes = [
       {
         path: 'clinic-goals',
         loadChildren: './clinic-goals/clinic-goals.module#ClinicGoalsModule',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'lost-opportunity',
+        component: LostOpportunityComponent,
         canActivate: [AuthGuard]
       },
       {

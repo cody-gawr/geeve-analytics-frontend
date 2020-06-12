@@ -5372,8 +5372,8 @@ window.global = window;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/jeeveanalytics/client2/src/polyfills.ts */"./src/polyfills.ts");
-module.exports = __webpack_require__(/*! /var/www/html/jeeveanalytics/client2/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/jit-polyfills.js */"./node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/jit-polyfills.js");
+__webpack_require__(/*! C:\xampp\htdocs\jeeveanalytics\client2\src\polyfills.ts */"./src/polyfills.ts");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\jeeveanalytics\client2\node_modules\@angular-devkit\build-angular\src\angular-cli-files\models\jit-polyfills.js */"./node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/jit-polyfills.js");
 
 
 /***/ })

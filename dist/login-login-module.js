@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sa_login_blur\" style=\"background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; height: 100vh;\ndisplay: flex;\nbackground-size: cover;\nalign-items: center;\"></div>\n<img class=\"login_abso_logo\" src=\"../assets/images/logo-white.png\">\n<div class=\"login-register\" style=\"background-image:url(assets/images/background/login-register.jpg);\">\n    <div class=\"login-register-box\">\n        <mat-card>\n            <mat-card-content>\n                <form [formGroup]=\"form\" (ngSubmit)=\"onSubmit()\">\n                    <div class=\"text-center\">\n                        <img alt=\"homepage\" src=\"../assets/images/logo-icon.gif\">\n                        <h4 class=\"m-t-0\">Login to Jeeve Analytics</h4>\n                    </div>\n\n                    <div fxLayout=\"row wrap\">\n                        <!-- col full-->\n                        <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"dc_input\">\n                            <mat-form-field>\n                                <input matInput placeholder=\"Email\" [formControl]=\"form.controls['uname']\">\n                            </mat-form-field>\n                            <small *ngIf=\"form.controls['uname'].hasError('required') && form.controls['uname'].touched\" class=\"text-danger support-text\">Email is required.</small>\n                        </div>\n                        <!-- col full-->\n                        <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"dc_input\">\n                            <mat-form-field>\n                                <input matInput type=\"password\" placeholder=\"Password\" [formControl]=\"form.controls['password']\">\n                            </mat-form-field>\n                            <small *ngIf=\"form.controls['password'].hasError('required') && form.controls['password'].touched\" class=\"text-danger support-text\">Password is required.</small>\n\n                        </div>\n                        <!-- col half-->\n                       <!--  <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"50\">\n                            <mat-checkbox color=\"warn\">Remember me</mat-checkbox>\n                        </div> -->\n                        <!-- col half-->\n                      <!--   <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"50\" class=\"text-right\">\n                            <a [routerLink]=\"['/authentication/forgot']\" class=\"link\">Forgot pwd?</a>\n                        </div> -->\n                        <!-- col full-->\n                        <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n                         <small *ngIf=\"errorLogin\" class=\"text-danger support-text\">Incorrect Email or Password.</small>\n                            <button mat-raised-button color=\"dc\" class=\"btn-block btn-lg m-t-20 m-b-20\" type=\"submit\" [disabled]=\"!form.valid\">Login</button>\n                        </div>\n                        <!-- col full-->\n                      <!--   <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"text-center\">\n                            <span>Don't have an account?\n                                <a [routerLink]=\"['/authentication/register']\" class=\"text-info link\">Register</a>\n                            </span>\n                        </div> -->\n                    </div>\n                </form>\n            </mat-card-content>\n        </mat-card>\n    </div>\n</div>"
+module.exports = "<div class=\"sa_login_blur\" style=\"background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; height: 100vh;\ndisplay: flex;\nbackground-size: cover;\nalign-items: center;\"></div>\n<img class=\"login_abso_logo\" src=\"../assets/images/logo-white.png\">\n<div class=\"login-register\" style=\"background-image:url(assets/images/background/login-register.jpg);\">\n    <div class=\"login-register-box\">\n        <mat-card>\n            <mat-card-content>\n                <form [formGroup]=\"form\" (ngSubmit)=\"onSubmit()\">\n                    <div class=\"text-center\">\n                        <img alt=\"homepage\" src=\"../assets/images/logo-icon.gif\">\n                        <h4 class=\"m-t-0\">Login to Jeeve Analytics</h4>\n                    </div>\n\n                    <div fxLayout=\"row wrap\">\n                        <!-- col full-->\n                        <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"dc_input\">\n                            <mat-form-field>\n                                <input matInput placeholder=\"Email\" [formControl]=\"form.controls['uname']\">\n                            </mat-form-field>\n                            <small *ngIf=\"form.controls['uname'].hasError('required') && form.controls['uname'].touched\" class=\"text-danger support-text\">Email is required.</small>\n                        </div>\n                        <!-- col full-->\n                        <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"dc_input\">\n                            <mat-form-field>\n                                <input matInput type=\"password\" placeholder=\"Password\" [formControl]=\"form.controls['password']\">\n                            </mat-form-field>\n                            <small *ngIf=\"form.controls['password'].hasError('required') && form.controls['password'].touched\" class=\"text-danger support-text\">Password is required.</small>\n\n                        </div>\n                          <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n                         <small *ngIf=\"errorLogin\" class=\"text-danger support-text\">Incorrect Email or Password.</small>\n                     </div>\n                        <!-- col half-->\n                         <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"50\">\n                            <mat-checkbox color=\"warn\">Remember me</mat-checkbox>\n                        </div> \n                        <!-- col half-->\n                        <div fxFlex.gt-sm=\"50\" fxFlex.gt-xs=\"50\" class=\"text-right\">\n                            <a [routerLink]=\"['/authentication/forgot']\" class=\"link\">Forgot Password?</a>\n                        </div> \n                        <!-- col full-->\n                      \n                     <div  fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\">\n                            <button mat-raised-button color=\"dc\" class=\"btn-block btn-lg m-t-20 m-b-20\" type=\"submit\" [disabled]=\"!form.valid\">Login</button>\n                        </div>\n                        <!-- col full-->\n                        <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"text-center\">\n                            <span>Don't have an account?\n                                <a [routerLink]=\"['/subscription']\" class=\"text-info link\">Register</a>\n                            </span>\n                        </div>\n                    </div>\n                </form>\n            </mat-card-content>\n        </mat-card>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -76,19 +76,46 @@ var LoginComponent = /** @class */ (function () {
                 datares['email'] = res.data.data.email;
                 datares['token'] = res.data.data.token;
                 datares['userid'] = res.data.data.id;
+                datares['parentid'] = res.data.data.parent_id;
                 datares['user_type'] = res.data.data.user_type;
+                datares['user_image'] = res.data.data.user_image;
+                datares['login_status'] = res.data.data.status;
+                datares['display_name'] = res.data.data.display_name;
+                datares['dentistid'] = res.data.data.dentist_id;
                 var opts = {
                     expires: new Date('2030-07-19')
                 };
+                _this._cookieService.put("userid", '', opts);
+                _this._cookieService.put("childid", '', opts);
+                _this._cookieService.put("dentistid", '', opts);
                 _this._cookieService.put("username", datares['username'], opts);
                 _this._cookieService.put("email", datares['email'], opts);
                 _this._cookieService.put("token", datares['token'], opts);
                 _this._cookieService.put("user_type", datares['user_type'], opts);
-                _this._cookieService.put("userid", datares['userid'], opts);
-                if (datares['user_type'] == '1')
+                _this._cookieService.put("login_status", datares['login_status'], opts);
+                _this._cookieService.put("display_name", datares['display_name'], opts);
+                _this._cookieService.put("user_image", datares['user_image'], opts);
+                if (datares['login_status'] == '5') {
+                    _this.router.navigate(['/profile-settings']);
+                    _this._cookieService.put("userid", datares['userid'], opts);
+                }
+                else if (datares['user_type'] == '1') {
                     _this.router.navigate(['/users']);
-                else if (datares['user_type'] == '2')
-                    _this.router.navigate(['/dashboards/cliniciananalysis/1']);
+                    _this._cookieService.put("userid", datares['userid'], opts);
+                }
+                else if (datares['user_type'] == '2') {
+                    _this._cookieService.put("userid", datares['userid'], opts);
+                    // if(datares['login_status'] == 0)
+                    //  window.location.href = '/assets/stepper/index.html';
+                    //  else
+                    _this.router.navigate(['/dashboards/healthscreen']);
+                }
+                else {
+                    _this._cookieService.put("userid", datares['parentid'], opts);
+                    _this._cookieService.put("childid", datares['userid'], opts);
+                    _this._cookieService.put("dentistid", datares['dentistid'], opts);
+                    _this.router.navigate(['/profile-settings']);
+                }
             }
             else if (res.message == 'error') {
                 _this.errorLogin = true;
@@ -198,59 +225,6 @@ var LoginRoutes = [
         }
     }
 ];
-
-
-/***/ }),
-
-/***/ "./src/app/login/login.service.ts":
-/*!****************************************!*\
-  !*** ./src/app/login/login.service.ts ***!
-  \****************************************/
-/*! exports provided: LoginService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginService", function() { return LoginService; });
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var LoginService = /** @class */ (function () {
-    function LoginService(http) {
-        this.http = http;
-        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].apiUrl;
-    }
-    // Items Predictor Analysis 
-    LoginService.prototype.login = function (uname, password) {
-        var formData = new FormData();
-        formData.append('email', uname);
-        formData.append('password', password);
-        return this.http.post(this.apiUrl + "/users/applogin", formData)
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
-            return response;
-        }));
-    };
-    LoginService = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])
-    ], LoginService);
-    return LoginService;
-}());
-
 
 
 /***/ })

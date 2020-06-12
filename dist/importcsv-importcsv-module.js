@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-card>\n    <mat-card-content>\n        <mat-card-title>Import CSV<input type='button'  class=\"sa-pull-right mat-raised-button mat-gray\" value=\"Process Files\" (click) = \"processAllFiles()\"><img alt=\"homepage\" src=\"assets/images/loading-gif-transparent-4.gif\" height=\"20px\" width=\"20px\" class=\"ng-hide\" id=\"processLoader\"> &nbsp;&nbsp;&nbsp;  <i class=\"fas fa-info-circle text-inspinia m-r-10\" matTooltip=\"File to be uploaded should have the same defined name.\"></i></mat-card-title>\n        <span class=\"error\" [style.display]=\"'none'\"></span>\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter file name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n            <ngx-datatable-column name=\"Name\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          {{value}}\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Date\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" >\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Sample\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n         <a class=\"mat-raised-button sa_smtable_btn\" href='{{homeUrl}}../src/assets/{{value}}.csv'>Sample CSV</a>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Status\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n        <span class=\"label label-red\"  *ngIf=\"value == 'Processed'\">{{value}}</span>\n        <span class=\"label label-danger\"  *ngIf=\"value == 'Pending'\">{{value}}</span>\n        <span class=\"label label-info\"  *ngIf=\"value == 'In Progress'\">{{value}}</span>\n        <span class=\"label label-light-success\"  *ngIf=\"value == 'No File Uploaded  '\">{{value}}</span>\n\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"id\">\n        <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Actions</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n           <input id=\"file-upload{{value}}\" class=\"ng-hide\" #fileInput\n                         type=\"file\"\n                         accept=\"csv/*\"\n                         (change)=\"processFile(fileInput,[rowIndex],'name')\" >\n                        <span *ngIf=\"show\">Uploading File...</span>\n            <label for=\"file-upload{{value}}\" class=\"mat-raised-button sa_smtable_btn mat-dc\">Choose Files</label>\n\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
+module.exports = " <input type=\"button\" id=\"clinic_initiate\" (click) = \"initiate_clinic()\"  [style.display]=\"'none'\">\n\n<mat-card>\n    <mat-card-content>\n        <mat-card-title class=\"ImportCSV-outer\"><div class=\"ImportCSV\">Import CSV<img alt=\"homepage\" src=\"assets/images/loading-gif-transparent-4.gif\" height=\"20px\" width=\"20px\" class=\"ng-hide\" id=\"processLoader\"> &nbsp;&nbsp;&nbsp;  <i class=\"fas fa-info-circle text-inspinia m-r-10\" matTooltip=\"File to be uploaded should have the same defined name.\"></i></div> <input type='button'  class=\"sa-pull-right mat-raised-button mat-gray\" value=\"Process Files\" (click) = \"processAllFiles()\"></mat-card-title>\n        <span class=\"error\" [style.display]=\"'none'\"></span>\n        <mat-form-field>\n            <input matInput type='text' class=\"form-control\" placeholder='Type to filter file name...' (keyup)='updateFilter($event)'\n            />\n        </mat-form-field>\n        <ngx-datatable #table class='material responsive-datatable' [columns]=\"columns\" [columnMode]=\"'force'\" [headerHeight]=\"50\" [footerHeight]=\"50\"\n            [rowHeight]=\"'auto'\" [limit]=\"10\" [rows]='rows'>\n            <ngx-datatable-column name=\"Name\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-value=\"value\" let-row=\"row\">\n          {{value}}\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Date\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n          <span title=\"Double click to edit\" >\n            {{value}}\n          </span>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Sample\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n         <a class=\"mat-raised-button sa_smtable_btn\" href='{{homeUrl}}../src/assets/{{value}}.csv'>Sample CSV</a>\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"Status\">\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n        <span class=\"label label-red\"  *ngIf=\"value == 'Processed'\">{{value}}</span>\n        <span class=\"label label-danger\"  *ngIf=\"value == 'Pending'\">{{value}}</span>\n        <span class=\"label label-info\"  *ngIf=\"value == 'In Progress'\">{{value}}</span>\n        <span class=\"label label-light-success\"  *ngIf=\"value == 'No File Uploaded  '\">{{value}}</span>\n\n        </ng-template>\n      </ngx-datatable-column>\n      <ngx-datatable-column name=\"id\">\n        <ng-template let-column=\"column\" ngx-datatable-header-template>\n        <span>Actions</span>\n      </ng-template>\n        <ng-template ngx-datatable-cell-template let-rowIndex=\"rowIndex\" let-row=\"row\" let-value=\"value\">\n           <input id=\"file-upload{{value}}\" class=\"ng-hide\" #fileInput\n                         type=\"file\"\n                         accept=\"csv/*\"\n                         (change)=\"processFile(fileInput,[rowIndex],'name')\" >\n                        <span *ngIf=\"show\">Uploading File...</span>\n            <label for=\"file-upload{{value}}\" class=\"mat-raised-button sa_smtable_btn mat-dc\">Choose Files</label>\n\n        </ng-template>\n      </ngx-datatable-column>\n        </ngx-datatable>\n    </mat-card-content>\n</mat-card>"
 
 /***/ }),
 
@@ -208,11 +208,18 @@ var ImportcsvComponent = /** @class */ (function () {
         }, 1500);
     }
     ImportcsvComponent_1 = ImportcsvComponent;
+    ImportcsvComponent.prototype.initiate_clinic = function () {
+        var val = $('#currentClinic').attr('cid');
+        this.clinic_id = val;
+        this.getLogs();
+    };
     ImportcsvComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
+        $('.header_filters').removeClass('hide_header');
+        $('.header_filters').removeClass('flex_direct_mar');
+        this.initiate_clinic();
         this.route.params.subscribe(function (params) {
             _this.clinic_id = _this.route.snapshot.paramMap.get("id");
-            _this.getLogs();
             $('#title').html('Data Upload');
             $('.external_clinic').show();
             $('.dentist_dropdown').hide();
@@ -374,15 +381,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _demo_material_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../demo-material-module */ "./src/app/demo-material-module.ts");
 /* harmony import */ var _angular_cdk_table__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/cdk/table */ "./node_modules/@angular/cdk/esm5/table.es5.js");
-/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ng2-charts */ "./node_modules/ng2-charts/index.js");
-/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ng2_charts__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ng2-charts */ "./node_modules/ng2-charts/fesm5/ng2-charts.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _angular_flex_layout__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/flex-layout */ "./node_modules/@angular/flex-layout/esm5/flex-layout.es5.js");
 /* harmony import */ var _importcsv_routing__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./importcsv.routing */ "./src/app/importcsv/importcsv.routing.ts");
 /* harmony import */ var ng_chartist__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ng-chartist */ "./node_modules/ng-chartist/dist/ng-chartist.js");
 /* harmony import */ var ng_chartist__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(ng_chartist__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @swimlane/ngx-charts */ "./node_modules/@swimlane/ngx-charts/release/index.js");
-/* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @swimlane/ngx-charts */ "./node_modules/@swimlane/ngx-charts/release/esm.js");
 /* harmony import */ var _importcsv_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./importcsv.service */ "./src/app/importcsv/importcsv.service.ts");
 /* harmony import */ var _importcsv_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./importcsv.component */ "./src/app/importcsv/importcsv.component.ts");
 /* harmony import */ var _swimlane_ngx_datatable__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @swimlane/ngx-datatable */ "./node_modules/@swimlane/ngx-datatable/release/index.js");
@@ -482,6 +487,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -496,11 +502,20 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ImportcsvService = /** @class */ (function () {
-    function ImportcsvService(http, _cookieService) {
+    function ImportcsvService(http, _cookieService, router) {
+        var _this = this;
         this.http = http;
         this._cookieService = _cookieService;
+        this.router = router;
         this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
+        this.router.events.subscribe(function (event) {
+            if (_this._cookieService.get("user_type") != '1' && _this._cookieService.get("user_type") != '2')
+                _this.token_id = _this._cookieService.get("childid");
+            else
+                _this.token_id = _this._cookieService.get("userid");
+        });
     }
     ImportcsvService.prototype.uploadFile = function (file, clinic_id) {
         var formData = new FormData();
@@ -510,6 +525,7 @@ var ImportcsvService = /** @class */ (function () {
         formData.append('target', 'webroot/uploads/');
         formData.append('file_input', 'file');
         formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
         // console.log(formData);
         return this.http.post(this.apiUrl + "/AccountingInvoicesAndReceipts/uploadFile", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
@@ -521,7 +537,7 @@ var ImportcsvService = /** @class */ (function () {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/logs/getUploadedCsvLogs?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), {})
+        return this.http.get(this.apiUrl + "/logs/getUploadedCsvLogs?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&token_id=" + this.token_id, {})
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -531,14 +547,14 @@ var ImportcsvService = /** @class */ (function () {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/processAllCsv?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), {})
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/processAllCsv?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&token_id=" + this.token_id, {})
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     ImportcsvService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
     ], ImportcsvService);
     return ImportcsvService;
 }());

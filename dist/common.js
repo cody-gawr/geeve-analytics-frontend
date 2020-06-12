@@ -17,6 +17,150 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/app/login/login.service.ts":
+/*!****************************************!*\
+  !*** ./src/app/login/login.service.ts ***!
+  \****************************************/
+/*! exports provided: LoginService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginService", function() { return LoginService; });
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var LoginService = /** @class */ (function () {
+    function LoginService(http, _cookieService, router) {
+        this.http = http;
+        this._cookieService = _cookieService;
+        this.router = router;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
+        //append headers
+        this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        this.headers.append("Content-Type", 'application/json');
+        this.headers.append("Access-Control-Allow-Origin", "*");
+        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+    }
+    // Items Predictor Analysis 
+    LoginService.prototype.login = function (uname, password) {
+        var formData = new FormData();
+        formData.append('email', uname);
+        formData.append('password', password);
+        return this.http.post(this.apiUrl + "/users/applogin", formData, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Items Predictor Analysis 
+    LoginService.prototype.checkEmail = function (email) {
+        var formData = new FormData();
+        formData.append('email', email);
+        return this.http.post(this.apiUrl + "/users/forgotPasswordApi", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // resetPassword 
+    LoginService.prototype.resetPassword = function (password, id) {
+        var formData = new FormData();
+        formData.append('password', password);
+        formData.append('confirm_password', password);
+        formData.append('id', id);
+        return this.http.post(this.apiUrl + "/users/resetPasswordApi", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Items Predictor Analysis 
+    LoginService.prototype.checkEmailExists = function (email) {
+        var formData = new FormData();
+        formData.append('email', email);
+        return this.http.post(this.apiUrl + "/users/checkEmailExists", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Items Predictor Analysis 
+    LoginService.prototype.addUser = function (email, password, user_type, plan_id) {
+        var formData = new FormData();
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('user_type', user_type);
+        formData.append('plan_id', plan_id);
+        formData.append('status', '0');
+        return this.http.post(this.apiUrl + "/users/addPracticeOwner", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    LoginService.prototype.getPlans = function () {
+        return this.http.get(this.apiUrl + "/plans/getPlans")
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Items Predictor Analysis 
+    LoginService.prototype.checkuser = function (plan_id, user_id) {
+        var formData = new FormData();
+        formData.append('plan_id', plan_id);
+        formData.append('user_id', user_id);
+        return this.http.post(this.apiUrl + "/users/checkuserplan", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Items Predictor Analysis 
+    LoginService.prototype.createSubscription = function (token, plan_id, user_id) {
+        var formData = new FormData();
+        formData.append('token', token.id);
+        formData.append('email', token.email);
+        formData.append('plan_id', plan_id);
+        formData.append('user_id', user_id);
+        return this.http.post(this.apiUrl + "/users/createSubscription", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Items Predictor Analysis 
+    LoginService.prototype.autoLogin = function (user_id) {
+        var formData = new FormData();
+        formData.append('user_id', user_id);
+        return this.http.post(this.apiUrl + "/users/autologin", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    LoginService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
+    ], LoginService);
+    return LoginService;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/assets/company.json":
 /*!*********************************!*\
   !*** ./src/assets/company.json ***!

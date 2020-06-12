@@ -1,19 +1,23 @@
 <div class="sa_dashboard_inner_content morning-huddle">
 
-<mat-tab-group>
+<mat-tab-group  (selectedTabChange)="onTabChanged($event);">
 
 	<!-- Dentist Performance Tab --> 	
 	<mat-tab label="Dentist Performance">
  		<input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
  			<div class="morning-huddle-date">
-				 					<mat-form-field>
-  <mat-label>Select Date</mat-label>
-  <mat-select>
-    <mat-option *ngFor="let food of foods" [value]="food.value">
-      {{food.viewValue}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+        <mat-form-field>
+          <mat-label>Previous Days</mat-label>
+          <mat-select (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
+            <mat-option [value]="1">1</mat-option>
+            <mat-option [value]="2">2</mat-option>
+            <mat-option [value]="3">3</mat-option>
+            <mat-option [value]="4">4</mat-option>
+            <mat-option [value]="5">5</mat-option>
+            <mat-option [value]="6">6</mat-option>
+            <mat-option [value]="7">7</mat-option>
+          </mat-select>
+        </mat-form-field>
  				
  					<strong> {{ production.date | date: 'fullDate' }} </strong>
  				
@@ -22,8 +26,8 @@
 		<div>
 
 			<div class="sa_dentist_graphs_area sa_profit_bar dentist-performance">
-				<div fxLayout="row wrap" fxLayoutGap="20px">
-					<div fxFlex="calc(33% - 10px)" class="sa_flexbg mh-matcard mh-matcard-down" [ngClass]="">
+				<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
+					<div fxFlex="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-down" [ngClass]="">
 						<mat-card class="dentistProduction sa_hccard">
 							<mat-card-content class="sa_matcard_content">
 								<div class="card-icon"><span class="material-icons">room_preferences</span></div>
@@ -46,7 +50,7 @@
 							</div>
 					</div>
 
-					<div fxFlex="calc(33% - 10px)" class="sa_flexbg mh-matcard mh-matcard-down" [ngClass]="" >
+					<div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-down" [ngClass]="" >
 						<mat-card  class="treatmentPlan sa_hccard">
 							<mat-card-content class="sa_matcard_content">
 								<div class="card-icon"><i class="fab fa-rev"></i></div>
@@ -71,7 +75,7 @@
 						</div>
 					</div>
 
-					<div fxFlex="calc(33% - 10px)" class="sa_flexbg last mh-matcard mh-matcard-up"  [ngClass]="">
+					<div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-up"  [ngClass]="">
 						<mat-card  class="noPatients sa_hccard">
 							<mat-card-content class="sa_matcard_content">
 								<div class="card-icon"><span class="material-icons">medical_services</span></div>
@@ -79,8 +83,6 @@
 								<div class="ttl_value">{{ treatmentRate.total}}%</div>
 									Rebook Treatment Rate
 								</mat-card-title>
-								
-							<!-- 	<div class="ttl_value_left">${{ treatmentRate.goal}}</div> -->
 							</mat-card-content>
 						</mat-card>
 						<div class="graph_image" >
@@ -117,20 +119,20 @@
   <!-- Weight Column -->
   <ng-container matColumnDef="production">
     <th mat-header-cell *matHeaderCellDef> Production Total </th>
-    <td mat-cell *matCellDef="let element"> ${{element.production.total}} 
+    <td mat-cell *matCellDef="let element"> <span class="mht-value-up">${{element.production.total}} </span>
     <span class="goal">Goal: ${{ element.production.goal}}</span> </td>
   </ng-container>
 
   <!-- Symbol Column -->
   <ng-container matColumnDef="recall">
     <th mat-header-cell *matHeaderCellDef> Recall Rate </th>
-    <td mat-cell *matCellDef="let element"> {{element.recall.rate}}% 
+    <td mat-cell *matCellDef="let element"> <span class="mht-value-up">{{element.recall.rate}}% </span>
     <span class="goal">Goal: ${{ element.recall.goal}}</span>
 </td>
   </ng-container>
  <ng-container matColumnDef="treatment">
     <th mat-header-cell *matHeaderCellDef> Recall Rate </th>
-    <td mat-cell *matCellDef="let element"> {{element.treatment.total}}%
+    <td mat-cell *matCellDef="let element"> <span class="mht-value-down">{{element.treatment.total}}%</span>
     <span class="goal">Goal: ${{ element.treatment.goal}}</span>
      </td>
   </ng-container>
@@ -138,13 +140,8 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-
-
-
-
-
-
-
+<div *ngIf="dentistList.length === 0 && dentistListLoading">No records</div>
+<div *ngIf="!dentistListLoading" style="text-align: center;">Loading</div>
 
 					<!-- <table class="table">
 						<thead>
@@ -209,29 +206,431 @@
 
 	<!-- Dentist Performance Tab --> 	
 	<mat-tab label="Patient Schedule">
-		Tab 2
+	   <div class="morning-huddle-date">
+        <mat-form-field>
+          <mat-select  (selectionChange)="refreshScheduleTab($event.value)" id="setPreviousDay2">
+            <mat-option [value]="dentist.sr" *ngFor="let dentist of clinicDentists">{{ dentist.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <strong> {{ production.date | date: 'fullDate' }} </strong> 
+      </div>
+      <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
+        <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><i class="fas fa-user-alt"></i></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">{{ schedulePatieltd }}</div>
+                  Patients </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image" ></div>
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mr0-md mh-matcard mh-matcard-red">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><i class="fas fa-user-plus"></i></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">{{ scheduleNewPatieltd }}</div>
+                  New Patients </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image" ></div>
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-green">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><span class="material-icons">access_alarm</span></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">{{ schedulehours }}</div>
+                  Scheduled Hours </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image" ></div>
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-blue">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><i class="fas fa-coins"></i></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">${{ unSchedulehours }}</div>
+                  Unscheduled </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image" ></div>
+          </div>
+        </div>
+      </div>
+      <div class="DentistListSecRow mh-table">
+<table mat-table [dataSource]="appointmentCards" class="mat-elevation-z8">
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="recall">
+    <th mat-header-cell *matHeaderCellDef>No Recal</th>
+    <td mat-cell *matCellDef="let element"> 
+      <span class="warning" *ngIf="!element.noRecall">No Recall</span>
+      <span *ngIf="element.noRecall == 'No previous recalls'">{{element.noRecall}}</span>
+      <span *ngIf="element.noRecall != 'No previous recalls'">{{element.noRecall | date: 'fullDate'}}</span>
+       </td>
+  </ng-container>
+
+  <ng-container matColumnDef="outstanding">
+    <th mat-header-cell *matHeaderCellDef>Outstanding Treatment</th>
+    <td mat-cell *matCellDef="let element"> 
+      <span class="warning" *ngIf="element.outstanding.warning"></span>
+      {{ element.outstanding.outstandingCode }}<span *ngIf="element.outstanding.outstandingCode">:</span>  
+      <span *ngIf="element.outstanding.outstandingDollar">$</span>{{element.outstanding.outstandingDollar}}</td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="xrays">
+    <th mat-header-cell *matHeaderCellDef> Last Xrays </th>
+    <td mat-cell *matCellDef="let element">
+      <span *ngIf="element.xray.length <= 0 ">No Records</span>
+      <p *ngFor="let xray of element.xray">
+        <span class="warning" *ngIf="element.xray.warning"></span>
+        <span  *ngIf="xray.code">{{ xray.code }}</span> -
+        <span  *ngIf="xray.date">{{ xray.date | date : "fullDate" }}</span>
+      </p>
+     
+</td>
+  </ng-container>
+ <ng-container matColumnDef="noshows">
+    <th mat-header-cell *matHeaderCellDef> History of No Shows </th>
+    <td mat-cell *matCellDef="let element"> 
+      <span class="warning" *ngIf="element.noshows > 3"></span> {{ element.noshows }}
+     </td>
+  </ng-container>
+
+ <ng-container matColumnDef="newpatient">
+    <th mat-header-cell *matHeaderCellDef>New Patient</th>
+    <td mat-cell *matCellDef="let element"><span class="warning" *ngIf="element.new">Warning</span>
+      <span *ngIf="!element.new">No</span></td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns6"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns6;"></tr>
+</table>
+<div *ngIf="appointmentCards.length === 0">No records</div>
+</div>
 	</mat-tab>
 	<!-- Dentist Performance Tab -->
 
 
 	<!-- Dentist Performance Tab --> 	
 	<mat-tab label="Front Desk">
-		Tab 3
+		<div class="sa_dentist_graphs_area sa_profit_bar front-desk">
+      <h3>Yesterday</h3>
+        <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
+          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-purple">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><i class="far fa-calendar-check"></i></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">{{ reAppointmen }}%</div>
+                  Re-Appointment </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image"></div>
+          </div>
+          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-red">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><i class="far fa-calendar"></i></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">{{ unscheduledPatients }}</div>
+                  Unscheduled Patients </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image"></div>
+          </div>
+          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-blue">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><i class="fas fa-coins"></i></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">${{ unscheduledValue }}</div>
+                  Unscheduled Value </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image"></div>
+          </div>
+        </div>
+         <h3>Today</h3>
+        <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><i class="fas fa-user-alt"></i></div>
+                <mat-card-title class="">
+                  <div class="ttl_value"> {{ todayPatients }}</div>
+                  Patients </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image"></div>
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mr0-md mh-matcard-green">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><span class="material-icons">access_alarm</span></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">{{ todayUnscheduledHours }}</div>
+                  Unscheduled Hours </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image"></div>
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-orange">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><i class="fas fa-coins"></i></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">${{ todayUnscheduledBal }}</div>
+                  Unscheduled Bal </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image"></div>
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-brown">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="card-icon"><i class="fas fa-phone-alt"></i></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">{{ todayPostopCalls }}</div>
+                  Post op Calls </mat-card-title>
+              </mat-card-content>
+            </mat-card>
+            <div class="graph_image"></div>
+          </div>
+        </div>
+      </div>
 	</mat-tab>
 	<!-- Dentist Performance Tab -->
 
 
 	<!-- Dentist Performance Tab --> 	
 	<mat-tab label="Reminders">
+<mat-card class="table-card">
+  <mat-card-title>Recalls Overdue</mat-card-title>
+  <mat-card-content> 
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
+          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+              <div class="DentistListSecRow mh-table">
+<table mat-table [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8">
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
+  </ng-container>
 
-Tab 4
+  <!-- Weight Column -->
+  <ng-container matColumnDef="dentist">
+    <th mat-header-cell *matHeaderCellDef> Dentist Name  </th>
+    <td mat-cell *matCellDef="let element">{{element.app_book_description}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="start">
+    <th mat-header-cell *matHeaderCellDef> Appointment Start </th>
+    <td mat-cell *matCellDef="let element"> {{element.start}}
+</td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+</table>
+<div *ngIf="remindersRecallsOverdue.length === 0">No records</div>
+</div>
+   </div>
+          <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
+            <img src="./assets/images/recalls-overdue.png">
+          </div>
+        </div>
+  </mat-card-content>
+</mat-card>
+
+
+
+
+<mat-card class="table-card">
+  <mat-card-title>Treatment Outstanding</mat-card-title>
+  <mat-card-content> 
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
+          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+              <div class="DentistListSecRow mh-table">
+<table mat-table [dataSource]="treatmentOutstanding" class="mat-elevation-z8">
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="start">
+    <th mat-header-cell *matHeaderCellDef> Appointment Start </th>
+    <td mat-cell *matCellDef="let element"> {{element.start}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="outstanding">
+    <th mat-header-cell *matHeaderCellDef> Treat Code </th>
+    <td mat-cell *matCellDef="let element"> {{element.code}}</td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+</table>
+<div *ngIf="treatmentOutstanding.length === 0">No records</div>
+</div>
+   </div>
+          <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
+            <img src="./assets/images/treatment-outstanding.png">
+          </div>
+        </div>
+  </mat-card-content>
+</mat-card>
+
+
+
+
+
+<mat-card class="table-card">
+  <mat-card-title>Outstanding Balance</mat-card-title>
+  <mat-card-content> 
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
+          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+              <div class="DentistListSecRow mh-table">
+<table mat-table [dataSource]="outstandingBalances" class="mat-elevation-z8">
+ 
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="start">
+    <th mat-header-cell *matHeaderCellDef> Start</th>
+    <td mat-cell *matCellDef="let element">{{element.start}}  </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="outstanding">
+    <th mat-header-cell *matHeaderCellDef> Outstanding </th>
+    <td mat-cell *matCellDef="let element">${{ element.outstanding}}</td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+</table>
+<div *ngIf="outstandingBalances.length === 0">No records</div>
+</div>
+   </div>
+          <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
+            <img src="./assets/images/outstanding-balance.png">
+          </div>
+        </div>
+  </mat-card-content>
+</mat-card>
+
 	</mat-tab>
 	<!-- Dentist Performance Tab -->
 
-
-
 	<mat-tab label="Followups">
-		Tab 5
+		
+<mat-card class="table-card">
+  <mat-card-title>Unscheduled Patients</mat-card-title>
+  <mat-card-content> 
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
+          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+              <div class="DentistListSecRow mh-table">
+<table mat-table [dataSource]="followupsUnscheduledPatients" class="mat-elevation-z8">
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.title}} {{element.firstname}} {{element.surname}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef> Phone </th>
+    <td mat-cell *matCellDef="let element">{{element.phone_home}}</td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="code">
+    <th mat-header-cell *matHeaderCellDef> Code </th>
+    <td mat-cell *matCellDef="let element"> {{element.code}}</td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns4;"></tr>
+</table>
+<div *ngIf="followupsUnscheduledPatients.length === 0">No records</div>
+</div>
+   </div>
+          <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
+            <img src="./assets/images/unscheduled-patients.png">
+          </div>
+        </div>
+  </mat-card-content>
+</mat-card>
+
+
+
+<mat-card class="table-card">
+  <mat-card-title>Post op Calls</mat-card-title>
+  <mat-card-content> 
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
+          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+              <div class="DentistListSecRow mh-table">
+<table mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8">
+  
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.firstname}} {{element.surname}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef> phone </th>
+    <td mat-cell *matCellDef="let element">{{element.phone_home}}</td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="code">
+    <th mat-header-cell *matHeaderCellDef> Code </th>
+    <td mat-cell *matCellDef="let element">{{ element.treat_item }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns5"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns5;"></tr>
+</table>
+<div *ngIf="followupPostOpCalls.length === 0">No records</div>
+</div>
+   </div>
+           <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
+            <img src="./assets/images/post-op-calls.png">
+          </div>
+        </div>
+  </mat-card-content>
+</mat-card>
+
+
 	</mat-tab>
 	<!-- Dentist Performance Tab -->
 

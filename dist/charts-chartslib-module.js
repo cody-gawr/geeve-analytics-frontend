@@ -389,15 +389,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
 /* harmony import */ var _demo_material_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../demo-material-module */ "./src/app/demo-material-module.ts");
 /* harmony import */ var _angular_cdk_table__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/cdk/table */ "./node_modules/@angular/cdk/esm5/table.es5.js");
-/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ng2-charts */ "./node_modules/ng2-charts/index.js");
-/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ng2_charts__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var ng2_charts__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ng2-charts */ "./node_modules/ng2-charts/fesm5/ng2-charts.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _angular_flex_layout__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/flex-layout */ "./node_modules/@angular/flex-layout/esm5/flex-layout.es5.js");
 /* harmony import */ var _chartslib_routing__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./chartslib.routing */ "./src/app/charts/chartslib.routing.ts");
 /* harmony import */ var ng_chartist__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ng-chartist */ "./node_modules/ng-chartist/dist/ng-chartist.js");
 /* harmony import */ var ng_chartist__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(ng_chartist__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @swimlane/ngx-charts */ "./node_modules/@swimlane/ngx-charts/release/index.js");
-/* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _swimlane_ngx_charts__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @swimlane/ngx-charts */ "./node_modules/@swimlane/ngx-charts/release/esm.js");
 /* harmony import */ var _chart_js_chartjs_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./chart-js/chartjs.component */ "./src/app/charts/chart-js/chartjs.component.ts");
 /* harmony import */ var _chartist_js_chartistjs_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./chartist-js/chartistjs.component */ "./src/app/charts/chartist-js/chartistjs.component.ts");
 /* harmony import */ var _ngx_charts_ngx_chart_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./ngx-charts/ngx-chart.component */ "./src/app/charts/ngx-charts/ngx-chart.component.ts");
@@ -1018,7 +1016,7 @@ module.exports = "<!-- =========================================================
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".chart-container {\n  display: block;\n  position: relative; }\n\n.w100 {\n  width: 100%;\n  height: 300px;\n  overflow: hidden;\n  display: block; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi92YXIvd3d3L2h0bWwvamVldmVhbmFseXRpY3MvY2xpZW50Mi9zcmMvYXBwL2NoYXJ0cy9uZ3gtY2hhcnRzL25neC1jaGFydC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGVBQWM7RUFDZCxtQkFBa0IsRUFDbkI7O0FBQ0Q7RUFDRSxZQUFXO0VBQ1gsY0FBYTtFQUNiLGlCQUFnQjtFQUNoQixlQUFjLEVBQ2YiLCJmaWxlIjoic3JjL2FwcC9jaGFydHMvbmd4LWNoYXJ0cy9uZ3gtY2hhcnQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY2hhcnQtY29udGFpbmVyIHtcbiAgZGlzcGxheTogYmxvY2s7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbn1cbi53MTAwIHtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMzAwcHg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IGJsb2NrO1xufVxuIl19 */"
+module.exports = ".chart-container {\n  display: block;\n  position: relative; }\n\n.w100 {\n  width: 100%;\n  height: 300px;\n  overflow: hidden;\n  display: block; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY2hhcnRzL25neC1jaGFydHMvQzpcXHhhbXBwXFxodGRvY3NcXGplZXZlYW5hbHl0aWNzXFxjbGllbnQyL3NyY1xcYXBwXFxjaGFydHNcXG5neC1jaGFydHNcXG5neC1jaGFydC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGVBQWM7RUFDZCxtQkFBa0IsRUFDbkI7O0FBQ0Q7RUFDRSxZQUFXO0VBQ1gsY0FBYTtFQUNiLGlCQUFnQjtFQUNoQixlQUFjLEVBQ2YiLCJmaWxlIjoic3JjL2FwcC9jaGFydHMvbmd4LWNoYXJ0cy9uZ3gtY2hhcnQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY2hhcnQtY29udGFpbmVyIHtcbiAgZGlzcGxheTogYmxvY2s7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbn1cbi53MTAwIHtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMzAwcHg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IGJsb2NrO1xufVxuIl19 */"
 
 /***/ }),
 

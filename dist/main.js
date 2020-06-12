@@ -1,5 +1,284 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["main"],{
 
+/***/ "./node_modules/moment/locale sync recursive ^\\.\\/.*$":
+/*!**************************************************!*\
+  !*** ./node_modules/moment/locale sync ^\.\/.*$ ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./af": "./node_modules/moment/locale/af.js",
+	"./af.js": "./node_modules/moment/locale/af.js",
+	"./ar": "./node_modules/moment/locale/ar.js",
+	"./ar-dz": "./node_modules/moment/locale/ar-dz.js",
+	"./ar-dz.js": "./node_modules/moment/locale/ar-dz.js",
+	"./ar-kw": "./node_modules/moment/locale/ar-kw.js",
+	"./ar-kw.js": "./node_modules/moment/locale/ar-kw.js",
+	"./ar-ly": "./node_modules/moment/locale/ar-ly.js",
+	"./ar-ly.js": "./node_modules/moment/locale/ar-ly.js",
+	"./ar-ma": "./node_modules/moment/locale/ar-ma.js",
+	"./ar-ma.js": "./node_modules/moment/locale/ar-ma.js",
+	"./ar-sa": "./node_modules/moment/locale/ar-sa.js",
+	"./ar-sa.js": "./node_modules/moment/locale/ar-sa.js",
+	"./ar-tn": "./node_modules/moment/locale/ar-tn.js",
+	"./ar-tn.js": "./node_modules/moment/locale/ar-tn.js",
+	"./ar.js": "./node_modules/moment/locale/ar.js",
+	"./az": "./node_modules/moment/locale/az.js",
+	"./az.js": "./node_modules/moment/locale/az.js",
+	"./be": "./node_modules/moment/locale/be.js",
+	"./be.js": "./node_modules/moment/locale/be.js",
+	"./bg": "./node_modules/moment/locale/bg.js",
+	"./bg.js": "./node_modules/moment/locale/bg.js",
+	"./bm": "./node_modules/moment/locale/bm.js",
+	"./bm.js": "./node_modules/moment/locale/bm.js",
+	"./bn": "./node_modules/moment/locale/bn.js",
+	"./bn.js": "./node_modules/moment/locale/bn.js",
+	"./bo": "./node_modules/moment/locale/bo.js",
+	"./bo.js": "./node_modules/moment/locale/bo.js",
+	"./br": "./node_modules/moment/locale/br.js",
+	"./br.js": "./node_modules/moment/locale/br.js",
+	"./bs": "./node_modules/moment/locale/bs.js",
+	"./bs.js": "./node_modules/moment/locale/bs.js",
+	"./ca": "./node_modules/moment/locale/ca.js",
+	"./ca.js": "./node_modules/moment/locale/ca.js",
+	"./cs": "./node_modules/moment/locale/cs.js",
+	"./cs.js": "./node_modules/moment/locale/cs.js",
+	"./cv": "./node_modules/moment/locale/cv.js",
+	"./cv.js": "./node_modules/moment/locale/cv.js",
+	"./cy": "./node_modules/moment/locale/cy.js",
+	"./cy.js": "./node_modules/moment/locale/cy.js",
+	"./da": "./node_modules/moment/locale/da.js",
+	"./da.js": "./node_modules/moment/locale/da.js",
+	"./de": "./node_modules/moment/locale/de.js",
+	"./de-at": "./node_modules/moment/locale/de-at.js",
+	"./de-at.js": "./node_modules/moment/locale/de-at.js",
+	"./de-ch": "./node_modules/moment/locale/de-ch.js",
+	"./de-ch.js": "./node_modules/moment/locale/de-ch.js",
+	"./de.js": "./node_modules/moment/locale/de.js",
+	"./dv": "./node_modules/moment/locale/dv.js",
+	"./dv.js": "./node_modules/moment/locale/dv.js",
+	"./el": "./node_modules/moment/locale/el.js",
+	"./el.js": "./node_modules/moment/locale/el.js",
+	"./en-au": "./node_modules/moment/locale/en-au.js",
+	"./en-au.js": "./node_modules/moment/locale/en-au.js",
+	"./en-ca": "./node_modules/moment/locale/en-ca.js",
+	"./en-ca.js": "./node_modules/moment/locale/en-ca.js",
+	"./en-gb": "./node_modules/moment/locale/en-gb.js",
+	"./en-gb.js": "./node_modules/moment/locale/en-gb.js",
+	"./en-ie": "./node_modules/moment/locale/en-ie.js",
+	"./en-ie.js": "./node_modules/moment/locale/en-ie.js",
+	"./en-il": "./node_modules/moment/locale/en-il.js",
+	"./en-il.js": "./node_modules/moment/locale/en-il.js",
+	"./en-nz": "./node_modules/moment/locale/en-nz.js",
+	"./en-nz.js": "./node_modules/moment/locale/en-nz.js",
+	"./eo": "./node_modules/moment/locale/eo.js",
+	"./eo.js": "./node_modules/moment/locale/eo.js",
+	"./es": "./node_modules/moment/locale/es.js",
+	"./es-do": "./node_modules/moment/locale/es-do.js",
+	"./es-do.js": "./node_modules/moment/locale/es-do.js",
+	"./es-us": "./node_modules/moment/locale/es-us.js",
+	"./es-us.js": "./node_modules/moment/locale/es-us.js",
+	"./es.js": "./node_modules/moment/locale/es.js",
+	"./et": "./node_modules/moment/locale/et.js",
+	"./et.js": "./node_modules/moment/locale/et.js",
+	"./eu": "./node_modules/moment/locale/eu.js",
+	"./eu.js": "./node_modules/moment/locale/eu.js",
+	"./fa": "./node_modules/moment/locale/fa.js",
+	"./fa.js": "./node_modules/moment/locale/fa.js",
+	"./fi": "./node_modules/moment/locale/fi.js",
+	"./fi.js": "./node_modules/moment/locale/fi.js",
+	"./fo": "./node_modules/moment/locale/fo.js",
+	"./fo.js": "./node_modules/moment/locale/fo.js",
+	"./fr": "./node_modules/moment/locale/fr.js",
+	"./fr-ca": "./node_modules/moment/locale/fr-ca.js",
+	"./fr-ca.js": "./node_modules/moment/locale/fr-ca.js",
+	"./fr-ch": "./node_modules/moment/locale/fr-ch.js",
+	"./fr-ch.js": "./node_modules/moment/locale/fr-ch.js",
+	"./fr.js": "./node_modules/moment/locale/fr.js",
+	"./fy": "./node_modules/moment/locale/fy.js",
+	"./fy.js": "./node_modules/moment/locale/fy.js",
+	"./gd": "./node_modules/moment/locale/gd.js",
+	"./gd.js": "./node_modules/moment/locale/gd.js",
+	"./gl": "./node_modules/moment/locale/gl.js",
+	"./gl.js": "./node_modules/moment/locale/gl.js",
+	"./gom-latn": "./node_modules/moment/locale/gom-latn.js",
+	"./gom-latn.js": "./node_modules/moment/locale/gom-latn.js",
+	"./gu": "./node_modules/moment/locale/gu.js",
+	"./gu.js": "./node_modules/moment/locale/gu.js",
+	"./he": "./node_modules/moment/locale/he.js",
+	"./he.js": "./node_modules/moment/locale/he.js",
+	"./hi": "./node_modules/moment/locale/hi.js",
+	"./hi.js": "./node_modules/moment/locale/hi.js",
+	"./hr": "./node_modules/moment/locale/hr.js",
+	"./hr.js": "./node_modules/moment/locale/hr.js",
+	"./hu": "./node_modules/moment/locale/hu.js",
+	"./hu.js": "./node_modules/moment/locale/hu.js",
+	"./hy-am": "./node_modules/moment/locale/hy-am.js",
+	"./hy-am.js": "./node_modules/moment/locale/hy-am.js",
+	"./id": "./node_modules/moment/locale/id.js",
+	"./id.js": "./node_modules/moment/locale/id.js",
+	"./is": "./node_modules/moment/locale/is.js",
+	"./is.js": "./node_modules/moment/locale/is.js",
+	"./it": "./node_modules/moment/locale/it.js",
+	"./it.js": "./node_modules/moment/locale/it.js",
+	"./ja": "./node_modules/moment/locale/ja.js",
+	"./ja.js": "./node_modules/moment/locale/ja.js",
+	"./jv": "./node_modules/moment/locale/jv.js",
+	"./jv.js": "./node_modules/moment/locale/jv.js",
+	"./ka": "./node_modules/moment/locale/ka.js",
+	"./ka.js": "./node_modules/moment/locale/ka.js",
+	"./kk": "./node_modules/moment/locale/kk.js",
+	"./kk.js": "./node_modules/moment/locale/kk.js",
+	"./km": "./node_modules/moment/locale/km.js",
+	"./km.js": "./node_modules/moment/locale/km.js",
+	"./kn": "./node_modules/moment/locale/kn.js",
+	"./kn.js": "./node_modules/moment/locale/kn.js",
+	"./ko": "./node_modules/moment/locale/ko.js",
+	"./ko.js": "./node_modules/moment/locale/ko.js",
+	"./ky": "./node_modules/moment/locale/ky.js",
+	"./ky.js": "./node_modules/moment/locale/ky.js",
+	"./lb": "./node_modules/moment/locale/lb.js",
+	"./lb.js": "./node_modules/moment/locale/lb.js",
+	"./lo": "./node_modules/moment/locale/lo.js",
+	"./lo.js": "./node_modules/moment/locale/lo.js",
+	"./lt": "./node_modules/moment/locale/lt.js",
+	"./lt.js": "./node_modules/moment/locale/lt.js",
+	"./lv": "./node_modules/moment/locale/lv.js",
+	"./lv.js": "./node_modules/moment/locale/lv.js",
+	"./me": "./node_modules/moment/locale/me.js",
+	"./me.js": "./node_modules/moment/locale/me.js",
+	"./mi": "./node_modules/moment/locale/mi.js",
+	"./mi.js": "./node_modules/moment/locale/mi.js",
+	"./mk": "./node_modules/moment/locale/mk.js",
+	"./mk.js": "./node_modules/moment/locale/mk.js",
+	"./ml": "./node_modules/moment/locale/ml.js",
+	"./ml.js": "./node_modules/moment/locale/ml.js",
+	"./mn": "./node_modules/moment/locale/mn.js",
+	"./mn.js": "./node_modules/moment/locale/mn.js",
+	"./mr": "./node_modules/moment/locale/mr.js",
+	"./mr.js": "./node_modules/moment/locale/mr.js",
+	"./ms": "./node_modules/moment/locale/ms.js",
+	"./ms-my": "./node_modules/moment/locale/ms-my.js",
+	"./ms-my.js": "./node_modules/moment/locale/ms-my.js",
+	"./ms.js": "./node_modules/moment/locale/ms.js",
+	"./mt": "./node_modules/moment/locale/mt.js",
+	"./mt.js": "./node_modules/moment/locale/mt.js",
+	"./my": "./node_modules/moment/locale/my.js",
+	"./my.js": "./node_modules/moment/locale/my.js",
+	"./nb": "./node_modules/moment/locale/nb.js",
+	"./nb.js": "./node_modules/moment/locale/nb.js",
+	"./ne": "./node_modules/moment/locale/ne.js",
+	"./ne.js": "./node_modules/moment/locale/ne.js",
+	"./nl": "./node_modules/moment/locale/nl.js",
+	"./nl-be": "./node_modules/moment/locale/nl-be.js",
+	"./nl-be.js": "./node_modules/moment/locale/nl-be.js",
+	"./nl.js": "./node_modules/moment/locale/nl.js",
+	"./nn": "./node_modules/moment/locale/nn.js",
+	"./nn.js": "./node_modules/moment/locale/nn.js",
+	"./pa-in": "./node_modules/moment/locale/pa-in.js",
+	"./pa-in.js": "./node_modules/moment/locale/pa-in.js",
+	"./pl": "./node_modules/moment/locale/pl.js",
+	"./pl.js": "./node_modules/moment/locale/pl.js",
+	"./pt": "./node_modules/moment/locale/pt.js",
+	"./pt-br": "./node_modules/moment/locale/pt-br.js",
+	"./pt-br.js": "./node_modules/moment/locale/pt-br.js",
+	"./pt.js": "./node_modules/moment/locale/pt.js",
+	"./ro": "./node_modules/moment/locale/ro.js",
+	"./ro.js": "./node_modules/moment/locale/ro.js",
+	"./ru": "./node_modules/moment/locale/ru.js",
+	"./ru.js": "./node_modules/moment/locale/ru.js",
+	"./sd": "./node_modules/moment/locale/sd.js",
+	"./sd.js": "./node_modules/moment/locale/sd.js",
+	"./se": "./node_modules/moment/locale/se.js",
+	"./se.js": "./node_modules/moment/locale/se.js",
+	"./si": "./node_modules/moment/locale/si.js",
+	"./si.js": "./node_modules/moment/locale/si.js",
+	"./sk": "./node_modules/moment/locale/sk.js",
+	"./sk.js": "./node_modules/moment/locale/sk.js",
+	"./sl": "./node_modules/moment/locale/sl.js",
+	"./sl.js": "./node_modules/moment/locale/sl.js",
+	"./sq": "./node_modules/moment/locale/sq.js",
+	"./sq.js": "./node_modules/moment/locale/sq.js",
+	"./sr": "./node_modules/moment/locale/sr.js",
+	"./sr-cyrl": "./node_modules/moment/locale/sr-cyrl.js",
+	"./sr-cyrl.js": "./node_modules/moment/locale/sr-cyrl.js",
+	"./sr.js": "./node_modules/moment/locale/sr.js",
+	"./ss": "./node_modules/moment/locale/ss.js",
+	"./ss.js": "./node_modules/moment/locale/ss.js",
+	"./sv": "./node_modules/moment/locale/sv.js",
+	"./sv.js": "./node_modules/moment/locale/sv.js",
+	"./sw": "./node_modules/moment/locale/sw.js",
+	"./sw.js": "./node_modules/moment/locale/sw.js",
+	"./ta": "./node_modules/moment/locale/ta.js",
+	"./ta.js": "./node_modules/moment/locale/ta.js",
+	"./te": "./node_modules/moment/locale/te.js",
+	"./te.js": "./node_modules/moment/locale/te.js",
+	"./tet": "./node_modules/moment/locale/tet.js",
+	"./tet.js": "./node_modules/moment/locale/tet.js",
+	"./tg": "./node_modules/moment/locale/tg.js",
+	"./tg.js": "./node_modules/moment/locale/tg.js",
+	"./th": "./node_modules/moment/locale/th.js",
+	"./th.js": "./node_modules/moment/locale/th.js",
+	"./tl-ph": "./node_modules/moment/locale/tl-ph.js",
+	"./tl-ph.js": "./node_modules/moment/locale/tl-ph.js",
+	"./tlh": "./node_modules/moment/locale/tlh.js",
+	"./tlh.js": "./node_modules/moment/locale/tlh.js",
+	"./tr": "./node_modules/moment/locale/tr.js",
+	"./tr.js": "./node_modules/moment/locale/tr.js",
+	"./tzl": "./node_modules/moment/locale/tzl.js",
+	"./tzl.js": "./node_modules/moment/locale/tzl.js",
+	"./tzm": "./node_modules/moment/locale/tzm.js",
+	"./tzm-latn": "./node_modules/moment/locale/tzm-latn.js",
+	"./tzm-latn.js": "./node_modules/moment/locale/tzm-latn.js",
+	"./tzm.js": "./node_modules/moment/locale/tzm.js",
+	"./ug-cn": "./node_modules/moment/locale/ug-cn.js",
+	"./ug-cn.js": "./node_modules/moment/locale/ug-cn.js",
+	"./uk": "./node_modules/moment/locale/uk.js",
+	"./uk.js": "./node_modules/moment/locale/uk.js",
+	"./ur": "./node_modules/moment/locale/ur.js",
+	"./ur.js": "./node_modules/moment/locale/ur.js",
+	"./uz": "./node_modules/moment/locale/uz.js",
+	"./uz-latn": "./node_modules/moment/locale/uz-latn.js",
+	"./uz-latn.js": "./node_modules/moment/locale/uz-latn.js",
+	"./uz.js": "./node_modules/moment/locale/uz.js",
+	"./vi": "./node_modules/moment/locale/vi.js",
+	"./vi.js": "./node_modules/moment/locale/vi.js",
+	"./x-pseudo": "./node_modules/moment/locale/x-pseudo.js",
+	"./x-pseudo.js": "./node_modules/moment/locale/x-pseudo.js",
+	"./yo": "./node_modules/moment/locale/yo.js",
+	"./yo.js": "./node_modules/moment/locale/yo.js",
+	"./zh-cn": "./node_modules/moment/locale/zh-cn.js",
+	"./zh-cn.js": "./node_modules/moment/locale/zh-cn.js",
+	"./zh-hk": "./node_modules/moment/locale/zh-hk.js",
+	"./zh-hk.js": "./node_modules/moment/locale/zh-hk.js",
+	"./zh-tw": "./node_modules/moment/locale/zh-tw.js",
+	"./zh-tw.js": "./node_modules/moment/locale/zh-tw.js"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) { // check for number or string
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return id;
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
+
+/***/ }),
+
 /***/ "./src/$$_lazy_route_resource lazy recursive":
 /*!**********************************************************!*\
   !*** ./src/$$_lazy_route_resource lazy namespace object ***!
@@ -10,7 +289,7 @@
 var map = {
 	"./apps/apps.module": [
 		"./src/app/apps/apps.module.ts",
-		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6b94e512",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6239eee7",
 		"common",
 		"apps-apps-module"
 	],
@@ -29,21 +308,22 @@ var map = {
 	],
 	"./clinic-goals/clinic-goals.module": [
 		"./src/app/clinic-goals/clinic-goals.module.ts",
-		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6b94e512",
-		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~4a81695a",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6239eee7",
+		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~bb55bc34",
 		"common",
 		"clinic-goals-clinic-goals-module"
 	],
 	"./clinic-settings/clinic-settings.module": [
 		"./src/app/clinic-settings/clinic-settings.module.ts",
-		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6b94e512",
-		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~4a81695a",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6239eee7",
+		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~bb55bc34",
 		"common",
 		"clinic-settings-clinic-settings-module"
 	],
 	"./clinic/clinic.module": [
 		"./src/app/clinic/clinic.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~b2450c2a",
+		"default~clinic-clinic-module~profile-settings-profile-settings-module",
 		"common",
 		"clinic-clinic-module"
 	],
@@ -62,34 +342,38 @@ var map = {
 	],
 	"./datatables/datatables.module": [
 		"./src/app/datatables/datatables.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~b2450c2a",
 		"common",
 		"datatables-datatables-module"
 	],
 	"./dentist-goals/dentist-goals.module": [
 		"./src/app/dentist-goals/dentist-goals.module.ts",
-		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6b94e512",
-		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~4a81695a",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6239eee7",
+		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~bb55bc34",
 		"common",
 		"dentist-goals-dentist-goals-module"
 	],
 	"./dentist/dentist.module": [
 		"./src/app/dentist/dentist.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~b2450c2a",
 		"common",
 		"dentist-dentist-module"
 	],
 	"./forms/forms.module": [
 		"./src/app/forms/forms.module.ts",
-		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6b94e512",
-		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~4a81695a",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6239eee7",
+		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~bb55bc34",
 		"default~authentication-authentication-module~forms-forms-module",
 		"common",
 		"forms-forms-module"
 	],
+	"./home/home.module": [
+		"./src/app/home/home.module.ts",
+		"home-home-module"
+	],
 	"./importcsv/importcsv.module": [
 		"./src/app/importcsv/importcsv.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~b2450c2a",
 		"default~charts-chartslib-module~dashboard-dashboard-module~dashboards-dashboards-module~importcsv-im~dcb35db1",
 		"default~charts-chartslib-module~dashboards-dashboards-module~importcsv-importcsv-module",
 		"common",
@@ -101,6 +385,7 @@ var map = {
 	],
 	"./login/login.module": [
 		"./src/app/login/login.module.ts",
+		"common",
 		"login-login-module"
 	],
 	"./material-component/material.module": [
@@ -113,15 +398,56 @@ var map = {
 	],
 	"./pages/pages.module": [
 		"./src/app/pages/pages.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~b2450c2a",
 		"common",
 		"pages-pages-module"
 	],
+	"./payment/payment.module": [
+		"./src/app/payment/payment.module.ts",
+		"default~payment-payment-module~planpayment-planpayment-module",
+		"common",
+		"payment-payment-module"
+	],
+	"./planpayment/planpayment.module": [
+		"./src/app/planpayment/planpayment.module.ts",
+		"default~payment-payment-module~planpayment-planpayment-module",
+		"common",
+		"planpayment-planpayment-module"
+	],
 	"./plans/plans.module": [
 		"./src/app/plans/plans.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~b2450c2a",
 		"common",
 		"plans-plans-module"
+	],
+	"./profile-settings/profile-settings.module": [
+		"./src/app/profile-settings/profile-settings.module.ts",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6239eee7",
+		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~bb55bc34",
+		"default~clinic-clinic-module~profile-settings-profile-settings-module",
+		"common",
+		"profile-settings-profile-settings-module"
+	],
+	"./roles-users/roles-users.module": [
+		"./src/app/roles-users/roles-users.module.ts",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~b2450c2a",
+		"common",
+		"roles-users-roles-users-module"
+	],
+	"./roles/roles.module": [
+		"./src/app/roles/roles.module.ts",
+		"default~apps-apps-module~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~den~6239eee7",
+		"default~clinic-goals-clinic-goals-module~clinic-settings-clinic-settings-module~dentist-goals-dentis~bb55bc34",
+		"common",
+		"roles-roles-module"
+	],
+	"./subscription/subscription.module": [
+		"./src/app/subscription/subscription.module.ts",
+		"subscription-subscription-module"
+	],
+	"./support/support.module": [
+		"./src/app/support/support.module.ts",
+		"support-support-module"
 	],
 	"./tables/tables.module": [
 		"./src/app/tables/tables.module.ts",
@@ -130,13 +456,17 @@ var map = {
 	],
 	"./users/users.module": [
 		"./src/app/users/users.module.ts",
-		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~afa74994",
+		"default~clinic-clinic-module~datatables-datatables-module~dentist-dentist-module~importcsv-importcsv~b2450c2a",
 		"common",
 		"users-users-module"
 	],
 	"./widgets/widgets.module": [
 		"./src/app/widgets/widgets.module.ts",
 		"widgets-widgets-module"
+	],
+	"./xero/xero.module": [
+		"./src/app/xero/xero.module.ts",
+		"xero-xero-module"
 	]
 };
 function webpackAsyncContext(req) {
@@ -179,7 +509,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Main wrapper - style you can find in pages.scss -->\n<!-- ============================================================== -->\n<router-outlet>\n    <app-spinner></app-spinner>\n</router-outlet>"
+module.exports = "<!-- ============================================================== -->\n<!-- Main wrapper - style you can find in pages.scss -->\n<!-- ============================================================== -->\n<router-outlet>\n    <app-spinner></app-spinner><notifier-container></notifier-container>\n</router-outlet>"
 
 /***/ }),
 
@@ -252,7 +582,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auth_authguard_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./auth/authguard.service */ "./src/app/auth/authguard.service.ts");
 /* harmony import */ var _layouts_full_header_header_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./layouts/full/header/header.service */ "./src/app/layouts/full/header/header.service.ts");
 /* harmony import */ var _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./dentist/dentist.service */ "./src/app/dentist/dentist.service.ts");
-/* harmony import */ var _layouts_full_headerright_headerright_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./layouts/full/headerright/headerright.component */ "./src/app/layouts/full/headerright/headerright.component.ts");
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/fesm5/angular-notifier.js");
+/* harmony import */ var _layouts_full_headerright_headerright_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./layouts/full/headerright/headerright.component */ "./src/app/layouts/full/headerright/headerright.component.ts");
+/* harmony import */ var _lost_opportunity_lost_opportunity_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./lost-opportunity/lost-opportunity.component */ "./src/app/lost-opportunity/lost-opportunity.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -284,6 +616,48 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
+
+var customNotifierOptions = {
+    position: {
+        horizontal: {
+            position: 'right',
+            distance: 12
+        },
+        vertical: {
+            position: 'top',
+            distance: 12,
+            gap: 10
+        }
+    },
+    theme: 'material',
+    behaviour: {
+        autoHide: 5000,
+        onClick: 'hide',
+        onMouseover: 'pauseAutoHide',
+        showDismissButton: true,
+        stacking: 4
+    },
+    animations: {
+        enabled: true,
+        show: {
+            preset: 'slide',
+            speed: 300,
+            easing: 'ease'
+        },
+        hide: {
+            preset: 'fade',
+            speed: 300,
+            easing: 'ease',
+            offset: 50
+        },
+        shift: {
+            speed: 300,
+            easing: 'ease'
+        },
+        overlap: 150
+    }
+};
 var DEFAULT_PERFECT_SCROLLBAR_CONFIG = {
     suppressScrollX: true,
     wheelSpeed: 2,
@@ -301,7 +675,8 @@ var AppModule = /** @class */ (function () {
                 _shared_spinner_component__WEBPACK_IMPORTED_MODULE_17__["SpinnerComponent"],
                 _layouts_blank_blank_component__WEBPACK_IMPORTED_MODULE_9__["AppBlankComponent"],
                 _layouts_full_sidebar_sidebar_component__WEBPACK_IMPORTED_MODULE_11__["AppSidebarComponent"],
-                _layouts_full_headerright_headerright_component__WEBPACK_IMPORTED_MODULE_23__["AppHeaderrightComponent"]
+                _layouts_full_headerright_headerright_component__WEBPACK_IMPORTED_MODULE_24__["AppHeaderrightComponent"],
+                _lost_opportunity_lost_opportunity_component__WEBPACK_IMPORTED_MODULE_25__["LostOpportunityComponent"],
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -314,7 +689,8 @@ var AppModule = /** @class */ (function () {
                 _shared_shared_module__WEBPACK_IMPORTED_MODULE_16__["SharedModule"],
                 _angular_http__WEBPACK_IMPORTED_MODULE_19__["HttpModule"],
                 ng_multiselect_dropdown__WEBPACK_IMPORTED_MODULE_14__["NgMultiSelectDropDownModule"].forRoot(),
-                _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(_app_routing__WEBPACK_IMPORTED_MODULE_5__["AppRoutes"])
+                _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(_app_routing__WEBPACK_IMPORTED_MODULE_5__["AppRoutes"]),
+                angular_notifier__WEBPACK_IMPORTED_MODULE_23__["NotifierModule"].withConfig(customNotifierOptions)
             ],
             providers: [
                 _auth_authguard_service__WEBPACK_IMPORTED_MODULE_20__["AuthGuard"],
@@ -348,7 +724,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppRoutes", function() { return AppRoutes; });
 /* harmony import */ var _layouts_full_full_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./layouts/full/full.component */ "./src/app/layouts/full/full.component.ts");
 /* harmony import */ var _layouts_blank_blank_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./layouts/blank/blank.component */ "./src/app/layouts/blank/blank.component.ts");
-/* harmony import */ var _auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth/authguard.service */ "./src/app/auth/authguard.service.ts");
+/* harmony import */ var _lost_opportunity_lost_opportunity_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lost-opportunity/lost-opportunity.component */ "./src/app/lost-opportunity/lost-opportunity.component.ts");
+/* harmony import */ var _auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./auth/authguard.service */ "./src/app/auth/authguard.service.ts");
+
 
 
 
@@ -359,7 +737,7 @@ var AppRoutes = [
         children: [
             {
                 path: '',
-                redirectTo: '/login',
+                redirectTo: '/home',
                 pathMatch: 'full'
             },
             {
@@ -367,53 +745,71 @@ var AppRoutes = [
                 loadChildren: './dashboard/dashboard.module#DashboardModule'
             },
             {
-                path: 'importcsv/:id',
+                path: 'importcsv',
                 loadChildren: './importcsv/importcsv.module#ImportcsvModule',
-                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
             },
             {
                 path: 'dashboards',
                 loadChildren: './dashboards/dashboards.module#DashboardsModule',
-                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
             },
             {
                 path: 'header',
                 loadChildren: './layouts/full/header/header.module#HeaderModule'
             },
             {
+                path: 'roles',
+                loadChildren: './roles/roles.module#RolesModule'
+            },
+            {
+                path: 'roles-users',
+                loadChildren: './roles-users/roles-users.module#RolesUsersModule'
+            },
+            {
                 path: 'clinic',
                 loadChildren: './clinic/clinic.module#ClinicModule',
-                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
             },
             {
                 path: 'users',
                 loadChildren: './users/users.module#UsersModule',
-                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
             },
             {
                 path: 'plans',
                 loadChildren: './plans/plans.module#PlansModule',
-                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
             },
             {
-                path: 'dentist/:id',
+                path: 'dentist',
                 loadChildren: './dentist/dentist.module#DentistModule',
-                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
             },
             {
-                path: 'clinic-goals/:id',
+                path: 'clinic-goals',
                 loadChildren: './clinic-goals/clinic-goals.module#ClinicGoalsModule',
-                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
+            },
+            {
+                path: 'lost-opportunity',
+                component: _lost_opportunity_lost_opportunity_component__WEBPACK_IMPORTED_MODULE_2__["LostOpportunityComponent"],
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
             },
             {
                 path: 'clinic-settings/:id',
                 loadChildren: './clinic-settings/clinic-settings.module#ClinicSettingsModule',
-                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
             },
             {
-                path: 'dentist-goals/:id',
+                path: 'profile-settings',
+                loadChildren: './profile-settings/profile-settings.module#ProfileSettingsModule',
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
+            },
+            {
+                path: 'dentist-goals',
                 loadChildren: './dentist-goals/dentist-goals.module#DentistGoalsModule',
-                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_2__["AuthGuard"]]
+                canActivate: [_auth_authguard_service__WEBPACK_IMPORTED_MODULE_3__["AuthGuard"]]
             },
             {
                 path: 'material',
@@ -470,6 +866,30 @@ var AppRoutes = [
             {
                 path: 'login',
                 loadChildren: './login/login.module#LoginModule'
+            },
+            {
+                path: 'home',
+                loadChildren: './home/home.module#HomeModule'
+            },
+            {
+                path: 'xero',
+                loadChildren: './xero/xero.module#XeroModule'
+            },
+            {
+                path: 'support',
+                loadChildren: './support/support.module#SupportModule'
+            },
+            {
+                path: 'subscription',
+                loadChildren: './subscription/subscription.module#SubscriptionModule'
+            },
+            {
+                path: 'payment',
+                loadChildren: './payment/payment.module#PaymentModule'
+            },
+            {
+                path: 'planpayment',
+                loadChildren: './planpayment/planpayment.module#PlanpaymentModule'
             }
         ]
     },
@@ -657,6 +1077,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -671,23 +1092,32 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var DentistService = /** @class */ (function () {
-    function DentistService(http, _cookieService) {
+    function DentistService(http, _cookieService, router) {
+        var _this = this;
         this.http = http;
         this._cookieService = _cookieService;
+        this.router = router;
         this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
         //append headers
         this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        this.router.events.subscribe(function (event) {
+            if (_this._cookieService.get("user_type") != '1' && _this._cookieService.get("user_type") != '2')
+                _this.token_id = _this._cookieService.get("childid");
+            else
+                _this.token_id = _this._cookieService.get("userid");
+        });
     }
     // Get Dentist
     DentistService.prototype.getDentists = function (clinic_id, user_id, token) {
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/dentists?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl + "/AccountingInvoicesAndReceipts/dentists?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&token_id=" + this.token_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
@@ -699,6 +1129,7 @@ var DentistService = /** @class */ (function () {
         var formData = new FormData();
         formData.append('id', dentist_id);
         formData.append('token', token);
+        formData.append('token_id', this.token_id);
         return this.http.post(this.apiUrl + "/Dentists/delete", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
@@ -712,6 +1143,7 @@ var DentistService = /** @class */ (function () {
         formData.append('name', value);
         formData.append('user_id', '23');
         formData.append('clinic_id', clinic_id);
+        formData.append('token_id', this.token_id);
         formData.append('token', token);
         return this.http.post(this.apiUrl + "/Dentists/update", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
@@ -726,6 +1158,7 @@ var DentistService = /** @class */ (function () {
         formData.append('name', value);
         formData.append('user_id', this._cookieService.get("userid"));
         formData.append('clinic_id', clinic_id);
+        formData.append('token_id', this.token_id);
         formData.append('token', token);
         return this.http.post(this.apiUrl + "/Dentists/add", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
@@ -734,7 +1167,7 @@ var DentistService = /** @class */ (function () {
     };
     DentistService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
     ], DentistService);
     return DentistService;
 }());
@@ -750,7 +1183,7 @@ var DentistService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- Only router without any element -->\n<!-- ============================================================== -->\n<mat-sidenav-container>\n  <router-outlet></router-outlet>\n</mat-sidenav-container>"
+module.exports = "<!-- ============================================================== -->\n<!-- Only router without any element -->\n<!-- ============================================================== -->\n\n  <router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -882,6 +1315,7 @@ var FullComponent = /** @class */ (function () {
             else
                 jquery__WEBPACK_IMPORTED_MODULE_0__(this).addClass('active');
         });
+        jquery__WEBPACK_IMPORTED_MODULE_0__("#snav .mat-nav-list .sub-item").css('display', 'block');
         // This is for the megamenu
     };
     FullComponent.prototype.loadClinic = function (value) {
@@ -1113,7 +1547,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
 /* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1128,21 +1563,31 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var HeaderService = /** @class */ (function () {
-    function HeaderService(http, _cookieService) {
+    function HeaderService(http, _cookieService, router) {
+        var _this = this;
         this.http = http;
         this._cookieService = _cookieService;
-        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
+        this.router = router;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].apiUrl;
         //append headers
         this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
         this.headers.append("Content-Type", 'application/json');
         this.headers.append("Access-Control-Allow-Origin", "*");
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        this.router.events.subscribe(function (event) {
+            if (_this._cookieService.get("user_type") != '1' && _this._cookieService.get("user_type") != '2')
+                _this.token_id = _this._cookieService.get("childid");
+            else
+                _this.token_id = _this._cookieService.get("userid");
+        });
     }
     // Items Predictor Analysis 
     HeaderService.prototype.logout = function (id) {
         var formData = new FormData();
         formData.append('user_id', id);
+        formData.append('token_id', this.token_id);
         return this.http.post(this.apiUrl + "/users/applogout", formData)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
@@ -1152,14 +1597,14 @@ var HeaderService = /** @class */ (function () {
         if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
         if (clinic_id === void 0) { clinic_id = '1'; }
         if (token === void 0) { token = this._cookieService.get("token"); }
-        return this.http.get(this.apiUrl + "/Practices/getPractices?user_id=" + user_id + "&token=" + this._cookieService.get("token"), { headers: this.headers })
+        return this.http.get(this.apiUrl + "/Practices/getPractices?user_id=" + user_id + "&token=" + this._cookieService.get("token") + "&token_id=" + this.token_id, { headers: this.headers })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
             return response;
         }));
     };
     HeaderService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
-        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]])
     ], HeaderService);
     return HeaderService;
 }());
@@ -1175,7 +1620,7 @@ var HeaderService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n    <div fxLayout=\"row wrap\" class=\"header_filters\" >\n\n        <div fxFlex.lg=\"48\" fxFlex.xs=\"100\" fxFlex=\"48\" class=\"header_first_select\">\n\n              <div class=\"vertical_center_header_content\">\n\n                  <div class=\"sa_mat_select_topbar\">\n\n                    <mat-form-field>\n\n                            <mat-select [value] =\"1\" class=\"external_clinic\">\n\n                                <mat-option *ngFor=\"let clinicData of clinicsData\" [value]=\"clinicData.id\">\n\n                                    {{clinicData.clinicName}}\n\n                                </mat-option>\n\n                            </mat-select>\n\n                        </mat-form-field>\n\n                  </div>\n              </div>\n          </div>\n            <div fxFlex.lg=\"50\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"dentist_dropdown\">\n\n                <div class=\"vertical_center_header_content\">\n\n                    <div class=\"sa_mat_select_topbar\">\n\n                        <mat-form-field>\n\n                            <mat-select [value] =\"selectedDentist\" class=\"external_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n\n                                <mat-option value=\"all\">All Dentists</mat-option>\n\n                                <mat-option *ngFor=\"let dentist of dentists\"  [value]=\"dentist.providerId\">\n\n                                    {{dentist.name}}\n\n                                </mat-option>\n\n                            </mat-select>\n\n                        </mat-form-field>\n\n                    </div>\n\n                </div>\n\n            </div>\n\n\n       </div>"
+module.exports = "\n    <div fxLayout=\"row wrap\" class=\"header_filters\" >\n\n        <div fxFlex.lg=\"48\" fxFlex.xs=\"100\" fxFlex=\"48\" class=\"header_first_select\">\n\n              <div class=\"vertical_center_header_content\">\n\n                  <div class=\"sa_mat_select_topbar\">\n                    <mat-form-field> \n\n                            <mat-select [value] =\"1\" class=\"external_clinic\" [(ngModel)]=\"selectedClinic\"  (ngModelChange)=\"loadClinic($event)\">\n                                <mat-option value=\"all\" *ngIf=\"route == '/dashboards/healthscreen'\">All Clinics</mat-option>\n                                <mat-option *ngFor=\"let clinicData of clinicsData\" [value]=\"clinicData.id\">\n\n                                    {{clinicData.clinicName}}\n\n                                </mat-option>\n\n                            </mat-select>\n\n                        </mat-form-field>\n\n                  </div>\n              </div>\n          </div>\n            <div fxFlex.lg=\"50\" fxFlex.xs=\"100\" fxFlex=\"50\" class=\"dentist_dropdown\">\n\n                <div class=\"vertical_center_header_content\">\n\n                    <div class=\"sa_mat_select_topbar\">\n\n                        <mat-form-field>\n\n                            <mat-select [value] =\"selectedDentist\" class=\"external_dentist\"  [(ngModel)]=\"selectedDentist\" (ngModelChange)=\"loadDentist($event)\">\n\n                                <mat-option value=\"all\">All Dentists</mat-option>\n\n                                <mat-option *ngFor=\"let dentist of dentists\"  [value]=\"dentist.providerId\">\n\n                                    {{dentist.name}}\n\n                                </mat-option>\n\n                            </mat-select>\n\n                        </mat-form-field>\n\n                    </div>\n\n                </div>\n\n            </div>\n\n\n       </div>"
 
 /***/ }),
 
@@ -1210,11 +1655,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var AppHeaderrightComponent = /** @class */ (function () {
-    function AppHeaderrightComponent(_cookieService, route, headerService, dentistService) {
+    function AppHeaderrightComponent(_cookieService, headerService, dentistService, router) {
+        var _this = this;
         this._cookieService = _cookieService;
-        this.route = route;
         this.headerService = headerService;
         this.dentistService = dentistService;
+        this.router = router;
         this.clinicsData = [];
         this.config = {};
         this.clinic_id = {};
@@ -1223,18 +1669,40 @@ var AppHeaderrightComponent = /** @class */ (function () {
         this.dentists = [
             { providerId: 'all', name: 'All Dentists' },
         ];
+        this.router.events.subscribe(function (event) {
+            _this.route = router.url;
+            if ($('#currentClinic').attr('cid') == 'all' && _this.route != '/dashboards/healthscreen')
+                _this.getClinics();
+        });
     }
     AppHeaderrightComponent.prototype.ngAfterViewInit = function () {
-        this.clinic_id = '1';
+        //  this.clinic_id = '1';
         this.getClinics();
-        this.getDentists();
     };
     AppHeaderrightComponent.prototype.getClinics = function () {
         var _this = this;
         this.headerService.getClinics().subscribe(function (res) {
             if (res.message == 'success') {
                 _this.clinicsData = res.data;
-                _this.title = $('#page_title').val();
+                if (res.data.length > 0) {
+                    if (_this.route == '/dashboards/healthscreen') {
+                        _this.clinic_id = 'all';
+                        _this.selectedClinic = 'all';
+                    }
+                    else {
+                        _this.clinic_id = res.data[0].id;
+                        _this.selectedClinic = res.data[0].id;
+                    }
+                    _this.title = $('#page_title').val();
+                    _this.loadClinic(_this.selectedClinic);
+                }
+            }
+            else if (res.status == '401') {
+                _this._cookieService.put("username", '');
+                _this._cookieService.put("email", '');
+                _this._cookieService.put("token", '');
+                _this._cookieService.put("userid", '');
+                _this.router.navigateByUrl('/login');
             }
         }, function (error) {
             // this.warningMessage = "Please Provide Valid Inputs!";
@@ -1248,30 +1716,32 @@ var AppHeaderrightComponent = /** @class */ (function () {
                 _this.dentists = res.data;
                 _this.dentistCount = res.data.length;
             }
+            else if (res.status == '401') {
+                _this._cookieService.put("username", '');
+                _this._cookieService.put("email", '');
+                _this._cookieService.put("token", '');
+                _this._cookieService.put("userid", '');
+                _this.router.navigateByUrl('/login');
+            }
         }, function (error) {
             _this.warningMessage = "Please Provide Valid Inputs!";
         });
     };
-    AppHeaderrightComponent.prototype.loadClinic = function (value) {
-        this.finalUrl = this.route.url.substring(0, this.route.url.lastIndexOf('/') + 1);
-        this.route.navigate([this.finalUrl + value]);
-        //this.location.go(this.finalUrl+value);
-    };
-    /*  logout() {
-          this.headerrightService.logout(this._cookieService.get("userid")).subscribe((res) => {
-           console.log(res);
-           if(res.message == 'success'){
-            this._cookieService.put("username",'');
-            this._cookieService.put("email", '');
-            this._cookieService.put("token", '');
-            this._cookieService.put("userid", '');
-    
-            this.router.navigate(['/login']);
-           }
-        }, error => {
+    AppHeaderrightComponent.prototype.loadClinic = function (newValue) {
+        if (newValue != 'undefined') {
+            if ($('body').find('span#currentClinic').length <= 0) {
+                $('body').append('<span id="currentClinic" style="display:none" cid="' + newValue + '"></span>');
+            }
+            else {
+                $('#currentClinic').attr('cid', newValue);
+            }
+            this.selectedClinic = newValue;
+            this.clinic_id = this.selectedClinic;
+            this.getDentists();
+            $('.internal_clinic').val(newValue);
+            $('#clinic_initiate').click();
         }
-        );
-      }*/
+    };
     AppHeaderrightComponent.prototype.loadDentist = function (newValue) {
         if ($('body').find('span#currentDentist').length <= 0) {
             $('body').append('<span id="currentDentist" style="display:none" did="' + newValue + '"></span>');
@@ -1289,7 +1759,7 @@ var AppHeaderrightComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./headerright.component.html */ "./src/app/layouts/full/headerright/headerright.component.html"),
             styleUrls: []
         }),
-        __metadata("design:paramtypes", [angular2_cookie_core__WEBPACK_IMPORTED_MODULE_1__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _header_header_service__WEBPACK_IMPORTED_MODULE_3__["HeaderService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_4__["DentistService"]])
+        __metadata("design:paramtypes", [angular2_cookie_core__WEBPACK_IMPORTED_MODULE_1__["CookieService"], _header_header_service__WEBPACK_IMPORTED_MODULE_3__["HeaderService"], _dentist_dentist_service__WEBPACK_IMPORTED_MODULE_4__["DentistService"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], AppHeaderrightComponent);
     return AppHeaderrightComponent;
 }());
@@ -1305,7 +1775,7 @@ var AppHeaderrightComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- ============================================================== -->\n<!-- sidebar -->\n<!-- ============================================================== -->\n<mat-nav-list appAccordion>\n    <div class=\"sa_sidebar_logo_main\">\n    <div class=\"sa_sidebar_logo\"><img src=\"assets/images/logo-text.png\" alt=\"homepage\" class=\"\"></div>\n    </div>\n\n    <div class=\"sa_sidebar_usersec\">\n        <div class=\"suer_image_sidebar\"><img src=\"assets/images/gPZwCbdS.jpg\"></div>\n        <div class=\"suer_text_sidebar\">Project Manager</div>\n\n    </div>\n\n\n<!--     <div class=\"sa-col-12\">\n        <div class=\"fxFlex\">\n            <div fxFlex.gt-sm=\"100\" fxFlex.gt-xs=\"100\" fxFlex=\"100\" class=\"header_select\">\n                <div class=\"sa_select_outer_main\" style=\"padding:10px 10px 20px; float:left; width:100%;\">\n                    <div class=\"sa_select_outer\" >\n                        <select class=\"sa_select forwhite\" >\n                            <option>Select Clinic</option>\n                            <option *ngFor=\"let clinicData of clinicsData\" [value]=\"clinicData.id\">{{clinicData.clinicName}}</option>\n                        </select>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div> -->\n\n\n    <mat-list-item appAccordionLink *ngFor=\"let menuitem of menuItems.getMenuitem()\" routerLinkActive=\"selected\" group=\"{{menuitem.state}}\">\n        <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state, menuitem.param]\" *ngIf=\"menuitem.type === 'link' &&  menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{ menuitem.icon }}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n         <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state]\" *ngIf=\"menuitem.type === 'link-noparam'  && menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" *ngIf=\"menuitem.type === 'extLink' && menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" target=\"_blank\" *ngIf=\"menuitem.type === 'extTabLink'  && menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name}}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'sub' && menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n            <i class=\"fas fa-caret-down\"></i>\n        </a>\n        <mat-nav-list class=\"sub-item\" *ngIf=\"menuitem.type === 'sub' && menuitem.role.indexOf(user_type) !== -1\">\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\" routerLinkActive=\"selected\">\n                <a [routerLink]=\"['/', menuitem.state, childitem.state, childitem.param ]\" *ngIf=\"childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1\" class=\"relative\"\n                    routerLinkActive=\"selected\" ><i class=\"{{childitem.icon}}\"></i>{{ childitem.name}}</a>\n            </mat-list-item>\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\">\n                <a class=\"\" href=\"javascript: void(0);\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\" (click)=\"clickEvent()\"\n                    [ngClass]=\"status ? 'selected' : ''\" >\n                    <span>{{ childitem.name }}</span>\n                    <span fxFlex></span>\n                    <i class=\"fas fa-caret-down\"></i>\n                </a>\n                <mat-nav-list class=\"child-sub-item\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\">\n                    <mat-list-item *ngFor=\"let child of childitem.subchildren\" routerLinkActive=\"selected\">\n                        <a [routerLink]=\"['/', menuitem.state, childitem.state, child.state ]\" routerLinkActive=\"selected\">{{child.name}}</a>\n                    </mat-list-item>\n                </mat-nav-list>\n            </mat-list-item>\n\n        </mat-nav-list>\n\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'sub-child' && menuitem.role.indexOf(user_type) !== -1\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n            <i class=\"fas fa-caret-down\"></i>\n        </a>\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'link-healthscreen' && menuitem.role.indexOf(user_type) !== -1\" [routerLink]=\"['/',  menuitem.param2, menuitem.state, menuitem.param1]\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n          \n        </a>\n        <mat-nav-list class=\"sub-item\" *ngIf=\"menuitem.type === 'sub-child' && menuitem.role.indexOf(user_type) !== -1\">\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\" routerLinkActive=\"selected\">\n                <a [routerLink]=\"['/', childitem.state, childitem.param ]\" *ngIf=\"childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1\" class=\"relative\"\n                    routerLinkActive=\"selected\"><i class=\"{{childitem.icon}}\"></i>{{ childitem.name}}</a>\n            </mat-list-item>\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\">\n                <a class=\"\" href=\"javascript: void(0);\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\" (click)=\"clickEvent()\"\n                    [ngClass]=\"status ? 'selected' : ''\" >\n                    <span>{{ childitem.name }}</span>\n                    <span fxFlex></span>\n                    <i class=\"fas fa-caret-down\"></i>\n                </a>\n                <mat-nav-list class=\"child-sub-item\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\" >\n                    <mat-list-item *ngFor=\"let child of childitem.subchildren\" routerLinkActive=\"selected\">\n                        <a [routerLink]=\"['/', childitem.state, child.state ]\" routerLinkActive=\"selected\">{{child.name}}</a>\n                    </mat-list-item>\n                </mat-nav-list>\n            </mat-list-item>\n\n        </mat-nav-list>\n\n        <div class=\"saperator text-muted\" *ngIf=\"menuitem.type === 'saperator' && menuitem.role.indexOf(user_type) !== -1\">\n            <span>{{ menuitem.name }}</span>\n        </div>\n    </mat-list-item>\n      <div class=\"sa_logout_icon\" (click) = \"logout()\"><button mat-icon-button ><i class=\"fas fa-power-off\"></i></button></div>\n</mat-nav-list>"
+module.exports = "<!-- ============================================================== -->\n<!-- sidebar -->\n<!-- ============================================================== -->\n<mat-nav-list appAccordion>\n    <div class=\"sa_sidebar_logo_main\">\n    <div class=\"sa_sidebar_logo\"><img src=\"assets/images/logo-text.png\" alt=\"homepage\" class=\"\"></div>\n    </div>\n\n    <div class=\"sa_sidebar_usersec\">\n        <div class=\"suer_image_sidebar\"><img src=\"{{user_image}}\"></div>\n        <div class=\"suer_text_sidebar\">{{display_name | uppercase}}</div>\n\n    </div>\n    <mat-list-item appAccordionLink *ngFor=\"let menuitem of menuItems.getMenuitem()\" routerLinkActive=\"selected\" group=\"{{menuitem.state}}\">\n        <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state]\" *ngIf=\"menuitem.type === 'link' &&  menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" >\n            <i class=\"{{ menuitem.icon }}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n         <a class=\"\" appAccordionToggle [routerLink]=\"['/', menuitem.state]\" *ngIf=\"menuitem.type === 'link-noparam'  && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" *ngIf=\"menuitem.type === 'extLink' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n        <a class=\"\" appAccordionToggle href=\"{{menuitem.state}}\" target=\"_blank\" *ngIf=\"menuitem.type === 'extTabLink'  && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name}}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'sub' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n            <i class=\"fas fa-caret-down\"></i>\n        </a>\n        <mat-nav-list class=\"sub-item\" *ngIf=\"menuitem.type === 'sub' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\">\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\" routerLinkActive=\"selected\">\n                <a [routerLink]=\"['/', menuitem.state, childitem.state, childitem.param ]\" *ngIf=\"childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1\" class=\"relative\"\n                    routerLinkActive=\"selected\" ><i class=\"{{childitem.icon}}\"></i>{{ childitem.name}}</a>\n            </mat-list-item>\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\">\n                <a class=\"\" href=\"javascript: void(0);\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\" (click)=\"clickEvent()\"\n                    [ngClass]=\"status ? 'selected' : ''\" >\n                    <span>{{ childitem.name }}</span>\n                    <span fxFlex></span>\n                    <i class=\"fas fa-caret-down\"></i>\n                </a>\n                <mat-nav-list class=\"child-sub-item\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\">\n                    <mat-list-item *ngFor=\"let child of childitem.subchildren\" routerLinkActive=\"selected\">\n                        <a [routerLink]=\"['/', menuitem.state, childitem.state, child.state ]\" routerLinkActive=\"selected\">{{child.name}}</a>\n                    </mat-list-item>\n                </mat-nav-list>\n            </mat-list-item>\n\n        </mat-nav-list>\n\n        \n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'link-healthscreen' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" [routerLink]=\"['/',   menuitem.param2,   menuitem.state]\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n          \n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'link-morning-huddle' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" [routerLink]=\"['/',   menuitem.param2,   menuitem.state]\">\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n          \n        </a>\n\n        <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'sub-child' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n            <i class=\"fas fa-caret-down\"></i>\n        </a>\n        <mat-nav-list class=\"sub-item\" *ngIf=\"menuitem.type === 'sub-child' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\">\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\" routerLinkActive=\"selected\">\n                <a [routerLink]=\"['/', childitem.state ]\" *ngIf=\"childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" class=\"relative\"\n                    routerLinkActive=\"selected\"><i class=\"{{childitem.icon}}\"></i>{{ childitem.name}}</a>\n            </mat-list-item>\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\">\n                <a class=\"\" href=\"javascript: void(0);\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1\" (click)=\"clickEvent()\"\n                    [ngClass]=\"status ? 'selected' : ''\" >\n                    <span>{{ childitem.name }}</span>\n                    <span fxFlex></span>\n                    <i class=\"fas fa-caret-down\"></i>\n                </a>\n                <mat-nav-list class=\"child-sub-item\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" >\n                    <mat-list-item *ngFor=\"let child of childitem.subchildren\" routerLinkActive=\"selected\">\n                        <a [routerLink]=\"['/', childitem.state, child.state ]\" routerLinkActive=\"selected\">{{child.name}}</a>\n                    </mat-list-item>\n                </mat-nav-list>\n            </mat-list-item>\n        </mat-nav-list>\n         <a class=\"\" appAccordionToggle href=\"javascript:;\" *ngIf=\"menuitem.type  === 'sub-dashboards' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" >\n            <i class=\"{{menuitem.icon}}\"></i>\n            <span>{{ menuitem.name }}</span>\n            <span fxFlex></span>\n            <span class=\"label label-{{ badge.type }}\" *ngFor=\"let badge of menuitem.badge\">{{ badge.value }}</span>\n            <i class=\"fas fa-caret-down\"></i>\n        </a>\n        <mat-nav-list class=\"sub-item\" *ngIf=\"menuitem.type === 'sub-dashboards' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\">\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\" routerLinkActive=\"selected\">\n                <a [routerLink]=\"['/', menuitem.state, childitem.state ]\" *ngIf=\"childitem.type === 'link' && childitem.role.indexOf(user_type) !== -1\" class=\"relative\"\n                    routerLinkActive=\"selected\"><i class=\"{{childitem.icon}}\"></i>{{ childitem.name}}</a>\n            </mat-list-item>\n            <mat-list-item *ngFor=\"let childitem of menuitem.children\">\n                <a class=\"\" href=\"javascript: void(0);\" *ngIf=\"childitem.type === 'subchild' && childitem.role.indexOf(user_type) !== -1  && login_status != 5 \" (click)=\"clickEvent()\"\n                    [ngClass]=\"status ? 'selected' : ''\" >\n                    <span>{{ childitem.name }}</span>\n                    <span fxFlex></span>\n                    <i class=\"fas fa-caret-down\"></i>\n                </a>\n                <mat-nav-list class=\"child-sub-item\" *ngIf=\"childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\" >\n                    <mat-list-item *ngFor=\"let child of childitem.subchildren\" routerLinkActive=\"selected\">\n                        <a [routerLink]=\"['/', childitem.state, child.state ]\" routerLinkActive=\"selected\">{{child.name}}</a>\n                    </mat-list-item>\n                </mat-nav-list>\n            </mat-list-item>\n\n        </mat-nav-list>\n        <div class=\"saperator text-muted\" *ngIf=\"menuitem.type === 'saperator' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5\">\n            <span>{{ menuitem.name }}</span>\n        </div>\n    </mat-list-item>\n      <div class=\"sa_logout_icon\" (click) = \"logout()\"><button mat-icon-button ><i class=\"fas fa-power-off\"></i></button></div>\n</mat-nav-list>"
 
 /***/ }),
 
@@ -1368,6 +1838,12 @@ var AppSidebarComponent = /** @class */ (function () {
         // This is for the topbar search
         this.getClinics();
         this.user_type = this._cookieService.get("user_type");
+        this.display_name = this._cookieService.get("display_name");
+        this.user_image = this._cookieService.get("user_image");
+        this.login_status = this._cookieService.get("login_status");
+        console.log(this.login_status);
+        if (!this._cookieService.get("user_image"))
+            this.user_image = 'assets/images/gPZwCbdS.jpg';
         // This is for the megamenu
     };
     AppSidebarComponent.prototype.ngOnDestroy = function () {
@@ -1382,6 +1858,8 @@ var AppSidebarComponent = /** @class */ (function () {
                 _this._cookieService.put("email", '');
                 _this._cookieService.put("token", '');
                 _this._cookieService.put("userid", '');
+                _this._cookieService.put("childid", '');
+                _this._cookieService.put("dentistid", '');
                 _this.router.navigate(['/login']);
             }
         }, function (error) {
@@ -1411,6 +1889,213 @@ var AppSidebarComponent = /** @class */ (function () {
             _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
     ], AppSidebarComponent);
     return AppSidebarComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/lost-opportunity/lost-opportunity.component.css":
+/*!*****************************************************************!*\
+  !*** ./src/app/lost-opportunity/lost-opportunity.component.css ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2xvc3Qtb3Bwb3J0dW5pdHkvbG9zdC1vcHBvcnR1bml0eS5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/lost-opportunity/lost-opportunity.component.html":
+/*!******************************************************************!*\
+  !*** ./src/app/lost-opportunity/lost-opportunity.component.html ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<mat-card >\n\t<mat-card-content>\n\t\t<div fxLayout=\"row wrap\" fxLayoutGap=\"20px\" fxLayoutGap.sm=\"0px\" fxLayoutGap.xs=\"0px\">\n\t\t\t<div fxFlex=\"calc(50% - 10px)\" fxFlex.md=\"calc(50% - 10px)\" fxFlex.sm=\"100\" fxFlex.xs=\"100\">\n\t\t\t\t<div class=\"lo-content\">\n\t\t\t\t\t<ul>\n\t\t\t\t\t\t<li><span class=\"left-lo-content\">Total Discounts:</span> <span class=\"right-lo-content\">$8,100 <small>$900 improvement</small></span></li>\n\t\t\t\t\t\t<li> <span class=\"left-lo-content\">Collection vs Production:</span> <span class=\"right-lo-content\">$67,500 <small>$7,500 improvement </small></span></li>\n\t\t\t\t\t\t<li><span class=\"left-lo-content\">Case Acceptance:</span> <span class=\"right-lo-content\">$108,000<small>$12,000 improvement</small></span></li>\n\t\t\t\t\t</ul>\n\t\t\t\t\t<p>Total Lost Opportunity:<span>$183,600</span></p>\n\t\t\t\t\t<p>Total Production:   <span>$520,400<small>+$20,400</small></span></p>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div fxFlex=\"calc(50% - 10px)\" fxFlex.md=\"calc(50% - 10px)\" fxFlex.sm=\"100\" fxFlex.xs=\"100\" class=\"text-center\">\n\t\t\t\t<img src=\"./assets/images/lost-opportunity.png\" alt=\"\">\n\t\t\t</div>\n\t\t</div>\n\t</mat-card-content>\n</mat-card>\n\n<mat-card >\n\t<mat-card-content>\n\t\t<div class=\"lo-slider\">\n\t\t\t<h4>10% improvement</h4>\n\t\t\t\t<mat-slider></mat-slider>\n\t\t\t\t<ul>\n\t\t\t\t\t<li style=\"left:0%;\">0</li>\n\t\t\t\t\t<li style=\"left:10%;\">10</li>\n\t\t\t\t\t<li style=\"left:20%;\">20</li>\n\t\t\t\t\t<li style=\"left:30%;\">30</li>\n\t\t\t\t\t<li style=\"left:40%;\">40</li>\n\t\t\t\t\t<li style=\"left:50%;\">50</li>\n\t\t\t\t\t<li style=\"left:60%;\">60</li>\n\t\t\t\t\t<li style=\"left:70%;\">70</li>\n\t\t\t\t\t<li style=\"left:80%;\">80</li>\n\t\t\t\t\t<li style=\"left:90%;\">90</li>\n\t\t\t\t\t<li style=\"left:100%;\">100</li>\n\t\t\t\t</ul>\n        </div>\n\t</mat-card-content>\n </mat-card>"
+
+/***/ }),
+
+/***/ "./src/app/lost-opportunity/lost-opportunity.component.ts":
+/*!****************************************************************!*\
+  !*** ./src/app/lost-opportunity/lost-opportunity.component.ts ***!
+  \****************************************************************/
+/*! exports provided: LostOpportunityComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LostOpportunityComponent", function() { return LostOpportunityComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var LostOpportunityComponent = /** @class */ (function () {
+    function LostOpportunityComponent() {
+    }
+    LostOpportunityComponent.prototype.ngOnInit = function () {
+    };
+    LostOpportunityComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-lost-opportunity',
+            template: __webpack_require__(/*! ./lost-opportunity.component.html */ "./src/app/lost-opportunity/lost-opportunity.component.html"),
+            styles: [__webpack_require__(/*! ./lost-opportunity.component.css */ "./src/app/lost-opportunity/lost-opportunity.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], LostOpportunityComponent);
+    return LostOpportunityComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/roles-users/roles-users.service.ts":
+/*!****************************************************!*\
+  !*** ./src/app/roles-users/roles-users.service.ts ***!
+  \****************************************************/
+/*! exports provided: RolesUsersService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RolesUsersService", function() { return RolesUsersService; });
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angular2-cookie/core */ "./node_modules/angular2-cookie/core.js");
+/* harmony import */ var angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var RolesUsersService = /** @class */ (function () {
+    function RolesUsersService(http, _cookieService, router) {
+        var _this = this;
+        this.http = http;
+        this._cookieService = _cookieService;
+        this.router = router;
+        this.apiUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].apiUrl;
+        //append headers
+        this.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]();
+        this.headers.append("Content-Type", 'application/json');
+        this.headers.append("Access-Control-Allow-Origin", "*");
+        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+        this.router.events.subscribe(function (event) {
+            if (_this._cookieService.get("user_type") != '1' && _this._cookieService.get("user_type") != '2')
+                _this.token_id = _this._cookieService.get("childid");
+            else
+                _this.token_id = _this._cookieService.get("userid");
+        });
+    }
+    // Get Dentist
+    RolesUsersService.prototype.getUsers = function (clinic_id, user_id, token) {
+        if (clinic_id === void 0) { clinic_id = '1'; }
+        if (user_id === void 0) { user_id = this._cookieService.get("userid"); }
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Users/getRolesUsers?user_id=" + user_id + "&clinic_id=" + clinic_id + "&token=" + this._cookieService.get("token") + "&token_id=" + this.token_id, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Get Dentist
+    RolesUsersService.prototype.getRoles = function (token) {
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Roles/getRoles?token=" + this._cookieService.get("token") + "&token_id=" + this.token_id, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // checkUserEmail
+    RolesUsersService.prototype.checkUserEmail = function (email, token) {
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        return this.http.get(this.apiUrl + "/Users/checkUserEmail?email=" + email + "&token=" + this._cookieService.get("token") + "&token_id=" + this.token_id, { headers: this.headers })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Delete Clinic
+    RolesUsersService.prototype.deleteUser = function (user_id, token) {
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        var formData = new FormData();
+        formData.append('id', user_id);
+        formData.append('token', token);
+        formData.append('token_id', this.token_id);
+        return this.http.post(this.apiUrl + "/Users/delete", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Update Clinic
+    RolesUsersService.prototype.saveRoles = function (role_id, checkedRoles, token) {
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        var formData = new FormData();
+        formData.append('id', role_id);
+        formData.append('permisions', checkedRoles);
+        formData.append('token', token);
+        formData.append('token_id', this.token_id);
+        return this.http.post(this.apiUrl + "/Roles/saveRoles/", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Update Clinic
+    RolesUsersService.prototype.addRoleUser = function (display_name, email, user_type, password, clinic_id, dentist_id, token) {
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        var formData = new FormData();
+        formData.append('display_name', display_name);
+        formData.append('email', email);
+        formData.append('user_type', user_type);
+        formData.append('clinic_id', clinic_id);
+        formData.append('password', password);
+        formData.append('dentist_id', dentist_id);
+        formData.append('token_id', this.token_id);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', token);
+        return this.http.post(this.apiUrl + "/Users/addRoleUser/", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    // Update Clinic
+    RolesUsersService.prototype.updateRoleUser = function (user_id, value, column, token) {
+        if (token === void 0) { token = this._cookieService.get("token"); }
+        var formData = new FormData();
+        formData.append('id', user_id);
+        formData.append(column, value);
+        formData.append('token', token);
+        formData.append('token_id', this.token_id);
+        return this.http.post(this.apiUrl + "/Users/updateUser/", formData)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_0__["map"])(function (response) {
+            return response;
+        }));
+    };
+    RolesUsersService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"], angular2_cookie_core__WEBPACK_IMPORTED_MODULE_3__["CookieService"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
+    ], RolesUsersService);
+    return RolesUsersService;
 }());
 
 
@@ -1662,12 +2347,20 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuItems", function() { return MenuItems; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _roles_users_roles_users_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../roles-users/roles-users.service */ "./src/app/roles-users/roles-users.service.ts");
+/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! chartjs-plugin-style */ "./node_modules/chartjs-plugin-style/dist/chartjs-plugin-style.js");
+/* harmony import */ var chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_style__WEBPACK_IMPORTED_MODULE_2__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
 
 var MENUITEMS = [
     /* {
@@ -1693,22 +2386,28 @@ var MENUITEMS = [
         icon: 'fas fa-home',
         role: ['2'],
         param2: 'dashboards',
-        param1: '1'
+    },
+    {
+        state: 'morning-huddle',
+        name: 'Morning Huddle',
+        type: 'link-morning-huddle',
+        icon: 'fas fa-sun',
+        role: ['2'],
+        param2: 'dashboards',
     },
     {
         state: 'dashboards',
         name: 'Dashboards',
-        type: 'sub',
+        type: 'sub-dashboards',
         icon: 'fas fa-chart-area',
         children: [
-            { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param: '1' },
-            { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', param: '1' },
-            { state: 'frontdesk', name: 'Front Desk', type: 'link', param: '1' },
-            { state: 'marketing', name: 'Marketing', type: 'link', param: '1' },
-            { state: 'finances', name: 'Finances', type: 'link', param: '1', icon: '' }
+            { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link' },
+            { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link' },
+            { state: 'frontdesk', name: 'Front Desk', type: 'link' },
+            { state: 'marketing', name: 'Marketing', type: 'link' },
+            { state: 'finances', name: 'Finances', type: 'link', icon: '' }
         ],
-        param: '1',
-        role: ['2']
+        param: '1'
     },
     {
         state: 'clinic',
@@ -1722,7 +2421,6 @@ var MENUITEMS = [
         name: 'Dentists',
         type: 'link',
         icon: 'fas fa-tooth',
-        param: '1',
         role: ['2']
     },
     {
@@ -1740,45 +2438,21 @@ var MENUITEMS = [
         role: ['1']
     },
     {
-        state: 'settings',
-        name: 'Settings',
-        type: 'link',
-        icon: 'fas fa-settings',
-        param: '1',
-        role: ['1']
-    },
-    {
-        state: 'roles',
+        state: 'roles-users',
         name: 'Roles Management',
         type: 'link',
-        icon: 'fas fa-settings',
-        param: '1',
-        role: ['1']
+        icon: 'fas fa-user-tag',
+        role: ['2']
     },
-    /*{
-      state: 'clinic-goals',
-      name: 'Clinic Goals',
-      type: 'link',
-      icon: 'fas fa-chart-line',
-      param : '1'
-    },
-      {
-      state: 'dentist-goals',
-      name: 'Dentist Goals',
-      type: 'link',
-      icon: 'fas fa-chart-line',
-      param : '1'
-    },*/
     {
         state: '',
         name: 'Goals',
         type: 'sub-child',
         icon: 'fas fa-medal',
         children: [
-            { state: 'clinic-goals', name: 'Clinic Goals', type: 'link', param: '1' },
-            { state: 'dentist-goals', name: 'Dentist Goals', type: 'link', param: '1' }
+            { state: 'clinic-goals', name: 'Clinic Goals', type: 'link' },
+            { state: 'dentist-goals', name: 'Dentist Goals', type: 'link' }
         ],
-        param: '1',
         role: ['1', '2']
     },
     {
@@ -1786,18 +2460,147 @@ var MENUITEMS = [
         name: 'Data Upload',
         type: 'link',
         icon: 'fas fa-upload',
-        param: '1',
         role: ['2']
+    },
+    {
+        state: 'profile-settings',
+        name: 'Profile Settings',
+        type: 'link',
+        icon: 'fas fa-user-cog',
+        role: ['1', '2']
     },
 ];
 var MenuItems = /** @class */ (function () {
-    function MenuItems() {
+    function MenuItems(rolesUsersService) {
+        this.rolesUsersService = rolesUsersService;
+        this.dashboard1role = ['1', '2'];
+        this.dashboard2role = ['1', '2'];
+        this.dashboard3role = ['1', '2'];
+        this.dashboard4role = ['1', '2'];
+        this.dashboard5role = ['1', '2'];
+        this.menu = [
+            {
+                state: 'healthscreen',
+                name: 'Health Screen',
+                type: 'link-healthscreen',
+                icon: 'fas fa-home',
+                role: ['2'],
+                param2: 'dashboards',
+            },
+            {
+                state: 'morning-huddle',
+                name: 'Morning Huddle',
+                type: 'link-morning-huddle',
+                icon: 'fas fa-sun',
+                role: ['2'],
+                param2: 'dashboards',
+            },
+            {
+                state: 'dashboards',
+                name: 'Dashboards',
+                type: 'sub-dashboards',
+                icon: 'fas fa-chart-area',
+                children: [
+                    { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', role: this.dashboard1role },
+                    { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', role: this.dashboard2role },
+                    { state: 'frontdesk', name: 'Front Desk', type: 'link', role: this.dashboard3role },
+                    { state: 'marketing', name: 'Marketing', type: 'link', role: this.dashboard4role },
+                    { state: 'finances', name: 'Finances', type: 'link', icon: '', role: this.dashboard5role }
+                ],
+                role: ['2', '3', '4', '5']
+            },
+            {
+                state: 'clinic',
+                name: 'Clinics',
+                type: 'link-noparam',
+                icon: 'fas fa-home',
+                role: ['2']
+            },
+            {
+                state: 'dentist',
+                name: 'Dentists',
+                type: 'link-noparam',
+                icon: 'fas fa-tooth',
+                role: ['2']
+            },
+            {
+                state: 'users',
+                name: 'Registered Clinic Owners',
+                type: 'link-noparam',
+                icon: 'fas fa-users',
+                role: ['1']
+            },
+            {
+                state: 'plans',
+                name: 'Subscription Plans',
+                type: 'link-noparam',
+                icon: 'fas fa-receipt',
+                role: ['1']
+            },
+            {
+                state: 'roles-users',
+                name: 'Roles Management',
+                type: 'link',
+                icon: 'fas fa-user-tag',
+                role: ['2']
+            },
+            {
+                state: '',
+                name: 'Goals',
+                type: 'sub-child',
+                icon: 'fas fa-medal',
+                children: [
+                    { state: 'clinic-goals', name: 'Clinic Goals', type: 'link' },
+                    { state: 'dentist-goals', name: 'Dentist Goals', type: 'link' }
+                ],
+                role: ['1', '2']
+            },
+            {
+                state: 'importcsv',
+                name: 'Data Upload',
+                type: 'link-noparam',
+                icon: 'fas fa-upload',
+                role: ['2']
+            },
+            {
+                state: 'profile-settings',
+                name: 'Profile Settings',
+                type: 'link-noparam',
+                icon: 'fas fa-user-cog',
+                role: ['1', '2', '3', '4', '5']
+            },
+        ];
+        this.getRoles();
     }
     MenuItems.prototype.getMenuitem = function () {
-        return MENUITEMS;
+        return this.menu;
+    };
+    MenuItems.prototype.getRoles = function () {
+        var _this = this;
+        this.rolesUsersService.getRoles().subscribe(function (res) {
+            if (res.message == 'success') {
+                res.data.forEach(function (result) {
+                    if (result.id != '1') {
+                        var dashboards = result.permisions.split(',');
+                        if (dashboards.includes("dashboard1"))
+                            _this.dashboard1role.push(result.id.toString());
+                        if (dashboards.includes("dashboard2"))
+                            _this.dashboard2role.push(result.id.toString());
+                        if (dashboards.includes("dashboard3"))
+                            _this.dashboard3role.push(result.id.toString());
+                        if (dashboards.includes("dashboard4"))
+                            _this.dashboard4role.push(result.id.toString());
+                        if (dashboards.includes("dashboard5"))
+                            _this.dashboard5role.push(result.id.toString());
+                    }
+                });
+            }
+        }, function (error) {
+        });
     };
     MenuItems = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])()
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __metadata("design:paramtypes", [_roles_users_roles_users_service__WEBPACK_IMPORTED_MODULE_1__["RolesUsersService"]])
     ], MenuItems);
     return MenuItems;
 }());
@@ -1818,7 +2621,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SharedModule", function() { return SharedModule; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _menu_items_menu_items__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./menu-items/menu-items */ "./src/app/shared/menu-items/menu-items.ts");
-/* harmony import */ var _accordion__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./accordion */ "./src/app/shared/accordion/index.ts");
+/* harmony import */ var _roles_users_roles_users_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../roles-users/roles-users.service */ "./src/app/roles-users/roles-users.service.ts");
+/* harmony import */ var _accordion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./accordion */ "./src/app/shared/accordion/index.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1828,22 +2632,23 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var SharedModule = /** @class */ (function () {
     function SharedModule() {
     }
     SharedModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"])({
             declarations: [
-                _accordion__WEBPACK_IMPORTED_MODULE_2__["AccordionAnchorDirective"],
-                _accordion__WEBPACK_IMPORTED_MODULE_2__["AccordionLinkDirective"],
-                _accordion__WEBPACK_IMPORTED_MODULE_2__["AccordionDirective"]
+                _accordion__WEBPACK_IMPORTED_MODULE_3__["AccordionAnchorDirective"],
+                _accordion__WEBPACK_IMPORTED_MODULE_3__["AccordionLinkDirective"],
+                _accordion__WEBPACK_IMPORTED_MODULE_3__["AccordionDirective"]
             ],
             exports: [
-                _accordion__WEBPACK_IMPORTED_MODULE_2__["AccordionAnchorDirective"],
-                _accordion__WEBPACK_IMPORTED_MODULE_2__["AccordionLinkDirective"],
-                _accordion__WEBPACK_IMPORTED_MODULE_2__["AccordionDirective"]
+                _accordion__WEBPACK_IMPORTED_MODULE_3__["AccordionAnchorDirective"],
+                _accordion__WEBPACK_IMPORTED_MODULE_3__["AccordionLinkDirective"],
+                _accordion__WEBPACK_IMPORTED_MODULE_3__["AccordionDirective"]
             ],
-            providers: [_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_1__["MenuItems"]]
+            providers: [_menu_items_menu_items__WEBPACK_IMPORTED_MODULE_1__["MenuItems"], _roles_users_roles_users_service__WEBPACK_IMPORTED_MODULE_2__["RolesUsersService"]]
         })
     ], SharedModule);
     return SharedModule;
@@ -1941,8 +2746,13 @@ __webpack_require__.r(__webpack_exports__);
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
     production: true,
-    apiUrl: "https://analytics-api.jeeve.com.au/",
-    homeUrl: "https://analytics.jeeve.com.au/"
+    //  apiUrl : "http://localhost:4000/staging/analytics",
+    apiUrl: "http://localhost/jeeveanalytics/server/staging/analytics",
+    homeUrl: "http://localhost/jeeveanalytics/client2/",
+    solutionsUrl: "https://api.jeeve.com.au/staging/solutions"
+    // apiUrl : "https://api.jeeve.com.au/staging/analytics",
+    //homeUrl:"https://staging-analytics.jeeve.com.au/",
+    //solutionsUrl : "https://api.jeeve.com.au/staging/solutions"
 };
 
 
@@ -1984,7 +2794,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/html/jeeveanalytics/client2/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\jeeveanalytics\client2\src\main.ts */"./src/main.ts");
 
 
 /***/ })
