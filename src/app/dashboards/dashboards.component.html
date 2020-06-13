@@ -32,7 +32,6 @@
                       <mat-form-field>
                             <mat-select class="external_clinic"  [value] ="selectedClinic" [(ngModel)]="selectedClinic" (ngModelChange)="loadClinicid($event)">
                                 <mat-option *ngFor="let clinicData of clinicsData" [value]="clinicData.id">
-                               
                                     {{clinicData.clinicName}}
                                 </mat-option>
                             </mat-select>

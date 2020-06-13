@@ -114,7 +114,7 @@ export class ProfileSettingsComponent implements OnInit {
 
   public cardStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
       fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
@@ -122,24 +122,24 @@ export class ProfileSettingsComponent implements OnInit {
       padding:'10px',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#FF0000',
       ':focus': {
-        color: '#a94442',
+        color: '#FF0000',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#fff',
       },
     },
   };
@@ -147,62 +147,62 @@ export class ProfileSettingsComponent implements OnInit {
 
   public expStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
       fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
       fontSmoothing: 'antialiased',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#FF0000',
       ':focus': {
-        color: '#a94442',
+        color: '#FF0000',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#FF0000',
       },
     },
   };
 
 public cvcStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
       fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
       fontSmoothing: 'antialiased',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#FF0000',
       ':focus': {
-        color: '#a94442',
+        color: '#FF0000',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#FF0000',
       },
     },
   };

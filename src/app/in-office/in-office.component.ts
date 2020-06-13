@@ -416,7 +416,7 @@ calculate_outstanding(val,type) {
       this.balanceamt =  finalAmount- this.data.deposited_amount;
 
       this.data.balance_amount = this.balanceamt.toFixed(2).replace(".00", "");
-      this.data.total_payable = finalAmount.toFixed(2).replace(".00", "");;
+      this.data.total_payable = finalAmount.toFixed(2).replace(".00", "");
       this.durationcal(this.durationval);
 }
 
@@ -443,9 +443,10 @@ calculate_outstanding(val,type) {
   public durationcal(durationval){
         this.durationval=$('#duration').val();
         this.monthlyweeklyamt =this.balanceamt/this.durationval;
-        let mwa = this.monthlyweeklyamt.toString();
+        let mwa = this.monthlyweeklyamt;
       //  mwa = mwa.slice(0, (mwa.indexOf("."))+3); //With 3 exposing the hundredths place
-        this.data.monthly_weekly_payment= Number(mwa);
+      console.log(mwa);
+        this.data.monthly_weekly_payment= parseFloat(mwa);
       }
 
       email = new FormControl('', [Validators.required, Validators.email]);

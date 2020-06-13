@@ -54,7 +54,7 @@
 							</div>
 						</div>
 <div fxLayout="row wrap" fxLayoutGap="15" class="update_card" *ngIf= "!invoice_id">
-                            <div fxFlex="100"  class="card_fields">
+                            <div fxFlex="100"  class="card_fields" *ngIf= "!cardUpdated">
                                   <span class="update_card">Please enter your new card details. Your account will be updated to use this card for all future payments.</span>
                                 <div class="sa_mattabs_design sa_matforms_design sa_payment_form">
                                     <div class="iframe_main">
@@ -72,6 +72,13 @@
                                       </div>
                                     </div> 
                                     </div> 
+                            </div>
+                            <div fxFlex="100"  class="card_fields"  *ngIf= "cardUpdated">
+                              <div class="card-success"><img style="width:210px;" src="/assets/images/cross_sucess.png">
+                              <h3 class="update_card">
+                              Card Details Updated Successfully!
+                            </h3>
+                          </div>
                             </div>
                         </div>
 

@@ -188,6 +188,7 @@ export class ClinicSettingsComponent implements OnInit {
    private readonly notifier: NotifierService;
    public form: FormGroup;
    public formLanding: FormGroup;
+    public formSocial: FormGroup;
    public errorLogin = false;
    public clinic_id:any ={};
    private homeUrl = environment.homeUrl;
@@ -257,6 +258,10 @@ export class ClinicSettingsComponent implements OnInit {
      this.formLanding = this.fb.group({
       headerTitle: [null, Validators.compose([Validators.required])],
       headerDescription: [null, Validators.compose([Validators.required])],
+      // clinicTagLine :[null, Validators.compose([Validators.required])]
+
+    });
+     this.formSocial = this.fb.group({
       facebook: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       twitter: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       linkedin: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
@@ -472,11 +477,45 @@ public user_id_encoded;
   this.header_info.headerTitle=this.formLanding.value.headerTitle;
   this.header_info.headerDescription=this.formLanding.value.headerDescription;
   this.header_info.image = this.headerImageURL;
+  this.clinicTagLine = this.formLanding.value.clinicTagLine;
+    this.social_info ={};
+  this.social_info.facebook = this.formSocial.value.facebook;
+  this.social_info.twitter  = this.formSocial.value.twitter;
+  this.social_info.linkedin = this.formSocial.value.linkedin;
+  this.social_info.instagram = this.formSocial.value.instagram;
+ 
+  this.clinicSettingsService.updateLandingPageSettings(this.id,JSON.stringify(this.header_info),JSON.stringify(this.social_info),this.clinicTagLine).subscribe((res) => {
+    $('.ajax-loader').hide(); 
+       if(res.message == 'success'){
+
+        this.toastr.success('Clinic Settings Updated .');
+        this.getClinicLandingPageSettings();
+       }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+        $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+    }    
+    ); 
+  }
+
+    onSettingsSocialSubmit() {
+  $('.ajax-loader').show();   
+  this.header_info ={};
+  this.header_info.headerTitle=this.formLanding.value.headerTitle;
+  this.header_info.headerDescription=this.formLanding.value.headerDescription;
+  this.header_info.image = this.headerImageURL;
   this.social_info ={};
-  this.social_info.facebook = this.formLanding.value.facebook;
-  this.social_info.twitter  = this.formLanding.value.twitter;
-  this.social_info.linkedin = this.formLanding.value.linkedin;
-  this.social_info.instagram = this.formLanding.value.instagram;
+  this.social_info.facebook = this.formSocial.value.facebook;
+  this.social_info.twitter  = this.formSocial.value.twitter;
+  this.social_info.linkedin = this.formSocial.value.linkedin;
+  this.social_info.instagram = this.formSocial.value.instagram;
   this.clinicTagLine = this.formLanding.value.clinicTagLine;
  
   this.clinicSettingsService.updateLandingPageSettings(this.id,JSON.stringify(this.header_info),JSON.stringify(this.social_info),this.clinicTagLine).subscribe((res) => {

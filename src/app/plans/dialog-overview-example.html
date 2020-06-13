@@ -9,13 +9,11 @@
       <small *ngIf="form.controls['planName'].hasError('required') && form.controls['planName'].touched" class="text-danger support-text">Member Plan Name is Required.</small>
     </div>
 
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group" style="margin-top:-2px;">
+    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group" >
         <label>&nbsp;</label>
-        <mat-checkbox [checked]= "data.isFeatured" [(ngModel)]="data.isFeatured" class = "example-margin" style="margin-top:-4px!important;">
+        <mat-checkbox [checked]= "data.isFeatured" [(ngModel)]="data.isFeatured" class = "example-margin" >
             Featured Plan
         </mat-checkbox>
-
-         <label>&nbsp;</label>
         <mat-checkbox [checked]= "data.hidden" [(ngModel)]="data.hidden" class = "example-margin" style="margin-top:-4px!important;">
            Hide Plan
         </mat-checkbox>

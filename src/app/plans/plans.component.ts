@@ -417,7 +417,7 @@ if(this.clinic_id != undefined) {
   }
   public sendMail;
   public updatePlan
-
+public changeType;
   openUpdateDialog(rowIndex): void {
     
     this.memberplan_id =this.rows[rowIndex]['id'];
@@ -428,39 +428,68 @@ if(this.clinic_id != undefined) {
     });  
 
   dialogUpdateRef.afterClosed().subscribe(result => {
-   if(result) {
+   if(result) {               
+
       this.sendMail = false;
       this.updatePlan= false;
+      this.changeType ='';
       this.plansService.getPatientsonPlan(this.memberplan_id).subscribe((res) => {
          if(res.message == 'success'){
             if(res.data>0){
           if((this.rows[rowIndex]['treatment_inclusions'] != JSON.stringify(result.treatment_inclusions_selected))  || (this.rows[rowIndex]['treatment_exclusions'] != JSON.stringify(result.treatment_exclusions_selected)) || (this.rows[rowIndex]['preventative_discount'] != result.preventative_discount)){
-                Swal.fire({
-                    text: 'These Changes will be reflected on '+res.data+' patients who have subscribed to this plan.'
-                  })
-                this.sendMail = true;
-                this.updatePlan= false;
+                this.updatePlan= false;  
+                 var self = this;          
+               Swal.fire({
+                  text: 'These Changes will be reflected on '+res.data+' patients who have subscribed to this plan.',
+                  input: 'checkbox',
+                  inputPlaceholder: 'Send Email Notification to Patients?',
+                   showCloseButton: true,
+                showCancelButton: true,
+                }).then(function(data) {
+                        if(data.value != undefined){
+                        $('.ajax-loader').show(); 
+
+                  if (data.value) {
+                     self.sendMail = true;
+                     self.changeType = 'details';
+                  } else if (data.value === 0) {
+                      self.sendMail = false;
+                     self.changeType = '';
+                  }  
+                  self.updatePlanMain(result);      }           
+                })              
           }
           else if((this.rows[rowIndex]['totalAmount'] != result.totalAmount ) || (this.rows[rowIndex]['discount'] != result.discount)){
-              Swal.fire({
-                    text: 'These Changes will update costs for '+res.data+' patients who have subscribed to this plan.'
-                  })
-              this.sendMail = true;
               this.updatePlan= true;
+          var self = this;          
+               Swal.fire({
+                  text: 'These Changes will update costs for '+res.data+' patients who have subscribed to this plan.',
+                  input: 'checkbox',
+                  inputPlaceholder: 'Send Email Notification to Patients?',
+                   showCloseButton: true,
+                showCancelButton: true,
+                }).then(function(data) {
+                     if(data.value != undefined){
+                        $('.ajax-loader').show(); 
+                  if (data.value) {
+                     self.sendMail = true;
+                     self.changeType = 'cost';                     
+                  } else if (data.value === 0) {
+                      self.sendMail = false;
+                     self.changeType = '';
+                  }  
+               self.updatePlanMain(result);      
+             }
+                })
+          }
+          else {
+          this.updatePlanMain(result);      
           }
         }
- $('.ajax-loader').show(); 
-         this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,result.hidden,JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount,this.sendMail,this.updatePlan).subscribe((res) => {
-         if(res.message == 'success'){
-          $('.ajax-loader').hide(); 
-            this.getPlans()
-            this.toastr.success('Plan Updated.');
-          }
-        }, error => {
-             $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
-        }); 
-
+        else {
+                $('.ajax-loader').show(); 
+         this.updatePlanMain(result);      
+       }
        }
         }, error => {
              $('.ajax-loader').hide(); 
@@ -468,6 +497,19 @@ if(this.clinic_id != undefined) {
         }); 
         }         
     });
+  }
+
+  updatePlanMain(result) {
+     this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,result.hidden,JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount,this.sendMail,this.updatePlan, this.changeType).subscribe((res) => {
+                     if(res.message == 'success'){
+                      $('.ajax-loader').hide(); 
+                        this.getPlans()
+                        this.toastr.success('Plan Updated.');
+                      }
+                    }, error => {
+                         $('.ajax-loader').hide(); 
+                    this.toastr.error('Some Error Occured, Please try Again.');
+                    }); 
   }
 
   private getTreatments() {

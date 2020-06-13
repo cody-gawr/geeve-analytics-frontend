@@ -252,7 +252,9 @@ this.updateCardService.checkValidString(this.string).subscribe((res) => {
      });
   }
 public token;
+public cardUpdated= false;
   buy() {
+    this.cardUpdated=false;
     const name = this.stripeTest.get('name').value;
     this.stripeService
     .createToken(this.cardNumber, { name })
@@ -266,11 +268,12 @@ public token;
                       this.cardCvc.clear();
                       this.cardExpiry.clear();
            if(res.message == 'success'){
-             Swal.fire(
-                  '',
-                  res.data,
-                  'success'
-                )
+            this.cardUpdated= true;
+             // Swal.fire(
+             //      '',
+             //      res.data,
+             //      'success'
+             //    )
            }
            else if(res.message == 'error'){
              this.cardNumber.clear();
@@ -283,6 +286,15 @@ public token;
                 )
            }
           }, error => {
+             $('.ajax-loader').hide();
+ this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
+                       Swal.fire(
+                  '',
+                  'Some issue with your card, Please try again!',
+                  'error'
+                )
           });
     } else {
       console.log("Error comes ");

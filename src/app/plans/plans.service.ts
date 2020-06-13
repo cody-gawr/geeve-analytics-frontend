@@ -81,7 +81,7 @@ export class PlansService {
     }
 
 
-    updateUser(memberid,clinic_id,planName,planOrder,planLength,totalAmount,discount,description,isFeatured,hidden,preventative_plan,preventative_frequency,treatment_inclusions,treatment_exclusions,preventative_discount,sendMail, updateUser,token = this._cookieService.get("token")): Observable<any> {
+    updateUser(memberid,clinic_id,planName,planOrder,planLength,totalAmount,discount,description,isFeatured,hidden,preventative_plan,preventative_frequency,treatment_inclusions,treatment_exclusions,preventative_discount,sendMail, updateUser,changeType,token = this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
     
         formData.append('id', memberid);
@@ -105,6 +105,7 @@ export class PlansService {
         formData.append('token_id', this.token_id);
          formData.append('sendMail', sendMail);
         formData.append('updateUser', updateUser);
+        formData.append('changeType', changeType);
         
         return this.http.post(this.apiUrl +"/MemberPlan/updateMemberplan/", formData)
          .pipe(map((response: Response) => {

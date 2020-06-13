@@ -25,9 +25,9 @@
                                 <mat-label>Filter by Status</mat-label>
                                 <mat-select [(ngModel)]="StatusSelected" (ngModelChange)="statusFilter()">
                                     <mat-option  value="">Select All</mat-option>
-                                    <mat-option  value="ACTIVE">Active</mat-option>
-                                    <mat-option  value="INACTIVE">Inactive</mat-option>
-                                    <mat-option  value="CANCELLED">Cancelled</mat-option>
+                                    <mat-option  value="Active">Active</mat-option>
+                                    <mat-option  value="Inactive">Inactive</mat-option>
+                                    <mat-option  value="Cancelled">Cancelled</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -116,7 +116,7 @@
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" >
           <a [routerLink]="['/members-details',value]" class="action_btn sa-pull-right patient_detail_edit textonly" title='View Patients Details'  *ngIf="value != ''"> <span class="material-icons">edit</span> </a>
-          <a (click) = "change_plan(rows[rowIndex]['id'], rows[rowIndex]['member_plan_id'])" class="action_btn sa-pull-right patient_detail_edit textonly" title='Change Plan'  *ngIf="value != '' && rows[rowIndex]['patient_status'] != 'CANCELLED'"> <span class="material-icons">description</span> </a>
+          <a (click) = "change_plan(rows[rowIndex]['id'], rows[rowIndex]['member_plan_id'], rows[rowIndex]['planLength'])" class="action_btn sa-pull-right patient_detail_edit textonly" title='Change Plan'  *ngIf="value != '' && rows[rowIndex]['patient_status'] != 'CANCELLED'"> <span class="material-icons">description</span> </a>
           <a class="action_btn text-danger sa-pull-right patient_detail_edit textonly" title= 'Delete Patient' (click) = "delete_invite(rows[rowIndex]['invite_id'])" *ngIf="value == ''">  <span class="material-icons">delete</span> </a>
           <a class="action_btn sa-pull-right patient_detail_edit textonly" title= 'Resend Invite' (click) = "resend_invite(rows[rowIndex]['patient_name'],rows[rowIndex]['patient_email'])" *ngIf="value == ''"> <span class="material-icons">restore_page</span></a>
         </ng-template>

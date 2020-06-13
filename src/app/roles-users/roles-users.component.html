@@ -24,7 +24,7 @@
         <span>Display Name</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'displayName')" *ngIf="!editing[rowIndex + '-displayName']">
+          <span  (dblclick)="enableEditing(rowIndex,'displayName')" *ngIf="!editing[rowIndex + '-displayName']">
             <span class="datatable_label">Display Name : </span> {{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'displayName', rowIndex)" *ngIf="editing[rowIndex+ '-displayName']" type="text" [value]="value"
@@ -34,7 +34,7 @@
        <ngx-datatable-column name="Email">
        
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span class="datatableEmail" title="Double click to edit"  *ngIf="!editing[rowIndex + '-email']">
+          <span class="datatableEmail"   *ngIf="!editing[rowIndex + '-email']">
              <span class="datatable_label">Email : </span> {{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'email', rowIndex)" *ngIf="editing[rowIndex+ '-email']" type="text" [value]="value"

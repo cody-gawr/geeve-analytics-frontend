@@ -255,6 +255,8 @@ export class PatientsDetailComponent implements AfterViewInit {
 
   initiate_clinic(){  
     this.clinic_id = $('#currentClinicid').attr('cid');
+    console.log(this.clinic_id+ 'b');
+    
   if(this.clinic_id != "undefined")
    {
       $('.header_filters').removeClass('hide_header');
@@ -426,15 +428,16 @@ public stripe_account_id;
     });
   }
   
-  change_plan(patientid,plan_id): void {
+  change_plan(patientid,plan_id,planLength): void {
     
 
     const dialogChangePlanRef = this.dialog.open(DialogOverviewUpdateDialogComponent, {
       width: '400px',
-      data: {plans: this.membersplan, patientid: patientid,plan_id: plan_id},
+      data: {plans: this.membersplan, patientid: patientid,plan_id: plan_id,planLength: planLength},
       panelClass: 'full-screen'
     });
   dialogChangePlanRef.afterClosed().subscribe(result => {  
+    if(result) {
   $('.ajax-loader').show();
 
         this.patientsdetailService.changeMemberPlan(patientid, result.plan_selected).subscribe((res) => {    
@@ -455,6 +458,7 @@ public stripe_account_id;
         this.warningMessage = "Please Provide Valid Inputs!";
       }    
       ); 
+      }
     });
   }
 

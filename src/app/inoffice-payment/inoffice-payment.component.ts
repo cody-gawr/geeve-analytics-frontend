@@ -18,6 +18,7 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { environment } from "../../environments/environment";
 import {ChangeDetectorRef} from '@angular/core';
 import * as _moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 // tslint:disable-next-line:no-duplicate-imports
@@ -185,7 +186,7 @@ public cvcStyle = {
     elements: Elements;
     card: StripeElement;
 
-  constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private inofficePaymentService: InofficePaymentService,private _cookieService: CookieService, private route: ActivatedRoute, private stripeService: StripeService, private http : Http, private ref: ChangeDetectorRef,private datePipe: DatePipe) {
+  constructor(private toastr: ToastrService,private loginService: LoginService, private fb: FormBuilder, private router: Router, private inofficePaymentService: InofficePaymentService,private _cookieService: CookieService, private route: ActivatedRoute, private stripeService: StripeService, private http : Http, private ref: ChangeDetectorRef,private datePipe: DatePipe) {
     this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
    
   }

@@ -114,16 +114,20 @@
                                     <tr *ngIf="payment.length==0||payment.length==''"><td colspan="6">No Data to Display</td></tr>
                                     </tbody>
                                 </table>
-
-
          
 </mat-tab>
 <mat-tab label="Contract Upload">                 
-  <div fxLayout="column"  class="sa_forms_design payment_full_info" fxLayoutGap="2%">
+  <div fxLayout="row column"  class="sa_forms_design payment_full_info" fxLayoutGap="2%">
          <div fxFlex.gt-sm="100%" fxFlex="100" class="payment_contract_responsive" >
-
-                     <div fxFlex.gt-sm="100%" fxFlex="50" class="payment_info_screen">
-
+            <div fxFlex="50" fxFlex.sm="50" class="display_50">
+                <div class="download">
+                 <div class="agreement-thumbnail" *ngIf="uploadedSignedContract; else empty">
+                  <img src="../assets/images/contract.png">
+                    <a mat-raised-button class="contractupload" color="dc" target="_blank" href="{{uploadedSignedContract}}"><i class="fas fa-cloud-download-alt"></i> Download Contract</a>
+                   </div>
+               </div>
+             </div>
+                <div  fxFlex="50" fxFlex.sm="50" class="payment_info_screen">
                     <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
                       <div class="bd_UpoadImage uploadsignedContract" fxFlex.gt-md="100" fxFlex="100">
                           <label>Upload Agreement</label>
@@ -145,19 +149,6 @@
                 
             </form>
           </div>
-
-            <div fxFlex.gt-sm="100%" fxFlex="50" class="display_50">
-              <div fxFlex="25" class="download">
-              </div>
-
-                <div fxFlex="25" class="download">
-                 <p *ngIf="uploadedSignedContract; else empty">
-                    <a mat-raised-button class="contractupload" color="dc" target="_blank" href="{{uploadedSignedContract}}">Download Contract</a>
-                   </p>
-               </div>
-            
-
-             </div>
                
            </div>
         </div>     

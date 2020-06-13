@@ -452,10 +452,10 @@ public memberplan_id;
 
   dialogUpdateRef.afterClosed().subscribe(result => {
    if(result) {
-    this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,'',JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount,true,true).subscribe((res) => {
+    this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,'',JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount,true,true,'').subscribe((res) => {
          if(res.message == 'success'){
             this.getPlans()
-                  this.toastr.success('Plan Updated.');
+              //    this.toastr.success('Plan Updated.');
 
             //this.notifier.notify( 'success', 'Plan Updated' ,'vertical');
              }
@@ -483,7 +483,7 @@ public memberplan_id;
       $('.ajax-loader').hide();
         if(res.message == 'success'){
           this.imageURL= res.data;
-                  this.toastr.success('Logo Uploaded.');
+                //  this.toastr.success('Logo Uploaded.');
 
          // this.notifier.notify( 'success', 'Logo Uploaded' ,'vertical');
         }
@@ -539,7 +539,6 @@ private getPlans() {
     this.rows=[];
     this.plansService.getPlans(this.clinic_id).subscribe((res) => {
         if(res.message == 'success'){
-        console.log(this.rows);
           if(res.data.length <=0) {
               this.plansService.addPlans('Sample Plan',1,'MONTHLY', 100,10,'Sample Plan',this.clinic_id,'true',JSON.stringify(this.preventative_plan_selected),2,JSON.stringify(this.treatment_inclusions_selected),JSON.stringify(this.treatment_exclusions_selected),10).subscribe((res) => {
             $('.ajax-loader').hide();  
@@ -586,13 +585,17 @@ public tabActive2= true;
 public tabActive3= true;
 public tabActive4= true;
 public tabActive5= true;
+public clinic_id_encoded;
+public user_id_encoded;
   getClinicSettings() {  
     $('.ajax-loader').show(); 
   this.clinicSettingsService.getClinicSettings(this.clinic_id).subscribe((res) => {
     $('.ajax-loader').hide(); 
        if(res.message == 'success'){
         this.clinic_id = res.data[0].id;
+        this.clinic_id_encoded = btoa(res.data[0].id);
         this.user_id = res.data[0].user_id;
+        this.user_id_encoded = btoa(res.data[0].user_id);
         this.clinicName = res.data[0].clinicName;
         this.contactName = res.data[0].contactName;
         this.clinicEmail = res.data[0].clinicEmail;
@@ -645,7 +648,7 @@ public tabActive5= true;
           this.stepVal = 1;
         this.updateStepperStatus();   
        //this.getClinic(); 
-                  this.toastr.success('Clinic Added.');
+               //   this.toastr.success('Clinic Added.');
 
         // this.notifier.notify( 'success', 'Clinic Added' ,'vertical');
        }else if(res.status == '401'){
@@ -834,7 +837,7 @@ getStripeAuthorization(){
 
   this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
       $('.ajax-loader').hide();      
-             this.toastr.success('User Added');
+         //    this.toastr.success('User Added');
 
        //if(res.message == 'success'){
       //  this.notifier.notify( 'success', 'User Added' ,'vertical');

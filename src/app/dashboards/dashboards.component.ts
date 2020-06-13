@@ -174,6 +174,11 @@ constructor(private dashboardsService: DashboardsService, private datePipe: Date
  const myDate = new Date();
  const monthname =this.getMonthName(myDate.getMonth());
  this.selectedMonthYear = monthname+" "+(myDate.getFullYear().toString()).slice(-2);
+    // this.router.events.subscribe(event => {
+    //   //  if( $('#currentClinicid').attr('cid') !='' && $('#currentClinicid').attr('cid') !=undefined) {
+    //   //   this.selectedClinic = $('#currentClinicid').attr('cid');
+    //   // }
+    // }
 // this.openDialog();
 }
   private warningMessage: string;
@@ -321,9 +326,15 @@ this.lineChartColors = [
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;
-        this.selectedClinic = res.data[0].id;
+        this.selectedClinic = res.data[0].id;   
         
-    this.loadAnalytics();
+         this.router.events.subscribe(event => {
+      //  if( $('#currentClinicid').attr('cid') !='' && $('#currentClinicid').attr('cid') !=undefined)
+      //   this.selectedClinic = $('#currentClinicid').attr('cid');
+      // else
+        this.selectedClinic = res.data[0].id;   
+     });
+         this.loadAnalytics();
        }
         else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -353,7 +364,7 @@ this.lineChartColors = [
 
   //labels
   public barChartLabels: string[] = [];
-    public pieChartLabels: string[] = ['ddfs'];
+  public pieChartLabels: string[] = ['ddfs'];
   public planChartLabels: string[] = [];
   public recallChartLabels: string[] = [];
   public treatmentPreChartLabels: string[] = [];
@@ -630,8 +641,19 @@ public barChartOptions: any = {
   };
 
   loadClinicid(clinicValue){ 
+      if($('body').find('span#currentClinicid').length <= 0){
+    $('body').append('<span id="currentClinicid" style="display:none" cid="'+clinicValue+'"></span>');
+  }
+  else{
+    $('#currentClinicid').attr('cid',clinicValue);
+  }
+   this.selectedClinic = clinicValue;
+
+//  $('.internal_clinic').val(clinicValue);
+  $('#clinic_initiate').click();
      this.selectedClinic = clinicValue;
     this.loadAnalytics();
+    this.getStripeDetail();
   }
   public barChartOptionstrend: any = {
     scaleShowVerticalLines: false,
@@ -792,7 +814,23 @@ public barChartOptions: any = {
       });
   }
 
+  getStripeDetail(){
+ this.headerService.getStripeDetail(this.selectedClinic).subscribe((res) => {
+       if(res.message == 'success'){
+          if(res.data[0].stripe_account_id){
+            $('.notification-box').hide();
+            $('body').removeClass('notification-box-main');           
 
-
+          }
+          else{
+            $('.notification-box').show(); 
+            $('body').addClass('notification-box-main');           
+          }
+       }
+    }, error => {
+     // this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+  }
   
 }

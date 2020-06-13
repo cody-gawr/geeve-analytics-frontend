@@ -103,7 +103,7 @@
         <span>Actions </span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" >
-            <a [routerLink]="['/patient-paymentinfo',rows[rowIndex].inoffice_paymentID]" class="action_btn sa-pull-right patient_detail_edit textonly" title= 'In-office History'><span class="material-icons">visibility</span></a>
+            <a [routerLink]="['/patient-paymentinfo',rows[rowIndex].inoffice_paymentID]" class="action_btn sa-pull-right patient_detail_edit textonly" title= 'In-office History'><span class="material-icons">edit</span></a>
           <button class="action_btn text-danger" mat-menu-item (click) = "deletePlan(rowIndex)" *ngIf="user_type !=3 && user_type !=4" title= 'Delete Plan'> 
          <span class="material-icons">delete</span></button>
         </ng-template>

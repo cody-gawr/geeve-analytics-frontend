@@ -281,14 +281,15 @@ public patient_email :any;
   }
 
 private sendDefaultersemail(defaulter_name, defaulter_email,defaulter_id) {
-
+ $('.ajax-loader').show();     
     this.defaultersService.sendDefaultersemail(defaulter_id,defaulter_name,defaulter_email).subscribe((res) => {
       console.log(res);
           if(res.message == 'success'){
-
+ $('.ajax-loader').hide();     
              this.toastr.success('Update Card Link Sent.');
           }
            else if(res.status == '401'){
+            $('.ajax-loader').hide();     
                this._cookieService.removeAll();
               this.router.navigateByUrl('/login');
            }

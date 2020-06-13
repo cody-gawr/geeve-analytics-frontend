@@ -110,8 +110,28 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     $('#currentClinicid').attr('cid',clinicValue);
   }
    this.selectedClinic = clinicValue;
-
 //  $('.internal_clinic').val(clinicValue);
   $('#clinic_initiate').click();
+   this.getStripeDetail();
+
+  }
+
+  getStripeDetail(){
+ this.headerService.getStripeDetail(this.selectedClinic).subscribe((res) => {
+       if(res.message == 'success'){
+          if(res.data[0].stripe_account_id){
+            $('.notification-box').hide();
+            $('body').removeClass('notification-box-main');           
+
+          }
+          else{
+            $('.notification-box').show(); 
+            $('body').addClass('notification-box-main');           
+          }
+       }
+    }, error => {
+     // this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
   }
 }
