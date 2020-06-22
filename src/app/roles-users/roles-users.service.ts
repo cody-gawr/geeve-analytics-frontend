@@ -88,7 +88,7 @@ export class RolesUsersService {
     saveRoles(role_id, checkedRoles, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
-    formData.append('id', role_id);
+    formData.append('role_id', role_id);
     formData.append('permisions', checkedRoles);
     formData.append('user_id', this._cookieService.get("userid"));
         formData.append('token', this._cookieService.get("token"));

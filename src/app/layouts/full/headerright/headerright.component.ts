@@ -2,7 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { CookieService } from "angular2-cookie/core";
 
-import { Router } from '@angular/router';
+import { Router   , NavigationEnd } from '@angular/router';
 import { HeaderService } from '../header/header.service';
 import { DentistService } from '../../../dentist/dentist.service';
 export interface Dentist {
@@ -16,19 +16,30 @@ export interface Dentist {
   styleUrls: []
 })
 export class AppHeaderrightComponent implements AfterViewInit  {   
-  constructor(private _cookieService: CookieService,  private route: Router, private headerService: HeaderService, private dentistService: DentistService) {}
+  constructor(private _cookieService: CookieService,  private route: Router, private headerService: HeaderService, private dentistService: DentistService) {
+     this.route.events.subscribe((ev) => {
+      if (ev instanceof NavigationEnd) { 
+       this.getClinics();
+     }
+    });
+
+  
+  }
+
+
 
  ngAfterViewInit() {
     this.clinic_id = '1';
-     this.getClinics();
-        this.getDentists(); 
+    
+     this.getDentists(); 
       
   }
-  public title;
+
+   public title;
    public clinicsData:any[] = [];
    public clinicdef:any[] = [];
-  public config: PerfectScrollbarConfigInterface = {};
-     public clinic_id:any ={};
+   public config: PerfectScrollbarConfigInterface = {};
+   public clinic_id:any ={};
    public dentistCount:any ={};
    public selectedDentist='all';
    public selectedClinic;
@@ -39,14 +50,23 @@ export class AppHeaderrightComponent implements AfterViewInit  {
 
    private warningMessage: string;
    public finalUrl:string;
+
+//this.setClinic();
+
+
    private getClinics() { 
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
-        if(res.data.length>0) {
-        this.clinicsData = res.data;
-        this.selectedClinic = res.data[0].id;
+        if(res.data.length > 0) {
+        this.clinicsData = res.data;                               
+        if($('body').find('span#currentClinicid').length > 0 && $('#currentClinicid').attr('cid')){ 
+          this.selectedClinic = parseInt($('#currentClinicid').attr('cid'));
+        }else{
+         this.selectedClinic = res.data[0].id;   
+        }
       }
         this.loadClinicid(this.selectedClinic);
+        //this._cookieService.set('clinicSelected',this.selectedClinic);
 
           this.title = $('#page_title').val();
        }
@@ -103,14 +123,17 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   }
 
   loadClinicid(clinicValue){
-  if($('body').find('span#currentClinicid').length <= 0){
+
+  if($('body').find('span#currentClinicid').length <= 0){ 
     $('body').append('<span id="currentClinicid" style="display:none" cid="'+clinicValue+'"></span>');
+  //  this._cookieService.put('clinicSelected',clinicValue);
   }
   else{
     $('#currentClinicid').attr('cid',clinicValue);
   }
+
    this.selectedClinic = clinicValue;
-//  $('.internal_clinic').val(clinicValue);
+ $('.internal_clinic').val(clinicValue);
   $('#clinic_initiate').click();
    this.getStripeDetail();
 
@@ -126,7 +149,9 @@ export class AppHeaderrightComponent implements AfterViewInit  {
           }
           else{
             $('.notification-box').show(); 
-            $('body').addClass('notification-box-main');           
+            $('body').addClass('notification-box-main');  
+            $('.notification-box a').attr('href','/clinic-settings/'+this.selectedClinic); 
+                     
           }
        }
     }, error => {

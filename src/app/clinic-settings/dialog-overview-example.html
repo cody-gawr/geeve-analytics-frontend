@@ -13,22 +13,22 @@
              
            <div class="upload-btn">
 			<span>Choose file</span>
-               <input class="contractFile" type="file" placeholder="" name= "file" id="file"  (change)="uploadImage($event.target.files)">
+               <input class="contractFile" type="file" placeholder="" name= "file" id="file"  (change)="uploadImage($event.target.files,data)">
                <input type='hidden'  placeholder="" id="contractURL" value="{{contractURL}}" >
              </div>
 
             </div>  
 
-             <div fxFlex.gt-md="49" fxFlex="100" class="top_download_Agreement form_div_sec">
+             <!--div fxFlex.gt-md="49" fxFlex="100" class="top_download_Agreement form_div_sec">
 
                 <p *ngIf="uploadedContract; else empty">
-                <!--label>Preview/Download </label-->
+              
                <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{uploadedContract}}">Preview</a>
                <span class="material-icons" (click)="deleteSignedDocImage()">delete_forever</span>
               </p>
-            </div>                             
+            </div-->                             
           <p>
-        <button mat-raised-button color="dc" [disabled]="contractURL==''" (click)="onSubmit(data)">Save</button>
+        <!--button mat-raised-button color="dc" [disabled]="contractURL==''" (click)="onSubmit(data)">Save</button-->
       </p>
     </form>     
   </mat-tab>

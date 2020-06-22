@@ -318,21 +318,21 @@ export class RolesUsersComponent implements AfterViewInit {
        if(res.message == 'success'){ 
         this.roles=[];
          res.data.forEach(result => {
-          this.selectedRole['dashboards_'+result.id] = false;
-          this.selectedRole['memberships_'+result.id] = false;
-          this.selectedRole['roles_'+result.id] = false;
-          this.selectedRole['settings_'+result.id] = false;
-          this.selectedRole['paymentplans_'+result.id] = false;
-          this.selectedRole['defaulters_'+result.id] = false;
+          this.selectedRole['dashboards_'+result.role_id] = false;
+          this.selectedRole['memberships_'+result.role_id] = false;
+          this.selectedRole['roles_'+result.role_id] = false;
+          this.selectedRole['settings_'+result.role_id] = false;
+          this.selectedRole['paymentplans_'+result.role_id] = false;
+          this.selectedRole['defaulters_'+result.role_id] = false;
           
             var temp=[];
-            temp['id'] = result.id;
+            temp['id'] = result.role_id;
             temp['role'] = result.role;
             temp['permisions'] = result.permisions;
             this.roles.push(temp);
             var dashboards = result.permisions.split(',');
             dashboards.forEach(results=>{
-               this.selectedRole[results+'_'+result.id] = true;
+               this.selectedRole[results+'_'+result.role_id] = true;
             })
          });
        }

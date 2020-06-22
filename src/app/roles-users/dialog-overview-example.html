@@ -17,7 +17,8 @@
    </div>
 
   <div class="selectIcon">
-     <select fxFlex.gt-sm="100%" class="form-control-dialog" required="true" fxFlex.gt-xs="100%" fxFlex="100" class="sa_select form-control" name="user_type" [(ngModel)]="data.user_type" [formControl]="form.controls['user_type']">
+    <label>User Type</label>
+     <select class="form-control-dialog" required="true" class="sa_select form-control" name="user_type" [(ngModel)]="data.user_type" [formControl]="form.controls['user_type']">
       <option value ="" selected>Select User Type</option>
       <option value ="3">Receptionist</option>
       <option value ="4">Manager</option>

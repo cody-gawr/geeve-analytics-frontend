@@ -199,6 +199,7 @@ export class ClinicComponent implements AfterViewInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '250px',
+      panelClass: 'limitClinic',
       data: { name: this.name, address: this.address, contact_name: this.contact_name ,phone_no: this.phone_no,clinicEmail: this.clinicEmail, facebook: this.facebook, twitter: this.twitter ,linkedin: this.linkedin,instagram:this.instagram}
     });
     

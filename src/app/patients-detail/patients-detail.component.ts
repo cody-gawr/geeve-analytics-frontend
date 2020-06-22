@@ -605,7 +605,8 @@ private deletePatients(row) {
   }
  
   private getPlans() {
-    this.patientsdetailService.getPlans().subscribe((res) => {
+  if(this.clinic_id != undefined) {
+    this.patientsdetailService.getPlans(this.clinic_id).subscribe((res) => {
         if(res.message == 'success'){
            this.membersplan= res.data;
            this.clinic_id = $('#currentClinicid').attr('cid');
@@ -621,6 +622,7 @@ private deletePatients(row) {
         this.warningMessage = "Please Provide Valid Inputs!";
       }    
       );
+      }
     }
     public StatusSelected;
  statusFilter() {

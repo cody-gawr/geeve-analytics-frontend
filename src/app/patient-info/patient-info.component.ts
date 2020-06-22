@@ -465,7 +465,11 @@ public patientsAppointmentData =[];
 
   onSubmitPatientDetails() {
     if(this.formPatient.valid && !this.invalid_dob) {
+            $('.ajax-loader').show();
+
         this.patientInfoService.updatePatientsDetails(this.patient_name,this.patient_address,this.patient_dob,this.patient_age,this.patient_gender,this.patient_phone_no,this.patient_home_phno,this.patient_status,this.patient_email,this.patient_id).subscribe((res) => {   
+            $('.ajax-loader').hide();
+
          if(res.message == 'success'){
                this.toastr.success('Patient Details Updated');
               }
@@ -636,7 +640,7 @@ public next_date;
 
 private sendDefaultersemail(defaulter_name, defaulter_email,defaulter_id) {
 $('.ajax-loader').show();  
-    this.defaultersService.sendDefaultersemail(defaulter_id,defaulter_name,defaulter_email).subscribe((res) => {
+    this.defaultersService.sendDefaultersemail(defaulter_id,defaulter_name,defaulter_email,'manual',this.member_plan_id).subscribe((res) => {
           $('.ajax-loader').hide();  
           if(res.message == 'success'){
             this.toastr.success('Update Card Link Sent.');

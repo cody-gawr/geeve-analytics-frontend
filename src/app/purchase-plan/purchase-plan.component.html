@@ -5,64 +5,70 @@
  -->
 
 
-<div class="login-register sa_forms_design patient_details_form " style=" height:auto; min-height:100vh;  padding:20px; ">
-    <div style="width:100%; float:left">
-  <div style="width:100%; float:left"><div class="clinic_logo_patientdetail"> <img src={{clinic_logo}}></div></div>
+<div class="login-register sa_forms_design patient_details_form">
+    <div>
+  <div><div class="clinic_logo_patientdetail"> <img src={{clinic_logo}}></div></div>
 
-    <div style="width:100%; float:left; display:flex;">
-    <mat-card style="margin:10px auto; max-width:1040px; float:left; width:100%; background:transparent!important;">
-            <mat-card-content  class="gradient_bg relative">
-             <h4 _ngcontent-c2="" class="spl_headings" style="margin-bottom:20px;">Patient Details</h4>
-           <div class="gradient_inner overflow_hidden spl_case_purplan">
+    <div>
+    <mat-card>
+            <mat-card-content  class="relative">
+             <h4 _ngcontent-c2="" class="spl_headings">Patient Details</h4>
+           <div class="overflow_hidden spl_case_purplan">
                 <!-- ============================================================== -->
                 <!-- column -->
                 <!-- ============================================================== -->
                     <!-- Card column -->
-                     <div fxLayout="row wrap">
-                            <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" class="">
                          <mat-tab-group dynamicHeight [selectedIndex]="selectedIndex">
                           <mat-tab class="step1" label="Your Details">
                           <div class="register_form" *ngIf="visible" [@slideIn]>
                               <form class="sa_custom_focus" [formGroup]="form" (ngSubmit)="onSubmit()">
-                          <div fxLayout="row wrap" fxLayoutGap="2%">
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.xs="0">
+                             <div fxFlex="calc(50% - 10px)" fxFlex.xs="100" class="sa-form-group">
                                <mat-label>Name</mat-label>
-                                  <mat-form-field style="width: 100%">
+                                  <mat-form-field>
                                     <input matInput placeholder="" type="text" [formControl]="form.controls['patient_name']" (keypress)="omit_special_char($event)" [(ngModel)]="patient_name">
                                   </mat-form-field>
                                   <small *ngIf="form.controls['patient_name'].hasError('required') && form.controls['patient_name'].touched" class="text-danger support-text">Patient Name is Required.</small>
                              </div>
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                             <div fxFlex="calc(50% - 10px)" fxFlex.xs="100" class="sa-form-group">
                                   <mat-label>Email address</mat-label>
-                                  <mat-form-field style="width: 100%">
+                                  <mat-form-field>
                                     <input matInput placeholder="" type="email" [formControl]="form.controls['patient_email']"  [(ngModel)]="patient_email">
                                   </mat-form-field>
                                   <small *ngIf="(form.controls['patient_email'].errors?.email && form.controls['patient_email'].touched) || (form.controls['patient_email'].hasError('required') && form.controls['patient_email'].touched) " class="text-danger support-text">You must include an email address.</small>
                              </div>
                            </div>
-                             <div fxLayout="row wrap" fxLayoutGap="2%">
-                             <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                             <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.xs="0">
+                             <div fxFlex="calc(50% - 10px)" fxFlex.xs="100" class="sa-form-group">
 							 <mat-label>Date of birth</mat-label>
 							 <div class="input_field_patient">
-                               <select fxFlex.gt-sm="32%" class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_date" [formControl]="form.controls['dob_date']" (change) ="checkDob('date')">
-                                    <option value="">Day</option>
-                                    <option *ngFor="let date of dates" value="{{date}}">{{date}}</option>
-                                 </select>
-                                <select fxFlex.gt-sm="32%" class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_month" [formControl]="form.controls['dob_month']" (change) ="checkDob('month')">
-                                    <option value="">Month</option>
-                                    <option *ngFor="let month of months" value="{{month.key}}">{{month.value}}</option>
-                                 </select> 
-                                 <select fxFlex.gt-sm="32%" class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="dob_year" [formControl]="form.controls['dob_year']" (change) ="checkDob('year')">
-                                    <option value="">Year</option>
-                                    <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
-                                 </select> 
+                <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutGap.xs="10px">
+                  <div fxFlex.xs="calc(32% - 5px)" fxFlex="calc(32% - 5px)">
+                     <select class="form-control-dialog" required="true" class="sa_select form-control" [(ngModel)]="dob_date" [formControl]="form.controls['dob_date']" (change) ="checkDob('date')">
+                       <option value="">Day</option>
+                       <option *ngFor="let date of dates" value="{{date}}">{{date}}</option>
+                     </select>
+                    </div>
+                     <div fxFlex.xs="calc(32% - 5px)" fxFlex="calc(32% - 5px)">
+                       <select class="form-control-dialog" required="true" class="sa_select form-control" [(ngModel)]="dob_month" [formControl]="form.controls['dob_month']" (change) ="checkDob('month')">
+                        <option value="">Month</option>
+                        <option *ngFor="let month of months" value="{{month.key}}">{{month.value}}</option>
+                       </select> 
+                    </div>
+                    <div fxFlex.xs="calc(32% - 5px)" fxFlex="calc(32% - 5px)">
+                       <select class="form-control-dialog" required="true" class="sa_select form-control" [(ngModel)]="dob_year" [formControl]="form.controls['dob_year']" (change) ="checkDob('year')">
+                         <option value="">Year</option>
+                         <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
+                        </select> 
+                      </div>
+                  </div>
 								  </div>
                   <small *ngIf="(form.controls['dob_date'].hasError('required') && form.controls['dob_date'].touched) || (form.controls['dob_month'].hasError('required') && form.controls['dob_month'].touched) || (form.controls['dob_year'].hasError('required') && form.controls['dob_year'].touched) " class="text-danger support-text">Please select complete dob from the list . </small>
            <small *ngIf ="dob_larger_error!=''" class="text-danger support-text">{{dob_larger_error}}</small>
               </div>
-              <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                             <div fxFlex="calc(50% - 10px)" fxFlex.xs="100" class="sa-form-group">
                 <mat-label>Contact No.</mat-label>
-                            <mat-form-field style="width: 100%">
+                            <mat-form-field>
             <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,11);" [(ngModel)]="patient_phone_no">
                             </mat-form-field>
                           <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched" class="text-danger support-text">You must include Phone No.</small>
@@ -75,20 +81,20 @@
                              </div>
                            </div>
                            <div fxLayout="row wrap">
-                                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                                <div fxFlex="100">
                                    <small *ngIf="errorLogin ==true && errorLoginText != ''" class="text-danger support-text">{{errorLoginText}}</small>
                                    <small *ngIf="successLogin ==true && successLoginText != ''" class="text-success support-text">{{successLoginText}}</small>
                                 </div>
                                 </div>
-                             <div fxLayout="row wrap" fxLayoutGap="2%">
-                               <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
+                            
+                               <div class="sa-form-group">
                                  <mat-checkbox color="primary" [formControl]="form.controls['termsCond']">I agree to all the <a target="_blank" (click) ="loadTerms()">Terms</a></mat-checkbox>
                                </div>
-                             </div>
+                            
                                 <!-- col full-->
 
                                 <div mat-dialog-actions class="sa-pull-right">
-                                <button class="sa-pull-right mat-raised-button mat-green" type="submit" [disabled]="(!form.valid || dob_larger_error)">Next</button>
+                                <button class="sa-pull-right mat-raised-button mat-green m-i-r" type="submit" [disabled]="(!form.valid || dob_larger_error)">Next <span class="material-icons">chevron_right</span></button>
 
                                 </div>  
                             </form>
@@ -102,14 +108,14 @@
                              {{termsText}}
                            </div>
                           </div>
-                          <div fxLayout="row wrap" fxLayoutGap="0%" class="sa-pull-right">
-                            <a class="mat-raised-button mat-dc ok_btn " target="_blank" (click) ="loadForm()">Back</a>
+                          <div fxLayout="row wrap" fxLayoutGap="0%" >
+                            <a class="mat-raised-button mat-gray ok_btn m-i-l" target="_blank" (click) ="loadForm()"><span class="material-icons">chevron_left</span> Back</a>
                           </div>
                           </div>
                           </mat-tab>
                            <mat-tab #tab class="step2" label="Plan Details" [disabled]='!tabActive1'>
-                            <div fxLayout="row wrap" fxLayoutGap="2%">
-                              <div fxFlex.gt-md="30" fxFlex="100">
+                            <div fxLayout="row wrap" fxLayoutGap="5%" fxLayoutGap.xs="0%">
+                              <div fxFlex="30" fxFlex.xs="100">
                                   <div class="selected_plan_area">
                                       <div class="selected_plan_image">
                                           <img src="assets/images/plan_selected.svg"> 
@@ -120,7 +126,7 @@
                                      </div>
                                   </div>
                               </div>
-                               <div fxFlex.gt-md="68" fxFlex="100">
+                               <div fxFlex="65" fxFlex.xs="100">
                            <div class="plan_table_design">
                                <h3>Member Details: </h3>
 
@@ -151,7 +157,7 @@
                           </div>
                           </div>
                                <div class="plan_button_area" >
-                                  <div  class="sa-pull-right" style="width:100%; margin-bottom:10px!important;">
+                                  <div  class="sa-pull-right" style="width:100%; margin-bottom:15px!important;">
                                     <div style="width:100%;" class="sa-form-group text-right">
                                     <div class="" style="position:relative; float:right; text-align: left;">
                                           <span class="btn-off-label" *ngIf="discount>0">{{discount}}% off</span>
@@ -160,26 +166,28 @@
                                   </div>
                                 </div>
                                  <div class="">
-                                  <div  class="sa-pull-right" style="width:100%;">
-                                <div style="width:100%;" class="sa-form-group text-right">
-                                 <button class="mat-raised-button mat-gray mr15" (click) ="changeTab(0)" >Back</button>
-                                 <button class="mat-raised-button mat-dc ok_btn" style="margin-left:8px;" (click) ="paymentStripe()">Next</button>
-                                </div>
+                                <div class="m-t-10">
+                                 <button class="mat-raised-button mat-gray mr15 m-i-l" (click) ="changeTab(0)" ><span class="material-icons">chevron_left</span> Back</button>
+                                 <button class="mat-raised-button mat-dc ok_btn m-i-r" (click) ="paymentStripe()">Next <span class="material-icons">chevron_right</span></button>
                                 </div>
                               </div>
                             </div>
                           </mat-tab>
                            <mat-tab class="step3" label="Payment" [disabled]='!tabActive2'>
                               <mat-card-content class="Payment-info">
-                                <div class="cc_total_amountarea"><span class="" *ngIf="planLength =='MONTHLY'"><b>Total Charges :  <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</b> per Month</b></span><span class="" *ngIf="planLength =='YEARLY'"><b>Total Charges : <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</b> per Year</b></span></div>
-                                <div class="cell example example3" id="example-3">
+                                <div class="cc_total_amountarea"><span class="" *ngIf="planLength =='MONTHLY'">Total Charges :  <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</b> per Month</span><span class="" *ngIf="planLength =='YEARLY'">Total Charges : <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</b> per Year</span></div>
+                                <div class="cell example example3 " id="example-3">
                                     <div class="iframe_main">
-                                      <div class="fieldset">
+                                      <div class="fieldset AddCard-main">
+                                        <div class="AddCard-box">
+                                       <img class="card-c" src="assets/images/card-icon.png" alt=""> 
+                                       <span class="powered-by-stripe">Powered by <strong>stripe</strong></span>
                                         <div id="example3-card-number" class="field empty iframe_design"></div>
                                         <div class="two_iframe_areas"> 
                                           <div id="example3-card-expiry" class="field empty third-width iframe_design "></div>
                                           <div id="example3-card-cvc" class="field empty third-width iframe_design"></div>
                                         </div>
+                                      </div>
                                          <div class="fieldset text-center">  
                                              <button type="button" mat-raised-button style="margin-top: 15px" class="btn btn-primary mat-dc"  (click) = "buy()">Pay Now</button>
                                         </div>
@@ -187,11 +195,9 @@
                                     </div>      
                                 </div>                                 
                                 </mat-card-content>
-                             <button class="mat-raised-button mat-gray mr15" (click) ="changeTab(1)" style="margin-top: 15px">Back</button>
+                             <button class="mat-raised-button mat-gray mr15 m-i-l" (click) ="changeTab(1)" style="margin-top: 15px"><span class="material-icons">chevron_left</span> Back</button>
                           </mat-tab>
                          </mat-tab-group>
-                       </div>
-                     </div>
                   </div>
             </mat-card-content>
         </mat-card>

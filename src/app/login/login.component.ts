@@ -24,6 +24,8 @@ export class LoginComponent implements OnInit {
       uname: [null, Validators.compose([Validators.required])],
       password: [null, Validators.compose([Validators.required])]
     });
+     $('.notification-box').hide();
+            $('body').removeClass('notification-box-main');    
   }
   
   public errorDeactivate;

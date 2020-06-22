@@ -1,13 +1,18 @@
 <!-- ============================================================== -->
 <!-- Card Grid-->
 <!-- ============================================================== -->
+
 <div class="clinic-settings-page">
-<div fxLayout="row wrap" class="sa_forms_design" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-  <div fxFlex="100" style="height: 0px;">
+<div fxLayout="row wrap">
+  <div fxFlex="100" style="height: 0px; margin-right: 0px;">
     <button class="sa_back_button_custom mat-raised-button sa-pull-right mat-gray" (click) = "goBack()">Back</button>
   </div>
+</div>
+
+<div fxLayout="row wrap" class="sa_forms_design" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
   
-    <mat-card class="sa_back_button_custom_spacer" fxFlex="calc(66% - 10px)" fxFlex.lg="calc(66% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+  
+    <mat-card class="sa_back_button_custom_spacer" fxFlex="calc(50% - 10px)" fxFlex.lg="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
       <mat-card-content>
         <div class="warning_message" *ngIf="!connectedStripe">Your stripe account is not connected</div>
         <div class="basic_details_form"> 
@@ -21,48 +26,51 @@
             </div>
             <div fxFlex="165px">
               <div class="st0ripe_button_connect sa-pull-right">
-                <button mat-raised-button color="gray" class="" type="button" (click)="connectStripe()" *ngIf="!connectedStripe">Connect To Stripe</button>
-                <button mat-raised-button color="gray" class="" type="button" (click)="disconnectStripe()" *ngIf="connectedStripe">Disconnect Stripe</button>
+                <button mat-raised-button color="gray" class="m-b-10" type="button" (click)="connectStripe()" *ngIf="!connectedStripe">Connect To Stripe</button>
+                <button mat-raised-button color="gray" class="m-b-10" type="button" (click)="disconnectStripe()" *ngIf="connectedStripe">Disconnect Stripe</button>
               </div>
             </div>
           </div>
           <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
             <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-              <div fxFlex="170px" fxFlex.md="130px" fxFlex.sm="100" fxFlex.xs="100" class="">
+              <div fxFlex="130px" fxFlex.md="130px" fxFlex.sm="100" fxFlex.xs="100" class="">
                 <div class="sa-image_upload_area" >
                   <div class="clinic_logo"> <img src="{{imageURL}}" height="130" width="130" *ngIf="imageURL != '' && imageURL != 'undefined'" > <img src="../assets/img/logo.png" height="130" width="130" *ngIf="imageURL == null || imageURL == 'undefined'" > </div>
                 </div>
               </div>
               <div  fxFlex>
                 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.xs="20">
-                  <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="100">
+                  <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
                     <div class="sa-form-group">
                       <label>Clinic Name*</label>
                       <input placeholder="" [formControl]="form.controls['clinicName']" [(ngModel)]= "clinicName">
                       <small *ngIf="form.controls['clinicName'].hasError('required') && form.controls['clinicName'].touched" class="text-danger support-text">Clinic name is required.</small> </div>
                   </div>
-                  <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="100">
+                  <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
                     <div class="sa-form-group">
                       <label>Phone Number*</label>
                       <input  type="text" placeholder="" [formControl]="form.controls['phoneNo']" (keypress)="numberOnly($event)" oninput="this.value = this.value.slice(0,13);"  [(ngModel)]="phoneNo">
                       <small *ngIf="form.controls['phoneNo'].hasError('required') && form.controls['phoneNo'].touched" class="text-danger support-text">Phone is required.</small> </div>
                   </div>
-                  <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="100">
+                </div>
+                 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.xs="20">
+                  <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
                     <div class="sa-form-group">
                       <label>Clinic Email*</label>
                       <input   placeholder="" [formControl]="form.controls['clinicEmail']" [(ngModel)]="clinicEmail">
-                      <small *ngIf="form.controls['clinicEmail'].hasError('required') && form.controls['clinicEmail'].touched" class="text-danger support-text">Clinic Email is required.</small> </div>
+                      <small *ngIf="form.controls['clinicEmail'].hasError('required') && form.controls['clinicEmail'].touched" class="text-danger support-text">Clinic Email is required.</small> 
+                    </div>
                   </div>
-                </div>
-                <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.xs="0">
-                  <div fxFlex="calc(66% - 10px)" fxFlex.md="100" fxFlex.sm="calc(66% - 10px)" fxFlex.xs="100">
+                     <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
                     <div class="sa-form-group">
                       <label>Address*</label>
                       <input [(ngModel)]="address" [formControl]="form.controls['address']" placeholder="" oninput="this.value = this.value.slice(0,60);">
                       <!-- <app-ngx-editor [placeholder]="'Enter address here...'" [spellcheck]="true" [(ngModel)]="address" [formControl]="form.controls['address']"  height="300px" minHeight="50px"></app-ngx-editor> --> 
                       <small *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched" class="text-danger support-text">Address is required.</small> <small *ngIf="form.controls['address'].hasError('minlength') && form.controls['address'].touched" class="text-danger support-text">Address should not be less than 60 characters.</small> </div>
                   </div>
-                  <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="100">
+                </div>
+                <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.xs="0">
+                     <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
                     <div class="sa-form-group">
                       <div class="bd_UpoadImage">
                         <label>Clinic Logo</label>
@@ -89,22 +97,57 @@
         </div>
       </mat-card-content>
     </mat-card>
-  
-  
-    <mat-card fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+
+    <mat-card fxFlex="calc(50% - 10px)" fxFlex.lg="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
     <div class="sa_forms_design payment_full_info" >
       
         <mat-card-content >
-        <mat-card-title class="mat-card-title"> Upload clinic contract </mat-card-title>
-        <div class="cart_button text-center" >
-        <div class="button_contractor contractor-thumbnail" *ngIf="Contract!='' && Contract!=null"> 
-           <img src="../assets/images/contract.png">
-          <a mat-raised-button class="contractDownload upload_buttons" color="accent" target="_blank" href="{{Contract}}"><i class="fas fa-cloud-download-alt"></i> Download Contract</a> </div>
-        <div class="button_contractor">
-          <button class="mat-raised-button mat-gray upload_buttons" mat-raised-button (click)="openDialog()"><i class="fas fa-cloud-upload-alt"></i> Upload contract</button>
-          <input type="hidden" class="currentclinicId" value="{{clinic_id}}">
+    <form [formGroup]="formSocial" class="basic-form" (ngSubmit)="onSettingsSocialSubmit()" >
+          <!-- column -->
+          <div class="sa-form-group">
+            <mat-card-title>Social Icons Settings</mat-card-title>
+          </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0px">
+              <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
+          <div class="sa-form-group">
+            <label>Facebook</label>
+            <div class="icon-group"> <i class="fab fa-facebook-f"></i>
+              <input  placeholder="" [formControl]="formSocial.controls['facebook']" [(ngModel)]="facebook">
+            </div>
+            <small *ngIf="formSocial.controls['facebook'].hasError('pattern') && formSocial.controls['facebook'].touched" class="text-danger support-text">Please enter valid url.</small> </div>
+          </div>
+          <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
+          <div class="sa-form-group">
+            <label>Twitter</label>
+            <div class="icon-group"> <i class="fab fa-twitter"></i>
+              <input  placeholder="" [formControl]="formSocial.controls['twitter']" [(ngModel)]="twitter">
+            </div>
+            <small *ngIf="formSocial.controls['twitter'].hasError('pattern') && formSocial.controls['twitter'].touched" class="text-danger support-text">Please enter valid url.</small> </div>
+          </div>
         </div>
-      </div>
+          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0px">
+          <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
+          <div class="sa-form-group">
+            <label>LinkedIn</label>
+            <div class="icon-group"> <i class="fab fa-linkedin-in"></i>
+              <input  placeholder="" [formControl]="formSocial.controls['linkedin']" [(ngModel)]="linkedin">
+            </div>
+            <small *ngIf="formSocial.controls['linkedin'].hasError('pattern') && formSocial.controls['linkedin'].touched" class="text-danger support-text">Please enter valid url.</small> </div>
+          </div>
+          <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
+          <div class="sa-form-group">
+            <label>Instagram</label>
+            <div class="icon-group"> <i class="fab fa-instagram"></i>
+              <input  placeholder="" [formControl]="formSocial.controls['instagram']" [(ngModel)]="instagram">
+            </div>
+            <small *ngIf="formSocial.controls['instagram'].hasError('pattern') && formSocial.controls['instagram'].touched" class="text-danger support-text">Please enter valid url.</small> </div>
+          </div>
+        </div>
+          
+         <div class="social-save-btn">
+            <button mat-raised-button color="green" class="sa-pull-right" type="submit" [disabled]="!formSocial.valid">Save</button>
+          </div>
+      </form>
       </mat-card-content>
     
   </div>
@@ -113,26 +156,18 @@
 </div>
 <div fxLayout="row wrap" class="sa_forms_design" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
   
-    <mat-card fxFlex="calc(66% - 10px)" fxFlex.lg="calc(66% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+    <mat-card fxFlex="calc(50% - 10px)" fxFlex.lg="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
       <mat-card-content>
         <div class="basic_details_form">
           <form [formGroup]="formLanding" class="basic-form" (ngSubmit)="onSettingsSubmit()" id="landingPageForm">
            
                 <mat-card-title>Landing Page Settings</mat-card-title>
                 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-                  <div fxFlex="170px" fxFlex.md="130px" fxFlex.sm="100" fxFlex.xs="100">
+                  <div fxFlex="130px" fxFlex.md="130px" fxFlex.sm="100" fxFlex.xs="100">
                     <div class="sa-image_upload_area">
                       <div class="header_main_image"> <img src="{{headerImageURL}}" height="130" width="130" *ngIf="headerImageURL" > <img src="../assets/uploads/headimage.jpg" height="130" width="130" *ngIf="headerImageURL == null" > </div>
                     </div>
-                  </div>
-                  <div fxFlex>
-                    <div fxLayout="coloum wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.xs="0" fxLayoutGap.sm="20px">
-                      <div fxFlex="calc(66% - 10px)" fxFlex.md="100" fxFlex.sm="calc(66% - 10px)" fxFlex.xs="100" class="sa-form-group">
-                        <label>Header Title*</label>
-                        <input  placeholder="" [formControl]="formLanding.controls['headerTitle']" [(ngModel)]="headerTitle" required>
-                        <small *ngIf="formLanding.controls['headerTitle'].hasError('required') && formLanding.controls['headerTitle'].touched" class="text-danger support-text">Header Title is required.</small> </div>
-                      <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="calc(32% - 10px)" fxFlex.xs="100">
-                        <div class="sa-form-group">
+                      <div class="sa-form-group">
                           <div class="bd_UpoadImage">
                             <label>Change Image</label>
                             <div class="upload-btn"> <span>Choose file</span>
@@ -141,11 +176,17 @@
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="sa-form-group">
+                  </div>
+                  <div fxFlex>
+                      <div class="sa-form-group">
+                        <label>Header Title*</label>
+                        <input  placeholder="" [formControl]="formLanding.controls['headerTitle']" [(ngModel)]="headerTitle" required>
+                        <small *ngIf="formLanding.controls['headerTitle'].hasError('required') && formLanding.controls['headerTitle'].touched" class="text-danger support-text">Header Title is required.</small> </div>
+                      
+                    
+                    <div class="sa-form-group hd-editor">
                       <label>Header Description*</label>
-                      <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="headerDescription" [formControl]="formLanding.controls['headerDescription']" width="100%" height="200px" minHeight="50px"></app-ngx-editor>
+                      <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="headerDescription" [formControl]="formLanding.controls['headerDescription']" width="100%" height="216px" minHeight="50px"></app-ngx-editor>
                       <small *ngIf="formLanding.controls['headerDescription'].hasError('required') && formLanding.controls['headerDescription'].touched" class="text-danger support-text">Header Description is required.</small> </div>
                   </div>
                 </div>
@@ -156,7 +197,7 @@
             
             <!--Row Wrap -->
             
-            <div fxLayout="row wrap" fxLayoutGap="20px">
+            <div fxLayout="row wrap">
               <div fxFlex.gt-md="100" fxFlex="100" class="">
                 <mat-card-actions>
                   <button mat-raised-button color="green" class="sa-pull-right" type="submit" [disabled]="!formLanding.valid">Submit</button>
@@ -167,58 +208,50 @@
             
             <!-- column -->
           </form>
+
+
+
           <!--Form Close --> 
         </div>
         <!--Basic Form Details Div --> 
       </mat-card-content>
     </mat-card>
-  
- 
-    <mat-card fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
-      <mat-card-content>
-        <div> 
-          <form [formGroup]="formSocial" class="basic-form" (ngSubmit)="onSettingsSocialSubmit()" >
-          <!-- column -->
-          <div class="sa-form-group">
-            <mat-card-title>Social Icons Settings</mat-card-title>
-          </div>
-          <div class="sa-form-group">
-            <label>Facebook</label>
-            <div class="icon-group"> <i class="fab fa-facebook-f"></i>
-              <input  placeholder="" [formControl]="formSocial.controls['facebook']" [(ngModel)]="facebook">
-            </div>
-            <small *ngIf="formSocial.controls['facebook'].hasError('pattern') && formSocial.controls['facebook'].touched" class="text-danger support-text">Please enter valid url.</small> </div>
-          <div class="sa-form-group">
-            <label>Twitter</label>
-            <div class="icon-group"> <i class="fab fa-twitter"></i>
-              <input  placeholder="" [formControl]="formSocial.controls['twitter']" [(ngModel)]="twitter">
-            </div>
-            <small *ngIf="formSocial.controls['twitter'].hasError('pattern') && formSocial.controls['twitter'].touched" class="text-danger support-text">Please enter valid url.</small> </div>
-          <div class="sa-form-group">
-            <label>LinkedIn</label>
-            <div class="icon-group"> <i class="fab fa-linkedin-in"></i>
-              <input  placeholder="" [formControl]="formSocial.controls['linkedin']" [(ngModel)]="linkedin">
-            </div>
-            <small *ngIf="formSocial.controls['linkedin'].hasError('pattern') && formSocial.controls['linkedin'].touched" class="text-danger support-text">Please enter valid url.</small> </div>
-          <div class="sa-form-group">
-            <label>Instagram</label>
-            <div class="icon-group"> <i class="fab fa-instagram"></i>
-              <input  placeholder="" [formControl]="formSocial.controls['instagram']" [(ngModel)]="instagram">
-            </div>
-            <small *ngIf="formSocial.controls['instagram'].hasError('pattern') && formSocial.controls['instagram'].touched" class="text-danger support-text">Please enter valid url.</small> </div>
-          <div class="social-save-btn">
-            <button mat-raised-button color="green" class="sa-pull-right" type="submit" [disabled]="!formSocial.valid">Save</button>
-          </div>
-      </form>
+
+    <mat-card fxFlex="calc(50% - 10px)" fxFlex.lg="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+  <mat-card-content style="min-height:100px;">
+          <mat-card-title class="mat-card-title"> Upload clinic contract </mat-card-title>
+      <div class="cart_button text-center m-b-10" >
+         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0px">
+          <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
+            <div class="button_contractor contractor-thumbnail" *ngIf="Contract!='' && Contract!=null"> 
+           <img src="../assets/images/contract.png">
+           </div>
+         </div>
+         <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100" class="button_contractor_main">
+        <div class="button_contractor">
+          <a mat-raised-button class="contractDownload " color="gray" target="_blank" *ngIf="clinicContract!=''" href="{{Contract}}"><i class="fas fa-cloud-download-alt"></i> Download Contract</a>
+          <button class="mat-raised-button mat-gray upload_buttons" mat-raised-button (click)="openDialog()"><i class="fas fa-cloud-upload-alt"></i> Upload contract</button>
+          <input type="hidden" class="currentclinicId" value="{{clinic_id}}">
         </div>
-         
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
+      </div>
 
+    <mat-card-title>Terms & Conditions</mat-card-title>
+<div class="termsSection m-t-10">
+      <form [formGroup]="formTerms" class="basic-form" (ngSubmit)="onSubmitTerms()">
+        <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="terms" [formControl]="formTerms.controls['terms']"  height="175px" minHeight="50px"></app-ngx-editor>
+        <mat-card-actions class="terms-conditions-btn">
+          <button mat-raised-button color="dc" type="submit">Submit</button>
+        </mat-card-actions>
+      </form>
+      <small *ngIf="errorTermstext" class="text-danger support-text">{{errorTermstext}}</small> <small  class="text-success support-text">{{successTermstext}}</small> </div>
 
-
-
+  </mat-card-content>
+</mat-card>
   
+   
+
 </div>
 <div fxLayout="row wrap" class="sa_forms_design">
 <mat-card class="view-page-card" fxFlex="100">
@@ -226,18 +259,10 @@
     <a [routerLink]="['/subscription',clinic_id_encoded,user_id_encoded]" target="_blank" mat-raised-button color="green" class="view-page-btn" title= 'Subscription Detail'><img src="../assets/images/view-page-icon.png"><span> View Landing Page</span></a>
   </mat-card-content>
 </mat-card>
-<mat-card fxFlex="100">
-  <mat-card-content style="min-height:100px;">
-    <div class="ChangePassword-section termsSection">
-      <mat-card-title style="margin-bottom:15px;" class="mat-card-title">Terms & Conditions</mat-card-title>
-      <form [formGroup]="formTerms" class="basic-form" (ngSubmit)="onSubmitTerms()">
-        <app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="terms" [formControl]="formTerms.controls['terms']"  height="300px" minHeight="50px"></app-ngx-editor>
-        <mat-card-actions class="text-right">
-          <button class="" mat-raised-button color="dc" type="submit">Submit</button>
-        </mat-card-actions>
-      </form>
-      <small *ngIf="errorTermstext" class="text-danger support-text">{{errorTermstext}}</small> <small  class="text-success support-text">{{successTermstext}}</small> </div>
-  </mat-card-content>
-</mat-card>
+
+
+  
+
+
 </div>
 </div>

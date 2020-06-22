@@ -14,7 +14,7 @@
   </ng-template>
 <mat-step  id="datata" state="home" [completed]="step1Completed" [editable]="step1editable">
 <div fxLayout="row wrap" fxLayoutGap="2%" id="step2">
-   <div fxFlex.gt-md="49" fxFlex="100" class="order2">
+   <div fxFlex.gt-md="49" fxFlex="100" class="order1">
   <div class="intro_title">
      <h2>Welcome To <span>Jeeve Members !</span></h2>
      <h3>Tell Us about your practice</h3>
@@ -84,7 +84,7 @@
 </div>
  </form>
 </div>
- <div fxFlex.gt-md="40" fxFlex="100" class="order1">
+ <div fxFlex.gt-md="40" fxFlex="100" class="order2">
   <div class="right-img">
      <img src="assets/stepper/Gif1.gif">
    </div>
@@ -99,7 +99,7 @@
 </mat-step>
 <mat-step id="step2" [completed]="step2Completed" [editable]="step2editable">
  <div fxLayout="row wrap" fxLayoutGap="2%" >
-  <div fxFlex.gt-md="49" fxFlex="100" class="order2">
+  <div fxFlex.gt-md="49" fxFlex="100" class="order1">
   <div class="intro_title stripe_payment">
     <h2>Setup Your <span>Stripe Payments</span></h2>
     <h4>All membership and payment plan payments are collected via Stripe. Please sign up for an account or connect your existing Stripe account</h4>
@@ -115,7 +115,7 @@
         </div>
     </form>
   </div>
-  <div fxFlex.gt-md="46" fxFlex="100" class="order1">
+  <div fxFlex.gt-md="46" fxFlex="100" class="order2">
     <div class="right-img">
       <img src="assets/stepper/Gif2.gif">
     </div>   
@@ -131,14 +131,14 @@
 <mat-step id="step3" [completed]="step3Completed" [editable]="step3editable">
   <div fxLayout="row wrap" fxLayoutGap="2%">
 
-     <div fxFlex.gt-md="49" fxFlex="100" class="order2">
+     <div fxFlex.gt-md="49" fxFlex="100" class="order1">
    <div class="intro_title membership_jeeve">
       <h2>Setup your first <br> <span>membership plan</span></h2>
       <h4>We’ve created a sample membership plan for your patients! Adjust it to suit your needs or create your own later</h4>
   </div>
  </div>
  
-  <div fxFlex.gt-md="46" fxFlex="100" class="order1">
+  <div fxFlex.gt-md="46" fxFlex="100" class="order2">
     <div class="right_table_section">
     <div class="table_inner_content">
     <div class="table_bg">
@@ -183,7 +183,7 @@
 </mat-step>
 <mat-step id="step4" [completed]="step4Completed" [editable]="step4editable">
  <div fxLayout="row wrap" >
-   <div fxFlex.gt-md="52" fxFlex="100" class="order2">
+   <div fxFlex.gt-md="52" fxFlex="100" class="order1">
     <form [formGroup]="inviteFormGroup">
   <div class="intro_title">
       <h2>Invite your staff to <span>use Jeeve Members</span> </h2>
@@ -231,7 +231,7 @@
   </form>
 </div>
 
-<div fxFlex.gt-md="47" fxFlex="100" class="order1">
+<div fxFlex.gt-md="47" fxFlex="100" class="order2">
     <div class="right-img">
       <img src="assets/stepper/Gif4.gif">
     </div>   
@@ -247,7 +247,7 @@
 </mat-step>
 <mat-step [completed]="step5Completed" [editable]="step5editable">
    <div fxLayout="row wrap" fxLayoutGap="2%" class="you_are_set_sec">
-    <div fxFlex.gt-md="47" fxFlex="100" class="order2">
+    <div fxFlex.gt-md="47" fxFlex="100" class="order1">
     <div class="you-are-set">
     <h2>You're <span>All Set.</span></h2>
    </div>
@@ -255,7 +255,7 @@
      <a [routerLink]="['/subscription',clinic_id_encoded,user_id_encoded]" target="_blank">Preview your membership landing page</a>
    </div>
    </div>
- <div fxFlex.gt-md="49" fxFlex="100" class="order1">
+ <div fxFlex.gt-md="49" fxFlex="100" class="order2">
      <div class="right-img">
       <img src="assets/stepper/Gif5.gif">
     </div> 

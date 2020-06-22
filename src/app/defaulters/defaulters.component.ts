@@ -122,7 +122,10 @@ private getDefaultersMembers() {
     var defaulter_name =  this.rows[rowIndex]['patient_name'];
     var defaulter_email = this.rows[rowIndex]['patient_email'];
     var defaulter_id = this.rows[rowIndex]['id'];
-    this.defaultersService.sendDefaultersemail(defaulter_id,defaulter_name,defaulter_email).subscribe((res) => {
+    var defaulter_type = this.rows[rowIndex]['plan_type'];
+    var defaulter_plan_id = '';
+
+    this.defaultersService.sendDefaultersemail(defaulter_id,defaulter_name,defaulter_email,defaulter_type,defaulter_plan_id).subscribe((res) => {
           if(res.message == 'success'){
             this.toastr.success('Payment Reminder Send .');
           }

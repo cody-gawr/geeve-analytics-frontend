@@ -53,7 +53,7 @@
 .sa_dentist_graphs_area .mat-card{box-shadow:none!important }
 .sa_dentist_graphs_area > div:nth-child(odd){border-radius:4px 0 0 4px;}
 .sa_dentist_graphs_area > div:nth-child(even){border-radius:0 4px 4px 0;}
-.sa_dentist_graphs_area .sa_flexbg{transition: transform .2s; transform: scale(1); margin-right:1%; background:#fff; margin-bottom:15px; width:50%; border-radius:4px; box-shadow:0 1px 15px 9px rgba(62,57,107,.07) !important;}
+.sa_dentist_graphs_area .sa_flexbg{transition: transform .2s; transform: scale(1); margin-right:0%; background:#fff; margin-bottom:20px; border-radius:4px; box-shadow:0 1px 15px 9px rgba(62,57,107,.07) !important;}
 .sa_dentist_graphs_area .sa_flexbg:hover{}
 .sa_flex_transparent{padding:1px 10px 13px; display:none;}
 
@@ -72,7 +72,7 @@
 
 
 
-.action_btn{min-width:30px!important; border:none; cursor:pointer; color:inherit !important; border-radius:4px!important; text-align:center!important;float:left;  padding:0!important;  display:inline-block!important;line-height: 30px !important; margin: 0 4px 4px !important;}
+.action_btn{min-width:30px!important; border:none; cursor:pointer; color:inherit !important; border-radius:4px!important; text-align:center!important;float:left;  padding:0!important;  display:inline-block!important;line-height: 30px !important; margin: 0 4px 0px !important;}
 .action_btn:hover{opacity:0.7;}
 
 .action_btn.danger.appt_btn {
@@ -109,6 +109,7 @@
 .sa_matforms_design .mat-form-field{padding:7px 20px;}
 
 .header_select{font-size:15px; margin:0; }
+
 .sa_select_color{color:#424242!important;}
 .text-inspinia{color:#18a689;}
 .sa_chart_desc_area h3{font-size:16px;}
@@ -146,7 +147,7 @@ margin: 0 4px; color:rgba(0, 0, 0, 0.54)}
 .page_title{font-size:16px;}
 .sa_forwhite_label{color:#424242; float:left; padding:4px 0;}
 
-.sa_dashboard_inner_content{padding:0 10px;}
+.sa_dashboard_inner_content{padding:0 15px;}
 .vertical_center_header_content{padding:4px 0; float:right; width:100%; text-align:right;}
 .mr15{margin-right:15px;}
 
@@ -437,7 +438,7 @@ display: inline-block;}
 .mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple{background-color:#18A689!important}
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{border-color:#0E3459;}
 
-.login-register .mat-card{box-shadow:0 1px 145px 10px rgba(14,52,89,1) !important}
+.login-register .mat-card{box-shadow:0 1px 145px 10px rgba(14,52,89,1) !important; float: left; width: 100%;}
 .login_abso_logo{position:fixed; bottom:40px; right:60px; width:120px; opaciity:0.6; pointer-events:none; z-index:99}
 .pad_20{padding:20px!important;}
 .mat-card-title{font-size:20px!important; color:#0e3459!important;}
@@ -1516,7 +1517,13 @@ line-height: 36px;padding: 4px 16px; border:none; border-radius:4px; color:#fff;
 .cdk-overlay-pane{width:auto!important}
 .datatable-scroll .datatable-row-wrapper:nth-child(even), .tabs_table tr:nth-child(2n) {background:rgba(24,166,137,0.05) !important;}
 
-.sa_plan_show th, .sa_plan_show td{font-size:15px!important; background: #fff!important; border:none!important; padding:10px 10px !important; border-bottom:1px solid #ccc!important;}
+.sa_plan_show th, .sa_plan_show td {
+    font-size: 15px!important;
+    background: #fff!important;
+    border: none!important;
+    padding: 5px 10px !important;
+    border: 1px solid #ccc!important;
+}
 .sa_plan_show td{border-color:#18a689!important; }
 .btn_td{border:none!important; padding:10px 0 0!important;}
 .btn_td a{text-align:center; cursor:pointer;}
@@ -1561,18 +1568,34 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', end
 .mat-checkbox-label{color:#424242!important;}
 .mat-checkbox-label a{color:#008DA3!important;}
 .sa_custom_focus .mat-checkbox-indeterminate.mat-primary .mat-checkbox-background, .sa_custom_focus .mat-checkbox-checked.mat-primary .mat-checkbox-background{background:#18a689;}
-.sa_forms_design label{padding-bottom:8px; padding-top:8px; width:100%; display:block; font-size:15px;}
+.sa_forms_design label { padding-bottom: 8px; padding-top: 8px; width: 100%; font-weight: 400; display: block; font-size: 15px;}
 .sa_forms_design .mat-form-field-underline{display:none;}
 .sa_forms_design .mat-form-field-suffix{position:absolute; right:3px; top:6px;}
 .sa_forms_design .mat-form-field-infix{padding:0px!important; border-top:0px; }
 .sa_forms_design input{border:1px solid #cccccc; padding:8px 10px; width:100%; border-radius:4px; font-size:14px;font-family:Poppins;}
 .sa_forms_design textarea{min-height:128px; border:1px solid #cccccc; padding:8px 10px; width:100%; border-radius:4px; font-size:14px;  font-family:Poppins;}
 .sa-form-group{margin-bottom:7px;}
-.sa_back_button_custom{margin-right:18px; position:absolute; z-index:999; top:-39px; right:15px;}
-.mat-flat-button.mat-.basic_details_form .mat-card-title, .mat-raised-button.mat-green, .mat-fab.mat-green, .mat-mini-fab.mat-green{background:#18a689; color:#fff;}
-.sa-image_upload_area{text-align:center;background:#DDEBE9;padding: 15px;border-radius:4px; margin-top:14px;}
-.sa-image_upload_area img{border-radius:4px; padding:4px; background:rgba(255,255,255,0.8); border-radius:4px;object-fit: cover;}
-.mat-flat-button.mat-.basic_details_form .mat-card-title:disabled, .mat-raised-button.mat-green:disabled, .mat-fab.mat-green:disabled, .mat-mini-fab.mat-green:disabled{background:#76dbc5!important; color:#18a689!important;}
+.sa_back_button_custom {
+    margin-right: 18px;
+    position: absolute;
+    z-index: 999;
+    top: -39px;
+    right: 0px;
+}.mat-flat-button.mat-.basic_details_form .mat-card-title, .mat-raised-button.mat-green, .mat-fab.mat-green, .mat-mini-fab.mat-green{background:#18a689; color:#fff;}
+.sa-image_upload_area {
+    text-align: center;
+    padding: 0px;
+    border-radius: 4px;
+    margin-top: 14px;
+}
+.sa-image_upload_area img {
+    padding: 4px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 3px;
+    -o-object-fit: cover;
+    box-shadow: 0 0 0px 1px rgba(14,52,89, 0.1);
+    object-fit: cover;
+}.mat-flat-button.mat-.basic_details_form .mat-card-title:disabled, .mat-raised-button.mat-green:disabled, .mat-fab.mat-green:disabled, .mat-mini-fab.mat-green:disabled{background:#76dbc5!important; color:#18a689!important;}
 .gradient_inner .mat-green:disabled{color:
 #fff!important;
 background-color:
@@ -1584,9 +1607,9 @@ border-color:
 	padding: 0px;
 }
 .last_payment_info {
-	background: #fdfdfd;
-	padding: 40px 35px 30px 25px;
-	border-bottom: 1px solid #f1f1f1;
+    background: #fdfdfd;
+    padding: 20px 15px 20px 15px;
+    border-bottom: 1px solid #f1f1f1;
 }
 .last_payment_sec .fas, .last_payment_sec .far {
     margin-right: 10px;
@@ -1639,13 +1662,21 @@ margin-right: 15px;
 .patient_details_form .mat-tab-labels {display: block !important;text-align: center;}
 .patient_details_form .mat-ink-bar.mat-ink-bar {display: none;}
 .patient_details_form .mat-tab-label-content{padding-left:10px;}
-.patient_details_form .mat-tab-label-container .mat-tab-label{position: relative;opacity: 1;}
-.patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(2) ,.mat-tab-label-container .mat-tab-label:nth-child(3){margin-left: 50px;overflow: initial !important;}
+.patient_details_form .mat-tab-label-container .mat-tab-label {
+    position: relative;
+    min-width: unset;
+    opacity: 1;
+    padding-left: 30px;
+    padding-right: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+}.patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(2) ,.mat-tab-label-container .mat-tab-label:nth-child(3){margin-left: 50px;overflow: initial !important;}
 .patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(2)::before ,
 .patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(3)::before {position: absolute;content: '';left: -70px;height: 0px;width: 50px; background-color: #d4d4d4;}
 .patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(2)::after {content: '2';}
 .patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(3)::after {content:'3'; }
-.patient_details_form .mat-tab-label::after {    position: absolute;    content: '1';    left: 0px;    line-height:28px;    border-radius: 40px;    background-color: #b1b1b1;    color: #fff;    height: 28px;    width: 28px;}
+.patient_details_form .mat-tab-label::after {    position: absolute; content: '1'; left: 8px; line-height: 26px; border-radius: 40px;
+ background-color: #b1b1b1; color: #fff; height: 25px; width: 25px;}
 .patient_details_form .mat-tab-label.mat-tab-label-active::after{background-color:#25A689;}
 .patient_details_form .mat-raised-button { border:none;    padding: 0 16px;    display: inline-block;    line-height: 36px;    cursor: pointer;}
 .pb10{ padding-bottom: 10px; }
@@ -1677,8 +1708,9 @@ margin-right: 15px;
 
 .patient_details_form.login-register .mat-form-field-appearance-legacy .mat-form-field-underline {display: none;}
 .patient_details_form.login-register .mat-form-field-appearance-legacy .mat-form-field-infix{padding: 0px;}
-.patient_details_form.login-register .mat-tab-body-wrapper {padding:30px;}
-
+.patient_details_form.login-register .mat-tab-body-wrapper {
+    padding: 20px 0 0 0;
+}
 .patient_details_form.login-register table.ng-star-inserted {width:100%;margin-bottom: 30px;}
 
 .patient_details_form.login-register table.ng-star-inserted td {width:60%;font-weight: 500;padding: 5px 0;}
@@ -1688,12 +1720,15 @@ margin-right: 15px;
 .patient_details_form .mat-dialog-actions{margin-bottom: 0px !important;}
 
  .mat-radio-button .mat-radio-label-content{line-height: 20px !important; vertical-align: top;}
-span.btn-off-label {position: relative;
-    color:#fff;
-    background-color:#ea2268; margin-left:4px;
-    line-height: 35px; float:right;
-    padding: 0px 10px;
-    border-radius: 4px 20px;
+span.btn-off-label {
+    position: relative;
+    color: #fff;
+    background-color: #E91E63;
+    margin-right: 10px;
+    font-size: 14px;
+    float: left;
+    padding: 8px 15px;
+    border-radius: 0px 15px;
     min-width: 24px;
     height: 36px;
 }
@@ -1886,6 +1921,11 @@ body .AddCard-main .AddCard-box .mat-card-title {
     background-size: contain !important;
 }
     .mat-raised-button{white-space:normal!important}
+
+    .patient_details_form .mat-card, .login-register[_ngcontent-xqt-c2] .mat-card[_ngcontent-xqt-c2] {
+    width: 95% !important;
+   
+}
 }
 @media (max-width: 959px) {
 .row-tablePD {display: block !important; }
@@ -1925,7 +1965,6 @@ body .AddCard-main .AddCard-box .mat-card-title {
 .sa_dentist_graphs_area .sa_flexbg.sa_designbg .mat-card:first-child {border-image: linear-gradient(90deg,white,#003858,white);border-image-slice: 100%;border-image-slice: 1;border-bottom:1px solid;border-right:none;margin-bottom:15px !important;}
 .mat-card-title .main-title {display: block; margin-bottom: 10px; }
 .mat-card-title .sa-pull-right.mat-raised-button, .mat-card-title .sa-pull-right {float: left; margin-right: 0 !important; }
-.patient_details_form.login-register .mat-tab-body-wrapper {padding:20px 0px;}
 .last_payment_info {
 	padding: 31px 15px 21px 15px;
 	font-size: 14px !important;
@@ -1935,6 +1974,27 @@ body .AddCard-main .AddCard-box .mat-card-title {
 }
 .last_payment_sec .fas, .last_payment_sec .far {
     margin-right: 6px;
+}
+
+.patient_details_form .spl_headings {
+    padding: 9px 0px 9px 0px !important;
+    min-width: auto !important;
+    width: auto;
+    top: 10px !important;
+}
+.patient_details_form .spl_headings::before, .patient_details_form .spl_headings::after {
+    height: 40px !important;
+    background-size: 100% auto !important;
+    width: 98px !important;
+}
+.patient_details_form .spl_headings::before {
+  left: -98px !important;
+}
+.patient_details_form .spl_headings::after {
+    right: -98px !important;
+}
+.patient_details_form .mat-card, .login-register[_ngcontent-xqt-c2] .mat-card[_ngcontent-xqt-c2] {
+    width: calc(100% - 30px) !important;
 }
 
 }
@@ -1948,7 +2008,8 @@ body .AddCard-main .AddCard-box .mat-card-title {
     text-transform: uppercase !important;
     margin-bottom: 0 !important;}
 .selected_plan_detail p{color: #424242;
-    font-size: 18px; font-weight:400;
+    font-size: 18px; 
+    font-weight:400;
     margin: 15px 0;
     background: #18A689;
     width: auto;
@@ -1960,10 +2021,13 @@ body .AddCard-main .AddCard-box .mat-card-title {
 .plan_table_design h3{margin: 0 0 10px;
     font-size: 17px;}
 
-.plan_button_area{border-top:3px solid #f2f2f2;
- display:block;
-    width: 100%; padding:15px 5px 0px; float:left;
-    margin-top: 5px;}
+.plan_button_area {
+    display: block;
+    width: 100%;
+    padding: 0px 0px 0px;
+    float: left;
+    margin-top: 5px;
+}
 
 .monthly_total{text-align: right;
     padding: 10px 0;
@@ -1995,8 +2059,24 @@ body .AddCard-main .AddCard-box .mat-card-title {
     margin-bottom: 17px;}
 
 .patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(2), .mat-tab-label-container .mat-tab-label:nth-child(3){margin-left:0px!important;}
-.clinic_logo_patientdetail{width:100%; text-align:center; margin-bottom:30px;}
-.clinic_logo_patientdetail img{max-width:170px; }
+.clinic_logo_patientdetail {
+    width: 110px;
+    text-align: center;
+    background-color: #DDEBE9;
+    margin: auto;
+    height: 110px;
+    bottom: 75px;
+    border: 5px solid #fff;
+    overflow: hidden;
+    border-radius: 50%;
+    position: relative;
+    z-index: 9;
+}
+.clinic_logo_patientdetail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
 
 .green_table{background:
@@ -2046,10 +2126,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', end
     display: none;
 }
 
-.custom_cart_area{padding: 10px;
-    box-shadow:0 1px 15px 9px rgba(62,57,107,.07);
-   color:#424242;
-    border-radius: 12px; text-align:center;
+.custom_cart_area {
+    padding: 5px;
+    color: #424242;
+    border-radius: 0px;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .mat-tab-group-dynamic-height .mat-tab-body-content{overflow:visible!important;}
@@ -2077,13 +2159,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', end
     margin-top: 0px;}
 .cc_delete_entry i{font-size:17px; }
 .ng-star-inserted td:nth-child(4){text-align:right;}
-.cc_total_value{
-    font-size: 16px; 
-    color:#424242;
-    font-weight: 500; background:#f2f2f2;
-    padding: 14px 20px;
-    text-align: right;}
-
+.cc_total_value {
+    font-size: 16px;
+    color: #424242;
+    font-weight: 500;
+    background: #f3f7f7;
+    margin-top: 10px;
+    border: 1px solid #DDEBE9;
+    padding: 10px 20px;
+    text-align: right;
+}
     .percent_value2{background:#ea2268;
     color:#fff;
     padding: 0 6px;
@@ -2242,6 +2327,12 @@ input[type="date"]::-webkit-inner-spin-button {
     overflow: hidden;
 }
 .notification-box-main .notification-box{display: block;}
+.notification-box a {
+    color: #e91e63;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: underline;
+}
 
 .change-password-icon {
     background-color: #DDEBE9;
@@ -2323,12 +2414,17 @@ a.link:hover, a.link:focus{color:#023857!important;}
 }
 
 .responsive_table_main{overflow:auto; width:100%;}
-.cc_total_amountarea{text-align:center; width:100%; padding:10px; margin-bottom:20px;}
-.cc_total_amountarea span{padding: 9px 20px;
-    border-radius: 150px; min-width:160px; display:inline-block;
-    background:
-    #DDEBE9;
-    font-weight: 400; }
+.cc_total_amountarea {
+    text-align: center;
+    width: 100%;
+    padding: 0px 0px 10px 0px;
+    margin-bottom: 20px;
+}.cc_total_amountarea span {
+    padding: 5px 0;
+    min-width: auto;
+    display: inline-block;
+    font-weight: 400;
+}
 .mat-chip.mat-standard-chip.mat-chip-selected.mat-primary {
 	background-color: #18A689 !important;
 }	
@@ -2428,9 +2524,7 @@ a.link:hover, a.link:focus{color:#023857!important;}
 .register_form  .input_field_patient select {
 	height: 40px;
 }
-.input_field_patient {
-    justify-content: space-between;
-}
+
 .gender_radio {
     padding-bottom: 0px !important;
 	margin-bottom: 0px !important;
@@ -2558,19 +2652,7 @@ a.link:hover, a.link:focus{color:#023857!important;}
 .mat-tab-body-wrapper .mat-tab-body {
 	padding-bottom: 15px !important;
 }
-::-webkit-scrollbar {
-    width: 12px;
-}
- 
-::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-    border-radius: 10px;
-}
- 
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-}
+
 /*.sa-form-group.patient_name {
     margin-right: 0px !important;
 }*/
@@ -2700,10 +2782,22 @@ form.basic-form.contract_up {
 .mat-raised-button.danger {
     box-shadow: 0px 10px 13px -5px rgba(220, 53, 69, 0.3) !important;
 }
-.mat-raised-button.danger:active, .mat-raised-button.danger:hover, .mat-raised-button.danger:focus {
-    box-shadow: 0px 15px 15px -7px rgba(220, 53, 69, 0.4) !important;
-}
 
+.mat-raised-button.danger:active, .mat-raised-button.danger:hover, .mat-raised-button.danger:focus {
+    box-shadow: 0px 15px 15px -7px rgba(220, 53, 69, 0.3) !important;
+}
+ .mat-raised-button.mat-warning {
+    box-shadow: 0px 10px 13px -5px rgba(220, 137, 12, 0.4) !important;
+}
+ .mat-raised-button.mat-warning:active,  .mat-raised-button.mat-warning:hover,  .mat-raised-button.mat-warning:focus {
+    box-shadow: 0px 15px 15px -7px rgba(220, 137, 12, 0.4) !important;
+}
+ .mat-raised-button.mat-blue:active,  .mat-raised-button.mat-blue:hover,  .mat-raised-button.mat-blue:focus {
+    box-shadow: 0px 15px 15px -7px rgba(52, 108, 204, 0.3) !important;
+}
+ .mat-raised-button.mat-blue {
+    box-shadow: 0px 10px 13px -5px rgba(52, 108, 204, 0.4) !important;
+}
 
 /*Purchase Plan CSS*/
 /*
@@ -2743,8 +2837,24 @@ form.basic-form.contract_up {
     margin-left: 5px !important;
     font-size: 17px;
 }
+
+
+
+}
+@media (max-width:359px) {
+.patient_details_form .spl_headings::before, .patient_details_form .spl_headings::after {
+   display: none;
+}
+.patient_details_form .spl_headings {
+    padding: 10px 0px 10px 0px !important;
+    width: 100%;
+    border-radius: 10px 10px 0 0 !important;
+}
+.patient_details_form .mat-card, .login-register[_ngcontent-xqt-c2] .mat-card[_ngcontent-xqt-c2] {
+    border-radius: 0px 0px 10px 10px !important;
 }
 
+}
 
 .no-invoices {
     color: rgba(0, 0, 0, 0.54);
@@ -2766,7 +2876,7 @@ form.basic-form.contract_up {
     margin:10px 0px;
 }
 .stepper_content  .mat-step-icon-state-number.mat-step-icon.mat-step-icon-selected {
-	background: #5fa489;
+	background: #18a689;
 }
 /* .stepper_content .mat-stepper-vertical-line::before {
 	content: '';
@@ -2816,8 +2926,9 @@ form.basic-form.contract_up {
 	position:relative;
 }
 .stepper_content .logo_jeeve {
-	margin-bottom: 25px;
-	margin-top: 30px;
+    margin-bottom: 25px;
+    margin-top: 30px;
+    max-width: 200px;
 }
 .stepper_content .mat-stepper-vertical{
 	background-color: transparent;
@@ -2836,7 +2947,7 @@ form.basic-form.contract_up {
 	top: -14px;
 } */
 .stepper_content  .mat-step-header .mat-step-icon {
-	/*background-color: #ffffff; */
+	background-color: #b0c6c6; 
 	color: white;
 	border: 1px solid #b0c6c6;
 } 
@@ -2884,7 +2995,7 @@ form.basic-form.contract_up {
 
 
 .stepper_content .mat-step .mat-green {
-	background: #5fa489 !important;
+	background: #18a689 !important;
 	/* width: 193px; */
 	height: 54px;
 	background-repeat: no-repeat !important;
@@ -2945,7 +3056,7 @@ form.basic-form.contract_up {
 	margin-bottom: 0;
 }
 .stepper_content .intro_title h2 span {
-	color: #5fa489;
+	color: #18a689;
 }
 .stepper_content .intro_title h3 {
     color: #263a5b;
@@ -3306,7 +3417,7 @@ form.basic-form.contract_up {
 } */
 
 .stepper_content  .you_are_set_sec .you-are-set h2 span {
-	color: #5fa489;
+	color: #18a689;
 }
 .stepper_content  .you_are_set_sec  .preview-your-membership a {
 	font-size: 24px;
@@ -3837,9 +3948,7 @@ form.basic-form.contract_up {
 	border-left-style: solid;
 	height: 470px !important;
 }
-.add_members .sa_forms_design.mat-dialog-content {
-	padding: 0 70px;
-}
+
 
 }
 
@@ -3945,6 +4054,14 @@ form.basic-form.contract_up {
 }
 
 }
+@media(max-width:1060px) { 
+    .button-group.membership-details-btnG .mat-raised-button, .button-group.membership-details-btnG button.mat-raised-button:first-child, .button-group.membership-details-btnG button.mat-raised-button:last-child {
+    border-radius: 50px !important;
+    margin: 5px;
+}
+
+
+    }
 
 
 @media(min-width:1280px) and  (max-width:1600px){ 
@@ -4038,27 +4155,18 @@ span.update_card {
     height: 47px;
 }
 .contractor-thumbnail {
-    background-color: #DDEBE9;
-    border-radius: 4px;
-    padding: 15px 15px 52px 15px;
-    position: relative;
-    margin: 15px 0px;
+    padding: 0px;
+    width: 100%;
+    float: left;
+    margin: 15px auto;
 }
 .contractor-thumbnail img {
-    max-width: 124px;
-    border-radius: 4px;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05);
+max-width: 124px;
+    border-radius: 3px;
+    padding: 4px;
+    box-shadow: 0 0 0px 1px rgba(14,52,89, 0.1);
 }
 
-.contractor-thumbnail .contractDownload {
-    background: rgba(14,52,89,1) !important;
-    position: absolute;
-    left: 0;
-    border-radius: 0 0 4px 4px !important;
-    bottom: 0;
-    width: 100%;
-    padding: 3px 10px !important;
-}
 .mat-raised-button i {
     padding-right:3px;
 }
@@ -4069,6 +4177,13 @@ span.update_card {
 
 body .mat-gray {
     background: rgba(14,52,89,1);
+}
+.mat-raised-button.mat-warning {
+    background: rgba(232,163,74,1) !important;
+    color: #fff;
+}
+.mat-raised-button.mat-blue {
+    background: rgba(67,133,245,1) !important;
 }
 
 .card-success {
@@ -4111,4 +4226,303 @@ body .mat-gray {
 .sa_profile_setting .mat-card .mat-card-content {
     padding-left: 10%;
     padding-right: 10%;
+}
+
+
+.swal2-modal .swal2-actions .swal2-styled { border-radius: 50px !important; }
+
+.swal2-modal .swal2-actions .swal2-cancel {
+  box-shadow: 0px 10px 13px -5px rgba(41, 56, 79, 0.1) !important;
+}
+.swal2-modal .swal2-actions .swal2-confirm {
+  box-shadow: 0px 10px 13px -5px rgba(24, 166, 137, 0.3) !important;
+}
+
+.mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button { border-radius: 50px !important; }
+
+
+.patient-details-textarea textarea {
+    min-height: 150px;
+}
+.membership-details-btnG {
+    float: right;
+}
+.button-group .mat-raised-button {
+    border-radius: 0px !important;
+}
+
+
+.button-group {
+    border: none !important;
+}
+
+.button-group button.mat-raised-button:first-child {
+    border-radius: 50px 0px 0px 50px !important;
+}
+.button-group button.mat-raised-button:last-child {
+    border-radius: 0px 50px 50px 0px !important;
+}
+
+.membership-details-btnG .mat-raised-button span.material-icons {
+    margin: 8px 5px 0 0;
+    font-size: 21px;
+    float: left;
+}
+.membership-details-btnG .mat-raised-button {
+    font-weight: 400;
+    float: left;
+}
+.add-clinic-popup {
+    max-height: unset !important;
+    overflow: hidden !important;
+}
+.add-clinic-popup img {
+    max-width: 160px;
+    margin-top: 30px;
+}
+.add-clinic-popup p {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 30px;
+}
+.add-clinic-popup .mat-dialog-actions {
+    margin-bottom: 0px;
+    padding: 15px 0;
+}
+
+.patient_details_form {
+    background-image: url(/assets/images/purchase-plan-bg.png);
+    background-repeat: repeat;
+    background-color: #0e3459;
+    justify-content: center;
+    height: 100% !important;
+    padding: 100px 0 30px 0;
+    min-height: 100vh !important;
+    align-items: center !important;
+    background-size: auto !important;
+}
+.patient_details_form .mat-card, .login-register[_ngcontent-xqt-c2] .mat-card[_ngcontent-xqt-c2] {
+    width: 800px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 40px 0 rgba(0,0,0, 0.3) !important;
+    position: relative;
+}
+
+.patient_details_form mat-label {
+    padding-top: 8px;
+    float: left;
+    font-size: 15px;
+    padding-bottom: 8px;
+    font-weight: 400;
+    width: 100%;
+}
+.patient_details_form .input_field_patient {
+    float: left;
+    width: 100%;
+}
+
+
+.patient_details_form .mat-input-element, .patient_details_form .input_field_patient select {
+    height: 39px;
+    margin: 0 !important;
+    padding: 8px 10px;
+}
+.patient_details_form .mat-card .mat-card-content {
+    padding: 10px 20px 5px 20px !important;
+    margin: 0px !important;
+}
+.patient_details_form .spl_headings {
+    padding: 15px 5px 9px 5px;
+    min-width: 260px;
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    border: 0;
+    transform: translate(-50%, -0%);
+    margin: 0;
+    bottom: unset;
+    top: 4px;
+    border-radius: 0px 0px 0 0;
+    color: #fff;
+    font-weight: 500;
+    background: #18a689;
+}
+
+.patient_details_form .spl_headings::before {
+    content: "";
+    width: 105px;
+    top: 0;
+    left: -104px;
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 46px;
+    position: absolute;
+    background-image: url(/assets/images/pdh-left-arrow.png);
+}
+.patient_details_form .spl_headings::after {
+    content: "";
+    width: 105px;
+    top: 0;
+    right: -104px;
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 46px;
+    position: absolute;
+      background-image:url(/assets/images/pdh-right-arrow.png);
+
+}
+
+.patient_details_form span.btn-off-label {
+    color: #dc3545;
+    background-color: #fbe8ea;
+    font-weight: 500;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    border: 1px solid #f3adb4;
+    font-size: 13px;
+    float: left;
+    line-height: 20px;
+    height: auto;
+    padding: 2px 15px;
+    border-radius: 3px;
+}
+.m-i-r .material-icons {
+    float: right;
+    margin: 6px 0 0px 2px;
+}
+
+.m-i-l .material-icons {
+    float: left;
+    margin: 6px 2px 0px 0px;
+}
+.patient_details_form .mat-raised-button.m-i-l {
+        padding-top: 2px !important;
+    float: left;
+    font-size: 16px;
+    padding-bottom: 2px !important;
+    padding-right: 27px !important;
+     letter-spacing: 2px;
+     text-transform: uppercase;
+}
+
+.patient_details_form .mat-raised-button.m-i-r {
+    padding-top: 2px !important;
+    float: right;
+    font-size: 16px;
+    padding-bottom: 2px !important;
+    padding-left: 27px !important;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.patient_details_form .AddCard-main {margin-top:40px;}
+
+.patient_details_form .mat-tab-label-active .mat-tab-label-content {
+    color: #18A689;
+}
+
+
+.patient_details_form_dialog {
+    overflow: unset !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-height: unset !important;
+}
+.patient_details_form_dialog .mat-dialog-actions {
+    margin: 0px !important;
+    min-height: auto;
+    padding: 0;
+}
+
+.patient_details_form .card-c {
+    max-width: 130px;
+}
+span.powered-by-stripe {
+    float: right;
+    color: #fff;
+    border: 1px solid #ffffff3b;
+    font-size: 12px;
+    padding: 2px 10px;
+    background-color: #ffffff1f;
+    border-radius: 3px;
+}
+span.powered-by-stripe strong {
+    font-weight: 500;
+    font-size: 14px;
+}
+.patient_details_form .sa_plan_show td {
+    font-weight: 500;
+}
+
+.patient_details_form .sa_plan_show {
+    margin-bottom: 20px !important;
+    border-spacing: 7.5px;
+}
+
+
+.patient_details_form .sa_plan_show th, .patient_details_form .sa_plan_show td {
+    background: rgba(24,166,137,0.05) !important;
+    padding: 5px 10px !important;
+    border: 1px solid rgba(24,166,137,0.2) !important;
+}
+
+.patient_details_form .sa_plan_show td {
+    border-color: #18a689!important;
+}
+
+.patient_details_form .right_payment_schedule p strong { font-weight: 500;  }
+.patient_details_form .right_payment_schedule p {
+    font-size: 14px;
+    margin: 5px 0 5px 0;
+}
+.patient_details_form .right_payment_schedule h4 { margin: 0px; font-weight:500; }
+
+
+.patient_details_form .sa_payment_form {padding: 0px;}
+
+
+.patient_details_form .update-card-main .AddCard-main {
+    margin-top: 110px;
+}
+
+.update-card-main .card_fields {
+    padding-bottom: 20px;
+}
+
+.update-card-main .last_payment_info {
+    padding: 10px 0px 0px 0px;
+    text-align: center;
+    border: none;
+}
+
+.update-card-main .update_card h4 {
+    margin: 0px 0px 5px 0px;
+}
+.patient_details_form .payment_made_message {
+    font-size: 18px;
+    float: left;
+    line-height: 30px;
+    width: 100%;
+    text-align: center;
+    font-weight: 400;
+    padding: 30px 20px 40px 20px;
+}
+
+.button_contractor_main {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 20px 0;
+}
+.basic_details_form .ngx-editor-textarea {
+    height: 251px !important;
+}
+.terms-conditions-btn {
+    text-align: right;
+    padding-top: 15px !important;
+    padding-bottom: 0px !important;
+}
+.button_contractor_main .mat-raised-button {
+    margin: 8px !important;
 }

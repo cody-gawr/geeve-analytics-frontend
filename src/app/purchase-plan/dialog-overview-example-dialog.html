@@ -1,6 +1,6 @@
 
   <h1 mat-dialog-title class="addmember_title">Add Family Member</h1>
-  <div mat-dialog-content class="sa_forms_design">
+  <div mat-dialog-content class="sa_forms_design patient_details_form_dialog">
                   
    <div fxLayout="row wrap">
      <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
@@ -11,20 +11,21 @@
  <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
  <label>Date of Birth</label>
  <div class="input_field_patient">
-
- <select tabindex="0" fxFlex.gt-sm="25%" class="form-control-dialog" required="true" fxFlex.gt-xs="32%" fxFlex="100" class="sa_select form-control" [(ngModel)]="data.dob_date" [formControl]="form.controls['dob_date']" (change) ="checkDob(data,'date')">
+<div fxLayout="row wrap" fxLayoutGap="10px">
+ <select tabindex="0" class="form-control-dialog" required="true" fxFlex.xs="calc(32% - 5px)" fxFlex="calc(32% - 5px)" class="sa_select form-control" [(ngModel)]="data.dob_date" [formControl]="form.controls['dob_date']" (change) ="checkDob(data,'date')">
         <option value="">Day</option>
 
         <option *ngFor="let date of dates" value="{{date}}">{{date}}</option>
      </select>
-    <select fxFlex.gt-sm="35%" tabindex="0" class="form-control-dialog" required="true" fxFlex.gt-xs="35%" fxFlex="100" class="sa_select form-control" [(ngModel)]="data.dob_month" [formControl]="form.controls['dob_month']" (change) ="checkDob(data,'month')">
+    <select tabindex="0" class="form-control-dialog" required="true" fxFlex.xs="calc(32% - 5px)" fxFlex="calc(32% - 5px)" class="sa_select form-control" [(ngModel)]="data.dob_month" [formControl]="form.controls['dob_month']" (change) ="checkDob(data,'month')">
         <option value="">Month</option>
         <option *ngFor="let month of months" value="{{month.key}}">{{month.value}}</option>
      </select> 
-     <select fxFlex.gt-sm="30%" tabindex="0" class="form-control-dialog" required="true" fxFlex.gt-xs="30%" fxFlex="100" class="sa_select form-control" [(ngModel)]="data.dob_year" [formControl]="form.controls['dob_year']" (change) ="checkDob(data,'year')">
+     <select  tabindex="0" class="form-control-dialog" required="true" fxFlex.xs="calc(32% - 5px)" fxFlex="calc(32% - 5px)" class="sa_select form-control" [(ngModel)]="data.dob_year" [formControl]="form.controls['dob_year']" (change) ="checkDob(data,'year')">
         <option value="">Year</option>
         <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
      </select> 
+   </div>
 </div>
 <small *ngIf="(form.controls['dob_date'].hasError('required') && form.controls['dob_date'].touched) || (form.controls['dob_month'].hasError('required') && form.controls['dob_month'].touched) || (form.controls['dob_year'].hasError('required') && form.controls['dob_year'].touched)" class="text-danger support-text">Please select complete Date of Birth from the list . </small>
 <small *ngIf ="dob_larger_pop_error!=''" class="text-danger support-text">{{dob_larger_pop_error}}</small>
@@ -42,12 +43,13 @@
           </mat-radio-button>
                  <small *ngIf="form.controls['subPatientGender'].hasError('required') && form.controls['subPatientGender'].touched" class="text-danger support-text">Gender Is Required.</small>
       </mat-radio-group>
-	   <div mat-dialog-actions class="sa-pull-right ok_cancel_btn " style="text-align: right;">
-
-        <button mat-button (click)="save(data)" tabindex="0" class="mat-raised-button mat-dc" [disabled]="(!form.valid || dob_larger_pop_error != '')">OK</button>
-          <button mat-button (click)="onNoClick()" tabindex="0" class="mat-raised-button mat-gray">Cancel</button>
-  </div>
+	  
   </div> 
+   <div mat-dialog-actions class=" ok_cancel_btn " style="text-align: right;">
+    <button mat-button (click)="onNoClick()" tabindex="0" class="mat-raised-button mat-gray sa-pull-left">Cancel</button>
+        <button mat-button (click)="save(data)" tabindex="0" class="mat-raised-button mat-dc sa-pull-right" [disabled]="(!form.valid || dob_larger_pop_error != '')">OK</button>
+          
+  </div>
 </div>
       <!--  <input type="file" (change)="onChange($event)"> -->
   </div>

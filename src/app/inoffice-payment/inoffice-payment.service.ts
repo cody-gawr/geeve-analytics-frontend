@@ -32,7 +32,7 @@ export class InofficePaymentService {
         
    }
     getInofficePlanDetails(payment_id): Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/getInofficePlanDetails?payment_id="+payment_id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficePlanDetailsFrontend?payment_id="+payment_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                 return response;
                     })

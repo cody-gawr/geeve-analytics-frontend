@@ -10,12 +10,14 @@
                    <div class="main_title_withbtn">
                        <mat-card-title> Membership Details | {{mainpatientname | titlecase}} </mat-card-title>
                    </div>
-                   <div class="title_btn" style="margin-bottom:10px;">
-                       <button class="mat-raised-button mat-gray" (click) = "goBack()">Back</button>
-                        <button class="mat-raised-button danger" mat-menu-item (click) = "cancelSubscription()" *ngIf="user_type !=3 && user_type !=4 && patient_status != 'CANCELLED'">Cancel Subscription</button>
-                        <button class="mat-raised-button mat-gray"  (click) = "sendDefaultersemail(patient_name,patient_email,patient_id)" *ngIf="patient_status=='ACTIVE'">Generate Update Card Link </button>
-                       <button class="mat-raised-button danger" mat-menu-item (click) = "deletePatients()" *ngIf="user_type !=3 && user_type !=4">Delete</button>
-                   </div>
+                   <mat-button-toggle-group class="button-group membership-details-btnG">
+                       <button class="mat-raised-button mat-gray" (click) = "goBack()"><span class="material-icons">keyboard_arrow_left</span> Back</button>
+                        <button class="mat-raised-button mat-green"  (click) = "sendDefaultersemail(patient_name,patient_email,patient_id)" *ngIf="patient_status=='ACTIVE'"><span class="material-icons">link
+</span> Generate Update Card Link </button>
+                        <button class="mat-raised-button mat-warning" mat-menu-item (click) = "cancelSubscription()" *ngIf="user_type !=3 && user_type !=4 && patient_status != 'CANCELLED'"><span class="material-icons">close
+</span> Cancel Subscription</button>
+                       <button class="mat-raised-button danger" mat-menu-item (click) = "deletePatients()" *ngIf="user_type !=3 && user_type !=4"><span class="material-icons">delete_outline</span> Delete</button>
+                   </mat-button-toggle-group>
                </div>
                <!-- ============================================================== -->
                 <!-- column -->
@@ -151,35 +153,35 @@
                         </div>
                         </mat-tab>
                       <mat-tab label="Patient Details">
-                        <div fxFlex.gt-sm="100%" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
-                                <h1 mat-dialog-title>Update Patient Details</h1>
+                        <div fxFlex.gt-sm="100" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
+                                <h1 class="m-t-0" mat-dialog-title>Update Patient Details</h1>
                         <form [formGroup]="formPatient"  (ngSubmit)="onSubmitPatientDetails()">
                         <div mat-dialog-content class="sa_forms_design">
                           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
                              <div fxFlex="calc(60% - 10px)" fxFlex.lg="calc(60% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
                           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-                             <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
+                             <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
                                <label>Patient Name</label>
                                     <input tabindex="1" [(ngModel)]="patient_name" [formControl]="formPatient.controls['patient_name']" placeholder=""  class="form-control-dialog" required="true">
                                  <small *ngIf="formPatient.controls['patient_name'].hasError('required') && formPatient.controls['patient_name'].touched" class="text-danger support-text">Patient Name is required.</small>
                              </div>
-                               <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
+                               <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
                                   <label>Email</label>
 
                                   <input tabindex="1" type="email" min="0" [(ngModel)]="patient_email" [formControl]="formPatient.controls['patient_email']" placeholder="" class="form-control-dialog"  required="true">
 
                                   <small *ngIf="formPatient.controls['patient_email'].hasError('required') && formPatient.controls['patient_email'].touched" class="text-danger support-text">Email is required.</small>
                              </div>  
-                               <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
+                           </div>
+                           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
+                               <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
                                   <label>Phone Number</label>
 
                                   <input tabindex="1" type="tel" pattern="[0-9]*" [(ngModel)]="patient_phone_no" [formControl]="formPatient.controls['patient_phone_no']" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,11);" required="true">
 
                                   <small *ngIf="formPatient.controls['patient_phone_no'].hasError('required') && formPatient.controls['patient_phone_no'].touched" class="text-danger support-text">Patient Phone No is required.</small>
                              </div>
-                           </div>
-                          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
- <div fxFlex="calc(25% - 10px)" fxFlex.lg="calc(25% - 10px)" fxFlex.md="calc(25% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
+                              <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
                                <label>Gender</label>
                                   <mat-select name ="value" tabindex="1" [(ngModel)]= "patient_gender" [formControl]="formPatient.controls['patient_gender']" class="form-control-dialog" required="true">
                                   <mat-option value="MALE">MALE</mat-option>
@@ -187,11 +189,9 @@
                                   </mat-select>
                                  <small *ngIf="formPatient.controls['patient_gender'].hasError('required') && formPatient.controls['patient_gender'].touched" class="text-danger support-text">Patient Gender is required.</small>
                              </div>
-
-                             
-                            <div fxFlex="calc(75% - 10px)" fxFlex.lg="calc(75% - 10px)" fxFlex.md="calc(75% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
-                          
-               
+                           </div>
+                          <div fxLayout="row wrap">
+                            <div fxFlex="100" class="sa-form-group">
                                <label>Patient DOB</label>
                             <div class="input_field_dob" fxLayout="row wrap" fxLayoutGap="20px">
                                  <select fxFlex="calc(32% - 10px)" fxFlex.xs="calc(32% - 10px)" class="form-control-dialog" required="true" class="sa_select form-control" [(ngModel)]="dob_date" [formControl]="formPatient.controls['dob_date']" (change) ="checkDob()">
@@ -218,20 +218,21 @@
                        </div>
                      </div>
                      </div>
-                           <div fxFlex="calc(40% - 10px)" fxFlex.lg="calc(40% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
+                           <div fxFlex="calc(40% - 10px)" fxFlex.lg="calc(40% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group patient-details-textarea">
                                   <label>Notes</label>
                                    <textarea tabindex="1" [(ngModel)]="patient_address" [formControl]="formPatient.controls['patient_address']" placeholder="" class="form-control-dialog">
                                    </textarea>
-             
+             <div mat-dialog-actions class="sa-pull-right">
+                       <button mat-raised-button color="green" class="m-t-20" [disabled]="!formPatient.valid" type="submit" >Submit</button>
+                      </div>
                              </div> 
+
                              </div>
 
 
 
                       
-                      <div mat-dialog-actions class="sa-pull-right">
-                       <button mat-raised-button color="green" class="m-t-20 m-b-20" [disabled]="!formPatient.valid" type="submit" >Submit</button>
-                      </div>
+                      
                     </div>
                     </form>
                         </div>

@@ -178,6 +178,22 @@ export class InOfficeService {
         );
     }
 
+
+      checkContractExists(clinicId,clinicContract,token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        formData.append('clinicId',clinicId);
+        formData.append('clinicContract',clinicContract);
+        formData.append('user_id', this._cookieService.get("userid"));
+        formData.append('token', this._cookieService.get("token"));
+        formData.append('token_id', this.token_id);
+       
+        return this.http.post(this.apiUrl +"/Clinics/checkContractExists/", formData)
+         .pipe(map((response: Response) => {
+             return response;
+          })
+        );
+    }
+
    
     
 }

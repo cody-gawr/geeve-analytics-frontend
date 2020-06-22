@@ -2,7 +2,7 @@
 <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
 <mat-card>
     <mat-card-content>
-       <div class="warning_message" *ngIf="!connectedStripe">Your stripe account is not connected</div>
+      <!--  <div class="warning_message" *ngIf="!connectedStripe">Your stripe account is not connected</div> -->
         <div class="main_title_outer" style="margin-bottom:0;">
             <div class="main_title_withbtn">
                 <mat-card-title><span class="main-title">Memberships</span></mat-card-title>
@@ -18,8 +18,8 @@
                 </div>
             </div>
          </div>
-         <div fxLayout="row wrap" fxLayoutGap="2%">            
-                 <div fxFlex.gt-xs="25" fxFlex="100" >
+         <div fxLayout="row wrap" fxLayoutGap="2%" fxLayoutGap.xs="">           
+                <div fxFlex="25" fxFlex.sm="49" fxFlex.xs="100">
                         <div class="filter_status">
                             <mat-form-field >
                                 <mat-label>Filter by Status</mat-label>
@@ -32,15 +32,14 @@
                             </mat-form-field>
                         </div>
                   </div>
-          </div>
-          <div fxLayout="row wrap" fxLayoutGap="2%">
-            <div fxFlex.gt-xs="25" fxFlex="100" >
-                <mat-form-field style="margin-top:2px;">
+                  <div fxFlex="25" fxFlex.sm="49" fxFlex.xs="100">
+                <mat-form-field style="margin-top:9px;">
                     <input matInput type='text' class="form-control" placeholder='Type to filter Patient name...' (keyup)='updateFilter($event)'
                            autocomplete="off"/>
                 </mat-form-field>
             </div>
-        </div>
+          </div>
+          
       <div class="ngx_datatable_scroll_div mat-table">
         <ngx-datatable #table class='material responsive-datatable datatable-middle rdt_1600px'  [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (onRowClick)="_onRowClick($event)" [reorderable]="true" [messages]="{emptyMessage: 'You have no members',totalMessage: 'total'}">
       <ngx-datatable-column prop="patient_name" name="patient_name">

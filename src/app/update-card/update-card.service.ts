@@ -36,7 +36,7 @@ export class UpdateCardService {
             const formData = new FormData();
 
             formData.append('id', id);
-            return this.http.post(this.apiUrl +"/Users/checkValidString", formData)
+            return this.http.post(this.apiUrl +"/Users/checkValidStringUpdate", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -52,19 +52,23 @@ export class UpdateCardService {
                })
             );
     }
-     updateCardRetryPayment(token:any,subscription_id): Observable<any> {
+     updateCardRetryPayment(token:any,subscription_id,plan_type): Observable<any> {
             const formData = new FormData();
             formData.append('token', token);
             formData.append('subscription_id', subscription_id);
+            formData.append('plan_type', plan_type);
+
             return this.http.post(this.apiUrl +"/Patients/updateCardRetryPayment", formData)
             .pipe(map((response: Response) => {
                    return response;
                })
             );
     }
-     getCardDetails(subscription_id): Observable<any> {
+     getCardDetails(subscription_id,plan_type): Observable<any> {
             const formData = new FormData();
             formData.append('subscription_id', subscription_id);
+            formData.append('plan_type', plan_type);
+
             return this.http.post(this.apiUrl +"/Patients/getCardDetails", formData)
             .pipe(map((response: Response) => {
                    return response;

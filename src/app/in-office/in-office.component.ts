@@ -151,14 +151,13 @@ public dob_larger_error="";
         this.token_id= this._cookieService.get("userid");
 
         this.downloadcontractURL=this.apiUrl +"/Clinics/getDefaultContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&clinicid="+cid;
-
-
-
+        this.checkContractExists();
+   
       this.minDate = this.datePipe.transform(this.minDate, 'yyyy-MM-dd');
       this.form = this.fb.group({
       patient_name: [null, Validators.compose([Validators.required])],
       patient_email: [null, Validators.compose([Validators.required, CustomValidators.email])],
-   //   patient_dob: [null, Validators.compose([Validators.required])],
+     //   patient_dob: [null, Validators.compose([Validators.required])],
       dob_date: [null, Validators.compose([Validators.required])],
       dob_month: [null, Validators.compose([Validators.required])],
       dob_year: [null, Validators.compose([Validators.required])],
@@ -176,6 +175,26 @@ public dob_larger_error="";
       data.dob_month ="";
       data.dob_year ="";
     }
+
+    checkContractExists(){
+      let clinic_id = $('#currentClinicid').attr('cid');
+      this.inofficeService.checkContractExists(clinic_id,this.downloadcontractURL).subscribe((res) => {
+       if(res.status=="file_not_exists"){
+        this.downloadcontractURL ="";
+       }   
+      }, error => {
+           $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+        return false;
+      }    
+      );
+
+
+
+    }
+
+
+    
   /* To allow only numbers */
     numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
@@ -225,10 +244,8 @@ if(control=='month' || control=='year'){
  }
 
 if(data.dob_year!="" && data.dob_month!="" && data.dob_date!=""){
-
    this.compareDateWithToday(data.dob_year,data.dob_month,data.dob_date);
-}
-
+ }
 
 }
 
@@ -274,7 +291,7 @@ getDaysInMonth(year: number, month: number) {
 
 
 toTrunc(value,n){ 
-console.log("ff"); 
+
   console.log(Math.floor(value*Math.pow(10,n))/(Math.pow(10,n)));
     return Math.floor(value*Math.pow(10,n))/(Math.pow(10,n));
 }
@@ -291,11 +308,11 @@ next(data){
   this.selectedIndex =1;
    this.contractTabDisable = false;
 }
-saveData(data){
+/*saveData(data){
 
   this.save(data,'yes');
 
-}
+} */
 uploadlater(data){
 
   this.save(data,'');
@@ -401,6 +418,12 @@ assignVal(val1,type) {
 }
 
 calculate_outstanding(val,type) {
+if(val>100) {
+  $('#deposite_percentage').val('100');
+  val=100;
+  this.data.deposite_percentage = 100;
+}
+
   this.totalAmount = $('#total_amount').val();
   this.setup_amount = $('#setup_amount').val();
   const finalAmount = parseFloat(this.totalAmount) + parseFloat(this.setup_amount);
@@ -443,7 +466,10 @@ calculate_outstanding(val,type) {
   public durationcal(durationval){
         this.durationval=$('#duration').val();
         this.monthlyweeklyamt =this.balanceamt/this.durationval;
+       // let mwa = this.monthlyweeklyamt.toString();
         let mwa = this.monthlyweeklyamt;
+        mwa = this.toTrunc(mwa,2);
+        mwa = mwa.toFixed(2).replace(".00", "");
       //  mwa = mwa.slice(0, (mwa.indexOf("."))+3); //With 3 exposing the hundredths place
       console.log(mwa);
         this.data.monthly_weekly_payment= parseFloat(mwa);
@@ -457,7 +483,7 @@ calculate_outstanding(val,type) {
       plan_description = new FormControl('', [Validators.required]);
       total_amount = new FormControl('', [Validators.required]);
       setup_fee = new FormControl('', [Validators.required]);
-      deposite_percentage = new FormControl('', [Validators.required]);
+      deposite_percentage = new FormControl('', [Validators.required, Validators.max(100)]);
       deposit_amount = new FormControl('', [Validators.required]);
       balance_amount = new FormControl('', [Validators.required]);
       duration = new FormControl('', [Validators.required]);
@@ -486,7 +512,7 @@ calculate_outstanding(val,type) {
   public fileToUpload;
   public signedFileType ="";
 public uploadedSignedContract='';
-  uploadImage(files: FileList,data) {
+  uploadImage(files: FileList,data) { 
     this.fileToUpload = files.item(0);
     const extension = this.fileToUpload.name.split('.')[1].toLowerCase();
     if(extension.trim() == "pdf" || extension.trim() == "doc" || extension.trim() == "jpg" || extension.trim() == "jpeg" || extension.trim() == "png" ){
@@ -510,6 +536,9 @@ public uploadedSignedContract='';
            this.signedFileType = extension;
            this.contractsave = false;
            this.uploadedSignedContract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(res.data));
+           console.log(data);
+           this.save(data,'yes');
+
           }
         });     
     }
@@ -569,6 +598,7 @@ export class InOfficeComponent implements AfterViewInit {
   fileInput: any ;
   clinic_id: any;
   treat = new FormControl();
+
 public StatusSelected ='';
 public user_type = this._cookieService.get("user_type");
   private checkPermission(role) { 
@@ -673,6 +703,8 @@ public stripe_account_id;
         else
           this.connectedStripe = false;             
        }
+
+      
         else if(res.status == '401'){
               this._cookieService.put("username",'');
               this._cookieService.put("email", '');

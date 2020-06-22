@@ -3,14 +3,11 @@
 <div mat-dialog-content class="sa_forms_design"> 
   <div fxLayout="row wrap" >
     <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group"> 
-         <mat-form-field>
-      <mat-label>Change Plan </mat-label> 
       <mat-select name ="value" tabindex="1" [(ngModel)]= "data.plan_selected"  class="form-control-dialog" required="true">
        <mat-option *ngFor="let plan of data.plans" [value]="plan.id" [disabled]="plan.id == data.plan_id || plan.planLength != data.planLength">
         {{plan.planName}}
       </mat-option>
       </mat-select>
-    </mat-form-field>
     </div>
    </div>
 </div>

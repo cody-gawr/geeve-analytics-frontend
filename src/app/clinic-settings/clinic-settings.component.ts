@@ -45,6 +45,7 @@ export class DialogOverviewExampleDialogComponent {
            $('.ajax-loader').hide();    
            if(res.message == 'success'){
             this.contractURL = res.data;
+
               //this.clinicContract= res.data;
             }  else if(res.status == '401'){
              // this._cookieService.put("username",'');
@@ -94,7 +95,7 @@ export class DialogOverviewExampleDialogComponent {
       }
       public uploadedContract;
   public fileToUpload;
-  uploadImage(files: FileList) {
+  uploadImage(files: FileList,data) {
     const currentclinicId = $(".currentclinicId").val();
     this.fileToUpload = files.item(0);
     const extension = this.fileToUpload.name.split('.')[1].toLowerCase();
@@ -114,8 +115,10 @@ export class DialogOverviewExampleDialogComponent {
        $('.ajax-loader').hide();
        if(res.message == 'success'){
            this.contractURL= res.data;
-           this.uploadedContract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.contractURL));
-           $(".uploadsignedContract").hide();
+
+           this.onSubmit();
+           //this.uploadedContract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.contractURL));
+           //$(".uploadsignedContract").hide();
            //this.clinicContract= res.data;
          }
       });
@@ -188,7 +191,9 @@ export class ClinicSettingsComponent implements OnInit {
    private readonly notifier: NotifierService;
    public form: FormGroup;
    public formLanding: FormGroup;
-    public formSocial: FormGroup;
+
+   public formSocial: FormGroup;
+
    public errorLogin = false;
    public clinic_id:any ={};
    private homeUrl = environment.homeUrl;
@@ -314,9 +319,13 @@ disconnectStripe() {
     this.clinicSettingsService.disconnectStripe(this.id).subscribe((res) => {
        if(res.message == 'success'){
        this.connectedStripe=false;
+         $('.notification-box').show();
+            $('body').addClass('notification-box-main'); 
        } 
        else
-        this.connectedStripe =true;
+      {  this.connectedStripe =true;
+         $('.notification-box').hide();
+            $('body').removeClass('notification-box-main'); }
     }, error => {
          $('.ajax-loader').hide(); 
     });
@@ -366,10 +375,16 @@ public user_id_encoded;
         this.clinicContract = res.data[0].contract;
 
         this.Contract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.clinicContract));
-        if(this.stripe_account_id)
-          this.connectedStripe = true;
+        if(this.stripe_account_id){
+                  this.connectedStripe = true;
+                     $('.notification-box').hide();
+            $('body').removeClass('notification-box-main'); 
+        }
         else
-          this.connectedStripe = false;
+       {       this.connectedStripe = false;
+               $('.notification-box').show();
+            $('body').addClass('notification-box-main'); 
+       }
 
         if(res.data[0].logo!=""){
           this.imageURL = res.data[0].logo;  

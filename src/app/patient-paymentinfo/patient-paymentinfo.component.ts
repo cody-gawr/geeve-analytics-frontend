@@ -165,8 +165,9 @@ isDecimal(value) {
 
      if(res.message == 'success'){
         this.imagepreviewURL= res.data;
-        this.previewSignedContract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.imagepreviewURL));
-        $(".uploadsignedContract").hide();
+       // this.previewSignedContract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.imagepreviewURL));
+        //$(".uploadsignedContract").hide();
+        this.onSubmit();
       }
     });
     }else
@@ -241,11 +242,10 @@ public patient_email :any;
   }
 
  getContract(){
-      this.patientPaymentinfoService.getContract(this.id).subscribe((res) => {
+      this.patientPaymentinfoService.getContract(this.id).subscribe((res) => { 
        $('.ajax-loader').hide();     
           if(res.message == 'success'){
-              this.imageURL =res.contract;
-        
+              this.imageURL =res.contract;        
               this.uploadedSignedContract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.imageURL));
           } else if(res.status == '401'){
              /* this._cookieService.put("username",'');
@@ -280,9 +280,9 @@ public patient_email :any;
     );
   }
 
-private sendDefaultersemail(defaulter_name, defaulter_email,defaulter_id) {
+private sendDefaultersemail(defaulter_name, defaulter_email,defaulter_patient_id,deafulter_plan_id) {
  $('.ajax-loader').show();     
-    this.defaultersService.sendDefaultersemail(defaulter_id,defaulter_name,defaulter_email).subscribe((res) => {
+    this.defaultersService.sendDefaultersemail(defaulter_patient_id,defaulter_name,defaulter_email,'inoffice',deafulter_plan_id).subscribe((res) => {
       console.log(res);
           if(res.message == 'success'){
  $('.ajax-loader').hide();     

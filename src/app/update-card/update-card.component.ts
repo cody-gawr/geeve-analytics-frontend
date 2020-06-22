@@ -26,7 +26,7 @@ import { ToastrService } from 'ngx-toastr';
 export class UpdateCardComponent implements OnInit {
   public cardStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
       fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
@@ -34,24 +34,24 @@ export class UpdateCardComponent implements OnInit {
       padding:'10px',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#FF0000',
       ':focus': {
-        color: '#a94442',
+        color: '#FF0000',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#FF0000',
       },
     },
   };
@@ -59,62 +59,62 @@ export class UpdateCardComponent implements OnInit {
 
   public expStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
       fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
       fontSmoothing: 'antialiased',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#FF0000',
       ':focus': {
-        color: '#a94442',
+        color: '#FF0000',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#FF0000',
       },
     },
   };
 
 public cvcStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
       fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
       fontSmoothing: 'antialiased',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#FF0000',
       ':focus': {
-        color: '#a94442',
+        color: '#FF0000',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#FF0000',
       },
     },
   };
@@ -203,7 +203,8 @@ public loading=true;
   $('.ajax-loader').show();
 this.updateCardService.checkValidString(this.string).subscribe((res) => {  
   if(res && res.message == 'success'){
-    this.subscription_id= res.data;
+    this.subscription_id= res.data['id'];
+    this.plan_type = res.data['type'];
      this.getCardDetails();      
 
     this.loading = false;
@@ -221,10 +222,13 @@ this.updateCardService.checkValidString(this.string).subscribe((res) => {
   public invoice_id;
   public pending_amount;
   public updateCardRetryPayment;
+  public plan_type;
   getCardDetails() {
-      this.updateCardService.getCardDetails(this.subscription_id).subscribe((res) => {
+      this.updateCardService.getCardDetails(this.subscription_id,this.plan_type).subscribe((res) => {
         this.last4 = res.last4;
         this.invoice_id =res.payment[0]['invoice_id'];
+        //this.invoice_id='3223324234234234324234';
+
         this.pending_amount= res.payment[0]['amount'];
       }, error => {
       });
@@ -262,7 +266,7 @@ public cardUpdated= false;
     if (obj) {
  this.token = obj.token.id;
       $('.ajax-loader').show();
-    this.updateCardService.updateCardRetryPayment(this.token, this.subscription_id).subscribe((res) => {
+    this.updateCardService.updateCardRetryPayment(this.token, this.subscription_id,this.plan_type).subscribe((res) => {
       $('.ajax-loader').hide();
  this.cardNumber.clear();
                       this.cardCvc.clear();

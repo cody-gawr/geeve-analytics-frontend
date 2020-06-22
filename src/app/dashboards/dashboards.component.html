@@ -7,11 +7,11 @@
    <div class="">
 <div class="sa_dentist_graphs_area sa_health_screen_area">    
     <div class="heading_section" style="padding:0; width:100%;">
-  <div fxLayout="row wrap" fxLayoutGap="1%">
-         <div fxFlex.lg="38" fxFlex.md="38" fxFlex.sm="100" fxFlex.xs="100" fxFlex="38" >
+  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+         <div fxFlex.lg="calc(38% - 10px)" fxFlex.md="calc(38% - 10px)" fxFlex.sm="100" fxFlex.xs="100" fxFlex="calc(38% - 10px)" >
             <div class="dashboard_title2" style="margin-top:12px; "><i class="fas fa-user-tie"></i>&nbsp;&nbsp;Membership Plans</div>
          </div>
-         <div fxFlex.lg="20" fxFlex.md="20" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20"  >
+         <div fxFlex.lg="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="100" fxFlex.xs="100" fxFlex="calc(20% - 10px)"  >
              <div class="custom_date2">
                  <mat-form-field>
                   <input matInput [matDatepicker]="dp" [formControl]="date">
@@ -25,13 +25,13 @@
                     </mat-form-field>
                 </div>
              </div>
-               <div fxFlex.lg="18" fxFlex.md="18" fxFlex.sm="100" fxFlex.xs="100" fxFlex="18">
+               <div fxFlex.lg="calc(18% - 10px)" fxFlex.md="calc(18% - 10px)" fxFlex.sm="100" fxFlex.xs="100" fxFlex="calc(18% - 10px)">
               </div>
-              <div fxFlex.lg="20" fxFlex.md="20" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20"  *ngIf="clinicsData.length>0">
+              <div fxFlex.lg="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="100" fxFlex.xs="100" fxFlex="calc(20% - 10px)" *ngIf="clinicsData.length>0">
                  <div class="sa_mat_select_topbar sa_pull-right" style="margin-top:12px; margin-bottom:20px;">
                       <mat-form-field>
-                            <mat-select class="external_clinic"  [value] ="selectedClinic" [(ngModel)]="selectedClinic" (ngModelChange)="loadClinicid($event)">
-                                <mat-option *ngFor="let clinicData of clinicsData" [value]="clinicData.id">
+                            <mat-select class="external_clinic"  [(value)] ="selectedClinic" [(ngModel)]="selectedClinic" (ngModelChange)="loadClinicid($event)">
+                                <mat-option *ngFor="let clinicData of clinicsData" [(value)]="clinicData.id">
                                     {{clinicData.clinicName}}
                                 </mat-option>
                             </mat-select>
@@ -40,8 +40,8 @@
               </div>
                 </div>
  </div>
-    <div fxLayout="row wrap" >
-      <div fxFlex.lg="70" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70" >
+    <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+      <div fxFlex.lg="calc(70% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="calc(70% - 10px)" >
           <div class="sa_flexbg sa_designbg" style="width:auto;">
         <mat-card  class="dentistProduction sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
@@ -93,7 +93,7 @@
               </mat-card>
           </div>
   </div>
-    <div fxFlex.lg="30" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="30" class="sa_flexbg sa_invitation" style="margin-right:0;">
+    <div fxFlex.lg="calc(30% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="calc(30% - 10px)" class="sa_flexbg sa_invitation">
         <mat-card  class="dentistProduction sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
             <div fxLayout="row wrap" >
@@ -137,11 +137,11 @@
         </mat-card>
       </div>
 </div>
-<div fxLayout="row wrap" >
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
     <div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" >
         <div class="dashboard_title2"><i class="fas fa-dollar-sign"></i>&nbsp;&nbsp;Payment Plans</div>
     </div>
-    <div fxFlex.lg="39" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="39" class="sa_flexbg sa_designbg v2">
+    <div fxFlex.lg="calc(39% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="calc(39% - 10px)" class="sa_flexbg sa_designbg v2">
         <mat-card  class="dentistProduction sa_no_tabs_area">
             <mat-card-content class="sa_matcard_content">
                 <div class="sa_grid_ico2">
@@ -166,7 +166,7 @@
                 </mat-card-content>
             </mat-card>
      </div>
-     <div fxFlex.lg="39" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="39" class="sa_flexbg sa_designbg v2" >
+     <div fxFlex.lg="calc(39% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="calc(39% - 10px)" class="sa_flexbg sa_designbg v2" >
             <mat-card  class="dentistProduction sa_no_tabs_area">
                 <mat-card-content class="sa_matcard_content">
                     <div class="sa_grid_ico2">
@@ -190,7 +190,7 @@
                 </mat-card-content>
             </mat-card>
      </div>     
-     <div fxFlex.lg="20" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20" class="sa_flexbg sa_designbg v2 single-mat-card" style="margin-right:0;">
+     <div fxFlex.lg="calc(20% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="calc(20% - 10px)" class="sa_flexbg sa_designbg v2 single-mat-card" style="margin-right:0;">
             <mat-card  class="dentistProduction sa_no_tabs_area">
                 <mat-card-content class="sa_matcard_content">
                     <div class="sa_grid_ico2">

@@ -236,6 +236,7 @@ constructor(private dashboardsService: DashboardsService, private datePipe: Date
     this.getClinics();
     this.route.params.subscribe(params => {
       this.clinic_id = this.route.snapshot.paramMap.get("id");
+
    //     $('.header_filters').addClass('hide_header');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
@@ -316,24 +317,18 @@ this.lineChartColors = [
   }
 
 
-  demo()
-  {
-    alert('asd');
-  }
-
   public selectedClinic;
      private getClinics() { 
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;
-        this.selectedClinic = res.data[0].id;   
-        
-         this.router.events.subscribe(event => {
-      //  if( $('#currentClinicid').attr('cid') !='' && $('#currentClinicid').attr('cid') !=undefined)
-      //   this.selectedClinic = $('#currentClinicid').attr('cid');
-      // else
-        this.selectedClinic = res.data[0].id;   
-     });
+      //  this.selectedClinic = Number(this._cookieService.get('clinicSelected'));
+      if($('body').find('span#currentClinicid').length > 0 && $('#currentClinicid').attr('cid')){ 
+          this.selectedClinic = parseInt($('#currentClinicid').attr('cid'));
+        }else{
+         this.selectedClinic = res.data[0].id;   
+        }   
+
          this.loadAnalytics();
        }
         else if(res.status == '401'){
@@ -643,15 +638,17 @@ public barChartOptions: any = {
   loadClinicid(clinicValue){ 
       if($('body').find('span#currentClinicid').length <= 0){
     $('body').append('<span id="currentClinicid" style="display:none" cid="'+clinicValue+'"></span>');
+    this._cookieService.put('clinicSelected',clinicValue);
   }
   else{
     $('#currentClinicid').attr('cid',clinicValue);
+    this._cookieService.put('clinicSelected',clinicValue);
   }
-   this.selectedClinic = clinicValue;
+ //  this.selectedClinic = Number(this._cookieService.get('clinicSelected'));
 
 //  $('.internal_clinic').val(clinicValue);
   $('#clinic_initiate').click();
-     this.selectedClinic = clinicValue;
+
     this.loadAnalytics();
     this.getStripeDetail();
   }
@@ -824,6 +821,7 @@ public barChartOptions: any = {
           }
           else{
             $('.notification-box').show(); 
+            $('.notification-box a').attr('href','/clinic-settings/'+this.selectedClinic); 
             $('body').addClass('notification-box-main');           
           }
        }

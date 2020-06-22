@@ -7,11 +7,10 @@
 
                   <div class="sa_mat_select_topbar">
 
-                    <mat-form-field>
-                    
-                            <mat-select class="external_clinic"  [value] ="selectedClinic" [(ngModel)]="selectedClinic" (ngModelChange)="loadClinicid($event)">
+                    <mat-form-field> 
+                            <mat-select class="external_clinic"  [(value)] ="selectedClinic" [(ngModel)]="selectedClinic" (ngModelChange)="loadClinicid($event)">
                                 
-                                <mat-option *ngFor="let clinicData of clinicsData" [value]="clinicData.id">
+                                <mat-option *ngFor="let clinicData of clinicsData" [(value)]="clinicData.id">
                                
                                     {{clinicData.clinicName}}
 

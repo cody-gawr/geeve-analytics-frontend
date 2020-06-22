@@ -9,7 +9,7 @@
    <!--     <button class="sa-pull-right mat-raised-button mat-gray" (click) = "goBack()">Back</button>
          <button class="sa-pull-right mat-raised-button danger" mat-menu-item (click) = "deletePatients()">Delete</button> -->
 
-<button class="sa-pull-right mat-raised-button mat-gray"  (click) = "sendDefaultersemail(patient_name,patient_email,patient_id)" *ngIf="patient_status=='ACTIVE'"> Generate Update Card Link </button>
+<button class="sa-pull-right mat-raised-button mat-gray"  (click) = "sendDefaultersemail(patient_name,patient_email,patient_id,id)" *ngIf="patient_status=='ACTIVE'"> Generate Update Card Link </button>
      
   </mat-card-title>
                <!-- ============================================================== -->
@@ -145,11 +145,23 @@
                    </p>
                </div> 
 
-                  <button mat-raised-button color="dc" class="sa-pull-right" [disabled]="imagepreviewURL=='' || imagepreviewURL==null">Save</button>
+                  <!--button mat-raised-button color="dc" class="sa-pull-right" [disabled]="imagepreviewURL=='' || imagepreviewURL==null">Save</button-->
                 
             </form>
           </div>
-               
+           <!--  <div fxFlex.gt-sm="100%" fxFlex="50" class="display_50">
+              <div fxFlex="25" class="download">
+              </div>
+
+                <div fxFlex="25" class="download">
+                 <p *ngIf="uploadedSignedContract; else empty">
+                    <a mat-raised-button class="contractupload" color="dc" target="_blank" *ngIf ="imageURL!=''" href="{{uploadedSignedContract}}">Download Contract</a>
+                   </p>
+               </div>
+            
+
+             </div> -->
+              
            </div>
         </div>     
       </mat-tab>

@@ -100,6 +100,7 @@
             <label>Deposit</label>
              <input matInput tabindex="1" id="deposite_percentage" type="number" min="0" max ="100"  (keyup)="calculate_outstanding(data.deposite_percentage,'PERCENT')" [(ngModel)]="data.deposite_percentage" *ngIf="data.depositType == 'PERCENT'" placeholder="" class="form-control-dialog"  readOnly>
              <input matInput tabindex="1" id="deposit_amount" type="number" min="0"  (change)="calculate_outstanding(data.deposit_amount,'DOLLAR')" [(ngModel)]="data.deposit_amount" *ngIf="data.depositType == 'DOLLAR'" placeholder="" class="form-control-dialog" >
+
         </div>
         <div fxFlex.gt-md="20" fxFlex="100" class="sa-form-group">
             <div class="duration width-full">
@@ -157,7 +158,7 @@
        </div>
    </div>
 </div>
-<div mat-dialog-actions class="sa-pull-right">
+<div mat-dialog-actions>
   <!--button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Ok</button!-->
  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
  <button mat-button (click)="next(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid || data.duration== 0">Next</button>
@@ -165,9 +166,10 @@
 </mat-tab>
 
  <mat-tab label="Contract Upload"  [disabled]='this.contractTabDisable'>
+
 <div class="pop_content sa_forms_design">
 <div fxLayout="row wrap" fxLayoutGap="2%">
-	<div fxFlex="48" fxFlex.md="48" class="top_download_Agreement">
+	<div fxFlex="48" fxFlex.md="48" class="top_download_Agreement"  *ngIf="downloadcontractURL!=''">
 		 <div class="agreement-thumbnail">
      <img src="../assets/images/contract.png">
 		  <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{downloadcontractURL}}"><i class="fas fa-cloud-download-alt"></i> Download Agreement</a>
@@ -231,7 +233,7 @@
 		<div mat-dialog-actions>
       <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
 		  <button mat-button (click)="uploadlater(data)" class="mat-raised-button mat-dc">Upload Later</button>
-		  <button mat-button (click)="saveData(data)"  class="mat-raised-button mat-gray" [disabled]="this.contractsave || contractURL==''">Save</button>
+		  <!--button mat-button (click)="saveData(data)"  class="mat-raised-button mat-gray" [disabled]="this.contractsave || contractURL==''">Save</button-->
 		</div>
 	</div>
 </div>

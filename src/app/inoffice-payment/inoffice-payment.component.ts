@@ -55,32 +55,31 @@ public max_days =31;
 public years:any = [];
   public cardStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
-      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
       fontSmoothing: 'antialiased',
       padding:'10px',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#FF0000',
       ':focus': {
-        color: '#a94442',
+        color: '#FF0000',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#FF0000',
       },
     },
   };
@@ -88,62 +87,60 @@ public years:any = [];
 
   public expStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
-      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
       fontSmoothing: 'antialiased',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#FF0000',
       ':focus': {
-        color: '#a94442',
+        color: '#FF0000',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#FF0000',
       },
     },
   };
 
 public cvcStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
-      fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
       fontSmoothing: 'antialiased',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#395c7f',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#FF0000',
       ':focus': {
-        color: '#a94442',
+        color: '#FF0000',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#FF0000',
       },
     },
   };
@@ -179,8 +176,10 @@ public cvcStyle = {
   public cardExpiry;
   public cardCvc;
   private homeUrl = environment.homeUrl;
+  public paymentCompleted = false;
  public DefaultLogo;
   public clinic_logo;
+  public clinicName;
     elementsOptions: ElementsOptions = {
     };
     elements: Elements;
@@ -190,7 +189,7 @@ public cvcStyle = {
     this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
    
   }
-  todayDate:Date = new Date();
+  todayDate:any = new Date().toLocaleString("en-US", {timeZone: "Australia/Melbourne"});
 
  date = new FormControl(moment());
 public start_date;
@@ -343,8 +342,10 @@ public maxDate;
   checkInvoiceStatus() {
       this.inofficePaymentService.checkInvoiceStatus(this.id).subscribe((res) => {  
        if(res.message == 'success'){
-          if(res.data[0]['status'] == 'ACTIVE')
-             this.router.navigateByUrl('/login');            
+          if(res.data[0]['status'] == 'ACTIVE'){
+            this.paymentCompleted = true;
+           //  this.router.navigateByUrl('/login');            
+          }
         }
          else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -364,9 +365,12 @@ getClinic(patient_id) {
        if(res.message == 'success'){
           this.clinic_id= res.data[0]['clinic']['id'];
           this.clinic_logo= res.data[0]['clinic']['logo'];
+          this.clinicName = res.data[0]['clinic']['clinicName'];
           if(this.clinic_logo == "undefined")
             this.clinic_logo = this.DefaultLogo;
         }
+  
+  
          else if(res.status == '401'){
               this._cookieService.put("username",'');
               this._cookieService.put("email", '');

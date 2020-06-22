@@ -407,20 +407,20 @@ export class MenuItems {
    this.rolesUsersService.getRoles().subscribe((res) => {
        if(res.message == 'success'){ 
          res.data.forEach(result => {
-          if(result.id != '1') {
+          if(result.role_id != '1') {
             var roles = result.permisions.split(',');
             if(roles.includes("dashboards")) 
-              this.dashboards.push(result.id.toString());
+              this.dashboards.push(result.role_id.toString());
             if(roles.includes("roles")) 
-              this.rolesusers.push(result.id.toString());
+              this.rolesusers.push(result.role_id.toString());
             if(roles.includes("paymentplans")) 
-              this.paymentplans.push(result.id.toString());
+              this.paymentplans.push(result.role_id.toString());
             if(roles.includes("memberships")) 
-              this.memberships.push(result.id.toString());
+              this.memberships.push(result.role_id.toString());
             if(roles.includes("defaulters")) 
-              this.defaulters.push(result.id.toString());
+              this.defaulters.push(result.role_id.toString());
             if(roles.includes("settings")) 
-              this.profilesettings.push(result.id.toString());
+              this.profilesettings.push(result.role_id.toString());
           }
          });
        }

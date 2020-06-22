@@ -315,6 +315,7 @@ this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
   public customer_id;
   public last_invoic_id;
    buy() {
+    alert('dsf');
     const name = this.stripeTest.get('name').value;
     this.stripeService
     .createToken(this.cardNumber, { name })
@@ -412,6 +413,7 @@ this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
   this.profileSettingsService.getPaymentDetails().subscribe((res) => {
        if(res.message == 'success'){
         this.last_invoic_id = res.data.lastinvoiceid;
+       // alert(res.data.lastinvoiceid);
         this.customer_id = res.data.customer_id; 
         this.subscription_id = res.data.subscr_id; 
         if(this.subscription_id)
