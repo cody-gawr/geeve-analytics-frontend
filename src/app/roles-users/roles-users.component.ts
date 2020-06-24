@@ -218,6 +218,7 @@ export class RolesUsersComponent implements AfterViewInit {
     rolesRef.afterClosed().subscribe(result => {
      if(result != undefined) {
       this.roles.forEach(res1 => {
+        console.log(res1);
           var checkedRoles1='';
           var checkedRoles =[];
           if(result.selectedRole['dashboards_'+res1.id])

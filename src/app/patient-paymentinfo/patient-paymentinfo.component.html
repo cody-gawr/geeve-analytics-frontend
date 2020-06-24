@@ -117,19 +117,19 @@
          
 </mat-tab>
 <mat-tab label="Contract Upload">                 
-  <div fxLayout="row column"  class="sa_forms_design payment_full_info" fxLayoutGap="2%">
-         <div fxFlex.gt-sm="100%" fxFlex="100" class="payment_contract_responsive" >
-            <div fxFlex="50" fxFlex.sm="50" class="display_50">
+  <div   class="sa_forms_design payment_full_info" >
+         <div fxLayout="row column" fxLayoutGap="20px" fxLayoutGap.xs="0px" class="payment_contract_responsive" >
+            <div fxFlex="calc(50% - 10px)" fxFlex.xs="100">
                 <div class="download">
                  <div class="agreement-thumbnail" *ngIf="uploadedSignedContract; else empty">
-                  <img src="../assets/images/contract.png">
-                    <a mat-raised-button class="contractupload" color="dc" target="_blank" href="{{uploadedSignedContract}}"><i class="fas fa-cloud-download-alt"></i> Download Contract</a>
+                  <img src="../assets/images/contract.png"><br>
+                    <a mat-raised-button class="contractupload" color="gray" target="_blank" href="{{uploadedSignedContract}}"><i class="fas fa-cloud-download-alt"></i> Download Contract</a>
                    </div>
                </div>
              </div>
-                <div  fxFlex="50" fxFlex.sm="50" class="payment_info_screen">
+                <div  fxFlex="calc(50% - 10px)" fxFlex.xs="100" class="payment_info_screen">
                     <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
-                      <div class="bd_UpoadImage uploadsignedContract" fxFlex.gt-md="100" fxFlex="100">
+                      <div class="bd_UpoadImage uploadsignedContract">
                           <label>Upload Agreement</label>
                           <div class="upload-btn">
                               <span>Choose file</span>
@@ -138,7 +138,7 @@
                           </div>         
                        </div>
 
-                   <div class="preview" fxFlex.gt-sm="100%" fxFlex="25">
+                   <div class="preview">
                  <p *ngIf="previewSignedContract; else empty">
                     <a mat-raised-button class="contractupload" color="dc" target="_blank" href="{{previewSignedContract}}">Preview Uploaded Contract</a>
                     <span class="material-icons" (click)="deleteSignedDocImage()">delete_forever</span>
@@ -162,8 +162,9 @@
 
              </div> -->
               
-           </div>
-        </div>     
+
+        </div>  
+        </div>   
       </mat-tab>
      </mat-tab-group>
     </div>

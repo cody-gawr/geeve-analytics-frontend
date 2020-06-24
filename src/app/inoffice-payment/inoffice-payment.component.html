@@ -47,7 +47,7 @@
                                   <td><span *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</span></td>
                                 </tr>
                               </table>
-                              <div style="text-align:left"> <a (click)="startPayment()" class="mat-raised-button mat-dc m-i-r">Start Payment Plan <span class="material-icons">chevron_right</span></a> </div>
+                              <div style="text-align:left"> <a (click)="startPayment()" class="mat-raised-button mat-dc m-i-r"  [ngClass]="{'disabled': !balance_amount}">Start Payment Plan <span class="material-icons">chevron_right</span></a> </div>
                             </div>
                           </div>
                         </div>

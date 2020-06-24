@@ -8,6 +8,7 @@ import {
   FormControl
 } from '@angular/forms';
 import { LoginService } from './login.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,7 +18,9 @@ export class LoginComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
 
-  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService) {}
+  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService,private toastr: ToastrService) {
+
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -25,7 +28,19 @@ export class LoginComponent implements OnInit {
       password: [null, Validators.compose([Validators.required])]
     });
      $('.notification-box').hide();
-            $('body').removeClass('notification-box-main');    
+            $('body').removeClass('notification-box-main');   
+
+
+  }
+
+  ngAfterViewInit(){
+
+    if(localStorage.getItem('prpermissionmessage')!="" && localStorage.getItem('prpermissionmessage')!=null){
+       let finalErr =localStorage.getItem('prpermissionmessage');
+       this.toastr.error(finalErr);
+       localStorage.removeItem("prpermissionmessage");
+    } 
+
   }
   
   public errorDeactivate;
@@ -55,24 +70,33 @@ export class LoginComponent implements OnInit {
         this._cookieService.put("login_status", datares['login_status'], opts);
         this._cookieService.put("display_name", datares['display_name'], opts);
         this._cookieService.put("user_image", datares['user_image'], opts);
-        if(datares['login_status'] == '5') {
-         this.router.navigate(['/profile-settings/1']);
-         this._cookieService.put("userid", datares['userid'], opts);          
+
+        if(datares['login_status'] == '5') { 
+        
+         if(datares['user_type']=='3' || datares['user_type']=='4'){ // 3 for receptionist and 4 for manager
+           this._cookieService.put("userid", datares['parentid'], opts);
+           this._cookieService.put("childid", datares['userid'], opts);
+         }else{
+          this._cookieService.put("userid", datares['userid'], opts);           
+         }
+          this.router.navigate(['/profile-settings/1']);
+         
         }
         else if(datares['user_type'] == '1') {
            this._cookieService.put("userid", datares['userid'], opts);
             this.router.navigate(['/users']);           
         }
-        else if(datares['user_type'] == '2' && datares['stepper_status'] != '0') {          
+        else if(datares['user_type'] == '2' && datares['stepper_status'] != '0') { console.log("chk3");          
          this._cookieService.put("stepper", datares['stepper_status'], opts);
          this._cookieService.put("userid", datares['userid'], opts);
          this.router.navigate(['/setup']);
         }
-        else if(datares['user_type'] == '2') {
+        else if(datares['user_type'] == '2') { 
            this._cookieService.put("userid", datares['userid'], opts);
           this.router.navigate(['/dashboards']);
         }
         else{
+
            this._cookieService.put("userid", datares['parentid'], opts);
            this._cookieService.put("childid", datares['userid'], opts);
           this.router.navigate(['/dashboards']);

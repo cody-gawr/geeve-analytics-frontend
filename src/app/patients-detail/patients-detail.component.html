@@ -18,22 +18,22 @@
                 </div>
             </div>
          </div>
-         <div fxLayout="row wrap" fxLayoutGap="2%" fxLayoutGap.xs="">           
+         <div fxLayout="row wrap" fxLayoutGap="2%" fxLayoutGap.xs="" class="top-filter">           
                 <div fxFlex="25" fxFlex.sm="49" fxFlex.xs="100">
                         <div class="filter_status">
                             <mat-form-field >
                                 <mat-label>Filter by Status</mat-label>
                                 <mat-select [(ngModel)]="StatusSelected" (ngModelChange)="statusFilter()">
                                     <mat-option  value="">Select All</mat-option>
-                                    <mat-option  value="Active">Active</mat-option>
-                                    <mat-option  value="Inactive">Inactive</mat-option>
-                                    <mat-option  value="Cancelled">Cancelled</mat-option>
+                                    <mat-option  value="ACTIVE">Active</mat-option>
+                                    <mat-option  value="INACTIVE">Inactive</mat-option>
+                                    <mat-option  value="CANCELLED">Cancelled</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
                   </div>
                   <div fxFlex="25" fxFlex.sm="49" fxFlex.xs="100">
-                <mat-form-field style="margin-top:9px;">
+                <mat-form-field>
                     <input matInput type='text' class="form-control" placeholder='Type to filter Patient name...' (keyup)='updateFilter($event)'
                            autocomplete="off"/>
                 </mat-form-field>

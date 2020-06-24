@@ -189,7 +189,7 @@ public cvcStyle = {
     this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
    
   }
-  todayDate:any = new Date().toLocaleString("en-US", {timeZone: "Australia/Melbourne"});
+ todayDate:Date; 
 
  date = new FormControl(moment());
 public start_date;
@@ -209,8 +209,19 @@ public dob_error='';
     this.dob_error= 'Please select date to schedule Payment Plan.'
    }
   }
+changeTimezone(date, ianatz) {
+  var invdate = new Date(date.toLocaleString('en-US', {
+    timeZone: ianatz
+  }));
+  var diff = date.getTime() - invdate.getTime();
+  return new Date(date.getTime() + diff);
+
+}  
 
   ngOnInit() {
+   var current = new Date();
+     this.todayDate = this.changeTimezone(current, "Australia/Melbourne");
+
     this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
             this.stripeTest = this.fb.group({
             name: ['', [Validators.required]]
@@ -316,9 +327,9 @@ public maxDate;
            "July", "August", "September", "October", "November", "December" ];
 
         if(this.payment_frequency == 'MONTHLY') {
-           this.maxDate = this.addMonths(new Date(),1);
+           this.maxDate = this.addMonths(this.todayDate ,1);
           } else if(this.payment_frequency == 'FORTNIGHTLY') {
-            this.maxDate = this.addDays(new Date(),14);
+            this.maxDate = this.addDays(this.todayDate ,14);
           }
         
 
@@ -332,6 +343,7 @@ public maxDate;
                this.router.navigateByUrl('/login');
            }
     }, error => {
+      this.toastr.error('Invalid Link.');
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );

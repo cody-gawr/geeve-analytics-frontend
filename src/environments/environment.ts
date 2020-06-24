@@ -11,6 +11,7 @@ export const environment = {
  homeUrl:"https://staging-members.jeeve.com.au",
  solutionsUrl : "https://api.jeeve.com.au/staging/solutions",
 
+
   // apiUrl :"http://localhost/jeevemembers/server/staging/members",
   // homeUrl:"http://localhost/jeevemembers",
   // solutionsUrl : "http://localhost/jeevesolutions/server/staging/solutions",

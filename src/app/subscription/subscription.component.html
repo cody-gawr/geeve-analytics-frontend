@@ -106,7 +106,7 @@
                                         <span class="price_value"><span *ngIf="isDecimal(load_totalAmount)"> {{load_totalAmount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(load_totalAmount)">{{load_totalAmount| currency: 'USD':true:'1.0'}}</span></span>
                                         <span class="price_limit">{{load_planLength}}</span>
                                         <div class="srvc_btn">
-                                            <a class="btn btn-white no-radius btn-block" (click)="openDialog(load_id,load_totalAmount)">Buy Now</a>
+                                            <a class="btn btn-white no-radius btn-block" (click)="openDialog(load_id,load_totalAmount)" [ngClass]="{'disabled': load_planName == 'Sample Plan' || stripeConnected==false}">Buy Now</a>
                                         </div>
                                     </div>
                                 </div>

@@ -8,7 +8,7 @@ import { NotifierService } from 'angular-notifier';
 import { empty } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
-
+import { first, take } from 'rxjs/operators';
 import { CustomValidators } from 'ng2-validation';
 declare var require: any;
 const data: any = [];
@@ -366,7 +366,7 @@ if(this.clinic_id != undefined) {
         this.temp = [...res.data];        
         this.table = data;
           if(this.rows.length <=0) {
-              this.plansService.addPlans('Sample Plan',1,'MONTHLY', 100,10,'',this.clinic_id,'true',JSON.stringify(this.preventative_plan_selected),2,JSON.stringify(this.treatment_inclusions_selected),JSON.stringify(this.treatment_exclusions_selected),10).subscribe((res) => {
+              this.plansService.addPlans('Sample Plan',1,'MONTHLY', 100,10,'',this.clinic_id,'true',JSON.stringify(this.preventative_plan_selected),2,JSON.stringify(this.treatment_inclusions_selected),JSON.stringify(this.treatment_exclusions_selected),10).pipe(take(1)).subscribe((res) => {
             $('.ajax-loader').hide();  
             if(res.message == 'success'){           
               // this.notifier.notify( 'success', 'New Plan Added' ,'vertical');

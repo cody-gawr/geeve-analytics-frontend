@@ -396,7 +396,7 @@ public patientsAppointmentData =[];
               var temp=[];
                this.rowsAppointments.forEach((appt,indexappt) => {
                   this.rows.forEach((res,indexres) => {
-                    if(appt.sub_patient_id == res.id)
+                    if(appt.sub_patient_id == res.id )
                       appt.patient_name = res.sub_patients_name;   
                  });
                     temp.push(appt);        
@@ -407,6 +407,9 @@ public patientsAppointmentData =[];
               this.rowsAppointments = [];
              }
           this.patientsAppointmentData=Object.assign([],this.rows);   
+          console.log(this.patientsAppointmentData);
+          console.log(this.rowsAppointments);  
+
           this.getAppointmentsCount();
 
         }, error => {
@@ -417,6 +420,7 @@ public patientsAppointmentData =[];
   public patientsAppointmentCount =[];  
     getAppointmentsCount() {    
        this.patientInfoService.getAppointmentsCount(this.patient_id,this.member_plan_id).subscribe((res) => {   
+          //   this.rowsAppointments = [];
              if(res.message == 'success'){               
              res.data.forEach(res => {
               if(res.count>= this.preventative_frequency){
@@ -428,9 +432,6 @@ public patientsAppointmentData =[];
               }
              });
              }
-             else{
-              this.rowsAppointments = [];
-             } 
         }, error => {
              $('.ajax-loader').hide(); 
         this.toastr.error('Some Error Occured, Please try Again.');

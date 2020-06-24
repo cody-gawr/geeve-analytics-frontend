@@ -73,6 +73,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
       this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
        if(res.message == 'success'){
       this._cookieService.removeAll();
+        $('#currentClinicid').attr('cid','');
         this.router.navigate(['/login']);
        }
     }, error => {

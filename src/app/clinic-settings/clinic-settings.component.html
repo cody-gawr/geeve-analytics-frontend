@@ -229,7 +229,7 @@
          </div>
          <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100" class="button_contractor_main">
         <div class="button_contractor">
-          <a mat-raised-button class="contractDownload " color="gray" target="_blank" *ngIf="clinicContract!=''" href="{{Contract}}"><i class="fas fa-cloud-download-alt"></i> Download Contract</a>
+          <a mat-raised-button class="contractDownload" color="gray" target="_blank" *ngIf="clinicContract!=''" href="{{Contract}}"><i class="fas fa-cloud-download-alt"></i> Download Contract</a>
           <button class="mat-raised-button mat-gray upload_buttons" mat-raised-button (click)="openDialog()"><i class="fas fa-cloud-upload-alt"></i> Upload contract</button>
           <input type="hidden" class="currentclinicId" value="{{clinic_id}}">
         </div>

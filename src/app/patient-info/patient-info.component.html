@@ -127,8 +127,8 @@
                                         <td><span class="res_table_label">Treatment : </span> Preventative Appointment</td>
                                         <td><span class="res_table_label">Patient Name :</span> {{data.patient_name }}</td>
                                         <td><span class="res_table_label">Completion Date :</span> {{data.completion_date| date:'dd-MM-y':'UTC +10'}}</td>
-                                        <td>
-                                          <span class="action_btn text-danger appt_btn" (click) ="deleteAppointment(data.id)">
+                                        <td >
+                                          <span class="action_btn text-danger appt_btn" (click) ="deleteAppointment(data.id)" *ngIf="data.is_active!=1">
                                           <span class="material-icons">delete</span>
                                          </span></td>
                                     </tr>
@@ -144,9 +144,9 @@
                                   </mat-select> 
                                   
                               </div>
-                               <div fxFlex style="padding-top:20px; text-align:right;" class="log_btns">
-                                  <input type ="button" *ngIf="patientsAppointmentData.length>0 && rows.length>=1 && preventative_frequency>0" value="Log Appointment" class="mat-raised-button mat-green" (click)="openDialog()" [ngClass]="{'disabled': patient_status =='CANCELLED'}">
-                                   <div style="color:#fff;" *ngIf="patientsAppointmentData.length<=0 || preventative_frequency<=0" class="mat-raised-button golden mat-menu-item">All Preventative Appointments have been Used</div>
+                               <div fxFlex class="log_btns m-t-20">
+                                  <input type ="button" *ngIf="patientsAppointmentData.length>0 && rows.length>=1 && preventative_frequency>0" value="Log Appointment" class="mat-raised-button sa-pull-right mat-green" (click)="openDialog()" [ngClass]="{'disabled': patient_status =='CANCELLED'}">
+                                   <div *ngIf="patientsAppointmentData.length<=0 || preventative_frequency<=0" class="alert-info">All Preventative Appointments have been Used</div>
                              </div>
                             </div>
                         </div>
@@ -156,7 +156,7 @@
                         <div fxFlex.gt-sm="100" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
                                 <h1 class="m-t-0" mat-dialog-title>Update Patient Details</h1>
                         <form [formGroup]="formPatient"  (ngSubmit)="onSubmitPatientDetails()">
-                        <div mat-dialog-content class="sa_forms_design">
+                        <div class="sa_forms_design">
                           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
                              <div fxFlex="calc(60% - 10px)" fxFlex.lg="calc(60% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
                           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">

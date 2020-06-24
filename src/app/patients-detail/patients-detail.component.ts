@@ -20,7 +20,7 @@ import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/mater
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MatDatepicker} from '@angular/material/datepicker';
 import { HeaderService } from '../layouts/full/header/header.service';
-
+import { first, take } from 'rxjs/operators';
 // Depending on whether rollup is used, moment needs to be imported differently.
 // Since Moment.js doesn't have a default export, we normally need to import using the `* as`
 // syntax. However, rollup creates a synthetic default module and we thus need to import it using
@@ -498,7 +498,7 @@ public stripe_account_id;
   }
 
   private getPatients() {
-    this.patientsdetailService.getPatients(this.clinic_id).subscribe((res) => {
+    this.patientsdetailService.getPatients(this.clinic_id).pipe(take(1)).subscribe((res) => {
       if(res.message == 'success'){
         this.rows = res.data;
         this.planname = res.data[0]['planName'];        
@@ -522,7 +522,7 @@ public stripe_account_id;
   }
 
   public getInviteMembers() {
-  this.patientsdetailService.getInviteMembers(this.clinic_id).subscribe((res) => {
+  this.patientsdetailService.getInviteMembers(this.clinic_id).pipe(take(1)).subscribe((res) => {
       if(res.message == 'success'){
         var count = this.rows.length;
         res.data.forEach(res => {

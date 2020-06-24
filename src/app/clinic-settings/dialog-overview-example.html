@@ -1,5 +1,5 @@
 
- <mat-tab-group dynamicHeight>
+ <mat-tab-group dynamicHeight class="sa_forms_design">
 
  <mat-tab label="Contract Upload" [disabled]='this.contractTabDisable'>
      <form class="basic-form">
@@ -9,14 +9,16 @@
           <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
 	       	<strong class="error_text"></strong>
         </div>
-			<label>Upload Agreement</label>
-             
+			
+
+<div class="sa-form-group">
+      <label>Upload Agreement</label>
            <div class="upload-btn">
-			<span>Choose file</span>
+			         <span>Choose file</span>
                <input class="contractFile" type="file" placeholder="" name= "file" id="file"  (change)="uploadImage($event.target.files,data)">
                <input type='hidden'  placeholder="" id="contractURL" value="{{contractURL}}" >
              </div>
-
+           </div>
             </div>  
 
              <!--div fxFlex.gt-md="49" fxFlex="100" class="top_download_Agreement form_div_sec">

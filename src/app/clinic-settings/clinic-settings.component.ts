@@ -360,7 +360,7 @@ public user_id_encoded;
     $('.ajax-loader').show(); 
   this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
     $('.ajax-loader').hide(); 
-       if(res.message == 'success' && res.data[0].id){
+       if(res.message == 'success' && res.data[0].id && res.data[0].id ==  this.id){
         console.log(res);
         this.clinic_id = res.data[0].id;
         this.clinic_id_encoded = btoa(res.data[0].id);
@@ -381,9 +381,14 @@ public user_id_encoded;
             $('body').removeClass('notification-box-main'); 
         }
         else
-       {       this.connectedStripe = false;
+       {       
+          console.log('sdf');
+
+        this.connectedStripe = false;
                $('.notification-box').show();
             $('body').addClass('notification-box-main'); 
+            $('.notification-box a').attr('href','/clinic-settings/'+this.id); 
+
        }
 
         if(res.data[0].logo!=""){

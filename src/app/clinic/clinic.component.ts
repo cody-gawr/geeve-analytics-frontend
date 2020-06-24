@@ -140,6 +140,7 @@ export class ClinicComponent implements AfterViewInit {
   private checkPermission(role) { 
   this.headerService.checkPermission(role).subscribe((res) => {
        if(res.message == 'success'){
+        
        }
         else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -155,7 +156,7 @@ export class ClinicComponent implements AfterViewInit {
 
   }
   ngAfterViewInit() {
-    this.checkPermission('clinics');
+    this.checkPermission('settings');
     this.getUserDetails();
 
     this.getClinics();
