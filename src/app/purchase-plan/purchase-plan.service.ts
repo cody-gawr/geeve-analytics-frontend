@@ -30,8 +30,19 @@ export class PurchasePlanService {
         this.token_id= this._cookieService.get("userid");
         });
    }
+     getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        }else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+   }
     getSubPatients(patient_id): Observable<any> {
-        return this.http.get(this.apiUrl +"/Patients/getAllPatientByIDWithoutToken?patient_id="+patient_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Patients/getAllPatientByIDWithoutToken?patient_id="+patient_id, { headers: header })
         .pipe(map((response: Response) => {
                 return response;
                     })
@@ -39,7 +50,8 @@ export class PurchasePlanService {
     }
 
     getPublishableKey(): Observable<any> {
-        return this.http.get(this.apiUrl +"/Patients/getPublishableKey", { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Patients/getPublishableKey", { headers: header })
         .pipe(map((response: Response) => {
                 return response;
           })
@@ -47,7 +59,8 @@ export class PurchasePlanService {
     }
 
     getPlanDetail(plan_id): Observable<any> {
-        return this.http.get(this.apiUrl +"/MemberPlan/getPlanDetail?plan_id="+plan_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/MemberPlan/getPlanDetail?plan_id="+plan_id, { headers: header })
         .pipe(map((response: Response) => {
                 return response;
                     })
@@ -117,7 +130,8 @@ export class PurchasePlanService {
     }
      // Items Predictor Analysis 
     checkPatientEmailExists(email,clinic_id,user_id): Observable<any> {
-            return this.http.get(this.apiUrl +"/Patients/checkPatientEmailExists?patient_email="+email+"&clinic_id="+clinic_id+"&user_id="+user_id, { headers: this.headers })
+    var header = this.getHeaders(); 
+            return this.http.get(this.apiUrl +"/Patients/checkPatientEmailExists?patient_email="+email+"&clinic_id="+clinic_id+"&user_id="+user_id, { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -125,7 +139,8 @@ export class PurchasePlanService {
     }
         // Items Predictor Analysis 
     checkTreatmentName(email,clinic_id,user_id): Observable<any> {
-            return this.http.get(this.apiUrl +"/Patients/checkPatientEmailExists?patient_email="+email+"&clinic_id="+clinic_id+"&user_id="+user_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+            return this.http.get(this.apiUrl +"/Patients/checkPatientEmailExists?patient_email="+email+"&clinic_id="+clinic_id+"&user_id="+user_id, { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -195,7 +210,7 @@ export class PurchasePlanService {
             formData.append('user_id', user_id);
             formData.append('amount', amount);
             formData.append('member_plan_id', member_plan_id);
-            formData.append('patient_name', patient_email);
+            formData.append('patient_name', patient_name);
             formData.append('patient_email', patient_email);
             formData.append('clinic_id', clinic_id);
             formData.append('planLength', planLength);

@@ -11,6 +11,7 @@ import { environment } from "../../environments/environment";
 export class SubscriptionService {
 
     public token: string;
+    public token_id: string;
     private headers: HttpHeaders;
 
     constructor(private http: HttpClient,private _cookieService: CookieService) {
@@ -20,12 +21,24 @@ export class SubscriptionService {
         this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
     }
 
+      getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        }else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+   }
+
 
     private apiUrl = environment.apiUrl;
 
     // Items Predictor Analysis 
     getPlans(clinic_id,user_id): Observable<any> {
-            return this.http.get(this.apiUrl +"/MemberPlan/getSubscriptions?user_id="+user_id+"&clinic_id="+clinic_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+            return this.http.get(this.apiUrl +"/MemberPlan/getSubscriptions?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -33,7 +46,8 @@ export class SubscriptionService {
     }
 
     getClinicSettings( clinic_id='1', user_id = this._cookieService.get("userid")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Practices/getPracticesFrontendSubscription?user_id="+user_id+"&clinic_id="+clinic_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Practices/getPracticesFrontendSubscription?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

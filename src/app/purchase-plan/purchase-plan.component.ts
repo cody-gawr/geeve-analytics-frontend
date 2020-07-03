@@ -247,7 +247,7 @@ public cardCvc;
   public successLoginText = '';
   public clinic_id;
   public plan_amount;
-  public selectedIndex =2;
+  public selectedIndex =0;
   public patientData =[];
   public countPatientData = 0;
   public tabActive1= false;
@@ -313,11 +313,11 @@ isDecimal(value) {
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -345,11 +345,11 @@ isDecimal(value) {
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -376,11 +376,11 @@ public cvcStyle = {
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -393,52 +393,14 @@ public cvcStyle = {
       },
     },
   };
+  public act =false;
 
    ngOnInit() {    
+      $('.ajax-loader').show();
     this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
   this.PurchasePlanService.getPublishableKey().subscribe((res) => {
  //   this.stripeService.setKey(res.key);
-       this.stripeTest = this.fb.group({
-            name: ['', [Validators.required]]
-            });
-            this.stripeService.elements(this.elementsOptions)
-            .subscribe(elements => {
-            this.elements = elements;
-            // Only mount the element the first time
-            if (!this.card) {
-
-              this.cardNumber = this.elements.create('cardNumber', {
-            style: this.cardStyle
-          });
-          this.cardExpiry = this.elements.create('cardExpiry', {
-            style: this.expStyle
-          });
-
-            this.cardCvc = this.elements.create('cardCvc', {
-            style: this.cvcStyle
-          });
-             this.cardNumber.mount('#example3-card-number');
-             this.cardExpiry.mount('#example3-card-expiry');
-             this.cardCvc.mount('#example3-card-cvc');
-           //  this.card = this.elements.create('card', {
-           //  style: {
-           // base: {
-           //     iconColor: '#424242',
-           //     color: '#424242',
-           //     lineHeight: '40px',
-           //     fontWeight: 400,
-           //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-           //     fontSize: '18px',
-           //     '::placeholder': {
-           //         color: '#424242'
-           //     }
-           //    }
-           //  }
-           //  });
-           // this.card.mount('#card-element');
-            this.changeTab(0);
-            }
-            });
+       
        }, error => {
     });
            this.form = this.fb.group({
@@ -482,7 +444,7 @@ public cvcStyle = {
     });
      this.getPlanDetail();
     this.getSubPatients();
-      
+    
     this.formStripe = this.fb.group({
       cardNumber: [
         null
@@ -500,6 +462,50 @@ public cvcStyle = {
         Validators.compose([Validators.required])
       ]
     });
+  }
+
+  getStripe(){
+     this.stripeTest = this.fb.group({
+            name: ['', [Validators.required]]
+            });
+            this.stripeService.elements(this.elementsOptions)
+            .subscribe(elements => {
+            this.elements = elements;
+            // Only mount the element the first time
+            if (!this.card) {
+
+              this.cardNumber = this.elements.create('cardNumber', {
+            style: this.cardStyle
+          });
+          this.cardExpiry = this.elements.create('cardExpiry', {
+            style: this.expStyle
+          });
+
+            this.cardCvc = this.elements.create('cardCvc', {
+            style: this.cvcStyle
+          });
+             this.cardNumber.mount('#example3-card-number');
+             this.cardExpiry.mount('#example3-card-expiry');
+             this.cardCvc.mount('#example3-card-cvc');
+           //  this.card = this.elements.create('card', {
+           //  style: {
+           // base: {
+           //     iconColor: '#424242',
+           //     color: '#424242',
+           //     lineHeight: '40px',
+           //     fontWeight: 400,
+           //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+           //     fontSize: '18px',
+           //     '::placeholder': {
+           //         color: '#424242'
+           //     }
+           //    }
+           //  }
+           //  });
+           // this.card.mount('#card-element');
+
+            }
+            });
   }
 
     buy() {
@@ -574,18 +580,26 @@ public cvcStyle = {
 
    loadForm() {
     this.visible=true;
+    this.ref.detectChanges(); 
   }
 
   changeTab(index){
+ //  $(".loader").show();
     this.selectedIndex =index;
      this.ref.detectChanges();
+
+     
   }
 
   paymentStripe(){
     this.selectedIndex = 2;
     this.tabActive2 = true;
     $(".mat-tab-label-active").siblings('.mat-tab-label').click();
-     this.ref.detectChanges();
+     var self = this;
+     setTimeout(function(){
+      self.getStripe();
+     },500);  
+       this.cardNumber.focus();
   }
 
   toTrunc(value,n){  
@@ -860,11 +874,11 @@ getDaysInMonth(year: number, month: number) {
               this._cookieService.put("userid",'');
         }
         else {
-        var patientArray ={};
-        patientArray['sub_patients_name'] = res.data[0]['patient_name'];
-        patientArray['sub_patients_dob'] = res.data[0]['patient_dob'];
-        patientArray['sub_patients_gender'] = res.data[0]['patient_gender'];
-        patientArray['sub_patients_amount'] = res.data[0]['member_plan']['totalAmount'];   
+            var patientArray ={};
+            patientArray['sub_patients_name'] = res.data[0]['patient_name'];
+            patientArray['sub_patients_dob'] = res.data[0]['patient_dob'];
+            patientArray['sub_patients_gender'] = res.data[0]['patient_gender'];
+            patientArray['sub_patients_amount'] = res.data[0]['member_plan']['totalAmount'];   
             var sub_patient_length = this.rows.length;
         this.rows[sub_patient_length] = patientArray; 
         }
@@ -877,17 +891,17 @@ getDaysInMonth(year: number, month: number) {
 
   updatePatients(status) { 
       $('.ajax-loader').show(); 
-    this.PurchasePlanService.updatePatients(this.totalAmountPatients,status, this.patient_id,this.form.value.patient_email).subscribe((res) => {
-      $('.ajax-loader').hide();      
+    this.PurchasePlanService.updatePatients(this.totalAmountPatients,status, this.patient_id,this.form.value.patient_email).subscribe((res) => {   
        if(res.message == 'success'){         
-             $('.ajax-loader').hide(); 
-             window.location.href = '/thank-you/'+this.clinic_id+'/'+this.patient_id; 
+          $('.ajax-loader').hide(); 
+          window.location.href = '/thank-you/'+this.clinic_id+'/'+this.patient_id; 
        }
        else if(res.message == 'error'){
-            $('.ajax-loader').hide();
+          $('.ajax-loader').hide();
           this.errorLogin  =true;
        }
     }, error => {
+       $('.ajax-loader').hide();
     });
   }
 

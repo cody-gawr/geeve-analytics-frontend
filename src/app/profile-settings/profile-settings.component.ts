@@ -126,11 +126,11 @@ export class ProfileSettingsComponent implements OnInit {
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -158,11 +158,11 @@ export class ProfileSettingsComponent implements OnInit {
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -189,11 +189,11 @@ public cvcStyle = {
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -271,7 +271,7 @@ public cvcStyle = {
     this.displayName = this._cookieService.get("display_name");
     this.email = this._cookieService.get("email");
     this.imageURL = this._cookieService.get("user_image");
-    this.getprofileSettings();
+ //   this.getprofileSettings();
     this.getPaymentDetails();
 this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
             this.stripeTest = this.fb.group({

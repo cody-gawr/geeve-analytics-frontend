@@ -11,6 +11,7 @@ import { environment } from "../../../environments/environment";
 export class RegisterService {
 
     public token: string;
+    public token_id: string;
     private headers: HttpHeaders;
 
     constructor(private http: HttpClient,private _cookieService: CookieService) {
@@ -21,16 +22,28 @@ export class RegisterService {
     }
 
 
+    getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        }else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+   }
     private apiUrl = environment.apiUrl;
 
     // Items Predictor Analysis 
     checkPatientEmailExists(email,clinic_id,user_id): Observable<any> {
-            return this.http.get(this.apiUrl +"/Patients/checkPatientEmailExists?patient_email="+email+"&clinic_id="+clinic_id+"&user_id="+user_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+            return this.http.get(this.apiUrl +"/Patients/checkPatientEmailExists?patient_email="+email+"&clinic_id="+clinic_id+"&user_id="+user_id, { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
             );
     }
+
 
       // Items Predictor Analysis 
     addPatient(email,name,phone_no, clinic_id,user_id,plan_id,plan_amount): Observable<any> {
@@ -59,7 +72,8 @@ export class RegisterService {
     }
 
         getTerms(clinic_id): Observable<any> {
-        return this.http.get(this.apiUrl +"/Users/getupdateprofiledata?clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+            var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Users/getupdateprofiledata?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

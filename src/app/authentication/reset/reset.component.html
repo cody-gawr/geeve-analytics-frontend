@@ -26,7 +26,7 @@ align-items: center;"></div>
                <small *ngIf="form.controls['password'].hasError('minlength') && form.controls['password'].touched" class="text-danger">Password should contain minimum 10 characters.</small>
                 <small *ngIf="form.controls['password'].hasError('pattern') && !form.controls['password'].hasError('minlength') &&  form.controls['password'].touched" class="text-danger">Password must contain one lowercase letter,one uppercase letter, alphanumeric and one special character.</small>
               <small *ngIf="form.controls['password'].value !=  form.controls['cpassword'].value" class="text-danger support-text">Password and Confirm Password does not match.</small>
-              <small *ngIf="errorLogin == true && errorLoginText != ''" class="text-danger support-text">{{errorLoginText}}</small>
+              <small *ngIf="errorLogin == true && errorLoginText != ''" class="text-success support-text">{{errorLoginText}}</small>
                 <small *ngIf="successLogin ==true && successLoginText != ''"  class="text-success support-text">Password changed successfully . <a mat-raised-button color="primary" [routerLink]="['/login']" class="m-t-10 mat-dc" align="center" *ngIf="isPasswordSet">Login</a></small> 
             </div>
           

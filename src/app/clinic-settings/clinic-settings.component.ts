@@ -363,7 +363,7 @@ public user_id_encoded;
        if(res.message == 'success' && res.data[0].id && res.data[0].id ==  this.id){
         console.log(res);
         this.clinic_id = res.data[0].id;
-        this.clinic_id_encoded = btoa(res.data[0].id);
+        this.clinic_id_encoded = decodeURIComponent(btoa(res.data[0].id));
         this.user_id = res.data[0].user_id;
         this.user_id_encoded = btoa(res.data[0].user_id);
         this.clinicName = res.data[0].clinicName;
@@ -492,6 +492,7 @@ public user_id_encoded;
   }
 
   onSettingsSubmit() {
+
   $('.ajax-loader').show();   
   this.header_info ={};
   this.header_info.headerTitle=this.formLanding.value.headerTitle;
@@ -577,6 +578,7 @@ public user_id_encoded;
   
   public fileToUpload;
  uploadImage(files: FileList) {
+
     this.fileToUpload = files.item(0);
     /* First check for file type then check for size .*/
    if(this.fileToUpload.type=='image/png' || this.fileToUpload.type=='image/jpg' || this.fileToUpload.type=='image/jpeg') //10000 bytes means 10 kb
@@ -597,6 +599,7 @@ public user_id_encoded;
     this.clinicSettingsService.logoUpload(formData).subscribe((res) => {
       if(res.message == 'success'){
         this.imageURL= res.data;
+        this.onSubmit();
        }
     });
   }
@@ -625,6 +628,7 @@ public user_id_encoded;
     this.clinicSettingsService.landingImageUpload(formData).subscribe((res) => {
       if(res.message == 'success'){
         this.headerImageURL= res.data;
+        this.onSettingsSubmit();
        }
     });
   }

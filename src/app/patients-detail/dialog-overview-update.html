@@ -2,17 +2,22 @@
 <h1 mat-dialog-title>Change Plan</h1>
 <div mat-dialog-content class="sa_forms_design"> 
   <div fxLayout="row wrap" >
-    <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group"> 
-      <mat-select name ="value" tabindex="1" [(ngModel)]= "data.plan_selected"  class="form-control-dialog" required="true">
-       <mat-option *ngFor="let plan of data.plans" [value]="plan.id" [disabled]="plan.id == data.plan_id || plan.planLength != data.planLength">
+    <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
+     
+      <mat-select name ="value" tabindex="1" [ngModel]= "data.selectedPlan"  class="form-control-dialog" required="true" *ngIf ="data.selectedPlan!=''">
+       <!--mat-option *ngFor="let plan of data.plans" [value]="plan.id" [disabled]="plan.id == data.plan_id || plan.planLength != data.planLength"-->
+       <mat-option *ngFor="let plan of data.plans" [value]="plan.id"  [ngClass]="{'hide1': plan.id == data.plan_id, 'hide2':plan.planLength != data.planLength}">
         {{plan.planName}}
       </mat-option>
       </mat-select>
+
+     <span *ngIf="data.selectedPlan==''">No {{data.planLength}} Plans Available To Change. </span>
+
     </div>
    </div>
 </div>
 <div mat-dialog-actions class="sa-pull-right">
-  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc" [disabled]="!data.plan_selected">Change Plan</button>
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Change Plan</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
 </div> 
 

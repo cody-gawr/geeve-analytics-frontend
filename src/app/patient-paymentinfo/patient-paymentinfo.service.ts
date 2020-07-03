@@ -29,9 +29,20 @@ export class PatientPaymentinfoService {
         this.token_id= this._cookieService.get("userid");
         });
    }
+     getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        }else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+   }
    
     getInofficePlan(payment_id, token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/getInofficePlanDetails?payment_id="+payment_id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficePlanDetails?payment_id="+payment_id+"&user_id="+this._cookieService.get("userid"), { headers: header })
         .pipe(map((response: Response) => {
                 return response;
                     })
@@ -39,7 +50,8 @@ export class PatientPaymentinfoService {
     }
 
     getPaymentHistory(id, token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeMembersPlanInvoicesDetails?inoffice_payment_id="+id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeMembersPlanInvoicesDetails?inoffice_payment_id="+id+"&user_id="+this._cookieService.get("userid"), { headers: header })
         .pipe(map((response: Response) => {
                 return response;
                     })
@@ -52,9 +64,8 @@ export class PatientPaymentinfoService {
         formData.append('payment_id',payment_id);
         formData.append('contract_upload', contract_upload);
         formData.append('user_id', this._cookieService.get("userid"));
-        formData.append('token', this._cookieService.get("token"));
-        formData.append('token_id', this.token_id);
-        return this.http.post(this.apiUrl +"/InofficePayments/UploadContract/", formData)
+        var header = this.getHeaders(); 
+        return this.http.post(this.apiUrl +"/InofficePayments/UploadContract/", formData, { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -64,10 +75,9 @@ export class PatientPaymentinfoService {
 
     contractUpload( formData): Observable<any> { 
      formData.append('user_id', this._cookieService.get("userid"));
-     formData.append('token', this._cookieService.get("token"));
-     formData.append('token_id', this.token_id);
+     var header = this.getHeaders(); 
 
-      return this.http.post(this.apiUrl +"/InofficePayments/logoUpload/", formData)
+      return this.http.post(this.apiUrl +"/InofficePayments/logoUpload/", formData, { headers: header })
       .pipe(map((response: Response) => {
                     return response;
                 })
@@ -75,13 +85,10 @@ export class PatientPaymentinfoService {
     }
 
 
-        getContract(payment_id, token = this._cookieService.get("token")): Observable<any> {
-            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')               
-        this.token_id = this._cookieService.get("childid");
-        else
-        this.token_id= this._cookieService.get("userid");
+getContract(payment_id, token = this._cookieService.get("token")): Observable<any> {
+    var header = this.getHeaders(); 
 
-     return this.http.get(this.apiUrl +"/InofficePayments/getContract?payment_id="+payment_id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
+     return this.http.get(this.apiUrl +"/InofficePayments/getContract?payment_id="+payment_id+"&user_id="+this._cookieService.get("userid"), { headers: header })
         .pipe(map((response: Response) => {
                 return response;
         })

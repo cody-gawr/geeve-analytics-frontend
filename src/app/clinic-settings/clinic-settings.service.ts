@@ -32,10 +32,21 @@ export class ClinicSettingsService {
         });
    }
 
+   getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        }else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+   }
 
    // Get ClinicSettings
     getClinicSettings( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -44,7 +55,8 @@ export class ClinicSettingsService {
 
        // Get ClinicSettings
     getClinicSettingsForSubscription( clinic_id='1', user_id = this._cookieService.get("userid")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Practices/getPracticesForSubscription?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/Practices/getPracticesForSubscription?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -53,7 +65,8 @@ export class ClinicSettingsService {
     
        // Get ClinicSettings
   getClinicLandingPageSettings(clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Clinics/getClinicInfo?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+    var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/Clinics/getClinicInfo?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -76,10 +89,9 @@ export class ClinicSettingsService {
     formData.append('id', clinic_id);
 
     formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', token);
-     formData.append('token_id', this.token_id);
-
-    return this.http.post(this.apiUrl +"/Practices/update/", formData)
+    
+    var header = this.getHeaders();
+    return this.http.post(this.apiUrl +"/Practices/update/", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -92,10 +104,9 @@ export class ClinicSettingsService {
     formData.append('id', clinic_id);
     formData.append('clinicTagLine', clinicTagLine);
     formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', token); 
-     formData.append('token_id', this.token_id);
-
-    return this.http.post(this.apiUrl +"/Practices/update/", formData)
+    
+    var header = this.getHeaders();
+    return this.http.post(this.apiUrl +"/Practices/update/", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -108,9 +119,8 @@ updateSliderImagesSettings(clinic_id,sliderInfo,token = this._cookieService.get(
     formData.append('slider_info', sliderInfo);
     formData.append('id', clinic_id);
     formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', token);
-     formData.append('token_id', this.token_id);
-    return this.http.post(this.apiUrl +"/Practices/update/", formData)
+    var header = this.getHeaders();
+    return this.http.post(this.apiUrl +"/Practices/update/", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -123,11 +133,8 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
     formData.append('id', clinic_id);
     formData.append('index', index);
     formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', token);
-     formData.append('token_id', this.token_id);
-    
-    console.log(formData);
-    return this.http.post(this.apiUrl +"/Practices/removeSliderImage/", formData)
+    var header = this.getHeaders();    
+    return this.http.post(this.apiUrl +"/Practices/removeSliderImage/", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -139,10 +146,9 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
 
     logoUpload( formData): Observable<any> {
        formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', this._cookieService.get("token"));
-     formData.append('token_id', this.token_id);
-
-    return this.http.post(this.apiUrl +"/Practices/logoUpload/", formData)
+   
+    var header = this.getHeaders(); 
+    return this.http.post(this.apiUrl +"/Practices/logoUpload/", formData,{ headers: header })
     .pipe(map((response: Response) => {
                     return response;
                 })
@@ -151,10 +157,9 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
 
     landingImageUpload(formData): Observable<any> {
          formData.append('user_id', this._cookieService.get("userid"));
-         formData.append('token', this._cookieService.get("token"));
-         formData.append('token_id', this.token_id);
-
-        return this.http.post(this.apiUrl +"/Practices/landingImageUpload/", formData)
+          
+        var header = this.getHeaders(); 
+        return this.http.post(this.apiUrl +"/Practices/landingImageUpload/", formData,{ headers: header })
          .pipe(map((response: Response) => {
                     return response;
                 })
@@ -167,10 +172,9 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
             formData.append('id', clinic_id); 
             formData.append('terms', terms); 
             formData.append('user_id', this._cookieService.get("userid"));
-            formData.append('token', token);
-            formData.append('token_id', this.token_id);
+          var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Practices/updateTerms/", formData)
+        return this.http.post(this.apiUrl +"/Practices/updateTerms/", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -178,14 +182,16 @@ removeSliderImage(clinic_id,keyUrl,index,token = this._cookieService.get("token"
     }
 
     getStripeAuthorization(clinic_id, user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Clinics/getStripeAuthorization?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&clinic_id="+clinic_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Clinics/getStripeAuthorization?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
      disconnectStripe(clinic_id, user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Clinics/disconnectStripe?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&clinic_id="+clinic_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Clinics/disconnectStripe?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -196,9 +202,8 @@ contractUpload(clinic_id,formData): Observable<any> {
   console.log("heree");  
     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('clinic_id', clinic_id);
-    formData.append('token', this._cookieService.get("token"));
-    formData.append('token_id', this.token_id);
-    return this.http.post(this.apiUrl +"/Clinics/uploaddefaultcontract/", formData)
+    var header = this.getHeaders(); 
+    return this.http.post(this.apiUrl +"/Clinics/uploaddefaultcontract/", formData, { headers: header })
      .pipe(map((response: Response) => {
          return response;
       })
@@ -211,10 +216,9 @@ contractUpload(clinic_id,formData): Observable<any> {
         formData.append('clinicContract', clinicContract);
         formData.append('clinic_id', clinic_id);
         formData.append('user_id', this._cookieService.get("userid"));
-        formData.append('token', this._cookieService.get("token"));
-        formData.append('token_id', this.token_id);
+        var header = this.getHeaders(); 
                
-        return this.http.post(this.apiUrl +"/Clinics/savedefaultcontract/", formData)
+        return this.http.post(this.apiUrl +"/Clinics/savedefaultcontract/", formData, { headers: header })
          .pipe(map((response: Response) => {
              return response;
           })

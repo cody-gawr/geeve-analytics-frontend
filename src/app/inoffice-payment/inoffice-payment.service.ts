@@ -31,8 +31,21 @@ export class InofficePaymentService {
         });
         
    }
+
+     getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        }else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+   }
+
     getInofficePlanDetails(payment_id): Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/getInofficePlanDetailsFrontend?payment_id="+payment_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficePlanDetailsFrontend?payment_id="+payment_id, { headers: header })
         .pipe(map((response: Response) => {
                 return response;
                     })
@@ -40,7 +53,8 @@ export class InofficePaymentService {
     }
 
     getClinic(patient_id): Observable<any> {
-        return this.http.get(this.apiUrl +"/Patients/getClinicDetails?patient_id="+patient_id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Patients/getClinicDetails?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid"), { headers: header })
         .pipe(map((response: Response) => {
                 return response;
                     })
@@ -48,7 +62,8 @@ export class InofficePaymentService {
     }
 
     checkInvoiceStatus(id): Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/checkInvoiceStatus?id="+id+"&token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/InofficePayments/checkInvoiceStatus?id="+id+"&user_id="+this._cookieService.get("userid"), { headers: header })
         .pipe(map((response: Response) => {
                 return response;
                     })
@@ -63,9 +78,8 @@ export class InofficePaymentService {
             formData.append('sub_patients_amount', patient_amount);
             formData.append('patients_id', id);
             formData.append('user_id', this._cookieService.get("userid"));
-        formData.append('token', this._cookieService.get("token"));
-        formData.append('token_id', this.token_id);
-            return this.http.post(this.apiUrl +"/SubPatients/addSubpatients", formData)
+        var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/SubPatients/addSubpatients", formData,  { headers: header })
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -77,9 +91,8 @@ export class InofficePaymentService {
             formData.append('patient_status', status);            
             formData.append('id', id);         
              formData.append('user_id', this._cookieService.get("userid"));
-        formData.append('token', this._cookieService.get("token"));
-        formData.append('token_id', this.token_id);   
-            return this.http.post(this.apiUrl +"/Patients/updatePatient", formData)
+        var header = this.getHeaders();   
+            return this.http.post(this.apiUrl +"/Patients/updatePatient", formData,  { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -92,9 +105,8 @@ export class InofficePaymentService {
             formData.append('email', uname);
             formData.append('password', password);
              formData.append('user_id', this._cookieService.get("userid"));
-        formData.append('token', this._cookieService.get("token"));
-        formData.append('token_id', this.token_id);
-            return this.http.post(this.apiUrl +"/users/applogin", formData)
+        var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/users/applogin", formData,  { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -106,9 +118,8 @@ export class InofficePaymentService {
 
             formData.append('email', email);
              formData.append('user_id', this._cookieService.get("userid"));
-        formData.append('token', this._cookieService.get("token"));
-        formData.append('token_id', this.token_id);
-            return this.http.post(this.apiUrl +"/users/forgotPasswordApi", formData)
+        var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/users/forgotPasswordApi", formData,  { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -122,9 +133,8 @@ export class InofficePaymentService {
             formData.append('confirm_password', password);
             formData.append('id', id);
              formData.append('user_id', this._cookieService.get("userid"));
-        formData.append('token', this._cookieService.get("token"));
-        formData.append('token_id', this.token_id);
-            return this.http.post(this.apiUrl +"/users/resetPasswordApi", formData)
+        var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/users/resetPasswordApi", formData,  { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -135,9 +145,8 @@ export class InofficePaymentService {
             const formData = new FormData();
             formData.append('email', email);
              formData.append('user_id', this._cookieService.get("userid"));
-        formData.append('token', this._cookieService.get("token"));
-        formData.append('token_id', this.token_id);
-            return this.http.post(this.apiUrl +"/users/checkEmailExists", formData)
+       var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/users/checkEmailExists", formData, { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -152,9 +161,8 @@ export class InofficePaymentService {
             formData.append('plan_id', plan_id);  
             formData.append('status', '0');            
             formData.append('user_id', this._cookieService.get("userid"));
-            formData.append('token', this._cookieService.get("token"));
-            formData.append('token_id', this.token_id);
-            return this.http.post(this.apiUrl +"/users/addPracticeOwner", formData)
+            var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/users/addPracticeOwner", formData, { headers: header })
             .pipe(map((response: Response) => {
                             return response;
              })

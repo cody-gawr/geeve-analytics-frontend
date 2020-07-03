@@ -203,6 +203,10 @@ public dob_error='';
     this.start_date = this.datePipe.transform(this.date.value, 'dd-MM-yyyy');
      this.selectedIndex=this.selectedIndex +1;
      this.tabActive2= true;
+      var self = this;
+     setTimeout(function(){
+      self.getStripe();
+     },500);  
      this.ref.detectChanges();
    }
    else {
@@ -255,7 +259,50 @@ changeTimezone(date, ianatz) {
 
     this.getInofficePlanDetails();
   }
+getStripe(){
+     this.stripeTest = this.fb.group({
+            name: ['', [Validators.required]]
+            });
+            this.stripeService.elements(this.elementsOptions)
+            .subscribe(elements => {
+            this.elements = elements;
+            // Only mount the element the first time
+            if (!this.card) {
 
+              this.cardNumber = this.elements.create('cardNumber', {
+            style: this.cardStyle
+          });
+          this.cardExpiry = this.elements.create('cardExpiry', {
+            style: this.expStyle
+          });
+
+            this.cardCvc = this.elements.create('cardCvc', {
+            style: this.cvcStyle
+          });
+             this.cardNumber.mount('#example3-card-number');
+             this.cardExpiry.mount('#example3-card-expiry');
+             this.cardCvc.mount('#example3-card-cvc');
+           //  this.card = this.elements.create('card', {
+           //  style: {
+           // base: {
+           //     iconColor: '#424242',
+           //     color: '#424242',
+           //     lineHeight: '40px',
+           //     fontWeight: 400,
+           //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+           //     fontSize: '18px',
+           //     '::placeholder': {
+           //         color: '#424242'
+           //     }
+           //    }
+           //  }
+           //  });
+           // this.card.mount('#card-element');
+          
+
+            }
+            });
+  }
     buy() {
     const name = this.stripeTest.get('name').value;
     this.stripeService

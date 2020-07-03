@@ -166,14 +166,18 @@ export class DialogOverviewUpdateDialogComponent {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
-    }).then((result) => {
+    }).then((result) => { 
+    if (result.value) {
         this.dialogChangePlanRef.close(data);
+      }else if (result.dismiss === Swal.DismissReason.cancel) { alert("h3")
+          this.dialogChangePlanRef.close('closed');
+       }
     });
   }
 
   
   
-  onNoClick(): void {
+  onNoClick(): void { 
     this.dialogChangePlanRef.close();
   }
 
@@ -225,6 +229,7 @@ export class PatientsDetailComponent implements AfterViewInit {
   public patientdob;
   public end_date ;
   public start_date; 
+  public selectedFirstPlan : any;
  
   minDate = new Date('1990-01-01');
   maxDate = new Date();
@@ -429,19 +434,37 @@ public stripe_account_id;
   }
   
   change_plan(patientid,plan_id,planLength): void {
-    
+       
 
-    const dialogChangePlanRef = this.dialog.open(DialogOverviewUpdateDialogComponent, {
-      width: '400px',
-      data: {plans: this.membersplan, patientid: patientid,plan_id: plan_id,planLength: planLength},
-      panelClass: 'full-screen'
-    });
-  dialogChangePlanRef.afterClosed().subscribe(result => {  
-    if(result) {
-  $('.ajax-loader').show();
+    this.patientsdetailService.getPlansForPurchase(this.clinic_id,patientid,plan_id,planLength).subscribe((res) => {
+        if(res.message == 'success'){
+           let plans= res.data;
+           let selectedPlan =""; 
+           if(plans.length > 0){
+             selectedPlan = plans[0].id;
+           }
 
-        this.patientsdetailService.changeMemberPlan(patientid, result.plan_selected).subscribe((res) => {    
-  $('.ajax-loader').hide();
+
+
+            const dialogChangePlanRef = this.dialog.open(DialogOverviewUpdateDialogComponent, {
+        width: '400px',
+        data: {plans: plans, patientid: patientid,plan_id: plan_id,planLength: planLength,selectedPlan: selectedPlan},
+        panelClass: 'full-screen'
+      });  
+
+       dialogChangePlanRef.afterClosed().subscribe(result => {  
+
+        if(result=="closed"){
+          return false;
+        }
+        if(result) { 
+          console.log("i m checking");
+          console.log(result);
+          console.log(result.selectedPlan);
+      $('.ajax-loader').show();
+
+        this.patientsdetailService.changeMemberPlan(patientid, result.selectedPlan).subscribe((res) => {    
+       $('.ajax-loader').hide();
 
          if(res.message == 'success'){
              this.getPatients();     
@@ -459,8 +482,50 @@ public stripe_account_id;
       }    
       ); 
       }
-    });
+    }); 
+
+
+           //this.openDialogNow(plans,patientid,plan_id,planLength,selectedPlan);
+
+        
+  
+           this.clinic_id = $('#currentClinicid').attr('cid');
+        }
+         else if(res.status == '401'){
+            this._cookieService.put("username",'');
+            this._cookieService.put("email", '');
+            this._cookieService.put("token", '');
+            this._cookieService.put("userid", '');
+            this.router.navigateByUrl('/login');
+           }
+      }, error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }    
+      );
+
+
+
   }
+
+
+  openDialogNow(plans,patientid,plan_id,planLength,selectedPlan): void {
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
 
   openUpdateDialog(patientid): void {
 
@@ -609,6 +674,11 @@ private deletePatients(row) {
     this.patientsdetailService.getPlans(this.clinic_id).subscribe((res) => {
         if(res.message == 'success'){
            this.membersplan= res.data;
+           if(this.membersplan.length > 0){
+              this.selectedFirstPlan =this.membersplan[0].id; 
+           }
+           
+  
            this.clinic_id = $('#currentClinicid').attr('cid');
         }
          else if(res.status == '401'){

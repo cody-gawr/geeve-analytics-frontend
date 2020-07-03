@@ -225,8 +225,13 @@ this.updateCardService.checkValidString(this.string).subscribe((res) => {
   public plan_type;
   getCardDetails() {
       this.updateCardService.getCardDetails(this.subscription_id,this.plan_type).subscribe((res) => {
+        console.log(res);
         this.last4 = res.last4;
+        this.clinic_logo = res.clinic_logo;
+         if(this.clinic_logo == 'undefined')
+            this.clinic_logo="../assets/img/logo.png";
         this.invoice_id =res.payment[0]['invoice_id'];
+        
         //this.invoice_id='3223324234234234324234';
 
         this.pending_amount= res.payment[0]['amount'];

@@ -174,7 +174,7 @@
                             </div>
                           </mat-tab>
                            <mat-tab class="step3" label="Payment" [disabled]='!tabActive2'>
-                              <mat-card-content class="Payment-info">
+                              <mat-card-content class="Payment-info fianl-payment-screen">
                                 <div class="cc_total_amountarea"><span class="" *ngIf="planLength =='MONTHLY'">Total Charges :  <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</b> per Month</span><span class="" *ngIf="planLength =='YEARLY'">Total Charges : <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</b> per Year</span></div>
                                 <div class="cell example example3 " id="example-3">
                                     <div class="iframe_main">

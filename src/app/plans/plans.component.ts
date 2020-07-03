@@ -216,7 +216,7 @@ export class PlansComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.initiate_clinic();
-    this.getTreatments();
+   // this.getTreatments();
         $('#title').html('Membership Plans');
         
          this.preventative_plan = [

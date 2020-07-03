@@ -489,7 +489,7 @@ public next_date;
        if(res.message == 'success'){
         this.payment = res.data;
         if(res.data[0]) {
-          this.payment_plan_name=res.data[0]['member_plan']['planName'];
+          //this.payment_plan_name=res.data[0]['member_plan']['planName'];
           this.start_date=new Date(res.data[0]['invoice_date']);
           if(this.planLength == 'MONTHLY') {
             this.renew_date=this.datePipe.transform(new Date(this.start_date.getFullYear()+1,this.start_date.getMonth(),this.start_date.getDate()), 'dd-MM-y');

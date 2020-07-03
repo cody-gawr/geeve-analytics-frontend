@@ -31,7 +31,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
  ngAfterViewInit() {
     this.clinic_id = '1';
     
-     this.getDentists(); 
+    // this.getDentists(); 
       
   }
 

@@ -1595,9 +1595,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', end
     padding: 4px;
     background: rgba(255,255,255,0.8);
     border-radius: 3px;
-    -o-object-fit: cover;
+    -o-object-fit: scale-down;
     box-shadow: 0 0 0px 1px rgba(14,52,89, 0.1);
-    object-fit: cover;
+    object-fit: scale-down;
 }.mat-flat-button.mat-.basic_details_form .mat-card-title:disabled, .mat-raised-button.mat-green:disabled, .mat-fab.mat-green:disabled, .mat-mini-fab.mat-green:disabled{background:#76dbc5!important; color:#18a689!important;}
 .gradient_inner .mat-green:disabled{color:
 #fff!important;
@@ -2005,16 +2005,9 @@ body .AddCard-main .AddCard-box .mat-card-title {
     top: 10px !important;
 }
 .patient_details_form .spl_headings::before, .patient_details_form .spl_headings::after {
-    height: 40px !important;
-    background-size: 100% auto !important;
-    width: 98px !important;
+    
 }
-.patient_details_form .spl_headings::before {
-  left: -98px !important;
-}
-.patient_details_form .spl_headings::after {
-    right: -98px !important;
-}
+
 .patient_details_form .mat-card, .login-register[_ngcontent-xqt-c2] .mat-card[_ngcontent-xqt-c2] {
     width: calc(100% - 30px) !important;
 }
@@ -2082,22 +2075,24 @@ body .AddCard-main .AddCard-box .mat-card-title {
 
 .patient_details_form .mat-tab-label-container .mat-tab-label:nth-child(2), .mat-tab-label-container .mat-tab-label:nth-child(3){margin-left:0px!important;}
 .clinic_logo_patientdetail {
-    width: 110px;
+    width: 230px;
+    border-radius: 3px;
+    height: 110px;
     text-align: center;
     background-color: #DDEBE9;
     margin: auto;
-    height: 110px;
-    bottom: 75px;
+    bottom: 70px;
     border: 5px solid #fff;
     overflow: hidden;
-    border-radius: 50%;
+    padding: 10px;
     position: relative;
     z-index: 9;
 }
 .clinic_logo_patientdetail img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit:scale-down;
+    float: left;
 }
 
 
@@ -4327,8 +4322,9 @@ body .mat-gray {
     left: -104px;
     background-repeat: no-repeat;
     background-position: right;
-    height: 46px;
+    height: 100%;
     position: absolute;
+    background-size:auto 100%;
     background-image: url(/assets/images/pdh-left-arrow.png);
 }
 .patient_details_form .spl_headings::after {
@@ -4337,8 +4333,9 @@ body .mat-gray {
     top: 0;
     right: -104px;
     background-repeat: no-repeat;
-    background-position: right;
-    height: 46px;
+    background-position: left;
+    background-size:auto 100%;
+    height: 100%;
     position: absolute;
       background-image:url(/assets/images/pdh-right-arrow.png);
 
@@ -4376,6 +4373,7 @@ body .mat-gray {
     padding-right: 27px !important;
      letter-spacing: 2px;
      text-transform: uppercase;
+     color: #fff !important;
 }
 
 .patient_details_form .mat-raised-button.m-i-r {

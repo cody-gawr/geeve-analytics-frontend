@@ -79,7 +79,7 @@ a:hover, a:focus, a.active{outline:none; text-decoration:none;}
 .desktop_hide{display:none;}
 .sa-c{max-width:1240px!important;}
 .btn{cursor:pointer;}
-.btn-theme{background:#00A289; color:#fff!important; border-color:#00A289;}
+.btn-theme{background:#00A289; color:#fff!important; border-color:#00A289; padding: 8px 30px;}
 .btn-theme:hover,.btn-theme:focus{background:#00A289; color:#fff; border-color:#00A289;}
 .btn-rounded{border-radius:150px;}
 
@@ -120,7 +120,7 @@ input.form-control{border-radius:80px;}
 #nav_main .menu ul li a{color: #212529; border-radius:150px;
     display: block; letter-spacing:1.5px;
     font-size: 14px; font-weight:500; text-transform:uppercase; 
-    padding: 7px 10px 7px;
+    padding: 6px 20px 6px;
     text-decoration: none; 
     text-transform: uppercase;}
 #nav_main .menu ul li a.active{background:#12375c!important; color:#fff;}

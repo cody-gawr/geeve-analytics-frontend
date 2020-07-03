@@ -6,19 +6,15 @@
 export const environment = {
   production: true,
 
-
-  apiUrl :"https://api.jeeve.com.au/staging/members",
- homeUrl:"https://staging-members.jeeve.com.au",
+apiUrl :"https://api.jeeve.com.au/staging/members",
+  homeUrl:"https://staging-members.jeeve.com.au",
  solutionsUrl : "https://api.jeeve.com.au/staging/solutions",
 
-
-  // apiUrl :"http://localhost/jeevemembers/server/staging/members",
-  // homeUrl:"http://localhost/jeevemembers",
-  // solutionsUrl : "http://localhost/jeevesolutions/server/staging/solutions",
 
   // apiUrl : "http://localhost:4001/staging/members",
   // homeUrl:"http://localhost/jeevemembers/client2/src/",
   // solutionsUrl : "http://localhost/jeevesolutions/server/staging/solutions",
+
 
 
 };

@@ -33,11 +33,22 @@ export class DefaultersService {
         });
    }
 
+     getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        }else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+   }
 
    // Get Dentist
    getInofficeDefaultersMembers(clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): 
     Observable<any> {
-        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeDefaultersMembers?token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/InofficePayments/getInofficeDefaultersMembers?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                     return response;
                 })
@@ -47,7 +58,8 @@ export class DefaultersService {
        // Get Dentist
    getDefaultersMembers(clinic_id,user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): 
     Observable<any> {
-        return this.http.get(this.apiUrl +"/Patients/getDefaulterMembers?token="+this._cookieService.get("token")+"&user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id+"&token_id="+this.token_id, { headers: this.headers })
+         var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Patients/getDefaulterMembers?user_id="+this._cookieService.get("userid")+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                     return response;
                 })
@@ -63,10 +75,9 @@ export class DefaultersService {
     formData.append('defaulter_email', defaulter_email)
     formData.append('defaulter_type', defaulter_type);
     formData.append('defaulter_plan_id', defaulter_plan_id);
-    formData.append('token', token);
-    formData.append('token_id', this.token_id);
+    var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/DefaultersEmail/sendDefaultersemail/", formData)
+        return this.http.post(this.apiUrl +"/DefaultersEmail/sendDefaultersemail/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
         })

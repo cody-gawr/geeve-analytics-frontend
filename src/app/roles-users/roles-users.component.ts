@@ -154,7 +154,7 @@ export class RolesUsersComponent implements AfterViewInit {
     
     this.getUsers();
     this.getRoles();
-    this.getDentists();
+ //   this.getDentists();
     this.clinic_id = this.route.snapshot.paramMap.get("id");
         $('#title').html('Users');
         $('.external_clinic').show();
@@ -218,7 +218,7 @@ export class RolesUsersComponent implements AfterViewInit {
     rolesRef.afterClosed().subscribe(result => {
      if(result != undefined) {
       this.roles.forEach(res1 => {
-        console.log(res1);
+        console.log(res1.id);
           var checkedRoles1='';
           var checkedRoles =[];
           if(result.selectedRole['dashboards_'+res1.id])
@@ -336,6 +336,22 @@ export class RolesUsersComponent implements AfterViewInit {
                this.selectedRole[results+'_'+result.role_id] = true;
             })
          });
+         // When user will come for the first time
+         if(this.roles.length==0){
+            var temp=[];
+            temp['id'] = "3";
+            temp['role'] = "Receptionist";
+            temp['permisions'] = "";
+            this.roles.push(temp);
+
+            temp=[];
+            temp['id'] = "4";
+            temp['role'] = "Manager";
+            temp['permisions'] = "";
+            this.roles.push(temp);
+
+         }
+         console.log(this.roles);
        }
         else if(res.status == '401'){
             this._cookieService.put("username",'');
