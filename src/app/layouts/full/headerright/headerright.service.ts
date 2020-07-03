@@ -1,4 +1,3 @@
-
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
@@ -13,7 +12,7 @@ export class HeaderrightService {
    public token: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
-
+    public token_id;
     constructor(private http: HttpClient,private _cookieService: CookieService) {
         //append headers
         this.headers = new HttpHeaders();
@@ -33,6 +32,8 @@ export class HeaderrightService {
             );
     } 
         getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+        console.log('header');
+        
         return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+user_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
@@ -42,5 +43,3 @@ export class HeaderrightService {
 
 
 }
-
-

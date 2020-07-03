@@ -7,6 +7,7 @@ import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import { Router, NavigationEnd, Event  } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-settings.component.html',
@@ -30,7 +31,7 @@ export class ClinicSettingsComponent implements OnInit {
           public xeroConnect = false;
           public xeroOrganization='';
           public workingDays:any = {sunday: false,monday: false,tuesday: false,wednesday: false,thursday: false,friday: false,saturday: false};       
-  constructor(notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
    this.notifier = notifierService;
     this.options = fb.group({
       hideRequired: false,
@@ -54,7 +55,7 @@ export class ClinicSettingsComponent implements OnInit {
       contactName: [null, Validators.compose([Validators.required])],
       address: [null, Validators.compose([Validators.required])],
       practice_size: [null, Validators.compose([Validators.required])],
-      post_op_calls: [null, Validators.compose([Validators.required])]
+      // post_op_calls: [null, Validators.compose([Validators.required])]
     });
   }
 
@@ -105,7 +106,7 @@ export class ClinicSettingsComponent implements OnInit {
   let days = JSON.stringify(this.workingDays);
    this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size,days,this.post_op_calls ).subscribe((res) => {
        if(res.message == 'success'){
-          this.notifier.notify( 'success', 'Clinic Settings Updated' ,'vertical');
+         this.toastr.success('Clinic Settings Updated' );
        }
         else if(res.status == '401'){
             this._cookieService.put("username",'');

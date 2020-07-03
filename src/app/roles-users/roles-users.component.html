@@ -1,6 +1,6 @@
 <mat-card class="roles_users">
     <mat-card-content>
-        <mat-card-title>Users <div class="sa-pull-right"><button class="mat-raised-button mat-gray mr-15" mat-raised-button (click)="openRoleDialog()">Set Roles</button><button class="mat-raised-button mat-gray" mat-raised-button (click)="openDialog()">Add User</button></div>
+        <mat-card-title>Users <div class="sa-pull-right"><button class="mat-raised-button mat-gray mr-15" mat-raised-button (click)="openRoleDialog()">Set Roles</button><button class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()">Add User</button></div>
            <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
         </mat-card-title>
 
@@ -25,7 +25,7 @@
         <span>Display Name</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'displayName')" *ngIf="!editing[rowIndex + '-displayName']">
+          <span>
             {{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'displayName', rowIndex)" *ngIf="editing[rowIndex+ '-displayName']" type="text" [value]="value"
@@ -35,7 +35,7 @@
        <ngx-datatable-column name="Email">
        
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'email')" *ngIf="!editing[rowIndex + '-email']">
+          <span >
             {{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'email', rowIndex)" *ngIf="editing[rowIndex+ '-email']" type="text" [value]="value"

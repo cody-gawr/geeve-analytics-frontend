@@ -68,6 +68,9 @@ export class DialogOverviewExampleLimitDialogComponent {
   ) {
 
   }
+   onNoClick(): void {
+    this.dialogRef.close();
+  }
 }
 
 declare var require: any;
@@ -137,7 +140,7 @@ export class ClinicComponent implements AfterViewInit {
 
   openLimitDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleLimitDialogComponent, {
-      width: '250px',      
+        
     });
  
   dialogRef.afterClosed().subscribe(result => {

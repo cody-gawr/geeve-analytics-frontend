@@ -1,4 +1,3 @@
-
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
@@ -127,6 +126,14 @@ export class LoginService {
                         })
             );
     }
+            checkValidString(id): Observable<any> {
+            const formData = new FormData();
+
+            formData.append('id', id);
+            return this.http.post(this.apiUrl +"/users/checkValidString", formData)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
 }
-
-

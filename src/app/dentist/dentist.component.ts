@@ -3,7 +3,8 @@ import { DentistService } from './dentist.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Router } from "@angular/router";
 import { CookieService } from "angular2-cookie/core";
-
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -74,7 +75,7 @@ export class DentistComponent implements AfterViewInit {
   columns = [{ prop: 'sr' },{ prop: 'providerId' }, { name: 'name' }, { name: 'Action' }];
 
   @ViewChild(DentistComponent) table: DentistComponent;
-  constructor(private dentistService: DentistService, public dialog: MatDialog, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
+  constructor(private dentistService: DentistService, public dialog: MatDialog, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,private toastr: ToastrService) {
   this.clinic_id = this.route.snapshot.paramMap.get("id");
 
     this.rows = data;
@@ -87,8 +88,7 @@ export class DentistComponent implements AfterViewInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-      width: '300px',
-      height: '300px',
+     
       data: { dentist_name: this.dentist_name, provider_id: this.provider_id }
     });
 
@@ -96,7 +96,7 @@ export class DentistComponent implements AfterViewInit {
   this.dentistService.addDentists(result.provider_id, result.dentist_name,this.clinic_id).subscribe((res) => {
     console.log(res);
        if(res.message == 'success'){
-        alert('Dentist Added');
+        this.toastr.success('Dentist Added');
           this.getDentists();
               $('.external_clinic').show();
         $('.dentist_dropdown').hide();
@@ -131,11 +131,19 @@ this.table = data;
 
   }
   private deleteDentists(row) {
-     if(confirm("Are you sure to delete Dentist?")) {
+       Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete Dentist?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if(result.value){
     if(this.rows[row]['providerId']) {
   this.dentistService.deleteDentists(this.rows[row]['providerId']).subscribe((res) => {
        if(res.message == 'success'){
-        alert('Dentist Removed');
+         this.toastr.success('Dentist Removed');
           this.getDentists();
        }  
     }, error => {
@@ -148,7 +156,8 @@ this.table = data;
     this.rows = [...this.rows];
 
     }
-  }
+ }
+});
   }
 
   updateFilter(event) {
@@ -173,7 +182,7 @@ this.table = data;
     this.rows[rowIndex][cell] = event.target.value;
     this.dentistService.updateDentists(this.rows[rowIndex]['providerId'], this.rows[rowIndex][cell],this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
-        alert('Dentist Updated');
+         this.toastr.success('Dentist Updated');
           this.getDentists();
        }
     }, error => {

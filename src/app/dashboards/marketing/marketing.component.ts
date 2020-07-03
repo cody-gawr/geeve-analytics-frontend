@@ -23,7 +23,7 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
 import {MenuItem} from 'primeng/api'; 
 import { NgxSmartModalService } from 'ngx-smart-modal';
-
+import { ToastrService } from 'ngx-toastr';/**/
 export interface Dentist {
   providerId: string;
   name: string;
@@ -45,10 +45,28 @@ export class MarketingComponent implements AfterViewInit {
   public trendText;
   public filteredCountriesMultiple: any[];
   public selectedCategories:any[] =[];
-  constructor(private marketingService: MarketingService, private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService){
+  constructor(private toastr: ToastrService,private marketingService: MarketingService, private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService){
   }
   private warningMessage: string; 
   private myTemplate: any = "";
+      private checkPermission(role) { 
+  this.headerService.checkPermission(role).subscribe((res) => {
+       if(res.message == 'success'){
+       }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+     //    $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+    }    
+    );
+
+  }
      initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
       if(val != undefined && val !='all') {
@@ -57,6 +75,7 @@ export class MarketingComponent implements AfterViewInit {
    }
   }
   ngAfterViewInit() {
+      this.checkPermission('dashboard4');
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
        //  this.filterDate('cytd');

@@ -1,0 +1,9 @@
+.loading.ng-star-inserted {
+    position: absolute;
+    z-index: 999;
+    background: #fff;
+    width: 100%;
+    text-align: center;
+    padding: 20%;
+    opacity: 0.9;
+}

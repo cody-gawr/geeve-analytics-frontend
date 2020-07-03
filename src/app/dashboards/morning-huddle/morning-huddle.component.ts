@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { MorningHuddleService } from './morning-huddle.service';
 import { CookieService } from "angular2-cookie/core";
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface PeriodicElement {
   name: string;
@@ -16,10 +18,9 @@ export interface PeriodicElement {
   xrays: string;
   noshows: string;
   newpatient: string;
+  card: string;  
+  status: string;  
 }
-
-
-
 
 
 
@@ -35,14 +36,17 @@ export class MorningHuddleComponent implements OnInit {
     public production:any = '';
     public recallRate:any = '';
     public treatmentRate:any = '';
-    public dentistList:any = [];
     public previousDays:any = 1;
+
 
     public schedulePatieltd:any = 0;
     public scheduleNewPatieltd:any = 0;
     public schedulehours:any = 0;
     public unSchedulehours:any = 0;
-    public appointmentCards:any = [];
+    //public appointmentCards:any = [];
+    public appointmentCards = new MatTableDataSource();
+    public dentistList = new MatTableDataSource([]);
+
     
     public reAppointment:any = 0;
     public unscheduledPatients:any = 0;
@@ -70,18 +74,20 @@ export class MorningHuddleComponent implements OnInit {
   displayedColumns1: string[] = ['name', 'dentist', 'start'];
   displayedColumns2: string[] = ['name', 'start', 'code'];
   displayedColumns3: string[] = ['name', 'start', 'outstanding'];
-  displayedColumns4: string[] = ['name', 'phone', 'code'];
-  displayedColumns5: string[] = ['name', 'phone', 'code'];
-  displayedColumns6: string[] = ['name','recall', 'outstanding', 'xrays', 'noshows', 'newpatient'];
+  displayedColumns4: string[] = ['name', 'phone', 'code','status'];
+  displayedColumns5: string[] = ['name', 'phone', 'code','status'];
+  displayedColumns6: string[] = ['start','dentist','name', 'card'];
   
-
+ @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService) { 
   }
  ngOnInit(){
     this.user_type = this._cookieService.get("user_type");
      this.initiate_clinic();
  }
-
+ngAfterViewInit(): void {
+    this.dentistList.paginator = this.paginator;
+  }
 initiate_clinic() {
     $('.external_clinic').show();
     $('.dentist_dropdown').hide();
@@ -94,7 +100,7 @@ initiate_clinic() {
     if(val != undefined && val !='all') {
       this.clinic_id = val;
     }  
-    
+     $('#title').html('Morning Huddle');
     /***** Tab 1 ***/
     this.getDentistPerformance();
     this.getRecallRate();
@@ -153,6 +159,14 @@ initiate_clinic() {
   }
   refreshScheduleTab(event){
     this.currentDentist = event;
+    this.getSchedulePatients();
+    this.getScheduleNewPatients();
+    this.getScheduleHours();
+    this.getUnscheduleHours();
+    this.getAppointmentCards();
+  }
+  frontDeskTab(event){
+    this.previousDays = event;
     this.getSchedulePatients();
     this.getScheduleNewPatients();
     this.getScheduleHours();
@@ -253,6 +267,7 @@ initiate_clinic() {
       }
     }); 
   }
+  
    getTodayPostopCalls(){
     this.morningHuddleService.getTodayPostopCalls( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
@@ -298,7 +313,7 @@ initiate_clinic() {
    getAppointmentCards(){
     this.morningHuddleService.getAppointmentCards( this.clinic_id,this.currentDentist, this.previousDays,  this.user_type ).subscribe((production:any) => {
       if(production.status == true) {
-        this.appointmentCards = production.data;
+        this.appointmentCards.data = production.data;
       }
     }); 
   }
@@ -336,7 +351,8 @@ initiate_clinic() {
  getDentistList(){
     this.morningHuddleService.dentistList( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((list:any) => {
       if(list.status == true){
-        this.dentistList = list.data;
+
+        this.dentistList.data = list.data;
         this.dentistListLoading = true;
       }
     }); 
@@ -354,6 +370,12 @@ initiate_clinic() {
     }
     var matches = str.match(/\b(\w)/g); // ['J','S','O','N']
     return matches.join('')
+  }
+  
+  toggleUpdate(event,pid,cid,uid,type) {    
+    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,uid,type).subscribe((update:any) => {
+      console.log(update,'***');
+    });
   }
 
 }

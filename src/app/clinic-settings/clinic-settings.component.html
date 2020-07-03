@@ -1,101 +1,71 @@
 <!-- ============================================================== -->
 <!-- Card Grid-->
 <!-- ============================================================== -->
-<div fxLayout="row wrap">
-  <div fxFlex.gt-sm="100" fxFlex="100">
-    <mat-card>
-      <mat-card-content>
-        <mat-card-title>Clinic Settings <button class="sa-pull-right mat-raised-button mat-gray connect-xero" *ngIf ="xeroConnect == false" mat-raised-button (click) = "openXero()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-         <span class="org_xero" *ngIf="xeroOrganization != ''" >- {{xeroOrganization}}</span> <button class="sa-pull-right mat-raised-button mat-red disconnect-xero" *ngIf ="xeroConnect == true" mat-raised-button (click) = "disconnectXero()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></mat-card-title>
 
-        <!-- ============================================================== -->
-        <!-- column -->
-        <!-- ============================================================== -->
-        <div fxLayout="row wrap">
-        <!-- Card column -->
-        <div fxFlex.gt-sm="100%" fxFlex="100">
-
-                           <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
-
-                                <div fxLayout="row wrap">
-                                  <!-- column -->
-                                  <div fxFlex.gt-md="100" fxFlex="100">
-                                    <mat-form-field>
-                                        <mat-card-title>Clinic Name</mat-card-title>
-                                      <input matInput placeholder="" [formControl]="form.controls['clinicName']" [(ngModel)]= "clinicName">
-                                    </mat-form-field>
-                                  </div>
-                                   <div fxFlex.gt-md="100" fxFlex="100">
-                                    <mat-form-field>
-                                        <mat-card-title>Contact Name</mat-card-title>
-                                      <input matInput placeholder="" [formControl]="form.controls['contactName']" [(ngModel)]="contactName">
-                                    </mat-form-field>
-                                  </div>
-                                   <div fxFlex.gt-md="100" fxFlex="100">
-                                    <mat-form-field>
-                                        <mat-card-title>Address</mat-card-title>
-                                      <input matInput placeholder="" [formControl]="form.controls['address']" [(ngModel)]="address">
-                                    </mat-form-field>
-                                  </div>
-                                   <div fxFlex.gt-md="100" fxFlex="100">
-                                    <mat-form-field>
-                                        <mat-card-title>Practice Size</mat-card-title>
-                                      <input matInput placeholder="" [formControl]="form.controls['practice_size']" [(ngModel)]="practice_size">
-                                    </mat-form-field>
-                                  </div> 
-                                  <div fxFlex.gt-md="100" fxFlex="100">
-                                    <mat-form-field>
-                                        <mat-card-title>Post Op Calls Treatments</mat-card-title>
-                                      <input matInput placeholder="" [formControl]="form.controls['post_op_calls']" [(ngModel)]="post_op_calls">
-                                    </mat-form-field>
-                                  </div>            
-
-
-                                <div fxFlex.gt-md="100" fxFlex="100">
-                                  <mat-card-title>Clinic Working Days</mat-card-title>
-                                </div>              
-                                <div fxFlex.gt-md="50" fxFlex="100">
-                                   <mat-slide-toggle checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Sunday</mat-slide-toggle>
-                                 </div>
-                                <div fxFlex.gt-md="50" fxFlex="100">                     
-                                   <mat-slide-toggle checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Monday</mat-slide-toggle>
-                                 </div>  
-                                 <div fxFlex.gt-md="50" fxFlex="100">                     
-                                   <mat-slide-toggle checked="{{ workingDays.tuesday }}" name="tuesday" (change)="toggle($event)">Tuesday</mat-slide-toggle>
-                                   </div>  
-                                 <div fxFlex.gt-md="50" fxFlex="100">
-                                   <mat-slide-toggle checked="{{ workingDays.wednesday }}" name="wednesday" (change)="toggle($event)">Wednesday</mat-slide-toggle>
-                                 </div>
-                                <div fxFlex.gt-md="50" fxFlex="100">
-                                   <mat-slide-toggle checked="{{ workingDays.thursday }}" name="thursday" (change)="toggle($event)">Thursday</mat-slide-toggle>
-                                   </div>  
-                                 <div fxFlex.gt-md="50" fxFlex="100">
-                                   <mat-slide-toggle checked="{{ workingDays.friday }}" name="friday" (change)="toggle($event)">Friday</mat-slide-toggle>
-                                   </div>  
-                                 <div fxFlex.gt-md="50" fxFlex="100">
-                                   <mat-slide-toggle checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
-                                   </div> 
-
-
-
-
-                                         
-                                                              
-                                 </div> 
-
-                                  <mat-card-actions>
-                                    <button mat-raised-button color="primary" type="submit">Save</button>
-                                  </mat-card-actions>
-                                  <!-- column -->
-                                 
-
-                              </form>
-
-
-        </div>
-      </div>
- 
-      </mat-card-content>
-    </mat-card>
+<mat-card>
+  <mat-card-content>
+    <div fxLayout="row wrap">
+      <div fxFlex>
+        <mat-card-title>Clinic Settings</mat-card-title>
   </div>
+  <div fxFlex="450px" fxFlex.sm="100" fxFlex.xs="100" class="xero-main"><button class="sa-pull-right mat-raised-button mat-gray connect-xero" *ngIf ="xeroConnect == false" mat-raised-button (click) = "openXero()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+      <span class="org_xero xero-company-name" *ngIf="xeroOrganization != ''" ><span class="material-icons">done</span> {{xeroOrganization}}</span>
+      <button class="sa-pull-right mat-raised-button mat-red disconnect-xero" *ngIf ="xeroConnect == true" mat-raised-button (click) = "disconnectXero()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></div>
 </div>
+    <!-- ============================================================== --> 
+    <!-- column --> 
+    <!-- ============================================================== -->
+        <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
+          <div fxLayout="row wrap" fxLayoutGap="4%" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+            <div fxFlex="58" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
+              <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"> 
+                <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+                  <mat-form-field>
+                    <input matInput placeholder="Clinic Name" [formControl]="form.controls['clinicName']" [(ngModel)]= "clinicName">
+                  </mat-form-field>
+                </div>
+                <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+                  <mat-form-field>
+                    <input matInput placeholder="Contact Name" [formControl]="form.controls['contactName']" [(ngModel)]="contactName">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row wrap"> 
+                <div fxFlex="100">
+                  <mat-form-field>
+                    <input matInput placeholder="Address" [formControl]="form.controls['address']" [(ngModel)]="address">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"> 
+                <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+                  <mat-form-field>
+                    <input matInput placeholder="Practice Size" [formControl]="form.controls['practice_size']" [(ngModel)]="practice_size">
+                  </mat-form-field>
+                </div>
+               <!--  <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+                  <mat-form-field>
+                    <input matInput placeholder="Post Op Calls Treatments" [formControl]="form.controls['post_op_calls']" [(ngModel)]="post_op_calls">
+                  </mat-form-field>
+                </div> -->
+              </div>
+            </div>
+      <!--       <div class="working-days" fxFlex="38" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
+              <h4>Clinic Working Days</h4>
+              <mat-slide-toggle checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Sunday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Monday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.tuesday }}" name="tuesday" (change)="toggle($event)">Tuesday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.wednesday }}" name="wednesday" (change)="toggle($event)">Wednesday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.thursday }}" name="thursday" (change)="toggle($event)">Thursday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.friday }}" name="friday" (change)="toggle($event)">Friday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
+            </div> -->
+          </div>
+          <mat-card-actions>
+            <button mat-raised-button color="green" type="submit" [disabled]="!form.valid">Save</button>
+          </mat-card-actions>
+          <!-- column -->
+          
+        </form>
+  </mat-card-content>
+</mat-card>

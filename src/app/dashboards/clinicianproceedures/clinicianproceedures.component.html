@@ -10,11 +10,11 @@
                 <input type="button" id="dentist_initiate" (click) = "initiate_dentist()"  [style.display]="'none'">
                  <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
                 <input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
-<div class="sa_dashboard_inner_content">
+<div class="sa_dashboard_inner_content sa_dentist_graphs_area">
    <div class="sa_card gridshadow">
-    <div fxLayout="row wrap">
+    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 
-      <div fxFlex.lg="80" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="80">
+      <div fxFlex>
          <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial YTD</span>
           <div class="custom_date">
           <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="" (click)="filterDate('custom')" />
@@ -22,7 +22,7 @@
         </div>
       </div>
 
-     <div fxFlex.lg="20" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20">
+     <div class="dh-target">
          <div class="onofftoogle" [style.display]="'none'">
           <span class="trend_mode_title">Trend Mode:</span>
               <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group" aria-label="Font Style" >
@@ -42,14 +42,13 @@
   </div>
 </div>
 
-<div class="sa_dentist_graphs_area">
-<div fxLayout="row wrap">
-  <div fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" class="sa_flex_transparent">
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+  <div fxFlex="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flex_transparent">
     {{startDate| date}}- {{endDate| date}}
 </div>
 
   <!-- Column-->
-  <div fxFlex.lg="65" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="65" class="sa_flexbg items_predictor md_mrn" >
+  <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg items_predictor md_mrn" >
     <mat-card class="itemsPredictor sa_no_tabs_area">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">Item Predictor 
@@ -112,7 +111,7 @@
     <div *ngIf="buildChartLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
     <div *ngIf="buildChartDentistLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
- <div fxFlex.lg="34" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="34" class="sa_flexbg referral_clinicians last">
+ <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians last">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
          <span class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{pieChartInternalPrevTotal}}"><i class="fas fa-chart-line {{pieChartInternalPrevTooltip}}"></i></span>
@@ -194,7 +193,7 @@
   </div>
  
   <!-- Column--> 
-  <div  fxFlex.lg="48" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="48" class="sa_flexbg predictor_ratio predictor_ratio_vertical">
+  <div  fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio predictor_ratio_vertical">
     <mat-card class="ratioPredictor">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">
@@ -345,7 +344,7 @@
     <div *ngIf="buildChartPredictorDentistLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
   <!-- Column-->
-  <div  *ngIf="toggleChecked == false" fxFlex.lg="51" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="51" class="sa_flexbg last revenue_proceedure">
+  <div  *ngIf="toggleChecked == false" fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last revenue_proceedure">
     <mat-card class="revenueProceedure sa_no_tabs_area">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">Total Revenue Per Procedure
@@ -409,5 +408,5 @@
      
   </div>
 </div>
-</div>
+
 </div><canvas #myCanvas baseChart [style.display]="'none'"></canvas>

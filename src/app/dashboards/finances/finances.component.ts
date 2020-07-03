@@ -18,6 +18,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "angular2-cookie/core";
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
+import { ToastrService } from 'ngx-toastr';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -75,7 +76,25 @@ single = [
   doughnut = false;
   arcWidth = 0.65;
   rangeFillOpacity = 0.75;
-  constructor(private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
+  constructor(private toastr: ToastrService,private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
+  }
+    private checkPermission(role) { 
+  this.headerService.checkPermission(role).subscribe((res) => {
+       if(res.message == 'success'){
+       }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+     //    $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+    }    
+    );
+
   }
   private warningMessage: string;
    initiate_clinic() {
@@ -87,6 +106,7 @@ single = [
    }
   }
   ngAfterViewInit() {
+     this.checkPermission('dashboard5');
         //this.filterDate('cytd');
       //  this.getDentists(); 
       this.initiate_clinic();
@@ -1470,7 +1490,7 @@ toggleFilter(val) {
     else if(val == 'off') {
         this.filterDate('cytd');
           $('.trendMode').hide();
-    $('.nonTrendMode').css('display','flex');
+    $('.nonTrendMode').css('display','block');
     }
 }
 flipcard(div){
@@ -1513,7 +1533,7 @@ public netProfitDisplayVal;
 toggleChangeProcess(){
     if(this.toggleChecked){
     $('.filter').removeClass('active');
-    $('.trendMode').css('display','flex');
+    $('.trendMode').css('display','block');
     $('.nonTrendMode').hide();
     this.finProductionByClinicianTrend();
     this.finTotalDiscountsTrend();

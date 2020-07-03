@@ -8,7 +8,7 @@ import { Router, NavigationEnd, Event  } from '@angular/router';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
 import Swal from 'sweetalert2';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './profile-settings.component.html',
@@ -22,7 +22,7 @@ export class ProfileSettingsComponent implements OnInit {
 
   public cardStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
       fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
@@ -30,24 +30,24 @@ export class ProfileSettingsComponent implements OnInit {
       padding:'10px',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#698aaa', 
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#fd0404',
       ':focus': {
-        color: '#a94442',
+        color: '#fd0404',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#fd0404',
       },
     },
   };
@@ -55,62 +55,62 @@ export class ProfileSettingsComponent implements OnInit {
 
   public expStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
       fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
       fontSmoothing: 'antialiased',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#698aaa',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#fd0404',
       ':focus': {
-        color: '#a94442',
+        color: '#fd0404',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#fd0404',
       },
     },
   };
 
 public cvcStyle = {
     base: {
-      color: '#424242',
+      color: '#fff',
       fontWeight: 400,
       fontFamily: 'Quicksand, Open Sans, Segoe UI, sans-serif',
       fontSize: '16px',
       fontSmoothing: 'antialiased',
 
       ':focus': {
-        color: '#424242',
+        color: '#fff',
       },
 
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#9e9e9e',
+        color: '#698aaa',
       },
     },
     invalid: {
-      color: '#a94442',
+      color: '#fd0404',
       ':focus': {
-        color: '#a94442',
+        color: '#fd0404',
       },
       '::placeholder': {
-        color: '#9e9e9e',
+        color: '#fd0404',
       },
     },
   };
@@ -134,18 +134,21 @@ public cvcStyle = {
           public xeroConnect = false;
           public xeroOrganization='';
           public email;
-  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute,private stripeService: StripeService, private router: Router) {
+  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute,private stripeService: StripeService, private router: Router,private toastr: ToastrService) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
     });
   }
+    
   ngOnInit() {
       this.route.params.subscribe(params => {
       this.id = this.route.snapshot.paramMap.get("id");
       this.displayName = this._cookieService.get("display_name");
-      this.email = this._cookieService.get("email");
+      this.email = this._cookieService.get("email");  
+      this.imageURL = this._cookieService.get("user_image");
         this.getPaymentDetails();
+
         this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
             this.stripeTest = this.fb.group({
             name: ['', [Validators.required]]
@@ -181,6 +184,11 @@ public cvcStyle = {
       currentPassword: [null, Validators.compose([Validators.required])],
       newPassword: [null, Validators.compose([Validators.required])],
       repeatPassword: [null, Validators.compose([Validators.required])]      
+    });
+         this.formSettings = this.fb.group({
+      email: [null, Validators.compose([Validators.required])],
+      displayName: [null, Validators.compose([Validators.required])],
+
     });
   }
 
@@ -298,8 +306,11 @@ public imageURL:any;
   this.displayName = $("#displayName").val();
   this.email = $("#email").val();
   this.imageURL = $("#imageURL").val();
+             $('.ajax-loader').show();
 
    this.profileSettingsService.updateprofileSettings(this.displayName, this.email, this.imageURL).subscribe((res) => {
+             $('.ajax-loader').hide();
+
        if(res.message == 'success'){
         let opts: CookieOptionsArgs = {
             expires: new Date('2030-07-19')
@@ -307,7 +318,13 @@ public imageURL:any;
         this._cookieService.put("display_name", this.displayName, opts);
         this._cookieService.put("user_image", this.imageURL, opts);
         this.display_name = this.displayName;
-        alert('Profile Settings Updated');
+         if(this.imageURL) {
+        $(".suer_image_sidebar img").attr('src' , this.imageURL);
+        this._cookieService.put("user_image", this.imageURL, opts);
+      }
+        $(".suer_text_sidebar").html(this.display_name.toUpperCase());
+       // this.notifier.notify( 'success', 'Profile Settings Updated' ,'vertical');
+         this.toastr.success('Profile Settings Updated .');  
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -319,7 +336,7 @@ public errorLogin = false;
   public errortext ="";
   public successLogin =false;
   public successtext ="";
-
+  public formSettings: FormGroup;
 public currentPassword;
 public newPassword;
 public repeatPassword;
@@ -354,11 +371,15 @@ public repeatPassword;
   } 
 public fileToUpload;
  uploadImage(files: FileList) {
+             $('.ajax-loader').show();
+
     this.fileToUpload = files.item(0);
     console.log(this.fileToUpload);
     let formData = new FormData();
     formData.append('file', this.fileToUpload, this.fileToUpload.name);
     this.profileSettingsService.logoUpload(formData).subscribe((res) => {
+             $('.ajax-loader').hide();
+
       if(res.message == 'success'){
         this.imageURL= res.data;
       }

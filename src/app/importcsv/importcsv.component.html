@@ -24,14 +24,14 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="Sample">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-         <a class="mat-raised-button sa_smtable_btn" href='{{homeUrl}}../src/assets/{{value}}.csv'>Sample CSV</a>
+         <a class="mat-raised-button mat-gray sa_smtable_btn" href='{{homeUrl}}../src/assets/{{value}}.csv'><i class="fas fa-file-csv"></i> Sample CSV</a>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Status">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-        <span class="label label-red"  *ngIf="value == 'Processed'">{{value}}</span>
+        <span class="label label-success"  *ngIf="value == 'Processed'">{{value}}</span>
         <span class="label label-danger"  *ngIf="value == 'Pending'">{{value}}</span>
-        <span class="label label-info"  *ngIf="value == 'In Progress'">{{value}}</span>
+        <span class="label label-warning"  *ngIf="value == 'In Progress'">{{value}}</span>
         <span class="label label-light-success"  *ngIf="value == 'No File Uploaded  '">{{value}}</span>
 
         </ng-template>
@@ -46,7 +46,7 @@
                          accept="csv/*"
                          (change)="processFile(fileInput,[rowIndex],'name')" >
                         <span *ngIf="show">Uploading File...</span>
-            <label for="file-upload{{value}}" class="mat-raised-button sa_smtable_btn mat-dc">Choose Files</label>
+            <label for="file-upload{{value}}" class="mat-raised-button sa_smtable_btn mat-dc"><i class="fas fa-cloud-upload-alt"></i> Choose Files</label>
 
         </ng-template>
       </ngx-datatable-column>

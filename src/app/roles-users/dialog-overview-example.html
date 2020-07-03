@@ -8,7 +8,7 @@
     <input matInput type="email" tabindex="1" [(ngModel)]="data.email"  class="mat-form-control" required="true"placeholder="Email">
   </mat-form-field>
   <div class="selectIcon">
-     <select fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100"  class="mat-form-control" required="true" class="sa_select form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
+     <select required="true" class="sa_select form-control mat-form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
       <option value ="" selected>Select User Type</option>
       <option value ="3">Practice Manager</option>
       <option value ="4">Clinician</option>
@@ -16,7 +16,7 @@
    </select> 
  </div>
  <div class="selectIcon" *ngIf="show_dentist == true">
-  <select class="sa_select sa_select_set_roles form-control" name="dentist_id" class="mat-form-control" required="true" [(ngModel)]="data.dentist_id" >
+  <select class="sa_select sa_select_set_roles form-control mat-form-control" name="dentist_id" required="true" [(ngModel)]="data.dentist_id" >
       <option value ="" selected="true">Select Dentist</option>
       <option *ngFor="let dentist of data.dentists" value ="{{dentist.providerId}}">{{dentist.name}}</option>
    </select> 

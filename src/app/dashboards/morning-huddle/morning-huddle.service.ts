@@ -1,4 +1,3 @@
-
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
@@ -207,6 +206,13 @@ export class MorningHuddleService {
                     })
         );
     }
+
+    updateFollowUpStatus(event,pid,cid,uid,type,token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/updateFollowUpStatus?event="+event+"&pid="+pid+"&cid="+cid+"&uid="+uid+"&type="+type+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
     
 }
-

@@ -74,11 +74,17 @@ export class LoginComponent implements OnInit {
        //  else
         this.router.navigate(['/dashboards/healthscreen']);
       }
+       else if(datares['user_type'] == '5') {
+          this._cookieService.put("userid", datares['parentid'], opts);
+         this._cookieService.put("childid", datares['userid'], opts);
+         this._cookieService.put("dentistid", datares['dentistid'], opts);
+         this.router.navigate(['/dashboards/finances']);
+      }
       else{
          this._cookieService.put("userid", datares['parentid'], opts);
          this._cookieService.put("childid", datares['userid'], opts);
          this._cookieService.put("dentistid", datares['dentistid'], opts);
-         this.router.navigate(['/profile-settings']);
+         this.router.navigate(['/dashboards/cliniciananalysis']);
       }
        }
        else if(res.message == 'error'){

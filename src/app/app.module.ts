@@ -30,7 +30,7 @@ import { HeaderService } from './layouts/full/header/header.service';
 import { Globals } from 'globals';
 import { DentistService } from './dentist/dentist.service';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
-
+import { ToastrModule } from 'ngx-toastr';
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 const customNotifierOptions: NotifierOptions = {
@@ -102,7 +102,15 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpModule,   
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot(AppRoutes),
-        NotifierModule.withConfig(customNotifierOptions)
+        NotifierModule.withConfig(customNotifierOptions),
+          ToastrModule.forRoot({ 
+    timeOut: 2000,
+    positionClass: 'toast-top-right',
+    preventDuplicates: true,
+    closeButton :true,
+    progressBar :true
+    //tapToDismiss:false
+  })
   ],
   providers: [
     AuthGuard, 

@@ -19,6 +19,7 @@ import { CookieService } from "angular2-cookie/core";
 import { BaseChartDirective } from 'ng2-charts';
 import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import { NgxSmartModalService } from 'ngx-smart-modal';
+import { ToastrService } from 'ngx-toastr';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -28,8 +29,10 @@ declare var Chart: any;
   templateUrl: './cliniciananalysis.component.html'
 })
 export class ClinicianAnalysisComponent implements AfterViewInit {
-   @ViewChild("myCanvas") canvas: ElementRef;
-@ViewChild(BaseChartDirective) chart: BaseChartDirective;
+
+  @ViewChild("myCanvas") canvas: ElementRef;
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+  
   lineChartColors;
   subtitle: string;
   public id:any ={};
@@ -48,14 +51,34 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public childid:string='';
   public user_type:string='';
   public flag= false;
-  constructor(private cliniciananalysisService: ClinicianAnalysisService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService, private frontdeskService: FrontDeskService){
-  }
-  private warningMessage: string;
-  ngAfterViewInit() {   
 
+  constructor(private toastr: ToastrService,private cliniciananalysisService: ClinicianAnalysisService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService, private frontdeskService: FrontDeskService){
+  }
+
+  private warningMessage: string;
+    private checkPermission(role) { 
+  this.headerService.checkPermission(role).subscribe((res) => {
+       if(res.message == 'success'){
+       }
+        else if(res.status == '401'){
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+     //    $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+    }    
+    );
+
+  }
+  ngAfterViewInit() {   
      // this.clinic_id = this.route.snapshot.paramMap.get("id");
     //  this.getDentists();
      // this.changeLoginStatus();
+       this.checkPermission('dashboard1');
       this.initiate_clinic();
       this.user_type = this._cookieService.get("user_type");
       if( this._cookieService.get("childid"))

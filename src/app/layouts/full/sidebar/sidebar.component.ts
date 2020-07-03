@@ -54,12 +54,10 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
       (<any>$('.app-search')).toggle(200);
     });
     // This is for the topbar search
-     this.getClinics();
      this.user_type = this._cookieService.get("user_type");
      this.display_name = this._cookieService.get("display_name");
      this.user_image = this._cookieService.get("user_image");
      this.login_status = this._cookieService.get("login_status");
-     console.log(this.login_status);
      if(!this._cookieService.get("user_image"))
       this.user_image = 'assets/images/gPZwCbdS.jpg';
 
@@ -85,15 +83,5 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
     }    
     );
   }
-   private getClinics() { 
-  this.headerService.getClinics().subscribe((res) => {
-       if(res.message == 'success'){
-        this.clinicsData = res.data;
-       }
-    }, error => {
-     // this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
 
-  }
 }

@@ -10,11 +10,11 @@
                 <input type="button" id="dentist_initiate" (click) = "initiate_dentist()"  [style.display]="'none'">
                   <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
                 <input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
-<div class="sa_dashboard_inner_content">
+<div class="sa_dashboard_inner_content sa_dentist_graphs_area">
    <div class="sa_card gridshadow">
-    <div fxLayout="row wrap">
+    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 
-      <div fxFlex.lg="80" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="80">
+      <div fxFlex>
          <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span
           ">Financial YTD</span>
           <div class="custom_date">
@@ -23,7 +23,7 @@
         </div>
       </div>
 
-     <div fxFlex.lg="20" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20">
+     <div class="dh-target">
          <div class="onofftoogle">
           <span class="trend_mode_title">Trend Mode:</span>
               <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group" aria-label="Font Style" >
@@ -43,14 +43,14 @@
   </div>
 </div>
 
-<div class="sa_dentist_graphs_area sa_marketing-area">
-<div fxLayout="row wrap">
+<div class=" sa_marketing-area">
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
   <div fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" class="sa_flex_transparent">
     {{startDate| date}}- {{endDate| date}}
 </div>
 
   <!-- Column-->
-  <div fxFlex.lg="50" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="50" class="sa_flexbg items_predictor md_mrn" >
+  <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg items_predictor md_mrn" >
     <mat-card class="itemsPredictor">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">No. New Patients By Referral
@@ -85,7 +85,7 @@
      <div *ngIf="mkNewPatientsByReferralLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
 
-   <div fxFlex.lg="49" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="49" class="sa_flexbg items_predictor md_mrn last" >
+   <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg items_predictor md_mrn last" >
     <mat-card class="itemsPredictor">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">Revenue by Referral
@@ -120,8 +120,10 @@
     </mat-card>
     <div *ngIf="mkRevenueByReferralLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
+</div>
   <!-- Column--> 
-<div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg referral_clinicians">
+  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+<div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
          <span *ngIf="showTrend == false" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
@@ -176,18 +178,19 @@
     <div *ngIf="fdnewPatientsRatioLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div>
     </div>
   </div>
-  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg referral_clinicians">
+  <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
          <span *ngIf="showTrend == false" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
         <mat-card-title class="text-center">Cost of New Patient Acquisition
-            <div class="sa_box_title_right_buttons">
+            
   
-            </div>  
+             
+              <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-raised-button mat-gray mat-button-sm mat-green-button" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Set Categories</button></div>
         </mat-card-title>
           <div class="chart py-2">
           <div>  
-            <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-raised-button mat-gray mat-green-button" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Set Categories</button></div>
+            
           <div  *ngIf="showTrend == false && newAcqValue>0" style="height: 200px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newAcqValue" 
@@ -229,7 +232,7 @@
       </mat-card-content>
     </mat-card>
   </div>                                                                                                                                                                                
-   <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg referral_clinicians last">
+   <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians last">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
          <span *ngIf="showTrend == false" class="referral_cliniciansrral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{visitsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{visitsTooltip}}.png"></span>         
@@ -297,8 +300,8 @@
 
   <ngx-smart-modal #myModal identifier="myModal">
   <h4 class="mt-0">Select Categories</h4>
-   <div fxLayout="row wrap" class="row_sc">
-          <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49" class="SelectCategories sa_flexbg referral_clinicians">
+   <div fxLayout="row wrap" class="row_sc" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+          <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50" class="SelectCategories sa_flexbg referral_clinicians">
             <h5 class="mt-0">Selected Categories</h5>
             <ul class="list-categories">
            <li *ngFor="let category of selectedCategories; let i = index">
@@ -307,7 +310,7 @@
             </ul>
             
           </div>
-          <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49" class="SelectCategories sa_flexbg referral_clinicians">
+          <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50" class="SelectCategories sa_flexbg referral_clinicians">
             <h5 class="mt-0 other_cat">Other Categories</h5>
             <ul class="list-categories">
               <li *ngFor="let category of categories; let i = index"><span (click)="add_category(i)"><i class="fa fa-plus"></i></span>
@@ -315,7 +318,8 @@
             </ul>
             
           </div>
-          <button class="mat-raised-button mat-gray" mat-raised-button (click)="load_chart_acq()">Save</button>
+          
         </div>
+        <button class="mat-raised-button mat-gray" mat-raised-button (click)="load_chart_acq()">Save</button>
   <button (click)="myModal.close()" class="close_modal" style="display:none">Close</button>
 </ngx-smart-modal>

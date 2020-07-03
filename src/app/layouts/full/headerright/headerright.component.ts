@@ -2,9 +2,12 @@ import { Component, AfterViewInit } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { CookieService } from "angular2-cookie/core";
 
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { HeaderService } from '../header/header.service';
 import { DentistService } from '../../../dentist/dentist.service';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';  
 export interface Dentist {
   providerId: string;
   name: string;
@@ -16,16 +19,27 @@ export interface Dentist {
   styleUrls: []
 })
 export class AppHeaderrightComponent implements AfterViewInit  {   
+    private _routerSub = Subscription.EMPTY;
   constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router) {
     
 
-    this.router.events.subscribe(event => {
+    this._routerSub = this.router.events
+         .filter(event => event instanceof NavigationEnd)
+         .subscribe((value) => {
        this.route = router.url; 
        if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
-         this.getClinics();
+       { 
+        this.getClinics();
+      }
+      if(($('body').find('span#currentDentist').length >= 0 || $('#currentDentist').attr('did') == 'all') && this.route == '/dentist-goals')
+       { 
+        this.getDentists();
+      }
         });
   }
-
+ ngOnDestroy(){
+     this._routerSub.unsubscribe();
+   }
  ngAfterViewInit() {
   //  this.clinic_id = '1';
      this.getClinics();
@@ -37,7 +51,6 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   public config: PerfectScrollbarConfigInterface = {};
      public clinic_id:any ={};
    public dentistCount:any ={};
-   public selectedDentist='all';
      dentists: Dentist[] = [
    { providerId: 'all', name: 'All Dentists' },
   ];
@@ -76,13 +89,20 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     );
 
   }
+  public selectedDentist;
     // Get Dentist
     getDentists() {
       this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
            if(res.message == 'success'){
               this.dentists= res.data;
               this.dentistCount= res.data.length;
-
+        if(this.route != '/dentist-goals'){
+          this.selectedDentist ='all';
+        }
+        else  
+        {
+          this.selectedDentist = res.data[0].providerId;
+        }
            }
             else if(res.status == '401'){
             this._cookieService.put("username",'');
@@ -124,4 +144,5 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     $('.internal_dentist').val(newValue);
     $('#dentist_initiate').click();
   }
+  
 }

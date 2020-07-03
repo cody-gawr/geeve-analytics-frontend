@@ -72,6 +72,13 @@ const MENUITEMS = [
     icon: 'fas fa-home',
     role:['2'],
     param2 : 'dashboards',
+  },{
+    state: 'lost-opportunity',
+    name: 'Lost Opportunity',
+    type: 'link-lost-opportunity',
+    icon: 'fas fa-arrow-up',
+    role:['2'],
+    param2 : '',
   },
    {
     state: 'morning-huddle',
@@ -343,6 +350,14 @@ export class MenuItems {
     role:['2'],
     param2 : 'dashboards',
   },
+/*  {
+    state: 'lost-opportunity',
+    name: 'Lost Opportunity',
+    type: 'link-lost-opportunity',
+    icon: 'fas fa-arrow-up',
+    role:['2'],
+    param2 : '',
+  },
   {
     state: 'morning-huddle',
     name: 'Morning Huddle',
@@ -350,7 +365,7 @@ export class MenuItems {
     icon: 'fas fa-sun',
     role:['2'],
      param2 : 'dashboards',
-  },
+  }, */
   {
     state: 'dashboards',
     name: 'Dashboards',
@@ -416,19 +431,19 @@ export class MenuItems {
     role:['1','2']
 
   },
-  {
+/*  {
     state: 'importcsv',
     name: 'Data Upload',
     type: 'link-noparam',
     icon: 'fas fa-upload',
     role:['2']
-  },
+  }, */
   {
     state: 'profile-settings',
     name: 'Profile Settings',
     type: 'link-noparam',
     icon: 'fas fa-user-cog',
-    role:['1','2','3','4','5']
+    role:['2','3','4','5']
 
   },
 ];
@@ -439,17 +454,18 @@ export class MenuItems {
           if(result.id != '1') {
             var dashboards = result.permisions.split(',');
             if(dashboards.includes("dashboard1")) 
-              this.dashboard1role.push(result.id.toString());
+              this.dashboard1role.push(result.role_id.toString());
             if(dashboards.includes("dashboard2")) 
-              this.dashboard2role.push(result.id.toString());
+              this.dashboard2role.push(result.role_id.toString());
             if(dashboards.includes("dashboard3")) 
-              this.dashboard3role.push(result.id.toString());
+              this.dashboard3role.push(result.role_id.toString());
             if(dashboards.includes("dashboard4")) 
-              this.dashboard4role.push(result.id.toString());
+              this.dashboard4role.push(result.role_id.toString());
             if(dashboards.includes("dashboard5")) 
-              this.dashboard5role.push(result.id.toString());
+              this.dashboard5role.push(result.role_id.toString());
           }
          });
+         console.log(this.dashboard1role, this.dashboard2role, this.dashboard3role, this.dashboard4role, this.dashboard5role);
        }
     }, error => {
     });

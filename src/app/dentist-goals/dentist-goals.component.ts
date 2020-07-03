@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { DentistService } from '../dentist/dentist.service';
 import { CookieService } from "angular2-cookie/core";
 import { NotifierService } from 'angular-notifier';
+import { ToastrService } from 'ngx-toastr';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -73,7 +74,7 @@ export class DentistGoalsComponent implements OnInit {
           public user_id;
   options: FormGroup;
 
-  constructor(notifierService: NotifierService,private fb: FormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute, private dentistService: DentistService,private _cookieService: CookieService, private router: Router) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private fb: FormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute, private dentistService: DentistService,private _cookieService: CookieService, private router: Router) {
   this.notifier = notifierService;
     this.clinic_id = this.route.snapshot.paramMap.get("id");
     this.options = fb.group({
@@ -84,8 +85,8 @@ export class DentistGoalsComponent implements OnInit {
      initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     this.clinic_id = val;
-          this.getDentistGoals();
           this.getDentists();
+
   }
   ngOnInit() {
     $('.header_filters').removeClass('hide_header'); 
@@ -271,10 +272,11 @@ export class DentistGoalsComponent implements OnInit {
   this.chartData[35] = this.form.value.discount;
   this.chartData[36] = this.form.value.overdueaccount;
   var myJsonString = JSON.stringify(this.chartData);
-  console.log(myJsonString);
+  $('.ajax-loader').show();
    this.dentistGoalsService.updateDentistGoals(myJsonString, this.clinic_id, this.dentist_id).subscribe((res) => {
+       $('.ajax-loader').hide();
        if(res.message == 'success'){
-          this.notifier.notify( 'success', 'Dentist Goals Updated' ,'vertical');
+         this.toastr.success('Dentist Goals Updated');
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -288,6 +290,10 @@ export class DentistGoalsComponent implements OnInit {
            if(res.message == 'success'){
               this.dentists= res.data;
               this.dentistCount= res.data.length;
+              if(!this.dentist_id)
+                this.dentist_id = res.data[0].providerId;
+          this.getDentistGoals(this.dentist_id);
+
            }
             else if(res.status == '401'){
               this._cookieService.put("username",'');

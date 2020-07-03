@@ -5,6 +5,7 @@ import { ClinicGoalsService } from './clinic-goals.service';
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NotifierService } from 'angular-notifier';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-goals.component.html',
@@ -64,7 +65,7 @@ export class ClinicGoalsComponent implements OnInit {
 
   options: FormGroup;
 
-  constructor(notifierService: NotifierService,private fb: FormBuilder,  private clinicGoalsService: ClinicGoalsService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private fb: FormBuilder,  private clinicGoalsService: ClinicGoalsService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
 //  this.clinic_id = this.route.snapshot.paramMap.get("id");
 this.notifier = notifierService;
     this.options = fb.group({
@@ -254,9 +255,11 @@ this.notifier = notifierService;
   this.chartData[35] = this.form.value.discount;
   this.chartData[36] = this.form.value.overdueaccount;
   var myJsonString = JSON.stringify(this.chartData);
+  $('.ajax-loader').show();
    this.clinicGoalsService.updateClinicGoals(myJsonString, this.clinic_id).subscribe((res) => {
+    $('.ajax-loader').hide();
        if(res.message == 'success'){
-          this.notifier.notify( 'success', 'Clinic Goals Updated' ,'vertical');
+          this.toastr.success('Clinic Goals Updated' );
        }
         else if(res.status == '401'){
             this._cookieService.put("username",'');

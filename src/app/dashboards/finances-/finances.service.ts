@@ -1,4 +1,3 @@
-
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
@@ -14,7 +13,7 @@ export class FinancesService {
  public token: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
-
+    public token_id;
 
     constructor(private http: HttpClient,private _cookieService: CookieService) {
         //append headers

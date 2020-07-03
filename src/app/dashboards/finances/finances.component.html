@@ -30,11 +30,11 @@
                 <input type="button" id="dentist_initiate" (click) = "initiate_dentist()"  [style.display]="'none'">
                  <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
                 <input type="text" id="page_title" value="Finances" [style.display]="'none'">
-<div class="sa_dashboard_inner_content">
+<div class="sa_dashboard_inner_content sa_dentist_graphs_area">
    <div class="sa_card gridshadow">
-    <div fxLayout="row wrap">
+    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 
-       <div fxFlex.lg="80" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="80">
+       <div fxFlex>
          <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial YTD</span>
           <div class="custom_date">
           <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="" (click)="filterDate('custom')" />
@@ -43,7 +43,7 @@
       </div>
 
 
-        <div fxFlex.lg="20" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="20">
+        <div class="dh-target">
             <div class="onofftoogle">
                 <span class="trend_mode_title">Trend Mode</span>
                 <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group" aria-label="Font Style">
@@ -63,7 +63,7 @@
   </div>
 </div>
 
-<div class="sa_dentist_graphs_area">
+<div class="">
 <div fxLayout="row wrap">
   <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="sa_flex_transparent">
         {{startDate| date}}- {{endDate| date}}
@@ -71,8 +71,10 @@
 </div>
 
   <!-- Column-->
-   <div class="nonTrendMode" fxLayout="row wrap">
-<div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_main_grid_dashboard md_mrn">
+     <div class="nonTrendMode">
+
+   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+<div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_main_grid_dashboard md_mrn">
         <div class="graph_abso"></div>
 
             <mat-card-content>
@@ -89,7 +91,7 @@
             </mat-card-content>
 
     </div>
-    <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_main_grid_dashboard md_mrn">
+    <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_main_grid_dashboard md_mrn">
         <div class="graph_abso"></div>
 
             <mat-card-content>
@@ -105,7 +107,7 @@
             </mat-card-content>
 
     </div>
-    <div fxFlex.lg="33" fxFlex.xl="33"  fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_main_grid_dashboard last md_mrn">
+    <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_main_grid_dashboard last md_mrn">
         <div class="graph_abso"></div>
 
             <mat-card-content>
@@ -121,8 +123,10 @@
             </mat-card-content>
 
     </div>
+  </div>
+  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
    
-    <div fxFlex.lg="59" fxFlex.xl="59" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="59" class="sa_flexbg md_mrn
+    <div fxFlex="calc(65% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg md_mrn
 expenses_card custom_ngx_cw01" >
         <mat-card class="chart_card" >
             <mat-card-content class="sa_matcard_content">
@@ -207,7 +211,7 @@ expenses_card custom_ngx_cw01" >
          <div *ngIf="categoryExpensesLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
     </div>
 
-  <div fxFlex.lg="40" fxFlex.xl="40" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="40" class="sa_flexbg predictor_ratio md_mrn last custom_ngx_cw02">
+  <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn  custom_ngx_cw02">
     
     <mat-card class="sa_no_tabs_area" >
       <mat-card-content class="sa_matcard_content">
@@ -239,7 +243,9 @@ expenses_card custom_ngx_cw01" >
     </mat-card>
      <div *ngIf="finProductionByClinicianLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
-    <div fxFlex.lg="49" fxFlex.xl="49" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="49" class="sa_flexbg predictor_ratio md_mrn custom_ngx_cw03">
+</div>
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+    <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn custom_ngx_cw03">
     
     <mat-card class="" >
       <mat-card-content class="sa_matcard_content">
@@ -286,7 +292,7 @@ expenses_card custom_ngx_cw01" >
     </mat-card>
      <div *ngIf="finTotalDiscountsLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
-      <div fxFlex.lg="50" fxFlex.xl="50" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="50" class="sa_flexbg predictor_ratio md_mrn last custom_ngx_cw04">
+   <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn  custom_ngx_cw04">
     
     <mat-card class="sa_no_tabs_area" >
       <mat-card-content class="sa_matcard_content">
@@ -330,7 +336,9 @@ expenses_card custom_ngx_cw01" >
     </mat-card>
     <div *ngIf="finOverdueAccountsLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
- <div fxFlex.lg="65" fxFlex.xl="65" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="65" class="sa_flexbg predictor_ratio total_val md_mrn custom_ngx_cw05">
+</div>
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+ <div fxFlex="calc(65% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio total_val md_mrn custom_ngx_cw05">
     
     <mat-card class="" >
       <mat-card-content class="sa_matcard_content">
@@ -452,7 +460,7 @@ expenses_card custom_ngx_cw01" >
       </mat-card-content>
     </mat-card>
   </div> -->
-   <div fxFlex.lg="32" fxFlex.xl="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="total_val sa_flexbg predictor_ratio md_mrn last custom_ngx_cw07">
+   <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="total_val sa_flexbg predictor_ratio md_mrn last custom_ngx_cw07">
      
     <mat-card class="">
       <mat-card-content class="sa_matcard_content">
@@ -503,8 +511,10 @@ expenses_card custom_ngx_cw01" >
     <div *ngIf="finProductionPerVisitLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
 </div>
- <div class="trendMode"  fxLayout="row wrap" [style.display]="'none'">
-   <div fxFlex.lg="59" fxFlex.xl="59" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="49" class="sa_flexbg predictor_ratio md_mrn ">
+</div>
+ <div class="trendMode" [style.display]="'none'">
+  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+   <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn ">
     
     <mat-card class="" >
       <mat-card-content class="sa_matcard_content">
@@ -545,7 +555,7 @@ expenses_card custom_ngx_cw01" >
     <div *ngIf="finNetProfitPercentTrendLoader == true && netProfitDisplayVal == 2" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
     <div *ngIf="finNetProfitPMSTrendLoader == true && netProfitDisplayVal == 3" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
-  <div fxFlex.lg="40" fxFlex.xl="40" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="40" class="sa_flexbg predictor_ratio md_mrn last">
+  <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn">
     
     <mat-card class="" >
       <mat-card-content class="sa_matcard_content">
@@ -574,8 +584,9 @@ expenses_card custom_ngx_cw01" >
     </mat-card>
     <div *ngIf="finTotalDiscountsTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
-    <div fxFlex.lg="49" fxFlex.xl="49" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="49" class="sa_flexbg md_mrn
-expenses_card" >
+</div>
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+    <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg md_mrn expenses_card" >
         <mat-card class="chart_card" >
             <mat-card-content class="sa_matcard_content">
                 <mat-card-title class="text-center">Expenses
@@ -609,7 +620,7 @@ expenses_card" >
             </mat-card-content>
         </mat-card>
     </div>
-  <div fxFlex.lg="50" fxFlex.xl="50" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="50" class="sa_flexbg predictor_ratio md_mrn last">    
+  <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn">    
     <mat-card class="" >
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">% of Production By Clinician
@@ -638,8 +649,9 @@ expenses_card" >
     </mat-card>
     <div *ngIf="finProductionByClinicianTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
-    
-  <div fxFlex.lg="32" fxFlex.xl="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg predictor_ratio md_mrn"> 
+</div>
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">    
+  <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn"> 
     <mat-card class="" >
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Overdue Accounts
@@ -667,7 +679,7 @@ expenses_card" >
     </mat-card>
     <div *ngIf="finOverdueAccountsTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
- <div fxFlex.lg="32" fxFlex.xl="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg predictor_ratio md_mrn">
+ <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn">
  <mat-card class="" >
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Total Production & Collection
@@ -694,8 +706,9 @@ expenses_card" >
     </mat-card>
     <div *ngIf="finCollectionTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
-   <div fxFlex.lg="33" fxFlex.xl="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="50" class="sa_flexbg predictor_ratio last md_mrn last">
-     
+</div>
+  <div fxLayout="row wrap" fxLayoutGap="0" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+   <div fxFlex="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio last md_mrn last">
     <mat-card class="">
       <mat-card-content class="sa_matcard_content">
        <mat-card-title class="text-center">Production Per Visit
@@ -722,7 +735,7 @@ expenses_card" >
     </mat-card>
     <div *ngIf="finProductionPerVisitTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
-  
+  </div>
 </div>
   <!-- Column-->   
 </div>

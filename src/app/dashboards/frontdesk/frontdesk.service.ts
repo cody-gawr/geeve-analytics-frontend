@@ -1,4 +1,3 @@
-
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
@@ -134,4 +133,3 @@ export class FrontDeskService {
         );
     }    
 }
-

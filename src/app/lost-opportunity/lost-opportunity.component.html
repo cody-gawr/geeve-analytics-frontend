@@ -1,15 +1,20 @@
+<div class="loading" *ngIf="isLoading">
+	<img class="tableLoader" src="../../assets/images/loader.gif">
+</div>
 <mat-card >
 	<mat-card-content>
+		<input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
+		<input type="text" id="page_title" value="Lost Opportunity" [style.display]="'none'">
 		<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
 			<div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
 				<div class="lo-content">
 					<ul>
-						<li><span class="left-lo-content">Total Discounts:</span> <span class="right-lo-content">$8,100 <small>$900 improvement</small></span></li>
-						<li> <span class="left-lo-content">Collection vs Production:</span> <span class="right-lo-content">$67,500 <small>$7,500 improvement </small></span></li>
-						<li><span class="left-lo-content">Case Acceptance:</span> <span class="right-lo-content">$108,000<small>$12,000 improvement</small></span></li>
+						<li><span class="left-lo-content">Total Discounts:</span> <span class="right-lo-content" id="TotalDiscounts">${{ discounts }} <small id="TotalDiscountsImprovement">${{ discountsImp }} improvement</small></span></li>
+						<li> <span class="left-lo-content">Collection vs Production:</span> <span class="right-lo-content" id="CollectionProduction">$ {{ collectionProduction }} <small id="CollectionProductionImprovement">${{ collectionProductionImp }} improvement </small></span></li>
+						<li><span class="left-lo-content">Case Acceptance:</span> <span class="right-lo-content" id="CaseAcceptance">${{ caseAcceptance }}<small id="CaseAcceptanceImprovement">${{ caseAcceptanceImp }}  improvement</small></span></li>
 					</ul>
-					<p>Total Lost Opportunity:<span>$183,600</span></p>
-					<p>Total Production:   <span>$520,400<small>+$20,400</small></span></p>
+					<p>Total Lost Opportunity: <span  id="TotalLostOpportunity">${{ lostOpportunity }}</span></p>
+					<p>Total Production: <span id="TotalProduction">${{ production }}<small id="TotalProductionImproment">+${{ productionImp }}</small></span></p>
 				</div>
 			</div>
 			<div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="text-center">
@@ -22,8 +27,9 @@
 <mat-card >
 	<mat-card-content>
 		<div class="lo-slider">
-			<h4>10% improvement</h4>
-				<mat-slider></mat-slider>
+			<h4>{{ improvement }}% improvement</h4>
+				<mat-slider #mySlider min="0" max="100" step="10" value="{{ improvement }}" (slideend)="sliderOnChange(mySlider.value)"
+  (pointerup)="sliderOnChange(mySlider.value)"  (input)="sliderOnChange(mySlider.value)"></mat-slider>
 				<ul>
 					<li style="left:0%;">0</li>
 					<li style="left:10%;">10</li>

@@ -1,4 +1,3 @@
-
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
@@ -28,6 +27,7 @@ export class HeaderService {
         this.token_id= this._cookieService.get("userid");
         });
    }
+
     // Items Predictor Analysis 
     logout(id): Observable<any> {
             const formData = new FormData();
@@ -40,7 +40,8 @@ export class HeaderService {
                         })
             );
     }
-        getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+        console.log('header');
         return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+user_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
@@ -48,7 +49,12 @@ export class HeaderService {
         );
     }
 
+       checkPermission(role,user_id = this._cookieService.get("userid"), user_type=this._cookieService.get("user_type"), token = this._cookieService.get("token")): Observable<any> {
+        return this.http.get(this.apiUrl +"/Roles/checkPermission?user_id="+this._cookieService.get("userid")+"&user_type="+this._cookieService.get("user_type")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&role="+role, { headers: this.headers })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 
 }
-
-

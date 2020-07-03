@@ -9,9 +9,9 @@
     <div class="sa_first_section">
 <div>
 <div class="sa_dentist_graphs_area sa_profit_bar">
-  <div style="width:100%;"><span class="green_title">Current Month</span></div>
-  <div fxLayout="row wrap" >
-  <div fxFlex.lg="33" fxFlex.md="33" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg" [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0}">
+  <div><span class="green_title">Current Month</span></div>
+  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+  <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg" [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0}">
 
     <mat-card class="dentistProduction sa_hccard">
       <mat-card-content class="sa_matcard_content">
@@ -30,7 +30,7 @@
       <div class="graph_image" ></div>
   </div>
   <!-- Column-->
-  <div fxFlex.lg="32" fxFlex.md="32" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg" [ngClass]="{'arrow-up': profit_dif>=0, 'arrow-down':profit_dif<=0}" >
+  <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg" [ngClass]="{'arrow-up': profit_dif>=0, 'arrow-down':profit_dif<=0}" >
 
     <mat-card  class="treatmentPlan sa_hccard">
       <mat-card-content class="sa_matcard_content">
@@ -45,7 +45,7 @@
       <div class="graph_image" ></div>
    </div>
   <!-- Column-->
-  <div fxFlex.lg="33" fxFlex.md="33" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg last"  [ngClass]="{'arrow-up': visits_dif>=0, 'arrow-down':visits_dif<=0}">
+  <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last" [ngClass]="{'arrow-up': visits_dif>=0, 'arrow-down':visits_dif<=0}">
 
     <mat-card  class="noPatients sa_hccard">
       <mat-card-content class="sa_matcard_content">
@@ -67,8 +67,8 @@
 <div>
 
 <div class="sa_dentist_graphs_area">
-  <div fxLayout="row wrap" >
-  <div fxFlex.lg="39" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="39" class="sa_flexbg">
+  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+  <div fxFlex="calc(39% - 10px)" fxFlex.lg="calc(39% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg">
     <mat-card  class="dentistProduction">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Hourly Rate Leaders
@@ -113,7 +113,7 @@
     </mat-card>
   </div>
   <!-- Column-->
-  <div fxFlex.lg="60" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="60" class="sa_flexbg last">
+  <div fxFlex="calc(60% - 10px)" fxFlex.lg="calc(60% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last">
     <mat-card  class="treatmentPlan">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Top Referrals
@@ -130,20 +130,22 @@
          <div *ngIf="maxNewPatients == 0">No Top Referrals Yet!</div> -->
 
           <div>
-              <div fxLayout="row wrap" class="top_referal">
+              <div class="top_referal" fxLayout="row wrap" fxLayoutGap="10px" fxLayoutGap.lg="10px" fxLayoutGap.md="10px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
                 <ng-container *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
-                  <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="" *ngIf="i<3">
+                  
+                  <div fxFlex="calc(32% - 5px)" fxFlex.lg="calc(32% - 5px)" fxFlex.md="calc(32% - 5px)" fxFlex.sm="100" fxFlex.xs="100" class="" *ngIf="i<3">
                       <div class="top_ref_grid" >
                           <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
                           <span class="top_ref_value">{{newPatientsTimeD}}</span>
                       </div>
                   </div>
-                   <div fxFlex.lg="48" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="48" class="" *ngIf="i>=3">
+                   <div fxFlex="calc(32% - 5px)" fxFlex.lg="calc(32% - 5px)" fxFlex.md="calc(32% - 5px)" fxFlex.sm="100" fxFlex.xs="100" class="" *ngIf="i>=3">
                       <div class="top_ref_grid" >
                           <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
                           <span class="top_ref_value">{{newPatientsTimeD}}</span>
                       </div>
                   </div>
+                
                 </ng-container>
                   <div *ngIf="maxNewPatients == 0">No Top Referrals Yet!</div>
               </div>
@@ -158,9 +160,9 @@
 
 <div class="sa_scnd_section">
 <div class="sa_dentist_graphs_area">
-  <div style="width:100%;"><span class="green_title">Next Month</span></div>
-  <div fxLayout="row wrap" >
-  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg">
+  <div><span class="green_title">Next Month</span></div>
+ <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+  <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg">
     <mat-card  class="dentistProduction">
       <mat-card-content class="sa_matcard_content">
       <mat-card-title class="text-center">Pre-booked Visits
@@ -174,7 +176,7 @@
     </mat-card>
   </div>
   <!-- Column-->
-  <div fxFlex.lg="32" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="32" class="sa_flexbg ">
+  <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg ">
     <mat-card  class="treatmentPlan">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Chair Utilisation Rate </mat-card-title>
@@ -188,7 +190,7 @@
     </mat-card>
    </div>
   <!-- Column-->
-  <div fxFlex.lg="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg last">
+  <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last">
     <mat-card  class="noPatients">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Unscheduled Production
