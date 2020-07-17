@@ -5,36 +5,37 @@
 
 <div class="login-register sa_forms_design patient_details_form ">
     <div>
-  <div ><div class="clinic_logo_patientdetail"> <img src={{clinic_logo}}></div></div>
+  <div  ><div class="clinic_logo_patientdetail"> <img src={{clinic_logo}} *ngIf="clinic_logo != '' "></div></div>
 
     <div>
     <mat-card >
             <mat-card-content  class="update-card-main">
-                <div class="update_card_sec">
+                <div class="update_card_sec" >
                 <!-- ============================================================== -->
                 <!-- column -->
                 <!-- ============================================================== -->
                     <!-- Card column -->
       <h4 _ngcontent-c2="" class="spl_headings">Update Card</h4>
-					
+					<div *ngIf= "!cardUpdated">
+            <div *ngIf= "invoice_id">
+             <h4 class="text-center">Retry your payment using your existing card</h4>
+          <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutGap.xs="0px">
+          <div fxFlex="calc(49% - 10px)" fxFlex.xs="100">
 						<div class="last_payment_info">
-							<div class="last_payment_sec" *ngIf= "invoice_id">
-								<div class="detail_last_payment"  ><strong><i class="fas fa-exclamation-triangle"></i> Failed Invoice ID :</strong>{{invoice_id}}</div>
+							<div class="last_payment_sec" >
+                
 								  <div class="detail_last_payment"><strong><i class="far fa-credit-card"></i> Current Card :</strong> xxxx-xxxx-xxxx-{{last4}}</div>
-								  <div class="detail_last_payment"  *ngIf= "invoice_id"><strong><i class="fas fa-money-check-alt"></i> Amount to be Paid :</strong> ${{pending_amount}}</div>
+								  <div class="detail_last_payment"  *ngIf= "invoice_id"><strong><i class="fas fa-money-check-alt"></i> Amount to be Paid :</strong><span *ngIf="isDecimal(pending_amount)"> {{pending_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(pending_amount)">{{pending_amount| currency: 'USD': 'symbol':'1.0'}}</span></div>
 							</div>
 						</div>
-					
-					
+					</div>
+					<div fxFlex="calc(49% - 10px)" fxFlex.xs="100">
 						<div class="update_card" *ngIf= "invoice_id">
 							<div class="cart_button" >
 								 <div class="sa_payment_left_area">
 									<a (click)="retryPayment()" class="btn-round mat-raised-button mat-dc">Retry Payment </a>
 								 </div>
 							</div>
-
-							
-
 						<!-- 	
 							<div fxFlex="60"  class="card_fields">
 								<div class="sa_mattabs_design sa_matforms_design sa_payment_form">
@@ -59,14 +60,33 @@
                                     </div> 
 							</div> -->
 						</div>
-
+          </div>
+        </div>
+</div>
 <div class="update_card">
                             <div class="card_fields" *ngIf= "!cardUpdated">
-                                  <span class="update_card"><h4>Please enter your new card details. </h4>Your account will be updated to use this card for all future payments.</span>
-
+                                  <div fxLayout="row wrap">
+                              <div fxFlex="100" *ngIf= "invoice_id">
+                                <h4 class="OR_update_card">OR Update your Card Details</h4>
+                              </div>
+                              <div fxFlex="100" *ngIf= "!invoice_id">
+                                <span class="update_card"><h4>Please enter your new card details. </h4>Your account will be updated to use this card for all future payments.</span>
+                              </div>
+                            </div>
+                                <div fxLayout="row wrap" fxLayoutGap="5%" fxLayoutGap.xs="0%">
+                              <div fxFlex="30" fxFlex.xs="100">
+                                  <div class="selected_plan_area">
+                                      <div class="selected_plan_image">
+                                          <img src="assets/images/enter-card-details.svg"> 
+                                      </div>
+                                     <div class="selected_plan_detail">
+                                         <h4>Enter your Card Details</h4>
+                                     </div>
+                                  </div>
+                              </div>
+                               <div fxFlex="65" fxFlex.xs="100">
                                 <div class="sa_mattabs_design sa_matforms_design sa_payment_form">
                                     <div class="iframe_main">
-                                    
                                       <div class="fieldset AddCard-main">
                                         <div class="AddCard-box">
                                        <img class="card-c" src="assets/images/card-icon.png" alt=""> 
@@ -78,24 +98,26 @@
                                         </div>
                                       </div>
                                         <div class="fieldset text-center">  
-                                           
-                                              <button  type="button" mat-raised-button style="margin-top: 15px" class="btn btn-primary mat-dc"  (click) = "buy()">Update Card</button>
+                                           <button  type="button" mat-raised-button style="margin-top: 15px" class="btn btn-primary mat-dc"  (click) = "buy()">Update Card</button>
                                         </div>
                                       </div>
                                     </div> 
                                     </div> 
+                                  </div>
+                                </div>
                             </div>
-                            <div fxFlex="100"  class="card_fields"  *ngIf= "cardUpdated">
-                              <div class="card-success"><img style="width:210px;" src="/assets/images/cross_sucess.png">
-                              <h3 class="update_card">
-                              Card Details Updated Successfully!
-                            </h3>
-                          </div>
-                            </div>
+                            
                         </div>
 
 				
                     </div>
+                    <div fxFlex="100"  class="card_fields"  *ngIf= "cardUpdated">
+                          <div class="card-success m-t-20"><img src="/assets/images/cross_sucess.png">
+                              <h4 class="update_card m-t-30" *ngIf= "!invoice_id">Card Details Updated Successfully!</h4>
+                              <h4 class="update_card m-t-30" *ngIf= "invoice_id">Card Updated and Payment Processed Successfully!</h4>
+                          </div>
+                            </div>
+                          </div>
             </mat-card-content>
         </mat-card>
         </div>

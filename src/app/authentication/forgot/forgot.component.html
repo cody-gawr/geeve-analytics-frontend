@@ -21,8 +21,8 @@ align-items: center;"></div>
               </mat-form-field>
               <small *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched" class="text-danger support-text">You must include an email address.</small>
               <small *ngIf="form.controls['email'].errors?.email && form.controls['email'].touched" class="text-danger support-text">You must include a valid email address.</small>
-              <small *ngIf="errorLogin ==true && errorLoginText != ''" class="text-danger support-text">{{errorLoginText}}</small>
-               <small *ngIf="successLogin ==true && successLoginText != ''" class="text-success support-text">{{successLoginText}}</small>
+              <small *ngIf="errorLogin ==true && errorLoginText != ''" class="text-black">{{errorLoginText}}</small>
+               <small *ngIf="successLogin ==true && successLoginText != ''" class="text-black">{{successLoginText}}</small>
             </div>
             <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
               <button mat-raised-button color="primary" type="submit" class="btn-block btn-lg m-t-20 m-b-20 mat-dc" [disabled]="!form.valid">Submit</button>

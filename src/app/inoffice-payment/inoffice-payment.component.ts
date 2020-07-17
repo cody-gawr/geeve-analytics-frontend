@@ -23,6 +23,7 @@ import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/mater
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 // tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment, Moment} from 'moment';
+import Swal from 'sweetalert2';
 const moment = _rollupMoment || _moment;
 export const MY_FORMATS = {
   parse: {
@@ -66,11 +67,11 @@ public years:any = [];
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -97,11 +98,11 @@ public years:any = [];
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -127,11 +128,11 @@ public cvcStyle = {
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -265,6 +266,10 @@ getStripe(){
             });
             this.stripeService.elements(this.elementsOptions)
             .subscribe(elements => {
+                setTimeout(function(){
+                 var iframe = $("iframe")[0];
+                  iframe['contentWindow'].focus();
+              },1000);
             this.elements = elements;
             // Only mount the element the first time
             if (!this.card) {
@@ -317,6 +322,18 @@ getStripe(){
              this.cardCvc.clear();
               this.cardExpiry.clear();
               this.updatePatientsOnPayment('ACTIVE',res.patientId);
+           }
+            else if(res.message == 'card_error'){
+      $('.ajax-loader').hide();
+                 this.cardNumber.clear();
+             this.cardCvc.clear();
+              this.cardExpiry.clear();
+              Swal.fire(
+                  '',
+                  'Your card is declined, Please change your card Details.',
+                  'error'
+                );
+
            }
            else if(res.message == 'error'){
             this.cardNumber.clear();

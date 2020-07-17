@@ -5,6 +5,7 @@ import { CookieService } from "angular2-cookie/core";
 import { Router   , NavigationEnd } from '@angular/router';
 import { HeaderService } from '../header/header.service';
 import { DentistService } from '../../../dentist/dentist.service';
+import { first, take } from 'rxjs/operators';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -17,17 +18,18 @@ export interface Dentist {
 })
 export class AppHeaderrightComponent implements AfterViewInit  {   
   constructor(private _cookieService: CookieService,  private route: Router, private headerService: HeaderService, private dentistService: DentistService) {
-     this.route.events.subscribe((ev) => {
-      if (ev instanceof NavigationEnd) { 
        this.getClinics();
-     }
-    });
-
   
   }
 
 
-
+ngOnInit() {
+   this.route.events.subscribe((ev) => {
+      if (ev instanceof NavigationEnd) {
+       this.getClinics();
+     }
+    });
+}
  ngAfterViewInit() {
     this.clinic_id = '1';
     
@@ -55,7 +57,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
 
 
    private getClinics() { 
-  this.headerService.getClinics().subscribe((res) => {
+  this.headerService.getClinics().pipe(take(1)).subscribe((res) => {
        if(res.message == 'success'){
         if(res.data.length > 0) {
         this.clinicsData = res.data;                               
@@ -123,7 +125,6 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   }
 
   loadClinicid(clinicValue){
-
   if($('body').find('span#currentClinicid').length <= 0){ 
     $('body').append('<span id="currentClinicid" style="display:none" cid="'+clinicValue+'"></span>');
   //  this._cookieService.put('clinicSelected',clinicValue);
@@ -131,10 +132,11 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   else{
     $('#currentClinicid').attr('cid',clinicValue);
   }
-
    this.selectedClinic = clinicValue;
+
  $('.internal_clinic').val(clinicValue);
-  $('#clinic_initiate').click();
+  $('#clinic_initiate:first').click();
+
    this.getStripeDetail();
 
   }

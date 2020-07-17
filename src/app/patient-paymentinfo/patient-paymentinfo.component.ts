@@ -89,6 +89,7 @@ constructor(private toastr: ToastrService,notifierService: NotifierService, priv
     this.id = this.route.snapshot.paramMap.get("id");
     this.getInofficePlan();
     this.getPaymentHistory();
+    this.getSubscriptionStripe();
    
     // $('.header_filters').removeClass('hide_header');
       this.route.params.subscribe(params =>  {
@@ -112,6 +113,21 @@ constructor(private toastr: ToastrService,notifierService: NotifierService, priv
    }
 
 
+public subscrData;
+    private getSubscriptionStripe() {
+      if(this.id) {
+      this.patientPaymentinfoService.getSubscriptionStripe(this.id).subscribe((res) => {
+           if(res.message == 'success'){
+            this.subscrData = res.data.data;
+            console.log(this.subscrData);
+           }
+        }, error => {
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+        }    
+        );
+        }
+  }
 isDecimal(value) {
  if(typeof value != 'undefined')
   {

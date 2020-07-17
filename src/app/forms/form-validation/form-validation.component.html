@@ -52,7 +52,7 @@
         </div>
         <div class="p-10" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
           <mat-form-field>
-            <input matInput placeholder="Phone number" [formControl]="form.controls['phone']" type="text">
+            <input matInput placeholder="Phone number" [formControl]="form.controls['phone']" type="text"  pattern="[0-9\s]\s*(\S\s*){7,}">
           </mat-form-field>
           <small *ngIf="form.controls['phone'].hasError('required') && form.controls['phone'].touched" class="text-danger font-14">You must include phone number.</small>
           <small *ngIf="form.controls['phone'].errors?.phone && form.controls['phone'].touched" class="text-danger font-14">You must include a valid phone number.</small>

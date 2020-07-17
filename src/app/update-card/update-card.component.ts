@@ -38,11 +38,11 @@ export class UpdateCardComponent implements OnInit {
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -70,11 +70,11 @@ export class UpdateCardComponent implements OnInit {
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -101,11 +101,11 @@ public cvcStyle = {
       },
 
       '::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
 
       ':focus::placeholder': {
-        color: '#395c7f',
+        color: '#698aaa',
       },
     },
     invalid: {
@@ -151,7 +151,7 @@ public cvcStyle = {
   public cardCvc;
   private homeUrl = environment.homeUrl;
  public DefaultLogo;
-  public clinic_logo;
+  public clinic_logo:any = '';
   public subscription_id;
     elementsOptions: ElementsOptions = {
     };
@@ -225,7 +225,6 @@ this.updateCardService.checkValidString(this.string).subscribe((res) => {
   public plan_type;
   getCardDetails() {
       this.updateCardService.getCardDetails(this.subscription_id,this.plan_type).subscribe((res) => {
-        console.log(res);
         this.last4 = res.last4;
         this.clinic_logo = res.clinic_logo;
          if(this.clinic_logo == 'undefined')
@@ -233,15 +232,18 @@ this.updateCardService.checkValidString(this.string).subscribe((res) => {
         this.invoice_id =res.payment[0]['invoice_id'];
         
         //this.invoice_id='3223324234234234324234';
-
+        if(this.plan_type == 'payment plan')
+        this.pending_amount= res.payment[0]['total_paid'];
+        else
         this.pending_amount= res.payment[0]['amount'];
+
       }, error => {
       });
   }
 
   retryPayment() {
       $('.ajax-loader').show();
-      this.updateCardService.retryPayment(this.subscription_id).subscribe((res) => {
+      this.updateCardService.retryPayment(this.subscription_id,this.plan_type).subscribe((res) => {
              $('.ajax-loader').hide();
              if(res.message == 'success'){
               Swal.fire(

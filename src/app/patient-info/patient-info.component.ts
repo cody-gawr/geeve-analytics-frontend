@@ -126,7 +126,7 @@ public dob_larger_error="";
 
    openDialog(): void {
     this.patientLog =  this.patientsAppointmentData[0].id+"_"+this.patientsAppointmentData[0].sub_patients_type;
-  if(this.patientsAppointmentData.length ==1){
+  if(this.rows.length ==1){
     this.patientInfoService.log_appointment(this.patient_id,this.member_plan_id,this.patientLog).subscribe((res) => {   
      if(res.message == 'success'){
        this.toastr.success('Appointment Logged .');
@@ -181,6 +181,7 @@ public dob_larger_error="";
     this.id = this.route.snapshot.paramMap.get("id");
     this.getSubPatients();
     this.getPatientContract();
+    this.getSubscriptionStripe();
     $('.header_filters').addClass('hide_header');
       this.route.params.subscribe(params =>  {
         $('#title').html('Membership Details');
@@ -193,7 +194,9 @@ public dob_larger_error="";
           dob_month: [null],
           dob_year: [null],
           patient_gender: [null, Validators.compose([Validators.required])],
-          patient_phone_no: [null, Validators.compose([Validators.required])],
+          patient_phone_no: [null, Validators.compose([Validators.required,
+        Validators.minLength(8),
+        Validators.pattern("^[0-9 ]*$")])],
         });    
   }
 
@@ -205,7 +208,24 @@ isDecimal(value) {
   }
 }
 
-    private deletePatients() {
+public subscrData;
+    private getSubscriptionStripe() {
+      if(this.id) {
+      this.patientInfoService.getSubscriptionStripe(this.id).subscribe((res) => {
+           if(res.message == 'success'){
+            this.subscrData = res.data.data;
+            console.log(this.subscrData);
+           }
+        }, error => {
+             $('.ajax-loader').hide(); 
+        this.toastr.error('Some Error Occured, Please try Again.');
+        }    
+        );
+        }
+  }
+
+
+      private deletePatients() {
      Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete member?',
@@ -233,28 +253,28 @@ isDecimal(value) {
 
 public invalid_dob = false;
 checkDob(control) {
-this.patient_dob = this.dob_year+"-"+this.dob_month+"-"+this.dob_date;
-var input = this.patient_dob;
-var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
-  if(!pattern.test(input) || input.substring(0, 4)<'1990') {
-  this.invalid_dob = true;
-  }else {
-  this.invalid_dob=false;  
-  }
+ var start_year =new Date().getFullYear();
+    this.patient_dob = this.dob_year+"-"+this.dob_month+"-"+this.dob_date;
+    var input = this.patient_dob;
+    var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
 
-  if(control=='month' || control=='year'){
-   this.max_days = this.getDaysInMonth(this.dob_year,this.dob_month);
-   let a = Array(this.max_days).fill(0).map((i,idx) => idx +1);
-   this.dates =a.map(this.updateDates);
-   if(this.dob_month=="02" && this.dob_date > a.length){
-     this.form.controls['dob_date'].setValue(a.length); 
+    if(!pattern.test(input) || input.substring(0, 4)< start_year - 100) {
+      this.invalid_dob = true;
+    } else {
+      this.invalid_dob=false;  
+    }
+
+    if(control=='month' || control=='year'){
+     this.max_days = this.getDaysInMonth(this.dob_year,this.dob_month);
+     let a = Array(this.max_days).fill(0).map((i,idx) => idx +1);
+     this.dates =a.map(this.updateDates);
+     if(this.dob_month=="02" && this.dob_date > a.length){
+       this.form.controls['dob_date'].setValue(a.length); 
+     }     
    }
-   
- }
-
- if(this.dob_year!="" && this.dob_month!="" && this.dob_date!=""){
-    this.compareDateWithToday(this.dob_year,this.dob_month,this.dob_date);
- }
+   if(this.dob_year!="" && this.dob_month!="" && this.dob_date!=""){
+      this.compareDateWithToday(this.dob_year,this.dob_month,this.dob_date);
+   }
 }
 
 updateDates(date){
@@ -324,6 +344,8 @@ compareDateWithToday(year,month,date){
     });
   } 
   public patient_email;
+  public start_date_tba;
+  public price_tba;
   getSubPatients() {
 
     this.patientInfoService.getSubPatients(this.id).subscribe((res) => {  
@@ -350,13 +372,7 @@ compareDateWithToday(year,month,date){
         this.patient_address=res.data[0]['patient_address'];
         if(this.patient_address == 'NULL')
         this.patient_address ='';
-        this.patient_dob = this.datePipe.transform(res.data[0]['patient_dob'],'yyyy-MM-dd');
-        var dobsplit = this.patient_dob.split("-");
-
-        this.dob_date=dobsplit[2].replace('"','');
-        this.dob_month=dobsplit[1];
-        this.dob_year=dobsplit[0].replace('"','');
-        this.checkDob('month');
+        
         this.patient_age=res.data[0]['patient_age'];
         this.patient_gender=res.data[0]['patient_gender'];
         this.patient_phone_no=res.data[0]['patient_phone_no'];
@@ -373,9 +389,21 @@ compareDateWithToday(year,month,date){
         this.planLength=res.data[0]['planLength'];
         this.clinic_id=res.data[0]['clinic_id'];
         this.user_id=res.data[0]['user_id'];
+        this.start_date_tba=res.data[0]['start_date_tba'];
+        this.price_tba=res.data[0]['price_tba'];
+
         this.mainpatientname = res.data[0]['patient_name'];
         this.getPaymentHistory();
         this.getAppointments();
+        if(this.patient_dob) {
+        this.patient_dob = this.datePipe.transform(res.data[0]['patient_dob'],'yyyy-MM-dd');
+        var dobsplit = this.patient_dob.split("-");
+
+        this.dob_date=dobsplit[2].replace('"','');
+        this.dob_month=dobsplit[1];
+        this.dob_year=dobsplit[0].replace('"','');
+        this.checkDob('month');
+      }
        }
         else if(res.status == '401' || res.message == 'error'){
                this._cookieService.removeAll();
@@ -462,6 +490,14 @@ public patientsAppointmentData =[];
         });
       } 
     })
+  }
+  
+  numberOnly(event): boolean {
+   const charCode = (event.which) ? event.which : event.keyCode;
+   if (charCode > 32 && (charCode < 48 || charCode > 57)) {
+     return false;
+   }
+   return true;
   }
 
   onSubmitPatientDetails() {
@@ -656,6 +692,4 @@ $('.ajax-loader').show();
       }    
       );
     }
-
-
 }

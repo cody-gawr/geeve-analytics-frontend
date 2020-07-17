@@ -18,13 +18,13 @@
                     <div class="sa_navclose"><i class="fas fa-times"></i></div>
                     <ul class="pull-left">
                         <li class="sa-ste">
-                            <a class="active" (click)="scroll('sa-container')">HOME</a>
+                            <a class="active upper-menu-item home-menu-item" (click)="scroll('sa-container')">HOME</a>
                         </li>
                         <li class="sa-ste">
-                            <a class="" (click)="scroll('offers_packages')">MEMBERSHIPS</a>
+                            <a class="upper-menu-item membership-menu-item" (click)="scroll('offers_packages')">MEMBERSHIPS</a>
                         </li>
                         <li class="sa-ste">
-                            <a (click)="scroll('footer')">Contact</a>
+                            <a class="upper-menu-item contact-menu-item" (click)="scroll('footer')">Contact</a>
                         </li>
                     </ul>
                     <div class="pull-left sa_header_number sa-ste">
@@ -69,7 +69,7 @@
                                     <div class="ribbon-banner-main"><span class=ribbon-banner>MOST POPULAR</span></div>
                                     <h4>{{plan.planName}}</h4>
                                     <span class="price_spacer"></span>
-                                    <span class="price_value"><span *ngIf="isDecimal(plan.totalAmount)"> {{plan.totalAmount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(plan.totalAmount)">{{plan.totalAmount| currency: 'USD':true:'1.0'}}</span></span>
+                                    <span class="price_value"><span *ngIf="isDecimal(plan.totalAmount)"> {{plan.totalAmount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(plan.totalAmount)">{{plan.totalAmount| currency: 'USD': 'symbol':'1.0'}}</span></span>
                                     <span class="price_limit" *ngIf="plan.planLength == 'MONTHLY'">per month</span>
                                     <span class="price_limit" *ngIf="plan.planLength == 'YEARLY'">per year</span>
                                     <div class="packgae_list_main">
@@ -103,7 +103,7 @@
                                 <div class="col-md-4 treatment_plan_bg">
                                     <div class="treatment_plan_side">
                                         <h4>{{load_planName}}</h4>
-                                        <span class="price_value"><span *ngIf="isDecimal(load_totalAmount)"> {{load_totalAmount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(load_totalAmount)">{{load_totalAmount| currency: 'USD':true:'1.0'}}</span></span>
+                                        <span class="price_value"><span *ngIf="isDecimal(load_totalAmount)"> {{load_totalAmount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(load_totalAmount)">{{load_totalAmount| currency: 'USD': 'symbol':'1.0'}}</span></span>
                                         <span class="price_limit">{{load_planLength}}</span>
                                         <div class="srvc_btn">
                                             <a class="btn btn-white no-radius btn-block" (click)="openDialog(load_id,load_totalAmount)" [ngClass]="{'disabled': load_planName == 'Sample Plan' || stripeConnected==false}">Buy Now</a>

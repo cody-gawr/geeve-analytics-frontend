@@ -17,6 +17,7 @@ import {ChangeDetectorRef} from '@angular/core';
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
 import { Http} from '@angular/http';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example-dialog.html',
@@ -396,7 +397,6 @@ public cvcStyle = {
   public act =false;
 
    ngOnInit() {    
-      $('.ajax-loader').show();
     this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
   this.PurchasePlanService.getPublishableKey().subscribe((res) => {
  //   this.stripeService.setKey(res.key);
@@ -423,7 +423,7 @@ public cvcStyle = {
         null,
         Validators.compose([Validators.required,
         Validators.minLength(8),
-        Validators.pattern("^[0-9]*$")])
+        Validators.pattern("^[0-9 ]*$")])
       ],
       dob_date: [null,Validators.compose([Validators.required])],
       dob_month: [null,Validators.compose([Validators.required])],
@@ -470,6 +470,11 @@ public cvcStyle = {
             });
             this.stripeService.elements(this.elementsOptions)
             .subscribe(elements => {
+
+              setTimeout(function(){
+                 var iframe = $("iframe")[0];
+                  iframe['contentWindow'].focus();
+              },1000);
             this.elements = elements;
             // Only mount the element the first time
             if (!this.card) {
@@ -598,6 +603,7 @@ public cvcStyle = {
      var self = this;
      setTimeout(function(){
       self.getStripe();
+
      },500);  
        this.cardNumber.focus();
   }
@@ -673,6 +679,16 @@ public cvcStyle = {
       this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.patient_id, this.totalAmountPatients, this.plan_id, this.user_id,this.form.value.patient_name,this.form.value.patient_email,this.clinic_id,this.planLength).subscribe((res) => {
            if(res.message == 'success'){
               this.updatePatients('ACTIVE');
+           }
+           else if(res.message == 'card_error'){
+      $('.ajax-loader').hide();
+              
+              Swal.fire(
+                  '',
+                  'Your card is declined, Please change your card Details.',
+                  'error'
+                );
+
            }
            else if(res.message == 'error'){
               this.errorLogin  =true;
@@ -846,6 +862,7 @@ getDaysInMonth(year: number, month: number) {
   }
   
   getSubPatients() {
+    if(this.id != undefined) {
     this.PurchasePlanService.getSubPatients(this.id).subscribe((res) => {  
        if(res.message == 'success'){
         this.rows = res.data[0]['sub_patients'];
@@ -886,6 +903,7 @@ getDaysInMonth(year: number, month: number) {
          $('.ajax-loader').hide(); 
        
     });
+  }
   }
 
 

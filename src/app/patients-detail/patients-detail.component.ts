@@ -156,8 +156,10 @@ export class DialogOverviewUpdateDialogComponent {
     public dialogChangePlanRef: MatDialogRef<DialogOverviewUpdateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log(data);
+   
   }
+
+
   save(data) {
      Swal.fire({
       title: 'Are you sure?',
@@ -168,8 +170,9 @@ export class DialogOverviewUpdateDialogComponent {
       cancelButtonText: 'No'
     }).then((result) => { 
     if (result.value) {
+       console.log(data);
         this.dialogChangePlanRef.close(data);
-      }else if (result.dismiss === Swal.DismissReason.cancel) { alert("h3")
+      }else if (result.dismiss === Swal.DismissReason.cancel) { 
           this.dialogChangePlanRef.close('closed');
        }
     });
@@ -251,7 +254,7 @@ export class PatientsDetailComponent implements AfterViewInit {
   }
   ngAfterViewInit() {
     this.checkPermission('memberships');
-      this.initiate_clinic();
+   //   this.initiate_clinic();
       $('.sa_heading_bar').show();           
       this.getPlans();
     $('#title').html('Memberships');
@@ -293,15 +296,17 @@ export class PatientsDetailComponent implements AfterViewInit {
 public stripe_account_id;
  getClinicSettings() {
     $('.ajax-loader').show(); 
-  this.patientsdetailService.getClinicSettings(this.clinic_id).subscribe((res) => {
+  this.patientsdetailService.getClinicSettings(this.clinic_id).pipe(take(1)).subscribe((res) => {
     $('.ajax-loader').hide(); 
        if(res.message == 'success'){
+        if(res.data[0]) {
         this.stripe_account_id = res.data[0].stripe_account_id;
         if(this.stripe_account_id)
             this.connectedStripe = true;        
         else {
           this.connectedStripe = false;        
         }
+      }
        }       
         else if(res.status == '401'){
               this._cookieService.put("username",'');
@@ -381,7 +386,7 @@ public stripe_account_id;
           this.getPatients();
        }
        else{
-        this.toastr.success(res.data.message);
+        this.toastr.error(res.data.message);
        }
     }, error => {
        this.warningMessage = "Please Provide Valid Inputs!";
@@ -563,6 +568,7 @@ public stripe_account_id;
   }
 
   private getPatients() {
+    this.rows = [];
     this.patientsdetailService.getPatients(this.clinic_id).pipe(take(1)).subscribe((res) => {
       if(res.message == 'success'){
         this.rows = res.data;
@@ -579,14 +585,14 @@ public stripe_account_id;
              }else if(res.status == '400'){
               this.rows = [];
              } 
-        this.getInviteMembers();
-           
+        this.getInviteMembers();           
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
 
   public getInviteMembers() {
+    console.log('fgdfg');
   this.patientsdetailService.getInviteMembers(this.clinic_id).pipe(take(1)).subscribe((res) => {
       if(res.message == 'success'){
         var count = this.rows.length;

@@ -45,7 +45,7 @@ export class DefaultersComponent implements AfterViewInit {
   }
   ngAfterViewInit() {
     this.checkPermission('defaulters');
-        this.initiate_clinic();
+       // this.initiate_clinic();
         $('#title').html('Defaulters');
 
         $('.sa_heading_bar').show();  
@@ -124,8 +124,9 @@ private getDefaultersMembers() {
     var defaulter_id = this.rows[rowIndex]['id'];
     var defaulter_type = this.rows[rowIndex]['plan_type'];
     var defaulter_plan_id = '';
-
+  $('.ajax-loader').show(); 
     this.defaultersService.sendDefaultersemail(defaulter_id,defaulter_name,defaulter_email,defaulter_type,defaulter_plan_id).subscribe((res) => {
+      $('.ajax-loader').hide(); 
           if(res.message == 'success'){
             this.toastr.success('Payment Reminder Send .');
           }

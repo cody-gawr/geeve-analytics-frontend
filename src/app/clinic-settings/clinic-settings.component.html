@@ -49,7 +49,7 @@
                   <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
                     <div class="sa-form-group">
                       <label>Phone Number*</label>
-                      <input  type="text" placeholder="" [formControl]="form.controls['phoneNo']" (keypress)="numberOnly($event)" oninput="this.value = this.value.slice(0,13);"  [(ngModel)]="phoneNo">
+                      <input  type="text" pattern="[0-9\s]\s*(\S\s*){7,}" placeholder="" [formControl]="form.controls['phoneNo']" (keypress)="numberOnly($event)" oninput="this.value = this.value.slice(0,13);"  [(ngModel)]="phoneNo">
                       <small *ngIf="form.controls['phoneNo'].hasError('required') && form.controls['phoneNo'].touched" class="text-danger support-text">Phone is required.</small> </div>
                   </div>
                 </div>

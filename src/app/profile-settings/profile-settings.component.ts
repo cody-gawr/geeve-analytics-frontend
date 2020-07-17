@@ -503,7 +503,7 @@ public website;
             expires: new Date('2030-07-19')
         };
         this._cookieService.put("display_name", this.displayName, opts);
-        this._cookieService.put("email", this.email, opts);
+       // this._cookieService.put("email", this.email, opts);
         this.display_name = this.displayName;
         this.phone_no = this.PhoneNo;
         this.address = this.Address;
@@ -619,7 +619,8 @@ public fileToUpload;
       $('.ajax-loader').hide();      
       if(res.message == 'success'){ 
         this.imageURL= res.data;
-
+         $("#imageURL").val(this.imageURL);
+        this.onSubmitBasic();
       }
     });
   }

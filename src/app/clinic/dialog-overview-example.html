@@ -11,7 +11,7 @@
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
          <label>Clinic Logo</label>
-        <input class="form-control b-b" type="file" name= "file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
+        <input class="form-control" type="file" name= "file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
     </div>
    </div>
    <div fxLayout="row wrap" fxLayoutGap="2%">
@@ -54,7 +54,7 @@
      <div fxLayout="row wrap" fxLayoutGap="2%">
     <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
         <label>Address</label>
-       <textarea tabindex="1" [(ngModel)]="data.address" [formControl]="form.controls['address']" placeholder="" class="form-control-dialog"> </textarea>
+       <input tabindex="1" [(ngModel)]="data.address" [formControl]="form.controls['address']" placeholder="" class="form-control-dialog">
        <small *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched" class="text-danger support-text">Address is Required.</small>
     </div>
    </div>

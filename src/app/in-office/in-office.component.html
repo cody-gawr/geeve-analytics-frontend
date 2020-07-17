@@ -73,7 +73,7 @@
      <span (click)="sort()">Total Amount</span>
    </ng-template> 
      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-         <span class="datatable_label">Total Amount : </span> <span *ngIf="isDecimal(value)"> {{value  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(value)">{{value| currency: 'USD':true:'1.0'}}</span>
+         <span class="datatable_label">Total Amount : </span> <span *ngIf="isDecimal(value)"> {{value  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(value)">{{value| currency: 'USD': 'symbol':'1.0'}}</span>
       </ng-template>
    </ngx-datatable-column>
        <ngx-datatable-column prop="balance_amount" name="balance_amount">
@@ -81,7 +81,7 @@
            <span (click)="sort()">Outstanding Amount</span>
         </ng-template>
        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-           <span class="datatable_label">Outstanding Amount : </span><span *ngIf="isDecimal(value)"> {{value  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(value)">{{value| currency: 'USD':true:'1.0'}}</span>
+           <span class="datatable_label">Outstanding Amount : </span><span *ngIf="isDecimal(value)"> {{value  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(value)">{{value| currency: 'USD': 'symbol':'1.0'}}</span>
         </ng-template>
      </ngx-datatable-column>
       <ngx-datatable-column prop="payment_status" name="payment_status">

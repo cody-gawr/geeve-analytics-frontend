@@ -12,7 +12,7 @@
                    </div>
                    <mat-button-toggle-group class="button-group membership-details-btnG">
                        <button class="mat-raised-button mat-gray" (click) = "goBack()"><span class="material-icons">keyboard_arrow_left</span> Back</button>
-                        <button class="mat-raised-button mat-green"  (click) = "sendDefaultersemail(patient_name,patient_email,patient_id)" *ngIf="patient_status=='ACTIVE'"><span class="material-icons">link
+                        <button class="mat-raised-button mat-green"  (click) = "sendDefaultersemail(patient_name,patient_email,patient_id)" *ngIf="patient_status=='ACTIVE' || patient_status=='DEFAULTER'"><span class="material-icons">link
 </span> Generate Update Card Link </button>
                         <button class="mat-raised-button mat-warning" mat-menu-item (click) = "cancelSubscription()" *ngIf="user_type !=3 && user_type !=4 && patient_status != 'CANCELLED'"><span class="material-icons">close
 </span> Cancel Subscription</button>
@@ -55,6 +55,8 @@
                                </div>
                                   <div class="responsive_table_main">
                                     <h3 style="margin-top:0px;" class="sb_title">Plan Details</h3>
+                                    <div class="alert-warning text-center m-b-10" *ngIf="start_date_tba 
+                                    && patient_status != 'CANCELLED'"> Membership price for your plan {{plan_name}} will change to ${{price_tba}} on {{start_date_tba| date:'dd-MM-y':'UTC +10'}}</div>
                                   <table class="tabs_table responsive_table">
                                       <thead>
                                           <tr>
@@ -81,7 +83,7 @@
                                           </tr>
                                           <tr>
                                               <td>Plan Cost</td>
-                                              <td><span *ngIf="isDecimal(patient_amount)"> {{patient_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(patient_amount)">{{patient_amount| currency: 'USD':true:'1.0'}}</span> per <span *ngIf="planLength == 'MONTHLY'">month</span><span *ngIf="planLength == 'YEARLY'">year</span> </td>
+                                              <td><span *ngIf="isDecimal(patient_amount)"> {{patient_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(patient_amount)">{{patient_amount| currency: 'USD': 'symbol':'1.0'}}</span> per <span *ngIf="planLength == 'MONTHLY'">month</span><span *ngIf="planLength == 'YEARLY'">year</span> </td>
                                           </tr>
                                           <tr>
                                               <td>Start Date</td>
@@ -136,7 +138,7 @@
                                     </tbody>
                                 </table>
                              </div>
-                             <div fxLayout.gt-md="row wrap" class="row-tablePD" fxLayoutAlign="end" fxLayoutGap.sm="2%" style="margin-bottom:15px;">                                      
+                             <div fxLayout.gt-md="row wrap" class="row-tablePD" fxLayoutAlign="end" fxLayoutGap.sm="2%" style="margin-bottom:20px;">                                      
                               <div fxFlex class="">
                                    <mat-select style="border:1px solid #ccc; padding: 5px 11px; border-radius: 4px;display:none" [(ngModel)]="patientLog"  *ngIf="patientsAppointmentData.length>0">
                                       <mat-option value="">Select All</mat-option>
@@ -149,7 +151,51 @@
                                    <div *ngIf="patientsAppointmentData.length<=0 || preventative_frequency<=0" class="alert-info">All Preventative Appointments have been Used</div>
                              </div>
                             </div>
+                                <!-- {{preventative_count}} ------ {{preventative_frequency}}
+                         <input type ="button" value="Log Appointment" class="sa-pull-right mat-raised-button sa-pull-right mat-green" (click)="log_appointment()" *ngIf="preventative_count<preventative_frequency">
+                         <div style="color:#fff;" *ngIf="preventative_count>=preventative_frequency" class="sa-pull-right mat-raised-button golden mat-menu-item">All Preventative Appointments have been Used</div> -->
+
+                         <h3 style="float:left; margin-top:0px; display:block; width:100%;" class="sb_title">Subscription Details</h3>
+                         <div class="responsive_table_main">
+                             <table class="tabs_table responsive_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Subscription id</th>
+                                            <th>Amount</th>                                            
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Status</th>
+
+                                            <th>Frequency</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let data of subscrData">
+                                        <td><span class="res_table_label">Subscription id : </span> {{data.id }}</td>
+                                        <td><span class="res_table_label">Amount :</span> 
+                                           <span *ngIf="isDecimal(data.plan.amount/100)">{{ data.plan.amount/100 | currency: 'USD': 'symbol':'1.2-2'}}</span>
+                                          <span *ngIf="!isDecimal(data.plan.amount/100)">{{ data.plan.amount/100 | currency: 'USD': 'symbol':'1.0'}}</span>
+                                        </td>
+                                        <td *ngIf= "data.status == 'trialing'"><span class="res_table_label">Start Date :</span> {{data.trial_end * 1000| date:'dd-MM-y':'UTC +10'}}</td>
+                                        <td *ngIf= "data.status != 'trialing'"><span class="res_table_label">Start Date :</span> {{data.created * 1000| date:'dd-MM-y':'UTC +10'}}</td>
+                                        <td><span class="res_table_label">End Date : </span> </td>
+                                         <td *ngIf= "data.status != 'trialing'"><span class="res_table_label">Status : </span> {{data.status| titlecase }}</td>
+                                         <td *ngIf= "data.status == 'trialing'"><span class="res_table_label">Status : </span> Scheduled</td>
+
+                                        <td><span class="res_table_label">Frequency :</span> {{data.plan.interval| titlecase }}ly</td>
+                                       
+                                    </tr>
+                                   
+                                    </tbody>
+                                </table>
+                             </div>
                         </div>
+
+
+
+                         
+
+
                         </div>
                         </mat-tab>
                       <mat-tab label="Patient Details">
@@ -177,7 +223,7 @@
                                <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
                                   <label>Phone Number</label>
 
-                                  <input tabindex="1" type="tel" pattern="[0-9]*" [(ngModel)]="patient_phone_no" [formControl]="formPatient.controls['patient_phone_no']" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,11);" required="true">
+                                  <input tabindex="1" type="tel" [(ngModel)]="patient_phone_no" [formControl]="formPatient.controls['patient_phone_no']" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,15);" required="true" (keypress)="numberOnly($event)" >
 
                                   <small *ngIf="formPatient.controls['patient_phone_no'].hasError('required') && formPatient.controls['patient_phone_no'].touched" class="text-danger support-text">Patient Phone No is required.</small>
                              </div>
@@ -206,13 +252,14 @@
                                     <option value="">Select Year</option>
                                     <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
                                  </select> 
-                
+                </div>
 
                                  <small *ngIf="(formPatient.controls['dob_date'].hasError('required') && formPatient.controls['dob_date'].touched) || (formPatient.controls['dob_month'].hasError('required') && formPatient.controls['dob_month'].touched) || (formPatient.controls['dob_year'].hasError('required') && formPatient.controls['dob_year'].touched)" class="text-danger support-text">Patient DOB is required.</small>
+        <small *ngIf="invalid_dob" class="text-danger support-text">Patient Dob is Invalid.</small>                                 
                                    <!--input tabindex="1" type="text" [(ngModel)]="patient_dob" [formControl]="formPatient.controls['patient_dob']" placeholder="" class="form-control-dialog" required="true"  (keyup) ="checkDob()" placeholder="yyyy-mm-dd">
                                    <small *ngIf="invalid_dob" class="text-danger support-text">Patient Dob is Invalid.</small>
                                  <small *ngIf="formPatient.controls['patient_dob'].hasError('required') && formPatient.controls['patient_dob'].touched" class="text-danger support-text">Patient DOB is required.</small-->
-                             </div>
+                             
                                                  
                           
                        </div>
@@ -254,11 +301,11 @@
                                         <td><span class="res_table_label">Customer ID : </span> {{data.customer_id}}</td>
                                         <td><span class="res_table_label">Subscriber ID : </span> {{data.subscr_id}}</td>
                                         <td><span class="res_table_label">Invoice Date : </span> {{data.invoice_date| date:'dd-MM-y':'UTC +10'}}</td>
-                                        <td><span class="res_table_label">Amount : </span><span *ngIf="isDecimal(data.amount)"> {{data.amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.amount)">{{data.amount| currency: 'USD':true:'1.0'}}</span></td>
+                                        <td><span class="res_table_label">Amount : </span><span *ngIf="isDecimal(data.amount)"> {{data.amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.amount)">{{data.amount| currency: 'USD': 'symbol':'1.0'}}</span></td>
                                         <td><span class="res_table_label">Payment Status : </span> 
                                         <mat-chip-list>
                                           <mat-chip color="primary" selected *ngIf="data.payment_status == 'PAID'">{{data.payment_status}}</mat-chip>
-                                          <mat-chip color="warn" selected *ngIf="data.payment_status == 'PENDING'">{{data.payment_status}}</mat-chip> 
+                                          <mat-chip color="warn" selected *ngIf="data.payment_status == 'PENDING'">FAILED</mat-chip> 
                                         </mat-chip-list>
                                         </td>
                                     </tr>

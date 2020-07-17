@@ -27,6 +27,21 @@
   <app-root></app-root>
   <div class="notification-box warning_message" style = "display:none;">Your stripe account is not connected - <a href=''>Click here to Connect </a>  </div>
   <div class='ajax-loader'><img src='assets/images/ajax-loading.gif'></div>
-
+<script type="text/javascript">
+    $(document).on('keyup',"input[type='number']",function(){
+      var val = parseInt($(this).val());
+      if(val < 0){
+        var val  = val * -1;
+        $(this).val(val);
+      }        
+    });
+    $(document).on('blur',"input[type='number']",function(){
+      var val = parseInt($(this).val());
+      if(val < 0){
+        var val  = val * -1;
+        $(this).val(val);
+      }        
+    });
+</script>
 </body>
 </html>

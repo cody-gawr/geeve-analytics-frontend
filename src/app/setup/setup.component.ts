@@ -30,7 +30,6 @@ import { ToastrService } from 'ngx-toastr';
 // syntax. However, rollup creates a synthetic default module and we thus need to import it using
 // the `default as` syntax.
 import * as _moment from 'moment';
-// tslint:disable-next-line:no-duplicate-imports
 import {default as _rollupMoment, Moment} from 'moment';
 import { ClinicSettingsService } from '../clinic-settings/clinic-settings.service';
 const moment = _rollupMoment || _moment;
@@ -188,6 +187,14 @@ usersArray = new Array(this.userRows);
    }
    return true;
   }
+      numberOnlyNum(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)  && charCode != 46) {
+      return false;
+    }
+    return true;
+  }
+    
   ngAfterViewInit() {
     $('.external_clinic').hide();
     $('.header_filters').hide();
@@ -269,6 +276,9 @@ usersArray = new Array(this.userRows);
                                   enableSearchFilter: true,
                                   classes:"myclass custom-class"
                                 }; 
+                                if(!this._cookieService.get("stepper"))
+          this.router.navigate(['/dashboards']);
+
   }
    minDate = new Date('1990-01-01');
    maxDate = new Date();

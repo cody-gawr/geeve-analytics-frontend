@@ -193,12 +193,18 @@ public dob_larger_error="";
 
     }
 
-
+    numberOnlyNum(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)  && charCode != 46) {
+      return false;
+    }
+    return true;
+  }
     
   /* To allow only numbers */
     numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+   if (charCode > 32 && (charCode < 48 || charCode > 57)) {
       return false;
     }
     return true;
@@ -621,7 +627,7 @@ public user_type = this._cookieService.get("user_type");
   }
   ngAfterViewInit() {
     this.checkPermission('paymentplans');
-    this.initiate_clinic();
+    //this.initiate_clinic();
         $('#title').html('Payment Plans');
 
   

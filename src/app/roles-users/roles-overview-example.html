@@ -13,9 +13,10 @@
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['dashboards_'+selected_id]">Dashboards</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['memberships_'+selected_id]">Memberships</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['paymentplans_'+selected_id]">Payment Plans</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['roles_'+selected_id]">Roles</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['settings_'+selected_id]">Settings</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['defaulters_'+selected_id]">Defaulters</mat-checkbox>
+    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['roles_'+selected_id]">Users</mat-checkbox>
+    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['settings_'+selected_id]">Settings</mat-checkbox>
+    
   </div>
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>

@@ -26,7 +26,7 @@
                              <div fxFlex="calc(50% - 10px)" fxFlex.xs="100" class="sa-form-group">
                                <mat-label>Name</mat-label>
                                   <mat-form-field>
-                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_name']" (keypress)="omit_special_char($event)" [(ngModel)]="patient_name">
+                                    <input matInput placeholder="" type="text" [formControl]="form.controls['patient_name']" (keypress)="omit_special_char($event)" [(ngModel)]="patient_name" autofocus>
                                   </mat-form-field>
                                   <small *ngIf="form.controls['patient_name'].hasError('required') && form.controls['patient_name'].touched" class="text-danger support-text">Patient Name is Required.</small>
                              </div>
@@ -69,7 +69,7 @@
                              <div fxFlex="calc(50% - 10px)" fxFlex.xs="100" class="sa-form-group">
                 <mat-label>Contact No.</mat-label>
                             <mat-form-field>
-            <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,11);" [(ngModel)]="patient_phone_no">
+            <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,15);" [(ngModel)]="patient_phone_no" (keypress)="numberOnly($event)">
                             </mat-form-field>
                           <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched" class="text-danger support-text">You must include Phone No.</small>
 
@@ -147,12 +147,12 @@
                                                 </span></td> 
                                                <td><span class="cc_table_label">Name :</span>{{data.name}}</td>
                                                <td><span class="cc_table_label">DOB :</span>{{data.dob | date:'dd-MM-y'}}</td>
-                                               <td><span class="cc_table_label">Amount :</span><span *ngIf="data.discount" class="percent_value2">{{data.discount}}% off</span><span *ngIf="isDecimal(data.amount)"> {{data.amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.amount)">{{data.amount| currency: 'USD':true:'1.0'}}</span></td>
+                                               <td><span class="cc_table_label">Amount :</span><span *ngIf="data.discount" class="percent_value2">{{data.discount}}% off</span><span *ngIf="isDecimal(data.amount)"> {{data.amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.amount)">{{data.amount| currency: 'USD': 'symbol':'1.0'}}</span></td>
                                            </tr>                                          
                                        </tbody>
                                    </table>
                                </div>
-                               <div class="cc_total_value">Total {{planLength | titlecase}} Price  : <span *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</span></div>
+                               <div class="cc_total_value">Total {{planLength | titlecase}} Price  : <span *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD': 'symbol':'1.0'}}</span></div>
                            </div>
                           </div>
                           </div>
@@ -175,7 +175,19 @@
                           </mat-tab>
                            <mat-tab class="step3" label="Payment" [disabled]='!tabActive2'>
                               <mat-card-content class="Payment-info fianl-payment-screen">
-                                <div class="cc_total_amountarea"><span class="" *ngIf="planLength =='MONTHLY'">Total Charges :  <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</b> per Month</span><span class="" *ngIf="planLength =='YEARLY'">Total Charges : <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD':true:'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD':true:'1.0'}}</b> per Year</span></div>
+                             <div fxLayout="row wrap" fxLayoutGap="5%" fxLayoutGap.xs="0%">
+                              <div fxFlex="30" fxFlex.xs="100">
+                                  <div class="selected_plan_area">
+                                      <div class="selected_plan_image">
+                                          <img src="assets/images/enter-card-details.svg"> 
+                                      </div>
+                                     <div class="selected_plan_detail">
+                                         <h4>Enter your Card Details</h4>
+                                     </div>
+                                  </div>
+                              </div>
+                               <div fxFlex="65" fxFlex.xs="100">
+                                <div class="cc_total_amountarea"><span class="" *ngIf="planLength =='MONTHLY'">Total Charges :  <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD': 'symbol':'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD': 'symbol':'1.0'}}</b> per Month</span><span class="" *ngIf="planLength =='YEARLY'">Total Charges : <b *ngIf="isDecimal(totalAmountPatients)"> {{totalAmountPatients  | currency: 'USD': 'symbol':'1.2-2'}} </b> <b  *ngIf="!isDecimal(totalAmountPatients)">{{totalAmountPatients| currency: 'USD': 'symbol':'1.0'}}</b> per Year</span></div>
                                 <div class="cell example example3 " id="example-3">
                                     <div class="iframe_main">
                                       <div class="fieldset AddCard-main">
@@ -193,7 +205,9 @@
                                         </div>
                                       </div>
                                     </div>      
-                                </div>                                 
+                                </div>
+                              </div>
+                            </div>
                                 </mat-card-content>
                              <button class="mat-raised-button mat-gray mr15 m-i-l" (click) ="changeTab(1)" style="margin-top: 15px"><span class="material-icons">chevron_left</span> Back</button>
                           </mat-tab>

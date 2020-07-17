@@ -72,6 +72,15 @@ export class PatientInfoService {
         );
     }
 
+    getSubscriptionStripe(patient_id, token = this._cookieService.get("token")): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Patients/getSubscriptionStripe?patient_id="+patient_id+"&user_id="+this._cookieService.get("userid"), { headers: header })
+        .pipe(map((response: Response) => {
+                return response;
+                    })
+        );
+    }
+
     log_appointment( patient_id, member_plan_id, patientLog): Observable<any> { 
     const formData = new FormData();      
         formData.append('patient_id', patient_id);

@@ -43,9 +43,11 @@ export class UpdateCardService {
             );
     }
 
-   retryPayment(subscription_id): Observable<any> {
+   retryPayment(subscription_id,plan_type): Observable<any> {
             const formData = new FormData();
             formData.append('subscription_id', subscription_id);
+            formData.append('plan_type', plan_type);
+            
             return this.http.post(this.apiUrl +"/Patients/retryPayment", formData)
             .pipe(map((response: Response) => {
                    return response;

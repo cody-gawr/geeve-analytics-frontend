@@ -27,10 +27,10 @@ align-items: center;"></div>
                 <small *ngIf="form.controls['password'].hasError('pattern') && !form.controls['password'].hasError('minlength') &&  form.controls['password'].touched" class="text-danger">Password must contain one lowercase letter,one uppercase letter, alphanumeric and one special character.</small>
               <small *ngIf="form.controls['password'].value !=  form.controls['cpassword'].value" class="text-danger support-text">Password and Confirm Password does not match.</small>
               <small *ngIf="errorLogin == true && errorLoginText != ''" class="text-success support-text">{{errorLoginText}}</small>
-                <small *ngIf="successLogin ==true && successLoginText != ''"  class="text-success support-text">Password changed successfully . <a mat-raised-button color="primary" [routerLink]="['/login']" class="m-t-10 mat-dc" align="center" *ngIf="isPasswordSet">Login</a></small> 
+              <small *ngIf="successLogin ==true && successLoginText != ''"  class="text-success support-text text-center">Password changed successfully.</small> 
             </div>
-          
-            <button mat-raised-button color="primary" type="submit" class="btn-block btn-lg m-t-20 mat-dc" [disabled]="!form.valid">Submit</button>
+            <small *ngIf="successLogin ==true && successLoginText != ''"  class="text-success support-text text-center"><a mat-raised-button color="primary" [routerLink]="['/login']" class="btn-block btn-lg m-t-20 mat-dc" align="center" *ngIf="isPasswordSet">Login</a></small> 
+            <button *ngIf="successLogin != true && successLoginText == ''" mat-raised-button color="primary" type="submit" class="btn-block btn-lg m-t-20 mat-dc" [disabled]="!form.valid">Submit</button>
             
           </div>
         </form>

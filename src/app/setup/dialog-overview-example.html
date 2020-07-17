@@ -48,7 +48,7 @@
     </div>
     <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
         <label>Phone Number</label>
-          <input matInput tabindex="1" oninput="this.value = this.value.slice(0,10);" [(ngModel)]="data.patient_phone_no" placeholder="" class="form-control-dialog"  type="text" [formControl]="form.controls['patient_phone_no']" (keypress)="numberOnly($event)">
+          <input matInput  pattern="[0-9\s]\s*(\S\s*){7,}" tabindex="1" oninput="this.value = this.value.slice(0,13);" [(ngModel)]="data.patient_phone_no" placeholder="" class="form-control-dialog"  type="text" [formControl]="form.controls['patient_phone_no']" >
            <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched" class="text-danger support-text">You must include valid Phone No.</small>
             <small *ngIf="form.controls['patient_phone_no'].hasError('minlength') && form.controls['patient_phone_no'].touched" class="text-danger support-text">Phone No Should be of minimum 8 digits in length.</small>
     </div>
@@ -100,10 +100,10 @@
                    </span>
                 </div>
                 <small *ngIf= "data.depositType == 'PERCENT' && !isNumber(data.deposited_amount)  && data.deposited_amount != null " class="support-text">
-                   <span *ngIf="isDecimal(data.deposite_percentage)"> {{data.deposite_percentage  | currency: 'USD':true:'1.2-2'}} </span>
-                 <span  *ngIf="!isDecimal(data.deposite_percentage)">{{data.deposite_percentage| currency: 'USD':true:'1.0'}}</span>% Deposit = 
-                  <span *ngIf="isDecimal(data.deposited_amount)"> {{data.deposited_amount  | currency: 'USD':true:'1.2-2'}} </span>
-                 <span  *ngIf="!isDecimal(data.deposited_amount)">{{data.deposited_amount| currency: 'USD':true:'1.0'}}</span></small>
+                   <span *ngIf="isDecimal(data.deposite_percentage)"> {{data.deposite_percentage  | currency: 'USD': 'symbol':'1.2-2'}} </span>
+                 <span  *ngIf="!isDecimal(data.deposite_percentage)">{{data.deposite_percentage| currency: 'USD': 'symbol':'1.0'}}</span>% Deposit = 
+                  <span *ngIf="isDecimal(data.deposited_amount)"> {{data.deposited_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span>
+                 <span  *ngIf="!isDecimal(data.deposited_amount)">{{data.deposited_amount| currency: 'USD': 'symbol':'1.0'}}</span></small>
             </div>
         </div>
         <div fxFlex.gt-md="38" fxFlex="100" class="sa-form-group">
@@ -138,7 +138,7 @@
    </div>
    <div fxLayout="row wrap" fxLayoutGap="2%">
        <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group" *ngIf="data.monthly_weekly_payment != '' && !isNumber(data.monthly_weekly_payment) && data.monthly_weekly_payment != 'Infinity'">
-           <div class="value_label">Instalment Amount <b> <span *ngIf="isDecimal(data.monthly_weekly_payment)"> {{data.monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.monthly_weekly_payment)">{{data.monthly_weekly_payment| currency: 'USD':true:'1.0'}}</span></b></div>
+           <div class="value_label">Instalment Amount <b> <span *ngIf="isDecimal(data.monthly_weekly_payment)"> {{data.monthly_weekly_payment  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.monthly_weekly_payment)">{{data.monthly_weekly_payment| currency: 'USD': 'symbol':'1.0'}}</span></b></div>
        </div>
    </div>
 </div>
@@ -275,10 +275,10 @@
                    </span>
                 </div>
                 <small *ngIf= "data.depositType == 'PERCENT' && !isNumber(data.deposited_amount)  && data.deposited_amount != null " class="support-text">
-                   <span *ngIf="isDecimal(data.deposite_percentage)"> {{data.deposite_percentage  | currency: 'USD':true:'1.2-2'}} </span>
-                 <span  *ngIf="!isDecimal(data.deposite_percentage)">{{data.deposite_percentage| currency: 'USD':true:'1.0'}}</span>% Deposit = 
-                  <span *ngIf="isDecimal(data.deposited_amount)"> {{data.deposited_amount  | currency: 'USD':true:'1.2-2'}} </span>
-                 <span  *ngIf="!isDecimal(data.deposited_amount)">{{data.deposited_amount| currency: 'USD':true:'1.0'}}</span></small>
+                   <span *ngIf="isDecimal(data.deposite_percentage)"> {{data.deposite_percentage  | currency: 'USD': 'symbol':'1.2-2'}} </span>
+                 <span  *ngIf="!isDecimal(data.deposite_percentage)">{{data.deposite_percentage| currency: 'USD': 'symbol':'1.0'}}</span>% Deposit = 
+                  <span *ngIf="isDecimal(data.deposited_amount)"> {{data.deposited_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span>
+                 <span  *ngIf="!isDecimal(data.deposited_amount)">{{data.deposited_amount| currency: 'USD': 'symbol':'1.0'}}</span></small>
             </div>
         </div>
         <div fxFlex.gt-md="38" fxFlex="100" class="sa-form-group">
@@ -313,7 +313,7 @@
    </div>
    <div fxLayout="row wrap" fxLayoutGap="2%">
        <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group" *ngIf="data.monthly_weekly_payment != '' && !isNumber(data.monthly_weekly_payment) && data.monthly_weekly_payment != 'Infinity'">
-           <div class="value_label">Instalment Amount <b> <span *ngIf="isDecimal(data.monthly_weekly_payment)"> {{data.monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.monthly_weekly_payment)">{{data.monthly_weekly_payment| currency: 'USD':true:'1.0'}}</span></b></div>
+           <div class="value_label">Instalment Amount <b> <span *ngIf="isDecimal(data.monthly_weekly_payment)"> {{data.monthly_weekly_payment  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.monthly_weekly_payment)">{{data.monthly_weekly_payment| currency: 'USD': 'symbol':'1.0'}}</span></b></div>
        </div>
    </div>
 </div>

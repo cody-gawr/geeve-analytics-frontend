@@ -183,7 +183,7 @@ export class SubscriptionComponent implements OnInit {
     });
     this.getPlans();
     this.planSliderConfig  = {
-      "slidesToShow": 4, "slidesToScroll": 1,autoplay: true, dots:true,
+      "slidesToShow": 4, "slidesToScroll": 1,autoplay: true, dots:true,"infinite": false,
       'responsive': [
        {
         'breakpoint': 767,
@@ -401,6 +401,14 @@ public terms;
 
  scroll(sectionId) {
     document.querySelector('#'+sectionId).scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $(".upper-menu-item").removeClass('active');
+    if(sectionId=="sa-container"){
+        $(".home-menu-item").addClass('active');
+    }else if(sectionId=="offers_packages"){
+        $(".membership-menu-item").addClass('active');
+    }else{
+         $(".contact-menu-item").addClass('active');   
+    }
  }
  submitContactForm($event){
   const formData=this.contactusForm.value;

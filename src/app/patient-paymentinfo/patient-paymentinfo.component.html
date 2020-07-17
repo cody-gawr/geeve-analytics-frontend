@@ -21,8 +21,8 @@
  <mat-tab-group dynamicHeight>
                         <!-- Plan Details tab -->
     <mat-tab label="Plan Details">
-         <div fxLayout="row wrap" class="row-tablePD" fxLayoutGap="2%" >
-          <div fxFlex.gt-sm="49" fxFlex class="sa_mattabs_design sa_matforms_design sa_table_evenodd">
+         <div fxLayout="row wrap" class="row-tablePD" fxLayoutGap="2%" fxLayoutGap.md="0">
+          <div fxFlex="49" fxFlex.md="100" class="sa_mattabs_design sa_matforms_design sa_table_evenodd">
       <form>
         <h3 style="margin-top:0px;" class="sb_title">Plan Details</h3>
         <table class="green_table">
@@ -40,23 +40,23 @@
                 </tr>
                 <tr>
                   <th>Plan Amount</th>
-                  <td><span *ngIf="isDecimal(total_amount)"> {{total_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(total_amount)">{{total_amount| currency: 'USD':true:'1.0'}}</span></td>
+                  <td><span *ngIf="isDecimal(total_amount)"> {{total_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(total_amount)">{{total_amount| currency: 'USD': 'symbol':'1.0'}}</span></td>
                 </tr>
                  <tr>
                   <th>Setup Fee</th>
-                  <td><span *ngIf="isDecimal(setup_fee)"> {{setup_fee  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(setup_fee)">{{setup_fee| currency: 'USD':true:'1.0'}}</span></td>
+                  <td><span *ngIf="isDecimal(setup_fee)"> {{setup_fee  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(setup_fee)">{{setup_fee| currency: 'USD': 'symbol':'1.0'}}</span></td>
                 </tr>
                  <tr>
                   <th>Total Amount</th>
-                  <td><span *ngIf="isDecimal(total_amount + setup_fee)"> {{total_amount + setup_fee  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(total_amount + setup_fee)">{{total_amount + setup_fee| currency: 'USD':true:'1.0'}}</span></td>
+                  <td><span *ngIf="isDecimal(total_amount + setup_fee)"> {{total_amount + setup_fee  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(total_amount + setup_fee)">{{total_amount + setup_fee| currency: 'USD': 'symbol':'1.0'}}</span></td>
                 </tr>
                 <tr>
                   <th>Deposited Amount</th>
-                  <td><span *ngIf="isDecimal(deposite_amount)"> {{deposite_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(deposite_amount)">{{deposite_amount| currency: 'USD':true:'1.0'}}</span></td>
+                  <td><span *ngIf="isDecimal(deposite_amount)"> {{deposite_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(deposite_amount)">{{deposite_amount| currency: 'USD': 'symbol':'1.0'}}</span></td>
                 </tr>
                 <tr>
                   <th>Outstanding Amount</th>
-                  <td><span *ngIf="isDecimal(balance_amount)"> {{balance_amount  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(balance_amount)">{{balance_amount| currency: 'USD':true:'1.0'}}</span></td>
+                  <td><span *ngIf="isDecimal(balance_amount)"> {{balance_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(balance_amount)">{{balance_amount| currency: 'USD': 'symbol':'1.0'}}</span></td>
                 </tr>
                 <tr>
                   <th>Payment Frequency</th>
@@ -68,7 +68,7 @@
                 </tr>
                   <tr>
                   <th>{{payment_frequency| titlecase}} Payment</th>
-                  <td><span *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD':true:'1.0'}}</span></td>
+                  <td><span *ngIf="isDecimal(monthly_weekly_payment)"> {{monthly_weekly_payment  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(monthly_weekly_payment)">{{monthly_weekly_payment| currency: 'USD': 'symbol':'1.0'}}</span></td>
                 </tr>
                 <tr>
                   <th>Start Date</th>
@@ -80,7 +80,45 @@
                 </tr>
          </table>
       </form>
- </div>
+    </div>
+      <div fxFlex="49" fxFlex.md="100" class="sa_mattabs_design sa_matforms_design">
+                        <!-- {{preventative_count}} ------ {{preventative_frequency}}
+                         <input type ="button" value="Log Appointment" class="sa-pull-right mat-raised-button sa-pull-right mat-green" (click)="log_appointment()" *ngIf="preventative_count<preventative_frequency">
+                         <div style="color:#fff;" *ngIf="preventative_count>=preventative_frequency" class="sa-pull-right mat-raised-button golden mat-menu-item">All Preventative Appointments have been Used</div> -->
+
+                         <h3 style="float:left; margin-top:0px; display:block; width:100%;" class="sb_title">Subscription Details</h3>
+                         <div class="responsive_table_main">
+                             <table class="tabs_table responsive_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Subscription id</th>
+                                            <th>Amount</th>                                            
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Status</th>
+
+                                            <th>Frequency</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let data of subscrData">
+                                        <td><span class="res_table_label">Subscription id : </span> {{data.id }}</td>
+                                        <td><span class="res_table_label">Amount :</span>
+                                          <span *ngIf="isDecimal(data.plan.amount/100)">{{ data.plan.amount/100 | currency: 'USD': 'symbol':'1.2-2'}}</span>
+                                          <span *ngIf="!isDecimal(data.plan.amount/100)">{{ data.plan.amount/100 | currency: 'USD': 'symbol':'1.0'}}</span>
+                                        </td>
+                                        <td><span class="res_table_label">Start Date :</span> {{data.created * 1000| date:'dd-MM-y':'UTC +10'}}</td>
+                                        <td><span class="res_table_label">End Date : </span> {{data.cancel_at * 1000| date:'dd-MM-y':'UTC +10'}}</td>
+                                        <td><span class="res_table_label">Status : </span> {{data.status| titlecase }}</td>
+
+                                        <td><span class="res_table_label">Frequency :</span> {{data.plan.interval| titlecase }}ly</td>
+                                       
+                                    </tr>
+                                   
+                                    </tbody>
+                                </table>
+                             </div>
+                        </div>
  </div>
 </mat-tab>
 <!-- Payment History tab -->
@@ -103,11 +141,11 @@
                                         <td><span class="res_table_label">Customer ID : </span> {{data.customer_id}}</td>
                                         <td><span class="res_table_label">Subscriber ID : </span> {{data.subscriptionId}}</td>
                                         <td><span class="res_table_label">Invoice Date : </span> {{data.created_at| date:'dd-MM-y':'UTC +10'}}</td>
-                                        <td><span class="res_table_label">Amount : </span><span *ngIf="isDecimal(data.total_paid)"> {{data.total_paid  | currency: 'USD':true:'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.total_paid)">{{data.total_paid| currency: 'USD':true:'1.0'}}</span></td>
+                                        <td><span class="res_table_label">Amount : </span><span *ngIf="isDecimal(data.total_paid)"> {{data.total_paid  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(data.total_paid)">{{data.total_paid| currency: 'USD': 'symbol':'1.0'}}</span></td>
                                         <td><span class="res_table_label">Payment Status : </span> 
                                         <mat-chip-list>
-                                          <mat-chip color="primary" selected *ngIf="data.paid">PAID</mat-chip>
-                                          <mat-chip color="warn" selected *ngIf="!data.paid">PENDING</mat-chip> 
+                                          <mat-chip color="primary" selected *ngIf="data.paid == '1'">PAID</mat-chip>
+                                          <mat-chip color="warn" selected *ngIf="data.paid == '0'">FAILED</mat-chip> 
                                         </mat-chip-list>
                                         </td>
                                     </tr>

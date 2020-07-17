@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { first, take } from 'rxjs/operators';
 import { CustomValidators } from 'ng2-validation';
+import { HeaderService } from '../layouts/full/header/header.service';
 declare var require: any;
 const data: any = [];
 @Component({
@@ -37,6 +38,41 @@ export class DialogOverviewExampleDialogComponent {
       preventative_frequency: [null, Validators.compose([Validators.required])],
       discount: [null, Validators.compose([Validators.required])]     
     });
+
+
+      data.preventative_plan_selected =[
+          {"id":1,"itemName":"Exam"},
+          {"id":2,"itemName":"Fluoride"},
+          {"id":3,"itemName":"Clean"}
+        ];
+        data.treatment_inclusions_selected=[
+          {"id":1,"itemName":"Fillings"},
+            {"id":2,"itemName":"Extractions"},
+            {"id":3,"itemName":"Wisdom teeth removal"},
+            {"id":4,"itemName":"Orthodontics"},
+            {"id":6,"itemName":"Intraoral Xrays"},
+            {"id":7,"itemName":"Opgs"},
+            {"id":8,"itemName":"Cbct"},
+            {"id":9,"itemName":"Fissure Sealants"},
+            {"id":10,"itemName":"Stainless Steel Crowns"},
+            {"id":10,"itemName":"Crowns"},
+            {"id":11,"itemName":"Bridges"},
+            {"id":12,"itemName":"Porcelain Veneers"},
+            {"id":13,"itemName":"Composite Veneers"},
+            {"id":14,"itemName":"Periodontal Treatment"},
+            {"id":15,"itemName":"Root Canal Treatment"},
+            {"id":16,"itemName":"Implants"},
+            {"id":17,"itemName":"Dentures"},
+            {"id":18,"itemName":"Occlusal Splints"}
+        ];
+        data.treatment_exclusions_selected=[
+             {"id":19,"itemName":"Any Treatment referred to a Specialist"},
+            {"id":20,"itemName":"Any Treatment performed under General Anaesthetic"},
+            {"id":21,"itemName":"Any Treatment performed under IV Sedation"}
+        ];
+
+
+
   }
  omit_special_char(event)
   {   
@@ -100,6 +136,23 @@ export class DialogOverviewExampleDialogComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  numberOnly(event): boolean {
+   const charCode = (event.which) ? event.which : event.keyCode;
+   if (charCode > 32 && (charCode < 48 || charCode > 57)) {
+     return false;
+   }
+   return true;
+  }
+
+
+      numberOnlyNum(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)  && charCode != 46) {
+      return false;
+    }
+    return true;
+  }
 }
 
 
@@ -150,6 +203,13 @@ export class UpdatePlanDialogComponent {
      return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
   }
   
+    numberOnly(event): boolean {
+   const charCode = (event.which) ? event.which : event.keyCode;
+   if (charCode > 32 && (charCode < 48 || charCode > 57)) {
+     return false;
+   }
+   return true;
+  }
   OnItemDeSelect(item:any,type,data){
        if(type=='inclusions'){  
         var index;
@@ -214,8 +274,28 @@ export class PlansComponent implements AfterViewInit {
         public treatment_exclusions;
         public settings;
 
+  private checkPermission(role) { 
+  this.headerService.checkPermission(role).subscribe((res) => {
+       if(res.message == 'success'){
+       }
+        else if(res.status == '401'){
+               localStorage.setItem('prpermissionmessage','Sorry! You are not authorized to access this section . Please contact clinic owner .') ;
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+     // this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+
+  }
   ngAfterViewInit() {
-    this.initiate_clinic();
+   this.checkPermission('settings');
+
+  //  this.initiate_clinic();
    // this.getTreatments();
         $('#title').html('Membership Plans');
         
@@ -291,7 +371,7 @@ export class PlansComponent implements AfterViewInit {
         this.dropdownSettings = { 
                                   singleSelection: false, 
                                   text:"Select Treatements",
-                                  selectAllText:'Select All',
+                                  selectAllText:'',
                                   unSelectAllText:'UnSelect All',
                                   enableSearchFilter: true,
                                   classes:"myclass custom-class"
@@ -320,7 +400,7 @@ export class PlansComponent implements AfterViewInit {
 
   columns = [{ prop: 'id' }, { name: 'planName' }, { name: 'planLength' }, { name: 'totalAmount' }, { name: 'discount' }, { name: 'description' } ];
 
-  constructor(private toastr: ToastrService,notifierService: NotifierService,private plansService: PlansService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private plansService: PlansService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router,private headerService: HeaderService) {
     this.notifier = notifierService;
     this.rows = data;
     this.temp = [...data];
@@ -355,22 +435,25 @@ export class PlansComponent implements AfterViewInit {
       return true;
     }
   }
-
+public addPlanCount =0;
   private getPlans() {
 if(this.clinic_id != undefined) {
-
+    
     this.rows=[];
     this.plansService.getPlans(this.clinic_id).subscribe((res) => {
         if(res.message == 'success'){
+   
         this.rows = res.data;
         this.temp = [...res.data];        
         this.table = data;
-          if(this.rows.length <=0) {
-              this.plansService.addPlans('Sample Plan',1,'MONTHLY', 100,10,'',this.clinic_id,'true',JSON.stringify(this.preventative_plan_selected),2,JSON.stringify(this.treatment_inclusions_selected),JSON.stringify(this.treatment_exclusions_selected),10).pipe(take(1)).subscribe((res) => {
+        
+          if(this.rows.length <=0 && this.addPlanCount==0) {
+           this.addPlanCount = this.addPlanCount + 1;
+           this.plansService.addPlans('Sample Plan',1,'MONTHLY', 100,10,'',this.clinic_id,'true',JSON.stringify(this.preventative_plan_selected),2,JSON.stringify(this.treatment_inclusions_selected),JSON.stringify(this.treatment_exclusions_selected),10).pipe(take(1)).subscribe((res) => {
             $('.ajax-loader').hide();  
             if(res.message == 'success'){           
               // this.notifier.notify( 'success', 'New Plan Added' ,'vertical');
-                this.toastr.success('New Plan Added .');
+                //this.toastr.success('New Plan Added .');
                 this.getPlans();
                }
             }, error => {

@@ -29,7 +29,7 @@
 
 
     <mat-form-field>
-        <input matInput tabindex="1" type="number" min="0" [(ngModel)]="data.patient_phone_no" placeholder="Phone Number" class="form-control-dialog" oninput="this.value = this.value.slice(0,10);" required="true">
+        <input matInput tabindex="1" type="number"   [(ngModel)]="data.patient_phone_no" placeholder="Phone Number" class="form-control-dialog" oninput="this.value = this.value.slice(0,13);" required="true"  pattern="[0-9\s]\s*(\S\s*){7,}">
       </mat-form-field>
 
 

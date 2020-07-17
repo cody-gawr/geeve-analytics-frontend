@@ -134,7 +134,7 @@ border-radius: 4px;
 -webkit-appearance: none; padding-right:20px;}
 .sa_select option{-webkit-appearance: none;  background:#fff; }
 .sa_select_outer{position: relative; float:left; width:100%; }
-.sa_select_outer:after{content:''; position: absolute; right:4px;  width: 0;
+.sa_select_outer::after{content:''; position: absolute; right:4px;  width: 0;
 height: 0; top:46%;
 border-left: 5px solid transparent;
 border-right: 5px solid transparent;
@@ -210,7 +210,7 @@ padding: 3px 8px; height:29px;
 border-radius: 4px; }
 
 .custom_date input{padding-right:23px;margin-right: 15%;}
-.custom_date:after{content: "\f073"; font-family: 'Font Awesome 5 Free';
+.custom_date::after{content: "\f073"; font-family: 'Font Awesome 5 Free';
     font-weight: 400;  position: absolute; right:8px;  top:5px;
  color:#18A689; pointer-events: none;}
 .sa_mat_menu_icon{background:rgba(255,255,255,0.6)!important; margin-right:8px!important;}
@@ -239,6 +239,9 @@ border-radius: 4px; }
  .sa_sidebar_logo_main{}
 .mat-list-base{padding-top:0px!important;}
 html .page-wrapper{height:100vh!important}
+html .notification-box-main .page-wrapper {
+    height: calc(100vh - 35px) !important;
+}
 .md-drppicker td.in-range{background:#DDEBE9!important;}
 .md-drppicker td.active, .md-drppicker td.active:hover{background: linear-gradient(308deg, rgba(14,52,89,0.8) 10%, rgba(24,166,137,0.9) 80%)!important;}
 .md-drppicker td.in-range.active, .md-drppicker td.active:hover{background: linear-gradient(308deg, rgba(14,52,89,0.8) 10%, rgba(24,166,137,0.9) 80%)!important;}
@@ -848,7 +851,7 @@ left: auto;
 .sa_dentist_graphs_area .sa_flexbg { min-height: 200px; position: relative; overflow:hidden;}
 .sa_designbg{padding:30px; padding-bottom:90px; position:relative;}
 .sa_designbg mat-card{margin:0!important}
-.sa_designbg:after{
+.sa_designbg::after{
     content: '';
     position: absolute;
     bottom: 0;
@@ -859,7 +862,7 @@ left: auto;
     left: 0;
     z-index: 999;
 }
-.sa_designbg.v2:after{ background: url(/assets/images/graph_vector.png) repeat-x!important; background-size: contain!important;}
+.sa_designbg.v2::after{ background: url(/assets/images/graph_vector.png) repeat-x!important; background-size: contain!important;}
 
 
 .sa_grid_ico{background:#00A489; color:#ffffff; font-size:20px; width:50px; height:50px; border-radius:150px; margin:0 auto; text-align:center; line-height:50px;}
@@ -1096,7 +1099,7 @@ margin-bottom: 20px; }
 .inner-header .navbar-expand-lg.navbar-main .navbar-nav .nav-link.btn-login:hover { color: #1ab394; }
 .subheader { padding-top: 120px; padding-bottom: 30px; }
 .breadcrumb-nav .breadcrumb { background-color: transparent; text-align: center;  align-self: center; justify-content: center;  font-size: 14px; }
-.breadcrumb-nav .breadcrumb li a{ color: #1ab394;  }.sa_designbg.v2:after{ background: url(https://staging-members.jeeve.com.au/assets/images/graph_vector.png) repeat-x!important; background-size: contain!important;}
+.breadcrumb-nav .breadcrumb li a{ color: #1ab394;  }.sa_designbg.v2::after{ background: url(https://staging-members.jeeve.com.au/assets/images/graph_vector.png) repeat-x!important; background-size: contain!important;}
 
 .pricing.pricing-center {
     text-align: center;
@@ -1231,7 +1234,9 @@ body .sa_forms_design .sa_select {
     .header_first_select{margin-right:0;}
     .stripe_button_connect{width:100%; float:left; display:block; margin-top:10px; margin-bottom:10px;}
     .log_btns{padding-top:15px;}
-
+html .notification-box-main .page-wrapper {
+    height: calc(100vh - 59px) !important;
+}
 }
 @media only screen and (max-width: 959px) {
 
@@ -1344,10 +1349,39 @@ body .sa_forms_design .sa_select {
 }
 
 }
+
+@media (max-width:1199px) {
+.stepper_content .table_inner_content {
+      max-width: 240px !important;
+    }
+
+.stepper_content .right_table_section .arrow_img {
+    right: 10px !important;
+    max-width: 40px !important;
+    top: 40px !important;
+}
+.stepper_content .right_table_section .price_area {
+    padding: 20px 10px !important;
+}
+
+.stepper_content .right_table_section .big_title h1 {
+    font-size: 44px !important;
+}
+.stepper_content .right_table_section .table_bg::after {
+        left: 85px !important;
+}
+
+.stepper_content .right_table_section .price_area::before {
+    width: 26px !important;
+    bottom: 14px !important;
+    left: -27px !important;
+}
+
+}
+
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (max-width: 1440px) {
-
-    .sa_tabs_design .sa_filter_span{/*margin-bottom:0;*/}
+.sa_tabs_design .sa_filter_span{/*margin-bottom:0;*/}
 .custom_date input{margin-left:0px;}
     .customRange{left:0; right:auto;}
 
@@ -1355,7 +1389,6 @@ body .sa_forms_design .sa_select {
 @media only screen and (max-width: 1580px) {
 
 }
-
 @media only screen and (max-width: 599px) {
     .sm_mrn{margin-right:0!important;}
     .sa_mat_select_topbar{padding:0 14px 0 14px;}
@@ -1382,16 +1415,12 @@ body .sa_forms_design .sa_select {
 
 }
 
-
 .sa_dentist_graphs_area .sa_flexbg{}
 .trend_mode_title{display:block; font-size:14px; margin-bottom:2px;}
-
-
 
 @media screen and (max-width: 1439px) and (min-width: 1280px) {
     .sa_tab_btn{font-size:12px;}
 }
-
 
 @media screen and (max-width: 1440px) and (min-width: 1280px) {
     .sa_dentist_graphs_area .sa_flexbg.custom_ngx_cw01{max-width:100%!important; flex:1 1 100%!important; margin-right:0!important;}
@@ -1877,6 +1906,18 @@ body .AddCard-main .AddCard-box .mat-card-title {
 .grid_title2 { font-size: 15px;}
 }
 @media (max-width: 1279px) {
+.stepper_content .you_are_set_sec .you-are-set h2 { font-size: 55px !important; }
+
+.stepper_content .intro_title h2 {
+    font-size: 45px !important;
+    line-height: 50px !important;
+    margin-bottom: 10px !important;
+}
+.stepper_content .intro_title h3 {
+    font-size: 27px !important;
+    line-height: 40px !important;
+}
+
 .action-two .datatable-header .datatable-row-center .datatable-header-cell:last-child,
 .action-two .datatable-body .datatable-row-center .datatable-body-cell:last-child{
     min-width: 110px;
@@ -1927,19 +1968,28 @@ body .AddCard-main .AddCard-box .mat-card-title {
 }
     .mat-raised-button{white-space:normal!important}
 
-    .patient_details_form .mat-card, .login-register[_ngcontent-xqt-c2] .mat-card[_ngcontent-xqt-c2] {
-    width: 95% !important;
-   
+.patient_details_form .mat-card, .login-register[_ngcontent-xqt-c2] .mat-card[_ngcontent-xqt-c2] {
+    width: calc(100% - 30px) !important;
 }
+.login-register > div { width: 100%; }
+
 }
 @media (max-width: 959px) {
+    body .stepper_content .you-are-set {
+    margin-top: 10px !important;
+}
 .row-tablePD {display: block !important; }
-
+.stepper_content .table_inner_content {
+    max-width: 300px !important;
+}
 .stepper_content .right-img {
     margin: auto;
-    max-width: 450px;
+    max-width: 450px !important;
+    float: none !important;
     padding: 0px;
 }
+
+.hide-sm{display: none !important;}
 
 .stepper_content .order1 {
     order: 1;
@@ -2016,11 +2066,13 @@ body .AddCard-main .AddCard-box .mat-card-title {
 
 .overflow_hidden{overflow:hidden!important;}
 .mat-tab-body-wrapper{overflow:visible!important;}
-
+.Payment-info .selected_plan_detail h4 {
+    margin-top: 10px;
+    margin-bottom: 10px !important;
+}
 .selected_plan_area{text-align:center;}
-.selected_plan_image{width:150px; margin:10px auto 0;}
-.selected_plan_detail h4{color: #003858; margin-top:4px;
-    text-transform: uppercase !important;
+.selected_plan_image{max-width:150px; margin:10px auto 0;}
+.selected_plan_detail h4{margin-top:10px;
     margin-bottom: 0 !important;}
 .selected_plan_detail p{color: #424242;
     font-size: 18px; 
@@ -2077,14 +2129,14 @@ body .AddCard-main .AddCard-box .mat-card-title {
 .clinic_logo_patientdetail {
     width: 230px;
     border-radius: 3px;
-    height: 110px;
+    height: 100px;
     text-align: center;
     background-color: #DDEBE9;
     margin: auto;
     bottom: 70px;
     border: 5px solid #fff;
     overflow: hidden;
-    padding: 10px;
+    padding: 5px;
     position: relative;
     z-index: 9;
 }
@@ -2184,15 +2236,24 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', end
     margin-top: 10px;
     border: 1px solid #DDEBE9;
     padding: 10px 20px;
+    margin-bottom: 20px;
     text-align: right;
 }
-    .percent_value2{background:#ea2268;
-    color:#fff;
-    padding: 0 6px;
-    margin-right: 5px;
-    border-radius: 4px 12px;
-    }
-
+.percent_value2 {
+    color: #dc3545;
+    background-color: #fbe8ea;
+    font-weight: 500;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    border: 1px solid #f3adb4;
+    font-size: 13px;
+    float: left;
+    line-height: 20px;
+    height: auto;
+    padding: 2px 15px;
+    border-radius: 3px;
+}
 .res_table_label{display:none; padding-right:10px; font-weight:500; color:#000;}
 .cc_table_label{display:none; padding-right:10px; font-weight:500; color:#000;}
 .total_vlu{color:#424242; text-transform:uppercase;}
@@ -2241,14 +2302,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', end
 .tabs_table{ width:100%; text-align: left; border-collapse: collapse; border-spacing: 0; }
 .tabs_table{}
 .tabs_table th, .tabs_table td{border:1px solid rgba(120, 130, 140, 0.15)!important; }
-.tabs_table thead tr{}
-.tabs_table th {
+.tabs_table th, table th {
     padding: 7px 12px;
     color: rgba(0, 0, 0, 0.54);
     font-weight: 500 !important;
     font-size: 14px!important;
 }
-.tabs_table td{padding:4px 12px; text-align: left;
+.tabs_table td, table td{padding:4px 12px; text-align: left;
     color:
     rgba(0, 0, 0, 0.87);
     font-size: 14px;
@@ -2279,14 +2339,14 @@ input[type="date"] {
 
 /* create a new arrow, because we are going to mess up the native one
 see "List of symbols" below if you want another, you could also try to add a font-awesome icon.. */
-input[type="date"]:after {
+input[type="date"]::after {
     content: "\25BC";
     color: #555;
     padding: 0 5px;
 }
 
 /* change color of symbol on hover */
-input[type="date"]:hover:after {
+input[type="date"]:hover::after {
     color: #bf1400;
 }
 
@@ -2334,6 +2394,8 @@ input[type="date"]::-webkit-inner-spin-button {
     position: fixed;
     left: 0;
     border-radius: 0;
+    min-height: 36px;
+    z-index: 9;
     text-align: center;
     padding: 5px 15px;
     top: 0;
@@ -2364,6 +2426,9 @@ input[type="date"]::-webkit-inner-spin-button {
     margin: 0px 0px 10px 0px !important;
     text-align: center;
 }
+.notification-box-main { padding-top: 58px; }
+.notification-box { min-height: 59px; }
+
 .profile-img-icon img {
     max-width: 150px;
     margin: auto;
@@ -2496,6 +2561,7 @@ a.link:hover, a.link:focus{color:#023857!important;}
 		text-align: center;
 		margin-top: 15px;
 	}
+    .hide-md{display: none !important;}
 
 	.dob_field .input_field select {
     margin-right: 3px;
@@ -2841,6 +2907,7 @@ form.basic-form.contract_up {
 .sa-form-group.cross_icon {
 	margin-top: 0px !important;
 }
+.AddCard-main::after { left: 15px; }
 }
 
 
@@ -2894,8 +2961,9 @@ form.basic-form.contract_up {
 .sa_profile_setting .mat-card {
     margin:10px 0px;
 }
-.stepper_content  .mat-step-icon-state-number.mat-step-icon.mat-step-icon-selected {
-	background: #18a689;
+.stepper_content .mat-step-icon-state-number.mat-step-icon.mat-step-icon-selected {
+    background: #1d2a49;
+    border: 1px solid #1d2a49;
 }
 /* .stepper_content .mat-stepper-vertical-line::before {
 	content: '';
@@ -2984,6 +3052,8 @@ form.basic-form.contract_up {
     padding-left: 30px;
     text-align: right;
     margin-top: 30px;
+    max-width: 680px;
+    float: right;
 }
 .stepper_content .mat-button {
 	background: #e8e9ec;
@@ -3044,7 +3114,7 @@ form.basic-form.contract_up {
 	background: url(/assets/img/right_btn_bg.png);
 	height: 50px;
 	width: 70px;
-	top: -2px;
+	top: 0px;
 	height: 100%;
 }
 .stepper_content  .mat-button-wrapper::before {
@@ -3065,6 +3135,7 @@ form.basic-form.contract_up {
     background-position: center left;
     background-repeat: no-repeat;
     padding-top: 100px;
+    background-size: 100% auto;
     padding-bottom: 80px;
 }
 .stepper_content .intro_title h2 {
@@ -3146,7 +3217,6 @@ form.basic-form.contract_up {
 .stepper_content .right_upload_btn input {
 	position: absolute;
 	width: 100%;
-	height: 104px;
 	height: 110px !important;
 	z-index: 99;
 	opacity: 0;
@@ -3199,6 +3269,12 @@ form.basic-form.contract_up {
 	background-size: 12px;
 	padding-right: 25px !important;
 }
+.stepper_content .invite_section input {
+    font-size: 14px;
+    font-family: Poppins;
+    height: 43px;
+    border: 1px solid #b8c6cc;
+}
 .stepper_content  .invite_section {
     min-height: auto !important;
 }
@@ -3208,11 +3284,12 @@ form.basic-form.contract_up {
 .stepper_content .circle_plus {
     position: relative;
     top: 6px;
-    margin-right: 9px;
+    margin-right: 5px;
 	 cursor: pointer;
 }
 .stepper_content span.add_Another {
     cursor: pointer;
+    font-weight: 500;
 }
 
 .stepper_content  .right_table_section {
@@ -3250,10 +3327,9 @@ form.basic-form.contract_up {
 	margin: auto;
 }
 .stepper_content  .right_table_section .price_area {
-	padding-top: 50px;
-	padding: 0 15px;
-	padding-top: 40px;
+	padding: 20px 15px;
 	position: relative;
+    border-radius: 25px;
 	box-shadow: 2px 2px 12px #d4e1dc;
 }
 .stepper_content  .right_table_section .price_area::before {
@@ -3293,7 +3369,7 @@ form.basic-form.contract_up {
 	left: 152px;
 }
 
-.stepper_content  .right_table_section .price_area::after {
+.stepper_content .right_table_section .price_area::after {
 	content: '';
 	position: absolute;
 		background: url(assets/img/right_bg.png);
@@ -3328,7 +3404,7 @@ form.basic-form.contract_up {
 }
 .stepper_content .right_table_section .arrow_img {
     position: absolute;
-    top: 40px;
+    top: 30px;
     right: 4px;
     max-width: 90px;
 }
@@ -3371,12 +3447,7 @@ form.basic-form.contract_up {
 	margin-bottom: 30px;
 	display: inline-block;
 }
-.stepper_content  .invite_section  .sa-form-group select {
-	height: 54px;
-	border: 1px solid #b8c6cc;
-	font-size: 18px;
-	color: #808080;
-}
+
 .stepper_content  .invite_section .sa-form-group.cross_icon img {
 	margin-top: 42px;
 }
@@ -3384,9 +3455,12 @@ form.basic-form.contract_up {
 
 
 .stepper_content  .invite_section label {
-	font-size: 17px;
+	font-size: 14px;
 	color: #a8aab3;
-	font-size: 500;
+}
+.stepper_content .mat-step-header .mat-step-icon-state-done.mat-step-icon{
+    background-color: #18a689;
+    border: 1px solid #18a689;
 }
 .stepper_content  .invite_section  .sa-form-group.cross_icon {
 	margin-top: 14px;
@@ -3400,19 +3474,20 @@ form.basic-form.contract_up {
 	position: relative;
 	top: -4px;
 }
-.stepper_content  .invite_section .sa-form-group select {
-	height: 54px;
-	border: 1px solid #b8c6cc;
-	font-size: 18px;
-	color: #808080;
-	background: url(/assets/img/angle-arrow-down.png);
-	background-repeat: no-repeat;
-	background-position: 96% 22px;
-	background-size: 12px;
-	padding-right: 25px !important;
+.stepper_content .invite_section .sa-form-group select {
+    height: 43px;
+    border: 1px solid #b8c6cc;
+    font-size: 14px;
+    line-height: 20px;
+    color: #808080;
+    background: url(/assets/img/angle-arrow-down.png);
+    background-repeat: no-repeat;
+    background-position: 96% 16px;
+    background-size: 10px;
+    padding-right: 25px !important;
 }
 .stepper_content  .you_are_set_sec .you-are-set h2 {
-	font-size: 80px;
+	font-size: 75px;
 	font-weight: 800;
 	color: #1d2a49;
 	line-height: 81px;
@@ -3443,7 +3518,7 @@ form.basic-form.contract_up {
     width: 120px;
     opacity: 1;
     position: absolute;
-    right: 26px;
+    right: 24px;
     top: 25px;
     z-index: 999;
     background: #1d2949;
@@ -3544,10 +3619,27 @@ form.basic-form.contract_up {
 }
 }
 
-@media (min-width:961px) { 
-	.sa-form-group.right_payment_schedule {
-		padding-left: 50px;
-	}
+@media (min-width:961px) and (max-width:1366px) { 
+.stepper_content .mat-step:nth-of-type(2) .mat-step-header {
+    top: 155px !important;
+}
+.stepper_content .mat-step:nth-of-type(3) .mat-step-header {
+    position: absolute;
+    top: 250px !important;
+}
+.stepper_content .mat-step:nth-of-type(4) .mat-step-header {
+    position: absolute;
+    top: 345px !important;
+}
+.stepper_content .mat-step:nth-of-type(5) .mat-step-header {
+    position: absolute;
+    top: 440px !important;
+}
+.stepper_content .mat-stepper-vertical::before {
+    height: 400px !important;
+}
+
+
 }
 
 @media (max-width:960px) {
@@ -3563,19 +3655,16 @@ form.basic-form.contract_up {
 	display: none;
 }
 .page-content.stepper_content {
-	background: #fff;
-	padding-left: 0px !important;
-}
-.stepper_content .mat-stepper-vertical {
-	padding-top: 0;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
 }
 .stepper_content .intro_title h2 {
-	font-size: 30px;
-	line-height: 32px;
+    font-size: 30px !important;
+    line-height: 43px !important;
 }
 .stepper_content .intro_title h3 {
-	font-size: 25px;
-	line-height: 36px;
+	font-size: 25px !important;
+	line-height: 36px !important;
 }
 .stepper_content .right-img {
 	padding-left: 0px;
@@ -3592,15 +3681,10 @@ form.basic-form.contract_up {
 
 	margin-top: 0 !important;
 }
-.stepper_innner {
-	margin-left: 0;
-	background: #fff;
-	border-radius: 20px 0 0 0;
-	box-shadow: none;
-}
+
 .stepper_content .you_are_set_sec .you-are-set h2 {
-    font-size: 40px;
-    line-height: 45px;
+    font-size: 40px !important;
+    line-height: 45px !important;
     margin-bottom: 10px;
 	border-bottom:none;
 }
@@ -3608,12 +3692,9 @@ form.basic-form.contract_up {
 	font-size: 15px;
 }
 .stepper_content .bottom_btns_page {
-	margin-top: 10px;
+    margin-top: 25px;
 }
-.stepper_content .right_upload_btn img {
-	height: 100px;
-	object-fit: contain;
-}
+
 
 
 /* .stepper_content .stripe_button_connect {
@@ -3662,14 +3743,7 @@ form.basic-form.contract_up {
 	top:400px;
 }
 
-.stepper_content .mat-stepper-vertical-line::before {
-	top: 34px;
-	bottom: -16px;
-	left: 0;
-	border-left-width: 1px;
-	border-left-style: solid;
-	height: 420px !important;
-}
+
 
 .stepper_content .mat-step .mat-green {
 	height: 45px;
@@ -3694,6 +3768,12 @@ form.basic-form.contract_up {
     .invite-setup-form-group .cross_icon {
    
     top: 5px !important;
+}
+.patient_details_form .Payment-info .selected_plan_image {
+    margin: 0px auto 0;
+}
+.patient_details_form .selected_plan_image {
+    margin: 10px auto 0 !important;
 }
 
 .stepper_content .right_upload_btn {
@@ -3729,10 +3809,6 @@ form.basic-form.contract_up {
 .stepper_content .right_upload_btn input {
 	/* height: 70px; */
 	opacity: 0;
-}
-
-.stepper_content .mat-vertical-content {
-	padding: 0 24px 24px 40px;
 }
 
 .table_inner_content {
@@ -3777,9 +3853,7 @@ form.basic-form.contract_up {
 	padding-bottom: 0;
 	background: none;
 }
-.stepper_content .right_upload_btn input {
-	height: 60px !important;
-}
+
 
 .stepper_content .sa_forms_design input {
     font-size: 14px;
@@ -3789,7 +3863,7 @@ form.basic-form.contract_up {
     padding-top: 7px;
 }
 .stepper_content .mat-vertical-content {
-	padding: 40px 0 24px 40px;
+    padding: 0 15px 15px 35px !important;
 }
 .upload_logo {
     line-height: 0;
@@ -3801,12 +3875,12 @@ form.basic-form.contract_up {
 	margin-bottom: 20px;
 }
 .stepper_content .intro_title h2 {
-	font-size: 24px;
-	line-height: 32px;
+	font-size: 24px !important;
+	line-height: 32px !important;
 }
 .stepper_content .intro_title h3 {
-	font-size: 20px;
-	line-height: 26px;
+	font-size: 20px !important;
+	line-height: 26px !important;
 }
 .stepper_content .sa-form-group {
     margin-bottom: 15px;
@@ -3878,18 +3952,21 @@ form.basic-form.contract_up {
 }
 
 .stepper_content .cross_icon_top {
-	width: 100px;
-	right: 0;
-	top: 10px;
-	z-index: 999;
-	padding: 5px 9px;
-	color: #fff;
-	height: 31px;
-	font-size: 13px;
+    width: 100px;
+    right: 15px;
+    top: 15px;
+    z-index: 999;
+    padding: 5px 9px;
+    color: #fff;
+    height: 31px;
+    font-size: 13px;
 }
 .add_members .mat-dialog-container {
     min-width: auto !important;
 	width:100% !important
+}
+.stepper_content .mat-stepper-vertical {
+    padding-top: 60px;
 }
 
 }
@@ -3910,7 +3987,9 @@ form.basic-form.contract_up {
 
 
 @media(min-width:961px) { 
-
+    .sa-form-group.right_payment_schedule {
+        padding-left: 50px;
+    }
 .stepper_content  .mat-step:nth-of-type(1) .mat-step-header {
 	position: absolute;
 	top:60px;
@@ -3933,14 +4012,7 @@ form.basic-form.contract_up {
 	top: 520px;
 }
 
-.stepper_content .mat-stepper-vertical-line::before {
-	top: 44px;
-	bottom: -16px;
-	left: 0;
-	border-left-width: 1px;
-	border-left-style: solid;
-	height: 470px !important;
-}
+
 
 
 }
@@ -3955,8 +4027,6 @@ form.basic-form.contract_up {
 	line-height: 75px;
 }
 .stepper_content .right-img {
-	padding-left: 90px;
-	margin-bottom: 50px;
 	text-align: center;
 }
 
@@ -3970,22 +4040,12 @@ form.basic-form.contract_up {
 .stepper_content .invite_section .sa-form-group.cross_icon_top img {
 	margin-top: -20px;
 }
-.stepper_content .mat-stepper-vertical-line::before {
-    border-left-color: #fff;
-}
-
 
 }
 
 
 @media(min-width:1280px) { 
 
-.stepper_content .you-are-set {
-	margin-top: 170px;
-}
-.stepper_content .intro_title.membership_jeeve {
-	margin-top: 140px;
-}
 .stepper_content .intro_title.stripe_payment {
 	margin-top: 10px;
 }
@@ -4035,6 +4095,9 @@ form.basic-form.contract_up {
     border-radius: 50px !important;
     margin: 5px;
 }
+.stepper_content .mat-vertical-content {
+    padding: 0 24px 24px 45px;
+}
 
 
     }
@@ -4058,6 +4121,12 @@ form.basic-form.contract_up {
 @media(max-width:1366px) {
 .basic_details_form, .ChangePassword-section {
     padding: 0 0%;
+}
+.preview-your-membership {
+    padding-bottom: 0px !important;
+}
+.stepper_content .you-are-set {
+    margin-top: 100px !important;
 }
 }
 
@@ -4087,6 +4156,7 @@ span.update_card {
     width: calc(100% - 42px);
     float: left;
     padding: 7px 10px;
+    height: 38px;
 }
 .sa-form-group .icon-group input {
     border-radius: 0px 4px 4px 0px;
@@ -4103,6 +4173,7 @@ span.update_card {
     text-align: center;
     padding: 10px 5px;
     float: left;
+    height: 38px;
 }
 
 .view-page-card {
@@ -4451,9 +4522,8 @@ span.powered-by-stripe strong {
 
 .patient_details_form .sa_payment_form {padding: 0px;}
 
-
 .patient_details_form .update-card-main .AddCard-main {
-    margin-top: 110px;
+    margin-top: 55px;
 }
 
 .update-card-main .card_fields {
@@ -4514,6 +4584,15 @@ span.powered-by-stripe strong {
     border-radius: 3px;
     border: 1px solid rgba(24,166,137,0.2);
 }
+.alert-warning {
+    background-color: rgba(232,163,74,0.1);
+    padding: 5px 10px;
+    font-weight: 400;
+    font-size: 14px;
+    color: rgb(183, 115, 25);
+    border-radius: 3px;
+    border: 1px solid rgba(232,163,74,0.2);
+}
 
 .top-filter .mat-form-field-infix {
     height: 50px;
@@ -4527,7 +4606,7 @@ span.powered-by-stripe strong {
     position: relative;
     float: left;
     width: 100%;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     padding-right: 15px;
 }
 .stepper_content .invite_section .sa-form-group {
@@ -4540,5 +4619,64 @@ span.powered-by-stripe strong {
     position: absolute;
     right: 0;
     cursor: pointer;
-    top: 55px;
+    top: 45px;
+}
+.stepper_content .right_upload_btn img {
+    height: 68px;
+    object-fit: scale-down;
+}
+
+.Payment-info .selected_plan_image {
+    margin-top: 45px;
+    margin-bottom: 15px;
+}
+
+.patient_details_form .selected_plan_image {
+    margin: 50px auto 0;
+}
+.patient_details_form .selected_plan_detail h4 {
+    margin: 10px 0 10px 0 !important;
+    font-size: 18px;
+}
+
+.patient_details_form .Payment-info .selected_plan_image {
+    margin: 78px auto 0;
+}
+
+.stepper_content .you-are-set {
+    margin-top: 170px;
+}
+
+.mat-stepper-vertical-line::before {display: none;}
+
+.pure-checkbox.select-all {
+    display: none;
+}
+.send_default{
+    cursor:pointer;
+}
+
+.text-black{
+    color:black !important;
+}
+.plan_table_design .custom_cart_area .link_btn {
+    color: #dc3545;
+}
+
+
+table tr:nth-child(even), table tr:nth-child(2n) {
+    background: rgba(24,166,137,0.05) !important;
+}
+table tr:hover {
+    background: #DDEBE9 !important;
+}
+table th, table td {
+    border: 1px solid rgba(120, 130, 140, 0.15)!important;
+}
+.preview-your-membership {
+    padding-bottom: 50px;
+}
+.update-card-main .OR_update_card {
+    text-align: center;
+    padding: 20px 0 10px 0;
 }

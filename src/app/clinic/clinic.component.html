@@ -62,7 +62,7 @@
             <span class="datatable_label">Phone Number : </span>
           {{value}}
         </span>
-         <input autofocus (blur)="updateValue($event, 'phoneNo', rowIndex)" *ngIf="editing[rowIndex+ '-phoneNo']" type="text" [value]="value" oninput="this.value = this.value.slice(0,10);"
+         <input autofocus  pattern="[0-9\s]\s*(\S\s*){7,}" (blur)="updateValue($event, 'phoneNo', rowIndex)" *ngIf="editing[rowIndex+ '-phoneNo']" type="text" [value]="value" oninput="this.value = this.value.slice(0,13);"
          />
        </ng-template>
      </ngx-datatable-column>

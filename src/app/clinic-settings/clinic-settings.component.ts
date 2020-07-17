@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
 
 import { ToastrService } from 'ngx-toastr';
 
-
+import { HeaderService } from '../layouts/full/header/header.service';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html'
@@ -228,7 +228,7 @@ export class ClinicSettingsComponent implements OnInit {
   public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
   // public practice_size:any ={};
   options: FormGroup;
-  constructor(private toastr: ToastrService,notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,public dialog: MatDialog,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,public dialog: MatDialog,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router,private headerService: HeaderService) {
 
     this.notifier = notifierService;
     this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
@@ -242,12 +242,32 @@ export class ClinicSettingsComponent implements OnInit {
       floatLabel: 'auto'
     });
   }
+    private checkPermission(role) { 
+  this.headerService.checkPermission(role).subscribe((res) => {
+       if(res.message == 'success'){
+       }
+        else if(res.status == '401'){
+               localStorage.setItem('prpermissionmessage','Sorry! You are not authorized to access this section . Please contact clinic owner .') ;
+              this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+     // this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );
+
+  }
   ngOnInit() {
       this.route.params.subscribe(params => {
       this.id = this.route.snapshot.paramMap.get("id");
       this.getClinicSettings();
       this.getClinicLandingPageSettings();
       this.getStripeAuthorization();
+    this.checkPermission('settings');
+
       $('#title').html('Clinic Settings');
       $('.header_filters').addClass('hide_header');
        
