@@ -5,6 +5,7 @@ import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
 declare var require: any;
+const data: any = require('assets/company.json');
 @Component({
   selector: 'app-table-filter',
   templateUrl: './users.component.html',
@@ -23,7 +24,7 @@ export class UsersComponent implements AfterViewInit {
         $('.header_filters').hide();
         
   }
-  const data = [
+  data = [
     {
         "dentist": "Ethel Price",
         "provider": "female",
