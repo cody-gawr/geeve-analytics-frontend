@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { RolesUsersService } from '../../roles-users/roles-users.service';
 
 import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, Pipe, PipeTransform, ViewChild, ElementRef  } from '@angular/core';
-import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe } from '@angular/common';
 import {
   FormControl,

@@ -26,7 +26,7 @@ import {
     <pre>{{ data?.event | json }}</pre>
   </div><br/>
   <button mat-raised-button color="primary"  (click)="dialogRef.close()">Close dialog</button>`
-})
+})date
 export class CalendarDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<CalendarDialogComponent>,
@@ -34,16 +34,16 @@ export class CalendarDialogComponent {
   ) {}
 }
 
-import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
-  isSameDay,
-  isSameMonth,
-  addHours
-} from 'date-fns';
+// import {
+//   startOfDay,
+//   endOfDay,
+//   subDays,
+//   addDays,
+//   endOfMonth,
+//   isSameDay,
+//   isSameMonth,
+//   addHours
+// } from 'date-fns';
 
 import { Subject } from 'rxjs/Subject';
 

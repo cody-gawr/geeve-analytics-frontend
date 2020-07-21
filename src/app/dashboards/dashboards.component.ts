@@ -1,6 +1,5 @@
 import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, Pipe, PipeTransform, ViewChild, ElementRef,Inject } from '@angular/core';
 import { DashboardsService } from './dashboards.service';
-import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe } from '@angular/common';
 import {
   FormBuilder,

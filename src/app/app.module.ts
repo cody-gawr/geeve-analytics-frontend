@@ -33,8 +33,6 @@ import { HeaderService } from './layouts/full/header/header.service';
 import { StepperHeaderService } from './layouts/stepper/header/header.service';
 import { StepperHeaderrightService } from './layouts/stepper/headerright/headerright.service';
 
-
-import { Globals } from 'globals';
 import { DentistService } from './dentist/dentist.service';
 
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
