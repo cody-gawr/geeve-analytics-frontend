@@ -75,15 +75,13 @@ export class ClinicSettingsService {
 
 
        // Get ClinicSettings
-    updateClinicSettings(clinic_id, name, address, contact_name,phone_no,clinicEmail, imageURL, token = this._cookieService.get("token")): Observable<any> {
+    updateClinicSettings(clinic_id, name, address,phone_no,clinicEmail, imageURL, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('clinicName', name);
     formData.append('address', address);
-    formData.append('contactName', contact_name);
     formData.append('phoneNo', phone_no);
     formData.append('clinicEmail', clinicEmail);
-    // formData.append('practice_size', practice_size);
     formData.append('logo', imageURL);   
 
     formData.append('id', clinic_id);
@@ -97,12 +95,11 @@ export class ClinicSettingsService {
                     })
         );
     }
-   updateLandingPageSettings(clinic_id,headerInfo,socialInfo,clinicTagLine,token = this._cookieService.get("token")): Observable<any> {
+   updateLandingPageSettings(clinic_id,headerInfo,socialInfo,token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
     formData.append('header_info', headerInfo);
     formData.append('social_info', socialInfo);
     formData.append('id', clinic_id);
-    formData.append('clinicTagLine', clinicTagLine);
     formData.append('user_id', this._cookieService.get("userid"));
     
     var header = this.getHeaders();

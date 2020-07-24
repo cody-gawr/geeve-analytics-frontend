@@ -49,8 +49,7 @@
           <span >
              <span class="datatable_label">User Type : </span> {{value}}
           </span>
-          <input autofocus (blur)="updateValue($event, 'contactName', rowIndex)" *ngIf="editing[rowIndex+ '-contactName']" type="text" [value]="value"
-          />
+          
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Created">

@@ -36,6 +36,6 @@ import { TaskboardComponent } from './taskboard/taskboard.component';
     CalendarDialogComponent,
     TaskboardComponent
   ],
-  entryComponents: [ DialogDataExampleDialogComponent]
+  entryComponents: [CalendarDialogComponent, DialogDataExampleDialogComponent]
 })
 export class AppsModule {}

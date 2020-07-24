@@ -129,7 +129,6 @@ export class ClinicComponent implements AfterViewInit {
   private readonly notifier: NotifierService;
   name: string;
   address: string;
-  contact_name: string;
   phone_no: number;
   publishable_key: string;
   secret_key: string;
@@ -177,7 +176,7 @@ export class ClinicComponent implements AfterViewInit {
   linkedin='http://linkedin.com/';
   instagram='http://instagram.com/';
   clinicEmail;
-  columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
+  columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'created' }];
 
   @ViewChild(ClinicComponent) table: ClinicComponent;
   constructor(private toastr: ToastrService,notifierService: NotifierService, private clinicService: ClinicService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router,  private headerService: HeaderService) {
@@ -201,7 +200,7 @@ export class ClinicComponent implements AfterViewInit {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '250px',
       panelClass: 'limitClinic',
-      data: { name: this.name, address: this.address, contact_name: this.contact_name ,phone_no: this.phone_no,clinicEmail: this.clinicEmail, facebook: this.facebook, twitter: this.twitter ,linkedin: this.linkedin,instagram:this.instagram}
+      data: { name: this.name, address: this.address,phone_no: this.phone_no,clinicEmail: this.clinicEmail, facebook: this.facebook, twitter: this.twitter ,linkedin: this.linkedin,instagram:this.instagram}
     });
     
     const sub = dialogRef.componentInstance.onAdd.subscribe((val) => {
@@ -228,7 +227,7 @@ export class ClinicComponent implements AfterViewInit {
   dialogRef.afterClosed().subscribe(result => {
     if(result) {
       $('.ajax-loader').show();
-  this.clinicService.addClinic(result.name, result.address, result.contact_name,result.phone_no,result.facebook, result.twitter, result.linkedin,result.instagram,result.clinicEmail, this.imageURL).subscribe((res) => {
+  this.clinicService.addClinic(result.name, result.address,result.phone_no,result.facebook, result.twitter, result.linkedin,result.instagram,result.clinicEmail, this.imageURL).subscribe((res) => {
       $('.ajax-loader').hide();
        if(res.message == 'success'){
         this.toastr.success('Clinic Added .');

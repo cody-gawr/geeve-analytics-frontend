@@ -98,6 +98,20 @@ export class UpdatePlanDialogComponent {
      k = event.charCode;  //
      return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
   }
+     numberOnly(event): boolean {
+   const charCode = (event.which) ? event.which : event.keyCode;
+   if (charCode > 32 && (charCode < 48 || charCode > 57)) {
+     return false;
+   }
+   return true;
+  }
+      numberOnlyNum(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)  && charCode != 46) {
+      return false;
+    }
+    return true;
+  }
   
   OnItemDeSelect(item:any,type,data){
        if(type=='inclusions'){  
@@ -154,6 +168,14 @@ export class SetupComponent implements AfterViewInit {
   private warningMessage: string;
   public disabled = false;
   public imageURL:any;  
+name:any;
+phone_no:any;
+planName:any;
+totalAmount:any;
+planLength:any;
+preventative_frequency:any;
+preventative_discount:any;
+discount:any;
 
   public selectedIndex:any;
   facebook ='http://facebook.com/';
@@ -344,21 +366,11 @@ if(selectedIndex >= 2) {
     this.step5editable=false;
   }
   this.selectedIndex= selectedIndex;
-  console.log(this.step1Completed);
-    console.log(this.step1editable);
-   console.log(this.step2Completed);
-    console.log(this.step2editable);
- console.log(this.step3Completed);
-    console.log(this.step3editable);
-  console.log(this.step4Completed);
-    console.log(this.step4editable);
-  console.log(this.step5Completed);
-    console.log(this.step5editable);
+
 
   }
         logout() {
       this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
-       console.log(res);
        if(res.message == 'success'){
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');
@@ -530,7 +542,8 @@ public memberplan_id;
       }, 1000);
   }
   public errortext;
-  rows = [];
+  rows:any;
+
   temp = [...data];
   table;
 disconnectStripe() {
@@ -584,7 +597,6 @@ public clinicEmail;
 public Contract;
 public token_id;
 public clinicName;
-public contactName;
 public address;
 public phoneNo;
 public clinicContract;
@@ -607,7 +619,6 @@ public user_id_encoded;
         this.user_id = res.data[0].user_id;
         this.user_id_encoded = btoa(res.data[0].user_id);
         this.clinicName = res.data[0].clinicName;
-        this.contactName = res.data[0].contactName;
         this.clinicEmail = res.data[0].clinicEmail;
         this.address = res.data[0].address;
         this.phoneNo = res.data[0].phoneNo;

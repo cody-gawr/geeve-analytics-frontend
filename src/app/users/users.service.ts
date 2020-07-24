@@ -79,12 +79,11 @@ export class UsersService {
     }
 
         // Update Clinic
-    addClinic(name, address, contact_name, token = this._cookieService.get("token")): Observable<any> {
+    addClinic(name, address,  token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('clinicName', name);
     formData.append('address', address);
-    formData.append('contactName', contact_name);
 
      formData.append('user_id', this._cookieService.get("userid"));
      var header = this.getHeaders();

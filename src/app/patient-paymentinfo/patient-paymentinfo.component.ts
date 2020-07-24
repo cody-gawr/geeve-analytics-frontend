@@ -63,7 +63,7 @@ export class PatientPaymentinfoComponent implements OnInit {
   rows = [];
   rowsAppointments =[];
   benefit =[];
-  payment=[];
+  payment:any=[];
   editing ={};
  public patient_id;
 public patient_address;

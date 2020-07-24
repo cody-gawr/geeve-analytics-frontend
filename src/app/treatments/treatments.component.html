@@ -49,7 +49,7 @@
           <span >
             {{value}}
           </span>
-          <input autofocus (blur)="updateValue($event, 'contactName', rowIndex)" *ngIf="editing[rowIndex+ '-treatmentStatus']" type="text" [value]="value"
+          <input autofocus  *ngIf="editing[rowIndex+ '-treatmentStatus']" type="text" [value]="value"
           />
         </ng-template>
       </ngx-datatable-column>

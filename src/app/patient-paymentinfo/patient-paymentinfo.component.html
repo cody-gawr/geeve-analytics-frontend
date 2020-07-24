@@ -159,7 +159,7 @@
          <div fxLayout="row column" fxLayoutGap="20px" fxLayoutGap.xs="0px" class="payment_contract_responsive" >
             <div fxFlex="calc(50% - 10px)" fxFlex.xs="100">
                 <div class="download">
-                 <div class="agreement-thumbnail" *ngIf="uploadedSignedContract; else empty">
+                 <div class="agreement-thumbnail" *ngIf="uploadedSignedContract;">
                   <img src="../assets/images/contract.png"><br>
                     <a mat-raised-button class="contractupload" color="gray" target="_blank" href="{{uploadedSignedContract}}"><i class="fas fa-cloud-download-alt"></i> Download Contract</a>
                    </div>
@@ -177,7 +177,7 @@
                        </div>
 
                    <div class="preview">
-                 <p *ngIf="previewSignedContract; else empty">
+                 <p *ngIf="previewSignedContract;">
                     <a mat-raised-button class="contractupload" color="dc" target="_blank" href="{{previewSignedContract}}">Preview Uploaded Contract</a>
                     <span class="material-icons" (click)="deleteSignedDocImage()">delete_forever</span>
                    </p>

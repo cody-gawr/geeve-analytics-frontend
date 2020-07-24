@@ -11,7 +11,7 @@ import { StepperHeaderService } from './header.service';
   templateUrl: './header.component.html',
   styleUrls: []
 })
-export class AppHeaderComponent {
+export class StepperAppHeaderComponent {
   constructor(private _cookieService: CookieService, private headerService: StepperHeaderService, private router: Router) {}
 
   public config: PerfectScrollbarConfigInterface = {};

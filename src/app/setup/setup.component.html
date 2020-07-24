@@ -192,7 +192,7 @@
 
     </div>
         <div formArrayName="itemRows">
-<div mat-dialog-content class="sa_forms_design sa_forms_group invite_section" *ngFor="let itemrow of inviteFormGroup.controls.itemRows.controls; let i=index"  [formGroupName]="i">
+<div mat-dialog-content class="sa_forms_design sa_forms_group invite_section" *ngFor="let itemrow of inviteFormGroup.controls.itemRows['controls']; let i=index"  [formGroupName]="i">
  <div class="invite_row invite-setup-form-group" >
     <div class="sa-form-group">
 		<label>Display Name</label>
@@ -256,7 +256,7 @@
    </div>
    <div class="skipwizard bottom_btns_page">
    <a class="text-center">
-       <button mat-raised-button color="green" (click)="finish(5)">Finish</button>
+       <button mat-raised-button color="green" (click)="finish()">Finish</button>
      </a>
   </div>
    </div>

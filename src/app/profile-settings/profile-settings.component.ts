@@ -220,13 +220,11 @@ public cvcStyle = {
           private warningMessage: string;
           public id:any ={};
           public clinicName:any =0;
-          public contactName =0;
           public description;
             
           // public chartData: any[] = [];
      //      public address:any = {};
           
-          public practice_size:any ={};
           options: FormGroup;
           public xero_link;
           public xeroConnect = false;

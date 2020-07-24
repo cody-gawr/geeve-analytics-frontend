@@ -105,12 +105,11 @@ export class ClinicService {
             );
     }
         // Update Clinic
-    addClinic(name, address, contact_name,phone_no,facebook, twitter, linkedin,instagram,clinicEmail,clinic_logo, token = this._cookieService.get("token")): Observable<any> {
+    addClinic(name, address,phone_no,facebook, twitter, linkedin,instagram,clinicEmail,clinic_logo, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('clinicName', name);
     formData.append('address', address);
-    formData.append('contactName', contact_name);
     formData.append('phoneNo', phone_no);
     formData.append('facebook', facebook);
     formData.append('twitter', twitter);

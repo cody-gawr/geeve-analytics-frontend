@@ -79,9 +79,9 @@ export class PatientInfoComponent implements OnInit {
   public totalAmount;
   public planLength;
   rows = [];
-  rowsAppointments =[];
+  rowsAppointments:any =[];
   benefit =[];
-  payment=[];
+  payment:any=[];
   editing ={};
  public patient_id;
 public patient_address;
@@ -106,7 +106,7 @@ public years:any = [];
 public preventative_frequency;
 public preventative_count;
 public patientLog;
-public user_type = this._cookieService.get("user_type");
+public user_type:any = this._cookieService.get("user_type");
 public max_days =31;
 public dob_larger_error="";
   constructor(private toastr: ToastrService,notifierService: NotifierService,private defaultersService: DefaultersService,private fb: FormBuilder,public dialog: MatDialog,  private patientInfoService: PatientInfoService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,breakpointObserver: BreakpointObserver,private datePipe: DatePipe) {
@@ -180,7 +180,7 @@ public dob_larger_error="";
   ngOnInit() {   
     this.id = this.route.snapshot.paramMap.get("id");
     this.getSubPatients();
-    this.getPatientContract();
+   // this.getPatientContract();
     this.getSubscriptionStripe();
     $('.header_filters').addClass('hide_header');
       this.route.params.subscribe(params =>  {

@@ -210,7 +210,7 @@
 			<!--button mat-raised-button color="dc" (click)="saveSignedContract(data)">Save</button-->
 		  </p>
 		</form> 
-	  <p *ngIf="uploadedSignedContract; else empty">
+	  <p *ngIf="this.uploadedSignedContract;">
 		  Download Signed Contract <br>
 		  
 		 <a mat-raised-button class="contractupload" color="accent" target="_blank" href="{{uploadedSignedContract}}">Download</a>

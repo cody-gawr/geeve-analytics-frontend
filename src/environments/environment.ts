@@ -8,11 +8,11 @@ export const environment = {
 
  // apiUrl :"http://localhost/jeevemembers/server/staging/members",
  // homeUrl:"http://localhost/jeevemembers/server/staging/members/",
- // solutionsUrl : "http://localhost/jeevesolutions/server/staging/solutions",
-
+//  // solutionsUrl : "http://localhost/jeevesolutions/server/staging/solutions",
+ solutionsUrl : "https://api.jeeve.com.au/staging/solutions",
 apiUrl :"https://api.jeeve.com.au/staging/members",
   homeUrl:"https://staging-members.jeeve.com.au",
- solutionsUrl : "https://api.jeeve.com.au/staging/solutions",
+
 
   // apiUrl : "http://localhost:4001/staging/members",
   // homeUrl:"http://localhost/jeevemembers/client2/src/",

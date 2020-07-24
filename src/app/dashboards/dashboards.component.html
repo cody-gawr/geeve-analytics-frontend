@@ -16,9 +16,8 @@
                  <mat-form-field>
                   <input matInput [matDatepicker]="dp" [formControl]="date">
                   <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                   <mat-datepicker #dp (click)="demo()"
+                   <mat-datepicker #dp 
                      startView="multi-year" startView="year"
-                     (yearSelected)="chosenYearHandler($event)"
                      (monthSelected)="chosenMonthHandler($event, dp)"
                      panelClass="example-month-picker">
                    </mat-datepicker>

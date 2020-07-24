@@ -38,7 +38,7 @@ import { DentistService } from './dentist/dentist.service';
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
-
+import { StepperAppHeaderComponent } from './layouts/stepper/header/header.component';
 
 import { ToastrModule } from 'ngx-toastr';
 
@@ -95,6 +95,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FullComponent,
     StepperComponent,
     AppHeaderComponent,
+    StepperAppHeaderComponent,
     SpinnerComponent,
     AppBlankComponent,
     AppSidebarComponent,

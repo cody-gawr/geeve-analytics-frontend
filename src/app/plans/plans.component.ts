@@ -203,12 +203,21 @@ export class UpdatePlanDialogComponent {
      return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
   }
   
-    numberOnly(event): boolean {
+   numberOnly(event): boolean {
    const charCode = (event.which) ? event.which : event.keyCode;
    if (charCode > 32 && (charCode < 48 || charCode > 57)) {
      return false;
    }
    return true;
+  }
+
+
+      numberOnlyNum(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)  && charCode != 46) {
+      return false;
+    }
+    return true;
   }
   OnItemDeSelect(item:any,type,data){
        if(type=='inclusions'){  
@@ -259,7 +268,6 @@ export class PlansComponent implements AfterViewInit {
   private readonly notifier: NotifierService;
   name: string;
   address: string;
-  contact_name: string;
   fileInput: any ;
   clinic_id: any;
   public selectedtreat;
@@ -530,8 +538,8 @@ public changeType;
                 showCancelButton: true,
                 }).then(function(data) {
                         if(data.value != undefined){
-                        $('.ajax-loader').show(); 
-
+                        $('#spinner_'+rowIndex).show(); 
+                        $('#action_'+rowIndex).hide();
                   if (data.value) {
                      self.sendMail = true;
                      self.changeType = 'details';
@@ -539,7 +547,8 @@ public changeType;
                       self.sendMail = false;
                      self.changeType = '';
                   }  
-                  self.updatePlanMain(result);      }           
+                  self.updatePlanMain(result,rowIndex);   
+                     }           
                 })              
           }
           else if((this.rows[rowIndex]['totalAmount'] != result.totalAmount ) || (this.rows[rowIndex]['discount'] != result.discount)){
@@ -553,7 +562,9 @@ public changeType;
                 showCancelButton: true,
                 }).then(function(data) {
                      if(data.value != undefined){
-                        $('.ajax-loader').show(); 
+                        $('#spinner_'+rowIndex).show(); 
+                        $('#action_'+rowIndex).hide();
+
                   if (data.value) {
                      self.sendMail = true;
                      self.changeType = 'cost';                     
@@ -561,36 +572,44 @@ public changeType;
                       self.sendMail = false;
                      self.changeType = '';
                   }  
-               self.updatePlanMain(result);      
+               self.updatePlanMain(result,rowIndex);      
              }
                 })
           }
           else {
-          this.updatePlanMain(result);      
+          this.updatePlanMain(result,rowIndex);      
           }
         }
         else {
-                $('.ajax-loader').show(); 
-         this.updatePlanMain(result);      
+                        $('#spinner_'+rowIndex).show(); 
+                        $('#action_'+rowIndex).hide();
+          
+         this.updatePlanMain(result,rowIndex);      
        }
        }
         }, error => {
-             $('.ajax-loader').hide(); 
+                        $('#spinner_'+rowIndex).hide(); 
+                        $('#action_'+rowIndex).show();
+
             this.toastr.error('Some Error Occured, Please try Again.');
         }); 
         }         
     });
   }
 
-  updatePlanMain(result) {
+  updatePlanMain(result,rowIndex) {
      this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,result.hidden,JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount,this.sendMail,this.updatePlan, this.changeType).subscribe((res) => {
                      if(res.message == 'success'){
-                      $('.ajax-loader').hide(); 
+                        $('#spinner_'+rowIndex).hide(); 
+                        $('#action_'+rowIndex).show();
+
                         this.getPlans()
                         this.toastr.success('Plan Updated.');
                       }
                     }, error => {
-                         $('.ajax-loader').hide(); 
+                        $('#spinner_'+rowIndex).hide(); 
+                        $('#action_'+rowIndex).show();
+
                     this.toastr.error('Some Error Occured, Please try Again.');
                     }); 
   }

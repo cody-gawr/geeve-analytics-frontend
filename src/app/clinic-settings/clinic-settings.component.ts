@@ -201,7 +201,6 @@ export class ClinicSettingsComponent implements OnInit {
   private warningMessage: string;
   public id:any ={};
   public clinicName:any =0;
-  public contactName =0;
   public phoneNo:any ={};
   public publishable_key:any ='';
   public secret_key:any='';
@@ -221,12 +220,11 @@ export class ClinicSettingsComponent implements OnInit {
   public instagram:string;
   public social_info:any ={};
   public sliderImages = [];
-  public clinicTagLine:any;
   public DefaultLogo :any;
   public clinicContract:any;
   public DefaultHeaderImage :any;
   public urlPattern=/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
-  // public practice_size:any ={};
+
   options: FormGroup;
   constructor(private toastr: ToastrService,notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,public dialog: MatDialog,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router,private headerService: HeaderService) {
 
@@ -282,16 +280,14 @@ export class ClinicSettingsComponent implements OnInit {
 
      this.formLanding = this.fb.group({
       headerTitle: [null, Validators.compose([Validators.required])],
-      headerDescription: [null, Validators.compose([Validators.required])],
-      // clinicTagLine :[null, Validators.compose([Validators.required])]
+      headerDescription: [null, Validators.compose([Validators.required])]
 
     });
      this.formSocial = this.fb.group({
       facebook: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       twitter: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       linkedin: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
-      instagram: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
-      // clinicTagLine :[null, Validators.compose([Validators.required])]
+      instagram: [null, Validators.compose([Validators.pattern(this.urlPattern)])]
 
     });
 
@@ -387,7 +383,6 @@ public user_id_encoded;
         this.user_id = res.data[0].user_id;
         this.user_id_encoded = btoa(res.data[0].user_id);
         this.clinicName = res.data[0].clinicName;
-        this.contactName = res.data[0].contactName;
         this.clinicEmail = res.data[0].clinicEmail;
         this.address = res.data[0].address;
         this.phoneNo = res.data[0].phoneNo;
@@ -462,7 +457,6 @@ public user_id_encoded;
           const sliderImagesData=res.data.slider_info;
           this.sliderImages =JSON.parse(sliderImagesData);
          }
-         this.clinicTagLine =res.data.clinicTagLine;
         
        }
         else if(res.status == '401'){
@@ -481,7 +475,6 @@ public user_id_encoded;
 
   onSubmit() {
   this.clinicName = this.form.value.clinicName;
-  this.contactName = this.form.value.contactName;
   this.address = this.form.value.address;
   this.phoneNo = this.form.value.phoneNo;
   this.clinicEmail = this.form.value.clinicEmail;
@@ -491,7 +484,7 @@ public user_id_encoded;
   this.address = this.address.replace(re, "");
 
   $('.ajax-loader').show();
-   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName,this.phoneNo,this.clinicEmail,this.imageURL).subscribe((res) => {
+   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.phoneNo,this.clinicEmail,this.imageURL).subscribe((res) => {
       $('.ajax-loader').hide();
     
        if(res.message == 'success'){
@@ -518,14 +511,13 @@ public user_id_encoded;
   this.header_info.headerTitle=this.formLanding.value.headerTitle;
   this.header_info.headerDescription=this.formLanding.value.headerDescription;
   this.header_info.image = this.headerImageURL;
-  this.clinicTagLine = this.formLanding.value.clinicTagLine;
     this.social_info ={};
   this.social_info.facebook = this.formSocial.value.facebook;
   this.social_info.twitter  = this.formSocial.value.twitter;
   this.social_info.linkedin = this.formSocial.value.linkedin;
   this.social_info.instagram = this.formSocial.value.instagram;
  
-  this.clinicSettingsService.updateLandingPageSettings(this.id,JSON.stringify(this.header_info),JSON.stringify(this.social_info),this.clinicTagLine).subscribe((res) => {
+  this.clinicSettingsService.updateLandingPageSettings(this.id,JSON.stringify(this.header_info),JSON.stringify(this.social_info)).subscribe((res) => {
     $('.ajax-loader').hide(); 
        if(res.message == 'success'){
 
@@ -557,9 +549,8 @@ public user_id_encoded;
   this.social_info.twitter  = this.formSocial.value.twitter;
   this.social_info.linkedin = this.formSocial.value.linkedin;
   this.social_info.instagram = this.formSocial.value.instagram;
-  this.clinicTagLine = this.formLanding.value.clinicTagLine;
  
-  this.clinicSettingsService.updateLandingPageSettings(this.id,JSON.stringify(this.header_info),JSON.stringify(this.social_info),this.clinicTagLine).subscribe((res) => {
+  this.clinicSettingsService.updateLandingPageSettings(this.id,JSON.stringify(this.header_info),JSON.stringify(this.social_info)).subscribe((res) => {
     $('.ajax-loader').hide(); 
        if(res.message == 'success'){
 

@@ -28,7 +28,7 @@ stripeTest: FormGroup;
   public form: FormGroup;
   public errortest = false;
   public errorLogin;
-
+complete;
   constructor(private http : Http, private fb: FormBuilder,
     private stripeService: StripeService, private router: Router, private testService: TestService,private _cookieService: CookieService) {}
 

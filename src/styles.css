@@ -4680,3 +4680,18 @@ table th, table td {
     text-align: center;
     padding: 20px 0 10px 0;
 }
+body .cdk-overlay-container, body .cdk-global-overlay-wrapper {
+    pointer-events: unset;
+    overflow-y: auto;
+}
+body .mat-dialog-content {
+    overflow: unset;
+    max-height: unset;
+}
+.spinner{
+    display: none;
+}
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}

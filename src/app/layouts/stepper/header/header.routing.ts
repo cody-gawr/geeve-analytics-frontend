@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
 
-import { AppHeaderComponent } from './header.component';
+import { StepperAppHeaderComponent } from './header.component';
 
 export const HeaderRoutes: Routes = [
   {
     path: '',
-    component: AppHeaderComponent,
+    component: StepperAppHeaderComponent,
     data: {
       title: 'Header'
     }

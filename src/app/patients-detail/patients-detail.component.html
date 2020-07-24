@@ -43,7 +43,7 @@
           </div>
           
       <div class="ngx_datatable_scroll_div mat-table">
-        <ngx-datatable #table class='material responsive-datatable datatable-middle rdt_1600px'  [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows' (onRowClick)="_onRowClick($event)" [reorderable]="true" [messages]="{emptyMessage: 'You have no members',totalMessage: 'total'}">
+        <ngx-datatable #table class='material responsive-datatable datatable-middle rdt_1600px'  [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [rows]='rows'  [reorderable]="true" [messages]="{emptyMessage: 'You have no members',totalMessage: 'total'}">
       <ngx-datatable-column prop="patient_name" name="patient_name">
          <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn">
         <span (click)="sort()">Patient Name</span>

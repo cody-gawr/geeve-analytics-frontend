@@ -72,7 +72,6 @@ export class SubscriptionComponent implements OnInit {
   public contactuser_phone: any;
   public contactuser_message: any;
   public clinicEmail :any;
-  public clinicTagline:any;
   public DefaultLogo :any;
   public DefaultHeaderImage :any;
   public sampleplan =false;
@@ -387,7 +386,6 @@ public terms;
           this.practiceOwnerEmail = (finalData[0].Users.email!="") ? finalData[0].Users.email : "admin@jeevemembers.com" ; // For display only
        //   this.clinicEmail = (finalData[0].Users.email !="") ? finalData[0].Users.email :"admin@jeevemembers.com"; // Used for sending email of contact us form 
     
-          this.clinicTagline = (finalData[0].clinicTagLine!=null) ? finalData[0].clinicTagLine : "Our <i class='fas fa-smile'></i> Are Valley Wide"; 
           this.terms= finalData[0].terms;
           // Used for sending email of contact us form 
 

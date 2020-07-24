@@ -240,15 +240,15 @@
                             <div fxFlex="100" class="sa-form-group">
                                <label>Patient DOB</label>
                             <div class="input_field_dob" fxLayout="row wrap" fxLayoutGap="20px">
-                                 <select fxFlex="calc(32% - 10px)" fxFlex.xs="calc(32% - 10px)" class="form-control-dialog" required="true" class="sa_select form-control" [(ngModel)]="dob_date" [formControl]="formPatient.controls['dob_date']" (change) ="checkDob()">
+                                 <select fxFlex="calc(32% - 10px)" fxFlex.xs="calc(32% - 10px)" class="form-control-dialog" required="true" class="sa_select form-control" [(ngModel)]="dob_date" [formControl]="formPatient.controls['dob_date']" (change) ="checkDob('date')">
                                     <option value="">Select Date</option>
                                     <option *ngFor="let date of dates" value="{{date}}">{{date}}</option>
                                  </select>
-                                  <select fxFlex="calc(32% - 10px)" fxFlex.xs="calc(32% - 10px)" class="form-control-dialog" required="true" class="sa_select form-control" [(ngModel)]="dob_month" [formControl]="formPatient.controls['dob_month']" (change) ="checkDob()">
+                                  <select fxFlex="calc(32% - 10px)" fxFlex.xs="calc(32% - 10px)" class="form-control-dialog" required="true" class="sa_select form-control" [(ngModel)]="dob_month" [formControl]="formPatient.controls['dob_month']" (change) ="checkDob('month')">
                                     <option value="">Select Month</option>
                                     <option *ngFor="let month of months" value="{{month.key}}">{{month.value}}</option>
                                  </select> 
-                                 <select fxFlex="calc(32% - 10px)" fxFlex.xs="calc(32% - 10px)" class="form-control-dialog" required="true" class="sa_select form-control" [(ngModel)]="dob_year" [formControl]="formPatient.controls['dob_year']" (change) ="checkDob()">
+                                 <select fxFlex="calc(32% - 10px)" fxFlex.xs="calc(32% - 10px)" class="form-control-dialog" required="true" class="sa_select form-control" [(ngModel)]="dob_year" [formControl]="formPatient.controls['dob_year']" (change) ="checkDob('year')">
                                     <option value="">Select Year</option>
                                     <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
                                  </select> 

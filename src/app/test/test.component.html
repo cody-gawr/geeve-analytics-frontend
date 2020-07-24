@@ -8,7 +8,7 @@ align-items: center;"></div>
         <mat-card>
             <mat-card-content>
 <div class="container">
-<form novalidate (ngSubmit)="buy($event)" [formGroup]="stripeTest">
+<form novalidate  [formGroup]="stripeTest">
 <div class="col-lg-6">
 <input class="form-control" type="text" formControlName="name" placeholder="Jane Doe">
 </div>
@@ -22,7 +22,7 @@ BUY
 </div>
 </form>
 </div>
-<button (click)="getCardToken()" [disabled]="!complete">Get Card Token</button>            </mat-card-content>
+<button  [disabled]="!complete">Get Card Token</button>            </mat-card-content>
         </mat-card>
 
     </div>

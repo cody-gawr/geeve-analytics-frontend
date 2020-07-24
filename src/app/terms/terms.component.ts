@@ -25,6 +25,14 @@ export class TermsComponent implements OnInit {
 
   private readonly notifier: NotifierService;
   public form: FormGroup;
+  clinicLogo;
+  clinicContactNo;
+  practiceOwnerEmail;
+  facebookUrl;
+  twitterUrl;
+  linkedinUrl;
+  instagramUrl;
+  scroll;
   public contactusForm: FormGroup;
   public errorLogin = false;
   public plans:any =[];

@@ -14,7 +14,6 @@ const data: any = require('assets/company.json');
 export class UsersComponent implements AfterViewInit {
   name: string;
   address: string;
-  contact_name: string;
   fileInput: any ;
 
 

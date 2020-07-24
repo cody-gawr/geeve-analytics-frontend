@@ -20,7 +20,6 @@ export class DefaultersComponent implements AfterViewInit {
   private readonly notifier: NotifierService;
   name: string;
   address: string;
-  contact_name: string;
   fileInput: any ;
   clinic_id: any;
   public selectedtreat;
