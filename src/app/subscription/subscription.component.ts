@@ -356,14 +356,7 @@ public terms;
             this.linkedinUrl = this.social_info.linkedin;
             this.instagramUrl = this.social_info.instagram;
           }
-          if(finalData[0].slider_info!="" && finalData[0].social_info!=null)
-          {
-            this.sliderimages = JSON.parse(finalData[0].slider_info);
-          }else{
-            /*  Load Default Single Image*/
-            const defaultSlideImage = "http://localhost/jeevemembers/client2/src/assets/img/slide1.jpg"
-            this.sliderimages =[{"file":defaultSlideImage}];
-          } 
+         
 
           this.clinicName =(finalData[0].clinicName!="") ? finalData[0].clinicName : "Clinic Name";
           this.clinicAddress =(finalData[0].address!="") ? finalData[0].address : "Default Lane 2, High Street, New York .";

@@ -661,7 +661,7 @@ public user_id_encoded;
     let instagram =this.firstFormGroup.controls.instagram.value;
 
       $('.ajax-loader').show();
-       this.clinicService.addClinic(name,address, '',phone_no,facebook, twitter, linkedin,instagram,clinicEmail, this.imageURL).subscribe((res) => {
+       this.clinicService.addClinic(name,address,phone_no,facebook, twitter, linkedin,instagram,clinicEmail, this.imageURL).subscribe((res) => {
        $('.ajax-loader').hide();
         if(res.message == 'success'){
           this.clinic_id = res.data.id;
