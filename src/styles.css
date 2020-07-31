@@ -4688,7 +4688,7 @@ body .mat-dialog-content {
     overflow: unset;
     max-height: unset;
 }
-.spinner{
+.spinnerPlan{
     display: none;
 }
 a.disabled {

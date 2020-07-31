@@ -85,7 +85,7 @@
           <span id="action_{{rowIndex}}">  <a class="action_btn sa-pull-right patient_detail_edit textonly"  (click)="openUpdateDialog(rowIndex)" title= 'Update Plan'><span class="material-icons">edit</span></a>
              <button class="action_btn text-danger" mat-menu-item (click) = "deletePlan(rowIndex)">         
          <span class="material-icons">delete</span></button></span>
-           <span class="spinner" id="spinner_{{rowIndex}}"> <i class="fa fa-spinner fa-pulse"></i></span>
+           <span class="spinnerPlan" id="spinner_{{rowIndex}}"> <i class="fa fa-spinner fa-pulse"></i></span>
          
         </ng-template>
       </ngx-datatable-column>

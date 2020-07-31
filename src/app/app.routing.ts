@@ -79,17 +79,8 @@ export const AppRoutes: Routes = [
       //  canActivate: [AuthGuard]
       },
       {
-        path: 'material',
-        loadChildren:
-          './material-component/material.module#MaterialComponentsModule',
-      },
-      {
         path: 'apps',
         loadChildren: './apps/apps.module#AppsModule',
-      },
-      {
-        path: 'forms',
-        loadChildren: './forms/forms.module#FormModule',
       },
       {
         path: 'tables',
