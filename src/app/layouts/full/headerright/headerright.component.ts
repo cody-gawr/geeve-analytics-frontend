@@ -6,6 +6,7 @@ import { Router   , NavigationEnd } from '@angular/router';
 import { HeaderService } from '../header/header.service';
 import { DentistService } from '../../../dentist/dentist.service';
 import { first, take } from 'rxjs/operators';
+import { Subscription } from 'rxjs/Subscription';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -17,18 +18,24 @@ export interface Dentist {
   styleUrls: []
 })
 export class AppHeaderrightComponent implements AfterViewInit  {   
-  constructor(private _cookieService: CookieService,  private route: Router, private headerService: HeaderService, private dentistService: DentistService) {
+    private _routerSub = Subscription.EMPTY;
+  constructor(private _cookieService: CookieService,  private router: Router, private headerService: HeaderService, private dentistService: DentistService) {
+   
+    this._routerSub = this.router.events
+         .filter(event => event instanceof NavigationEnd)
+         .subscribe((value) => {
+          this.route = router.url; 
+          if(this.route != '/login')
+       {
        this.getClinics();
+     }
+    });
   
   }
 
 
 ngOnInit() {
-   this.route.events.subscribe((ev) => {
-      if (ev instanceof NavigationEnd) {
-       this.getClinics();
-     }
-    });
+   
 }
  ngAfterViewInit() {
     this.clinic_id = '1';
@@ -36,7 +43,7 @@ ngOnInit() {
     // this.getDentists(); 
       
   }
-
+public route:any;
    public title;
    public clinicsData:any[] = [];
    public clinicdef:any[] = [];
@@ -57,6 +64,7 @@ ngOnInit() {
 
 
    private getClinics() { 
+    console.log('headerright');
   this.headerService.getClinics().pipe(take(1)).subscribe((res) => {
        if(res.message == 'success'){
         if(res.data.length > 0) {

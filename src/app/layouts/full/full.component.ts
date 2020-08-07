@@ -97,6 +97,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   //this.location.go(this.finalUrl+value);
  }
  private getClinics() { 
+  console.log('full');
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;

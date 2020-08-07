@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
   import { InofficePaymentService } from './inoffice-payment.service';
 import { LoginService } from '../login/login.service';
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
+import { StripeService, Element as StripeElement, ElementsOptions } from "ngx-stripe";
 import { Http} from '@angular/http';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';

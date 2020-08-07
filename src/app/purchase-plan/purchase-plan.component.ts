@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import {
@@ -14,9 +14,12 @@ import { CustomValidators } from 'ng2-validation';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { EventEmitter , Output, Input,Inject} from '@angular/core';
 import {ChangeDetectorRef} from '@angular/core';
-import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
+import { StripeService, StripeCardComponent } from 'ngx-stripe';
+import {
+  StripeCardElementOptions,
+  StripeElementsOptions
+} from '@stripe/stripe-js';
 import { Http} from '@angular/http';
-import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
@@ -211,13 +214,14 @@ toTrunc(value,n){
   styleUrls: ['./purchase-plan.component.scss']
 })
 export class PurchasePlanComponent implements OnInit {
- elements: Elements;
-  card: StripeElement;
+   @ViewChild(StripeCardComponent) card: StripeCardComponent;
 public cardNumber;
 public cardExpiry;
 public cardCvc;
+public elements;
   // optional parameters
-  elementsOptions: ElementsOptions = {
+  elementsOptions: StripeElementsOptions = {
+    locale: 'es'
   };
  
   stripeTest: FormGroup;
@@ -397,7 +401,7 @@ public cvcStyle = {
   public act =false;
 
    ngOnInit() {    
-    this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
+   var stripe =    this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc', { stripeAccount: "acct_1Fc4RTEuY4RZrUtg"});
   this.PurchasePlanService.getPublishableKey().subscribe((res) => {
  //   this.stripeService.setKey(res.key);
        
@@ -470,25 +474,22 @@ public cvcStyle = {
             });
             this.stripeService.elements(this.elementsOptions)
             .subscribe(elements => {
-
               setTimeout(function(){
                  var iframe = $("iframe")[0];
                   iframe['contentWindow'].focus();
-              },1000);
+             },1000);
             this.elements = elements;
             // Only mount the element the first time
             if (!this.card) {
-
-              this.cardNumber = this.elements.create('cardNumber', {
+            this.cardNumber = this.elements.create('cardNumber', {
             style: this.cardStyle
-          });
-          this.cardExpiry = this.elements.create('cardExpiry', {
-            style: this.expStyle
-          });
-
+           });
+            this.cardExpiry = this.elements.create('cardExpiry', {
+              style: this.expStyle
+            });
             this.cardCvc = this.elements.create('cardCvc', {
             style: this.cvcStyle
-          });
+             });
              this.cardNumber.mount('#example3-card-number');
              this.cardExpiry.mount('#example3-card-expiry');
              this.cardCvc.mount('#example3-card-cvc');
@@ -527,9 +528,9 @@ public cvcStyle = {
                     this.successLogin = false;
                     this.successLoginText = '';
                      if(res.message == 'success'){
-                      this.cardNumber.clear();
-                      this.cardCvc.clear();
-                      this.cardExpiry.clear();
+                      // this.cardNumber.clear();
+                      // this.cardCvc.clear();
+                      // this.cardExpiry.clear();
                       this.patient_id = res.data.id;
                       if( this.patientData.length>1) {
                         var i=0;
@@ -557,9 +558,9 @@ public cvcStyle = {
                       }
                      else if(res.message == 'error'){
                                   $('.ajax-loader').hide();
-                                  this.cardNumber.clear();
-                      this.cardCvc.clear();
-                      this.cardExpiry.clear(); 
+                      //             this.cardNumber.clear();
+                      // this.cardCvc.clear();
+                      // this.cardExpiry.clear(); 
                         this.errorLogin  =true;
                         this.errorLoginText  =res.data;
                      }
@@ -681,15 +682,28 @@ public cvcStyle = {
               this.updatePatients('ACTIVE');
            }
            else if(res.message == 'card_error'){
-      $('.ajax-loader').hide();
-              
+               $('.ajax-loader').hide();              
               Swal.fire(
                   '',
                   'Your card is declined, Please change your card Details.',
                   'error'
                 );
-
            }
+           else if(res.message == 'requires_action'){
+           
+              $('.ajax-loader').hide();              
+               this.stripeService.confirmCardPayment(res.data.pi_client_secret,{
+                    payment_method: {
+                      card: this.cardNumber,
+                      billing_details: {
+                        name: this.form.value.patient_email,
+                      },
+                    },
+                  })
+                   .subscribe((result) => {
+                      console.log(result);
+                  });
+             }
            else if(res.message == 'error'){
               this.errorLogin  =true;
            }

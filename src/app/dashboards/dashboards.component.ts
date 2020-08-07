@@ -318,6 +318,7 @@ this.lineChartColors = [
 
   public selectedClinic;
      private getClinics() { 
+     console.log('dashboard');
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;
