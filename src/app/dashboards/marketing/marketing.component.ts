@@ -281,7 +281,8 @@ this.preoceedureChartColors = [
   public startDate ='';
   public endDate = '';
   public selectedValToggle ='off';
-
+  public selectedDentist;
+  public dentists;
   public pieChartType = 'doughnut';
     public pieChartOptions: any = {
     responsive: true,
@@ -291,7 +292,7 @@ this.preoceedureChartColors = [
             position:'right'
          }
   };
- private loadDentist(newValue) {
+  loadDentist(newValue) {
   $('#title').html('Marketing '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
 
     if(newValue == 'all') {

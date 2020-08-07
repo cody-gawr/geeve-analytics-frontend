@@ -2,6 +2,7 @@ export const environment = {
   production: true,
  // apiUrl : "http://localhost/jeeveanalytics/server/",
  //  homeUrl:"http://localhost/jeeveanalytics/client2/"
-  apiUrl : "https://staging-analytics-api.jeeve.com.au:1443/",
-  homeUrl:"https://staging-analytics.jeeve.com.au/"
+ apiUrl : "https://api.jeeve.com.au/staging/analytics",
+  homeUrl:"https://staging-analytics.jeeve.com.au/",
+  solutionsUrl : "https://api.jeeve.com.au/staging/solutions"
 };

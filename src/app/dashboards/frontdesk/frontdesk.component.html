@@ -18,7 +18,7 @@
          <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial YTD</span>
           <div class="custom_date">
           <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="" (click)="filterDate('custom')" />
-           <ngx-daterangepicker-material (rangeClicked)="rangeClicked($event)" class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'"></ngx-daterangepicker-material></div>
+           <ngx-daterangepicker-material  class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'"></ngx-daterangepicker-material></div>
         </div>
       </div>
  <div class="sa_frontdesk_target dh-target"> 

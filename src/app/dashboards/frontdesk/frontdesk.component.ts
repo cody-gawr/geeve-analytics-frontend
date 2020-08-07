@@ -293,6 +293,8 @@ public stackedChartOptionsticks: any = {
   public stackedChartData3: any[] = [];
   public stackedChartData4: any[] = [];
   public stackedChartData5: any[] = [];
+public selectedDentist;
+public dentists;
   public duration='';
   // events
   public chartClicked(e: any): void {
@@ -314,7 +316,7 @@ public stackedChartOptionsticks: any = {
   public endDate = '';
   public selectedValToggle ='off';
 
- private loadDentist(newValue) {
+ loadDentist(newValue) {
    $('#title').html('Front Desk '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
 
     if(newValue == 'all') {

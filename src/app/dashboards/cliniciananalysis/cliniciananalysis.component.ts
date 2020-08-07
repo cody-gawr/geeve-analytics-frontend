@@ -539,7 +539,7 @@ changeLoginStatus(){
     });
 }
 
- private loadDentist(newValue) {
+ loadDentist(newValue) {
    $('#title').html('Clinician Analysis '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
   this.getAccountingDentist();
   this.getStatusDentist();
@@ -1931,7 +1931,7 @@ public dentistProdTrend: any[]  = [
             pointShadowColor: 'rgba(0, 0, 0, 0.3)',
             backgroundOverlayMode: 'multiply'}];
   public dentistProductionTrend1=[];
-  public dentistProductionTrendLabels =[];
+  public dentistProductionTrendLabels:any =[];
   public dentistProductionTrendLabels1 =[];
   public dentistProductionTrendLoader:any;
   private dentistProductionTrend() {

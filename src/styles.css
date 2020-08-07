@@ -1169,13 +1169,13 @@ body .working-days .mat-slide-toggle { width: 100% !important; }
 
 .list_rep.last { border: none; }
 
-.list_rep:after { content: ''; width: 5px; height: 40px; margin-top: -1px; position: absolute; left: -16px; }
+.list_rep::after { content: ''; width: 5px; height: 40px; margin-top: -1px; position: absolute; left: -16px; }
 
-.r1:after { background: #ebaf37; }
+.r1::after { background: #ebaf37; }
 
-.r2:after { background: #807e7f; }
+.r2::after { background: #807e7f; }
 
-.r3:after { background: #b05f21!important; }
+.r3::after { background: #b05f21!important; }
 
 .range_icon { font-size: 16px; margin-top: 0px; margin-right: 5px; float: left; }
 
@@ -1398,9 +1398,9 @@ img { max-width: 100%; max-height: 100%; }
 
 .lo-content small { color: #18a689; width: 100%; float: left; font-size: 13px; }
 
-.lo-content p { text-align: center; font-size: 20px; }
+.lo-content p { text-align: right; font-size: 20px; }
 
-.lo-content p span { color: rgba(0, 0, 0, 0.87); padding-left: 20px; text-align: right; display: inline-grid; }
+.lo-content p span { color: rgba(0, 0, 0, 0.87); padding-left: 15px; text-align: right; display: inline-grid; }
 
 .lo-slider h4 { margin-top: 0; float: right; margin-bottom: 5px; }
 
@@ -1418,14 +1418,25 @@ img { max-width: 100%; max-height: 100%; }
 
 .lo-slider .mat-slider-horizontal .mat-slider-track-wrapper, .lo-slider .mat-slider-horizontal .mat-slider-track-fill, .lo-slider .mat-slider-horizontal .mat-slider-ticks-container, .lo-slider .mat-slider-horizontal .mat-slider-track-background, .mat-slider-horizontal .mat-slider-wrapper { height: 15px !important; }
 
-.lo-slider .mat-slider-thumb { right: -20px; bottom: -23px; width: 50px; height: 50px; border: 5px solid #0e3459; background-color: #1c466d !important; }
+.lo-slider .mat-slider-thumb { right: -25px; bottom: -23px; width: 50px; height: 50px; border: 5px solid #0e3459; background-color: #1c466d !important; }
 
 .lo-slider .mat-slider:not(.mat-slider-disabled).cdk-mouse-focused .mat-slider-thumb, .lo-slider .mat-slider:not(.mat-slider-disabled).cdk-program-focused .mat-slider-thumb, .lo-slider .mat-slider:not(.mat-slider-disabled).cdk-touch-focused .mat-slider-thumb { border-width: 5px; }
 
-.lo-slider ul { padding: 20px 0px; list-style: none; color: #0e3459; left: 15px; font-size: 12px; width: calc(100% - 50px); position: relative; }
-
-.lo-slider ul li { position: absolute; top: 10px; }
-
+.lo-slider ul {
+    padding: 20px 0px;
+    list-style: none;
+    color: #0e3459;
+    left: -12px;
+    font-size: 12px;
+    width: 100%;
+    position: relative;
+}
+.lo-slider ul li {
+    position: absolute;
+    top: 10px;
+    width: 25px;
+    text-align: center;
+}
 .basic-profile-img { text-align: center; width: 100%; margin-bottom: 14px; }
 
 .basic-profile-img img  {
@@ -1437,6 +1448,15 @@ img { max-width: 100%; max-height: 100%; }
     object-fit: cover;
     max-width: 150px;
 }
+
+.lo-slider .mat-slider-horizontal .mat-slider-wrapper {
+    left: 0px;
+    right: 0px;
+}
+
+.lo-slider .mat-slider{padding: 0px;}
+
+
 .sa_forms_design input { border: 1px solid #cccccc; padding: 8px 10px; width: 100%; border-radius: 4px; font-size: 14px; font-family: Poppins; }
 
 .sa_forms_design label { padding-bottom: 8px; padding-top: 8px; width: 100%; display: block; font-size: 15px; }
@@ -1642,7 +1662,7 @@ body .mat-gray {
 }
 .cdk-overlay-pane {max-width:100% !important; }
 
-#mat-tab-content-0-1 .appointment {width: max-content; background-color: #f3faf9;padding: 5px 10px;border: 1px solid #d1ede7;margin: 5px 5px;border-radius: 2px;font-size: 12px;float: left;}
+#mat-tab-content-0-1 .appointment {width: max-content; background-color: #f3faf9;padding: 5px 10px;border: 1px solid #d1ede7;margin: 5px 5px;border-radius: 2px;font-size: 13px;float: left;}
 
 #mat-tab-content-0-0 .mat-select-value , #mat-tab-content-0-2 .mat-select-value {font-size: 12px!important;}
 
@@ -1653,11 +1673,38 @@ body .mat-gray {
 
 #mat-tab-content-0-0 .morning-huddle-date .mat-form-field , #mat-tab-content-0-2 .morning-huddle-date .mat-form-field  {max-width: 180px;}
 
-#mat-tab-content-0-1 .appointment .material-icons , #mat-tab-content-0-1 .appointment .fas {color:#e88814;padding-right: 5px;}
+#mat-tab-content-0-1 .appointment .material-icons , #mat-tab-content-0-1 .appointment .fas {color:rgba(14, 52, 89, 0.8);padding-right: 5px;}
 
 .mh-table .new-patient .mat-column-start {padding-top: 55px !important;position: relative;}
 
 .new-patient .mat-column-start::after {position: absolute;content: '';height: 50px;width: 70px;background-size: contain;background-image: url("./assets/images/new-tag.png");left: 0;top: 15px;background-repeat: no-repeat; }
+
+.data-loading-main {
+    background-color: #ffff;
+    border-radius: 0 0px 5px 5px;
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    box-shadow: 10px 5px 10px 0 rgba(0,0,0,.05)!important;
+}
+
+.data-loading-main .loader img {
+    max-width: 60px;
+}
+
+.data-loading-main .loader {
+   padding: 50px;
+}
+
+.data-loading-main .no-data {
+   padding: 50px;
+   font-size: 16px;
+}
+.mat-paginator {
+    box-shadow: 10px 5px 10px 0 rgba(0,0,0,.05)!important;
+    border-radius: 5px;
+}
+
 .ajax-loader {z-index: 9999;position: absolute;top: 0;display:none;}
 .ajax-loader{z-index: 9999;position: fixed;top: 0;/* display: none; */width: 100%;background: rgba(0,0,0,0.6);height: 100%;text-align: center;}
 .ajax-loader img{border-radius:180px;overflow:hidden;display:inline-block;position:absolute;top:50%;left:50%;width:70px;margin-top:-35px; margin-left:-35px;}
@@ -1681,3 +1728,54 @@ body .mat-gray {
     margin: 0px 0 0 0;
     padding: 10px 0px;
 }
+.card-loading {
+    position: absolute;
+    z-index: 999;
+    background: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    padding: 0;
+    height: 100%;
+    align-items: center;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    bottom: 0;
+    border-radius: 4px;
+    opacity: 0.9;
+    width: 100%;
+}
+
+.card-loading .tableLoader {max-width:65px;}
+
+
+.lo-slider .mat-slider:hover .mat-slider-track-background, .lo-slider .cdk-focused .mat-slider-track-background {
+    background-color: rgba(24,166,137,0.25);
+}
+
+.lo-slider .mat-slider-thumb::before {
+    position: absolute;
+    width: 4px;
+    left: 18px;
+    top: 8px;
+    height: 25px;
+    content: "";
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+    border-right: 3px solid rgba(255, 255, 255, 0.3);
+}
+.lo-slider .mat-slider-thumb::after {
+    position: absolute;
+    width: 3px;
+    left: 11px;
+    top: 8px;
+    height: 25px;
+    content: "";
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.sa_mattabs_design .example-small-box {box-shadow: none !important;}
+.sa_mattabs_design .mat-tab-group-dynamic-height .mat-tab-body-content {
+    overflow: unset;
+}
+.DentistListSecRow {position: relative;}
+
+.d-none {display: none;}

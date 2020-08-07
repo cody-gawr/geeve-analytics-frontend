@@ -39,10 +39,7 @@ export class ClinicSettingsService {
     }
        // Get ClinicSettings
     updateClinicSettings(clinic_id, name, address, contact_name, practice_size,workingDays,postOpCalls, user_id = '23', token = this._cookieService.get("token")): Observable<any> {
-
-        console.log(workingDays,'***');
-    const formData = new FormData();
-
+        const formData = new FormData();
     formData.append('clinicName', name);
     formData.append('address', address);
     formData.append('contactName', contact_name);

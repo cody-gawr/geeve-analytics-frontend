@@ -1,4 +1,4 @@
-<select class="sa_select internal_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)" [style.display]="'none'">
+<select class="sa_select internal_dentist"  [(ngModel)]="selectedDentist" [style.display]="'none'">
                      <option value ="all">All Dentist</option>
                     <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
                 </select> 

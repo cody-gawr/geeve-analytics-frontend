@@ -97,9 +97,9 @@ initiate_clinic() {
 
 
     var val = $('#currentClinic').attr('cid');
-    if(val != undefined && val !='all') {
+   if(val != undefined && val !='all') {
       this.clinic_id = val;
-    }  
+      
      $('#title').html('Morning Huddle');
     /***** Tab 1 ***/
     this.getDentistPerformance();
@@ -110,9 +110,9 @@ initiate_clinic() {
 
 
     this.morningHuddleService.getDentists(this.clinic_id).subscribe((dentist:any) =>{ 
-      if(dentist.status == 200){
+      if(dentist.status == 200 && dentist.data){
         this.clinicDentists = dentist.data;
-        this.currentDentist = dentist.data[0].sr;        
+        this.currentDentist = dentist.data[0].providerid;        
         this.getSchedulePatients();
         this.getScheduleNewPatients();
         this.getScheduleHours();
@@ -142,7 +142,7 @@ initiate_clinic() {
     this.getFollowupsUnscheduledPatients();
     this.getFollowupPostOpCalls();
     /***** Tab 4 ***/
-
+    }
   }
 
 

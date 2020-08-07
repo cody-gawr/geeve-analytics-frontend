@@ -910,7 +910,7 @@ public labelBarPercentOptions: any = {
 
   
 
- private loadDentist(newValue) {
+  loadDentist(newValue) {
 
   $('#title').html('Finances ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
   if(newValue == 'all') {

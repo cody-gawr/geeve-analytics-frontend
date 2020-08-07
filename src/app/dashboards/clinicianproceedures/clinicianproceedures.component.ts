@@ -787,7 +787,7 @@ this.preoceedureChartColors = [
   public selectedValToggle ='off';
   public gaugeDuration ='2500';
   public dentistid ='';
- private loadDentist(newValue) {  
+ loadDentist(newValue) {  
   $('#title').html('Clinician Procedures & Referrals '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
   if(newValue == 'all') {
     $(".predicted1Tool").show();

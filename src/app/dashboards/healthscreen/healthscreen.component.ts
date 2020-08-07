@@ -88,6 +88,8 @@ customOptions: OwlOptions = {
       arcColors: ['rgba(80,167,232)','rgba(0, 164, 137,0.7)','rgba(0, 164, 137,0.7)'],
 
   }
+  public selectedDentist;
+  public dentists;
   public filter_val ='c';
   constructor(private healthscreenService: HealthScreenService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){   
   }

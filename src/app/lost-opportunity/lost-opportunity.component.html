@@ -1,6 +1,4 @@
-<div class="loading" *ngIf="isLoading">
-	<img class="tableLoader" src="../../assets/images/loader.gif">
-</div>
+
 <mat-card >
 	<mat-card-content>
 		<input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
@@ -21,6 +19,9 @@
 				<img src="./assets/images/lost-opportunity.png" alt="">
 			</div>
 		</div>
+		<div class="card-loading" *ngIf="isLoading">
+	<img class="tableLoader" src="../../assets/images/loader.gif">
+</div>
 	</mat-card-content>
 </mat-card>
 

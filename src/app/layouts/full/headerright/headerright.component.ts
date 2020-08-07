@@ -116,7 +116,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
         }    
         );
   }
- private loadClinic(newValue) {
+  loadClinic(newValue) {
  if(newValue != 'undefined') {
  if($('body').find('span#currentClinic').length <= 0){
     $('body').append('<span id="currentClinic" style="display:none" cid="'+newValue+'"></span>');

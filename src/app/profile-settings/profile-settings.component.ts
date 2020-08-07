@@ -120,6 +120,8 @@ public cvcStyle = {
   public cardNumber;
   public cardExpiry;
   public cardCvc;
+  old_password_error;
+  confirm_password_error;
    public clinic_id:any ={};
 
           private warningMessage: string;

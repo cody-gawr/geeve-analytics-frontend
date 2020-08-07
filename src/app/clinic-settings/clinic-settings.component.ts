@@ -82,7 +82,11 @@ export class ClinicSettingsComponent implements OnInit {
         this.address = res.data[0].address;
         this.practice_size = res.data[0].practice_size;
         this.post_op_calls = res.data[0].post_op_calls;        
-        this.workingDays = JSON.parse(res.data[0].days);        
+        if(res.data[0].days != null && res.data[0].days != 0){
+          this.workingDays = JSON.parse(res.data[0].days);
+          console.log(res.data[0].days);
+          console.log(typeof(this.workingDays));
+        }
        }
         else if(res.status == '401'){
             this._cookieService.put("username",'');
@@ -104,7 +108,7 @@ export class ClinicSettingsComponent implements OnInit {
   this.practice_size = this.form.value.practice_size;
   this.post_op_calls = this.form.value.post_op_calls;
   let days = JSON.stringify(this.workingDays);
-   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size,days,this.post_op_calls ).subscribe((res) => {
+  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size,days,this.post_op_calls ).subscribe((res) => {
        if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );
        }
@@ -189,7 +193,6 @@ export class ClinicSettingsComponent implements OnInit {
 
 public toggle(event){
   if(event.source.name == 'sunday'){
-
     this.workingDays.sunday = event.checked;
 
   } else if(event.source.name == 'monday'){
