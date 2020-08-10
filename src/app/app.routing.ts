@@ -155,11 +155,6 @@ export const AppRoutes: Routes = [
         path: 'login',
         loadChildren:
           './login/login.module#LoginModule'
-      },
-       {
-        path: 'test',
-        loadChildren:
-          './test/test.module#TestModule'
       }
     ]
   },

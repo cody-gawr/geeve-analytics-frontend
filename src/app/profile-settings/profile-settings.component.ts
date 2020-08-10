@@ -7,8 +7,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import { NotifierService } from 'angular-notifier';
 import { Router, NavigationEnd, Event  } from '@angular/router';
-import { StripeInstance, StripeFactoryService } from "ngx-stripe";
-import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
+import { StripeService, StripeCardComponent } from 'ngx-stripe';
+import {
+  StripeCardElementOptions,
+  StripeElementsOptions
+} from '@stripe/stripe-js';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { HeaderService } from '../layouts/full/header/header.service';
@@ -107,10 +110,11 @@ export class DialogOverviewExampleDialogComponent {
   styleUrls: ['./profile-settings.component.scss']
 })
 export class ProfileSettingsComponent implements OnInit {
-      elementsOptions: ElementsOptions = {
-    };
-    elements: Elements;
-    card: StripeElement;
+        elementsOptions: StripeElementsOptions = {
+    locale: 'es'
+  };
+   public elements;
+   public card;
 
   public cardStyle = {
     base: {

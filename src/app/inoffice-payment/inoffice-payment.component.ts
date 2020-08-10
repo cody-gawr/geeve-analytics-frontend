@@ -11,7 +11,11 @@ import { DatePipe } from '@angular/common';
   import { InofficePaymentService } from './inoffice-payment.service';
 import { LoginService } from '../login/login.service';
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { StripeService, Element as StripeElement, ElementsOptions } from "ngx-stripe";
+import { StripeService, StripeCardComponent } from 'ngx-stripe';
+import {
+  StripeCardElementOptions,
+  StripeElementsOptions
+} from '@stripe/stripe-js';
 import { Http} from '@angular/http';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
@@ -176,15 +180,17 @@ public cvcStyle = {
   public cardNumber;
   public cardExpiry;
   public cardCvc;
+  public card;
   private homeUrl = environment.homeUrl;
   public paymentCompleted = false;
  public DefaultLogo;
   public clinic_logo;
   public clinicName;
-    elementsOptions: ElementsOptions = {
-    };
-    elements: Elements;
-    card: StripeElement;
+    elementsOptions: StripeElementsOptions = {
+    locale: 'es'
+  };
+   public elements;
+
 
   constructor(private toastr: ToastrService,private loginService: LoginService, private fb: FormBuilder, private router: Router, private inofficePaymentService: InofficePaymentService,private _cookieService: CookieService, private route: ActivatedRoute, private stripeService: StripeService, private http : Http, private ref: ChangeDetectorRef,private datePipe: DatePipe) {
     this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";

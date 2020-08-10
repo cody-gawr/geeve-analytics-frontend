@@ -10,9 +10,13 @@ import {
   import { UpdateCardService } from './update-card.service';
 import { LoginService } from '../login/login.service';
 import { MatTableDataSource,MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
+
 import { Http} from '@angular/http';
-import { StripeInstance, StripeFactoryService } from "ngx-stripe";
+import { StripeService, StripeCardComponent } from 'ngx-stripe';
+import {
+  StripeCardElementOptions,
+  StripeElementsOptions
+} from '@stripe/stripe-js';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { environment } from "../../environments/environment";
 import {ChangeDetectorRef} from '@angular/core';
@@ -153,10 +157,11 @@ public cvcStyle = {
  public DefaultLogo;
   public clinic_logo:any = '';
   public subscription_id;
-    elementsOptions: ElementsOptions = {
-    };
-    elements: Elements;
-    card: StripeElement;
+          elementsOptions: StripeElementsOptions = {
+    locale: 'es'
+  };
+   public elements;
+   public card;
 
   constructor(private loginService: LoginService, private fb: FormBuilder, private router: Router, private updateCardService: UpdateCardService,private _cookieService: CookieService, private route: ActivatedRoute, private stripeService: StripeService, private http : Http, private ref: ChangeDetectorRef,private toastr: ToastrService) {
     this.DefaultLogo=this.homeUrl+"/assets/img/logo.png";
