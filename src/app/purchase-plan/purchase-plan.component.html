@@ -69,7 +69,7 @@
                              <div fxFlex="calc(50% - 10px)" fxFlex.xs="100" class="sa-form-group">
                 <mat-label>Contact No.</mat-label>
                             <mat-form-field>
-            <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,15);" [(ngModel)]="patient_phone_no" (keypress)="numberOnly($event)">
+            <input matInput placeholder="" type="text" [formControl]="form.controls['patient_phone_no']" oninput="this.value = this.value.slice(0,15);" [(ngModel)]="patient_phone_no" >
                             </mat-form-field>
                           <small *ngIf="form.controls['patient_phone_no'].hasError('required') && form.controls['patient_phone_no'].touched" class="text-danger support-text">You must include Phone No.</small>
 

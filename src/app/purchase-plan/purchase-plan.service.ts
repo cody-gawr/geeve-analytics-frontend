@@ -49,9 +49,9 @@ export class PurchasePlanService {
         );
     }
 
-    getPublishableKey(): Observable<any> {
+    getPublishableKey(clinic_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Patients/getPublishableKey", { headers: header })
+        return this.http.get(this.apiUrl +"/Patients/getPublishableKey?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                 return response;
           })
@@ -147,6 +147,24 @@ export class PurchasePlanService {
             );
     }
 
+    removePatients(patient_id): Observable<any> {
+        var header = this.getHeaders(); 
+            return this.http.get(this.apiUrl +"/Patients/removePatientsApi?patient_id="+patient_id, { headers: header })
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
+
+    sendMailPatient(patient_id): Observable<any> {
+        var header = this.getHeaders(); 
+            return this.http.get(this.apiUrl +"/Patients/sendMailPatient?patient_id="+patient_id, { headers: header })
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
+
        // Items Predictor Analysis 
     addPatient(email,name,dob,phone_no, clinic_id,user_id,plan_id,plan_amount): Observable<any> {
 
@@ -164,7 +182,7 @@ export class PurchasePlanService {
         formData.append('patient_age', '12');
         formData.append('patient_gender', 'MALE');
         formData.append('patient_home_phno', 'NULL');
-        formData.append('patient_status', 'INACTIVE');
+        formData.append('patient_status', 'INCOMPLETE');
         formData.append('stripe_token', 'NULL');
          return this.http.post(this.apiUrl +"/Patients/addPatient/", formData)
         .pipe(map((response: Response) => {

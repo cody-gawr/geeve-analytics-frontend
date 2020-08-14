@@ -401,12 +401,8 @@ public cvcStyle = {
   public act =false;
 
    ngOnInit() {    
-   var stripe =    this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc', { stripeAccount: "acct_1Fc4RTEuY4RZrUtg"});
-  this.PurchasePlanService.getPublishableKey().subscribe((res) => {
- //   this.stripeService.setKey(res.key);
-       
-       }, error => {
-    });
+ //  var stripe =    this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc', { stripeAccount: "acct_1Fc4RTEuY4RZrUtg"});
+ 
            this.form = this.fb.group({
       patient_email: [
         null,
@@ -528,9 +524,7 @@ public cvcStyle = {
                     this.successLogin = false;
                     this.successLoginText = '';
                      if(res.message == 'success'){
-                      // this.cardNumber.clear();
-                      // this.cardCvc.clear();
-                      // this.cardExpiry.clear();
+                  
                       this.patient_id = res.data.id;
                       if( this.patientData.length>1) {
                         var i=0;
@@ -558,9 +552,9 @@ public cvcStyle = {
                       }
                      else if(res.message == 'error'){
                                   $('.ajax-loader').hide();
-                      //             this.cardNumber.clear();
-                      // this.cardCvc.clear();
-                      // this.cardExpiry.clear(); 
+                                  this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear(); 
                         this.errorLogin  =true;
                         this.errorLoginText  =res.data;
                      }
@@ -679,9 +673,15 @@ public cvcStyle = {
     this.stripe_plan_id =  this.planName.replace('',' ');
       this.PurchasePlanService.createSubscription(token,this.stripe_plan_id,this.patient_id, this.totalAmountPatients, this.plan_id, this.user_id,this.form.value.patient_name,this.form.value.patient_email,this.clinic_id,this.planLength).subscribe((res) => {
            if(res.message == 'success'){
+                this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
               this.updatePatients('ACTIVE');
            }
            else if(res.message == 'card_error'){
+                this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
                $('.ajax-loader').hide();              
               Swal.fire(
                   '',
@@ -691,7 +691,6 @@ public cvcStyle = {
            }
            else if(res.message == 'requires_action'){
            
-              $('.ajax-loader').hide();              
                this.stripeService.confirmCardPayment(res.data.pi_client_secret,{
                     payment_method: {
                       card: this.cardNumber,
@@ -701,7 +700,22 @@ public cvcStyle = {
                     },
                   })
                    .subscribe((result) => {
-                      console.log(result);
+                        this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
+                    console.log(result);
+                    if(result.paymentIntent && result.paymentIntent.status == 'succeeded'){
+                        this.sendMailPatient();
+                        this.updatePatients('ACTIVE');
+                    }
+                    else{
+                       this.removePatients();
+                         Swal.fire(
+                  '',
+                  'Your card is declined, Please change your card Details.',
+                  'error'
+                );
+                    }
                   });
              }
            else if(res.message == 'error'){
@@ -710,6 +724,26 @@ public cvcStyle = {
           }, error => {
       $('.ajax-loader').hide();
       });
+  }
+
+    removePatients() {
+    this.PurchasePlanService.removePatients(this.patient_id).subscribe((res) => {
+       $('.ajax-loader').hide();                     
+       if(res.message == 'success'){
+
+        }
+        }, error => {
+    });
+  }
+
+    sendMailPatient() {
+    this.PurchasePlanService.sendMailPatient(this.patient_id).subscribe((res) => {
+       $('.ajax-loader').hide();                     
+       if(res.message == 'success'){
+
+        }
+        }, error => {
+    });
   }
   
 public planLength;
@@ -728,7 +762,14 @@ public planLength;
           this.clinic_logo = res.data[0].clinic.logo;
           if(this.clinic_logo == 'undefined')
             this.clinic_logo="../assets/img/logo.png";
+
+           this.PurchasePlanService.getPublishableKey(this.clinic_id).subscribe((res) => {
+    this.stripeService.setKey(res.key, { stripeAccount: res.stripe_account_id});       
+       }, error => {
+    });
           this.ref.detectChanges();
+
+
         }
         }, error => {
     });

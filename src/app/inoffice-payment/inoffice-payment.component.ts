@@ -55,6 +55,7 @@ export const MY_FORMATS = {
 })
 export class InofficePaymentComponent implements OnInit {
   public dates =[];
+    public selectedIndex =0;
 public months:any =[];
 public max_days =31;
 public years:any = [];
@@ -233,32 +234,32 @@ changeTimezone(date, ianatz) {
    var current = new Date();
      this.todayDate = this.changeTimezone(current, "Australia/Melbourne");
 
-    this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
-            this.stripeTest = this.fb.group({
-            name: ['', [Validators.required]]
-            });
-            this.stripeService.elements(this.elementsOptions)
-            .subscribe(elements => {
-            this.elements = elements;
-            // Only mount the element the first time
-            if(!this.card) {
-              this.cardNumber = this.elements.create('cardNumber', {
-              style: this.cardStyle
-          });
-          this.cardExpiry = this.elements.create('cardExpiry', {
-              style: this.expStyle
-          });
 
-          this.cardCvc = this.elements.create('cardCvc', {
-            style: this.cvcStyle
-          });
+          //   this.stripeTest = this.fb.group({
+          //   name: ['', [Validators.required]]
+          //   });
+          //   this.stripeService.elements(this.elementsOptions)
+          //   .subscribe(elements => {
+          //   this.elements = elements;
+          //   // Only mount the element the first time
+          //   if(!this.card) {
+          //     this.cardNumber = this.elements.create('cardNumber', {
+          //     style: this.cardStyle
+          // });
+          // this.cardExpiry = this.elements.create('cardExpiry', {
+          //     style: this.expStyle
+          // });
 
-             this.cardNumber.mount('#example3-card-number');
-             this.cardExpiry.mount('#example3-card-expiry');
-             this.cardCvc.mount('#example3-card-cvc');            
-            this.selectedIndex =0;;
-            }
-            });
+          // this.cardCvc = this.elements.create('cardCvc', {
+          //   style: this.cvcStyle
+          // });
+
+          //    this.cardNumber.mount('#example3-card-number');
+          //    this.cardExpiry.mount('#example3-card-expiry');
+          //    this.cardCvc.mount('#example3-card-cvc');            
+          //   this.selectedIndex =0;;
+          //   }
+          //   });
      this.route.params.subscribe(params => {
       this.id = atob(this.route.snapshot.paramMap.get("id"));
       this.checkInvoiceStatus();      
@@ -330,8 +331,8 @@ getStripe(){
               this.updatePatientsOnPayment('ACTIVE',res.patientId);
            }
             else if(res.message == 'card_error'){
-      $('.ajax-loader').hide();
-                 this.cardNumber.clear();
+              $('.ajax-loader').hide();
+             this.cardNumber.clear();
              this.cardCvc.clear();
               this.cardExpiry.clear();
               Swal.fire(
@@ -341,7 +342,37 @@ getStripe(){
                 );
 
            }
+            else if(res.message == 'requires_action'){
+           
+               this.stripeService.confirmCardPayment(res.data.pi_client_secret,{
+                    payment_method: {
+                      card: this.cardNumber,
+                      billing_details: {
+                        name: 'dsf',
+                      },
+                    },
+                  })
+                   .subscribe((result) => {
+                        this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
+                    if(result.paymentIntent && result.paymentIntent.status == 'succeeded'){
+                         this.updatePatientsOnPayment('ACTIVE',res.patientId);
+                         this.sendMailPatient();
+                    }
+                    else{
+                         this.cancelSubscriptionInoffice();
+                      $('.ajax-loader').hide();              
+                         Swal.fire(
+                  '',
+                  'Your card is declined, Please change your card Details.',
+                  'error'
+                );
+                    }
+                  });
+             }
            else if(res.message == 'error'){
+            $('.ajax-loader').hide();              
             this.cardNumber.clear();
                       this.cardCvc.clear();
                       this.cardExpiry.clear();
@@ -373,6 +404,20 @@ getStripe(){
   date.setDate( date.getDate() + days );
   return date;
 }
+
+
+
+    cancelSubscriptionInoffice() {
+    this.inofficePaymentService.cancelSubscriptionInoffice(this.patient_id).subscribe((res) => {
+       $('.ajax-loader').hide();                     
+       if(res.message == 'success'){
+
+        }
+        }, error => {
+    });
+  }
+
+
 public maxDate;
   getInofficePlanDetails() {
    // console.log(this.addMonths(new Date(),1));
@@ -421,6 +466,16 @@ public maxDate;
   public clinic_id;
 
 
+    sendMailPatient() {
+    this.inofficePaymentService.sendMailPatient(this.id,this.patient_id).subscribe((res) => {
+       $('.ajax-loader').hide();                     
+       if(res.message == 'success'){
+
+        }
+        }, error => {
+    });
+  }
+
   checkInvoiceStatus() {
       this.inofficePaymentService.checkInvoiceStatus(this.id).subscribe((res) => {  
        if(res.message == 'success'){
@@ -448,11 +503,13 @@ getClinic(patient_id) {
           this.clinic_id= res.data[0]['clinic']['id'];
           this.clinic_logo= res.data[0]['clinic']['logo'];
           this.clinicName = res.data[0]['clinic']['clinicName'];
+          this.inofficePaymentService.getPublishableKey(this.clinic_id).subscribe((res) => {
+          this.stripeService.setKey(res.key, { stripeAccount: res.stripe_account_id});       
+           }, error => {
+          });
           if(this.clinic_logo == "undefined")
             this.clinic_logo = this.DefaultLogo;
         }
-  
-  
          else if(res.status == '401'){
               this._cookieService.put("username",'');
               this._cookieService.put("email", '');
@@ -543,7 +600,7 @@ checkDob(){
   }
 public tabActive1= false;
 public tabActive2= false;
-public selectedIndex=2;
+
   startPayment() {
     if(!this.tabActive1)
     this.tabActive1= true;

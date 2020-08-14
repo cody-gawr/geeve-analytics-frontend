@@ -69,7 +69,14 @@ export class InofficePaymentService {
                     })
         );
     }
-
+getPublishableKey(clinic_id): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Patients/getPublishableKey?clinic_id="+clinic_id, { headers: header })
+        .pipe(map((response: Response) => {
+                return response;
+          })
+        );
+    }
     addSubPatients(name,age,gender,patient_amount,id): Observable<any> {
             const formData = new FormData();
             formData.append('sub_patients_name', name);
@@ -186,6 +193,25 @@ export class InofficePaymentService {
 
             formData.append('balance_amount', balance_amount);
             return this.http.post(this.apiUrl +"/Patients/createInofficeSubscription", formData)
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
+
+        sendMailPatient(id,patient_id): Observable<any> {
+        var header = this.getHeaders(); 
+            return this.http.get(this.apiUrl +"/Patients/sendMailPatientInoffice?id="+id+"&patient_id="+patient_id, { headers: header })
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
+
+
+        cancelSubscriptionInoffice(patient_id): Observable<any> {
+        var header = this.getHeaders(); 
+            return this.http.get(this.apiUrl +"/Patients/cancelSubscriptionInoffice?patient_id="+patient_id, { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })

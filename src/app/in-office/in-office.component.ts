@@ -424,7 +424,7 @@ assignVal(val1,type) {
 }
 
 calculate_outstanding(val,type) {
-if(val>100) {
+if(val>100 && type == 'PERCENT') {
   $('#deposite_percentage').val('100');
   val=100;
   this.data.deposite_percentage = 100;
