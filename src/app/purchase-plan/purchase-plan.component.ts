@@ -703,7 +703,6 @@ public cvcStyle = {
                         this.cardNumber.clear();
                       this.cardCvc.clear();
                       this.cardExpiry.clear();
-                    console.log(result);
                     if(result.paymentIntent && result.paymentIntent.status == 'succeeded'){
                         this.sendMailPatient();
                         this.updatePatients('ACTIVE');

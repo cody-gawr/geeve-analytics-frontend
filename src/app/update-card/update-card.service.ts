@@ -77,6 +77,29 @@ export class UpdateCardService {
                })
             );
     }
+
+    createSetupIntent(customer,stripe_account_id): Observable<any> {
+            const formData = new FormData();
+            formData.append('customer', customer);
+            formData.append('stripe_account_id', stripe_account_id);
+
+            return this.http.post(this.apiUrl +"/Patients/createSetupIntent", formData)
+            .pipe(map((response: Response) => {
+                   return response;
+               })
+            );
+    }
+    updateCustomerCard(customer,stripe_account_id): Observable<any> {
+            const formData = new FormData();
+            formData.append('customer', customer);
+            formData.append('stripe_account_id', stripe_account_id);
+
+            return this.http.post(this.apiUrl +"/Patients/updateCustomerCard", formData)
+            .pipe(map((response: Response) => {
+                   return response;
+               })
+            );
+    }
 }
 
 

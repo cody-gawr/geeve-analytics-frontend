@@ -176,7 +176,7 @@ getPublishableKey(clinic_id): Observable<any> {
             );
     }
              // Items Predictor Analysis 
-    createInofficeSubscription(token,plan_name, monthly_weekly_payment,duration,id,patient_id,clinic_id,payment_frequency,balance_amount,start_date): Observable<any> {
+    createInofficeSubscription(token,plan_name, monthly_weekly_payment,duration,id,patient_id,clinic_id,payment_frequency,balance_amount,start_date,customer_id): Observable<any> {
             const formData = new FormData();
             formData.append('token', token);
             formData.append('inoffice_id', id);
@@ -190,6 +190,7 @@ getPublishableKey(clinic_id): Observable<any> {
             formData.append('token_id', this.token_id);
             formData.append('clinic_id', clinic_id);
             formData.append('start_date', start_date);
+            formData.append('customer_id', customer_id);
 
             formData.append('balance_amount', balance_amount);
             return this.http.post(this.apiUrl +"/Patients/createInofficeSubscription", formData)
@@ -212,6 +213,18 @@ getPublishableKey(clinic_id): Observable<any> {
         cancelSubscriptionInoffice(patient_id): Observable<any> {
         var header = this.getHeaders(); 
             return this.http.get(this.apiUrl +"/Patients/cancelSubscriptionInoffice?patient_id="+patient_id, { headers: header })
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+    }
+    createCustomerScheduled(stripe_account_id,patient_name,patient_email): Observable<any> {
+           const formData = new FormData();
+            formData.append('stripe_account_id', stripe_account_id);
+            formData.append('patient_name', patient_name);
+            formData.append('patient_email', patient_email);
+
+            return this.http.post(this.apiUrl +"/Patients/createCustomerScheduled", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })

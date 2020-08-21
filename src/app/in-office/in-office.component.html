@@ -93,6 +93,8 @@
          <mat-chip-list>
            <mat-chip color="primary" selected *ngIf="value == 'COMPLETED'">{{value}}</mat-chip>
             <mat-chip color="primary" selected *ngIf="value == 'ACTIVE'">{{value}}</mat-chip>
+            <mat-chip color="primary" selected *ngIf="value == 'INCOMPLETE'">{{value}}</mat-chip>
+
             <mat-chip color="warn" selected *ngIf="value == 'INACTIVE'">{{value}}</mat-chip> 
          </mat-chip-list>
       </ng-template>

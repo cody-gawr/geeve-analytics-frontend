@@ -168,32 +168,12 @@ public cvcStyle = {
   }
 
    ngOnInit() {
-    this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
+  //  this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
             this.stripeTest = this.fb.group({
             name: ['', [Validators.required]]
             });
 
-            this.stripeService.elements(this.elementsOptions)
-            .subscribe(elements => {
-            this.elements = elements;
-            // Only mount the element the first time
-            if (!this.card) {
-              this.cardNumber = this.elements.create('cardNumber', {
-            style: this.cardStyle
-          });
-          this.cardExpiry = this.elements.create('cardExpiry', {
-            style: this.expStyle
-          });
-
-            this.cardCvc = this.elements.create('cardCvc', {
-            style: this.cvcStyle
-          });
-
-             this.cardNumber.mount('#example3-card-number');
-             this.cardExpiry.mount('#example3-card-expiry');
-             this.cardCvc.mount('#example3-card-cvc');   
-            }
-            });
+           
      this.route.params.subscribe(params => {
        this.string = this.route.snapshot.paramMap.get("subscr");
     this.id='';
@@ -227,10 +207,17 @@ this.updateCardService.checkValidString(this.string).subscribe((res) => {
   public invoice_id;
   public pending_amount;
   public updateCardRetryPayment;
+  public customer;
   public plan_type;
+  public stripe_account_id;
   getCardDetails() {
       this.updateCardService.getCardDetails(this.subscription_id,this.plan_type).subscribe((res) => {
+          this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc', { stripeAccount: res.stripe_account_id});     
+          this.getStripe();
+
         this.last4 = res.last4;
+        this.customer = res.customer;
+        this.stripe_account_id= res.stripe_account_id;
         this.clinic_logo = res.clinic_logo;
          if(this.clinic_logo == 'undefined')
             this.clinic_logo="../assets/img/logo.png";
@@ -244,6 +231,30 @@ this.updateCardService.checkValidString(this.string).subscribe((res) => {
 
       }, error => {
       });
+  }
+
+  getStripe(){
+     this.stripeService.elements(this.elementsOptions)
+            .subscribe(elements => {
+            this.elements = elements;
+            // Only mount the element the first time
+            if (!this.card) {
+              this.cardNumber = this.elements.create('cardNumber', {
+            style: this.cardStyle
+          });
+          this.cardExpiry = this.elements.create('cardExpiry', {
+            style: this.expStyle
+          });
+
+            this.cardCvc = this.elements.create('cardCvc', {
+            style: this.cvcStyle
+          });
+
+             this.cardNumber.mount('#example3-card-number');
+             this.cardExpiry.mount('#example3-card-expiry');
+             this.cardCvc.mount('#example3-card-cvc');   
+            }
+            });
   }
 
   retryPayment() {
@@ -269,199 +280,112 @@ this.updateCardService.checkValidString(this.string).subscribe((res) => {
   }
 public token;
 public cardUpdated= false;
-  buy() {
+ //  buy() {
+ //    this.cardUpdated=false;
+ //    const name = this.stripeTest.get('name').value;
+ //      $('.ajax-loader').show();
+ //    this.updateCardService.updateCardRetryPayment(this.token, this.subscription_id,this.plan_type).subscribe((res) => {
+ //      $('.ajax-loader').hide();
+ // this.cardNumber.clear();
+ //                      this.cardCvc.clear();
+ //                      this.cardExpiry.clear();
+ //           if(res.message == 'success'){
+ //            this.cardUpdated= true;
+ //             // Swal.fire(
+ //             //      '',
+ //             //      res.data,
+ //             //      'success'
+ //             //    )
+ //           }
+ //           else if(res.message == 'error'){
+ //             this.cardNumber.clear();
+ //                      this.cardCvc.clear();
+ //                      this.cardExpiry.clear();
+ //              Swal.fire(
+ //                  '',
+ //                  'Some issue with your card, Please try again!',
+ //                  'error'
+ //                )
+ //           }
+ //          }, error => {
+ //             $('.ajax-loader').hide();
+ // this.cardNumber.clear();
+ //                      this.cardCvc.clear();
+ //                      this.cardExpiry.clear();
+ //                       Swal.fire(
+ //                  '',
+ //                  'Some issue with your card, Please try again!',
+ //                  'error'
+ //                )
+ //          });
+ //    } else {
+ //      console.log("Error comes ");
+ //    }
+ //    });
+ //    }
+
+
+ setupIntent() {
     this.cardUpdated=false;
-    const name = this.stripeTest.get('name').value;
-    this.stripeService
+        this.stripeService
     .createToken(this.cardNumber, { name })
     .subscribe(obj => {
-    if (obj) {
- this.token = obj.token.id;
+    if (obj.token) {
+    const name = this.stripeTest.get('name').value;
       $('.ajax-loader').show();
-    this.updateCardService.updateCardRetryPayment(this.token, this.subscription_id,this.plan_type).subscribe((res) => {
-      $('.ajax-loader').hide();
- this.cardNumber.clear();
+    this.updateCardService.createSetupIntent(this.customer, this.stripe_account_id).subscribe((res) => {
+      if(res.message == 'success'){
+             this.stripeService.confirmCardSetup(res.data.client_secret,{
+                    payment_method: {
+                      card: this.cardNumber,
+                      billing_details: {
+                        name: 'dsf',
+                      },
+                    },
+                  })
+                   .subscribe((result) => {
+                    console.log(result);
+                        this.cardNumber.clear();
                       this.cardCvc.clear();
                       this.cardExpiry.clear();
-           if(res.message == 'success'){
-            this.cardUpdated= true;
-             // Swal.fire(
-             //      '',
-             //      res.data,
-             //      'success'
-             //    )
-           }
-           else if(res.message == 'error'){
-             this.cardNumber.clear();
-                      this.cardCvc.clear();
-                      this.cardExpiry.clear();
-              Swal.fire(
-                  '',
-                  'Some issue with your card, Please try again!',
-                  'error'
-                )
-           }
-          }, error => {
-             $('.ajax-loader').hide();
- this.cardNumber.clear();
-                      this.cardCvc.clear();
-                      this.cardExpiry.clear();
-                       Swal.fire(
-                  '',
-                  'Some issue with your card, Please try again!',
-                  'error'
-                )
-          });
+                    if(result.setupIntent && result.setupIntent.status == 'succeeded'){                      
+                      this.updateCustomerCard();
+                    }
+                    else{
+                        $('.ajax-loader').hide();
+                            this.cardNumber.clear();
+                            this.cardCvc.clear();
+                            this.cardExpiry.clear();
+                    Swal.fire(
+                        '',
+                        'Some issue with your card, Please try again!',
+                        'error'
+                      )
+                    }
+                  });
+        }
+      });
     } else {
       console.log("Error comes ");
     }
     });
-    }
-
-
-  isDecimal(value) {
- if(typeof value != 'undefined')
-  {
-    if(String(value).includes("."))
-    return true;
-  }
+    } 
+updateCustomerCard(){
+  this.updateCardService.updateCustomerCard(this.customer, this.stripe_account_id).subscribe((res) => {
+              if(res.message == 'success'){
+                if(this.invoice_id) {
+                        this.retryPayment();
+                      }
+                 $('.ajax-loader').hide();
+                         this.cardUpdated= true;
+              }           
+   });
 }
-//   getInofficePlanDetails() {
-//     this.updateCardService.getInofficePlanDetails(this.id).subscribe((res) => {  
-//        if(res.message == 'success'){
-//         this.patient_id = res.data[0].patient_id;
-//         this.getClinic(this.patient_id);
-//         this.plan_name = res.data[0].plan_name;
-//         this.plan_description = res.data[0].plan_description;
-//         this.total_amount = res.data[0].total_amount;
-//         this.balance_amount = res.data[0].balance_amount;
-//         this.payment_frequency = res.data[0].payment_frequency;
-//         this.monthly_weekly_payment = res.data[0].monthly_weekly_payment;
-//         this.duration = res.data[0].duration;
-//         this.payment_frequency = res.data[0].payment_frequency;
-//         }
-//          else if(res.status == '401'){
-//               this._cookieService.put("username",'');
-//               this._cookieService.put("email", '');
-//               this._cookieService.put("token", '');
-//               this._cookieService.put("userid", '');
-//                this.router.navigateByUrl('/login');
-//            }
-//     }, error => {
-//       this.warningMessage = "Please Provide Valid Inputs!";
-//     }    
-//     );
-//   }
-//   public clinic_id;
-
-
-//   checkInvoiceStatus() {
-//       this.updateCardService.checkInvoiceStatus(this.id).subscribe((res) => {  
-//        if(res.message == 'success'){
-//           if(res.data[0]['status'] == 'ACTIVE')
-//              this.router.navigateByUrl('/login');            
-//         }
-//          else if(res.status == '401'){
-//               this._cookieService.put("username",'');
-//               this._cookieService.put("email", '');
-//               this._cookieService.put("token", '');
-//               this._cookieService.put("userid", '');
-//                this.router.navigateByUrl('/login');
-//            }
-//     }, error => {
-//       this.warningMessage = "Please Provide Valid Inputs!";
-//     }    
-//     );    
-// }
-
-// getClinic(patient_id) {
-//       this.updateCardService.getClinic(patient_id).subscribe((res) => {  
-//        if(res.message == 'success'){
-//           this.clinic_id= res.data[0]['clinic']['id'];
-//           this.clinic_logo= res.data[0]['clinic']['logo'];
-//           if(this.clinic_logo == "undefined")
-//             this.clinic_logo = this.DefaultLogo;
-//         }
-//          else if(res.status == '401'){
-//               this._cookieService.put("username",'');
-//               this._cookieService.put("email", '');
-//               this._cookieService.put("token", '');
-//               this._cookieService.put("userid", '');
-//                this.router.navigateByUrl('/login');
-//            }
-//     }, error => {
-//       this.warningMessage = "Please Provide Valid Inputs!";
-//     }    
-//     );
-// }
-// onSubmit() {
-//   this.errorLogin  =false;
-//   var count_patient = this.rows.length;
-//   if(this.rows.length>1)
-//     var patient_amount = this.rows[count_patient -2]['sub_patients_amount'];
-//   else
-//     var patient_amount = this.rows[0]['sub_patients_amount'];
-//   if(count_patient < 4)
-//     patient_amount = patient_amount - Math.floor(this.discount/patient_amount*100);
-//     this.patient_amount =this.patient_amount+ patient_amount;
-//       $('.ajax-loader').show();  
-//     this.updateCardService.addSubPatients(this.form.value.name,this.form.value.age,this.form.value.gender,patient_amount,this.id).subscribe((res) => {
-//       $('.ajax-loader').hide();     
-//        if(res.message == 'success'){
-//         this.updatePatients('INACTIVE');
-//        }
-//        else if(res.message == 'error'){
-//           this.errorLogin  =true;
-//        }
-//     }, error => {
-//     });
-//   }
-
-//   updatePatients(status) { 
-//     this.updateCardService.updatePatients(this.patient_amount,status, this.id).subscribe((res) => {
-//       $('.ajax-loader').hide();      
-//        if(res.message == 'success'){
-//               window.location.href = '/thank-you/'+this.clinic_id; 
-//        }
-//        else if(res.message == 'error'){
-//           this.errorLogin  =true;
-//        }
-//     }, error => {
-//     });
-//   }
-
-//   openCheckout() {
-//     var handler = (<any>window).StripeCheckout.configure({
-//       key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
-//       locale: 'auto',                                                                                                 
-//       token: token => {
-//       $('.ajax-loader').show();
-//            this.updateCardService.createInofficeSubscription(token,this.plan_name,this.monthly_weekly_payment,this.duration,this.id,this.patient_id,this.clinic_id,this.payment_frequency, this.balance_amount).subscribe((res) => {
-//            $('.ajax-loader').hide();
-//            if(res.message == 'success'){
-//                 this.updatePatients('ACTIVE');
-//               window.location.href = '/thank-you/'+this.clinic_id; 
-//            }
-//            else if(res.message == 'error'){
-//               this.errorLogin  =true;
-//            }
-//           }, error => {
-//           });
-//       }
-//      });
-//     handler.open({      
-//       name:  this.planName,
-//       amount: this.amount
-//     });
- 
-//   }
-// public tabActive1= false;
-// public selectedIndex=1;
-//   startPayment() {
-//     if(!this.tabActive1)
-//     this.tabActive1= true;
-//     this.selectedIndex=this.selectedIndex +1;
-//      this.ref.detectChanges();
-//   }
-
+        isDecimal(value) {
+           if(typeof value != 'undefined')
+            {
+              if(String(value).includes("."))
+              return true;
+            }
+      }
 }

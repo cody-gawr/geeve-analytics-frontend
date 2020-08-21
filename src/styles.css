@@ -4232,7 +4232,9 @@ body .mat-gray {
 }
 
 .card-success {
-    text-align: center;}
+    text-align: center;
+min-height: 150px;
+}
 
 .agreement-thumbnail {
     padding: 0px;

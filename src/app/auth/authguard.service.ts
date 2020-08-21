@@ -17,12 +17,12 @@
   boolean {
     if(this._cookieService.get("login_status")=='5') {
           this.router.navigateByUrl('/profile-settings/1');
-       }
-      else if (this._cookieService.get("token")) {
-            return true;
-       } 
-       else {
-           this.router.navigateByUrl('/login');
-       }
+    }
+    else if (this._cookieService.get("token")) {
+        return true;
+    } 
+    else {
+        this.router.navigateByUrl('/login');
+                          }
     }
 }

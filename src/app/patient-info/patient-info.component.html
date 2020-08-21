@@ -56,7 +56,7 @@
                                   <div class="responsive_table_main">
                                     <h3 style="margin-top:0px;" class="sb_title">Plan Details</h3>
                                     <div class="alert-warning text-center m-b-10" *ngIf="start_date_tba 
-                                    && patient_status != 'CANCELLED'"> Membership price for your plan {{plan_name}} will change to ${{price_tba}} on {{start_date_tba| date:'dd-MM-y':'UTC +10'}}</div>
+                                    && patient_status != 'CANCELLED'"> Membership price for your plan {{plan_name}} will change to ${{price_tba}} on {{start_date_tba| date:'dd-MM-y':'UTC +11'}}</div>
                                   <table class="tabs_table responsive_table">
                                       <thead>
                                           <tr>
@@ -178,7 +178,7 @@
                                         </td>
                                         <td *ngIf= "data.status == 'trialing'"><span class="res_table_label">Start Date :</span> {{data.trial_end * 1000| date:'dd-MM-y':'UTC +10'}}</td>
                                         <td *ngIf= "data.status != 'trialing'"><span class="res_table_label">Start Date :</span> {{data.created * 1000| date:'dd-MM-y':'UTC +10'}}</td>
-                                        <td><span class="res_table_label">End Date : </span> </td>
+                                        <td><span class="res_table_label">End Date : </span> <span  *ngIf="data.cancel_at != null">{{data.cancel_at * 1000| date:'dd-MM-y':'UTC +10'}}</span></td>
                                          <td *ngIf= "data.status != 'trialing'"><span class="res_table_label">Status : </span> {{data.status| titlecase }}</td>
                                          <td *ngIf= "data.status == 'trialing'"><span class="res_table_label">Status : </span> Scheduled</td>
 

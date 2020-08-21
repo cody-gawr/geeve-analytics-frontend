@@ -199,6 +199,7 @@ public cvcStyle = {
   }
  todayDate:Date; 
 
+
  date = new FormControl(moment());
 public start_date;
 public dob_year='';
@@ -316,6 +317,8 @@ getStripe(){
             });
   }
     buy() {
+      var date
+     if(this.start_date==this.datePipe.transform(new Date(), 'dd-MM-yyyy')){
     const name = this.stripeTest.get('name').value;
     this.stripeService
     .createToken(this.cardNumber, { name })
@@ -323,7 +326,7 @@ getStripe(){
     if (obj.token) {
  this.token = obj.token.id;
       $('.ajax-loader').show();
-    this.inofficePaymentService.createInofficeSubscription(this.token,this.plan_description,this.monthly_weekly_payment,this.duration,this.id,this.patient_id, this.clinic_id, this.payment_frequency, this.balance_amount,this.start_date).subscribe((res) => {
+    this.inofficePaymentService.createInofficeSubscription(this.token,this.plan_description,this.monthly_weekly_payment,this.duration,this.id,this.patient_id, this.clinic_id, this.payment_frequency, this.balance_amount,this.start_date,'').subscribe((res) => {
            if(res.message == 'success'){
              this.cardNumber.clear();
              this.cardCvc.clear();
@@ -384,7 +387,75 @@ getStripe(){
       console.log("Error comes ");
     }
     });
+  }
+  else {
+      this.createScheduledSubscription();
     }
+  }
+
+createScheduledSubscription() {
+   $('.ajax-loader').show();
+    this.inofficePaymentService.createCustomerScheduled(this.stripe_account_id,this.patient_name,this.patient_email).subscribe((res) => {
+       if(res.message == 'success'){
+             this.stripeService.confirmCardSetup(res.data.client_secret,{
+                    payment_method: {
+                      card: this.cardNumber,
+                      billing_details: {
+                        name: 'dsf',
+                      },
+                    },
+                  })
+                   .subscribe((result) => {
+                    console.log(result);
+                        this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
+                    if(result.setupIntent && result.setupIntent.status == 'succeeded'){
+                        this.inofficePaymentService.createInofficeSubscription(this.token,this.plan_description,this.monthly_weekly_payment,this.duration,this.id,this.patient_id, this.clinic_id, this.payment_frequency, this.balance_amount,this.start_date,res.data.customer_id).subscribe((res) => {
+                               if(res.message == 'success'){
+                                 this.cardNumber.clear();
+                                 this.cardCvc.clear();
+                                  this.cardExpiry.clear();
+                                  this.updatePatientsOnPayment('ACTIVE',res.patientId);
+                               }
+                                else if(res.message == 'card_error'){
+                                  $('.ajax-loader').hide();
+                                 this.cardNumber.clear();
+                                 this.cardCvc.clear();
+                                  this.cardExpiry.clear();
+                                  Swal.fire(
+                                      '',
+                                      'Your card is declined, Please change your card Details.',
+                                      'error'
+                                    );
+
+                               }
+                           else if(res.message == 'error'){
+            $('.ajax-loader').hide();              
+            this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
+              this.errorLogin  =true;
+           }
+          }, error => {
+          });
+                    }
+                    else{
+                        $('.ajax-loader').hide();                     
+                         Swal.fire(
+                  '',
+                  'Your card is declined, Please change your card Details.',
+                  'error'
+                );
+                    }
+                  });
+        }
+        }, error => {
+    });
+
+}
+
+
   isDecimal(value) {
  if(typeof value != 'undefined')
   {
@@ -416,7 +487,8 @@ getStripe(){
         }, error => {
     });
   }
-
+public patient_name
+public patient_email;
 
 public maxDate;
   getInofficePlanDetails() {
@@ -434,6 +506,8 @@ public maxDate;
         this.monthly_weekly_payment = res.data[0].monthly_weekly_payment;
         this.duration = res.data[0].duration;
         this.payment_frequency = res.data[0].payment_frequency;
+        this.patient_name =res.data[0].patient.patient_name;
+        this.patient_email =res.data[0].patient.patient_email;
          var today = new Date();
             var minYear = today.getFullYear();
             var minMonth = today.getMonth()+1
@@ -496,7 +570,7 @@ public maxDate;
     }    
     );    
 }
-
+public stripe_account_id;
 getClinic(patient_id) {
       this.inofficePaymentService.getClinic(patient_id).subscribe((res) => {  
        if(res.message == 'success'){
@@ -504,7 +578,8 @@ getClinic(patient_id) {
           this.clinic_logo= res.data[0]['clinic']['logo'];
           this.clinicName = res.data[0]['clinic']['clinicName'];
           this.inofficePaymentService.getPublishableKey(this.clinic_id).subscribe((res) => {
-          this.stripeService.setKey(res.key, { stripeAccount: res.stripe_account_id});       
+            this.stripe_account_id=res.stripe_account_id;
+          this.stripeService.setKey(res.key, { stripeAccount: res.stripe_account_id});     
            }, error => {
           });
           if(this.clinic_logo == "undefined")
@@ -579,7 +654,7 @@ checkDob(){
       locale: 'auto',                                                                                                 
       token: token => {
       $('.ajax-loader').show();
-           this.inofficePaymentService.createInofficeSubscription(token,this.plan_name,this.monthly_weekly_payment,this.duration,this.id,this.patient_id,this.clinic_id,this.payment_frequency, this.balance_amount,  this.start_date).subscribe((res) => {
+           this.inofficePaymentService.createInofficeSubscription(token,this.plan_name,this.monthly_weekly_payment,this.duration,this.id,this.patient_id,this.clinic_id,this.payment_frequency, this.balance_amount,  this.start_date,'').subscribe((res) => {
            $('.ajax-loader').hide();
            if(res.message == 'success'){
                this.updatePatients('ACTIVE');
