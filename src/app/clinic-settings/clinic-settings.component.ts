@@ -144,7 +144,7 @@ export class ClinicSettingsComponent implements OnInit {
 
   public openXero(){
       var success;
-      console.log(this.xero_link);
+      alert(this.xero_link);
       var win = window.open(this.xero_link, "MsgWindow", "width=400,height=400");
       var self = this;
      var timer = setInterval(function() { 

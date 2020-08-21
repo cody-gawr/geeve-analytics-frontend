@@ -1,0 +1,138 @@
+<!-- ============================================================== -->
+<!-- sidebar -->
+<!-- ============================================================== -->
+
+    <div class="sa_sidebar_logo_main">
+    <div class="sa_sidebar_logo"><img src="assets/images/home/logo.png" alt="homepage" class=""></div>
+    </div>
+
+    <!--div class="sa_sidebar_usersec">
+        <div class="suer_image_sidebar"><img src="{{user_image}}"></div>
+        <div class="suer_text_sidebar">{{display_name | uppercase}}</div>
+
+    </div-->
+
+
+
+    <!--mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected" group="{{menuitem.state}}">
+        <a class="" appAccordionToggle [routerLink]="['/', menuitem.state, menuitem.param]" *ngIf="menuitem.type === 'link' &&  menuitem.role.indexOf(user_type) !== -1 && login_status != 5" >
+            <i class="{{ menuitem.icon }}"></i>
+            <span>{{ menuitem.name }}</span>
+            <span fxFlex></span>
+            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+        </a>
+         <a class="" appAccordionToggle [routerLink]="['/', menuitem.state]" *ngIf="menuitem.type === 'link-noparam'  && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" >
+            <i class="{{menuitem.icon}}"></i>
+            <span>{{ menuitem.name }}</span>
+            <span fxFlex></span>
+            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+        </a>
+
+        <a class="" appAccordionToggle href="{{menuitem.state}}" *ngIf="menuitem.type === 'extLink' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" >
+            <i class="{{menuitem.icon}}"></i>
+            <span>{{ menuitem.name }}</span>
+            <span fxFlex></span>
+            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+        </a>
+        <a class="" appAccordionToggle href="{{menuitem.state}}" target="_blank" *ngIf="menuitem.type === 'extTabLink'  && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" >
+            <i class="{{menuitem.icon}}"></i>
+            <span>{{ menuitem.name}}</span>
+            <span fxFlex></span>
+            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+        </a>
+
+        <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'sub' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" >
+            <i class="{{menuitem.icon}}"></i>
+            <span>{{ menuitem.name }}</span>
+            <span fxFlex></span>
+            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+            <i class="fas fa-caret-down"></i>
+        </a>
+        <mat-nav-list class="sub-item" *ngIf="menuitem.type === 'sub' && menuitem.role.indexOf(user_type) !== -1">
+            <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="selected">
+                <a [routerLink]="['/', menuitem.state, childitem.state, childitem.param ]" *ngIf="childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" class="relative"
+                    routerLinkActive="selected" ><i class="{{childitem.icon}}"></i>{{ childitem.name}}</a>
+            </mat-list-item>
+            <mat-list-item *ngFor="let childitem of menuitem.children">
+                <a class="" href="javascript: void(0);" *ngIf="childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" (click)="clickEvent()"
+                    [ngClass]="status ? 'selected' : ''" >
+                    <span>{{ childitem.name }}</span>
+                    <span fxFlex></span>
+                    <i class="fas fa-caret-down"></i>
+                </a>
+                <mat-nav-list class="child-sub-item" *ngIf="childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5">
+                    <mat-list-item *ngFor="let child of childitem.subchildren" routerLinkActive="selected">
+                        <a [routerLink]="['/', menuitem.state, childitem.state, child.state ]" routerLinkActive="selected">{{child.name}}</a>
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-list-item>
+        </mat-nav-list>        
+        <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'link-healthscreen' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" [routerLink]="['/',  menuitem.param2, menuitem.state, menuitem.param1]">
+            <i class="{{menuitem.icon}}"></i>
+            <span>{{ menuitem.name }}</span>
+            <span fxFlex></span>
+            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>          
+        </a>
+        <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'sub-child' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" >
+            <i class="{{menuitem.icon}}"></i>
+            <span>{{ menuitem.name }}</span>
+            <span fxFlex></span>
+            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+            <i class="fas fa-caret-down"></i>
+        </a>
+        <mat-nav-list class="sub-item" *ngIf="menuitem.type === 'sub-child' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5">
+            <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="selected">
+                <a [routerLink]="['/', childitem.state, childitem.param ]" *ngIf="childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1 && childitem.param != ''" class="relative"
+                    routerLinkActive="selected"><i class="{{childitem.icon}}"></i>{{ childitem.name}}</a>
+
+
+                    <a [routerLink]="['/', childitem.state ]" *ngIf="childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1 && childitem.param == ''" class="relative"
+                    routerLinkActive="selected"><i class="{{childitem.icon}}"></i>{{ childitem.name}}</a>
+            </mat-list-item>
+            <mat-list-item *ngFor="let childitem of menuitem.children">
+                <a class="" href="javascript: void(0);" *ngIf="childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" (click)="clickEvent()"
+                    [ngClass]="status ? 'selected' : ''" >
+                    <span>{{ childitem.name }}</span>
+                    <span fxFlex></span>
+                    <i class="fas fa-caret-down"></i>
+                </a>
+                <mat-nav-list class="child-sub-item" *ngIf="childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" >
+                    <mat-list-item *ngFor="let child of childitem.subchildren" routerLinkActive="selected">
+                        <a [routerLink]="['/', childitem.state, child.state ]" routerLinkActive="selected">{{child.name}}</a>
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-list-item>
+        </mat-nav-list>
+         <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'sub-dashboards' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" >
+            <i class="{{menuitem.icon}}"></i>
+            <span>{{ menuitem.name }}</span>
+            <span fxFlex></span>
+            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+            <i class="fas fa-caret-down"></i>
+        </a>
+        <mat-nav-list class="sub-item" *ngIf="menuitem.type === 'sub-dashboards' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5">
+            <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="selected">
+                <a [routerLink]="['/', menuitem.state, childitem.state, childitem.param ]" *ngIf="childitem.type === 'link' && childitem.role.indexOf(user_type) !== -1  && login_status != 5" class="relative"
+                    routerLinkActive="selected"><i class="{{childitem.icon}}"></i>{{ childitem.name}}</a>
+            </mat-list-item>
+            <mat-list-item *ngFor="let childitem of menuitem.children">
+                <a class="" href="javascript: void(0);" *ngIf="childitem.type === 'subchild' && childitem.role.indexOf(user_type) !== -1  && login_status != 5" (click)="clickEvent()"
+                    [ngClass]="status ? 'selected' : ''" >
+                    <span>{{ childitem.name }}</span>
+                    <span fxFlex></span>
+                    <i class="fas fa-caret-down"></i>
+                </a>
+                <mat-nav-list class="child-sub-item" *ngIf="childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1  && login_status != 5" >
+                    <mat-list-item *ngFor="let child of childitem.subchildren" routerLinkActive="selected">
+                        <a [routerLink]="['/', childitem.state, child.state ]" routerLinkActive="selected">{{child.name}}</a>
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-list-item>
+        </mat-nav-list>
+        <div class="saperator text-muted" *ngIf="menuitem.type === 'saperator' && menuitem.role.indexOf(user_type) !== -1">
+            <span>{{ menuitem.name }}</span>
+        </div>
+    </mat-list-item-->
+      
+
+<div class="sa_logout_icon" (click) = "logout()"><button mat-button ><i class="fas fa-power-off"></i>Sign Out</button></div>

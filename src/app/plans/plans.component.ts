@@ -83,7 +83,8 @@ public discount;
 
     openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-      width: '250px',
+      width: '750px',
+      panelClass: 'add_members',
       data: { plan: this.plan, allowedClinics: this.allowedClinics, description: this.description, amount: this.amount, discount: this.discount }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -182,7 +183,7 @@ public discount;
   }
     updatePlan(row): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-      width: '250px',
+      width: '750px',
       data: { plan: this.rows[row]['plan'], allowedClinics: this.rows[row]['allowedClinics'], description: this.rows[row]['description'], amount: this.rows[row]['amount'], discount: this.rows[row]['discount'] }
     });
     dialogRef.afterClosed().subscribe(result => {

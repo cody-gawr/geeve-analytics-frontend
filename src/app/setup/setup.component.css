@@ -1,0 +1,8 @@
+.lds-roller div::after {
+    background: black;
+}
+.spinner {
+    position: relative;
+    background: none;
+}
+

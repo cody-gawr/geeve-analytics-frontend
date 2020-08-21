@@ -350,7 +350,7 @@ export class MenuItems {
     role:['2'],
     param2 : 'dashboards',
   },
-/*  {
+  {
     state: 'lost-opportunity',
     name: 'Lost Opportunity',
     type: 'link-lost-opportunity',
@@ -365,7 +365,7 @@ export class MenuItems {
     icon: 'fas fa-sun',
     role:['2'],
      param2 : 'dashboards',
-  }, */
+  }, 
   {
     state: 'dashboards',
     name: 'Dashboards',

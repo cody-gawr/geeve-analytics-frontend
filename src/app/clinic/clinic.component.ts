@@ -122,7 +122,7 @@ export class ClinicComponent implements AfterViewInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-      width: '350px', 
+      width: '400px', 
       data: { name: this.name, address: this.address, contact_name: this.contact_name }
     });
     dialogRef.afterClosed().subscribe(result => {

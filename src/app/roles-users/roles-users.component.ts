@@ -120,6 +120,7 @@ initiate_clinic() {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+       width: '400px',
       data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,dentist_id:this.dentist_id }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -139,6 +140,7 @@ initiate_clinic() {
   }
   openRoleDialog(): void {
     const rolesRef = this.dialog.open(RolesOverviewExampleDialogComponent, {
+     width: '600px',
       data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password, roles:this.roles, selectedRole:this.selectedRole, selected_id:this.selected_id,dentists:this.dentists}
     });
     const sub = rolesRef.componentInstance.onAdd.subscribe((val) => {

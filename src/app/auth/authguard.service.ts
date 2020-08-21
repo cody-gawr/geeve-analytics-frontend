@@ -14,7 +14,7 @@
   canActivate(
   next: ActivatedRouteSnapshot,
   state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | 
-  boolean {
+  boolean { 
         if (this._cookieService.get("token")) {
             return true;
        } else {
@@ -22,4 +22,4 @@
           //this.snackBar.open('Please Login to Continue');
        }
     }
-}
+}                                                                                             

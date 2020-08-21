@@ -9,12 +9,15 @@ import { AppComponent } from './app.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FullComponent } from './layouts/full/full.component';
+
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './demo-material-module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { StepperComponent } from './layouts/stepper/stepper.component';
+import { StepperSidebarComponent } from './layouts/stepper/sidebar/sidebar.component';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -27,12 +30,17 @@ import { HttpModule } from '@angular/http';
 import { AuthGuard } from './auth/authguard.service';
 
 import { HeaderService } from './layouts/full/header/header.service';
+import { StepperHeaderService } from './layouts/stepper/header/header.service';
+import { StepperHeaderrightService } from './layouts/stepper/headerright/headerright.service';
 import { Globals } from 'globals';
 import { DentistService } from './dentist/dentist.service';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { ToastrModule } from 'ngx-toastr';
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
+import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
+
+
 const customNotifierOptions: NotifierOptions = {
   position: {
     horizontal: {
@@ -89,6 +97,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppSidebarComponent,
     AppHeaderrightComponent,
     LostOpportunityComponent,
+    StepperComponent,
+    StepperSidebarComponent,
+    StepperHeaderrightComponent
   ],
   imports: [
     BrowserModule,
@@ -102,6 +113,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpModule,   
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot(AppRoutes),
+
         NotifierModule.withConfig(customNotifierOptions),
           ToastrModule.forRoot({ 
     timeOut: 2000,
@@ -115,6 +127,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   providers: [
     AuthGuard, 
     HeaderService,
+    StepperHeaderService,
+    StepperHeaderrightService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

@@ -1,9 +1,10 @@
 <div class="SetRolesPopup_outer">
 <h1 mat-dialog-title>Set Roles</h1>
-<div class="SetRolesPopup">
-  <div class="selectIcon">
+<div mat-dialog-content class="SetRolesPopup sa_forms_design">
+  <div class="sa-form-group">
+    <label>Select User Type</label>
   <select class="sa_select sa_select_set_roles form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadPermisions($event)">
-      <option value ="" selected="true">Select User Type</option>
+      <!--<option value ="" selected="true">Select User Type</option>-->
       <option value ="3">Practice Manager</option>
       <option value ="4">Clinician</option>
       <option value ="5">Staff</option>

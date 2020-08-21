@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
+import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AuthGuard } from './auth/authguard.service';
 
 export const AppRoutes: Routes = [
@@ -139,6 +140,18 @@ export const AppRoutes: Routes = [
   },
   {
     path: '',
+    component: StepperComponent,
+    children: [
+      {
+        path: 'setup',
+        loadChildren:
+           './setup/setup.module#SetupModule',
+        canActivate: [AuthGuard]
+      }
+    ]
+  },
+  {
+    path: '',
     component: AppBlankComponent,
     children: [
       {
@@ -175,7 +188,7 @@ export const AppRoutes: Routes = [
         path: 'planpayment',
         loadChildren:
           './planpayment/planpayment.module#PlanpaymentModule'
-      }
+      },
     ]
   },
   {

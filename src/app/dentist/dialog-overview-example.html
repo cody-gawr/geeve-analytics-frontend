@@ -1,13 +1,15 @@
 <h1 mat-dialog-title>Add Dentist</h1>
-<div mat-dialog-content>
+<div mat-dialog-content class="sa_forms_design">
+ 
+  <div class="sa-form-group">
+  	<label>Provider ID</label>
+    <input tabindex="1" [(ngModel)]="data.provider_id" class="form-control" required="true" placeholder="" required>
+  </div>
 
-  <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.provider_id" class="mat-form-control" required="true" placeholder="Provider ID" required>
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput tabindex="1" [(ngModel)]="data.dentist_name" class="mat-form-control" required="true" placeholder="Dentist Name" required>
-  </mat-form-field>
+  <div class="sa-form-group">
+  	<label>Dentist Name</label>
+    <input tabindex="1" [(ngModel)]="data.dentist_name" class="form-control" required="true" placeholder="" required>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>

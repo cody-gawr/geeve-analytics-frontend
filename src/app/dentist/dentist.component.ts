@@ -88,7 +88,7 @@ export class DentistComponent implements AfterViewInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-     
+       width: '400px',
       data: { dentist_name: this.dentist_name, provider_id: this.provider_id }
     });
 
