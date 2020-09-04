@@ -164,13 +164,15 @@
                                             <th>Amount</th>                                            
                                             <th>Start Date</th>
                                             <th>End Date</th>
+                                            <th>Cancelled On</th>
+
                                             <th>Status</th>
 
                                             <th>Frequency</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr *ngFor="let data of subscrData">
+                                    <tbody *ngFor="let data of subscrData">
+                                    <tr *ngIf="!(patient_status == 'INCOMPLETE' && data.status=='canceled')" >
                                         <td><span class="res_table_label">Subscription id : </span> {{data.id }}</td>
                                         <td><span class="res_table_label">Amount :</span> 
                                            <span *ngIf="isDecimal(data.plan.amount/100)">{{ data.plan.amount/100 | currency: 'USD': 'symbol':'1.2-2'}}</span>
@@ -179,6 +181,7 @@
                                         <td *ngIf= "data.status == 'trialing'"><span class="res_table_label">Start Date :</span> {{data.trial_end * 1000| date:'dd-MM-y':'UTC +10'}}</td>
                                         <td *ngIf= "data.status != 'trialing'"><span class="res_table_label">Start Date :</span> {{data.created * 1000| date:'dd-MM-y':'UTC +10'}}</td>
                                         <td><span class="res_table_label">End Date : </span> <span  *ngIf="data.cancel_at != null">{{data.cancel_at * 1000| date:'dd-MM-y':'UTC +10'}}</span></td>
+                                        <td><span class="res_table_label">Cancelled On : </span> <span  *ngIf="data.canceled_at != null">{{data.canceled_at * 1000| date:'dd-MM-y':'UTC +10'}}</span></td>
                                          <td *ngIf= "data.status != 'trialing'"><span class="res_table_label">Status : </span> {{data.status| titlecase }}</td>
                                          <td *ngIf= "data.status == 'trialing'"><span class="res_table_label">Status : </span> Scheduled</td>
 
@@ -190,12 +193,6 @@
                                 </table>
                              </div>
                         </div>
-
-
-
-                         
-
-
                         </div>
                         </mat-tab>
                       <mat-tab label="Patient Details">

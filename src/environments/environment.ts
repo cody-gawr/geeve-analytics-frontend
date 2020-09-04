@@ -18,4 +18,3 @@ apiUrl :"https://api.jeeve.com.au/staging/members",
 
 };
 
-	

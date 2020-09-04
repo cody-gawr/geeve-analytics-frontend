@@ -158,7 +158,6 @@ public cvcStyle = {
   public clinic_logo:any = '';
   public subscription_id;
           elementsOptions: StripeElementsOptions = {
-    locale: 'es'
   };
    public elements;
    public card;

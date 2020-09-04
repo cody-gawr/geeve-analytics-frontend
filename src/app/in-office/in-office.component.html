@@ -23,8 +23,8 @@
                         <div class="filter_status">
                             <mat-form-field >
                                 <mat-label>Filter by Status</mat-label>
-                                <mat-select [(ngModel)]="StatusSelected" (ngModelChange)="statusFilter()">
-                                   <mat-option  value="">Select All</mat-option>
+                                <mat-select #mySelect [(ngModel)]="StatusSelected" (ngModelChange)="statusFilter()">
+                                  <mat-option  value="">Select All</mat-option>
                                   <mat-option  value="ACTIVE">Active</mat-option>
                                   <mat-option  value="INACTIVE">Inactive</mat-option>
                                   <mat-option  value="COMPLETED">Completed</mat-option>
@@ -68,6 +68,14 @@
            <span class="setColumnValueWidth"><span class="datatable_label">Email : </span>{{value}}</span>
       </ng-template>
     </ngx-datatable-column>
+    <ngx-datatable-column prop="patient_dob" name="patient_dob" class="minemail" [width] = "240">
+         <ng-template let-column="column" ngx-datatable-header-template let-sort="sortFn">
+        <span (click)="sort()">Date of Birth</span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+           <span class="setColumnValueWidth"><span class="datatable_label">Date of Birth : </span>{{value| date:'dd-MM-y':'UTC +10'}}</span>
+      </ng-template>
+    </ngx-datatable-column>
      <ngx-datatable-column prop="total_amount" name="total_amount">
       <ng-template let-column="column" ngx-datatable-header-template let-sort="sortFn">
      <span (click)="sort()">Total Amount</span>
@@ -91,11 +99,12 @@
 <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
          <span class="datatable_label">Status : </span> 
          <mat-chip-list>
-           <mat-chip color="primary" selected *ngIf="value == 'COMPLETED'">{{value}}</mat-chip>
-            <mat-chip color="primary" selected *ngIf="value == 'ACTIVE'">{{value}}</mat-chip>
-            <mat-chip color="primary" selected *ngIf="value == 'INCOMPLETE'">{{value}}</mat-chip>
 
-            <mat-chip color="warn" selected *ngIf="value == 'INACTIVE'">{{value}}</mat-chip> 
+            <mat-chip color="primary" selected *ngIf="value == 'COMPLETED'">{{value}}</mat-chip>
+            <mat-chip color="primary" selected *ngIf="value == 'ACTIVE'">{{value}}</mat-chip>
+            <mat-chip color="warn" selected *ngIf="value == 'INCOMPLETE'">{{value}}</mat-chip>
+            <mat-chip color="warn" selected *ngIf="value == 'INACTIVE'">{{value}}</mat-chip>
+
          </mat-chip-list>
       </ng-template>
    </ngx-datatable-column>

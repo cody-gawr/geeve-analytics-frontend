@@ -173,5 +173,63 @@ export class PlansService {
                 })
         );
     }
+
+        retryUpdate(memberid,clinic_id,planName,planOrder,planLength,totalAmount,discount,description,isFeatured,hidden,preventative_plan,preventative_frequency,treatment_inclusions,treatment_exclusions,preventative_discount,sendMail, updateUser,changeType,token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+    
+        formData.append('id', memberid);
+        formData.append('clinic_id', clinic_id);
+        formData.append('planName', planName);
+        formData.append('planOrder', planOrder);
+        formData.append('planLength', planLength);
+        formData.append('totalAmount', totalAmount);
+        formData.append('discount', discount);
+        formData.append('description', description);
+        formData.append('isFeatured', isFeatured);
+        formData.append('hidden', hidden);
+
+        formData.append('preventative_plan',preventative_plan);
+        formData.append('preventative_frequency', preventative_frequency);
+        formData.append('treatment_inclusions',treatment_inclusions );
+        formData.append('treatment_exclusions',treatment_exclusions);
+        formData.append('preventative_discount',preventative_discount);
+         formData.append('user_id', this._cookieService.get("userid"));
+        
+         formData.append('sendMail', sendMail);
+        formData.append('updateUser', updateUser);
+        formData.append('changeType', changeType);
+        var header = this.getHeaders(); 
+        return this.http.post(this.apiUrl +"/MemberPlan/retryUpdate/", formData, { headers: header })
+         .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+        }
+
+
+       // Delete Clinic
+    discard(id, token = this._cookieService.get("token")): Observable<any> {
+    const formData = new FormData();
+    formData.append('id', id);
+         var header = this.getHeaders(); 
+
+        return this.http.post(this.apiUrl +"/MemberPlan/discard", formData,{ headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    getRetryPatients(id, token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        formData.append('id', id);
+         var header = this.getHeaders(); 
+
+        return this.http.post(this.apiUrl +"/MemberPlan/getRetryPatients", formData,{ headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 }
 

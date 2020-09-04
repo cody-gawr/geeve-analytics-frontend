@@ -82,11 +82,12 @@
         <span>Actions</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
-          <span id="action_{{rowIndex}}">  <a class="action_btn sa-pull-right patient_detail_edit textonly"  (click)="openUpdateDialog(rowIndex)" title= 'Update Plan'><span class="material-icons">edit</span></a>
+          <span id="action_{{rowIndex}}" *ngIf="!rows[rowIndex]['update_status']">  <a class="action_btn sa-pull-right patient_detail_edit textonly"  (click)="openUpdateDialog(rowIndex)" title= 'Update Plan'><span class="material-icons">edit</span></a>
              <button class="action_btn text-danger" mat-menu-item (click) = "deletePlan(rowIndex)">         
          <span class="material-icons">delete</span></button></span>
            <span class="spinnerPlan" id="spinner_{{rowIndex}}"> <i class="fa fa-spinner fa-pulse"></i></span>
-         
+          <span id="retry_{{rowIndex}}" *ngIf="rows[rowIndex]['update_status']"> <span *ngIf="rows[rowIndex]['update_status']" class="action_btn" title="Retry Update" (click)="retryUpdate(rowIndex)"> <i class="fa fa-sync fa-sync"></i></span>
+          <span *ngIf="rows[rowIndex]['update_status']" class="action_btn text-danger" title="Discard" (click)="discard(rowIndex)"> <i class="fa fa-times fa-times"></i></span></span>
         </ng-template>
       </ngx-datatable-column>
         </ngx-datatable>

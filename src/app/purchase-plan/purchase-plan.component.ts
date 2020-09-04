@@ -221,7 +221,6 @@ public cardCvc;
 public elements;
   // optional parameters
   elementsOptions: StripeElementsOptions = {
-    locale: 'es'
   };
  
   stripeTest: FormGroup;

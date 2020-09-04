@@ -188,7 +188,6 @@ public cvcStyle = {
   public clinic_logo;
   public clinicName;
     elementsOptions: StripeElementsOptions = {
-    locale: 'es'
   };
    public elements;
 

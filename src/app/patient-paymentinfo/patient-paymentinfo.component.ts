@@ -223,6 +223,8 @@ public patient_email :any;
         this.patient_name=res.data[0]['patient']['patient_name'];
         this.patient_id=res.data[0]['patient']['id'];
         this.patient_email=res.data[0]['patient']['patient_email'];
+        this.patient_dob=res.data[0]['patient']['patient_dob'];
+
         this.patient_status=res.data[0]['patient']['patient_status'];
         this.clinic_id=res.data[0]['patient']['clinic_id'];
         this.plan_name=res.data[0]['plan_name'];

@@ -1,7 +1,7 @@
 import { Component, Inject ,EventEmitter,Output, ViewChild, AfterViewInit } from '@angular/core';
 import { InOfficeService } from './in-office.service';
 import { ClinicService } from '../clinic/clinic.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatSelectModule } from '@angular/material';
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NotifierService } from 'angular-notifier';
@@ -597,6 +597,7 @@ isDecimal(value) {
   styleUrls: ['./in-office.component.scss']
 })
 export class InOfficeComponent implements AfterViewInit {
+  @ViewChild('mySelect') mySelect:any;
   private readonly notifier: NotifierService;
   name: string;
   address: string;

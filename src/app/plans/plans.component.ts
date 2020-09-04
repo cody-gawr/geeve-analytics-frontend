@@ -600,11 +600,20 @@ public changeType;
   updatePlanMain(result,rowIndex) {
      this.plansService.updateUser(this.memberplan_id ,this.clinic_id,result.planName,result.planOrder,result.planLength, result.totalAmount,result.discount,result.description,result.isFeatured,result.hidden,JSON.stringify(result.preventative_plan_selected),result.preventative_frequency,JSON.stringify(result.treatment_inclusions_selected),JSON.stringify(result.treatment_exclusions_selected),result.preventative_discount,this.sendMail,this.updatePlan, this.changeType).subscribe((res) => {
                      if(res.message == 'success'){
+                    this.plansService.getRetryPatients(this.memberplan_id).subscribe((result) => {
+                      if(result.status == '200' && result.data.res.length>0){
+                        var failCount = result.data.totalCount-result.data.sucCount;
+                            Swal.fire({
+                              html: '<b>Plan Update failed for Some Patients:</b><br>'+result.data.sucCount+' Patients Updated Successfully! <br> '+failCount+' Patients Update Failed.',
+                               showCloseButton: true,
+                            }).then(function(data) {
+                        })
+                      }
                         $('#spinner_'+rowIndex).hide(); 
                         $('#action_'+rowIndex).show();
-
                         this.getPlans()
                         this.toastr.success('Plan Updated.');
+                      });
                       }
                     }, error => {
                         $('#spinner_'+rowIndex).hide(); 
@@ -686,5 +695,44 @@ public changeType;
   enableEditing(rowIndex, cell) {
     this.editing[rowIndex + '-' + cell] = true;
   }
+
+
+  retryUpdate(row) {
+     $('#spinner_'+row).show(); 
+      $('#retry_'+row).hide();
+     this.plansService.retryUpdate(this.rows[row]['id'] ,this.clinic_id,this.rows[row]['planName'],this.rows[row]['planOrder'],this.rows[row]['planLength'], this.rows[row]['totalAmount'],this.rows[row]['discount'],this.rows[row]['description'],this.rows[row]['isFeatured'],this.rows[row]['hidden'],JSON.stringify(this.rows[row]['preventative_plan_selected']),this.rows[row]['preventative_frequency'],JSON.stringify(this.rows[row]['treatment_inclusions_selected']),JSON.stringify(this.rows[row]['treatment_exclusions_selected']),this.rows[row]['preventative_discount'],true,true, 'cost').subscribe((res) => {
+                     if(res.message == 'success'){
+                        $('#spinner_'+row).hide(); 
+                        $('#retry_'+row).show();
+
+                        this.getPlans()
+                        this.toastr.success('Plan Updated.');
+                      }
+                    }, error => {
+                        $('#spinner_'+row).hide(); 
+                        $('#retry_'+row).show();
+
+                    this.toastr.error('Some Error Occured, Please try Again.');
+                    }); 
+  }
+
+
+
+  discard(row) {
+     this.plansService.discard(this.rows[row]['id']).subscribe((res) => {
+                     if(res.message == 'success'){
+                        $('#spinner_'+row).hide(); 
+                        $('#retry_'+row).show();
+                        this.getPlans()
+                        this.toastr.success('Retry Discarded.');
+                      }
+                    }, error => {
+                        $('#spinner_'+row).hide(); 
+                        $('#retry_'+row).show();
+
+                    this.toastr.error('Some Error Occured, Please try Again.');
+                    }); 
+  }
+
 
 }

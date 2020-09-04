@@ -715,8 +715,6 @@ getStripeAuthorization(){
      if(result) { 
         
      }
-    
-
   });
   }
 

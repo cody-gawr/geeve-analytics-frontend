@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule,DatePipe } from '@angular/common';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule , MatSelectModule} from '@angular/material';
 import { DemoMaterialModule } from '../demo-material-module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { InOfficeService } from './in-office.service';
@@ -20,7 +20,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     DemoMaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatSelectModule
   ],
   providers: [
     InOfficeService,DatePipe,ClinicService
