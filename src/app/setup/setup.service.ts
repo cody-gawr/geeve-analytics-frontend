@@ -15,25 +15,24 @@ export class SetupService {
     private apiUrl = environment.apiUrl;
     public token_id;
 
-    constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {
-        //append headers
-        this.headers = new HttpHeaders();
-        this.headers.append("Content-Type", 'application/json');
-        this.headers.append("Access-Control-Allow-Origin", "*");
-        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
-        this.router.events.subscribe(event => {
-         if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
-        this.token_id = this._cookieService.get("childid");
-        else
-        this.token_id= this._cookieService.get("userid");
-        });
-   }
+    constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {}
 
+     getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        } else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+    }
 
    
     // Get ClinicSettings
     getXeroLink( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Xeros2/getAuthorizeUrl/?getxero=1&user_id="+user_id+"&clinic_id="+clinic_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Xeros2/getAuthorizeUrl/?getxero=1&user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -41,7 +40,8 @@ export class SetupService {
     }
 
     checkXeroStatus( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Xeros2/getXeroStatus?getxero=1&user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Xeros2/getXeroStatus?getxero=1&user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -49,7 +49,8 @@ export class SetupService {
     }
 
     clearSession( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Xeros2/disconnectXero/?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Xeros2/disconnectXero/?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -65,7 +66,8 @@ export class SetupService {
     }
 
     sendCompleteEmail( user_id = this._cookieService.get("userid")): Observable<any> {
-        return this.http.get(this.apiUrl +"/users/sendCompleteEmail/"+user_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/users/sendCompleteEmail/"+user_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -76,31 +78,33 @@ export class SetupService {
             const formData = new FormData();
             formData.append('user_id', this._cookieService.get("userid"));
             formData.append('stepper_status', this._cookieService.get("stepper"));
-            return this.http.post(this.apiUrl +"/users/updateStepperStatus", formData)
+            var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/users/updateStepperStatus", formData,  { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
             );
     }
 
-    addClinic(name, address, contact_name,phone_no,facebook, twitter, linkedin,instagram,clinicEmail,clinic_logo, token = this._cookieService.get("token")): Observable<any> {
+    addClinic(name,address,phone_no,clinicEmail,displayName,days, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('clinicName', name);
     formData.append('address', address);
-    formData.append('contactName', contact_name);
     formData.append('phoneNo', phone_no);
-    formData.append('facebook', facebook);
+    formData.append('clinicEmail', clinicEmail);    
+    formData.append('display_name', displayName);    
+    formData.append('days', days);    
+    /*formData.append('contactName', contact_name);*/
+    /*formData.append('facebook', facebook);
     formData.append('twitter', twitter);
     formData.append('linkedin', linkedin);
-    formData.append('instagram', instagram);
-    formData.append('clinicEmail', clinicEmail);    
     formData.append('logo', clinic_logo);
+    formData.append('instagram', instagram);*/
     formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('token', token);
-    formData.append('token_id', this.token_id);
+    var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Practices/add/", formData)
+        return this.http.post(this.apiUrl +"/Practices/add/", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -124,10 +128,9 @@ export class SetupService {
     formData.append('treatment_exclusions',treatment_exclusions);
     formData.append('preventative_discount',preventative_discount);
      formData.append('user_id', this._cookieService.get("userid"));
-        formData.append('token', token);
-        formData.append('token_id', this.token_id);
+       var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/MemberPlan/addmemberplan/", formData)
+        return this.http.post(this.apiUrl +"/MemberPlan/addmemberplan/", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
         })
@@ -140,11 +143,9 @@ export class SetupService {
             formData.append('id', this._cookieService.get("childid"));
             else
             formData.append('id', this._cookieService.get("userid"));
+            var header = this.getHeaders(); 
 
-            formData.append('token', this._cookieService.get("token"));
-            formData.append('token_id', this.token_id);
-
-        return this.http.post(this.apiUrl +"/Users/logoUpload/", formData)
+        return this.http.post(this.apiUrl +"/Users/logoUpload/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

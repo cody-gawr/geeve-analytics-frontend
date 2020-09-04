@@ -22,14 +22,21 @@
     <form [formGroup]="firstFormGroup" id="step1">        
 <div mat-dialog-content class="sa_forms_design">
   <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+     <div fxFlex="calc(48% - 15px)" fxFlex.md="50" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
+         <input tabindex="1" [(ngModel)]="displayName" placeholder="Display Name" class="form-control-dialog" [formControl]="firstFormGroup.controls['displayName']">
+          <small *ngIf="firstFormGroup.controls['displayName'].hasError('required') && firstFormGroup.controls['displayName'].touched" class="text-danger support-text">Display Name is Required.</small>
+    </div>
+  </div>
+  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
      <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
          <input tabindex="1" [(ngModel)]="name" placeholder="Clinic Name" class="form-control-dialog" (keypress)="omit_special_char($event)" [formControl]="firstFormGroup.controls['name']">
          <small *ngIf="firstFormGroup.controls['name'].hasError('required') && firstFormGroup.controls['name'].touched" class="text-danger support-text">Clinic Name is Required.</small>
     </div>
-     <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
+      <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
         <input tabindex="1" type="text" [(ngModel)]="phone_no" placeholder="Phone No" class="form-control-dialog" oninput="this.value = this.value.slice(0,12);" [formControl]="firstFormGroup.controls['phone_no']" (keypress)="numberOnly($event)"  >
         <small *ngIf="firstFormGroup.controls['phone_no'].hasError('required') && firstFormGroup.controls['phone_no'].touched" class="text-danger support-text">Phone No is Required.</small>
     </div>
+   
 
    </div>
   <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
@@ -42,8 +49,24 @@
        <small *ngIf="firstFormGroup.controls['address'].hasError('required') && firstFormGroup.controls['address'].touched" class="text-danger support-text">Address is Required.</small>
     </div>
    </div>
+   <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+     
+   
+    
 
-     <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="30px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+     <div class="working-days" fxFlex="calc(48% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">  
+              <h4>Clinic Working Days</h4>
+              <mat-slide-toggle checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Sunday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Monday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.tuesday }}" name="tuesday" (change)="toggle($event)">Tuesday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.wednesday }}" name="wednesday" (change)="toggle($event)">Wednesday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.thursday }}" name="thursday" (change)="toggle($event)">Thursday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.friday }}" name="friday" (change)="toggle($event)">Friday</mat-slide-toggle>
+              <mat-slide-toggle checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
+            </div>
+   </div>
+
+  <!--    <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="30px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
       <div fxFlex="130px" fxFlex.xs="100" class="right_upload_btn">
        <input class="form-control b-b" type="file" name= "file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
 
@@ -79,7 +102,7 @@
       </div>
     </div>
   
-      </div>
+      </div> -->
 </div>
  </form>
 </div>
@@ -101,22 +124,31 @@
   <div class="intro_title stripe_payment">
      <div class="intro_title stripe_payment">
     <h2>Connect To <span>Xero</span></h2>
-    <h4>All membership and payment plan payments are collected via Xero. Please sign up for an account or connect your existing Xero account</h4>
+    <h4>Xero is online accounting software for your small business. Please sign up for an account or connect your existing Xero account</h4>
+    <h5 *ngIf="xeroOrganization != ''">You are now connected to <span>{{xeroOrganization}}</span> organization</h5>
+   <div class="connect-xero-btn">
+
+   <button mat-raised-button color="green"  class="mat-gray connect-xero" *ngIf ="xeroConnect == false" mat-raised-button (click) = "openXero()">Connect</button>
+
+   <button mat-raised-button color="green" class="disconnect-xero" *ngIf ="xeroConnect == true" mat-raised-button (click) = "disconnectXero()">Disconnect</button>
+ 
+  </div>
   </div>
   </div>
   </div>
   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
     <div class="right-img">
-      <img src="assets/stepper/GifXero2.gif">
+      <img src="assets/stepper/GifXero3.gif">
     </div>   
   </div>
  
  </div> 
    <div class="order2">
    <div class="skipwizard bottom_btns_page">
-   <button mat-raised-button color="green"  class="mat-gray connect-xero" *ngIf ="xeroConnect == false" mat-raised-button (click) = "openXero()">Connect</button>
-         <span class="org_xero" *ngIf="xeroOrganization != ''" >- {{xeroOrganization}}</span> <button mat-raised-button color="green" class="disconnect-xero" *ngIf ="xeroConnect == true" mat-raised-button (click) = "disconnectXero()">Connect</button>
-  <button mat-button (click)="saveStripe()">Skip</button>
+
+  <button mat-raised-button color="green" (click)="saveStripe()" *ngIf ="xeroConnect == true">Next</button>
+  <button mat-button (click)="saveStripe()" *ngIf ="xeroConnect == false">Skip</button>
+
   </div>
  </div>    
 </mat-step>
@@ -188,7 +220,6 @@
    <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
     <div class="intro_title">
     <h2>Download PMS to <span>sync</span></h2>
-
 <ul class="download-sync-list">
   <li><span>Download Sync Utility.</span></li>
   <li><span>Login to the desktop application using analytics credentials.</span></li>
@@ -214,25 +245,57 @@
 </mat-step>
 
 
-<mat-step  id="step5"[completed]="step5Completed" [editable]="step5editable">
+<mat-step  id="step5" [completed]="step5Completed" [editable]="step5editable">
    <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px" class="">
    <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
     
     <div class="downloading-wrap">
-    <div class="bounceball"></div>
-    <div class="text-loading">Data Synchronizing...</div>
-    
+    <!--<div class="bounceball"></div>
+    <div class="text-loading">Data Synchronizing...</div>-->
+    <div class="text-loading">Data Synchronizing  <div class="dots-loading-main"><div class="dots-loading">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+    </div>
+  </div>
+</div>
     <ul>
-     <li class="not-start" *ngIf="reportsStatus.length <= 0">Not Start Yet</li>
-     <li *ngIf="reportsStatus.progress != '' && reportsStatus.length > 0" class="in-progress"><span class="InProgress"></span><i class="fas fa-spinner fa-pulse"></i> {{ reportsStatus.progress }}</li>
-     <li *ngFor="let itemrow of reportsStatus.pending; let i=index"><i class="fas fa-caret-right"></i> {{ itemrow }}</li>
+    <li class="not-start" *ngIf="!reportsStatusInfo">We are collecting data.</li>
+     <li class="not-start" *ngIf="reportsStatus.length <= 0 && reportsStatusInfo">Not Started Yet</li>
+     <li *ngFor="let itemrow of reportsStatus; let i=index">
+      <span *ngIf="itemrow.status == 'Pending'">
+        <i class="fas fa-check" ></i>  
+        {{ itemrow.report }}
+      </span>
+      <span *ngIf="itemrow.status == 'In Process'"  class="in-progress">
+         <i class="fas fa-spinner fa-pulse"></i> 
+        {{ itemrow.report }}
+      </span>
+      <span *ngIf="itemrow.status == 'Completed'" class="complete">
+        <i class="fas fa-check"></i> 
+        {{ itemrow.report }}
+      </span>     
+    </li>
+
+
+
+<!--      <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
+     <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
+     <li class="in-progress"><i class="fas fa-spinner fa-pulse"></i> It is a long established fact that a reader will be distracted by the </li>
+     <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
+     <li class="complete"><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
+     <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li> -->
+
     </ul>
 </div>
 
 
   <div class="skipwizard bottom_btns_page again-download-btn">
    <a class="text-left">
-       <button mat-raised-button color="green" (click)="downloadPMSAgain()">Again Download</button>
+       <button mat-raised-button color="green" *ngIf="reportsStatus.length <= 0" (click)="downloadPMSAgain()">Again Download</button>
      </a>
   </div>
 
@@ -253,6 +316,8 @@
    <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
     <div class="you-are-set">
     <h2>You're <span>All Set.</span></h2>
+    <br/>
+     <button mat-raised-button color="green" (click)="finish(5)">Finish</button>
    </div>
    </div>
  <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
@@ -265,7 +330,7 @@
 <div class="order3">
    <div class="skipwizard bottom_btns_page">
    <a class="text-center">
-       <button mat-raised-button color="green" (click)="finish(5)">Finish</button>
+      
      </a>
   </div>
  </div>

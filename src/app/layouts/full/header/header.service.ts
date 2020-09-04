@@ -14,35 +14,32 @@ export class HeaderService {
     private apiUrl = environment.apiUrl;
     public token_id;
 
-    constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {
-        //append headers
-        this.headers = new HttpHeaders();
-        this.headers.append("Content-Type", 'application/json');
-        this.headers.append("Access-Control-Allow-Origin", "*");
-        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
-          this.router.events.subscribe(event => {
-         if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
-        this.token_id = this._cookieService.get("childid");
-        else
-        this.token_id= this._cookieService.get("userid");
-        });
-   }
-
+    constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {  }
+    getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        } else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+    }
     // Items Predictor Analysis 
     logout(id): Observable<any> {
             const formData = new FormData();
 
             formData.append('user_id', id);
-            formData.append('token_id', this.token_id);            
-            return this.http.post(this.apiUrl +"/users/applogout", formData)
+           var header = this.getHeaders();            
+            return this.http.post(this.apiUrl +"/users/applogout", formData,  { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
             );
     }
     getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
-        console.log('header');
-        return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+user_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders();   
+        return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+user_id,  { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

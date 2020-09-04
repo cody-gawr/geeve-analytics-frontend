@@ -30,6 +30,8 @@ export class LoginComponent implements OnInit {
 
   this.loginService.login(this.form.value.uname, this.form.value.password).subscribe((res) => {
        if(res.message == 'success'){
+        
+        
         var datares = [];
         datares['username'] = res.data.data.username;
         datares['email'] = res.data.data.email;
@@ -39,7 +41,6 @@ export class LoginComponent implements OnInit {
         datares['user_type'] = res.data.data.user_type;       
         datares['user_image'] = res.data.data.user_image;        
         datares['stepper_status'] = res.data.data.stepper_status;        
-
         datares['login_status'] = res.data.data.status;        
         datares['display_name'] = res.data.data.display_name;  
         datares['dentistid'] = res.data.data.dentist_id;        
@@ -47,6 +48,8 @@ export class LoginComponent implements OnInit {
         let opts: CookieOptionsArgs = {
             expires: new Date('2030-07-19')
         };
+        var nextStep = (parseInt(res.data.data.stepper_status) + 1).toString();
+        this._cookieService.put("stepper", nextStep , opts);
         this._cookieService.put("userid", '', opts);
         this._cookieService.put("childid", '', opts);
         this._cookieService.put("dentistid", '', opts);
@@ -59,14 +62,12 @@ export class LoginComponent implements OnInit {
         this._cookieService.put("login_status", datares['login_status'], opts);
         this._cookieService.put("display_name", datares['display_name'], opts);
         this._cookieService.put("user_image", datares['user_image'], opts);
-        this._cookieService.put("stepper", datares['stepper_status'], opts);
-        if( datares['stepper_status'] == 0){
-          this._cookieService.put("stepper", datares['stepper_status'] + 1 , opts);
-        }
         
-         this._cookieService.put("userid", datares['userid'], opts);
-
-        if(parseInt(datares['stepper_status']) <= 6 && datares['user_type'] == '2'){
+        this._cookieService.put("userid", datares['userid'], opts);
+        var self = this;
+        if(datares['parent_stepper'] != 'no' && parseInt(datares['stepper_status']) < 6 ){
+          this.router.navigate(['/setup']);
+        } else if(parseInt(datares['stepper_status']) < 6 && datares['user_type'] == '2'){
           this.router.navigate(['/setup']);
         } else {
             if(datares['login_status'] == '5') {

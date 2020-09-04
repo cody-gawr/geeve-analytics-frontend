@@ -11,11 +11,21 @@ export const environment = {
    homeUrl:"http://localhost/jeeveanalytics/client2/",
    solutionsUrl : "https://api.jeeve.com.au/staging/solutions"
 
+// apiUrl : "http://localhost:4000/staging/analytics",
+//apiUrl : "http://localhost/jeeveanalytics/server/staging/analytics",
+//homeUrl:"http://localhost/jeeveanalytics/client2/",
+//solutionsUrl : "https://api.jeeve.com.au/staging/solutions"
      
+<<<<<<< HEAD
  // apiUrl : "https://api.jeeve.com.au/staging/analytics",
  //  homeUrl:"https://staging-analytics.jeeve.com.au/",
  //  solutionsUrl : "https://api.jeeve.com.au/staging/solutions"
 
 
+=======
+ apiUrl : "https://api.jeeve.com.au/staging/analytics",
+ homeUrl:"https://staging-analytics.jeeve.com.au/",
+ solutionsUrl : "https://api.jeeve.com.au/staging/solutions"
+>>>>>>> 748bbbf2e5b7da4fea22aff639e37bec780138bd
 
 };

@@ -15,25 +15,23 @@ export class MorningHuddleService {
     private apiUrl = environment.apiUrl;
     public token_id;
     
-    constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {
-        //append headers
-        this.headers = new HttpHeaders();
-        this.headers.append("Content-Type", 'application/json');
-        this.headers.append("Access-Control-Allow-Origin", "*");
-        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
-        this.headers.append("Token", this._cookieService.get("token"));
-        this.router.events.subscribe(event => {
-         if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
-        this.token_id = this._cookieService.get("childid");
-        else
-        this.token_id= this._cookieService.get("userid");
-        });
+    constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {}
 
-   }
+    getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        } else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+    }
 
     // clinic Production Service
     dentistProduction( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleDentistPerformance?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleDentistPerformance?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -41,7 +39,8 @@ export class MorningHuddleService {
     }
      // clinic recallRate
     recallRate( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleRecallPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleRecallPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -49,7 +48,8 @@ export class MorningHuddleService {
     }
 
     rebookTreatmentRate( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleTreatmentPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleTreatmentPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -58,7 +58,8 @@ export class MorningHuddleService {
 
 
      dentistList( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddledDentistList?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddledDentistList?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -66,7 +67,8 @@ export class MorningHuddleService {
     }
 
      getPatients( clinic_id,currentDentist, user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -74,7 +76,8 @@ export class MorningHuddleService {
     }
 
      getNewPatients( clinic_id, currentDentist,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getNewPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getNewPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -82,7 +85,8 @@ export class MorningHuddleService {
     }
 
      getScheduleHours( clinic_id, currentDentist,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getScheduledHours?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getScheduledHours?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -90,7 +94,8 @@ export class MorningHuddleService {
     }
     
      getUnscheduleHours( clinic_id, currentDentist,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getUnscheduled?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getUnscheduled?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -98,7 +103,8 @@ export class MorningHuddleService {
     }
     
      getAppointmentCards( clinic_id,currentDentist, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getAppointmentCards?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id+"&provider_id="+currentDentist, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getAppointmentCards?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&provider_id="+currentDentist, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -107,7 +113,8 @@ export class MorningHuddleService {
     
     
      getReAppointment( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleFDReappointment?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleFDReappointment?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -115,7 +122,8 @@ export class MorningHuddleService {
     } 
 
      getUnscheduledPatients( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleFDUnscheduledPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleFDUnscheduledPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -123,7 +131,8 @@ export class MorningHuddleService {
     }
     
      getUnscheduledValues( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleFDUnscheduledValue?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleFDUnscheduledValue?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -131,7 +140,8 @@ export class MorningHuddleService {
     }
     
      getTodayPatients( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getTodayPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getTodayPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -139,21 +149,24 @@ export class MorningHuddleService {
     }
     
      getTodayUnscheduledHours( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleUnscheduledHours?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleUnscheduledHours?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
      getTodayUnscheduledBal( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleOutstandingBalance?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddleOutstandingBalance?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
      getTodayPostopCalls( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddlePostOpCalls?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/huddlePostOpCalls?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -161,7 +174,8 @@ export class MorningHuddleService {
     }
     
     getReminders( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getRemindersRecallsOverdue?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getRemindersRecallsOverdue?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -169,7 +183,8 @@ export class MorningHuddleService {
     }
     
     getRemindersTreatmentOutstanding( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getRemindersTreatmentOutstanding?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getRemindersTreatmentOutstanding?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -177,21 +192,24 @@ export class MorningHuddleService {
     }
     
     getRemindersOutstandingBalances( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getRemindersOutstandingBalances?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getRemindersOutstandingBalances?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
     getFollowupsUnscheduledPatients( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getFollowupsUnscheduledPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getFollowupsUnscheduledPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
     followupPostOpCalls( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/followupPostOpCalls?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/followupPostOpCalls?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -200,7 +218,8 @@ export class MorningHuddleService {
 
 
     getDentists(clinic_id='1', user_id=this._cookieService.get("userid") , token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/dentists?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/dentists?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -208,7 +227,8 @@ export class MorningHuddleService {
     }
 
     updateFollowUpStatus(event,pid,cid,uid,type,token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/updateFollowUpStatus?event="+event+"&pid="+pid+"&cid="+cid+"&uid="+uid+"&type="+type+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/updateFollowUpStatus?event="+event+"&pid="+pid+"&cid="+cid+"&uid="+uid+"&type="+type, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

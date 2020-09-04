@@ -11,6 +11,7 @@ import { ClinicService } from '../clinic/clinic.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 import { PlansService } from '../plans/plans.service';
 import { ToastrService } from 'ngx-toastr';
+import { Location } from "@angular/common";
 import {
   FormBuilder,
   FormGroup,
@@ -160,15 +161,17 @@ usersArray = new Array(this.userRows);
                                   enableSearchFilter: true,
                                   classes:"myclass custom-class"
                                 }; 
+    this.getClinics();
+    this.checkXeroStatus(false);
   }
   minDate = new Date('1990-01-01');
    maxDate = new Date();
-  constructor(private _formBuilder: FormBuilder,private clinicService: ClinicService, private setupService: SetupService, private _cookieService: CookieService, private router: Router, private route: ActivatedRoute,private rolesUsersService: RolesUsersService,private toastr: ToastrService,private plansService: PlansService){
+  constructor(private _formBuilder: FormBuilder,private clinicService: ClinicService, private setupService: SetupService, private _cookieService: CookieService, private router: Router, private route: ActivatedRoute,private rolesUsersService: RolesUsersService,private toastr: ToastrService,private plansService: PlansService, private _location: Location){
     
   }
 
 
-    public isCompleted = true;
+  public isCompleted = true;
   public clinicscount=0;
   public createdClinicsCount=0;
 
@@ -186,20 +189,28 @@ usersArray = new Array(this.userRows);
   public step5editable= false;
   public step6editable= false;
   public reportsStatus:any = [];
+  public reportsStatusInfo:boolean = false;
+   public workingDays:any = {sunday: false,monday: true,tuesday: true,wednesday: true,thursday: true,friday: true,saturday: true}; 
 
 
 
   ngOnInit() {
+    let currentStep = parseInt(this._cookieService.get("stepper"))
+    if(currentStep > 6){
+      this.router.navigateByUrl('/login');
+    }
 
     this.firstFormGroup = this._formBuilder.group({
       name: [null, Validators.compose([Validators.required])],
       phone_no: [null, Validators.compose([Validators.required])],
       clinicEmail: [null, Validators.compose([Validators.required, CustomValidators.email])],
       address: [null, Validators.compose([Validators.required])],  
-      facebook: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
+      displayName: [null, Validators.compose([Validators.required])],  
+
+     /* facebook: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       twitter: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
       linkedin: [null, Validators.compose([Validators.pattern(this.urlPattern)])],
-      instagram: [null, Validators.compose([Validators.pattern(this.urlPattern)])]
+      instagram: [null, Validators.compose([Validators.pattern(this.urlPattern)])]*/
     });
 
     this.secondFormGroup = this._formBuilder.group({
@@ -210,9 +221,6 @@ usersArray = new Array(this.userRows);
        itemRows: this._formBuilder.array([this.initItemRows()])
     });
     this.id = this._cookieService.get("userid");
-    this.getClinics();
-    this.checkXeroStatus();
-
   }
 
 
@@ -228,12 +236,12 @@ usersArray = new Array(this.userRows);
               //this.getClinicSettings();
 
             }            
-          }
+          }          
           if(this._cookieService.get("stepper"))
           { 
               this.refreshTabs();
               //this.getPlans();
-            }
+          }
        } else if(res.status == '401'){
           this._cookieService.put("username",'');
           this._cookieService.put("email", '');
@@ -318,27 +326,29 @@ if(selectedIndex >= 2) {
   }
 
   public openXero(){ 
-      var success;
-      
+      var success;      
       var win = window.open(this.xero_link, "MsgWindow", "width=400,height=400");
       var self = this;
      var timer = setInterval(function() { 
         if(win.closed) {
-          self.checkXeroStatus();
+          self.checkXeroStatus(true);
           clearTimeout(timer);
         }
       }, 1000);
   }
-  public checkXeroStatus(){
-    this.setupService.checkXeroStatus(this.id).subscribe((res) => {
+  public checkXeroStatus(close){
+    this.setupService.checkXeroStatus(this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
+
         if(res.data.xero_connect == 1) {
           this.xeroConnect = true;
           this.xeroOrganization = res.data.Name;
-        }
-        else {
+          if(close){
+            this.saveStripe();
+          }
+        } else {
           this.xeroConnect = false;
-           this.xeroOrganization = '';          
+          this.xeroOrganization = '';          
           this.disconnectXero();
         }
        }
@@ -354,7 +364,7 @@ if(selectedIndex >= 2) {
  }
  public disconnectXero() {
   
-    this.setupService.clearSession(this.id).subscribe((res) => {
+    this.setupService.clearSession(this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
           this.xeroConnect = false;
           this.xeroOrganization = '';   
@@ -375,20 +385,24 @@ if(selectedIndex >= 2) {
     let phone_no =this.firstFormGroup.controls.phone_no.value;
     let clinicEmail =this.firstFormGroup.controls.clinicEmail.value;
     let address  =this.firstFormGroup.controls.address.value;
-    let facebook =this.firstFormGroup.controls.facebook.value;
+    let displayName  =this.firstFormGroup.controls.displayName.value;
+    let days = JSON.stringify(this.workingDays);
+    console.log(this.workingDays);
+  /*  let facebook =this.firstFormGroup.controls.facebook.value;
     let twitter  =this.firstFormGroup.controls.twitter.value;
     let linkedin =this.firstFormGroup.controls.linkedin.value;
     let instagram =this.firstFormGroup.controls.instagram.value;
-
+*/
       $('.ajax-loader').show();
-       this.setupService.addClinic(name,address,'',phone_no,facebook, twitter, linkedin,instagram,clinicEmail, this.imageURL).subscribe((res) => {
+       this.setupService.addClinic(name,address,phone_no,clinicEmail,displayName,days ).subscribe((res) => {
        $('.ajax-loader').hide();
         if(res.message == 'success'){
           this.clinic_id = res.data.id;
+          this.getXeroLink();  
 
           //this.getClinicSettings();
-       this.stepVal = 1;
-       this.updateStepperStatus();   
+          this.stepVal = 1;
+       this.updateStepperStatus(); 
        //this.getClinic(); 
        this.toastr.success('Clinic Added.');
        }else if(res.status == '401'){
@@ -429,8 +443,15 @@ abc(data) {
 checkUserEmail(display_name, email, user_type) { 
  this.rolesUsersService.checkUserEmail(email).subscribe((res) => {
            if(res.message == 'success'){
+            let length = 10;
+            var randomPassword  = '';
+            var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
+            var charactersLength = characters.length;
+            for ( var i = 0; i < length; i++ ) {
+              randomPassword += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
            if(res.data <=0)
-           this.add_user(display_name, email, user_type, 'jeeveanalytics',this.clinic_id,this.inviteFormGroup.value.dentist_id);
+           this.add_user(display_name, email, user_type, randomPassword,this.clinic_id,this.inviteFormGroup.value.dentist_id);
             else
              this.toastr.success('Email Already Exists!');
 
@@ -461,16 +482,14 @@ checkUserEmail(display_name, email, user_type) {
       this.setupService.updateStepperStatus().subscribe((res) => {
        $('.ajax-loader').hide();
         if(res.message == 'success'){
-          if(this.stepVal != 6 && this.stepVal != 0) {
+          if(this.stepVal < 6 ) {
           var stepper1 = parseInt(this.stepVal) + 1;
            this._cookieService.put("stepper", stepper1.toString());
             this.refreshTabs();
 
             if(this.selectedIndex == 2)
               this.getPlans();
-          }
-          else
-          {
+          } else {
              this._cookieService.put("stepper", "7");
              this.router.navigateByUrl('/dashboards');
           }
@@ -549,7 +568,7 @@ checkUserEmail(display_name, email, user_type) {
       $('.ajax-loader').hide();
         if(res.message == 'success'){
           this.imageURL= res.data;
-          this.toastr.success('Logo Uploaded.');
+         // this.toastr.success('Logo Uploaded.');
 
          // this.notifier.notify( 'success', 'Logo Uploaded' ,'vertical');
         }
@@ -577,16 +596,29 @@ checkUserEmail(display_name, email, user_type) {
     this.stepVal = 2;
     this.updateStepperStatus(); 
   }
-  saveInvites(){
+  saveInvites() {
+    this.stepVal = 3;
+    var i=0;
+    this.inviteFormGroup.value.itemRows.forEach(res => {
+       this.checkUserEmail(res.display_name, res.email, res.user_type)
+         i++;
+     });
+     if(i == this.inviteFormGroup.value.itemRows.length){
+        this.updateStepperStatus(); 
+     }
+    }
+  /*saveInvites(){
     this.stepVal = 3;
     this.updateStepperStatus(); 
-  }
+  }*/
   downloadPMS(){
      this.stepVal = 4;
      this.updateStepperStatus(); 
   }
   downloadPMSAgain(){
      this.stepVal = 3;
+     var stepper1 = parseInt(this.stepVal);
+    this._cookieService.put("stepper", stepper1.toString());
      this.updateStepperStatus(); 
      setTimeout(function(){
         $('mat-vertical-stepper').find('div.mat-step:eq(3)').find('mat-step-header').addClass('honey').click();
@@ -600,17 +632,24 @@ checkUserEmail(display_name, email, user_type) {
   checkRepotrs(){   
      var selfO = this;
      selfO.setupService.checkReportsStatus(selfO.clinic_id).subscribe((res) => {
-          if(res.message == 'NotStart')
+          let urlActive = this._location.path();
+          this.reportsStatusInfo = true;
+          if(res.message == 'noStart')
           {           
             selfO.reportsStatus = [];
-            setTimeout(function(){
+            if(urlActive == '/setup'){
+              setTimeout(function(){
                 selfO.checkRepotrs();
-            }, 10000);
+              }, 10000);
+            }
+            
           } else if(res.message == 'Pending') {
             selfO.reportsStatus = res.data;
-            setTimeout(function(){
+            if(urlActive == '/setup'){
+              setTimeout(function(){
                 selfO.checkRepotrs();
-            }, 10000);
+              }, 10000);
+            }
           } else if(res.message == 'Completed') {
              selfO.setupService.sendCompleteEmail().subscribe((emailstatus) => {
                 if(emailstatus.status != 200){
@@ -627,6 +666,7 @@ checkUserEmail(display_name, email, user_type) {
             selfO.updateStepperStatus(); 
           }
       }, error => {
+          this.toastr.error('Some Error Occur. Please try later.');
           selfO._cookieService.put("username",'');
           selfO._cookieService.put("email", '');
           selfO._cookieService.put("token", '');
@@ -636,4 +676,35 @@ checkUserEmail(display_name, email, user_type) {
     ); 
 
   }
+
+  public toggle(event){
+  if(event.source.name == 'sunday'){
+    this.workingDays.sunday = event.checked;
+
+  } else if(event.source.name == 'monday'){
+
+    this.workingDays.monday = event.checked;
+
+  } else if(event.source.name == 'tuesday'){
+
+    this.workingDays.tuesday = event.checked;
+
+  } else if(event.source.name == 'wednesday'){
+
+    this.workingDays.wednesday = event.checked;
+
+  } else if(event.source.name == 'thursday'){
+
+    this.workingDays.thursday = event.checked;
+
+  } else if(event.source.name == 'friday'){
+
+    this.workingDays.friday = event.checked;
+
+  } else if(event.source.name == 'saturday'){
+
+    this.workingDays.saturday = event.checked;
+
+  }
+}
 }

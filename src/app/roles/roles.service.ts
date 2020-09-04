@@ -10,21 +10,26 @@ import { environment } from "../../environments/environment";
 export class RolesService {
 
    public token: string;
+   public token_id: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
 
-    constructor(private http: HttpClient,private _cookieService: CookieService) {
-        //append headers
-        this.headers = new HttpHeaders();
-        this.headers.append("Content-Type", 'application/json');
-        this.headers.append("Access-Control-Allow-Origin", "*");
-        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
-   }
-
+    constructor(private http: HttpClient,private _cookieService: CookieService) {}
+    getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        } else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+    }
 
    // Get profileSettings
     getprofileSettings( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Users/getPractices?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/Users/getPractices?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -37,9 +42,9 @@ export class RolesService {
             formData.append('email', email);
             formData.append('user_image', imageURL);            
             formData.append('id', this._cookieService.get("userid"));
-            formData.append('token', token);
+             var header = this.getHeaders();
 
-        return this.http.post(this.apiUrl +"/Users/updateprofileSettings/", formData)
+        return this.http.post(this.apiUrl +"/Users/updateprofileSettings/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -52,9 +57,9 @@ export class RolesService {
             formData.append('password', newPassword);
             formData.append('confirm_password', newPassword);            
             formData.append('id', this._cookieService.get("userid"));
-            formData.append('token', token);
+            var header = this.getHeaders();
 
-        return this.http.post(this.apiUrl +"/Users/changePasswordApi/", formData)
+        return this.http.post(this.apiUrl +"/Users/changePasswordApi/", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -63,9 +68,9 @@ export class RolesService {
 
     logoUpload( formData): Observable<any> {
         formData.append('id', this._cookieService.get("userid"));
-            formData.append('token', this._cookieService.get("token"));
+          var header = this.getHeaders();
 
-        return this.http.post(this.apiUrl +"/Users/logoUpload/", formData)
+        return this.http.post(this.apiUrl +"/Users/logoUpload/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -73,7 +78,8 @@ export class RolesService {
     }
 
     clearSession( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token"), { headers: this.headers })
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

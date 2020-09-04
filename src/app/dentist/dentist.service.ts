@@ -16,23 +16,23 @@ export class DentistService {
     public token_id;
 
     constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {
-        //append headers
-        this.headers = new HttpHeaders();
-        this.headers.append("Content-Type", 'application/json');
-        this.headers.append("Access-Control-Allow-Origin", "*");
-        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
-        this.router.events.subscribe(event => {
-         if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
-        this.token_id = this._cookieService.get("childid");
-        else
-        this.token_id= this._cookieService.get("userid");
-        });
+   
    }
-
+    getHeaders(){
+        if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2'){
+            this.token_id = this._cookieService.get("childid");
+        } else {
+            this.token_id= this._cookieService.get("userid");
+        }
+        var authString = this._cookieService.get("token")+" "+this.token_id;
+        let headers = new HttpHeaders({'Authorization' : authString});
+        return headers;
+    }
 
    // Get Dentist
     getDentists(clinic_id='1', user_id=this._cookieService.get("userid") , token = this._cookieService.get("token")): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/dentists?user_id="+user_id+"&clinic_id="+clinic_id+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/dentists?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -44,10 +44,9 @@ export class DentistService {
     const formData = new FormData();
 
     formData.append('id', dentist_id);
-    formData.append('token', token);
-    formData.append('token_id', this.token_id);
+    var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Dentists/delete", formData)
+        return this.http.post(this.apiUrl +"/Dentists/delete", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -62,11 +61,9 @@ export class DentistService {
     formData.append('name', value);
      formData.append('user_id', '23');
     formData.append('clinic_id',clinic_id);
-    formData.append('token_id', this.token_id);
-
-    formData.append('token', token);
+    var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Dentists/update", formData)
+        return this.http.post(this.apiUrl +"/Dentists/update", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -82,10 +79,9 @@ export class DentistService {
     formData.append('name', value);
     formData.append('user_id', this._cookieService.get("userid"));
     formData.append('clinic_id', clinic_id);
-    formData.append('token_id', this.token_id);
-    formData.append('token', token);
+    var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Dentists/add", formData)
+        return this.http.post(this.apiUrl +"/Dentists/add", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
