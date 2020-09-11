@@ -9,7 +9,7 @@
    <!--     <button class="sa-pull-right mat-raised-button mat-gray" (click) = "goBack()">Back</button>
          <button class="sa-pull-right mat-raised-button danger" mat-menu-item (click) = "deletePatients()">Delete</button> -->
 
-<button class="sa-pull-right mat-raised-button mat-gray"  (click) = "sendDefaultersemail(patient_name,patient_email,patient_id,id)" *ngIf="patient_status=='ACTIVE'"> Generate Update Card Link </button>
+<button class="sa-pull-right mat-raised-button mat-gray"  (click) = "sendDefaultersemail(patient_name,patient_email,patient_id,id)" *ngIf="patient_status=='ACTIVE' && !trial"> Generate Update Card Link </button>
      
   </mat-card-title>
                <!-- ============================================================== -->
@@ -56,11 +56,11 @@
                 </tr>
                 <tr>
                   <th>Deposited Amount</th>
-                  <td><span *ngIf="isDecimal(deposite_amount)"> {{deposite_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(deposite_amount)">{{deposite_amount| currency: 'USD': 'symbol':'1.0'}}</span></td>
+                  <td><span *ngIf="isDecimal(deposite_amount)"> {{deposite_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span *ngIf="!isDecimal(deposite_amount)">{{deposite_amount| currency: 'USD': 'symbol':'1.0'}}</span></td>
                 </tr>
                 <tr>
                   <th>Outstanding Amount</th>
-                  <td><span *ngIf="isDecimal(balance_amount)"> {{balance_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(balance_amount)">{{balance_amount| currency: 'USD': 'symbol':'1.0'}}</span></td>
+                  <td><span *ngIf="isDecimal(balance_amount)"> {{balance_amount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span *ngIf="!isDecimal(balance_amount)">{{balance_amount| currency: 'USD': 'symbol':'1.0'}}</span></td>
                 </tr>
                 <tr>
                   <th>Payment Frequency</th>
@@ -86,22 +86,17 @@
       </form>
     </div>
       <div fxFlex="49" fxFlex.md="100" class="sa_mattabs_design sa_matforms_design">
-                        <!-- {{preventative_count}} ------ {{preventative_frequency}}
-                         <input type ="button" value="Log Appointment" class="sa-pull-right mat-raised-button sa-pull-right mat-green" (click)="log_appointment()" *ngIf="preventative_count<preventative_frequency">
-                         <div style="color:#fff;" *ngIf="preventative_count>=preventative_frequency" class="sa-pull-right mat-raised-button golden mat-menu-item">All Preventative Appointments have been Used</div> -->
-
-                         <h3 style="float:left; margin-top:0px; display:block; width:100%;" class="sb_title">Subscription Details</h3>
-                         <div class="responsive_table_main">
-                             <table class="tabs_table responsive_table">
+          <h3 style="float:left; margin-top:0px; display:block; width:100%;" class="sb_title">Subscription Details</h3>
+                      <div class="responsive_table_main">
+                          <table class="tabs_table responsive_table">
                                     <thead>
                                         <tr>
-                                            <th>Subscription id</th>
+                                            <th>Subscription Id</th>
                                             <th>Amount</th>                                            
                                             <th>Start Date</th>
                                             <th>End Date</th>
                                             <th>Cancelled On</th>
                                             <th>Status</th>
-
                                             <th>Frequency</th>
                                         </tr>
                                     </thead>
@@ -117,17 +112,14 @@
                                         <td><span class="res_table_label">Cancelled On : </span> <span  *ngIf="data.canceled_at != null && data.status!='active' ">{{data.canceled_at * 1000| date:'dd-MM-y':'UTC +10'}}</span></td>
                                         <td><span class="res_table_label">Status : </span> {{data.status| titlecase }}</td>
                                         <td><span class="res_table_label">Frequency :</span> {{data.plan.interval| titlecase }}ly</td>
-                                       
-                                    </tr>
-                                   
+                                    </tr>                                   
                                     </tbody>
-                                </table>
+                               </table>
                              </div>
                         </div>
  </div>
 </mat-tab>
 <!-- Payment History tab -->
-
   <mat-tab label="Payment History">
 
      <table class="tabs_table responsive_table">

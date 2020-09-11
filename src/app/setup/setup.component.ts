@@ -626,8 +626,10 @@ public user_id_encoded;
         this.clinicContract = res.data[0].contract;
       
         this.Contract = this.apiUrl +"/Clinics/getUploadedSignedContract?user_id="+this._cookieService.get("userid")+"&token="+this._cookieService.get("token")+"&token_id="+this.token_id+"&code="+encodeURIComponent(window.btoa(this.clinicContract));
-        if(this.stripe_account_id)
+        if(this.stripe_account_id) {
           this.connectedStripe = true;
+          this.saveStripe();
+        }
         else
           this.connectedStripe = false;
 

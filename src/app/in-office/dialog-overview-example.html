@@ -152,7 +152,7 @@
 
     <div fxFlex="calc(49% - 10px)" fxFlex.xs="100" class="sa-form-group">
         <label>Number of Instalments</label>
-        <input matInput tabindex="1" id="duration" type="number" min="1" [(ngModel)]="data.duration" placeholder="{{durationPaymentPlaceholder}}" (keyup)="durationcal(data.duration)" class="form-control-dialog" [formControl]="form.controls['duration']" (keypress)="numberOnly($event)" >
+        <input matInput tabindex="1" id="duration" type="number" min="1" [(ngModel)]="data.duration" placeholder="{{durationPaymentPlaceholder}}" (keyup)="durationcal(data.duration)" (change)="durationcal(data.duration)" class="form-control-dialog" [formControl]="form.controls['duration']" (keypress)="numberOnly($event)" >
          <small *ngIf="form.controls['duration'].hasError('required') && form.controls['duration'].touched" class="text-danger support-text">Number of Instalments is Required.</small> 
     </div>
    </div>

@@ -106,20 +106,24 @@ constructor(private toastr: ToastrService,notifierService: NotifierService, priv
       patient_home_phno: [null, Validators.compose([Validators.required])],
       patient_status: [null, Validators.compose([Validators.required])]
     });
-
-     this.form = this.fb.group({
-     
+     this.form = this.fb.group({     
     });
    }
 
 
 public subscrData;
+public trial=true;
     private getSubscriptionStripe() {
       if(this.id) {
       this.patientPaymentinfoService.getSubscriptionStripe(this.id).subscribe((res) => {
            if(res.message == 'success'){
             this.subscrData = res.data.data;
-            console.log(this.subscrData);
+           this.subscrData.forEach(data => {
+              if(data.status=='trialing')
+                this.trial = true;
+              else
+                this.trial= false;
+            });
            }
         }, error => {
              $('.ajax-loader').hide(); 

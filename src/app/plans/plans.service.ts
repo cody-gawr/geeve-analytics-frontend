@@ -76,8 +76,6 @@ export class PlansService {
         );
     }
 
-
-
        // Delete Clinic
     deletePlan(id, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
@@ -92,10 +90,8 @@ export class PlansService {
         );
     }
 
-
     updateUser(memberid,clinic_id,planName,planOrder,planLength,totalAmount,discount,description,isFeatured,hidden,preventative_plan,preventative_frequency,treatment_inclusions,treatment_exclusions,preventative_discount,sendMail, updateUser,changeType,token = this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
-    
         formData.append('id', memberid);
         formData.append('clinic_id', clinic_id);
         formData.append('planName', planName);

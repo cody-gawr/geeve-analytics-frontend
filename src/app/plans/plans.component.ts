@@ -535,6 +535,7 @@ public changeType;
                   input: 'checkbox',
                   inputPlaceholder: 'Send Email Notification to Patients?',
                    showCloseButton: true,
+                   inputValue: '1',
                 showCancelButton: true,
                 }).then(function(data) {
                         if(data.value != undefined){
@@ -553,13 +554,14 @@ public changeType;
           }
           else if((this.rows[rowIndex]['totalAmount'] != result.totalAmount ) || (this.rows[rowIndex]['discount'] != result.discount)){
               this.updatePlan= true;
-          var self = this;          
+               var self = this;          
                Swal.fire({
                   text: 'These Changes will update costs for '+res.data+' patients who have subscribed to this plan.',
                   input: 'checkbox',
                   inputPlaceholder: 'Send Email Notification to Patients?',
                    showCloseButton: true,
                 showCancelButton: true,
+                  inputValue: '1',
                 }).then(function(data) {
                      if(data.value != undefined){
                         $('#spinner_'+rowIndex).show(); 

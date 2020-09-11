@@ -294,24 +294,6 @@ getStripe(){
              this.cardNumber.mount('#example3-card-number');
              this.cardExpiry.mount('#example3-card-expiry');
              this.cardCvc.mount('#example3-card-cvc');
-           //  this.card = this.elements.create('card', {
-           //  style: {
-           // base: {
-           //     iconColor: '#424242',
-           //     color: '#424242',
-           //     lineHeight: '40px',
-           //     fontWeight: 400,
-           //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-           //     fontSize: '18px',
-           //     '::placeholder': {
-           //         color: '#424242'
-           //     }
-           //    }
-           //  }
-           //  });
-           // this.card.mount('#card-element');
-          
-
             }
             });
   }
@@ -345,7 +327,7 @@ getStripe(){
 
            }
             else if(res.message == 'requires_action'){
-           
+              $('.ajax-loader').show();           
                this.stripeService.confirmCardPayment(res.data.pi_client_secret,{
                     payment_method: {
                       card: this.cardNumber,

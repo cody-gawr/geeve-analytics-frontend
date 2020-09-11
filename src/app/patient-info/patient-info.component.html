@@ -56,7 +56,7 @@
                                   <div class="responsive_table_main">
                                     <h3 style="margin-top:0px;" class="sb_title">Plan Details</h3>
                                     <div class="alert-warning text-center m-b-10" *ngIf="start_date_tba 
-                                    && patient_status != 'CANCELLED'"> Membership price for your plan {{plan_name}} will change to ${{price_tba}} on {{start_date_tba| date:'dd-MM-y':'UTC +11'}}</div>
+                                    && patient_status != 'CANCELLED'"> Membership price for your plan {{plan_name}} will change to <span *ngIf="isDecimal(price_tba)"> {{price_tba  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(price_tba)">{{price_tba| currency: 'USD': 'symbol':'1.0'}}</span> on {{start_date_tba| date:'dd-MM-y':'UTC +11'}}</div>
                                   <table class="tabs_table responsive_table">
                                       <thead>
                                           <tr>

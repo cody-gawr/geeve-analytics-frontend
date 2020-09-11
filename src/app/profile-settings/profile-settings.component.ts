@@ -111,7 +111,7 @@ export class DialogOverviewExampleDialogComponent {
 })
 export class ProfileSettingsComponent implements OnInit {
         elementsOptions: StripeElementsOptions = {
-    locale: 'es'
+    
   };
    public elements;
    public card;

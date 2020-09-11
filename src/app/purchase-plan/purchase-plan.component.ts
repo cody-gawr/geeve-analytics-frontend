@@ -145,13 +145,6 @@ compareDateWithToday(year,month,date){
 
 }
 
-
-
-
-
-
-
-
 updateDates(date){
   let newDate =date < 10 ? "0"+date : date ;
   return newDate.toString();
@@ -184,7 +177,6 @@ getDaysInMonth(year: number, month: number) {
              else
              temp['amount'] =  data.patientData[countPatient]['amount'];
              data.patientData.push(temp);
-             console.log(data, temp);
              data.totalAmountPatients = data.totalAmountPatients +  temp['amount'];
              this.dialogRef.close(data);          
   }else{
@@ -689,7 +681,7 @@ public cvcStyle = {
                 );
            }
            else if(res.message == 'requires_action'){
-           
+               $('.ajax-loader').show();
                this.stripeService.confirmCardPayment(res.data.pi_client_secret,{
                     payment_method: {
                       card: this.cardNumber,
@@ -699,12 +691,14 @@ public cvcStyle = {
                     },
                   })
                    .subscribe((result) => {
-                        this.cardNumber.clear();
+                      this.cardNumber.clear();
                       this.cardCvc.clear();
                       this.cardExpiry.clear();
                     if(result.paymentIntent && result.paymentIntent.status == 'succeeded'){
                         this.sendMailPatient();
                         this.updatePatients('ACTIVE');
+
+                        
                     }
                     else{
                        this.removePatients();
