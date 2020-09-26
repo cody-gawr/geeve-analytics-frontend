@@ -8,7 +8,7 @@
         </mat-form-field>
         <ngx-datatable #table class='material dentist-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
             [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
-            <ngx-datatable-column name="Sr">
+           <!--  <ngx-datatable-column name="Sr">
                 <ng-template let-column="column" ngx-datatable-header-template>
         <span>Sr</span>
       </ng-template>
@@ -19,13 +19,13 @@
           <input autofocus (blur)="updateValue($event, 'providerId', rowIndex)" *ngIf="editing[rowIndex+ '-providerId']" type="text" [value]="value"
           />
         </ng-template>
-      </ngx-datatable-column>
+      </ngx-datatable-column> -->
       <ngx-datatable-column name="providerId">
                 <ng-template let-column="column" ngx-datatable-header-template>
         <span>Provider Id</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-          <span title="Double click to edit" (dblclick)="editing[rowIndex + '-providerId'] = true" *ngIf="!editing[rowIndex + '-providerId']">
+          <span title="Double click to edit">
             {{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'providerId', rowIndex)" *ngIf="editing[rowIndex+ '-providerId']" type="text" [value]="value"

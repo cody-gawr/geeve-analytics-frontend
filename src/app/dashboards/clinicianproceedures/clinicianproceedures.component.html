@@ -231,7 +231,8 @@
           [chartType]="stackedChartType"
           [colors]="PRcolors"></canvas>
           </div>
-<div *ngIf="predictedMax <= 0 && buildChartPredictorLoader == false" class="sa_nodata_div">
+
+          <div *ngIf="(predictedMax <= 0 || predictedMax == ''  ) && buildChartPredictorLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p>Oops! Looks like we don't have any data to show you</p>
           </div>

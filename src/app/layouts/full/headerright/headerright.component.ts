@@ -21,21 +21,22 @@ export interface Dentist {
 export class AppHeaderrightComponent implements AfterViewInit  {   
     private _routerSub = Subscription.EMPTY;
   constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router) {
-    
+     
 
     this._routerSub = this.router.events
          .filter(event => event instanceof NavigationEnd)
          .subscribe((value) => {
-       this.route = router.url; 
-       if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
-       { 
-        this.getClinics();
-      }
-      if(($('body').find('span#currentDentist').length >= 0 || $('#currentDentist').attr('did') == 'all') && this.route == '/dentist-goals')
-       { 
+          this.route = router.url; 
+          if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
+          { 
+            this.getClinics();
+          }
+          if(($('body').find('span#currentDentist').length >= 0 || $('#currentDentist').attr('did') == 'all') && this.route == '/dentist-goals')
+          { 
+            //this.getDentists();
+          }
         this.getDentists();
-      }
-        });
+    });
   }
  ngOnDestroy(){
      this._routerSub.unsubscribe();
@@ -48,15 +49,14 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   public route:any;
   public title;
    public clinicsData:any[] = [];
-  public config: PerfectScrollbarConfigInterface = {};
-     public clinic_id:any ={};
-   public dentistCount:any ={};
-     dentists: Dentist[] = [
-   { providerId: 'all', name: 'All Dentists' },
-  ];
+    public config: PerfectScrollbarConfigInterface = {};
+    public clinic_id:any;
+    public dentistCount:any ={};
+    dentists: Dentist[] = [];
    private warningMessage: string;
    public finalUrl:string;
    public selectedClinic;
+   public showAll:boolean = true;
    private getClinics() { 
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
@@ -93,29 +93,29 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     // Get Dentist
     getDentists() {
       this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+          this.showAll = true;
            if(res.message == 'success'){
               this.dentists= res.data;
               this.dentistCount= res.data.length;
-        if(this.route != '/dentist-goals'){
-          this.selectedDentist ='all';
-        }
-        else  
-        {
-          this.selectedDentist = res.data[0].providerId;
-        }
-           }
-            else if(res.status == '401'){
-            this._cookieService.put("username",'');
+              if(this.route != '/dentist-goals'){
+                this.selectedDentist = 'all';
+              } else {
+                this.showAll = false;
+                this.selectedDentist = res.data[0].providerId;
+              }
+           } else if(res.status == '401'){
+              this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("token", '');
               this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
+              this.router.navigateByUrl('/login');
            }
         }, error => {
           this.warningMessage = "Please Provide Valid Inputs!";
         }    
         );
   }
+
   loadClinic(newValue) {
  if(newValue != 'undefined') {
  if($('body').find('span#currentClinic').length <= 0){

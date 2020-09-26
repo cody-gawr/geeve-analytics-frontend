@@ -229,7 +229,7 @@
 
      <div class="skipwizard bottom_btns_page">
    <a>
-       <button mat-raised-button color="green" (click)="downloadPMS()">Download</button>
+       <button mat-raised-button color="green" (click)="downloadPMS()">Download Sync Utility</button>
      </a>
   </div>
    </div>
@@ -264,7 +264,7 @@
 </div>
     <ul>
     <li class="not-start" *ngIf="!reportsStatusInfo">We are collecting data.</li>
-     <li class="not-start" *ngIf="reportsStatus.length <= 0 && reportsStatusInfo">Not Started Yet</li>
+     <li class="not-start" *ngIf="reportsStatus.length <= 0 && reportsStatusInfo">Sync not yet started - Please download and install the Sync Utility on your Dental 4 Windows server to continue</li>
      <li *ngFor="let itemrow of reportsStatus; let i=index">
       <span *ngIf="itemrow.status == 'Pending'">
         <i class="fas fa-check" ></i>  
@@ -295,7 +295,7 @@
 
   <div class="skipwizard bottom_btns_page again-download-btn">
    <a class="text-left">
-       <button mat-raised-button color="green" *ngIf="reportsStatus.length <= 0" (click)="downloadPMSAgain()">Again Download</button>
+       <button mat-raised-button color="green" *ngIf="reportsStatus.length <= 0" (click)="downloadPMSAgain()">Download Sync Utility</button>
      </a>
   </div>
 

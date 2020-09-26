@@ -64,6 +64,7 @@ export class DentistGoalsComponent implements OnInit {
           public totalproduction =0;
           public visitproduction =0;
           public collection =0;
+          public currentValue:any =0;
 
 
           public discount:any =0;
@@ -89,6 +90,16 @@ export class DentistGoalsComponent implements OnInit {
 
   }
   ngOnInit() {
+
+   $(document).on('keyup','.mat-input-element',function(e){
+        this.currentValue = $(this).val();
+        if(this.currentValue == 0){
+          $(this).val(1);
+        } else {
+          $(this).val( $(this).val()  );
+        }
+    });
+
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
     

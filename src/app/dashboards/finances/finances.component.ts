@@ -561,7 +561,7 @@ public labelBarPercentOptions: any = {
             }],
           yAxes: [{  
             ticks: {
-             
+               suggestedMin:0
             }, 
             }],
         },
@@ -977,7 +977,7 @@ public netProfitTrendTotal;
         else
         this.netProfitIcon = "-";
              
-        this.netProfitVal = Math.abs(this.netProfitVal).toFixed(2); 
+        this.netProfitVal = this.netProfitVal; 
       if(this.netProfitVal>=this.netProfitTrendTotal)
             this.netProfitTrendIcon = "up"; 
        }
@@ -1006,7 +1006,7 @@ public netProfitTrendTotal;
         this.netProfitPercentIcon = "";
         else
         this.netProfitPercentIcon = "-";
-        this.netProfitPercentVal = Math.abs(data.data).toFixed(2);    
+        this.netProfitPercentVal =data.data;    
         if(this.netProfitPercentVal>=this.netProfitPercentTrendTotal)
             this.netProfitPercentTrendIcon = "up"; 
        }
@@ -1226,9 +1226,9 @@ public totalProductionCollectionLabel1 =[];
        if(data.message == 'success'){
         this.finCollectionLoader = false;
         this.collectionVal =0;
-        this.collectionVal = (data.data.paym_total).toFixed(2);      
-        this.collectionPercentage = (data.data.percent).toFixed(2); 
-        this.collectionTrendVal = (data.data.paym_total_ta).toFixed(2);    
+        this.collectionVal = (data.data.paym_total)? (data.data.paym_total).toFixed(2) : 0;      
+        this.collectionPercentage = (data.data.percent)? (data.data.percent).toFixed(2) : 0; 
+        this.collectionTrendVal = (data.data.paym_total_ta)?  (data.data.paym_total_ta).toFixed(2) : 0;    
           this.totalProductionCollection1[0]['data'].push(this.collectionVal);
           this.totalProductionCollectionLabel1 = ['Total Production','Collection'];
            this.totalProductionCollectionMax = Math.max(...this.totalProductionCollection1[0]['data']);
@@ -1323,10 +1323,11 @@ filterDate(duration) {
       this.trendText= 'Last Week';
       this.currentText= 'This Week';
 
-      const now = new Date();
+        const now = new Date();
        var first = now.getDate() - now.getDay();
        var last = first + 6; 
        this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'yyyy-MM-dd');
+      // alert( this.startDate);
        var end = new Date();
         end.setFullYear(now.getFullYear());
         end.setMonth(now.getMonth()+1);
@@ -1465,13 +1466,12 @@ filterDate(duration) {
   }
 choosedDate(val) {
     val = (val.chosenLabel);
-    var val= val.toString().split(' - ');
-      this.startDate = this.datePipe.transform(val[0], 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(val[1], 'yyyy-MM-dd');
-      this.loadDentist('all');
-      
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
-     $('.customRange').css('display','none');
+    var val= val.toString().split('-');
+    this.startDate = this.datePipe.transform( $.trim(val[0]), 'yyyy-MM-dd');
+    this.endDate = this.datePipe.transform($.trim(val[1]), 'yyyy-MM-dd');
+    this.loadDentist('all');      
+    $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+    $('.customRange').css('display','none');
 }
 toggleFilter(val) {
    $('.target_filter').removeClass('mat-button-toggle-checked');

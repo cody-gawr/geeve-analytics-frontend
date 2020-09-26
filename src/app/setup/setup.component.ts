@@ -12,6 +12,7 @@ import { RolesUsersService } from '../roles-users/roles-users.service';
 import { PlansService } from '../plans/plans.service';
 import { ToastrService } from 'ngx-toastr';
 import { Location } from "@angular/common";
+import { environment } from "../../environments/environment";
 import {
   FormBuilder,
   FormGroup,
@@ -32,6 +33,7 @@ export class SetupComponent implements AfterViewInit {
 
 
   @ViewChild('stepper') stepper;
+  private apiUrl = environment.apiUrl;
   private readonly notifier: NotifierService;
   public form: FormGroup;
   isLinear = true;
@@ -164,6 +166,13 @@ usersArray = new Array(this.userRows);
     this.getClinics();
     this.checkXeroStatus(false);
   }
+
+/*  ngAfterViewChecked(){
+    var winH = $(window).height();
+    var divH = $('div.stepper_innner').height();
+    var marginTop = ((winH - divH) /2 ) - 50 ;
+    $('div.stepper_innner').css('margin-top',marginTop);
+  }*/
   minDate = new Date('1990-01-01');
    maxDate = new Date();
   constructor(private _formBuilder: FormBuilder,private clinicService: ClinicService, private setupService: SetupService, private _cookieService: CookieService, private router: Router, private route: ActivatedRoute,private rolesUsersService: RolesUsersService,private toastr: ToastrService,private plansService: PlansService, private _location: Location){
@@ -327,7 +336,7 @@ if(selectedIndex >= 2) {
 
   public openXero(){ 
       var success;      
-      var win = window.open(this.xero_link, "MsgWindow", "width=400,height=400");
+      var win = window.open(this.xero_link, "MsgWindow", "width=1000,height=800");
       var self = this;
      var timer = setInterval(function() { 
         if(win.closed) {
@@ -404,7 +413,7 @@ if(selectedIndex >= 2) {
           this.stepVal = 1;
        this.updateStepperStatus(); 
        //this.getClinic(); 
-       this.toastr.success('Clinic Added.');
+       //this.toastr.success('Clinic Added.');
        }else if(res.status == '401'){
          this._cookieService.put("username",'');
          this._cookieService.put("email", '');
@@ -453,7 +462,7 @@ checkUserEmail(display_name, email, user_type) {
            if(res.data <=0)
            this.add_user(display_name, email, user_type, randomPassword,this.clinic_id,this.inviteFormGroup.value.dentist_id);
             else
-             this.toastr.success('Email Already Exists!');
+             this.toastr.error('Email Already Exists!');
 
             //this.notifier.notify( 'success', 'Email Already Exists!' ,'vertical');
            }
@@ -468,7 +477,7 @@ checkUserEmail(display_name, email, user_type) {
 
   this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
       $('.ajax-loader').hide();      
-             this.toastr.success('User Added');
+             //this.toastr.success('User Added');
 
        //if(res.message == 'success'){
       //  this.notifier.notify( 'success', 'User Added' ,'vertical');
@@ -612,8 +621,9 @@ checkUserEmail(display_name, email, user_type) {
     this.updateStepperStatus(); 
   }*/
   downloadPMS(){
-     this.stepVal = 4;
-     this.updateStepperStatus(); 
+    var winP = window.open(this.apiUrl+'/users/getPMS', "_blank");      
+    this.stepVal = 4;
+    this.updateStepperStatus(); 
   }
   downloadPMSAgain(){
      this.stepVal = 3;

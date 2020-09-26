@@ -188,6 +188,8 @@ export class ClinicSettingsComponent implements OnInit {
         }
       }, 1000);
   }
+
+
   public checkXeroStatus(){
     this.clinicSettingsService.checkXeroStatus(this.id).subscribe((res) => {
        if(res.message == 'success'){

@@ -6,8 +6,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
 import { ToastrService } from 'ngx-toastr';
-import { first, take } from 'rxjs/operators';
-import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -97,7 +95,9 @@ initiate_clinic() {
 
     this.clinic_id = this.route.snapshot.paramMap.get("id");
         $('#title').html('Users');
-        $('.header_filters').addClass('hide_header'); 
+        $('.external_clinic').show();
+        $('.dentist_dropdown').hide();
+        $('.header_filters').addClass('flex_direct_mar');
   }
   editing = {};
   rows = [];
@@ -147,16 +147,6 @@ initiate_clinic() {
     this.selected_id = val;
     });
     rolesRef.afterClosed().subscribe(result => {
-      if(result) {
-        $('.ajax-loader').show();
-      
-      if(this.roles.length == 0){
-        var temp =[];
-        this.roles[0]={id:3, length:0, permissions:"",role:"Practice Manager"};
-        this.roles[1]={id:4, length:0, permissions:"",role:"Clinician"};
-        this.roles[2]={id:5, length:0, permissions:"",role:"Staff"};
-
-      }
      if(result != undefined) {
       this.roles.forEach(res1 => {
           var checkedRoles1='';
@@ -173,18 +163,15 @@ initiate_clinic() {
             checkedRoles.push('dashboard5');
             var checkedRoles1 = checkedRoles.join();
               this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
-                  $('.ajax-loader').hide();
                  if(res.message == 'success'){
                   this.toastr.success('Permissions Saved!');
+                  this.getRoles();
                  }
               }, error => {
                 this.warningMessage = "Please Provide Valid Inputs!";
               });
          });
     }
-     this.getRoles();
-   }
-
     });
   }
     // Get Dentist
@@ -205,12 +192,9 @@ initiate_clinic() {
   }
 
   add_user(display_name, email, user_type, password,clinic_id,dentist_id) {
-     $('.ajax-loader').show();
-    
   if(dentist_id =='' || dentist_id == undefined)
     dentist_id ='';
-  this.rolesUsersService.addRoleUser(display_name, email, user_type, password,dentist_id).subscribe((res) => {
-     $('.ajax-loader').hide();
+  this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
        if(res.message == 'success'){
         this.toastr.success('User has been added successfully!');
         this.getUsers();
@@ -269,15 +253,7 @@ initiate_clinic() {
   }
 
   private deleteUser(row) {
-         Swal.fire({
-      title: 'Are you sure?',
-      text: 'You want to delete User?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if(result.value){
+           if(confirm("Are you sure to delete User?")) {
     if(this.rows[row]['id']) {
   this.rolesUsersService.deleteUser(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
@@ -295,7 +271,6 @@ initiate_clinic() {
 
     }
     }
-});
   }
 
   addDentist() {

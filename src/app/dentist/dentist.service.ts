@@ -59,11 +59,10 @@ export class DentistService {
 
     formData.append('provider_id', dentist_id);
     formData.append('name', value);
-     formData.append('user_id', '23');
+    formData.append('user_id', this._cookieService.get("userid"));
     formData.append('clinic_id',clinic_id);
-    var header = this.getHeaders(); 
-    
-        return this.http.post(this.apiUrl +"/Dentists/update", formData, { headers: header })
+    var header = this.getHeaders();     
+    return this.http.post(this.apiUrl +"/Dentists/update", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

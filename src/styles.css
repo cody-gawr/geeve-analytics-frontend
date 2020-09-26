@@ -954,6 +954,9 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 
 .dh-target { max-width: 320px; }
 
+.stepper_content .right-img img {max-width: 72%;}
+
+
 }
  @media only screen and (max-width: 599px) {
 
@@ -1015,6 +1018,8 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 .ngx-datatable.responsive-datatable .datatable-header-inner .datatable-row-center, .ngx-datatable.responsive-datatable .datatable-body .datatable-body-row .datatable-row-center { width: 800px !important; border-bottom: 1px solid rgba(0, 0, 0, 0.12); }
 
 .ngx-datatable.fixed-header.responsive-datatable .datatable-header .datatable-header-inner .datatable-header-cell, .ngx-datatable.material.responsive-datatable .datatable-body .datatable-body-row .datatable-body-cell { width: 200px !important }
+
+
 }
 @media (max-width:959px) {
 .xero-main {
@@ -1033,14 +1038,16 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 .cdk-overlay-pane .mat-dialog-container { min-width: 100% !important; }
 
 .morning-huddle .mat-tab-body-content { padding: 0 0px !important; }
+
+
 }
+
+
 @media (max-width:600px) {
 
 
-.SetRoles_checkbox .mat-checkbox {
-    padding: 7px 0px;
-    width: 100%;
-}
+.SetRoles_checkbox .mat-checkbox {padding: 7px 0px;width: 100%;}
+
 .sa_chart_details_sec > .text-center { margin-bottom: 15px; }
 
 .sa_chart_details_sec > .text-center:last-child { margin-bottom: 0px; }
@@ -1056,7 +1063,7 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 }
 @media (max-width:575px) {
 
-body .working-days .mat-slide-toggle { width: 100% !important; }
+body .working-days .mat-slide-toggle { width: 50% !important; }
 
 .ImportCSV { display: block; }
 
@@ -1078,10 +1085,18 @@ body .working-days .mat-slide-toggle { width: 100% !important; }
 .morning-huddle .mat-ink-bar { display: none; }
 
 .morning-huddle .mat-tab-list { background-color: #fff; padding: 10px; border-radius: 5px; box-shadow: 0px 3px 15px 0 rgba(0, 0, 0, 0.1); }
+
+
+
+
 }
 @media (max-width:400px) {
 
 .roles_users .mat-card-title .sa-pull-right { float: none; clear: both; margin-top: 10px; }
+
+body .working-days .mat-slide-toggle { width: 100% !important;}
+
+
 }
  @media (min-width:959px) and (max-width:1280px) {
 
@@ -1098,8 +1113,6 @@ body .working-days .mat-slide-toggle { width: 100% !important; }
 }
 
 /* healthscreen css start */
-
-.sa_profit_bar { }
 
 .sa_profit_bar.sa_dentist_graphs_area .sa_flexbg { min-height: 190px!important; }
 
@@ -1705,13 +1718,13 @@ body .mat-gray {
 
 .working-days .mat-slide-toggle {
     float: left;
-    width: 50%;
+    width: 25%;
     margin-bottom: 15px;
     padding-right: 15px;
     font-weight: 400;
 }
 .working-days h4 {
-    margin-top: 10px;
+    margin-top: 0px;
     margin-bottom: 15px;
 }
 .mat-card-title .mat-button-sm {
@@ -1865,45 +1878,35 @@ body .mat-gray {
     padding-right: 25px !important;
     background-attachment: fixed;
     padding-bottom: 0px !important;
+    position: relative;
+    min-height: 770px;
+    height: 100%;
+    padding-top: 90px !important;
 }
+
+
 .stepper_content .logo_jeeve {
-    margin-bottom: 25px;
-    margin-top: 30px;
-    max-width: 200px;
+    margin-bottom: 20px;
+    margin-top: -70px;
+    max-width: 160px;
 }
-.stepper_innner {
-    background: #fff;
-    border-radius: 20px 20px 0 0;
-    box-shadow: 2px 2px 22px #c3dfdd;
-    position: relative;
-    min-height: 650px;
-}
-.stepper_content .cross_icon_top {
-    width: 120px;
-    opacity: 1;
-    position: absolute;
-    right: 26px;
-    top: 25px;
-    z-index: 999;
-    background: #1d2949;
-    border-radius: 25px;
-    padding: 8px 9px;
-    color: #fff;
-    font-weight: 500;
-    height: 40px;
-    text-align: center;
-    cursor: pointer;
-}
-.stepper_content .fas.fa-power-off {
-    margin-right: 6px;
-}
-.stepper_content .mat-stepper-vertical {
-    padding-top: 70px;
-    position: relative;
-}
-.stepper_content .mat-stepper-vertical {
-    background-color: transparent;
-}
+
+
+
+.stepper_innner {top: 0px;background: #fff;border-radius: 20px;box-shadow: -20px -20px 22px rgb(0, 0, 0, 0.04);position: relative;
+    min-height: -webkit-fit-content;min-height: 530px;left: 0px;width: 100%;display: inline-table;margin-bottom: 25px;}
+
+
+
+.stepper_content .cross_icon_top {width: 120px;opacity: 1;position: absolute;right: 26px;top: 25px;z-index: 999;background: #1d2949;
+    border-radius: 25px;padding: 8px 9px;color: #fff;font-weight: 500;height: 40px;text-align: center;cursor: pointer;}
+
+.stepper_content .fas.fa-power-off { margin-right: 6px;}
+
+.stepper_content .mat-stepper-vertical { padding-top: 70px; position: relative;}
+
+.stepper_content .mat-stepper-vertical {background-color: transparent;}
+
 .stepper_content .mat-stepper-vertical::before {
     content: '';
     background: url(/assets/img/border_pipes.png);
@@ -1919,6 +1922,7 @@ body .mat-gray {
     position: absolute;
     left: 44px;
     top: 90px;
+    height: 380px !important;
 }
 .stepper_content .mat-step {
     overflow: hidden;
@@ -1960,7 +1964,7 @@ body .mat-gray {
     padding: 0 24px 24px 75px;
 }
 .stepper_content .intro_title h2 {
-    font-size: 50px;
+    font-size: 42px;
     font-weight: 800;
     color: #1d2a49;
     line-height: 60px;
@@ -1969,9 +1973,10 @@ body .mat-gray {
 }
 .stepper_content .intro_title h3 {
     color: #263a5b;
-    font-size: 36px;
+    font-size: 26px;
     margin-top: 0px;
-    line-height: 56px;
+    line-height: 36px;
+    margin-bottom: 0;
 }
 .stepper_content .intro_title h4 {
     color: #263a5b;
@@ -1983,12 +1988,12 @@ body .mat-gray {
     margin-top: 20px;
 }
 .stepper_content .sa-form-group {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 .stepper_content .sa_forms_design input {
-    font-size: 18px;
+    font-size: 14px;
     font-family: Poppins;
-    height: 54px;
+    height: 43px;
     border: 1px solid #b8c6cc;
 }
 .stepper_content .right_upload_btn {
@@ -2079,9 +2084,9 @@ body .mat-gray {
     padding-left: 55px;
 }
 .stepper_content .bottom_btns_page {
-    margin-top: 40px;
+    margin-top: 20px;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 .stepper_content .mat-step .mat-green {
     background: #18a689 !important;
@@ -2150,6 +2155,10 @@ body .mat-gray {
     text-align: right;
     padding-top: 30px;
 }
+
+
+.stepper_content .right-img img {max-width: 70%;}
+
 .stepper_content .invite_section {
     min-height: auto !important;
 }
@@ -2158,12 +2167,12 @@ body .mat-gray {
     position: relative;
     float: left;
     width: 100%;
-    padding-bottom: 10px;
+    padding-bottom: 0px;
     padding-right: 15px;
 }
 
 .stepper_content .invite_section .sa-form-group {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     padding: 0 20px 0 0px;
     float: left;
     width: 33%;
@@ -2536,7 +2545,7 @@ top: 29px;
     background-image: url(assets/img/Xero.png); 
     background-repeat: no-repeat;
     background-position: center left;
-    background-size: auto 100%;
+    background-size:contain;
 }
 
 .mb-0 {margin-bottom: 0px;}
@@ -2544,6 +2553,7 @@ top: 29px;
     font-size: 24px;
     margin: 15px 0 5px 0;
     color: #263a5b;
+    line-height: 30px;
 }
 .stepper_content .intro_title h5 span{
     font-size: 26px;
@@ -2611,6 +2621,8 @@ top: 29px;
 .stepper_content .invite_section .sa-form-group {
     width: 100% !important;
 }
+.stepper_content .right-img img {max-width: 100%;}
+
 }
 @media (max-width: 959.98px) and (min-width: 600px){
 body .stepper_content .invite_section .sa-form-group {
@@ -2630,19 +2642,19 @@ body .stepper_content .invite_section .sa-form-group {
 
 .stepper_content .mat-step:nth-of-type(2) .mat-step-header {
     position: absolute;
-    top: 170px;
+    top: 153px;
 }
 .stepper_content .mat-step:nth-of-type(3) .mat-step-header {
     position: absolute;
-    top: 285px;
+    top: 246px;
 }
 .stepper_content .mat-step:nth-of-type(4) .mat-step-header {
     position: absolute;
-    top: 400px;
+    top: 339px;
 }
 .stepper_content .mat-step:nth-of-type(5) .mat-step-header {
     position: absolute;
-    top: 520px;
+    top: 432px;
 }
 
 
@@ -2741,10 +2753,7 @@ body .sa_mobile_header {
 }
 
 @media (max-width: 599.98px){
-.stepper_content .intro_title h2 {
-    font-size: 24px;
-    line-height: 32px;
-}
+
 .dots-loading-main {
     right: 65px;
 }
@@ -2752,10 +2761,7 @@ body .sa_mobile_header {
     margin-top: 0px;
     margin-bottom: 10px;
 }
-.stepper_content .intro_title h3 {
-    font-size: 20px;
-    line-height: 26px;
-}
+
 .stepper_content .sa_forms_design input {
     font-size: 14px;
     height: 42px;
@@ -2899,5 +2905,83 @@ ul.download-sync-list {
     font-size: 24px;
     width: 100%;
 }
+
+}
+
+
+@media (max-width:1280px) {
+
+.stepper_content .invite_section .sa-form-group {margin-bottom: 10px;}
+
+
+
+}
+
+
+
+@media (max-width:991px) {
+
+
+
+
+.stepper_content .intro_title h2 { font-size: 28px;line-height: 32px;}
+
+.stepper_content .intro_title h3 { font-size: 22px;line-height: 36px;}
+
+
+}
+
+
+@media (max-width:767px) {
+
+
+.page-content.stepper_content {min-height: 520px;}
+
+.stepper_content .intro_title h4 { font-size: 15px !important;line-height: 22px;}
+
+.stepper_innner {display: block;}
+
+}
+
+@media (max-width:600px) {
+.connect-xero-btn { padding: 60px 0 100px;}
+}
+
+@media (max-width:575px) {
+
+
+.connect-xero-btn {background-image: none;}
+
+.text-loading {font-size: 24px;padding-right: 120px;line-height: 28px;}
+
+.dots-loading-main {right: 85px;}
+.stepper_content .intro_title h2 {font-size: 24px;line-height: 26px;}
+
+
+.stepper_content .intro_title h5 , .stepper_content .intro_title h5 span {font-size: 16px;}   
+
+.stepper_content button.disconnect-xero.mat-raised-button.mat-green.ng-star-inserted {
+    width: auto;
+}
+
+}
+
+@media (max-width:400px) {
+
+.text-loading {font-size: 20px;line-height: 22px;}
+
+.dots-loading-main {right: 30px;}
+
+.stepper_innner { padding-bottom: 20px;}
+.page-content.stepper_content { min-height: auto;width: 100%; height:min-content;}
+
+.stepper_content .intro_title h3 { font-size: 20px; line-height: 26px;}
+
+.stepper_content .mat-step .mat-green {padding-right: 66px !important;font-size: 14px !important;}
+
+.stepper_content .mat-green .mat-button-wrapper::before { width: 36px; right: 20px;
+    background-size: contain;}
+
+
 
 }
