@@ -47,9 +47,9 @@ background: rgba(14,52,89,1)!important; }
     min-width: 47px;
     font-weight: 500;
     color: #424242;
-    padding: 6px 15px 5px;
+    padding: 5px 15px 5px;
     border-radius: 34px;
-    margin: 10px 5px 10px 0;
+    margin: 10px 0px 10px 0;
     font-size: 13px;
     cursor: pointer;
 }
@@ -201,7 +201,7 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .sa_toogle_group2 .mat-button-toggle-appearance-standard .mat-button-toggle-label-content { line-height: 27px !important; font-size: 13px; font-weight: 400; color: #424242; }
 
-.sa_toogle_group2 { margin: 1px 0 0 0; float: right; }
+.sa_toogle_group2 { margin: 0px 0 0 0; float: right; }
 
 .sa_toogle_group2 .mat-button-toggle-standalone.mat-button-toggle-appearance-standard, .mat-button-toggle-group-appearance-standard { border-color: #0e3459!important; }
 
@@ -237,7 +237,7 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .sa_logo img { max-width: 100%; }
 
-.sa_datepicker { position: relative; width: 190px; display: inline-block; margin-left: 15px; box-shadow: none; border: 1px solid #ccc; padding: 3px 8px; height: 29px; border-radius: 4px; }
+.sa_datepicker { position: relative; width: auto; display: inline-block; margin-left: 15px; box-shadow: none; border: 1px solid #ccc; padding: 3px 8px; height: 30px; border-radius: 4px; }
 
 .custom_date input { padding-right: 23px; }
 
@@ -249,7 +249,7 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .md-drppicker td.available:hover, .md-drppicker th.available:hover { background-color: #DDEBE9!important; }
 
-.custom_date { position: relative; margin: 12px 0 11px; float: left; }
+.custom_date { position: relative; margin: 10px 0 10px; float: left; }
 
 .customRange { right: 0; width: 522px!important; top: 41px; margin-top: -8px; margin-right: -25px; /* background: -moz-linear-gradient(308deg, rgba(14,52,89,0.8) 60%, rgba(24,166,137,0.8) 100%)!important; /* ff3.6+ */
      /*  background: -webkit-gradient(linear, left top, right bottom, color-stop(40%, rgba(14,52,89,0.8)), color-stop(100%, rgba(24,166,137,0.8)))!important; /* safari4+,chrome */
@@ -987,7 +987,7 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 
 .sa_dentist_graphs_area .sa_flexbg { }
 
-.trend_mode_title { display: block; font-size: 14px; margin: 5px 10px 0 15px; float: left; }
+.trend_mode_title { display: block; font-size: 14px; margin: 5px 10px 0 10px; float: left; }
  @media screen and (max-width: 1439px) and (min-width: 1280px) {
 
 .sa_tab_btn { font-size: 12px; }
@@ -998,6 +998,14 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 
 .sa_tab_btn { font-size: 13px; padding: 2px 5px; }
 }
+
+@media only screen and (max-width: 1599px) {
+    .sa_tabs_design .sa_filter_span {
+    padding: 5px 14px 5px;
+
+}
+}
+
 @media only screen and (max-width: 1279px) {
 
 .toogletopright, .onofftoogle { float: left; }
@@ -1610,7 +1618,7 @@ body .AddCard-main .AddCard-box .mat-card-title { font-size: 1rem !important; fl
 
 .header_filters { margin-right: -5px; }
 
-.custom_date input { margin-left: 15px; }
+.custom_date input { margin-left: 10px; }
 
 .datatable-header-cell { font-weight: 500!important; font-size: 14px!important; }
 
@@ -1728,7 +1736,7 @@ body .mat-gray {
     margin-bottom: 15px;
 }
 .mat-card-title .mat-button-sm {
-    font-size: 12px;
+    font-size: 11px;
     line-height: normal;
     padding: 5px 15px !important;
 }
@@ -2979,9 +2987,18 @@ ul.download-sync-list {
 
 .stepper_content .mat-step .mat-green {padding-right: 66px !important;font-size: 14px !important;}
 
-.stepper_content .mat-green .mat-button-wrapper::before { width: 36px; right: 20px;
-    background-size: contain;}
-
-
-
+.stepper_content .mat-green .mat-button-wrapper::before { width: 36px; right: 20px; background-size: contain;}
 }
+
+.ngx-gauge-meter .reading-block {
+    overflow: unset;
+}
+
+.chartjs-render-monitor {
+    width: 100% !important;
+    height: auto !important;
+}
+.next-month-green .gauge-chart {
+    width: 100% !important;
+}
+

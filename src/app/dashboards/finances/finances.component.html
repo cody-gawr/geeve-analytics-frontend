@@ -32,13 +32,13 @@
                 <input type="text" id="page_title" value="Finances" [style.display]="'none'">
 <div class="sa_dashboard_inner_content sa_dentist_graphs_area">
    <div class="sa_card gridshadow">
-    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 
        <div fxFlex>
          <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial YTD</span>
           <div class="custom_date">
           <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="" (click)="filterDate('custom')" />
-           <ngx-daterangepicker-material class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'" [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"></ngx-daterangepicker-material></div>
+           <ngx-daterangepicker-material class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'" [locale]="{applyLabel: 'ok', displayFormat: 'DD-MM-YYYY'}"></ngx-daterangepicker-material></div>
         </div>
       </div>
 
@@ -46,7 +46,7 @@
         <div class="dh-target">
             <div class="onofftoogle">
                 <span class="trend_mode_title">Trend Mode</span>
-                <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group" aria-label="Font Style">
+                <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group" aria-label="Font Style" [disabled]="trendxero">
                     <mat-button-toggle checked value = "off" class = "target_off target_filter" (click)="toggleFilter('off')">
                         <span>Off</span>
                     </mat-button-toggle>
@@ -81,7 +81,7 @@
                 <!-- column -->
                 <div class="d-flex no-block align-items-center">
                     <div class="stats">
-                       <h3 class="text-white m-0"><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{netProfitTrendTotal | number:'1.0-2'}}" ><img class="trend_ico" src="../assets/images/trend_{{netProfitTrendIcon}}.png"></span>
+                       <h3 class="text-white m-0"><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{netProfitTrendTotal | number:'1.0-2'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitTrendIcon}}.png"></span>
                            Net Profit</h3>
 
                         <h1 class="text-white m-0">$ {{netProfitVal | number:'1.0-2'}}</h1>
@@ -99,7 +99,7 @@
                 <div class="d-flex no-block align-items-center">
                     <div class="stats">
 
-                              <h3 class="text-white m-0"> <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{netProfitPercentTrendTotal | number:'1.0-2'}}" ><img class="trend_ico" src="../assets/images/trend_{{netProfitPercentTrendIcon}}.png"></span> Net Profit % (Xero)</h3>
+                              <h3 class="text-white m-0"> <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{netProfitPercentTrendTotal | number:'1.0-2'}} %" *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitPercentTrendIcon}}.png"></span> Net Profit % (Xero)</h3>
                         <h1 class="text-white m-0">{{netProfitPercentVal | number:'1.0-2'}}%</h1>
                     </div>
                     <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPercentIcon}}-alt"></i></div> -->
@@ -114,11 +114,11 @@
                 <!-- column -->
                 <div class="d-flex no-block align-items-center">
                     <div class="stats">
-                      <h3 class="text-white m-0" ><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{netProfitPmsTrendTotal | number:'1.0-2'}}" ><img class="trend_ico" src="../assets/images/trend_{{netProfitPmsTrendIcon}}.png"></span>
+                      <h3 class="text-white m-0" ><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{netProfitPmsTrendTotal | number:'1.0-2'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitPmsTrendIcon}}.png"></span>
                           Net Profit % (PMS)</h3>
                         <h1 class="text-white m-0">{{netProfitPmsIcon}}{{netProfitPmsVal}}%</h1>
                     </div>
-                    <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPmsIcon}}-alt"></i></div> -->
+                    <!-- <div class="spark-count ml-auto"> <i class="fa s fa-sort-amount-{{netProfitPmsIcon}}-alt"></i></div> -->
                 </div>
             </mat-card-content>
 
@@ -130,7 +130,7 @@
 expenses_card custom_ngx_cw01" >
         <mat-card class="chart_card" >
             <mat-card-content class="sa_matcard_content">
-              <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{expensescChartTrendTotal | number:'1.0-0'}}" ><img class="trend_ico" src="../assets/images/trend_{{expensescChartTrendIcon}}.png"></span>
+              <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{expensescChartTrendTotal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{expensescChartTrendIcon}}.png"></span>
                 <mat-card-title class="text-center">Expenses
                     <div class="sa_box_title_right_buttons">
                         <button mat-icon-button (click) = "flipcard('expenses_card')" ><i class="fas fa-list-ul list_ico"></i><i class="fas fa-chart-line chart_ico"></i></button>
@@ -215,7 +215,7 @@ expenses_card custom_ngx_cw01" >
     
     <mat-card class="sa_no_tabs_area" >
       <mat-card-content class="sa_matcard_content">
-        <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionChartTrendTotal | number:'1.0-0'}}" ><img class="trend_ico" src="../assets/images/trend_{{productionChartTrendIcon}}.png"></span>
+        <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionChartTrendTotal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{productionChartTrendIcon}}.png"></span>
           <mat-card-title class="text-center">% of Production By Clinician
               <div class="sa_box_title_right_buttons">
                   <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -249,7 +249,7 @@ expenses_card custom_ngx_cw01" >
     
     <mat-card class="" >
       <mat-card-content class="sa_matcard_content">
-         <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{totalDiscountChartTrendTotal | number:'1.0-0'}}" ><img class="trend_ico" src="../assets/images/trend_{{totalDiscountChartTrendIcon}}.png"></span>
+         <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{totalDiscountChartTrendTotal | number:'1.0-0'}}" *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{totalDiscountChartTrendIcon}}.png"></span>
           <mat-card-title class="text-center">Total Discounts
               <div class="sa_box_title_right_buttons">
                   <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -296,7 +296,7 @@ expenses_card custom_ngx_cw01" >
     
     <mat-card class="sa_no_tabs_area" >
       <mat-card-content class="sa_matcard_content">
-      <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{totalOverdueTrendAccount | number:'1.0-0'}}" ><img class="trend_ico" src="../assets/images/trend_{{totalOverdueTrendIcon}}.png"></span>
+      <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{totalOverdueTrendAccount | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{totalOverdueTrendIcon}}.png"></span>
           <mat-card-title class="text-center">Overdue Accounts
               <div class="sa_box_title_right_buttons">
                   <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -355,10 +355,10 @@ expenses_card custom_ngx_cw01" >
 
            <div fxLayout="row wrap" class="m-t-20 sa_combine_title">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center no-boldText">
-                        <h5 class="m-0 font-light"><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{totalProductionTrendVal | number:'1.0-0'}}" ><img class="trend_ico" src="../assets/images/trend_{{totalProductionTrendIcon}}.png"></span>Production</h5>
+                        <h5 class="m-0 font-light"><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{totalProductionTrendVal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{totalProductionTrendIcon}}.png"></span>Production</h5>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center no-boldText">
-                        <h5 class="m-0 font-light"><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{collectionTrendVal | number:'1.0-0'}}" ><img class="trend_ico" src="../assets/images/trend_{{collectionTrendIcon}}.png"></span>Collection</h5>
+                        <h5 class="m-0 font-light"><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{collectionTrendVal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{collectionTrendIcon}}.png"></span>Collection</h5>
                     </div>
                 </div>  
           
@@ -464,7 +464,7 @@ expenses_card custom_ngx_cw01" >
      
     <mat-card class="">
       <mat-card-content class="sa_matcard_content">
-<span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionTrendVal | number:'1.0-0'}}" ><img class="trend_ico" src="../assets/images/trend_{{productionTrendIcon}}.png"></span>
+<span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionTrendVal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{productionTrendIcon}}.png"></span>
        <mat-card-title class="text-center">Production Per Visit
               <div class="sa_box_title_right_buttons">
                   <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -591,8 +591,8 @@ expenses_card custom_ngx_cw01" >
             <mat-card-content class="sa_matcard_content">
                 <mat-card-title class="text-center">Expenses
                     <div class="sa_box_title_right_buttons">
-                        <button mat-icon-button (click) = "flipcard('expenses_card')" ><i class="fas fa-list-ul list_ico"></i><i class="fas fa-chart-line chart_ico"></i></button>
-                        <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                        <!-- <button mat-icon-button (click) = "flipcard('expenses_card')" ><i class="fas fa-list-ul list_ico"></i><i class="fas fa-chart-line chart_ico"></i></button>
+ -->                        <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
                         <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button> 
                         <mat-menu #menu="matMenu">
                             <button mat-menu-item>Save Image</button>
@@ -694,7 +694,7 @@ expenses_card custom_ngx_cw01" >
           
           </mat-card-title>
        <div  style="height: 280px">
-          <canvas  #myCanvas2 class="trendtotalProduction" *ngIf="totalProductionCollectionLabel.length  > 0" baseChart [datasets]="totalProductionCollection" [labels]="totalProductionCollectionLabel" [options]="labelBarOptions" [legend]="true"
+          <canvas class="trendtotalProduction" *ngIf="totalProductionCollectionLabel.length  > 0" baseChart [datasets]="totalProductionCollection" [labels]="totalProductionCollectionLabel" [options]="labelBarOptions" [legend]="true"
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" (chartClick)="chartClicked($event)">
         </canvas>
         <div *ngIf="totalProductionCollectionLabel.length  <=0 && finCollectionTrendLoader == false" class="sa_nodata_div">

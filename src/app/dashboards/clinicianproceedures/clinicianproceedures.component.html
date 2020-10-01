@@ -12,13 +12,13 @@
                 <input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
 <div class="sa_dashboard_inner_content sa_dentist_graphs_area">
    <div class="sa_card gridshadow">
-    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 
       <div fxFlex>
          <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial YTD</span>
           <div class="custom_date">
           <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="" (click)="filterDate('custom')" />
-           <ngx-daterangepicker-material class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'"></ngx-daterangepicker-material></div>
+           <ngx-daterangepicker-material class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'"  [locale]="{applyLabel: 'ok', displayFormat: 'DD-MM-YYYY'}"></ngx-daterangepicker-material></div>
         </div>
       </div>
 
@@ -114,9 +114,9 @@
  <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians last">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
-         <span class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{pieChartInternalPrevTotal}}"><i class="fas fa-chart-line {{pieChartInternalPrevTooltip}}"></i></span>
-            <span class="referral2Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartExternalPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{pieChartExternalPrevTooltip}}.png"></span>
-            <span class="referral3Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartCombinedPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{pieChartCombinedPrevTooltip}}.png"></span>
+         <span *ngIf="trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{pieChartInternalPrevTotal}}"><i class="fas fa-chart-line {{pieChartInternalPrevTooltip}}"></i></span>
+            <span *ngIf="trendText" class="referral2Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartExternalPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{pieChartExternalPrevTooltip}}.png"></span>
+            <span *ngIf="trendText" class="referral3Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartCombinedPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{pieChartCombinedPrevTooltip}}.png"></span>
         <mat-card-title class="text-center">Clinician Referrals
 
             <div class="sa_box_title_right_buttons">
@@ -197,9 +197,9 @@
     <mat-card class="ratioPredictor">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">
-<span class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage1}}"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip1}}.png"></span>
-            <span class="predicted2Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage2}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip2}}.png"></span>
-            <span class="predicted3Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage3}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip3}}.png"></span>
+<span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage1}}"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip1}}.png"></span>
+            <span  *ngIf="trendText" class="predicted2Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage2}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip2}}.png"></span>
+            <span *ngIf="trendText" class="predicted3Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage3}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip3}}.png"></span>
             Predictor Ratio
             <div class="sa_box_title_right_buttons">
                 <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>

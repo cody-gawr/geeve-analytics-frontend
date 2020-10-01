@@ -539,9 +539,19 @@ changeLoginStatus(){
       this.warningMessage = "Please Provide Valid Inputs!"; 
     });
 }
+  myDateParser(dateStr : string) : string {
+    // 2018-01-01T12:12:12.123456; - converting valid date format like this
 
+    let date = dateStr.substring(0, 10);
+    let time = dateStr.substring(11, 19);
+    let millisecond = dateStr.substring(20)
+
+    let validDate = date;
+    console.log(validDate)
+    return validDate
+  }
  private loadDentist(newValue) {
-  $('#title').html('Clinician Analysis '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
+  $('#title').html('Clinician Analysis  ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');
   this.getAccountingDentist();
   this.getStatusDentist();
   this.changePrebookRate('recall');
@@ -1485,7 +1495,7 @@ private treatmentPrePrebook() {
     );
   }  
 
-  public doughnutTotalTooltip='down';
+  public doughnutTotalTooltip='up';
   public doughnutTotalPrev=0;
   public buildChartNopatientsLoader:any;
   public npKey:any;
@@ -1502,7 +1512,7 @@ private treatmentPrePrebook() {
          this.doughnutChartLabels = [];
        if(data.message == 'success'){
         this.buildChartNopatientsLoader =false;
-         this.doughnutTotalTooltip = 'down';
+         this.doughnutTotalTooltip = 'up';
          var i=0;
         data.data.forEach(res => {
           if(res.provider != null){
@@ -1528,7 +1538,7 @@ private treatmentPrePrebook() {
       else
         this.npColors= this.doughnutChartColors;
         if(this.doughnutTotalAverage>=this.doughnutTotalPrev)
-        this.doughnutTotalTooltip = 'up';
+        this.doughnutTotalTooltip = 'down';
        }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -1853,12 +1863,12 @@ public currentText;
       const now = new Date();
        var first = now.getDate() - now.getDay();
        var last = first +6; 
-      this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd-MM-yyyy');
         var end = new Date();
         end.setFullYear(now.getFullYear());
         end.setMonth(now.getMonth()+1);
         end.setDate(last);
-        this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'yyyy-MM-dd');
+        this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
         this.loadDentist(dentistVal);
     }
     else if (duration == 'm') {
@@ -1866,8 +1876,8 @@ public currentText;
       this.currentText= 'This Month';
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
     this.loadDentist(dentistVal);
    
     }
@@ -1880,18 +1890,18 @@ public currentText;
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {1
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'yyyy-MM-dd');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  }
     this.loadDentist(dentistVal);
     
     }
@@ -1904,18 +1914,18 @@ public currentText;
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'yyyy-MM-dd');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
     this.loadDentist(dentistVal);   
     }
     else if (duration == 'cytd') {
@@ -1923,8 +1933,8 @@ public currentText;
       this.currentText= 'This Year';
 
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist(dentistVal);
     }
      else if (duration == 'fytd') {
@@ -1932,8 +1942,8 @@ public currentText;
       this.currentText= 'This Financial Year';
 
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 3, 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 3, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
       this.loadDentist(dentistVal);
     }
@@ -1954,8 +1964,8 @@ public currentText;
   choosedDate(val) {
     val = (val.chosenLabel);
     var val= val.toString().split(' - ');
-      this.startDate = this.datePipe.transform(val[0], 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(val[1], 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.loadDentist('all');      
       $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');

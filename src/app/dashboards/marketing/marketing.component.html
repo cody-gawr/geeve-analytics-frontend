@@ -12,7 +12,7 @@
                 <input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
 <div class="sa_dashboard_inner_content sa_dentist_graphs_area">
    <div class="sa_card gridshadow">
-    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 
       <div fxFlex>
          <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span
@@ -126,7 +126,7 @@
 <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
-         <span *ngIf="showTrend == false" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
+         <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
         <mat-card-title class="text-center">No. New Patients
             <div class="sa_box_title_right_buttons">
             </div>  
@@ -181,12 +181,14 @@
   <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
-         <span *ngIf="showTrend == false" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
-        <mat-card-title class="text-center">Cost of New Patient Acquisition
-            
-  
-             
-              <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-raised-button mat-gray mat-button-sm mat-green-button" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Set Categories</button></div>
+         <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
+        <mat-card-title class="text-center">
+          <div fxLayout="row wrap" fxLayoutGap="10px">
+  <div fxFlex>
+  Cost of New Patient Acquisition
+</div>
+                <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-raised-button mat-gray mat-button-sm mat-green-button" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Set Categories</button></div>
+            </div>
         </mat-card-title>
           <div class="chart py-2">
           <div>  
@@ -235,7 +237,7 @@
    <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians last">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
-         <span *ngIf="showTrend == false" class="referral_cliniciansrral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{visitsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{visitsTooltip}}.png"></span>         
+         <span *ngIf="showTrend == false  && trendText" class="referral_cliniciansrral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{visitsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{visitsTooltip}}.png"></span>         
         <mat-card-title class="text-center">Total Visits
             <div class="sa_box_title_right_buttons">
                 <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>

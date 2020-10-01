@@ -89,8 +89,8 @@ export class MarketingComponent implements AfterViewInit {
         $('.header_filters').addClass('flex_direct_mar');
   $('#title').html('Marketing '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
         
-        $('.external_clinic').show();
-        $('.external_dentist').show();
+        // $('.external_clinic').show();
+        // $('.external_dentist').show();
         $(document).on('click', function(e) {
           if ($(document.activeElement).attr('id') == 'sa_datepicker') {
              $('.customRange').show();
