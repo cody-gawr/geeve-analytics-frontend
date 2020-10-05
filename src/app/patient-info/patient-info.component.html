@@ -264,7 +264,7 @@
                      </div>
                            <div fxFlex="calc(40% - 10px)" fxFlex.lg="calc(40% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group patient-details-textarea">
                                   <label>Notes</label>
-                                   <textarea tabindex="1" [(ngModel)]="patient_address" [formControl]="formPatient.controls['patient_address']" placeholder="" class="form-control-dialog">
+                                   <textarea tabindex="1" [(ngModel)]="notes" [formControl]="formPatient.controls['notes']" placeholder="" class="form-control-dialog">
                                    </textarea>
              <div mat-dialog-actions class="sa-pull-right">
                        <button mat-raised-button color="green" class="m-t-20" [disabled]="!formPatient.valid" type="submit" >Submit</button>

@@ -245,11 +245,11 @@ export class PatientInfoService {
             );
     }
 
-        updatePatientsDetails(patient_name, patient_address,patient_dob,patient_age,patient_gender,patient_phone_no,patient_home_phno,patient_status,patient_email,patient_id,token =this._cookieService.get("token")): Observable<any> {
+        updatePatientsDetails(patient_name, notes,patient_dob,patient_age,patient_gender,patient_phone_no,patient_home_phno,patient_status,patient_email,patient_id,token =this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
         
         formData.append('patient_name', patient_name);
-        formData.append('patient_address', patient_address);
+        formData.append('notes', notes);
         formData.append('patient_dob',patient_dob);
         formData.append('patient_age', patient_age);
         formData.append('patient_gender', patient_gender);

@@ -95,7 +95,7 @@
                                             <th>Amount</th>                                            
                                             <th>Start Date</th>
                                             <th>End Date</th>
-                                            <th>Cancelled On</th>
+                                           <!--  <th>Cancelled On</th> -->
                                             <th>Status</th>
                                             <th>Frequency</th>
                                         </tr>
@@ -109,8 +109,9 @@
                                         </td>
                                         <td><span class="res_table_label">Start Date :</span> {{data.created * 1000| date:'dd-MM-y':'UTC +10'}}</td>
                                         <td><span class="res_table_label">End Date : </span> {{data.cancel_at * 1000| date:'dd-MM-y':'UTC +10'}}</td>
-                                        <td><span class="res_table_label">Cancelled On : </span> <span  *ngIf="data.canceled_at != null && data.status!='active' ">{{data.canceled_at * 1000| date:'dd-MM-y':'UTC +10'}}</span></td>
-                                        <td><span class="res_table_label">Status : </span> {{data.status| titlecase }}</td>
+                                       <!--  <td><span class="res_table_label">Cancelled On : </span> <span  *ngIf="data.canceled_at != null && data.status!='active' ">{{data.canceled_at * 1000| date:'dd-MM-y':'UTC +10'}}</span></td> -->
+                                         <td *ngIf= "data.status != 'trialing'"><span class="res_table_label">Status : </span> {{data.status| titlecase }}</td>
+                                         <td *ngIf= "data.status == 'trialing'"><span class="res_table_label">Status : </span> Scheduled</td>
                                         <td><span class="res_table_label">Frequency :</span> {{data.plan.interval| titlecase }}ly</td>
                                     </tr>                                   
                                     </tbody>

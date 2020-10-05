@@ -367,7 +367,7 @@ if(selectedIndex >= 2) {
   }
   this.selectedIndex= selectedIndex;
 
-
+console.log(this.selectedIndex);
   }
         logout() {
       this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {

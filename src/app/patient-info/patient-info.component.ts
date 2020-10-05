@@ -84,7 +84,7 @@ export class PatientInfoComponent implements OnInit {
   payment:any=[];
   editing ={};
  public patient_id;
-public patient_address;
+public notes;
 public patientdob;
 public patient_age;
 public patient_gender;
@@ -189,7 +189,7 @@ public dob_larger_error="";
          this.formPatient = this.fb.group({
           patient_name: [null, Validators.compose([Validators.required])],
         patient_email: [null, Validators.compose([Validators.required])],
-          patient_address: [null],
+          notes: [null],
           dob_date: [null],
           dob_month: [null],
           dob_year: [null],
@@ -369,9 +369,9 @@ compareDateWithToday(year,month,date){
         this.patient_id=res.data[0]['id'];
         this.patient_name=res.data[0]['patient_name'];
         this.patient_email=res.data[0]['patient_email'];
-        this.patient_address=res.data[0]['patient_address'];
-        if(this.patient_address == 'NULL')
-        this.patient_address ='';
+        this.notes=res.data[0]['notes'];
+        if(this.notes == 'NULL')
+        this.notes ='';
         
         this.patient_age=res.data[0]['patient_age'];
         this.patient_gender=res.data[0]['patient_gender'];
@@ -504,7 +504,7 @@ public patientsAppointmentData =[];
     if(this.formPatient.valid && !this.invalid_dob) {
             $('.ajax-loader').show();
 
-        this.patientInfoService.updatePatientsDetails(this.patient_name,this.patient_address,this.patient_dob,this.patient_age,this.patient_gender,this.patient_phone_no,this.patient_home_phno,this.patient_status,this.patient_email,this.patient_id).subscribe((res) => {   
+        this.patientInfoService.updatePatientsDetails(this.patient_name,this.notes,this.patient_dob,this.patient_age,this.patient_gender,this.patient_phone_no,this.patient_home_phno,this.patient_status,this.patient_email,this.patient_id).subscribe((res) => {   
             $('.ajax-loader').hide();
 
          if(res.message == 'success'){
