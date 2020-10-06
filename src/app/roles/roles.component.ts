@@ -18,9 +18,10 @@ export class RolesComponent implements OnInit {
           private warningMessage: string;
           public id:any ={};
           public clinicName:any =0;
-         
+          public contactName =0;
           // public chartData: any[] = [];
           public address:any = {};
+          public practice_size:any ={};
           options: FormGroup;
           public xero_link;
           public xeroConnect = false;
@@ -32,7 +33,6 @@ export class RolesComponent implements OnInit {
       floatLabel: 'auto'
     });
   }
-  
   ngOnInit() {
       this.route.params.subscribe(params => {
     this.id = this.route.snapshot.paramMap.get("id");

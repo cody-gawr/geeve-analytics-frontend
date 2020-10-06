@@ -54,12 +54,10 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
       (<any>$('.app-search')).toggle(200);
     });
     // This is for the topbar search
-   //  this.getClinics();
      this.user_type = this._cookieService.get("user_type");
-     this.login_status = this._cookieService.get("login_status");
-
      this.display_name = this._cookieService.get("display_name");
      this.user_image = this._cookieService.get("user_image");
+     this.login_status = this._cookieService.get("login_status");
      if(!this._cookieService.get("user_image"))
       this.user_image = 'assets/images/gPZwCbdS.jpg';
 
@@ -71,9 +69,14 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   }
       logout() {
       this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
+       console.log(res);
        if(res.message == 'success'){
-      this._cookieService.removeAll();
-        $('#currentClinicid').attr('cid','');
+        this._cookieService.put("username",'');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this._cookieService.put("childid", '');
+        this._cookieService.put("dentistid", '');
         this.router.navigate(['/login']);
        }
     }, error => {

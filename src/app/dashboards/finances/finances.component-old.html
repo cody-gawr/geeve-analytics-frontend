@@ -1,0 +1,296 @@
+<!-- ============================================================== -->
+<!-- Grid-->
+<!-- ============================================================== -->
+  <select class="sa_select internal_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)"  [style.display]="'none'">
+                     <option value ="all">All Dentist( {{dentistCount}} )</option>
+                    <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+                </select> 
+                <input type="button" id="dentist_initiate" (click) = "initiate_dentist()"  [style.display]="'none'">
+<div fxLayout="row wrap">
+  <div class="sa_heading_bar">
+      <div fxFlex.gt-sm="85" fxFlex.gt-xs="100" fxFlex="100" class="">
+          <h4><span class="page_title">Clinician Procedures &#38; Referrals</span></h4>
+       </div>
+      <div id="file">
+</div>
+<app-headerright class="app-headerright"></app-headerright>
+    
+
+       <div fxFlex.gt-sm="18" fxFlex.gt-xs="100" fxFlex="100" class="">
+          <div class="vertical_center_header_content">
+            <div class="sa_select_outer">
+                <select class="sa_select"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
+                     <option value ="all">All Dentist( {{dentistCount}} )</option>
+                    <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+                </select> 
+            </div>
+          </div>
+       </div>
+  </div>
+</div>  
+
+
+<div class="sa_dashboard_inner_content">
+   <div class="sa_card gridshadow">
+    <div fxLayout="row wrap">
+      <div fxFlex.gt-sm="80" fxFlex.gt-xs="100" fxFlex="100">
+         <div class="sa_tabs_design"><span class="filter_w active filter" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter">This Month</span><span class="filter_q filter" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter">Financial YTD</span>
+          <div class="custom_date">
+          <input class="filter_custom filter sa_datepicker" value="" (click)="filterDate('custom')" />
+           <ngx-daterangepicker-material (rangeClicked)="rangeClicked($event)" class="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'"></ngx-daterangepicker-material></div>
+        </div>
+      </div>
+
+      <div fxFlex.gt-sm="20" fxFlex.gt-xs="100" fxFlex="100" class="trend_toggle">
+          <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group" aria-label="Font Style">
+           <mat-button-toggle checked value = "off" class = "target_off" (click)="toggleFilter('off')">
+              <span>Off</span>
+           </mat-button-toggle>
+           <mat-button-toggle value = "current" class = "target_current" (click)="toggleFilter('current')">
+              <span>Current</span>
+           </mat-button-toggle>
+           <mat-button-toggle value = "historic" class = "target_historic" (click)="toggleFilter('historic')">
+              <span>Historic</span>
+           </mat-button-toggle>
+        </mat-button-toggle-group> 
+      </div>
+
+
+      
+  </div>
+</div>
+
+<div class="sa_dentist_graphs_area">
+<div fxLayout="row wrap">
+  <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="sa_flex_transparent">
+    {{startDate| date}}- {{endDate| date}}
+</div>
+
+  <!-- Column-->
+<div fxFlex.gt-sm="33.33" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="bg-info">
+            <mat-card-content>
+                <!-- column -->
+                <div class="d-flex no-block align-items-center">
+                    <div class="stats">
+                        <h3 class="text-white m-0">Net Profit</h3>
+                        <h6 class="text-white m-t-0"></h6>
+                        <h1 class="text-white m-0">$ {{netProfitVal | number:'1.0-0'}}</h1>
+                    </div>
+                    <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitIcon}}-alt"></i></div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="bg-info">
+            <mat-card-content>
+                <!-- column -->
+                <div class="d-flex no-block align-items-center">
+                    <div class="stats">
+                        <h3 class="text-white m-0">Net Profit % (Xero)</h3>
+                        <h6 class="text-white m-t-0"></h6>
+                        <h1 class="text-white m-0">$ {{netProfitPercentVal | number:'1.0-2'}}%</h1>
+                    </div>
+                    <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPercentIcon}}-alt"></i></div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card class="bg-info">
+            <mat-card-content>
+                <!-- column -->
+                <div class="d-flex no-block align-items-center">
+                    <div class="stats">
+                        <h3 class="text-white m-0">Net Profit % (PMS)</h3>
+                        <h6 class="text-white m-t-0"></h6>
+                        <h1 class="text-white m-0">$ {{netProfitPmsVal}}%</h1>
+                    </div>
+                    <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPmsIcon}}-alt"></i></div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+<div fxFlex.gt-sm="24" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg expenses_card" (click) = "flipcard('expenses_card')">
+     <mat-card class="chart_card" >
+      <mat-card-content>
+        <mat-card-title class="text-center">Expenses</mat-card-title>
+<div class="chart chart_card" *ngIf="pieChartLabels.length > 0">
+             <div  style="height: 190px">
+        <canvas *ngIf="showInternal == true" baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"  [options]="pieChartOptions" [colors]="doughnutChartColors">
+        </canvas>
+      </div>
+      </div>
+         <div class="summary_card" *ngIf="pieChartLabels.length > 0"  [style.display]="'none'">
+            <div *ngFor="let a of pieChartData; let i = index">
+               <span>{{pieChartLabels[i]}}</span><br>
+              <span>{{a}}</span><br>
+            </div>
+      </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex.gt-sm="24" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg predictor_ratio">
+    
+    <mat-card class="" >
+      <mat-card-content>
+        <mat-card-title class="text-center">% of Production By Clinician</mat-card-title>
+<div class="chart" *ngIf="productionChartLabels.length > 0">
+             <div  style="height: 190px">
+        <canvas *ngIf="showInternal == true" baseChart [data]="productionChartData" [labels]="productionChartLabels" [chartType]="productionChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"  [options]="pieChartOptions" [colors]="doughnutChartColors">
+        </canvas>
+      </div>
+      </div>
+           
+      </mat-card-content>
+    </mat-card>
+  </div>
+    <div fxFlex.gt-sm="24" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg predictor_ratio">
+    
+    <mat-card class="" >
+      <mat-card-content>
+        <mat-card-title class="text-center">Total Discounts</mat-card-title>
+<div class="chart" *ngIf="totalDiscountChartLabels.length > 0">
+             <div  style="height: 190px">
+        <canvas *ngIf="showInternal == true" baseChart [data]="totalDiscountChartData" [labels]="totalDiscountChartLabels" [chartType]="totalDiscountChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"  [options]="pieChartOptions" [colors]="doughnutChartColors">
+        </canvas>
+      </div>
+      </div>
+            <div fxLayout="row wrap" class="m-t-40 predicted1">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light">{{totalDiscountChartTotal | number:'1.0-0'}}</h3>
+                        <small>Current</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous</small>
+                    </div>
+                </div>            
+      </mat-card-content>
+    </mat-card>
+  </div>
+      <div fxFlex.gt-sm="24" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg predictor_ratio">
+    
+    <mat-card class="" >
+      <mat-card-content>
+        <mat-card-title class="text-center">Overdue Accounts</mat-card-title>
+<div class="chart" *ngIf="totalOverdueAccountLabels.length > 0">
+             <div  style="height: 190px">
+        <canvas *ngIf="showInternal == true" baseChart [data]="totalOverdueAccountData" [labels]="totalOverdueAccountLabels" [chartType]="productionChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"  [options]="pieChartOptions" [colors]="doughnutChartColors">
+        </canvas>
+      </div>
+      </div>
+            <div fxLayout="row wrap" class="m-t-40 predicted1">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light">{{totalOverdueAccount | number:'1.0-0'}}</h3>
+                        <small>Current</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous</small>
+                    </div>
+                </div>            
+      </mat-card-content>
+    </mat-card>
+  </div>
+ <div fxFlex.gt-sm="30" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg predictor_ratio">
+    
+    <mat-card class="" >
+      <mat-card-content>
+        <mat-card-title class="text-center">Total Production</mat-card-title>
+
+             <div  style="height: 150px">
+
+        <ngx-gauge [type]="gaugeType"
+           [value]="totalProductionVal" 
+           [label]="totalProductionLabel"  
+           [thick]="gaugeThick"  
+           [foregroundColor]="foregroundColor"
+           [cap] ="cap"
+           [prepend]="gaugePrependText"
+           [size] = "size">
+          </ngx-gauge>
+        </div>
+            <div fxLayout="row wrap" class="m-t-40 predicted1">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light">{{totalProductionVal | number:'1.0-0'}}</h3>
+                        <small>Current</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous</small>
+                    </div>
+                </div>            
+      </mat-card-content>
+    </mat-card>
+  </div>
+   <div fxFlex.gt-sm="37" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg predictor_ratio">
+    
+    <mat-card class="" >
+      <mat-card-content>
+        <mat-card-title class="text-center">Collection</mat-card-title>
+             <h1 class="text-black m-0">$ {{collectionVal | number:'1.0-2'}}</h1>
+             <div  style="height: 60px">
+        <ngx-gauge [type]="gaugeType"
+           [value]="collectionPercentage"  
+           [thick]="gaugeThick"  
+           [foregroundColor]="foregroundColor"
+           [cap] ="cap"
+           [append]="collectionAppend"
+           [size] = "180">
+          </ngx-gauge>
+        </div>
+            <div fxLayout="row wrap" class="m-t-40 predicted1">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light">{{collectionVal | number:'1.0-0'}}</h3>
+                        <small>Current</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous</small>
+                    </div>
+                </div>            
+      </mat-card-content>
+    </mat-card>
+  </div>
+   <div fxFlex.gt-sm="30" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg predictor_ratio last">
+    
+    <mat-card class="" >
+      <mat-card-content>
+        <mat-card-title class="text-center">Production Per Visit</mat-card-title>
+
+             <div  style="height: 150px">
+
+        <ngx-gauge [type]="gaugeType"
+           [value]="productionVal" 
+           [thick]="gaugeThick"  
+           [foregroundColor]="foregroundColor"
+           [cap] ="cap"
+           [prepend]="gaugePrependText"
+           [size] = "size">
+          </ngx-gauge>
+        </div>
+            <div fxLayout="row wrap" class="m-t-40 predicted1">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light">{{productionVal | number:'1.0-0'}}</h3>
+                        <small>Current</small>
+                    </div>
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light">--</h3>
+                        <small>Previous</small>
+                    </div>
+                </div>            
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Column--> 
+ 
+  
+</div>
+</div>
+</div>

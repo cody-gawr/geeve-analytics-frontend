@@ -42,33 +42,33 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.loginService.checkEmailExists(this.form.value.email).subscribe((res) => {
-    //       this.errorLogin = false;
-    //       this.errorLoginText = '';
-    //       this.successLogin = false;
-    //       this.successLoginText = '';
-    //        if(res.message == 'success'){
-    //                this.loginService.addUser(this.form.value.email,this.form.value.password,'2',this.plan_id).subscribe((res) => {
-    //                 this.errorLogin = false;
-    //                 this.errorLoginText = '';
-    //                 this.successLogin = false;
-    //                 this.successLoginText = '';
-    //                  if(res.message == 'success'){
-    //                       this.successLogin  =true;
-    //                       alert('Please confirm your mail and complete the payment!');
-    //                   }
-    //                  else if(res.message == 'error'){
-    //                     this.errorLogin  =true;
-    //                     this.errorLoginText  =res.data;
-    //                  }
-    //               }, error => {
-    //           });
-    //         }
-    //        else if(res.message == 'error'){
-    //           this.errorLogin  =true;
-    //           this.errorLoginText  ='Email already Exists!';
-    //        }
-    //     }, error => {
-    // });
+    this.loginService.checkEmailExists(this.form.value.email).subscribe((res) => {
+          this.errorLogin = false;
+          this.errorLoginText = '';
+          this.successLogin = false;
+          this.successLoginText = '';
+           if(res.message == 'success'){
+                   this.loginService.addUser(this.form.value.email,this.form.value.password,'2',this.plan_id).subscribe((res) => {
+                    this.errorLogin = false;
+                    this.errorLoginText = '';
+                    this.successLogin = false;
+                    this.successLoginText = '';
+                     if(res.message == 'success'){
+                          this.successLogin  =true;
+                          alert('Please confirm your mail and complete the payment!');
+                      }
+                     else if(res.message == 'error'){
+                        this.errorLogin  =true;
+                        this.errorLoginText  =res.data;
+                     }
+                  }, error => {
+              });
+            }
+           else if(res.message == 'error'){
+              this.errorLogin  =true;
+              this.errorLoginText  ='Email already Exists!';
+           }
+        }, error => {
+    });
   }
 }

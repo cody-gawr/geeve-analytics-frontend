@@ -1,66 +1,29 @@
-
-
 <h1 mat-dialog-title>Add Clinic</h1>
 <div mat-dialog-content class="sa_forms_design">
  
- <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Clinic Name</label>
-         <input tabindex="1" [(ngModel)]="data.name" placeholder="" class="form-control-dialog" (keypress)="omit_special_char($event)" [formControl]="form.controls['name']">
-         <small *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched" class="text-danger support-text">Clinic Name is Required.</small>
-    </div>
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-         <label>Clinic Logo</label>
-        <input class="form-control" type="file" name= "file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
-    </div>
-   </div>
-   <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Phone No</label>
-        <input tabindex="1" type="text" [(ngModel)]="data.phone_no" placeholder="" class="form-control-dialog" oninput="this.value = this.value.slice(0,12);" (keypress)="numberOnly($event)" [formControl]="form.controls['phone_no']">
-        <small *ngIf="form.controls['phone_no'].hasError('required') && form.controls['phone_no'].touched" class="text-danger support-text">Phone No is Required.</small>
-    </div>
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Clinic Email</label>
-         <input tabindex="1" [(ngModel)]="data.clinicEmail" placeholder="" class="form-control-dialog" [formControl]="form.controls['clinicEmail']">
-          <small *ngIf="form.controls['clinicEmail'].errors?.email && form.controls['clinicEmail'].touched" class="text-danger support-text">You must include a valid email address.</small>
-    </div>
-   </div>
+  <div class="sa-form-group">
+    <label>Clinic Name</label>
+    <input tabindex="1" [(ngModel)]="data.name" [formControl]="form.controls['name']" class="form-control-dialog" placeholder="" required>
+    <small *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched" class="text-danger support-text">Name is Required.</small>
+  </div>
 
-    <div fxLayout="row wrap" fxLayoutGap="2%">
-        <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-            <label>Facebook</label>
-            <input tabindex="1" [(ngModel)]="data.facebook" placeholder="" class="form-control-dialog" [formControl]="form.controls['facebook']">
-            <small *ngIf="form.controls['facebook'].hasError('pattern') && form.controls['facebook'].touched" class="text-danger support-text">Please enter valid url.</small>
-        </div>
-        <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-            <label>Twitter</label>
-             <input tabindex="1" [(ngModel)]="data.twitter" placeholder="" class="form-control-dialog" [formControl]="form.controls['twitter']">
-             <small *ngIf="form.controls['twitter'].hasError('pattern') && form.controls['twitter'].touched" class="text-danger support-text">Please enter valid url.</small>
-        </div>
-    </div>
-    <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>LinkedIn</label>
-        <input tabindex="1" [(ngModel)]="data.linkedin" placeholder="" class="form-control-dialog" [formControl]="form.controls['linkedin']">
-        <small *ngIf="form.controls['linkedin'].hasError('pattern') && form.controls['linkedin'].touched" class="text-danger support-text">Please enter valid url.</small>
-    </div>
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Instagram</label>
-         <input tabindex="1" [(ngModel)]="data.instagram" placeholder="" class="form-control-dialog" [formControl]="form.controls['instagram']">
-         <small *ngIf="form.controls['instagram'].hasError('pattern') && form.controls['instagram'].touched" class="text-danger support-text">Please enter valid url.</small>
-    </div>
-    </div>
-     <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
-        <label>Address</label>
-       <input tabindex="1" [(ngModel)]="data.address" [formControl]="form.controls['address']" placeholder="" class="form-control-dialog">
-       <small *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched" class="text-danger support-text">Address is Required.</small>
-    </div>
-   </div>
-
+  
+  <div class="sa-form-group">
+    <label>Address</label>
+    <input tabindex="1" [(ngModel)]="data.address" [formControl]="form.controls['address']" class="form-control-dialog" placeholder="" required>
+    <small *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched" class="text-danger support-text">Address is Required.</small>
+  </div>
+    
+  
+  <div class="sa-form-group">
+    <label>Contact Name</label>
+    <input tabindex="1" [(ngModel)]="data.contact_name" [formControl]="form.controls['contact_name']" class="form-control-dialog"  placeholder="" required>
+    <small *ngIf="form.controls['contact_name'].hasError('required') && form.controls['contact_name'].touched" class="text-danger support-text">Contact Name is Required.</small>
+    <!--  <input type="file" (change)="onChange($event)"> -->
+  </div>
+     
 </div>
-<div mat-dialog-actions class="sa-pull-right">
-  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc ok_btn" [disabled]="!form.valid">Submit</button>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+<div mat-dialog-actions>
+   <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc"  [disabled]="!form.valid">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
 </div>

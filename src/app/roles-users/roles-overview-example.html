@@ -1,27 +1,27 @@
 <div class="SetRolesPopup_outer">
 <h1 mat-dialog-title>Set Roles</h1>
-<div class="SetRolesPopup">
-  <div class="selectIcon">
+<div mat-dialog-content class="SetRolesPopup sa_forms_design">
+  <div class="sa-form-group">
+    <label>Select User Type</label>
   <select class="sa_select sa_select_set_roles form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadPermisions($event)">
-      <option value ="" selected="true">Select User Type</option>
-      <option value ="3">Receptionist</option>
-      <option value ="4">Manager</option>
-
+      <!--<option value ="" selected="true">Select User Type</option>-->
+      <option value ="3">Practice Manager</option>
+      <option value ="4">Clinician</option>
+      <option value ="5">Staff</option>
    </select> 
  </div>
   <div class="SetRoles_checkbox">
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['dashboards_'+selected_id]">Dashboards</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['memberships_'+selected_id]">Memberships</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['paymentplans_'+selected_id]">Payment Plans</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['defaulters_'+selected_id]">Defaulters</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['roles_'+selected_id]">Users</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['settings_'+selected_id]">Settings</mat-checkbox>
-    
+    <mat-checkbox class="role_permissions" *ngIf="selected_id <=4" [(ngModel)]="data.selectedRole['dashboard1_'+selected_id]">Clinician Analysis</mat-checkbox>
+    <mat-checkbox class="role_permissions" *ngIf="selected_id <=4" [(ngModel)]="data.selectedRole['dashboard2_'+selected_id]">Clinician Procedures & Referrals</mat-checkbox>
+    <mat-checkbox class="role_permissions" *ngIf="selected_id <4" [(ngModel)]="data.selectedRole['dashboard3_'+selected_id]">Front Desk</mat-checkbox>
+    <mat-checkbox class="role_permissions" *ngIf="selected_id <4" [(ngModel)]="data.selectedRole['dashboard4_'+selected_id]">Marketing</mat-checkbox>
+    <mat-checkbox class="role_permissions" *ngIf="selected_id != 3 && selected_id != 4 && selected_id >= 1" [(ngModel)]="data.selectedRole['dashboard5_'+selected_id]">Finances</mat-checkbox>
   </div>
+
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
-<div mat-dialog-actions class="sa-pull-right">
-  <button mat-button [mat-dialog-close]="data" tabindex="2" class="mat-raised-button mat-dc" [disabled]="!data.user_type">OK</button>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data"  tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
 </div>
 </div>

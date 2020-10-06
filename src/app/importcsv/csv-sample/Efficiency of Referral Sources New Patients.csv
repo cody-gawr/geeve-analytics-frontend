@@ -1,0 +1,20 @@
+reftype_code,reftype_name,referral_id,referral_name,new_appointments,real_visits,patient_name,patient_address,dob,phone_home,phone_work,phone_mobile,cart_num,first_attended,provider_name,refsource_notes,practice_iddd
+ADVERTISE,Advertising,69,Letter Drop: Local - Aug 2002,1,1,"Bloggs, Mr Joe",36 Happyl St Hurlstone Park NSW 2193,5/05/1955,2589 9856,,,9,14/04/2019,"Bowe, Dr David",,0
+ADVERTISE,Advertising,67,Newpaper- Local: The Valley Times,1,0,"Janis, Mrs Kattie",25 Kavinl Ave,2/05/1957,,,,10,19/07/1997,"Spencer, Dr Frank",,0
+ADVERTISE,Advertising,66,Radio: 2GB,1,0,"Dunn, Prof Andrew",140A Malabar Road Coogee NSW 2034,17/09/1967,,,,42,1/11/1997,"Spencer, Dr Frank",,0
+ADVERTISE,Advertising,66,Radio: 2GB,1,1,"Howser, Mrs Heather",34 Dover Ave Kadina SA 5554,4/04/1933,4567 7899,,,44,4/07/2007,"Gagarin, Dr Yuri",,0
+ADVERTISE,Advertising,65,TV: Channel 9,1,1,"Graple, Mr George",14 Harvard Ave,5/05/1962,,,,1a,4/07/2007,"Spencer, Dr Frank",,0
+ADVERTISE,Advertising,65,TV: Channel 9,1,1,"Jones, Mr Jimmy",100 Holden Street Ashfield NSW 2131,,9555 6525,,0412 662987,52,20/11/2006,"Spencer, Dr Frank",,0
+INSURANCE,Insurance Companies,5,A D A,1,0,"Jones, Mr James",18 Mark Street Galston NSW 2159,7/07/1945,9785 5643,9223 6754,0414 786 432,30,1/11/1997,"Spencer, Dr Frank",Fred White,0
+INSURANCE,Insurance Companies,10,B H P,1,1,"Anandale, Mrs Jane",65 Haveart Srt,6/06/1959,8525 5425,,0402 555896,6,19/06/1997,"Spencer, Dr Frank",,0
+INSURANCE,Insurance Companies,14,F A I Health Benefits,1,0,"Jones, Miss Gemma (Gem)",18 Mark Street Galston NSW 2159,11/12/1984,9785 5643,,,33,1/11/1997,"Spencer, Dr Frank",Fred White,0
+OTHER,Other contacts,72,Cafe's: The Hurlstone Perk Cafe,1,1,"Anandale, Mr Peter",65 Haveart Srt Hurlstone Park NSW 2193,5/06/1955,8525 5425,,,5,1/05/1997,"Spencer, Dr Frank",,0
+OTHER,Other contacts,74,Medical Centre: Central Medical,1,0,"Anderson, Dr William (Bill)",12/34 Barker Street Randwick NSW 2031,3/04/1951,9399 6570,9339 6570,0412 345 678PAGE,35,1/05/1997,"Spencer, Dr Frank",Mr Smyth,0
+OTHER,Other contacts,74,Medical Centre: Central Medical,1,1,"Lamrock, Mrs Karen",12/52 Tableton Ave Ubobo QLD 4680,10/11/1965,7585 2595,,,15,18/10/1997,"Spencer, Dr Frank",Walk In,0
+OTHER,Other contacts,74,Medical Centre: Central Medical,1,1,"Venus, Ms Helen",785 Salvation Ave Tabbimoble NSW 2472,2/05/1967,8596 2598,4526 8455,,26,10/11/1997,"Spencer, Dr Frank",,0
+OTHER,Other contacts,70,"Specialists: Jones, Dr John",1,0,"White, Mr Fred",36 Gravel St Dadswells Bridge VIC 3385,,2589 9856,,0414567454 ,1,10/02/1987,"Spencer, Dr Frank",,0
+PATIENT,Patients,6,"Anandale, Mrs Jane",1,1,"Dickson, Mrs Caren",745 Canterbury Rd,5/06/1972,8597 2566,,,8,15/05/1997,"Bowe, Dr David",,0
+PATIENT,Patients,26,"Venus, Ms Helen",1,1,"Universe, Mr Arnold",,2/05/1969, 8595 2599,2562 2569,,25,15/09/1997,"Spencer, Dr Frank",,0
+STAFF,Practice Staff,4," Schumaker, Dr Michael",1,0,"Ulna, Mr Bob",,5/11/1914,,,,48,1/03/2001,"Spencer, Dr Frank",,0
+STAFF,Practice Staff,1," Spencer, Dr Frank",1,0,"Jones, Ms Jane",123 Gate Road Jack River VIC 3971,12/03/1969,087 976 543,097876345,0414 567 432,38,1/11/1997,"Spencer, Dr Frank",,0
+THIRD_PART,Third parties,3,Veterans Affairs,1,1,"Korin, Mr James",45 Dove St Kabra QLD 4702,2/05/1958,9526 8565,2547 8595,,14,10/10/1997,"Spencer, Dr Frank",Medical Centre,0

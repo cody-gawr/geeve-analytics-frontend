@@ -1,11 +1,45 @@
 import { Routes } from '@angular/router';
 
-import { DashboardsComponent } from './dashboards.component';
+import { ClinicianAnalysisComponent } from './cliniciananalysis/cliniciananalysis.component';
+import { ClinicianProceeduresComponent } from './clinicianproceedures/clinicianproceedures.component';
+import { FinancesComponent } from './finances/finances.component';
+import { FrontDeskComponent } from './frontdesk/frontdesk.component';
+import { MarketingComponent } from './marketing/marketing.component';
+import { HealthScreenComponent } from './healthscreen/healthscreen.component';
+import { MorningHuddleComponent } from './morning-huddle/morning-huddle.component';
+
 export const DashboardsRoutes: Routes = [
   {
     path: '',
-    component: DashboardsComponent,
-    data: {
-      title: 'Members Dashboard'
-    }  }
+    children: [
+      {
+        path: 'cliniciananalysis',
+        component: ClinicianAnalysisComponent
+      },
+      {
+        path: 'clinicianproceedures',
+        component: ClinicianProceeduresComponent
+      },
+      {
+        path: 'frontdesk',
+        component: FrontDeskComponent
+      },
+      {
+        path: 'marketing',
+        component: MarketingComponent
+      },
+      {
+        path: 'finances',
+        component: FinancesComponent
+      },
+      {
+        path: 'healthscreen',
+        component: HealthScreenComponent
+      },
+      {
+        path: 'morning-huddle',
+        component: MorningHuddleComponent
+      }
+    ]
+  }
 ];

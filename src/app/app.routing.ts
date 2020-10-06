@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
-import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
+import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
+import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AuthGuard } from './auth/authguard.service';
 
 export const AppRoutes: Routes = [
@@ -11,14 +12,19 @@ export const AppRoutes: Routes = [
     component: FullComponent,
     children: [
       {
+      
         path: '',
-        redirectTo: '/login',
+        redirectTo: '/home',
         pathMatch: 'full'
-      }
-      ,
+      },
       {
         path: 'dashboard',
         loadChildren: './dashboard/dashboard.module#DashboardModule'
+      },
+      {
+        path: 'importcsv',
+        loadChildren: './importcsv/importcsv.module#ImportcsvModule',
+        canActivate: [AuthGuard]
       },
       {
         path: 'dashboards',
@@ -30,11 +36,11 @@ export const AppRoutes: Routes = [
         loadChildren: './layouts/full/header/header.module#HeaderModule'
       },
       {
-        path: 'roles/:id',
+        path: 'roles',
         loadChildren: './roles/roles.module#RolesModule'
       },
       {
-        path: 'roles-users/:id',
+        path: 'roles-users',
         loadChildren: './roles-users/roles-users.module#RolesUsersModule'
       },
       {
@@ -53,19 +59,18 @@ export const AppRoutes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'payment-plan',
-        loadChildren: './in-office/in-office.module#InOfficeModule',
-        canActivate: [AuthGuard]
-      },
-
-      {
-        path: 'in-office-history/:id',
-        loadChildren: './in-office-history/in-office-history.module#InOfficeHistoryModule',
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'dentist/:id',
+        path: 'dentist',
         loadChildren: './dentist/dentist.module#DentistModule',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'clinic-goals',
+        loadChildren: './clinic-goals/clinic-goals.module#ClinicGoalsModule',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'lost-opportunity',
+        component: LostOpportunityComponent,
         canActivate: [AuthGuard]
       },
       {
@@ -74,87 +79,51 @@ export const AppRoutes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'profile-settings/:id',
+        path: 'profile-settings',
         loadChildren: './profile-settings/profile-settings.module#ProfileSettingsModule',
-      //  canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'dentist-goals',
+        loadChildren: './dentist-goals/dentist-goals.module#DentistGoalsModule',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'material',
+        loadChildren:
+          './material-component/material.module#MaterialComponentsModule'
       },
       {
         path: 'apps',
-        loadChildren: './apps/apps.module#AppsModule',
+        loadChildren: './apps/apps.module#AppsModule'
+      },
+      {
+        path: 'forms',
+        loadChildren: './forms/forms.module#FormModule'
       },
       {
         path: 'tables',
-        loadChildren: './tables/tables.module#TablesModule',
+        loadChildren: './tables/tables.module#TablesModule'
       },
       {
         path: 'datatables',
-        loadChildren: './datatables/datatables.module#DataTablesModule',
+        loadChildren: './datatables/datatables.module#DataTablesModule'
       },
       {
         path: 'pages',
-        loadChildren: './pages/pages.module#PagesModule',
+        loadChildren: './pages/pages.module#PagesModule'
       },
       {
         path: 'widgets',
-        loadChildren: './widgets/widgets.module#WidgetsModule',
+        loadChildren: './widgets/widgets.module#WidgetsModule'
       },
       {
         path: 'charts',
-        loadChildren: './charts/chartslib.module#ChartslibModule',
+        loadChildren: './charts/chartslib.module#ChartslibModule'
       },
       {
         path: 'multi',
-        loadChildren: './multi-dropdown/multi-dd.module#MultiModule',
-      },
-      {
-        path: 'members',
-        loadChildren: './patients-detail/patients-detail.module#PatientsDetailModule',
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'members-details/:id',
-        loadChildren: './patient-info/patient-info.module#PatientInfoModule',
-        canActivate: [AuthGuard]
-       },
-      {
-        path: 'patient-paymentinfo/:id',
-        loadChildren: './patient-paymentinfo/patient-paymentinfo.module#PatientPaymentinfoModule',
-        canActivate: [AuthGuard]
-       },
-      //  {
-      //   path: 'treatments/:id',
-      //   loadChildren: './treatments/treatments.module#TreatmentsModule'
-      // },
-      {
-        path: 'defaulters',
-        loadChildren: './defaulters/defaulters.module#DefaultersModule',
-        canActivate: [AuthGuard]
-      },
-   
-    ]
-  },
- 
-  {
-    path: '',
-    component: StepperComponent,
-    children: [
-      {
-       path: 'setup',
-        loadChildren:
-          './setup/setup.module#SetupModule',
-        canActivate: [AuthGuard]
-          
-      }
-    ]
-  },
-  {
-    path: '',
-    component: AppBlankComponent,
-    children: [
-      {
-        path: 'login',
-        loadChildren:
-          './login/login.module#LoginModule'
+        loadChildren: './multi-dropdown/multi-dd.module#MultiModule'
       }
     ]
   },
@@ -171,37 +140,55 @@ export const AppRoutes: Routes = [
   },
   {
     path: '',
+    component: StepperComponent,
+    children: [
+      {
+        path: 'setup',
+        loadChildren:
+           './setup/setup.module#SetupModule',
+        canActivate: [AuthGuard]
+      }
+    ]
+  },
+  {
+    path: '',
     component: AppBlankComponent,
     children: [
       {
-        path: 'subscription/:clinic_id/:user_id',
+        path: 'login',
+        loadChildren:
+          './login/login.module#LoginModule'
+      },
+      {
+        path: 'home',
+        loadChildren:
+          './home/home.module#HomeModule'
+      },
+      {
+        path: 'xero',
+        loadChildren:
+          './xero/xero.module#XeroModule'
+      },
+      {
+        path: 'support',
+        loadChildren:
+          './support/support.module#SupportModule'
+      },
+      {
+        path: 'subscription',
         loadChildren:
           './subscription/subscription.module#SubscriptionModule'
       },
       {
-        path: 'terms/:id',
-        loadChildren: './terms/terms.module#TermsModule'
-      },      
-      {
-        path: 'payment-patient/:id',
-        loadChildren: './payment-patient/payment-patient.module#PaymentPatientModule',      
-      },      
-      {
-        path: 'update-card/:subscr',
-        loadChildren: './update-card/update-card.module#UpdateCardModule', 
+        path: 'payment',
+        loadChildren:
+          './payment/payment.module#PaymentModule'
       },
       {
-        path: 'inoffice-payment/:id',
-        loadChildren: './inoffice-payment/inoffice-payment.module#InofficePaymentModule',       
+        path: 'planpayment',
+        loadChildren:
+          './planpayment/planpayment.module#PlanpaymentModule'
       },
-      {
-        path: 'purchase-plan/:id',
-        loadChildren: './purchase-plan/purchase-plan.module#PurchasePlanModule'
-      },
-      {
-        path: 'thank-you/:id/:patientId',
-        loadChildren: './thank-you/thank-you.module#ThankYouModule',
-      }
     ]
   },
   {

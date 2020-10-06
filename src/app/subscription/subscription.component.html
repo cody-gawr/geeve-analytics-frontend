@@ -1,307 +1,135 @@
+<div class="inner-pages">
+<header id="header" class="sa-ste">
+  <div class="container-fluid sa-cf">
+  <nav class="navbar navbar-expand-lg navbar-light navbar-main">
 
-<div class="gray_shape02"></div>
-<section id="sa-container" class="sa-container subscription-main ">
-    <div class="sa-pull-left sa-col-12 sa-main-header sa-ste">
-        <div class="container ">
-            <a class="sa-logo sa-ste" >
-                <!--img class="sa-main-logo-txt sa-ste" src="../../assets/img/logo.png"-->
-                <img class="sa-ste sa-main-logo-txt sa-ste" src="{{clinicLogo}}">
-            </a>
-            <div id="nav_main" class="pull-right sa-navigation">
-                <div class="nv-ico">
-                    <div class="sa-mobile-nav sa_navclk">
-                        <button class="navbar-toggler navbar-toggler-mob" type="button" onclick="openNav()"><div class="openMenu"> <span class="navbar-toggler-line line-first"></span> <span class="navbar-toggler-line line-second"></span> <span class="navbar-toggler-line line-third"></span></div></button>
-                    </div>
-                </div>
+    <a class="navbar-brand logo" href="/home"><img class="d-none d-md-block logo-color" src="../../assets/images/home/logo.png" alt="logo"> <img class="d-block d-md-none logo-white" src="../../assets/images/home/logo-white.png" alt="logo white"> </a>
+      <button class="navbar-toggler navbar-toggler-mob" type="button" (click)="openNav()"><div class="openMenu"> <span class="navbar-toggler-line line-first"></span> <span class="navbar-toggler-line line-second"></span> <span class="navbar-toggler-line line-third"></span></div>
+       </button>
 
-                <div class="menu pull-right nav-sec sa-ste">
-                    <div class="sa_navclose"><i class="fas fa-times"></i></div>
-                    <ul class="pull-left">
-                        <li class="sa-ste">
-                            <a class="active upper-menu-item home-menu-item" (click)="scroll('sa-container')">HOME</a>
-                        </li>
-                        <li class="sa-ste">
-                            <a class="upper-menu-item membership-menu-item" (click)="scroll('offers_packages')">MEMBERSHIPS</a>
-                        </li>
-                        <li class="sa-ste">
-                            <a class="upper-menu-item contact-menu-item" (click)="scroll('footer')">Contact</a>
-                        </li>
-                    </ul>
-                    <div class="pull-left sa_header_number sa-ste">
-                        {{clinicContactNo}}
-                    </div>
-                </div>
+<div id="myNav" class="overlay menu">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+  <div class="overlay-content">
+    <ul class="navbar-nav navbar-nav-main ml-auto">
+       <li class="nav-item"> <a class="nav-link" href="/subscription">Subscription</a> </li>
+                      <li class="nav-item active"> <a class="nav-link" href="/xero">Xero Integration</a> </li>
+                        <li class="nav-item active"> <a class="nav-link" href="/faq">Support</a> </li>
+                      <li class="nav-item"> <a class="nav-link btn btn-login"  href="/login">Login</a> </li>
+        </ul>
+  </div>
+</div>
+</nav>
+  </div>
+</header>
+<section class="pricing-page pricing pricing-center" style="position: relative;z-index: 99;">
+  <div class="container">
+    <div class="shape-shadow shape-shadow-right-aside">
+    <h2 class="title mb-3">Subscription</h2>
+  <p class="mb-5 sub-description">Jeeve Solutions formed in 2018 and is committed to developing niche software solutions for the dental industry. </p>
+  <div class="row">
+        <!-- pricing item -->
+        <div class="col-md-4 mb-5" *ngFor="let plan of plans">
+          <div class="pricing-box h-100">
+            <h5>{{plan.plan}}</h5>
+            <div class="plan-price">
+              <span class="price text-grad">
+              <sup class="text-grad">$</sup>{{plan.amount}}</span> /month
             </div>
+            <ul class="list-unstyled list-pricing mt-4 mb-5" innerHTML="{{plan.description}}"></ul>
+            <a class="btn btn-grad" href="/authentication/register/{{plan.id}}">Register</a>
+          </div>
         </div>
       </div>
-    </section>
-    <section class="sa-pull-left sa-col-12 sa-slide-section" id="header_section">
-        <div class="container">
-                <div class="row">
-                        <div class="col-md-7">
-                          <div class="head_sec_text pull-left">  
-                           <!--<h1>Welcome to {{clinicName}} Clinic</h1> -->
-                              <h1>{{headerTitle}}</h1>
-                              <p [innerHTML] = "headerDescription"></p>
-                              <div class="pull-left">
-                              <a class="btn btn-lg btn-theme btn-rounded" (click)="scroll('offers_packages')">Join Now</a>
-                              </div>
-                          </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="headimage_area">
-                                <img src="{{headerImageURL}}">
-                            </div>
-                        </div>
-                </div>
-        </div>
-    </section>
-    <section class="sa-pull-left sa-col-12 pricing-section" id="offers_packages" >
-        <div class="container">
-            <div class="row justify-content-center align-items-center">
-                <div class="col-md-12">
-                    <h2 class="section_title">Our <b>MEMBERSHIPS</b></h2>
-                    <div class="owl-carousel price_slide">
-                        <ngx-slick class="carousel" #slickModal="slick-modal" [config]="planSliderConfig" responsive="breakpoints">
-
-                            <div ngxSlickItem *ngFor="let plan of plans;i as index" class="slide"  [ngClass]="{'featuredPlan': plan.isFeatured==='true', 'hidden': plan.hidden==='true'}"> 
-                                <div class="pricing_area sa-ste" >
-                                    <div class="ribbon-banner-main"><span class=ribbon-banner>MOST POPULAR</span></div>
-                                    <h4>{{plan.planName}}</h4>
-                                    <span class="price_spacer"></span>
-                                    <span class="price_value"><span *ngIf="isDecimal(plan.totalAmount)"> {{plan.totalAmount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(plan.totalAmount)">{{plan.totalAmount| currency: 'USD': 'symbol':'1.0'}}</span></span>
-                                    <span class="price_limit" *ngIf="plan.planLength == 'MONTHLY'">per month</span>
-                                    <span class="price_limit" *ngIf="plan.planLength == 'YEARLY'">per year</span>
-                                    <div class="packgae_list_main">
-                                        <div class="packgae_list">
-                                            <span *ngIf="plan.preventative_frequency"><i class="fas fa-check" ></i>{{plan.preventative_frequency}} FREE CHECKUPS PER ANNUM *</span>
-                                            <span *ngIf="plan.preventative_discount"><i class="fas fa-check" ></i>{{plan.preventative_discount}}% OFF SELECTED TREATMENTS *</span>
-                                            <span *ngIf="plan.discount"><i class="fas fa-check" ></i>{{plan.discount}}% OFF FOR ADDITIONAL FAMILY MEMBERS</span>
-                                        </div>          
-                                    </div>
-                         
-                                    <div class="plan_abso_btns">
-               <a class="btn btn-theme no-radius pricing_btn" (click)="openDialog(plan.id,plan.totalAmount)" [ngClass]="{'disabled': plan.planName == 'Sample Plan' || stripeConnected==false}" >Buy Now</a>
-                                          <span (click) ="loadDesc(plan.id, plan.preventative_plan, plan.treatment_inclusions, plan.treatment_exclusions, plan.totalAmount,plan.planName,plan.planLength)" class="learn_more {{plan.id}}">Learn More</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </ngx-slick>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="sa-pull-left sa-col-12 gray_shape01" >
-        <div class="container">
-            <div class=" treatment_content {{load_id}}" [style.display]="'none'">
-                <h2 class="section_title">Plan <b>DETAILS</b></h2>
-                <div class="row justify-content-center align-items-center">
-                    <div class="col-md-10">
-                        <div class="treatment_content_inner sacol01">
-                            <div class="row ">
-                                <div class="col-md-4 treatment_plan_bg">
-                                    <div class="treatment_plan_side">
-                                        <h4>{{load_planName}}</h4>
-                                        <span class="price_value"><span *ngIf="isDecimal(load_totalAmount)"> {{load_totalAmount  | currency: 'USD': 'symbol':'1.2-2'}} </span> <span  *ngIf="!isDecimal(load_totalAmount)">{{load_totalAmount| currency: 'USD': 'symbol':'1.0'}}</span></span>
-                                        <span class="price_limit">{{load_planLength}}</span>
-                                        <div class="srvc_btn">
-                                            <a class="btn btn-white no-radius btn-block" (click)="openDialog(load_id,load_totalAmount)" [ngClass]="{'disabled': load_planName == 'Sample Plan' || stripeConnected==false}">Buy Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="treatment_sec">
-                                        <h5 class="srvc_title"><i class="far fa-star"></i> Preventative Plan inclusions</h5>
-                                        <div class="sa-pull-left sa-col-12 spnlast">
-                                            <span *ngFor="let service of load_preventative_plan">{{service.itemName}}<span>, </span></span>
-                                        </div>
-                                        <h5 class="srvc_title" ><i class="far fa-star"></i> Treatment Inclusions</h5>
-                                        <div class="sa-pull-left sa-col-12 spnlast">
-                                            <span *ngFor="let service of load_treatment_inclusions"> {{service.itemName}}<span>, </span></span>
-                                        </div>
-                                        <h5 class="srvc_title"><i class="far fa-star"></i> Treatment Exclusions</h5>
-                                        <div class="sa-pull-left sa-col-12 spnlast">
-                                            <span *ngFor="let service of load_treatment_exclusions"> {{service.itemName}}<span>, </span></span> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div> 
+    </div>
+    </div>
+</section>
+<!-- Return to Top -->
+<footer>
+   <div class="container">
+            <div class="footerLogo"> <img src="../../assets/images/home/footer-logo.png"> </div>
+            <div class="row">
+               <div class="col-md-4 col-sm-6">
+                  <div class="widget mb-4 mb-md-0">
+                     <h6>Navigation</h6>
+                     <ul class="nav flex-column primary-hover">
+                          <li class="nav-item"><a class="nav-link" href="/subscription">Subscription</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/xero">Xero Integration</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/faq">FAQ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-md-4 col-sm-6">
+                  <div class="widget mb-4 mb-sm-0">
+                     <h6>Social</h6>
+                     <ul class="nav flex-column primary-hover">
+                        <li class="nav-item"><a class="nav-link" href="#">Facebook</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Twitter</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Linkedin</a></li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="col-md-4 col-sm-6">
+                  <div class="widget bg-grad widget-form mb-4 mb-sm-0">
+                     <h6>Newsletter</h6>
+                     <div class="form-group mb-0">
+                        <input class="form-control" type="email" placeholder="Your Email Address">
+                        <p class="mb-3">We will  not disclose your details with others and spam your inbox.</p>
+                        <button class="btn btn-main btn-block mb-0">Subcsribe</button>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
-    </section>
-    <section class="sa-pull-left sa-col-12 slider-section d-none">
-        <div class="container">
-            <div class="sa_slide_main">
-                <ngx-slick class="carousel" #slickModal="slick-modal" [config]="imageSliderConfig">
-                    <div ngxSlickItem *ngFor="let slide of sliderimages" class="slide">
-                        <img src="{{ slide.file }}" alt="" width="100%">
-                    </div>
-                </ngx-slick>
-                <img class="slide_shape" src="assets/img/slide_shape.png"/>
-                <img class="slide_shape2" src="assets/img/slide_shape2.png"/>
+  <div class="copyright-section text-center">
+    <div class="container">© 2018 Jeeve analytics - 2018  All right Reserved</div>
+  </div>
+</footer>
+</div>
+<!-- Optional JavaScript --> 
+<!-- jQuery first, then Popper.js, then Bootstrap JS --> 
+<script type="text/javascript" src="js/jquery-3.1.0.js" ></script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" src="js/script.js"></script> 
+<script>
+$(document).ready(function(){
+    $('ul.list-circles-point li').click(function(){
+     var target = $(this).attr("data-target");
+      $('.list-circles-point li').removeClass("active");
+      $('.testimonial-text').removeClass("active");
+      $('.testimonial-img').removeClass("active");
 
-            </div>
-            <div class="about_text" id="about_text">
-                <div class="row justify-content-center align-items-center">
-                    <div class="col-md-10">
-                        <img class="about_text_image" src="assets/img/about_text.png"/>
-                        <p>{{ClinicAbout}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="sa-pull-left sa-col-12 doctor-section d-none">
-        <div class="container">
-            <div class="doctor_text">
-                <div class="row justify-content-center">
-                    <div class="col-md-3">
-                        <div class="doctor_image">
-                            <img src="assets/img/banner_doctor.png" alt=""/>
-                        </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="sa_doctor_detail">
-                            <h5>{{DoctorName}}</h5>
-                            <span class="doctor_des">{{DoctorPractice}}</span>
-                            <p>{{DoctorDescription}}</p>
-                        </div>
-                        <div class="clinic_detail_main">
-                            <div class="clinic_logo">
-                                <img src="{{clinicLogo}}" alt=""/>
-                            </div>
-                            <div class="clinic_detail">
-                                <span class="clinic_n">{{clinicName}}</span>
-                                <span>{{clinicAddress}}</span>
-                                <span>{{clinicContactNo}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="sa-pull-left sa-col-12 treatments-section d-none">
-        <div class="container">
-            <div class="doctor_text">
-                <div class="row justify-content-center ">
-                    <div class="col-md-12">
-                        <div class="treatments_image">
-                            <div class="treatments_image_overlay"></div>
-                                <img src="assets/img/secimg.jpg" alt=""/>
-                            </div>
-                        <h2 class="section_title">Treatments</h2>
-                        <div class="treatment_types">
-                            <div class="row justify-content-center">
-                                <div class="col-md-12 text-center">
-                                    <div class="icon_bg_main">
-                                        <div class="icon_bg ib1 sa-ste"><img src="assets/img/01.png"/></div>
-                                        <div class="icon_bg ib2 sa-ste"><img src="assets/img/02.png"/></div>
-                                        <div class="icon_bg ib3 sa-ste"><img src="assets/img/03.png"/></div>
-                                        <div class="icon_bg ib4 sa-ste"><img src="assets/img/04.png"/></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="iconbg_text">
-                                        Perfect Solutions to all your Dental Problems
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="sa-pull-left sa-col-12 smile-section d-none">
-        <div class="smile_image">
-            <!--h4>Our <i class="fas fa-smile"></i> Are Valley Wide</h4-->
-            <div class="smile_image_overlay"></div>
-        </div>
-    </section>
+      $(this).addClass("active");
+      $(target).addClass("active");
+  });
 
-    <section class="sa-pull-left sa-col-12 message-section d-none" id="message_section ">
-        <div class="container">
-            <h2 class="section_title">Drop Us a Message</h2>
-            <div class="">
-                <form action="#"  [formGroup]="contactusForm" id="contactUs_form">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-5 sa_forms">
-                            <div class="form-group">
-                                <input type="text" class="form-control"  name="contactuser_name" id="contactuser_name" placeholder="Your Name" [formControl]="contactusForm.controls['contactuser_name']" [(ngModel)]="contactuser_name">
-                                <small *ngIf="contactusForm.controls['contactuser_name'].hasError('required') && contactusForm.controls['contactuser_name'].touched" class="text-danger support-text">Name is required.</small>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control" name="contactuser_email" id="contactuser_email" placeholder="Your Email" [formControl]="contactusForm.controls['contactuser_email']" [(ngModel)]="contactuser_email">
-                                <small *ngIf="contactusForm.controls['contactuser_email'].hasError('required') && contactusForm.controls['contactuser_email'].touched" class="text-danger support-text">Email is required.</small>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control"  name="contactuser_phone" id="contactuser_phone" placeholder="Phone" [formControl]="contactusForm.controls['contactuser_phone']" [(ngModel)]="contactuser_phone">
-                                <small *ngIf="contactusForm.controls['contactuser_phone'].hasError('required') && contactusForm.controls['contactuser_phone'].touched" class="text-danger support-text">Phone is required.</small>
-                            </div>
-                        </div>
-                        <div class="col-lg-5 sa_forms">
-                            <div class="form-group">
-                                <textarea type="text" class="form-control" name="contactuser_message" id="contactuser_message" placeholder="Message" [formControl]="contactusForm.controls['contactuser_message']" [(ngModel)]="contactuser_message"></textarea>
 
-                                <small *ngIf="contactusForm.controls['contactuser_message'].hasError('required') && contactusForm.controls['contactuser_message'].touched" class="text-danger support-text">Message is required.</small>
-                            </div>
-                        </div>
-                        <!--input type="hidden" name="clinicEmail" id="clinicEmail" [formControl]="contactusForm.controls['clinicEmail']" [(ngModel)]="clinicEmail" value={{clinicEmail}}-->
-                        <input type="hidden" name="clinicEmail" id="clinicEmail" [formControl]="contactusForm.controls['clinicEmail']" [(ngModel)]="clinicEmail" value={{clinicEmail}}>
-                        <div class="col-lg-10 ">
-                            <div class="submit_btn_area ">
-                                <div class="form-group text-center">
-                                    <button type="submit" name="btnSubmit" class="btn btn-lg btn-theme btn-rounded" (click)="submitContactForm($event);" [disabled]="!contactusForm.valid" >Send Message</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+      $('.testimonial-img').click(function(){
+       var target = $(this).attr("data-target");
+       var target2 = $(this).attr("data-targets");
+        $('.list-circles-point li').removeClass("active");
+        $('.testimonial-text').removeClass("active");
+        $('.testimonial-img').removeClass("active");
 
-                </form>
-            </div>
-        </div>
-    </section>
-    <footer class="sa-pull-left sa-col-12 sa-footer-area" id="footer">
-        <div class="container">
-            <div class="row justify-content-md-center">
-                <div class="col-lg-4">
-                    <h6>Navigation</h6>
-                    <div class="sa-links-area">
-                        <a class="sa-ste"(click)="scroll('header_section')"><i class="fas fa-chevron-right"></i>Home</a>
-                        <a class="sa-ste" (click)="scroll('offers_packages')"><i class="fas fa-chevron-right"></i>Memberships</a>
+        $(target2).addClass("active");
+        $(target).addClass("active");
+    });
 
-                        <a class="sa-ste" (click)="scroll('footer')"><i class="fas fa-chevron-right"></i>Contact</a>
-                    </div>
-                </div>
 
-                <div class="col-lg-4">
-                    <div class="sa-pull-left sa-col-12">
-                        <h6>Contact Us</h6>
-                        <div class="sa-address-area">
-                            <span [innerHTML] = "clinicAddress">&nbsp;&nbsp;{{clinicAddress}}</span>
-                            <span><i class="fas fa-mobile-alt"></i>&nbsp;&nbsp;{{clinicContactNo}}</span>
-                            <span><i class="fas fa-envelope"></i>&nbsp;&nbsp;{{clinicEmail}}</span>
-                        </div>
-                        <div   class="social-icon">
-                            <a class="icoFacebook" target="_blank" href="{{facebookUrl}}" *ngIf="facebookUrl && facebookUrl != 'http://facebook.com/'"><i class="fab fa-facebook-f"> </i></a>
-                            <a class="icoTwitter" target="_blank" href="{{twitterUrl}}" *ngIf="twitterUrl  && twitterUrl != 'http://twitter.com/'"><i class="fab fa-twitter"></i></a>
-                            <a class="icoGoogle" target="_blank" href="{{linkedinUrl}}" *ngIf="linkedinUrl  && linkedinUrl != 'http://linkedin.com/'"><i class="fab fa-linkedin"></i></a>
-                            <a class="icoInstagram" target="_blank" href="{{instagramUrl}}" *ngIf="instagramUrl  && instagramUrl != 'http://instagram.com/'"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+window.scrollTo(0,0);
+});
+</script>
+<script>
+function openNav() {
+  document.getElementById("myNav").style.width = "100%";
+}
 
-        <div class="sa-end-footer" style="margin-top:40px;">
-            <p>&copy; {{date| date:'yyyy'}} Powered by <a href="https://www.jeeve.com.au/members" class="footer_link" target="_blank">Jeeve Members</a></p>
-        </div>
-    </footer>
-      
+function closeNav() {
+  document.getElementById("myNav").style.width = "0%";
+}
+</script>
+     

@@ -9,15 +9,15 @@ import { AppComponent } from './app.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FullComponent } from './layouts/full/full.component';
-import { StepperComponent } from './layouts/stepper/stepper.component';
+
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
-import { StepperSidebarComponent } from './layouts/stepper/sidebar/sidebar.component';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './demo-material-module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { StepperComponent } from './layouts/stepper/stepper.component';
+import { StepperSidebarComponent } from './layouts/stepper/sidebar/sidebar.component';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -25,22 +25,20 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
 import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
-import { CookieService, CookieOptions } from "angular2-cookie/core";
+import { CookieService } from "angular2-cookie/services/cookies.service";
 import { HttpModule } from '@angular/http'; 
 import { AuthGuard } from './auth/authguard.service';
-import { AuthService } from './auth/auth.service';
+
 import { HeaderService } from './layouts/full/header/header.service';
 import { StepperHeaderService } from './layouts/stepper/header/header.service';
 import { StepperHeaderrightService } from './layouts/stepper/headerright/headerright.service';
-
+import { Globals } from 'globals';
 import { DentistService } from './dentist/dentist.service';
-
-import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
-import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
-import { StepperAppHeaderComponent } from './layouts/stepper/header/header.component';
-
 import { ToastrModule } from 'ngx-toastr';
+import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
+import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
+import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -93,16 +91,15 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   declarations: [
     AppComponent,
     FullComponent,
-    StepperComponent,
     AppHeaderComponent,
-    StepperAppHeaderComponent,
     SpinnerComponent,
     AppBlankComponent,
     AppSidebarComponent,
     AppHeaderrightComponent,
+    LostOpportunityComponent,
+    StepperComponent,
     StepperSidebarComponent,
     StepperHeaderrightComponent
-
   ],
   imports: [
     BrowserModule,
@@ -116,8 +113,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpModule,   
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot(AppRoutes),
-    NotifierModule.withConfig(customNotifierOptions),
-    ToastrModule.forRoot({ 
+
+        NotifierModule.withConfig(customNotifierOptions),
+          ToastrModule.forRoot({ 
     timeOut: 2000,
     positionClass: 'toast-top-right',
     preventDuplicates: true,
@@ -128,7 +126,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   providers: [
     AuthGuard, 
-    AuthService,
     HeaderService,
     StepperHeaderService,
     StepperHeaderrightService,
@@ -137,8 +134,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
       CookieService,
-      DentistService,
-      { provide: CookieOptions, useValue: false }
+      DentistService
   ],
   bootstrap: [AppComponent]
 })

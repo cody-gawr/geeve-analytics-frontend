@@ -9,7 +9,6 @@ import {
 import { CustomValidators } from 'ng2-validation';
 import { LoginService } from '../../login/login.service';
 import { ActivatedRoute } from "@angular/router";
-
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-reset',
@@ -21,11 +20,9 @@ export class ResetComponent implements OnInit {
   public errorLogin = false;
   public errorLoginText = '';
   public successLogin = false;
-  public isPasswordSet = false;
   public successLoginText = '';
+    public isPasswordSet = false;
    public id:any ={};
-   public string='';
-   public loading = true;
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService, private route: ActivatedRoute,private toastr: ToastrService) {}
   ngOnInit() {
     this.form = this.fb.group({ 
@@ -33,13 +30,14 @@ export class ResetComponent implements OnInit {
       cpassword: [null, Validators.compose([Validators.required])]
     });
           this.route.params.subscribe(params => {
-    this.string = this.route.snapshot.paramMap.get("id");
-    this.id='';
+                this.string = this.route.snapshot.paramMap.get("id");
+ this.id='';
     this.checkValidString();
      });
   }
-
-checkValidString() {
+public loading = true;
+public string;
+  checkValidString() {
   this.loading = true;
   $('.ajax-loader').show();
 this.loginService.checkValidString(this.string).subscribe((res) => {  
@@ -55,13 +53,12 @@ this.loginService.checkValidString(this.string).subscribe((res) => {
   }
 });
 }
-
-  onSubmit() {
-    if(this.id) {
+onSubmit() {
+      if(this.id) {
     if(this.form.value.password == this.form.value.cpassword) {
       var timeStamp = Math.floor(Date.now() / 1000);
       var data = encodeURIComponent(window.btoa(this.id+"+"+timeStamp));
-      this.loginService.resetPassword(this.form.value.password,data).subscribe((res) => {        
+      this.loginService.resetPassword(this.form.value.password,data).subscribe((res) => {
           this.errorLogin = false;
           this.errorLoginText = '';
           this.successLogin = false;
@@ -70,15 +67,14 @@ this.loginService.checkValidString(this.string).subscribe((res) => {
               this.successLogin  =true;
               this.isPasswordSet =true;
               this.successLoginText  =res.data;
-           }
+            }
            else if(res.message == 'error'){
               this.errorLogin  =true;
               this.errorLoginText  =res.data;
            }
         }, error => {
-
     });
-    }
+      }
   }
   else
   {

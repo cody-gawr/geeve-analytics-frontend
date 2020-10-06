@@ -13,7 +13,7 @@ import {
   AfterViewInit, Inject
 } from '@angular/core';
 import { MenuItems } from '../../shared/menu-items/menu-items';
-import { StepperAppHeaderComponent } from './header/header.component';
+import { AppHeaderComponent } from './header/header.component';
 import { StepperSidebarComponent } from './sidebar/sidebar.component';
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';

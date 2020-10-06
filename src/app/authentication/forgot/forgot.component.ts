@@ -32,9 +32,9 @@ export class ForgotComponent implements OnInit {
   }
 
   onSubmit() {
-     $('.ajax-loader').show();    
+    $('.ajax-loader').show();
       this.loginService.checkEmail(this.form.value.email).subscribe((res) => {
-         $('.ajax-loader').hide();    
+  $('.ajax-loader').hide();
           this.errorLogin = false;
           this.errorLoginText = '';
           this.successLogin = false;

@@ -31,7 +31,7 @@ import { LoginService } from '../login/login.service';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule
-  ],  
+  ],
   providers: [
     LoginService
   ],  

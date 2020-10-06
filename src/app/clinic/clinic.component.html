@@ -1,43 +1,23 @@
 <mat-card>
     <mat-card-content>
+      
+        <mat-card-title>Clinics 
+         <button class="sa-pull-right mat-raised-button mat-gray" mat-raised-button (click)="openDialog()" disabled ="false"  *ngIf= "clinicscount > createdClinicsCount">Add Clinic</button>
+       <button class="sa-pull-right mat-raised-button mat-gray m-l-10" mat-raised-button (click)="openLimitDialog()" *ngIf= "clinicscount <= createdClinicsCount">Add Clinic</button> </mat-card-title>
 
-
-    <div class="main_title_outer">
-          <div class="main_title_withbtn">
-             <mat-card-title><span class="main-title">Clinics</span></mat-card-title>
-          </div>
-          <div class="title_btn" style="margin-bottom:10px;">
-             <button class="sa-pull-right mat-raised-button mat-gray mr-15" mat-raised-button (click)="openDialog()" *ngIf= "clinicscount > createdClinicsCount">Add Clinic</button>
-              <button class="sa-pull-right mat-raised-button mat-gray mr-15" mat-raised-button (click)="openLimitDialog()" *ngIf= "clinicscount <= createdClinicsCount">Add Clinic</button>
-            </div>
-        </div>
-
-
-
-        <!--mat-form-field>
+        <mat-form-field>
             <input matInput type='text' class="form-control" placeholder='Type to filter Clinic name...' (keyup)='updateFilter($event)'
             />
-        </mat-form-field-->
-        <div class="ngx_datatable_scroll_div">
-        <ngx-datatable #table class='material responsive-datatable datatable-middle rdt_1600px action-three' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+        </mat-form-field>
+        <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
             [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
-   <!--     <ngx-datatable-column name="Sr">
+      <ngx-datatable-column name="clinicName">
          <ng-template let-column="column" ngx-datatable-header-template>
-        <span>Id</span>
-      </ng-template>
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-          <span>
-             <span class="datatable_label">Id : </span>{{rowIndex+1}}
-          </span>
-        </ng-template>
-      </ngx-datatable-column> -->
-      <ngx-datatable-column name="clinicName"  prop="clinicName">
-         <ng-template let-column="column" ngx-datatable-header-template  let-sort="sortFn" >
-        <span (click)="sort()">Clinic Name</span>
+        <span>Clinic Name</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span title="Double click to edit">
-             <span class="datatable_label">Clinic Name : </span>{{value}}
+          <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'clinicName')" *ngIf="!editing[rowIndex + '-clinicName']">
+            {{value}}
           </span>
           <input autofocus (blur)="updateValue($event, 'clinicName', rowIndex)" *ngIf="editing[rowIndex+ '-clinicName']" type="text" [value]="value"
           />
@@ -46,30 +26,28 @@
        <ngx-datatable-column name="Address">
        
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-          <span>
-             <span class="datatable_label">Address : </span>{{value}}
+          <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'address')" *ngIf="!editing[rowIndex + '-address']">
+            {{value}}
           </span>
-          <input autofocus (blur)="updateValue($event, 'address', rowIndex)" *ngIf="editing[rowIndex+ '-address']" type="text" [value]="value"
+          <input autofocus (blur)="updateValue($event, 'address', rowIndex)" *ngIf="editing[rowIndex+ '-address']" type="text" [value]="value" />
+        </ng-template>
+      </ngx-datatable-column>
+       <ngx-datatable-column name="ContactName">
+         <ng-template let-column="column" ngx-datatable-header-template>
+        <span>Contact Name</span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span title="Double click to edit" (dblclick)="enableEditing(rowIndex,'contactName')" *ngIf="!editing[rowIndex + '-contactName']">
+            {{value}}
+          </span>
+          <input autofocus (blur)="updateValue($event, 'contactName', rowIndex)" *ngIf="editing[rowIndex+ '-contactName']" type="text" [value]="value"
           />
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="PhoneNo">
-        <ng-template let-column="column" ngx-datatable-header-template>
-       <span>Phone Number</span>
-     </ng-template>
-       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-         <span>
-            <span class="datatable_label">Phone Number : </span>
-          {{value}}
-        </span>
-         <input autofocus  pattern="[0-9\s]\s*(\S\s*){7,}" (blur)="updateValue($event, 'phoneNo', rowIndex)" *ngIf="editing[rowIndex+ '-phoneNo']" type="text" [value]="value" oninput="this.value = this.value.slice(0,13);"
-         />
-       </ng-template>
-     </ngx-datatable-column>
       <ngx-datatable-column name="Created">
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span>
-             <span class="datatable_label">Created : </span>{{value| date:'dd-MM-y':'UTC +10'}}
+            {{value| date}}
           </span>
         </ng-template>
       </ngx-datatable-column>
@@ -77,13 +55,16 @@
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Actions</span>
       </ng-template>
-        <ng-template class="actionThree" ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;" >
-          <a [routerLink]="['/clinic-settings',value]" class="textonly action_btn" title= 'Clinic Settings'><span class="material-icons">edit</span></a>
-          <button class="action_btn text-danger" mat-menu-item (click) = "deleteClinic(rowIndex)">
-         <span class="material-icons">delete</span></button>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
+         <!--  <a [routerLink]="['/importcsv']" class="action_btn golden" title= 'Import CSV'><i class="ti-upload"></i></a> -->
+          <a [routerLink]="['/dentist']" class="action_btn golden" title= 'List Dentist'><i class="ti-view-list-alt "></i></a>
+             <a [routerLink]="['/clinic-goals']" class="action_btn golden" title= 'Clinic Goals'><i class="fas fa-stethoscope"></i></a>
+          <a [routerLink]="['/dentist-goals']" class="action_btn golden" title= 'Dentist Goals'><i class="fas fa-tooth"></i></a>
+          <a [routerLink]="['/clinic-settings',value]" class="action_btn golden" title= 'Clinic Settings'><i class="ti-settings  m-r-10"></i></a>
+          <button class="action_btn danger" mat-menu-item (click) = "deleteClinic(rowIndex)">
+         <i class="ti-trash text-danger"></i></button>
         </ng-template>
       </ngx-datatable-column>
         </ngx-datatable>
-            </div>
     </mat-card-content>
 </mat-card>

@@ -1,120 +1,46 @@
-<h1 mat-dialog-title>Add Member Plan</h1>
-<div mat-dialog-content class="sa_forms_design" >
 
-   <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex="49" class="sa-form-group">
-        <label>Member Plan Name</label>
-         <input matInput tabindex="1" [(ngModel)]="data.planName" (keypress)="omit_special_char($event)" placeholder="" [formControl]="form.controls['planName']"  class="form-control-dialog" required="true">
-      <input matInput style="color: #FF0000;" tabindex="1" *ngIf="valplans" [(ngModel)]="valplans" required="true">
-      <small *ngIf="form.controls['planName'].hasError('required') && form.controls['planName'].touched" class="text-danger support-text">Member Plan Name is Required.</small>
-    </div>
-
-    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex="49" class="sa-form-group">
-        <label class="hide-md">&nbsp;</label>
-        <div fxLayout="row wrap">
-    <div fxFlex="48" fxFlex.xs="100">
-        <mat-checkbox [checked]= "data.isFeatured" [(ngModel)]="data.isFeatured" class = "example-margin" >
-            Featured Plan
-        </mat-checkbox>
-      </div>
-    <div fxFlex="48" fxFlex.xs="100">
-        <mat-checkbox [checked]= "data.hidden" [(ngModel)]="data.hidden" class = "example-margin" style="margin-top:-4px!important;">
-           Hide Plan
-        </mat-checkbox>
-      </div>
-    </div>
-    </div>
-   </div>
-
-   <div fxLayout="row wrap" fxLayoutGap="2%">
-
-        <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
-            <label>Description</label>
-            <input matInput tabindex="1" [(ngModel)]="data.description" (keypress)="omit_special_char($event)" placeholder="" [formControl]="form.controls['description']" placeholder="" class="form-control-dialog" required="true">
-              <small *ngIf="form.controls['description'].hasError('required') && form.controls['description'].touched" class="text-danger support-text">Description is Required.</small>
-        </div>
-    </div>
-    <div fxLayout="row wrap" fxLayoutGap="2%">
-
-        <div fxFlex.gt-md="32" fxFlex="100" class="sa-form-group">
-            <label>Membership Cost ($)</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.totalAmount" placeholder="" [formControl]="form.controls['totalAmount']" placeholder=""  class="form-control-dialog" required="true" style="max-width:180px;" (keypress)="numberOnlyNum($event)">
-             <small *ngIf="form.controls['totalAmount'].hasError('required') && form.controls['totalAmount'].touched" class="text-danger support-text">Membership Cost is Required.</small>
-        </div>
-
-        <div fxFlex.gt-md="28" fxFlex="100" class="sa-form-group">
-            <div class="duration width-full ">
-                <label>&nbsp;</label>
-                <div class="btn-group sa-pull-left ">
-          <span class="position-relative btn-switch ">
-           <input type="radio" id="same1" name="planLength" [(ngModel)]="data.planLength" value="MONTHLY">
-          <label class="active-duration" for="same1">Monthly</label>
-           </span>
-           <span class="position-relative btn-switch ">
-          <input type="radio" id="same2" name="planLength" [(ngModel)]="data.planLength"  value="YEARLY">
-            <label class="active-duration" for="same2">Yearly</label>
-          </span>
-                </div>
-            </div>
-        </div>
-
-        <div fxFlex.gt-md="36" fxFlex="100" class="sa-form-group">
-            <label>Discount for family members %</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.discount" [formControl]="form.controls['discount']" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px;" (keypress)="numberOnlyNum($event)">
-            <small *ngIf="form.controls['discount'].hasError('required') && form.controls['discount'].touched" class="text-danger support-text">Discount for family members is Required.</small>
-        </div>
-    </div>
-
-    <div fxLayout="row wrap" fxLayoutGap="2%">
-        <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-            <label>#Free Preventative Appts</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_frequency" [formControl]="form.controls['preventative_frequency']" class="form-control" min="1" max="100" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px; float:left; margin-right:10px;" (keypress)="numberOnly($event)"> <span style="float:left; margin-top:7px;">Per year</span>
-             <small *ngIf="form.controls['preventative_frequency'].hasError('required') && form.controls['preventative_frequency'].touched" class="text-danger support-text">Free Preventative Appts is Required.</small>
-        </div>
-        <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-            <label>Treatment Discount %</label>
-            <input matInput tabindex="1" type="number" [(ngModel)]="data.preventative_discount" [formControl]="form.controls['preventative_discount']" class="form-control" min="1" max="100"  onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" placeholder=""  class="form-control-dialog" required="true" style="max-width:80px;" (keypress)="numberOnlyNum($event)">
-            <small *ngIf="form.controls['preventative_discount'].hasError('required') && form.controls['preventative_discount'].touched" class="text-danger support-text">Treatment Discount is Required.</small>
-        </div>
-    </div>
-
-   <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
-      <div class="width-full">
-         <label>Free Preventative Appt inclusions</label>
-         <angular2-multiselect [data]="data.preventative_plan" [(ngModel)]="data.preventative_plan_selected" [settings]="data.dropdownSettings"></angular2-multiselect>
-      </div>
-    </div>
-   </div>
-
-
-   <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
-      <div class="width-full">
-         <label>Treatment Discount Inclusions</label>
-        <angular2-multiselect [data]="data.treatment_inclusions" [(ngModel)]="data.treatment_inclusions_selected"   
-    [settings]="data.dropdownSettings"    (onSelect)="onItemSelect($event,'inclusions',data)" 
-    (onDeSelect)="OnItemDeSelect($event,'inclusions',data)"></angular2-multiselect>
-      </div>
-    </div>
+<h1 mat-dialog-title>Add plan</h1>
+<div mat-dialog-content class="sa_forms_design">
+ 
+ <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.xs="0"> 
+   <div fxFlex="calc(49% - 10px)" fxFlex.xs="100">
+  <div class="sa-form-group">
+    <label>Plan Name</label>
+    <input tabindex="1" [(ngModel)]="data.plan" class="form-control" required="true" placeholder="" >
   </div>
-    <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="100" fxFlex="100" class="sa-form-group">
-         <div class="width-full">
-         <label>Treatment Discount Exclusions</label>
-        <angular2-multiselect [data]="data.treatment_inclusions" [(ngModel)]="data.treatment_exclusions_selected"   
-    [settings]="data.dropdownSettings"  (onSelect)="onItemSelect($event,'exclusions',data)" 
-    (onDeSelect)="OnItemDeSelect($event,'exclusions',data)"></angular2-multiselect>
-      </div>
-    </div>
-   </div>
 
+   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.xs="0"> 
+   <div fxFlex="calc(69% - 10px)" fxFlex.xs="100">
+  <div class="sa-form-group">
+    <label>Allowed Clinics</label>
+    <input tabindex="1" [(ngModel)]="data.allowedClinics" class="form-control" required="true" placeholder="">
+  </div>
+</div>
+<div fxFlex="calc(29% - 10px)" fxFlex.xs="100">
+<div class="sa-form-group">
+    <label>Amount($)</label>
+    <input tabindex="1" [(ngModel)]="data.amount" class="form-control" required="true"  placeholder="">
+  </div>
+</div>
 
+  </div>
+</div>
+   <div fxFlex="calc(49% - 10px)" fxFlex.xs="100">
+  <div class="sa-form-group">
+    <label>Description <small>(Please press enter after each line)</small></label>
+    <textarea tabindex="1" [(ngModel)]="data.description" class="form-control" required="true" placeholder=""></textarea>
+  </div>
+</div>
+</div>
+  
 
+<!--   
+  <mat-form-field>
+    <input matInput tabindex="1" [(ngModel)]="data.discount" class="form-control" required="true" placeholder="Discount">
+  </mat-form-field> -->
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
-<div mat-dialog-actions class="sa-pull-right">
-  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc" [disabled]="!form.valid">OK</button>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-
+<div mat-dialog-actions>
+  <button mat-button (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
 </div>

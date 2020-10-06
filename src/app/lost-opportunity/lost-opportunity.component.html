@@ -1,0 +1,49 @@
+
+<mat-card >
+	<mat-card-content>
+		<input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
+		<input type="text" id="page_title" value="Lost Opportunity" [style.display]="'none'">
+		<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
+			<div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+				<div class="lo-content">
+					<ul>
+						<li><span class="left-lo-content">Total Discounts:</span> <span class="right-lo-content" id="TotalDiscounts">${{ discounts }} <small id="TotalDiscountsImprovement">${{ discountsImp }} improvement</small></span></li>
+						<li> <span class="left-lo-content">Collection vs Production:</span> <span class="right-lo-content" id="CollectionProduction">$ {{ collectionProduction }} <small id="CollectionProductionImprovement">${{ collectionProductionImp }} improvement </small></span></li>
+						<li><span class="left-lo-content">Case Acceptance:</span> <span class="right-lo-content" id="CaseAcceptance">${{ caseAcceptance }}<small id="CaseAcceptanceImprovement">${{ caseAcceptanceImp }}  improvement</small></span></li>
+					</ul>
+					<p>Total Lost Opportunity: <span  id="TotalLostOpportunity">${{ lostOpportunity }}</span></p>
+					<p>Total Production: <span id="TotalProduction">${{ production }}<small id="TotalProductionImproment">+${{ productionImp }}</small></span></p>
+				</div>
+			</div>
+			<div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="text-center">
+				<img src="./assets/images/lost-opportunity.png" alt="">
+			</div>
+		</div>
+		<div class="card-loading" *ngIf="isLoading">
+	<img class="tableLoader" src="../../assets/images/loader.gif">
+</div>
+	</mat-card-content>
+</mat-card>
+
+<mat-card >
+	<mat-card-content>
+		<div class="lo-slider">
+			<h4>{{ improvement }}% improvement</h4>
+				<mat-slider #mySlider min="0" max="100" step="10" value="{{ improvement }}" (slideend)="sliderOnChange(mySlider.value)"
+  (pointerup)="sliderOnChange(mySlider.value)"  (input)="sliderOnChange(mySlider.value)"></mat-slider>
+				<ul>
+					<li style="left:0%;">0</li>
+					<li style="left:10%;">10</li>
+					<li style="left:20%;">20</li>
+					<li style="left:30%;">30</li>
+					<li style="left:40%;">40</li>
+					<li style="left:50%;">50</li>
+					<li style="left:60%;">60</li>
+					<li style="left:70%;">70</li>
+					<li style="left:80%;">80</li>
+					<li style="left:90%;">90</li>
+					<li style="left:100%;">100</li>
+				</ul>
+        </div>
+	</mat-card-content>
+ </mat-card>

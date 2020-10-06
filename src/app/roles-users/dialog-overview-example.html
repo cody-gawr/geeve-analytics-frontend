@@ -1,36 +1,36 @@
 <div class="AddUserPopup"> 
 <h1 mat-dialog-title>Add User</h1>
 <div mat-dialog-content class="sa_forms_design">
-
- <div fxLayout="row wrap" fxLayoutGap="2%">
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-        <label>Display Name</label>
-         <input tabindex="1" class="form-control-dialog" (keypress)="omit_special_char($event)" [formControl]="form.controls['display_name']" [(ngModel)]="data.display_name" placeholder="">
-         <small *ngIf="form.controls['display_name'].hasError('required') && form.controls['display_name'].touched" class="text-danger support-text">Display Name is Required.</small>
-    </div>
-    <div fxFlex.gt-md="49" fxFlex="100" class="sa-form-group">
-         <label>Email</label>
-    <input tabindex="1" class="form-control-dialog" [(ngModel)]="data.email" placeholder="" [formControl]="form.controls['email']">
-     <small *ngIf="form.controls['email'].errors?.email && form.controls['email'].touched" class="text-danger support-text">You must include a valid email address.</small>
-    </div>
-
-   </div>
-
-  <div class="selectIcon">
-    <label>User Type</label>
-     <select class="form-control-dialog" required="true" class="sa_select form-control" name="user_type" [(ngModel)]="data.user_type" [formControl]="form.controls['user_type']">
-      <option value ="" selected>Select User Type</option>
-      <option value ="3">Receptionist</option>
-      <option value ="4">Manager</option>
+  <div class="sa-form-group">
+    <label>Display Name</label>
+    <input tabindex="1" [(ngModel)]="data.display_name"  class="mat-form-control" required="true"placeholder="">
+  </div>
+  <div class="sa-form-group">
+    <label>Email</label>
+    <input matInput type="email" tabindex="1" [(ngModel)]="data.email"  class="mat-form-control" required="true"placeholder="">
+  </div>
+  <div class="sa-form-group">
+    <label>Select User Type</label>
+     <select required="true" class="sa_select mat-form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
+      <!--<option value ="Select User Type" selected></option>-->
+      <option value ="3">Practice Manager</option>
+      <option value ="4">Clinician</option>
+      <option value ="5">Staff</option>
    </select> 
- </div>
- <small *ngIf="form.controls['user_type'].hasError('required') && form.controls['user_type'].touched" class="text-danger support-text">User Type is Required.</small>
-
+</div>
+<div class="sa-form-group" *ngIf="show_dentist == true">
+  <label>Select Dentist</label>
+  <select class="sa_select sa_select_set_roles mat-form-control" name="dentist_id" required="true" [(ngModel)]="data.dentist_id" >
+      <!--<option value ="Select Dentist" selected="true"></option>-->
+      <option *ngFor="let dentist of data.dentists" value ="{{dentist.providerId}}">{{dentist.name}}</option>
+   </select> 
+ 
    <input type='hidden' tabindex="1" [(ngModel)]="data.password"  placeholder="Email">
   <!--  <input type="file" (change)="onChange($event)"> -->
 </div>
-<div mat-dialog-actions class="sa-pull-right">
-  <button mat-button (click)="save(data)"   tabindex="2" class="mat-raised-button mat-dc" [disabled]="!form.valid">OK</button>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
 </div>
 </div>

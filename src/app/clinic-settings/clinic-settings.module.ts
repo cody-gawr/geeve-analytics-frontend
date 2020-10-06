@@ -13,14 +13,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
-import { ClinicSettingsComponent,DialogOverviewExampleDialogComponent } from './clinic-settings.component';
+import { ClinicSettingsComponent } from './clinic-settings.component';
 
 import { ClinicSettingsService } from './clinic-settings.service';
-
-import { AngularFileUploaderModule } from "angular-file-uploader";
-
-import { NgxEditorModule } from 'ngx-editor';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -33,19 +28,13 @@ import { NgxEditorModule } from 'ngx-editor';
     FileUploadModule,
     MatTreeModule,
     MatDatepickerModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    AngularFileUploaderModule,
-    NgxEditorModule
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
-    ClinicSettingsService,DialogOverviewExampleDialogComponent
+    ClinicSettingsService
   ],
   declarations: [
-    ClinicSettingsComponent,DialogOverviewExampleDialogComponent
-  ],
-  entryComponents: [DialogOverviewExampleDialogComponent]
+    ClinicSettingsComponent
+  ]
 })
-
-
-
 export class ClinicSettingsModule {}

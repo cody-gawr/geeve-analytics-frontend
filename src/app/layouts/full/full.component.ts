@@ -64,8 +64,8 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     document.addEventListener("fullscreenchange", this.onFullScreenChange, false);
-    document.addEventListener("webkitfullscreenchange", this.onFullScreenChange, false);
-    document.addEventListener("mozfullscreenchange", this.onFullScreenChange, false);
+document.addEventListener("webkitfullscreenchange", this.onFullScreenChange, false);
+document.addEventListener("mozfullscreenchange", this.onFullScreenChange, false);
   }
 
   ngOnDestroy(): void {
@@ -97,7 +97,6 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   //this.location.go(this.finalUrl+value);
  }
  private getClinics() { 
-  console.log('full');
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;

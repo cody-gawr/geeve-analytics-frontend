@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { RolesUsersService } from '../../roles-users/roles-users.service';
 
 import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, Pipe, PipeTransform, ViewChild, ElementRef  } from '@angular/core';
+import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe } from '@angular/common';
 import {
   FormControl,
@@ -64,17 +65,43 @@ const MENUITEMS = [
       { state: 'dashboard2', name: 'Dashboard 2', type: 'link' }
     ]
   },*/
-
-  // {
-  //   state: 'dashboards',
-  //   name: 'Dashboards',
-  //   type: 'sub-dashboards',
-  //   icon: 'fas fa-chart-area',
-  //   children: [
-  //     { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', param : '1'}
-  //   ],
-  //   param: '1'
-  // },  
+  {
+    state: 'healthscreen',
+    name: 'Health Screen',
+    type: 'link-healthscreen',
+    icon: 'fas fa-home',
+    role:['2'],
+    param2 : 'dashboards',
+  },{
+    state: 'lost-opportunity',
+    name: 'Lost Opportunity',
+    type: 'link-lost-opportunity',
+    icon: 'fas fa-arrow-up',
+    role:['2'],
+    param2 : '',
+  },
+   {
+    state: 'morning-huddle',
+    name: 'Morning Huddle',
+    type: 'link-morning-huddle',
+    icon: 'fas fa-sun',
+    role:['2'],
+     param2 : 'dashboards',
+  },
+  {
+    state: 'dashboards',
+    name: 'Dashboards',
+    type: 'sub-dashboards',
+    icon: 'fas fa-chart-area',
+    children: [
+      { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link'},
+      { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link'},
+      { state: 'frontdesk', name: 'Front Desk', type: 'link'}, 
+      { state: 'marketing', name: 'Marketing', type: 'link'}, 
+      { state: 'finances', name: 'Finances', type: 'link' , icon: ''}
+    ],
+    param: '1'
+  },  
   {
     state: 'clinic',
     name: 'Clinics',
@@ -87,7 +114,6 @@ const MENUITEMS = [
     name: 'Dentists',
     type: 'link',
     icon: 'fas fa-tooth',
-    param : '1',
     role:['2']
   },
   {
@@ -99,68 +125,44 @@ const MENUITEMS = [
   },
   {
     state: 'plans',
-    name: 'Member Plans',
+    name: 'Subscription Plans',
     type: 'link-noparam',
     icon: 'fas fa-receipt',
-    role:['2']
+    role:['1']
 
   },
   {
-    state: 'payment-plan',
-    name: 'In office Plans',
-    type: 'link-noparam',
-    icon: 'fas fa-receipt',
-    role:['2']
-
-  },
-  {
-
-    state: 'defaulters',
-    name: 'Defaulters',
-    type: 'link-noparam',
-    icon: 'fas fa-user-tag',
-    role:['2']
-
-  },
-   {
-    state: 'treatments',
-    name: 'Treatments',
+    state: 'roles-users',
+    name: 'Roles Management',
     type: 'link',
     icon: 'fas fa-user-tag',
-    param: '1',
     role:['2']
 
   },
-  // {
-  //   state: 'roles-users',
-  //   name: 'Roles Management',
-  //   type: 'link',
-  //   icon: 'fas fa-user-tag',
-  //   param: '1',
-  //   role:['2']
-
-  // },
   {
     state: '',
     name: 'Goals',
     type: 'sub-child',
     icon: 'fas fa-medal',
     children: [
-      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link', param : '1'},
-      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link', param : '1' }
+      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
+      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link' }
 
     ],
-    param: '1',
     role:['1','2']
-
   },
-
+  {
+    state: 'importcsv',
+    name: 'Data Upload',
+    type: 'link',
+    icon: 'fas fa-upload',
+    role:['2']
+  },
   {
     state: 'profile-settings',
-    name: 'Profile',
+    name: 'Profile Settings',
     type: 'link',
     icon: 'fas fa-user-cog',
-    param : '1',
     role:['1','2']
 
   },
@@ -327,103 +329,147 @@ const MENUITEMS = [
 @Injectable()
 export class MenuItems {
   constructor(private rolesUsersService: RolesUsersService) {
+
     this.getRoles();
-    
   }
   getMenuitem(): Menu[] {
     return this.menu;
   }
-   public MENUITEMS;
-   public dashboards=['2'];
-   public memberships=['2'];
-   public paymentplans=['2'];
-   public defaulters=['2'];
-
-   public rolesusers=['2'];
-   public profilesettings=['2'];
+  public MENUITEMS;
+  public dashboard1role=['1','2'];
+ public dashboard2role=['1','2'];
+ public dashboard3role=['1','2'];
+ public dashboard4role=['1','2'];
+ public dashboard5role=['1','2'];
   public menu = [
-  
+  {
+    state: 'healthscreen',
+    name: 'Health Screen',
+    type: 'link-healthscreen',
+    icon: 'fas fa-home',
+    role:['2'],
+    param2 : 'dashboards',
+  },
+  {
+    state: 'lost-opportunity',
+    name: 'Lost Opportunity',
+    type: 'link-lost-opportunity',
+    icon: 'fas fa-arrow-up',
+    role:['2'],
+    param2 : '',
+  },
+  {
+    state: 'morning-huddle',
+    name: 'Morning Huddle',
+    type: 'link-morning-huddle',
+    icon: 'fas fa-sun',
+    role:['2'],
+     param2 : 'dashboards',
+  }, 
   {
     state: 'dashboards',
     name: 'Dashboards',
-    type: 'link-noparam',
+    type: 'sub-dashboards',
     icon: 'fas fa-chart-area',
-    role:this.dashboards
+    children: [
+      { state: 'cliniciananalysis', name: 'Clinician Analysis', type: 'link', role:this.dashboard1role},
+      { state: 'clinicianproceedures', name: 'Clinician Procedures & Referrals', type: 'link', role:this.dashboard2role},
+      { state: 'frontdesk', name: 'Front Desk', type: 'link', role:this.dashboard3role}, 
+      { state: 'marketing', name: 'Marketing', type: 'link', role:this.dashboard4role}, 
+      { state: 'finances', name: 'Finances', type: 'link' , icon: '', role:this.dashboard5role}
+    ],
+    role:['2','3','4','5']
 
   },  
   {
+    state: 'clinic',
+    name: 'Clinics',
+    type: 'link-noparam',
+    icon: 'fas fa-home',
+    role:['2']
+  },
+  {
+    state: 'dentist',
+    name: 'Dentists',
+    type: 'link-noparam',
+    icon: 'fas fa-tooth',
+    role:['2']
+  },
+  {
     state: 'users',
-    name: 'Registered Users',
+    name: 'Registered Clinic Owners',
     type: 'link-noparam',
     icon: 'fas fa-users',
     role:['1']
   },
   {
-    state: 'members',
-    name: 'Memberships', //Member Plans
+    state: 'plans',
+    name: 'Subscription Plans',
     type: 'link-noparam',
     icon: 'fas fa-receipt',
-    role:this.memberships
-  },
-  {
-    state: 'payment-plan',
-    name: 'Payment Plans', //In office Plans
-    type: 'link-noparam',
-    icon: 'fas fa-file-invoice',
-    role:this.paymentplans
-  },
-  {
-    state: 'defaulters',
-    name: 'Defaulters',
-    type: 'link-noparam',
-    icon: 'fas fa-user-times',
-    role:this.defaulters
-    },
-  {
+    role:['1']
 
+  },
+  {
     state: 'roles-users',
-    name: 'Users',
+    name: 'Roles Management',
     type: 'link',
     icon: 'fas fa-user-tag',
-    param: '1',
-    role:this.rolesusers
+    role:['2']
+
   },
   {
-    state: 'profile-settings',
-    name: 'Settings',
+    state: '',
+    name: 'Goals',
     type: 'sub-child',
-    icon: 'fas fa-user-cog',
+    icon: 'fas fa-medal',
     children: [
-      { state: 'profile-settings', name: 'Profile', type: 'link',param : '1'},
-      { state: 'plans', name: 'Membership Plans', type: 'link',param : ''},
-      { state: 'clinic', name: 'Clinics', type: 'link',param : ''}
-    ],
-    role:this.profilesettings
-  }
-];
+      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
+      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link'}
 
+    ],
+    role:['1','2']
+
+  },
+/*  {
+    state: 'importcsv',
+    name: 'Data Upload',
+    type: 'link-noparam',
+    icon: 'fas fa-upload',
+    role:['2']
+  }, */
+  {
+    state: 'profile-settings',
+    name: 'Profile Settings',
+    type: 'link-noparam',
+    icon: 'fas fa-user-cog',
+    role:['2','3','4','5']
+
+  },
+];
   getRoles() {      
    this.rolesUsersService.getRoles().subscribe((res) => {
        if(res.message == 'success'){ 
          res.data.forEach(result => {
-          if(result.role_id != '1') {
-            var roles = result.permisions.split(',');
-            if(roles.includes("dashboards")) 
-              this.dashboards.push(result.role_id.toString());
-            if(roles.includes("roles")) 
-              this.rolesusers.push(result.role_id.toString());
-            if(roles.includes("paymentplans")) 
-              this.paymentplans.push(result.role_id.toString());
-            if(roles.includes("memberships")) 
-              this.memberships.push(result.role_id.toString());
-            if(roles.includes("defaulters")) 
-              this.defaulters.push(result.role_id.toString());
-            if(roles.includes("settings")) 
-              this.profilesettings.push(result.role_id.toString());
+          if(result.id != '1') {
+            var dashboards = result.permisions.split(',');
+            if(dashboards.includes("dashboard1")) 
+              this.dashboard1role.push(result.role_id.toString());
+            if(dashboards.includes("dashboard2")) 
+              this.dashboard2role.push(result.role_id.toString());
+            if(dashboards.includes("dashboard3")) 
+              this.dashboard3role.push(result.role_id.toString());
+            if(dashboards.includes("dashboard4")) 
+              this.dashboard4role.push(result.role_id.toString());
+            if(dashboards.includes("dashboard5")) 
+              this.dashboard5role.push(result.role_id.toString());
           }
          });
+         console.log(this.dashboard1role, this.dashboard2role, this.dashboard3role, this.dashboard4role, this.dashboard5role);
        }
     }, error => {
     });
+
   }
+
 }

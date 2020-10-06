@@ -1,0 +1,262 @@
+<!-- ============================================================== -->
+<!-- Card Grid-->
+<!-- ============================================================== -->
+ <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
+<div fxLayout="row wrap">
+    <div fxFlex.gt-sm="100" fxFlex="100">
+        <mat-card>
+            
+            <mat-card-content>
+                <mat-card-title>Clinic Goals</mat-card-title>
+                <!-- ============================================================== -->
+                <!-- column -->
+                <!-- ============================================================== -->
+                <div fxLayout="row wrap">
+                    <!-- Card column -->
+                    <div fxFlex.gt-sm="100%" fxFlex="100" class="sa_mattabs_design sa_matforms_design">
+
+                        <form [formGroup]="form" class="basic-form" (ngSubmit)="onSubmit()">
+
+                            <mat-tab-group dynamicHeight>
+                                <mat-tab label="Clinician Analysis">
+                                    <div class="example-small-box">
+                                            <div class="matInput-form-group">
+                                            <!-- column -->
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+
+                                                    <input matInput placeholder="Dentist Production value" [formControl]="form.controls['dentistprod']" [(ngModel)]= "dentistprod">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Treatment Plan Completion Rate (%) value" [formControl]="form.controls['treatmentplan']" [(ngModel)]="treatmentplan">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Treatment Plan Average Cost value" [formControl]="form.controls['planaverage']" [(ngModel)]="planaverage">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Recall Prebook Rate value" [formControl]="form.controls['recallrate']" [(ngModel)]="recallrate">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Treatment Prebook Rate value" [formControl]="form.controls['rebookrate']" [(ngModel)]="rebookrate">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="No. Patient Complaints value" [formControl]="form.controls['patientcomplaints']" [(ngModel)]="patientcomplaints">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Hourly Rate value" [formControl]="form.controls['hourlyrate']" [(ngModel)]="hourlyrate">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="No. New Patients  value" [formControl]="form.controls['newpatients']" [(ngModel)]="newpatients">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                         <button class="m-l-10" mat-raised-button color="dc" type="submit">Submit</button>
+                                        <!-- column -->
+                                    </div>
+                                </mat-tab>
+
+
+                                <mat-tab label="Clinician Procedures & Referrals">
+                                    <div class="example-small-box">
+                                            <div class="matInput-form-group">
+                                            <!-- column -->
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Items Predictor Analysis  value" [formControl]="form.controls['itempredictor']" [(ngModel)]= "itempredictor">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Predictor Ratio 1: (Crown to Large Filling Ratio) value" [formControl]="form.controls['ratio1']" [(ngModel)]="ratio1">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Predictor Ratio 2: (Extraction to RCT Ratio) value" [formControl]="form.controls['ratio2']" [(ngModel)]="ratio2">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Predictor Ratio 3: (RCT Conversion Ratio) value" [formControl]="form.controls['ratio3']" [(ngModel)]="ratio3">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Total Revenue of Clinician Per Procedure value" [formControl]="form.controls['totalrevenue']" [(ngModel)]="totalrevenue">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Referral to Other Clinicians Internal / External value" [formControl]="form.controls['referralclinician']" [(ngModel)]="referralclinician">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                            <button class="m-l-10" mat-raised-button color="dc" type="submit">Submit</button>
+                                        <!-- column -->
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Front Desk">
+                                    <div class="example-small-box ">
+                                            <div class="matInput-form-group">
+                                            <!-- column -->
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Items Predictor Analysis  value" [formControl]="form.controls['utilisationrate']" [(ngModel)]= "utilisationrate">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Recall prebook rate (%) value" [formControl]="form.controls['recallprebook']" [(ngModel)]="recallprebook">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Treatment prebook rate (%) value" [formControl]="form.controls['treatmentprebook']" [(ngModel)]="treatmentprebook">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="FTA ratio (%) value" [formControl]="form.controls['fta']" [(ngModel)]="fta">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="UTA ratio (%) value" [formControl]="form.controls['uta']" [(ngModel)]="uta">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Number of Ticks value" [formControl]="form.controls['noticks']" [(ngModel)]="noticks">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Recall Attendance Rate value" [formControl]="form.controls['attendancerate']" [(ngModel)]="attendancerate">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                            <button class="m-l-10" mat-raised-button color="dc" type="submit">Submit</button>
+                                        <!-- column -->
+                                    </div>
+                                </mat-tab>
+
+                                <mat-tab label="Marketing">
+                                    <div class="example-small-box">
+                                            <div class="matInput-form-group">
+                                            <!-- column -->
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="No. New Patients By Referral  value" [formControl]="form.controls['referralpatient']" [(ngModel)]= "referralpatient">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Revenue by Referral value" [formControl]="form.controls['revenuereferral']" [(ngModel)]="revenuereferral">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Total Visits value" [formControl]="form.controls['visits']" [(ngModel)]="visits">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="No. New Patients value" [formControl]="form.controls['newpatients2']" [(ngModel)]="newpatients2">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+
+                                                    <input matInput placeholder="Cost of New Patient Acquisition value" [formControl]="form.controls['patientcost']" [(ngModel)]="patientcost">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                            <button class="m-l-10" mat-raised-button color="dc" type="submit">Submit</button>
+                                        <!-- column -->
+                                    </div>
+                                </mat-tab>
+
+                                <mat-tab label="Finances">
+                                    <div class="example-small-box">
+                                            <div class="matInput-form-group">
+                                            <!-- column -->
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Net Profit value" [formControl]="form.controls['netprofit']" [(ngModel)]= "netprofit">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Net Profit % (Xero) value" [formControl]="form.controls['netprofitxero']" [(ngModel)]="netprofitxero">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Net Profit % (PMS) value" [formControl]="form.controls['netprofitpms']" [(ngModel)]="netprofitpms">
+                                                </mat-form-field>                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Expenses value" [formControl]="form.controls['expenses']" [(ngModel)]="expenses">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="% of Production By Clinician value" [formControl]="form.controls['productionclinician']" [(ngModel)]="productionclinician">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Total Production value" [formControl]="form.controls['totalproduction']" [(ngModel)]="totalproduction">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Collection value" [formControl]="form.controls['collection']" [(ngModel)]="collection">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Production Per Visit value" [formControl]="form.controls['visitproduction']" [(ngModel)]="visitproduction">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Total Discounts value" [formControl]="form.controls['discount']" [(ngModel)]="discount">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="sa-form-group">
+                                                <mat-form-field>
+                                                    <input matInput placeholder="Overdue Accounts value" [formControl]="form.controls['overdueaccount']" [(ngModel)]="overdueaccount">
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                            <button class="m-l-10" mat-raised-button color="dc" type="submit">Submit</button>
+                                        <!-- column -->
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </form>
+
+
+
+                    </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

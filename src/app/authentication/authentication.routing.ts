@@ -9,7 +9,7 @@ import { ResetComponent } from './reset/reset.component';
 export const AuthenticationRoutes: Routes = [
   {
     path: '',
-    children: [ 
+    children: [
       {
         path: '404',
         component: ErrorComponent

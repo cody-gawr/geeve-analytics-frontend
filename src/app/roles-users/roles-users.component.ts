@@ -5,18 +5,7 @@ import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
-import { NotifierService } from 'angular-notifier';
-import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
-
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl
-} from '@angular/forms';
-import { CustomValidators } from 'ng2-validation';
-import { HeaderService } from '../layouts/full/header/header.service';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -25,22 +14,12 @@ import { HeaderService } from '../layouts/full/header/header.service';
 
 export class DialogOverviewExampleDialogComponent {
    public clinic_id:any ={};
-   public form: FormGroup;
+show_dentist = false;
 
-   show_dentist = false;
-
-  constructor(private fb: FormBuilder,
-    private toastr: ToastrService,
+  constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-
-     this.form = this.fb.group({
-      display_name: [null, Validators.compose([Validators.required])],
-      email: [null, Validators.compose([Validators.required, CustomValidators.email])],
-      user_type: [null, Validators.compose([Validators.required])],
-    });
-  }
+  ) {}
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -51,32 +30,12 @@ export class DialogOverviewExampleDialogComponent {
       if(val == '4')
         this.show_dentist = true;
     }
-
-      omit_special_char(event)
-      {   
-         var k;  
-         k = event.charCode;  //         k = event.keyCode;  (Both can be used)
-         return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57) || k==45); 
+    save(data) {
+    $('.mat-form-control').click();
+    if(data.display_name != undefined && data.email != undefined && data.user_type != ''  ){
+        this.dialogRef.close(data);
       }
-
-     save(data) {
-
-       $('.form-control-dialog').each(function(){
-          var likeElement = $(this).click();
-       });
-       var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      if(!data.email.match(mailformat) && data.email != '')
-      {
-      alert('Please enter a valid Email.');
-       return false;
-      }
-      if(data.display_name != undefined && data.email != undefined  && data.user_type != undefined ){
-          this.dialogRef.close(data);
-      }else{
-        return false;
-       }
-     }
-
+    }
 }
 
 @Component({
@@ -88,17 +47,10 @@ export class DialogOverviewExampleDialogComponent {
 export class RolesOverviewExampleDialogComponent {
    public clinic_id:any ={};
   constructor(
-    public rolesRef: MatDialogRef<RolesOverviewExampleDialogComponent>,private toastr: ToastrService,
+    public rolesRef: MatDialogRef<RolesOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-      
-  }
-  omit_special_char(event)
-{   
-   var k;  
-   k = event.charCode;  //         k = event.keyCode;  (Both can be used)
-   return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57) || k==45); 
-}
+  ) {}
+
   onNoClick(): void {
     this.rolesRef.close();
   }
@@ -121,47 +73,31 @@ const data: any = require('assets/company.json');
   styleUrls: ['./roles-users.component.scss']
 })
 export class RolesUsersComponent implements AfterViewInit {
- display_name: string;
- email: string;
- notifier:any;
- user_type='';
- fileInput: any ;
- public clinic_id;
- dentist_id = '';
- password:string;
- dentists:any=[];
-  private checkPermission(role) { 
-  this.headerService.checkPermission(role).subscribe((res) => {
-       if(res.message == 'success'){
-       }
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-              this.router.navigateByUrl('/login');
-           }
-    }, error => {
-        $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
-    }    
-    );
-
+  display_name: string;
+  email: string;
+  user_type='';
+  fileInput: any ;
+  public clinic_id;
+  dentist_id = '';
+password:string;
+dentists:any=[];
+initiate_clinic() {
+    var val = $('#currentClinic').attr('cid');
+    this.clinic_id = val;
+     this.getUsers();
+    this.getRoles();
+    this.getDentists();
   }
   ngAfterViewInit() {
-    this.checkPermission('roles');
-    $('.header_filters').addClass('hide_header');
-    
-    this.getUsers();
-    this.getRoles();
- //   this.getDentists();
+    $('.header_filters').removeClass('hide_header'); 
+    $('.header_filters').removeClass('flex_direct_mar'); 
+    this.initiate_clinic();
+
     this.clinic_id = this.route.snapshot.paramMap.get("id");
         $('#title').html('Users');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
-        $('.sa_heading_bar').show();
-        
   }
   editing = {};
   rows = [];
@@ -173,8 +109,7 @@ export class RolesUsersComponent implements AfterViewInit {
   columns = [{ prop: 'sr' }, { name: 'displayName' }, { name: 'email' }, { name: 'usertype' }, { name: 'created' }];
 
   @ViewChild(RolesUsersComponent) table: RolesUsersComponent;
-  constructor(private toastr: ToastrService,notifierService: NotifierService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService,  private headerService: HeaderService) {
-    this.notifier = notifierService;
+  constructor(private toastr: ToastrService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService) {
     this.rows = data;
     this.temp = [...data];
     setTimeout(() => {
@@ -182,13 +117,10 @@ export class RolesUsersComponent implements AfterViewInit {
     }, 1500);
   }
   private warningMessage: string;
-  goBack() {
-      window.history.back();
-  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-      width: '250px',
+       width: '400px',
       data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,dentist_id:this.dentist_id }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -198,18 +130,17 @@ export class RolesUsersComponent implements AfterViewInit {
            if(res.data <=0)
            this.add_user(result.display_name, result.email, result.user_type, 'jeeveanalytics',this.clinic_id,result.dentist_id);
             else
-            this.notifier.notify( 'success', 'Email Already Exists!' ,'vertical');
+           this.toastr.error("Email Already Exists!");
            }
         }, error => {
-         $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
+      this.warningMessage = "Please Provide Valid Inputs!";
     });
    }
     });
   }
   openRoleDialog(): void {
     const rolesRef = this.dialog.open(RolesOverviewExampleDialogComponent, {
-      width: '250px',
+     width: '600px',
       data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password, roles:this.roles, selectedRole:this.selectedRole, selected_id:this.selected_id,dentists:this.dentists}
     });
     const sub = rolesRef.componentInstance.onAdd.subscribe((val) => {
@@ -218,37 +149,33 @@ export class RolesUsersComponent implements AfterViewInit {
     rolesRef.afterClosed().subscribe(result => {
      if(result != undefined) {
       this.roles.forEach(res1 => {
-        console.log(res1.id);
           var checkedRoles1='';
           var checkedRoles =[];
-          if(result.selectedRole['dashboards_'+res1.id])
-            checkedRoles.push('dashboards');
-           if(result.selectedRole['roles_'+res1.id])
-            checkedRoles.push('roles');
-           if(result.selectedRole['settings_'+res1.id])
-            checkedRoles.push('settings');
-           if(result.selectedRole['memberships_'+res1.id])
-            checkedRoles.push('memberships');
-          if(result.selectedRole['paymentplans_'+res1.id])
-            checkedRoles.push('paymentplans');
-           if(result.selectedRole['defaulters_'+res1.id])
-            checkedRoles.push('defaulters');
+          if(result.selectedRole['dashboard1_'+res1.id])
+            checkedRoles.push('dashboard1');
+           if(result.selectedRole['dashboard2_'+res1.id])
+            checkedRoles.push('dashboard2');
+           if(result.selectedRole['dashboard3_'+res1.id])
+            checkedRoles.push('dashboard3');
+           if(result.selectedRole['dashboard4_'+res1.id])
+            checkedRoles.push('dashboard4');
+           if(result.selectedRole['dashboard5_'+res1.id])
+            checkedRoles.push('dashboard5');
             var checkedRoles1 = checkedRoles.join();
               this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
                  if(res.message == 'success'){
-                  this.toastr.success('Permissions Saved .');
+                  this.toastr.success('Permissions Saved!');
                   this.getRoles();
                  }
               }, error => {
-                   $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
+                this.warningMessage = "Please Provide Valid Inputs!";
               });
          });
     }
     });
   }
     // Get Dentist
- getDentists() {
+    getDentists() {
       this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
            if(res.message == 'success'){
             res.data.forEach(result => {
@@ -258,15 +185,8 @@ export class RolesUsersComponent implements AfterViewInit {
             this.dentists.push(temp);
             });
            }
-            else if(res.status == '401'){
-            this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
         }, error => {
-             $('.ajax-loader').hide(); 
+          this.warningMessage = "Please Provide Valid Inputs!";
         }    
         );
   }
@@ -274,38 +194,26 @@ export class RolesUsersComponent implements AfterViewInit {
   add_user(display_name, email, user_type, password,clinic_id,dentist_id) {
   if(dentist_id =='' || dentist_id == undefined)
     dentist_id ='';
-      $('.ajax-loader').show();      
-
   this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
-      $('.ajax-loader').hide();      
-
-       //if(res.message == 'success'){
-        this.toastr.success('User Added Successfully .');
+       if(res.message == 'success'){
+        this.toastr.success('User has been added successfully!');
         this.getUsers();
-     //  }
+       }
     }, error => {
-         $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
+      this.toastr.error('Please Provide Valid Inputs!');
     });
   }
 
   private getUsers() {
-  this.rolesUsersService.getUsers().subscribe((res) => {
+    this.rolesUsersService.getUsers(this.clinic_id).subscribe((res) => {
+      this.rows=[];
        if(res.message == 'success'){
         this.rows = res.data;
         this.temp = [...res.data];        
         this.table = data;
        }
-        else if(res.status == '401'){
-            this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-              this.router.navigateByUrl('/login');
-           }
     }, error => {
-         $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
+      this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
 
@@ -315,17 +223,17 @@ export class RolesUsersComponent implements AfterViewInit {
 
   public selected_id:any;
   private getRoles() {      
-  this.rolesUsersService.getRoles().subscribe((res) => {
+  this.rolesUsersService.getRoles(this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){ 
         this.roles=[];
          res.data.forEach(result => {
-          this.selectedRole['dashboards_'+result.role_id] = false;
-          this.selectedRole['memberships_'+result.role_id] = false;
-          this.selectedRole['roles_'+result.role_id] = false;
-          this.selectedRole['settings_'+result.role_id] = false;
-          this.selectedRole['paymentplans_'+result.role_id] = false;
-          this.selectedRole['defaulters_'+result.role_id] = false;
-          
+          if(result.id != '1' && result.id != '2') {
+          this.selectedRole['dashboard1_'+result.role_id] = false;
+          this.selectedRole['dashboard2_'+result.role_id] = false;
+          this.selectedRole['dashboard3_'+result.role_id] = false;
+          this.selectedRole['dashboard4_'+result.role_id] = false;
+          this.selectedRole['dashboard5_'+result.role_id] = false;
+
             var temp=[];
             temp['id'] = result.role_id;
             temp['role'] = result.role;
@@ -335,83 +243,45 @@ export class RolesUsersComponent implements AfterViewInit {
             dashboards.forEach(results=>{
                this.selectedRole[results+'_'+result.role_id] = true;
             })
+          }
          });
-         // When user will come for the first time
-         if(this.roles.length==0){
-            var temp=[];
-            temp['id'] = "3";
-            temp['role'] = "Receptionist";
-            temp['permisions'] = "";
-            this.roles.push(temp);
-
-            temp=[];
-            temp['id'] = "4";
-            temp['role'] = "Manager";
-            temp['permisions'] = "";
-            this.roles.push(temp);
-
-         }
-         console.log(this.roles);
        }
-        else if(res.status == '401'){
-            this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
     }, error => {
-         $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
+      this.warningMessage = "Please Provide Valid Inputs!";
     });
 
   }
 
   private deleteUser(row) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You want to delete User?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if(result.value){
+           if(confirm("Are you sure to delete User?")) {
     if(this.rows[row]['id']) {
   this.rolesUsersService.deleteUser(this.rows[row]['id']).subscribe((res) => {
        if(res.message == 'success'){
-       // this.notifier.notify( 'success', 'User Removed' ,'vertical');
-          this.toastr.success('User Removed.');
+        this.toastr.success('User Removed');
           this.getUsers();
        }
-        else if(res.status == '401'){
-            this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
     }, error => {
-         $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
+      this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
     }
     else {
       this.rows.splice(row, 1);
-      this.rows = [...this.rows];
+    this.rows = [...this.rows];
+
     }
- }
-});
+    }
   }
 
   addDentist() {
+    console.log(this.rows);
     var temp ={};
     temp['providerId'] ='Enter Provider Id';
     temp['name'] ='Enter Name';
     var length = this.rows.length;
     this.editing[length + '-providerId'] = true;
     this.editing[length + '-name'] = true;
+    
     this.rows.push(temp);
     this.table =data;
   }
@@ -439,13 +309,11 @@ export class RolesUsersComponent implements AfterViewInit {
     this.rows[rowIndex][cell] = event.target.value;
     this.rolesUsersService.updateRoleUser(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
        if(res.message == 'success'){
-         //this.notifier.notify( 'success', 'User Details Updated' ,'vertical');
-         this.toastr.success('User Details Updated.');
+        this.toastr.success('User Details Updated');
          // this.getDentists();
        }
     }, error => {
-         $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
+      this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );  
     this.rows = [...this.rows];

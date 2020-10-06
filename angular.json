@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "material":  {
+    "material": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -30,15 +30,15 @@
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "node_modules/@swimlane/ngx-datatable/release/index.css",
               "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
-              "node_modules/@swimlane/ngx-datatable/release/assets/icons.css",  
+                  "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
+            "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
               "src/assets/styles/style.scss",
-              "node_modules/ngx-toastr/toastr.css" 
+               "node_modules/ngx-toastr/toastr.css" 
             ],
             "scripts": [
-             "node_modules/jquery/dist/jquery.min.js",
-             "src/assets/js/jquery.sparkline.min.js",
-             "src/assets/js/script.js",
-             "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "src/assets/js/jquery.sparkline.min.js",
+               "./node_modules/jquery/dist/jquery.min.js",
             ]
           },
           "configurations": {
@@ -105,8 +105,8 @@
             ],
             "assets": [
               "src/assets",
-              "src/favicon.ico",
 
+              "src/favicon.ico"
             ]
           }
         },

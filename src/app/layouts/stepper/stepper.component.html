@@ -58,7 +58,7 @@
                 <div class="sa_mobile_header">
                     <div class="sa_mobile_logo_area">
                         <div class="sa_header_icons">
-                            <button class="sa_mat_menu_icon sa_backslide_area hamburger_menu" mat-icon-button  value="sidebarclosed">
+                            <button class="sa_mat_menu_icon sa_backslide_area hamburger_menu" mat-icon-button (click)="snav.toggle()" value="sidebarclosed">
                                 <mat-icon class="sa_ico1 sa_mobile_menu_ico">menu</mat-icon>
                                 <mat-icon class="sa_ico2 sa_mobile_menu_ico">menu</mat-icon>
                             </button>
@@ -93,7 +93,7 @@
 
                 <div class="page-content stepper_content"> 
 					<div class="logo_jeeve">
-							<img src="assets/img/jeeve_logo.png" alt=" " />
+							<img src="assets/images/logo-text.png" alt=" " />
 						</div>
 					<div class="stepper_innner">   
 						<div class="cross_icon_top">

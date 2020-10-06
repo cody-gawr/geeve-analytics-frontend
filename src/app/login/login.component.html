@@ -2,7 +2,7 @@
 display: flex;
 background-size: cover;
 align-items: center;"></div>
-<img class="login_abso_logo" src="../assets/images/logo-text-white.png">
+<img class="login_abso_logo" src="../assets/images/logo-white.png">
 <div class="login-register" style="background-image:url(assets/images/background/login-register.jpg);">
     <div class="login-register-box">
         <mat-card>
@@ -10,7 +10,7 @@ align-items: center;"></div>
                 <form [formGroup]="form" (ngSubmit)="onSubmit()">
                     <div class="text-center">
                         <img alt="homepage" src="../assets/images/logo-icon.gif">
-                        <h4 class="m-t-0">Login to Jeeve Members</h4>
+                        <h4 class="m-t-10 m-b-10">Login to Jeeve Analytics</h4>
                     </div>
 
                     <div fxLayout="row wrap">
@@ -29,30 +29,22 @@ align-items: center;"></div>
                             <small *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched" class="text-danger support-text">Password is required.</small>
 
                         </div>
-                         <!-- col full-->
-                         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
-                            <small *ngIf="errorLogin" class="text-danger support-text">Incorrect Email or Password.</small>
-                            <small *ngIf="errorDeactivate" class="text-danger support-text">Your account has been suspended, please contact support@jeeve.com.au.</small>
-                               <button mat-raised-button color="dc" class="btn-block btn-lg m-t-20 m-b-20" type="submit" [disabled]="!form.valid">Login</button>
-                           </div>
+                          <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                         <small *ngIf="errorLogin" class="text-danger support-text">Incorrect Email or Password.</small>
+                     </div>
                         <!-- col half-->
-                        <!--div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-                            <mat-checkbox color="warn">Remember me</mat-checkbox>
-                        </div-->
-                        <!-- col half-->
-                        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="text-right sa-pull-right">
-                            <a [routerLink]="['/authentication/forgot']" class="link forgot_link">Forgot password?</a>
-                        </div>
+                        <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+                            <a [routerLink]="['/authentication/forgot']" class="link">Forgot Password?</a>
+                        </div> 
                         <!-- col full-->
-                       <!--  <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center">
-                            <span>Don't have an account?
-                                <a [routerLink]="['/authentication/register']" class="text-info link">Register</a>
-                            </span>
-                        </div> -->
+                      
+                     <div  fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                            <button mat-raised-button color="dc" class="btn-block btn-lg m-t-20 m-b-20" type="submit" [disabled]="!form.valid">Login</button>
+                        </div>
+                        <!-- col full--> 
                     </div>
                 </form>
             </mat-card-content>
         </mat-card>
-
     </div>
 </div>

@@ -8,7 +8,7 @@ import {
   FormControl
 } from '@angular/forms';
 import { LoginService } from './login.service';
-import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,38 +17,21 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
-
-  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService,private toastr: ToastrService) {
-
-  }
+  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService) {}
 
   ngOnInit() {
     this.form = this.fb.group({
       uname: [null, Validators.compose([Validators.required])],
       password: [null, Validators.compose([Validators.required])]
     });
-     $('.notification-box').hide();
-            $('body').removeClass('notification-box-main');   
-
-
   }
-
-  ngAfterViewInit(){
-
-    if(localStorage.getItem('prpermissionmessage')!="" && localStorage.getItem('prpermissionmessage')!=null){
-       let finalErr =localStorage.getItem('prpermissionmessage');
-       this.toastr.error(finalErr);
-       localStorage.removeItem("prpermissionmessage");
-    } 
-
-  }
-  
-  public errorDeactivate;
   onSubmit() {
           this.errorLogin  =false;
-          this.errorDeactivate = false;
+
   this.loginService.login(this.form.value.uname, this.form.value.password).subscribe((res) => {
        if(res.message == 'success'){
+        
+        
         var datares = [];
         datares['username'] = res.data.data.username;
         datares['email'] = res.data.data.email;
@@ -57,55 +40,50 @@ export class LoginComponent implements OnInit {
         datares['parentid'] = res.data.data.parent_id;   
         datares['user_type'] = res.data.data.user_type;       
         datares['user_image'] = res.data.data.user_image;        
+        datares['stepper_status'] = res.data.data.stepper_status;        
         datares['login_status'] = res.data.data.status;        
-        datares['display_name'] = res.data.data.display_name; 
-         datares['stepper_status'] = res.data.data.stepper_status;          
+        datares['display_name'] = res.data.data.display_name;  
+        datares['dentistid'] = res.data.data.dentist_id;        
+
         let opts: CookieOptionsArgs = {
-            expires: new Date('2035-07-19')
+            expires: new Date('2030-07-19')
         };
+        var nextStep = (parseInt(res.data.data.stepper_status) + 1).toString();
+        this._cookieService.put("stepper", nextStep , opts);
+        this._cookieService.put("userid", '', opts);
+        this._cookieService.put("childid", '', opts);
+        this._cookieService.put("dentistid", '', opts);
+
         this._cookieService.put("username", datares['username'], opts);
         this._cookieService.put("email", datares['email'], opts);
         this._cookieService.put("token", datares['token'], opts);
-        this._cookieService.put("user_type", datares['user_type'], opts);       
+        this._cookieService.put("user_type", datares['user_type'], opts);
+       
         this._cookieService.put("login_status", datares['login_status'], opts);
         this._cookieService.put("display_name", datares['display_name'], opts);
         this._cookieService.put("user_image", datares['user_image'], opts);
-
-        if(datares['login_status'] == '5') { 
         
-         if(datares['user_type']=='3' || datares['user_type']=='4'){ // 3 for receptionist and 4 for manager
-           this._cookieService.put("userid", datares['parentid'], opts);
-           this._cookieService.put("childid", datares['userid'], opts);
-         }else{
-          this._cookieService.put("userid", datares['userid'], opts);           
-         }
-          this.router.navigate(['/profile-settings/1']);
-         
-        }
-        else if(datares['user_type'] == '1') {
-           this._cookieService.put("userid", datares['userid'], opts);
-            this.router.navigate(['/users']);           
-        }
-        else if(datares['user_type'] == '2' && datares['stepper_status'] != '0') { console.log("chk3");          
-         this._cookieService.put("stepper", datares['stepper_status'], opts);
-         this._cookieService.put("userid", datares['userid'], opts);
-         this.router.navigate(['/setup']);
-        }
-        else if(datares['user_type'] == '2') { 
-           this._cookieService.put("userid", datares['userid'], opts);
-          this.router.navigate(['/dashboards']);
-        }
-        else{
-
-           this._cookieService.put("userid", datares['parentid'], opts);
-           this._cookieService.put("childid", datares['userid'], opts);
-          this.router.navigate(['/dashboards']);
-        }
-       }
-       else if(res.status == '500'){
-          this.errorDeactivate  =true;
-       }
-       else if(res.status == '401'){
+        this._cookieService.put("userid", datares['userid'], opts);
+        var self = this;
+        if(datares['parent_stepper'] != 'no' && parseInt(datares['stepper_status']) < 6 ){
+          this.router.navigate(['/setup']);
+        } else if(parseInt(datares['stepper_status']) < 6 && datares['user_type'] == '2'){
+          this.router.navigate(['/setup']);
+        } else {
+            if(datares['login_status'] == '5') {
+              this.router.navigate(['/profile-settings']);
+            } else if(datares['user_type'] == '1') {
+              this.router.navigate(['/users']);
+            } else if(datares['user_type'] == '2') {
+               this.router.navigate(['/dashboards/healthscreen']);
+            } else{
+               this._cookieService.put("userid", datares['parentid'], opts);
+               this._cookieService.put("childid", datares['userid'], opts);
+               this._cookieService.put("dentistid", datares['dentistid'], opts);
+               this.router.navigate(['/profile-settings']);
+            }
+        }    
+      } else if(res.message == 'error'){
           this.errorLogin  =true;
        }
     }, error => {
