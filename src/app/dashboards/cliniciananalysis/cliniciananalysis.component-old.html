@@ -1,0 +1,315 @@
+<!-- ============================================================== -->
+<!-- Grid-->
+<!-- ============================================================== -->
+<!-- <div fxLayout="row wrap">
+    <div class="sa_heading_bar">
+        <div fxFlex.gt-sm="85" fxFlex.gt-xs="100" fxFlex="100" class="">
+            <h4><span class="page_title">Clinician Procedures &#38; Referrals</span></h4>
+        </div>
+        <app-headerright class="app-headerright"></app-headerright>
+
+        <div fxFlex.gt-sm="18" fxFlex.gt-xs="100" fxFlex="100" class="">
+            <div class="vertical_center_header_content">
+                <div class="sa_select_outer">
+                    <select class="sa_select"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
+                        <option value ="all">All Dentist( {{dentistCount}} )</option>
+                        <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+                <select class="sa_select internal_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)"  [style.display]="'none'">
+                     <option value ="all">All Dentist( {{dentistCount}} )</option>
+                    <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
+                </select> 
+                <input type="button" id="dentist_initiate" (click) = "initiate_dentist()"  [style.display]="'none'">
+<div class="sa_dashboard_inner_content">
+    <div class="sa_card gridshadow">
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-sm="80" fxFlex.gt-xs="100" fxFlex="100">
+                <div class="sa_tabs_design"><span class="filter_w active filter" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter">This Month</span><span class="filter_q filter" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter">Financial YTD</span>
+                    <div class="custom_date">
+                        <input class="filter_custom filter sa_datepicker" value="" (click)="filterDate('custom')" />
+                        <ngx-daterangepicker-material (rangeClicked)="rangeClicked($event)" class="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'"></ngx-daterangepicker-material></div>
+                </div>
+            </div>
+
+            <div fxFlex.gt-sm="20" fxFlex.gt-xs="100" fxFlex="100" class="trend_toggle">
+                <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group" aria-label="Font Style">
+                    <mat-button-toggle checked value = "off" class = "target_off" (click)="toggleFilter('off')">
+                        <span>Off</span>
+                    </mat-button-toggle>
+                    <mat-button-toggle value = "current" class = "target_current" (click)="toggleFilter('current')">
+                        <span>Current</span>
+                    </mat-button-toggle>
+                    <mat-button-toggle value = "historic" class = "target_historic" (click)="toggleFilter('historic')">
+                        <span>Historic</span>
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+        </div>
+    </div>
+
+<div class="sa_dentist_graphs_area">
+  <div fxLayout="row wrap" >
+  <div fxFlex.gt-sm="37" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
+    <mat-card  class="dentistProduction">
+      <mat-card-content class="sa_matcard_content">
+          <mat-card-title class="text-center">Dentist Production
+
+              <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div>
+
+          </mat-card-title>
+
+        <div  style="height: 250px">
+        <canvas #myCanvas baseChart [datasets]="barChartData" [labels]="barChartLabels"  [legend]="barChartLegend"
+          [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptions" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{productionTotal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{productionTotalAverage| number:'1.0-0'}}</h3>
+                        <small class="text-center">Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"fddf>
+                        <h3 class="m-0 font-light text-center">${{productionGoal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+
+     <mat-card class="dentistProductionSingle" [style.display]="'none'" >
+      <mat-card-content class="sa_matcard_content">
+
+          <mat-card-title class="text-center">Dentist Production
+
+              <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div>
+
+          </mat-card-title>
+
+         <ngx-gauge [type]="gaugeType"
+           [value]="gaugeValue"
+           [label]="gaugeLabel"
+           [thick]="gaugeThick"
+           [foregroundColor]="foregroundColor"
+           [cap] ="cap"
+           [duration]= "gaugeDuration"
+           [prepend]="gaugePrependText"
+           [size] = "size">
+          </ngx-gauge>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{productionTotal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Total  </small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{productionTotalAverage| number:'1.0-0'}}</h3>
+                        <small class="text-center">Practice Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{productionGoal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Column-->
+  <div fxFlex.gt-sm="37" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg">
+    <mat-card  class="treatmentPlan">
+      <mat-card-content class="sa_matcard_content">
+
+          <mat-card-title class="text-center">Treatment Plan Average Cost
+
+              <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div>
+
+          </mat-card-title>
+        <div  style="height: 250px">
+        <canvas #myCanvas baseChart class="chart"
+          [datasets]="planChartData"
+          [labels]="planChartLabels"
+          [options]="barChartOptions"
+          [legend]="true"
+          [chartType]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"  [colors]="lineChartColors"></canvas>
+        </div>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{planTotalAverage | number:'1.0-0'}}</h3>
+                        <small class="text-center">Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">--</h3>
+                        <small class="text-center">Previous Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{planTotalGoal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="treatmentPlanSingle" [style.display]="'none'">
+      <mat-card-content class="sa_matcard_content">
+
+          <mat-card-title class="text-center">Treatment Plan Average Cost
+
+              <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div>
+
+          </mat-card-title>
+        <ngx-gauge [type]="gaugeType"
+           [value]="gaugeValueTreatment"
+           [label]="gaugeLabelTreatment"
+           [thick]="gaugeThick"
+           [foregroundColor]="foregroundColor"
+           [cap] ="cap"
+           [duration]= "gaugeDuration"
+           [prepend]="gaugePrependText"
+           [size] = "size">
+          </ngx-gauge>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{planTotalAverage | number:'1.0-0' }}</h3>
+                        <small class="text-center">Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">--</h3>
+                        <small class="text-center">Previous Average</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">${{planTotalGoal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- Column-->
+  <div fxFlex.gt-sm="24" fxFlex.gt-xs="100" fxFlex="100" class="sa_flexbg last">
+    <mat-card  class="noPatients">
+      <mat-card-content class="sa_matcard_content">
+
+          <mat-card-title class="text-center">No. Patient Complaints
+
+              <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div>
+
+          </mat-card-title>
+        <div class="chart" *ngIf="doughnutChartLabels.length > 0">
+          <div  style="height: 250px">
+        <canvas #myCanvas baseChart class="chart"
+        [data]="doughnutChartData"
+          [labels]="doughnutChartLabels"
+          [legend]="false"
+          [options]="doughnutChartOptions"
+          [chartType]="doughnutChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)" [colors]="doughnutChartColors"></canvas>
+        </div>
+        </div>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{doughnutTotal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">--</h3>
+                        <small class="text-center">Previous Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light typext-center">{{doughnutGoals| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="noPatientsSingle" [style.display]="'none'">
+      <mat-card-content class="sa_matcard_content">
+
+          <mat-card-title class="text-center">No. Patient Complaints
+
+              <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div>
+
+          </mat-card-title>
+
+        <div class="chart" *ngIf="doughnutChartLabels.length > 0">
+         <ngx-gauge [type]="gaugeType"
+           [value]="gaugeValuePatients"
+           [label]="gaugeLabelPatients"
+           [thick]="gaugeThick"
+           [foregroundColor]="foregroundColor"
+           [cap] ="cap"
+           [prepend]="gaugePrependText"
+           [size] = "size"
+           [duration]= "gaugeDuration">
+          </ngx-gauge>
+        </div>
+          <div fxLayout="row wrap" class="m-t-40">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{doughnutTotal| number:'1.0-0'}}</h3>
+                        <small class="text-center">Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">--</h3>
+                        <small class="text-center">Previous Total</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                        <h3 class="m-0 font-light text-center">{{doughnutGoals| number:'1.0-0'}}</h3>
+                        <small class="text-center">Goal</small>
+                    </div>
+                </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+</div>
+</div>

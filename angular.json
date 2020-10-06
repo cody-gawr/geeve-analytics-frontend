@@ -31,9 +31,15 @@
               "node_modules/@swimlane/ngx-datatable/release/index.css",
               "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
                   "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
+<<<<<<< HEAD
             "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
               "src/assets/styles/style.scss",
                "node_modules/ngx-toastr/toastr.css" 
+=======
+    "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
+              "src/assets/styles/style.scss",
+               
+>>>>>>> 29d951443983d484b4f30b93b8641dd51bd2f4fe
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -100,8 +106,12 @@
               "node_modules/@swimlane/ngx-datatable/release/index.css",
               "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
               "node_modules/@swimlane/ngx-datatable/release/assets/icons.css",
+<<<<<<< HEAD
               "src/assets/styles/style.scss",
               "node_modules/ngx-toastr/toastr.css" 
+=======
+              "src/assets/styles/style.scss"
+>>>>>>> 29d951443983d484b4f30b93b8641dd51bd2f4fe
             ],
             "assets": [
               "src/assets",
