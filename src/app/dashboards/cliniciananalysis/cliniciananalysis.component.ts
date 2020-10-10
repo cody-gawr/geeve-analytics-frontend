@@ -28,6 +28,10 @@ declare var Chart: any;
 @Component({
   templateUrl: './cliniciananalysis.component.html'
 })
+/**
+  *Clinician analysis graph Dashboard
+  *AUTHOR - Teq Mavens
+  */
 export class ClinicianAnalysisComponent implements AfterViewInit {
 
   @ViewChild("myCanvas") canvas: ElementRef;
@@ -54,7 +58,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   constructor(private cliniciananalysisService: ClinicianAnalysisService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService, private frontdeskService: FrontDeskService,private toastr:ToastrService){
   }
-
+  /**
+  *Check If logged in user is eligible to access this page.
+  *AUTHOR - Teq Mavens
+  */
   private warningMessage: string;
   private checkPermission(role) { 
   this.headerService.checkPermission(role).subscribe((res) => {
@@ -73,7 +80,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     }    
     );
   }
-
+//initialize component
   ngAfterViewInit() {   
      // this.clinic_id = this.route.snapshot.paramMap.get("id");
     //  this.getDentists();
@@ -158,7 +165,7 @@ gradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
       this.doughnutChartColors = [{backgroundColor: [doughnutGradient,doughnutGradient2, '#dadada']}];
   }
 
-
+//Load Clinic Data
  initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     if(val != undefined && val !='all') {
@@ -529,6 +536,7 @@ public barChartOptions: any = {
             position:'right'
          }
   };
+  //check status of login
  public dentistVal= 'all';
 changeLoginStatus(){
   this.cliniciananalysisService.changeLoginStatus().subscribe((data) => {
@@ -550,7 +558,10 @@ changeLoginStatus(){
     console.log(validDate)
     return validDate
   }
+  //Load Dentist Data
  private loadDentist(newValue) {
+  if(newValue =='')
+    newValue='all';
   $('#title').html('Clinician Analysis  ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');
   this.getAccountingDentist();
   this.getStatusDentist();
@@ -610,6 +621,7 @@ changeLoginStatus(){
     }
   }
   public accountingDentist:any =[];
+  //Get provider details
   private getAccountingDentist()
   {
     this.accountingDentist = [];
@@ -636,6 +648,8 @@ changeLoginStatus(){
   }
   public statusDentist:any =[];  
   public final_map:any = {};
+
+  //Get status of dentist for modal of hourly rate chart
   private getStatusDentist()
   {
      this.statusDentist  = [];  
@@ -662,7 +676,7 @@ changeLoginStatus(){
     }
     );
   }
-
+//Save hourly rate chart mapping
   save_mapping() {
     var i=0;
      this.accountingDentist.forEach(res => {
@@ -688,6 +702,9 @@ changeLoginStatus(){
     }    
     );
   }
+
+
+  //Activate average /Goal line on Treatment Cost Chart
   public planCompletedTotal;
   public planCompletedTotalTrend;
   changeTreatmentCost(val) {
@@ -713,7 +730,7 @@ changeLoginStatus(){
     }
     
   }
-
+//Load Individual dentist Chart
   changeTreatmentCostSingle(val) {
     $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
     $('.treatmentPlanSingle .tcmain'+val).addClass('active');
@@ -733,7 +750,7 @@ changeLoginStatus(){
   public buildChartLoader:any;
   public dentistKey;
   public DPcolors:any;
-  //Dentist Production Chart
+  //Dentist Production Chart for all Dentist
   private buildChart() {
     this.buildChartLoader =true;
    this.barChartData1 =[];
@@ -1045,6 +1062,7 @@ public treatmentPreChartTooltip = 'down';
   public treatmentPrebookLoader:any;
   public tpKey:any;
   public TPcolors:any;
+  //All dentist Treatment Prebook Chart
 private treatmentPrePrebook() {
 
     this.treatmentPrebookLoader = true;
@@ -1129,7 +1147,7 @@ private treatmentPrePrebook() {
   }
   public treatmentPrebookDentistLoader:any;
 
-  //Individual Dentist Production Chart
+  //Individual Treatment Prebook Chart
   private treatmentPrePrebookDentist() {
     this.treatmentPrebookDentistLoader=true;
     this.treatmentPreValue = '0';
@@ -1173,6 +1191,7 @@ private treatmentPrePrebook() {
   public treatmentPlanRateLoader:any;
   public TPRKey:any;
   public TPRcolors:any;
+  //Treatment pLAn Rate chart for all dentists
   private treatmentPlanRate() {
     this.treatmentPlanRateLoader =true;
     this.treatmentChartData1 =[];
@@ -1266,7 +1285,7 @@ private treatmentPrePrebook() {
   public treatmentPlanGoal;
   public treatmentPlanRateDentistLoader:any;
 
-  //Individual Dentist Production Chart
+  //Individual Treatment plan rate chart
   private treatmentPlanRateDentist() {
     this.treatmentPlanRateDentistLoader =true;
      this.treatmentPlanValue = '0';
@@ -1309,7 +1328,7 @@ private treatmentPrePrebook() {
   public tpacCKey;
 
 
-//Treatment Plan Average Cost
+//Treatment Plan Average Cost for all dentist
   private buildChartTreatment() {
     this.buildChartTreatmentLoader=true;
     $('.treatment_cost .sa_tab_btn').removeClass('active');
@@ -1471,7 +1490,7 @@ private treatmentPrePrebook() {
     );
   }
 
-//treatmentPre Prebook Rate
+//Recall Chart Rate for all dentists
 
   private recallChartTreatment() {
      this.planTotal = 0;
@@ -1501,6 +1520,7 @@ private treatmentPrePrebook() {
   public npKey:any;
   public npColors:any;
   public doughnutChartColors1:any;
+  //No of patient Complaints chart for all dentists
   private buildChartNopatients() {
     this.buildChartNopatientsLoader =true;
      
@@ -1548,7 +1568,7 @@ private treatmentPrePrebook() {
   }
 
   public buildChartNopatientsDentistLoader:any;
-
+//Indvidual No pf patients complaint chart
   private buildChartNopatientsDentist() {
     this.buildChartNopatientsDentistLoader =true;
     
@@ -1587,6 +1607,7 @@ private treatmentPrePrebook() {
   public newpKey:any;
   public newpColors:any;
   public doughnutChartColors2:any;
+  //New Patients Chart for all dentist
   private buildChartNewpatients() {
           this.newPatientChartData1 =[];
            this.newPatientChartLabels1 =[];
@@ -1633,7 +1654,7 @@ private treatmentPrePrebook() {
 
 public newPatientPercent=0;
   public buildChartNewpatientsDentistLoader:any;
-
+//New Patients chart for individual dentist
   private buildChartNewpatientsDentist() {
     this.buildChartNewpatientsDentistLoader = true;
     this.newPatientPercent = 0;
@@ -1687,7 +1708,7 @@ public newPatientPercent=0;
   public hourlyRateChartLoader:any;
   public hrKey:any;
   public HRcolors:any;
-
+//All dentist Hourly ratechart
   private hourlyRateChart() {
     this.hourlyRateChartLoader = true;
     this.hourlyRateChartData1 =[];
@@ -1786,7 +1807,7 @@ public newPatientPercent=0;
   public hourlyGoal;
   public hourlyRateDentistLoader:any;
 
-  //Individual Dentist Production Chart
+  //Individual Dentist Hourly Rate chart
   private hourlyRateDentist() {
     this.hourlyRateDentistLoader =true;
     
@@ -1957,6 +1978,7 @@ public currentText;
     $('.filter_custom').val(this.startDate+ " - "+this.endDate);
 }
   }
+  //Load Individual dentits Chart
     initiate_dentist() {
     var val = $('.internal_dentist').val();
     this.loadDentist(val);
@@ -2015,7 +2037,7 @@ public dentistProdTrend: any[]  = [
   public dentistProductionTrendLabels =[];
   public dentistProductionTrendLabels1 =[];
   public dentistProductionTrendLoader:any;
-
+//Trend mode for dentist Production
   private dentistProductionTrend() {
     this.dentistProductionTrendLoader=true;
     
@@ -2067,7 +2089,7 @@ public treatPlanTrend: any[]  = [
   public treatmentPlanTrendLabels =[];
   public treatmentPlanTrendLabels1 =[];
   public treatmentPlanTrendLoader:any;
-  
+  //Trend mode for Treatment PLan Chart
   private treatmentPlanTrend() {
   this.treatmentPlanTrendLoader = true;
     var user_id;
@@ -2119,7 +2141,7 @@ public patientComplaintTrend: any[]  = [
   public patientComplaintsTrendLabels =[];
   public patientComplaintsTrendLabels1 =[];
   public patientComplaintsTrendLoader:any;
-
+//Trend mode for Pateint Complaints chart
   private patientComplaintsTrend() {
   this.patientComplaintsTrendLoader =true;
  
@@ -2172,7 +2194,7 @@ public patientComplaintTrend: any[]  = [
   public recallPrebookChartTrendLabels =[];
   public recallPrebookChartTrendLabels1 =[];
   public fdRecallPrebookRateTrendLoader:any;
-
+//Recall Prebook Rate Chart trend mode
   private fdRecallPrebookRateTrend() {
     this.fdRecallPrebookRateTrendLoader =true;
     this.recallPrebookChartTrendLabels =[]; 
@@ -2221,7 +2243,7 @@ public patientComplaintTrend: any[]  = [
   public treatmentPrebookChartTrendLabels =[];
   public treatmentPrebookChartTrendLabels1 =[];
   public fdTreatmentPrebookRateTrendLoader:any;
-
+//Trend Mode for Treatment Prebook RAte
   private fdTreatmentPrebookRateTrend() {
     this.fdTreatmentPrebookRateTrendLoader =true;
     this.treatmentPrebookChartTrendLabels =[]; 
@@ -2271,7 +2293,7 @@ public patientComplaintTrend: any[]  = [
   public hourlyRateChartTrendLabels =[];
   public hourlyRateChartTrendLabels1 =[];
   public fdhourlyRateRateTrendLoader:any;
-
+//Trend Mode for Hourly Rate chart
   private fdhourlyRateRateTrend() {
     this.fdhourlyRateRateTrendLoader =true;
     var user_id;
@@ -2322,7 +2344,7 @@ public patientComplaintTrend: any[]  = [
   public newPatientsChartTrendLabels =[];
   public newPatientsChartTrendLabels1 =[];
   public fdnewPatientsRateTrendLoader:any;
-
+//Trend Mode for New Patient 
   private fdnewPatientsRateTrend() {
     this.fdnewPatientsRateTrendLoader= true;
     this.newPatientsChartTrendLabels=[];
@@ -2379,7 +2401,7 @@ public patientComplaintTrend: any[]  = [
   public treatmentPlanChartTrendLabels =[];
   public treatmentPlanChartTrendLabels1 =[];
   public fdtreatmentPlanRateTrendLoader:any;
-
+//Trend Mode for Treatment plan Rate chart
   private fdtreatmentPlanRateTrend() {
     this.fdtreatmentPlanRateTrendLoader = true;
             this.treatmentPlanChartTrendLabels=[];

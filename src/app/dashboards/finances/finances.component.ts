@@ -1514,11 +1514,20 @@ filterDate(duration) {
 choosedDate(val) {
     val = (val.chosenLabel);
     var val= val.toString().split(' - ');
-      this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+      
+     var date2= new Date(val[1]);
+     var date1= new Date(val[0]);
+      var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+if(diffTime<=365){
+this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.loadDentist('all');      
       $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
+   }
+   else {
+     alert("Please select date range within 365 Days");
+   }
 }
   myDateParser(dateStr : string) : string {
     // 2018-01-01T12:12:12.123456; - converting valid date format like this
@@ -2030,6 +2039,15 @@ this.trendxero=true;
 this.trendxero=false;
 
        if(data.message == 'success'){
+         this.netProfitChartTrendLabels1=[];
+  this.netProfitChartTrendLabels=[];
+  this.netProfitChartTrend1= [];
+        this.netProfitPmsChartTrendLabels1=[];
+  this.netProfitPmsChartTrend1= [];
+  this.netProfitPercentChartTrendLabels1=[];
+  this.netProfitPercentChartTrendLabels=[];
+ 
+  this.netProfitPercentChartTrend1= [];
          this.expensesChartTrendLabels1=[];
           this.expensesChartTrend =[
     {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
@@ -2058,7 +2076,6 @@ this.trendxero=false;
                  }
                   
                  });
-                console.log(this.expensesChartTrend);
                  this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
                  this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
             

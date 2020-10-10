@@ -26,6 +26,10 @@ export interface Dentist {
 @Component({
   templateUrl: './clinicianproceedures.component.html'
 })
+  /**
+  *Clinician Proceedure Graph Dashboard
+  *AUTHOR - Teq Mavens
+  */
 export class ClinicianProceeduresComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas: ElementRef;
   lineChartColors;
@@ -43,6 +47,10 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
   }
   private warningMessage: string;
   private myTemplate: any = "";
+  /**
+  *Check If logged in user is eligible to access this page.
+  *AUTHOR - Teq Mavens
+  */
   private checkPermission(role) { 
   this.headerService.checkPermission(role).subscribe((res) => {
        if(res.message == 'success'){
@@ -61,6 +69,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
     );
 
   }
+
+  //Load Clinic Data
   initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
      if(val != undefined && val !='all') {
@@ -80,6 +90,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
     console.log(validDate)
     return validDate
   }
+  //Initialize compoenent
   ngAfterViewInit() {
        this.checkPermission('dashboard2');
  this.route.params.subscribe(params => {
@@ -798,6 +809,7 @@ this.preoceedureChartColors = [
   public selectedValToggle ='off';
   public gaugeDuration ='2500';
   public dentistid ='';
+  //lOad individula dentist Chart
  loadDentist(newValue) {  
 
   $('.ratioPredictorSingle .predictor_ratio .sa_tab_btn').removeClass('active');
@@ -878,7 +890,7 @@ this.preoceedureChartColors = [
   public ipKey;
   public IPcolors;
   public barChartColors;
-  //Items Predictor Analysis 
+  //Items Predictor Analysis - All dentist Chart
   private buildChart() {
     this.buildChartLoader =true;
     var user_id;
@@ -996,7 +1008,7 @@ public predictedMax;
 public buildChartPredictorLoader:any;
 public prKey:any[] =[];
 public PRcolors;
-//Predictor Ratio :
+//Predictor Ratio :All Dentist
   private buildChartPredictor() {
 
      if(this.duration){
@@ -1087,7 +1099,7 @@ public PRcolors;
     );
 }
   }
-
+//Chnage predictor tab
   changeDentistPredictorMain(val) {
     $('.predictor_ratio_main .sa_tab_btn').removeClass('active');
     $('.prmain'+val).addClass('active');
@@ -1125,7 +1137,7 @@ public gaugeValuePredictedPrev1;
 public gaugeValuePredictedPrev2;
 public gaugeValuePredictedPrev3;
 public buildChartPredictorDentistLoader:any;
-  //Predictor Ratio :
+  //Predictor Ratio : Individual Dentist
   private buildChartPredictorDentist() {
     this.buildChartPredictorDentistLoader =true;
        var user_id;
@@ -1189,7 +1201,7 @@ public buildChartProceedureLoader:any;
   }
 
 
-//Total Revenue of Clinician Per Procedure
+//Total Revenue of Clinician Per Procedure- all Dentist
 public buildChartProceedureDentistLoader:any;
 
   private buildChartProceedureDentist() {
@@ -1208,8 +1220,6 @@ public buildChartProceedureDentistLoader:any;
         });
        this.proceedureDentistChartData[0]['data'] = this.proceedureChartData1;
        this.proceedureDentistChartLabels = this.proceedureChartLabels1;
-       console.log(this.proceedureDentistChartLabels);
-
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1336,7 +1346,7 @@ this.pieChartDataMax3=0;
     );
   this.changePieReferral('Combined');
   }
-
+// Change Referral Chart Tabs
    changePieReferral(chart){
     this.showInternal =false;
     this.showExternal = false;
@@ -1515,6 +1525,7 @@ public currentText;
         }    
         );
   }
+  //Load Individual Dentist Item Predictor tab
   changeDentistPredictor(val){
     $('.ratioPredictorSingle .predictor_ratio .sa_tab_btn').removeClass('active');
     $('.pr'+val).addClass('active');
@@ -1585,6 +1596,8 @@ toggleFilter(val) {
         $('#mat-radio-2').click();
     }
 }
+
+//Get Clinics List of all clinics
  private getClinics() { 
       this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
@@ -1595,7 +1608,7 @@ toggleFilter(val) {
     }    
     );
   }
-
+//Load dentist Charts
   initiate_dentist() {
     var val = $('.internal_dentist').val();
     this.loadDentist(val);
@@ -1606,37 +1619,6 @@ toggleFilter(val) {
   isDisabled =true;
   isChecked =true;
   mode='Internal';
-
-  // toggleChanged(){
-  //   if(this.toggleChecked == true) {
-  //       this.isDisabled = false;
-  //       this.trendValue = 'c';
-  //       this.isChecked = true;
-  //      this.toggleChangeProcess();
-  //      $('.pieChartDetails').hide();
-  //      $('.revenue_proceedure').hide();
-  //   }
-  //   else if(this.toggleChecked == false) {
-  //       this.isDisabled = true;
-  //       this.changePieReferral('Combined');
-  //       this.showTrend =false;
-  //       $('.pieChartDetails').show();
-  //       this.filterDate('cytd');
-  //       this.isChecked = true;
-  //       this.changeDentistPredictor('1');
-  //       $('.trendRatio').hide();
-  //       $('.predictorRatioDetails').show();
-  //       $('.singleRatio').show();
-  //       $('.revenue_proceedure').show();
-  //       $('#mat-radio-3').removeClass('mat-radio-checked');
-  //       $('#mat-radio-2').addClass('mat-radio-checked');
-  //       $('#mat-radio-2').click();
-  //   }
-  // }
-  // onChange(mrChange) {
-  //  this.trendValue = mrChange.value;
-  //    this.toggleChangeProcess();
-  // } 
 
 toggleChangeProcess(){
     if(this.toggleChecked){
@@ -1710,7 +1692,7 @@ toggleChangeProcess(){
       public stackedChartTrendLabels=[];
       public showTrend =false;
       public stackedChartTrendDataMax;
-
+// Load Predcitor chart - Individual Dentist 
   referralTrendSingle(){
       var user_id;
       var clinic_id;

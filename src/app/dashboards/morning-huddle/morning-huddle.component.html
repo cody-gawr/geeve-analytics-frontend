@@ -245,7 +245,7 @@
         <mat-form-field>
           <mat-label>Select Dentist</mat-label>
           <mat-select  (selectionChange)="refreshScheduleTab($event.value)" id="setPreviousDay2">
-            <mat-option [value]="dentist.providerid" *ngFor="let dentist of clinicDentists">{{ dentist.name }}</mat-option>
+            <mat-option [value]="dentist.providerId" *ngFor="let dentist of clinicDentists">{{ dentist.name }}</mat-option>
           </mat-select>
         </mat-form-field>        
       </div>

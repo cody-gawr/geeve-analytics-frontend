@@ -11,6 +11,10 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './clinic-goals.component.html',
   styleUrls: ['./clinic-goals.component.scss']
 })
+/**
+  *Clinic Goals component
+  *AUTHOR - Teq Mavens
+  */
 export class ClinicGoalsComponent implements OnInit {
      private readonly notifier: NotifierService;
    public clinic_id:any ={};
@@ -64,7 +68,7 @@ export class ClinicGoalsComponent implements OnInit {
           public chartData:any = {};
 
   options: FormGroup;
-
+//initialize component
   constructor(private toastr: ToastrService,notifierService: NotifierService,private fb: FormBuilder,  private clinicGoalsService: ClinicGoalsService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
 //  this.clinic_id = this.route.snapshot.paramMap.get("id");
 this.notifier = notifierService;
@@ -78,6 +82,7 @@ this.notifier = notifierService;
     this.clinic_id = val;
         this.getClinicGoals();
   }
+  //initialize component
   ngOnInit() {
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
@@ -153,7 +158,7 @@ this.notifier = notifierService;
         ? 'Not a valid email'
         : '';
   }
-
+//get clinic goals for all graphs
   getClinicGoals() {
   this.clinicGoalsService.getClinicGoals(this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
@@ -212,7 +217,7 @@ this.notifier = notifierService;
     }    
     );
   }
-
+//save clinic gaols
   onSubmit() {
   this.chartData[1] = this.form.value.dentistprod;
   this.chartData[2] = this.form.value.treatmentplan;

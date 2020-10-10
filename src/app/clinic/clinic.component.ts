@@ -15,7 +15,10 @@ import { NotifierService } from 'angular-notifier';
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
 })
-
+/**
+  *Update Clinic
+  *AUTHOR - Teq Mavens
+  */
 
 export class DialogOverviewExampleDialogComponent {
   public form: FormGroup;
@@ -61,6 +64,10 @@ export class DialogOverviewExampleDialogComponent {
   selector: 'app-dialog-overview-limit-example-dialog',
   templateUrl: './dialog-overview-limit-example.html',
 })
+/**
+  *Get count of clinic limmits
+  *AUTHOR - Teq Mavens
+  */
 export class DialogOverviewExampleLimitDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
@@ -80,13 +87,17 @@ const data: any = require('assets/company.json');
   templateUrl: './clinic.component.html',
   styleUrls: ['./clinic.component.scss']
 })
+/**
+  *Main Clinic Component
+  *AUTHOR - Teq Mavens
+  */
 export class ClinicComponent implements AfterViewInit {
    private readonly notifier: NotifierService;
   name: string;
   address: string;
   contact_name: string;
   fileInput: any;
-
+//initialize component
   ngAfterViewInit() {
     this.getUserDetails();
     this.getClinics();
@@ -119,7 +130,7 @@ export class ClinicComponent implements AfterViewInit {
     }, 1500);
   }
   private warningMessage: string;
-
+//open add clinic modal
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '400px', 
@@ -137,7 +148,7 @@ export class ClinicComponent implements AfterViewInit {
     );  
     });
   }
-
+//open clinic limit dialog
   openLimitDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleLimitDialogComponent, {
         
@@ -147,7 +158,7 @@ export class ClinicComponent implements AfterViewInit {
 
     });
   }
-
+//get list of clinics
 public clinicscount=0;
 public createdClinicsCount=0;
   private getClinics() {
@@ -173,7 +184,7 @@ public createdClinicsCount=0;
     );
 
   }
-
+//get count of clinics allowed
   private getUserDetails() {
     this.rows=[];
     this.clinicService.getUserDetails().subscribe((res) => {
@@ -195,7 +206,7 @@ public createdClinicsCount=0;
     );
 
   }
-
+//delete clinic
   private deleteClinic(row) {
     Swal.fire({
       title: 'Are you sure?',
@@ -232,6 +243,7 @@ public createdClinicsCount=0;
    }
    })
   }
+  //craete dentist for clinic
   addDentist() {
     var temp ={};
     temp['providerId'] ='Enter Provider Id';
@@ -243,7 +255,7 @@ public createdClinicsCount=0;
     this.rows.push(temp);
     this.table =data;
   }
-
+//fileter data
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
 

@@ -112,7 +112,7 @@ initiate_clinic() {
     this.morningHuddleService.getDentists(this.clinic_id).subscribe((dentist:any) =>{ 
       if(dentist.status == 200 && dentist.data){
         this.clinicDentists = dentist.data;
-        this.currentDentist = dentist.data[0].providerid;        
+        this.currentDentist = dentist.data[0].providerId;        
         this.getSchedulePatients();
         this.getScheduleNewPatients();
         this.getScheduleHours();

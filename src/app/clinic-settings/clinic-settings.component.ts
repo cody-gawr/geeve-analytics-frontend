@@ -13,6 +13,10 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './clinic-settings.component.html',
   styleUrls: ['./clinic-settings.component.scss']
 })
+/**
+  *Clinic Setting main Component
+  *AUTHOR - Teq Mavens
+  */
 export class ClinicSettingsComponent implements OnInit {
    public fileToUpload;
    public form: FormGroup;
@@ -48,6 +52,7 @@ export class ClinicSettingsComponent implements OnInit {
       floatLabel: 'auto'
     });
   }
+  //initilaize component
   ngOnInit() {
       this.route.params.subscribe(params => {
     this.id = this.route.snapshot.paramMap.get("id");
@@ -89,7 +94,7 @@ export class ClinicSettingsComponent implements OnInit {
         ? 'Not a valid email'
         : '';
   }
-
+//get setting for teh selcted clinic
   getClinicSettings() {
   this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
 
@@ -126,7 +131,7 @@ export class ClinicSettingsComponent implements OnInit {
     }    
     );
   }
-
+//save clinic settings
   onSubmit() {
   this.clinicName = this.form.value.clinicName;
   this.contactName = this.form.value.contactName;
@@ -158,7 +163,7 @@ export class ClinicSettingsComponent implements OnInit {
     }    
     );
   } 
-
+//get xero authorization link
   getXeroLink(){
     this.clinicSettingsService.getXeroLink(this.id).subscribe((res) => {
        if(res.message == 'success'){
@@ -175,7 +180,7 @@ export class ClinicSettingsComponent implements OnInit {
     }    
     );  
   }
-
+//create xero connection model
   public openXero(){
       var success;
 
@@ -189,7 +194,7 @@ export class ClinicSettingsComponent implements OnInit {
       }, 1000);
   }
 
-
+//check status of xeroc onnection
   public checkXeroStatus(){
     this.clinicSettingsService.checkXeroStatus(this.id).subscribe((res) => {
        if(res.message == 'success'){
@@ -212,6 +217,7 @@ export class ClinicSettingsComponent implements OnInit {
       this.warningMessage = "Please Provide Valid Inputs!";
     });  
  }
+ //disconnect xero connection
  public disconnectXero() {
     this.clinicSettingsService.clearSession(this.id).subscribe((res) => {
        if(res.message == 'success'){
@@ -257,7 +263,7 @@ public toggle(event){
 
   }
 }
-
+//upload logo for clinic
 
   uploadImage(files: FileList) {  
     this.fileToUpload = files.item(0);

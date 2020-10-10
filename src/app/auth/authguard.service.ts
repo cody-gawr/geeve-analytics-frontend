@@ -11,7 +11,10 @@
   @Injectable()
   export class AuthGuard implements CanActivate {
   constructor(private router: Router,  private snackBar: MatSnackBar,private _cookieService: CookieService, private activatedRoute: Location ) {}
-
+/**
+  *Check if user is Authenticated
+  *AUTHOR - Teq Mavens
+  */
   canActivate(
   next: ActivatedRouteSnapshot,
   state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | 
