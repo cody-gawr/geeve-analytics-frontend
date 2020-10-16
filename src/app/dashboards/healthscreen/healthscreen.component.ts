@@ -200,8 +200,8 @@ customOptions: OwlOptions = {
           this.profit_p = data.data.profit_p;
           this.visits_p = data.data.visits_p;
           this.visits_f = data.data.visits_f;
-          this.utilisation_rate_f = data.data.utilisation_rate_f;
-          this.unscheduled_production_f = data.data.unscheduled_production_f; 
+          this.utilisation_rate_f = data.data.utilisation_rate_f.toFixed(2);
+          this.unscheduled_production_f = data.data.unscheduled_production_f;
 
           this.profit_g = data.data.profit_g;          
           this.visits_g = data.data.visits_g;          

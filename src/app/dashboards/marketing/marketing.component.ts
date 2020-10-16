@@ -23,6 +23,7 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
 import {MenuItem} from 'primeng/api'; 
 import { NgxSmartModalService } from 'ngx-smart-modal';
+import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';/**/
 export interface Dentist {
   providerId: string;
@@ -529,10 +530,12 @@ public fdnewPatientsAcqLoader:any;
               this.expenseData[res.meta_key] = res.expenses;
               this.categories.push(res.meta_key);
              });
-              // if(this.selectedCategories.length<=0) 
+             console.log(this.selectedCategories.length);
+              if(this.selectedCategories.length>0) 
+                this.load_chart_acq();
               //  this.selectedCategories = this.categories;
               // console.log(this.selectedCategories);
-              // this.load_chart_acq();
+              
            }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -660,17 +663,31 @@ public currentText;
       
 
   }
-
 choosedDate(val) {
     val = (val.chosenLabel);
     var val= val.toString().split(' - ');
-      this.startDate = this.datePipe.transform(val[0], 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(val[1], 'yyyy-MM-dd');
-      this.loadDentist('all');
       
+     var date2:any= new Date(val[1]);
+     var date1:any= new Date(val[0]);
+      var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+if(diffTime<=365){
+ this.startDate = this.datePipe.transform(val[0], 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(val[1], 'yyyy-MM-dd');
+      this.loadDentist('all');      
       $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
+   }
+   else {
+            Swal.fire({
+      text: 'Please select date range within 365 Days',
+      icon: 'warning',
+      showCancelButton: false,
+      confirmButtonText: 'Ok',
+    }).then((result) => {
+    });
+   }
 }
+
 toggleFilter(val) {
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_'+val).addClass('mat-button-toggle-checked');
@@ -939,6 +956,8 @@ load_chart_acq() {
       if(this.expenseData[res])
       totalY = totalY+parseInt(this.expenseData[res]);
     });
+  console.log(totalY);
+this.newAcqValue = 0;
     if(totalY != undefined && this.newPatientsTotal>0)
     this.newAcqValue = (totalY/this.newPatientsTotal).toFixed(0);
     $('.close_modal').click();

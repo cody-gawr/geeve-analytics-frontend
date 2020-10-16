@@ -903,9 +903,9 @@ this.preoceedureChartColors = [
     {data: [], label: 'Surgical Extractions' }  ];
 
 
-  this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {
-   
+  this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
        if(data.message == 'success'){
+        console.log(data.data);
         this.buildChartLoader =false;
           this.stackedChartData1 = [];
           this.stackedChartData2 = [];
@@ -966,6 +966,7 @@ this.preoceedureChartColors = [
      }
        }
     }, error => {
+      alert('dsfs');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );

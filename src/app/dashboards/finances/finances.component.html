@@ -363,25 +363,16 @@ expenses_card custom_ngx_cw01" >
                 </div>  
           
 
-       <div *ngIf="totalProductionCollectionLabel1.length > 0" style="height: 180px">
+       <div style="height: 180px">
      <canvas #myCanvas2 baseChart [datasets]="totalProductionCollection1" [labels]="totalProductionCollectionLabel1" [options]="labelBarOptionsTC" [legend]="false"
           [chartType]="stackedChartTypeHorizontal" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" 
           (chartClick)="chartClicked($event)"></canvas>
-      <!--   <ngx-gauge class="totalProduction" [type]="gaugeType"
-           [value]="totalProductionVal" 
-           [label]="totalProductionLabel"  
-           [thick]="gaugeThick"  
-           [foregroundColor]="foregroundColor2"
-           [cap] ="cap"
-           [prepend]="gaugePrependText"
-           [size] = "size">
-          </ngx-gauge> -->
         </div>
 
-       <div *ngIf="totalProductionCollectionLabel1.length <= 0 && finTotalProductionLoader == false" class="sa_nodata_div">
+     <!--   <div *ngIf="totalProductionCollectionLabel1.length <= 0 && finTotalProductionLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p>Oops! Looks like we don't have any data to show you</p>
-          </div>
+          </div> -->
         <div fxLayout="row wrap" class="m-t-40 predicted1" *ngIf="totalProductionCollectionLabel1.length > 0">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                          <h4 class="m-0 font-light no-boldText"><b>Production</b></h4>
@@ -416,50 +407,7 @@ expenses_card custom_ngx_cw01" >
     </mat-card>
     <div *ngIf="finTotalProductionLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
-  <!--  <div fxFlex.lg="33" fxFlex.xl="33" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="33" class="sa_flexbg predictor_ratio md_mrn custom_ngx_cw06">
-    
-    <mat-card class="" >
-      <mat-card-content class="sa_matcard_content">
-      <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{collectionTrendVal | number:'1.0-0'}}" ><img class="trend_ico" src="../assets/images/trend_{{collectionTrendIcon}}.png"></span>
-          <mat-card-title class="text-center">Collection
-              <div class="sa_box_title_right_buttons">
-                  <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
-                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
-                  <mat-menu #menu="matMenu">
-                      <button mat-menu-item>Save Image</button>
-                      <button mat-menu-item>Download PDF</button>
-                  </mat-menu> -->
-          <!--    </div>
-          </mat-card-title>
-          <h1 class="text-black m-0 sa_cart_title">$ {{collectionVal | number:'1.0-2'}}</h1>
-
-             <div  style="height: 180px">
-        <ngx-gauge  class="collection" [type]="gaugeType"
-           [value]="collectionPercentage"  
-           [thick]="gaugeThick"  
-           [foregroundColor]="foregroundColor"
-           [cap] ="cap"
-           [append]="collectionAppend"
-           [size]="size"
-           >
-          </ngx-gauge>
-         
-        </div>
-
-            <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec">
-                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">$ {{collectionVal | number:'1.0-0'}}</h3>
-                        <small>Current</small>
-                    </div>
-                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">$ {{collectionTrendVal | number:'1.0-0'}}</h3>
-                        <small>Previous</small>
-                    </div>
-                </div>
-
-      </mat-card-content>
-    </mat-card>
-  </div> -->
+  
    <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="total_val sa_flexbg predictor_ratio md_mrn last custom_ngx_cw07">
      
     <mat-card class="">
@@ -478,7 +426,7 @@ expenses_card custom_ngx_cw01" >
        <h1 class="text-black m-0 sa_cart_title">&nbsp;</h1>
           
 
-       <div  style="height: 220px" *ngIf="productionVal > 0">
+       <div  style="height: 220px" >
         <ngx-gauge class="productionVisit" [type]="gaugeType"
            [value]="productionVal" 
            [thick]="gaugeThick"  
@@ -490,10 +438,10 @@ expenses_card custom_ngx_cw01" >
           </ngx-gauge>
           
         </div>
-<div *ngIf="productionVal <= 0 && finProductionPerVisitLoader == false" class="sa_nodata_div">
+<!-- <div *ngIf="productionVal <= 0 && finProductionPerVisitLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p>Oops! Looks like we don't have any data to show you</p>
-          </div>
+          </div> -->
             <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec" *ngIf="productionVal > 0">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light">${{productionVal | number:'1.0-0'}}</h3>

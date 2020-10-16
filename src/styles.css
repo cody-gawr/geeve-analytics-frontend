@@ -552,7 +552,7 @@ html .page-wrapper { height: 100vh!important }
 
 .sa_combine_title .trend_ico { float: none; }
 
-.sa_nodata_div { padding: 20px; text-align: center; position: relative; margin: 20px auto 20px !important; width: 100%; max-width: 370px; background-image: url(assets/images/nodata02.jpg); background-size: cover; }
+.sa_nodata_div { padding: 20px; text-align: center; position: relative; margin: 20px auto 20px !important; width: 100%; max-width: 370px; background-image: url(assets/images/nodata02.jpg); background-size: cover;height:200px; }
 
 .sa_back_btn_holder { float: left; width: 100%; margin-bottom: 10px; }
 

@@ -19,6 +19,7 @@ import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerri
 import { CookieService } from "angular2-cookie/core";
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -388,7 +389,7 @@ this.preoceedureChartColors = [
           xAxes: [{ 
             stacked:false,
             ticks: {
-                suggestedMin:500000,
+                suggestedMin:0,
                userCallback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
@@ -1515,8 +1516,8 @@ choosedDate(val) {
     val = (val.chosenLabel);
     var val= val.toString().split(' - ');
       
-     var date2= new Date(val[1]);
-     var date1= new Date(val[0]);
+     var date2:any= new Date(val[1]);
+     var date1:any= new Date(val[0]);
       var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
 if(diffTime<=365){
 this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
@@ -1526,7 +1527,13 @@ this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
      $('.customRange').css('display','none');
    }
    else {
-     alert("Please select date range within 365 Days");
+            Swal.fire({
+      text: 'Please select date range within 365 Days',
+      icon: 'warning',
+      showCancelButton: false,
+      confirmButtonText: 'Ok',
+    }).then((result) => {
+    });
    }
 }
   myDateParser(dateStr : string) : string {

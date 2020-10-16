@@ -41,9 +41,9 @@ export class RolesUsersService {
     }
 
        // Get Dentist
-    getRoles(token = this._cookieService.get("token")): Observable<any> {
+    getRoles(user_id= this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Roles/getRoles", { headers: header })
+        return this.http.get(this.apiUrl +"/Roles/getRoles?user_id="+user_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

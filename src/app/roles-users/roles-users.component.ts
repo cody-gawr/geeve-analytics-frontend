@@ -223,7 +223,7 @@ initiate_clinic() {
 
   public selected_id:any;
   private getRoles() {      
-  this.rolesUsersService.getRoles(this.clinic_id).subscribe((res) => {
+  this.rolesUsersService.getRoles().subscribe((res) => {
        if(res.message == 'success'){ 
         this.roles=[];
          res.data.forEach(result => {

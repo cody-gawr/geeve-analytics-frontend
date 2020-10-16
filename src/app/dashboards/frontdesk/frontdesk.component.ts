@@ -399,6 +399,8 @@ public fdWorkTimeAnalysisLoader:any;
          ]
         }
        }
+           console.log(this.stackedChartOptionssWT);
+
           
        }
     }, error => {
