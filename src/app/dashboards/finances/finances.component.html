@@ -38,7 +38,7 @@
          <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial YTD</span>
           <div class="custom_date">
           <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="" (click)="filterDate('custom')" />
-           <ngx-daterangepicker-material class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'" [locale]="{applyLabel: 'ok', displayFormat: 'DD-MM-YYYY'}"></ngx-daterangepicker-material></div>
+           <ngx-daterangepicker-material class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'" [locale]="{applyLabel: 'ok', displayFormat: 'DD-MM-YYYY',firstDay: 1}"></ngx-daterangepicker-material></div>
         </div>
       </div>
 
@@ -84,7 +84,7 @@
                        <h3 class="text-white m-0"><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{netProfitTrendTotal | number:'1.0-2'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitTrendIcon}}.png"></span>
                            Net Profit</h3>
 
-                        <h1 class="text-white m-0">$ {{netProfitVal | number:'1.0-2'}}</h1>
+                        <h1 class="text-white m-0">${{netProfitVal | number:'1.0-2'}}</h1>
                     </div>
                     <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitIcon}}-alt"></i></div> -->
                 </div>
@@ -99,7 +99,7 @@
                 <div class="d-flex no-block align-items-center">
                     <div class="stats">
 
-                              <h3 class="text-white m-0"> <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{netProfitPercentTrendTotal | number:'1.0-2'}} %" *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitPercentTrendIcon}}.png"></span> Net Profit % (Xero)</h3>
+                              <h3 class="text-white m-0"> <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{netProfitPercentTrendTotal | number:'1.0-2'}}%" *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitPercentTrendIcon}}.png"></span> Net Profit % (Xero)</h3>
                         <h1 class="text-white m-0">{{netProfitPercentVal | number:'1.0-2'}}%</h1>
                     </div>
                     <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPercentIcon}}-alt"></i></div> -->
@@ -114,7 +114,7 @@
                 <!-- column -->
                 <div class="d-flex no-block align-items-center">
                     <div class="stats">
-                      <h3 class="text-white m-0" ><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{netProfitPmsTrendTotal | number:'1.0-2'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitPmsTrendIcon}}.png"></span>
+                      <h3 class="text-white m-0" ><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{netProfitPmsTrendTotal | number:'1.0-2'}}%"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitPmsTrendIcon}}.png"></span>
                           Net Profit % (PMS)</h3>
                         <h1 class="text-white m-0">{{netProfitPmsIcon}}{{netProfitPmsVal}}%</h1>
                     </div>
@@ -178,7 +178,7 @@ expenses_card custom_ngx_cw01" >
                             </ngx-charts-pie-chart>
                 <div *ngIf="pieChartLabels.length <= 0 && categoryExpensesLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
                                 </div>
                           </div>
@@ -201,7 +201,7 @@ expenses_card custom_ngx_cw01" >
                         <div class="sa_list_show"*ngFor="let a of pieChartData; let i = index">
                             <span class="sa_clr_box sa_clr{{i}}m"></span>
                             <span class="frl">{{pieChartLabels[i]}}</span>
-                            <span class="frv">{{a | number:'1.0-2'}} ({{pieChartDataPercentres[i]}} %)</span>
+                            <span class="frv">{{a | number:'1.0-2'}} ({{pieChartDataPercentres[i]}}%)</span>
                         </div>
                     </div>
                 </div>
@@ -215,7 +215,7 @@ expenses_card custom_ngx_cw01" >
     
     <mat-card class="sa_no_tabs_area" >
       <mat-card-content class="sa_matcard_content">
-        <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionChartTrendTotal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{productionChartTrendIcon}}.png"></span>
+       <!--  <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionChartTrendTotal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{productionChartTrendIcon}}.png"></span> -->
           <mat-card-title class="text-center">% of Production By Clinician
               <div class="sa_box_title_right_buttons">
                   <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -237,7 +237,7 @@ expenses_card custom_ngx_cw01" >
       </div>
       <div *ngIf="productionChartLabels.length <= 0 && finProductionByClinicianLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>        
       </mat-card-content>
     </mat-card>
@@ -269,9 +269,9 @@ expenses_card custom_ngx_cw01" >
         </canvas>
       </div>
       </div>
-      <div *ngIf="totalDiscountChartLabels.length <= 0 && finTotalDiscountsLoader == false" class="sa_nodata_div">
+      <div *ngIf="totalDiscountChartData.length <= 0 && finTotalDiscountsLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>   
 
             <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec" *ngIf="totalDiscountChartLabels.length > 0">
@@ -317,7 +317,7 @@ expenses_card custom_ngx_cw01" >
       </div>
 <div *ngIf="totalOverdueAccountDataMax <= 0 && finOverdueAccountsLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
       </div>
             <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec" *ngIf="totalOverdueAccountDataMax > 0">
@@ -371,7 +371,7 @@ expenses_card custom_ngx_cw01" >
 
      <!--   <div *ngIf="totalProductionCollectionLabel1.length <= 0 && finTotalProductionLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div> -->
         <div fxLayout="row wrap" class="m-t-40 predicted1" *ngIf="totalProductionCollectionLabel1.length > 0">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
@@ -432,7 +432,6 @@ expenses_card custom_ngx_cw01" >
            [thick]="gaugeThick"  
            [prepend]= "gaugePrependText"
            [foregroundColor]="foregroundColor2"
-            [max] = "productionTrendVal"
            [cap] ="cap"
            [size] = "size">
           </ngx-gauge>
@@ -440,7 +439,7 @@ expenses_card custom_ngx_cw01" >
         </div>
 <!-- <div *ngIf="productionVal <= 0 && finProductionPerVisitLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div> -->
             <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec" *ngIf="productionVal > 0">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
@@ -525,7 +524,7 @@ expenses_card custom_ngx_cw01" >
         </canvas>
         <div *ngIf="discountsChartTrendLabels.length  <=0 && finTotalDiscountsTrendLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
       </div>
       </mat-card-content>
@@ -557,9 +556,9 @@ expenses_card custom_ngx_cw01" >
               [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" (chartClick)="chartClicked($event)" >
             </canvas>
 
-            <div *ngIf="expensesChartTrendLabels.length  <=0" class="sa_nodata_div">
+            <div *ngIf="expensesChartTrendLabels.length  <=0 && finNetProfitPercentTrendLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
                         </div>
                     </div>
@@ -567,6 +566,7 @@ expenses_card custom_ngx_cw01" >
                 </div>
             </mat-card-content>
         </mat-card>
+        <div *ngIf="finNetProfitPercentTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
     </div>
   <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn">    
     <mat-card class="" >
@@ -589,7 +589,7 @@ expenses_card custom_ngx_cw01" >
         </canvas>
         <div *ngIf="productionChartTrendLabels.length  <=0 && finProductionByClinicianTrendLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
       </div>
            
@@ -620,7 +620,7 @@ expenses_card custom_ngx_cw01" >
         </canvas>
         <div *ngIf="overdueChartTrendLabels.length  <=0 && finOverdueAccountsTrendLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
       </div>           
       </mat-card-content>
@@ -647,7 +647,7 @@ expenses_card custom_ngx_cw01" >
         </canvas>
         <div *ngIf="totalProductionCollectionLabel.length  <=0 && finCollectionTrendLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
         </div>           
       </mat-card-content>
@@ -676,7 +676,7 @@ expenses_card custom_ngx_cw01" >
           [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" (chartClick)="chartClicked($event)"></canvas>
 <div *ngIf="productionVisitChartTrendLabels.length  <=0 && finProductionPerVisitTrendLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
         </div>           
       </mat-card-content>
