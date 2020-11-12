@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -33,9 +34,12 @@ show_dentist = false;
     save(data) {
     $('.mat-form-control').click();
     if(data.display_name != undefined && data.email != undefined && data.user_type != ''  ){
+      if(this.show_dentist == true && data.dentist_id !='')
         this.dialogRef.close(data);
-      }
+      else if(this.show_dentist == false)
+         this.dialogRef.close(data);
     }
+  }
 }
 
 @Component({
@@ -194,7 +198,9 @@ initiate_clinic() {
   add_user(display_name, email, user_type, password,clinic_id,dentist_id) {
   if(dentist_id =='' || dentist_id == undefined)
     dentist_id ='';
+  $('.ajax-loader').show();
   this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
+    $('.ajax-loader').hide();
        if(res.message == 'success'){
         this.toastr.success('User has been added successfully!');
         this.getUsers();
@@ -253,35 +259,49 @@ initiate_clinic() {
   }
 
   private deleteUser(row) {
-           if(confirm("Are you sure to delete User?")) {
-    if(this.rows[row]['id']) {
-  this.rolesUsersService.deleteUser(this.rows[row]['id']).subscribe((res) => {
-       if(res.message == 'success'){
-        this.toastr.success('User Removed');
-          this.getUsers();
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
-    }
-    else {
-      this.rows.splice(row, 1);
-    this.rows = [...this.rows];
+           Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete user?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if(result.value){
+          $('.ajax-loader').show();
+          if(this.rows[row]['id']) {
+          this.rolesUsersService.deleteUser(this.rows[row]['id']).subscribe((res) => {
+            $('.ajax-loader').hide();
+               if(res.message == 'success'){
+                this.toastr.success('User Removed');
+                  this.getUsers();
+               }
+            }, error => {
+              this.warningMessage = "Please Provide Valid Inputs!";
+            }    
+            );
+            }
+            else {
+              this.rows.splice(row, 1);
+            this.rows = [...this.rows];
 
-    }
-    }
+            }
+ }
+});
+
+
+
+
   }
 
   addDentist() {
-    console.log(this.rows);
+    
     var temp ={};
     temp['providerId'] ='Enter Provider Id';
     temp['name'] ='Enter Name';
     var length = this.rows.length;
     this.editing[length + '-providerId'] = true;
-    this.editing[length + '-name'] = true;
-    
+    this.editing[length + '-name'] = true;    
     this.rows.push(temp);
     this.table =data;
   }

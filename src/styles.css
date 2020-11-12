@@ -3002,3 +3002,27 @@ ul.download-sync-list {
     width: 100% !important;
 }
 
+.sa_nodata_div {
+    padding: 20px;
+    text-align: center;
+    min-height: 200px;
+    position: relative;
+    margin: 20px auto 20px !important;
+    width: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url(assets/images/nodata02.jpg);
+    background-size: auto 100%;
+}
+.mat-raised-button[disabled] {
+    cursor: none !important;
+    background-color: #cecece !important;
+}
+.mat-raised-button[disabled] .mat-button-wrapper{
+    color: #ffffff !important;
+}
+.ur_clinic {
+    font-weight: 100;
+    font-size: 12px;
+    margin: 0px;
+}

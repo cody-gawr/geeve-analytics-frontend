@@ -83,7 +83,7 @@
           
         </a>
 
-        <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'link-morning-huddle' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5" [routerLink]="['/',   menuitem.param2,   menuitem.state]">
+        <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type  === 'link-morning-huddle' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5" [routerLink]="['/', menuitem.state]">
             <i class="{{menuitem.icon}}"></i>
             <span>{{ menuitem.name }}</span>
             <span fxFlex></span>

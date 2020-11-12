@@ -20,8 +20,7 @@
             <img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="production_dif > 0">
             <img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="production_dif <= 0"> 
             Production
-              <div class="change_value"> <span class="range_icon"><i class="fa fa-plus" *ngIf="production_dif > 0"></i></span>
-                <span class="range_icon" *ngIf="production_dif < 0"><i class="fa fa-minus"></i></span>
+              <div class="change_value">
                  $ {{production_dif| number:'1.0-0'}}</div> </mat-card-title>
           <div class="ttl_value">$ {{production_c| number:'1.0-0'}}</div>
       </mat-card-content>
@@ -35,7 +34,7 @@
     <mat-card  class="treatmentPlan sa_hccard">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center"><img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="profit_dif > 0"><img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="profit_dif <= 0"> Profit
-              <div class="change_value"><span class="range_icon" *ngIf="profit_dif > 0"><i class="fa fa-plus"></i></span><span class="range_icon" *ngIf="profit_dif < 0"><i class="fa fa-minus"></i></span>$ {{profit_dif| number:'1.0-0'}}</div> </mat-card-title>
+              <div class="change_value">$ {{profit_dif| number:'1.0-0'}}</div> </mat-card-title>
          
     <div class="ttl_value"> $ {{profit_c| number:'1.0-0'}}</div>
 
@@ -50,7 +49,7 @@
     <mat-card  class="noPatients sa_hccard">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center"><img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="visits_dif > 0"><img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="visits_dif <= 0">  Total Visits
-              <div class="change_value"><span class="range_icon" *ngIf="visits_dif > 0"><i class="fa fa-plus"></i></span><span class="range_icon" *ngIf="visits_dif < 0"><i class="fa fa-minus"></i></span>{{visits_dif}}</div></mat-card-title>
+              <div class="change_value">{{visits_dif}}</div></mat-card-title>
         
           <div class="ttl_value">{{visits_c}}</div>
 
@@ -95,6 +94,7 @@
                       <div class="ur_users_main">
                           <div class="ur_user_name">
                               {{hourlyRateChartLabels[i]}}
+                              <p class="ur_clinic" *ngIf="clinic_id =='all'">{{hourlyRateChartClinic[i]}}</p>
                           </div>
                           <div class="ur_users_number">
                               ${{hourlyRateChartD| number:'1.0-0'}}
@@ -137,12 +137,16 @@
                       <div class="top_ref_grid" >
                           <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
                           <span class="top_ref_value">{{newPatientsTimeD}}</span>
+                          <span class="ur_clinic" *ngIf="clinic_id =='all'">{{newPatientsTimeClinic[i]}}</span>
+
                       </div>
                   </div>
                    <div fxFlex="calc(32% - 5px)" fxFlex.lg="calc(32% - 5px)" fxFlex.md="calc(32% - 5px)" fxFlex.sm="100" fxFlex.xs="100" class="" *ngIf="i>=3">
                       <div class="top_ref_grid" >
                           <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
                           <span class="top_ref_value">{{newPatientsTimeD}}</span>
+                          <span class="ur_clinic" *ngIf="clinic_id =='all'">{{newPatientsTimeClinic[i]}}</span>
+
                       </div>
                   </div>
                 

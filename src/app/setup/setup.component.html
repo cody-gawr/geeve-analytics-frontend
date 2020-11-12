@@ -162,7 +162,7 @@
 
     </div>
         <div formArrayName="itemRows">
-<div mat-dialog-content class="sa_forms_design invite_section" *ngFor="let itemrow of inviteFormGroup.controls.itemRows.controls; let i=index"  [formGroupName]="i">
+<div mat-dialog-content class="sa_forms_design invite_section" *ngFor="let itemrow of inviteFormGroup.controls.itemRows['controls']; let i=index"  [formGroupName]="i">
  <div class="invite_row invite-setup-form-group">
     <div class="sa-form-group">
     <label>Display Name</label>
@@ -317,7 +317,7 @@
     <div class="you-are-set">
     <h2>You're <span>All Set.</span></h2>
     <br/>
-     <button mat-raised-button color="green" (click)="finish(5)">Finish</button>
+     <button mat-raised-button color="green" (click)="finish()">Finish</button>
    </div>
    </div>
  <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">

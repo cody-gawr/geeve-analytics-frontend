@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
+import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-huddle.component';
 import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AuthGuard } from './auth/authguard.service';
 
@@ -66,6 +67,11 @@ export const AppRoutes: Routes = [
       {
         path: 'clinic-goals',
         loadChildren: './clinic-goals/clinic-goals.module#ClinicGoalsModule',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'morning-huddle',
+        component: MorningHuddleComponent,
         canActivate: [AuthGuard]
       },
       {

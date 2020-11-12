@@ -108,9 +108,9 @@ public token_id;
 
 
     //Referral to Other Clinicians Internal / External
-    ClinicianReferralDentist(dentist_id, clinic_id='1', startDate = '', endDate = '', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+    ClinicianReferralDentist(dentist_id, clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferralToOtherClinicians?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpReferralToOtherClinicians?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

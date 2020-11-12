@@ -133,6 +133,7 @@ export class ClinicSettingsComponent implements OnInit {
   }
 //save clinic settings
   onSubmit() {
+       $('.ajax-loader').show();
   this.clinicName = this.form.value.clinicName;
   this.contactName = this.form.value.contactName;
   this.address = this.form.value.address;
@@ -148,6 +149,7 @@ export class ClinicSettingsComponent implements OnInit {
 
   let days = JSON.stringify(this.workingDays);
   this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size,days,this.post_op_calls, this.phoneNo, this.clinicEmail, this.facebook, this.twitter, this.linkedin, this.instagram, this.logo ).subscribe((res) => {
+       $('.ajax-loader').hide();
        if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );
        }

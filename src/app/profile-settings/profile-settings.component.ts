@@ -6,7 +6,11 @@ import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import { Router, NavigationEnd, Event  } from '@angular/router';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
-import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
+import { StripeService, StripeCardComponent } from 'ngx-stripe';
+import {
+  StripeCardElementOptions,
+  StripeElementsOptions
+} from '@stripe/stripe-js';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 @Component({
@@ -15,10 +19,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./profile-settings.component.scss']
 })
 export class ProfileSettingsComponent implements OnInit {
-   elementsOptions: ElementsOptions = {
+   elementsOptions: StripeElementsOptions = {
     };
-    elements: Elements;
-    card: StripeElement;
+    elements;
+    card;
 
   public cardStyle = {
     base: {
@@ -353,16 +357,20 @@ public repeatPassword;
   if(this.newPassword == this.repeatPassword) {
    this.profileSettingsService.updatePassword(this.currentPassword, this.newPassword).subscribe((res) => {
        if(res.message == 'success'){
-        this.successLogin = true;
-        this.successtext = res.data;
+        this.toastr.success(res.data);
+        /*this.successLogin = true;
+        this.successtext = res.data;*/
+        this.form.reset();
        }
        else{
-          this.errorLogin = true;     
-          this.errortext = res.data;
+          /*this.errorLogin = true;     
+          this.errortext = res.data;*/
+          this.toastr.error(res.data);
         }
     }, error => {
-      this.errorLogin = true;
-      this.errortext = "Please Provide Valid Inputs!";
+      this.toastr.error('Please Provide Valid Inputs!');
+      /*this.errorLogin = true;
+      this.errortext = "Please Provide Valid Inputs!";*/
     }    
     );
  }

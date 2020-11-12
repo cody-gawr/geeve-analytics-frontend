@@ -222,7 +222,7 @@ export class FinancesService {
                 // finExpensesByCategoryMktTrend
     finExpensesByCategoryMktTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finances/finExpensesByCategoryMktTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finances/finExpensesByCategoryTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

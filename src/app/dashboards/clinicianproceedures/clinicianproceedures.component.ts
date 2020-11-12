@@ -11,13 +11,16 @@ import {
   NgForm,
   Validators
 } from '@angular/forms';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router , NavigationEnd } from "@angular/router";
 import 'chartjs-plugin-style';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "angular2-cookie/core";
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';  
 export interface Dentist {
   providerId: string;
   name: string;
@@ -43,7 +46,19 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
     public user_type;
     public childid='';
   public trendText;
+    private _routerSub = Subscription.EMPTY;
   constructor(private toastr: ToastrService,private clinicianproceeduresService: ClinicianProceeduresService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
+         this._routerSub = this.router.events
+         .filter(event => event instanceof NavigationEnd)
+         .subscribe((value) => {
+      this.user_type = this._cookieService.get("user_type");          
+ if( this._cookieService.get("childid")){
+         this.childid = this._cookieService.get("childid");
+          $('.internal_dentist').val('all');
+          $('.external_dentist').val('all');
+
+       }
+    });
   }
   private warningMessage: string;
   private myTemplate: any = "";
@@ -446,7 +461,21 @@ this.preoceedureChartColors = [
             }],
         },legend: {
             display: true
-         }
+         },
+          tooltips: {
+            custom: function(tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
+  callbacks: {
+     label: function(tooltipItems, data) { 
+          return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
+     },
+     
+  }
+}
+
   };
   
    public lineChartColors1: Array<any> = [
@@ -755,6 +784,9 @@ this.preoceedureChartColors = [
     public pieChartExternalPrevTooltip='down';
     public pieChartCombinedPrevTotal=0;
     public pieChartCombinedPrevTooltip='down';
+        public predictedTotalTooltip1 = 'down';
+    public predictedTotalTooltip2 = 'down';
+    public predictedTotalTooltip3 = 'down';
 
   public itemPredictedChartData: any[] = [
     {data: [10,1,5], label: 'Items Predictor Analysis ',  shadowOffsetX: 3,
@@ -847,22 +879,17 @@ this.preoceedureChartColors = [
          $('.revenueProceedureSingle').show();
          $('.revenueProceedure').hide();
     }
-   
-/*
-    (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'none';
-    (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'block';
 
-    (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'none';
-    (<HTMLElement>document.querySelector('.noPatients')).style.display = 'block';*/
   }
   else {
+        this.selectedDentist = newValue;
     $(".onofftoogle").show();
     $(".trend_arrow").hide();
     if(this.toggleChecked ) {
         this.toggleChangeProcess()
       }
       else {
-    this.selectedDentist = newValue;
+        console.log('fdgdf2');
     this.buildChartDentist();
     if(!this.toggleChecked) {
         (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'block';
@@ -875,6 +902,7 @@ this.preoceedureChartColors = [
          $('.revenueProceedureSingle').show();
          $('.revenueProceedure').hide();
         this.buildChartReferralDentist();
+        this.changeDentistPredictor('1');
       }
 /*    this.buildChartTreatmentDentist();
     (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'block';
@@ -1001,17 +1029,19 @@ this.preoceedureChartColors = [
 
 public predictedChartD:any[] =[];
 public predictedChartL:any[] =[];
-public predictedT=[];
+public predictedT:any=[];
 public predictedTotal0;
 public predictedTotal;
-public predictedTP=[];
+public predictedTP:any=[];
 public predictedMax;
 public buildChartPredictorLoader:any;
 public prKey:any[] =[];
 public PRcolors;
 //Predictor Ratio :All Dentist
   private buildChartPredictor() {
-
+     this.predictedTotalAverageTooltip1 = 'down';
+    this.predictedTotalAverageTooltip2 = 'down';
+    this.predictedTotalAverageTooltip3 = 'down';
      if(this.duration){
       this.buildChartPredictorLoader = true;
        var user_id;
@@ -1054,9 +1084,10 @@ public PRcolors;
       if(data.message == 'success'){
         data.data.forEach((res,key) => {
           var i=0;
+          if(res) {
              res.forEach((result) => {
               if(result.provider != null){
-                this.predictedChartD[key].push(result.ratio);
+                this.predictedChartD[key].push(Math.round(result.ratio));
                 this.predictedChartL[key].push(result.provider);
                 this.predictedT[key] = this.predictedT[key] + parseInt(result.ratio);
                 this.predictedTP[key] = this.predictedTP[key] + parseInt(result.ratio_ta);
@@ -1065,13 +1096,14 @@ public PRcolors;
                 i++;
               }
              });
+           }
         });
-         this.predictedTotalAverage1 = this.predictedT[0]/this.predictedChartD[0].length;
-         this.predictedTotalAverage2 = this.predictedT[1]/this.predictedChartD[1].length;
-         this.predictedTotalAverage3 = this.predictedT[2]/this.predictedChartD[2].length;
-          this.predictedPreviousAverage1 = this.predictedTP[0]/this.predictedChartD[0].length;
-         this.predictedPreviousAverage2 = this.predictedTP[1]/this.predictedChartD[1].length;
-         this.predictedPreviousAverage3 = this.predictedTP[2]/this.predictedChartD[2].length;
+         this.predictedTotalAverage1 = Math.round(this.predictedT[0]/this.predictedChartD[0].length);
+         this.predictedTotalAverage2 =  Math.round(this.predictedT[1]/this.predictedChartD[1].length);
+         this.predictedTotalAverage3 =  Math.round(this.predictedT[2]/this.predictedChartD[2].length);
+          this.predictedPreviousAverage1 = Math.round( this.predictedTP[0]/this.predictedChartD[0].length);
+         this.predictedPreviousAverage2 =  Math.round(this.predictedTP[1]/this.predictedChartD[1].length);
+         this.predictedPreviousAverage3 =  Math.round(this.predictedTP[2]/this.predictedChartD[2].length);
          this.predictedChartData[0]['data'] = this.predictedChartD[0];
          this.predictedChartLabels = this.predictedChartL[0];
          this.predictedTotal =this.predictedT[0];
@@ -1102,6 +1134,7 @@ public PRcolors;
   }
 //Chnage predictor tab
   changeDentistPredictorMain(val) {
+  
     $('.predictor_ratio_main .sa_tab_btn').removeClass('active');
     $('.prmain'+val).addClass('active');
     $('.predicted_main').hide();
@@ -1140,31 +1173,41 @@ public gaugeValuePredictedPrev3;
 public buildChartPredictorDentistLoader:any;
   //Predictor Ratio : Individual Dentist
   private buildChartPredictorDentist() {
+       this.predictedTotalTooltip1 = 'down';
+    this.predictedTotalTooltip2 = 'down';
+    this.predictedTotalTooltip3 = 'down';
     this.buildChartPredictorDentistLoader =true;
        var user_id;
     var clinic_id;
   this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
        if(data.message == 'success'){
-        console.log(data);
           this.buildChartPredictorDentistLoader =false;
           if(data.data.ratio1[0]) {
-           this.gaugeValuePredicted1 = data.data.ratio1[0].ratio;
-           this.gaugeValuePredictedPrev1 = data.data.ratio1[0].ratio_ta;
+           this.gaugeValuePredicted1 = Math.round(data.data.ratio1[0].ratio);
+           this.gaugeValuePredictedPrev1 = Math.round(data.data.ratio1[0].ratio_ta);
            this.gaugeLabelPredicted = data.data.ratio1[0].provider;
          }
           if(data.data.ratio2[0]) {
-           this.gaugeValuePredicted2 = data.data.ratio2[0].ratio;
-           this.gaugeValuePredictedPrev2 = data.data.ratio2[0].ratio_ta;
+           this.gaugeValuePredicted2 = Math.round(data.data.ratio2[0].ratio);
+           this.gaugeValuePredictedPrev2 = Math.round(data.data.ratio2[0].ratio_ta);
          }
          if(data.data.ratio3[0]) {
-           this.gaugeValuePredicted3 = data.data.ratio3[0].ratio;
-           this.gaugeValuePredictedPrev3 = data.data.ratio3[0].ratio_ta;
+           this.gaugeValuePredicted3 = Math.round(data.data.ratio3[0].ratio);
+           this.gaugeValuePredictedPrev3 = Math.round(data.data.ratio3[0].ratio_ta);
          }
 
            this.predictedDentistTotal = this.gaugeValuePredicted1;
            this.predictedDentistPrevTotal = this.gaugeValuePredictedPrev1;
 
            this.gaugeValuePredicted= this.gaugeValuePredicted1;
+
+             if(this.gaugeValuePredicted1>=this.gaugeValuePredictedPrev1)
+            this.predictedTotalTooltip1 = 'up'
+          if(this.gaugeValuePredicted2>=this.gaugeValuePredictedPrev2)
+            this.predictedTotalTooltip2 = 'up'
+          if(this.gaugeValuePredicted3>=this.gaugeValuePredictedPrev3)
+            this.predictedTotalTooltip3 = 'up'
+          console.log(this.predictedTotalTooltip1,this.gaugeValuePredicted1,this.gaugeValuePredictedPrev1);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1312,7 +1355,13 @@ public doughnutChartColors1;
 this.pieChartDataMax2=0;
 this.pieChartDataMax3=0;
 
-  this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
+        this.pieChartInternalPrevTotal = 0;
+        this.pieChartExternalPrevTotal = 0;
+        this.pieChartCombinedPrevTotal = 0;
+        this.pieChartInternalPrevTooltip = 'down';
+        this.pieChartExternalPrevTooltip = 'down';
+        this.pieChartCombinedPrevTooltip = 'down';
+  this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
            this.pieChartInternalTotal = 0;
            this.pieChartExternalTotal = 0;
@@ -1329,7 +1378,18 @@ this.pieChartDataMax3=0;
            this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.i_count);
            this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.e_count);
            this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
+
+
+           this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(res.i_count_ta);
+           this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(res.e_count_ta);
+           this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(res.total_ta);
  });
+         if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
+          this.pieChartInternalPrevTooltip = 'up'
+        if(this.pieChartExternalTotal>=this.pieChartExternalPrevTotal)
+          this.pieChartExternalPrevTooltip = 'up'
+        if(this.pieChartCombinedTotal>=this.pieChartCombinedPrevTotal)
+           this.pieChartCombinedPrevTooltip = 'up'
 
        this.pieChartData1 = this.pieChartDatares1;
        this.pieChartData2 = this.pieChartDatares2;
@@ -1370,6 +1430,17 @@ this.pieChartDataMax3=0;
     }
   }
   else {
+      if(chart == 'Internal') {
+      this.showInternal = true;
+
+    }
+    else if(chart == 'External') {
+      this. showExternal =true;
+    }
+    else if(chart == 'Combined') {
+      this.showCombined = true;
+    }
+
     this.mode=chart;
     this.referralTrendSingle();
   }
@@ -1405,7 +1476,12 @@ public currentText;
       this.currentText= 'This Week';
 
       const now = new Date();
-       var first = now.getDate() - now.getDay();
+        if(now.getDay()==0)
+          var day = 7;
+        else
+          var day = now.getDay();
+
+       var first = now.getDate() - day +1;
        var last = first + 6; 
        this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd-MM-yyyy');
        var end = new Date();
@@ -1419,13 +1495,13 @@ public currentText;
     else if (duration == 'm') {
       this.trendText= 'Last Month';
       this.currentText= 'This Month';
+   this.duration='m';
 
 
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
             this.loadDentist(dentistVal);
-   this.duration='m';
     }
     else if (duration == 'q') {
       this.trendText= 'Last Quarter';
@@ -1490,7 +1566,7 @@ public currentText;
       this.currentText= 'This Financial Year';
 
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 3, 1), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='fytd';
       this.loadDentist(dentistVal);
@@ -1498,7 +1574,9 @@ public currentText;
      else if (duration == 'custom') {
        this.trendText= '';
       this.currentText= '';
+      this.duration='custom';
      $('.customRange').css('display','block');
+       this.loadDentist(dentistVal);
     }
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
@@ -1528,6 +1606,8 @@ public currentText;
   }
   //Load Individual Dentist Item Predictor tab
   changeDentistPredictor(val){
+     $('.predictedToolMain').hide();
+    $('.predicted'+val+'Tool').show();
     $('.ratioPredictorSingle .predictor_ratio .sa_tab_btn').removeClass('active');
     $('.pr'+val).addClass('active');
     if(val =='1') {
@@ -1571,11 +1651,14 @@ toggleFilter(val) {
     if(val == 'current') {
      this.toggleChecked = true;
      this.trendValue = 'c';
+     this.trendText=false;
      this.toggleChangeProcess();
      $('.pieChartDetails').hide();
      $('.revenue_proceedure').hide();
     }
     else if(val == 'historic') {
+     this.trendText=false;
+      
        this.toggleChecked = true;
        this.trendValue = 'h';
        this.toggleChangeProcess();
@@ -1625,8 +1708,9 @@ toggleChangeProcess(){
     if(this.toggleChecked){
     $('.filter').removeClass('active');
     this.predictorTrendSingle();
-    this.mode='Internal';
-    this.referralTrendSingle();
+    this.mode='Combined';
+    this.changePieReferral('Combined');
+  //  this.referralTrendSingle();
     this.predictorRatioTrendSingle();
     (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';

@@ -3,6 +3,7 @@ import { ClinicService } from './clinic.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
 import {
   FormBuilder,
   FormGroup,
@@ -120,7 +121,7 @@ export class ClinicComponent implements AfterViewInit {
   columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
 
   @ViewChild(ClinicComponent) table: ClinicComponent;
-  constructor(notifierService: NotifierService,private clinicService: ClinicService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
+  constructor(private toastr: ToastrService,notifierService: NotifierService,private clinicService: ClinicService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router) {
       this.notifier = notifierService;
 
     this.rows = data;
@@ -139,7 +140,8 @@ export class ClinicComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
   this.clinicService.addClinic(result.name, result.address, result.contact_name).subscribe((res) => {
        if(res.message == 'success'){
-          this.notifier.notify( 'success', 'Clinic Added!' ,'vertical');
+          this.toastr.success('Clinic Added!' );
+          //this.notifier.notify( 'success',  ,'vertical');
           this.getClinics();
        }
     }, error => {
@@ -208,6 +210,7 @@ public createdClinicsCount=0;
   }
 //delete clinic
   private deleteClinic(row) {
+      
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete Clinic?',
@@ -217,10 +220,13 @@ public createdClinicsCount=0;
       cancelButtonText: 'No'
     }).then((result) => {
       if(result.value){
+       $('.ajax-loader').show();
     if(this.rows[row]['id']) {
   this.clinicService.deleteClinic(this.rows[row]['id']).subscribe((res) => {
+       $('.ajax-loader').hide();
        if(res.message == 'success'){
-          this.notifier.notify( 'success', 'Clinic Removed!' ,'vertical');
+          this.toastr.success('Clinic Removed!' );
+          //this.notifier.notify( 'success', 'Clinic Removed!' ,'vertical');
           this.getClinics();
        }
         else if(res.status == '401'){
@@ -231,6 +237,7 @@ public createdClinicsCount=0;
                this.router.navigateByUrl('/login');
            }
     }, error => {
+      $('.ajax-loader').hide();
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
@@ -240,6 +247,8 @@ public createdClinicsCount=0;
     this.rows = [...this.rows];
 
     }
+   } else {
+     $('.ajax-loader').hide();
    }
    })
   }
@@ -274,7 +283,8 @@ public createdClinicsCount=0;
     this.rows[rowIndex][cell] = event.target.value;
     this.clinicService.updateClinic(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
        if(res.message == 'success'){
-          this.notifier.notify( 'success', 'Clinic Details Updated!' ,'vertical');
+        this.toastr.success('Clinic Details Updated!' );
+          //this.notifier.notify( 'success', 'Clinic Details Updated!' ,'vertical');
           this.getClinics();
        }
     }, error => {

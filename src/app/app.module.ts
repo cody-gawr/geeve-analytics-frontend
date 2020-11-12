@@ -25,7 +25,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
 import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
-import { CookieService } from "angular2-cookie/services/cookies.service";
+import { CookieService, CookieOptions } from "angular2-cookie/core";
 import { HttpModule } from '@angular/http'; 
 import { AuthGuard } from './auth/authguard.service';
 
@@ -38,8 +38,9 @@ import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { ToastrModule } from 'ngx-toastr';
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
+import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-huddle.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
-
+ import { MatMenuModule} from '@angular/material/menu';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -97,11 +98,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppSidebarComponent,
     AppHeaderrightComponent,
     LostOpportunityComponent,
+    MorningHuddleComponent,
     StepperComponent,
     StepperSidebarComponent,
     StepperHeaderrightComponent
   ],
   imports: [
+  MatMenuModule,
     BrowserModule,
     BrowserAnimationsModule,
     DemoMaterialModule,
@@ -134,7 +137,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
       CookieService,
-      DentistService
+      DentistService,
+      { provide: CookieOptions, useValue: false }
   ],
   bootstrap: [AppComponent]
 })

@@ -354,6 +354,11 @@ this.preoceedureChartColors = [
             display: true
          },
           tooltips: {
+            custom: function(tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
   callbacks: {
      label: function(tooltipItems, data) { 
           return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
@@ -456,10 +461,18 @@ this.preoceedureChartColors = [
             display: true
          },
           tooltips: {
+             custom: function(tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
   callbacks: {
      label: function(tooltipItems, data) { 
-        return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
+         return tooltipItems.xLabel + ": $" + tooltipItems.yLabel;
      },
+       title: function(tooltipItem, data) {
+          return;
+        }
   }
 }
   };
@@ -500,13 +513,73 @@ public labelBarPercentOptions: any = {
         },legend: {
             display: true
          },
-          tooltips: {
+  tooltips: {
+      custom: function(tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
+      callbacks: {
+        // use label callback to return the desired label
+        label: function(tooltipItem, data) {
+          return tooltipItem.xLabel + ": " + tooltipItem.yLabel+"%";
+        },
+        // remove title
+        title: function(tooltipItem, data) {
+          return;
+        }
+      }
+    },
+  };
+  public labelBarPercentOptionsStacked: any = {
+      elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle:'rectRounded',
+        hoverBorderWidth:7
+      },
+    },
+    scaleShowVerticalLines: false,
+           responsive: true,
+    maintainAspectRatio: false,
+    barThickness: 10,
+      animation: {
+        duration: 500,
+        easing: 'easeOutSine'
+      },
+    scales: {
+          xAxes: [{ 
+            stacked:true,
+            ticks: {
+                autoSkip: false
+            }
+            }],
+          yAxes: [{ 
+            stacked:true,
+
+            ticks: {
+              userCallback: function(item) {
+                  return item+ "%";
+                },
+            }, 
+            }],
+        },legend: {
+            display: true
+         },
+    tooltips: {
+            custom: function(tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
   callbacks: {
      label: function(tooltipItems, data) { 
-        return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel+"%";
-     },     
+          return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel+"%";
+     },
+     
   }
-}
+},
   };
 
     public pieChartOptions: any = {
@@ -1038,30 +1111,30 @@ public netProfitPmsTrendTotal;
            this.netProfitTrendTotal=0;
   this.financesService.NetProfitPms(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
        if(data.message == 'success'){
-        this.netProfitPmsVal = data.data.net_profit_pms; 
-        this.netProfitPmsTrendTotal=data.data_ta.net_profit_pms;  
+        this.netProfitPmsVal = Math.round(data.data.net_profit_pms); 
+        this.netProfitPmsTrendTotal=Math.round(data.data_ta.net_profit_pms);  
 
         if(this.netProfitPmsVal>=0)
         this.netProfitPmsIcon = "";
         else
         this.netProfitPmsIcon = "-";
-        this.netProfitPmsVal = Math.abs(data.data.net_profit_pms).toFixed(2);
+        this.netProfitPmsVal = Math.round(data.data.net_profit_pms);
          if(this.netProfitPmsVal>=this.netProfitPmsTrendTotal)
             this.netProfitPmsTrendIcon = "up";      
 
-       this.netProfitVal = data.data.net_profit;   
-        this.netProfitTrendTotal=data.data_ta.net_profit;  
+       this.netProfitVal = Math.round(data.data.net_profit);   
+        this.netProfitTrendTotal=Math.round(data.data_ta.net_profit);  
         if(this.netProfitVal>=0)
         this.netProfitIcon = "";
         else
         this.netProfitIcon = "-";
              
-        this.netProfitVal = this.netProfitVal; 
+        this.netProfitVal = Math.round(this.netProfitVal); 
       if(this.netProfitVal>=this.netProfitTrendTotal)
             this.netProfitTrendIcon = "up";     
 
-        this.netProfitPercentVal = data.data.net_profit_percent;  
-        this.netProfitPercentTrendTotal=data.data_ta.net_profit_percent;  
+        this.netProfitPercentVal = Math.round(data.data.net_profit_percent);  
+        this.netProfitPercentTrendTotal=Math.round(data.data_ta.net_profit_percent);  
 
         if(this.netProfitPercentVal>=0)
         this.netProfitPercentIcon = "";
@@ -1111,16 +1184,16 @@ public categoryExpensesLoader:any;
           temp.value =res.expenses;  
 
           this.single.push(temp);
-          this.single[key].value =Math.abs(res.expenses_percent).toFixed(2);  
+          this.single[key].value =Math.round(res.expenses_percent);  
 
-           this.pieChartDatares.push(res.expenses);
+           this.pieChartDatares.push(Math.round(res.expenses));
 
-           this.pieChartDataPercentres.push(res.expenses_percent.toFixed(2));
+           this.pieChartDataPercentres.push(Math.round(res.expenses_percent));
            this.pieChartLabelsres.push(res.meta_key);
            this.pieChartTotal = this.pieChartTotal + parseInt(res.expenses);
  });
         this.expensescChartTrendTotal = data.data_ta;
-        if(Math.abs(this.pieChartTotal)>=Math.abs(this.expensescChartTrendTotal))
+        if(Math.round(this.pieChartTotal)>=Math.round(this.expensescChartTrendTotal))
             this.expensescChartTrendIcon = "up";  
        this.pieChartData = this.pieChartDatares;
        this.pieChartLabels = this.pieChartLabelsres;
@@ -1154,12 +1227,12 @@ public categoryExpensesLoader:any;
 
     this.productionChartDatares = [];
         data.data.forEach(res => {
-           this.productionChartDatares.push((res.percent).toFixed(2));
+           this.productionChartDatares.push(Math.round(res.percent));
            this.productionChartLabelsres.push(res.name);
            this.productionChartTotal = this.productionChartTotal + parseInt(res.expenses);
     });
            this.productionChartTrendTotal = data.total_ta;
-        if(Math.abs(this.productionChartTotal)>=Math.abs(this.productionChartTrendTotal))
+        if(Math.round(this.productionChartTotal)>=Math.round(this.productionChartTrendTotal))
             this.productionChartTrendIcon = "up";  
        this.productionChartData = this.productionChartDatares;
        this.productionChartLabels = this.productionChartLabelsres;
@@ -1192,16 +1265,16 @@ public categoryExpensesLoader:any;
                    this.totalDiscountChartTotal = 0;
         data.data.total_production_by_provider.forEach(res => {
           if(res.total!=0) {
-           this.totalDiscountChartDatares.push(Math.floor(res.total)); 
+           this.totalDiscountChartDatares.push(Math.round(res.total)); 
            this.totalDiscountChartLabelsres.push(res.name);
          }
         });
-           this.totalDiscountChartTotal = data.data.total_production.total;
+           this.totalDiscountChartTotal = Math.round(data.data.total_production.total);
            if(data.data.trend_total_production.total)
-           this.totalDiscountChartTrendTotal = data.data.trend_total_production.total;
+           this.totalDiscountChartTrendTotal = Math.round(data.data.trend_total_production.total);
           else
             this.totalDiscountChartTrendTotal=0;
-           if(Math.abs(this.totalDiscountChartTotal)>=Math.abs(this.totalDiscountChartTrendTotal))
+           if(Math.round(this.totalDiscountChartTotal)>=Math.round(this.totalDiscountChartTrendTotal))
             this.totalDiscountChartTrendIcon = "up";
        this.totalDiscountChartData = this.totalDiscountChartDatares;
        this.totalDiscountChartLabels = this.totalDiscountChartLabelsres;
@@ -1232,7 +1305,7 @@ public totalProductionCollectionLabel1 =[];
         this.finTotalProductionLoader = false;
         this.totalProductionCollection1[0]['data'] =[];
         if(data.data[0].total)
-        this.totalProductionVal = parseFloat(data.data[0].total); 
+        this.totalProductionVal = Math.round(data.data[0].total); 
         else
         this.totalProductionVal = 0; 
 
@@ -1242,13 +1315,13 @@ public totalProductionCollectionLabel1 =[];
         this.totalProductionLabel ='';    
 
         if(data.data[0].total_ta)
-         this.totalProductionTrendVal = data.data[0].total_ta;  
+         this.totalProductionTrendVal = Math.round(data.data[0].total_ta);  
         else    
          this.totalProductionTrendVal = 0;  
 
           this.totalProductionCollection1[0]['data'].push(this.totalProductionVal);
 
-        if(Math.abs(this.totalProductionVal)>=Math.abs(this.totalProductionTrendVal))
+        if(Math.round(this.totalProductionVal)>=Math.round(this.totalProductionTrendVal))
             this.totalProductionTrendIcon = "up";  
        }
     }, error => {
@@ -1286,18 +1359,18 @@ isDecimal(value) {
        if(data.message == 'success'){
         this.finCollectionLoader = false;
         this.collectionVal =0;
-        this.collectionVal = (data.data.paym_total)? (data.data.paym_total).toFixed(2) : 0;      
-        this.collectionPercentage = (data.data.percent)? (data.data.percent).toFixed(2) : 0; 
-        this.collectionTrendVal = (data.data.paym_total_ta)?  (data.data.paym_total_ta).toFixed(2) : 0;    
+        this.collectionVal = (data.data.paym_total)? Math.round(data.data.paym_total) : 0;      
+        this.collectionPercentage = (data.data.percent)? Math.round(data.data.percent) : 0; 
+        this.collectionTrendVal = (data.data.paym_total_ta)?  Math.round(data.data.paym_total_ta) : 0;    
           this.totalProductionCollection1[0]['data'].push(this.collectionVal);
           this.totalProductionCollectionLabel1 = ['Total Production','Collection'];
            this.totalProductionCollectionMax = Math.max(...this.totalProductionCollection1[0]['data']);
            if(this.totalProductionVal)
-           this.collectionPercentageC=parseFloat(((this.collectionVal/this.totalProductionVal)*100).toFixed(2));
+           this.collectionPercentageC=Math.round((this.collectionVal/this.totalProductionVal)*100);
           else
            this.collectionPercentageC=0;
 
-        if(Math.abs(this.collectionVal)>=Math.abs(this.collectionTrendVal))
+        if(Math.round(this.collectionVal)>=Math.round(this.collectionTrendVal))
             this.collectionTrendIcon = "up";
          //console.log(this.totalProductionCollection1);
        }
@@ -1323,9 +1396,9 @@ isDecimal(value) {
   this.financesService.finProductionPerVisit(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.finProductionPerVisitLoader = false;
-        this.productionVal = Math.floor(data.data);  
-        this.productionTrendVal =  data.data_ta.toFixed(2);  
-        if(Math.abs(this.productionVal)>=Math.abs(this.productionTrendVal))
+        this.productionVal = Math.round(data.data);  
+        this.productionTrendVal = Math.round( data.data_ta);  
+        if(Math.round(this.productionVal)>=Math.round(this.productionTrendVal))
             this.productionTrendIcon = "up";            
        }
     }, error => {
@@ -1354,12 +1427,12 @@ isDecimal(value) {
      this.totalOverdueTrendIcon="down";
      this.totalOverdueAccountLabelsres = [];
         data.data.forEach(res => {
-           this.totalOverdueAccountres.push(res.overdue.toFixed(2));
+           this.totalOverdueAccountres.push(Math.round(res.overdue));
            this.totalOverdueAccountLabelsres.push(res.label);
                   });
            this.totalOverdueAccount = data.total;
            this.totalOverdueTrendAccount = data.trend_total;
-           if(Math.abs(this.totalOverdueAccount)>Math.abs(this.totalOverdueTrendAccount))
+           if(Math.round(this.totalOverdueAccount)>Math.round(this.totalOverdueTrendAccount))
             this.totalOverdueTrendIcon= "up";
        this.totalOverdueAccountData = this.totalOverdueAccountres;
        this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres; 
@@ -1388,7 +1461,12 @@ filterDate(duration) {
       this.currentText= 'This Week';
 
         const now = new Date();
-       var first = now.getDate() - now.getDay() +1;
+        if(now.getDay()==0)
+          var day = 7;
+        else
+          var day = now.getDay();
+
+       var first = now.getDate() - day +1;
        var last = first + 6; 
        var sd =new Date(now.setDate(first));
 
@@ -1471,7 +1549,7 @@ filterDate(duration) {
       this.currentText= 'This Financial Year';
       
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 3, 1), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
@@ -1583,6 +1661,8 @@ toggleFilter(val) {
           $('.trendMode').hide();
     $('.nonTrendMode').css('display','block');
     }
+     $('.expenses_card').removeClass('active');
+
 }
 flipcard(div){
  if( $('.'+div).hasClass('active'))
@@ -1665,7 +1745,7 @@ private finProductionByClinicianTrend() {
           this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(res => {  
                    res.val.forEach((result,key) => {
-                     this.productionChartTrend[key]['data'].push(Math.abs(result.total).toFixed(2));
+                     this.productionChartTrend[key]['data'].push(Math.round(result.total));
                      this.productionChartTrend[key]['label'] = result.name;
                    });
                    if(this.trendValue == 'c')
@@ -1712,7 +1792,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
          this.finTotalDiscountsTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.discountsChartTrend1.push(res.val.total);
+                     this.discountsChartTrend1.push(Math.round(res.val.total));
                    if(this.trendValue == 'c')
                    this.discountsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -1759,7 +1839,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
             this.finOverdueAccountsTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.overdueChartTrend1.push(res.val.total.toFixed(2));
+                     this.overdueChartTrend1.push(Math.round(res.val.total));
                    if(this.trendValue == 'c')
                    this.overdueChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -1805,7 +1885,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finTotalProductionTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.totalProductionChartTrend1.push(Math.abs(res.val.total));
+                     this.totalProductionChartTrend1.push(Math.round(res.val.total));
                    if(this.trendValue == 'c')
                    this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -1853,7 +1933,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finCollectionTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.collectionChartTrend1.push(Math.abs(res.val.total));
+                     this.collectionChartTrend1.push(Math.round(res.val.total));
                    if(this.trendValue == 'c')
                    this.collectionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -1905,7 +1985,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finProductionPerVisitTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.productionVisitChartTrend1.push(Math.abs(res.val).toFixed(2));
+                     this.productionVisitChartTrend1.push(Math.round(res.val));
                    if(this.trendValue == 'c')
                    this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -1953,7 +2033,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
     this.finNetProfitTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.netProfitChartTrend1.push(res.val.toFixed(2));
+                     this.netProfitChartTrend1.push(Math.round(res.val));
                    if(this.trendValue == 'c')
                    this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -2001,7 +2081,7 @@ private finTotalDiscountsTrend() {
   this.finNetProfitPercentTrendLoader = false;
 
                 data.data.forEach(res => {  
-                     this.netProfitPercentChartTrend1.push(Math.abs(res.val).toFixed(2));
+                     this.netProfitPercentChartTrend1.push(Math.round(res.val));
                    if(this.trendValue == 'c')
                    this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -2079,18 +2159,18 @@ this.trendxero=false;
     this.finNetProfitPMSTrendLoader = false;
         this.finNetProfitTrendLoader = false;
           this.finNetProfitPercentTrendLoader = false;
-                data.data.forEach(res => {  
+                data.data.net_profit.forEach(res => {  
                   console.log(res.val.net);
                      if (res.val.net != null)
-                     this.netProfitChartTrend1.push(res.val.net);
+                     this.netProfitChartTrend1.push(Math.round(res.val.net));
                      else
                      this.netProfitChartTrend1.push(0);
                      if(res.val.percent) 
-                     this.netProfitPercentChartTrend1.push((res.val.percent).toFixed(2));       
+                     this.netProfitPercentChartTrend1.push(Math.round(res.val.percent));       
                      else
                      this.netProfitPercentChartTrend1.push(0);       
                     if(res.val.pms)
-                     this.netProfitPmsChartTrend1.push((res.val.pms).toFixed(2));
+                     this.netProfitPmsChartTrend1.push(Math.round(res.val.pms));
                    else
                      this.netProfitPmsChartTrend1.push(0);
 
@@ -2119,22 +2199,21 @@ this.trendxero=false;
                  this.netProfitPmsChartTrend[0]['data'] = this.netProfitPmsChartTrend1;
 
                  this.netProfitPmsChartTrendLabels =this.netProfitPmsChartTrendLabels1;
-                 data.data.forEach(res => {  
-                  if(res.val.expense.length>0) {
-                    res.val.expense.forEach((result,key) => {
-                      if(result.meta_key != 'Total Operating Expenses') {
-                     this.expensesChartTrend[key]['data'].push(result.expenses);
-                     this.expensesChartTrend[key]['label'] = result.meta_key;
-                   }
-                   });
-                    if(this.trendValue == 'c')
-                   this.expensesChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-                   else
-                   this.expensesChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
+                 data.data.expenses.forEach((result,key) => {  
+                    if(result.meta_key != 'Total Operating Expenses') {
+                      let tempO:any = [];
+                      result.expenses.forEach((res) => {  
+                        tempO.push(Math.round(res));
+                      });                      
 
-                 }
+                     this.expensesChartTrend[key]['data'] = tempO;
+                     this.expensesChartTrend[key]['label'] = result.meta_key;                  
+                   }
                  }); 
-                      this.expensesChartTrendLabels =this.expensesChartTrendLabels1; 
+                 this.expensesChartTrendLabels = data.data.duration; 
+
+                 console.log('this.expensesChartTrend',  this.expensesChartTrend);
+                 console.log('this.expensesChartTrendLabels',  this.expensesChartTrendLabels);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -2158,7 +2237,7 @@ private finExpensesByCategoryTrend() {
        if(data.message == 'success'){
                 data.data.forEach(res => {  
                    res.val.expense.forEach((result,key) => {
-                     this.expensesChartTrend[key]['data'].push(Math.floor(result.expenses));
+                     this.expensesChartTrend[key]['data'].push(Math.round(result.expenses));
                      this.expensesChartTrend[key]['label'] = result.meta_key;
                    });
                    if(this.trendValue == 'c')

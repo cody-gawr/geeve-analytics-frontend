@@ -140,9 +140,11 @@ this.table = data;
       cancelButtonText: 'No'
     }).then((result) => {
       if(result.value){
+         $('.ajax-loader').show();
     if(this.rows[row]['providerId']) {
   this.dentistService.deleteDentists(this.rows[row]['providerId']).subscribe((res) => {
        if(res.message == 'success'){
+         $('.ajax-loader').hide();
          this.toastr.success('Dentist Removed');
           this.getDentists();
        }  
@@ -152,6 +154,8 @@ this.table = data;
     );
     }
     else {
+      $('.ajax-loader').hide();
+      this.toastr.error('Something went wrong. Please try again.');
       this.rows.splice(row, 1);
     this.rows = [...this.rows];
 

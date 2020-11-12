@@ -76,7 +76,7 @@ export class FrontDeskComponent implements AfterViewInit {
         this.getClinics();
       this.initiate_clinic();
         
-   $('#title').html('Front Desk '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
+   $('#title').html('Front Desk ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')'); 
         
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
@@ -191,6 +191,8 @@ this.predictedChartColors = [
           yAxes: [{ 
             stacked:true,
             ticks: {
+              min:0,
+              max:100,
               userCallback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
@@ -201,6 +203,11 @@ this.predictedChartColors = [
             }],
         },
                 tooltips: {
+                        custom: function(tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
   callbacks: {
      label: function(tooltipItems, data) { 
                       return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel+ "%";
@@ -252,6 +259,11 @@ public stackedChartOptionsticks: any = {
             }],
         },
                 tooltips: {
+                      custom: function(tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
   callbacks: {
      label: function(tooltipItems, data) { 
                       return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
@@ -315,9 +327,19 @@ public dentists;
   public startDate ='';
   public endDate = '';
   public selectedValToggle ='off';
+    myDateParser(dateStr : string) : string {
+    // 2018-01-01T12:12:12.123456; - converting valid date format like this
 
+    let date = dateStr.substring(0, 10);
+    let time = dateStr.substring(11, 19);
+    let millisecond = dateStr.substring(20)
+
+    let validDate = date;
+    console.log(validDate)
+    return validDate
+  }
  loadDentist(newValue) {
-   $('#title').html('Front Desk '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
+   $('#title').html('Front Desk ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')'); 
 
     if(newValue == 'all') {
       this.fdFtaRatio();
@@ -359,14 +381,14 @@ public fdWorkTimeAnalysisLoader:any;
       this.prevWorkTimeTooltip = 'down';
         if(data.data.length >0) {
          data.data.forEach(res => {
-           this.workTimeData1.push(Math.abs(res.wta).toFixed(1));
+           this.workTimeData1.push(Math.round(res.wta));
            this.workTimeLabels1.push(res.app_book_name);
          });
      }
         this.workTimeData[0]['data'] = this.workTimeData1;
          this.workTimeLabels= this.workTimeLabels1;
-         this.workTimeTotal = Math.abs(data.total).toFixed(1);
-         this.prevWorkTimeTotal =  Math.abs(data.total_ta).toFixed(1);
+         this.workTimeTotal = Math.round(data.total);
+         this.prevWorkTimeTotal =  Math.round(data.total_ta);
          this.workTimeGoal = data.goals;
          if(this.workTimeTotal>=this.prevWorkTimeTotal)
             this.prevWorkTimeTooltip = 'up';
@@ -429,8 +451,8 @@ public fdFtaRatioLoader:any;
           this.ftaPrevTotal = 0;
        if(data.message == 'success'){
         this.fdFtaRatioLoader = false;
-          this.ftaTotal = Math.abs(data.data).toFixed(1);
-          this.ftaPrevTotal = Math.abs(data.data_ta).toFixed(1);
+          this.ftaTotal = Math.round(data.data);
+          this.ftaPrevTotal = Math.round(data.data_ta);
           this.ftaGoal = data.goals;
 
           if(this.ftaTotal>=this.ftaPrevTotal)
@@ -462,8 +484,8 @@ public fdUtaRatioLoader:any;
           this.utaPrevTotal = 0;
        if(data.message == 'success'){
         this.fdUtaRatioLoader = false;
-          this.utaTotal = Math.abs(data.data).toFixed(1);
-          this.utaPrevTotal = Math.abs(data.data_ta).toFixed(1);
+          this.utaTotal = Math.round(data.data);
+          this.utaPrevTotal = Math.round(data.data_ta);
           this.utaGoal = data.goals;
 
           if(this.utaTotal>=this.utaPrevTotal)
@@ -495,8 +517,8 @@ public fdNumberOfTicksLoader:any;
           this.ticksPrevTotal = 0;
         this.ticksTotal = 0;
         if(data.data.length > 0)
-          this.ticksTotal = Math.abs(data.data[0].treat_item).toFixed(1);
-          this.ticksPrevTotal = Math.abs(data.data_ta).toFixed(1);
+          this.ticksTotal = Math.round(data.data[0].treat_item);
+          this.ticksPrevTotal = Math.round(data.data_ta);
           if(this.ticksTotal>=this.ticksPrevTotal)
             this.ticksTooltip = 'up';
         }
@@ -524,12 +546,9 @@ public fdRecallPrebookRateLoader:any;
         this.fdRecallPrebookRateLoader = false;
           this.recallPrebookPrevTotal = 0;
         this.recallPrebookTotal = 0;
-        if(data.data.length > 0) {
-          if(data.data[0].percent >0)
-          this.recallPrebookTotal = Math.abs(data.data[0].percent).toFixed(1);
-        }
-          this.recallPrebookPrevTotal = Math.abs(data.total_ta).toFixed(1);
-          console.log(this.recallPrebookTotal);
+          this.recallPrebookTotal = Math.round(data.total);
+
+          this.recallPrebookPrevTotal = Math.round(data.total_ta);
           if(this.recallPrebookTotal>=this.recallPrebookPrevTotal)
             this.recallPrebookTooltip = 'up';
         }
@@ -558,11 +577,11 @@ public fdtreatmentPrebookRateLoader:any;
         this.fdtreatmentPrebookRateLoader = false;
           this.treatmentPrebookPrevTotal = 0;
         this.treatmentPrebookTotal = 0;
-        if(data.data.length > 0)
-          this.treatmentPrebookTotal = Math.abs(data.data[0].percent).toFixed(1);
-          this.treatmentPrebookPrevTotal = Math.abs(data.total_ta).toFixed(1);
+          this.treatmentPrebookTotal = Math.round(data.total);
+          this.treatmentPrebookPrevTotal = Math.round(data.total_ta);
           if(this.treatmentPrebookTotal>=this.treatmentPrebookPrevTotal)
             this.treatmentPrebookTooltip = 'up';
+          console.log(this.fdtreatmentPrebookRateLoader);
         }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -584,14 +603,19 @@ public currentText;
        this.trendText= 'Last Week';
       this.currentText= 'This Week';
       const now = new Date();
-       var first = now.getDate() - now.getDay();
+       if(now.getDay()==0)
+          var day = 7;
+        else
+          var day = now.getDay();
+
+       var first = now.getDate() - day +1;
        var last = first + 6; 
-       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'yyyy-MM-dd');
+       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd-MM-yyyy');
        var end = new Date();
         end.setFullYear(now.getFullYear());
         end.setMonth(now.getMonth()+1);
         end.setDate(last);
-       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'yyyy-MM-dd');
+       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
        this.duration='w';
         this.loadDentist('all');
     }
@@ -600,10 +624,11 @@ public currentText;
       this.currentText= 'This Month';
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'yyyy-MM-dd');
-            this.loadDentist('all');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
         this.duration='m';
+        
+            this.loadDentist('all');
     }
     else if (duration == 'q') {
       this.trendText= 'Last Quarter';
@@ -613,18 +638,18 @@ public currentText;
       var cmonth = now.getMonth()+1;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'yyyy-MM-dd');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  }
         this.duration='q';
         this.loadDentist('all');
     }
@@ -637,18 +662,18 @@ public currentText;
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'yyyy-MM-dd');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
         this.duration='lq';
             this.loadDentist('all');
    
@@ -658,8 +683,8 @@ public currentText;
       this.currentText= 'This Year';
 
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='cytd';
       this.loadDentist('all');
     }
@@ -668,14 +693,15 @@ public currentText;
       this.currentText= 'This Financial Year';
 
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 3, 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='fytd';
       this.loadDentist('all');
     }
      else if (duration == 'custom') {
       this.trendText= '';
       this.currentText= '';
+        this.duration='custom';
      $('.customRange').css('display','block');
     }
     $('.filter').removeClass('active');
@@ -688,8 +714,8 @@ public currentText;
 choosedDate(val) {
     val = (val.chosenLabel);
     var val= val.toString().split(' - ');
-      this.startDate = this.datePipe.transform(val[0], 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(val[1], 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.loadDentist('all');
       
       $('.filter_custom').val(this.startDate+ " - "+this.endDate);
@@ -804,7 +830,8 @@ toggleChangeProcess(){
        if(data.message == 'success'){
         this.fdFtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
-                     this.ftaChartTrend1.push(res.val);
+
+                     this.ftaChartTrend1.push(Math.round(res.val));
                    if(this.trendValue == 'c')
                    this.ftaChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -812,7 +839,6 @@ toggleChangeProcess(){
                   
                  });
                  this.ftaChartTrend[0]['data'] = this.ftaChartTrend1;
-
                  this.ftaChartTrendLabels =this.ftaChartTrendLabels1; 
        }
     }, error => {
@@ -850,7 +876,7 @@ toggleChangeProcess(){
        if(data.message == 'success'){
         this.fdwtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
-                     this.wtaChartTrend1.push(res.val);
+                     this.wtaChartTrend1.push(Math.round(res.val));
                    if(this.trendValue == 'c')
                    this.wtaChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -898,7 +924,7 @@ toggleChangeProcess(){
        if(data.message == 'success'){
         this.fdUtaRatioTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.utaChartTrend1.push(res.val);
+                     this.utaChartTrend1.push(Math.round(res.val));
                    if(this.trendValue == 'c')
                    this.utaChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -988,13 +1014,13 @@ toggleChangeProcess(){
   this.recallPrebookChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+    this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
         this.fdRecallPrebookRateTrendLoader = false;
           this.recallPrebookChartTrendLabels1=[];
   this.recallPrebookChartTrend1=[];
                 data.data.forEach(res => {  
-                     this.recallPrebookChartTrend1.push(res.percent.toFixed(1));
+                     this.recallPrebookChartTrend1.push(Math.round(res.percent));
                    if(this.trendValue == 'c')
                    this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
                     else
@@ -1028,7 +1054,7 @@ toggleChangeProcess(){
     public treatmentPrebookChartTrend1=[];
   public treatmentPrebookChartTrendLabels =[];
   public treatmentPrebookChartTrendLabels1 =[];
-  public fdTreatmentPrebookRateTrendLoader:any;
+  public fdTreatmentPrebookRateTrendLoader:any=false;
 
   private fdTreatmentPrebookRateTrend() {
     this.fdTreatmentPrebookRateTrendLoader = true;
@@ -1038,13 +1064,13 @@ toggleChangeProcess(){
   this.treatmentPrebookChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdTreatmentPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+    this.frontdeskService.frontdeskTreatmentPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
         this.fdTreatmentPrebookRateTrendLoader = false;
           this.treatmentPrebookChartTrendLabels1=[];
           this.treatmentPrebookChartTrend1=[];
                 data.data.forEach(res => {  
-                     this.treatmentPrebookChartTrend1.push(res.percent.toFixed(1));
+                     this.treatmentPrebookChartTrend1.push(Math.round(res.percent));
                    if(this.trendValue == 'c')
                    this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
                     else

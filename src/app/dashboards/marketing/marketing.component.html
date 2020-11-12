@@ -76,7 +76,7 @@
 
 <div *ngIf="newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
       </div>
     </div>
@@ -112,7 +112,7 @@
 
          <div *ngIf="revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
       </div>
     </div>
@@ -132,7 +132,7 @@
             </div>  
         </mat-card-title>
           <div class="chart py-2">
-          <div *ngIf="showTrend == false && visitsTotal>0" style="height: 190px">
+          <div *ngIf="showTrend == false" style="height: 190px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newPatientsTotal" 
            [thick]="gaugeThick"  
@@ -142,10 +142,10 @@
            [size] = "size">
           </ngx-gauge>
       </div>
-         <div *ngIf="showTrend == false && newPatientsTotal<0 && fdnewPatientsRatioLoader == false" class="sa_nodata_div">
+ <!--         <div *ngIf="showTrend == false && newPatientsTotal<0" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
-          </div>
+              <p></p>
+          </div> -->
        <div *ngIf="showTrend == true" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend" [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
@@ -154,21 +154,21 @@
       
       <div *ngIf="showTrend == true && visitsChartTrendLabels.length <=0" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
       </div>
-          <div *ngIf="showTrend == false && newPatientsTotal>0" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
+          <div *ngIf="showTrend == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light">{{newPatientsTotal | number:'1.0-0'}}</h3>
                          <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
                         <h3 class="m-0 font-light">{{newPatientsPrevTotal | number:'1.0-0'}}</h3>
                         <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
                         <h3 class="m-0 font-light">{{newPatientsGoal | number:'1.0-0'}}</h3>
                         <small>Goal</small>
                     </div>
@@ -181,7 +181,7 @@
   <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
-         <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
+         <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
         <mat-card-title class="text-center">
           <div fxLayout="row wrap" fxLayoutGap="10px">
   <div fxFlex>
@@ -206,7 +206,7 @@
         </div>
     <div *ngIf="showTrend == false && newAcqValue<=0" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
        <div *ngIf="showTrend == true" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="expenseDataTrend" [labels]="expenseDataTrendLabels" [options]="barChartOptions" 
@@ -215,7 +215,7 @@
       </div>
         <div *ngIf="showTrend == true && visitsChartTrendLabels.length <=0" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
     </div>
       </div>  
@@ -226,7 +226,7 @@
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">$ {{newPatientsPrevTotal | number:'0.0-0'}}</h3>
+                        <h3 class="m-0 font-light">$ {{newAcqValuePrev | number:'0.0-0'}}</h3>
                         <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
@@ -250,7 +250,7 @@
         </mat-card-title>                                         
            <div class="chart py-2">           
           
-          <div *ngIf="showTrend == false && visitsTotal>0" style="height: 190px">
+          <div *ngIf="showTrend == false" style="height: 190px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="visitsTotal" 
            [thick]="gaugeThick"  
@@ -261,10 +261,10 @@
           </ngx-gauge>
       </div>
 
-       <div *ngIf="showTrend == false && visitsTotal<=0 && fdvisitsRatioLoader == false" class="sa_nodata_div">
+     <!--   <div *ngIf="showTrend == false && visitsTotal<=0 && fdvisitsRatioLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
-       </div>
+              <p></p>
+       </div> -->
        <div *ngIf="showTrend == true" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="visitsChartTrend" [labels]="visitsChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
@@ -273,24 +273,21 @@
 
       <div *ngIf="showTrend == true && visitsChartTrendLabels.length <=0" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+              <p></p>
           </div>
       </div>
-          <div *ngIf="showTrend == false && visitsTotal>0" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
+          <div *ngIf="showTrend == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light">{{visitsTotal | number:'1.0-0'}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
                        <h3 class="m-0 font-light">{{visitsPrevTotal | number:'1.0-0'}}</h3>
                        <small *ngIf="trendText != ''">{{trendText}}</small>
                        <small *ngIf="trendText == ''">Previous</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{visitsGoal | number:'1.0-0'}}</h3>
-                        <small>Goal</small>
-                    </div>
+                    
                 </div>       
       </mat-card-content>
     </mat-card>

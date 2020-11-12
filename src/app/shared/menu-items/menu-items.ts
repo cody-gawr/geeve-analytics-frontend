@@ -10,14 +10,16 @@ import {
   NgForm,
   Validators
 } from '@angular/forms';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router , NavigationEnd } from "@angular/router";
 import 'chartjs-plugin-style';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { CookieService } from "angular2-cookie/core";
 import { BaseChartDirective } from 'ng2-charts';
 import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import { NgxSmartModalService } from 'ngx-smart-modal';
-
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';  
 export interface BadgeItem {
   type: string;
   value: string;
@@ -86,7 +88,7 @@ const MENUITEMS = [
     type: 'link-morning-huddle',
     icon: 'fas fa-sun',
     role:['2'],
-     param2 : 'dashboards',
+    param2 : '',
   },
   {
     state: 'dashboards',
@@ -328,9 +330,13 @@ const MENUITEMS = [
 
 @Injectable()
 export class MenuItems {
-  constructor(private rolesUsersService: RolesUsersService) {
-
+      private _routerSub = Subscription.EMPTY;
+  constructor(private rolesUsersService: RolesUsersService, private router: Router) {
+   this._routerSub = this.router.events
+         .filter(event => event instanceof NavigationEnd)
+         .subscribe((value) => {
     this.getRoles();
+    });
   }
   getMenuitem(): Menu[] {
     return this.menu;
@@ -364,7 +370,7 @@ export class MenuItems {
     type: 'link-morning-huddle',
     icon: 'fas fa-sun',
     role:['2'],
-     param2 : 'dashboards',
+     param2 : '',
   }, 
   {
     state: 'dashboards',

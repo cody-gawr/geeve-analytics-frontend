@@ -3,7 +3,6 @@ import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , 
 import { MarketingService } from './marketing.service';
 import { FinancesService } from '../finances/finances.service';
 import { DentistService } from '../../dentist/dentist.service';
-
 import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe } from '@angular/common';
 import {
@@ -88,7 +87,7 @@ export class MarketingComponent implements AfterViewInit {
         $('.dentist_dropdown').hide();
         $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
-  $('#title').html('Marketing '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
+  $('#title').html('Marketing ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');        
         
         // $('.external_clinic').show();
         // $('.external_dentist').show();
@@ -200,7 +199,20 @@ this.preoceedureChartColors = [
             }],
         },legend: {
             display: true
-         }
+         },
+             tooltips: {
+            custom: function(tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
+  callbacks: {
+     label: function(tooltipItems, data) { 
+          return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
+     },
+     
+  }
+},
   };
 
   public stackedChartColors: Array<any> = [
@@ -293,8 +305,19 @@ this.preoceedureChartColors = [
             position:'right'
          }
   };
+    myDateParser(dateStr : string) : string {
+    // 2018-01-01T12:12:12.123456; - converting valid date format like this
+
+    let date = dateStr.substring(0, 10);
+    let time = dateStr.substring(11, 19);
+    let millisecond = dateStr.substring(20)
+
+    let validDate = date;
+    console.log(validDate)
+    return validDate
+  }
   loadDentist(newValue) {
-  $('#title').html('Marketing '+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+'');
+  $('#title').html('Marketing ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');        
 
     if(newValue == 'all') {
       this.fdnewPatientsRatio();
@@ -330,7 +353,7 @@ public mkNewPatientsByReferralLoader:any;
              data.data.patients_reftype.forEach(res => {
                if(i<10) {
                this.newPatientsTimeData1.push(res.patients_visits);
-               this.newPatientsTimeLabels1.push(res.reftype_code);
+               this.newPatientsTimeLabels1.push(res.reftype_name);
                 i++;
               }
              });
@@ -399,7 +422,7 @@ public mkRevenueByReferralLoader:any;
              data.data.patients_reftype.forEach(res => {
                if(i<10) {
                this.revenueReferralData1.push(Math.floor(res.total));
-               this.revenueReferralLabels1.push(res.reftype_code);
+               this.revenueReferralLabels1.push(res.reftype_name);
                 i++;
               }
              });
@@ -457,6 +480,7 @@ public fdvisitsRatioLoader:any;
      if(this.duration){
     this.visitsTotal = 0;      
       this.fdvisitsRatioLoader = true;
+       this.visitsTooltip = 'down';
        var user_id;
        var clinic_id;
   this.marketingService.fdvisitsRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
@@ -488,6 +512,7 @@ public fdnewPatientsRatioLoader:any;
   private fdnewPatientsRatio() {
      if(this.duration){
       this.fdnewPatientsRatioLoader = true;
+         this.newPatientsTooltip = 'down';
       this.newPatientsTotal = 0;
        var user_id;
        var clinic_id;
@@ -514,7 +539,7 @@ public fdnewPatientsRatioLoader:any;
 public expenseData=[];
 public categories=[];
 public fdnewPatientsAcqLoader:any;
-
+public newAcqValuePrev =0;
 //Predictor Ratio :
   private fdnewPatientsAcq() {
      if(this.duration){
@@ -526,15 +551,17 @@ public fdnewPatientsAcqLoader:any;
        this.fdnewPatientsAcqLoader = false;
             this.categories=[];
             this.expenseData=[];
+            this.selectedCategories=[];
              data.data.forEach((res,key) => {
               this.expenseData[res.meta_key] = res.expenses;
-              this.categories.push(res.meta_key);
+              //this.categories.push(res.meta_key);
+              this.selectedCategories.push(res.meta_key);
+
              });
-             console.log(this.selectedCategories.length);
+             if(this.newPatientsPrevTotal>0)
+             this.newAcqValuePrev= Math.round(data.data_ta/this.newPatientsPrevTotal);
               if(this.selectedCategories.length>0) 
                 this.load_chart_acq();
-              //  this.selectedCategories = this.categories;
-              // console.log(this.selectedCategories);
               
            }
     }, error => {
@@ -557,14 +584,19 @@ public currentText;
       this.trendText= 'Last Week';
       this.currentText= 'This Week';
       const now = new Date();
-       var first = now.getDate() - now.getDay();
+        if(now.getDay()==0)
+          var day = 7;
+        else
+          var day = now.getDay();
+
+       var first = now.getDate() - day +1;
        var last = first + 6; 
-       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'yyyy-MM-dd');
+       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd-MM-yyyy');
        var end = new Date();
         end.setFullYear(now.getFullYear());
         end.setMonth(now.getMonth()+1);
         end.setDate(last);
-       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'yyyy-MM-dd');
+       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
        this.duration='w';
         this.loadDentist('all');
     }
@@ -574,10 +606,11 @@ public currentText;
 
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      this.duration='m';
             this.loadDentist('all');
-        this.duration='m';
+        
     }
     else if (duration == 'q') {
       this.trendText= 'Last Quarter';
@@ -588,18 +621,18 @@ public currentText;
       var cmonth = now.getMonth()+1;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'yyyy-MM-dd');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  }
         this.duration='q';
             this.loadDentist('all');
     
@@ -614,18 +647,18 @@ public currentText;
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'yyyy-MM-dd');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
         this.duration='lq';
             this.loadDentist('all');
    
@@ -636,8 +669,8 @@ public currentText;
 
 
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='cytd';
       this.loadDentist('all');
     }
@@ -647,14 +680,16 @@ public currentText;
 
 
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 3, 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='fytd';
       this.loadDentist('all');
     }
      else if (duration == 'custom') {
       this.trendText= '';
+      this.duration='custom';
       this.currentText= '';
+       this.loadDentist('all');
      $('.customRange').css('display','block');
     }
     $('.filter').removeClass('active');
@@ -671,8 +706,8 @@ choosedDate(val) {
      var date1:any= new Date(val[0]);
       var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
 if(diffTime<=365){
- this.startDate = this.datePipe.transform(val[0], 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(val[1], 'yyyy-MM-dd');
+this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.loadDentist('all');      
       $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
@@ -687,24 +722,23 @@ if(diffTime<=365){
     });
    }
 }
-
 toggleFilter(val) {
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_'+val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
     var date = new Date();
-    this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
     if(val == 'current') {
      this.toggleChecked = true;
      this.trendValue = 'c';
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, date.getMonth(), 1), 'yyyy-MM-dd');
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, date.getMonth(), 1), 'dd-MM-yyyy');
 
      this.toggleChangeProcess();
     }
     else if(val == 'historic') {
        this.toggleChecked = true;
        this.trendValue = 'h';
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-10, date.getMonth(), 1), 'yyyy-MM-dd');
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-10, date.getMonth(), 1), 'dd-MM-yyyy');
 
        this.toggleChangeProcess();
     }
@@ -864,13 +898,15 @@ public barChartOptions: any = {
             }, 
             }],
         },
-        tooltips: {
+    tooltips: {
+            custom: function(tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
   callbacks: {
      label: function(tooltipItems, data) { 
-              if(data.datasets[tooltipItems.datasetIndex].label != undefined)
-                return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
-              else
-                return "$"+tooltipItems.yLabel;
+          return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
      },
      
   }
@@ -909,6 +945,7 @@ public barChartOptions: any = {
 public expenseDataTrend1=[];
 public expenseDataTrendLabels1=[];
 public expenseDataTrendLabels=[];
+public dataY:any=0;
 //Predictor Ratio :
   private fdnewPatientsAcqTrend() {
      if(this.duration){
@@ -919,23 +956,29 @@ public expenseDataTrendLabels=[];
 
             this.expenseDataTrend1=[];
             this.expenseDataTrendLabels1=[];
-            console.log( this.selectedCategories);
            this.newPatientsChartTemp.forEach((res,key) => {
              data.data.forEach((res1,key1) => {
                 if(res1.duration == res.duration) {
-                  var dataX=0;
-                  var dataY=0;
-                  var percent =0;
-                  if(res1.val.expenses != undefined) {
-                    dataY=res1.val.expenses;
+                  let dataX:number=0;
+                  let percent:any =0;
+                  if(res1.val != undefined) {
+                    res1.val.forEach((res2,key2) => {
+                      if(res2.meta_key != 'Total Operating Expenses')
+                      this.dataY = parseInt(this.dataY) + parseInt(res2.expenses);
+                     });
                   }
+
                   if(res.val != '') {
                     dataX = res.val;
                   }
+
                   if(dataX != 0) 
-                    percent = dataY/dataX;
-                  this.expenseDataTrend1.push(percent.toFixed(1));
-                  this.expenseDataTrendLabels1.push(res.duration);
+                    percent = this.dataY/dataX;
+                  this.expenseDataTrend1.push(Math.round(percent));
+                   if(this.trendValue == 'c')
+                   this.expenseDataTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                    else
+                   this.expenseDataTrendLabels1.push(res.duration);
                 }
              });    
              });   
@@ -956,7 +999,6 @@ load_chart_acq() {
       if(this.expenseData[res])
       totalY = totalY+parseInt(this.expenseData[res]);
     });
-  console.log(totalY);
 this.newAcqValue = 0;
     if(totalY != undefined && this.newPatientsTotal>0)
     this.newAcqValue = (totalY/this.newPatientsTotal).toFixed(0);

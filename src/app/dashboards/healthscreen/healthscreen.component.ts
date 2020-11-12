@@ -191,7 +191,11 @@ customOptions: OwlOptions = {
   public visits_dif;
   //Dentist Production Chart
   private healthCheckStats() {  
+  $('.ajax-loader').show();
+
     this.healthscreenService.healthCheckStats(this.clinic_id).subscribe((data) => {
+  $('.ajax-loader').hide();
+
        if(data.message == 'success'){
           this.production_c = data.data.production_c;
           this.profit_c = data.data.profit_c;
@@ -200,7 +204,7 @@ customOptions: OwlOptions = {
           this.profit_p = data.data.profit_p;
           this.visits_p = data.data.visits_p;
           this.visits_f = data.data.visits_f;
-          this.utilisation_rate_f = data.data.utilisation_rate_f.toFixed(2);
+          this.utilisation_rate_f = Math.round(data.data.utilisation_rate_f);
           this.unscheduled_production_f = data.data.unscheduled_production_f;
 
           this.profit_g = data.data.profit_g;          
@@ -216,9 +220,10 @@ customOptions: OwlOptions = {
          //  this.options_utilisation.arcDelimiters[1] = this.utilisation_rate_f_g;
         //  this.options_utilisation.arcDelimiters[0] = Math.floor(this.utilisation_rate_f_g/2);
 
-          this.production_dif = Math.abs(this.production_c - this.production_p);
-          this.profit_dif =Math.abs(this.profit_c - this.profit_p);
-          this.visits_dif = Math.abs(this.visits_c - this.visits_p);
+          this.production_dif = Math.round(this.production_c - this.production_p);
+          this.profit_dif =Math.round(this.profit_c - this.profit_p);
+          this.visits_dif = Math.round(this.visits_c - this.visits_p);
+          
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -230,31 +235,29 @@ public hourlyRateChartData =[];
 public hourlyRateChartLabels1;
 public productionTotal;
 public hourlyRateChartLabels;
+public hourlyRateChartClinic;
 public hourlyRateChartInitials =[];
 public maxHourlyRate =0 ;
  private hourlyRateChart() {
     this.hourlyRateChartLoader = true;
     this.hourlyRateChartLabels = [];
     this.hourlyRateChartInitials =[];
+    this.hourlyRateChartClinic=[];
     this.hourlyRateChartData =[];
+    this.maxHourlyRate=0;
     this.healthscreenService.hourlyRateChart(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
          data.data.forEach(res => {
           this.hourlyRateChartData.push(Math.abs(res.hourlyRate).toFixed(1));
           var name = res.provider;
-          if(res.provider != null && res.provider !='Anonymous') {
-             name = res.provider.split(')');
-            if(name.length >0 && name[1] != undefined)
-            {
-              name = name[1].split(',');
-              if(name.length>0)
-                name =name[1]+ " "+ name[0];
-            }
-          }
+          var clinic = res.clinic;
+
           var initials = name.match(/\b\w/g) || [];
           initials = ((initials[initials.length-2] || '') + (initials.pop() || '')).toUpperCase();
            this.hourlyRateChartInitials.push(initials);
            this.hourlyRateChartLabels.push(name);
+           this.hourlyRateChartClinic.push(clinic);
+
          });
          if(this.hourlyRateChartData.length >0)
          this.maxHourlyRate = Math.max(...this.hourlyRateChartData);
@@ -279,12 +282,13 @@ public maxHourlyRate =0 ;
     public newPatientsTimeLabelsl2 = [];  
     public mkNewPatientsByReferralLoader:any;
 public maxNewPatients =0;
-
+public newPatientsTimeClinic=[];
   //Items Predictor Analysis 
     private mkNewPatientsByReferral() {
     this.mkNewPatientsByReferralLoader = true;
     this.newPatientsTimeLabels =[];
     this.newPatientsTimeData =[];
+    this.newPatientsTimeClinic=[];
     var user_id;
     var clinic_id;
     this.healthscreenService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
@@ -304,7 +308,8 @@ public maxNewPatients =0;
              data.data.patients_reftype.forEach(res => {
                if(i<limit) {
                this.newPatientsTimeData.push(res.patients_visits);
-               this.newPatientsTimeLabels.push(res.reftype_code);
+               this.newPatientsTimeLabels.push(res.reftype_name);
+           this.newPatientsTimeClinic.push(res.clinic);
                 i++;
               }
              });

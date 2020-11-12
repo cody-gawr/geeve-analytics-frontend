@@ -34,7 +34,7 @@
         <div fxFlex>
              <div class="sa_tabs_design"> <span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial YTD</span>
               <div class="custom_date">
-              <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="" (click)="filterDate('custom')" />
+              <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="" />
               <ngx-daterangepicker-material  class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'" [locale]="{applyLabel: 'ok', displayFormat: 'DD-MM-YYYY',firstDay: 1}"></ngx-daterangepicker-material></div>
             </div>
         </div>
@@ -72,7 +72,6 @@
       </div>
   </div>
 </div>
-
 <div class=" sa_health_screen_area">
   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
   <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg">
@@ -93,7 +92,7 @@
           </div> -->
 
       </div>
-          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="barChartLabels.length > 0">
+          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" >
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">${{productionTotal| number:'1.0-0'}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Total</small>
@@ -106,8 +105,8 @@
 
                         <small>Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">${{productionGoal| number:'1.0-0'}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                        <h3 class="m-0 font-light text-center">${{productionGoal*goalCount| number:'1.0-0'}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -116,7 +115,7 @@
 
      <mat-card class="dentistProductionSingle sa_no_tabs_area" [style.display]="'none'" >
       <mat-card-content class="sa_matcard_content">
-
+      <span *ngIf="trendText && showTrendChart == false" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{productionTooltip}}.png"></span>
           <mat-card-title class="text-center">Dentist Production
           </mat-card-title>
          
@@ -145,7 +144,7 @@
         </div>
  -->
 
-          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && gaugeValue >0">
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">${{productionTotal| number:'1.0-0'}}</h3>
                          <small *ngIf="currentText != ''">{{currentText}} Total</small>
@@ -156,8 +155,8 @@
                         <!-- <small *ngIf="trendText != ''">{{ trendText }} Average</small> -->
                         <small>Clinic Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">${{productionGoal| number:'1.0-0'}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                        <h3 class="m-0 font-light text-center">${{productionGoal*goalCount| number:'1.0-0'}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -215,13 +214,13 @@
                          <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
                         <h3 class="m-0 font-light text-center">${{planTotalPrev | number:'1.0-0'}}</h3>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">${{planTotalGoal| number:'1.0-0'}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                        <h3 class="m-0 font-light text-center">${{planTotalGoal*goalCount| number:'1.0-0'}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -229,7 +228,7 @@
     </mat-card>
     <mat-card class="treatmentPlanSingle" [style.display]="'none'">
       <mat-card-content class="sa_matcard_content">
-   
+    <span *ngIf="trendText && showTrendChart == false" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{planTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
           <mat-card-title class="text-center">Treatment Plan Average Cost </mat-card-title>
           <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100">
@@ -255,25 +254,18 @@
               [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
               </canvas>
           </div>
-<!-- 
-          <div *ngIf="treatmentPlanTrendLabels.length <= 0 && gaugeValueTreatment <= 0 && buildChartTreatmentDentistLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
-          </div> -->
 
-          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && gaugeValueTreatment >0">
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">${{gaugeValueTreatment | number:'1.0-0' }}</h3>
-                        <small *ngIf="currentText != ''">{{currentText}} Average</small>
-                        <small *ngIf="currentText == ''">Average</small>
+                        <small>Current</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">${{planTotalPrev | number:'1.0-0' }}</h3>
-                        <small *ngIf="trendText != ''">{{trendText}} Average</small>
-                        <small *ngIf="trendText == ''">Average</small>
+                        <h3 class="m-0 font-light text-center">${{planTotal | number:'1.0-0' }}</h3>
+                         <small>Clinic Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">${{planTotalGoal| number:'1.0-0'}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                        <h3 class="m-0 font-light text-center">${{planTotalGoal*goalCount| number:'1.0-0'}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -314,13 +306,13 @@
                        <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
                         <h3 class="m-0 font-light text-center">{{doughnutTotalPrev| number:'1.0-0'}}</h3>
                          <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light typext-center">{{doughnutGoals| number:'1.0-0'}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                        <h3 class="m-0 font-light typext-center">{{doughnutGoals*goalCount| number:'1.0-0'}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -328,17 +320,8 @@
     </mat-card>
     <mat-card class="noPatientsSingle sa_no_tabs_area" [style.display]="'none'">
       <mat-card-content class="sa_matcard_content">
+          <span *ngIf="trendText && showTrendChart == false" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} :  {{doughnutTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{doughnutTotalTooltip}}.png"></span>
           <mat-card-title class="text-center">No. Patient Complaints
-
-          <!--     <div class="sa_box_title_right_buttons">
-                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
-                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
-                  <mat-menu #menu="matMenu">
-                      <button mat-menu-item>Item 1</button>
-                      <button mat-menu-item>Item 2</button>
-                  </mat-menu>
-              </div> -->
-
           </mat-card-title>
 
 
@@ -366,19 +349,17 @@
           </div> -->
 
         </div>
-          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && gaugeValuePatients >0">
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">{{doughnutTotal| number:'1.0-0'}}</h3>
-                       <small *ngIf="currentText != ''">{{currentText}}</small>
-                        <small *ngIf="currentText == ''">Current</small>
+                        <small>Current</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{doughnutTotalPrev| number:'1.0-0'}}</h3>
-                         <small *ngIf="trendText != ''">{{trendText}}</small>
-                        <small *ngIf="trendText == ''">Previous</small>
+                        <h3 class="m-0 font-light text-center">{{doughnutTotalAverage| number:'1.0-0'}}</h3>
+                          <small>Clinic Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{doughnutGoals| number:'1.0-0'}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                        <h3 class="m-0 font-light text-center">{{doughnutGoals*goalCount| number:'1.0-0'}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -393,7 +374,7 @@
   <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg">
     <mat-card  class="newPatients sa_no_tabs_area">
       <mat-card-content class="sa_matcard_content">
-      <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} :  {{newPatientTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientTotalTooltip}}.png"></span>
+      <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} :  {{newPatientTotalPrev| number:'1.0-0'}}%"><img class="trend_ico" src="../assets/images/trend_{{newPatientTotalTooltip}}.png"></span>
           <mat-card-title class="text-center">No. New Patients
           </mat-card-title>
           
@@ -404,7 +385,7 @@
         [data]="newPatientChartData"
           [labels]="newPatientChartLabels"
           [legend]="true"
-          [options]="doughnutChartOptions"
+          [options]="doughnutChartOptionsPercent"
           [chartType]="doughnutChartType"
           (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" [colors]="newpColors"></canvas>
@@ -428,7 +409,7 @@
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light typext-center">{{newPatientGoals| number:'1.0-0'}}%</h3>
+                        <h3 class="m-0 font-light typext-center">{{newPatientGoals*goalCount| number:'1.0-0'}}%</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -436,42 +417,47 @@
     </mat-card>
     <mat-card class="newPatientsSingle sa_no_tabs_area" [style.display]="'none'">
       <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center">No. New Patients
+          <mat-card-title class="text-center"><span *ngIf="trendText && showTrendChart == false" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} :  {{newPatientTotalPrev| number:'1.0-0'}}%"><img class="trend_ico" src="../assets/images/trend_{{newPatientTotalTooltip}}.png"></span>No. New Patients
 
           </mat-card-title>
-<div class="row_Patients">
- <!--  <div *ngIf="newPatientsChartTrendLabels.length <= 0 && newPatientPercent <= 0 && buildChartNewpatientsDentistLoader == false" class="sa_nodata_div">
+<div fxLayout="row wrap" class="row_Patients">
+  <div *ngIf="newPatientsChartTrendLabels.length <= 0 && newPatientPercent<=0 && buildChartNewpatientsDentistLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
-  </div> -->
-  <div fxLayout="row wrap">
-<!--   <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49" class="text-center" *ngIf="showTrendChart == false && newPatientPercent >0">
-   <div class="sa_new_patients" ><strong>{{newPatientValuePatients}}</strong>
+              <p></p>
+          </div>
+          <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49" class="text-center" *ngIf="showTrendChart == false && newPatientPercent >0">
+
+   <div class="sa_new_patients" *ngIf="showTrendChart == false && newPatientPercent >0"><strong>{{newPatientValuePatients}}</strong>
 <span class="sa_new_patients_text">New Patients</span>
           </div>
-</div> -->
-<div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100">
+</div><div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49" *ngIf="showTrendChart == false && newPatientPercent >0">
         <div class="chart">
          
-         <ngx-gauge *ngIf="showTrendChart == false" [type]="gaugeType"
-           [value]="newPatientValuePatients"
+         <ngx-gauge *ngIf="showTrendChart == false && newPatientPercent >0" [type]="gaugeType"
+           [value]="newPatientPercent"
            [label]="newPatientLabelPatients"
            [thick]="gaugeThick"
            [foregroundColor]="foregroundColor"
            [max] = "newPatientGoals"
            [cap] ="cap"
+           [append] ="gaugeAppendText"
            [size] = "size"
-                [append]="gaugeAppendText"
            [duration]= "gaugeDuration">
           </ngx-gauge>
+          
+        
+           
+
         </div>
       </div>
-    </div>
-<div *ngIf="showTrendChart == true" style="height: 250px; width:100%;">
+<div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" *ngIf="showTrendChart == true && newPatientsChartTrendLabels.length>0">
+  <div *ngIf="showTrendChart == true && newPatientsChartTrendLabels.length>0" style="height: 250px">
               <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend" [labels]="newPatientsChartTrendLabels"  [legend]="barChartLegend"
               [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
               </canvas>
           </div>
+</div>
+
     </div>
           <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && newPatientPercent >0 && newPatientsChartTrendLabels.length>0">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -485,7 +471,7 @@
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{newPatientGoals| number:'1.0-0'}}</h3>
+                        <h3 class="m-0 font-light text-center">{{newPatientGoals*goalCount| number:'1.0-0'}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -541,7 +527,7 @@ Prebook Rate</small>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{recallChartGoal| number:'1.0-0'}}%</h3>
+                        <h3 class="m-0 font-light text-center">{{recallChartGoal*goalCount| number:'1.0-0'}}%</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -552,12 +538,12 @@ Prebook Rate</small>
                          <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
                         <h3 class="m-0 font-light text-center">{{treatmentPreChartAveragePrev| number:'1.0-0'}}%</h3>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{treatmentPreChartGoal| number:'1.0-0'}}%</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                        <h3 class="m-0 font-light text-center">{{treatmentPreChartGoal*goalCount| number:'1.0-0'}}%</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -566,7 +552,7 @@ Prebook Rate</small>
 
      <mat-card class="recallPrebookSingle" [style.display]="'none'" >
       <mat-card-content class="sa_matcard_content">
-
+  <span *ngIf="trendText && showTrendChart == false" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{recallChartAveragePrev| number:'1.0-0'}}%"><img class="trend_ico" src="../assets/images/trend_{{recallChartTooltip}}.png"></span>
           <mat-card-title class="text-center">Recall Prebook Rate
 
           </mat-card-title>
@@ -621,33 +607,31 @@ Prebook Rate</small>
               <p>Oops! Looks like we don't have any data to show you</p>
           </div> -->
 
-          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && recallValue >0 && prebook=='recall'">
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && prebook=='recall'">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">{{recallValue| number:'1.0-0'}}%</h3>
-                        <small *ngIf="currentText != ''">{{currentText}} Total</small>
-                        <small *ngIf="currentText == ''">Total</small>
+                        <small>Current</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">{{recallChartAverage| number:'1.0-0'}}%</h3>
                         <small class="text-center">Clinic Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{recallGoal}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                        <h3 class="m-0 font-light text-center">{{recallGoal*goalCount}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
-      <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && treatmentPreValue >0 && prebook=='treatment'">
+      <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && prebook=='treatment'">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">{{treatmentPreValue| number:'1.0-0'}}%</h3>
-                         <small *ngIf="currentText != ''">{{currentText}} Total</small>
-                        <small *ngIf="currentText == ''">Total</small>
+                        <small>Current</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">{{treatmentPreChartAverage| number:'1.0-0'}}%</h3>
                         <small class="text-center">Clinic Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{treatmentPreGoal}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                        <h3 class="m-0 font-light text-center">{{treatmentPreGoal*goalCount}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -693,12 +677,12 @@ Prebook Rate</small>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
                         <h3 class="m-0 font-light text-center">${{hourlyRateChartAveragePrev| number:'1.0-0'}}</h3>
                         <small class="text-center">Previous Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">${{hourlyRateChartGoal| number:'1.0-0'}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                        <h3 class="m-0 font-light text-center">${{hourlyRateChartGoal*goalCount| number:'1.0-0'}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -707,7 +691,7 @@ Prebook Rate</small>
 
      <mat-card class="hourlyRateSingle sa_no_tabs_area" [style.display]="'none'" >
       <mat-card-content class="sa_matcard_content">
-
+<span *ngIf="trendText && showTrendChart == false" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
           <mat-card-title class="text-center">Hourly Rate</mat-card-title>
 
 
@@ -733,18 +717,17 @@ Prebook Rate</small>
               <p>Oops! Looks like we don't have any data to show you</p>
           </div> -->
 
-          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && hourlyValue >0">
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">${{hourlyValue| number:'1.0-0'}}</h3>
-                         <small *ngIf="currentText != ''">{{currentText}}</small>
-                        <small *ngIf="currentText == ''">Current</small>
+                        <small>Current</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">${{treatmentChartAverage| number:'1.0-0'}}</h3>
+                        <h3 class="m-0 font-light text-center">${{hourlyRateChartAverage| number:'1.0-0'}}</h3>
                         <small class="text-center">Clinic Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">${{hourlyGoal}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                        <h3 class="m-0 font-light text-center">${{hourlyGoal*goalCount}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -779,12 +762,12 @@ Prebook Rate</small>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
                         <h3 class="m-0 font-light text-center">{{treatmentChartAveragePrev| number:'1.0-0'}}%</h3>
                         <small class="text-center">Previous Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">{{treatmentChartGoal| number:'1.0-0'}}%</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                        <h3 class="m-0 font-light text-center">{{treatmentChartGoal*goalCount| number:'1.0-0'}}%</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
@@ -793,7 +776,7 @@ Prebook Rate</small>
 
      <mat-card class="treatmentPlanRateSingle sa_no_tabs_area" [style.display]="'none'" >
       <mat-card-content class="sa_matcard_content">
-
+<span *ngIf="trendText && showTrendChart == false" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{treatmentChartAveragePrev| number:'1.0-0'}}%"><img class="trend_ico" src="../assets/images/trend_{{treatmentChartTooltip}}.png"></span>
           <mat-card-title class="text-center">Treatment Plan Completion Rate (%)
           </mat-card-title>
 
@@ -820,18 +803,17 @@ Prebook Rate</small>
               <p>Oops! Looks like we don't have any data to show you</p>
           </div> -->
 
-          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && treatmentPlanValue >0">
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">${{treatmentPlanValue| number:'1.0-0'}}%</h3>
-                        <small *ngIf="currentText != ''">{{currentText}}</small>
-                        <small *ngIf="currentText == ''">Current</small>
+                        <small>Current</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">${{treatmentChartAverage| number:'1.0-0'}}%</h3>
                         <small class="text-center">Clinic Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light text-center">${{treatmentPlanGoal}}</h3>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                        <h3 class="m-0 font-light text-center">${{treatmentPlanGoal*goalCount}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
