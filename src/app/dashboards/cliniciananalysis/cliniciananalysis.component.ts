@@ -1923,7 +1923,7 @@ public newPatientPercent=0;
   } 
 
  public hourlyRateChartData: any[] = [
-    {data: [],  shadowOffsetX: 3,
+    {data: [], shadowOffsetX: 3,
             shadowOffsetY: 3,
             shadowBlur: 5,
             shadowColor: 'rgba(0, 0, 0, 0.5)',

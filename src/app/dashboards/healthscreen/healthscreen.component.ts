@@ -17,6 +17,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "angular2-cookie/core";
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { ToastrService } from 'ngx-toastr';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -91,7 +92,7 @@ customOptions: OwlOptions = {
   public selectedDentist;
   public dentists;
   public filter_val ='c';
-  constructor(private healthscreenService: HealthScreenService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){   
+  constructor(private healthscreenService: HealthScreenService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,private toastr:ToastrService){   
   }
   private warningMessage: string;
   ngAfterViewInit() {  
@@ -192,9 +193,26 @@ customOptions: OwlOptions = {
   //Dentist Production Chart
   private healthCheckStats() {  
   $('.ajax-loader').show();
+    this.production_c = 0;
+          this.profit_c = 0;
+          this.visits_c =0;
+          this.production_p = 0;
+          this.profit_p = 0;
+          this.visits_p = 0;
+          this.visits_f = 0;
+          this.utilisation_rate_f = 0;
+          this.unscheduled_production_f = 0;
 
+          this.profit_g = 0;       
+          this.visits_g = 0;     
+          this.production_g = 0;      
+          this.utilisation_rate_f_g = 0;     
+          this.production_dif =  0;  
+          this.profit_dif = 0;  
+          this.visits_dif =  0; 
     this.healthscreenService.healthCheckStats(this.clinic_id).subscribe((data) => {
   $('.ajax-loader').hide();
+       
 
        if(data.message == 'success'){
           this.production_c = data.data.production_c;
@@ -226,7 +244,8 @@ customOptions: OwlOptions = {
           
        }
     }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+      $('.ajax-loader').hide();
+        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
     }
     );
   }
