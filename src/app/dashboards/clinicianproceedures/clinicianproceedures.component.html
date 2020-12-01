@@ -126,7 +126,7 @@
                     </div>
                     
                 </div>
-          <div class="chart" *ngIf="pieChartLabels.length > 0">
+          <div class="chart" >
              <div  style="height: 190px">
         <canvas *ngIf="showInternal == true && pieChartDataMax1 > 0" baseChart [data]="pieChartData1" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)"  [legend] = "true" [options]="pieChartOptions" [colors]="doughnutChartColors">

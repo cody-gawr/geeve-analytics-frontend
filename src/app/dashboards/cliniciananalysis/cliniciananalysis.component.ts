@@ -92,6 +92,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   }
 //initialize component
   ngAfterViewInit() {   
+      $('#currentDentist').attr('did','all');
+    
      // this.clinic_id = this.route.snapshot.paramMap.get("id");
     //  this.getDentists();
      // this.changeLoginStatus();
@@ -335,7 +337,7 @@ gradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
     
   }
   public gaugeType = "arch";
-  public  gaugeValue = '';
+  public  gaugeValue:any = 0;
   public  gaugeLabel = "";
   public  gaugeThick = "20";
   public  foregroundColor= "rgba(0, 150, 136,0.7)";
@@ -434,8 +436,9 @@ public barChartOptions: any = {
               }
             }],
           yAxes: [{  
+             suggestedMin:0,
             ticks: {
-              suggestedMin:0,
+              beginAtZero:true,
               userCallback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
@@ -651,6 +654,7 @@ public barChartOptions: any = {
           yAxes: [{  
              suggestedMin:0,
             ticks: {
+               beginAtZero:true,
               userCallback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
@@ -964,6 +968,12 @@ changeLoginStatus(){
 
       }
     }
+    if(this.gaugeValueTreatment>this.planTotalGoal)
+            this.maxplanTotalGoal=this.gaugeValueTreatment;
+          else
+            this.maxplanTotalGoal=this.planTotalGoal;
+           if(this.maxplanTotalGoal == 0)
+            this.maxplanTotalGoal ='';
   } 
 
   public productionTooltip='down';
@@ -1078,6 +1088,7 @@ changeLoginStatus(){
   }
 
 public buildChartDentistLoader:any;
+public maxProductionGoal:any=0;
   //Individual Dentist Production Chart
   private buildChartDentist() {
     this.buildChartDentistLoader =true;
@@ -1087,6 +1098,7 @@ public buildChartDentistLoader:any;
       this.productionTotal = 0;
        this.productionTotalPrev = 0;
        this.productionTotalAverage=0;
+       this.maxProductionGoal=0;
        if(data.message == 'success' ){
         this.buildChartDentistLoader =false;
          this.gaugeValue = '0';
@@ -1105,8 +1117,12 @@ public buildChartDentistLoader:any;
           this.productionTotalAverage= Math.round(data.total_average);
           this.productionGoal = data.goals;
 
-        
-
+        if(this.gaugeValue > this.productionGoal)
+          this.maxProductionGoal= this.gaugeValue;
+        else
+          this.maxProductionGoal= this.productionGoal;
+        if(this.maxProductionGoal ==0)
+          this.maxProductionGoal ='';
        }
         else if(data.status == '401'){
             this._cookieService.put("username",'');
@@ -1229,7 +1245,7 @@ private recallPrebook() {
     );
   }
   public recallPrebookDentistLoader:any;
-
+public maxrecallGoal:any=0;
   //Individual Dentist Production Chart
   private recallPrebookDentist() {
     this.recallPrebookDentistLoader =true;
@@ -1237,6 +1253,8 @@ private recallPrebook() {
     this.recallChartTooltip = 'down';
 this.recallLabel ='';
   this.cliniciananalysisService.RecallPrebookSingle(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.maxrecallGoal=0;
+     
        if(data.message == 'success' ){
         this.recallPrebookDentistLoader =false;
          this.recallValue = '0';
@@ -1248,6 +1266,13 @@ this.recallLabel ='';
         this.recallChartAveragePrev = data.total_ta;
         this.recallGoal = data.goals;
         this.recallChartAverage = data.total;
+           if(this.recallValue>this.recallGoal)
+          this.maxrecallGoal= this.recallValue;
+        else
+          this.maxrecallGoal= this.recallGoal;
+
+        if(this.maxrecallGoal == 0)
+          this.maxrecallGoal = '';
         if(this.recallValue>=this.recallChartAveragePrev)
           this.recallChartTooltip = 'up';
        }
@@ -1510,6 +1535,7 @@ this.treatmentPreLabel = '';
   public treatmentPlanLabel='';
   public treatmentPlanGoal;
   public treatmentPlanRateDentistLoader:any;
+  public maxtreatmentPlanGoal:any=0;
 
   //Individual Treatment plan rate chart
   private treatmentPlanRateDentist() {
@@ -1531,6 +1557,12 @@ this.treatmentPreLabel = '';
          this.treatmentChartAverage= Math.round(data.total);
            if(this.treatmentChartAverage>=this.treatmentChartAveragePrev)
           this.treatmentChartTooltip = 'up';
+        if(this.treatmentPlanValue>this.treatmentPlanGoal)
+          this.maxtreatmentPlanGoal = this.treatmentPlanValue;
+        else
+          this.maxtreatmentPlanGoal = this.treatmentPlanGoal;
+        if(this.maxtreatmentPlanGoal == 0)
+          this.maxtreatmentPlanGoal = '';
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!"; 
@@ -1672,6 +1704,7 @@ this.treatmentPreLabel = '';
 
   public gaugeValueTreatmentP:any=0;
   public gaugeValueTreatmentC:any=0;
+  public maxplanTotalGoal:any=0;
   public buildChartTreatmentDentistLoader:any;
 
 //Individual Treatment Plan Average Cost
@@ -1715,6 +1748,13 @@ this.treatmentPreLabel = '';
         }
           this.gaugeValueTreatment = this.gaugeValueTreatmentP;  
           this.planTotalGoal = data.goals;
+          if(this.gaugeValueTreatment>this.planTotalGoal)
+            this.maxplanTotalGoal=this.gaugeValueTreatment;
+          else
+            this.maxplanTotalGoal=this.planTotalGoal;
+          if(this.maxplanTotalGoal == 0)
+            this.maxplanTotalGoal ='';
+
        }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -1768,7 +1808,7 @@ this.doughnutTotalAverage=0;
          this.doughnutTotalTooltip = 'up';
          var i=0;
         data.data.forEach(res => {
-          if(res.provider != null){
+          if(res.provider != null && res.treat_item>0){
              this.doughnutChartData1.push(Math.round(res.treat_item));
              this.doughnutChartLabels1.push(res.provider);
              this.doughnutTotal = this.doughnutTotal + parseInt(res.treat_item);
@@ -1801,12 +1841,14 @@ this.doughnutTotalAverage=0;
   }
 
   public buildChartNopatientsDentistLoader:any;
+  public maxdoughnutGoals:any=0;
 //Indvidual No pf patients complaint chart
   private buildChartNopatientsDentist() {
     this.buildChartNopatientsDentistLoader =true;
     this.gaugeLabelPatients='';
   this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     this.doughnutTotal = 0;
+    this.maxdoughnutGoals=0;
        if(data.message == 'success'){
         this.doughnutTotalTooltip = 'up';
         this.buildChartNopatientsDentistLoader = false;
@@ -1828,7 +1870,12 @@ this.doughnutTotalAverage=0;
         if(this.doughnutTotalAverage>=this.doughnutTotalPrev)
         this.doughnutTotalTooltip = 'down'; 
        this.doughnutGoals = data.goals;
-        
+       if(this.gaugeValuePatients>this.doughnutGoals)
+        this.maxdoughnutGoals = this.gaugeValuePatients;
+      else
+        this.maxdoughnutGoals= this.doughnutGoals;
+        if(this.maxdoughnutGoals == 0)
+          this.maxdoughnutGoals = '';
        }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -1860,7 +1907,7 @@ this.doughnutTotalAverage=0;
          this.newPatientTotalTooltip = 'down';
          var i=0;
         data.data.forEach(res => {
-           this.newPatientChartData1.push(parseInt(res.percent));
+           this.newPatientChartData1.push(parseInt(res.getX));
            this.newPatientChartLabels1.push(res.provider);
            if(res.provider != 'Anonymous')
             this.newpKey = i;
@@ -1902,9 +1949,9 @@ public newPatientPercent=0;
          if(data.data != null && data.data[0] && data.data[0].getX != undefined) {
         this.newPatientValuePatients = data.data[0].getX;
           this.newPatientLabelPatients = data.data[0].provider;
-          this.newPatientPercent = data.data[0].percent;
-          this.newPatientTotalAverage =  data.total;
-          this.newPatientTotalPrev = data.total_ta;
+          this.newPatientPercent = Math.round(data.data[0].percent);
+          this.newPatientTotalAverage =  Math.round(data.total);
+          this.newPatientTotalPrev = Math.round(data.total_ta);
         }
         else {
           this.newPatientValuePatients = 0;
@@ -2043,7 +2090,7 @@ public newPatientPercent=0;
   public hourlyLabel='';
   public hourlyGoal;
   public hourlyRateDentistLoader:any;
-
+  public maxhourlyGoal:any=0;
   //Individual Dentist Hourly Rate chart
   private hourlyRateDentist() {
     this.hourlyRateDentistLoader =true;
@@ -2078,6 +2125,13 @@ public newPatientPercent=0;
          this.hourlyRateChartAverage = data.total;
           if(this.hourlyValue>=this.hourlyRateChartAveragePrev)
           this.hourlyRateChartTooltip = 'up';
+        if(this.hourlyValue>this.hourlyGoal)
+          this.maxhourlyGoal =this.hourlyValue;
+        else
+          this.maxhourlyGoal= this.hourlyGoal;
+
+        if(this.maxhourlyGoal == 0)
+          this.maxhourlyGoal ='';
        }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -2628,7 +2682,7 @@ public patientComplaintTrend: any[]  = [
     var user_id;
     var clinic_id;
     this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist,this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data.message == 'success'){
+       if(data !=null && data.message == 'success'){
         this.fdnewPatientsRateTrendLoader= false;
           this.newPatientsChartTrendLabels1=[];
   this.newPatientsChartTrend1=[];

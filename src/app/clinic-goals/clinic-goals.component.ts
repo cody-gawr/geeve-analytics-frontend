@@ -84,6 +84,7 @@ this.notifier = notifierService;
   }
   //initialize component
   ngOnInit() {
+      $('#currentDentist').attr('did','all');
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
       $('.external_clinic').show();

@@ -138,7 +138,7 @@
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
            [cap] ="cap"
-           [max] = "newPatientsGoal"
+           [max] = "maxnewPatientsGoal"
            [size] = "size">
           </ngx-gauge>
       </div>
@@ -256,7 +256,6 @@
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
            [cap] ="cap"
-           [max] = "visitsGoal"
            [size] = "size">
           </ngx-gauge>
       </div>
@@ -277,12 +276,12 @@
           </div>
       </div>
           <div *ngIf="showTrend == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light">{{visitsTotal | number:'1.0-0'}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
                        <h3 class="m-0 font-light">{{visitsPrevTotal | number:'1.0-0'}}</h3>
                        <small *ngIf="trendText != ''">{{trendText}}</small>
                        <small *ngIf="trendText == ''">Previous</small>
