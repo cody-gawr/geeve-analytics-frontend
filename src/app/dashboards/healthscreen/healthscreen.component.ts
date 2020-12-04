@@ -18,6 +18,7 @@ import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerri
 import { CookieService } from "angular2-cookie/core";
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -96,6 +97,7 @@ customOptions: OwlOptions = {
   }
   private warningMessage: string;
   ngAfterViewInit() {  
+      $('#currentDentist').attr('did','all');
       this.initiate_clinic();
 
       
@@ -241,7 +243,22 @@ customOptions: OwlOptions = {
           this.production_dif = Math.round(this.production_c - this.production_p);
           this.profit_dif =Math.round(this.profit_c - this.profit_p);
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
-          
+          if(data.data.profit_c == 'error') {
+            if(this.clinic_id == 'all') {
+              Swal.fire({
+              title: "<i>Error Connection to Xero</i>", 
+              html: "There was an error retrieving your xero data, please reconnect your xero account . Please go to clinic settings to connect your clinic.",  
+              });    
+            }
+            else
+            {
+               Swal.fire({
+              title: "<i>Error Connection to Xero</i>", 
+              html: "There was an error retrieving your xero data, please reconnect your xero account . Please <a href='/clinic-settings/"+this.clinic_id+"'>click here</a> to connect",  
+              }); 
+
+            }
+          }
        }
     }, error => {
       $('.ajax-loader').hide();

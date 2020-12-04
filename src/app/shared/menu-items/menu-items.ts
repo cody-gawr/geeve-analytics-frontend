@@ -350,19 +350,11 @@ export class MenuItems {
   public menu = [
   {
     state: 'healthscreen',
-    name: 'Health Screen',
+    name: 'Clinic Health',
     type: 'link-healthscreen',
     icon: 'fas fa-home',
     role:['2'],
     param2 : 'dashboards',
-  },
-  {
-    state: 'lost-opportunity',
-    name: 'Lost Opportunity',
-    type: 'link-lost-opportunity',
-    icon: 'fas fa-arrow-up',
-    role:['2'],
-    param2 : '',
   },
   {
     state: 'morning-huddle',
@@ -371,6 +363,14 @@ export class MenuItems {
     icon: 'fas fa-sun',
     role:['2'],
      param2 : '',
+  },
+  {
+    state: 'lost-opportunity',
+    name: 'Lost Opportunity',
+    type: 'link-lost-opportunity',
+    icon: 'fas fa-arrow-up',
+    role:['2'],
+    param2 : '',
   }, 
   {
     state: 'dashboards',
@@ -386,72 +386,86 @@ export class MenuItems {
     ],
     role:['2','3','4','5']
 
-  },  
-  {
-    state: 'clinic',
-    name: 'Clinics',
-    type: 'link-noparam',
-    icon: 'fas fa-home',
-    role:['2']
   },
   {
-    state: 'dentist',
-    name: 'Dentists',
-    type: 'link-noparam',
-    icon: 'fas fa-tooth',
-    role:['2']
-  },
-  {
-    state: 'users',
-    name: 'Registered Clinic Owners',
-    type: 'link-noparam',
-    icon: 'fas fa-users',
-    role:['1']
-  },
-  {
-    state: 'plans',
-    name: 'Subscription Plans',
-    type: 'link-noparam',
-    icon: 'fas fa-receipt',
-    role:['1']
-
-  },
-  {
-    state: 'roles-users',
-    name: 'Roles Management',
-    type: 'link',
-    icon: 'fas fa-user-tag',
-    role:['2']
-
-  },
-  {
+    state: 'Settings',
+    name: 'Settings',
+    type: 'sub-child',
+    icon: 'fas fa-user-cog',
+    children: [
+      { state: 'clinic', name: 'Clinics', type: 'link'},
+      { state: 'dentist', name: 'Dentists', type: 'link'},
+      { state: 'roles-users', name: 'Users', type: 'link'},
+      { state: 'profile-settings', name: 'Profile Settings', type: 'link'},   {
     state: '',
     name: 'Goals',
-    type: 'sub-child',
+    type: 'subchild',
     icon: 'fas fa-medal',
-    children: [
+    subchildren: [
       { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
       { state: 'dentist-goals', name: 'Dentist Goals', type: 'link'}
 
     ],
     role:['1','2']
 
-  },
-/*  {
-    state: 'importcsv',
-    name: 'Data Upload',
-    type: 'link-noparam',
-    icon: 'fas fa-upload',
-    role:['2']
-  }, */
-  {
-    state: 'profile-settings',
-    name: 'Profile Settings',
-    type: 'link-noparam',
-    icon: 'fas fa-user-cog',
+  }
+    ],
     role:['2','3','4','5']
 
-  },
+   },  
+//   {
+//     state: 'clinic',
+//     name: 'Clinics',
+//     type: 'link-noparam',
+//     icon: 'fas fa-home',
+//     role:['2']
+//   },
+//   {
+//     state: 'dentist',
+//     name: 'Dentists',
+//     type: 'link-noparam',
+//     icon: 'fas fa-tooth',
+//     role:['2']
+//   },
+//   {
+//     state: 'users',
+//     name: 'Registered Clinic Owners',
+//     type: 'link-noparam',
+//     icon: 'fas fa-users',
+//     role:['1']
+//   },
+//   {
+//     state: 'plans',
+//     name: 'Subscription Plans',
+//     type: 'link-noparam',
+//     icon: 'fas fa-receipt',
+//     role:['1']
+
+//   },
+//   {
+//     state: 'roles-users',
+//     name: 'Roles Management',
+//     type: 'link',
+//     icon: 'fas fa-user-tag',
+//     role:['2']
+
+//   },
+
+// /*  {
+//     state: 'importcsv',
+//     name: 'Data Upload',
+//     type: 'link-noparam',
+//     icon: 'fas fa-upload',
+//     role:['2']
+//   }, */
+//   {
+//     state: 'profile-settings',
+//     name: 'Profile Settings',
+//     type: 'link-noparam',
+//     icon: 'fas fa-user-cog',
+//     role:['2','3','4','5']
+
+//   },
 ];
   getRoles() {      
    this.rolesUsersService.getRoles().subscribe((res) => {

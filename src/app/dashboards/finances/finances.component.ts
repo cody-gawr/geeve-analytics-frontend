@@ -108,6 +108,7 @@ single = [
    }
   }
   ngAfterViewInit() {
+      $('#currentDentist').attr('did','all');
      this.checkPermission('dashboard5');
         //this.filterDate('cytd');
       //  this.getDentists(); 

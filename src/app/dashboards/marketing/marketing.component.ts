@@ -75,6 +75,7 @@ export class MarketingComponent implements AfterViewInit {
    }
   }
   ngAfterViewInit() {
+      $('#currentDentist').attr('did','all');
       this.checkPermission('dashboard4');
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
@@ -179,7 +180,7 @@ this.preoceedureChartColors = [
     scaleShowVerticalLines: false,
            responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    barThickness: 1,
       animation: {
         duration: 500,
         easing: 'easeOutSine'
@@ -192,9 +193,15 @@ this.preoceedureChartColors = [
             }
             }],
           yAxes: [{ 
-            stacked:true,
             ticks: {
-              
+               beginAtZero: true,
+               userCallback: function(label, index, labels) {
+                     // when the floored value is the same as jhgjghe value we have a whole number
+                     if (Math.floor(label) === label) {
+                         return label;
+                     }
+
+                 },
             }, 
             }],
         },legend: {
@@ -203,7 +210,7 @@ this.preoceedureChartColors = [
              tooltips: {
             custom: function(tooltip) {
         if (!tooltip) return;
-        // disable displaying the color box;
+        // disable displaying the colorg box;
         tooltip.displayColors = false;
       },
   callbacks: {
@@ -351,11 +358,13 @@ public mkNewPatientsByReferralLoader:any;
             if(data.data.patients_reftype.length >0) {
               var i=0;
              data.data.patients_reftype.forEach(res => {
+              if(res.patients_visits>0) {
                if(i<10) {
                this.newPatientsTimeData1.push(res.patients_visits);
                this.newPatientsTimeLabels1.push(res.reftype_name);
                 i++;
               }
+            }
              });
         }
          this.newPatientsTimeData = this.newPatientsTimeData1;
@@ -420,11 +429,13 @@ public mkRevenueByReferralLoader:any;
             if(data.data.patients_reftype.length >0) {
                var i=0;
              data.data.patients_reftype.forEach(res => {
+              if(res.total>0) {
                if(i<10) {
-               this.revenueReferralData1.push(Math.floor(res.total));
+               this.revenueReferralData1.push(Math.round(res.total));
                this.revenueReferralLabels1.push(res.reftype_name);
                 i++;
               }
+            }
              });
         }
          this.revenueReferralData = this.revenueReferralData1;
@@ -474,7 +485,6 @@ public visitsPrevTotal;
 public visitsTooltip='down';
 public visitsGoal;
 public fdvisitsRatioLoader:any;
-
 //Predictor Ratio :
   private fdvisitsRatio() {
      if(this.duration){
@@ -507,7 +517,7 @@ public newPatientsPrevTotal =0;
 public newPatientsTooltip='down';
 public newPatientsGoal;
 public fdnewPatientsRatioLoader:any;
-
+public maxnewPatientsGoal:any=0;
 //Predictor Ratio :
   private fdnewPatientsRatio() {
      if(this.duration){
@@ -528,6 +538,13 @@ public fdnewPatientsRatioLoader:any;
           this.newPatientsGoal = data.goals;
           if(this.newPatientsTotal>=this.newPatientsPrevTotal)
             this.newPatientsTooltip = 'up';
+
+           if(this.newPatientsTotal> this.newPatientsGoal)
+            this.maxnewPatientsGoal = this.newPatientsTotal;
+          else
+            this.maxnewPatientsGoal = this.newPatientsGoal;
+          if(this.maxnewPatientsGoal==0)
+            this.maxnewPatientsGoal ='';
         }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

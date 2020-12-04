@@ -30,6 +30,7 @@ export class LostOpportunityComponent implements OnInit {
 	constructor(public lostOpportunityService: LostOpportunityService) { }
 
   	ngOnInit() {
+  		  $('#currentDentist').attr('did','all');
   		 this.initiate_clinic();
   	}
 

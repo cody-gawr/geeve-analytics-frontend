@@ -17,7 +17,13 @@ import { LoginService } from './login.service';
 export class LoginComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
-  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService) {}
+  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService) {
+
+  if(this._cookieService.get("userid")){
+   this.router.navigate(['/dashboards/healthscreen']);
+  }
+
+  }
 
   ngOnInit() {
     this.form = this.fb.group({

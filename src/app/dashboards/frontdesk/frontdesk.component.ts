@@ -70,6 +70,7 @@ export class FrontDeskComponent implements AfterViewInit {
   }
   ngAfterViewInit() {
      this.checkPermission('dashboard3');
+      $('#currentDentist').attr('did','all');
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
      //    this.filterDate('cytd');
@@ -436,6 +437,8 @@ public ftaTotal;
 public ftaPrevTotal;
 public ftaTooltip='down';
 public ftaGoal;
+public maxftaGoal:any=0;
+
 public fdFtaRatioLoader:any;
 
 //Predictor Ratio :
@@ -454,7 +457,12 @@ public fdFtaRatioLoader:any;
           this.ftaTotal = Math.round(data.data);
           this.ftaPrevTotal = Math.round(data.data_ta);
           this.ftaGoal = data.goals;
-
+          if(this.ftaTotal> this.ftaGoal)
+            this.maxftaGoal = this.ftaTotal;
+          else
+            this.maxftaGoal = this.ftaGoal;
+          if(this.maxftaGoal ==0)
+            this.maxftaGoal ='';
           if(this.ftaTotal>=this.ftaPrevTotal)
             this.ftaTooltip = 'up';
         }
@@ -471,6 +479,7 @@ public utaPrevTotal;
 public utaTooltip='down';
 public utaGoal;
 public fdUtaRatioLoader:any;
+public maxutaGoal:any=0;
 //Predictor Ratio :
   private fdUtaRatio() {
      if(this.duration){
@@ -487,7 +496,12 @@ public fdUtaRatioLoader:any;
           this.utaTotal = Math.round(data.data);
           this.utaPrevTotal = Math.round(data.data_ta);
           this.utaGoal = data.goals;
-
+ if(this.utaTotal> this.utaGoal)
+            this.maxutaGoal = this.utaTotal;
+          else
+            this.maxutaGoal = this.utaGoal;
+          if(this.maxutaGoal ==0)
+            this.maxutaGoal ='';
           if(this.utaTotal>=this.utaPrevTotal)
             this.utaTooltip = 'up';
         }

@@ -3026,3 +3026,6 @@ ul.download-sync-list {
     font-size: 12px;
     margin: 0px;
 }
+#snav .mat-nav-list .sub-item .child-sub-item {
+    margin-top: 0px !important;
+}

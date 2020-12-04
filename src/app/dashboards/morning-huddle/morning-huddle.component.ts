@@ -82,6 +82,7 @@ export class MorningHuddleComponent implements OnInit {
   constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService) { 
   }
  ngOnInit(){
+    $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
      this.initiate_clinic();
  }

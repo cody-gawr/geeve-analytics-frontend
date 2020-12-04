@@ -107,6 +107,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
   }
   //Initialize compoenent
   ngAfterViewInit() {
+      $('#currentDentist').attr('did','all');
+    
        this.checkPermission('dashboard2');
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
@@ -616,8 +618,13 @@ this.preoceedureChartColors = [
             }],
           yAxes: [{  
             ticks: {
+              beginAtZero:true,
              callback: function(value) {
+                    if(value.length>20)
                     return value.substr(0,20)+"....";//truncate
+                    else
+                    return value;//truncate
+
                 }
             }, 
             }],
@@ -1231,10 +1238,13 @@ public buildChartProceedureLoader:any;
        if(data.message == 'success'){
         this.buildChartProceedureLoader =false;
         data.data.forEach(res => {
-           this.proceedureChartData1.push(Math.floor(res.total));
+          if(res.total >0) {
+           this.proceedureChartData1.push(Math.round(res.total));
            this.proceedureChartLabels1.push(res.treat_item);
        //    this.productionTotal = this.productionTotal + parseInt(res.total);
+     }
         });
+        console.log(this.proceedureChartData1);
        this.proceedureChartData[0]['data'] = this.proceedureChartData1;
        this.proceedureChartLabels = this.proceedureChartLabels1;
        }
@@ -1259,7 +1269,7 @@ public buildChartProceedureDentistLoader:any;
         this.proceedureChartData1 = [];
            this.proceedureChartLabels1 = [];
         data.data.forEach(res => {
-           this.proceedureChartData1.push(Math.floor(res.total));
+           this.proceedureChartData1.push(Math.round(res.total));
            this.proceedureChartLabels1.push(res.treat_item);
         });
        this.proceedureDentistChartData[0]['data'] = this.proceedureChartData1;
@@ -1303,6 +1313,8 @@ public doughnutChartColors1;
            this.pieChartLabelsres = [];
            var i=0;
         data.data.forEach(res => {
+
+          if(res.total>0) {
            this.pieChartDatares1.push(res.i_count);
            this.pieChartDatares2.push(res.e_count);
            this.pieChartDatares3.push(res.total);
@@ -1317,6 +1329,7 @@ public doughnutChartColors1;
            if(res.label != 'Anonymous')
             this.crKey= i;
             i++;
+          }
           });
         if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
           this.pieChartInternalPrevTooltip = 'up'
@@ -1371,6 +1384,7 @@ this.pieChartDataMax3=0;
            this.pieChartDatares3 = [];
            this.pieChartLabelsres = [];
         data.data.forEach(res => {
+              if(res.total>0) {
            this.pieChartDatares1.push(res.i_count);
            this.pieChartDatares2.push(res.e_count);
            this.pieChartDatares3.push(res.total);
@@ -1383,6 +1397,7 @@ this.pieChartDataMax3=0;
            this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(res.i_count_ta);
            this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(res.e_count_ta);
            this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(res.total_ta);
+         }
  });
          if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
           this.pieChartInternalPrevTooltip = 'up'
