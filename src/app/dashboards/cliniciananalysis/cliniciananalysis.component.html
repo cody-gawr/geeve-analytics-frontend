@@ -208,7 +208,7 @@
             <h4>No Data</h4>
             <p>Oops! Looks like we don't have any data to show you</p>
         </div>  --> 
-         <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && planChartLabels.length > 0">
+         <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">${{planTotalAverage | number:'1.0-0'}}</h3>
                          <small *ngIf="currentText != ''">{{currentText}} Average</small>
@@ -300,7 +300,7 @@
           </div>
 
 
-          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && doughnutChartLabels.length > 0">
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">{{doughnutTotal| number:'1.0-0'}}</h3>
                        <small *ngIf="currentText != ''">{{currentText}}</small>
@@ -397,7 +397,7 @@
               <p></p>
           </div>
 
-          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && newPatientsDataMax != '0'">
+          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">{{newPatientTotalAverage| number:'1.0-0'}}</h3>
                          <small *ngIf="currentText != ''">{{currentText}}</small>
@@ -515,7 +515,7 @@ Prebook Rate</small>
           [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsRP" [colors]="TPcolors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="recallChartLabels.length > 0 && prebook=='recall'">
+          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="prebook=='recall'">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 *ngIf="recallChartAverage > 0" class="m-0 font-light text-center">{{recallChartAverage| number:'1.0-0'}}%</h3>
                          <h3 *ngIf="recallChartAverage <= 0" class="m-0 font-light text-center">{{recallChartAverage| number:'0.0-0'}}%</h3>
@@ -531,7 +531,7 @@ Prebook Rate</small>
                         <small class="text-center">Goal</small>
                     </div>
                 </div>
-  <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="treatmentPreChartLabels.length > 0 && prebook=='treatment'">
+  <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="prebook=='treatment'">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                          <h3 *ngIf="treatmentPreChartAverage > 0" class="m-0 font-light text-center">{{treatmentPreChartAverage| number:'1.0-0'}}%</h3>
                          <h3 *ngIf="treatmentPreChartAverage <= 0" class="m-0 font-light text-center">{{treatmentPreChartAverage| number:'0.0-0'}}%</h3>
@@ -671,7 +671,7 @@ Prebook Rate</small>
 
       </div>
     </div>
-          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="recallChartLabels.length > 0">
+          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" >
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light text-center">${{hourlyRateChartAverage| number:'1.0-0'}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
@@ -755,7 +755,7 @@ Prebook Rate</small>
         </div> -->
 
       </div>
-          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="treatmentChartLabels.length > 0">
+          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" >
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                       <h3 *ngIf="treatmentChartAverage > 0" class="m-0 font-light text-center">{{treatmentChartAverage| number:'1.0-0'}}%</h3>
                          <h3 *ngIf="treatmentChartAverage <= 0" class="m-0 font-light text-center">{{treatmentChartAverage| number:'1.0-0'}}%</h3>

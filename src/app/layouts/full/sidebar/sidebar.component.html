@@ -112,7 +112,7 @@
                 </a>
                 <mat-nav-list class="child-sub-item" *ngIf="childitem.type === 'subchild' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5" >
                     <mat-list-item *ngFor="let child of childitem.subchildren" routerLinkActive="selected">
-                        <a [routerLink]="['/', childitem.state, child.state ]" routerLinkActive="selected">{{child.name}}</a>
+                        <a [routerLink]="['/',  child.state ]" routerLinkActive="selected">{{child.name}}</a>
                     </mat-list-item>
                 </mat-nav-list>
             </mat-list-item>

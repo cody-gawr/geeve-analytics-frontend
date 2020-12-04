@@ -1238,10 +1238,13 @@ public buildChartProceedureLoader:any;
        if(data.message == 'success'){
         this.buildChartProceedureLoader =false;
         data.data.forEach(res => {
+          if(res.total >0) {
            this.proceedureChartData1.push(Math.round(res.total));
            this.proceedureChartLabels1.push(res.treat_item);
        //    this.productionTotal = this.productionTotal + parseInt(res.total);
+     }
         });
+        console.log(this.proceedureChartData1);
        this.proceedureChartData[0]['data'] = this.proceedureChartData1;
        this.proceedureChartLabels = this.proceedureChartLabels1;
        }

@@ -355,38 +355,38 @@ public repeatPassword;
   this.newPassword = this.form.value.newPassword;
   this.repeatPassword = this.form.value.repeatPassword;
   if(this.newPassword == this.repeatPassword) {
-   this.profileSettingsService.updatePassword(this.currentPassword, this.newPassword).subscribe((res) => {
-       if(res.message == 'success'){
-        this.toastr.success(res.data);
-        /*this.successLogin = true;
-        this.successtext = res.data;*/
-        this.form.reset();
-       }
-       else{
-          /*this.errorLogin = true;     
-          this.errortext = res.data;*/
-          this.toastr.error(res.data);
-        }
-    }, error => {
-      this.toastr.error('Please Provide Valid Inputs!');
-      /*this.errorLogin = true;
-      this.errortext = "Please Provide Valid Inputs!";*/
-    }    
-    );
- }
- else {
-  this.errorLogin = true;
-  this.errortext ="Password doesn't Match!";
- }
+       this.profileSettingsService.updatePassword(this.currentPassword, this.newPassword).subscribe((res) => {
+           if(res.message == 'success'){
+            this.toastr.success(res.data);
+            /*this.successLogin = true;
+            this.successtext = res.data;*/
+            this.form.reset();
+           }
+           else{
+              /*this.errorLogin = true;     
+              this.errortext = res.data;*/
+              this.toastr.error(res.data);
+            }
+        }, error => {
+          this.toastr.error('Please Provide Valid Inputs!');
+          /*this.errorLogin = true;
+          this.errortext = "Please Provide Valid Inputs!";*/
+        }    
+        );
+     }
+     else {
+      this.errorLogin = true;
+       this.toastr.error("Password and Confirm Password doesn't Match!");
+     }
   } 
 public fileToUpload;
  uploadImage(files: FileList) {
              $('.ajax-loader').show();
-
     this.fileToUpload = files.item(0);
-    console.log(this.fileToUpload);
+    if(this.fileToUpload.size <2097152) {
     let formData = new FormData();
     formData.append('file', this.fileToUpload, this.fileToUpload.name);
+    console.log(this.fileToUpload);
     this.profileSettingsService.logoUpload(formData).subscribe((res) => {
              $('.ajax-loader').hide();
 
@@ -394,6 +394,12 @@ public fileToUpload;
         this.imageURL= res.data;
       }
     });
+    }
+    else{
+       $('.ajax-loader').hide();
+      this.toastr.error('Image Size should be less than 2 MB');
+
+    }
   }
 
 

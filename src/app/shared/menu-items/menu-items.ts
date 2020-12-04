@@ -386,18 +386,6 @@ export class MenuItems {
     ],
     role:['2','3','4','5']
 
-  },   {
-    state: '',
-    name: 'Goals',
-    type: 'sub-child',
-    icon: 'fas fa-medal',
-    children: [
-      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
-      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link'}
-
-    ],
-    role:['1','2']
-
   },
   {
     state: 'Settings',
@@ -408,7 +396,19 @@ export class MenuItems {
       { state: 'clinic', name: 'Clinics', type: 'link'},
       { state: 'dentist', name: 'Dentists', type: 'link'},
       { state: 'roles-users', name: 'Users', type: 'link'},
-      { state: 'profile-settings', name: 'Profile Settings', type: 'link'}
+      { state: 'profile-settings', name: 'Profile Settings', type: 'link'},   {
+    state: '',
+    name: 'Goals',
+    type: 'subchild',
+    icon: 'fas fa-medal',
+    subchildren: [
+      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
+      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link'}
+
+    ],
+    role:['1','2']
+
+  }
     ],
     role:['2','3','4','5']
 
