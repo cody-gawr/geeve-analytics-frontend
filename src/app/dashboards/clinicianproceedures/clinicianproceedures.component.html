@@ -128,7 +128,7 @@
                 </div>
           <div class="chart" >
              <div  style="height: 190px">
-        <canvas *ngIf="showInternal == true && pieChartDataMax1 > 0" baseChart [data]="pieChartData1" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+        <canvas *ngIf="showInternal == true && pieChartDataMax1 > 0" baseChart [data]="pieChartData1" [labels]="pieChartLabels1" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)"  [legend] = "true" [options]="pieChartOptions" [colors]="doughnutChartColors">
         </canvas>
          <div *ngIf="pieChartDataMax1 <= 0 && showInternal == true "class="sa_nodata_div">
@@ -136,7 +136,7 @@
               <p></p>
           </div>
  
-         <canvas *ngIf="showExternal == true && pieChartDataMax2 > 0" baseChart [data]="pieChartData2" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+         <canvas *ngIf="showExternal == true && pieChartDataMax2 > 0" baseChart [data]="pieChartData2" [labels]="pieChartLabels2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" [options]="pieChartOptions" [colors]="doughnutChartColors">
         </canvas>
          <div *ngIf="pieChartDataMax2 <= 0 && showExternal == true" class="sa_nodata_div">
@@ -144,7 +144,7 @@
               <p></p>
           </div>
        
-         <canvas *ngIf="showCombined == true  && pieChartDataMax3 > 0" baseChart [data]="pieChartData3" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+         <canvas *ngIf="showCombined == true  && pieChartDataMax3 > 0" baseChart [data]="pieChartData3" [labels]="pieChartLabels3" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" [options]="pieChartOptions" [colors]="doughnutChartColors">
         </canvas>
       <div *ngIf="pieChartDataMax3 <= 0 && showCombined == true" class="sa_nodata_div">

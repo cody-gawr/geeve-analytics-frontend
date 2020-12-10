@@ -768,6 +768,12 @@ this.preoceedureChartColors = [
   // Pie
   public pieChartLabels: string[] = [
   ];
+   public pieChartLabels1: string[] = [
+  ];
+    public pieChartLabels2: string[] = [
+  ];
+    public pieChartLabels3: string[] = [
+  ];
   public pieChartData1: number[] = [];
   public pieChartData2: number[] = [];
   public pieChartData3: number[] = [];
@@ -775,8 +781,12 @@ this.preoceedureChartColors = [
   public pieChartDatares1: number[] = [];
   public pieChartDatares2: number[] = [];
   public pieChartDatares3: number[] = [];
-
-  public pieChartLabelsres: string[] = [
+public pieChartLabelsres: string[] = [
+  ];
+  public pieChartLabelsres1: string[] = [
+  ];
+   public pieChartLabelsres2: string[] = [
+  ]; public pieChartLabelsres3: string[] = [
   ];
 
     public predictedTotalAverageTooltip = 'down';
@@ -1018,14 +1028,28 @@ this.preoceedureChartColors = [
        if(data.message == 'success'){
         this.buildChartDentistLoader = false;
           this.itemPredictedChartData1 = [];
-          this.itemPredictedChartData1.push(data.data[0].crowns);
-          this.itemPredictedChartData1.push(data.data[0].splints);
-          this.itemPredictedChartData1.push(data.data[0].root_canals);
-          this.itemPredictedChartData1.push(data.data[0].perio);
-          this.itemPredictedChartData1.push(data.data[0].surgical_extractions);
+          var temp=[];
+          temp['Crowns'] = data.data[0].crowns;
+          
+          temp['Splints'] = data.data[0].splints;
+         
+          temp['Root Canals'] = data.data[0].root_canals;
+         
+          temp['Perio'] = data.data[0].perio;
+         
+          temp['Surgical Extractions'] = data.data[0].surgical_extractions;
+          var tupleArray=[];
+   for (var key in temp) tupleArray.push([key, temp[key]]);
+    tupleArray.sort(function (a, b) { return b[1] - a[1] });
+
+tupleArray.forEach((res,key) => {
+
+  this.itemPredictedChartData1.push(res[1]);
+  this.itemPredictedChartLabels.push(res[0]);
+});
           this.itemPredictedChartData[0]['data'] = this.itemPredictedChartData1;
           this.itemPredictedChartData[0]['label'] = data.data[0].provider;
-          this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
+          //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
           this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data'])
        }
     }, error => {
@@ -1310,15 +1334,28 @@ public doughnutChartColors1;
            this.pieChartDatares1 = [];
            this.pieChartDatares2 = [];
            this.pieChartDatares3 = [];
+           this.pieChartLabelsres1 = [];
+           this.pieChartLabelsres2 = [];
            this.pieChartLabelsres = [];
+
+
            var i=0;
         data.data.forEach(res => {
 
-          if(res.total>0) {
+          if(res.i_count>0) {
            this.pieChartDatares1.push(res.i_count);
+           this.pieChartLabelsres1.push(res.label);
+         }
+         if(res.e_count>0) {
            this.pieChartDatares2.push(res.e_count);
+           this.pieChartLabelsres2.push(res.label);
+
+         }
+         if(res.total>0) {
            this.pieChartDatares3.push(res.total);
-           this.pieChartLabelsres.push(res.label);
+           this.pieChartLabelsres3.push(res.label);
+
+         }
            this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.i_count);
            this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.e_count);
            this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
@@ -1329,7 +1366,7 @@ public doughnutChartColors1;
            if(res.label != 'Anonymous')
             this.crKey= i;
             i++;
-          }
+          
           });
         if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
           this.pieChartInternalPrevTooltip = 'up'
@@ -1340,7 +1377,10 @@ public doughnutChartColors1;
          this.pieChartData1 = this.pieChartDatares1;
          this.pieChartData2 = this.pieChartDatares2;
          this.pieChartData3 = this.pieChartDatares3;
-         this.pieChartLabels = this.pieChartLabelsres;
+         this.pieChartLabels1 = this.pieChartLabelsres1;
+         this.pieChartLabels2 = this.pieChartLabelsres2;
+         this.pieChartLabels3 = this.pieChartLabelsres3;
+
          this.pieChartDataMax1 = Math.max(...this.pieChartData1);
          this.pieChartDataMax2 = Math.max(...this.pieChartData2);
          this.pieChartDataMax3 = Math.max(...this.pieChartData3);

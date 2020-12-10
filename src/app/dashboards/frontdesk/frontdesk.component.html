@@ -130,7 +130,7 @@
    
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
-         <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{ftaPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{ftaTooltip}}.png"></span>
+         <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{ftaPrevTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{ftaTooltip}}.png"></span>
         <mat-card-title class="text-center">FTA ratio (%)
             <div class="sa_box_title_right_buttons">
                 <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -191,7 +191,7 @@
   <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians last">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
-         <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{utaPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{utaTooltip}}.png"></span>
+         <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{utaPrevTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{utaTooltip}}.png"></span>
         <mat-card-title class="text-center">UTA ratio (%)
             <div class="sa_box_title_right_buttons">
                 <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -328,6 +328,7 @@
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
            [cap] ="cap"
+           [max]="maxrecallPrebookGoal"
            [append]="gaugeAppendText"
            [size] = "size">
           </ngx-gauge>
@@ -349,15 +350,19 @@
           </div> -->
       </div>
           <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails" *ngIf="showTrend == false">
-                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light">{{recallPrebookTotal}}%</h3>
                        <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
-                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
                         <h3 class="m-0 font-light">{{recallPrebookPrevTotal}}%</h3>
                         <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                        <h3 class="m-0 font-light">{{maxrecallPrebookGoal}}%</h3>
+                        <small>Goal</small>
                     </div>
                 </div>       
       </mat-card-content>
@@ -385,6 +390,7 @@
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
            [cap] ="cap"
+           [max]="maxtreatmentPrebookGoal"
            [append]="gaugeAppendText"
            [size] = "size">
           </ngx-gauge>
@@ -408,15 +414,19 @@
           </div>
       </div>
           <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails" *ngIf="showTrend == false">
-                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light">{{treatmentPrebookTotal}}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
-                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
                         <h3 class="m-0 font-light">{{treatmentPrebookPrevTotal}}%</h3>
                        <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
+                    </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                        <h3 class="m-0 font-light">{{treatmentPrebookGoal}}%</h3>
+                        <small>Goal</small>
                     </div>
                 </div>       
       </mat-card-content>

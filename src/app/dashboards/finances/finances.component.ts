@@ -1425,16 +1425,14 @@ isDecimal(value) {
 
         this.totalOverdueAccountLabels=[];
              this.totalOverdueAccountres =[];
-     this.totalOverdueTrendIcon="down";
      this.totalOverdueAccountLabelsres = [];
         data.data.forEach(res => {
+          if(res.overdue >0) {
            this.totalOverdueAccountres.push(Math.round(res.overdue));
            this.totalOverdueAccountLabelsres.push(res.label);
+         }
                   });
            this.totalOverdueAccount = data.total;
-           this.totalOverdueTrendAccount = data.trend_total;
-           if(Math.round(this.totalOverdueAccount)>Math.round(this.totalOverdueTrendAccount))
-            this.totalOverdueTrendIcon= "up";
        this.totalOverdueAccountData = this.totalOverdueAccountres;
        this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres; 
        this.totalOverdueAccountDataMax = Math.max(...this.totalOverdueAccountData);
@@ -1709,7 +1707,7 @@ toggleChangeProcess(){
     $('.nonTrendMode').hide();
     this.finProductionByClinicianTrend();
     this.finTotalDiscountsTrend();
-    this.finOverdueAccountsTrend();
+  //  this.finOverdueAccountsTrend();
     this.finTotalProductionTrend();
     this.finCollectionTrend();
     this.finProductionPerVisitTrend();
