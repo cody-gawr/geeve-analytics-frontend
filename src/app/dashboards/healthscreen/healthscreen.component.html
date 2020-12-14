@@ -82,14 +82,13 @@
           </div>
         </div>
          <div *ngIf="maxHourlyRate == 0">No Top Leaders Yet!</div> -->
-
           <div class="user_rate_listing">
               <ul>
                 <div *ngIf="maxHourlyRate > 0">
                   <li *ngFor="let hourlyRateChartD of hourlyRateChartData; let i = index">
                       <div class="ur_users">
                           <div class="ur_rank">{{i+1}}</div>
-                          <div class="ur_pic"><img class="" src="https://staging-analytics.jeeve.com.au/assets/uploads/image.jpeg"></div>
+                          <div class="ur_pic"><img class="" src="../assets/uploads/image.jpeg"></div>
                       </div>
                       <div class="ur_users_main">
                           <div class="ur_user_name">
@@ -103,13 +102,9 @@
                   </li>
                 </div>
                 <li *ngIf="maxHourlyRate == 0">No Top Leaders Yet!</li>
-
               </ul>
-
           </div>
-
-
-      </mat-card-content>                                                                                                                                                                                                                         
+      </mat-card-content>                                                                                                
     </mat-card>
   </div>
   <!-- Column-->
