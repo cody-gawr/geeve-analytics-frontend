@@ -6,7 +6,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "prod": "node --max_old_space_size=64384  ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --output-hashing=none",
+    "build-prod": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build -c=production",
+    "build-staging": "ng build -c=staging",    
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
