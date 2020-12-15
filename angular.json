@@ -75,7 +75,6 @@
                 }
               ]
             }
-
           }
         },
         "serve": {
@@ -90,11 +89,9 @@
             "prod-non-optimized": {
               "browserTarget": "material:build:prod-non-optimized"
             },
-
             "staging": {
               "browserTarget": "material:build:staging"
             }
-
           }
         },
         "extract-i18n": {
