@@ -36,7 +36,7 @@ deploy_staging:
     - aws s3 sync ./dist s3://$STAGING_S3/ --acl=public-read --delete
     - aws s3api put-public-access-block --bucket $STAGING_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
     - echo "Staging - Invalidate Cloudfront"
-    - aws cloudfront create-invalidation --distribution-id $STAGING_CLOUDFRONT --paths /*
+    - aws cloudfront create-invalidation --distribution-id $STAGING_CLOUDFRONT --paths "/*"
   only: ['staging']
 
 # Make Production Build
@@ -65,5 +65,5 @@ deploy_master:
     - aws s3 sync ./dist s3://$PROD_S3/ --acl=public-read --delete
     - aws s3api put-public-access-block --bucket $PROD_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
     - echo "Production - Invalidate Cloudfront"
-    - aws cloudfront create-invalidation --distribution-id $PROD_CLOUDFRONT --paths /*
+    - aws cloudfront create-invalidation --distribution-id $PROD_CLOUDFRONT --paths "/*"
   only: ['master']
