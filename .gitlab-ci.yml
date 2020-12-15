@@ -1,0 +1,69 @@
+# Node Image for docker on which code will execute
+image: node:latest
+
+# This is the stages / task to perfom in jobs
+stages:
+  - build
+  - deploy
+    
+# This command is run before the execution of stages    
+before_script:
+  - npm install
+
+# Make Staging Build
+build_staging: 
+  stage: build
+  script:
+  - npm run build-staging
+  artifacts:
+    paths:
+    - dist
+    expire_in: 1 day
+  only: ['staging']
+
+# Deploy Staging Build
+deploy_staging:
+  image: python:latest  
+  stage: deploy
+  before_script:
+    - pip install awscli 
+  script:
+    - echo "Staging - Update AWS Keys"
+    - export AWS_ACCESS_KEY_ID=$STAGING_AWS_ACCESS_KEY_ID
+    - export AWS_SECRET_ACCESS_KEY=$STAGING_AWS_SECRET_ACCESS_KEY
+    - echo "Staging - Deploy to S3"    
+    - aws s3api put-public-access-block --bucket $STAGING_S3  --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
+    - aws s3 sync ./dist s3://$STAGING_S3/ --acl=public-read --delete
+    - aws s3api put-public-access-block --bucket $STAGING_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+    - echo "Staging - Invalidate Cloudfront"
+    - aws cloudfront create-invalidation --distribution-id $STAGING_CLOUDFRONT --paths /*
+  only: ['staging']
+
+# Make Production Build
+build_master: 
+  stage: build
+  script:
+  - npm run build-prod-non-optimized
+  artifacts:
+    paths:
+    - dist
+    expire_in: 1 day
+  only: ['master']
+
+# Deploy Production Build
+deploy_master:
+  image: python:latest  
+  stage: deploy
+  before_script:
+    - pip install awscli 
+  script:
+    - echo "Production - Update AWS Keys"
+    - export AWS_ACCESS_KEY_ID=$PROD_AWS_ACCESS_KEY_ID
+    - export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET_ACCESS_KEY
+    - echo "Production - Deploy to S3"    
+    - aws s3api put-public-access-block --bucket $PROD_S3  --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
+    - aws s3 sync ./dist s3://$PROD_S3/ --acl=public-read --delete
+    - aws s3api put-public-access-block --bucket $PROD_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+    - echo "Production - Invalidate Cloudfront"
+    - aws cloudfront create-invalidation --distribution-id $PROD_CLOUDFRONT --paths /*
+  only: ['master']
