@@ -127,7 +127,7 @@ var header = this.getHeaders();
 
     getPaymentDetails(): Observable<any> {
      const formData = new FormData();
-     formData.append('user_id',  this.token_id);
+     formData.append('user_id', this._cookieService.get("userid"));
      formData.append('type', "analytics");
     var header = this.getHeaders(); 
         return this.http.post(this.solutionsUrl +"/users/getUserPaymentData", formData, { headers: header })
