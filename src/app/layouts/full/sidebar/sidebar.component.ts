@@ -48,6 +48,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    
   }
  ngAfterViewInit() {
 (<any>$('.srh-btn, .cl-srh-btn')).on('click', function() {
@@ -62,7 +63,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
       this.user_image = 'assets/images/gPZwCbdS.jpg';
 
      
-    // This is for the megamenu  gdhfhgd
+    // This is for the megamenu
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);

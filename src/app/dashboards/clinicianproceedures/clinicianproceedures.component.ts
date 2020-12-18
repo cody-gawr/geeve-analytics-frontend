@@ -1028,6 +1028,7 @@ public pieChartLabelsres: string[] = [
        if(data.message == 'success'){
         this.buildChartDentistLoader = false;
           this.itemPredictedChartData1 = [];
+           this.itemPredictedChartLabels=[];
           var temp=[];
           temp['Crowns'] = data.data[0].crowns;
           
@@ -1628,7 +1629,6 @@ public currentText;
     }
      else if (duration == 'custom') {
       this.duration='custom';
-
        this.trendText= '';
       this.currentText= '';
       this.duration='custom';
@@ -1696,7 +1696,7 @@ choosedDate(val) {
     var val= val.toString().split(' - ');
       this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
-      this.loadDentist('all');
+      this.filterDate('custom');
       
       $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
