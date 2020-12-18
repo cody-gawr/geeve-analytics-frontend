@@ -267,12 +267,15 @@ public customer_id;
             }, error => {
      });
   }
-
+public subscription_id='';
    getPaymentDetails() {
   this.profileSettingsService.getPaymentDetails().subscribe((res) => {
        if(res.message == 'success'){
         this.last_invoic_id = res.data.lastinvoiceid;
         this.customer_id = res.data.customer_id; 
+          this.subscription_id = res.data.subscr_id; 
+         if(this.subscription_id)
+          this.getCardDetails();
         if(!this.last_invoic_id){
           let opts: CookieOptionsArgs = {
             expires: new Date('2030-07-19')
@@ -298,13 +301,19 @@ public last4;
        if(res.message == 'success'){
         this.displayName = res.data[0].displayName;
         this.email = res.data[0].email;
+
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
   }
-
+getCardDetails() {
+      this.profileSettingsService.getCardDetails(this.customer_id).subscribe((res) => {
+        this.last4 = res.last4;
+      }, error => {
+      });
+  }
 public displayName;
 public display_name;
 public imageURL:any;
