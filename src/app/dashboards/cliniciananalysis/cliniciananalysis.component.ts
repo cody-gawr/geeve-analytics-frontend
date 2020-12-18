@@ -1722,10 +1722,10 @@ this.treatmentPreLabel = '';
         this.gaugeValueTreatmentC = 0;
         this.gaugeValueTreatment =0;
         if(data.data != null) {
-          if(data.data.plan_fee_completed.average_cost_completed != undefined)
-          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed.average_cost_completed);
-          if(data.data.plan_fee_all.average_cost_all != undefined)
-          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all.average_cost_all);
+          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
+          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_cost_completed);
+          if(data.data.plan_fee_all[0].average_cost_all != undefined)
+          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
           this.gaugeLabelTreatment = data.data.plan_fee_all.provider;
           this.planTotalAll = Math.round(data.total_all);
           this.planTotalCompleted = Math.round(data.total_completed);
@@ -1937,6 +1937,7 @@ this.doughnutTotalAverage=0;
   }
 
 public newPatientPercent=0;
+public maxnewPatientGoal:any=0;
   public buildChartNewpatientsDentistLoader:any;
 //New Patients chart for individual dentist
   private buildChartNewpatientsDentist() {
@@ -1949,6 +1950,7 @@ public newPatientPercent=0;
          if(data.data != null && data.data[0] && data.data[0].getX != undefined) {
         this.newPatientValuePatients = data.data[0].getX;
           this.newPatientLabelPatients = data.data[0].provider;
+          if(data.data[0].percent)
           this.newPatientPercent = Math.round(data.data[0].percent);
           this.newPatientTotalAverage =  Math.round(data.total);
           this.newPatientTotalPrev = Math.round(data.total_ta);
@@ -1960,7 +1962,14 @@ public newPatientPercent=0;
           this.newPatientTotalAverage = 0;
         }
        this.newPatientGoals = data.goals;
-        
+          if(this.newPatientPercent>this.newPatientGoals)
+          this.maxnewPatientGoal= this.newPatientPercent;
+        else
+          this.maxnewPatientGoal= this.newPatientGoals;
+
+        if(this.maxnewPatientGoal == 0)
+          this.maxnewPatientGoal = '';
+        console.log(this.maxnewPatientGoal);
        }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -2484,6 +2493,7 @@ public patientComplaintTrend: any[]  = [
   this.patientComplaintsTrend1= [];
        if(data.message == 'success'){
         this.patientComplaintsTrendLoader =false;
+        if(data.data) {
                 data.data.forEach(res => {  
                      this.patientComplaintsTrend1.push(res.val.treat_item);
                    if(this.trendValue == 'c')
@@ -2491,6 +2501,7 @@ public patientComplaintTrend: any[]  = [
                    else
                    this.patientComplaintsTrendLabels1.push(res.duration);                  
                  });
+              }
                  this.patientComplaintTrend[0]['data'] = this.patientComplaintsTrend1;
 
                  this.patientComplaintsTrendLabels =this.patientComplaintsTrendLabels1; 
@@ -2743,6 +2754,7 @@ public patientComplaintTrend: any[]  = [
           this.fdtreatmentPlanRateTrendLoader = false;
           this.treatmentPlanChartTrendLabels1=[];
           this.treatmentPlanChartTrend1=[];
+          if(data.data) {
                 data.data.forEach(res => {  
                   if(res.val) {
                      this.treatmentPlanChartTrend1.push(Math.round(res.val.percent));
@@ -2752,6 +2764,7 @@ public patientComplaintTrend: any[]  = [
                    this.treatmentPlanChartTrendLabels1.push(res.duration);
                   }
                  });
+              }
                  this.treatmentPlanChartTrend[0]['data'] = this.treatmentPlanChartTrend1;
 
                  this.treatmentPlanChartTrendLabels =this.treatmentPlanChartTrendLabels1; 

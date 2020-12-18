@@ -1,3 +1,4 @@
+
 <select class="sa_select internal_dentist"  [(ngModel)]="selectedDentist" [style.display]="'none'">
                      <option value ="all">All Dentist</option>
                     <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
@@ -88,7 +89,7 @@
                   <li *ngFor="let hourlyRateChartD of hourlyRateChartData; let i = index">
                       <div class="ur_users">
                           <div class="ur_rank">{{i+1}}</div>
-                          <div class="ur_pic"><img class="" src="../assets/uploads/image.jpeg"></div>
+                          <div class="ur_pic"><img class="" src="../assets/images/image1.jpg"></div>
                       </div>
                       <div class="ur_users_main">
                           <div class="ur_user_name">

@@ -408,7 +408,7 @@
                         <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
                         <h3 class="m-0 font-light typext-center">{{newPatientGoals*goalCount| number:'1.0-0'}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
@@ -438,8 +438,6 @@
            [label]="newPatientLabelPatients"
            [thick]="gaugeThick"
            [foregroundColor]="foregroundColor"
-           [max] = ""
-           [cap] ="cap"
            [append] ="gaugeAppendText"
            [size] = "size"
            [duration]= "gaugeDuration">
@@ -470,7 +468,7 @@
                          <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
                         <h3 class="m-0 font-light text-center">{{newPatientGoals*goalCount| number:'1.0-0'}}</h3>
                         <small class="text-center">Goal</small>
                     </div>
@@ -526,7 +524,7 @@ Prebook Rate</small>
                         <h3 class="m-0 font-light text-center">{{recallChartAveragePrev| number:'1.0-0'}}%</h3>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                     </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
                         <h3 class="m-0 font-light text-center">{{recallChartGoal*goalCount| number:'1.0-0'}}%</h3>
                         <small class="text-center">Goal</small>
                     </div>

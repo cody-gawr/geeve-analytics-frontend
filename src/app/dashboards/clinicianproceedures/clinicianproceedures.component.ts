@@ -1627,6 +1627,8 @@ public currentText;
       this.loadDentist(dentistVal);
     }
      else if (duration == 'custom') {
+      this.duration='custom';
+
        this.trendText= '';
       this.currentText= '';
       this.duration='custom';
