@@ -146,5 +146,25 @@ var header = this.getHeaders();
                })
             );
     }
+
+     createSetupIntent(customer): Observable<any> {
+            const formData = new FormData();
+            formData.append('customer', customer);
+            return this.http.post(this.apiUrl +"/users/createSetupIntent", formData)
+            .pipe(map((response: Response) => {
+                   return response;
+               })
+            );
+    }
+     updateCustomerCard(customer): Observable<any> {
+            const formData = new FormData();
+            formData.append('customer', customer);
+
+            return this.http.post(this.apiUrl +"/users/updateCustomerCard", formData)
+            .pipe(map((response: Response) => {
+                   return response;
+               })
+            );
+    }
 }
 

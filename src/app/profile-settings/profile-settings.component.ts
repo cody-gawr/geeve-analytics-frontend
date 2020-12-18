@@ -314,6 +314,67 @@ getCardDetails() {
       }, error => {
       });
   }
+
+
+
+   setupIntent() {
+        this.stripeService
+    .createToken(this.cardNumber, { name })
+    .subscribe(obj => {
+    if (obj.token) {
+    const name = this.stripeTest.get('name').value;
+      $('.ajax-loader').show();
+    this.profileSettingsService.createSetupIntent(this.customer_id).subscribe((res) => {
+      if(res.message == 'success'){
+             this.stripeService.confirmCardSetup(res.data.client_secret,{
+                    payment_method: {
+                      card: this.cardNumber,
+                      billing_details: {
+                        name: 'dsf',
+
+                      },
+                    },
+                  })
+                   .subscribe((result) => {
+                    console.log(result);
+                        this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
+                    if(result.setupIntent && result.setupIntent.status == 'succeeded'){                      
+                      this.updateCustomerCard();
+                    }
+                    else{
+                        $('.ajax-loader').hide();
+                            this.cardNumber.clear();
+                            this.cardCvc.clear();
+                            this.cardExpiry.clear();
+                    Swal.fire(
+                        '',
+                        'Some issue with your card, Please try again!',
+                        'error'
+                      )
+                    }
+                  });
+        }
+      });
+    } else {
+      console.log("Error comes ");
+    }
+    });
+    } 
+updateCustomerCard(){
+  this.profileSettingsService.updateCustomerCard(this.customer_id).subscribe((res) => {
+              if(res.message == 'success'){
+                 $('.ajax-loader').hide();
+                  Swal.fire(
+                        '',
+                        'Card Updated Successfully!',
+                        'success'
+                      )
+              }           
+   });
+}
+
 public displayName;
 public display_name;
 public imageURL:any;
