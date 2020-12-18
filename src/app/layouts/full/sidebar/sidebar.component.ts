@@ -62,7 +62,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
       this.user_image = 'assets/images/gPZwCbdS.jpg';
 
      
-    // This is for the megamenu
+    // This is for the megamenu  gdhfhgd
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
