@@ -48,6 +48,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    changeDetectorRef.detectChanges();
   }
  ngAfterViewInit() {
 (<any>$('.srh-btn, .cl-srh-btn')).on('click', function() {
