@@ -8,6 +8,7 @@ stages:
     
 # This command is run before the execution of stages    
 before_script:
+  - npm -v
   - npm install --only=prod
   - npm audit fix
 
