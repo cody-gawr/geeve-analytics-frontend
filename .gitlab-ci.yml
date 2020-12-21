@@ -1,5 +1,5 @@
 # Node Image for docker on which code will execute
-image: node:10.20.1
+image: node:latest
 
 # This is the stages / task to perfom in jobs
 stages:
@@ -7,12 +7,8 @@ stages:
   - deploy
     
 # This command is run before the execution of stages    
-before_script:
-  - npm -v
-  - npm install -g npm@latest
-  - npm -v
   - npm install --only=prod
-  - npm audit fix
+  #- npm audit fix
 
 # Make Staging Build
 build_staging: 
