@@ -6,7 +6,8 @@ stages:
   - build
   - deploy
     
-# This command is run before the execution of stages    
+# This command is run before the execution of stages   
+before_script: 
   - npm install
   - npm audit fix
 
