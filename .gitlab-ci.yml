@@ -9,7 +9,7 @@ stages:
 # This command is run before the execution of stages   
 before_script: 
   - npm install
-  - npm audit fix
+  #- npm audit fix
 
 # Make Staging Build
 build_staging: 
