@@ -913,8 +913,8 @@ public pieChartLabelsres: string[] = [
         (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'none'; }
 
         this.buildChartPredictorDentist();
-        (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'none';
+        // (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'block';
+        // (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'none';
         this.buildChartProceedureDentist();
          $('.revenueProceedureSingle').show();
          $('.revenueProceedure').hide();
@@ -1069,93 +1069,101 @@ public predictedMax;
 public buildChartPredictorLoader:any;
 public prKey:any[] =[];
 public PRcolors;
+   public predictedstackedChartData = [
+    {data: [], label: ''},
+    {data: [], label: '' } ];
+
+      public predictedstackedChartData1 = [
+    {data: [], label: 'Crowns'},
+    {data: [], label: 'Large Fillings' } ];
+
+      public predictedstackedChartData2 = [
+    {data: [], label: 'RCT'},
+    {data: [], label: 'Extractions' } ];
+
+      public predictedstackedChartData3 = [
+    {data: [], label: "RCT's Completed" },
+    {data: [], label: "RCT's Started" } ];
+public predictedstackedChartLabels=[];
+
+public predictedstackedChartLabels1=[];
+public predictedstackedChartLabels2=[];
+
+public predictedstackedChartLabels3=[];
+
 //Predictor Ratio :All Dentist
   private buildChartPredictor() {
      this.predictedTotalAverageTooltip1 = 'down';
     this.predictedTotalAverageTooltip2 = 'down';
     this.predictedTotalAverageTooltip3 = 'down';
      if(this.duration){
-      this.buildChartPredictorLoader = true;
+      this.buildChartLoader = true;
        var user_id;
     var clinic_id;
   this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
+     this.buildChartLoader = false;
+    this. predictedstackedChartData1 = [
+    {data: [], label: 'Crowns'},
+    {data: [], label: 'Large Fillings' } ];
+    this.predictedstackedChartData2 = [
+    {data: [], label: 'RCT'},
+    {data: [], label: 'Extractions' } ];
+    this.predictedstackedChartData3 = [
+    {data: [], label: "RCT's Completed" },
+    {data: [], label: "RCT's Started" } ];
 
-       
-        this.buildChartPredictorLoader = false;
-        this.predictedChartData1 =[];
-        this.predictedChartData2 =[];
-        this.predictedChartData3 =[];
-        this.predictedChartLabels1=[];
-        this.predictedChartLabels = [];
-        this.predictedChartData[0]['data'] = [];
-        this.predictedChartD[0] = [];
-        this.predictedChartD[1]= [];
-        this.predictedChartD[2] = [];
-        this.predictedT[0] = 0;
-        this.predictedT[1]= 0;
-        this.predictedT[2] = 0;
-
-        this.predictedChartL[0] = [];
-        this.predictedChartL[1]= [];
-        this.predictedChartL[2] = [];
-        this.predictedTotal0 = 0;
-        this.predictedTotal1 = 0;
-        this.predictedTotal2 =0;
-        this.predictedPreviousTotal1 =0;
-        this.predictedPreviousTotal2 =0;
-        this.predictedPreviousTotal3 =0;
-        this.predictedChartLabels1 =[];
-        this.predictedPreviousAverage1=0;
-        this.predictedPreviousAverage2=0;
-        this.predictedPreviousAverage3=0;
-        this.predictedTP[0] = 0;
-        this.predictedTP[1]= 0;
-        this.predictedTP[2] = 0;
-        this.predictedMax = 0;
-        var i=0;
+    this.predictedstackedChartLabels1=[];
+    this.predictedstackedChartLabels2=[];
+    this.predictedstackedChartLabels3=[];
+    this.crowns=this.crowns_ta =this.large_fillings=this.large_fillings_ta =this.extractions=this.extractions_ta =this.root_canals=this.root_canals_ta =this.rct_completed=this.rct_completed_ta=this.rct_started =this.rct_started_ta =0
       if(data.message == 'success'){
+
         data.data.forEach((res,key) => {
           var i=0;
-          if(res) {
+          if(key == 0) {
              res.forEach((result) => {
               if(result.provider != null){
-                this.predictedChartD[key].push(Math.round(result.ratio));
-                this.predictedChartL[key].push(result.provider);
-                this.predictedT[key] = this.predictedT[key] + parseInt(result.ratio);
-                this.predictedTP[key] = this.predictedTP[key] + parseInt(result.ratio_ta);
-                if(result.provider != 'Anonymous')
-                  this.prKey[key] =i;
-                i++;
+                     this.predictedstackedChartLabels1.push(result.provider);
+                 this.predictedstackedChartData1[0]['data'].push(result.crowns);
+                 this.crowns= parseInt(this.crowns)+parseInt(result.crowns);
+                 this.crowns_ta= parseInt(this.crowns_ta)+parseInt(result.crowns_trend);
+
+                 this.predictedstackedChartData1[1]['data'].push(result.large_fillings);
+                  this.large_fillings= parseInt(this.large_fillings)+parseInt(result.large_fillings);
+                 this.large_fillings_ta= parseInt(this.large_fillings_ta)+parseInt(result.large_fillings_trend);
+              }
+             });
+           }
+           if(key == 1) {
+             res.forEach((result) => {
+              if(result.provider != null){
+                     this.predictedstackedChartLabels2.push(result.provider);
+                 this.predictedstackedChartData2[0]['data'].push(result.extractions);
+                  this.extractions= parseInt(this.extractions)+parseInt(result.extractions);
+                 this.extractions_ta= parseInt(this.extractions_ta)+parseInt(result.extractions_trend);
+                 this.predictedstackedChartData2[1]['data'].push(result.root_canals);
+                 this.root_canals= parseInt(this.root_canals)+parseInt(result.root_canals);
+                 this.root_canals_ta= parseInt(this.root_canals_ta)+parseInt(result.root_canals_trend);
+              }
+             });
+           }
+           if(key == 2) {
+             res.forEach((result) => {
+              if(result.provider != null){
+                     this.predictedstackedChartLabels3.push(result.provider);
+                 this.predictedstackedChartData3[0]['data'].push(result.rct_completed);
+                 this.rct_completed= parseInt(this.rct_completed)+parseInt(result.rct_completed);
+                 this.rct_completed_ta= parseInt(this.rct_completed_ta)+parseInt(result.rct_completed_trend);
+                 this.predictedstackedChartData3[1]['data'].push(result.rct_started);
+                 this.rct_started= parseInt(this.rct_started)+parseInt(result.rct_started);
+                 this.rct_started_ta= parseInt(this.rct_started_ta)+parseInt(result.rct_started_trend);
               }
              });
            }
         });
-         this.predictedTotalAverage1 = Math.round(this.predictedT[0]/this.predictedChartD[0].length);
-         this.predictedTotalAverage2 =  Math.round(this.predictedT[1]/this.predictedChartD[1].length);
-         this.predictedTotalAverage3 =  Math.round(this.predictedT[2]/this.predictedChartD[2].length);
-          this.predictedPreviousAverage1 = Math.round( this.predictedTP[0]/this.predictedChartD[0].length);
-         this.predictedPreviousAverage2 =  Math.round(this.predictedTP[1]/this.predictedChartD[1].length);
-         this.predictedPreviousAverage3 =  Math.round(this.predictedTP[2]/this.predictedChartD[2].length);
-         this.predictedChartData[0]['data'] = this.predictedChartD[0];
-         this.predictedChartLabels = this.predictedChartL[0];
-         this.predictedTotal =this.predictedT[0];
-         if(this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-                { backgroundColor: [] }
-              ];
-            this.barChartColors[0].backgroundColor[this.prKey[0]] = '#1CA49F';
-            this.PRcolors= this.barChartColors;
-          }
-          else
-            this.PRcolors= this.predictedChartColors;
+        this.predictedstackedChartData= this.predictedstackedChartData1;
+        this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
 
-          if(this.predictedTotalAverage1>=this.predictedPreviousAverage1)
-            this.predictedTotalAverageTooltip1 = 'up'
-          if(this.predictedTotalAverage2>=this.predictedPreviousAverage2)
-            this.predictedTotalAverageTooltip2 = 'up'
-          if(this.predictedTotalAverage3>=this.predictedPreviousAverage3)
-            this.predictedTotalAverageTooltip3 = 'up'
-            this.predictedMax = Math.max(...this.predictedChartData[0]['data']);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1183,69 +1191,110 @@ public PRcolors;
           else
             this.PRcolors= this.predictedChartColors;
     if(val =='1') {
-       this.predictedChartData[0]['data'] = this.predictedChartD[0];
-         this.predictedChartLabels = this.predictedChartL[0];
+       this.predictedstackedChartData = this.predictedstackedChartData1;
+         this.predictedstackedChartLabels = this.predictedstackedChartLabels1;
 
      }
     else if(val =='2'){
-     this.predictedChartData[0]['data'] = this.predictedChartD[1];
-         this.predictedChartLabels = this.predictedChartL[1];
+   this.predictedstackedChartData = this.predictedstackedChartData2;
+         this.predictedstackedChartLabels = this.predictedstackedChartLabels2;
 
      }
     else if(val =='3') {
-    this.predictedChartData[0]['data'] = this.predictedChartD[2];
-         this.predictedChartLabels = this.predictedChartL[2];
+ this.predictedstackedChartData = this.predictedstackedChartData3;
+         this.predictedstackedChartLabels = this.predictedstackedChartLabels3;
      }
-      this.predictedMax = Math.max(...this.predictedChartData[0]['data']);
 
   } 
 public gaugeValuePredictedPrev1;
 public gaugeValuePredictedPrev2;
 public gaugeValuePredictedPrev3;
 public buildChartPredictorDentistLoader:any;
+public crowns:any=0; 
+public crowns_ta :any=0; 
+public large_fillings:any=0; 
+public large_fillings_ta :any=0; 
+public extractions:any=0; 
+public extractions_ta :any=0; 
+public root_canals:any=0; 
+public root_canals_ta :any=0; 
+public rct_completed:any=0; 
+public rct_completed_ta:any=0; 
+public rct_started :any=0; 
+public rct_started_ta :any=0; 
   //Predictor Ratio : Individual Dentist
   private buildChartPredictorDentist() {
-       this.predictedTotalTooltip1 = 'down';
-    this.predictedTotalTooltip2 = 'down';
-    this.predictedTotalTooltip3 = 'down';
-    this.buildChartPredictorDentistLoader =true;
+     this.predictedTotalAverageTooltip1 = 'down';
+    this.predictedTotalAverageTooltip2 = 'down';
+    this.predictedTotalAverageTooltip3 = 'down';
+     if(this.duration){
+      this.buildChartDentistLoader = true;
        var user_id;
     var clinic_id;
-  this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
-       if(data.message == 'success'){
-          this.buildChartPredictorDentistLoader =false;
-          if(data.data.ratio1[0]) {
-           this.gaugeValuePredicted1 = Math.round(data.data.ratio1[0].ratio);
-           this.gaugeValuePredictedPrev1 = Math.round(data.data.ratio1[0].ratio_ta);
-           this.gaugeLabelPredicted = data.data.ratio1[0].provider;
-         }
-          if(data.data.ratio2[0]) {
-           this.gaugeValuePredicted2 = Math.round(data.data.ratio2[0].ratio);
-           this.gaugeValuePredictedPrev2 = Math.round(data.data.ratio2[0].ratio_ta);
-         }
-         if(data.data.ratio3[0]) {
-           this.gaugeValuePredicted3 = Math.round(data.data.ratio3[0].ratio);
-           this.gaugeValuePredictedPrev3 = Math.round(data.data.ratio3[0].ratio_ta);
-         }
+  this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.buildChartDentistLoader = false;
+    this. predictedstackedChartData1 = [
+    {data: [], label: 'Crowns'},
+    {data: [], label: 'Large Fillings' } ];
+    this.predictedstackedChartData2 = [
+    {data: [], label: 'RCT'},
+    {data: [], label: 'Extractions' } ];
+    this.predictedstackedChartData3 = [
+    {data: [], label: "RCT's Completed" },
+    {data: [], label: "RCT's Started" } ];
 
-           this.predictedDentistTotal = this.gaugeValuePredicted1;
-           this.predictedDentistPrevTotal = this.gaugeValuePredictedPrev1;
+    this.predictedstackedChartLabels1=[];
+    this.predictedstackedChartLabels2=[];
+    this.predictedstackedChartLabels3=[];
+    this.crowns=this.crowns_ta =this.large_fillings=this.large_fillings_ta =this.extractions=this.extractions_ta =this.root_canals=this.root_canals_ta =this.rct_completed=this.rct_completed_ta=this.rct_started =this.rct_started_ta =0;
+      if(data.message == 'success'){
 
-           this.gaugeValuePredicted= this.gaugeValuePredicted1;
 
-             if(this.gaugeValuePredicted1>=this.gaugeValuePredictedPrev1)
-            this.predictedTotalTooltip1 = 'up'
-          if(this.gaugeValuePredicted2>=this.gaugeValuePredictedPrev2)
-            this.predictedTotalTooltip2 = 'up'
-          if(this.gaugeValuePredicted3>=this.gaugeValuePredictedPrev3)
-            this.predictedTotalTooltip3 = 'up'
-          console.log(this.predictedTotalTooltip1,this.gaugeValuePredicted1,this.gaugeValuePredictedPrev1);
+             data.data.ratio1.forEach((result) => {
+              if(result.provider != null){
+                     this.predictedstackedChartLabels1.push(result.provider);
+                 this.predictedstackedChartData1[0]['data'].push(result.crowns);
+                 this.crowns= parseInt(this.crowns)+parseInt(result.crowns);
+                 this.crowns_ta= parseInt(this.crowns_ta)+parseInt(result.crowns_trend);
+
+                 this.predictedstackedChartData1[1]['data'].push(result.large_fillings);
+                  this.large_fillings= parseInt(this.large_fillings)+parseInt(result.large_fillings);
+                 this.large_fillings_ta= parseInt(this.large_fillings_ta)+parseInt(result.large_fillings_trend);
+              }
+             });
+             data.data.ratio2.forEach((result) => {
+              if(result.provider != null){
+                     this.predictedstackedChartLabels2.push(result.provider);
+                 this.predictedstackedChartData2[0]['data'].push(result.extractions);
+                  this.extractions= parseInt(this.extractions)+parseInt(result.extractions);
+                 this.extractions_ta= parseInt(this.extractions_ta)+parseInt(result.extractions_trend);
+                 this.predictedstackedChartData2[1]['data'].push(result.root_canals);
+                 this.root_canals= parseInt(this.root_canals)+parseInt(result.root_canals);
+                 this.root_canals_ta= parseInt(this.root_canals_ta)+parseInt(result.root_canals_trend);
+              }
+             });
+             data.data.ratio3.forEach((result) => {
+              if(result.provider != null){
+                     this.predictedstackedChartLabels3.push(result.provider);
+                 this.predictedstackedChartData3[0]['data'].push(result.rct_completed);
+                 this.rct_completed= parseInt(this.rct_completed)+parseInt(result.rct_completed);
+                 this.rct_completed_ta= parseInt(this.rct_completed_ta)+parseInt(result.rct_completed_trend);
+                 this.predictedstackedChartData3[1]['data'].push(result.rct_started);
+                 this.rct_started= parseInt(this.rct_started)+parseInt(result.rct_started);
+                 this.rct_started_ta= parseInt(this.rct_started_ta)+parseInt(result.rct_started_trend);
+              }
+             });
+
+        this.predictedstackedChartData= this.predictedstackedChartData1;
+        this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
+
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
  
     }
     );
+}
   }
 
 //Total Revenue of Clinician Per Procedure

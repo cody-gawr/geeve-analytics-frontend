@@ -208,54 +208,54 @@
                     </div>
                 </div>
 
-         <div  style="height: 350px"  *ngIf="predictedMax > 0">
+         <div  style="height: 350px" >
         <canvas baseChart class="chart" 
-          [datasets]="predictedChartData"
-          [labels]="predictedChartLabels"
-          [options]="barChartOptions"
+          [datasets]="predictedstackedChartData"
+          [labels]="predictedstackedChartLabels"
+          [options]="stackedChartOptions"
           [legend]="false"
-          [chartType]="stackedChartType"
-          [colors]="PRcolors"></canvas>
+          [options]="stackedChartOptions" 
+          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)"></canvas>
           </div>
 
-          <div *ngIf="(predictedMax <= 0 || predictedMax == ''  ) && buildChartPredictorLoader == false" class="sa_nodata_div">
+          <!-- <div *ngIf="(predictedMax <= 0 || predictedMax == ''  ) && buildChartPredictorLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
-          </div>
+          </div> -->
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted1 sa_chart_details_sec" >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                    <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                        <h3 class="m-0 font-light">{{predictedTotalAverage1 | number:'1.0-0' }}</h3>
+                        <h3 class="m-0 font-light">{{crowns}}:{{large_fillings}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
             <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                        <h3 class="m-0 font-light">{{predictedPreviousAverage1 | number:'1.0-0' }}</h3>
+                        <h3 class="m-0 font-light">{{crowns_ta}}:{{large_fillings_ta}}</h3>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
                 </div> 
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'"  >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{predictedTotalAverage2  | number:'1.0-0'}}</h3>
+                        <h3 class="m-0 font-light">{{extractions}}:{{root_canals}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                        <h3 class="m-0 font-light">{{predictedPreviousAverage2  | number:'1.0-0'}}</h3>
+                        <h3 class="m-0 font-light">{{extractions_ta}}:{{root_canals_ta}}</h3>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
                 </div> 
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'"  >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{predictedTotalAverage3  | number:'1.0-0'}}</h3>
+                        <h3 class="m-0 font-light">{{rct_completed}}:{{rct_started}}</h3>
                        <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                        <h3 class="m-0 font-light">{{predictedPreviousAverage3 | number:'1.0-0' }}</h3>
+                        <h3 class="m-0 font-light">{{rct_completed}}:{{rct_started_ta}}</h3>
                        <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
