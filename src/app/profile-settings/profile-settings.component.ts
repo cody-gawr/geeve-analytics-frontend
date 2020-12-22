@@ -267,12 +267,15 @@ public customer_id;
             }, error => {
      });
   }
-
+public subscription_id='';
    getPaymentDetails() {
   this.profileSettingsService.getPaymentDetails().subscribe((res) => {
        if(res.message == 'success'){
         this.last_invoic_id = res.data.lastinvoiceid;
         this.customer_id = res.data.customer_id; 
+          this.subscription_id = res.data.subscr_id; 
+         if(this.subscription_id)
+          this.getCardDetails();
         if(!this.last_invoic_id){
           let opts: CookieOptionsArgs = {
             expires: new Date('2030-07-19')
@@ -298,12 +301,79 @@ public last4;
        if(res.message == 'success'){
         this.displayName = res.data[0].displayName;
         this.email = res.data[0].email;
+
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );
   }
+getCardDetails() {
+      this.profileSettingsService.getCardDetails(this.customer_id).subscribe((res) => {
+        this.last4 = res.last4;
+      }, error => {
+      });
+  }
+
+
+
+   setupIntent() {
+        this.stripeService
+    .createToken(this.cardNumber, { name })
+    .subscribe(obj => {
+    if (obj.token) {
+    const name = this.stripeTest.get('name').value;
+      $('.ajax-loader').show();
+    this.profileSettingsService.createSetupIntent(this.customer_id).subscribe((res) => {
+      if(res.message == 'success'){
+             this.stripeService.confirmCardSetup(res.data.client_secret,{
+                    payment_method: {
+                      card: this.cardNumber,
+                      billing_details: {
+                        name: 'dsf',
+
+                      },
+                    },
+                  })
+                   .subscribe((result) => {
+                    console.log(result);
+                        this.cardNumber.clear();
+                      this.cardCvc.clear();
+                      this.cardExpiry.clear();
+                    if(result.setupIntent && result.setupIntent.status == 'succeeded'){                      
+                      this.updateCustomerCard();
+                    }
+                    else{
+                        $('.ajax-loader').hide();
+                            this.cardNumber.clear();
+                            this.cardCvc.clear();
+                            this.cardExpiry.clear();
+                    Swal.fire(
+                        '',
+                        'Some issue with your card, Please try again!',
+                        'error'
+                      )
+                    }
+                  });
+        }
+      });
+    } else {
+      console.log("Error comes ");
+    }
+    });
+    } 
+updateCustomerCard(){
+  this.profileSettingsService.updateCustomerCard(this.customer_id).subscribe((res) => {
+              if(res.message == 'success'){
+                 $('.ajax-loader').hide();
+                  Swal.fire(
+                        '',
+                        'Card Updated Successfully!',
+                        'success'
+                      )
+              }           
+   });
+}
 
 public displayName;
 public display_name;

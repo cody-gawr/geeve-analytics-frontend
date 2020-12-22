@@ -127,7 +127,7 @@ var header = this.getHeaders();
 
     getPaymentDetails(): Observable<any> {
      const formData = new FormData();
-     formData.append('user_id',  this.token_id);
+     formData.append('user_id', this._cookieService.get("userid"));
      formData.append('type', "analytics");
     var header = this.getHeaders(); 
         return this.http.post(this.solutionsUrl +"/users/getUserPaymentData", formData, { headers: header })
@@ -135,6 +135,36 @@ var header = this.getHeaders();
                         return response;
                     })
         );
+    }
+
+             getCardDetails(customer_id): Observable<any> {
+            const formData = new FormData();
+            formData.append('customer_id', customer_id);
+            return this.http.post(this.apiUrl +"/users/getCardDetails", formData)
+            .pipe(map((response: Response) => {
+                   return response;
+               })
+            );
+    }
+
+     createSetupIntent(customer): Observable<any> {
+            const formData = new FormData();
+            formData.append('customer', customer);
+            return this.http.post(this.apiUrl +"/users/createSetupIntent", formData)
+            .pipe(map((response: Response) => {
+                   return response;
+               })
+            );
+    }
+     updateCustomerCard(customer): Observable<any> {
+            const formData = new FormData();
+            formData.append('customer', customer);
+
+            return this.http.post(this.apiUrl +"/users/updateCustomerCard", formData)
+            .pipe(map((response: Response) => {
+                   return response;
+               })
+            );
     }
 }
 

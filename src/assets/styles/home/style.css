@@ -51,7 +51,7 @@ transition: all 0.2s ease-in-out; line-height: 16px; text-shadow: 0px 1px 2px rg
 .btn-watch-demo:hover{ background-color: #0e3459; color: #fff; }
 .banner-white-img { position: absolute; right: -308px; top: -521px; background-size: cover; width: 880px; height: 920px; border-radius: 120px;
     overflow: hidden; transform: rotate(50deg); -ms-transform: rotate(50deg); -webkit-transform: rotate(50deg); }
-.banner-white-img-inner { background-image: url('https://staging-analytics.jeeve.com.au/assets/images/home/banner.jpg'); background-size: cover; width: 1214px; height: 863px;
+.banner-white-img-inner { background-image: url('assets/images/home/banner.jpg'); background-size: cover; width: 1214px; height: 863px;
     transform: rotate(-50deg); -ms-transform: rotate(-50deg); -webkit-transform: rotate(-50deg); position: absolute; left: 122px; top: 262px; }
 .mob-curve { position: absolute; content: ""; height: 106px; width: 100%; bottom: 0px; left: 0; }
 .mob-curve svg { width: 100%; bottom: -47px; position: absolute; left: 0; right: -30px; object-fit: cover; }
@@ -145,15 +145,15 @@ footer .nav-item .nav-link:hover{ opacity: 0.6 }
 .plus-sign { background: rgba(250,250,250,.7); width: 60px; height: 60px; text-align: center; line-height: 60px;
     position: absolute; border-radius: 50%; color: #1ab394; font-size: 34px; left: 50%; top: 50%; transform: translate(-50%, -50%);
     box-shadow: 0 3px 10px rgba(0,0,0, 0.1); margin-left: 29px; z-index: 1; }
-.xero-plus-jeeve-rightImg::after { background-image: url(https://staging-analytics.jeeve.com.au/assets/images/home/waveTopSection.png); content: ""; position: absolute;
+.xero-plus-jeeve-rightImg::after { background-image: url(assets/images/home/waveTopSection.png); content: ""; position: absolute;
     width: 532px; height: 415px; z-index: -1; top: -75px; left: 22%; background-size: 440px; background-repeat: no-repeat;
 }
 /***features-box***/
 .features {padding: 60px 0px;background-color: #f5f8ff;margin-bottom: 100px;position: relative;}
-.features::after {position: absolute;content: "";background-image: url('https://staging-analytics.jeeve.com.au/assets/images/home/curve-bottom.png');height: 99px;width: 100%;left: 0;bottom: -88px;background-size: auto;background-repeat: no-repeat;background-position: center;}
+.features::after {position: absolute;content: "";background-image: url('assets/images/home/curve-bottom.png');height: 99px;width: 100%;left: 0;bottom: -88px;background-size: auto;background-repeat: no-repeat;background-position: center;}
 .features-box {text-align: center;/* border: 1px solid #1ab394; */padding: 20px;min-height: 320px;margin: 0 30px;border-radius: 14px;position: relative;background-color: #fff;z-index: 9;display: flex;justify-items: center;}
-.features-box::after {position:absolute;content:'';background-image: url('https://staging-analytics.jeeve.com.au/assets/images/home/blob-buckets-bottom.png');height:50px;width:100%;right:-11px;bottom:-25px;background-repeat:no-repeat;background-position:right bottom;}
-.features-box::before {position: absolute;content:'';background-image:url('https://staging-analytics.jeeve.com.au/assets/images/home/blob-buckets-right.png');height:100%;width:100%;right: -18px;top:0;background-repeat:no-repeat;background-position:right bottom;}
+.features-box::after {position:absolute;content:'';background-image: url('assets/images/home/blob-buckets-bottom.png');height:50px;width:100%;right:-11px;bottom:-25px;background-repeat:no-repeat;background-position:right bottom;}
+.features-box::before {position: absolute;content:'';background-image:url('assets/images/home/blob-buckets-right.png');height:100%;width:100%;right: -18px;top:0;background-repeat:no-repeat;background-position:right bottom;}
 .features-box p {margin: 30px 0 0;}
 .features-box span {background-color: #1ab394;height: 70px;width: 70px;display: block;margin: auto;padding: 15px;border-radius: 10px;box-shadow: 7px 7px 0px rgb(235, 239, 254); margin-top:6px;}
 
@@ -202,7 +202,7 @@ line-height: 36px;}
 .conections .inner-box {margin:15px 160px;box-shadow: 0 0 60px rgba(0,0,0,0.1);border-radius: 15px;justify-items: center;align-items: center; overflow:hidden;}
 
 /****get-started***/
-.get-started {background-image: url(https://staging-analytics.jeeve.com.au/assets/images/home/get-started-bg.jpg);padding:90px 0px;text-align: center;color: #fff;background-size: cover;background-repeat: no-repeat;}
+.get-started {background-image: url(assets/images/home/get-started-bg.jpg);padding:90px 0px;text-align: center;color: #fff;background-size: cover;background-repeat: no-repeat;}
 
 .btn-white{color: #fff !important;border-color: #fff !important;}
 .btn-white:hover{border-color:#0e3459 !important;}

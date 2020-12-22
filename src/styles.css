@@ -343,7 +343,7 @@ html .page-wrapper { height: 100vh!important }
 
 .spark-count { position: absolute; right: 12px; top: 12px; width: 40px; height: 40px; text-align: center; padding-left: 2px; line-height: 39px; font-size: 16px; border-radius: 150px; background: rgba(255,255,255,0.1); color: #10deb4; }
 
-.sa_main_grid_dashboard .graph_abso { pointer-events: none; padding: 8px; left: 0px; background: url("https://analytics.jeeve.com.au/assets/images/graph_vector.png") no-repeat; background-size: contain; background-position: right; position: absolute; bottom: 10px; height: 124px; width: 994px; }
+.sa_main_grid_dashboard .graph_abso { pointer-events: none; padding: 8px; left: 0px; background: url("assets/images/graph_vector.png") no-repeat; background-size: contain; background-position: right; position: absolute; bottom: 10px; height: 124px; width: 994px; }
 
 .trending_mode_area { float: right; margin-bottom: 4px; }
 
@@ -558,9 +558,9 @@ html .page-wrapper { height: 100vh!important }
 
 .sa_back_btn_holder span { float: left; background: #18A689; min-width: 47px; font-weight: 500; color: #fff; padding: 2px 9px 2px; border-radius: 4px; font-size: 13px; cursor: pointer; }
 
-.connect-xero { background-image: url('https://staging-analytics.jeeve.com.au/assets/images/connect-blue.svg') !important; background-repeat: no-repeat !important; background-size: 100% 100% !important; width: 190px; height: 43px; }
+.connect-xero { background-image: url('assets/images/connect-blue.svg') !important; background-repeat: no-repeat !important; background-size: 100% 100% !important; width: 190px; height: 43px; }
 
-.disconnect-xero { background-image: url('https://staging-analytics.jeeve.com.au/assets/images/disconnect-blue.svg') !important; background-repeat: no-repeat !important; background-size: 100% 100% !important; width: 222px; height: 43px; }
+.disconnect-xero { background-image: url('assets/images/disconnect-blue.svg') !important; background-repeat: no-repeat !important; background-size: 100% 100% !important; width: 222px; height: 43px; }
 
 .settingsBtn, .CategoriesBtn { float: right; }
 
@@ -1126,7 +1126,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .sa_profit_bar .sa_matcard_content .mat-card-title { border: none!important; position: relative; font-size: 19px!important; }
 
-.graph_image { pointer-events: none; padding: 8px; left: 0px; background-image: url("https://staging-analytics.jeeve.com.au/assets/images/graph_vector_repeat.png"); background-repeat: repeat-x; background-size: contain; background-position: right; position: absolute; bottom: 10px; height: 95px; width: 100%; }
+.graph_image { pointer-events: none; padding: 8px; left: 0px; background-image: url("assets/images/graph_vector_repeat.png"); background-repeat: repeat-x; background-size: contain; background-position: right; position: absolute; bottom: 10px; height: 95px; width: 100%; }
 
 .asboimg01 { position: absolute; bottom: 0px; left: 2px; width: 70px; }
 

@@ -128,7 +128,7 @@
                 </div>
           <div class="chart" >
              <div  style="height: 190px">
-        <canvas *ngIf="showInternal == true && pieChartDataMax1 > 0" baseChart [data]="pieChartData1" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+        <canvas *ngIf="showInternal == true && pieChartDataMax1 > 0" baseChart [data]="pieChartData1" [labels]="pieChartLabels1" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)"  [legend] = "true" [options]="pieChartOptions" [colors]="doughnutChartColors">
         </canvas>
          <div *ngIf="pieChartDataMax1 <= 0 && showInternal == true "class="sa_nodata_div">
@@ -136,7 +136,7 @@
               <p></p>
           </div>
  
-         <canvas *ngIf="showExternal == true && pieChartDataMax2 > 0" baseChart [data]="pieChartData2" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+         <canvas *ngIf="showExternal == true && pieChartDataMax2 > 0" baseChart [data]="pieChartData2" [labels]="pieChartLabels2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" [options]="pieChartOptions" [colors]="doughnutChartColors">
         </canvas>
          <div *ngIf="pieChartDataMax2 <= 0 && showExternal == true" class="sa_nodata_div">
@@ -144,7 +144,7 @@
               <p></p>
           </div>
        
-         <canvas *ngIf="showCombined == true  && pieChartDataMax3 > 0" baseChart [data]="pieChartData3" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+         <canvas *ngIf="showCombined == true  && pieChartDataMax3 > 0" baseChart [data]="pieChartData3" [labels]="pieChartLabels3" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" [options]="pieChartOptions" [colors]="doughnutChartColors">
         </canvas>
       <div *ngIf="pieChartDataMax3 <= 0 && showCombined == true" class="sa_nodata_div">
@@ -183,9 +183,9 @@
     <mat-card class="ratioPredictor">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">
-<span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage1}}"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip1}}.png"></span>
-            <span  *ngIf="trendText" class="predicted2Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage2}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip2}}.png"></span>
-            <span *ngIf="trendText" class="predicted3Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage3}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip3}}.png"></span>
+<span *ngIf="trendText || duration!= 'custom'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage1}}"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip1}}.png"></span>
+            <span  *ngIf="trendText|| duration!= 'custom'" class="predicted2Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage2}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip2}}.png"></span>
+            <span *ngIf="trendText|| duration!= 'custom'" class="predicted3Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage3}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip3}}.png"></span>
             Predictor Ratio
             <div class="sa_box_title_right_buttons">
                 <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -208,54 +208,54 @@
                     </div>
                 </div>
 
-         <div  style="height: 350px"  *ngIf="predictedMax > 0">
+         <div  style="height: 350px" >
         <canvas baseChart class="chart" 
-          [datasets]="predictedChartData"
-          [labels]="predictedChartLabels"
-          [options]="barChartOptions"
+          [datasets]="predictedstackedChartData"
+          [labels]="predictedstackedChartLabels"
+          [options]="stackedChartOptions"
           [legend]="false"
-          [chartType]="stackedChartType"
-          [colors]="PRcolors"></canvas>
+          [options]="stackedChartOptions" 
+          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)"></canvas>
           </div>
 
-          <div *ngIf="(predictedMax <= 0 || predictedMax == ''  ) && buildChartPredictorLoader == false" class="sa_nodata_div">
+          <!-- <div *ngIf="(predictedMax <= 0 || predictedMax == ''  ) && buildChartPredictorLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
-          </div>
+          </div> -->
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted1 sa_chart_details_sec" >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                    <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                        <h3 class="m-0 font-light">{{predictedTotalAverage1 | number:'1.0-0' }}</h3>
+                        <h3 class="m-0 font-light">{{crowns}}:{{large_fillings}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
             <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                        <h3 class="m-0 font-light">{{predictedPreviousAverage1 | number:'1.0-0' }}</h3>
+                        <h3 class="m-0 font-light">{{crowns_ta}}:{{large_fillings_ta}}</h3>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
                 </div> 
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'"  >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{predictedTotalAverage2  | number:'1.0-0'}}</h3>
+                        <h3 class="m-0 font-light">{{extractions}}:{{root_canals}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                        <h3 class="m-0 font-light">{{predictedPreviousAverage2  | number:'1.0-0'}}</h3>
+                        <h3 class="m-0 font-light">{{extractions_ta}}:{{root_canals_ta}}</h3>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
                 </div> 
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'"  >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{predictedTotalAverage3  | number:'1.0-0'}}</h3>
+                        <h3 class="m-0 font-light">{{rct_completed}}:{{rct_started}}</h3>
                        <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                        <h3 class="m-0 font-light">{{predictedPreviousAverage3 | number:'1.0-0' }}</h3>
+                        <h3 class="m-0 font-light">{{rct_completed}}:{{rct_started_ta}}</h3>
                        <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
@@ -265,9 +265,9 @@
     <mat-card class="ratioPredictorSingle" [style.display]="'none'" >
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">
-            <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{gaugeValuePredictedPrev1}}"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalTooltip1}}.png"></span>
-            <span  *ngIf="trendText" class="predicted2Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{gaugeValuePredictedPrev2}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalTooltip2}}.png"></span>
-            <span *ngIf="trendText" class="predicted3Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{gaugeValuePredictedPrev3}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalTooltip3}}.png"></span>Predictor Ratio 
+            <span *ngIf="trendText || duration!= 'custom'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{gaugeValuePredictedPrev1}}"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalTooltip1}}.png"></span>
+            <span  *ngIf="trendText || duration!= 'custom'" class="predicted2Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{gaugeValuePredictedPrev2}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalTooltip2}}.png"></span>
+            <span *ngIf="trendText || duration!= 'custom'" class="predicted3Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{gaugeValuePredictedPrev3}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalTooltip3}}.png"></span>Predictor Ratio 
               <div class="sa_box_title_right_buttons">
                   <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>

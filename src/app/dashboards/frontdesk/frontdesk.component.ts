@@ -454,6 +454,10 @@ public fdFtaRatioLoader:any;
           this.ftaPrevTotal = 0;
        if(data.message == 'success'){
         this.fdFtaRatioLoader = false;
+          if(data.data>100)
+            data.data =100;
+          if(data.data_ta>100)
+            data.data_ta =100;
           this.ftaTotal = Math.round(data.data);
           this.ftaPrevTotal = Math.round(data.data_ta);
           this.ftaGoal = data.goals;
@@ -493,6 +497,10 @@ public maxutaGoal:any=0;
           this.utaPrevTotal = 0;
        if(data.message == 'success'){
         this.fdUtaRatioLoader = false;
+          if(data.data>100)
+            data.data =100;
+          if(data.data_ta>100)
+            data.data_ta =100;
           this.utaTotal = Math.round(data.data);
           this.utaPrevTotal = Math.round(data.data_ta);
           this.utaGoal = data.goals;
@@ -544,9 +552,11 @@ public fdNumberOfTicksLoader:any;
   }
 
 public recallPrebookTotal;
+public recallPrebookGoal=0;
 public recallPrebookPrevTotal;
 public recallPrebookTooltip='down';
 public fdRecallPrebookRateLoader:any;
+public maxrecallPrebookGoal:any=0;
 
 //Predictor Ratio :
   private fdRecallPrebookRate() {
@@ -559,12 +569,19 @@ public fdRecallPrebookRateLoader:any;
        if(data.message == 'success'){
         this.fdRecallPrebookRateLoader = false;
           this.recallPrebookPrevTotal = 0;
+          this.recallPrebookGoal= data.goals;
         this.recallPrebookTotal = 0;
           this.recallPrebookTotal = Math.round(data.total);
 
           this.recallPrebookPrevTotal = Math.round(data.total_ta);
           if(this.recallPrebookTotal>=this.recallPrebookPrevTotal)
             this.recallPrebookTooltip = 'up';
+           if(this.recallPrebookTotal> this.recallPrebookGoal)
+            this.maxrecallPrebookGoal = this.recallPrebookTotal;
+          else
+            this.maxrecallPrebookGoal = this.recallPrebookGoal;
+          if(this.maxrecallPrebookGoal ==0)
+            this.maxrecallPrebookGoal ='';
         }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -574,10 +591,12 @@ public fdRecallPrebookRateLoader:any;
   }
 
 public treatmentPrebookTotal;
+public treatmentPrebookGoal=0;
+
 public treatmentPrebookPrevTotal;
 public treatmentPrebookTooltip='down';
 public fdtreatmentPrebookRateLoader:any;
-
+public maxtreatmentPrebookGoal:any=0;
 //Predictor Ratio :
   private fdtreatmentPrebookRate() {
      if(this.duration){
@@ -591,11 +610,17 @@ public fdtreatmentPrebookRateLoader:any;
         this.fdtreatmentPrebookRateLoader = false;
           this.treatmentPrebookPrevTotal = 0;
         this.treatmentPrebookTotal = 0;
+        this.treatmentPrebookGoal= data.goals;
           this.treatmentPrebookTotal = Math.round(data.total);
           this.treatmentPrebookPrevTotal = Math.round(data.total_ta);
           if(this.treatmentPrebookTotal>=this.treatmentPrebookPrevTotal)
             this.treatmentPrebookTooltip = 'up';
-          console.log(this.fdtreatmentPrebookRateLoader);
+          if(this.treatmentPrebookTotal> this.treatmentPrebookGoal)
+            this.maxtreatmentPrebookGoal = this.treatmentPrebookTotal;
+          else
+            this.maxtreatmentPrebookGoal = this.treatmentPrebookGoal;
+          if(this.maxtreatmentPrebookGoal ==0)
+            this.maxtreatmentPrebookGoal ='';
         }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -841,10 +866,13 @@ toggleChangeProcess(){
     var user_id;
     var clinic_id;
     this.frontdeskService.fdFtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      this.ftaChartTrendLabels1=[];
+  this.ftaChartTrend1=[];
        if(data.message == 'success'){
         this.fdFtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
-
+                  if(res.val>100)
+                    res.val =100;
                      this.ftaChartTrend1.push(Math.round(res.val));
                    if(this.trendValue == 'c')
                    this.ftaChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -887,6 +915,8 @@ toggleChangeProcess(){
     var user_id;
     var clinic_id;
     this.frontdeskService.fdWorkTimeAnalysisTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+       this.wtaChartTrendLabels1=[];
+  this.wtaChartTrend1=[];
        if(data.message == 'success'){
         this.fdwtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
@@ -935,9 +965,13 @@ toggleChangeProcess(){
     var user_id;
     var clinic_id;
     this.frontdeskService.fdUtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      this.utaChartTrendLabels1=[];
+  this.utaChartTrend1=[];
        if(data.message == 'success'){
         this.fdUtaRatioTrendLoader = false;
                 data.data.forEach(res => {  
+                  if(res.val>100)
+                    res.val =100;
                      this.utaChartTrend1.push(Math.round(res.val));
                    if(this.trendValue == 'c')
                    this.utaChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -981,6 +1015,8 @@ toggleChangeProcess(){
     var user_id;
     var clinic_id;
     this.frontdeskService.fdNumberOfTicksTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      this.tickChartTrendLabels1=[];
+  this.tickChartTrend1=[];
        if(data.message == 'success'){
         this.fdNumberOfTicksTrendLoader = false;
                 data.data.forEach(res => {  

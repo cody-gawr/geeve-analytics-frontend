@@ -296,8 +296,7 @@ expenses_card custom_ngx_cw01" >
     
     <mat-card class="sa_no_tabs_area" >
       <mat-card-content class="sa_matcard_content">
-      <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{totalOverdueTrendAccount | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{totalOverdueTrendIcon}}.png"></span>
-          <mat-card-title class="text-center">Overdue Accounts
+          <mat-card-title class="text-center">Current Overdues
               <div class="sa_box_title_right_buttons">
                   <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -321,15 +320,10 @@ expenses_card custom_ngx_cw01" >
           </div>
       </div>
             <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec" *ngIf="totalOverdueAccountDataMax > 0">
-                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                    <div fxFlex.gt-sm="100%" fxFlex.gt-xs="100%" fxFlex="100" class="text-center">
                         <h3 class="m-0 font-light">$ {{totalOverdueAccount | number:'1.0-0'}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
-                    </div>
-                    <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">$ {{totalOverdueTrendAccount | number:'1.0-0'}}</h3>
-                       <small *ngIf="trendText != ''">{{trendText}}</small>
-                        <small *ngIf="trendText == ''">Previous</small>
                     </div>
                 </div>            
       </mat-card-content>
@@ -599,7 +593,7 @@ expenses_card custom_ngx_cw01" >
   </div>
 </div>
 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">    
-  <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn"> 
+  <!-- <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn"> 
     <mat-card class="" >
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Overdue Accounts
@@ -610,7 +604,7 @@ expenses_card custom_ngx_cw01" >
                       <button mat-menu-item>Save Image</button>
                       <button mat-menu-item>Download PDF</button>
                   </mat-menu> -->
-              </div>
+          <!--     </div>
           </mat-card-title>
           
 
@@ -622,11 +616,11 @@ expenses_card custom_ngx_cw01" >
               <h4>No Data</h4>
               <p></p>
           </div>
-      </div>           
+      </div>            
       </mat-card-content>
     </mat-card>
     <div *ngIf="finOverdueAccountsTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
-  </div>
+  </div> -->
  <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn">
  <mat-card class="" >
       <mat-card-content class="sa_matcard_content">
@@ -654,9 +648,9 @@ expenses_card custom_ngx_cw01" >
     </mat-card>
     <div *ngIf="finCollectionTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
-</div>
-  <div fxLayout="row wrap" fxLayoutGap="0" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-   <div fxFlex="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio last md_mrn last">
+<!-- </div>
+  <div fxLayout="row wrap" fxLayoutGap="0" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0"> -->
+   <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio last md_mrn last">
     <mat-card class="">
       <mat-card-content class="sa_matcard_content">
        <mat-card-title class="text-center">Production Per Visit
