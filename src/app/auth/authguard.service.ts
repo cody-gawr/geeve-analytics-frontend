@@ -21,7 +21,6 @@
   boolean { 
         if (this._cookieService.get("token")) {
           let urlActive = this.activatedRoute.path();
-          console.log(urlActive);
           if(this._cookieService.get("stepper") && parseInt(this._cookieService.get("stepper"))  < 6 && urlActive != '/setup' && urlActive != '/login'){
             this.router.navigateByUrl('/login');
             //this.router.navigateByUrl('/setup');  

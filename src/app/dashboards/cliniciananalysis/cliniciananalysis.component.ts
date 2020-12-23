@@ -1076,7 +1076,6 @@ changeLoginStatus(){
               this._cookieService.put("userid", '');
                this.router.navigateByUrl('/login');
            }
-           console.log(this.productionGoal,this.goalchecked,this.barChartOptionsDP);
          }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -1969,7 +1968,6 @@ public maxnewPatientGoal:any=0;
 
         if(this.maxnewPatientGoal == 0)
           this.maxnewPatientGoal = '';
-        console.log(this.maxnewPatientGoal);
        }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -2698,7 +2696,6 @@ public patientComplaintTrend: any[]  = [
           this.newPatientsChartTrendLabels1=[];
   this.newPatientsChartTrend1=[];
                 data.data.forEach(res => {  
-                  console.log(res);
                     if(res.val)
                      this.newPatientsChartTrend1.push(Math.round(res.val.percent));
                    else

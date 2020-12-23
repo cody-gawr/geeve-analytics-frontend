@@ -275,7 +275,6 @@ export class MenuItems {
               this.dashboard5role.push(result.role_id.toString());
           }
          });
-         console.log(this.dashboard1role, this.dashboard2role, this.dashboard3role, this.dashboard4role, this.dashboard5role);
        }
     }, error => {
     });
