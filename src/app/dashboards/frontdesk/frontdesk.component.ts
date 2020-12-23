@@ -65,7 +65,7 @@ export class FrontDeskComponent implements AfterViewInit {
       if(val != undefined && val !='all') {
     this.clinic_id = val;
    // this.getDentists();
-     this.filterDate('cytd');
+     this.filterDate('m');
    }
   }
   ngAfterViewInit() {
@@ -725,7 +725,7 @@ public currentText;
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='cytd';
-      this.loadDentist('all');
+     // this.loadDentist('all');
     }
      else if (duration == 'fytd') {
       this.trendText= 'Last Financial Year';

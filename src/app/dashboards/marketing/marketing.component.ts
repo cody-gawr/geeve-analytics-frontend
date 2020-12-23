@@ -71,7 +71,7 @@ export class MarketingComponent implements AfterViewInit {
     var val = $('#currentClinic').attr('cid');
       if(val != undefined && val !='all') {
     this.clinic_id = val;
-     this.filterDate('cytd');
+     this.filterDate('m');
    }
   }
   ngAfterViewInit() {

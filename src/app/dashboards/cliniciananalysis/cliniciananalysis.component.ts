@@ -183,7 +183,7 @@ gradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
     if(val != undefined && val !='all') {
      this.clinic_id = val;
      this.getDentists();
-     this.filterDate('cytd');
+     this.filterDate('m');
    }
   }
 
@@ -769,14 +769,14 @@ changeLoginStatus(){
       this.showTrend= false;
       this.toggleChecked= false;
       this.showTrendChart=false;
-      this.buildChartNopatients();
       this.buildChart();
       this.buildChartTreatment();
+      this.buildChartNopatients();
+      this.buildChartNewpatients();      
       this.recallPrebook();
-      this.treatmentPlanRate();
       this.treatmentPrePrebook();
-      this.buildChartNewpatients();
       this.hourlyRateChart();
+      this.treatmentPlanRate();
       (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'none';
       (<HTMLElement>document.querySelector('.dentistProduction')).style.display = 'block';
       (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'none';
@@ -812,19 +812,21 @@ changeLoginStatus(){
       (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'block';
       (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'none';
       this.buildChartNopatientsDentist();
+      this.buildChartNewpatientsDentist();
+      
       (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'block';
       (<HTMLElement>document.querySelector('.noPatients')).style.display = 'none';
       this.recallPrebookDentist();
       this.treatmentPrePrebookDentist();
        (<HTMLElement>document.querySelector('.recallPrebookSingle')).style.display = 'block';
       (<HTMLElement>document.querySelector('.recallPrebook')).style.display = 'none';
-      this.treatmentPlanRateDentist();
        (<HTMLElement>document.querySelector('.treatmentPlanRateSingle')).style.display = 'block';
       (<HTMLElement>document.querySelector('.treatmentPlanRate')).style.display = 'none';
-      this.buildChartNewpatientsDentist();
             (<HTMLElement>document.querySelector('.newPatientsSingle')).style.display = 'block';
       (<HTMLElement>document.querySelector('.newPatients')).style.display = 'none';
       this.hourlyRateDentist();
+      this.treatmentPlanRateDentist();
+
             (<HTMLElement>document.querySelector('.hourlyRateSingle')).style.display = 'block';
       (<HTMLElement>document.querySelector('.hourlyRate')).style.display = 'none';
     }
@@ -2277,6 +2279,8 @@ public planTotalCompleted=0;
 
      var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+      console.log(this.startDate);
+
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
     var difMonths =new Date().getMonth()- new Date(date.getFullYear(), 0, 1).getMonth();
       this.goalCount = difMonths+1;

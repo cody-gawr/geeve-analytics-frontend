@@ -91,7 +91,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
      if(val != undefined && val !='all') {
     this.clinic_id = val;
     this.getDentists();
-     this.filterDate('cytd');
+     this.filterDate('m');
    }
   }
   myDateParser(dateStr : string) : string {
