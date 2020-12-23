@@ -343,10 +343,11 @@ public dentists;
    $('#title').html('Front Desk ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')'); 
 
     if(newValue == 'all') {
+      this.fdWorkTimeAnalysis();
+      
       this.fdFtaRatio();
       this.fdUtaRatio();
       this.fdNumberOfTicks();
-      this.fdWorkTimeAnalysis();
       this.fdRecallPrebookRate();
       this.fdtreatmentPrebookRate();
     }

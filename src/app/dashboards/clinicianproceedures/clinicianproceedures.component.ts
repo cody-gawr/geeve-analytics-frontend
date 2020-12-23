@@ -878,21 +878,23 @@ public pieChartLabelsres: string[] = [
     this.toggleChecked =false;
     }
     this.changePieReferral('Combined');
-    this.buildChartPredictor();
-    this.buildChart();
      (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
     (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';    
     if(this.childid == '') {
-      this.buildChartProceedure();
+    this.buildChart();
       this.buildChartReferral();
+    this.buildChartPredictor();      
+      this.buildChartProceedure();
+
       $('.revenueProceedureSingle').hide();
       $('.revenueProceedure').show();
     }else {
         this.selectedDentist =  this.dentistid;
-        this.buildChartProceedureDentist();
         this.buildChartReferralDentist();
+        this.buildChartProceedureDentist();
+        
          $('.revenueProceedureSingle').show();
          $('.revenueProceedure').hide();
     }

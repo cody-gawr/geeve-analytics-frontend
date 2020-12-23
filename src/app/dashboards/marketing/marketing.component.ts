@@ -327,11 +327,14 @@ this.preoceedureChartColors = [
   $('#title').html('Marketing ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');        
 
     if(newValue == 'all') {
-      this.fdnewPatientsRatio();
       this.mkNewPatientsByReferral();
-      this.fdvisitsRatio();
+
       this.mkRevenueByReferral();
+      this.fdnewPatientsRatio();
+
       this.fdnewPatientsAcq();
+      this.fdvisitsRatio();
+
       //this.fdWorkTimeAnalysis();
     }
   }
@@ -786,11 +789,12 @@ toggleFilter(val) {
   showTrend= false;
 toggleChangeProcess(){
       this.showTrend = true;
+      this.mkNewPatientsByReferral();
+      this.mkRevenueByReferral();
+      
             this.mkNoNewPatientsTrend();
       this.fdvisitsRatioTrend();
 
-      this.mkRevenueByReferral();
-      this.mkNewPatientsByReferral();
    
 
 }

@@ -1001,9 +1001,10 @@ public labelBarPercentOptions: any = {
     this.categoryExpenses();
     this.finProductionByClinician();
     this.finTotalDiscounts();
+    this.finOverdueAccounts();
+
     this.finCollection();
     this.finProductionPerVisit();
-    this.finOverdueAccounts();
 /*
     (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'block';
@@ -1705,6 +1706,8 @@ toggleChangeProcess(){
     $('.filter').removeClass('active');
     $('.trendMode').css('display','block');
     $('.nonTrendMode').hide();
+    this.finNetProfitPMSTrend();
+    
     this.finProductionByClinicianTrend();
     this.finTotalDiscountsTrend();
   //  this.finOverdueAccountsTrend();
@@ -1713,7 +1716,6 @@ toggleChangeProcess(){
     this.finProductionPerVisitTrend();
   //  this.finNetProfitTrend();
    // this.finNetProfitPercentTrend();
-    this.finNetProfitPMSTrend();
     //this.finExpensesByCategoryTrend();
     this.netProfitDisplayVal ='1';
 /*    this.totalProductionCollection[0]['data'] = this.totalProductionChartTrend1;

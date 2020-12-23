@@ -813,7 +813,7 @@ changeLoginStatus(){
       (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'none';
       this.buildChartNopatientsDentist();
       this.buildChartNewpatientsDentist();
-      
+
       (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'block';
       (<HTMLElement>document.querySelector('.noPatients')).style.display = 'none';
       this.recallPrebookDentist();
@@ -2785,8 +2785,8 @@ public patientComplaintTrend: any[]  = [
       this.patientComplaintsTrend();
       this.fdRecallPrebookRateTrend();
       this.fdTreatmentPrebookRateTrend();
-      this.fdhourlyRateRateTrend();
       this.fdnewPatientsRateTrend();
+      this.fdhourlyRateRateTrend();
       this.fdtreatmentPlanRateTrend();
       this.changeTreatmentCostSingle('1');
       this.changePrebookRate('recall');
@@ -2797,9 +2797,10 @@ public patientComplaintTrend: any[]  = [
     this.buildChart();
     this.buildChartTreatment();     
     this.recallPrebook();
-    this.treatmentPlanRate();
     this.treatmentPrePrebook();
     this.hourlyRateChart();
+    this.treatmentPlanRate();
+    
   }
   changePrebookRate(val) {
     $('.prebook_rate .sa_tab_btn').removeClass('active');
