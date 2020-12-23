@@ -2219,6 +2219,8 @@ public planTotalCompleted=0;
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      console.log(this.startDate+" "+this.endDate);
+      
     this.loadDentist(dentistVal);
    
     }

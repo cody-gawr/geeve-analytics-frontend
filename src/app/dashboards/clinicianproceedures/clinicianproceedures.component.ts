@@ -102,7 +102,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
     let millisecond = dateStr.substring(20)
 
     let validDate = date;
-    console.log(validDate)
     return validDate
   }
   //Initialize compoenent
@@ -908,7 +907,7 @@ public pieChartLabelsres: string[] = [
         this.toggleChangeProcess()
       }
       else {
-        console.log('fdgdf2');
+       
     this.buildChartDentist();
     if(!this.toggleChecked) {
         (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'block';
@@ -952,7 +951,7 @@ public pieChartLabelsres: string[] = [
 
   this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
        if(data.message == 'success'){
-        console.log(data.data);
+   
         this.buildChartLoader =false;
           this.stackedChartData1 = [];
           this.stackedChartData2 = [];
@@ -987,7 +986,7 @@ public pieChartLabelsres: string[] = [
        this.stackedChartData[3]['data'] = this.stackedChartData4;
        this.stackedChartData[4]['data'] = this.stackedChartData5;
        this.stackedChartLabels = this.stackedChartLabels1;
-       console.log(this.stackedChartData);
+      
          if(this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
             { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
@@ -1320,7 +1319,7 @@ public buildChartProceedureLoader:any;
        //    this.productionTotal = this.productionTotal + parseInt(res.total);
      }
         });
-        console.log(this.proceedureChartData1);
+      
        this.proceedureChartData[0]['data'] = this.proceedureChartData1;
        this.proceedureChartLabels = this.proceedureChartLabels1;
        }
@@ -1608,6 +1607,8 @@ public currentText;
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+
+      console.log(this.startDate+" "+this.endDate);
             this.loadDentist(dentistVal);
     }
     else if (duration == 'q') {
@@ -2014,7 +2015,7 @@ toggleChangeProcess(){
          }
          this.stackedChartTrendDataMax = Math.max(...this.stackedChartTrendData[0]['data'])+Math.max(...this.stackedChartTrendData[1]['data'])+Math.max(...this.stackedChartTrendData[2]['data'])+Math.max(...this.stackedChartTrendData[3]['data'])+Math.max(...this.stackedChartTrendData[4]['data'])+Math.max(...this.stackedChartTrendData[5]['data'])+Math.max(...this.stackedChartTrendData[6]['data'])+Math.max(...this.stackedChartTrendData[7]['data']);
 
-         console.log(this.stackedChartTrendDataMax,'*****');
+       
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
  
