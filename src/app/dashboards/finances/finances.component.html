@@ -682,4 +682,6 @@ expenses_card custom_ngx_cw01" >
   <!-- Column-->   
 </div>
 
-</div><canvas #myCanvas2 baseChart [style.display]="'none'"></canvas><canvas #myCanvas baseChart [style.display]="'none'"></canvas>
+</div>
+<canvas #myCanvas2 baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1" [chartType]="productionChartType"></canvas>
+<canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1" [chartType]="productionChartType"></canvas>

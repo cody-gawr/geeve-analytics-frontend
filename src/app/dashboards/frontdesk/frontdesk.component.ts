@@ -38,6 +38,8 @@ export class FrontDeskComponent implements AfterViewInit {
    public dentistCount:any ={};
     public clinicsData:any[] = [];
   public trendText;
+  chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
+  chartLabels1 = ['January', 'February', 'Mars', 'April'];
   constructor(private toastr: ToastrService,private frontdeskService: FrontDeskService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
   }
   private warningMessage: string; 

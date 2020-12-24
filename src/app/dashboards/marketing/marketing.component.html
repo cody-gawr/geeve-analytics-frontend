@@ -321,3 +321,4 @@
         <button class="mat-raised-button mat-gray" mat-raised-button (click)="load_chart_acq()">Save</button>
   <button (click)="myModal.close()" class="close_modal" style="display:none">Close</button>
 </ngx-smart-modal>
+<canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1" [chartType]="pieChartType"></canvas>

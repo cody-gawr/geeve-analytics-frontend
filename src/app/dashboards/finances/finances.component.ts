@@ -78,6 +78,8 @@ single = [
   doughnut = false;
   arcWidth = 0.65;
   rangeFillOpacity = 0.75;
+   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
+  chartLabels1 = ['January', 'February', 'Mars', 'April'];
   constructor(private toastr: ToastrService,private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
   }
     private checkPermission(role) { 

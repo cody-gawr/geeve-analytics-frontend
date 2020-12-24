@@ -58,6 +58,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public user_type:string='';
   public flag= false;
   private _routerSub = Subscription.EMPTY;
+
+  chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
+  chartLabels1 = ['January', 'February', 'Mars', 'April'];
+
   constructor(private cliniciananalysisService: ClinicianAnalysisService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService, private frontdeskService: FrontDeskService,private toastr:ToastrService){
        this._routerSub = this.router.events
          .filter(event => event instanceof NavigationEnd)

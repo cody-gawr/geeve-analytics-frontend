@@ -83,7 +83,7 @@
           </mat-card-title>
          
         <div  style="height: 292px">
-        <canvas #myCanvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels" *ngIf="buildChartLoader == false" [legend]="barChartLegend"
+    <canvas #myCanvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels" *ngIf="buildChartLoader == false" [legend]="barChartLegend"
           [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsDP" [colors]="DPcolors" (chartClick)="chartClicked($event)">
         </canvas>
        <!--  <div *ngIf="barChartLabels.length <= 0 && buildChartLoader == false" class="sa_nodata_div">
@@ -824,7 +824,7 @@ Prebook Rate</small>
   </div>
 </div>
 </div>
-</div> <canvas #myCanvas baseChart [style.display]="'none'"></canvas>
+</div> <canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1" [chartType]="barChartType"></canvas>
   <ngx-smart-modal #myModal identifier="myModal">
   <h3 class="datamapping-heading">Data Mapping</h3>
  <div class="modal-popup-mapping sa_flexbg referral_clinicians">   

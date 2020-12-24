@@ -47,6 +47,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
     public childid='';
   public trendText;
     private _routerSub = Subscription.EMPTY;
+    chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
+  chartLabels1 = ['January', 'February', 'Mars', 'April'];
   constructor(private toastr: ToastrService,private clinicianproceeduresService: ClinicianProceeduresService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
          this._routerSub = this.router.events
          .filter(event => event instanceof NavigationEnd)

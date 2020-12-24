@@ -45,6 +45,8 @@ export class MarketingComponent implements AfterViewInit {
   public trendText;
   public filteredCountriesMultiple: any[];
   public selectedCategories:any[] =[];
+    chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
+  chartLabels1 = ['January', 'February', 'Mars', 'April'];
   constructor(private toastr: ToastrService,private marketingService: MarketingService, private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService){
   }
   private warningMessage: string; 
