@@ -466,6 +466,7 @@ this.preoceedureChartColors = [
             display: true
          },
           tooltips: {
+            mode: 'x-axis',
             custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -634,6 +635,7 @@ this.preoceedureChartColors = [
         position: 'top',
       },
       tooltips: {
+        mode: 'x-axis',
   enabled: true,
         mode: 'label',
         callbacks: {

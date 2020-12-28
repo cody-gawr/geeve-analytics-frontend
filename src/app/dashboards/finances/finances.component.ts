@@ -357,6 +357,7 @@ this.preoceedureChartColors = [
             display: true
          },
           tooltips: {
+            mode: 'x-axis',
             custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -417,6 +418,7 @@ this.preoceedureChartColors = [
             display: true
          },
           tooltips: {
+            mode: 'x-axis',
   callbacks: {
      label: function(tooltipItems, data) { 
         return "$"+data['datasets'][0]['data'][tooltipItems['index']];
@@ -464,6 +466,7 @@ this.preoceedureChartColors = [
             display: true
          },
           tooltips: {
+            mode: 'x-axis',
              custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -517,6 +520,7 @@ public labelBarPercentOptions: any = {
             display: true
          },
   tooltips: {
+    mode: 'x-axis',
       custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -571,6 +575,7 @@ public labelBarPercentOptions: any = {
             display: true
          },
     tooltips: {
+      mode: 'x-axis',
             custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -704,6 +709,7 @@ public labelBarPercentOptions: any = {
         position: 'top',
       },
       tooltips: {
+        mode: 'x-axis',
   callbacks: {
     label: function(tooltipItems, data) { 
       return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;

@@ -210,6 +210,7 @@ this.preoceedureChartColors = [
             display: true
          },
              tooltips: {
+              mode: 'x-axis',
             custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the colorg box;
@@ -922,6 +923,7 @@ public barChartOptions: any = {
             }],
         },
     tooltips: {
+      mode: 'x-axis',
             custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;

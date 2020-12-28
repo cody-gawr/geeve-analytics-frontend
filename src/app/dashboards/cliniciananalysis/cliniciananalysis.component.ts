@@ -393,6 +393,7 @@ public barChartOptions: any = {
             }],
         },
         tooltips: {
+          mode: 'x-axis',
   callbacks: {
      label: function(tooltipItems, data) { 
               if(data.datasets[tooltipItems.datasetIndex].label != undefined)
@@ -454,6 +455,7 @@ public barChartOptions: any = {
             }],
         },
     tooltips: {
+      mode: 'x-axis',
       custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -528,6 +530,7 @@ public barChartOptions: any = {
                         }
                     },
        tooltips: {
+        mode: 'x-axis',
       custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -602,6 +605,7 @@ public barChartOptions: any = {
                         }
                     },
        tooltips: {
+        mode: 'x-axis',
       custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -669,6 +673,7 @@ public barChartOptions: any = {
             }],
         },
         tooltips: {
+          mode: 'x-axis',
            custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -1007,6 +1012,7 @@ changeLoginStatus(){
         this.productionTooltip = 'down';
         var i=0;
         data.data.forEach(res => {
+          if(res.total>0) {
            this.barChartData1.push(Math.round(res.total));
            var name = res.name;
            if(res.name != null && res.name !='Anonymous') {
@@ -1019,6 +1025,7 @@ changeLoginStatus(){
            if(res.total != null)
            this.productionTotal = this.productionTotal + parseInt(res.total);
          i++;
+       }
         });
 
         if(this.user_type == '4' && this.childid != '') {
@@ -1185,6 +1192,7 @@ private recallPrebook() {
         this.recallChartTooltip = 'down';
         var i=0;
         data.data.forEach(res => {
+          if(res.percent>0) {
           if(res.provider != null){
             this.recallChartData1.push(Math.round(res.percent));
             this.recallChartLabels1.push(res.provider);
@@ -1192,6 +1200,7 @@ private recallPrebook() {
               this.rpKey = i;
               i++;
           }
+        }
         });
          this.recallChartData[0]['data'] = this.recallChartData1;
          this.recallChartLabels = this.recallChartLabels1;
@@ -1339,6 +1348,7 @@ private treatmentPrePrebook() {
         this.treatmentPreChartTooltip = 'down';
         var i=0;
         data.data.forEach(res => {
+          if(res.percent >0) {
           if(res.provider != null){
             this.treatmentPreChartData1.push(Math.round(res.percent));
             this.treatmentPreChartLabels1.push(res.provider);
@@ -1346,6 +1356,7 @@ private treatmentPrePrebook() {
               this.tpKey = i;
               i++;
           }
+        }
         });
          this.treatmentPreChartData[0]['data'] = this.treatmentPreChartData1;
          this.treatmentPreChartLabels = this.treatmentPreChartLabels1;
@@ -1467,6 +1478,7 @@ this.treatmentPreLabel = '';
         this.treatmentChartTooltip = 'down';
         var i=0;
         data.data.forEach(res => {
+          if(res.percent) {
            this.treatmentChartData1.push(Math.round(res.percent));
              var name = res.provider;
            if(res.provider != null && res.provider !='Anonymous') {
@@ -1479,6 +1491,7 @@ this.treatmentPreLabel = '';
            else
            this.treatmentChartLabels1.push(res.provider);
          i++;
+       }
         });
          this.treatmentChartData[0]['data'] = this.treatmentChartData1;
          this.treatmentChartLabels = this.treatmentChartLabels1;
@@ -1616,6 +1629,7 @@ this.treatmentPreLabel = '';
         this.planTotalTooltip = 'down';
         var ia=0;
         data.data.plan_fee_all.forEach(res => {
+          if(res.average_cost_all>0) {
           if(res.provider != null){
             this.planChartData1.push(Math.round(res.average_cost_all));
             this.planChartLabels1.push(res.provider);
@@ -1623,17 +1637,20 @@ this.treatmentPreLabel = '';
               this.tpacAKey = ia;
               ia++;
            }
+         }
         });
            this.planAllTotal =  Math.round(data.total_all);
            this.planAllTotalTrend =  Math.round(data.total_ta_all);
 
            var ic=0;
         data.data.plan_fee_completed.forEach(res => {
+          if(res.average_cost_completed) {
            this.planChartData2.push(Math.round(res.average_cost_completed));
            this.planChartLabels2.push(res.provider);
            if(res.provider != 'Anonymous')
             this.tpacCKey = ic;
            ic++;
+         }
         });
            this.planCompletedTotal = Math.round(data.total_completed);
            this.planCompletedTotalTrend = Math.round(data.total_ta_completed);
@@ -1776,9 +1793,11 @@ this.treatmentPreLabel = '';
     this.planTotal = 0;
        if(data.message == 'success'){
         data.data.forEach(res => { 
+          if(res.average_cost) {
            this.planChartData1.push(Math.round(res.average_cost));
            this.planChartLabels1.push(res.provider);
            this.planTotal = this.planTotal + parseInt(res.average_cost);
+         }
  });
        this.planChartData[0]['data'] = this.planChartData1;
        this.planChartLabels = this.planChartLabels1;
@@ -1912,11 +1931,13 @@ this.doughnutTotalAverage=0;
          this.newPatientTotalTooltip = 'down';
          var i=0;
         data.data.forEach(res => {
+          if(res.getX) {
            this.newPatientChartData1.push(parseInt(res.getX));
            this.newPatientChartLabels1.push(res.provider);
            if(res.provider != 'Anonymous')
             this.newpKey = i;
            i++;
+         }
         });
          this.newPatientChartData = this.newPatientChartData1;
          this.newPatientChartLabels = this.newPatientChartLabels1;
@@ -2024,6 +2045,8 @@ public maxnewPatientGoal:any=0;
         this.hourlyRateChartTooltip = 'down';
         var i=0;
         data.data.forEach(res => {
+          if(res.hourlyRate) {
+
            this.hourlyRateChartData1.push(Math.round(res.hourlyRate));
              
           if(res.provider != null && res.provider !='Anonymous') {             
@@ -2039,6 +2062,8 @@ public maxnewPatientGoal:any=0;
            else
            this.hourlyRateChartLabels1.push(res.provider);
          i++;
+       }
+
         });
 
          this.hourlyRateChartData[0]['data'] = this.hourlyRateChartData1;

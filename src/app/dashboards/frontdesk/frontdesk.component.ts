@@ -206,6 +206,7 @@ this.predictedChartColors = [
             }],
         },
                 tooltips: {
+                  mode: 'x-axis',
                         custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
