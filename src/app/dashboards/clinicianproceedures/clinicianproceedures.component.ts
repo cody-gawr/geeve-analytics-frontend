@@ -637,7 +637,6 @@ this.preoceedureChartColors = [
       tooltips: {
         mode: 'x-axis',
   enabled: true,
-        mode: 'label',
         callbacks: {
             title: function(tooltipItems, data) {
                 var idx = tooltipItems[0].index;
