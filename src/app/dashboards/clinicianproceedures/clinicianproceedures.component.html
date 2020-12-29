@@ -183,17 +183,9 @@
     <mat-card class="ratioPredictor">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">
-<span *ngIf="trendText || duration!= 'custom'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage1}}"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip1}}.png"></span>
-            <span  *ngIf="trendText|| duration!= 'custom'" class="predicted2Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage2}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip2}}.png"></span>
-            <span *ngIf="trendText|| duration!= 'custom'" class="predicted3Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{predictedPreviousAverage3}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalAverageTooltip3}}.png"></span>
             Predictor Ratio
             <div class="sa_box_title_right_buttons">
-                <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
-                <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
-                <mat-menu #menu="matMenu">
-                     <button mat-menu-item>Save Image</button>
-                    <button mat-menu-item>Download PDF</button>
-                </mat-menu> -->
+
             </div>
         </mat-card-title>
          <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec">
@@ -265,9 +257,7 @@
     <mat-card class="ratioPredictorSingle" [style.display]="'none'" >
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">
-            <span *ngIf="trendText || duration!= 'custom'" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{gaugeValuePredictedPrev1}}"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalTooltip1}}.png"></span>
-            <span  *ngIf="trendText || duration!= 'custom'" class="predicted2Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{gaugeValuePredictedPrev2}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalTooltip2}}.png"></span>
-            <span *ngIf="trendText || duration!= 'custom'" class="predicted3Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{gaugeValuePredictedPrev3}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{predictedTotalTooltip3}}.png"></span>Predictor Ratio 
+            Predictor Ratio 
               <div class="sa_box_title_right_buttons">
                   <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>

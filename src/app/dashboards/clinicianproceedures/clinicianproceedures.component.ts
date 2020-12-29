@@ -969,7 +969,7 @@ public pieChartLabelsres: string[] = [
           var i=0
         data.data.forEach(res => {
           if(res.provider != null){
-
+            if(parseInt(res.crowns)+parseInt(res.splints)+parseInt(res.root_canals)+parseInt(res.perio)+parseInt(res.surgical_extractions) >0){
           
              this.stackedChartData1.push(res.crowns);
              this.stackedChartData2.push(res.splints);
@@ -980,6 +980,7 @@ public pieChartLabelsres: string[] = [
              if(res.provider != 'Anonymous')
               this.ipKey =i;
              i++;
+           }
            }
        //    this.productionTotal = this.productionTotal + parseInt(res.total);
          });
@@ -1127,6 +1128,7 @@ public predictedstackedChartLabels3=[];
           if(key == 0) {
              res.forEach((result) => {
               if(result.provider != null){
+                if(parseInt(result.crowns)+parseInt(result.large_fillings)>0){
                      this.predictedstackedChartLabels1.push(result.provider);
                  this.predictedstackedChartData1[0]['data'].push(result.crowns);
                  this.crowns= parseInt(this.crowns)+parseInt(result.crowns);
@@ -1135,12 +1137,14 @@ public predictedstackedChartLabels3=[];
                  this.predictedstackedChartData1[1]['data'].push(result.large_fillings);
                   this.large_fillings= parseInt(this.large_fillings)+parseInt(result.large_fillings);
                  this.large_fillings_ta= parseInt(this.large_fillings_ta)+parseInt(result.large_fillings_trend);
+               }
               }
              });
            }
            if(key == 1) {
              res.forEach((result) => {
               if(result.provider != null){
+                  if(parseInt(result.extractions)+parseInt(result.root_canals)>0){
                      this.predictedstackedChartLabels2.push(result.provider);
                  this.predictedstackedChartData2[0]['data'].push(result.extractions);
                   this.extractions= parseInt(this.extractions)+parseInt(result.extractions);
@@ -1148,12 +1152,14 @@ public predictedstackedChartLabels3=[];
                  this.predictedstackedChartData2[1]['data'].push(result.root_canals);
                  this.root_canals= parseInt(this.root_canals)+parseInt(result.root_canals);
                  this.root_canals_ta= parseInt(this.root_canals_ta)+parseInt(result.root_canals_trend);
+               }
               }
              });
            }
            if(key == 2) {
              res.forEach((result) => {
               if(result.provider != null){
+                 if(parseInt(result.rct_completed)+parseInt(result.rct_started)>0){
                      this.predictedstackedChartLabels3.push(result.provider);
                  this.predictedstackedChartData3[0]['data'].push(result.rct_completed);
                  this.rct_completed= parseInt(this.rct_completed)+parseInt(result.rct_completed);
@@ -1161,6 +1167,7 @@ public predictedstackedChartLabels3=[];
                  this.predictedstackedChartData3[1]['data'].push(result.rct_started);
                  this.rct_started= parseInt(this.rct_started)+parseInt(result.rct_started);
                  this.rct_started_ta= parseInt(this.rct_started_ta)+parseInt(result.rct_started_trend);
+               }
               }
              });
            }

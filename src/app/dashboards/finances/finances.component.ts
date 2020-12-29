@@ -1011,7 +1011,7 @@ public labelBarPercentOptions: any = {
     this.finTotalDiscounts();
     this.finOverdueAccounts();
 
-    this.finCollection();
+   // this.finCollection();
     this.finProductionPerVisit();
 /*
     (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'none';
@@ -1311,6 +1311,7 @@ public totalProductionCollectionLabel1 =[];
     var user_id;
     var clinic_id;
   this.financesService.finTotalProduction(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+     this.finCollection();
        if(data.message == 'success'){
         this.finTotalProductionLoader = false;
         this.totalProductionCollection1[0]['data'] =[];
@@ -1754,8 +1755,10 @@ private finProductionByClinicianTrend() {
           this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(res => {  
                    res.val.forEach((result,key) => {
+                    if(result.total>0) {
                      this.productionChartTrend[key]['data'].push(Math.round(result.total));
                      this.productionChartTrend[key]['label'] = result.name;
+                   }
                    });
                    if(this.trendValue == 'c')
                    this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));

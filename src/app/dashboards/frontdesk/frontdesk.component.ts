@@ -386,8 +386,10 @@ public fdWorkTimeAnalysisLoader:any;
       this.prevWorkTimeTooltip = 'down';
         if(data.data.length >0) {
          data.data.forEach(res => {
+          if(res.wta>0) {
            this.workTimeData1.push(Math.round(res.wta));
            this.workTimeLabels1.push(res.app_book_name);
+         }
          });
      }
         this.workTimeData[0]['data'] = this.workTimeData1;
