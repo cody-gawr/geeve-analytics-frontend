@@ -1023,7 +1023,7 @@ changeLoginStatus(){
            this.barChartLabels1.push(res.firstname);
 
            if(res.total != null)
-           this.productionTotal = this.productionTotal + parseInt(res.total);
+           this.productionTotal = this.productionTotal + parseFloat(res.total);
          i++;
        }
         });
