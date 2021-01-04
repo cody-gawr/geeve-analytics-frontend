@@ -359,7 +359,7 @@ gradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
   public recallValue:any;
   public recallLabel = "";
   public recallGoal = 0;
-    public treatmentPreValue= '';
+    public treatmentPreValue:any= '';
   public treatmentPreLabel = "";
   public treatmentPreGoal = 0;
 public barChartOptions: any = {
@@ -1115,7 +1115,7 @@ public maxProductionGoal:any=0;
         this.buildChartDentistLoader =false;
          this.gaugeValue = '0';
         if(data.data != null ) {
-          this.gaugeValue = data.data.total;
+          this.gaugeValue = Math.round(data.data.total);
           this.gaugeLabel = data.data.name;
           var name = data.data.name;
           if(name != null) {
@@ -1423,7 +1423,7 @@ this.treatmentPreLabel = '';
        if(data.message == 'success' ){
         this.treatmentPrebookDentistLoader=false;
         if(data.data.length > 0 ) {
-          this.treatmentPreValue = data.data[0].percent;
+          this.treatmentPreValue = Math.round(data.data[0].percent);
           this.treatmentPreLabel = data.data[0].provider;
           this.treatmentPreGoal = data.goals;
         }
@@ -2322,7 +2322,12 @@ public planTotalCompleted=0;
       this.currentText= 'This Financial Year';
 
      var date = new Date();
+if ((date.getMonth() + 1) <= 3) {
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
+        } else {
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+    }
+
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
  var difMonths =new Date().getMonth()- new Date(date.getFullYear(), 6, 1).getMonth();
       this.goalCount = difMonths+1;

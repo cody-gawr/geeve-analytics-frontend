@@ -917,8 +917,8 @@ public pieChartLabelsres: string[] = [
         (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'none'; }
 
         this.buildChartPredictorDentist();
-        // (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'block';
-        // (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'none';
+        (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'block';
+        (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'none';
         this.buildChartProceedureDentist();
          $('.revenueProceedureSingle').show();
          $('.revenueProceedure').hide();
@@ -1377,6 +1377,14 @@ public doughnutChartColors1;
   private buildChartReferral() {
         var user_id;
     var clinic_id;
+      this.pieChartDatares1 = [];
+           this.pieChartDatares2 = [];
+           this.pieChartDatares3 = [];
+           this.pieChartLabelsres1 = [];
+           this.pieChartLabelsres2 = [];
+           this.pieChartLabelsres = [];
+          this.pieChartLabelsres3=[];
+
     this.clinicianproceeduresService.ClinicianReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
         this.pieChartInternalTotal = 0;
         this.pieChartExternalTotal = 0;
@@ -1392,12 +1400,6 @@ public doughnutChartColors1;
         this.pieChartExternalPrevTooltip = 'down';
         this.pieChartCombinedPrevTooltip = 'down';
        if(data.message == 'success'){
-           this.pieChartDatares1 = [];
-           this.pieChartDatares2 = [];
-           this.pieChartDatares3 = [];
-           this.pieChartLabelsres1 = [];
-           this.pieChartLabelsres2 = [];
-           this.pieChartLabelsres = [];
 
 
            var i=0;
@@ -1684,7 +1686,11 @@ public currentText;
       this.currentText= 'This Financial Year';
 
      var date = new Date();
+      if ((date.getMonth() + 1) <= 3) {
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
+        } else {
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+    }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='fytd';
       this.loadDentist(dentistVal);
@@ -2032,9 +2038,15 @@ toggleChangeProcess(){
     }
     );
   }
-    public ratioChartData1;
-    public ratioChartData2;
-    public ratioChartData3;
+    public ratioChartData1=[
+    {data: [], label: 'Crowns'},
+    {data: [], label: 'Large Fillings' } ];
+    public ratioChartData2=[
+    {data: [], label: 'Crowns'},
+    {data: [], label: 'Large Fillings' } ];
+    public ratioChartData3=[
+    {data: [], label: 'Crowns'},
+    {data: [], label: 'Large Fillings' } ];
     public ratioChartLabels;
     public ratioChartLabels1 =[];
     public ratio =1;
@@ -2061,33 +2073,42 @@ toggleChangeProcess(){
     //$('.predictorRatioDetails').hide();
       var user_id;
       var clinic_id;
-      this.ratioChartData1 =[];
-      this.ratioChartData2 =[];
-      this.ratioChartData3 =[];
+      this.ratioChartData1 = [
+    {data: [], label: 'Crowns'},
+    {data: [], label: 'Large Fillings' } ];
+      this.ratioChartData2 = [
+    {data: [], label: 'RCT'},
+    {data: [], label: 'Extractions' } ];
+      this.ratioChartData3 =[
+    {data: [], label: "RCT's Completed" },
+    {data: [], label: "RCT's Started" } ];
       this.ratioChartLabels1=[];
   this.clinicianproceeduresService.CpPredictorRatioTrend(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
-         this.ratioChartData1 =[];
-      this.ratioChartData2 =[];
-      this.ratioChartData3 =[];
       this.ratioChartLabels1=[];
        if(data.message == 'success'){
          if(data.data.length <=0) {
                 }else {
                 data.data.forEach(res => {
-                   this.ratioChartData1.push(res.val.ratio1);
-                   this.ratioChartData2.push(res.val.ratio2);
-                   this.ratioChartData3.push(res.val.ratio3);
+
+                 this.ratioChartData1[0]['data'].push(res.val.crowns);
+                 this.ratioChartData1[1]['data'].push(res.val.large_fillings);
+                 this.ratioChartData2[0]['data'].push(res.val.extractions);
+                 this.ratioChartData2[1]['data'].push(res.val.root_canals);
+               
+                 this.ratioChartData3[0]['data'].push(res.val.rct_completed);
+                 this.ratioChartData3[1]['data'].push(res.val.rct_started);
+
                    if(this.trendValue == 'c')
                    this.ratioChartLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
                    this.ratioChartLabels1.push(res.duration);
                  });
                 if(this.ratio ==1)
-               this.ratioChartData[0]['data'] = this.ratioChartData1;
+               this.ratioChartData = this.ratioChartData1;
                else if(this.ratio ==2)
-               this.ratioChartData[0]['data'] = this.ratioChartData2;
+               this.ratioChartData = this.ratioChartData2;
                else if(this.ratio ==3)             
-               this.ratioChartData[0]['data'] = this.ratioChartData3;
+               this.ratioChartData = this.ratioChartData3;
                this.ratioChartLabels = this.ratioChartLabels1;
                this.ratioChartDataMax = Math.max(...this.ratioChartData[0]['data']);
              }

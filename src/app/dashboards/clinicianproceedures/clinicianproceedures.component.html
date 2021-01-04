@@ -296,15 +296,13 @@
               <h4>No Data</h4>
               <p></p>
           </div> 
-        <div  style="height: 250px" *ngIf="toggleChecked == true &&  ratioChartDataMax>0">
-           <canvas  class="trendRatio" baseChart [datasets]="ratioChartData" [labels]="ratioChartLabels" [options]="stackedChartOptions" [legend]="false"
-          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
+        <div  style="height: 250px" *ngIf="toggleChecked == true ">
+           <canvas  class="trendRatio" baseChart [datasets]="ratioChartData" [labels]="ratioChartLabels" [options]="stackedChartOptions"
+          [legend]="false"
+          [options]="stackedChartOptions" 
+          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-      <div *ngIf="toggleChecked == true && ratioChartDataMax<=0" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div> 
 
             <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec predictorRatioDetails" *ngIf="toggleChecked == false" >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
