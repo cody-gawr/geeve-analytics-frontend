@@ -1504,6 +1504,13 @@ public doughnutChartColors1;
           this.pieChartLabelsres3=[];
 
     this.clinicianproceeduresService.ClinicianReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+         this.pieChartDatares1 = [];
+           this.pieChartDatares2 = [];
+           this.pieChartDatares3 = [];
+        this.pieChartLabelsres1 = [];
+           this.pieChartLabelsres2 = [];
+          this.pieChartLabelsres3=[];
+
         this.pieChartInternalTotal = 0;
         this.pieChartExternalTotal = 0;
         this.pieChartCombinedTotal =0;
