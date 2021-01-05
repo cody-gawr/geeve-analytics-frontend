@@ -6,12 +6,11 @@ stages:
   - build
   - deploy
     
-# This command is run before the execution of stages   
-before_script: 
+# This command is run before the execution of stages    
+before_script:
   - npm install
-  #- npm audit fix
-
-# Make Staging Build
+  
+  # Make Staging Build
 build_staging: 
   stage: build
   script:
@@ -39,6 +38,35 @@ deploy_staging:
     - echo "Staging - Invalidate Cloudfront"
     - aws cloudfront create-invalidation --distribution-id $STAGING_CLOUDFRONT --paths "/*"
   only: ['staging']
+
+# Make Dev Build
+build_dev: 
+  stage: build
+  script:
+  - npm run build-dev
+  artifacts:
+    paths:
+    - dist
+    expire_in: 1 day
+  only: ['design']
+
+# Deploy Dev Build
+deploy_dev:
+  image: python:latest  
+  stage: deploy
+  before_script:
+    - pip install awscli 
+  script:
+    - echo "Dev - Update AWS Keys"
+    - export AWS_ACCESS_KEY_ID=$STAGING_AWS_ACCESS_KEY_ID
+    - export AWS_SECRET_ACCESS_KEY=$STAGING_AWS_SECRET_ACCESS_KEY
+    - echo "Dev - Deploy to S3"    
+    - aws s3api put-public-access-block --bucket $DEV_S3  --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
+    - aws s3 sync ./dist s3://$DEV_S3/ --exclude "assets/protected/*" --exclude "assets/uploads/*" --acl=public-read --delete
+    - aws s3api put-public-access-block --bucket $DEV_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+    - echo "Dev - Invalidate Cloudfront"
+    - aws cloudfront create-invalidation --distribution-id $DEV_CLOUDFRONT --paths "/*"
+  only: ['design']
 
 # Make Production Build
 build_master: 
