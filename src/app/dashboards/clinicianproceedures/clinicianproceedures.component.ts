@@ -1594,7 +1594,9 @@ public doughnutChartColors1;
     this.pieChartDataMax1=0;
 this.pieChartDataMax2=0;
 this.pieChartDataMax3=0;
-
+ this.pieChartLabelsres1 = [];
+           this.pieChartLabelsres2 = [];
+          this.pieChartLabelsres3=[];
         this.pieChartInternalPrevTotal = 0;
         this.pieChartExternalPrevTotal = 0;
         this.pieChartCombinedPrevTotal = 0;
@@ -1603,6 +1605,10 @@ this.pieChartDataMax3=0;
         this.pieChartCombinedPrevTooltip = 'down';
   this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
+this.pieChartLabelsres1 = [];
+           this.pieChartLabelsres2 = [];
+          this.pieChartLabelsres3=[];
+
            this.pieChartInternalTotal = 0;
            this.pieChartExternalTotal = 0;
            this.pieChartCombinedTotal =0;
@@ -1612,10 +1618,20 @@ this.pieChartDataMax3=0;
            this.pieChartLabelsres = [];
         data.data.forEach(res => {
               if(res.total>0) {
+          if(res.i_count>0) {
            this.pieChartDatares1.push(res.i_count);
+           this.pieChartLabelsres1.push(res.label);
+         }
+         if(res.e_count>0) {
            this.pieChartDatares2.push(res.e_count);
+           this.pieChartLabelsres2.push(res.label);
+
+         }
+         if(res.total>0) {
            this.pieChartDatares3.push(res.total);
-           this.pieChartLabelsres.push(res.label);
+           this.pieChartLabelsres3.push(res.label);
+
+         }
            this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.i_count);
            this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.e_count);
            this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
@@ -1637,7 +1653,9 @@ this.pieChartDataMax3=0;
        this.pieChartData2 = this.pieChartDatares2;
        this.pieChartData3 = this.pieChartDatares3;
 
-       this.pieChartLabels = this.pieChartLabelsres;
+       this.pieChartLabels1 = this.pieChartLabelsres1;
+         this.pieChartLabels2 = this.pieChartLabelsres2;
+         this.pieChartLabels3 = this.pieChartLabelsres3;
        this.pieChartDataMax1 = Math.max(...this.pieChartData1);
        this.pieChartDataMax2 = Math.max(...this.pieChartData2);
        this.pieChartDataMax3 = Math.max(...this.pieChartData3);
