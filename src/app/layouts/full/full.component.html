@@ -85,7 +85,7 @@
                 <div class="sa_heading_bar">
                     <div fxLayout="row wrap">
                         <div fxFlex.lg="70" fxFlex.md="60" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70" class="sa_mobile_heading">
-                            <div class="sa_header_icons">
+                            <!-- <div class="sa_header_icons">
                                 <button class="sa_mat_menu_icon sa_backslide_area hamburger_menu" mat-icon-button (click)="snav.toggle()" value="sidebarclosed">
                                     <mat-icon class="sa_ico1">arrow_back_ios</mat-icon>
                                     <mat-icon class="sa_ico2">arrow_forward_ios</mat-icon>
@@ -95,8 +95,8 @@
                                     <mat-icon class="sa_ico2" (click) ="closeFullscreen()">fullscreen_exit</mat-icon>
                                 </button>
 
-                            </div>
-                            <h4><span class="page_title" id="title"></span></h4>
+                            </div> -->
+                            <h4><div class="page_title" id="title"></div></h4>
                         </div>
                         <div fxFlex.lg="30" fxFlex.md="40" fxFlex.sm="100" fxFlex.xs="100" fxFlex="30" class="">
                          <app-headerright class="app-headerright"></app-headerright>
@@ -104,7 +104,7 @@
                     </div>
                 </div>
 
-                <div class="page-content">
+                <div class="page-content p-0">
                   
                     <router-outlet>
                         <app-spinner></app-spinner>
