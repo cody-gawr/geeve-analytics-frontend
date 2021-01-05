@@ -1,4 +1,4 @@
-body{font-family: 'Poppins', sans-serif; background-color: #ffffff; font-size: 18px; outline: none; overflow-x: hidden; }
+body{font-family: 'Gilroy-Regular'; background-color: #ffffff; font-size: 18px; outline: none; overflow-x: hidden; }
 img{ max-width: 100%;  }
 ul {padding: 0;margin:0px;}
 .transition-3d-hover { transition: all 0.2s ease-in-out; }
@@ -245,7 +245,7 @@ background: #fff;}
 .faq-question{color:#424242; font-weight:normal; font-size:20px; display:block; width:100%;}
 .faq-question:hover{color:#424242; text-decoration:none;}
 .sa-shadow01{-webkit-box-shadow: 0 0 40px rgba(0,0,0,.1);
--moz-box-shadow: 0 0 40px rgba(0,0,0,.1));
+-moz-box-shadow: 0 0 40px rgba(0,0,0,.1);
 box-shadow: 0 0 40px rgba(0,0,0,.1);}
 
 .faq-answer {

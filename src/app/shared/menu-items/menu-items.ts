@@ -145,7 +145,7 @@ const MENUITEMS = [
     state: '',
     name: 'Goals',
     type: 'sub-child',
-    icon: 'fas fa-medal',
+    icon: 'fas fa-cog',
     children: [
       { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
       { state: 'dentist-goals', name: 'Dentist Goals', type: 'link' }
@@ -195,7 +195,7 @@ export class MenuItems {
     state: 'healthscreen',
     name: 'Clinic Health',
     type: 'link-healthscreen',
-    icon: 'fas fa-home',
+    icon: 'fas fa-clinic-medical',
     role:['2'],
     param2 : 'dashboards',
   },
@@ -203,7 +203,7 @@ export class MenuItems {
     state: 'morning-huddle',
     name: 'Morning Huddle',
     type: 'link-morning-huddle',
-    icon: 'fas fa-sun',
+    icon: 'fas fa-coffee',
     role:['2','3','4','5'],
      param2 : '',
   },
@@ -211,7 +211,7 @@ export class MenuItems {
     state: 'lost-opportunity',
     name: 'Lost Opportunity',
     type: 'link-lost-opportunity',
-    icon: 'fas fa-arrow-up',
+    icon: 'fas fa-briefcase',
     role:['2'],
     param2 : '',
   }, 
@@ -234,7 +234,7 @@ export class MenuItems {
     state: 'Settings',
     name: 'Settings',
     type: 'sub-child',
-    icon: 'fas fa-user-cog',
+    icon: 'fas fa-cog',
     children: [
       { state: 'clinic', name: 'Clinics', type: 'link'},
       { state: 'dentist', name: 'Dentists', type: 'link'},
@@ -243,7 +243,7 @@ export class MenuItems {
     state: '',
     name: 'Goals',
     type: 'subchild',
-    icon: 'fas fa-medal',
+    icon: 'fas fa-user-cog',
     subchildren: [
       { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
       { state: 'dentist-goals', name: 'Dentist Goals', type: 'link'}
