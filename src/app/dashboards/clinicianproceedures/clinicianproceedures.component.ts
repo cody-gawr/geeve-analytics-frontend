@@ -635,7 +635,6 @@ this.preoceedureChartColors = [
         position: 'top',
       },
       tooltips: {
-        mode: 'x-axis',
   enabled: true,
         callbacks: {
             title: function(tooltipItems, data) {
