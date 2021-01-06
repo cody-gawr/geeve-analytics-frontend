@@ -35,6 +35,7 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import 'chartjs-plugin-annotation';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { DentistProductionChartComponent } from './charts/dentist-production-chart/dentist-production-chart.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -57,6 +58,6 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     CarouselModule
   ],
   providers: [ ClinicianAnalysisService,MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, HealthScreenService],
-  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent]
+  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, DentistProductionChartComponent]
 })
 export class DashboardsModule {}

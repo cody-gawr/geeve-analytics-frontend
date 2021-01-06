@@ -1,20 +1,11 @@
-import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, Pipe, PipeTransform, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ClinicianAnalysisService } from './cliniciananalysis.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { FrontDeskService } from '../frontdesk/frontdesk.service';
-import * as frLocale from 'date-fns/locale/fr';
-import { DatePipe } from '@angular/common';
-import {
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators
-} from '@angular/forms';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import 'chartjs-plugin-style';
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "angular2-cookie/core";
 import { BaseChartDirective } from 'ng2-charts';
 import { NgxSmartModalService } from 'ngx-smart-modal';
@@ -22,13 +13,16 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
+import { ChartService } from '../chart.service';
 export interface Dentist {
   providerId: string;
   name: string;
 }
-declare var Chart: any;
 @Component({
-  templateUrl: './cliniciananalysis.component.html'
+  templateUrl: './cliniciananalysis.component.html',
+  providers: [
+    DecimalPipe
+  ]
 })
 /**
   *Clinician analysis graph Dashboard
@@ -61,8 +55,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
+  private dentistProductionLabelsByIndex = [];
+  private treatmentPlanProposedProvidersByInx = [];
 
-  constructor(private cliniciananalysisService: ClinicianAnalysisService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute, private headerService: HeaderService, private _cookieService: CookieService, private router: Router, public ngxSmartModalService: NgxSmartModalService, private frontdeskService: FrontDeskService, private toastr: ToastrService) {
+  constructor(
+    private cliniciananalysisService: ClinicianAnalysisService,
+    private dentistService: DentistService,
+    private datePipe: DatePipe,
+    private route: ActivatedRoute,
+    private headerService: HeaderService,
+    private _cookieService: CookieService,
+    private router: Router,
+    public ngxSmartModalService: NgxSmartModalService,
+    private frontdeskService: FrontDeskService,
+    private toastr: ToastrService,
+    private decimalPipe: DecimalPipe,
+    private chartService: ChartService
+  ) {
     this._routerSub = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((value) => {
@@ -94,6 +103,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     }
     );
   }
+
+  private getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
   //initialize component
   ngAfterViewInit() {
     $('#currentDentist').attr('did', 'all');
@@ -172,13 +191,24 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     //   }
     // ];
 
-    let doughnutGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
-    doughnutGradient.addColorStop(0, 'rgba(104, 255, 249, 1)');
-    doughnutGradient.addColorStop(1, 'rgba(28, 164, 159, 1)');
-    let doughnutGradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-    doughnutGradient2.addColorStop(1, '#4FC1D1');
-    doughnutGradient2.addColorStop(0, '#BFE8EE');
-    this.doughnutChartColors = [{ backgroundColor: [doughnutGradient, doughnutGradient2, '#dadada'] }];
+    // let doughnutGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
+    // doughnutGradient.addColorStop(0, 'rgba(104, 255, 249, 1)');
+    // doughnutGradient.addColorStop(1, 'rgba(28, 164, 159, 1)');
+    // let doughnutGradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    // doughnutGradient2.addColorStop(1, '#4FC1D1');
+    // doughnutGradient2.addColorStop(0, '#BFE8EE');
+    this.doughnutChartColors = [
+      {
+        backgroundColor: [
+          '#6cd8ba',
+          '#b0fffa',
+          '#abb3ff',
+          '#feefb8',
+          '#ffb4b5',
+          '#fffcac',
+          '#d7f8ef'
+        ]
+      }];
   }
 
   //Load Clinic Data
@@ -224,85 +254,62 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   //data
   public barChartData: any[] = [
     {
-      data: []
-      // shadowOffsetX: 3,
-      // shadowOffsetY: 3,
-      // shadowBlur: 5,
-      // shadowColor: 'rgba(0, 0, 0, 0.5)',
-      // pointBevelWidth: 2,
-      // pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      // pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-      // pointShadowOffsetX: 3,
-      // pointShadowOffsetY: 3,
-      // pointShadowBlur: 10,
-      // pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      // backgroundOverlayMode: 'multiply'
+      ...this.chartService.baseChartData,
+      data: [],
     }
   ];
   public pieChartData: any[] = [
     { data: [10], label: 'Dentist Production' }
   ];
-  public planChartData: any[] = [
-    {
-      data: [], label: '', shadowOffsetX: 3,
-      shadowOffsetY: 3,
-      shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
-    },
-  ];
+
   public planChartDataP: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
-      shadowOffsetY: 3,
-      shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
-    },
+      ...this.chartService.baseChartData,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+      ],
+      hoverBackgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+      ],
+      data: [],
+      label: ''
+    }
   ];
   public planChartDataC: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
-      shadowOffsetY: 3,
-      shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
-    },
+      ...this.chartService.baseChartData,
+      data: [],
+      label: '',
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+      ],
+      hoverBackgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+      ],
+    }
   ];
   public doughnutDataset = {
-    shadowOffsetX: 3,
-    shadowOffsetY: 3,
-    shadowBlur: 5,
-    shadowColor: 'rgba(0, 0, 0, 0.5)',
-    pointBevelWidth: 2,
-    pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-    pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-    pointShadowOffsetX: 3,
-    pointShadowOffsetY: 3,
-    pointShadowBlur: 10,
-    pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-    backgroundOverlayMode: 'multiply'
+    ...this.chartService.baseChartData
   };
   /*  public recallChartData: any[] = [
       {data: [50,30,20], label: 'Recall Rate'},
@@ -387,7 +394,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     scales: {
       xAxes: [{
         gridLines: {
-          display: false
+          display: true
         },
         ticks: {
           autoSkip: false,
@@ -396,57 +403,63 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       yAxes: [{
         ticks: {
           suggestedMin: 0,
-          userCallback: function (label, index, labels) {
+          userCallback: (label, index, labels) => {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              return '$' + label;
+              return '$' + this.decimalPipe.transform(label);
             }
 
           },
         },
         gridLines: {
-          color: '#fbfbfc'
+          // color: '#fbfbfc'
         }
       }],
     },
     tooltips: {
       mode: 'x-axis',
+      bodyFontFamily: 'Gilroy-Regular',
+      cornerRadius: 0,
       backgroundColor: '#fff',
       titleFontColor: '#000',
       bodyFontColor: '#000',
       borderColor: '#000',
       callbacks: {
         label: function (tooltipItems, data) {
-          if (data.datasets[tooltipItems.datasetIndex].label != undefined)
-            return data.datasets[tooltipItems.datasetIndex].label + ": $" + tooltipItems.yLabel;
-          else
-            return "$" + tooltipItems.yLabel;
+          // if (data.datasets[tooltipItems.datasetIndex].label != undefined)
+          //   // return data.datasets[tooltipItems.datasetIndex].label + ": $" + tooltipItems.yLabel;
+          //   return data.datasets[tooltipItems.datasetIndex].label
+          // else
+          //   return "#" + tooltipItems.yLabel;
+          return '';
         },
-
+        title: (tooltipItems, data) => {
+          return this.dentistProductionLabelsByIndex[tooltipItems[0].index];
+        }
       }
     },
-    legend: {
-      position: 'top',
-      onClick: function (e, legendItem) {
-        var index = legendItem.datasetIndex;
-        var ci = this.chart;
-        if (index == 0) {
-          ci.getDatasetMeta(1).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        }
-        else if (index == 1) {
-          ci.getDatasetMeta(0).hidden = true;
-          ci.getDatasetMeta(index).hidden = false;
-        }
-        ci.update();
-      },
-    },
+    // legend: {
+    //   position: 'top',
+    //   onClick: function (e, legendItem) {
+    //     var index = legendItem.datasetIndex;
+    //     var ci = this.chart;
+    //     if (index == 0) {
+    //       ci.getDatasetMeta(1).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     else if (index == 1) {
+    //       ci.getDatasetMeta(0).hidden = true;
+    //       ci.getDatasetMeta(index).hidden = false;
+    //     }
+    //     ci.update();
+    //   },
+    // },
   };
 
   public barChartOptionsTrend: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
-    curvature: 1,
+    // curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -1025,16 +1038,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartLoader = false;
         this.productionTooltip = 'down';
         var i = 0;
+        this.dentistProductionLabelsByIndex = [];
         data.data.forEach(res => {
           if (res.total > 0) {
             this.barChartData1.push(Math.round(res.total));
             var name = res.name;
             if (res.name != null && res.name != 'Anonymous') {
-              this.barChartLabels1.push(name);
+              this.barChartLabels1.push(this.getNameInitials(res.name));
+              this.dentistProductionLabelsByIndex.push(res.name);
               this.dentistKey = i;
             }
-            else
-              this.barChartLabels1.push(res.firstname);
+            else {
+              this.barChartLabels1.push(this.getNameInitials(res.firstname));
+              this.dentistProductionLabelsByIndex.push(res.firstname);
+            }
 
             if (res.total != null)
               this.productionTotal = this.productionTotal + parseFloat(res.total);
@@ -1044,7 +1061,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
-            { 
+            {
               backgroundColor: [],
               hoverBorderColor: '#000'
             }
@@ -1055,17 +1072,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         else
           this.DPcolors = this.lineChartColors;
 
-          console.log('DPcolors', this.DPcolors);
-          
         this.barChartData[0]['data'] = this.barChartData1;
         const colors = [
-          '#119682',
-          '#EEEEF8',
-          '#119682',
-          '#EEEEF8',
-          '#119682',
-          '#EEEEF8',
-          '#119682'
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd
         ];
         this.barChartData[0].backgroundColor = colors;
         this.barChartData[0].hoverBackgroundColor = colors;
@@ -1183,18 +1198,26 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public recallChartData: any[] = [
     {
-      data: [], shadowOffsetX: 3,
-      shadowOffsetY: 3,
-      shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      ...this.chartService.baseChartData,
+      data: [],
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd
+      ],
+      hoverBackgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd
+      ],
     }
   ];
   public recallChartAverage;
@@ -1340,18 +1363,26 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public treatmentPreChartData: any[] = [
     {
-      data: [], shadowOffsetX: 3,
-      shadowOffsetY: 3,
-      shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      ...this.chartService.baseChartData,
+      data: [],
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd
+      ],
+      hoverBackgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd
+      ]
     }
   ];
   public treatmentPreChartAverage;
@@ -1476,18 +1507,26 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public treatmentChartData: any[] = [
     {
-      data: [], shadowOffsetX: 3,
-      shadowOffsetY: 3,
-      shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      ...this.chartService.baseChartData,
+      data: [],
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd
+      ],
+      hoverBackgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd
+      ]
     }
   ];
   public treatmentChartAverage;
@@ -1636,7 +1675,59 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public planAllTotal = 0;
   public planAllTotalTrend = 0;
   public planChartLabels2 = [];
-  public barChartOptionsTC: any = this.barChartOptions;
+  public barChartOptionsTC: any = {
+    borderRadius: 50,
+    scaleShowVerticalLines: false,
+    cornerRadius: 60,
+    curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine'
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        ticks: {
+          autoSkip: false,
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          suggestedMin: 0,
+          userCallback: (label, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return '$' + this.decimalPipe.transform(label);
+            }
+
+          },
+        }
+      }],
+    },
+    tooltips: {
+      mode: 'x-axis',
+      bodyFontFamily: 'Gilroy-Regular',
+      cornerRadius: 0,
+      backgroundColor: '#fff',
+      titleFontColor: '#000',
+      bodyFontColor: '#000',
+      borderColor: '#000',
+      callbacks: {
+        label: function (tooltipItems, data) {
+          // if (data.datasets[tooltipItems.datasetIndex].label != undefined)
+          //   // return data.datasets[tooltipItems.datasetIndex].label + ": $" + tooltipItems.yLabel;
+          //   return data.datasets[tooltipItems.datasetIndex].label
+          // else
+          //   return "#" + tooltipItems.yLabel;
+          return '';
+        },
+        title: (tooltipItems, data) => {
+          return this.treatmentPlanProposedProvidersByInx[tooltipItems[0].index];
+        }
+      }
+    }
+  };
   public buildChartTreatmentLoader: any;
   public TPACAcolors: any;
   public TPACCcolors: any;
@@ -1670,11 +1761,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartTreatmentLoader = false;
         this.planTotalTooltip = 'down';
         var ia = 0;
+        this.treatmentPlanProposedProvidersByInx = [];
         data.data.plan_fee_all.forEach(res => {
           if (res.average_cost_all > 0) {
             if (res.provider != null) {
               this.planChartData1.push(Math.round(res.average_cost_all));
-              this.planChartLabels1.push(res.provider);
+              this.planChartLabels1.push(this.getNameInitials(res.provider));
+              this.treatmentPlanProposedProvidersByInx.push(res.provider);
               if (res.provider != 'Anonymous')
                 this.tpacAKey = ia;
               ia++;
@@ -1688,7 +1781,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         data.data.plan_fee_completed.forEach(res => {
           if (res.average_cost_completed) {
             this.planChartData2.push(Math.round(res.average_cost_completed));
-            this.planChartLabels2.push(res.provider);
+            this.planChartLabels2.push(this.getNameInitials(res.provider));
+            this.treatmentPlanProposedProvidersByInx.push(res.provider);
             if (res.provider != 'Anonymous')
               this.tpacCKey = ic;
             ic++;
@@ -1700,7 +1794,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
         this.planChartDataP[0]['data'] = this.planChartData1;
         this.planChartDataC[0]['data'] = this.planChartData2;
-        //  this.planChartData[1]['data'] = this.planChartData2;
         this.planChartDataP[0]['label'] = '';
         this.planChartDataC[0]['label'] = '';
 
@@ -1843,7 +1936,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             this.planTotal = this.planTotal + parseInt(res.average_cost);
           }
         });
-        this.planChartData[0]['data'] = this.planChartData1;
         this.planChartLabels = this.planChartLabels1;
         this.planTotalAverage = this.planTotal / this.planChartData1.length;
 
@@ -1960,6 +2052,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public newpKey: any;
   public newpColors: any;
   public doughnutChartColors2: any;
+  public legendSettings = {
+    visible: false,
+    position: top,
+    labels: {
+      usePointStyle: true
+    }
+  }
   //New Patients Chart for all dentist
   private buildChartNewpatients() {
     this.newPatientChartData1 = [];
@@ -1974,7 +2073,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartNewpatientsLoader = false;
         this.newPatientTotalTooltip = 'down';
         var i = 0;
+        console.log('\n data : ', data);
+        
         data.data.forEach(res => {
+          console.log('\n res : ', res);
+          
           if (res.getX) {
             this.newPatientChartData1.push(parseInt(res.getX));
             this.newPatientChartLabels1.push(res.provider);
@@ -1983,6 +2086,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             i++;
           }
         });
+        console.log('\n this.newPatientChartData1 : ', this.newPatientChartData1);
+        console.log('\n this.newPatDientChartLabels : ', this.newPatientChartLabels1);
         this.newPatientChartData = this.newPatientChartData1;
         this.newPatientChartLabels = this.newPatientChartLabels1;
         this.newPatientTotalAverage = data.total;
@@ -2049,18 +2154,26 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public hourlyRateChartData: any[] = [
     {
-      data: [], shadowOffsetX: 3,
-      shadowOffsetY: 3,
-      shadowBlur: 5,
-      shadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointBevelWidth: 2,
-      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-      pointShadowOffsetX: 3,
-      pointShadowOffsetY: 3,
-      pointShadowBlur: 10,
-      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-      backgroundOverlayMode: 'multiply'
+      ...this.chartService.baseChartData,
+      data: [],
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd
+      ],
+      hoverBackgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd
+      ]
     }
   ];
   public hourlyRateChartLabels1 = [];
@@ -2912,5 +3025,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     $('.prebook_rate .sa_tab_btn').removeClass('active');
     this.prebook = val;
     $('.prebook_rate .pr_' + val).addClass('active');
+  }
+
+  getNameInitials(name: string) {
+    const initials = name.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g);
+    return initials.join('');
   }
 }

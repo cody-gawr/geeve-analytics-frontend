@@ -78,13 +78,13 @@
     <mat-card  class="dentistProduction sa_no_tabs_area">
       <mat-card-content class="sa_matcard_content">
         <!-- <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{productionTooltip}}.png"></span> -->
-          <mat-card-title class="text-center">Dentist Production 
+          <mat-card-title class="text-center">Dentist Production
             <img src="../assets/images/info-icon.png" alt="info-icon"/>
           </mat-card-title>
         <div class="card-body">
           <div  style="height: 292px">
             <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels" *ngIf="buildChartLoader == false" [legend]="barChartLegend"
-              [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsDP" [colors]="DPcolors" (chartClick)="chartClicked($event)">
+              [chartType]="barChartType" [options]="barChartOptionsDP">
             </canvas>
             <!--  <div *ngIf="barChartLabels.length <= 0 && buildChartLoader == false" class="sa_nodata_div">
                 <h4>No Data</h4>
@@ -403,7 +403,7 @@
         <canvas #myCanvas baseChart  id="newPatients" class="chart"
         [data]="newPatientChartData"
           [labels]="newPatientChartLabels"
-          [legend]="true"
+          [legend]="legendSettings"
           [options]="doughnutChartOptions"
           [chartType]="doughnutChartType"
           (chartHover)="chartHovered($event)"
@@ -521,7 +521,7 @@
               <img src="../assets/images/info-icon.png" alt="info-icon"/>
           </mat-card-title>
           <div class="card-body">
-          <div fxLayout="row wrap" class="prebook_rate sa_tabs_main_sec">
+          <div fxLayout="row wrap" class="prebook_rate sa_tabs_main_sec btn-right">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                       <small class="sa_tab_btn pr_recall active" (click) = "changePrebookRate('recall')">Recall Prebook Rate</small>
                     </div>

@@ -132,6 +132,8 @@
 
 .sa_tabs_main_sec { border-radius: 4px; margin-bottom: 15px; }
 
+.btn-right {justify-content: flex-end;}
+
 .sa_tabs_main_sec .btn-group { padding: 0 10px;}
 
 .sa_dentist_graphs_area { padding: 0px 15px; }
@@ -288,6 +290,8 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 .sa_matcard_content .mat-card-title a i { color: #717272; }
 
 .sa_matcard_content .mat-card-title {text-align: left!important;font-size: 15px!important;color: #686d6c!important;border-bottom: 2px solid #f3f3f3!important;padding: 15px 30px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
+
+.sa_matcard_content .mat-card-title img {height: 18px;}
 
 .card-body {padding: 20px}
 
