@@ -63,6 +63,7 @@ export class MorningHuddleComponent implements OnInit {
     public followupPostOpCalls:any = [];
     public clinicDentists:any = [];
     public currentDentist:any = 1;
+    public currentDentistSchedule:any = 0;
     
     public dentistListLoading:boolean = false;
 
@@ -113,7 +114,7 @@ initiate_clinic() {
     this.morningHuddleService.getDentists(this.clinic_id).subscribe((dentist:any) =>{ 
       if(dentist.status == 200 && dentist.data){
         this.clinicDentists = dentist.data;
-        this.currentDentist = dentist.data[0].providerId;        
+        /*this.currentDentist = dentist.data[0].providerId;        */
         this.getSchedulePatients();
         this.getScheduleNewPatients();
         this.getScheduleHours();
@@ -282,14 +283,14 @@ initiate_clinic() {
   
 /***** Tab 2 ***/
    getSchedulePatients(){
-    this.morningHuddleService.getPatients( this.clinic_id,this.currentDentist,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getPatients( this.clinic_id,null,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.schedulePatieltd = production.data;
       }
     }); 
   }
    getScheduleNewPatients(){
-    this.morningHuddleService.getNewPatients( this.clinic_id, this.currentDentist,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getNewPatients( this.clinic_id, null,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.scheduleNewPatieltd = production.data;
       }
@@ -297,14 +298,14 @@ initiate_clinic() {
   }
 
    getScheduleHours(){
-    this.morningHuddleService.getScheduleHours( this.clinic_id,  this.currentDentist,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getScheduleHours( this.clinic_id,  null,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.schedulehours = production.data;
       }
     }); 
   }
    getUnscheduleHours(){
-    this.morningHuddleService.getUnscheduleHours( this.clinic_id, this.currentDentist,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getUnscheduleHours( this.clinic_id, null,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.unSchedulehours = production.data;
       }
@@ -312,7 +313,7 @@ initiate_clinic() {
   }
 
    getAppointmentCards(){
-    this.morningHuddleService.getAppointmentCards( this.clinic_id,this.currentDentist, this.previousDays,  this.user_type ).subscribe((production:any) => {
+    this.morningHuddleService.getAppointmentCards( this.clinic_id,null, this.previousDays,  this.user_type ).subscribe((production:any) => {
       if(production.status == true) {
         this.appointmentCards.data = production.data;
       }
