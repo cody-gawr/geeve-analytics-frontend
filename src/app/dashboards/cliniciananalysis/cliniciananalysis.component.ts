@@ -2737,7 +2737,7 @@ public patientComplaintTrend: any[]  = [
   this.newPatientsChartTrend1=[];
                 data.data.forEach(res => {  
                     if(res.val)
-                     this.newPatientsChartTrend1.push(Math.round(res.val.percent));
+                     this.newPatientsChartTrend1.push(Math.round(res.val.getX));
                    else
                      this.newPatientsChartTrend1.push(0);
 
