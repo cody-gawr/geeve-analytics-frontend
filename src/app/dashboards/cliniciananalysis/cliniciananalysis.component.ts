@@ -362,7 +362,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public gaugeValue: any = 0;
   public gaugeLabel = "";
   public gaugeThick = "20";
-  public foregroundColor = "rgba(0, 150, 136,0.7)";
+  public foregroundColor = "#4ccfae";
+  public backgroundColor = '#f4f0fa';
   public cap = "round";
   public size = "300"
 
@@ -420,21 +421,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       mode: 'x-axis',
       bodyFontFamily: 'Gilroy-Regular',
       cornerRadius: 0,
-      backgroundColor: '#fff',
-      titleFontColor: '#000',
-      bodyFontColor: '#000',
-      borderColor: '#000',
+      // backgroundColor: '#fff',
+      // titleFontColor: '#000',
+      // bodyFontColor: '#000',
+      // borderColor: '#000',
       callbacks: {
-        label: function (tooltipItems, data) {
-          // if (data.datasets[tooltipItems.datasetIndex].label != undefined)
-          //   // return data.datasets[tooltipItems.datasetIndex].label + ": $" + tooltipItems.yLabel;
-          //   return data.datasets[tooltipItems.datasetIndex].label
-          // else
-          //   return "#" + tooltipItems.yLabel;
-          return '';
+        label: (tooltipItem)=> {
+          return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
         },
-        title: (tooltipItems, data) => {
-          return this.dentistProductionLabelsByIndex[tooltipItems[0].index];
+        // remove title
+        title: function () {
+          return;
         }
       }
     },
@@ -739,6 +736,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   };
   public doughnutChartOptions: any = {
     scaleShowVerticalLines: false,
+    borderWidth: 0,
     responsive: true,
     maintainAspectRatio: false,
     animation: {
@@ -1038,19 +1036,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartLoader = false;
         this.productionTooltip = 'down';
         var i = 0;
-        this.dentistProductionLabelsByIndex = [];
         data.data.forEach(res => {
           if (res.total > 0) {
             this.barChartData1.push(Math.round(res.total));
             var name = res.name;
             if (res.name != null && res.name != 'Anonymous') {
-              this.barChartLabels1.push(this.getNameInitials(res.name));
-              this.dentistProductionLabelsByIndex.push(res.name);
+              this.barChartLabels1.push(res.name);
               this.dentistKey = i;
             }
             else {
-              this.barChartLabels1.push(this.getNameInitials(res.firstname));
-              this.dentistProductionLabelsByIndex.push(res.firstname);
+              this.barChartLabels1.push(res.firstname);
             }
 
             if (res.total != null)
@@ -1709,21 +1704,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       mode: 'x-axis',
       bodyFontFamily: 'Gilroy-Regular',
       cornerRadius: 0,
-      backgroundColor: '#fff',
-      titleFontColor: '#000',
-      bodyFontColor: '#000',
-      borderColor: '#000',
+      // backgroundColor: '#fff',
+      // titleFontColor: '#000',
+      // bodyFontColor: '#000',
+      // borderColor: '#000',
       callbacks: {
-        label: function (tooltipItems, data) {
-          // if (data.datasets[tooltipItems.datasetIndex].label != undefined)
-          //   // return data.datasets[tooltipItems.datasetIndex].label + ": $" + tooltipItems.yLabel;
-          //   return data.datasets[tooltipItems.datasetIndex].label
-          // else
-          //   return "#" + tooltipItems.yLabel;
-          return '';
+        label: (tooltipItem)=> {
+          return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
         },
-        title: (tooltipItems, data) => {
-          return this.treatmentPlanProposedProvidersByInx[tooltipItems[0].index];
+        // remove title
+        title: function () {
+          return;
         }
       }
     }
@@ -1766,7 +1757,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           if (res.average_cost_all > 0) {
             if (res.provider != null) {
               this.planChartData1.push(Math.round(res.average_cost_all));
-              this.planChartLabels1.push(this.getNameInitials(res.provider));
+              this.planChartLabels1.push(res.provider);
               this.treatmentPlanProposedProvidersByInx.push(res.provider);
               if (res.provider != 'Anonymous')
                 this.tpacAKey = ia;
@@ -1781,7 +1772,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         data.data.plan_fee_completed.forEach(res => {
           if (res.average_cost_completed) {
             this.planChartData2.push(Math.round(res.average_cost_completed));
-            this.planChartLabels2.push(this.getNameInitials(res.provider));
+            this.planChartLabels2.push(res.provider);
             this.treatmentPlanProposedProvidersByInx.push(res.provider);
             if (res.provider != 'Anonymous')
               this.tpacCKey = ic;
@@ -2086,10 +2077,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             i++;
           }
         });
+        
         console.log('\n this.newPatientChartData1 : ', this.newPatientChartData1);
         console.log('\n this.newPatDientChartLabels : ', this.newPatientChartLabels1);
         this.newPatientChartData = this.newPatientChartData1;
         this.newPatientChartLabels = this.newPatientChartLabels1;
+
         this.newPatientTotalAverage = data.total;
         this.newPatientTotalPrev = data.total_ta;
         this.newPatientGoals = data.goals;
@@ -2413,6 +2406,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.loadDentist(dentistVal);
 
       }
+      else if (duration == 'lm') {
+        this.goalCount = 1;
+
+        this.trendText = 'Previous Month';
+        this.currentText = 'Last Month';
+
+        const date = new Date();
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() -1, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
+        console.log(this.startDate + " " + this.endDate);
+
+        this.loadDentist(dentistVal);
+
+      }
       else if (duration == 'q') {
         this.goalCount = 3;
 
@@ -2506,6 +2513,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         $('.customRange').css('display', 'block');
         this.loadDentist(dentistVal);
       }
+      $('.filter').removeClass('active');
+      $('.filter_'+duration).addClass("active");
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
     }
   }
   //Load Individual dentits Chart
@@ -2519,7 +2529,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
     this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
     this.filterDate('custom');
-    $('.filter_custom').val(this.startDate + " - " + this.endDate);
+    // $('.filter_custom').val(this.startDate + " - " + this.endDate);
     $('.customRange').css('display', 'none');
   }
 

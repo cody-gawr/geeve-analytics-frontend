@@ -79,7 +79,7 @@ export class FrontDeskComponent implements AfterViewInit {
         this.getClinics();
       this.initiate_clinic();
         
-   $('#title').html('Front Desk ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')'); 
+   $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span'); 
         
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
@@ -343,7 +343,7 @@ public dentists;
     return validDate
   }
  loadDentist(newValue) {
-   $('#title').html('Front Desk ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')'); 
+   $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>'); 
 
     if(newValue == 'all') {
       this.fdWorkTimeAnalysis();
@@ -755,7 +755,7 @@ public currentText;
     }
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
       
 
   }
@@ -767,7 +767,7 @@ choosedDate(val) {
       this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.loadDentist('all');
       
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
 }
 toggleFilter(val) {

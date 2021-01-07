@@ -122,7 +122,7 @@ single = [
         $('.header_filters').addClass('flex_direct_mar');
          $('.external_clinic').show();
         $('.external_dentist').show();
-  $('#title').html('Finances  ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');
+  $('#title').html('<span>Finances<span>  <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();
@@ -998,7 +998,7 @@ public labelBarPercentOptions: any = {
 
   loadDentist(newValue) {
 
-  $('#title').html('Finances ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');
+  $('#title').html('<span>Finances</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');
   if(newValue == 'all') {
     $(".trend_toggle").hide();
     this.finTotalProduction();
@@ -1573,7 +1573,7 @@ filterDate(duration) {
     }
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
 
   }
 
@@ -1628,7 +1628,7 @@ if(diffTime<=365){
 this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.loadDentist('all');      
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
    }
    else {

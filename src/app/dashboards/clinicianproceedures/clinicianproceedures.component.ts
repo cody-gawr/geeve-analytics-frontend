@@ -134,7 +134,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
         $('.dentist_dropdown').show();
         $('.header_filters').removeClass('flex_direct_mar');
         $('.header_filters').removeClass('hide_header');
-        $('#title').html('Clinician Procedures & Referrals ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');        
+        $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');        
         $('.external_clinic').show();
         $('.external_dentist').show();
         if(this.childid != ''){
@@ -866,7 +866,7 @@ public pieChartLabelsres: string[] = [
   $('.pr1').addClass('active');
   $('.predictor_ratio_main').find('.sa_tab_btn').removeClass('active');
   $('.prmain1').addClass('active');
-  $('#title').html('Clinician Procedures & Referrals  ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');
+  $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');
   if(newValue == 'all') {
     $(".predicted1Tool").show();
     $(".referral1Tool").show();
@@ -1847,7 +1847,7 @@ public currentText;
     }
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
       
 
   }
@@ -1908,7 +1908,7 @@ choosedDate(val) {
       this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.filterDate('custom');
       
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
 }
 toggleFilter(val) {
