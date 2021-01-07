@@ -1746,7 +1746,7 @@ this.treatmentPreLabel = '';
         if(data.data != null) {
           if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
           this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_cost_completed);
-          if(data.data.plan_fee_all[0].average_cost_all != undefined)
+          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
           this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
           this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider;
           this.planTotalAll = Math.round(data.total_all);
@@ -2330,7 +2330,7 @@ if ((date.getMonth() + 1) <= 3) {
 
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
  var difMonths =new Date().getMonth()- new Date(date.getFullYear(), 6, 1).getMonth();
-      this.goalCount = difMonths+1;
+      this.goalCount = Math.abs(difMonths+1);
       this.loadDentist(dentistVal);
     }
      else if (duration == 'custom') {
