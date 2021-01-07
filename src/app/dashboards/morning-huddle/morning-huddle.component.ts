@@ -63,6 +63,7 @@ export class MorningHuddleComponent implements OnInit {
     public followupPostOpCalls:any = [];
     public clinicDentists:any = [];
     public currentDentist:any = 1;
+    public currentDentistSchedule:any = 0;
     
     public dentistListLoading:boolean = false;
 
@@ -113,12 +114,12 @@ initiate_clinic() {
     this.morningHuddleService.getDentists(this.clinic_id).subscribe((dentist:any) =>{ 
       if(dentist.status == 200 && dentist.data){
         this.clinicDentists = dentist.data;
-        this.currentDentist = dentist.data[0].providerId;        
-        this.getSchedulePatients();
-        this.getScheduleNewPatients();
-        this.getScheduleHours();
-        this.getUnscheduleHours();
-        this.getAppointmentCards();
+        /*this.currentDentist = dentist.data[0].providerId;        */
+        this.getSchedulePatients(null);
+        this.getScheduleNewPatients(null);
+        this.getScheduleHours(null);
+        this.getUnscheduleHours(null);
+        this.getAppointmentCards(null);
       }
     });
     /***** Tab 2 ***/
@@ -160,20 +161,23 @@ initiate_clinic() {
   }
   refreshScheduleTab(event){
     this.currentDentist = event;
-    this.getSchedulePatients();
-    this.getScheduleNewPatients();
-    this.getScheduleHours();
-    this.getUnscheduleHours();
-    this.getAppointmentCards();
+    if(this.currentDentist == 0){
+        this.currentDentist = null;
+    }
+    this.getSchedulePatients(this.currentDentist);
+    this.getScheduleNewPatients(this.currentDentist);
+    this.getScheduleHours(this.currentDentist);
+    this.getUnscheduleHours(this.currentDentist);
+    this.getAppointmentCards(this.currentDentist);
   }
-  frontDeskTab(event){
+/*  frontDeskTab(event){
     this.previousDays = event;
     this.getSchedulePatients();
     this.getScheduleNewPatients();
     this.getScheduleHours();
     this.getUnscheduleHours();
     this.getAppointmentCards();
-  }
+  }*/
 
   /***** Tab 4 ***/
    getReminders(){
@@ -281,38 +285,38 @@ initiate_clinic() {
   /***** Tab 3 ***/  
   
 /***** Tab 2 ***/
-   getSchedulePatients(){
-    this.morningHuddleService.getPatients( this.clinic_id,this.currentDentist,  this.user_type  ).subscribe((production:any) => {
+   getSchedulePatients(dentist){
+    this.morningHuddleService.getPatients( this.clinic_id,dentist,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.schedulePatieltd = production.data;
       }
     }); 
   }
-   getScheduleNewPatients(){
-    this.morningHuddleService.getNewPatients( this.clinic_id, this.currentDentist,  this.user_type  ).subscribe((production:any) => {
+   getScheduleNewPatients(dentist){
+    this.morningHuddleService.getNewPatients( this.clinic_id, dentist,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.scheduleNewPatieltd = production.data;
       }
     }); 
   }
 
-   getScheduleHours(){
-    this.morningHuddleService.getScheduleHours( this.clinic_id,  this.currentDentist,  this.user_type  ).subscribe((production:any) => {
+   getScheduleHours(dentist){
+    this.morningHuddleService.getScheduleHours( this.clinic_id,  dentist,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.schedulehours = production.data;
       }
     }); 
   }
-   getUnscheduleHours(){
-    this.morningHuddleService.getUnscheduleHours( this.clinic_id, this.currentDentist,  this.user_type  ).subscribe((production:any) => {
+   getUnscheduleHours(dentist){
+    this.morningHuddleService.getUnscheduleHours( this.clinic_id, dentist,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.unSchedulehours = production.data;
       }
     }); 
   }
 
-   getAppointmentCards(){
-    this.morningHuddleService.getAppointmentCards( this.clinic_id,this.currentDentist, this.previousDays,  this.user_type ).subscribe((production:any) => {
+   getAppointmentCards(dentist){
+    this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist, this.previousDays,  this.user_type ).subscribe((production:any) => {
       if(production.status == true) {
         this.appointmentCards.data = production.data;
       }

@@ -1879,12 +1879,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartTreatmentDentistLoader = false;
         this.gaugeValueTreatmentP = 0;
         this.gaugeValueTreatmentC = 0;
-        this.gaugeValueTreatment = 0;
-        if (data.data != null) {
-          if (data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
-            this.gaugeValueTreatmentC = Math.round(data.data.plan_fee_completed[0].average_cost_completed);
-          if (data.data.plan_fee_all[0].average_cost_all != undefined)
-            this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
+        this.gaugeValueTreatment =0;
+        if(data.data != null) {
+          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
+          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_cost_completed);
+          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
+          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
           this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider;
           this.planTotalAll = Math.round(data.total_all);
           this.planTotalCompleted = Math.round(data.total_completed);
@@ -2497,7 +2497,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
-        this.goalCount = difMonths + 1;
+        this.goalCount = Math.abs(difMonths + 1);
         this.loadDentist(dentistVal);
       }
       else if (duration == 'custom') {
@@ -2506,9 +2506,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         $('.customRange').css('display', 'block');
         this.loadDentist(dentistVal);
       }
-      $('.filter').removeClass('active');
-      $('.filter_' + duration).addClass("active");
-      $('.filter_custom').val(this.startDate + " - " + this.endDate);
     }
   }
   //Load Individual dentits Chart
@@ -2911,31 +2908,31 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
-      if (data != null && data.message == 'success') {
-        this.fdnewPatientsRateTrendLoader = false;
-        this.newPatientsChartTrendLabels1 = [];
-        this.newPatientsChartTrend1 = [];
-        data.data.forEach(res => {
-          if (res.val)
-            this.newPatientsChartTrend1.push(Math.round(res.val.percent));
-          else
-            this.newPatientsChartTrend1.push(0);
+    this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist,this.clinic_id,this.trendValue).subscribe((data) => {
+       if(data !=null && data.message == 'success'){
+        this.fdnewPatientsRateTrendLoader= false;
+          this.newPatientsChartTrendLabels1=[];
+  this.newPatientsChartTrend1=[];
+                data.data.forEach(res => {  
+                    if(res.val)
+                     this.newPatientsChartTrend1.push(Math.round(res.val.getX));
+                   else
+                     this.newPatientsChartTrend1.push(0);
 
-          if (this.trendValue == 'c')
-            this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-          else
-            this.newPatientsChartTrendLabels1.push(res.duration);
+                   if(this.trendValue == 'c')
+                   this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                    else
+                   this.newPatientsChartTrendLabels1.push(res.duration);
+                  
+                 });
+                 this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
 
-        });
-        this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
+                 this.newPatientsChartTrendLabels =this.newPatientsChartTrendLabels1; 
+                 if(this.newPatientsChartTrendLabels.length <= 0){
+                  this.newPatientPercent = 0;
 
-        this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
-        if (this.newPatientsChartTrendLabels.length <= 0) {
-          this.newPatientPercent = 0;
-
-        }
-      }
+                 }
+       }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
