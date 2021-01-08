@@ -167,18 +167,18 @@ this.predictedChartColors = [
 
   public date =new Date();
     public stackedChartOptions: any = {
-      elements: {
-      point: {
-        radius: 5,
-        hoverRadius: 7,
-        pointStyle:'rectRounded',
-        hoverBorderWidth:7
-      },
-    },
+    //   elements: {
+    //   point: {
+    //     radius: 5,
+    //     hoverRadius: 7,
+    //     pointStyle:'rectRounded',
+    //     hoverBorderWidth:7
+    //   },
+    // },
     scaleShowVerticalLines: false,
-           responsive: true,
+    responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
+    // barThickness: 10,
       animation: {
         duration: 500,
         easing: 'easeOutSine'
@@ -186,13 +186,13 @@ this.predictedChartColors = [
       fill:false,
     scales: {
           xAxes: [{ 
-            stacked:true,
+            // stacked:true,
             ticks: {
                 autoSkip: false
             }
             }],
           yAxes: [{ 
-            stacked:true,
+            // stacked:true,
             ticks: {
               min:0,
               max:100,
@@ -357,7 +357,39 @@ public dentists;
   }
 
   public workTimeData = [
-    {data: [], label: ''}];
+    {
+      data: [], 
+      label: '',
+      backgroundColor: [
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+      ],
+      hoverBackgroundColor: [
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+        '#119582',
+        '#ffb4b5',
+      ]
+    }
+  ];
   public workTimeLabels = [];
   
   public workTimeLabels1 = [];
@@ -674,6 +706,16 @@ public currentText;
         this.duration='m';
         
             this.loadDentist('all');
+    }
+    else if (duration == 'lm') {
+      this.duration = 'lm';
+      this.trendText = 'Previous Month';
+      this.currentText = 'Last Month';
+
+      const date = new Date();
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
+      this.loadDentist('all');
     }
     else if (duration == 'q') {
       this.trendText= 'Last Quarter';

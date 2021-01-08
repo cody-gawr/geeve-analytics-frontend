@@ -15,11 +15,29 @@
     <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 
       <div fxFlex>
-         <div class="sa_tabs_design"> <span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial YTD</span>
-              <div class="custom_date">
-              <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="Select Date Range" placeholder="Select Date Range" readonly />
+         <div class="sa_tabs_design"> 
+            <span (click)="filterDate('m')" class="filter_m filter sa_filter_span active">
+              This Month
+            </span>
+            <span (click)="filterDate('lm')" class="filter_lm filter sa_filter_span">
+              Last Month
+            </span>
+            <span class="filter_q filter sa_filter_span" (click)="filterDate('q')">
+              This Quarter
+            </span>
+            <span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">
+              Last Quarter
+            </span>
+            <span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">
+              Calendar Year
+            </span>
+            <span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">
+              Financial Year
+            </span>
+            <div class="custom_date">
+            <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="Select Date Range" placeholder="Select Date Range" readonly />
               <ngx-daterangepicker-material  class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'" [locale]="{applyLabel: 'ok', displayFormat: 'DD-MM-YYYY',firstDay: 1}"></ngx-daterangepicker-material></div>
-            </div>
+          </div>
       </div>
 
      <div class="dh-target">
@@ -103,9 +121,9 @@
       <mat-card-content class="sa_matcard_content"> 
         <mat-card-title class="text-center">
           <div>
-            <span *ngIf="trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{pieChartInternalPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{pieChartInternalPrevTooltip}}.png"></span>
-            <span *ngIf="trendText" class="referral2Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartExternalPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{pieChartExternalPrevTooltip}}.png"></span>
-            <span *ngIf="trendText" class="referral3Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartCombinedPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{pieChartCombinedPrevTooltip}}.png"></span>
+            <span *ngIf="trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{pieChartInternalPrevTotal}}"><img class="trend_ico" src="../assets/images/trending_{{pieChartInternalPrevTooltip}}.png"></span>
+            <span *ngIf="trendText" class="referral2Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartExternalPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trending_{{pieChartExternalPrevTooltip}}.png"></span>
+            <span *ngIf="trendText" class="referral3Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartCombinedPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trending_{{pieChartCombinedPrevTooltip}}.png"></span>
             Clinician Referrals
           </div>
 
@@ -213,7 +231,6 @@
           [datasets]="predictedstackedChartData"
           [labels]="predictedstackedChartLabels"
           [options]="stackedChartOptions"
-          [legend]="false"
           [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)"></canvas>
           </div>
@@ -359,7 +376,7 @@
           [legend]="false"
           [chartType]="proceedureChartType"
           (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"  [colors]="preoceedureChartColors"></canvas>
+          (chartClick)="chartClicked($event)"></canvas>
         </div>
       </div>
         <img src='../assets/images/nodata02.png' *ngIf="proceedureChartLabels.length <= 0 && buildChartProceedureLoader == false" class="blankChart"> 
@@ -388,7 +405,7 @@
           [legend]="false"
           [chartType]="proceedureChartType"
           (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"  [colors]="preoceedureChartColors"></canvas>
+          (chartClick)="chartClicked($event)"></canvas>
         </div>
         <div *ngIf="proceedureDentistChartLabels.length <= 0 && buildChartProceedureDentistLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>

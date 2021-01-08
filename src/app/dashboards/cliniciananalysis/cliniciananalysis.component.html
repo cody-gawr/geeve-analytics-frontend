@@ -147,8 +147,8 @@
           <img src="../assets/images/info-icon.png" alt="info-icon"/>
           </mat-card-title>
           <div class="card-body">
-            <div class="chart" fxLayout="row" fxLayoutAlign="start end" style="height: 300px">
-                <ngx-gauge  *ngIf="showTrendChart == false"  [type]="gaugeType"
+            <div class="chart" fxLayout="row" fxLayoutAlign="start end" style="height: 300px" *ngIf="showTrendChart == false">
+                <ngx-gauge    [type]="gaugeType"
                   [value]="gaugeValue"
                   [label]="gaugeLabel"
                   [thick]="gaugeThick"
@@ -160,14 +160,13 @@
                   [prepend]="gaugePrependText"
                   [size] = "size">
                   </ngx-gauge>
-
-                  <div *ngIf="showTrendChart == true" style="height: 292px">
-                  <canvas  #myCanvas id="dentistProductionTrend" baseChart [datasets]="dentistProdTrend" [labels]="dentistProductionTrendLabels"  [legend]="barChartLegend"
-                  [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
             </div>
+            <div *ngIf="showTrendChart == true" style="height: 300px">
+              <canvas  #myCanvas id="dentistProductionTrend" baseChart [datasets]="dentistProdTrend" [labels]="dentistProductionTrendLabels"  [legend]="barChartLegend"
+              [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+            </canvas>
           </div>
+    </div>
       
   <!--      <div *ngIf="dentistProductionTrendLabels.length <= 0 && gaugeValue <= 0 && buildChartDentistLoader == false" class="sa_nodata_div">
             <h4>No Data</h4>
@@ -380,11 +379,12 @@
             <span *ngIf="trendText && showTrendChart == false" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} :  {{doughnutTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{doughnutTotalTooltip}}.png"></span>
             No. Patient Complaints
             </div>
+            <img src="../assets/images/info-icon.png" alt="info-icon"/>
           </mat-card-title>
           <div class="card-body">
 
-        <div class="chart" fxLayout="row" fxLayoutAlign="start end" style="height: 300px">
-         <ngx-gauge *ngIf="showTrendChart == false" [type]="gaugeType"  
+        <div class="chart" fxLayout="row" fxLayoutAlign="start end" style="height: 300px" *ngIf="showTrendChart == false">
+         <ngx-gauge [type]="gaugeType"  
            [value]="gaugeValuePatients"
            [label]="gaugeLabelPatients"
            [thick]="gaugeThick"
@@ -395,17 +395,16 @@
            [size] = "size"
            [duration]= "gaugeDuration">
           </ngx-gauge>
-
-          <div *ngIf="showTrendChart == true" style="height: 292px">
-              <canvas #myCanvas  id="patientComplaintsTrend" baseChart [datasets]="patientComplaintTrend" [labels]="patientComplaintsTrendLabels"  [legend]="barChartLegend"
-              [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
-              </canvas>
-          </div>
         <!-- 
            <div *ngIf="patientComplaintsTrendLabels.length <= 0 && gaugeValuePatients <=0 && buildChartNopatientsDentistLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p>Oops! Looks like we don't have any data to show you</p>
           </div> -->
+          </div>
+          <div *ngIf="showTrendChart == true" style="height: 292px">
+            <canvas #myCanvas  id="patientComplaintsTrend" baseChart [datasets]="patientComplaintTrend" [labels]="patientComplaintsTrendLabels"  [legend]="barChartLegend"
+            [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+            </canvas>
           </div>
         </div>
         <div class="card-footer">
@@ -447,7 +446,7 @@
         <div class="chart" *ngIf="newPatientsDataMax > 0">
           <div *ngIf="showTrendChart == false" style="height: 326px; position: relative;">
             <div class="doughnut-chart-center-text">
-              150
+              {{newPatientTotalAverage}}
             </div>
         <canvas #myCanvas baseChart  id="newPatients" class="chart"
         [data]="newPatientChartData"
@@ -487,46 +486,50 @@
     </mat-card>
     <mat-card class="newPatientsSingle sa_no_tabs_area" [style.display]="'none'">
       <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center"><span *ngIf="trendText && showTrendChart == false" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} :  {{newPatientTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientTotalTooltip}}.png"></span>No. New Patients
+          <mat-card-title class="text-center">
+            <span *ngIf="trendText && showTrendChart == false" 
+            class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button 
+            matTooltip="{{trendText}} :  {{newPatientTotalPrev| number:'1.0-0'}}">
+            <img class="trend_ico" src="../assets/images/trend_{{newPatientTotalTooltip}}.png">
+          </span>
+          No. New Patients
+          <img src="../assets/images/info-icon.png" alt="info-icon"/>
 
           </mat-card-title>
           <div class="card-body">
-<div fxLayout="row wrap" class="row_Patients" fxLayoutAlign="center end" style="height: 305px">
-<!--   <div *ngIf="newPatientsChartTrendLabels.length <= 0 && newPatientPercent<=0 && buildChartNewpatientsDentistLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div> -->
-          <!-- <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49" class="text-center" *ngIf="showTrendChart == false">
-            <div class="sa_new_patients" *ngIf="showTrendChart == false"><strong>{{newPatientValuePatients}}</strong>
-              <span class="sa_new_patients_text">New Patients</span>
-            </div>
-          </div> -->
-    <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49" *ngIf="showTrendChart == false">
-        <div class="chart">
-         
-         <ngx-gauge *ngIf="showTrendChart == false" [type]="gaugeType"
-           [value]="newPatientPercent"
-           [label]="newPatientValuePatients"
-           [thick]="gaugeThick"
-            [cap] ="cap"
-           [foregroundColor]="foregroundColor"
-           [backgroundColor]="backgroundColor"
-           [append] ="gaugeAppendText"
-           [size] = "size"
-           [duration]= "gaugeDuration">
-          </ngx-gauge>
+              <div fxLayout="row wrap" class="row_Patients" fxLayoutAlign="center end" style="height: 305px" *ngIf="showTrendChart == false">
+              <!--   <div *ngIf="newPatientsChartTrendLabels.length <= 0 && newPatientPercent<=0 && buildChartNewpatientsDentistLoader == false" class="sa_nodata_div">
+                            <h4>No Data</h4>
+                            <p></p>
+                        </div> -->
+                        <!-- <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49" class="text-center" *ngIf="showTrendChart == false">
+                          <div class="sa_new_patients" *ngIf="showTrendChart == false"><strong>{{newPatientValuePatients}}</strong>
+                            <span class="sa_new_patients_text">New Patients</span>
+                          </div>
+                        </div> -->
+                  <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49">
+                      <div class="chart">
+                      
+                      <ngx-gauge *ngIf="showTrendChart == false" [type]="gaugeType"
+                        [value]="newPatientPercent"
+                        [label]="newPatientValuePatients"
+                        [thick]="gaugeThick"
+                          [cap] ="cap"
+                        [foregroundColor]="foregroundColor"
+                        [backgroundColor]="backgroundColor"
+                        [append] ="gaugeAppendText"
+                        [size] = "size"
+                        [duration]= "gaugeDuration">
+                        </ngx-gauge>
 
-        </div>
-      </div>
-<div fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" *ngIf="showTrendChart == true && newPatientsChartTrendLabels.length>0">
-  <div *ngIf="showTrendChart == true && newPatientsChartTrendLabels.length>0" style="height: 250px">
-              <canvas #myCanvas  id="newPatientsTrend" baseChart [datasets]="newPatientsChartTrend" [labels]="newPatientsChartTrendLabels"  [legend]="barChartLegend"
-              [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
-              </canvas>
-          </div>
-</div>
-
-    </div>
+                      </div>
+                  </div>
+              </div>
+              <div *ngIf="showTrendChart == true && newPatientsChartTrendLabels.length>0" style="height: 300px">
+                <canvas #myCanvas  id="newPatientsTrend" baseChart [datasets]="newPatientsChartTrend" [labels]="newPatientsChartTrendLabels"  [legend]="barChartLegend"
+                [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
           </div>
           <div class="card-footer">
           <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false" fxLayoutAlign="center center">

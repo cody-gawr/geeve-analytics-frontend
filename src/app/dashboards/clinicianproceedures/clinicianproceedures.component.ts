@@ -49,6 +49,11 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
     private _routerSub = Subscription.EMPTY;
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
+  private legendLabelOptions = {
+    labels: {
+      usePointStyle: true
+    }
+  };
   constructor(private toastr: ToastrService,private clinicianproceeduresService: ClinicianProceeduresService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
          this._routerSub = this.router.events
          .filter(event => event instanceof NavigationEnd)
@@ -359,7 +364,7 @@ this.predictedChartColors = [
   }
 ];
 
- let proceedureGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
+let proceedureGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
 proceedureGradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
 proceedureGradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
 let proceedureGradient1 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
@@ -462,8 +467,11 @@ this.preoceedureChartColors = [
                  },
             }, 
             }],
-        },legend: {
-            display: true
+        },
+        legend: {
+            display: true,
+            position: 'bottom',
+            ...this.legendLabelOptions
          },
           tooltips: {
             mode: 'x-axis',
@@ -507,8 +515,9 @@ this.preoceedureChartColors = [
     maintainAspectRatio: false,
     legend: {
             display: true,
-            position:'right'
-         }
+            position:'right',
+            ...this.legendLabelOptions
+    }
   };
    public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -719,6 +728,16 @@ this.preoceedureChartColors = [
             shadowOffsetY: 3,
             shadowBlur: 5,
             shadowColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: [
+              '#119682',
+              '#28a08e',
+              '#41ab9b',
+              '#58b5a7',
+              '#70c0b4',
+              '#88cac0',
+              '#a0d5cd',
+              '#aedbd4',
+            ],
             pointBevelWidth: 2,
             pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
             pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
@@ -729,18 +748,40 @@ this.preoceedureChartColors = [
             backgroundOverlayMode: 'multiply'}
     ];
   public proceedureDentistChartData: any[] = [
-    {data: [], label: 'Total Revenue of Clinician Per Procedure',  shadowOffsetX: 3,
-            shadowOffsetY: 3,
-            shadowBlur: 5,
-            shadowColor: 'rgba(0, 0, 0, 0.5)',
-            pointBevelWidth: 2,
-            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-            pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
-            pointShadowOffsetX: 3,
-            pointShadowOffsetY: 3,
-            pointShadowBlur: 10,
-            pointShadowColor: 'rgba(0, 0, 0, 0.5)',
-            backgroundOverlayMode: 'multiply'}
+    { data: [],
+      backgroundColor: [
+        '#119682',
+        '#28a08e',
+        '#41ab9b',
+        '#58b5a7',
+        '#70c0b4',
+        '#88cac0',
+        '#a0d5cd',
+        '#aedbd4',
+      ],
+      hoverBackgroundColor: [
+        '#119682',
+        '#28a08e',
+        '#41ab9b',
+        '#58b5a7',
+        '#70c0b4',
+        '#88cac0',
+        '#a0d5cd',
+        '#aedbd4',
+      ],
+      label: 'Total Revenue of Clinician Per Procedure',  
+      shadowOffsetX: 3,
+      shadowOffsetY: 3,
+      shadowBlur: 5,
+      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointBevelWidth: 2,
+      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      pointBevelShadowColor: 'rgba(0, 0, 0, 0.5)',
+      pointShadowOffsetX: 3,
+      pointShadowOffsetY: 3,
+      pointShadowBlur: 10,
+      pointShadowColor: 'rgba(0, 0, 0, 0.5)',
+      backgroundOverlayMode: 'multiply'}
     ];
   public proceedureChartData1: any[] = []; 
  
@@ -1764,6 +1805,17 @@ public currentText;
 
       console.log(this.startDate+" "+this.endDate);
             this.loadDentist(dentistVal);
+    }
+    else if (duration == 'lm') {
+      this.duration = 'lm';
+      this.trendText = 'Previous Month';
+      this.currentText = 'Last Month';
+
+      const date = new Date();
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
+      console.log(this.startDate + " " + this.endDate);
+      this.loadDentist(dentistVal);
     }
     else if (duration == 'q') {
       this.trendText= 'Last Quarter';

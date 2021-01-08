@@ -221,6 +221,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     }
   }
 
+  splitName(name: string) {
+    const regex = /\w+\s\w+(?=\s)|\w+/g;
+    return name.trim().match(regex);
+  }
+
   dentists: Dentist[] = [
     { providerId: 'all', name: 'All Dentists' },
   ];
@@ -400,7 +405,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         ticks: {
           autoSkip: false,
           userCallback: (label: string) => {
-            const names = label.split(' ');
+            const names = this.splitName(label);
             return `${names[0][0]} ${names[1]}`;
           }
         },
@@ -460,7 +465,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public barChartOptionsTrend: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
-    // curvature: 1,
+    curvature: 1,
     animation: {
       duration: 1500,
       easing: 'easeOutSine'
@@ -478,10 +483,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         suggestedMin: 0,
         ticks: {
           beginAtZero: true,
-          userCallback: function (label, index, labels) {
+          userCallback: (label, index, labels) => {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              return '$' + label;
+              return '$' + this.decimalPipe.transform(label);
             }
 
           },
@@ -497,8 +502,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       },
       callbacks: {
         // use label callback to return the desired label
-        label: function (tooltipItem, data) {
-          return tooltipItem.xLabel + ": $" + tooltipItem.yLabel;
+        label: (tooltipItem, data) => {
+          return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
         },
         // remove title
         title: function (tooltipItem, data) {
@@ -540,7 +545,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         ticks: {
           autoSkip: false,
           userCallback: (label: any) => {
-            const names = typeof label === "string" ? label.split(' ') : label[0].split(' ');
+            const names = typeof label === "string" ? this.splitName(label) : this.splitName(label[0]);
             return `${names[0][0]} ${names[1]}`;
           }
         }
@@ -753,7 +758,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     },
     legend: {
       display: true,
-      position: 'right'
+      position: 'bottom',
+      labels: {
+        usePointStyle: true
+      }
     }
   };
   public doughnutChartOptionsPercent: any = {
@@ -1694,7 +1702,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         ticks: {
           autoSkip: false,
           userCallback: (label: string) => {
-            const names = label.split(' ');
+            const names = this.splitName(label);
             return `${names[0][0]} ${names[1]}`;
           }
         }
@@ -2575,6 +2583,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public dentistProdTrend: any[] = [
     {
       data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even
+      ],
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -2629,6 +2651,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public treatPlanTrend: any[] = [
     {
       data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+    ],
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -2694,6 +2730,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public patientComplaintTrend: any[] = [
     {
       data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+    ],
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -2750,7 +2800,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public recallPrebookChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [], 
+      label: '', 
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+    ],
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -2801,7 +2867,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public treatmentPrebookChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [], 
+      label: '', 
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+    ],
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -2853,7 +2935,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public hourlyRateChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [], 
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+    ],
+      label: '', shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -2906,7 +3003,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public newPatientsChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [], 
+      label: '', 
+      shadowOffsetX: 3,
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+    ],
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -2964,7 +3077,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public treatmentPlanChartTrend: any[] = [
     {
-      data: [], label: '', shadowOffsetX: 3,
+      data: [], 
+      label: '', 
+      backgroundColor: [
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
+    ],
+      shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
