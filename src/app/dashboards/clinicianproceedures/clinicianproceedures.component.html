@@ -193,7 +193,7 @@
                         <small class="sa_tab_btn prmain1 active" (click) = "changeDentistPredictorMain('1')">Crown to Large Filling</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
-                        <small class="sa_tab_btn prmain2" (click) = "changeDentistPredictorMain('2')">Extraction to RCT</small>
+                        <small class="sa_tab_btn prmain2" (click) = "changeDentistPredictorMain('2')">RCT to Extraction</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100">
                         <small class="sa_tab_btn prmain3" (click) = "changeDentistPredictorMain('3')">RCT Conversion</small>
@@ -230,12 +230,12 @@
                 </div> 
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'"  >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{extractions}}:{{root_canals}}</h3>
+                        <h3 class="m-0 font-light">{{root_canals}}:{{extractions}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                        <h3 class="m-0 font-light">{{extractions_ta}}:{{root_canals_ta}}</h3>
+                        <h3 class="m-0 font-light">{{root_canals_ta}}:{{extractions_ta}}</h3>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
