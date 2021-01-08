@@ -154,8 +154,6 @@
 
 .sa_dentist_graphs_area .sa_flexbg { transition: transform .2s; transform: scale(1); background: #fff; margin-bottom: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 15px 24px rgba(0,115,112,.02) !important; }
 
-.sa_dentist_graphs_area .sa_flexbg:hover { }
-
 .sa_flex_transparent { padding: 1px 10px 13px; display: none; }
 
 .sa_dentist_graphs_area .sa_flexbg.last { margin-right: 0!important; }
@@ -178,7 +176,7 @@
     font-size: 18px !important;
     border-radius: 4px!important;
     text-align: center!important;
-    float: left;
+    /* float: left; */
     line-height: 30px!important;
     padding: 0!important;
     margin: 2px 5px !important;
@@ -349,8 +347,6 @@ border-radius: 4px; }
 
 .sa_sidebar_logo img { max-width: 100%; padding: 6px 10px; max-height: 52px; }
 
-.sa_sidebar_logo_main { }
-
 .mat-list-base { padding-top: 0px!important; }
 
 html .page-wrapper { height: 100vh!important }
@@ -390,8 +386,6 @@ html .page-wrapper { height: 100vh!important }
 .sa_expand_area { float: left; }
 
 .sa_expand_area .mat-icon { margin-left: 8px; }
-
-.sa_expand_area.active { }
 
 .sa_expand_area .sa_ico2 { display: none; }
 
@@ -461,7 +455,7 @@ html .page-wrapper { height: 100vh!important }
 
 .sa_pie_chart_txtdata h6 { border-radius: 4px; text-align: center; padding: 10px; background: linear-gradient(308deg, rgba(14,52,89,0.8) 10%, rgba(24,166,137,0.7) 80%); color: #ffffff; margin: 0 0 11px 0; }
 
-.doughnut-chart-center-text {width: 100%;position: absolute;top: 50%;left: 0;text-align: center;z-index: 99;color: #2c5a52;font-size: 42px;font-weight: 600; padding-right: 110px;-moz-transform: translateY(-50%);-webkit-transform: translateY(-50%);transform: translateY(-50%);}
+.doughnut-chart-center-text {width: 100%;position: absolute;font-family: 'Gilroy-Bold';top: 50%;left: 0;text-align: center;z-index: 99;color: #2c5a52;font-size: 42px;font-weight: 600; padding-right: 145px;-moz-transform: translateY(-50%);-webkit-transform: translateY(-50%);transform: translateY(-50%);}
 /* .sa_chart_summary_flip{
 
     width: 100%;
@@ -488,9 +482,6 @@ html .page-wrapper { height: 100vh!important }
     color: #424242; background:#fff; font-size:12px;
 }
  */
-
-
-.sa_summary_flip { }
 
 .sa_chart_flip { display: block; }
 
@@ -567,8 +558,6 @@ html .page-wrapper { height: 100vh!important }
 
 .sa_chart_details_sec { margin: 10px 0 0px 0 !important; padding: 15px 0px 10px; border-radius: 4px; color: #5e5e5e; background: #f5f5f5; }
 
-.dc_input { }
-
 .mat-form-field.mat-focused .mat-form-field-label { color: #18A689!important; }
 
 .mat-form-field.mat-focused .mat-form-field-ripple { background-color: #18A689!important; }
@@ -599,15 +588,13 @@ html .page-wrapper { height: 100vh!important }
 
 .login-register .mat-card { box-shadow: 0 1px 145px 10px rgba(14,52,89,1) !important }
 
-.login_abso_logo { position: fixed; bottom: 40px; right: 60px; width: 120px; opaciity: 0.6; pointer-events: none; z-index: 99 }
+.login_abso_logo { position: fixed; bottom: 40px; right: 60px; width: 120px; opacity: 0.6; pointer-events: none; z-index: 99 }
 
 .pad_20 { padding: 20px!important; }
 
 .mat-card-title { font-size: 20px!important; color: #0e3459!important; }
 
 .login-register { position: relative; z-index: 1; transition: opacity 400ms ease 0ms; }
-
-.sa_login_blur { }
 
 .mat-radio-button.mat-radio-disabled .mat-radio-ripple .mat-ripple-element, .mat-radio-button.mat-radio-disabled .mat-radio-inner-circle { background-color: rgba(0, 0, 0, 0.38) !important; }
 
@@ -627,7 +614,7 @@ html .page-wrapper { height: 100vh!important }
 
 .onofftoogle { margin: 10px 5px 10px 0; float: right; }
 
-.trend_ico { width: 23px; float: left; margin-right: 10px; margin-top: 2px; }
+.trend_ico { width: 23px; vertical-align: middle; margin-right: 10px; margin-top: 2px; }
 
 .flex_direct_mar { flex-direction: row-reverse !important }
 
@@ -866,8 +853,6 @@ ripple {  0% {
 
 .sa_tabs_main_sec.sa_tabs_clinician_referrals { margin-bottom: 40px; }
 
-.Item_Predictor_clinicianproceedures { }
-
 ul.list-categories { padding: 0 5px; list-style-type: none; margin-bottom: 20px; }
 
 .list-categories li { background-color: #18a689; border-radius: 3px; display: inline-block; margin: 2px; font-size: 13px; padding: 1px 6px; color: #fff; }
@@ -1028,7 +1013,7 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 
 .sa_mobile_header { display: block; }
 
-.sa_mobile_heading { background: #0e3459; margin-top: -34px; border-radius: 4px; padding: 10px; margin-bottom: 4px; color: #fff; }
+.sa_mobile_heading { background: #0e3459; border-radius: 4px; padding: 10px; margin-bottom: 4px; color: #fff; }
 
 .sa_mobile_heading .sa_sidebar_logo { padding-top: 0px; }
 
@@ -1089,7 +1074,6 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
  @media only screen and (orientation: landscape) {
 }
 
-.sa_dentist_graphs_area .sa_flexbg { }
 
 .trend_mode_title { display: block; font-size: 14px; margin: 5px 10px 0 10px; float: left; }
  @media screen and (max-width: 1439px) and (min-width: 1280px) {
@@ -1347,7 +1331,6 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
     width: 100% !important;
 }
 
-.mat-card .mat-card-content { padding: 24px 15px !important; }
 }
  @media(min-width:991px) {
 }

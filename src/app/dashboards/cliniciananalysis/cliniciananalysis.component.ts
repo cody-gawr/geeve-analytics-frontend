@@ -373,7 +373,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public gaugeValuePatients = 0;
   public gaugeLabelPatients = "";
 
-  public newPatientValuePatients = 0;
+  public newPatientValuePatients: string = '0 New Patients';
   public newPatientLabelPatients = "";
   public recallValue: any;
   public recallLabel = "";
@@ -399,7 +399,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         },
         ticks: {
           autoSkip: false,
-        }
+          userCallback: (label: string) => {
+            const names = label.split(' ');
+            return `${names[0][0]} ${names[1]}`;
+          }
+        },
       }],
       yAxes: [{
         ticks: {
@@ -426,7 +430,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       // bodyFontColor: '#000',
       // borderColor: '#000',
       callbacks: {
-        label: (tooltipItem)=> {
+        label: (tooltipItem) => {
           return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
         },
         // remove title
@@ -534,7 +538,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       xAxes: [{
         gridLines: { display: true },
         ticks: {
-          autoSkip: false
+          autoSkip: false,
+          userCallback: (label: any) => {
+            const names = typeof label === "string" ? label.split(' ') : label[0].split(' ');
+            return `${names[0][0]} ${names[1]}`;
+          }
         }
       }],
       yAxes: [{
@@ -1031,7 +1039,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       this.barChartLabels1 = [];
       this.barChartLabels = [];
       this.productionTotal = 0;
-
+      console.log('data.data', data.data);
       if (data.message == 'success') {
         this.buildChartLoader = false;
         this.productionTooltip = 'down';
@@ -1685,6 +1693,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       xAxes: [{
         ticks: {
           autoSkip: false,
+          userCallback: (label: string) => {
+            const names = label.split(' ');
+            return `${names[0][0]} ${names[1]}`;
+          }
         }
       }],
       yAxes: [{
@@ -1709,7 +1721,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       // bodyFontColor: '#000',
       // borderColor: '#000',
       callbacks: {
-        label: (tooltipItem)=> {
+        label: (tooltipItem) => {
           return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
         },
         // remove title
@@ -1870,12 +1882,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartTreatmentDentistLoader = false;
         this.gaugeValueTreatmentP = 0;
         this.gaugeValueTreatmentC = 0;
-        this.gaugeValueTreatment =0;
-        if(data.data != null) {
-          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
-          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_cost_completed);
-          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
-          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
+        this.gaugeValueTreatment = 0;
+        if (data.data != null) {
+          if (data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
+            this.gaugeValueTreatmentC = Math.round(data.data.plan_fee_completed[0].average_cost_completed);
+          if (data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
+            this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
           this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider;
           this.planTotalAll = Math.round(data.total_all);
           this.planTotalCompleted = Math.round(data.total_completed);
@@ -2065,10 +2077,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.newPatientTotalTooltip = 'down';
         var i = 0;
         console.log('\n data : ', data);
-        
+
         data.data.forEach(res => {
           console.log('\n res : ', res);
-          
+
           if (res.getX) {
             this.newPatientChartData1.push(parseInt(res.getX));
             this.newPatientChartLabels1.push(res.provider);
@@ -2077,7 +2089,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             i++;
           }
         });
-        
+
         console.log('\n this.newPatientChartData1 : ', this.newPatientChartData1);
         console.log('\n this.newPatDientChartLabels : ', this.newPatientChartLabels1);
         this.newPatientChartData = this.newPatientChartData1;
@@ -2116,7 +2128,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       if (data.message == 'success') {
         this.buildChartNewpatientsDentistLoader = false;
         if (data.data != null && data.data[0] && data.data[0].getX != undefined) {
-          this.newPatientValuePatients = data.data[0].getX;
+          this.newPatientValuePatients = data.data[0].getX + ' New Patients';
           this.newPatientLabelPatients = data.data[0].provider;
           if (data.data[0].percent)
             this.newPatientPercent = Math.round(data.data[0].percent);
@@ -2124,7 +2136,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           this.newPatientTotalPrev = Math.round(data.total_ta);
         }
         else {
-          this.newPatientValuePatients = 0;
+          this.newPatientValuePatients = 0 + ' New Patients';
           this.newPatientLabelPatients = "";
           this.newPatientTotalPrev = 0;
           this.newPatientTotalAverage = 0;
@@ -2413,7 +2425,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.currentText = 'Last Month';
 
         const date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() -1, 1), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
         console.log(this.startDate + " " + this.endDate);
 
@@ -2514,7 +2526,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.loadDentist(dentistVal);
       }
       $('.filter').removeClass('active');
-      $('.filter_'+duration).addClass("active");
+      $('.filter_' + duration).addClass("active");
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
     }
   }
@@ -2918,31 +2930,31 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist,this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data !=null && data.message == 'success'){
-        this.fdnewPatientsRateTrendLoader= false;
-          this.newPatientsChartTrendLabels1=[];
-  this.newPatientsChartTrend1=[];
-                data.data.forEach(res => {  
-                    if(res.val)
-                     this.newPatientsChartTrend1.push(Math.round(res.val.getX));
-                   else
-                     this.newPatientsChartTrend1.push(0);
+    this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+      if (data != null && data.message == 'success') {
+        this.fdnewPatientsRateTrendLoader = false;
+        this.newPatientsChartTrendLabels1 = [];
+        this.newPatientsChartTrend1 = [];
+        data.data.forEach(res => {
+          if (res.val)
+            this.newPatientsChartTrend1.push(Math.round(res.val.getX));
+          else
+            this.newPatientsChartTrend1.push(0);
 
-                   if(this.trendValue == 'c')
-                   this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                   this.newPatientsChartTrendLabels1.push(res.duration);
-                  
-                 });
-                 this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
+          if (this.trendValue == 'c')
+            this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+          else
+            this.newPatientsChartTrendLabels1.push(res.duration);
 
-                 this.newPatientsChartTrendLabels =this.newPatientsChartTrendLabels1; 
-                 if(this.newPatientsChartTrendLabels.length <= 0){
-                  this.newPatientPercent = 0;
+        });
+        this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
 
-                 }
-       }
+        this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
+        if (this.newPatientsChartTrendLabels.length <= 0) {
+          this.newPatientPercent = 0;
+
+        }
+      }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
