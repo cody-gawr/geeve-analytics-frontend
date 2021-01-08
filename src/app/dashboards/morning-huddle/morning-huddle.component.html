@@ -19,7 +19,7 @@
           </mat-select>
         </mat-form-field>
         
-          <strong> {{ production.date | date: 'MMM d, y' }} </strong>
+          <strong> {{ production.date | date: 'MMM d, y':'UTC +10' }} </strong>
         
       </div>
     <!-- Top Cards -->
@@ -139,13 +139,13 @@
 
     <td mat-cell *matCellDef="let element"> <span [ngClass] = "(element.recall.rate > element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}}% </span>
 
-    <span class="goal">Goal: {{ element.recall.goal}}</span>
+    <span class="goal">Goal: {{ element.recall.goal}}%</span>
 </td>
   </ng-container>
  <ng-container matColumnDef="treatment">
     <th mat-header-cell *matHeaderCellDef> Treatment Rate </th>
     <td mat-cell *matCellDef="let element"> <span [ngClass] = "(element.treatment.total > element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}%</span>
-    <span class="goal">Goal: {{ element.treatment.goal}}</span>
+    <span class="goal">Goal: {{ element.treatment.goal}}%</span>
      </td>
   </ng-container>
 
@@ -516,7 +516,7 @@
   <!-- Symbol Column -->
   <ng-container matColumnDef="start">
     <th mat-header-cell *matHeaderCellDef> Appointment Start </th>
-    <td mat-cell *matCellDef="let element"> {{ element.start | date: 'd, M y h:mm a':'UTC +10' }}
+    <td mat-cell *matCellDef="let element"> {{ element.start | date: 'h:mm a':'UTC' }}
 </td>
   </ng-container>
 <ng-container matColumnDef="isDataAvailable">
@@ -559,7 +559,7 @@
   <!-- Weight Column -->
   <ng-container matColumnDef="start">
     <th mat-header-cell *matHeaderCellDef> Appointment Start </th>
-    <td mat-cell *matCellDef="let element"> {{element.start | date: 'd, M y h:mm a':'UTC +10' }} </td>
+    <td mat-cell *matCellDef="let element"> {{element.start | date: 'h:mm a':'UTC' }} </td>
   </ng-container>
 
   <!-- Symbol Column -->
@@ -610,13 +610,16 @@
   <!-- Weight Column -->
   <ng-container matColumnDef="start">
     <th mat-header-cell *matHeaderCellDef> Start</th>
-    <td mat-cell *matCellDef="let element">{{element.start | date: 'd, M y h:mm a' }}  </td>
+    <td mat-cell *matCellDef="let element">{{element.start | date: 'h:mm a':'UTC' }}  </td>
   </ng-container>
 
   <!-- Symbol Column -->
   <ng-container matColumnDef="outstanding">
     <th mat-header-cell *matHeaderCellDef> Outstanding </th>
-    <td mat-cell *matCellDef="let element">${{ element.outstanding | number : 2}}</td>
+    <td mat-cell *matCellDef="let element">$
+      <span *ngIf="element.outstanding %1 == 0">{{ element.outstanding }}</span>
+      <span *ngIf="element.outstanding %1 != 0">{{ element.outstanding | number:'1.2-2'}}</span>
+  </td>
   </ng-container>
 <ng-container matColumnDef="isDataAvailable">
   <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
