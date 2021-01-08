@@ -242,12 +242,12 @@
                 </div> 
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'"  >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{rct_completed}}:{{rct_started}}</h3>
+                        <h3 class="m-0 font-light">{{rct_started}}:{{rct_completed}}</h3>
                        <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                        <h3 class="m-0 font-light">{{rct_completed}}:{{rct_started_ta}}</h3>
+                        <h3 class="m-0 font-light">{{rct_started_ta}}:{{rct_completed_ta}}</h3>
                        <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
