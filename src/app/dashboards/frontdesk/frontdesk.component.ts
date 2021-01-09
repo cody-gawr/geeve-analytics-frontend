@@ -324,7 +324,8 @@ public dentists;
   public  gaugeValue = '';
   public  gaugeLabel = "";
   public  gaugeThick = "20";
-  public  foregroundColor= "rgba(0, 150, 136,0.7)";
+  public foregroundColor = "#4ccfae";
+  public backgroundColor = '#f4f0fa';
   public  cap= "round";
   public  size = "250"
   public gaugeAppendText ='%';

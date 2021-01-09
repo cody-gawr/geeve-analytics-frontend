@@ -278,14 +278,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.chartService.colors.odd,
         this.chartService.colors.even
       ],
-      hoverBackgroundColor: [
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even
-      ],
       data: [],
       label: ''
     }
@@ -302,15 +294,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even
-      ],
-      hoverBackgroundColor: [
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even
-      ],
+      ]
     }
   ];
   public doughnutDataset = {
@@ -388,6 +372,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public treatmentPreGoal = 0;
   public barChartOptions: any = {
     borderRadius: 50,
+    hover: {mode: null},
     scaleShowVerticalLines: false,
     cornerRadius: 60,
     curvature: 1,
@@ -465,6 +450,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public barChartOptionsTrend: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
+    hover: {mode: null},
     curvature: 1,
     animation: {
       duration: 1500,
@@ -532,6 +518,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public barChartOptionsPercent: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
+    hover: {mode: null},
     curvature: 1,
     animation: {
       duration: 1500,
@@ -610,6 +597,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public barChartOptionsPercentTrend: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
+    hover: {mode: null},
     curvature: 1,
     animation: {
       duration: 1500,
@@ -685,6 +673,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public barChartOptionstrend: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
+    hover: {mode: null},
     curvature: 1,
     animation: {
       duration: 1500,
@@ -751,6 +740,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     scaleShowVerticalLines: false,
     borderWidth: 0,
     responsive: true,
+    hover: {mode: null},
     maintainAspectRatio: false,
     animation: {
       duration: 2000,
@@ -767,6 +757,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public doughnutChartOptionsPercent: any = {
     scaleShowVerticalLines: false,
     responsive: true,
+    hover: {mode: null},
     maintainAspectRatio: false,
     animation: {
       duration: 2000,
@@ -1094,7 +1085,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           this.chartService.colors.odd
         ];
         this.barChartData[0].backgroundColor = colors;
-        this.barChartData[0].hoverBackgroundColor = colors;
         this.barChartLabels = this.barChartLabels1;
         this.productionTotalAverage = Math.round(data.total_average);
         this.productionTotalPrev = Math.round(data.total_ta);
@@ -1219,16 +1209,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.chartService.colors.odd,
         this.chartService.colors.even,
         this.chartService.colors.odd
-      ],
-      hoverBackgroundColor: [
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd
-      ],
+      ]
     }
   ];
   public recallChartAverage;
@@ -1384,15 +1365,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.chartService.colors.odd,
         this.chartService.colors.even,
         this.chartService.colors.odd
-      ],
-      hoverBackgroundColor: [
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd
       ]
     }
   ];
@@ -1521,15 +1493,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       ...this.chartService.baseChartData,
       data: [],
       backgroundColor: [
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd
-      ],
-      hoverBackgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
         this.chartService.colors.odd,
@@ -1688,6 +1651,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public planChartLabels2 = [];
   public barChartOptionsTC: any = {
     borderRadius: 50,
+    hover: {mode: null},
     scaleShowVerticalLines: false,
     cornerRadius: 60,
     curvature: 1,
@@ -2170,15 +2134,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       ...this.chartService.baseChartData,
       data: [],
       backgroundColor: [
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd,
-        this.chartService.colors.even,
-        this.chartService.colors.odd
-      ],
-      hoverBackgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
         this.chartService.colors.odd,

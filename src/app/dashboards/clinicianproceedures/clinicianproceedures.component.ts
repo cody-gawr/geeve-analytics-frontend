@@ -433,6 +433,7 @@ this.preoceedureChartColors = [
    { providerId: 'all', name: 'All Dentists' },
   ];
     public stackedChartOptions: any = {
+      
       elements: {
       point: {
         radius: 5,
@@ -604,6 +605,7 @@ this.preoceedureChartColors = [
   public lineChartType = 'line';
 
   public proceedureChartOptions: any = {
+    hover: {mode: null},
     scaleShowVerticalLines: false,
            responsive: true,
     maintainAspectRatio: false,
@@ -730,13 +732,15 @@ this.preoceedureChartColors = [
             shadowColor: 'rgba(0, 0, 0, 0.5)',
             backgroundColor: [
               '#119682',
-              '#28a08e',
-              '#41ab9b',
-              '#58b5a7',
-              '#70c0b4',
-              '#88cac0',
-              '#a0d5cd',
-              '#aedbd4',
+              '#eeeef8',
+              '#119682',
+              '#eeeef8',
+              '#119682',
+              '#eeeef8',
+              '#119682',
+              '#eeeef8',
+              '#119682',
+              '#eeeef8',
             ],
             pointBevelWidth: 2,
             pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
@@ -751,24 +755,17 @@ this.preoceedureChartColors = [
     { data: [],
       backgroundColor: [
         '#119682',
-        '#28a08e',
-        '#41ab9b',
-        '#58b5a7',
-        '#70c0b4',
-        '#88cac0',
-        '#a0d5cd',
-        '#aedbd4',
-      ],
-      hoverBackgroundColor: [
+        '#eeeef8',
         '#119682',
-        '#28a08e',
-        '#41ab9b',
-        '#58b5a7',
-        '#70c0b4',
-        '#88cac0',
-        '#a0d5cd',
-        '#aedbd4',
+        '#eeeef8',
+        '#119682',
+        '#eeeef8',
+        '#119682',
+        '#eeeef8',
+        '#119682',
+        '#eeeef8',
       ],
+      
       label: 'Total Revenue of Clinician Per Procedure',  
       shadowOffsetX: 3,
       shadowOffsetY: 3,

@@ -90,7 +90,7 @@ export class MarketingComponent implements AfterViewInit {
         $('.dentist_dropdown').hide();
         $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
-  $('#title').html('Marketing ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');        
+  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');        
         
         // $('.external_clinic').show();
         // $('.external_dentist').show();
@@ -226,12 +226,12 @@ this.preoceedureChartColors = [
   };
 
   public stackedChartColors: Array<any> = [
-    { backgroundColor: '#07BEB8' },
+    { backgroundColor: '#119682' },
     { backgroundColor: '#6BE6EF' },
     { backgroundColor: '#68D8D6' },
     { backgroundColor: '#3DCCC7' },
     { backgroundColor: '#68FFF9' },
-    { backgroundColor: '#07BEB8' }
+    { backgroundColor: '#119682' }
   ];
   public stackedChartType = 'bar';
   public stackedChartLegend = true;
@@ -297,7 +297,8 @@ this.preoceedureChartColors = [
   public  gaugeValue = '';
   public  gaugeLabel = "";
   public  gaugeThick = "20";
-  public  foregroundColor= "rgba(0, 150, 136,0.7)";
+  public foregroundColor = "#4ccfae";
+  public backgroundColor = '#f4f0fa';
   public  cap= "round";
   public  size = "250"
   public gaugePrependText ='$';
@@ -307,12 +308,28 @@ this.preoceedureChartColors = [
   public selectedDentist;
   public dentists;
   public pieChartType = 'doughnut';
+  public pieChartColors = [
+    {
+      backgroundColor: [
+        '#6edbbb',
+        '#b0fffa',
+        '#abb3ff',
+        '#ffb4b5',
+        '#fffcac',
+        '#D7F8EF',
+        '#FEEFB8'
+      ]
+    }
+  ]
     public pieChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
     legend: {
             display: true,
-            position:'right'
+            position: 'bottom',
+            labels: {
+              usePointStyle: true
+            }
          }
   };
     myDateParser(dateStr : string) : string {
@@ -327,7 +344,7 @@ this.preoceedureChartColors = [
     return validDate
   }
   loadDentist(newValue) {
-  $('#title').html('Marketing ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');        
+  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');        
 
     if(newValue == 'all') {
       this.mkNewPatientsByReferral();
@@ -634,6 +651,16 @@ public currentText;
       this.duration='m';
             this.loadDentist('all');
         
+    }
+    else if (duration == 'lm') {
+      this.trendText = 'Previous Month';
+      this.currentText = 'Last Month';
+
+      const date = new Date();
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      this.duration='lm';
+      this.loadDentist('all');  
     }
     else if (duration == 'q') {
       this.trendText= 'Last Quarter';

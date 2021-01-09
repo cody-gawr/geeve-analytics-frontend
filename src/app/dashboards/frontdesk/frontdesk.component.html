@@ -46,16 +46,16 @@
             </mat-button-toggle-group>
           </div>
    <div class="onofftoogle">
-          <span class="trend_mode_title">Trend Mode:</span>
+          <span class="trend_mode_title">Trend:</span>
               <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style" >
                <mat-button-toggle checked value = "off" class = "target_off target_filter" (click)="toggleFilter('off')">
                <span>Off</span>
                </mat-button-toggle>
                <mat-button-toggle value = "current" class = "target_current target_filter" (click)="toggleFilter('current')">
-                  <span>Current</span>
+                  <span>Monthly</span>
                </mat-button-toggle>
                <mat-button-toggle value = "historic" class = "target_historic target_filter" (click)="toggleFilter('historic')">
-                  <span>Historic</span>
+                  <span>Annual</span>
                </mat-button-toggle>
             </mat-button-toggle-group>
           </div>
@@ -90,7 +90,7 @@
                     <button mat-menu-item>Download PDF</button>
                 </mat-menu> -->
             </div>
-         
+            <img alt="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
         <div class="card-body">
         <div>
@@ -157,6 +157,7 @@
                     <button mat-menu-item>Download PDF</button>
                 </mat-menu> -->
             </div>  
+            <img alt="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
         <div class="card-body">
           <div class="chart">
@@ -167,6 +168,7 @@
            [value]="ftaTotal" 
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
+           [backgroundColor]="backgroundColor"
            [append]="gaugeAppendText"
            [max] = "maxftaGoal"
            [cap] ="cap"
@@ -225,7 +227,7 @@
                     <button mat-menu-item>Download PDF</button>
                 </mat-menu> -->
             </div>  
-           
+            <img alt="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
         <div class="card-body">
           <div class="chart">
@@ -236,6 +238,7 @@
            [value]="utaTotal" 
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
+           [backgroundColor]="backgroundColor"
            [append]="gaugeAppendText"
            [max] = "maxutaGoal"
            [cap] ="cap"
@@ -294,7 +297,8 @@
           </div>
             <div class="sa_box_title_right_buttons">
 
-            </div>  
+            </div> 
+            <img alt="info-icon" src="../assets/images/info-icon.png"> 
         </mat-card-title>
         <div class="card-body">
           <div class="chart">
@@ -304,6 +308,7 @@
            [value]="ticksTotal" 
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
+           [backgroundColor]="backgroundColor"
            [cap] ="cap"
            [size] = "size">
           </ngx-gauge>
@@ -355,7 +360,8 @@
           </div>
             <div class="sa_box_title_right_buttons">
 
-            </div>  
+            </div> 
+            <img alt="info-icon" src="../assets/images/info-icon.png"> 
         </mat-card-title>
         <div class="card-body">
           <div class="chart">
@@ -366,6 +372,7 @@
            [value]="recallPrebookTotal" 
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
+           [backgroundColor]="backgroundColor"
            [cap] ="cap"
            [max]="maxrecallPrebookGoal"
            [append]="gaugeAppendText"
@@ -425,6 +432,7 @@
             <div class="sa_box_title_right_buttons">
 
             </div>  
+            <img alt="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
         <div class="card-body">
           <div class="chart">
@@ -435,6 +443,7 @@
            [value]="treatmentPrebookTotal" 
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
+           [backgroundColor]="backgroundColor"
            [cap] ="cap"
            [max]="maxtreatmentPrebookGoal"
            [append]="gaugeAppendText"

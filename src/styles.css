@@ -132,8 +132,6 @@
 
 .sa_tabs_main_sec { border-radius: 4px; margin-bottom: 15px; }
 
-.btn-right {justify-content: flex-end;}
-
 .sa_tabs_main_sec .btn-group { padding: 0 10px;}
 
 .sa_dentist_graphs_area { padding: 0px 15px; }
@@ -287,7 +285,9 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .sa_matcard_content .mat-card-title a i { color: #717272; }
 
-.sa_matcard_content .mat-card-title {text-align: left!important;font-size: 15px!important;color: #686d6c!important;border-bottom: 2px solid #f3f3f3!important;padding: 15px 30px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
+.sa_matcard_content .mat-card-title {text-align: left!important;font-size: 15px!important;color: #686d6c!important; align-items: center;border-bottom: 2px solid #f3f3f3!important;padding: 15px 30px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
+
+.sa_matcard_content .mat-card-title img {height: 18px;}
 
 .card-body {padding: 20px}
 
@@ -453,7 +453,7 @@ html .page-wrapper { height: 100vh!important }
 
 .sa_pie_chart_txtdata h6 { border-radius: 4px; text-align: center; padding: 10px; background: linear-gradient(308deg, rgba(14,52,89,0.8) 10%, rgba(24,166,137,0.7) 80%); color: #ffffff; margin: 0 0 11px 0; }
 
-.doughnut-chart-center-text {width: 100%;position: absolute;font-family: 'Gilroy-Bold';top: 50%;left: 0;text-align: center;z-index: 99;color: #2c5a52;font-size: 42px;font-weight: 600; padding-right: 145px;-moz-transform: translateY(-50%);-webkit-transform: translateY(-50%);transform: translateY(-50%);}
+.doughnut-chart-center-text {width: 100%;position: absolute;font-family: 'Gilroy-Bold';top: 50%;left: 0;text-align: center;z-index: 99;color: #2c5a52;font-size: 42px;font-weight: 600; margin-top: -12px;-moz-transform: translateY(-50%);-webkit-transform: translateY(-50%);transform: translateY(-50%);}
 /* .sa_chart_summary_flip{
 
     width: 100%;
@@ -654,7 +654,16 @@ html .page-wrapper { height: 100vh!important }
 
 .settingsBtn, .CategoriesBtn { float: right; }
 
-.mat-green-button.mat-raised-button { background: linear-gradient(308deg, rgba(14,52,89,0.8) 10%, rgba(24,166,137,0.7) 80%); color: #fff; }
+.mat-green-button { 
+    background: rgb(24,166,137); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(24,166,137,1) 0%, rgba(0,111,115,1) 99%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(24,166,137,1) 0%,rgba(0,111,115,1) 99%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(24,166,137,1) 0%,rgba(0,111,115,1) 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', endColorstr='#006f73',GradientType=0 ); /* IE6-9 */
+    color: #fff; 
+    border: 0;
+    border-radius: 4px;
+}
 
 .datamapping-heading, .nsm-content h4 {
     margin-top: 0;
@@ -1026,6 +1035,10 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 .sa_mobile_menu_ico { font-size: 31px!important; color: #18A689!important; }
 }
 
+@media only screen and (max-width: 1742px) and (min-width: 1280px) {
+    .doughnut-chart-center-text{margin-top: -24px;}
+}
+
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (max-width: 1440px) {
 .matInput-form-group .sa-form-group {
@@ -1133,7 +1146,7 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 
 .morning-huddle .mat-tab-body-content { padding: 0 0px !important; }
 
-
+.doughnut-chart-center-text{margin-top: -24px;}
 }
 
 
@@ -1184,6 +1197,9 @@ body .working-days .mat-slide-toggle { width: 50% !important; }
 
 
 }
+@media (max-width:471px) {
+    .doughnut-chart-center-text {margin-top: -35px;}
+}
 @media (max-width:400px) {
 
 .roles_users .mat-card-title .sa-pull-right { float: none; clear: both; margin-top: 10px; }
@@ -1191,6 +1207,9 @@ body .working-days .mat-slide-toggle { width: 50% !important; }
 body .working-days .mat-slide-toggle { width: 100% !important;}
 
 
+}
+@media (max-width:386px) {
+    .doughnut-chart-center-text {margin-top: -44px;}
 }
  @media (min-width:959px) and (max-width:1280px) {
 
@@ -1823,7 +1842,8 @@ body .mat-gray {
 .mat-card-title .mat-button-sm {
     font-size: 11px;
     line-height: normal;
-    padding: 5px 15px !important;
+    cursor: pointer;
+    padding: 11px 15px !important;
 }
 .mat-dialog-container .mat-dialog-actions {
     margin-bottom: 0px;

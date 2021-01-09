@@ -72,10 +72,11 @@
         <mat-card-title class="text-center">Item Predictor 
           <div class="sa_box_title_right_buttons">
             </div>
+            <img alt="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
         <div class="card-body">
           <div class="Item_Predictor_clinicianproceedures">
-            <div  style="height: 300px" *ngIf="stackedChartDataMax > 0">
+            <div  style="height: 350px" *ngIf="stackedChartDataMax > 0">
               <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels" [options]="stackedChartOptions" 
                 [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
               </canvas>
@@ -95,12 +96,12 @@
 
               <div class="sa_box_title_right_buttons">
                             </div>
-
+            <img alt="info-icon" src="../assets/images/info-icon.png">
           </mat-card-title>
           
           <div class="card-body">
             <div class="chart" *ngIf="itemPredictedChartDataMax > 0">
-              <div  style="height: 300px">
+              <div  style="height: 350px">
                 <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels" [options]="stackedChartOptions" [legend]="false"
                   [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
                 </canvas>
@@ -121,9 +122,9 @@
       <mat-card-content class="sa_matcard_content"> 
         <mat-card-title class="text-center">
           <div>
-            <span *ngIf="trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{pieChartInternalPrevTotal}}"><img class="trend_ico" src="../assets/images/trending_{{pieChartInternalPrevTooltip}}.png"></span>
-            <span *ngIf="trendText" class="referral2Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartExternalPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trending_{{pieChartExternalPrevTooltip}}.png"></span>
-            <span *ngIf="trendText" class="referral3Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartCombinedPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trending_{{pieChartCombinedPrevTooltip}}.png"></span>
+            <span *ngIf="trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{pieChartInternalPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{pieChartInternalPrevTooltip}}.png"></span>
+            <span *ngIf="trendText" class="referral2Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartExternalPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{pieChartExternalPrevTooltip}}.png"></span>
+            <span *ngIf="trendText" class="referral3Tool referral sa_inc_dec_arrows trend_arrow" matTooltip="{{trendText}} : {{pieChartCombinedPrevTotal}}" [style.display]="'none'"><img class="trend_ico" src="../assets/images/trend_{{pieChartCombinedPrevTooltip}}.png"></span>
             Clinician Referrals
           </div>
 
@@ -134,7 +135,8 @@
                    <button mat-menu-item>Save Image</button>
                     <button mat-menu-item>Download PDF</button>
                 </mat-menu> -->
-            </div>  
+            </div> 
+            <img alt="info-icon" src="../assets/images/info-icon.png"> 
         </mat-card-title>
         <div class="card-body">
          <div fxLayout="row wrap" class="sa_tabs_main_sec sa_tabs_clinician_referrals">
@@ -212,6 +214,7 @@
             <div class="sa_box_title_right_buttons">
 
             </div>
+            <img alt="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
         <div class="card-body">
          <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec">
@@ -219,7 +222,7 @@
                         <small class="sa_tab_btn prmain1 active" (click) = "changeDentistPredictorMain('1')">Crown to Large Filling</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                        <small class="sa_tab_btn prmain2" (click) = "changeDentistPredictorMain('2')">Extraction to RCT</small>
+                        <small class="sa_tab_btn prmain2" (click) = "changeDentistPredictorMain('2')">RCT to Extraction</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                         <small class="sa_tab_btn prmain3" (click) = "changeDentistPredictorMain('3')">RCT Conversion</small>
@@ -231,7 +234,6 @@
           [datasets]="predictedstackedChartData"
           [labels]="predictedstackedChartLabels"
           [options]="stackedChartOptions"
-          [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)"></canvas>
           </div>
 
@@ -244,37 +246,37 @@
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted1 sa_chart_details_sec" >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                    <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                        <h3 class="m-0 value-num">{{crowns}}:{{large_fillings}}</h3>
+                        <h3 class="m-0 value-num">{{large_fillings}}:{{crowns}}</h3>
                         <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
                         <span class="value-text" *ngIf="currentText == ''">Average</span>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
             <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                        <h3 class="m-0 value-num">{{crowns_ta}}:{{large_fillings_ta}}</h3>
+                        <h3 class="m-0 value-num">{{large_fillings_ta}}:{{crowns_ta}}</h3>
                         <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
                         <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                     </div>
                 </div> 
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'"  >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 value-num">{{extractions}}:{{root_canals}}</h3>
+                        <h3 class="m-0 value-num">{{root_canals}}:{{extractions}}</h3>
                         <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
                         <span class="value-text" *ngIf="currentText == ''">Average</span>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                        <h3 class="m-0 value-num">{{extractions_ta}}:{{root_canals_ta}}</h3>
+                        <h3 class="m-0 value-num">{{root_canals_ta}}:{{extractions_ta}}</h3>
                         <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
                         <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                     </div>
                 </div> 
             <div fxLayout="row wrap" class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'"  >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 value-num">{{rct_completed}}:{{rct_started}}</h3>
+                        <h3 class="m-0 value-num">{{rct_started}}:{{rct_completed}}</h3>
                         <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
                         <span class="value-text" *ngIf="currentText == ''">Average</span>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                        <h3 class="m-0 value-num">{{rct_completed}}:{{rct_started_ta}}</h3>
+                        <h3 class="m-0 value-num">{{rct_started_ta}}:{{rct_completed}}</h3>
                         <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
                         <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                     </div>
@@ -294,6 +296,7 @@
                       <button mat-menu-item>Download PDF</button>
                   </mat-menu> -->
               </div>
+              <img alt="info-icon" src="../assets/images/info-icon.png">
           </mat-card-title>
           <div class="card-body">
          <div fxLayout="row wrap" class="predictor_ratio sa_tabs_main_sec">
@@ -301,7 +304,7 @@
                         <small class="sa_tab_btn pr1 active" (click) = "changeDentistPredictor('1')">Crown to Large Filling</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                        <small class="sa_tab_btn pr2" (click) = "changeDentistPredictor('2')">Extraction to RCT</small>
+                        <small class="sa_tab_btn pr2" (click) = "changeDentistPredictor('2')">RCT to Extraction</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                         <small class="sa_tab_btn pr3" (click) = "changeDentistPredictor('3')">RCT Conversion</small>
@@ -365,10 +368,11 @@
                     <button mat-menu-item>Download PDF</button>
                 </mat-menu> -->
             </div>
+            <img alt="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
         <div class="card-body">
 <div class="Item_Predictor_TotalRevenue">
-         <div  style="height: 400px" *ngIf="proceedureChartLabels.length>0">
+         <div  style="height: 474px" *ngIf="proceedureChartLabels.length>0">
         <canvas baseChart class="chart" 
           [datasets]="proceedureChartData"
           [labels]="proceedureChartLabels"
@@ -394,10 +398,11 @@
                       <button mat-menu-item>Download PDF</button>
                   </mat-menu> -->
               </div>
+              <img alt="info-icon" src="../assets/images/info-icon.png">
           </mat-card-title>
           <div class="card-body">
 
-         <div style="height: 400px"  *ngIf="proceedureDentistChartLabels.length>0">
+         <div style="height: 474px"  *ngIf="proceedureDentistChartLabels.length>0">
         <canvas baseChart class="chart" 
           [datasets]="proceedureDentistChartData"
           [labels]="proceedureDentistChartLabels"
