@@ -1044,7 +1044,7 @@ changeLoginStatus(){
          this.productionTotalPrev =Math.round(data.total_ta);
          this.productionGoal = data.goals;
         
-  if(this.productionTotalAverage >= this.productionTotalPrev)
+  if(this.productionTotal >= this.productionTotalPrev)
           this.productionTooltip = 'up';
         this.barChartOptionsDP.annotation =[];
           if(this.goalchecked == 'average') {
@@ -1105,6 +1105,7 @@ public maxProductionGoal:any=0;
   private buildChartDentist() {
     this.buildChartDentistLoader =true;
           this.gaugeLabel='';
+          this.gaugeValue = 0;
   this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
       //this.barChartOptionsDP.annotation = [];
       this.productionTotal = 0;
@@ -1113,8 +1114,9 @@ public maxProductionGoal:any=0;
        this.maxProductionGoal=0;
        if(data.message == 'success' ){
         this.buildChartDentistLoader =false;
-         this.gaugeValue = '0';
+         this.gaugeValue = 0;
         if(data.data != null ) {
+          if(data.data.total)
           this.gaugeValue = Math.round(data.data.total);
           this.gaugeLabel = data.data.name;
           var name = data.data.name;
@@ -1123,6 +1125,7 @@ public maxProductionGoal:any=0;
          }
            else
            this.gaugeLabel =  data.data.firstname;
+           if(data.data.total)
           this.productionTotal = Math.round(data.data.total);
          }
           this.productionTotalPrev = Math.round(data.total_ta);
