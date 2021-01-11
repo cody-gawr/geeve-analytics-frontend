@@ -80,10 +80,10 @@
                <mat-button-toggle checked value = "off" class = "target_off target_filter" (click)="toggleFilter('off')"><span>Off</span>
                </mat-button-toggle>
                <mat-button-toggle value = "current" class = "target_current target_filter" (click)="toggleFilter('current')">
-                  <span>Current</span>
+                  <span>Monthly</span>
                </mat-button-toggle>
                <mat-button-toggle value = "historic" class = "target_historic target_filter" (click)="toggleFilter('historic')">
-                  <span>Historic</span>
+                  <span>Annual</span>
                </mat-button-toggle>
             </mat-button-toggle-group>
           </div>
@@ -445,9 +445,6 @@
 
         <div class="chart" *ngIf="newPatientsDataMax > 0">
           <div *ngIf="showTrendChart == false" style="height: 326px; position: relative;">
-            <div class="doughnut-chart-center-text">
-              {{newPatientTotalAverage}}
-            </div>
         <canvas #myCanvas baseChart  id="newPatients" class="chart"
         [data]="newPatientChartData"
           [labels]="newPatientChartLabels"

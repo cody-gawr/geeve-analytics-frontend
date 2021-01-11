@@ -31,7 +31,7 @@
       </div>
  <div class="sa_frontdesk_target dh-target"> 
   <div class="toogletopright">
-    <div class="onofftoogle2">
+    <!-- <div class="onofftoogle2">
           <span class="trend_mode_title">Target:</span>
               <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style" >
                   <mat-button-toggle checked value = "off" class = "toggle_off toggle_filter" (click)="goalToggle('off')">
@@ -44,7 +44,7 @@
                   <span>Goal</span>
                </mat-button-toggle>
             </mat-button-toggle-group>
-          </div>
+          </div> -->
    <div class="onofftoogle">
           <span class="trend_mode_title">Trend:</span>
               <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style" >
@@ -94,7 +94,7 @@
         </mat-card-title>
         <div class="card-body">
         <div>
-         <div style="height: 330px;">
+         <div style="height: 330px; width: 100%;">
           
 
         <canvas *ngIf="showTrend == false && workTimeLabels.length > 0" #myCanvas baseChart [datasets]="workTimeData" [labels]="workTimeLabels" [options]="stackedChartOptions" 
@@ -115,20 +115,20 @@
       </div></div>
         </div>
         <div class="card-footer">
-       <div *ngIf="showTrend == false && workTimeLabels.length > 0" fxLayout="row wrap" class="m-t-40 predicted_main predicted1 sa_chart_details_sec">
-                    <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="text-center">
+       <div *ngIf="showTrend == false && workTimeLabels.length > 0" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 predicted_main predicted1 sa_chart_details_sec">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                    <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                         <h3 class="m-0 value-num">{{workTimeTotal | number }}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
-                    <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
             <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                         <h3 class="m-0 value-num">{{prevWorkTimeTotal | number }}%</h3>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
-                    <div fxFlex.gt-sm="30%" fxFlex.gt-xs="30%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
             <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                         <h3 class="m-0 value-num">{{workTimeGoal | number }}%</h3>
                         <small>Goal</small>
@@ -163,7 +163,7 @@
           <div class="chart">
          
 
-          <div *ngIf="showTrend == false" style="height: 190px">
+          <div *ngIf="showTrend == false" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="ftaTotal" 
            [thick]="gaugeThick"  
@@ -181,7 +181,7 @@
               <p></p>
           </div> -->
 
-       <div *ngIf="showTrend == true && ftaChartTrendLabels.length > 0" style="height: 300px">
+       <div *ngIf="showTrend == true && ftaChartTrendLabels.length > 0" style="height: 300px;width: 100%">
           <canvas #myCanvas baseChart [datasets]="ftaChartTrend" [labels]="ftaChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="lineChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
@@ -190,7 +190,7 @@
       </div>
         </div>
         <div class="card-footer">
-          <div *ngIf="showTrend == false"  fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
+          <div *ngIf="showTrend == false"  fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">{{ftaTotal | number:'1.0-0'}}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
@@ -233,7 +233,7 @@
           <div class="chart">
           
 
-          <div *ngIf="showTrend == false" style="height: 190px">
+          <div *ngIf="showTrend == false" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="utaTotal" 
            [thick]="gaugeThick"  
@@ -250,7 +250,7 @@
               <p></p>
           </div> -->
 
-       <div *ngIf="showTrend == true && utaChartTrendLabels.length > 0" style="height: 300px">
+       <div *ngIf="showTrend == true && utaChartTrendLabels.length > 0" style="height: 300px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="utaChartTrend" [labels]="utaChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="lineChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
@@ -263,7 +263,7 @@
       </div>
         </div>
         <div class="card-footer">
-          <div *ngIf="showTrend == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
+          <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">{{utaTotal | number:'1.0-0'}}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
@@ -303,7 +303,7 @@
         <div class="card-body">
           <div class="chart">
          
-          <div *ngIf="showTrend == false" style="height: 190px">
+          <div *ngIf="showTrend == false" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="ticksTotal" 
            [thick]="gaugeThick"  
@@ -318,7 +318,7 @@
               <p></p>
           </div> -->
 
-      <div *ngIf="showTrend == true && tickChartTrendLabels.length > 0" style="height: 300px">
+      <div *ngIf="showTrend == true && tickChartTrendLabels.length > 0" style="height: 300px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="tickChartTrend" [labels]="tickChartTrendLabels" [options]="stackedChartOptionsticks" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
@@ -330,7 +330,7 @@
       </div>
         </div>
         <div class="card-footer">
-          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails" *ngIf="showTrend == false ">
+          <div fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails" *ngIf="showTrend == false ">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">{{ticksTotal | number}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
@@ -367,7 +367,7 @@
           <div class="chart">
          
 
-          <div *ngIf="showTrend == false && recallPrebookTotal>0" style="height: 190px">
+          <div *ngIf="showTrend == false && recallPrebookTotal>0" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="recallPrebookTotal" 
            [thick]="gaugeThick"  
@@ -384,7 +384,7 @@
               <p></p>
           </div>
 
-        <div *ngIf="showTrend == true && recallPrebookChartTrendLabels.length > 0" style="height: 300px">
+        <div *ngIf="showTrend == true && recallPrebookChartTrendLabels.length > 0" style="height: 300px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="recallPrebookChartTrend" [labels]="recallPrebookChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
@@ -397,7 +397,7 @@
       </div>
         </div>
         <div class="card-footer">
-          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails" *ngIf="showTrend == false">
+          <div fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails" *ngIf="showTrend == false">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">{{recallPrebookTotal}}%</h3>
                        <small *ngIf="currentText != ''">{{currentText}}</small>
@@ -438,7 +438,7 @@
           <div class="chart">
           
 
-          <div *ngIf="showTrend == false" style="height: 190px">
+          <div *ngIf="showTrend == false" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="treatmentPrebookTotal" 
            [thick]="gaugeThick"  
@@ -457,7 +457,7 @@
           </div>
       -->
 
-<div *ngIf="showTrend == true && treatmentPrebookChartTrendLabels.length > 0" style="height: 300px">
+<div *ngIf="showTrend == true && treatmentPrebookChartTrendLabels.length > 0" style="height: 300px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="treatmentPrebookChartTrend" [labels]="treatmentPrebookChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
@@ -470,7 +470,7 @@
       </div>
         </div>
         <div class="card-footer">
-          <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails" *ngIf="showTrend == false">
+          <div fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails" *ngIf="showTrend == false">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">{{treatmentPrebookTotal}}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>

@@ -20,9 +20,6 @@ export interface Dentist {
 }
 @Component({
   templateUrl: './cliniciananalysis.component.html',
-  providers: [
-    DecimalPipe
-  ]
 })
 /**
   *Clinician analysis graph Dashboard
@@ -126,7 +123,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     if (this._cookieService.get("childid"))
       this.childid = this._cookieService.get("childid");
     //   $('.external_dentist').val('all');
-    $('#title').html('Clinician Analysis');
+    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.myDateParser(this.startDate) + '-' + this.myDateParser(this.endDate) + '</span>');
     $('.external_clinic').show();
     $('.dentist_dropdown').show();
     $('.header_filters').removeClass('flex_direct_mar');
@@ -223,7 +220,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   splitName(name: string) {
     const regex = /\w+\s\w+(?=\s)|\w+/g;
-    return name.trim().match(regex);
+    return name.toString().trim().match(regex);
   }
 
   dentists: Dentist[] = [
@@ -421,7 +418,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       // borderColor: '#000',
       callbacks: {
         label: (tooltipItem) => {
-          return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
         },
         // remove title
         title: function () {
@@ -489,7 +486,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       callbacks: {
         // use label callback to return the desired label
         label: (tooltipItem, data) => {
-          return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
         },
         // remove title
         title: function (tooltipItem, data) {
@@ -750,7 +747,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       display: true,
       position: 'bottom',
       labels: {
-        usePointStyle: true
+        usePointStyle: true,
+        padding: 20
+      }
+    },
+    elements: {
+      center: {
+        text: this.newPatientTotalAverage,
+        // sidePadding: 60
       }
     }
   };
@@ -1161,7 +1165,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartDentistLoader = false;
         this.gaugeValue = '0';
         if (data.data != null) {
-          this.gaugeValue = Math.round(data.data.total);
+          this.gaugeValue = Math.round((data.data.total || 0));
           this.gaugeLabel = data.data.name;
           var name = data.data.name;
           if (name != null) {
@@ -1169,10 +1173,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           }
           else
             this.gaugeLabel = data.data.firstname;
-          this.productionTotal = Math.round(data.data.total);
+          this.productionTotal = Math.round((data.data.total || 0));
         }
-        this.productionTotalPrev = Math.round(data.total_ta);
-        this.productionTotalAverage = Math.round(data.total_average);
+        this.productionTotalPrev = Math.round((data.total_ta || 0));
+        this.productionTotalAverage = Math.round((data.total_average || 0));
         this.productionGoal = data.goals;
 
         if (this.gaugeValue > this.productionGoal)
@@ -1694,7 +1698,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       // borderColor: '#000',
       callbacks: {
         label: (tooltipItem) => {
-          return tooltipItem.xLabel + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
         },
         // remove title
         title: function () {
@@ -1860,7 +1864,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             this.gaugeValueTreatmentC = Math.round(data.data.plan_fee_completed[0].average_cost_completed);
           if (data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
             this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
-          this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider;
+          this.gaugeLabelTreatment = (data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider || "");
           this.planTotalAll = Math.round(data.total_all);
           this.planTotalCompleted = Math.round(data.total_completed);
           this.planTotal = this.planTotalAll;
@@ -2068,6 +2072,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.newPatientChartLabels = this.newPatientChartLabels1;
 
         this.newPatientTotalAverage = data.total;
+        this.doughnutChartOptions.elements.center.text = this.newPatientTotalAverage;
         this.newPatientTotalPrev = data.total_ta;
         this.newPatientGoals = data.goals;
         if (this.user_type == '4' && this.childid != '') {
@@ -2113,6 +2118,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           this.newPatientTotalPrev = 0;
           this.newPatientTotalAverage = 0;
         }
+        this.doughnutChartOptions.elements.center.text = this.newPatientTotalAverage;
         this.newPatientGoals = data.goals;
         if (this.newPatientPercent > this.newPatientGoals)
           this.maxnewPatientGoal = this.newPatientPercent;
@@ -2375,7 +2381,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
         var date = new Date();
         this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         console.log(this.startDate + " " + this.endDate);
 
         this.loadDentist(dentistVal);
@@ -2407,21 +2413,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
         if (cmonth >= 1 && cmonth <= 3) {
           this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 4 && cmonth <= 6) {
           this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 7 && cmonth <= 9) {
           this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 10 && cmonth <= 12) {
           1
           this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');
         }
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         this.loadDentist(dentistVal);
 
       }

@@ -122,7 +122,7 @@ single = [
         $('.header_filters').addClass('flex_direct_mar');
          $('.external_clinic').show();
         $('.external_dentist').show();
-  $('#title').html('<span>Finances<span>  <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');
+  $('#title').html('<span>Finances</span>  <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();
@@ -1491,7 +1491,7 @@ filterDate(duration) {
 
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
             this.loadDentist('all');
     }
     else if (duration == 'q') {
@@ -1504,18 +1504,22 @@ filterDate(duration) {
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy')
       }
       else if(cmonth >=4 && cmonth <=6) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); 
+      }
       else if(cmonth >=7 && cmonth <=9) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); }
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); 
+      }
       else if(cmonth >=10 && cmonth <=12) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  }
-            this.loadDentist('all');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
+      }
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.loadDentist('all');
     }
     else if (duration == 'lq') {
         this.duration='lq';

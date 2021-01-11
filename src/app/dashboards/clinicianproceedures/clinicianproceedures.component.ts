@@ -4,7 +4,7 @@ import { ClinicianProceeduresService } from './clinicianproceedures.service';
 import { DentistService } from '../../dentist/dentist.service';
 
 import * as frLocale from 'date-fns/locale/fr';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import {
   FormControl,
   FormGroupDirective,
@@ -20,7 +20,8 @@ import { CookieService } from "angular2-cookie/core";
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';  
+import 'rxjs/add/operator/filter';
+import { ChartService } from '../chart.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -51,10 +52,22 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   private legendLabelOptions = {
     labels: {
-      usePointStyle: true
+      usePointStyle: true,
+      padding: 20
     }
   };
-  constructor(private toastr: ToastrService,private clinicianproceeduresService: ClinicianProceeduresService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
+  constructor(
+    private toastr: ToastrService,
+    private clinicianproceeduresService: ClinicianProceeduresService, 
+    private dentistService: DentistService, 
+    private datePipe: DatePipe, 
+    private route: ActivatedRoute, 
+    private headerService: HeaderService,
+    private _cookieService: CookieService, 
+    private router: Router,
+    private numPipe: DecimalPipe,
+    private chartService: ChartService
+  ){
          this._routerSub = this.router.events
          .filter(event => event instanceof NavigationEnd)
          .subscribe((value) => {
@@ -433,7 +446,9 @@ this.preoceedureChartColors = [
    { providerId: 'all', name: 'All Dentists' },
   ];
     public stackedChartOptions: any = {
-      
+      hover: { 
+        mode: null
+    },
       elements: {
       point: {
         radius: 5,
@@ -472,7 +487,7 @@ this.preoceedureChartColors = [
         legend: {
             display: true,
             position: 'bottom',
-            ...this.legendLabelOptions
+            ...this.legendLabelOptions,
          },
           tooltips: {
             mode: 'x-axis',
@@ -617,10 +632,10 @@ this.preoceedureChartColors = [
         scales: {
           xAxes: [{ 
             ticks: {
-                userCallback: function(label, index, labels) {
+                userCallback: (label, index, labels) => {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
-                         return "$"+label;
+                         return '$' + this.numPipe.transform(label);
                      }
                  },
               callback: function(value) {
@@ -650,12 +665,13 @@ this.preoceedureChartColors = [
         callbacks: {
             title: function(tooltipItems, data) {
                 var idx = tooltipItems[0].index;
-                return data.labels[idx];//do something with title
+                // return data.labels[idx];//do something with title
+                return '';
             },
-            label: function(tooltipItems, data) {
+            label: (tooltipItems, data) => {
                 //var idx = tooltipItems.index;
                 //return data.labels[idx] + ' €';
-                return '$'+tooltipItems.xLabel;
+                return tooltipItems.yLabel + ': $'+ this.numPipe.transform(tooltipItems.xLabel);
             }
         }
 },        
@@ -676,6 +692,14 @@ this.preoceedureChartColors = [
     { backgroundColor: '#68FFF9' },
     { backgroundColor: '#07BEB8' }
   ];
+  public predictorRatioColors = [
+    {
+      backgroundColor: '#119682'
+    },
+    {
+      backgroundColor: '#1fd6b1'
+    },
+  ]
   public stackedChartType = 'bar';
   public stackedChartLegend = true;
 
@@ -1798,7 +1822,7 @@ public currentText;
 
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
       console.log(this.startDate+" "+this.endDate);
             this.loadDentist(dentistVal);
@@ -1823,19 +1847,24 @@ public currentText;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); 
+      }
       else if(cmonth >=7 && cmonth <=9) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); }
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); 
+      }
       else if(cmonth >=10 && cmonth <=12) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  }
-        this.duration='q';
-            this.loadDentist(dentistVal);
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
+      }
+      
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.duration='q';
+      this.loadDentist(dentistVal);
     }
     else if (duration == 'lq') {
       this.trendText= 'Previous Quarter';

@@ -1843,7 +1843,7 @@ body .mat-gray {
     font-size: 11px;
     line-height: normal;
     cursor: pointer;
-    padding: 11px 15px !important;
+    padding: 6px 15px !important;
 }
 .mat-dialog-container .mat-dialog-actions {
     margin-bottom: 0px;

@@ -4,7 +4,7 @@ import { MarketingService } from './marketing.service';
 import { FinancesService } from '../finances/finances.service';
 import { DentistService } from '../../dentist/dentist.service';
 import * as frLocale from 'date-fns/locale/fr';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import {
   FormControl,
   FormGroupDirective,
@@ -24,6 +24,7 @@ import {MenuItem} from 'primeng/api';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';/**/
+import { BaseChartDirective } from 'ng2-charts';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -34,6 +35,7 @@ export interface Dentist {
 })
 export class MarketingComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas2: ElementRef;
+    @ViewChild("revenueRefChart") revenueRefChart: BaseChartDirective;
   closeResult: string;
   lineChartColors;
   predictedChartColors;
@@ -47,7 +49,19 @@ export class MarketingComponent implements AfterViewInit {
   public selectedCategories:any[] =[];
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  constructor(private toastr: ToastrService,private marketingService: MarketingService, private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService){
+  constructor(
+    private toastr: ToastrService,
+    private marketingService: MarketingService, 
+    private financesService: FinancesService, 
+    private dentistService: DentistService, 
+    private datePipe: DatePipe, 
+    private route: ActivatedRoute,  
+    private headerService: HeaderService,
+    private _cookieService: CookieService, 
+    private router: Router,
+    public ngxSmartModalService: NgxSmartModalService,
+    public decimalPipe: DecimalPipe,
+  ){
   }
   private warningMessage: string; 
   private myTemplate: any = "";
@@ -217,9 +231,12 @@ this.preoceedureChartColors = [
         tooltip.displayColors = false;
       },
   callbacks: {
-     label: function(tooltipItems, data) { 
-          return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
+     label: (tooltipItems, data) => { 
+          return tooltipItems.xLabel+": "+ this.decimalPipe.transform(tooltipItems.yLabel);
      },
+     title: function() {
+       return '';
+     }
      
   }
 },
@@ -321,16 +338,58 @@ this.preoceedureChartColors = [
       ]
     }
   ]
-    public pieChartOptions: any = {
+
+  public totalRevenueByReferral = '$ 0';
+  public totalNewPatientsReferral = 0;
+
+
+  public noNewPatientsByReferralChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
+    tooltips: {
+      callbacks: {
+        label: (tooltipItem, data) => {
+          return data.labels[tooltipItem.index] + ": " + this.decimalPipe.transform(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
+        }
+      }
+    },
     legend: {
-            display: true,
-            position: 'bottom',
-            labels: {
-              usePointStyle: true
-            }
-         }
+      display: true,
+      position: 'right',
+      labels: {
+        usePointStyle: true
+      }
+    },
+    
+    elements: {
+      center: {
+        text: this.totalNewPatientsReferral
+      }
+    }
+  };
+
+  public pieChartOptions: any = {
+    responsive: true,
+    maintainAspectRatio: false,
+    tooltips: {
+      callbacks: {
+        label: (tooltipItem, data) => {
+          return data.labels[tooltipItem.index] + ": $ " + this.decimalPipe.transform(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
+        }
+      }
+    },
+    legend: {
+      display: true,
+      position: 'right',
+      labels: {
+        usePointStyle: true
+      }
+    },
+    elements: {
+      center: {
+        text: this.totalRevenueByReferral
+      }
+    }
   };
     myDateParser(dateStr : string) : string {
     // 2018-01-01T12:12:12.123456; - converting valid date format like this
@@ -374,6 +433,8 @@ public mkNewPatientsByReferralLoader:any;
     var clinic_id;
   this.marketingService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
+      this.totalNewPatientsReferral = Math.round(data.total);
+      this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
     this.mkNewPatientsByReferralLoader = false;
             this.newPatientsTimeData1 =[];
             this.newPatientsTimeLabelsl2 =[];
@@ -446,6 +507,12 @@ public mkRevenueByReferralLoader:any;
   this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.mkRevenueByReferralLoader = false;
+        this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(data.total || 0));
+        this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
+        if (this.revenueRefChart) {
+         this.revenueRefChart.ngOnDestroy();
+         this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
+        }
             this.revenueReferralData1 =[];
             this.revenueReferralLabelsl2 =[];
             this.revenueReferralLabels1 =[];
@@ -647,7 +714,7 @@ public currentText;
 
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='m';
             this.loadDentist('all');
         
@@ -672,19 +739,24 @@ public currentText;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy')
+        ;
       }
       else if(cmonth >=4 && cmonth <=6) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); 
+      }
       else if(cmonth >=7 && cmonth <=9) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); }
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); 
+      }
       else if(cmonth >=10 && cmonth <=12) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  }
-        this.duration='q';
-            this.loadDentist('all');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
+      }
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.duration='q';
+      this.loadDentist('all');
     
     }
     else if (duration == 'lq') {
@@ -748,7 +820,7 @@ public currentText;
     }
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
       
 
   }
@@ -763,7 +835,7 @@ if(diffTime<=365){
 this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.loadDentist('all');      
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
    }
    else {
@@ -943,12 +1015,11 @@ public barChartOptions: any = {
           yAxes: [{  
             ticks: {
              suggestedMin:0,
-              userCallback: function(label, index, labels) {
+              userCallback: (label, index, labels)=> {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
-                         return '$'+label;
+                         return '$'+this.decimalPipe.transform(label);
                      }
-
                  },
             }, 
             }],
@@ -961,9 +1032,12 @@ public barChartOptions: any = {
         tooltip.displayColors = false;
       },
   callbacks: {
-     label: function(tooltipItems, data) { 
-          return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
+     label: (tooltipItems, data) => { 
+          return tooltipItems.xLabel+": $"+ this.decimalPipe.transform(tooltipItems.yLabel);
      },
+     title: function() {
+       return '';
+     }
      
   }
 },

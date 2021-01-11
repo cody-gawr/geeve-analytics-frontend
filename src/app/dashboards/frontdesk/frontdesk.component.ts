@@ -79,13 +79,14 @@ export class FrontDeskComponent implements AfterViewInit {
         this.getClinics();
       this.initiate_clinic();
         
-   $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span'); 
+      $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>'); 
+
         
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
         $('.header_filters').removeClass('hide_header');
-        $('#title').html('Front Desk');
+        $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>'); 
         $('.external_clinic').show();
         $('.external_dentist').show();
         $(document).on('click', function(e) {
@@ -214,8 +215,11 @@ this.predictedChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
-                      return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel+ "%";
+        return tooltipItems.xLabel+": "+tooltipItems.yLabel+ "%";
      },
+     title: function() {
+       return "";
+     }
      
   }
 },
@@ -269,9 +273,12 @@ public stackedChartOptionsticks: any = {
         tooltip.displayColors = false;
       },
   callbacks: {
-     label: function(tooltipItems, data) { 
-                      return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
-     },
+    label: function(tooltipItems, data) { 
+      return tooltipItems.xLabel+": "+tooltipItems.yLabel+ "%";
+   },
+   title: function() {
+     return "";
+   }
      
   }
 },
@@ -703,7 +710,7 @@ public currentText;
 
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         this.duration='m';
         
             this.loadDentist('all');
@@ -727,19 +734,24 @@ public currentText;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy')
+        ;
       }
       else if(cmonth >=4 && cmonth <=6) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); 
+      }
       else if(cmonth >=7 && cmonth <=9) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); }
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); 
+      }
       else if(cmonth >=10 && cmonth <=12) {
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  }
-        this.duration='q';
-        this.loadDentist('all');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
+      }
+      this.duration='q';
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.loadDentist('all');
     }
     else if (duration == 'lq') {
       this.trendText= 'Previous Quarter';
@@ -808,6 +820,7 @@ choosedDate(val) {
     var val= val.toString().split(' - ');
       this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
+      this.duration = 'custom';
       this.loadDentist('all');
       
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);

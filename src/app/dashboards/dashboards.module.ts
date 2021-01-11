@@ -2,7 +2,7 @@ import 'hammerjs';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 
 import { DemoMaterialModule } from '../demo-material-module';
 import { CdkTableModule } from '@angular/cdk/table';
@@ -36,7 +36,6 @@ import { NgxSmartModalModule } from 'ngx-smart-modal';
 import 'chartjs-plugin-annotation';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { DentistProductionChartComponent } from './charts/dentist-production-chart/dentist-production-chart.component';
-import { DashboardDurationTabsComponent } from './dashboard-duration-tabs/dashboard-duration-tabs.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -58,7 +57,7 @@ import { DashboardDurationTabsComponent } from './dashboard-duration-tabs/dashbo
     NgxSmartModalModule.forRoot(),
     CarouselModule
   ],
-  providers: [ ClinicianAnalysisService,MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, HealthScreenService],
-  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, DentistProductionChartComponent, DashboardDurationTabsComponent]
+  providers: [ ClinicianAnalysisService,MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe,DecimalPipe, HealthScreenService],
+  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, DentistProductionChartComponent]
 })
 export class DashboardsModule {}

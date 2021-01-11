@@ -48,10 +48,10 @@
                   <span>Off</span>
                </mat-button-toggle>
                <mat-button-toggle value = "current" class = "target_current target_filter" (click)="toggleFilter('current')">
-                  <span>Current</span>
+                  <span>Monthly</span>
                </mat-button-toggle>
                <mat-button-toggle value = "historic" class = "target_historic target_filter" (click)="toggleFilter('historic')">
-                  <span>Historic</span>
+                  <span>Annual</span>
                </mat-button-toggle>
             </mat-button-toggle-group>
           </div>
@@ -76,7 +76,7 @@
         </mat-card-title>
         <div class="card-body">
           <div class="Item_Predictor_clinicianproceedures">
-            <div  style="height: 350px" *ngIf="stackedChartDataMax > 0">
+            <div  style="height: 408px" *ngIf="stackedChartDataMax > 0">
               <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels" [options]="stackedChartOptions" 
                 [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
               </canvas>
@@ -101,7 +101,7 @@
           
           <div class="card-body">
             <div class="chart" *ngIf="itemPredictedChartDataMax > 0">
-              <div  style="height: 350px">
+              <div  style="height: 408px">
                 <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels" [options]="stackedChartOptions" [legend]="false"
                   [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
                 </canvas>
@@ -152,31 +152,35 @@
                     
                 </div>
           <div class="chart" >
-             <div  style="height: 190px">
-        <canvas *ngIf="showInternal == true && pieChartDataMax1 > 0" baseChart [data]="pieChartData1" [labels]="pieChartLabels1" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"  [legend] = "true" [options]="pieChartOptions" [colors]="doughnutChartColors">
-        </canvas>
-         <div *ngIf="pieChartDataMax1 <= 0 && showInternal == true "class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div>
- 
-         <canvas *ngIf="showExternal == true && pieChartDataMax2 > 0" baseChart [data]="pieChartData2" [labels]="pieChartLabels2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+             <div *ngIf="showInternal == true && pieChartDataMax1 > 0" style="height: 250px">
+              <canvas  baseChart [data]="pieChartData1" [labels]="pieChartLabels1" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"  [legend] = "true" [options]="pieChartOptions" [colors]="doughnutChartColors">
+              </canvas>
+              <div *ngIf="pieChartDataMax1 <= 0 && showInternal == true "class="sa_nodata_div">
+                    <h4>No Data</h4>
+                    <p></p>
+                </div>
+              </div>
+              <div *ngIf="showExternal == true && pieChartDataMax2 > 0" style="height: 250px">
+         <canvas baseChart [data]="pieChartData2" [labels]="pieChartLabels2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" [options]="pieChartOptions" [colors]="doughnutChartColors">
         </canvas>
          <div *ngIf="pieChartDataMax2 <= 0 && showExternal == true" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
           </div>
-       
-         <canvas *ngIf="showCombined == true  && pieChartDataMax3 > 0" baseChart [data]="pieChartData3" [labels]="pieChartLabels3" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+              </div>
+              <div *ngIf="showCombined == true  && pieChartDataMax3 > 0" style="height: 250px">
+         <canvas baseChart [data]="pieChartData3" [labels]="pieChartLabels3" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" [options]="pieChartOptions" [colors]="doughnutChartColors">
         </canvas>
       <div *ngIf="pieChartDataMax3 <= 0 && showCombined == true" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
           </div>
-         <canvas *ngIf="showTrend == true && stackedChartTrendDataMax > 0" baseChart [datasets]="stackedChartTrendData" [labels]="stackedChartTrendLabels" [options]="stackedChartOptions" [legend]="false"
+              </div>
+              <div *ngIf="showTrend == true && stackedChartTrendDataMax > 0" style="height: 310px">
+         <canvas  baseChart [datasets]="stackedChartTrendData" [labels]="stackedChartTrendLabels" [options]="stackedChartOptions" [legend]="false"
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)"></canvas>
 <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true" class="sa_nodata_div">
               <h4>No Data</h4>
@@ -186,7 +190,7 @@
       </div>
         </div>
         <div class="card-footer">
-          <div *ngIf="toggleChecked == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
+          <div *ngIf="toggleChecked == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails" fxLayoutAlign="center center">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">{{pieChartInternalTotal | number:'1.0-0'}}</h3>
                         <span class="value-text">Internal</span>
@@ -206,7 +210,7 @@
   </div>
  
   <!-- Column--> 
-  <div  fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio predictor_ratio_vertical">
+  <div  fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio">
     <mat-card class="ratioPredictor">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">
@@ -234,7 +238,7 @@
           [datasets]="predictedstackedChartData"
           [labels]="predictedstackedChartLabels"
           [options]="stackedChartOptions"
-          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)"></canvas>
+          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="predictorRatioColors" (chartClick)="chartClicked($event)"></canvas>
           </div>
 
           <!-- <div *ngIf="(predictedMax <= 0 || predictedMax == ''  ) && buildChartPredictorLoader == false" class="sa_nodata_div">
@@ -243,7 +247,7 @@
           </div> -->
         </div>
         <div class="card-footer">
-            <div fxLayout="row wrap" class="m-t-40 predicted_main predicted1 sa_chart_details_sec" >
+            <div fxLayout="row wrap" class="m-t-40 predicted_main predicted1 sa_chart_details_sec"  fxLayoutAlign="center center">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                    <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                         <h3 class="m-0 value-num">{{large_fillings}}:{{crowns}}</h3>
@@ -257,7 +261,7 @@
                         <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                     </div>
                 </div> 
-            <div fxLayout="row wrap" class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'"  >
+            <div fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'"  >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">{{root_canals}}:{{extractions}}</h3>
                         <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
@@ -269,7 +273,7 @@
                         <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                     </div>
                 </div> 
-            <div fxLayout="row wrap" class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'"  >
+            <div fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'"  >
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">{{rct_started}}:{{rct_completed}}</h3>
                         <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
@@ -328,7 +332,7 @@
               <h4>No Data</h4>
               <p></p>
           </div> 
-        <div  style="height: 250px" *ngIf="toggleChecked == true ">
+        <div style="height: 250px" *ngIf="toggleChecked == true ">
            <canvas  class="trendRatio" baseChart [datasets]="ratioChartData" [labels]="ratioChartLabels" [options]="stackedChartOptions"
           [legend]="false"
           [options]="stackedChartOptions" 
@@ -337,16 +341,16 @@
       </div>
           </div>
           <div class="card-footer">
-            <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec predictorRatioDetails" *ngIf="toggleChecked == false" >
+            <div fxLayout="row wrap" class="predicted1 sa_chart_details_sec predictorRatioDetails" *ngIf="toggleChecked == false" fxLayoutAlign="center center">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{predictedDentistTotal | number:'1.0-0'}}</h3>
-                        <small *ngIf="currentText != ''">{{currentText}}</small>
-                        <small *ngIf="currentText == ''">Current</small>
+                        <h3 class="m-0 value-num">{{predictedDentistTotal | number:'1.0-0'}}</h3>
+                        <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                        <span class="value-text" *ngIf="currentText == ''">Current</span>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-                        <h3 class="m-0 font-light">{{predictedDentistPrevTotal | number:'1.0-0'}}</h3>
-                        <small *ngIf="trendText != ''">{{trendText}}</small>
-                        <small *ngIf="trendText == ''">Previous</small>
+                        <h3 class="m-0 value-num">{{predictedDentistPrevTotal | number:'1.0-0'}}</h3>
+                        <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                        <span class="value-text" *ngIf="trendText == ''">Previous</span>
                     </div>
                 </div>  
                 </div>          

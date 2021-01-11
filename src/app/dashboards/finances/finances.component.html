@@ -74,53 +74,47 @@
      <div class="nonTrendMode">
 
    <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-<div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_main_grid_dashboard md_mrn">
-        <div class="graph_abso"></div>
+    <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_main_grid_dashboard md_mrn">
+        <mat-card-content>
+            <!-- column -->
+            <div class="d-flex no-block align-items-center">
+                <div class="stats">
+                    <h3 class="text-white m-0">
+                        Net Profit</h3>
 
-            <mat-card-content>
-                <!-- column -->
-                <div class="d-flex no-block align-items-center">
-                    <div class="stats">
-                       <h3 class="text-white m-0"><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{netProfitTrendTotal | number:'1.0-2'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitTrendIcon}}.png"></span>
-                           Net Profit</h3>
-
-                        <h1 class="text-white m-0">${{netProfitVal | number:'1.0-0'}}</h1>
-                    </div>
-                    <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitIcon}}-alt"></i></div> -->
+                    <h1 class="text-white m-0">${{netProfitVal | number:'1.0-0'}}</h1>
                 </div>
-            </mat-card-content>
+                <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitIcon}}-alt"></i></div> -->
+            </div>
+        </mat-card-content>
 
     </div>
     <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_main_grid_dashboard md_mrn">
-        <div class="graph_abso"></div>
+        <mat-card-content>
+            <!-- column -->
+            <div class="d-flex no-block align-items-center">
+                <div class="stats">
 
-            <mat-card-content>
-                <!-- column -->
-                <div class="d-flex no-block align-items-center">
-                    <div class="stats">
-
-                              <h3 class="text-white m-0"> <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{netProfitPercentTrendTotal | number:'1.0-2'}}%" *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitPercentTrendIcon}}.png"></span> Net Profit % (Xero)</h3>
-                        <h1 class="text-white m-0">{{netProfitPercentVal | number:'1.0-0'}}%</h1>
-                    </div>
-                    <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPercentIcon}}-alt"></i></div> -->
+                          <h3 class="text-white m-0"> Net Profit % (Xero)</h3>
+                    <h1 class="text-white m-0">{{netProfitPercentVal | number:'1.0-0'}}%</h1>
                 </div>
-            </mat-card-content>
+                <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPercentIcon}}-alt"></i></div> -->
+            </div>
+        </mat-card-content>
 
     </div>
     <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_main_grid_dashboard last md_mrn">
-        <div class="graph_abso"></div>
-
-            <mat-card-content>
-                <!-- column -->
-                <div class="d-flex no-block align-items-center">
-                    <div class="stats">
-                      <h3 class="text-white m-0" ><span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : {{netProfitPmsTrendTotal | number:'1.0-2'}}%"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{netProfitPmsTrendIcon}}.png"></span>
-                          Net Profit % (PMS)</h3>
-                        <h1 class="text-white m-0"> {{netProfitPmsVal | number:'1.0-0'}}%</h1>
-                    </div>
-                    <!-- <div class="spark-count ml-auto"> <i class="fa s fa-sort-amount-{{netProfitPmsIcon}}-alt"></i></div> -->
+        <mat-card-content>
+            <!-- column -->
+            <div class="d-flex no-block align-items-center">
+                <div class="stats">
+                  <h3 class="text-white m-0" >
+                      Net Profit % (PMS)</h3>
+                    <h1 class="text-white m-0"> {{netProfitPmsVal | number:'1.0-0'}}%</h1>
                 </div>
-            </mat-card-content>
+                <!-- <div class="spark-count ml-auto"> <i class="fa s fa-sort-amount-{{netProfitPmsIcon}}-alt"></i></div> -->
+            </div>
+        </mat-card-content>
 
     </div>
   </div>
