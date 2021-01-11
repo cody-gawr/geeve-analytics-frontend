@@ -768,8 +768,8 @@ changeLoginStatus(){
   if(newValue =='')
     newValue='all';
   $('#title').html('Clinician Analysis  ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');
-  this.getAccountingDentist();
-  this.getStatusDentist();
+  //this.getAccountingDentist();
+  //this.getStatusDentist();
   this.changePrebookRate('recall');
    if( this._cookieService.get("childid"))
          this.childid = this._cookieService.get("childid");
@@ -1044,7 +1044,7 @@ changeLoginStatus(){
          this.productionTotalPrev =Math.round(data.total_ta);
          this.productionGoal = data.goals;
         
-         if(this.productionTotalAverage >= this.productionTotalPrev)
+  if(this.productionTotalAverage >= this.productionTotalPrev)
           this.productionTooltip = 'up';
         this.barChartOptionsDP.annotation =[];
           if(this.goalchecked == 'average') {
