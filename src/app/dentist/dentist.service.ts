@@ -30,13 +30,15 @@ export class DentistService {
     }
 
    // Get Dentist
-    getDentists(clinic_id='1', user_id=this._cookieService.get("userid") , token = this._cookieService.get("token")): Observable<any> {
+    getDentists(clinic_id, user_id=this._cookieService.get("userid") , token = this._cookieService.get("token")): Observable<any> {
+        if(clinic_id) {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/dentists?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
+    }
     }
 
     // Delete Dentist

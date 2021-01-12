@@ -802,20 +802,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     return validDate
   }
   //Load Dentist Data
-  loadDentist(newValue) {
-    if (newValue == '')
-      newValue = 'all';
-    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.myDateParser(this.startDate) + '-' + this.myDateParser(this.endDate) + '</span>');
-    this.getAccountingDentist();
-    this.getStatusDentist();
-    this.changePrebookRate('recall');
-    if (this._cookieService.get("childid"))
-      this.childid = this._cookieService.get("childid");
-    if (newValue == 'all') {
-      this.dentistVal = 'all';
-      this.showTrend = false;
-      this.toggleChecked = false;
-      this.showTrendChart = false;
+ loadDentist(newValue) {
+  if(newValue =='')
+    newValue='all';
+  $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.myDateParser(this.startDate) + '-' + this.myDateParser(this.endDate) + '</span>');
+  //this.getAccountingDentist();
+  //this.getStatusDentist();
+  this.changePrebookRate('recall');
+   if( this._cookieService.get("childid"))
+         this.childid = this._cookieService.get("childid");
+  if(newValue == 'all') {
+      this.dentistVal='all';
+      this.showTrend= false;
+      this.toggleChecked= false;
+      this.showTrendChart=false;
       this.buildChart();
       this.buildChartTreatment();
       this.buildChartNopatients();
@@ -1072,14 +1072,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
               hoverBorderColor: '#000'
             }
           ];
-          this.barChartColors[0].backgroundColor[this.dentistKey] = '#119682';
-          this.DPcolors = this.barChartColors;
-        }
-        else
-          this.DPcolors = this.lineChartColors;
+        this.barChartColors[0].backgroundColor[this.dentistKey] = '#119682';
+        this.DPcolors= this.barChartColors;
+      }
+      else
+         this.DPcolors = this.lineChartColors;
 
-        this.barChartData[0]['data'] = this.barChartData1;
-        const colors = [
+         this.barChartData[0]['data'] = this.barChartData1;
+         const colors = [
           this.chartService.colors.odd,
           this.chartService.colors.even,
           this.chartService.colors.odd,
@@ -1089,12 +1089,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           this.chartService.colors.odd
         ];
         this.barChartData[0].backgroundColor = colors;
-        this.barChartLabels = this.barChartLabels1;
-        this.productionTotalAverage = Math.round(data.total_average);
-        this.productionTotalPrev = Math.round(data.total_ta);
-        this.productionGoal = data.goals;
-
-        if (this.productionTotalAverage >= this.productionTotalPrev)
+         this.barChartLabels = this.barChartLabels1;
+         this.productionTotalAverage =Math.round(data.total_average);
+         this.productionTotalPrev =Math.round(data.total_ta);
+         this.productionGoal = data.goals;
+        
+  if(this.productionTotal >= this.productionTotalPrev)
           this.productionTooltip = 'up';
         this.barChartOptionsDP.annotation = [];
         if (this.goalchecked == 'average') {
@@ -1153,34 +1153,37 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public maxProductionGoal: any = 0;
   //Individual Dentist Production Chart
   private buildChartDentist() {
-    this.buildChartDentistLoader = true;
-    this.gaugeLabel = '';
-    this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.buildChartDentistLoader =true;
+          this.gaugeLabel='';
+          this.gaugeValue = 0;
+  this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
       //this.barChartOptionsDP.annotation = [];
       this.productionTotal = 0;
-      this.productionTotalPrev = 0;
-      this.productionTotalAverage = 0;
-      this.maxProductionGoal = 0;
-      if (data.message == 'success') {
-        this.buildChartDentistLoader = false;
-        this.gaugeValue = '0';
-        if (data.data != null) {
-          this.gaugeValue = Math.round((data.data.total || 0));
+       this.productionTotalPrev = 0;
+       this.productionTotalAverage=0;
+       this.maxProductionGoal=0;
+       if(data.message == 'success' ){
+        this.buildChartDentistLoader =false;
+         this.gaugeValue = 0;
+        if(data.data != null ) {
+          if(data.data.total)
+          this.gaugeValue = Math.round(data.data.total);
           this.gaugeLabel = data.data.name;
           var name = data.data.name;
-          if (name != null) {
-            this.gaugeLabel = name;
-          }
-          else
-            this.gaugeLabel = data.data.firstname;
-          this.productionTotal = Math.round((data.data.total || 0));
-        }
-        this.productionTotalPrev = Math.round((data.total_ta || 0));
-        this.productionTotalAverage = Math.round((data.total_average || 0));
-        this.productionGoal = data.goals;
+          if(name != null) {
+           this.gaugeLabel = name;
+         }
+           else
+           this.gaugeLabel =  data.data.firstname;
+           if(data.data.total)
+          this.productionTotal = Math.round(data.data.total);
+         }
+          this.productionTotalPrev = Math.round(data.total_ta);
+          this.productionTotalAverage= Math.round(data.total_average);
+          this.productionGoal = data.goals;
 
-        if (this.gaugeValue > this.productionGoal)
-          this.maxProductionGoal = this.gaugeValue;
+        if(this.gaugeValue > this.productionGoal)
+          this.maxProductionGoal= this.gaugeValue;
         else
           this.maxProductionGoal = this.productionGoal;
         if (this.maxProductionGoal == 0)
@@ -2531,10 +2534,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       this.showTrendChart = true;
       this.toggleChangeProcess();
     }
-    else if (val == 'off') {
-      this.filterDate('cytd');
-      this.toggleChecked = false;
-      this.showTrendChart = false;
+    else if(val == 'off') {
+       this.filterDate('m');
+       this.toggleChecked = false;
+       this.showTrendChart = false;
     }
   }
   toggleChecked = false;
