@@ -341,13 +341,13 @@
         <span class="warning" >{{ element.noRecall }}</span>
       </div>
       <div class="appointment" *ngIf="element.outstanding.outstandingDollar != 0"> <span class="warning" ><i class="fas fa-procedures font-16"></i> Outstanding Treatment ${{ element.outstanding.outstandingDollar }}</span></div>
-      <div class="appointment" *ngIf="element.xray.022 == 'true' && element.xray.037 == 'true'">
+      <div class="appointment" *ngIf="element.xray.first == 'true' && element.xray.second == 'true'">
           <span class="warning" title="022,037 "><i class="fas fa-x-ray font-16"></i> Xrays Overdue</span>
       </div>
-      <div class="appointment" *ngIf="element.xray.022 != 'true' && element.xray.037 == 'true'">
+      <div class="appointment" *ngIf="element.xray.first != 'true' && element.xray.second == 'true'">
           <span class="warning" title="037 "><i class="fas fa-x-ray font-16"></i> Xrays Overdue</span>
       </div>
-      <div class="appointment" *ngIf="element.xray.022 == 'true' && element.xray.037 != 'true'">
+      <div class="appointment" *ngIf="element.xray.first == 'true' && element.xray.second != 'true'">
           <span class="warning" title="022 "><i class="fas fa-x-ray font-16"></i> Xrays Overdue</span>
       </div>
       <div class="appointment" *ngIf="element.noshows > 3"> <span class="warning" ><i class="fas fa-x-ray font-16"></i> History of No Shows (Patient has >=3 FTA/UTA)</span></div>
