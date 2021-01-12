@@ -285,7 +285,66 @@ public stackedChartOptionsticks: any = {
   legend: {
             display: true
          }
-  };
+};
+
+public numOfTicksChartOptionsticks: any = {
+  elements: {
+  point: {
+    radius: 5,
+    hoverRadius: 7,
+    pointStyle:'rectRounded',
+    hoverBorderWidth:7
+  },
+},
+scaleShowVerticalLines: false,
+       responsive: true,
+maintainAspectRatio: false,
+barThickness: 10,
+  animation: {
+    duration: 500,
+    easing: 'easeOutSine'
+  },
+  fill:false,
+scales: {
+      xAxes: [{ 
+        stacked:true,
+        ticks: {
+            autoSkip: false
+        }
+        }],
+      yAxes: [{ 
+        stacked:true,
+        ticks: {
+          userCallback: function(label, index, labels) {
+                 // when the floored value is the same as the value we have a whole number
+                 if (Math.floor(label) === label) {
+                     return label;
+                 }
+             },
+        },
+        }],
+    },
+            tooltips: {
+                  custom: function(tooltip) {
+    if (!tooltip) return;
+    // disable displaying the color box;
+    tooltip.displayColors = false;
+  },
+callbacks: {
+label: function(tooltipItems, data) { 
+  return tooltipItems.xLabel+": "+ tooltipItems.yLabel;
+},
+title: function() {
+ return "";
+}
+ 
+}
+},
+legend: {
+        display: true
+     }
+};
+
   public stackedChartColors: Array<any> = [
     { backgroundColor: '#76F2E5' },
     { backgroundColor: '#6BE6EF' },

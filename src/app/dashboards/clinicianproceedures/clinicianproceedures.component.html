@@ -42,7 +42,7 @@
 
      <div class="dh-target">
          <div class="onofftoogle" [style.display]="'none'">
-          <span class="trend_mode_title">Trend Mode:</span>
+          <span class="trend_mode_title">Trend:</span>
               <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style" >
                <mat-button-toggle checked value = "off" class = "target_off target_filter" (click)="toggleFilter('off')">
                   <span>Off</span>
@@ -179,7 +179,7 @@
               <p></p>
           </div>
               </div>
-              <div *ngIf="showTrend == true && stackedChartTrendDataMax > 0" style="height: 310px">
+              <div *ngIf="showTrend == true && stackedChartTrendDataMax > 0" style="height: 300px">
          <canvas  baseChart [datasets]="stackedChartTrendData" [labels]="stackedChartTrendLabels" [options]="stackedChartOptions" [legend]="false"
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)"></canvas>
 <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true" class="sa_nodata_div">

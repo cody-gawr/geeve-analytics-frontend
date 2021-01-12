@@ -749,6 +749,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       labels: {
         usePointStyle: true,
         padding: 20
+      },
+      onClick: function (e) {
+        e.stopPropagation();
       }
     },
     elements: {
@@ -769,7 +772,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     },
     legend: {
       display: true,
-      position: 'right'
+      position: 'right',
+      onClick: function (e) {
+        e.stopPropagation();
+      }
     },
     tooltips: {
       callbacks: {
@@ -1153,10 +1159,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public maxProductionGoal: any = 0;
   //Individual Dentist Production Chart
   private buildChartDentist() {
-    this.buildChartDentistLoader =true;
-          this.gaugeLabel='';
-          this.gaugeValue = 0;
-  this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.buildChartDentistLoader = true;
+    this.gaugeLabel = '';
+    this.productionTooltip = 'down';
+    this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       //this.barChartOptionsDP.annotation = [];
       this.productionTotal = 0;
        this.productionTotalPrev = 0;
@@ -1181,6 +1187,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           this.productionTotalPrev = Math.round(data.total_ta);
           this.productionTotalAverage= Math.round(data.total_average);
           this.productionGoal = data.goals;
+
+          if (this.productionTotal > this.productionTotalPrev){
+            this.productionTooltip = 'up';
+          }
 
         if(this.gaugeValue > this.productionGoal)
           this.maxProductionGoal= this.gaugeValue;

@@ -2,20 +2,10 @@ import * as $ from 'jquery';
 import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , ViewChild,ElementRef } from '@angular/core';
 import { ClinicianProceeduresService } from './clinicianproceedures.service';
 import { DentistService } from '../../dentist/dentist.service';
-
-import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import {
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators
-} from '@angular/forms';
 import { ActivatedRoute, Router , NavigationEnd } from "@angular/router";
 import 'chartjs-plugin-style';
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "angular2-cookie/core";
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs/Subscription';
@@ -54,6 +44,9 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
     labels: {
       usePointStyle: true,
       padding: 20
+    },
+    onClick: function (e) {
+      e.stopPropagation();
     }
   };
   constructor(
@@ -486,7 +479,7 @@ this.preoceedureChartColors = [
         },
         legend: {
             display: true,
-            position: 'bottom',
+            position: 'top',
             ...this.legendLabelOptions,
          },
           tooltips: {
@@ -659,6 +652,9 @@ this.preoceedureChartColors = [
         },
          legend: {
         position: 'top',
+        onClick: function (e) {
+          e.stopPropagation();
+        }
       },
       tooltips: {
   enabled: true,

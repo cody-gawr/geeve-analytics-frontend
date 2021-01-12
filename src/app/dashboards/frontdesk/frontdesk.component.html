@@ -319,7 +319,7 @@
           </div> -->
 
       <div *ngIf="showTrend == true && tickChartTrendLabels.length > 0" style="height: 300px;width: 100%">
-      <canvas #myCanvas baseChart [datasets]="tickChartTrend" [labels]="tickChartTrendLabels" [options]="stackedChartOptionsticks" 
+      <canvas #myCanvas baseChart [datasets]="tickChartTrend" [labels]="tickChartTrendLabels" [options]="numOfTicksChartOptionsticks" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>

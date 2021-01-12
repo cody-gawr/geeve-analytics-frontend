@@ -355,9 +355,13 @@ this.preoceedureChartColors = [
     },
     legend: {
       display: true,
-      position: 'right',
+      position: 'bottom',
       labels: {
-        usePointStyle: true
+        usePointStyle: true,
+        padding: 20
+      },
+      onClick: function(e) {
+        e.stopPropagation();
       }
     },
     
@@ -380,9 +384,13 @@ this.preoceedureChartColors = [
     },
     legend: {
       display: true,
-      position: 'right',
+      position: 'bottom',
       labels: {
-        usePointStyle: true
+        usePointStyle: true,
+        padding: 20
+      },
+      onClick: function (e) {
+        e.stopPropagation();
       }
     },
     elements: {
