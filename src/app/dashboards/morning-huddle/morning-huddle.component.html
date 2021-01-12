@@ -335,7 +335,7 @@
         <span class="warning" ><span class="material-icons font-16">phone_callback</span> No Recall for > 6 Months</span>
       </div>
       <div class="appointment" *ngIf="element.noRecall != 'true' && element.noRecall != 'No previous recalls'"> 
-        <span class="warning" >{{ element.noRecall | date: 'h:mm a':'UTC' }}</span>
+        <span class="warning" >Last Recall {{ element.noRecall | date: 'MMM d, y':'UTC' }}</span>
       </div>
       <div class="appointment" *ngIf="element.noRecall != 'true' && element.noRecall == 'No previous recalls'"> 
         <span class="warning" >{{ element.noRecall }}</span>
