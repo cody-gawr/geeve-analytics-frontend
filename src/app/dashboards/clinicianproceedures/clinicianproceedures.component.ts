@@ -916,8 +916,8 @@ public pieChartLabelsres: string[] = [
         (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'none'; }
 
         this.buildChartPredictorDentist();
-        // (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'block';
-        // (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'none';
+        (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
+        (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';
         this.buildChartProceedureDentist();
          $('.revenueProceedureSingle').show();
          $('.revenueProceedure').hide();
@@ -1939,7 +1939,7 @@ toggleFilter(val) {
        this.changePieReferral('Combined');
         $('.pieChartDetails').show();
         this.toggleChecked = false;
-        $('.filter_cytd').click();
+        $('.filter_m').click();
         $('.trendRatio').hide();
     //    $('.predictorRatioDetails').show();
         $('.revenue_proceedure').show();
