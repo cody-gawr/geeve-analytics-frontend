@@ -49,7 +49,7 @@ export class FinancesComponent implements AfterViewInit {
    public netProfitVal:any= 0;
    public netProfitPercentVal:any =0;
    public netProfitPmsVal:any =0;
-   public duration='cytd';
+   public duration='m';
    public predictedChartColors;
    public trendText;
      colorScheme = {
@@ -1670,7 +1670,7 @@ toggleFilter(val) {
 
     }
     else if(val == 'off') {
-        this.filterDate('cytd');
+        this.filterDate('m');
           $('.trendMode').hide();
     $('.nonTrendMode').css('display','block');
     }

@@ -2379,7 +2379,7 @@ toggleFilter(val) {
        this.toggleChangeProcess();
     }
     else if(val == 'off') {
-       this.filterDate('cytd');
+       this.filterDate('m');
        this.toggleChecked = false;
        this.showTrendChart = false;
     }
