@@ -373,58 +373,51 @@ this.preoceedureChartColors = [
   };
 
 
-   public labelBarOptionsTC: any = {
-      elements: {
-      point: {
-        radius: 5,
-        hoverRadius: 7,
-        pointStyle:'rectRounded',
-        hoverBorderWidth:7
-      },
-    },
-    scaleOverride : true,
-        scaleSteps : 1000000,
-        scaleStepWidth : 50,
-        scaleStartValue : 500000,
-    scaleShowVerticalLines: false,
-           responsive: true,
+  public labelBarOptionsTC: any = {
+    pointHoverBackgroundColor: 'none',
+    responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
-      animation: {
-        duration: 500,
-        easing: 'easeOutSine'
-      },
+    animation: {
+      duration: 500,
+      easing: 'easeOutSine'
+    },
     scales: {
-          xAxes: [{ 
-            stacked:false,
-            ticks: {
-                suggestedMin:0,
-               userCallback: function(label, index, labels) {
-                     // when the floored value is the same as the value we have a whole number
-                     if (Math.floor(label) === label) {
-                         return "$" +label;
-                     }
-                 },
-                autoSkip: false
+      xAxes: [{
+        stacked: false,
+        barPercentage: 0.4,
+        gridLines: {
+          color: "transparent",
+        }
+      }],
+      yAxes: [{
+        stacked: false,
+        gridLines: {
+          color: "transparent",
+        },
+        ticks: {
+          suggestedMin: 0,
+          userCallback: function (label, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              const currencyLabel = label>1000 ? label/1000 : label;
+              return "$ " + currencyLabel + "K";
             }
-            }],
-          yAxes: [{ 
-            stacked:false,
-            ticks: {
-           
-            }, 
-            }],
-        },legend: {
-            display: true
-         },
-          tooltips: {
-            mode: 'x-axis',
-  callbacks: {
-     label: function(tooltipItems, data) { 
-        return "$"+data['datasets'][0]['data'][tooltipItems['index']];
-     },
-  }
-}
+          },
+          autoSkip: false
+        },
+      }],
+    },
+    legend: {
+      display: true
+    },
+    tooltips: {
+      mode: 'x-axis',
+      callbacks: {
+        label: function (tooltipItems, data) {
+          return "$ " + data['datasets'][0]['data'][tooltipItems['index']];
+        },
+      }
+    }
   };
 
     public labelBarOptions: any = {
@@ -1308,8 +1301,14 @@ public categoryExpensesLoader:any;
   }
     public totalProductionTrendIcon;
     public totalProductionTrendVal;
-    public totalProductionCollection1: any[] = [
-    {data: [], label: ''}];
+  public totalProductionCollection1: any[] = [
+    { 
+      data: [], 
+      label: '',
+      backgroundColor: [],
+      hoverBackgroundColor: []
+    }
+  ];
 public totalProductionCollectionLabel1 =[];
   public finTotalProductionLoader:any;
 
@@ -1342,7 +1341,7 @@ public totalProductionCollectionLabel1 =[];
          this.totalProductionTrendVal = 0;  
 
           this.totalProductionCollection1[0]['data'].push(this.totalProductionVal);
-
+                   
         if(Math.round(this.totalProductionVal)>=Math.round(this.totalProductionTrendVal))
             this.totalProductionTrendIcon = "up";  
        }
@@ -1386,6 +1385,8 @@ isDecimal(value) {
         this.collectionTrendVal = (data.data.paym_total_ta)?  Math.round(data.data.paym_total_ta) : 0;    
           this.totalProductionCollection1[0]['data'].push(this.collectionVal);
           this.totalProductionCollectionLabel1 = ['Total Production','Collection'];
+         this.totalProductionCollection1[0]['hoverBackgroundColor'] = ['#ffb4b5', '#4ccfae'];
+          this.totalProductionCollection1[0]['backgroundColor'] = ['#ffb4b5', '#4ccfae']; //as label are static we can add background color for that particular column as static
            this.totalProductionCollectionMax = Math.max(...this.totalProductionCollection1[0]['data']);
            if(this.totalProductionVal)
            this.collectionPercentageC=Math.round((this.collectionVal/this.totalProductionVal)*100);

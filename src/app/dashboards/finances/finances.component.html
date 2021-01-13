@@ -317,10 +317,17 @@ expenses_card custom_ngx_cw01" >
               <div class="card-body">
                 <div fxLayout="row wrap" fxLayoutGap="20px grid">
                   <div class="ngx-charts-fix " fxFlex.lg="60" fxFlex.xl="60" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="60">
-                    <div style="height: 180px">
-                      <canvas #myCanvas2 baseChart [datasets]="totalProductionCollection1" [labels]="totalProductionCollectionLabel1" [options]="labelBarOptionsTC" [legend]="false"
-                [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" 
-                (chartClick)="chartClicked($event)"></canvas>
+                    <div style="height: 330px;">
+                      <canvas 
+                        #myCanvas2 
+                        baseChart 
+                        [datasets]="totalProductionCollection1" 
+                        [labels]="totalProductionCollectionLabel1" 
+                        [options]="labelBarOptionsTC" 
+                        [legend]="false"
+                        [chartType]="stackedChartType" 
+                        (chartHover)="chartHovered($event)" 
+                        (chartClick)="chartClicked($event)"></canvas>
                     </div>
                   </div>
                   <div class="" fxFlex.lg="40" fxFlex.xl="40" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="40">
