@@ -179,7 +179,7 @@
               <p></p>
           </div>
               </div>
-              <div *ngIf="showTrend == true && stackedChartTrendDataMax > 0" style="height: 300px">
+              <div *ngIf="showTrend == true && stackedChartTrendDataMax > 0" style="height: 340px">
          <canvas  baseChart [datasets]="stackedChartTrendData" [labels]="stackedChartTrendLabels" [options]="stackedChartOptions" [legend]="false"
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)"></canvas>
 <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true" class="sa_nodata_div">

@@ -24,7 +24,10 @@ import {MenuItem} from 'primeng/api';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';/**/
-import { BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+
 export interface Dentist {
   providerId: string;
   name: string;
@@ -47,8 +50,13 @@ export class MarketingComponent implements AfterViewInit {
   public trendText;
   public filteredCountriesMultiple: any[];
   public selectedCategories:any[] =[];
+  public newPatientsReferral$ = new BehaviorSubject<number>(0);
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
+  pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+  public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
+
   constructor(
     private toastr: ToastrService,
     private marketingService: MarketingService, 
@@ -91,6 +99,28 @@ export class MarketingComponent implements AfterViewInit {
    }
   }
   ngAfterViewInit() {
+    // plugin observable for the center text in doughnut chart to subscribe the no patients count
+    this.pluginObservable$ = this.newPatientsReferral$.pipe(
+      takeUntil(this.destroyed$),
+      map((count) => {
+        let array: PluginServiceGlobalRegistrationAndOptions[] = [{
+          beforeDraw(chart: any) {
+            const ctx = chart.ctx;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+            const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+            ctx.font = 37 + 'px Gilroy-Bold';
+            ctx.fillStyle = '#454649';
+            // Draw text in center
+            ctx.fillText(count, centerX, centerY);
+          }
+        }]
+        return array
+      })
+    )
+    // end of plugin observable logic
+
       $('#currentDentist').attr('did','all');
       this.checkPermission('dashboard4');
  this.route.params.subscribe(params => {
@@ -367,7 +397,7 @@ this.preoceedureChartColors = [
     
     elements: {
       center: {
-        text: this.totalNewPatientsReferral
+        text: ''
       }
     }
   };
@@ -442,7 +472,8 @@ public mkNewPatientsByReferralLoader:any;
   this.marketingService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
       this.totalNewPatientsReferral = Math.round(data.total);
-      this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
+         this.newPatientsReferral$.next(this.totalNewPatientsReferral)
+      // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
     this.mkNewPatientsByReferralLoader = false;
             this.newPatientsTimeData1 =[];
             this.newPatientsTimeLabelsl2 =[];

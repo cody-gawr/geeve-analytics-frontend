@@ -75,9 +75,11 @@
          <div style="height: 326px; position: relative;">
          <div class="sa_back_btn_holder" *ngIf="newPatientsTimeLabelsl2.length > 0"><span (click) ="changeLevel('newPatient')">Back</span></div>
        <canvas *ngIf="newPatientsTimeLabels.length > 0"  #myCanvas2 baseChart [data]="newPatientsTimeData" [labels]="newPatientsTimeLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event,'newPatients')"  [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
+        [plugins]="pluginObservable$ | async"  
+        (chartClick)="chartClicked($event,'newPatients')"  [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
         </canvas>
          <canvas *ngIf="newPatientsTimeLabelsl2.length > 0"  #myCanvas2 baseChart [data]="newPatientsTimeData" [labels]="newPatientsTimeLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+        [plugins]="pluginObservable$ | async"
           [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
         </canvas>
 
