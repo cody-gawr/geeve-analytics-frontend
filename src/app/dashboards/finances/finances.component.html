@@ -197,8 +197,11 @@ expenses_card custom_ngx_cw01" >
               <div class="card-body">
               <div class="chart" *ngIf="productionChartLabels.length > 0">
                 <div  style="height: 280px">
-                  <canvas class="productionPercentage" #myCanvas *ngIf="showInternal == true" baseChart [data]="productionChartData" [labels]="productionChartLabels" [chartType]="productionChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"  [options]="pieChartOptions" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]"> </canvas>
+                  <canvas class="productionPercentage" #myCanvas *ngIf="showInternal == true" baseChart
+                      [data]="productionChartData" [labels]="productionChartLabels" [chartType]="productionChartType"
+                      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
+                      [options]="pieChartOptions" [colors]="[{backgroundColor: [
+                      '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac','#D7F8EF','#FEEFB8']}]"></canvas>
                 </div>
               </div>
               <div *ngIf="productionChartLabels.length <= 0 && finProductionByClinicianLoader == false" class="sa_nodata_div">
@@ -316,7 +319,7 @@ expenses_card custom_ngx_cw01" >
                   <div class="ngx-charts-fix " fxFlex.lg="60" fxFlex.xl="60" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="60">
                     <div style="height: 180px">
                       <canvas #myCanvas2 baseChart [datasets]="totalProductionCollection1" [labels]="totalProductionCollectionLabel1" [options]="labelBarOptionsTC" [legend]="false"
-                [chartType]="stackedChartTypeHorizontal" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" 
+                [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" 
                 (chartClick)="chartClicked($event)"></canvas>
                     </div>
                   </div>
@@ -390,7 +393,8 @@ expenses_card custom_ngx_cw01" >
            [value]="productionVal" 
            [thick]="gaugeThick"  
            [prepend]= "gaugePrependText"
-           [foregroundColor]="foregroundColor2"
+           [foregroundColor]="foregroundColor"
+           [backgroundColor]="backgroundColor"
            [cap] ="cap"
            [size] = "size"> </ngx-gauge>
               </div>

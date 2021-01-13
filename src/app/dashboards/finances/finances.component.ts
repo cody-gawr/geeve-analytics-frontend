@@ -595,15 +595,25 @@ public labelBarPercentOptions: any = {
     maintainAspectRatio: false,
     legend: {
             display: true,
-             position:'right'
+             position:'bottom',
+             labels: {
+              usePointStyle: true,
+              padding: 20
+            },
          },
+         elements: {
+         center: {
+            text: 99,
+            // sidePadding: 60
+          }
+        },
         tooltips: {
         callbacks: {
           label: function(tooltipItem, data) {
             return data['labels'][tooltipItem['index']] +": "+data['datasets'][0]['data'][tooltipItem['index']]+ "%";
           }
         }
-      }
+      },
   };
 
       public pieChartOptions2: any = {
@@ -969,8 +979,9 @@ public labelBarPercentOptions: any = {
   public  gaugeValue = '';
   public  totalProductionLabel = "";
   public  gaugeThick = "20";
-  public  foregroundColor= "rgba(0, 150, 136,0.5)";
-  public  foregroundColor2= "#106E9D";
+  public  foregroundColor= "#4ccfae";
+  public  foregroundColor2= "#4ccfae";
+  public  backgroundColor = '#f4f0fa';
   public  cap= "round";
   public  size = "250"
   public  totalProductionVal:any = 10;
