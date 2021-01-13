@@ -63,8 +63,15 @@ export class AppHeaderrightComponent implements AfterViewInit  {
         this.clinicsData = res.data;
         if(res.data.length>0) {
         if(this.route == '/dashboards/healthscreen'){
+          if(this.clinicsData.length>1) {
           this.clinic_id ='all';
           this.selectedClinic ='all';
+        }
+        else {
+         this.clinic_id = res.data[0].id;
+          this.selectedClinic = res.data[0].id;
+        }
+
         }
         else  
         {
