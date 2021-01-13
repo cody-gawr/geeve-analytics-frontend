@@ -60,7 +60,7 @@
     
     <!-- Column-->
     <div class="nonTrendMode">
-      <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+      <div class="pb-2" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
         <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="md_mrn">
           <mat-card-content class="sa_matcard_content"> 
             <!-- column -->
@@ -73,8 +73,10 @@
                 <h3 class="m-0">Net Profit</h3>
                 <h1 class="m-0">${{netProfitVal | number:'1.0-0'}}</h1>
               </div>
-              <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitIcon}}-alt"></i></div> --> 
-            </div>
+              <div class="info-button"><img alt="info-icon" src="../assets/images/info-icon.png"></div>
+              
+              <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitIcon}}-alt"></i></div>  -->
+            </div>            
           </mat-card-content>
         </div>
         <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="md_mrn">
@@ -89,6 +91,8 @@
                 <h3 class="m-0"> Net Profit % (Xero)</h3>
                 <h1 class="m-0">{{netProfitPercentVal | number:'1.0-0'}}%</h1>
               </div>
+              <div class="info-button"><img alt="info-icon" src="../assets/images/info-icon.png"></div>
+
               <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPercentIcon}}-alt"></i></div> --> 
             </div>
           </mat-card-content>
@@ -105,6 +109,8 @@
                 <h3 class="m-0">Net Profit % (PMS)</h3>
                 <h1 class="m-0"> {{netProfitPmsVal | number:'1.0-0'}}%</h1>
               </div>
+              <div class="info-button"><img alt="info-icon" src="../assets/images/info-icon.png"></div>
+
               <!-- <div class="spark-count ml-auto"> <i class="fa s fa-sort-amount-{{netProfitPmsIcon}}-alt"></i></div> --> 
             </div>
           </mat-card-content>
@@ -216,19 +222,19 @@ expenses_card custom_ngx_cw01" >
           </div>
         </div>
       </div>
-      <!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+      <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn custom_ngx_cw03">
           <mat-card class="" >
              <mat-card-content class="sa_matcard_content"> <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{totalDiscountChartTrendTotal | number:'1.0-0'}}" *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{totalDiscountChartTrendIcon}}.png"></span>
               <mat-card-title class="text-center">Total Discounts <img alt="info-icon" src="../assets/images/info-icon.png">
-                <div class="sa_box_title_right_buttons"> 
+                <!-- <div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
                   <mat-menu #menu="matMenu">
                       <button mat-menu-item>Save Image</button>
                       <button mat-menu-item>Download PDF</button>
                   </mat-menu>
-                </div> 
+                </div>  -->
               </mat-card-title>
               <div class="card-body">
               <div class="chart" *ngIf="totalDiscountChartLabels.length > 0">
@@ -264,14 +270,14 @@ expenses_card custom_ngx_cw01" >
           <mat-card class="sa_no_tabs_area" >
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">Current Overdues <img alt="info-icon" src="../assets/images/info-icon.png">
-                <div class="sa_box_title_right_buttons"> 
+                <!-- <div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
                   <mat-menu #menu="matMenu">
                       <button mat-menu-item>Save Image</button>
                       <button mat-menu-item>Download PDF</button>
                   </mat-menu> 
-                </div>
+                </div> -->
               </mat-card-title>
               <div class="card-body">
               <div class="chart" >
@@ -299,7 +305,7 @@ expenses_card custom_ngx_cw01" >
             <div class="loader-text">Calculating...</div>
           </div>
         </div>
-      </div> -->
+      </div>
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
         <div fxFlex="calc(64% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio total_val md_mrn custom_ngx_cw05">
           <mat-card class="" >

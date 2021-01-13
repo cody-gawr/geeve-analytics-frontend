@@ -26,7 +26,8 @@ export interface Dentist {
 }
 
 @Component({
-  templateUrl: './finances.component.html'
+  templateUrl: './finances.component.html',
+  styleUrls: ['./finances.component.scss']
 })
 export class FinancesComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas: ElementRef;
