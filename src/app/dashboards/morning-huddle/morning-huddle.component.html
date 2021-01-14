@@ -334,11 +334,9 @@
       <div class="appointment" *ngIf="element.noRecall == 'true'"> 
         <span class="warning" ><span class="material-icons font-16">phone_callback</span> No Recall for > 6 Months</span>
       </div>
-      <div class="appointment" *ngIf="element.noRecall != 'true' && element.noRecall != 'No previous recalls'"> 
-        <span class="warning" >Last Recall {{ element.noRecall | date: 'MMM d, y':'UTC' }}</span>
-      </div>
-      <div class="appointment" *ngIf="element.noRecall != 'true' && element.noRecall == 'No previous recalls'"> 
-        <span class="warning" >{{ element.noRecall }}</span>
+      <div class="appointment" *ngIf="element.noRecall != 'true'"> 
+        <span class="warning" >Last Recall {{ element.noRecall | date: 'MMM d, y':'UTC' }} </span>
+        <span class="warning" >No previous recalls</span>
       </div>
       <div class="appointment" *ngIf="element.outstanding.outstandingDollar != 0"> <span class="warning" ><i class="fas fa-procedures font-16"></i> Outstanding Treatment ${{ element.outstanding.outstandingDollar }}</span></div>
       <div class="appointment" *ngIf="element.xray.first == 'true' && element.xray.second == 'true'">
