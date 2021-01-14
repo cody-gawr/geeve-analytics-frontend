@@ -61,7 +61,7 @@
 <div class="">
 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
   <div fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" class="sa_flex_transparent">
-    {{startDate| date}}- {{endDate| date}}
+    {{startDate}}- {{endDate}}
 </div>
 
   <!-- Column-->
@@ -436,4 +436,4 @@
   </div>
 </div>
 </div>
-</div><canvas #myCanvas baseChart [style.display]="'none'"></canvas>
+</div><canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1" [chartType]="stackedChartType"></canvas>

@@ -46,7 +46,7 @@
 <div class=" sa_marketing-area">
 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
   <div fxFlex.sm="100" fxFlex.xs="100" fxFlex="100" class="sa_flex_transparent">
-    {{startDate| date}}- {{endDate| date}}
+    {{startDate}}- {{endDate}}
 </div>
 
   <!-- Column-->
@@ -321,3 +321,4 @@
         <button class="mat-raised-button mat-gray" mat-raised-button (click)="load_chart_acq()">Save</button>
   <button (click)="myModal.close()" class="close_modal" style="display:none">Close</button>
 </ngx-smart-modal>
+<canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1" [chartType]="pieChartType"></canvas>

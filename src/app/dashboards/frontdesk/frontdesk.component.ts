@@ -38,6 +38,8 @@ export class FrontDeskComponent implements AfterViewInit {
    public dentistCount:any ={};
     public clinicsData:any[] = [];
   public trendText;
+  chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
+  chartLabels1 = ['January', 'February', 'Mars', 'April'];
   constructor(private toastr: ToastrService,private frontdeskService: FrontDeskService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
   }
   private warningMessage: string; 
@@ -65,7 +67,7 @@ export class FrontDeskComponent implements AfterViewInit {
       if(val != undefined && val !='all') {
     this.clinic_id = val;
    // this.getDentists();
-     this.filterDate('cytd');
+     this.filterDate('m');
    }
   }
   ngAfterViewInit() {
@@ -204,6 +206,7 @@ this.predictedChartColors = [
             }],
         },
                 tooltips: {
+                  mode: 'x-axis',
                         custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
@@ -343,10 +346,11 @@ public dentists;
    $('#title').html('Front Desk ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')'); 
 
     if(newValue == 'all') {
+      this.fdWorkTimeAnalysis();
+      
       this.fdFtaRatio();
       this.fdUtaRatio();
       this.fdNumberOfTicks();
-      this.fdWorkTimeAnalysis();
       this.fdRecallPrebookRate();
       this.fdtreatmentPrebookRate();
     }
@@ -382,8 +386,10 @@ public fdWorkTimeAnalysisLoader:any;
       this.prevWorkTimeTooltip = 'down';
         if(data.data.length >0) {
          data.data.forEach(res => {
+          if(res.wta>0) {
            this.workTimeData1.push(Math.round(res.wta));
            this.workTimeLabels1.push(res.app_book_name);
+         }
          });
      }
         this.workTimeData[0]['data'] = this.workTimeData1;
@@ -725,14 +731,18 @@ public currentText;
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='cytd';
-      this.loadDentist('all');
+     // this.loadDentist('all');
     }
      else if (duration == 'fytd') {
       this.trendText= 'Last Financial Year';
       this.currentText= 'This Financial Year';
 
      var date = new Date();
+     if ((date.getMonth() + 1) <= 3) {
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
+        } else {
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+    }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='fytd';
       this.loadDentist('all');

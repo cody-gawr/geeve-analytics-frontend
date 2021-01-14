@@ -18,8 +18,6 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "angular2-cookie/core";
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
-import { ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -37,7 +35,6 @@ export class FinancesComponent implements AfterViewInit {
   stackedChartColors;
   stackedChartColorsBar;
   stackedChartColorsBar1;
-
   preoceedureChartColors;
   subtitle: string;
    public clinic_id:any ={};
@@ -49,7 +46,7 @@ export class FinancesComponent implements AfterViewInit {
    public netProfitVal:any= 0;
    public netProfitPercentVal:any =0;
    public netProfitPmsVal:any =0;
-   public duration='m';
+   public duration='cytd';
    public predictedChartColors;
    public trendText;
      colorScheme = {
@@ -78,51 +75,18 @@ single = [
   doughnut = false;
   arcWidth = 0.65;
   rangeFillOpacity = 0.75;
-   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
-  chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  constructor(private toastr: ToastrService,private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
-  }
-    private checkPermission(role) { 
-  this.headerService.checkPermission(role).subscribe((res) => {
-       if(res.message == 'success'){
-       }
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
-    }, error => {
-     //    $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
-    }    
-    );
-
+  constructor(private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
   }
   private warningMessage: string;
-   initiate_clinic() {
-    var val = $('#currentClinic').attr('cid');
-      if(val != undefined && val !='all') {
-    this.clinic_id = val;
-    this.getDentists();
-     this.filterDate('m');
-   }
-  }
   ngAfterViewInit() {
-      $('#currentDentist').attr('did','all');
-     this.checkPermission('dashboard5');
-        //this.filterDate('cytd');
-      //  this.getDentists(); 
-       this.route.params.subscribe(params => {
-      this.initiate_clinic();
-    $('.external_clinic').show();
+  this.route.params.subscribe(params => {
+    this.clinic_id = this.route.snapshot.paramMap.get("id");
+        this.filterDate('cytd');
+        this.getDentists(); 
+        $('#title').html('Finances ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
+        $('.external_clinic').show();
         $('.dentist_dropdown').hide();
-        $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
-         $('.external_clinic').show();
-        $('.external_dentist').show();
-  $('#title').html('Finances  ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();
@@ -134,7 +98,7 @@ single = [
             $('.customRange').hide();
         }
         })
-             });
+     });
       let gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
       gradient.addColorStop(0, '#17a2a6');
       gradient.addColorStop(1, '#17a2a6');
@@ -357,70 +321,6 @@ this.preoceedureChartColors = [
             display: true
          },
           tooltips: {
-            mode: 'x-axis',
-            enabled: false,
-            custom: function(tooltip) {
-            if (!tooltip) return;
-            var tooltipEl = document.getElementById('chartjs-tooltip');
-            if (!tooltipEl) {
-              tooltipEl = document.createElement('div');
-              tooltipEl.id = 'chartjs-tooltip';
-              tooltipEl.style.backgroundColor = "#FFFFFF";
-              tooltipEl.style.borderColor = "#B2BABB";
-              tooltipEl.style.borderWidth = "thin";
-              tooltipEl.style.borderStyle = "solid";
-              tooltipEl.style.zIndex = "999999";
-              tooltipEl.style.backgroundColor = "#000000";
-              tooltipEl.style.color = "#FFFFFF";
-              document.body.appendChild(tooltipEl);
-            }
-            if (tooltip.opacity === 0) {
-              tooltipEl.style.opacity = "0";
-              return;
-            } else {
-              tooltipEl.style.opacity = "0.8";
-            }
-
-             tooltipEl.classList.remove('above', 'below', 'no-transform');
-            if (tooltip.yAlign) {
-              tooltipEl.classList.add(tooltip.yAlign);
-            } else {
-              tooltipEl.classList.add('no-transform');
-            }
-
-              function getBody(bodyItem) {
-              return bodyItem.lines;
-            }
-            if (tooltip.body) {
-              var titleLines = tooltip.title || [];
-              var bodyLines = tooltip.body.map(getBody);
-              var innerHtml = '<table><thead>';             
-              innerHtml += '</thead><tbody>';
-              titleLines.forEach(function (title) {
-                innerHtml += '<tr><th style="text-align: left;">' + title + '</th></tr>';
-              });
-                 bodyLines.forEach(function (body, i) {
-                if(!body[0].includes("$0")){
-                  innerHtml += '<tr><td style="padding: 0px">'+body[0]+'</td></tr>';
-                  }                
-              });
-              innerHtml += '</tbody></table>';
-              tooltipEl.innerHTML = innerHtml;
-              //tableRoot.innerHTML = innerHtml;
-            }       
-        // disable displaying the color box;
-            var position = this._chart.canvas.getBoundingClientRect();
-            // Display, position, and set styles for font
-            tooltipEl.style.position = 'absolute';
-            tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
-            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 30) + 'px';
-            tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-            tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-            tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-            tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-            tooltipEl.style.pointerEvents = 'none';
-            tooltip.displayColors = false;
-      },
   callbacks: {
      label: function(tooltipItems, data) { 
           return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
@@ -456,7 +356,7 @@ this.preoceedureChartColors = [
           xAxes: [{ 
             stacked:false,
             ticks: {
-                suggestedMin:0,
+                suggestedMin:500000,
                userCallback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
@@ -476,10 +376,9 @@ this.preoceedureChartColors = [
             display: true
          },
           tooltips: {
-            mode: 'x-axis',
   callbacks: {
      label: function(tooltipItems, data) { 
-        return "$"+data['datasets'][0]['data'][tooltipItems['index']];
+        return tooltipItems.yLabel+": $"+data['datasets'][0]['data'][tooltipItems['index']];
      },
   }
 }
@@ -524,19 +423,10 @@ this.preoceedureChartColors = [
             display: true
          },
           tooltips: {
-            mode: 'x-axis',
-             custom: function(tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
   callbacks: {
      label: function(tooltipItems, data) { 
-         return tooltipItems.xLabel + ": $" + tooltipItems.yLabel;
+        return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
      },
-       title: function(tooltipItem, data) {
-          return;
-        }
   }
 }
   };
@@ -569,6 +459,7 @@ public labelBarPercentOptions: any = {
             stacked:true,
 
             ticks: {
+              max:100,
               userCallback: function(item) {
                   return item+ "%";
                 },
@@ -577,131 +468,11 @@ public labelBarPercentOptions: any = {
         },legend: {
             display: true
          },
-  tooltips: {
-    mode: 'x-axis',
-      custom: function(tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
-      callbacks: {
-        // use label callback to return the desired label
-        label: function(tooltipItem, data) {
-          return tooltipItem.xLabel + ": " + tooltipItem.yLabel+"%";
-        },
-        // remove title
-        title: function(tooltipItem, data) {
-          return;
-        }
-      }
-    },
-  };
-  public labelBarPercentOptionsStacked: any = {
-      elements: {
-      point: {
-        radius: 5,
-        hoverRadius: 7,
-        pointStyle:'rectRounded',
-        hoverBorderWidth:7
-      },
-    },
-    scaleShowVerticalLines: false,
-           responsive: true,
-    maintainAspectRatio: false,
-    barThickness: 10,
-      animation: {
-        duration: 500,
-        easing: 'easeOutSine'
-      },
-    scales: {
-          xAxes: [{ 
-            stacked:true,
-            ticks: {
-                autoSkip: false
-            }
-            }],
-          yAxes: [{ 
-            stacked:true,
-
-            ticks: {
-              userCallback: function(item) {
-                  return item+ "%";
-                },
-            }, 
-            }],
-        },legend: {
-            display: true
-         },
-     tooltips: {
-            mode: 'x-axis',
-            enabled: false,
-            custom: function(tooltip) {
-            if (!tooltip) return;
-            var tooltipEl = document.getElementById('chartjs-tooltip');
-            if (!tooltipEl) {
-              tooltipEl = document.createElement('div');
-              tooltipEl.id = 'chartjs-tooltip';
-              tooltipEl.style.backgroundColor = "#FFFFFF";
-              tooltipEl.style.borderColor = "#B2BABB";
-              tooltipEl.style.borderWidth = "thin";
-              tooltipEl.style.borderStyle = "solid";
-              tooltipEl.style.zIndex = "999999";
-              tooltipEl.style.backgroundColor = "#000000";
-              tooltipEl.style.color = "#FFFFFF";
-              document.body.appendChild(tooltipEl);
-            }
-            if (tooltip.opacity === 0) {
-              tooltipEl.style.opacity = "0";
-              return;
-            } else {
-              tooltipEl.style.opacity = "0.8";
-            }
-
-             tooltipEl.classList.remove('above', 'below', 'no-transform');
-            if (tooltip.yAlign) {
-              tooltipEl.classList.add(tooltip.yAlign);
-            } else {
-              tooltipEl.classList.add('no-transform');
-            }
-
-              function getBody(bodyItem) {
-              return bodyItem.lines;
-            }
-            if (tooltip.body) {
-              var titleLines = tooltip.title || [];
-              var bodyLines = tooltip.body.map(getBody);
-              var innerHtml = '<table><thead>';             
-              innerHtml += '</thead><tbody>';
-              titleLines.forEach(function (title) {
-                innerHtml += '<tr><th style="text-align: left;">' + title + '</th></tr>';
-              });
-                 bodyLines.forEach(function (body, i) {
-                if(!body[0].includes("0%")){
-                  innerHtml += '<tr><td style="padding: 0px">'+body[0]+'</td></tr>';
-                  }                
-              });
-              innerHtml += '</tbody></table>';
-              tooltipEl.innerHTML = innerHtml;
-              //tableRoot.innerHTML = innerHtml;
-            }       
-        // disable displaying the color box;
-            var position = this._chart.canvas.getBoundingClientRect();
-            // Display, position, and set styles for font
-            tooltipEl.style.position = 'absolute';
-            tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
-            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 30) + 'px';
-            tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
-            tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
-            tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
-            tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
-            tooltipEl.style.pointerEvents = 'none';
-            tooltip.displayColors = false;
-      },
+          tooltips: {
   callbacks: {
      label: function(tooltipItems, data) { 
-           return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel+"%";
-     },
-     
+        return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel+"%";
+     },     
   }
 }
   };
@@ -713,13 +484,13 @@ public labelBarPercentOptions: any = {
             display: true,
              position:'right'
          },
-        tooltips: {
-        callbacks: {
-          label: function(tooltipItem, data) {
-            return data['labels'][tooltipItem['index']] +": "+data['datasets'][0]['data'][tooltipItem['index']]+ "%";
-          }
-        }
-      }
+              tooltips: {
+  callbacks: {
+    label: function(tooltipItem, data) {
+      return data['labels'][tooltipItem['index']] +": "+data['datasets'][0]['data'][tooltipItem['index']]+ "%";
+    }
+  }
+}
   };
 
       public pieChartOptions2: any = {
@@ -737,7 +508,7 @@ public labelBarPercentOptions: any = {
   }
 }
   };
-  public pieChartOptions1: any = {
+      public pieChartOptions1: any = {
     responsive: true,
     maintainAspectRatio: false,
     legend: {
@@ -762,7 +533,7 @@ public labelBarPercentOptions: any = {
             }],
           yAxes: [{  
             ticks: {
-               suggestedMin:0
+             
             }, 
             }],
         },
@@ -773,7 +544,7 @@ public labelBarPercentOptions: any = {
           var ci = this.chart; 
           if(index ==0)
           {
-                (<HTMLElement>document.querySelector('.predicted1')).style.display = 'flex';
+                (<HTMLElement>document.querySelector('.predicted1')).style.display = 'flex';                
                 (<HTMLElement>document.querySelector('.predicted2')).style.display = 'none';
                 (<HTMLElement>document.querySelector('.predicted3')).style.display = 'none';
                 ci.getDatasetMeta(1).hidden = true;
@@ -789,9 +560,10 @@ public labelBarPercentOptions: any = {
                 ci.getDatasetMeta(index).hidden = false;
           } 
           else if(index== 2) {
-                (<HTMLElement>document.querySelector('.predicted1')).style.display = 'none';
+            (<HTMLElement>document.querySelector('.predicted1')).style.display = 'none';
                 (<HTMLElement>document.querySelector('.predicted2')).style.display = 'none';
                 (<HTMLElement>document.querySelector('.predicted3')).style.display = 'flex';
+
                 ci.getDatasetMeta(0).hidden = true;
                 ci.getDatasetMeta(1).hidden = true;
                 ci.getDatasetMeta(index).hidden = false;
@@ -799,17 +571,18 @@ public labelBarPercentOptions: any = {
           ci.update();
         },
       }     
-    };
+          };
+
 
   public proceedureChartOptions: any = {
     scaleShowVerticalLines: false,
            responsive: true,
     maintainAspectRatio: false,
     barThickness: 10,
-        animation: {
-          duration: 1500,
-          easing: 'easeOutSine'
-        },
+      animation: {
+        duration: 1500,
+        easing: 'easeOutSine'
+      },
         scales: {
           xAxes: [{ 
             ticks: {
@@ -818,14 +591,14 @@ public labelBarPercentOptions: any = {
             }],
           yAxes: [{  
             ticks: {
+             
             }, 
-        }],
-      },
-      legend: {
+            }],
+        },
+         legend: {
         position: 'top',
       },
       tooltips: {
-        mode: 'x-axis',
   callbacks: {
     label: function(tooltipItems, data) { 
       return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
@@ -841,15 +614,19 @@ public labelBarPercentOptions: any = {
   public showInternal: boolean = true;
   public showExternal: boolean = false;
   public showCombined: boolean = false;
+
   public stackedChartType = 'bar';
   public stackedChartTypeHorizontal = 'horizontalBar';
+
   public stackedChartLegend = true;
 
   //labels
   public stackedChartLabels: string[] = [];  
   public stackedChartLabels1: string[] = [];
+
   public predictedChartLabels: string[] = [];
   public predictedChartLabels1: string[] = [];
+
   public proceedureChartLabels: string[] = [];
   public proceedureChartLabels1: string[] = [];
   public proceedureDentistChartLabels: string[] = [];
@@ -1112,23 +889,22 @@ public labelBarPercentOptions: any = {
 
   
 
-  loadDentist(newValue) {
+ private loadDentist(newValue) {
 
-  $('#title').html('Finances ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');
+  $('#title').html('Finances ('+this.datePipe.transform(this.startDate, 'MMM d yyyy')+'-'+this.datePipe.transform(this.endDate, 'MMM d yyyy')+')');
   if(newValue == 'all') {
     $(".trend_toggle").hide();
     this.finTotalProduction();
 
-    //this.netProfit();
-   // this.netProfitPercent();
+    this.netProfit();
+    this.netProfitPercent();
     this.netProfitPms();
     this.categoryExpenses();
     this.finProductionByClinician();
     this.finTotalDiscounts();
-    this.finOverdueAccounts();
-
-   // this.finCollection();
+    this.finCollection();
     this.finProductionPerVisit();
+    this.finOverdueAccounts();
 /*
     (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'block';
@@ -1180,8 +956,7 @@ public netProfitTrendTotal;
         else
         this.netProfitIcon = "-";
              
-        this.netProfitVal = this.netProfitVal; 
-        console.log(this.netProfitVal,this.netProfitTrendTotal);
+        this.netProfitVal = Math.abs(this.netProfitVal).toFixed(2); 
       if(this.netProfitVal>=this.netProfitTrendTotal)
             this.netProfitTrendIcon = "up"; 
        }
@@ -1210,7 +985,7 @@ public netProfitTrendTotal;
         this.netProfitPercentIcon = "";
         else
         this.netProfitPercentIcon = "-";
-        this.netProfitPercentVal =data.data;    
+        this.netProfitPercentVal = Math.abs(data.data).toFixed(2);    
         if(this.netProfitPercentVal>=this.netProfitPercentTrendTotal)
             this.netProfitPercentTrendIcon = "up"; 
        }
@@ -1230,44 +1005,18 @@ public netProfitPmsTrendTotal;
     var clinic_id;
  this.netProfitPmsTrendIcon = "down";
            this.netProfitPmsTrendTotal=0;
-           this.netProfitPercentTrendIcon = "down";
-           this.netProfitPercentTrendTotal=0;
-               var clinic_id;
-           this.netProfitTrendIcon = "down";
-           this.netProfitTrendTotal=0;
   this.financesService.NetProfitPms(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
        if(data.message == 'success'){
-        this.netProfitPmsVal = Math.round(data.data.net_profit_pms); 
-        this.netProfitPmsTrendTotal=Math.round(data.data_ta.net_profit_pms);  
+        this.netProfitPmsVal = data.data; 
+        this.netProfitPmsTrendTotal=data.data_ta;  
 
         if(this.netProfitPmsVal>=0)
         this.netProfitPmsIcon = "";
         else
         this.netProfitPmsIcon = "-";
-        this.netProfitPmsVal = Math.round(data.data.net_profit_pms);
+        this.netProfitPmsVal = Math.abs(data.data).toFixed(2);
          if(this.netProfitPmsVal>=this.netProfitPmsTrendTotal)
-            this.netProfitPmsTrendIcon = "up";      
-
-       this.netProfitVal = Math.round(data.data.net_profit);   
-        this.netProfitTrendTotal=Math.round(data.data_ta.net_profit);  
-        if(this.netProfitVal>=0)
-        this.netProfitIcon = "";
-        else
-        this.netProfitIcon = "-";
-             
-        this.netProfitVal = Math.round(this.netProfitVal); 
-      if(this.netProfitVal>=this.netProfitTrendTotal)
-            this.netProfitTrendIcon = "up";     
-
-        this.netProfitPercentVal = Math.round(data.data.net_profit_percent);  
-        this.netProfitPercentTrendTotal=Math.round(data.data_ta.net_profit_percent);  
-
-        if(this.netProfitPercentVal>=0)
-        this.netProfitPercentIcon = "";
-        else
-        this.netProfitPercentIcon = "-";
-        if(this.netProfitPercentVal>=this.netProfitPercentTrendTotal)
-            this.netProfitPercentTrendIcon = "up";       
+            this.netProfitPmsTrendIcon = "up";           
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1310,16 +1059,16 @@ public categoryExpensesLoader:any;
           temp.value =res.expenses;  
 
           this.single.push(temp);
-          this.single[key].value =Math.round(res.expenses_percent);  
+          this.single[key].value =Math.abs(res.expenses_percent).toFixed(1);  
 
-           this.pieChartDatares.push(Math.round(res.expenses));
+           this.pieChartDatares.push(res.expenses);
 
-           this.pieChartDataPercentres.push(Math.round(res.expenses_percent));
+           this.pieChartDataPercentres.push(Math.abs(res.expenses_percent).toFixed(1));
            this.pieChartLabelsres.push(res.meta_key);
            this.pieChartTotal = this.pieChartTotal + parseInt(res.expenses);
  });
         this.expensescChartTrendTotal = data.data_ta;
-        if(Math.round(this.pieChartTotal)>=Math.round(this.expensescChartTrendTotal))
+        if(Math.abs(this.pieChartTotal)>=Math.abs(this.expensescChartTrendTotal))
             this.expensescChartTrendIcon = "up";  
        this.pieChartData = this.pieChartDatares;
        this.pieChartLabels = this.pieChartLabelsres;
@@ -1353,14 +1102,12 @@ public categoryExpensesLoader:any;
 
     this.productionChartDatares = [];
         data.data.forEach(res => {
-          if(res.percent>0) {
-           this.productionChartDatares.push(Math.round(res.percent));
+           this.productionChartDatares.push((res.percent).toFixed(1));
            this.productionChartLabelsres.push(res.name);
            this.productionChartTotal = this.productionChartTotal + parseInt(res.expenses);
-         }
     });
            this.productionChartTrendTotal = data.total_ta;
-        if(Math.round(this.productionChartTotal)>=Math.round(this.productionChartTrendTotal))
+        if(Math.abs(this.productionChartTotal)>=Math.abs(this.productionChartTrendTotal))
             this.productionChartTrendIcon = "up";  
        this.productionChartData = this.productionChartDatares;
        this.productionChartLabels = this.productionChartLabelsres;
@@ -1392,17 +1139,12 @@ public categoryExpensesLoader:any;
              this.totalDiscountChartDatares = [];
                    this.totalDiscountChartTotal = 0;
         data.data.total_production_by_provider.forEach(res => {
-          if(res.total!=0) {
-           this.totalDiscountChartDatares.push(Math.round(res.total)); 
+           this.totalDiscountChartDatares.push(Math.floor(res.total)); 
            this.totalDiscountChartLabelsres.push(res.name);
-         }
         });
-           this.totalDiscountChartTotal = Math.round(data.data.total_production.total);
-           if(data.data.trend_total_production.total)
-           this.totalDiscountChartTrendTotal = Math.round(data.data.trend_total_production.total);
-          else
-            this.totalDiscountChartTrendTotal=0;
-           if(Math.round(this.totalDiscountChartTotal)>=Math.round(this.totalDiscountChartTrendTotal))
+           this.totalDiscountChartTotal = data.data.total_production.total;
+           this.totalDiscountChartTrendTotal = data.data.trend_total_production.total;
+           if(Math.abs(this.totalDiscountChartTotal)>=Math.abs(this.totalDiscountChartTrendTotal))
             this.totalDiscountChartTrendIcon = "up";
        this.totalDiscountChartData = this.totalDiscountChartDatares;
        this.totalDiscountChartLabels = this.totalDiscountChartLabelsres;
@@ -1429,28 +1171,15 @@ public totalProductionCollectionLabel1 =[];
     var user_id;
     var clinic_id;
   this.financesService.finTotalProduction(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-     this.finCollection();
        if(data.message == 'success'){
         this.finTotalProductionLoader = false;
         this.totalProductionCollection1[0]['data'] =[];
-        if(data.data[0].total)
-        this.totalProductionVal = Math.round(data.data[0].total); 
-        else
-        this.totalProductionVal = 0; 
-
-        if(data.data[0].name)    
+        this.totalProductionVal = data.data[0].total;      
         this.totalProductionLabel = data.data[0].name;    
-        else
-        this.totalProductionLabel ='';    
-
-        if(data.data[0].total_ta)
-         this.totalProductionTrendVal = Math.round(data.data[0].total_ta);  
-        else    
-         this.totalProductionTrendVal = 0;  
-
+         this.totalProductionTrendVal = data.data[0].total_ta;      
           this.totalProductionCollection1[0]['data'].push(this.totalProductionVal);
 
-        if(Math.round(this.totalProductionVal)>=Math.round(this.totalProductionTrendVal))
+        if(Math.abs(this.totalProductionVal)>=Math.abs(this.totalProductionTrendVal))
             this.totalProductionTrendIcon = "up";  
        }
     }, error => {
@@ -1459,18 +1188,6 @@ public totalProductionCollectionLabel1 =[];
     }
     );
   }
-
-
-  //validate if input is decimal
-isDecimal(value) {
- if(typeof value != 'undefined')
-  {
-    if(String(value).includes("."))
-    return true;
-  }
-}
-
-
   public collectionPercentageC;
  public collectionTrendIcon;
   public collectionTrendVal;
@@ -1488,18 +1205,14 @@ isDecimal(value) {
        if(data.message == 'success'){
         this.finCollectionLoader = false;
         this.collectionVal =0;
-        this.collectionVal = (data.data.paym_total)? Math.round(data.data.paym_total) : 0;      
-        this.collectionPercentage = (data.data.percent)? Math.round(data.data.percent) : 0; 
-        this.collectionTrendVal = (data.data.paym_total_ta)?  Math.round(data.data.paym_total_ta) : 0;    
+        this.collectionVal = (data.data.paym_total).toFixed(2);      
+        this.collectionPercentage = (data.data.percent).toFixed(2); 
+        this.collectionTrendVal = (data.data.paym_total_ta).toFixed(2);    
           this.totalProductionCollection1[0]['data'].push(this.collectionVal);
           this.totalProductionCollectionLabel1 = ['Total Production','Collection'];
            this.totalProductionCollectionMax = Math.max(...this.totalProductionCollection1[0]['data']);
-           if(this.totalProductionVal)
-           this.collectionPercentageC=Math.round((this.collectionVal/this.totalProductionVal)*100);
-          else
-           this.collectionPercentageC=0;
-
-        if(Math.round(this.collectionVal)>=Math.round(this.collectionTrendVal))
+           this.collectionPercentageC=((this.collectionVal/this.totalProductionVal)*100).toFixed(1);
+        if(Math.abs(this.collectionVal)>=Math.abs(this.collectionTrendVal))
             this.collectionTrendIcon = "up";
          //console.log(this.totalProductionCollection1);
        }
@@ -1525,9 +1238,9 @@ isDecimal(value) {
   this.financesService.finProductionPerVisit(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.finProductionPerVisitLoader = false;
-        this.productionVal = Math.round(data.data);  
-        this.productionTrendVal = Math.round( data.data_ta);  
-        if(Math.round(this.productionVal)>=Math.round(this.productionTrendVal))
+        this.productionVal = Math.floor(data.data);  
+        this.productionTrendVal =  data.data_ta.toFixed(2);  
+        if(Math.abs(this.productionVal)>=Math.abs(this.productionTrendVal))
             this.productionTrendIcon = "up";            
        }
     }, error => {
@@ -1553,14 +1266,16 @@ isDecimal(value) {
 
         this.totalOverdueAccountLabels=[];
              this.totalOverdueAccountres =[];
+     this.totalOverdueTrendIcon="down";
      this.totalOverdueAccountLabelsres = [];
         data.data.forEach(res => {
-          if(res.overdue >0) {
-           this.totalOverdueAccountres.push(Math.round(res.overdue));
+           this.totalOverdueAccountres.push(Math.floor(res.overdue));
            this.totalOverdueAccountLabelsres.push(res.label);
-         }
                   });
            this.totalOverdueAccount = data.total;
+           this.totalOverdueTrendAccount = data.trend_total;
+           if(Math.abs(this.totalOverdueAccount)>Math.abs(this.totalOverdueTrendAccount))
+            this.totalOverdueTrendIcon= "up";
        this.totalOverdueAccountData = this.totalOverdueAccountres;
        this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres; 
        this.totalOverdueAccountDataMax = Math.max(...this.totalOverdueAccountData);
@@ -1587,19 +1302,15 @@ filterDate(duration) {
       this.trendText= 'Last Week';
       this.currentText= 'This Week';
 
-        const now = new Date();
-        if(now.getDay()==0)
-          var day = 7;
-        else
-          var day = now.getDay();
-
-       var first = now.getDate() - day +1;
+      const now = new Date();
+       var first = now.getDate() - now.getDay();
        var last = first + 6; 
-       var sd =new Date(now.setDate(first));
-
-       this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd-MM-yyyy');
-       var end = now.setDate(sd.getDate()+6);
-       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
+       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'yyyy-MM-dd');
+       var end = new Date();
+        end.setFullYear(now.getFullYear());
+        end.setMonth(now.getMonth()+1);
+        end.setDate(last);
+       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'yyyy-MM-dd');
         this.loadDentist('all');
     }
     else if (duration == 'm') {
@@ -1608,8 +1319,8 @@ filterDate(duration) {
       this.currentText= 'This Month';
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'yyyy-MM-dd');
             this.loadDentist('all');
     }
     else if (duration == 'q') {
@@ -1621,18 +1332,18 @@ filterDate(duration) {
       var cmonth = now.getMonth()+1;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'yyyy-MM-dd');  }
             this.loadDentist('all');
     }
     else if (duration == 'lq') {
@@ -1645,18 +1356,18 @@ filterDate(duration) {
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'yyyy-MM-dd');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'yyyy-MM-dd'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'yyyy-MM-dd'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'yyyy-MM-dd');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'yyyy-MM-dd');  }
             this.loadDentist('all');
    
     }
@@ -1666,8 +1377,8 @@ filterDate(duration) {
 
       this.duration='cytd';
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
       this.loadDentist('all');
     }
      else if (duration == 'fytd') {
@@ -1676,12 +1387,8 @@ filterDate(duration) {
       this.currentText= 'This Financial Year';
       
      var date = new Date();
-      if ((date.getMonth() + 1) <= 3) {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
-        } else {
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
-    }
-      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 3, 1), 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
       this.loadDentist('all');
     }
      else if (duration == 'custom') {
@@ -1733,43 +1440,18 @@ filterDate(duration) {
      }
   } 
   ytd_load(val) {
-    alert(this.datePipe.transform(val, 'dd-MM-yyyy'));
+    alert(this.datePipe.transform(val, 'yyyy-MM-dd'));
   }
 choosedDate(val) {
     val = (val.chosenLabel);
     var val= val.toString().split(' - ');
+      this.startDate = this.datePipe.transform(val[0], 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(val[1], 'yyyy-MM-dd');
+      this.loadDentist('all');
       
-     var date2:any= new Date(val[1]);
-     var date1:any= new Date(val[0]);
-      var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
-if(diffTime<=365){
-this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
-      this.loadDentist('all');      
       $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
-   }
-   else {
-            Swal.fire({
-      text: 'Please select date range within 365 Days',
-      icon: 'warning',
-      showCancelButton: false,
-      confirmButtonText: 'Ok',
-    }).then((result) => {
-    });
-   }
 }
-  myDateParser(dateStr : string) : string {
-    // 2018-01-01T12:12:12.123456; - converting valid date format like this
-
-    let date = dateStr.substring(0, 10);
-    let time = dateStr.substring(11, 19);
-    let millisecond = dateStr.substring(20)
-
-    let validDate = date;
-    console.log(validDate)
-    return validDate
-  }
 toggleFilter(val) {
    $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_'+val).addClass('mat-button-toggle-checked');
@@ -1778,22 +1460,17 @@ toggleFilter(val) {
      this.toggleChecked = true;
      this.trendValue = 'c';
      this.toggleChangeProcess();
-     this.displayProfit(1);
     }
     else if(val == 'historic') {
        this.toggleChecked = true;
        this.trendValue = 'h';
        this.toggleChangeProcess();
-     this.displayProfit(1);
-
     }
     else if(val == 'off') {
-        this.filterDate('m');
+        this.filterDate('cytd');
           $('.trendMode').hide();
-    $('.nonTrendMode').css('display','block');
+    $('.nonTrendMode').css('display','flex');
     }
-     $('.expenses_card').removeClass('active');
-
 }
 flipcard(div){
  if( $('.'+div).hasClass('active'))
@@ -1835,19 +1512,18 @@ public netProfitDisplayVal;
 toggleChangeProcess(){
     if(this.toggleChecked){
     $('.filter').removeClass('active');
-    $('.trendMode').css('display','block');
+    $('.trendMode').css('display','flex');
     $('.nonTrendMode').hide();
-    this.finNetProfitPMSTrend();
-    
     this.finProductionByClinicianTrend();
     this.finTotalDiscountsTrend();
-  //  this.finOverdueAccountsTrend();
+    this.finOverdueAccountsTrend();
     this.finTotalProductionTrend();
     this.finCollectionTrend();
     this.finProductionPerVisitTrend();
-  //  this.finNetProfitTrend();
-   // this.finNetProfitPercentTrend();
-    //this.finExpensesByCategoryTrend();
+    this.finNetProfitTrend();
+    this.finNetProfitPercentTrend();
+    this.finNetProfitPMSTrend();
+    this.finExpensesByCategoryTrend();
     this.netProfitDisplayVal ='1';
 /*    this.totalProductionCollection[0]['data'] = this.totalProductionChartTrend1;
     this.totalProductionCollection[1]['data'] = this.collectionChartTrend1;
@@ -1877,7 +1553,7 @@ private finProductionByClinicianTrend() {
           this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(res => {  
                    res.val.forEach((result,key) => {
-                     this.productionChartTrend[key]['data'].push(Math.round(result.total));
+                     this.productionChartTrend[key]['data'].push(Math.abs(result.total).toFixed(1));
                      this.productionChartTrend[key]['label'] = result.name;
                    });
                    if(this.trendValue == 'c')
@@ -1924,7 +1600,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
          this.finTotalDiscountsTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.discountsChartTrend1.push(Math.round(res.val.total));
+                     this.discountsChartTrend1.push(res.val.total);
                    if(this.trendValue == 'c')
                    this.discountsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -1971,7 +1647,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
             this.finOverdueAccountsTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.overdueChartTrend1.push(Math.round(res.val.total));
+                     this.overdueChartTrend1.push(res.val.total);
                    if(this.trendValue == 'c')
                    this.overdueChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -2017,7 +1693,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finTotalProductionTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.totalProductionChartTrend1.push(Math.round(res.val.total));
+                     this.totalProductionChartTrend1.push(Math.abs(res.val.total));
                    if(this.trendValue == 'c')
                    this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -2065,7 +1741,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finCollectionTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.collectionChartTrend1.push(Math.round(res.val.total));
+                     this.collectionChartTrend1.push(Math.abs(res.val.total));
                    if(this.trendValue == 'c')
                    this.collectionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -2117,7 +1793,7 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finProductionPerVisitTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.productionVisitChartTrend1.push(Math.round(res.val));
+                     this.productionVisitChartTrend1.push(Math.abs(res.val).toFixed(1));
                    if(this.trendValue == 'c')
                    this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -2165,11 +1841,11 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
     this.finNetProfitTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.netProfitChartTrend1.push(Math.round(res.val));
+                     this.netProfitChartTrend1.push(Math.abs(res.val).toFixed(1));
                    if(this.trendValue == 'c')
                    this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
-                   this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
+                   this.netProfitChartTrendLabels1.push(res.duration);
                   
                  });
                  this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
@@ -2213,7 +1889,7 @@ private finTotalDiscountsTrend() {
   this.finNetProfitPercentTrendLoader = false;
 
                 data.data.forEach(res => {  
-                     this.netProfitPercentChartTrend1.push(Math.round(res.val));
+                     this.netProfitPercentChartTrend1.push(Math.abs(res.val).toFixed(1));
                    if(this.trendValue == 'c')
                    this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -2249,103 +1925,27 @@ private finTotalDiscountsTrend() {
   public netProfitPmsChartTrendLabels1 =[];
   public finNetProfitPMSTrendLoader:any;
 
-trendxero=false;
+
   private finNetProfitPMSTrend() {
-      this.netProfitChartTrendLabels1=[];
-  this.netProfitChartTrendLabels=[];
-  this.netProfitChartTrend1= [];
-  this.finNetProfitTrendLoader = true;
     this.finNetProfitPMSTrendLoader = true;
   this.netProfitPmsChartTrendLabels1=[];
   this.netProfitPmsChartTrend1= [];
-   this.netProfitPercentChartTrendLabels1=[];
-  this.netProfitPercentChartTrendLabels=[];
- 
-  this.netProfitPercentChartTrend1= [];
-  this.finNetProfitPercentTrendLoader = true;
     var user_id;
     var clinic_id;
-     this.expensesChartTrendLabels=[];
-    
-this.trendxero=true;
-  this.expensesChartTrend =[
-    {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
-
     this.financesService.finNetProfitPMSTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-this.trendxero=false;
-
        if(data.message == 'success'){
-         this.netProfitChartTrendLabels1=[];
-  this.netProfitChartTrendLabels=[];
-  this.netProfitChartTrend1= [];
-        this.netProfitPmsChartTrendLabels1=[];
-  this.netProfitPmsChartTrend1= [];
-  this.netProfitPercentChartTrendLabels1=[];
-  this.netProfitPercentChartTrendLabels=[];
- 
-  this.netProfitPercentChartTrend1= [];
-         this.expensesChartTrendLabels1=[];
-          this.expensesChartTrend =[
-    {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
-
     this.finNetProfitPMSTrendLoader = false;
-        this.finNetProfitTrendLoader = false;
-          this.finNetProfitPercentTrendLoader = false;
-                data.data.net_profit.forEach(res => {  
-                  console.log(res.val.net);
-                     if (res.val.net != null)
-                     this.netProfitChartTrend1.push(Math.round(res.val.net));
-                     else
-                     this.netProfitChartTrend1.push(0);
-                     if(res.val.percent) 
-                     this.netProfitPercentChartTrend1.push(Math.round(res.val.percent));       
-                     else
-                     this.netProfitPercentChartTrend1.push(0);       
-                    if(res.val.pms)
-                     this.netProfitPmsChartTrend1.push(Math.round(res.val.pms));
-                   else
-                     this.netProfitPmsChartTrend1.push(0);
-
-                   if(this.trendValue == 'c'){
-                   this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-                   this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));                    
+                data.data.forEach(res => {  
+                     this.netProfitPmsChartTrend1.push(Math.abs(res.val).toFixed(1));
+                   if(this.trendValue == 'c')
                    this.netProfitPmsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-             //      this.expensesChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-
-                 }
-                 else {
-                   this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
-                   this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));                    
-                   this.netProfitPmsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
-                   //this.expensesChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
-
-                 }
+                    else
+                   this.netProfitPmsChartTrendLabels1.push(res.duration);
                   
                  });
-                 this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
-                 this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
-            
-                 this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
-
-                 this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
                  this.netProfitPmsChartTrend[0]['data'] = this.netProfitPmsChartTrend1;
 
-                 this.netProfitPmsChartTrendLabels =this.netProfitPmsChartTrendLabels1;
-                 data.data.expenses.forEach((result,key) => {  
-                    if(result.meta_key != 'Total Operating Expenses') {
-                      let tempO:any = [];
-                      result.expenses.forEach((res) => {  
-                        tempO.push(Math.round(res));
-                      });                      
-
-                     this.expensesChartTrend[key]['data'] = tempO;
-                     this.expensesChartTrend[key]['label'] = result.meta_key;                  
-                   }
-                 }); 
-                 this.expensesChartTrendLabels = data.data.duration; 
-
-                 console.log('this.expensesChartTrend',  this.expensesChartTrend);
-                 console.log('this.expensesChartTrendLabels',  this.expensesChartTrendLabels);
+                 this.netProfitPmsChartTrendLabels =this.netProfitPmsChartTrendLabels1; 
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -2368,8 +1968,8 @@ private finExpensesByCategoryTrend() {
     this.financesService.finExpensesByCategoryTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
                 data.data.forEach(res => {  
-                   res.val.expense.forEach((result,key) => {
-                     this.expensesChartTrend[key]['data'].push(Math.round(result.expenses));
+                   res.val.forEach((result,key) => {
+                     this.expensesChartTrend[key]['data'].push(Math.floor(result.expenses));
                      this.expensesChartTrend[key]['label'] = result.meta_key;
                    });
                    if(this.trendValue == 'c')

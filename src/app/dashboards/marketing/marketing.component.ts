@@ -45,6 +45,8 @@ export class MarketingComponent implements AfterViewInit {
   public trendText;
   public filteredCountriesMultiple: any[];
   public selectedCategories:any[] =[];
+    chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
+  chartLabels1 = ['January', 'February', 'Mars', 'April'];
   constructor(private toastr: ToastrService,private marketingService: MarketingService, private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService){
   }
   private warningMessage: string; 
@@ -71,7 +73,7 @@ export class MarketingComponent implements AfterViewInit {
     var val = $('#currentClinic').attr('cid');
       if(val != undefined && val !='all') {
     this.clinic_id = val;
-     this.filterDate('cytd');
+     this.filterDate('m');
    }
   }
   ngAfterViewInit() {
@@ -208,6 +210,7 @@ this.preoceedureChartColors = [
             display: true
          },
              tooltips: {
+              mode: 'x-axis',
             custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the colorg box;
@@ -327,11 +330,14 @@ this.preoceedureChartColors = [
   $('#title').html('Marketing ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');        
 
     if(newValue == 'all') {
-      this.fdnewPatientsRatio();
       this.mkNewPatientsByReferral();
-      this.fdvisitsRatio();
+
       this.mkRevenueByReferral();
+      this.fdnewPatientsRatio();
+
       this.fdnewPatientsAcq();
+      this.fdvisitsRatio();
+
       //this.fdWorkTimeAnalysis();
     }
   }
@@ -697,7 +703,11 @@ public currentText;
 
 
      var date = new Date();
+      if ((date.getMonth() + 1) <= 3) {
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
+        } else {
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+    }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='fytd';
       this.loadDentist('all');
@@ -786,11 +796,12 @@ toggleFilter(val) {
   showTrend= false;
 toggleChangeProcess(){
       this.showTrend = true;
+      this.mkNewPatientsByReferral();
+      this.mkRevenueByReferral();
+      
             this.mkNoNewPatientsTrend();
       this.fdvisitsRatioTrend();
 
-      this.mkRevenueByReferral();
-      this.mkNewPatientsByReferral();
    
 
 }
@@ -916,6 +927,7 @@ public barChartOptions: any = {
             }],
         },
     tooltips: {
+      mode: 'x-axis',
             custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
