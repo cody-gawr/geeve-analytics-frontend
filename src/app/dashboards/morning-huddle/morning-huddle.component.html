@@ -336,6 +336,8 @@
       </div>
       <div class="appointment" *ngIf="element.noRecall != 'true'"> 
         <span class="warning" >Last Recall {{ element.noRecall | date: 'MMM d, y':'UTC' }} </span>
+      </div>
+       <div class="appointment" *ngIf="element.noRecall != 'true'"> 
         <span class="warning" >No previous recalls</span>
       </div>
       <div class="appointment" *ngIf="element.outstanding.outstandingDollar != 0"> <span class="warning" ><i class="fas fa-procedures font-16"></i> Outstanding Treatment ${{ element.outstanding.outstandingDollar }}</span></div>
