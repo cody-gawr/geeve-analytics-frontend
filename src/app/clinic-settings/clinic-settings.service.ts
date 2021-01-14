@@ -36,7 +36,9 @@ export class ClinicSettingsService {
         );
     }
        // Get ClinicSettings
+   
     updateClinicSettings(clinic_id, name, address, contact_name, practice_size,workingDays,postOpCalls,phoneNo,clinicEmail,facebook,twitter,linkedin,instagram,logo, user_id = '23', token = this._cookieService.get("token")): Observable<any> {
+
         const formData = new FormData();
     formData.append('clinicName', name);
     formData.append('address', address);
@@ -48,6 +50,7 @@ export class ClinicSettingsService {
     formData.append('logo', logo);
     formData.append('phoneNo', phoneNo);
     formData.append('clinicEmail', clinicEmail);
+    formData.append('post_op_calls', postOpCalls);
 
     var social_info = JSON.stringify({facebook: facebook, twitter: twitter, linkedin: linkedin, instagram: instagram});
     formData.append('social_info', social_info);
