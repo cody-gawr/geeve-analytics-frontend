@@ -63,20 +63,24 @@ export class AppHeaderrightComponent implements AfterViewInit  {
         this.clinicsData = res.data;
         if(res.data.length>0) {
         if(this.route == '/dashboards/healthscreen'){
-          if(this.clinicsData.length>1) {
-          this.clinic_id ='all';
-          this.selectedClinic ='all';
-        }
-        else {
-         this.clinic_id = res.data[0].id;
-          this.selectedClinic = res.data[0].id;
-        }
-
+            if(this.clinicsData.length>1) {
+              this.clinic_id ='all';
+              this.selectedClinic ='all';
+            }
+            else {
+             this.clinic_id = res.data[0].id;
+              this.selectedClinic = res.data[0].id;
+            }
         }
         else  
         {
           this.clinic_id = res.data[0].id;
           this.selectedClinic = res.data[0].id;
+        }
+        if(this._cookieService.get("user_type") != '2') {
+          this.clinicsData =[];
+          this.clinic_id = this._cookieService.get("clinicid");
+          this.selectedClinic = this._cookieService.get("clinicid");
         }
 
         this.title = $('#page_title').val();
@@ -84,10 +88,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     }
        }
         else if(res.status == '401'){
-            this._cookieService.put("username",'');
-            this._cookieService.put("email", '');
-            this._cookieService.put("token", '');
-            this._cookieService.put("userid", '');
+            this._cookieService.removeAll();
             this.router.navigateByUrl('/login');
            }
     }, error => {
@@ -111,10 +112,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
                 this.selectedDentist = res.data[0].providerId;
               }
            } else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
+             this._cookieService.removeAll();
               this.router.navigateByUrl('/login');
            }
         }, error => {

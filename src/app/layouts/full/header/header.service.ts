@@ -38,6 +38,8 @@ export class HeaderService {
             );
     }
     getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+
+        
         var header = this.getHeaders();   
         return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+user_id,  { headers: header })
         .pipe(map((response: Response) => {
