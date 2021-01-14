@@ -332,12 +332,12 @@
     <th mat-header-cell *matHeaderCellDef>Appointment</th>
     <td mat-cell *matCellDef="let element"> 
       
-      <div class="appointment" *ngIf="element.noRecall == 'true'"> 
+      <div class="appointment" *ngIf="element.noRecall == 'true' || element.noRecall == 'No previous recalls'"> 
         <span class="warning" ><span class="material-icons font-16">phone_callback</span> No Recall for > 6 Months</span>
       </div>
-      <div class="appointment" *ngIf="element.noRecall == 'No previous recalls'"> 
+      <!-- <div class="appointment" *ngIf="element.noRecall == 'No previous recalls'"> 
         <span class="warning" >No previous recalls</span>
-      </div>
+      </div> -->
       <div class="appointment" *ngIf="element.lastRecall != 'false'"> 
         <span class="warning" >Last Recall {{ element.lastRecall | date: 'MMM d, y':'UTC' }} </span>
       </div>
