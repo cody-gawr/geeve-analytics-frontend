@@ -7,13 +7,15 @@ import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import 'chartjs-plugin-style';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from "angular2-cookie/core";
-import { BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -49,6 +51,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public user_type: string = '';
   public flag = false;
   private _routerSub = Subscription.EMPTY;
+  newPatientPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+  newPatientTotalAverage$ = new BehaviorSubject<number>(0);
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -112,6 +117,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   //initialize component
   ngAfterViewInit() {
+    this.newPatientPluginObservable$ = this.newPatientTotalAverage$.pipe(
+      takeUntil(this.destroyed$),
+      map((count) => {
+        return this.chartService.beforeDrawChart(count)
+      })
+    );
+
     $('#currentDentist').attr('did', 'all');
 
     // this.clinic_id = this.route.snapshot.paramMap.get("id");
@@ -756,7 +768,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     },
     elements: {
       center: {
-        text: this.newPatientTotalAverage,
+        text: '',
         // sidePadding: 60
       }
     }
@@ -2085,7 +2097,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.newPatientChartLabels = this.newPatientChartLabels1;
 
         this.newPatientTotalAverage = data.total;
-        this.doughnutChartOptions.elements.center.text = this.newPatientTotalAverage;
+        this.newPatientTotalAverage$.next(data.total);
+        // this.doughnutChartOptions.elements.center.text = this.newPatientTotalAverage;
         this.newPatientTotalPrev = data.total_ta;
         this.newPatientGoals = data.goals;
         if (this.user_type == '4' && this.childid != '') {
@@ -2123,6 +2136,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           if (data.data[0].percent)
             this.newPatientPercent = Math.round(data.data[0].percent);
           this.newPatientTotalAverage = Math.round(data.total);
+          this.newPatientTotalAverage$.next(this.newPatientTotalAverage);
           this.newPatientTotalPrev = Math.round(data.total_ta);
         }
         else {
@@ -2130,8 +2144,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           this.newPatientLabelPatients = "";
           this.newPatientTotalPrev = 0;
           this.newPatientTotalAverage = 0;
+          this.newPatientTotalAverage$.next(0);
         }
-        this.doughnutChartOptions.elements.center.text = this.newPatientTotalAverage;
+        // this.doughnutChartOptions.elements.center.text = this.newPatientTotalAverage;
         this.newPatientGoals = data.goals;
         if (this.newPatientPercent > this.newPatientGoals)
           this.maxnewPatientGoal = this.newPatientPercent;

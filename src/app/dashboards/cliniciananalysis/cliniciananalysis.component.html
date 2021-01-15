@@ -446,13 +446,14 @@
           <div *ngIf="fdnewPatientsRateTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
 
         <div class="chart" *ngIf="newPatientsDataMax > 0">
-          <div *ngIf="showTrendChart == false" style="height: 326px; position: relative;">
+          <div *ngIf="showTrendChart == false" style="height: 326px; position: relative; padding-top: 16px;">
         <canvas #myCanvas baseChart  id="newPatients" class="chart"
         [data]="newPatientChartData"
           [labels]="newPatientChartLabels"
           [legend]="legendSettings"
           [options]="doughnutChartOptions"
           [chartType]="doughnutChartType"
+          [plugins]="newPatientPluginObservable$ | async"
           (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" [colors]="newpColors"></canvas>
         </div>

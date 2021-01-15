@@ -116,7 +116,9 @@
          <div  style="height: 326px;position: relative;">
            <div class="sa_back_btn_holder" *ngIf="revenueReferralLabelsl2.length > 0"><span (click) ="changeLevel('revenue')">Back</span></div>
        <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabels.length > 0" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event,'revenue')" [options]="pieChartOptions" [colors]="pieChartColors">
+          (chartClick)="chartClicked($event,'revenue')" 
+          [plugins]="revenuePluginObservable$ | async"
+          [options]="pieChartOptions" [colors]="pieChartColors">
         </canvas>
          <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabelsl2.length > 0" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           [options]="pieChartOptions" [colors]="pieChartColors">

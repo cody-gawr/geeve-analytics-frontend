@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 
 @Injectable({ providedIn: 'root' })
 export class ChartService {
@@ -23,5 +24,28 @@ export class ChartService {
       pointShadowColor: 'rgba(0, 0, 0, 0.5)',
       backgroundOverlayMode: 'multiply'
     };
+
+    beforeDrawChart(count: number, isCurrency?:boolean) {
+      let array: PluginServiceGlobalRegistrationAndOptions[] = [{
+        beforeDraw(chart: any) {
+          const ctx = chart.ctx;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+          const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+          ctx.font = ((count.toString().length>4) ? 24 : 37) + 'px Gilroy-Bold';
+          ctx.fillStyle = '#454649';
+          // Draw text in center
+          
+          if(isCurrency) {
+            let currencyFormate = count.toString().split(/(?=(?:...)*$)/).join(',');
+            ctx.fillText(('$ ' + currencyFormate), centerX, centerY);
+          } else {
+            ctx.fillText(count, centerX, centerY); 
+          }                   
+        }
+      }]
+      return array
+    }
 
 }

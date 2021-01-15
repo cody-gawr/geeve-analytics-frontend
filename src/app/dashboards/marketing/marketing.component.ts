@@ -27,6 +27,7 @@ import { ToastrService } from 'ngx-toastr';/**/
 import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+import { ChartService } from '../chart.service';
 
 export interface Dentist {
   providerId: string;
@@ -51,9 +52,11 @@ export class MarketingComponent implements AfterViewInit {
   public filteredCountriesMultiple: any[];
   public selectedCategories:any[] =[];
   public newPatientsReferral$ = new BehaviorSubject<number>(0);
+  revenueByReferralCount$ = new BehaviorSubject<number>(0);
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  revenuePluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
 
@@ -69,6 +72,7 @@ export class MarketingComponent implements AfterViewInit {
     private router: Router,
     public ngxSmartModalService: NgxSmartModalService,
     public decimalPipe: DecimalPipe,
+    private chartService: ChartService
   ){
   }
   private warningMessage: string; 
@@ -102,23 +106,17 @@ export class MarketingComponent implements AfterViewInit {
     // plugin observable for the center text in doughnut chart to subscribe the no patients count
     this.pluginObservable$ = this.newPatientsReferral$.pipe(
       takeUntil(this.destroyed$),
-      map((count) => {
-        let array: PluginServiceGlobalRegistrationAndOptions[] = [{
-          beforeDraw(chart: any) {
-            const ctx = chart.ctx;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-            const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
-            ctx.font = 37 + 'px Gilroy-Bold';
-            ctx.fillStyle = '#454649';
-            // Draw text in center
-            ctx.fillText(count, centerX, centerY);
-          }
-        }]
-        return array
+      map((productionCount) => {
+        return this.chartService.beforeDrawChart(productionCount)
       })
-    )
+    );
+
+    this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
+      takeUntil(this.destroyed$),
+      map((revenueCount) => {
+        return this.chartService.beforeDrawChart(revenueCount, true)
+      })
+    );
     // end of plugin observable logic
 
       $('#currentDentist').attr('did','all');
@@ -425,7 +423,7 @@ this.preoceedureChartColors = [
     },
     elements: {
       center: {
-        text: this.totalRevenueByReferral
+        text: ''
       }
     }
   };
@@ -547,7 +545,8 @@ public mkRevenueByReferralLoader:any;
        if(data.message == 'success'){
         this.mkRevenueByReferralLoader = false;
         this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(data.total || 0));
-        this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
+         this.revenueByReferralCount$.next(Math.round(data.total || 0));
+        // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
         if (this.revenueRefChart) {
          this.revenueRefChart.ngOnDestroy();
          this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);

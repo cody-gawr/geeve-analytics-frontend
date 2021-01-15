@@ -23,6 +23,7 @@ import Swal from 'sweetalert2';
 import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { map, takeUntil } from 'rxjs/operators';
+import { ChartService } from '../chart.service';
 
 export interface Dentist {
   providerId: string;
@@ -102,7 +103,8 @@ single = [
     private route: ActivatedRoute,  
     private headerService: HeaderService,
     private _cookieService: CookieService, 
-    private router: Router){
+    private router: Router,
+    private chartService: ChartService){
     }
     private checkPermission(role) { 
   this.headerService.checkPermission(role).subscribe((res) => {
@@ -135,63 +137,24 @@ single = [
     //plugin for Percentage of Production by Clinician chart
     this.pluginObservable$ = this.percentOfProductionCount$.pipe(
       takeUntil(this.destroyed$),
-      map((count) => {
-        let array: PluginServiceGlobalRegistrationAndOptions[] = [{
-          beforeDraw(chart: any) {
-            const ctx = chart.ctx;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-            const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
-            ctx.font = 37 + 'px Gilroy-Bold';
-            ctx.fillStyle = '#454649';
-            // Draw text in center
-            ctx.fillText(count, centerX, centerY);
-          }
-        }]
-        return array
+      map((productionCount) => {
+        return this.chartService.beforeDrawChart(productionCount)
       })
     );
 
     //plugin for Total Discounts chart
     this.totalDiscountPluginObservable$ = this.percentOfTotalDiscount$.pipe(
       takeUntil(this.destroyed$),
-      map((count) => {
-        let array: PluginServiceGlobalRegistrationAndOptions[] = [{
-          beforeDraw(chart: any) {
-            const ctx = chart.ctx;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-            const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
-            ctx.font = 37 + 'px Gilroy-Bold';
-            ctx.fillStyle = '#454649';
-            // Draw text in center
-            ctx.fillText(count, centerX, centerY);
-          }
-        }]
-        return array
+      map((discountCount) => {
+        return this.chartService.beforeDrawChart(discountCount)
       })
     )
 
     //plugin for Current Overdue chart
     this.currentOverduePluginObservable$ = this.percentOfCurrentOverdue$.pipe(
       takeUntil(this.destroyed$),
-      map((count) => {
-        let array: PluginServiceGlobalRegistrationAndOptions[] = [{
-          beforeDraw(chart: any) {
-            const ctx = chart.ctx;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-            const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
-            ctx.font = 37 + 'px Gilroy-Bold';
-            ctx.fillStyle = '#454649';
-            // Draw text in center
-            ctx.fillText(count, centerX, centerY);
-          }
-        }]
-        return array
+      map((overDueCount) => {
+        return this.chartService.beforeDrawChart(overDueCount)
       })
     )
 
