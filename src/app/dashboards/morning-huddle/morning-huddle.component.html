@@ -30,15 +30,30 @@
           <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard custom_production_match" [ngClass]="production.goal > production.total? 'mh-matcard-down' : 'mh-matcard-up'">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><span class="material-icons">room_preferences</span></div>
+                <!-- <div class="card-icon"><span class="material-icons">room_preferences</span></div> -->
                 <mat-card-title class="">
-                   <div class="ttl_value">${{ production.total}}</div>
-                <!-- <div class="ttl_value_left">$ {{ production.goal}}</div> -->
-                  Production
+
+                  <div class="prodction_main_box">
+                    <div class="production_images">
+                      <img src="../assets/images/product-chart.png" alt="product-chart" /> 
+                    </div>
+                    <div class="production_description">
+                      <h4>Production</h4>
+                      <div class="price-section">
+                        <span class="change_value">${{ production.total}}</span>
+                        <div class="ttl_value_left">+ ${{ production.goal}}</div>
+                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                      </div>
+                    </div>
+                  </div>
+
+                  
+                
+                  
                 </mat-card-title>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" >
+            <!-- <div class="graph_image" >
               <div class="change_value">
                     <span class="range_icon" *ngIf="production.goal < production.total">
                       <i class="fa fa-plus"></i>
@@ -47,23 +62,41 @@
                       <i class="fa fa-minus"></i>
                     </span>${{ getdifference(production.total,production.goal) }}
                   </div>
-              </div>
+            </div> -->
           </div>
 
           <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard custom_rebook_recall_rate" [ngClass]="recallRate.goal > recallRate.rate? 'mh-matcard-down' : 'mh-matcard-up'" >
             <mat-card  class="treatmentPlan sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fab fa-rev"></i></div>
+                <!-- <div class="card-icon"><i class="fab fa-rev"></i></div> -->
                 <mat-card-title class="text-center">
-                  <div class="ttl_value">{{ recallRate.rate}}%</div>
+
+                  <div class="prodction_main_box">
+                    <div class="production_images">
+                      <img src="../assets/images/profit.png" alt="product-chart" /> 
+                    </div>
+                    <div class="production_description">
+                      <h4>Rebook Recall Rate</h4>
+                      <div class="recall-retail-rate">
+                        <span class="change_value">{{ recallRate.rate}}%</span>
+                        <div class="ttl_value_left">- {{ recallRate.goal}}%</div>
+                        <img src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                      </div>
+                    </div>
+                  </div>
+
+
+                  
                 <!--  <img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="recallRate.goal < recallRate.rate">
                    <img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="recallRate.goal > recallRate.rate"> -->
-                   Rebook Recall Rate
-                </mat-card-title>
-                <!-- <div class="ttl_value_left">{{ recallRate.goal}}%</div> -->
+                  
+                  
+
+              </mat-card-title>
+
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" >
+            <!-- <div class="graph_image" >
               <div class="change_value">
                     <span class="range_icon" *ngIf="recallRate.goal < recallRate.rate">
                       <i class="fa fa-plus"></i>
@@ -76,20 +109,32 @@
                       {{ getdifference(recallRate.rate,recallRate.goal) }}%                     
                     </span>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard" [ngClass]="treatmentRate.goal > treatmentRate.total ? 'mh-matcard-down' : 'mh-matcard-up'" >
             <mat-card  class="noPatients sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><span class="material-icons">medical_services</span></div>
+                <!-- <div class="card-icon"><span class="material-icons">medical_services</span></div> -->
                 <mat-card-title class="text-center">
-                <div class="ttl_value">{{ treatmentRate.total}}%</div>
-                  Rebook Treatment Rate
+                  <div class="prodction_main_box">
+                    <div class="production_images">
+                      <img src="../assets/images/product-chart.png" alt="product-chart" /> 
+                    </div>
+                    <div class="production_description">
+                      <h4>Rebook Treatment Rate</h4>
+                      <div class="price-section">
+                        <span class="change_value">{{ treatmentRate.total}}%</span>
+                        <div class="ttl_value_left">+30%</div>
+                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                      </div>
+                    </div>
+                  </div>
+                  
                 </mat-card-title>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" >
+            <!-- <div class="graph_image" >
               <div class="change_value">
                     <span class="range_icon" *ngIf="treatmentRate.goal < treatmentRate.total">
                       <i class="fa fa-plus"></i>
@@ -102,7 +147,7 @@
                         {{ getdifference(treatmentRate.total, treatmentRate.goal) }}%                     
                     </span>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>                                                                                                        
       </div>
@@ -171,6 +216,13 @@
   </table>
 </div>
 
+
+  <ul class="main_pagination">
+    <li><a href="javascript:void(0)" class="first-page active">1</a></li>
+    <li><a href="javascript:void(0)" class="second-page">2</a></li>
+    <li><a href="javascript:void(0)" class="third-page">3</a></li>
+  </ul>
+
 <div class="data-loading-main">
    <div class="no-data" [ngClass]="(dentistList.data.length == 0 && dentistListLoading)? 'show' : 'hide'">
       No Data found
@@ -183,10 +235,10 @@
 
 
 
-<mat-paginator  [length]="dentistList.length"
+<!-- <mat-paginator  [length]="dentistList.length"
                [pageSize]="25"
                [pageSizeOptions]="[5, 10, 25, 100]">
-</mat-paginator>
+</mat-paginator> -->
           <!-- <table class="table">
             <thead>
               <tr>
