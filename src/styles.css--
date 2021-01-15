@@ -3029,6 +3029,3 @@ ul.download-sync-list {
 #snav .mat-nav-list .sub-item .child-sub-item {
     margin-top: 0px !important;
 }
-.header_filters .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-    display: none;
-}
