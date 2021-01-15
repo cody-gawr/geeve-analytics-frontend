@@ -441,7 +441,9 @@
             </div>
             <img src="../assets/images/info-icon.png" alt="info-icon"/>
           </mat-card-title>
-          <div class="card-body">
+          <div *ngIf="buildChartNewpatientsLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
+          <div *ngIf="buildChartNewpatientsDentistLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
+          <div *ngIf="fdnewPatientsRateTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
 
         <div class="chart" *ngIf="newPatientsDataMax > 0">
           <div *ngIf="showTrendChart == false" style="height: 326px; position: relative;">
@@ -459,7 +461,6 @@
           <div *ngIf="newPatientsDataMax <= 0 && buildChartNewpatientsLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
-          </div>
           </div>
           <div class="card-footer">
           <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false" fxLayoutAlign="center center">
@@ -481,6 +482,8 @@
               </div>
       </mat-card-content>
     </mat-card>
+
+    
     <mat-card class="newPatientsSingle sa_no_tabs_area" [style.display]="'none'">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">
@@ -548,9 +551,7 @@
                 </div>
       </mat-card-content>
     </mat-card>
-     <div *ngIf="buildChartNewpatientsLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
-          <div *ngIf="buildChartNewpatientsDentistLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
-          <div *ngIf="fdnewPatientsRateTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
+     
   </div>
 <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last">
     <mat-card  class="recallPrebook">

@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
         datares['email'] = res.data.data.email;
         datares['token'] = res.data.data.token;        
         datares['userid'] = res.data.data.id;      
+        datares['clinicid'] = res.data.data.clinic_id;      
         datares['parentid'] = res.data.data.parent_id;   
         datares['user_type'] = res.data.data.user_type;       
         datares['user_image'] = res.data.data.user_image;        
@@ -85,6 +86,8 @@ export class LoginComponent implements OnInit {
             } else{
                this._cookieService.put("userid", datares['parentid'], opts);
                this._cookieService.put("childid", datares['userid'], opts);
+                this._cookieService.put("clinicid", datares['clinicid'], opts);
+
                this._cookieService.put("dentistid", datares['dentistid'], opts);
                this.router.navigate(['/profile-settings']);
             }

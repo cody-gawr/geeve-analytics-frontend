@@ -12,7 +12,6 @@ import Swal from 'sweetalert2';
   templateUrl: './dialog-overview-example.html',
 })
 
-
 export class DialogOverviewExampleDialogComponent {
    public clinic_id:any ={};
 show_dentist = false;
@@ -181,6 +180,7 @@ initiate_clinic() {
     // Get Dentist
     getDentists() {
       this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+        this.dentists=[];
            if(res.message == 'success'){
             res.data.forEach(result => {
               var temp=[];

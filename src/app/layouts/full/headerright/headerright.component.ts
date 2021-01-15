@@ -56,31 +56,51 @@ export class AppHeaderrightComponent implements AfterViewInit  {
    private warningMessage: string;
    public finalUrl:string;
    public selectedClinic;
+    public placeHolder='';
    public showAll:boolean = true;
    private getClinics() { 
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;
         if(res.data.length>0) {
+        if(this._cookieService.get("user_type") != '2') {
+          this.clinic_id = this._cookieService.get("clinicid");
+          this.selectedClinic = this._cookieService.get("clinicid");
+          this.clinicsData.forEach((res,key) => {
+            if(res.id != this.clinic_id)
+              this.clinicsData.splice(key, 1);
+          });
+              this.placeHolder =res.data[0].clinicName;
+
+        }
+        else {
         if(this.route == '/dashboards/healthscreen'){
-          this.clinic_id ='all';
-          this.selectedClinic ='all';
+            if(this.clinicsData.length>1) {
+              this.clinic_id ='all';
+              this.selectedClinic ='all';
+              this.placeHolder ='All Clinics';
+            }
+            else {
+             this.clinic_id = res.data[0].id;
+              this.selectedClinic = res.data[0].id;
+              this.placeHolder =res.data[0].clinicName;
+
+            }
         }
         else  
         {
           this.clinic_id = res.data[0].id;
           this.selectedClinic = res.data[0].id;
+              this.placeHolder =res.data[0].clinicName;
+          
         }
-
+       }
         this.title = $('#page_title').val();
         this.loadClinic(this.selectedClinic);
     }
        }
         else if(res.status == '401'){
-            this._cookieService.put("username",'');
-            this._cookieService.put("email", '');
-            this._cookieService.put("token", '');
-            this._cookieService.put("userid", '');
+            this._cookieService.removeAll();
             this.router.navigateByUrl('/login');
            }
     }, error => {
@@ -104,10 +124,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
                 this.selectedDentist = res.data[0].providerId;
               }
            } else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
+             this._cookieService.removeAll();
               this.router.navigateByUrl('/login');
            }
         }, error => {

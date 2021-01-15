@@ -443,10 +443,68 @@ this.preoceedureChartColors = [
          },
           tooltips: {
             mode: 'x-axis',
+            enabled: false,
             custom: function(tooltip) {
-        if (!tooltip) return;
+            if (!tooltip) return;
+            var tooltipEl = document.getElementById('chartjs-tooltip');
+            if (!tooltipEl) {
+              tooltipEl = document.createElement('div');
+              tooltipEl.id = 'chartjs-tooltip';
+              tooltipEl.style.backgroundColor = "#FFFFFF";
+              tooltipEl.style.borderColor = "#B2BABB";
+              tooltipEl.style.borderWidth = "thin";
+              tooltipEl.style.borderStyle = "solid";
+              tooltipEl.style.zIndex = "999999";
+              tooltipEl.style.backgroundColor = "#000000";
+              tooltipEl.style.color = "#FFFFFF";
+              document.body.appendChild(tooltipEl);
+            }
+            if (tooltip.opacity === 0) {
+              tooltipEl.style.opacity = "0";
+              return;
+            } else {
+              tooltipEl.style.opacity = "0.8";
+            }
+
+             tooltipEl.classList.remove('above', 'below', 'no-transform');
+            if (tooltip.yAlign) {
+              tooltipEl.classList.add(tooltip.yAlign);
+            } else {
+              tooltipEl.classList.add('no-transform');
+            }
+
+              function getBody(bodyItem) {
+              return bodyItem.lines;
+            }
+            if (tooltip.body) {
+              var titleLines = tooltip.title || [];
+              var bodyLines = tooltip.body.map(getBody);
+              var innerHtml = '<table><thead>';             
+              innerHtml += '</thead><tbody>';
+              titleLines.forEach(function (title) {
+                innerHtml += '<tr><th style="text-align: left;">' + title + '</th></tr>';
+              });
+                 bodyLines.forEach(function (body, i) {
+                if(!body[0].includes("$0")){
+                  innerHtml += '<tr><td style="padding: 0px">'+body[0]+'</td></tr>';
+                  }                
+              });
+              innerHtml += '</tbody></table>';
+              tooltipEl.innerHTML = innerHtml;
+              //tableRoot.innerHTML = innerHtml;
+            }       
         // disable displaying the color box;
-        tooltip.displayColors = false;
+            var position = this._chart.canvas.getBoundingClientRect();
+            // Display, position, and set styles for font
+            tooltipEl.style.position = 'absolute';
+            tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
+            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 30) + 'px';
+            tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+            tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+            tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+            tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+            tooltipEl.style.pointerEvents = 'none';
+            tooltip.displayColors = false;
       },
   callbacks: {
      label: function(tooltipItems, data) { 
@@ -655,20 +713,78 @@ public labelBarPercentOptions: any = {
         },legend: {
             display: true
          },
-    tooltips: {
-      mode: 'x-axis',
+     tooltips: {
+            mode: 'x-axis',
+            enabled: false,
             custom: function(tooltip) {
-        if (!tooltip) return;
+            if (!tooltip) return;
+            var tooltipEl = document.getElementById('chartjs-tooltip');
+            if (!tooltipEl) {
+              tooltipEl = document.createElement('div');
+              tooltipEl.id = 'chartjs-tooltip';
+              tooltipEl.style.backgroundColor = "#FFFFFF";
+              tooltipEl.style.borderColor = "#B2BABB";
+              tooltipEl.style.borderWidth = "thin";
+              tooltipEl.style.borderStyle = "solid";
+              tooltipEl.style.zIndex = "999999";
+              tooltipEl.style.backgroundColor = "#000000";
+              tooltipEl.style.color = "#FFFFFF";
+              document.body.appendChild(tooltipEl);
+            }
+            if (tooltip.opacity === 0) {
+              tooltipEl.style.opacity = "0";
+              return;
+            } else {
+              tooltipEl.style.opacity = "0.8";
+            }
+
+             tooltipEl.classList.remove('above', 'below', 'no-transform');
+            if (tooltip.yAlign) {
+              tooltipEl.classList.add(tooltip.yAlign);
+            } else {
+              tooltipEl.classList.add('no-transform');
+            }
+
+              function getBody(bodyItem) {
+              return bodyItem.lines;
+            }
+            if (tooltip.body) {
+              var titleLines = tooltip.title || [];
+              var bodyLines = tooltip.body.map(getBody);
+              var innerHtml = '<table><thead>';             
+              innerHtml += '</thead><tbody>';
+              titleLines.forEach(function (title) {
+                innerHtml += '<tr><th style="text-align: left;">' + title + '</th></tr>';
+              });
+                 bodyLines.forEach(function (body, i) {
+                if(!body[0].includes("0%")){
+                  innerHtml += '<tr><td style="padding: 0px">'+body[0]+'</td></tr>';
+                  }                
+              });
+              innerHtml += '</tbody></table>';
+              tooltipEl.innerHTML = innerHtml;
+              //tableRoot.innerHTML = innerHtml;
+            }       
         // disable displaying the color box;
-        tooltip.displayColors = false;
+            var position = this._chart.canvas.getBoundingClientRect();
+            // Display, position, and set styles for font
+            tooltipEl.style.position = 'absolute';
+            tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
+            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 30) + 'px';
+            tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
+            tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
+            tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
+            tooltipEl.style.padding = tooltip.yPadding + 'px ' + tooltip.xPadding + 'px';
+            tooltipEl.style.pointerEvents = 'none';
+            tooltip.displayColors = false;
       },
   callbacks: {
      label: function(tooltipItems, data) { 
-          return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel+"%";
+           return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel+"%";
      },
      
   }
-},
+}
   };
 
   public pieChartOptions: any = {
@@ -1336,9 +1452,11 @@ public categoryExpensesLoader:any;
 
     this.productionChartDatares = [];
         data.data.forEach(res => {
+          if(res.percent>0) {
            this.productionChartDatares.push(Math.round(res.percent));
            this.productionChartLabelsres.push(res.name);
            this.productionChartTotal = this.productionChartTotal + parseInt(res.expenses);
+         }
     });
            this.productionChartTrendTotal = data.total_ta;
         if(Math.round(this.productionChartTotal)>=Math.round(this.productionChartTrendTotal))
@@ -1897,10 +2015,8 @@ private finProductionByClinicianTrend() {
           this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(res => {  
                    res.val.forEach((result,key) => {
-                    if(result.total>0) {
                      this.productionChartTrend[key]['data'].push(Math.round(result.total));
                      this.productionChartTrend[key]['label'] = result.name;
-                   }
                    });
                    if(this.trendValue == 'c')
                    this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
