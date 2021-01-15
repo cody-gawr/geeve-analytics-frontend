@@ -136,7 +136,7 @@
 
 .sa_dentist_graphs_area { padding: 0px 15px; }
 
-.sa_dentist_graphs_area .mat-card-title { margin-bottom: 10px!important; }
+.sa_dentist_graphs_area .mat-card-title { margin-bottom: 00px!important; }
 
 .sa_dentist_graphs_area .reading-label { font-size: 18px!important }
 
@@ -1259,7 +1259,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 /* healthscreen css start */
 
-.sa_profit_bar.sa_dentist_graphs_area .sa_flexbg { min-height: 190px!important; }
+.sa_profit_bar.sa_dentist_graphs_area .sa_flexbg { min-height: 152px!important; }
 
 .sa_profit_bar .sa_matcard_content .mat-card-title { border: none!important; position: relative; font-size: 19px!important; }
 
@@ -1283,13 +1283,13 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .ur_users { position: relative; width: 74px; float: left; margin-right: 8px; }
 
-.ur_rank { width: 40px; height: 40px; border-radius: 150px; overflow: hidden; background: #18a689; color: #fff; text-align: center; line-height: 40px; font-size: 18px; font-weight: 600; }
+.ur_rank { color: #000; text-align: left;  font-size: 14px; font-weight: 600;     height: 52px; display: flex; align-items: center; }
 
-.ur_pic { width: 44px; height: 44px; border-radius: 150px; overflow: hidden; position: absolute; right: 0; top: 0; background: #fff; border: 2px solid #fff; }
+.ur_pic { width: 32px; height: 32px;}
 
 .ur_pic img { max-width: 100%; border-radius: 150px; overflow: hidden; }
 
-.ur_user_name { float: left; font-size: 18px; font-weight: 400; padding: 10px 0; }
+.ur_user_name { float: left; font-size: 18px; font-weight: 400; padding: 10px 0;     display: flex; align-items: center; }
 
 .top_ref_grid { border-radius: 4px; border: 1px solid #f2f2f2; min-height: 150px; padding: 15px; border-bottom: 6px solid #18a689; box-shadow: 0 1px 15px 9px rgba(62,57,107,.07); }
 
@@ -1299,25 +1299,38 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .top_ref_value { font-size: 28px; font-weight: 500; width: 100%; text-align: center; padding: 55px 0 65px; width: 100%; display: block; }
 
-.ur_users_number { float: right; font-size: 20px; padding: 10px 0; font-weight: 500; }
+.ur_users_number { 
+    float: right;
+    font-size: 14px;
+    padding: 10px 0;
+    font-weight: 500;
+    color: #4d4d4d;
+    height: 52px;
+    display: flex;
+    align-items: center;
+}
 
 .ur_users_main { overflow: hidden; }
 
 .user_rate_listing ul { list-style: none; padding: 0; margin: 0; }
 
-.user_rate_listing li { list-style: none; padding: 15px 0; margin: 0; border-bottom: 1px solid #f2f2f2; }
-
+.user_rate_listing li { list-style: none; padding:5px 30px; margin: 0; border-bottom: 1px solid #f2f2f2; }
+.user_rate_listing li:hover{
+    background-color: #fbfbfb;
+}
 .user_rate_listing li:last-child { border-bottom: none }
 
 .ttl_value { text-align: left; padding: 20px 0; font-size: 32px; color: #424242; font-weight: 500; padding-left: 6px; }
 
 .change_value { text-align: right; padding: 0px 0 0; font-weight: 500; float: right; font-size: 25px; }
 
-.arrow-up .change_value { color: #18a689!important; }
+.arrow-up .change_value { color: #2a2a2a!important; }
 
-.arrow-down .change_value { color: red!important; }
+.arrow-down .change_value { color:#2a2a2a!important; }
 
-.green_title { background: #00A289; margin-left: 0px; color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: 400; width: auto; display: inline-block; margin-bottom: 13px; }
+.green_title { background: #00A289; margin-left: 0px; font-size: 14px; color: #fff; padding: 10px 20px; border-radius: 4px; font-weight: 400; width: auto; display: inline-block; margin-bottom: 13px; }
+
+.green_title i {margin-right:5px;}
 
 .rank_image { margin-right: 10px; float: left; width: 38px; margin-top: -7px; height: 48px; overflow: hidden; }
 
@@ -3165,4 +3178,129 @@ ul.download-sync-list {
 }
 #snav .mat-nav-list .sub-item .child-sub-item {
     margin-top: 0px !important;
+}
+
+.prodction_main_box{
+    padding: 30px;
+    display: flex;
+}
+
+.custom-box{
+    height: auto;
+    min-height: auto;
+}
+
+.production_images{
+    margin-right:30px;
+}
+
+.production_images img{
+    max-width: 81px;
+    min-height: 81px;
+}
+
+.production_description{
+    text-align: left;
+}
+
+.production_description h4{
+    font-size: 19px;
+    font-weight: bold;
+    color: #4c838b;
+    margin: 10px 0px 15px;
+}
+
+.production_description span{
+    float:left !important;
+    font-size: 23px !important;
+    font-weight: 900 !important;
+}
+
+.mb-0{
+    margin-bottom:0 !important;
+}
+
+.three-horizontal-dots a i{
+    color: #cbcbcb !important;
+}
+
+.client-name{
+    margin-left:15px;
+    color: #4d4d4d;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.user-reffrance{
+    list-style: none;
+    padding-left:0;
+}
+
+.user-reffrance li{
+    width: 100%;
+    padding: 5px 30px;
+    margin: 0;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.user-reffrance .user_name{
+   padding: 0;
+   height: 52px;
+   display: flex;
+   align-items: center;
+   margin-left: 15px;
+    color: #4d4d4d;
+    font-size: 14px;
+    font-weight: 500; 
+}
+
+.user-reffrance .user_name span{
+    width:32px;
+    height: 32px;
+    background-color: #c2c2c2;
+    border-radius: 50%;
+    margin-right:15px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:#fff;
+    font-size: 14px;
+    font-weight:bold;
+}
+
+.user-reffrance .user_value{
+    float: right;
+    font-size: 14px;
+    padding: 10px 0;
+    font-weight: 500;
+    color: #4d4d4d;
+    background-color: transparent !important;
+}
+
+@media(max-width:375px){
+    .ur_users{
+        width: 18px;
+    }
+
+    .user_rate_listing li {
+        padding: 5px 20px;
+    }
+
+    .user-reffrance li{
+        padding: 5px 20px;
+    }
+
+    .sa_profit_bar.sa_dentist_graphs_area .sa_flexbg{
+        min-height: 130px !important;
+    }
+
+    .prodction_main_box {
+        padding: 15px;
+    }
+
+    .production_images img {
+        max-width: 64px;
+        min-height: auto;
+    }
 }

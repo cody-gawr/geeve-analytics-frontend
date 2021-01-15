@@ -10,54 +10,81 @@
     <div class="sa_first_section">
 <div>
 <div class="sa_dentist_graphs_area sa_profit_bar">
-  <div><span class="green_title">Current Month</span></div>
+  <div><span class="green_title"><i class="far fa-calendar-alt"></i> This Month</span></div>
   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-  <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg" [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0}">
+  <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg custom-box" [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0}">
 
-    <mat-card class="dentistProduction sa_hccard">
+    <mat-card class="dentistProduction card-box sa_hccard">
       <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="">
+          <!-- <mat-card-title class="">  </mat-card-title>-->
 
-            <img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="production_dif > 0">
-            <img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="production_dif <= 0"> 
-            Production
-              <div class="change_value">
-                 $ {{production_dif| number:'1.0-0'}}</div> </mat-card-title>
-          <div class="ttl_value">$ {{production_c| number:'1.0-0'}}</div>
+            <!-- <img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="production_dif > 0">
+            <img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="production_dif <= 0"> -->
+            <div class="prodction_main_box">
+              <div class="production_images">
+                <img src="../assets/images/product-chart.png" alt="product-chart" /> 
+              </div>
+              <div class="production_description">
+                <h4>Production</h4>
+                <span class="change_value">$ {{production_dif| number:'1.0-0'}}</span>
+              </div>
+            </div>
+
+          <!-- <div class="ttl_value">$ {{production_c| number:'1.0-0'}}</div> -->
+                
       </mat-card-content>
-
     </mat-card>
-      <div class="graph_image" ></div>
+      <!-- <div class="graph_image" ></div> -->
   </div>
   <!-- Column-->
   <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg" [ngClass]="{'arrow-up': profit_dif>=0, 'arrow-down':profit_dif<=0}" >
 
     <mat-card  class="treatmentPlan sa_hccard">
       <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center"><img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="profit_dif > 0"><img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="profit_dif <= 0"> Profit
-              <div class="change_value">$ {{profit_dif| number:'1.0-0'}}</div> </mat-card-title>
+        <div class="prodction_main_box">
+          <div class="production_images">
+            <img src="../assets/images/profit.png" alt="product-chart" /> 
+          </div>
+          <div class="production_description">
+            <h4>Profit</h4>
+            <span class="change_value">$ {{profit_dif| number:'1.0-0'}}</span>
+          </div>
+        </div>
+
+          <!-- <mat-card-title class="text-center"><img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="profit_dif > 0"><img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="profit_dif <= 0"> Profit
+              <div class="change_value"></div> </mat-card-title>
          
-    <div class="ttl_value"> $ {{profit_c| number:'1.0-0'}}</div>
+    <div class="ttl_value"> $ {{profit_c| number:'1.0-0'}}</div> -->
 
 
       </mat-card-content>
     </mat-card>
-      <div class="graph_image" ></div>
+      <!-- <div class="graph_image" ></div> -->
    </div>
   <!-- Column-->
   <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last" [ngClass]="{'arrow-up': visits_dif>=0, 'arrow-down':visits_dif<=0}">
 
     <mat-card  class="noPatients sa_hccard">
       <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center"><img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="visits_dif > 0"><img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="visits_dif <= 0">  Total Visits
-              <div class="change_value">{{visits_dif}}</div></mat-card-title>
+        <div class="prodction_main_box">
+          <div class="production_images">
+            <img src="../assets/images/total-visit.png" alt="total-visit" /> 
+          </div>
+          <div class="production_description">
+            <h4>Total Visits</h4>
+            <span class="change_value">{{visits_dif}}</span>
+          </div>
+        </div>
+
+          <!-- <mat-card-title class="text-center"><img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="visits_dif > 0"><img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="visits_dif <= 0">  Total Visits
+              <div class="change_value"></div></mat-card-title>
         
-          <div class="ttl_value">{{visits_c}}</div>
+          <div class="ttl_value">{{visits_c}}</div> -->
 
 
       </mat-card-content>
     </mat-card>
-      <div class="graph_image" ></div>
+      <!-- <div class="graph_image" ></div> -->
   </div>
 </div>                                                                                                        
 </div>
@@ -71,7 +98,10 @@
   <div fxFlex="calc(39% - 10px)" fxFlex.lg="calc(39% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg">
     <mat-card  class="dentistProduction">
       <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center">Hourly Rate Leaders
+          <mat-card-title class="text-center mb-0">Hourly Rate Leaders
+            <div class="three-horizontal-dots">
+              <a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a>
+            </div> 
           </mat-card-title>
           <!--$ {{production_p+production_c}}-->
          <!-- <div *ngIf="maxHourlyRate > 0">
@@ -89,12 +119,13 @@
                   <li *ngFor="let hourlyRateChartD of hourlyRateChartData; let i = index">
                       <div class="ur_users">
                           <div class="ur_rank">{{i+1}}</div>
-                          <div class="ur_pic"><img class="" src="../assets/images/image1.jpg"></div>
                       </div>
                       <div class="ur_users_main">
+                        
                           <div class="ur_user_name">
-                              {{hourlyRateChartLabels[i]}}
-                              <p class="ur_clinic" *ngIf="clinic_id =='all'">{{hourlyRateChartClinic[i]}}</p>
+                            <div class="ur_pic"><img class="" src="../assets/images/image1.jpg"></div>
+                              <span class="client-name">{{hourlyRateChartLabels[i]}}</span>
+                              <!-- <p class="ur_clinic" *ngIf="clinic_id =='all'">{{hourlyRateChartClinic[i]}}</p> -->
                           </div>
                           <div class="ur_users_number">
                               ${{hourlyRateChartD| number:'1.0-0'}}
@@ -109,11 +140,26 @@
     </mat-card>
   </div>
   <!-- Column-->
-  <div fxFlex="calc(60% - 10px)" fxFlex.lg="calc(60% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last">
+  <div fxFlex="calc(39% - 10px)" fxFlex.lg="calc(39% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last">
     <mat-card  class="treatmentPlan">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Top Referrals
+            <div class="three-horizontal-dots"><a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a></div>
           </mat-card-title>
+
+          <ul class="user-reffrance">
+            <li class="list_rep r{{i+1}}" *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
+              <div class="ur_users">
+                <div class="ur_rank">{{i+1}}</div>
+              </div>
+
+              <div class="user_name"><span>S</span>{{newPatientsTimeLabels[i]}}</div>
+              <div class="user_value">{{newPatientsTimeD}}</div>
+
+            </li>
+          </ul>
+
+        
           <!--<div *ngIf="maxNewPatients > 0">
 
               <div class="list_rep r{{i+1}}" *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
@@ -130,21 +176,21 @@
                 <ng-container *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
                   
                   <div fxFlex="calc(32% - 5px)" fxFlex.lg="calc(32% - 5px)" fxFlex.md="calc(32% - 5px)" fxFlex.sm="100" fxFlex.xs="100" class="" *ngIf="i<3">
+
+                      <!-- <div class="top_ref_grid" >
+                          <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
+                          <span class="top_ref_value">{{newPatientsTimeD}}</span>
+                          <span class="ur_clinic" *ngIf="clinic_id =='all'">{{newPatientsTimeClinic[i]}}</span>
+                      </div> -->
+                  </div>
+
+                   <!-- <div fxFlex="calc(32% - 5px)" fxFlex.lg="calc(32% - 5px)" fxFlex.md="calc(32% - 5px)" fxFlex.sm="100" fxFlex.xs="100" class="" *ngIf="i>=3">
                       <div class="top_ref_grid" >
                           <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
                           <span class="top_ref_value">{{newPatientsTimeD}}</span>
                           <span class="ur_clinic" *ngIf="clinic_id =='all'">{{newPatientsTimeClinic[i]}}</span>
-
                       </div>
-                  </div>
-                   <div fxFlex="calc(32% - 5px)" fxFlex.lg="calc(32% - 5px)" fxFlex.md="calc(32% - 5px)" fxFlex.sm="100" fxFlex.xs="100" class="" *ngIf="i>=3">
-                      <div class="top_ref_grid" >
-                          <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
-                          <span class="top_ref_value">{{newPatientsTimeD}}</span>
-                          <span class="ur_clinic" *ngIf="clinic_id =='all'">{{newPatientsTimeClinic[i]}}</span>
-
-                      </div>
-                  </div>
+                  </div> -->
                 
                 </ng-container>
                   <div *ngIf="maxNewPatients == 0">No Top Referrals Yet!</div>
@@ -160,12 +206,13 @@
 
 <div class="sa_scnd_section">
 <div class="sa_dentist_graphs_area">
-  <div><span class="green_title">Next Month</span></div>
+  <div><span class="green_title"><i class="far fa-calendar-alt"></i> Next Month</span></div>
  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
   <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg next-month-green">
     <mat-card  class="dentistProduction">
       <mat-card-content class="sa_matcard_content">
       <mat-card-title class="text-center">Pre-booked Visits
+        <div class="three-horizontal-dots"><a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a></div>
      </mat-card-title>
            <rg-gauge-chart class="green_guagechart" *ngIf="visits_f >= ''"
     [canvasWidth]="canvasWidth"
@@ -179,7 +226,9 @@
   <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg next-month-green">
     <mat-card  class="treatmentPlan">
       <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center">Chair Utilisation Rate </mat-card-title>
+          <mat-card-title class="text-center">Chair Utilisation Rate 
+            <div class="three-horizontal-dots"><a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a></div>
+          </mat-card-title>
            <rg-gauge-chart class="green_guagechart"  *ngIf="utilisation_rate_f >= ''"
 
     [canvasWidth]="canvasWidth"
@@ -195,6 +244,7 @@
     <mat-card  class="noPatients">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Unscheduled Production
+            <div class="three-horizontal-dots"><a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a></div>
           </mat-card-title>
         <div class="chart" >
            <rg-gauge-chart  class="blue_guagechart" *ngIf="unscheduled_production_f >= ''"
