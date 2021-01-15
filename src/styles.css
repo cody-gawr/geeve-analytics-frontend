@@ -134,7 +134,7 @@
 
 .sa_tabs_main_sec .btn-group { padding: 0 10px;}
 
-.sa_dentist_graphs_area { padding: 0px 15px; }
+/* .sa_dentist_graphs_area { padding: 0px 15px;} */
 
 .sa_dentist_graphs_area .mat-card-title { margin-bottom: 00px!important; }
 
@@ -610,7 +610,7 @@ html .page-wrapper { height: 100vh!important }
 
 .mat-slide-toggle.mat-checked .mat-slide-toggle-bar { background-color: rgba(24,166,137,0.54)!important }
 
-.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar { background-color: #18A689!important }
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar { background-color: #18A689!important; border-radius: 8px; }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple { background-color: #18A689!important }
 
@@ -1438,7 +1438,7 @@ ul { margin: 0px !important; }
 
 .dentist-performance .mh-matcard .graph_image .change_value { position: absolute; right: 15px; bottom: 10px; font-weight: 300; font-size: 16px; color: #fff; }
 
-.dentist-performance .mh-matcard .mat-card { margin-bottom: 85px; }
+/* .dentist-performance .mh-matcard .mat-card { margin-bottom: 85px; } */
 
 .mh-matcard-down .card-icon { background-color: #f35e5e; box-shadow: 0 0 20px 0 rgba(243, 94, 94, 0.4); }
 
@@ -1448,7 +1448,7 @@ ul { margin: 0px !important; }
 
 .mh-matcard-up .ttl_value { color: #00a98a; }
 
-.morning-huddle .mat-tab-labels { background-color: #fff; border-radius: 40px; display: unset; width: auto; box-shadow: 0px 3px 15px 0 rgba(0, 0, 0, 0.1); padding: 14px 5px; }
+.morning-huddle .mat-tab-labels { background-color: #fff; border-radius: 8px; display: unset; width: auto; box-shadow: 0px 3px 15px 0 rgba(0, 0, 0, 0.1); padding: 14px 5px; }
 
 .morning-huddle .mat-tab-nav-bar, .morning-huddle .mat-tab-header { border-bottom: 0px solid rgba(0, 0, 0, 0.12); }
 
@@ -1486,7 +1486,7 @@ ul { margin: 0px !important; }
 
 .mh-matcard .graph_image { height: 45px; opacity: 0.7; bottom: 5px; }
 
-.sa_profit_bar.sa_dentist_graphs_area .sa_flexbg.mh-matcard { min-height: 165px !important; }
+.sa_profit_bar.sa_dentist_graphs_area .sa_flexbg.mh-matcard { min-height: auto !important; }
 
 .dentist-performance .mh-matcard-down .graph_image { background-image: url("./assets/images/graph-down.png"); }
 
@@ -1532,17 +1532,17 @@ ul { margin: 0px !important; }
 
 .morning-huddle h3 { font-size: 20px; margin-bottom: 0px; }
 
-.mh-table .mat-row:nth-child(even) { background-color: rgba(24,166,137,0.03); }
+.mh-table .mat-row:nth-child(even) { background-color: #f6f7f9;}
 
-.mh-table .mat-row:nth-child(odd) { background-color: #ffffff; }
+.mh-table .mat-row:nth-child(odd) { background-color: #ffffff;}
 
-.mh-table td.mat-cell, .mh-table td.mat-footer-cell { padding: 7px 20px !important; font-weight: 400; border-bottom: none !important; border-right: 1px solid rgba(24,166,137,0.2); font-size: 16px; }
+.mh-table td.mat-cell, .mh-table td.mat-footer-cell { padding: 7px 20px !important; font-weight: 400; border-bottom: none !important; font-size: 14px; color: #000; }
 
-.mh-table th.mat-header-cell { background: rgba(24,166,137,0.05); font-size: 14px; padding: 13px 20px !important; font-weight: 400; border-right: 1px solid rgba(24,166,137,0.2); color: rgba(0, 0, 0, 0.87); border-bottom: 1px solid rgba(24,166,137,0.2); }
+.mh-table th.mat-header-cell {  font-size: 14px; padding: 13px 20px !important; font-weight: bold;  color:#000; border-bottom: 1px solid #f6f7f9; }
 
-.mh-table span.mht-value-down { width: 100%; color: #f35e5e; font-size: 18px; float: left; }
+.mh-table span.mht-value-down { color: #f35e5e; float: left; font-weight: bold;  height: 23px; display: flex; align-items: center; }
 
-.mh-table span.mht-value-up { width: 100%; color: #00a98a; font-size: 18px; float: left; }
+.mh-table span.mht-value-up { color: #00a98a;  float: left; font-weight: bold;  height: 23px; display: flex; align-items: center; }
 
 .mh-table td.mat-cell:last-of-type, .mh-table td.mat-footer-cell:last-of-type, .mh-table th.mat-header-cell:last-of-type { border-right: 0px solid rgba(24,166,137,0.2); }
 
@@ -3183,6 +3183,7 @@ ul.download-sync-list {
 .prodction_main_box{
     padding: 30px;
     display: flex;
+    width: 100%;
 }
 
 .custom-box{
@@ -3214,6 +3215,7 @@ ul.download-sync-list {
     float:left !important;
     font-size: 23px !important;
     font-weight: 900 !important;
+    color: #2a2a2a;
 }
 
 .mb-0{
@@ -3250,7 +3252,7 @@ ul.download-sync-list {
    align-items: center;
    margin-left: 15px;
     color: #4d4d4d;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500; 
 }
 
@@ -3277,6 +3279,103 @@ ul.download-sync-list {
     color: #4d4d4d;
     background-color: transparent !important;
 }
+
+.price-section{
+    display: flex;
+}
+
+.price-section .ttl_value_left{
+    background-color: #1d9781;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 0px 10px;
+    margin: 0 10px 0 15px;
+    white-space: nowrap;
+}
+
+.price-section img{
+    width: 30px;
+    height: 30px;
+}
+
+.recall-retail-rate{
+    display:flex;
+}
+
+.recall-retail-rate .ttl_value_left{
+    background-color: #ff6565;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 0px 10px;
+    margin: 0 10px 0 15px;
+}
+
+.recall-retail-rate img{
+    width: 30px;
+    height: 30px;
+}
+
+.mat-elevation-z8 td .custom_goal:nth-child(2n){
+    background-color: #fff;
+    width: 110px;
+    height: 24px;
+    display: flex;
+    height: 23px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 44px;
+    border-radius: 8px;
+}
+
+.mat-elevation-z8 tr:nth-child(2n-1) .custom_goal{
+    background-color: #f6f7f9;
+    width: 110px;
+    height: 24px;
+    display: flex;
+    height: 23px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 44px;
+    border-radius: 8px;
+}
+
+.main_pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    padding: 25px 0;
+}
+
+.main_pagination li a{
+    width: 44px;
+    height:44px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius:50%;
+    border:1px solid #cccccc;
+    color: #545d7a;
+    transition: all 0.5s;
+    margin: 0 5px;
+    user-select: none;
+}
+
+.main_pagination li a:hover{
+    background-color: #0a857c;
+    color:#fff;
+}
+
+.main_pagination .active{
+    background-color: #0a857c;
+    border:1px solid #0a857c;
+    color: #fff;
+    box-shadow: 11px 18px 21px rgba(51, 56, 72, 0.23);
+}
+
 
 @media(max-width:375px){
     .ur_users{
