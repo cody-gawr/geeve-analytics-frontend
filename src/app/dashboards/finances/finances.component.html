@@ -35,7 +35,14 @@
   <div class="sa_card topbar-strip">
     <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
       <div fxFlex>
-        <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial YTD</span>
+        <div class="sa_tabs_design">
+          <!-- <span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span> -->
+          <span (click)="filterDate('m')" class="filter_m filter sa_filter_span active">This Month</span>
+          <span class="filter_lm filter sa_filter_span" (click)="filterDate('lm')">Last Month</span>
+          <span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span>
+          <span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span>
+          <span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Calender Year</span>
+          <span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">Financial Year</span>
           <div class="custom_date">
             <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="Select Date Range" placeholder="Select Date Range" readonly />
             <ngx-daterangepicker-material class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'" [locale]="{applyLabel: 'ok', displayFormat: 'DD-MM-YYYY',firstDay: 1}"></ngx-daterangepicker-material>
@@ -43,12 +50,24 @@
         </div>
       </div>
       <div class="dh-target">
-        <div class="onofftoogle"> <span class="trend_mode_title">Average</span>
+        <div class="onofftoogle"> 
+          <span class="trend_mode_title">Trend:</span>
           <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style" [disabled]="trendxero">
+            <mat-button-toggle checked value = "off" class = "target_off target_filter" (click)="toggleFilter('off')">
+              <span>Off</span>
+            </mat-button-toggle>  
+            <mat-button-toggle value = "current" class = "target_current target_filter" (click)="toggleFilter('current')">
+              <span>Monthly</span>
+            </mat-button-toggle>
+            <mat-button-toggle value = "historic" class = "target_historic target_filter" (click)="toggleFilter('historic')">
+              <span>Annual</span>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+          <!-- <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style" [disabled]="trendxero">
             <mat-button-toggle checked value = "off" class = "target_off target_filter" (click)="toggleFilter('off')"> <span>Off</span> </mat-button-toggle>
             <mat-button-toggle value = "current" class = "target_current target_filter" (click)="toggleFilter('current')"> <span>On</span> </mat-button-toggle>
-            <!-- <mat-button-toggle value = "historic" class = "target_historic target_filter" (click)="toggleFilter('historic')"> <span>Historic</span> </mat-button-toggle> -->
-          </mat-button-toggle-group>
+            <mat-button-toggle value = "historic" class = "target_historic target_filter" (click)="toggleFilter('historic')"> <span>Historic</span> </mat-button-toggle>
+          </mat-button-toggle-group> -->
         </div>
       </div>
     </div>
@@ -144,7 +163,7 @@ expenses_card custom_ngx_cw01" >
                                     [options]="pieChartOptions" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]">                  
                             </canvas> -->
                     <div fxLayout="row wrap" fxLayoutGap="20px grid">
-                      <div class="ngx-charts-fix " fxFlex.lg="60" fxFlex.xl="60" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="60">
+                      <div class="ngx-charts-fix " fxFlex.lg="70" fxFlex.xl="70" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70">
                           <ngx-charts-pie-chart *ngIf="pieChartLabels.length > 0"
                               class="chart-container sa_chart_custom"
                               [view]="[500]"
@@ -152,9 +171,7 @@ expenses_card custom_ngx_cw01" >
                               [trimLabels] ="true"
                               [maxLabelLength] ="15"
                               [results]="single"
-                              [animations]="animations"
                               [legend]="false"
-                              [legendTitle]="legendTitle"
                               [explodeSlices]="explodeSlices"
                               [labels]="showLabels"
                               [doughnut]="doughnut"
@@ -167,7 +184,7 @@ expenses_card custom_ngx_cw01" >
                             <p></p>
                           </div>
                       </div>
-                      <div class="" fxFlex.lg="40" fxFlex.xl="40" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="40">
+                      <div class="" fxFlex.lg="30" fxFlex.xl="30" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="30">
                         <div class="sa_pie_chart_txtdata">
                           <h6>Industry Benchmarks</h6>
                           <span><b>Dentist:</b> 35-40%</span> <span><b>Lab Fees:</b> 2-4%</span> <span><b>Consumables:</b> 6-8%</span> <span><b>Advertising:</b> 2-5%</span> <span><b>Rent:</b> 4-8%</span> <span><b>Wages (non-clinical):</b> 18-23%</span> <span><b>EBITDA (profit):</b> 5-25%</span> </div>
@@ -190,7 +207,7 @@ expenses_card custom_ngx_cw01" >
           <mat-card class="sa_no_tabs_area" >
             <mat-card-content class="sa_matcard_content"> 
               <!--  <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionChartTrendTotal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{productionChartTrendIcon}}.png"></span> -->
-              <mat-card-title class="text-center">Percentage of production by clinicain (%) <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">Percentage of Production by Clinician <img alt="info-icon" src="../assets/images/info-icon.png">
                 <!--<div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -206,6 +223,7 @@ expenses_card custom_ngx_cw01" >
                   <canvas class="productionPercentage" #myCanvas *ngIf="showInternal == true" baseChart
                       [data]="productionChartData" [labels]="productionChartLabels" [chartType]="productionChartType"
                       (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
+                      [plugins]="pluginObservable$ | async"
                       [options]="pieChartOptions" [colors]="[{backgroundColor: [
                       '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac','#D7F8EF','#FEEFB8']}]"></canvas>
                 </div>
@@ -225,8 +243,18 @@ expenses_card custom_ngx_cw01" >
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn custom_ngx_cw03">
           <mat-card class="" >
-             <mat-card-content class="sa_matcard_content"> <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{totalDiscountChartTrendTotal | number:'1.0-0'}}" *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{totalDiscountChartTrendIcon}}.png"></span>
-              <mat-card-title class="text-center">Total Discounts <img alt="info-icon" src="../assets/images/info-icon.png">
+             <mat-card-content class="sa_matcard_content">              
+              <mat-card-title class="text-center total-dicount-title">
+                <span  
+                  class="predicted3Tool sa_inc_dec_arrows trend_arrow" 
+                  mat-icon-button matTooltip="{{trendText}} : ${{totalDiscountChartTrendTotal | number:'1.0-0'}}" 
+                  *ngIf="trendText">
+                  <img class="trend_ico" src="../assets/images/trend_{{totalDiscountChartTrendIcon}}.png">
+                </span> 
+                <span class="title">
+                  Total Discounts
+                </span>
+                <img alt="info-icon" src="../assets/images/info-icon.png">
                 <!-- <div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -240,7 +268,11 @@ expenses_card custom_ngx_cw01" >
               <div class="chart" *ngIf="totalDiscountChartLabels.length > 0">
                 <div  style="height: 280px">
                   <canvas class="totalDiscount" #myCanvas *ngIf="showInternal == true" baseChart [data]="totalDiscountChartData" [labels]="totalDiscountChartLabels" [chartType]="totalDiscountChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)" [options]="pieChartOptions2" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]"> </canvas>
+          (chartClick)="chartClicked($event)" [options]="pieChartOptions2" 
+          [plugins]="totalDiscountPluginObservable$ | async"
+          [colors]="[{backgroundColor: [
+                      '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac','#D7F8EF','#FEEFB8']}]"
+          > </canvas>
                 </div>
               </div>
               <div *ngIf="totalDiscountChartData.length <= 0 && finTotalDiscountsLoader == false" class="sa_nodata_div">
@@ -283,7 +315,11 @@ expenses_card custom_ngx_cw01" >
               <div class="chart" >
                 <div  style="height: 280px" *ngIf="totalOverdueAccountDataMax > 0">
                   <canvas class="totalOverdue" #myCanvas *ngIf="showInternal == true" baseChart [data]="totalOverdueAccountData" [labels]="totalOverdueAccountLabels" [chartType]="productionChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"  [options]="pieChartOptions2" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]"> </canvas>
+          (chartClick)="chartClicked($event)"  [options]="pieChartOptions2"
+           [plugins]="currentOverduePluginObservable$ | async"
+          [colors]="[{backgroundColor: [
+                      '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac','#D7F8EF','#FEEFB8']}]"
+          > </canvas>
                 </div>
                 <div *ngIf="totalOverdueAccountDataMax <= 0 && finOverdueAccountsLoader == false" class="sa_nodata_div">
                   <h4>No Data</h4>
@@ -295,8 +331,9 @@ expenses_card custom_ngx_cw01" >
               <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec" *ngIf="totalOverdueAccountDataMax > 0">
                 <div fxFlex.gt-sm="100%" fxFlex.gt-xs="100%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">$ {{totalOverdueAccount | number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span> 
-                  <span class="value-text" *ngIf="currentText == ''">Current</span> </div>
+                  <span class="value-text">Current Overdues</span> 
+                  <!-- <span class="value-text" *ngIf="currentText == ''">Current</span>  -->
+                </div>
               </div>
               </div>
             </mat-card-content>

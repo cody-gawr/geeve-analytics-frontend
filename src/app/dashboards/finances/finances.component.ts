@@ -20,6 +20,10 @@ import { CookieService } from "angular2-cookie/core";
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
+import { map, takeUntil } from 'rxjs/operators';
+
 export interface Dentist {
   providerId: string;
   name: string;
@@ -29,6 +33,7 @@ export interface Dentist {
   templateUrl: './finances.component.html',
   styleUrls: ['./finances.component.scss']
 })
+
 export class FinancesComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas: ElementRef;
     @ViewChild("myCanvas2") canvas2: ElementRef;
@@ -53,9 +58,9 @@ export class FinancesComponent implements AfterViewInit {
    public duration='m';
    public predictedChartColors;
    public trendText;
-     colorScheme = {
-    domain: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']
-  };
+   colorScheme = {
+    domain: ['#6edbba', '#abb3ff', '#b0fffa', '#ffb4b5', '#d7f8ef', '#fffdac', '#fef0b8', '#4ccfae']
+   };
 single = [
 ];
  dateData: any[];
@@ -79,10 +84,26 @@ single = [
   doughnut = false;
   arcWidth = 0.65;
   rangeFillOpacity = 0.75;
-   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
+  pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  totalDiscountPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  currentOverduePluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+  public percentOfProductionCount$ = new BehaviorSubject<number>(99);
+  public percentOfTotalDiscount$ = new BehaviorSubject<number>(60);
+  public percentOfCurrentOverdue$ = new BehaviorSubject<number>(45);
+  chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  constructor(private toastr: ToastrService,private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
-  }
+
+  constructor(
+    private toastr: ToastrService,
+    private financesService: FinancesService, 
+    private dentistService: DentistService, 
+    private datePipe: DatePipe, 
+    private route: ActivatedRoute,  
+    private headerService: HeaderService,
+    private _cookieService: CookieService, 
+    private router: Router){
+    }
     private checkPermission(role) { 
   this.headerService.checkPermission(role).subscribe((res) => {
        if(res.message == 'success'){
@@ -111,6 +132,69 @@ single = [
    }
   }
   ngAfterViewInit() {
+    //plugin for Percentage of Production by Clinician chart
+    this.pluginObservable$ = this.percentOfProductionCount$.pipe(
+      takeUntil(this.destroyed$),
+      map((count) => {
+        let array: PluginServiceGlobalRegistrationAndOptions[] = [{
+          beforeDraw(chart: any) {
+            const ctx = chart.ctx;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+            const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+            ctx.font = 37 + 'px Gilroy-Bold';
+            ctx.fillStyle = '#454649';
+            // Draw text in center
+            ctx.fillText(count, centerX, centerY);
+          }
+        }]
+        return array
+      })
+    );
+
+    //plugin for Total Discounts chart
+    this.totalDiscountPluginObservable$ = this.percentOfTotalDiscount$.pipe(
+      takeUntil(this.destroyed$),
+      map((count) => {
+        let array: PluginServiceGlobalRegistrationAndOptions[] = [{
+          beforeDraw(chart: any) {
+            const ctx = chart.ctx;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+            const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+            ctx.font = 37 + 'px Gilroy-Bold';
+            ctx.fillStyle = '#454649';
+            // Draw text in center
+            ctx.fillText(count, centerX, centerY);
+          }
+        }]
+        return array
+      })
+    )
+
+    //plugin for Current Overdue chart
+    this.currentOverduePluginObservable$ = this.percentOfCurrentOverdue$.pipe(
+      takeUntil(this.destroyed$),
+      map((count) => {
+        let array: PluginServiceGlobalRegistrationAndOptions[] = [{
+          beforeDraw(chart: any) {
+            const ctx = chart.ctx;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+            const centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+            ctx.font = 37 + 'px Gilroy-Bold';
+            ctx.fillStyle = '#454649';
+            // Draw text in center
+            ctx.fillText(count, centerX, centerY);
+          }
+        }]
+        return array
+      })
+    )
+
       $('#currentDentist').attr('did','all');
      this.checkPermission('dashboard5');
         //this.filterDate('cytd');
@@ -415,7 +499,10 @@ this.preoceedureChartColors = [
       mode: 'x-axis',
       callbacks: {
         label: function (tooltipItems, data) {
-          return "$ " + data['datasets'][0]['data'][tooltipItems['index']];
+          let currency = data['datasets'][0]['data'][tooltipItems['index']].toString();
+          // Convert the number to a string and split the string every 3 characters from the end and join comma separator
+          currency = currency.split(/(?=(?:...)*$)/).join(',');
+          return "$ " + currency;
         },
       }
     }
@@ -584,31 +671,35 @@ public labelBarPercentOptions: any = {
 },
   };
 
-    public pieChartOptions: any = {
-    responsive: true,
-    maintainAspectRatio: false,
-    legend: {
-            display: true,
-             position:'bottom',
-             labels: {
-              usePointStyle: true,
-              padding: 20
-            },
-         },
-         elements: {
-         center: {
-            text: 99,
-            // sidePadding: 60
-          }
+  public pieChartOptions: any = {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          padding: 20
         },
-        tooltips: {
+        onClick : (event: MouseEvent) => {
+            event.stopPropagation();
+        }
+      },
+      elements: {
+        center: {
+          text: '',
+          // sidePadding: 60
+        }
+      },
+      tooltips: {
         callbacks: {
-          label: function(tooltipItem, data) {
-            return data['labels'][tooltipItem['index']] +": "+data['datasets'][0]['data'][tooltipItem['index']]+ "%";
+          label: function (tooltipItem, data) {
+            return data['labels'][tooltipItem['index']] + ": " + data['datasets'][0]['data'][tooltipItem['index']] + "%";
           }
         }
       },
   };
+  
 
       public pieChartOptions2: any = {
     responsive: true,
@@ -619,8 +710,11 @@ public labelBarPercentOptions: any = {
          },
               tooltips: {
   callbacks: {
-        label: function(tooltipItem, data,index) {        
-          return data['labels'][tooltipItem['index']] +": $"+data['datasets'][0]['data'][tooltipItem['index']];
+        label: function(tooltipItem, data,index) { 
+          let currency = data['datasets'][0]['data'][tooltipItem['index']].toString();      
+          // Convert the number to a string and split the string every 3 characters from the end and join comma separator
+          currency = currency.split(/(?=(?:...)*$)/).join(',');          
+          return data['labels'][tooltipItem['index']] +": $"+currency;
         } 
   }
 }
@@ -1670,27 +1764,54 @@ this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
     return validDate
   }
 toggleFilter(val) {
-   $('.target_filter').removeClass('mat-button-toggle-checked');
-    $('.target_'+val).addClass('mat-button-toggle-checked');
-    $('.filter').removeClass('active');
-    if(val == 'current') {
-     this.toggleChecked = true;
-     this.trendValue = 'c';
-     this.toggleChangeProcess();
-     this.displayProfit(1);
-    }
-    else if(val == 'historic') {
-       this.toggleChecked = true;
-       this.trendValue = 'h';
-       this.toggleChangeProcess();
-     this.displayProfit(1);
+  $('.target_filter').removeClass('mat-button-toggle-checked');
+  $('.target_' + val).addClass('mat-button-toggle-checked');
+  $('.filter').removeClass('active');
+  var date = new Date();
+  this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+  if (val == 'current') {
+    this.toggleChecked = true;
+    this.trendValue = 'c';
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, date.getMonth(), 1), 'dd-MM-yyyy');
 
-    }
-    else if(val == 'off') {
-        this.filterDate('m');
-          $('.trendMode').hide();
-    $('.nonTrendMode').css('display','block');
-    }
+    this.toggleChangeProcess();
+    this.displayProfit(1);
+  }
+  else if (val == 'historic') {
+    this.toggleChecked = true;
+    this.trendValue = 'h';
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 10, date.getMonth(), 1), 'dd-MM-yyyy');
+
+    this.toggleChangeProcess();
+    this.displayProfit(1);
+  }
+  else if (val == 'off') {
+    this.filterDate('m');
+    $('.trendMode').hide();
+    $('.nonTrendMode').css('display', 'block');
+  }
+
+  //  $('.target_filter').removeClass('mat-button-toggle-checked');
+  //   $('.target_'+val).addClass('mat-button-toggle-checked');
+  //   $('.filter').removeClass('active');
+  //   if(val == 'current') {
+  //    this.toggleChecked = true;
+  //    this.trendValue = 'c';
+  //    this.toggleChangeProcess();
+  //    this.displayProfit(1);
+  //   }
+  //   else if(val == 'historic') {
+  //      this.toggleChecked = true;
+  //      this.trendValue = 'h';
+  //      this.toggleChangeProcess();
+  //    this.displayProfit(1);
+
+  //   }
+  //   else if(val == 'off') {
+  //       this.filterDate('m');
+  //         $('.trendMode').hide();
+  //   $('.nonTrendMode').css('display','block');
+  //   }
      $('.expenses_card').removeClass('active');
 
 }
@@ -2280,6 +2401,7 @@ private finExpensesByCategoryTrend() {
                   
                  });
                  this.expensesChartTrendLabels =this.expensesChartTrendLabels1; 
+                 console.log('this.expensesChartTrendLabels', this.expensesChartTrendLabels)
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

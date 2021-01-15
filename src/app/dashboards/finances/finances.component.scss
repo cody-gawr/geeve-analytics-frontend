@@ -8,4 +8,11 @@
         width: 18px;
     }
   }
+ 
+  .total-dicount-title {
+    justify-content: start; 
+    .title {
+      flex-grow: 1;
+    } 
+  }
 }
