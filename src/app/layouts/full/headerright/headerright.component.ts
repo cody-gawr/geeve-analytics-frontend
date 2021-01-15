@@ -56,33 +56,45 @@ export class AppHeaderrightComponent implements AfterViewInit  {
    private warningMessage: string;
    public finalUrl:string;
    public selectedClinic;
+    public placeHolder='';
    public showAll:boolean = true;
    private getClinics() { 
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;
         if(res.data.length>0) {
+        if(this._cookieService.get("user_type") != '2') {
+          this.clinic_id = this._cookieService.get("clinicid");
+          this.selectedClinic = this._cookieService.get("clinicid");
+          this.clinicsData.forEach((res,key) => {
+            if(res.id != this.clinic_id)
+              this.clinicsData.splice(key, 1);
+          });
+              this.placeHolder =res.data[0].clinicName;
+
+        }
+        else {
         if(this.route == '/dashboards/healthscreen'){
             if(this.clinicsData.length>1) {
               this.clinic_id ='all';
               this.selectedClinic ='all';
+              this.placeHolder ='All Clinics';
             }
             else {
              this.clinic_id = res.data[0].id;
               this.selectedClinic = res.data[0].id;
+              this.placeHolder =res.data[0].clinicName;
+
             }
         }
         else  
         {
           this.clinic_id = res.data[0].id;
           this.selectedClinic = res.data[0].id;
+              this.placeHolder =res.data[0].clinicName;
+          
         }
-        if(this._cookieService.get("user_type") != '2') {
-          this.clinicsData =[];
-          this.clinic_id = this._cookieService.get("clinicid");
-          this.selectedClinic = this._cookieService.get("clinicid");
-        }
-
+       }
         this.title = $('#page_title').val();
         this.loadClinic(this.selectedClinic);
     }

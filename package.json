@@ -6,15 +6,13 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-prod": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build -c=production",
-    "build-prod-non-optimized": "ng build -c=prod-non-optimized",
-    "build-staging": "ng build -c=staging",
+    "prod": "node --max_old_space_size=64384  ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --output-hashing=none",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
   "private": true,
-   "dependencies": {
+  "dependencies": {
     "@angular-devkit/core": "7.0.2",
     "@angular/animations": "^7.2.15",
     "@angular/cdk": "^7.3.7",

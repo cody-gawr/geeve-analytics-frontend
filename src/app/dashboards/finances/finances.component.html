@@ -1,28 +1,6 @@
 <!-- ============================================================== -->
 <!-- Grid-->
 <!-- ============================================================== -->
-<!-- <div fxLayout="row wrap">
-  <div class="sa_heading_bar">
-      <div fxFlex.gt-sm="85" fxFlex.gt-xs="100" fxFlex="100" class="">
-          <h4><span class="page_title">Clinician Procedures &#38; Referrals</span></h4>
-       </div>
-      <div id="file">
-</div>
-<app-headerright class="app-headerright"></app-headerright>
-    
-
-       <div fxFlex.gt-sm="18" fxFlex.gt-xs="100" fxFlex="100" class="">
-          <div class="vertical_center_header_content">
-            <div class="sa_select_outer">
-                <select class="sa_select"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
-                     <option value ="all">All Dentist( {{dentistCount}} )</option>
-                    <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
-                </select> 
-            </div>
-          </div>
-       </div>
-  </div>
-</div>   -->
  <select class="sa_select internal_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)"  [style.display]="'none'">1
                      <option value ="all">All Dentist</option>
                     <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
@@ -134,12 +112,7 @@ expenses_card custom_ngx_cw01" >
                 <mat-card-title class="text-center">Expenses
                     <div class="sa_box_title_right_buttons">
                         <button mat-icon-button (click) = "flipcard('expenses_card')" ><i class="fas fa-list-ul list_ico"></i><i class="fas fa-chart-line chart_ico"></i></button>
-                        <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
-                        <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button> 
-                        <mat-menu #menu="matMenu">
-                            <button mat-menu-item>Save Image</button>
-                            <button mat-menu-item>Download PDF</button>
-                        </mat-menu> -->
+                    
                     </div>
                 </mat-card-title>
 
@@ -147,12 +120,6 @@ expenses_card custom_ngx_cw01" >
                 <div class=" sa_chart_summary_flip">
                     <div class="chart sa_chart_flip sa_flip">
                      
-                       <!--      <canvas *ngIf="showInternal == true" baseChart
-                                    [data]="pieChartData" [labels]="pieChartLabels"
-                                    [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-                                    (chartClick)="chartClicked($event)"
-                                    [options]="pieChartOptions" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]">                  
-                            </canvas> -->
                              <div fxLayout="row wrap">
                             <div class="ngx-charts-fix " fxFlex.lg="69" fxFlex.xl="73" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="73">
          
@@ -176,7 +143,7 @@ expenses_card custom_ngx_cw01" >
                               [tooltipText]="pieTooltipText"
                             >
                             </ngx-charts-pie-chart>
-                <div *ngIf="pieChartLabels.length <= 0 && categoryExpensesLoader == false" class="sa_nodata_div">
+                <div *ngIf="single.length <= 0 && categoryExpensesLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
           </div>
@@ -540,7 +507,7 @@ expenses_card custom_ngx_cw01" >
                 <div class=" sa_chart_summary_flip">
                     <div class="chart sa_chart_flip sa_flip" >
                         <div style="height: 280px;">
-                                  <canvas #myCanvas2 class="trendProductionPercentage" *ngIf="expensesChartTrendLabels.length  > 0" baseChart [datasets]="expensesChartTrend" [labels]="expensesChartTrendLabels" [options]="stackedChartOptions" [legend]="false"
+            <canvas #myCanvas2 class="trendProductionPercentage" *ngIf="expensesChartTrendLabels.length  > 0" baseChart [datasets]="expensesChartTrend" [labels]="expensesChartTrendLabels" [options]="stackedChartOptions" [legend]="false"
               [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" (chartClick)="chartClicked($event)" >
             </canvas>
 
