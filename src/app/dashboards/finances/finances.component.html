@@ -552,20 +552,18 @@ expenses_card custom_ngx_cw01" >
 
                 <div class=" sa_chart_summary_flip_main">
                 <div class=" sa_chart_summary_flip">
-                    <div class="chart sa_chart_flip sa_flip" >
-                        <div style="height: 280px;">
-            <canvas #myCanvas2 class="trendProductionPercentage" *ngIf="expensesChartTrendLabels.length  > 0" baseChart [datasets]="expensesChartTrend" [labels]="expensesChartTrendLabels" [options]="stackedChartOptions" [legend]="false"
-              [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" (chartClick)="chartClicked($event)" >
-            </canvas>
-
-            <div *ngIf="expensesChartTrendLabels.length  <=0 && finNetProfitPercentTrendLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div>
-                        </div>
+                  <div class="chart sa_chart_flip sa_flip" >
+                    <div style="height: 280px;">
+                      <canvas #myCanvas2 class="trendProductionPercentage" *ngIf="expensesChartTrendLabels.length  > 0" baseChart [datasets]="expensesChartTrend" [labels]="expensesChartTrendLabels" [options]="stackedChartOptions" [legend]="false"
+              [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" (chartClick)="chartClicked($event)" > </canvas>
+                      <div *ngIf="expensesChartTrendLabels.length  <=0 && finNetProfitPercentTrendLoader == false" class="sa_nodata_div">
+                        <h4>No Data</h4>
+                        <p></p>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
             </mat-card-content>
           </mat-card>
           <div *ngIf="finNetProfitPercentTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
