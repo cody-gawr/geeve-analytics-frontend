@@ -6,9 +6,9 @@
   <mat-tab label="Dentist Performance">
     <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
       <div class="morning-huddle-date">
-        <mat-form-field>
-          <mat-label>Previous Days</mat-label>
-          <mat-select (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
+        <mat-form-field floatLabel="never">
+          <!-- <mat-label>Previous Days</mat-label> -->
+          <mat-select  placeholder="Previous Days" (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
             <mat-option [value]="1">1</mat-option>
             <mat-option [value]="2">2</mat-option>
             <mat-option [value]="3">3</mat-option>
@@ -253,7 +253,7 @@
   <mat-tab label="Patient Schedule">
      <div class="morning-huddle-date">
         <mat-form-field>
-          <mat-label>Select Dentist</mat-label>
+          <!-- <mat-label>Select Dentist</mat-label> -->
           <mat-select  (selectionChange)="refreshScheduleTab($event.value)" id="setPreviousDay2" [(ngModel)]="currentDentistSchedule">
             <mat-option [value]="0">All Dentist</mat-option>
             <mat-option [value]="dentist.providerId" *ngFor="let dentist of clinicDentists">{{ dentist.name }}</mat-option>
