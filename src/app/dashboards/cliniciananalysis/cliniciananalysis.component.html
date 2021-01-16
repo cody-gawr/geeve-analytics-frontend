@@ -445,8 +445,8 @@
           <div *ngIf="buildChartNewpatientsDentistLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
           <div *ngIf="fdnewPatientsRateTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
 
-        <div class="chart" *ngIf="newPatientsDataMax > 0">
-          <div *ngIf="showTrendChart == false" style="height: 326px; position: relative; padding-top: 16px;">
+        <div class="chart vertical-center-box" *ngIf="newPatientsDataMax > 0">
+          <div *ngIf="showTrendChart == false" style="height: 326px; position: relative; width: 100%;">
         <canvas #myCanvas baseChart  id="newPatients" class="chart"
         [data]="newPatientChartData"
           [labels]="newPatientChartLabels"

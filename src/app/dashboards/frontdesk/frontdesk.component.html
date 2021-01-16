@@ -438,7 +438,7 @@
           <div class="chart">
           
 
-          <div *ngIf="showTrend == false" style="height: 190px;width: 100%">
+          <div *ngIf="showTrend == false && treatmentPrebookTotal>0" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="treatmentPrebookTotal" 
            [thick]="gaugeThick"  
@@ -451,11 +451,10 @@
           </ngx-gauge>
       </div>
 
-<!--        <div *ngIf="showTrend == false && treatmentPrebookTotal<=0 && fdtreatmentPrebookRateLoader == false" class="sa_nodata_div">
+     <div *ngIf="showTrend == false && treatmentPrebookTotal<=0 && fdtreatmentPrebookRateLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
           </div>
-      -->
 
 <div *ngIf="showTrend == true && treatmentPrebookChartTrendLabels.length > 0" style="height: 300px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="treatmentPrebookChartTrend" [labels]="treatmentPrebookChartTrendLabels" [options]="stackedChartOptions" 

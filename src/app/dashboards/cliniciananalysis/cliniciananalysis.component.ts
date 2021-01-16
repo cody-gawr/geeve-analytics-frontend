@@ -22,6 +22,7 @@ export interface Dentist {
 }
 @Component({
   templateUrl: './cliniciananalysis.component.html',
+  styleUrls: ['./cliniciananalysis.component.scss']
 })
 /**
   *Clinician analysis graph Dashboard

@@ -287,7 +287,7 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .sa_matcard_content .mat-card-title {text-align: left!important;font-size: 15px!important;color: #686d6c!important; align-items: center;border-bottom: 2px solid #f3f3f3!important;padding: 15px 30px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
 
-.sa_matcard_content .mat-card-title img {height: 18px;}
+.sa_matcard_content .mat-card-title img {height: 15px;}
 
 .card-body {padding: 20px}
 
@@ -572,7 +572,7 @@ html .page-wrapper { height: 100vh!important }
 
 .collection h4 {color: #5bd2af; font-size: 16px;}
 
-.production-value:not(:last-child),.collection-value:not(:last-child) {margin-bottom: 20px;}
+.production-value:not(:last-child),.collection-value:not(:last-child) {margin-bottom: 26px;}
 
 .production-value {border-right: 1px solid #eeeef4;}
 

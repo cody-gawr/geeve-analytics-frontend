@@ -90,8 +90,8 @@ single = [
   currentOverduePluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public percentOfProductionCount$ = new BehaviorSubject<number>(99);
-  public percentOfTotalDiscount$ = new BehaviorSubject<number>(60);
-  public percentOfCurrentOverdue$ = new BehaviorSubject<number>(45);
+  public percentOfTotalDiscount$ = new BehaviorSubject<number>(0);
+  public percentOfCurrentOverdue$ = new BehaviorSubject<number>(0);
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
 
@@ -146,7 +146,7 @@ single = [
     this.totalDiscountPluginObservable$ = this.percentOfTotalDiscount$.pipe(
       takeUntil(this.destroyed$),
       map((discountCount) => {
-        return this.chartService.beforeDrawChart(discountCount)
+        return this.chartService.beforeDrawChart(discountCount, true)
       })
     )
 
@@ -154,7 +154,7 @@ single = [
     this.currentOverduePluginObservable$ = this.percentOfCurrentOverdue$.pipe(
       takeUntil(this.destroyed$),
       map((overDueCount) => {
-        return this.chartService.beforeDrawChart(overDueCount)
+        return this.chartService.beforeDrawChart(overDueCount, true)
       })
     )
 
@@ -783,10 +783,17 @@ public labelBarPercentOptions: any = {
       public pieChartOptions2: any = {
     responsive: true,
     maintainAspectRatio: false,
-    legend: {
-            display: true,
-             position:'right'
-         },
+        legend: {
+          display: true,
+          position: 'right',
+          labels: {
+            usePointStyle: true,
+            padding: 20
+          },
+          onClick: (event: MouseEvent) => {
+            event.stopPropagation();
+          }
+        },
               tooltips: {
   callbacks: {
         label: function(tooltipItem, data,index) { 
@@ -1460,6 +1467,7 @@ public categoryExpensesLoader:any;
          }
         });
            this.totalDiscountChartTotal = Math.round(data.data.total_production.total);
+         this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
            if(data.data.trend_total_production.total)
            this.totalDiscountChartTrendTotal = Math.round(data.data.trend_total_production.total);
           else
@@ -1631,6 +1639,7 @@ isDecimal(value) {
          }
                   });
            this.totalOverdueAccount = data.total;
+         this.percentOfCurrentOverdue$.next(data.total);
        this.totalOverdueAccountData = this.totalOverdueAccountres;
        this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres; 
        this.totalOverdueAccountDataMax = Math.max(...this.totalOverdueAccountData);

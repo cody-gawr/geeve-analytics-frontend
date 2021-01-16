@@ -5,7 +5,7 @@
     right: 16px;
     top: 16px;
     img {
-        width: 18px;
+        width: 15px;
     }
   }
  
@@ -15,4 +15,24 @@
       flex-grow: 1;
     } 
   }
+
+  .chart-spacing {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    padding-right: 32px;
+  }
+
+  .clinician-center-chart {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    justify-content: center;
+  }
+}
+
+.w-100 {
+  width: 100%;
 }

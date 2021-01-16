@@ -38,7 +38,7 @@ export class ChartService {
           // Draw text in center
           
           if(isCurrency) {
-            let currencyFormate = count.toString().split(/(?=(?:...)*$)/).join(',');
+            let currencyFormate = count.toFixed(0).split(/(?=(?:...)*$)/).join(','); //decimal numbers fixed to zero number of digits after decimal point
             ctx.fillText(('$ ' + currencyFormate), centerX, centerY);
           } else {
             ctx.fillText(count, centerX, centerY); 

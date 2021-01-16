@@ -162,11 +162,11 @@ expenses_card custom_ngx_cw01" >
                                     (chartClick)="chartClicked($event)"
                                     [options]="pieChartOptions" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]">                  
                             </canvas> -->
-                    <div fxLayout="row wrap" fxLayoutGap="20px grid">
+                    <div fxLayout="row wrap">
                       <div class="ngx-charts-fix " fxFlex.lg="70" fxFlex.xl="70" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70">
                           <ngx-charts-pie-chart *ngIf="pieChartLabels.length > 0"
                               class="chart-container sa_chart_custom"
-                              [view]="[500]"
+                              [view]="[500, 300]"
                               [scheme]="colorScheme"
                               [trimLabels] ="true"
                               [maxLabelLength] ="15"
@@ -207,7 +207,7 @@ expenses_card custom_ngx_cw01" >
           <mat-card class="sa_no_tabs_area" >
             <mat-card-content class="sa_matcard_content"> 
               <!--  <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionChartTrendTotal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{productionChartTrendIcon}}.png"></span> -->
-              <mat-card-title class="text-center">Percentage of Production by Clinician <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">Production % by Clinician <img alt="info-icon" src="../assets/images/info-icon.png">
                 <!--<div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -217,13 +217,12 @@ expenses_card custom_ngx_cw01" >
                   </mat-menu>  
                 </div>-->
               </mat-card-title>
-              <div class="card-body">
-              <div class="chart" *ngIf="productionChartLabels.length > 0">
-                <div  style="height: 280px">
+              <div class="card-body clinician-center-chart">
+              <div class="chart w-100" *ngIf="productionChartLabels.length > 0">
+                <div style="height: 280px; width: 100%;">
                   <canvas class="productionPercentage" #myCanvas *ngIf="showInternal == true" baseChart
                       [data]="productionChartData" [labels]="productionChartLabels" [chartType]="productionChartType"
                       (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
-                      [plugins]="pluginObservable$ | async"
                       [options]="pieChartOptions" [colors]="[{backgroundColor: [
                       '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac','#D7F8EF','#FEEFB8']}]"></canvas>
                 </div>
@@ -264,9 +263,9 @@ expenses_card custom_ngx_cw01" >
                   </mat-menu>
                 </div>  -->
               </mat-card-title>
-              <div class="card-body">
-              <div class="chart" *ngIf="totalDiscountChartLabels.length > 0">
-                <div  style="height: 280px">
+              <div class="card-body chart-spacing">
+              <div class="chart w-100" *ngIf="totalDiscountChartLabels.length > 0">
+                <div  style="height: 280px; width: 100%;">
                   <canvas class="totalDiscount" #myCanvas *ngIf="showInternal == true" baseChart [data]="totalDiscountChartData" [labels]="totalDiscountChartLabels" [chartType]="totalDiscountChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" [options]="pieChartOptions2" 
           [plugins]="totalDiscountPluginObservable$ | async"
@@ -311,9 +310,9 @@ expenses_card custom_ngx_cw01" >
                   </mat-menu> 
                 </div> -->
               </mat-card-title>
-              <div class="card-body">
-              <div class="chart" >
-                <div  style="height: 280px" *ngIf="totalOverdueAccountDataMax > 0">
+              <div class="card-body chart-spacing">
+              <div class="chart w-100" >
+                <div  style="height: 280px; width: 100%;" *ngIf="totalOverdueAccountDataMax > 0">
                   <canvas class="totalOverdue" #myCanvas *ngIf="showInternal == true" baseChart [data]="totalOverdueAccountData" [labels]="totalOverdueAccountLabels" [chartType]="productionChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)"  [options]="pieChartOptions2"
            [plugins]="currentOverduePluginObservable$ | async"
@@ -373,11 +372,11 @@ expenses_card custom_ngx_cw01" >
                         (chartClick)="chartClicked($event)"></canvas>
                     </div>
                   </div>
-                  <div class="" fxFlex.lg="40" fxFlex.xl="40" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="40">
+                  <div fxFlexAlign="center" fxFlex.lg="40" fxFlex.xl="40" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="40">
                     <div fxLayout="row wrap" fxLayoutGap="30px grid" class="predicted1 sa_chart_details_sec production_collection" *ngIf="totalProductionCollectionLabel1.length > 0">
                       <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="production">
                         <h4 class="m-0 no-boldText"><b>Production</b></h4>
-                        <div fxLayout="row wrap" class="m-t-20" *ngIf="totalProductionCollectionLabel1.length > 0">
+                        <div fxLayout="row wrap" class="m-t-30" *ngIf="totalProductionCollectionLabel1.length > 0">
                           <div fxFlex.gt-sm="100%" fxFlex.gt-xs="100%" fxFlex="100">
                             <div class="production-value">
                               <h3 class="m-0 value-num">$ {{totalProductionVal | number:'1.0-0'}}</h3>
@@ -393,7 +392,7 @@ expenses_card custom_ngx_cw01" >
                       </div>
                       <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="collection">
                         <h4 class="m-0 no-boldText"><b>Collection <!--({{collectionPercentageC| number:'1.0-0'}}%)--></b></h4>
-                        <div fxLayout="row wrap" class="m-t-20" *ngIf="totalProductionCollectionLabel1.length > 0">
+                        <div fxLayout="row wrap" class="m-t-30" *ngIf="totalProductionCollectionLabel1.length > 0">
                           <div fxFlex.gt-sm="100%" fxFlex.gt-xs="100%" fxFlex="100">
                             <div class="collection-value">
                               <h3 class="m-0 value-num">$ {{collectionVal | number:'1.0-0'}}</h3>
@@ -437,8 +436,8 @@ expenses_card custom_ngx_cw01" >
                   </mat-menu> 
                 </div>--> 
               </mat-card-title>
-              <div class="card-body">
-              <div  style="height: 220px" >
+              <div class="card-body clinician-center-chart">
+              <div  style="height: 200px; width: 100%;" >
                 <ngx-gauge class="productionVisit" [type]="gaugeType"
            [value]="productionVal" 
            [thick]="gaugeThick"  
