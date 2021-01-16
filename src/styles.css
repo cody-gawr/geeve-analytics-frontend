@@ -134,7 +134,7 @@
 
 .sa_tabs_main_sec .btn-group { padding: 0 10px;}
 
-.sa_dentist_graphs_area { padding: 0px 15px; }
+/* .sa_dentist_graphs_area { padding: 0px 15px;} */
 
 .sa_dentist_graphs_area .mat-card-title { margin-bottom: 00px!important; }
 
@@ -287,7 +287,6 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .sa_matcard_content .mat-card-title {text-align: left!important;font-size: 15px!important;color: #686d6c!important; align-items: center;border-bottom: 2px solid #f3f3f3!important;padding: 15px 30px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
 
-.sa_matcard_content .mat-card-title img {height: 15px;}
 
 .card-body {padding: 20px}
 
@@ -572,7 +571,7 @@ html .page-wrapper { height: 100vh!important }
 
 .collection h4 {color: #5bd2af; font-size: 16px;}
 
-.production-value:not(:last-child),.collection-value:not(:last-child) {margin-bottom: 26px;}
+.production-value:not(:last-child),.collection-value:not(:last-child) {margin-bottom: 20px;}
 
 .production-value {border-right: 1px solid #eeeef4;}
 
@@ -606,17 +605,12 @@ html .page-wrapper { height: 100vh!important }
 
 .sa_seprate_toogle_options { margin-left: 16px; border-left: 1px solid #ccc; padding-left: 13px; padding-right: 15px; }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb { background-color: #18A689!important }
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {background-image: linear-gradient(to top, #11998e 0%, #38ef7d 100%);}
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-bar { background-color: rgba(24,166,137,0.54)!important }
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {    box-shadow: inset 3px 4px 5px rgba(242, 226, 226, 0.75);
+    background-color: #e5ffec!important; }
 
-.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar { 
-    background: rgb(24,166,137); /* Old browsers */
-    background: -moz-linear-gradient(top,  rgba(24,166,137,1) 0%, rgba(0,111,115,1) 99%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  rgba(24,166,137,1) 0%,rgba(0,111,115,1) 99%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  rgba(24,166,137,1) 0%,rgba(0,111,115,1) 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', endColorstr='#006f73',GradientType=0 ); /* IE6-9 */
-    border-radius: 8px; }
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar { background-color: #18A689!important; border-radius: 8px; }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple { background-color: #18A689!important }
 
@@ -1444,7 +1438,7 @@ ul { margin: 0px !important; }
 
 .dentist-performance .mh-matcard .graph_image .change_value { position: absolute; right: 15px; bottom: 10px; font-weight: 300; font-size: 16px; color: #fff; }
 
-.dentist-performance .mh-matcard .mat-card { margin-bottom: 85px; }
+/* .dentist-performance .mh-matcard .mat-card { margin-bottom: 85px; } */
 
 .mh-matcard-down .card-icon { background-color: #f35e5e; box-shadow: 0 0 20px 0 rgba(243, 94, 94, 0.4); }
 
@@ -1454,7 +1448,7 @@ ul { margin: 0px !important; }
 
 .mh-matcard-up .ttl_value { color: #00a98a; }
 
-.morning-huddle .mat-tab-labels { background-color: #fff; border-radius: 40px; display: unset; width: auto; box-shadow: 0px 3px 15px 0 rgba(0, 0, 0, 0.1); padding: 14px 5px; }
+.morning-huddle .mat-tab-labels { background-color: #fff; border-radius: 8px; display: unset; width: auto; box-shadow: 0px 3px 15px 0 rgba(0, 0, 0, 0.1); padding: 14px 5px; }
 
 .morning-huddle .mat-tab-nav-bar, .morning-huddle .mat-tab-header { border-bottom: 0px solid rgba(0, 0, 0, 0.12); }
 
@@ -1464,25 +1458,21 @@ ul { margin: 0px !important; }
 
 .morning-huddle .mat-ink-bar { position: absolute; bottom: 4px; border-radius: 50px; height: calc(100% - 7px); }
 
-.morning-huddle .mat-tab-label { z-index: 9; transition: all 0.3s ease; font-family: 'Gilroy-Bold';}
+.morning-huddle .mat-tab-label { z-index: 9; transition: all 0.3s ease; }
 
 .morning-huddle .mat-tab-label.mat-tab-label-active { color: #fff; opacity: 1; }
 
-.morning-huddle-date { text-align: center; display: grid;  }
+.morning-huddle-date { text-align: center; display: grid; }
 
 .morning-huddle-date .mat-form-field-appearance-legacy .mat-form-field-underline, .morning-huddle-date .mat-form-field-appearance-legacy .mat-form-field-ripple { height: 0px; }
 
 .morning-huddle-date .mat-form-field.mat-focused.mat-primary .mat-select-arrow { color: #18A689; }
 
-.morning-huddle-date .mat-form-field-infix { margin: 5px 0 !important; line-height: normal; border-top: 0px solid transparent; }
-
-.morning-huddle-date .mat-form-field-infix .mat-select-arrow {border: 0; position: relative;width: auto;height: auto;}
-
-.morning-huddle-date .mat-form-field-infix .mat-select-arrow:before {content: "\f078"; font-family: 'Font Awesome 5 Free'; color: #444; font-weight: 900; font-size: 12px;}
+.morning-huddle-date .mat-form-field-infix { padding: 8px 0 !important; line-height: normal; border-top: 4px solid transparent; }
 
 .dentist-performance .mh-matcard .graph_image { background-repeat: no-repeat; opacity: 1; bottom: 0; height: 80px; border-radius: 0 0 4px 0px; background-position: calc(100% + 2px) calc(100% + 2px); overflow: hidden; }
 
-.morning-huddle-date .mat-form-field { background-color: #fff; max-width: 270px; margin: auto; padding: 0px 20px; border-radius: 5px; }
+.morning-huddle-date .mat-form-field { background-color: #fff; max-width: 270px; margin: auto; padding: 0px 20px; border-radius: 50px; }
 
 .morning-huddle-date strong { font-size: 14px; padding: 10px 0; font-weight: 600; }
 
@@ -1490,13 +1480,13 @@ ul { margin: 0px !important; }
 
 .mh-table .mat-table { width: 100%; border-radius: 5px; box-shadow: 0 5px 10px 0px rgba(62,57,107,.07); overflow: hidden; margin: 10px 0; }
 
-.mh-matcard { margin-top: 30px; margin-bottom: 10px !important; }
+.mh-matcard { margin-top: 30px; margin-bottom: 10px !important; border-radius: 10px; }
 
 .morning-huddle .mat-tab-body-content { padding: 0 15px; }
 
 .mh-matcard .graph_image { height: 45px; opacity: 0.7; bottom: 5px; }
 
-.sa_profit_bar.sa_dentist_graphs_area .sa_flexbg.mh-matcard { min-height: 165px !important; }
+.sa_profit_bar.sa_dentist_graphs_area .sa_flexbg.mh-matcard { min-height: auto !important; }
 
 .dentist-performance .mh-matcard-down .graph_image { background-image: url("./assets/images/graph-down.png"); }
 
@@ -1542,17 +1532,17 @@ ul { margin: 0px !important; }
 
 .morning-huddle h3 { font-size: 20px; margin-bottom: 0px; }
 
-.mh-table .mat-row:nth-child(even) { background-color: rgba(24,166,137,0.03); }
+.mh-table .mat-row:nth-child(even) { background-color: #f6f7f9;}
 
-.mh-table .mat-row:nth-child(odd) { background-color: #ffffff; }
+.mh-table .mat-row:nth-child(odd) { background-color: #ffffff;}
 
-.mh-table td.mat-cell, .mh-table td.mat-footer-cell { padding: 7px 20px !important; font-weight: 400; border-bottom: none !important; border-right: 1px solid rgba(24,166,137,0.2); font-size: 16px; }
+.mh-table td.mat-cell, .mh-table td.mat-footer-cell { padding: 7px 20px !important; font-weight: 400; border-bottom: none !important; font-size: 14px; color: #303030; white-space: nowrap; }
 
-.mh-table th.mat-header-cell { background: rgba(24,166,137,0.05); font-size: 14px; padding: 13px 20px !important; font-weight: 400; border-right: 1px solid rgba(24,166,137,0.2); color: rgba(0, 0, 0, 0.87); border-bottom: 1px solid rgba(24,166,137,0.2); }
+.mh-table th.mat-header-cell {  font-size: 14px; padding: 13px 20px !important; font-weight: 400;  color:#595959; border-bottom: 1px solid #f6f7f9; white-space: nowrap; }
 
-.mh-table span.mht-value-down { width: 100%; color: #f35e5e; font-size: 18px; float: left; }
+.mh-table span.mht-value-down { color: #f35e5e; float: left; font-weight: bold;  height: 23px; display: flex; align-items: center; }
 
-.mh-table span.mht-value-up { width: 100%; color: #00a98a; font-size: 18px; float: left; }
+.mh-table span.mht-value-up { color: #00a98a;  float: left; font-weight: bold;  height: 23px; display: flex; align-items: center; }
 
 .mh-table td.mat-cell:last-of-type, .mh-table td.mat-footer-cell:last-of-type, .mh-table th.mat-header-cell:last-of-type { border-right: 0px solid rgba(24,166,137,0.2); }
 
@@ -1560,13 +1550,14 @@ ul { margin: 0px !important; }
 
 .morning-huddle .table-card { margin-left: 0; margin-right: 0; margin-bottom: 10px; margin-top: 10px; width: 100%; float: left; }
 
-.table-card .mat-card-title { padding: 15px 20px; font-size: 18px !important; margin-bottom: 0 !important; font-weight: 400; color: rgba(0, 0, 0, 0.87) !important; border-bottom: 1px solid rgba(24,166,137,0.2); }
+.table-card .mat-card-title { padding: 15px 20px; font-size: 16px !important; margin-bottom: 0 !important; font-weight: 700; color: rgba(0, 0, 0, 1) !important;}
 
-.table-card .mat-table { box-shadow: none; margin: 0; border: 1px solid rgba(24,166,137,0.2); }
+.table-card .mat-table { box-shadow: none; margin: 0; border: 1px solid #e7e9eb; }
 
-.mh-table .mat-slide-toggle-bar { background-color: #cadedb; }
+.mh-table .mat-slide-toggle-bar {background-color: transparent;
+    box-shadow: inset 3px 4px 5px rgba(213, 213, 213, 0.75); }
 
-.table-card.mat-card .mat-card-content { padding: 20px; }
+.table-card.mat-card .mat-card-content { padding: 20px; padding-top:0; }
 
 img { max-width: 100%; max-height: 100%; }
 
@@ -1923,14 +1914,14 @@ body .mat-gray {
 
 #mat-tab-content-0-1 .appointment {width: max-content; background-color: #f3faf9;padding: 5px 10px;border: 1px solid #d1ede7;margin: 5px 5px;border-radius: 2px;font-size: 13px;float: left;}
 
-#mat-tab-content-0-0 .mat-select-value , #mat-tab-content-0-2 .mat-select-value {font-size: 14px!important; vertical-align: middle;}
+#mat-tab-content-0-0 .mat-select-value , #mat-tab-content-0-2 .mat-select-value {font-size: 12px!important;}
 
 
 .morning-huddle .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
 {transform: translateY(-0.6em) scale(0.75) perspective(100px) translateZ(0.001px);}
 
 
-#mat-tab-content-0-0 .morning-huddle-date .mat-form-field , #mat-tab-content-0-2 .morning-huddle-date .mat-form-field  {max-width: 360px;}
+#mat-tab-content-0-0 .morning-huddle-date .mat-form-field , #mat-tab-content-0-2 .morning-huddle-date .mat-form-field  {max-width: 180px;}
 
 #mat-tab-content-0-1 .appointment .material-icons , #mat-tab-content-0-1 .appointment .fas {color:rgba(14, 52, 89, 0.8);padding-right: 5px;}
 
@@ -3193,6 +3184,7 @@ ul.download-sync-list {
 .prodction_main_box{
     padding: 30px;
     display: flex;
+    width: 100%;
 }
 
 .custom-box{
@@ -3224,6 +3216,8 @@ ul.download-sync-list {
     float:left !important;
     font-size: 23px !important;
     font-weight: 900 !important;
+    color: #2a2a2a;
+    text-align: left;
 }
 
 .mb-0{
@@ -3260,7 +3254,7 @@ ul.download-sync-list {
    align-items: center;
    margin-left: 15px;
     color: #4d4d4d;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500; 
 }
 
@@ -3286,6 +3280,260 @@ ul.download-sync-list {
     font-weight: 500;
     color: #4d4d4d;
     background-color: transparent !important;
+}
+
+.price-section{
+    display: flex;
+}
+
+.price-section .ttl_value_left{
+    background-color: #1d9781;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 0px 10px;
+    margin: 0 10px 0 15px;
+    white-space: nowrap;
+    height: 23px;
+}
+
+.price-section img{
+    width: 30px;
+    height: 30px;
+}
+
+.recall-retail-rate{
+    display:flex;
+}
+
+.recall-retail-rate .ttl_value_left{
+    background-color: #ff6565;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 0px 10px;
+    margin: 0 10px 0 15px;
+    height: 23px;
+}
+
+.recall-retail-rate img{
+    width: 30px;
+    height: 30px;
+}
+
+.mat-elevation-z8 td .custom_goal:nth-child(2n){
+    background-color: #fff;
+    width: 110px;
+    height: 24px;
+    display: flex;
+    height: 23px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 44px;
+    border-radius: 8px;
+}
+
+.mat-elevation-z8 tr:nth-child(2n-1) .custom_goal{
+    background-color: #f6f7f9;
+    width: 110px;
+    height: 24px;
+    display: flex;
+    height: 23px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 44px;
+    border-radius: 8px;
+}
+
+.main_pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    padding: 25px 0;
+}
+
+.main_pagination li a{
+    width: 44px;
+    height:44px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius:50%;
+    border:1px solid #cccccc;
+    color: #545d7a;
+    transition: all 0.5s;
+    margin: 0 5px;
+    user-select: none;
+}
+
+.main_pagination li a:hover{
+    background-color: #0a857c;
+    color:#fff;
+}
+
+.main_pagination .active{
+    background-color: #0a857c;
+    border:1px solid #0a857c;
+    color: #fff;
+    box-shadow: 11px 18px 21px rgba(51, 56, 72, 0.23);
+}
+
+.mat-slide-toggle-thumb{
+    background-color: #bab7b7 !important;
+}
+
+.mat-slide-toggle-thumb{
+    width: 18px !important;
+    height: 18px !important;
+    position: relative;
+    top: 3px;
+}
+
+.mat-slide-toggle-bar{
+    height: 18px !important;
+}
+
+.phone_align_center{
+    display: flex;
+    align-items: center;
+}
+
+.phone_align_center .phone_no{
+    margin-left: 10px;
+}
+
+.unschedild_patient_border{
+    border-radius: 10px !important;
+}
+
+.post_call_responsive_border{
+    border-radius: 10px !important;
+}
+
+@media(min-width:1200px) and (max-width:1500px){
+    
+    .custom_production_match{
+        margin-right:15px !important;
+    }
+    .custom_rebook_recall_rate{
+        margin-right:15px !important;
+    }
+
+    .production_images {
+        margin-right: 18px;
+    }
+
+    .price-section .ttl_value_left{
+        margin: 0 10px;
+    }
+
+    .prodction_main_box {
+        padding: 15px;
+    }
+
+    .production_images img {
+        max-width: 60px;
+        min-height: 60px;
+    }
+
+}
+
+@media(max-width:1200px){
+    .respopnsive-table-set{
+        overflow-x: scroll;
+    }
+}
+
+@media(min-width:992px) and (max-width:1199px){
+ .prodction_main_box {
+    padding: 15px;
+ }   
+
+ .production_images {
+    margin-right: 15px;
+}
+
+.production_images img {
+    max-width: 60px;
+    min-height: 55px;
+}
+
+.recall-retail-rate {
+    flex-direction: column;
+    float: left;
+}
+
+.recall-retail-rate .ttl_value_left{
+    margin: 9px 0;
+}
+
+.price-section{
+    flex-direction: column;
+    float: left;
+}
+
+.price-section .ttl_value_left{
+    margin: 9px 0;
+}
+
+.responsive_patient_data{
+    margin-right: 0px !important;
+    flex: 1 1 calc(100% - 10px) !important;
+    margin-bottom: 25px;
+}
+
+.respopnsive_leptop_post_call{
+    margin-right: 0px !important;
+    flex: 1 1 calc(100% - 10px) !important;
+    margin-bottom: 25px;
+}
+
+
+}
+
+@media(max-width:991px){
+    .price-section .ttl_value_left{
+        height:23px;
+        margin: 0 8px;
+    }
+    
+    .recall-retail-rate .ttl_value_left{
+        height:23px;
+        margin: 0 8px;
+    }
+
+    .production_description h4{
+        font-size: 16px;
+    }
+
+    .production_description span{
+        font-size: 20px !important;
+    }
+
+    .custom-row .sa_flexbg{
+        margin-top: 8px;
+    }
+
+    .production_images {
+        margin-right: 20px;
+    }
+
+    .custom_production_match{
+        flex: 1 1 calc(100% - 10px) !important;
+        margin-right: 0 !important;
+    }
+
+    .custom_rebook_recall_rate{
+        flex: 1 1 calc(100% - 10px) !important;
+        margin-right: 0 !important;
+    }
+
+    .patient_data-table_responsive{
+        overflow-x: auto;
+        margin-bottom:25px;
+    }
 }
 
 @media(max-width:375px){
@@ -3314,3 +3562,4 @@ ul.download-sync-list {
         min-height: auto;
     }
 }
+
