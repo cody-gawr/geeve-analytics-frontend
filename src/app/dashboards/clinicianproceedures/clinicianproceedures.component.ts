@@ -941,7 +941,6 @@ public pieChartLabelsres: string[] = [
     (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
     (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';    
-    if(this.childid == '') {
     this.buildChart();
       this.buildChartReferral();
     this.buildChartPredictor();      
@@ -949,14 +948,14 @@ public pieChartLabelsres: string[] = [
 
       $('.revenueProceedureSingle').hide();
       $('.revenueProceedure').show();
-    }else {
-        this.selectedDentist =  this.dentistid;
-        this.buildChartReferralDentist();
-        this.buildChartProceedureDentist();
+    // }else {
+    //     this.selectedDentist =  this.dentistid;
+    //     this.buildChartReferralDentist();
+    //     this.buildChartProceedureDentist();
         
-         $('.revenueProceedureSingle').show();
-         $('.revenueProceedure').hide();
-    }
+    //      $('.revenueProceedureSingle').show();
+    //      $('.revenueProceedure').hide();
+    // }
 
   }
   else {
@@ -982,12 +981,6 @@ public pieChartLabelsres: string[] = [
         this.buildChartReferralDentist();
         this.changeDentistPredictor('1');
       }
-/*    this.buildChartTreatmentDentist();
-    (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'block';
-    (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'none';
-    this.buildChartNopatientsDentist();
-    (<HTMLElement>document.querySelector('.noPatientsSingle')).style.display = 'block';
-    (<HTMLElement>document.querySelector('.noPatients')).style.display = 'none';*/
   }
   }
 
@@ -1073,7 +1066,6 @@ public pieChartLabelsres: string[] = [
      }
        }
     }, error => {
-      alert('dsfs');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
@@ -1130,6 +1122,7 @@ public predictedTP:any=[];
 public predictedMax;
 public buildChartPredictorLoader:any;
 public prKey:any[] =[];
+
 public PRcolors;
    public predictedstackedChartData = [
     {data: [], label: ''},
@@ -1293,6 +1286,8 @@ public predictedstackedChartLabels3=[];
         this.predictedstackedChartData= this.predictedstackedChartData1;
         this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
 
+
+
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1380,7 +1375,7 @@ public rct_started_ta :any=0;
     this.crowns=this.crowns_ta =this.large_fillings=this.large_fillings_ta =this.extractions=this.extractions_ta =this.root_canals=this.root_canals_ta =this.rct_completed=this.rct_completed_ta=this.rct_started =this.rct_started_ta =0;
       if(data.message == 'success'){
 
-
+        if(data.data.ratio1) {
              data.data.ratio1.forEach((result) => {
               if(result.provider != null){
                      this.predictedstackedChartLabels1.push(result.provider);
@@ -1411,6 +1406,8 @@ public rct_started_ta :any=0;
 
               }
              });
+           }
+           if(data.data.ratio2) {
              data.data.ratio2.forEach((result) => {
               if(result.provider != null){
                      this.predictedstackedChartLabels2.push(result.provider);
@@ -1440,6 +1437,8 @@ public rct_started_ta :any=0;
 
               }
              });
+           }
+           if(data.data.ratio3) {
              data.data.ratio3.forEach((result) => {
               if(result.provider != null){
 
@@ -1470,7 +1469,7 @@ public rct_started_ta :any=0;
 
               }
              });
-
+           }
         this.predictedstackedChartData= this.predictedstackedChartData1;
         this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
 
@@ -1788,7 +1787,7 @@ public currentText;
         dentistVal = $('.internal_dentist').val();
      else
         dentistVal = $('.external_dentist').val();
-      
+
     if(duration == 'w') {
       this.trendText= 'Last Week';
       this.currentText= 'This Week';

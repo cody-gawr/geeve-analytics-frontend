@@ -1374,6 +1374,7 @@ public categoryExpensesLoader:any;
          this.pieChartDatares = [];
          this.pieChartDataPercentres =[];
           data.data.forEach((res,key) => {
+            if(res.expenses_percent>0) {
           var temp= {name:'',value:1};
           temp.name =res.meta_key;
           temp.value =res.expenses;  
@@ -1386,13 +1387,13 @@ public categoryExpensesLoader:any;
            this.pieChartDataPercentres.push(Math.round(res.expenses_percent));
            this.pieChartLabelsres.push(res.meta_key);
            this.pieChartTotal = this.pieChartTotal + parseInt(res.expenses);
+         }
  });
         this.expensescChartTrendTotal = data.data_ta;
         if(Math.round(this.pieChartTotal)>=Math.round(this.expensescChartTrendTotal))
             this.expensescChartTrendIcon = "up";  
        this.pieChartData = this.pieChartDatares;
        this.pieChartLabels = this.pieChartLabelsres;
-       
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
