@@ -317,28 +317,25 @@
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-user-alt"></i></div>
+                <!-- <div class="card-icon"><i class="fas fa-user-alt"></i></div> -->
                 <!-- <mat-card-title class="">
                   <div class="ttl_value">{{ schedulePatieltd }}</div>
                   Patients
                 </mat-card-title> -->
 
-                <mat-card-title class="text-center">
-
                   <div class="prodction_main_box">
-                    <div class="production_images">
-                      <img src="../assets/images/profit.png" alt="product-chart" /> 
+                    <div class="icon purple">
+                      <i class="fas fa-user-alt"></i>
                     </div>
                     <div class="production_description">
                       <h4>Patients</h4>
-                      <div class="recall-retail-rate">
+                      <div class="patients-num">
                         <span class="change_value">{{ schedulePatieltd }}</span>
-                        <img src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
                       </div>
                     </div>
                   </div>
 
-                </mat-card-title>
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
@@ -346,35 +343,71 @@
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mr0-md mh-matcard mh-matcard-red">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-user-plus"></i></div>
-                <mat-card-title class="">
+                <!-- <div class="card-icon"><i class="fas fa-user-plus"></i></div> -->
+                <!-- <mat-card-title class="">
                   <div class="ttl_value">{{ scheduleNewPatieltd }}</div>
-                  New Patients </mat-card-title>
+                  New Patients </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon red">
+                      <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>New Patients</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ scheduleNewPatieltd }}</span>
+                        <img src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" ></div>
+            <!-- <div class="graph_image" ></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-green">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><span class="material-icons">access_alarm</span></div>
-                <mat-card-title class="">
+                <!-- <div class="card-icon"><span class="material-icons">access_alarm</span></div> -->
+                <!-- <mat-card-title class="">
                   <div class="ttl_value">{{ schedulehours }}</div>
-                  Scheduled Hours </mat-card-title>
+                  Scheduled Hours </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon green">
+                      <span class="material-icons">access_alarm</span>
+                    </div>
+                    <div class="production_description">
+                      <h4>Scheduled Hours</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ schedulehours }}</span>
+                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" ></div>
+            <!-- <div class="graph_image" ></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-blue">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-coins"></i></div>
-                <mat-card-title class="">
+                <!-- <div class="card-icon"><i class="fas fa-coins"></i></div> -->
+                <!-- <mat-card-title class="">
                   <div class="ttl_value">${{ unSchedulehours }}</div>
-                  Unscheduled </mat-card-title>
+                  Unscheduled </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon blue">
+                      <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Unscheduled</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ unSchedulehours }}</span>
+                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" ></div>
+            <!-- <div class="graph_image" ></div> -->
           </div>
         </div>
       </div>
@@ -491,85 +524,162 @@
       </div> -->
       <h3>Yesterday</h3>
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-purple">
+          <div fxFlex="calc(33% - 20px)" fxFlex.md="100%" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-purple">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="far fa-calendar-check"></i></div>
+                <!-- <div class="card-icon"><i class="far fa-calendar-check"></i></div>
                 <mat-card-title class="">
                   <div class="ttl_value">{{ reAppointment }}%</div>
-                  Re-Appointment </mat-card-title>
+                  Re-Appointment </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon purple">
+                      <i class="far fa-calendar-check"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Re-Appointment</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ reAppointment }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
-          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-red">
+          <div fxFlex="calc(33% - 20px)" fxFlex.md="100%" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-red">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="far fa-calendar"></i></div>
+                <!-- <div class="card-icon"><i class="far fa-calendar"></i></div>
                 <mat-card-title class="">
                   <div class="ttl_value">{{ unscheduledPatients }}</div>
-                  Unscheduled Patients</mat-card-title>
+                  Unscheduled Patients</mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon red">
+                      <i class="far fa-calendar"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Unscheduled Patients</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ unscheduledPatients }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
-          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-blue">
+          <div fxFlex="calc(33% - 20px)" fxFlex.md="100%" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-blue">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-coins"></i></div>
+                <!-- <div class="card-icon"><i class="fas fa-coins"></i></div>
                 <mat-card-title class="">
                   <div class="ttl_value">${{ unscheduledValue }}</div>
-                  Unscheduled Value </mat-card-title>
+                  Unscheduled Value </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon blue">
+                      <span class="material-icons">access_alarm</span>
+                    </div>
+                    <div class="production_description">
+                      <h4>Unscheduled Value</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ unscheduledValue }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
         </div>
          <h3>Today</h3>
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
+          <div fxFlex="calc(20  % - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-user-alt"></i></div>
+                <!-- <div class="card-icon"><i class="fas fa-user-alt"></i></div>
                 <mat-card-title class="">
                   <div class="ttl_value"> {{ todayPatients }}</div>
-                  Patients </mat-card-title>
+                  Patients </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon black">
+                      <i class="fas fa-user-alt"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Patients</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ todayPatients }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mr0-md mh-matcard-green">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><span class="material-icons">access_alarm</span></div>
+                <!-- <div class="card-icon"><span class="material-icons">access_alarm</span></div>
                 <mat-card-title class="">
                   <div class="ttl_value">{{ todayUnscheduledHours }}</div>
-                  Unscheduled Hours </mat-card-title>
+                  Unscheduled Hours </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon green">
+                      <span class="material-icons">access_alarm</span>
+                    </div>
+                    <div class="production_description">
+                      <h4>Unscheduled Hours</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ todayUnscheduledHours }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-orange">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-coins"></i></div>
+                <!-- <div class="card-icon"><i class="fas fa-coins"></i></div>
                 <mat-card-title class="">
                   <div class="ttl_value">${{ todayUnscheduledBal }}</div>
-                  Unscheduled Bal </mat-card-title>
+                  Unscheduled Bal </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon orange">
+                      <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Unscheduled Bal</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ todayUnscheduledBal }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-brown">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-phone-alt"></i></div>
+                <!-- <div class="card-icon"><i class="fas fa-phone-alt"></i></div>
                 <mat-card-title class="">
                   <div class="ttl_value">{{ todayPostopCalls }}</div>
-                  Post op Calls </mat-card-title>
+                  Post op Calls </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon purple">
+                      <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Post op Calls</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ todayPostopCalls }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
         </div>
       </div>

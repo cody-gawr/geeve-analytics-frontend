@@ -135,19 +135,20 @@
           <mat-card-title class="text-center">Top Referrals
             <div class="three-horizontal-dots"><a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a></div>
           </mat-card-title>
+          <div class="user_rate_listing">
+            <ul class="user-reffrance">
+              <li class="list_rep r{{i+1}}" *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
+                <div class="hourly-rate-li-hover">
+                  <div class="ur_users">
+                    <div class="ur_rank">{{i+1}}</div>
+                  </div>
 
-          <ul class="user-reffrance">
-            <li class="list_rep r{{i+1}}" *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
-              <div class="ur_users">
-                <div class="ur_rank">{{i+1}}</div>
-              </div>
-
-              <div class="user_name"><span>S</span>{{newPatientsTimeLabels[i]}}</div>
-              <div class="user_value">{{newPatientsTimeD}}</div>
-
-            </li>
-          </ul>
-
+                  <div class="user_name"><span>S</span>{{newPatientsTimeLabels[i]}}</div>
+                  <div class="user_value">{{newPatientsTimeD}}</div>
+                </div>
+              </li>
+            </ul>
+          </div>
         
           <!--<div *ngIf="maxNewPatients > 0">
 
