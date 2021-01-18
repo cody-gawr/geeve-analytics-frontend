@@ -285,10 +285,11 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .sa_matcard_content .mat-card-title a i { color: #717272; }
 
-.sa_matcard_content .mat-card-title {text-align: left!important;font-size: 16px!important;color: #686d6c!important; align-items: center;border-bottom: 2px solid #f3f3f3!important;padding: 15px 30px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
-
+.sa_matcard_content .mat-card-title {text-align: left!important;font-size: 17px!important;color: #686d6c!important; align-items: center;border-bottom: 2px solid #f3f3f3!important;padding: 15px 30px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
 
 .card-body {padding: 20px}
+
+.sa_matcard_content .mat-card-title img {height: 15px;}
 
 .card-footer {padding: 5px; margin-top: auto;}
 
@@ -1336,7 +1337,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .arrow-down .change_value { color:#2a2a2a!important; }
 
-.green_title { background: #00A289; margin-left: 0px; font-size: 14px; color: #fff; padding: 10px 20px; border-radius: 4px; font-weight: 400; width: auto; display: inline-block; margin-bottom: 13px; }
+.green_title { background: #00A289; margin-left: 0px; font-size: 14px; color: #fff; padding: 10px 20px; border-radius: 4px; font-weight: 400; width: auto; display: inline-block; margin-bottom: 13px; text-transform: uppercase; }
 
 .green_title i {margin-right:5px;}
 
@@ -1350,7 +1351,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .user_name { float: left; color: #424242; font-weight: 400; padding: 4px 0; }
 
-.list_rep { border-bottom: 1px solid #f2f2f2; padding: 9px 0 7px 0; float: left; width: 100%; }
+.list_rep { padding: 9px 0 7px 0; float: left; width: 100%; }
 
 .list_rep.last { border: none; }
 
@@ -1456,7 +1457,7 @@ ul { margin: 0px !important; }
 
 .mh-matcard-up .ttl_value { color: #00a98a; }
 
-.morning-huddle .mat-tab-labels { background-color: #fff; border-radius: 8px; display: unset; width: auto; box-shadow: 0px 3px 15px 0 rgba(0, 0, 0, 0.1); padding: 14px 5px; }
+.morning-huddle .mat-tab-labels { background-color: #fff; border-radius: 8px; display: unset; width: auto; border: 1px solid #139a84; padding: 15px 5px; }
 
 .morning-huddle .mat-tab-nav-bar, .morning-huddle .mat-tab-header { border-bottom: 0px solid rgba(0, 0, 0, 0.12); }
 
@@ -1490,7 +1491,7 @@ ul { margin: 0px !important; }
 
 .morning-huddle-date .mat-form-field .mat-form-field-wrapper { padding: 0px; }
 
-.mh-table .mat-table { width: 100%; border-radius: 5px; box-shadow: 0 5px 10px 0px rgba(62,57,107,.07); overflow: hidden; margin: 10px 0; }
+.mh-table .mat-table { width: 100%; border-radius: 10px; box-shadow: 0 5px 10px 0px rgba(62,57,107,.07); overflow: hidden; margin: 10px 0; }
 
 .mh-matcard { margin-top: 30px; margin-bottom: 10px !important; border-radius: 10px; }
 
@@ -1550,7 +1551,7 @@ ul { margin: 0px !important; }
 
 .mh-table td.mat-cell, .mh-table td.mat-footer-cell { padding: 7px 20px !important; font-weight: 400; border-bottom: none !important; font-size: 14px; color: #303030; white-space: nowrap; }
 
-.mh-table th.mat-header-cell {  font-size: 14px; padding: 13px 20px !important; font-weight: 400;  color:#595959; border-bottom: 1px solid #f6f7f9; white-space: nowrap; }
+.mh-table th.mat-header-cell {  font-size: 14px; padding: 13px 20px !important;  color:#000; border-bottom: 1px solid #f6f7f9; white-space: nowrap; font-family: 'Gilroy-Medium';}
 
 .mh-table span.mht-value-down { color: #f35e5e; float: left; font-weight: bold;  height: 23px; display: flex; align-items: center; }
 
@@ -3201,8 +3202,70 @@ ul.download-sync-list {
     width: 100%;
 }
 
+.icon {
+    max-width: 80px;
+    flex: 0 0 80px;
+    height: 80px;
+    text-align: center;
+    border-radius: 100%;
+    margin-right: 30px;
+}
+
+.icon i,
+.icon span {
+    line-height: 80px;
+    font-size: 32px;
+}
+.icon.purple {
+    background-color: #f4f1ff;
+}
+.icon.red {
+    background-color: #ffecec;
+}
+.icon.green {
+    background-color: #ebfffb;
+}
+.icon.blue {
+    background-color: #f2fbff;
+}
+.icon.black {
+    background-color: #DDE2E7;
+}
+.icon.orange {
+    background-color: #FFF6EF;
+}
+
+.icon.purple i,
+.icon.purple span {
+    color: #737eef;
+}
+.icon.red i,
+.icon.red span {
+    color: #f35d5e;
+}
+.icon.green i,
+.icon.green span {
+    color: #00a98a;
+}
+.icon.blue i,
+.icon.blue span {
+    color: #07a7e5;
+}
+.icon.black i,
+.icon.black span {
+    color: #718192;
+}
+.icon.orange i,
+.icon.orange span {
+    color: #f3a062;
+}
+
 .production_description-grow {
     flex-grow: 1;
+}
+
+.patients-num .change_value {
+    margin-right: 20px;
 }
 
 .custom-box{
@@ -3236,6 +3299,7 @@ ul.download-sync-list {
     font-weight: 900 !important;
     color: #2a2a2a;
     text-align: left;
+    font-family: 'Gilroy-Bold';
 }
 
 .mb-0{
@@ -3303,6 +3367,7 @@ ul.download-sync-list {
 
 .price-section{
     display: flex;
+    align-items: center;
 }
 
 .price-section .ttl_value_left{
@@ -3333,7 +3398,6 @@ ul.download-sync-list {
 
 .price-section img{
     width: 30px;
-    height: 30px;
 }
 
 .recall-retail-rate{
@@ -3352,7 +3416,6 @@ ul.download-sync-list {
 
 .recall-retail-rate img{
     width: 30px;
-    height: 30px;
 }
 
 .mat-elevation-z8 td .custom_goal:nth-child(2n){
@@ -3446,6 +3509,17 @@ ul.download-sync-list {
     border-radius: 10px !important;
 }
 
+.hourly-rate-li-hover{
+    padding: 0px 20px;
+    display: inline-block;
+    width: 100%;
+}
+
+.user_rate_listing li .hourly-rate-li-hover:hover{
+    background-color: #fbfbfb;
+    border-radius: 10px;
+}
+
 @media(min-width:1200px) and (max-width:1500px){
     
     .custom_production_match{
@@ -3471,12 +3545,32 @@ ul.download-sync-list {
         max-width: 60px;
         min-height: 60px;
     }
+    .icon {
+        max-width: 70px;
+        height: 70px;
+        margin-right: 15px;
+        flex: 0 0 70px;
+    }
+    .icon i, .icon span {
+        line-height: 70px;
+        font-size: 28px;
+    }
 
 }
 
 @media(max-width:1200px){
     .respopnsive-table-set{
         overflow-x: scroll;
+    }
+    .icon {
+        max-width: 70px;
+        height: 70px;
+        margin-right: 15px;
+        flex: 0 0 70px;
+    }
+    .icon i, .icon span {
+        line-height: 70px;
+        font-size: 28px;
     }
 }
 

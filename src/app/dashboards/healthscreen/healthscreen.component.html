@@ -102,7 +102,8 @@
               <ul>
                 <div *ngIf="maxHourlyRate > 0">
                   <li *ngFor="let hourlyRateChartD of hourlyRateChartData; let i = index">
-                      <div class="ur_users">
+                    <div class="hourly-rate-li-hover">
+                      <div class="ur_users"> 
                           <div class="ur_rank">{{i+1}}</div>
                       </div>
                       <div class="ur_users_main">
@@ -121,6 +122,7 @@
                               ${{hourlyRateChartD| number:'1.0-0'}}
                           </div>
                       </div>
+                    </div>
                   </li>
                 </div>
                 <li *ngIf="maxHourlyRate == 0">No Top Leaders Yet!</li>
@@ -136,8 +138,8 @@
           <mat-card-title class="text-center">Top Referrals
             <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon"/>
           </mat-card-title>
-
-          <ul class="user-reffrance">
+          <div class="user_rate_listing">
+                 <ul class="user-reffrance">
             <li class="list_rep r{{i+1}}" *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
               <div class="ur_users">
                 <div class="ur_rank">{{i+1}}</div>
@@ -152,7 +154,7 @@
 
             </li>
           </ul>
-
+          </div>
         
           <!--<div *ngIf="maxNewPatients > 0">
 
