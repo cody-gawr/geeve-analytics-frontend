@@ -10,7 +10,7 @@
     <div class="sa_first_section">
 <div>
 <div class="sa_dentist_graphs_area sa_profit_bar">
-  <div><span class="green_title"><i class="far fa-calendar-alt"></i> This Month</span></div>
+  <div><span class="green_title"><i class="far fa-calendar-alt"></i> Month to Date</span></div>
   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
   <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg custom-box" [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0}">
 
@@ -86,9 +86,7 @@
     <mat-card  class="dentistProduction">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center mb-0">Hourly Rate Leaders
-            <div class="three-horizontal-dots">
-              <a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a>
-            </div> 
+            <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon"/>
           </mat-card-title>
           <!--$ {{production_p+production_c}}-->
          <!-- <div *ngIf="maxHourlyRate > 0">
@@ -110,7 +108,12 @@
                       <div class="ur_users_main">
                         
                           <div class="ur_user_name">
-                            <div class="ur_pic"><img class="" src="../assets/images/image1.jpg"></div>
+                            <!-- <div class="ur_pic">
+                              <img class="" src="../assets/images/image1.jpg">
+                            </div> -->
+                              <span class="user-icon" [ngStyle]="{ 'background-color': hourlyRateColors[i] }">
+                                {{getShortName(hourlyRateChartLabels[i])}}
+                              </span>
                               <span class="client-name">{{hourlyRateChartLabels[i]}}</span>
                               <!-- <p class="ur_clinic" *ngIf="clinic_id =='all'">{{hourlyRateChartClinic[i]}}</p> -->
                           </div>
@@ -131,7 +134,7 @@
     <mat-card  class="treatmentPlan">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Top Referrals
-            <div class="three-horizontal-dots"><a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a></div>
+            <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon"/>
           </mat-card-title>
 
           <ul class="user-reffrance">
@@ -140,7 +143,11 @@
                 <div class="ur_rank">{{i+1}}</div>
               </div>
 
-              <div class="user_name"><span>S</span>{{newPatientsTimeLabels[i]}}</div>
+              <div class="user_name">
+                <span [ngStyle]="{ 'background-color': newPatientsTimeColors[i] }">
+                  {{getShortName(newPatientsTimeLabels[i])}}
+                </span>
+                {{newPatientsTimeLabels[i]}}</div>
               <div class="user_value">{{newPatientsTimeD}}</div>
 
             </li>
@@ -193,19 +200,19 @@
 
 <div class="sa_scnd_section">
 <div class="sa_dentist_graphs_area">
-  <div><span class="green_title"><i class="far fa-calendar-alt"></i> Next Month</span></div>
+  <div><span class="green_title"><i class="far fa-calendar-alt"></i> Next 7 Days</span></div>
  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
   <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg next-month-green">
     <mat-card  class="dentistProduction">
       <mat-card-content class="sa_matcard_content">
       <mat-card-title class="text-center">Pre-booked Visits
-        <div class="three-horizontal-dots"><a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a></div>
+        <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon"/>
      </mat-card-title>
            <rg-gauge-chart class="green_guagechart" *ngIf="visits_f >= ''"
     [canvasWidth]="canvasWidth"
     [needleValue]="visits_f"
     [options]="options"
-    [bottomLabel]="visits_f"></rg-gauge-chart>
+    [centralLabel]="visits_f + ''"></rg-gauge-chart>
       </mat-card-content>
     </mat-card>
   </div>
@@ -214,7 +221,7 @@
     <mat-card  class="treatmentPlan">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Chair Utilisation Rate 
-            <div class="three-horizontal-dots"><a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a></div>
+            <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon"/>
           </mat-card-title>
            <rg-gauge-chart class="green_guagechart"  *ngIf="utilisation_rate_f >= ''"
 
@@ -222,7 +229,7 @@
     [needleValue]="utilisation_rate_f"
     [options]="options"
     
-    [bottomLabel]="utilisation_rate_f"></rg-gauge-chart>
+    [centralLabel]="utilisation_rate_f + '%'"></rg-gauge-chart>
       </mat-card-content>
     </mat-card>
    </div>
@@ -231,14 +238,14 @@
     <mat-card  class="noPatients">
       <mat-card-content class="sa_matcard_content">
           <mat-card-title class="text-center">Unscheduled Production
-            <div class="three-horizontal-dots"><a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i></a></div>
+            <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon"/>
           </mat-card-title>
         <div class="chart" >
            <rg-gauge-chart  class="blue_guagechart" *ngIf="unscheduled_production_f >= ''"
     [canvasWidth]="canvasWidth"
     [needleValue]="unscheduled_production_f"
     [options]="optionsunscheduled"
-    [bottomLabel]="unscheduled_production_f| number:'1.0-0'"></rg-gauge-chart>
+    [centralLabel]="'$' + (unscheduled_production_f| number:'1.0-0')"></rg-gauge-chart>
         </div>
       </mat-card-content>
     </mat-card>

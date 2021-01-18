@@ -92,7 +92,7 @@
                 <h3 class="m-0">Net Profit</h3>
                 <h1 class="m-0">${{netProfitVal | number:'1.0-0'}}</h1>
               </div>
-              <div class="info-button"><img alt="info-icon" src="../assets/images/info-icon.png"></div>
+              <div class="info-button"><img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png"></div>
               
               <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitIcon}}-alt"></i></div>  -->
             </div>            
@@ -110,7 +110,7 @@
                 <h3 class="m-0"> Net Profit % (Xero)</h3>
                 <h1 class="m-0">{{netProfitPercentVal | number:'1.0-0'}}%</h1>
               </div>
-              <div class="info-button"><img alt="info-icon" src="../assets/images/info-icon.png"></div>
+              <div class="info-button"><img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png"></div>
 
               <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPercentIcon}}-alt"></i></div> --> 
             </div>
@@ -128,7 +128,7 @@
                 <h3 class="m-0">Net Profit % (PMS)</h3>
                 <h1 class="m-0"> {{netProfitPmsVal | number:'1.0-0'}}%</h1>
               </div>
-              <div class="info-button"><img alt="info-icon" src="../assets/images/info-icon.png"></div>
+              <div class="info-button"><img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png"></div>
 
               <!-- <div class="spark-count ml-auto"> <i class="fa s fa-sort-amount-{{netProfitPmsIcon}}-alt"></i></div> --> 
             </div>
@@ -140,7 +140,7 @@
 expenses_card custom_ngx_cw01" >
           <mat-card class="chart_card" >
              <mat-card-content class="sa_matcard_content"> <!--<span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{expensescChartTrendTotal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{expensescChartTrendIcon}}.png"></span> -->
-              <mat-card-title class="text-center"> Expenses <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center"> Expenses <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 <!-- <div class="sa_box_title_right_buttons">
                   <button mat-icon-button (click) = "flipcard('expenses_card')" ><i class="fas fa-list-ul list_ico"></i><i class="fas fa-chart-line chart_ico"></i></button> -->
                   <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -207,7 +207,7 @@ expenses_card custom_ngx_cw01" >
           <mat-card class="sa_no_tabs_area" >
             <mat-card-content class="sa_matcard_content"> 
               <!--  <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionChartTrendTotal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{productionChartTrendIcon}}.png"></span> -->
-              <mat-card-title class="text-center">Production % by Clinician <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">Production % by Clinician <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 <!--<div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -253,7 +253,7 @@ expenses_card custom_ngx_cw01" >
                 <span class="title">
                   Total Discounts
                 </span>
-                <img alt="info-icon" src="../assets/images/info-icon.png">
+                <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 <!-- <div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -300,7 +300,7 @@ expenses_card custom_ngx_cw01" >
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn  custom_ngx_cw04">
           <mat-card class="sa_no_tabs_area" >
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Current Overdues <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">Current Overdues <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 <!-- <div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -346,7 +346,7 @@ expenses_card custom_ngx_cw01" >
         <div fxFlex="calc(64% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio total_val md_mrn custom_ngx_cw05">
           <mat-card class="" >
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Total Production & Collection <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">Total Production & Collection <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 <!--<div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -426,7 +426,7 @@ expenses_card custom_ngx_cw01" >
           <mat-card class="">
             <mat-card-content class="sa_matcard_content"> 
               <!-- <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionTrendVal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{productionTrendIcon}}.png"></span> -->
-              <mat-card-title class="text-center">Production Per Visit <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">Production Per Visit <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 <!--<div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -477,7 +477,7 @@ expenses_card custom_ngx_cw01" >
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn ">
           <mat-card class="" >
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">- <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">- <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
               </mat-card-title>
               <div class="card-body">
                 <div class="sa_tabs_main_sec">
@@ -513,7 +513,7 @@ expenses_card custom_ngx_cw01" >
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="" >
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Total Discounts <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">Total Discounts <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 <!--<div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -573,7 +573,7 @@ expenses_card custom_ngx_cw01" >
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="" >
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">% of Production By Clinician <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">% of Production By Clinician <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 <!-- <div class="sa_box_title_right_buttons"> 
                   <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -632,7 +632,7 @@ expenses_card custom_ngx_cw01" >
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="" >
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Total Production & Collection <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">Total Production & Collection <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                <!-- <div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -663,7 +663,7 @@ expenses_card custom_ngx_cw01" >
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio last md_mrn last">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Production Per Visit <img alt="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">Production Per Visit <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 <!--<div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>

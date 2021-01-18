@@ -285,7 +285,7 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .sa_matcard_content .mat-card-title a i { color: #717272; }
 
-.sa_matcard_content .mat-card-title {text-align: left!important;font-size: 15px!important;color: #686d6c!important; align-items: center;border-bottom: 2px solid #f3f3f3!important;padding: 15px 30px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
+.sa_matcard_content .mat-card-title {text-align: left!important;font-size: 16px!important;color: #686d6c!important; align-items: center;border-bottom: 2px solid #f3f3f3!important;padding: 15px 30px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
 
 
 .card-body {padding: 20px}
@@ -874,7 +874,7 @@ ripple {  0% {
 
 .sa_health_screen_area .sa_matcard_content .ngx-gauge-meter { margin-left: -150px !important; }
 
-.sa_dentist_graphs_area .sa_flexbg { min-height: 260px; position: relative; }
+.sa_dentist_graphs_area .sa_flexbg { min-height: 210px; position: relative; }
 
 .loader_container_middle.loader_container { position: absolute; z-index: 9999999; left: 50%; right: 0; top: 50%; max-width: 102px; text-align: center; transform: translate(-50%, -50%); }
 
@@ -1287,9 +1287,9 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .sa_hccard { background: transparent!important; }
 
-.ur_users { position: relative; width: 74px; float: left; margin-right: 8px; }
+.ur_users { position: relative; width: 20%; float: left; margin-right: 8px; }
 
-.ur_rank { color: #000; text-align: left;  font-size: 14px; font-weight: 600;     height: 52px; display: flex; align-items: center; }
+.ur_rank { color: #000; text-align: left;  font-size: 15px; font-weight: 600;     height: 52px; display: flex; align-items: center; }
 
 .ur_pic { width: 32px; height: 32px;}
 
@@ -1307,7 +1307,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .ur_users_number { 
     float: right;
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px 0;
     font-weight: 500;
     color: #4d4d4d;
@@ -1315,12 +1315,14 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
     display: flex;
     align-items: center;
 }
-
+.info-icon {
+    width: 15px;
+}
 .ur_users_main { overflow: hidden; }
 
 .user_rate_listing ul { list-style: none; padding: 0; margin: 0; }
 
-.user_rate_listing li { list-style: none; padding:5px 30px; margin: 0; border-bottom: 1px solid #f2f2f2; }
+.user_rate_listing li { list-style: none; padding:5px 30px; margin: 0; }
 .user_rate_listing li:hover{
     background-color: #fbfbfb;
 }
@@ -3192,8 +3194,10 @@ ul.download-sync-list {
 }
 
 .prodction_main_box{
-    padding: 30px;
+    padding: 18px 30px;
     display: flex;
+    height: 100%;
+    align-items: center;
     width: 100%;
 }
 
@@ -3223,7 +3227,7 @@ ul.download-sync-list {
     font-size: 19px;
     font-weight: bold;
     color: #4c838b;
-    margin: 10px 0px 15px;
+    margin: 0px 0px 15px;
 }
 
 .production_description span{
@@ -3245,7 +3249,7 @@ ul.download-sync-list {
 .client-name{
     margin-left:15px;
     color: #4d4d4d;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
 }
 
@@ -3258,7 +3262,7 @@ ul.download-sync-list {
     width: 100%;
     padding: 5px 30px;
     margin: 0;
-    border-bottom: 1px solid #f2f2f2;
+    /* border-bottom: 1px solid #f2f2f2; */
 }
 
 .user-reffrance .user_name{
@@ -3272,7 +3276,8 @@ ul.download-sync-list {
     font-weight: 500; 
 }
 
-.user-reffrance .user_name span{
+.user-reffrance .user_name span,
+.ur_user_name .user-icon {
     width:32px;
     height: 32px;
     background-color: #c2c2c2;
@@ -3289,7 +3294,7 @@ ul.download-sync-list {
 
 .user-reffrance .user_value{
     float: right;
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px 0;
     font-weight: 500;
     color: #4d4d4d;
