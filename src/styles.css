@@ -1551,7 +1551,7 @@ ul { margin: 0px !important; }
 
 .mh-table td.mat-cell, .mh-table td.mat-footer-cell { padding: 7px 20px !important; font-weight: 400; border-bottom: none !important; font-size: 14px; color: #303030; white-space: nowrap; }
 
-.mh-table th.mat-header-cell {  font-size: 14px; padding: 13px 20px !important;  color:#000; border-bottom: 1px solid #f6f7f9; white-space: nowrap; font-family: 'Gilroy-Medium';}
+.mh-table th.mat-header-cell {  font-size: 14px; padding: 13px 20px !important;  color:rgba(48,48,48,0.8); border-bottom: 1px solid #f6f7f9; white-space: nowrap; font-family: 'Gilroy-Medium';}
 
 .mh-table span.mht-value-down { color: #f35e5e; float: left; font-weight: bold;  height: 23px; display: flex; align-items: center; }
 
@@ -1563,7 +1563,7 @@ ul { margin: 0px !important; }
 
 .morning-huddle .table-card { margin-left: 0; margin-right: 0; margin-bottom: 10px; margin-top: 10px; width: 100%; float: left; }
 
-.table-card .mat-card-title { padding: 15px 20px; font-size: 16px !important; margin-bottom: 0 !important; font-weight: 700; color: rgba(0, 0, 0, 1) !important;}
+.table-card .mat-card-title { padding: 15px 20px; font-size: 16px !important; margin-bottom: 0 !important;font-family: 'Gilroy-Medium'; color: rgba(0, 0, 0, 1) !important;}
 
 .table-card .mat-table { box-shadow: none; margin: 0; border: 1px solid #e7e9eb; }
 
