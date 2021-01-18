@@ -3197,6 +3197,10 @@ ul.download-sync-list {
     width: 100%;
 }
 
+.production_description-grow {
+    flex-grow: 1;
+}
+
 .custom-box{
     height: auto;
     min-height: auto;
@@ -3305,6 +3309,21 @@ ul.download-sync-list {
     margin: 0 10px 0 15px;
     white-space: nowrap;
     height: 23px;
+}
+
+.prodction_main_box_label div {    
+     color: #fff;
+     font-size: 12px;
+     border-radius: 5px;
+     padding: 4px 10px 0px;
+}
+
+.prodction_main_box_label .plus {
+    background-color: #1d9781;
+}
+
+.prodction_main_box_label .minus {
+    background-color: #ff6565;
 }
 
 .price-section img{

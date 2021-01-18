@@ -51,7 +51,9 @@ width: 8%; font-size: 40px;
     background-color: #18a689!important;
     background-image: linear-gradient(90deg, #18a689, #18a689);
 }
-
+.grow-1 {
+    flex-grow: 1;
+}
 @-webkit-keyframes ripple{
     0%{
         opacity:1;
