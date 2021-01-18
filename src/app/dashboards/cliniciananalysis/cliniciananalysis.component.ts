@@ -1040,7 +1040,7 @@ changeLoginStatus(){
 
          this.barChartData[0]['data'] = this.barChartData1;
          this.barChartLabels = this.barChartLabels1;
-         this.productionTotalAverage =Math.round(data.total_average);
+         this.productionTotalAverage =Math.round(this.productionTotal/this.barChartData1.length);
          this.productionTotalPrev =Math.round(data.total_ta);
          this.productionGoal = data.goals;
         
