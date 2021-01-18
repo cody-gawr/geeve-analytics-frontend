@@ -72,9 +72,9 @@ export class MorningHuddleComponent implements OnInit {
 
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
-  displayedColumns1: string[] = ['name', 'dentist', 'start'];
-  displayedColumns2: string[] = ['name', 'start', 'code'];
-  displayedColumns3: string[] = ['name', 'start', 'outstanding'];
+  displayedColumns1: string[] = ['start', 'name', 'dentist',];
+  displayedColumns2: string[] = ['start', 'name', 'code'];
+  displayedColumns3: string[] = ['start', 'name', 'outstanding'];
   displayedColumns4: string[] = ['name', 'phone', 'code','status'];
   displayedColumns5: string[] = ['name', 'phone', 'code','status'];
   displayedColumns6: string[] = ['start','dentist','name', 'card'];

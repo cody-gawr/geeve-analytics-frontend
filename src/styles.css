@@ -1337,7 +1337,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .arrow-down .change_value { color:#2a2a2a!important; }
 
-.green_title { background: #00A289; margin-left: 0px; font-size: 14px; color: #fff; padding: 10px 20px; border-radius: 4px; font-weight: 400; width: auto; display: inline-block; margin-bottom: 13px; text-transform: uppercase; }
+.green_title { background: #00A289; margin-left: 0px; font-size: 14px; color: #fff; padding: 10px 20px 7px; border-radius: 4px; font-weight: 400; width: auto; display: inline-block; margin-bottom: 13px; text-transform: uppercase; }
 
 .green_title i {margin-right:5px;}
 
@@ -1441,7 +1441,7 @@ ul { margin: 0px !important; }
 
 .morning-huddle .mh-matcard .mat-card-title { text-align: right !important; }
 
-.morning-huddle .mh-matcard .mat-card-title { text-align: right !important; font-size: 16px !important; font-weight: 500 !important; padding: 0px !important; }
+.morning-huddle .mh-matcard .mat-card-title { text-align: right !important; height: 100%; font-size: 16px !important; font-weight: 500 !important; padding: 0px !important; }
 
 .dentist-performance .mh-matcard .graph_image .change_value i { font-size: 9px; margin: 6px 0 0 0; float: left; }
 
@@ -1499,7 +1499,7 @@ ul { margin: 0px !important; }
 
 .mh-matcard .graph_image { height: 45px; opacity: 0.7; bottom: 5px; }
 
-.sa_profit_bar.sa_dentist_graphs_area .sa_flexbg.mh-matcard { min-height: auto !important; }
+/* .sa_profit_bar.sa_dentist_graphs_area .sa_flexbg.mh-matcard { min-height: auto !important; } */
 
 .dentist-performance .mh-matcard-down .graph_image { background-image: url("./assets/images/graph-down.png"); }
 
@@ -3375,7 +3375,7 @@ ul.download-sync-list {
     color: #fff;
     font-size: 12px;
     border-radius: 5px;
-    padding: 0px 10px;
+    padding: 2px 10px 0px;
     margin: 0 10px 0 15px;
     white-space: nowrap;
     height: 23px;
@@ -3409,7 +3409,7 @@ ul.download-sync-list {
     color: #fff;
     font-size: 12px;
     border-radius: 5px;
-    padding: 0px 10px;
+    padding: 2px 10px 0px;
     margin: 0 10px 0 15px;
     height: 23px;
 }
