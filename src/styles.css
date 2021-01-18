@@ -1320,10 +1320,8 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .user_rate_listing ul { list-style: none; padding: 0; margin: 0; }
 
-.user_rate_listing li { list-style: none; padding:5px 30px; margin: 0; border-bottom: 1px solid #f2f2f2; }
-.user_rate_listing li:hover{
-    background-color: #fbfbfb;
-}
+.user_rate_listing li { list-style: none; margin: 5px 20px; }
+
 .user_rate_listing li:last-child { border-bottom: none }
 
 .ttl_value { text-align: left; padding: 20px 0; font-size: 32px; color: #424242; font-weight: 500; padding-left: 6px; }
@@ -1334,7 +1332,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .arrow-down .change_value { color:#2a2a2a!important; }
 
-.green_title { background: #00A289; margin-left: 0px; font-size: 14px; color: #fff; padding: 10px 20px; border-radius: 4px; font-weight: 400; width: auto; display: inline-block; margin-bottom: 13px; }
+.green_title { background: #00A289; margin-left: 0px; font-size: 14px; color: #fff; padding: 10px 20px; border-radius: 4px; font-weight: 400; width: auto; display: inline-block; margin-bottom: 13px; text-transform: uppercase; }
 
 .green_title i {margin-right:5px;}
 
@@ -1348,7 +1346,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .user_name { float: left; color: #424242; font-weight: 400; padding: 4px 0; }
 
-.list_rep { border-bottom: 1px solid #f2f2f2; padding: 9px 0 7px 0; float: left; width: 100%; }
+.list_rep { padding: 9px 0 7px 0; float: left; width: 100%; }
 
 .list_rep.last { border: none; }
 
@@ -3232,6 +3230,7 @@ ul.download-sync-list {
     font-weight: 900 !important;
     color: #2a2a2a;
     text-align: left;
+    font-family: 'Gilroy-Bold';
 }
 
 .mb-0{
@@ -3258,7 +3257,6 @@ ul.download-sync-list {
     width: 100%;
     padding: 5px 30px;
     margin: 0;
-    border-bottom: 1px solid #f2f2f2;
 }
 
 .user-reffrance .user_name{
@@ -3439,6 +3437,15 @@ ul.download-sync-list {
 
 .post_call_responsive_border{
     border-radius: 10px !important;
+}
+
+.hourly-rate-li-hover{
+    padding: 5px 20px;
+}
+
+.user_rate_listing li .hourly-rate-li-hover:hover{
+    background-color: #fbfbfb;
+    border-radius: 10px;
 }
 
 @media(min-width:1200px) and (max-width:1500px){

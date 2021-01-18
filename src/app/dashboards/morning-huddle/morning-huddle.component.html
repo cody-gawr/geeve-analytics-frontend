@@ -318,12 +318,30 @@
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
                 <div class="card-icon"><i class="fas fa-user-alt"></i></div>
-                <mat-card-title class="">
+                <!-- <mat-card-title class="">
                   <div class="ttl_value">{{ schedulePatieltd }}</div>
-                  Patients </mat-card-title>
+                  Patients
+                </mat-card-title> -->
+
+                <mat-card-title class="text-center">
+
+                  <div class="prodction_main_box">
+                    <div class="production_images">
+                      <img src="../assets/images/profit.png" alt="product-chart" /> 
+                    </div>
+                    <div class="production_description">
+                      <h4>Patients</h4>
+                      <div class="recall-retail-rate">
+                        <span class="change_value">{{ schedulePatieltd }}</span>
+                        <img src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                      </div>
+                    </div>
+                  </div>
+
+                </mat-card-title>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" ></div>
+            <!-- <div class="graph_image" ></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mr0-md mh-matcard mh-matcard-red">
             <mat-card class="dentistProduction sa_hccard">
