@@ -80,11 +80,14 @@ customOptions: OwlOptions = {
       thick: 15,
       size: 251,
       cap: 'round',    
+  };
+  public options1 = {
+    hasNeedle: false,
+    arcColors: ['rgb(255, 211, 45, 0.9)', 'rgb(255, 211, 45, 0.9)', 'rgb(255, 211, 45, 0.9)'],
   }
   public optionsunscheduled = {
-      hasNeedle: false,
-      arcColors: ['rgba(80,167,232)','rgba(0, 164, 137,0.7)','rgba(0, 164, 137,0.7)'],
-
+    hasNeedle: false,
+    arcColors: ['rgb(171, 179, 255, 0.9)', 'rgb(171, 179, 255, 0.9)','rgb(171, 179, 255), 0.9'],
   }
   public selectedDentist;
   public dentists;
