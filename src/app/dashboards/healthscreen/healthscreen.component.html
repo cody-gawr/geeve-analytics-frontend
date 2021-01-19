@@ -245,7 +245,7 @@
     [canvasWidth]="canvasWidth"
     [needleValue]="unscheduled_production_f"
     [options]="optionsunscheduled"
-    [centralLabel]="'$' + (unscheduled_production_f| number:'1.0-0')"></rg-gauge-chart>
+    [centralLabel]="'$' + (unscheduled_production_f| currencySuffix:2)"></rg-gauge-chart>
         </div>
       </mat-card-content>
     </mat-card>

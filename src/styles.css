@@ -1366,26 +1366,26 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 .range_icon { font-size: 16px; margin-top: 0px; margin-right: 5px; float: left; }
 
 .green_guagechart path:nth-child(2n) {
-    fill: rgba(0, 164, 137, 0.8) !important;
+    fill: rgba(166, 178, 255, 0.8) !important;
 }
 
 .yellow_guagechart path:nth-child(2n) {
-    fill: rgb(255, 211, 45, 0.7) !important;
+    fill: rgba(255, 240, 187, 0.8) !important;
 }
 
 .blue_guagechart path:nth-child(2n) {
-    fill: rgb(171, 179, 255, 0.8) !important;
+    fill: rgba(255, 195, 194, 0.8) !important;
 }
+
 .gauge-chart text {
     font-size: 32px;
     font-family: 'Gilroy-Bold';
     fill: #444649;
 }
-.small-fonts .gauge-chart text{
-    font-size: 24px;
-    text-align: center;
-    transform: translateX(18px);
-}
+/* .small-fonts .gauge-chart text{
+    font-size: 28px;
+    transform: translateX(8px);
+} */
 .iframe_main { max-width: 400px!important; margin: 0 auto; }
 
 .iframe_design { padding: 10px 18px; margin: 8px 0; border-radius: 150px; background: #fff; color: #424242; text-align: center; float: left; border: 1px solid #ccc; width: 100%; }
@@ -1563,6 +1563,10 @@ ul { margin: 0px !important; }
 .morning-huddle h3 { font-size: 20px; margin-bottom: 0px; }
 
 .mh-table .mat-row:nth-child(even) { background-color: #f6f7f9;}
+
+#mat-tab-content-0-1 .mh-table .mat-row:nth-child(even) .appointment { background-color: #fff; }
+
+.DentistListSecRow .mat-row:nth-child(even) .appointment { background-color: #fff; }
 
 .mh-table .mat-row:nth-child(odd) { background-color: #ffffff;}
 
@@ -1776,7 +1780,7 @@ body .AddCard-main .AddCard-box .mat-card-title { font-size: 1rem !important; fl
 
 .profile-img-icon img { max-width: 150px; margin: auto; float: none; width: 100%; }
 
-#mat-tab-content-0-1 .appointment { width: max-content; background-color: #f3faf9; padding: 5px 10px; border: 1px solid #d1ede7; margin: 5px 5px; border-radius: 2px; font-size: 12px; float: left; }
+#mat-tab-content-0-1 .appointment { width: max-content; background-color: #f6f7f9; padding: 5px 10px; margin: 5px 5px; border-radius: 2px; font-size: 12px; float: left; }
 
 #mat-tab-content-0-0 .mat-select-value, #mat-tab-content-0-2 .mat-select-value { font-size: 12px!important; }
 
@@ -1942,7 +1946,27 @@ body .mat-gray {
 
 .cdk-overlay-pane {max-width:100% !important; }
 
-#mat-tab-content-0-1 .appointment {width: max-content; background-color: #f3faf9;padding: 5px 10px;border: 1px solid #d1ede7;margin: 5px 5px;border-radius: 2px;font-size: 13px;float: left;}
+#mat-tab-content-0-1 .appointment {
+    width: max-content;
+    background-color: #f6f7f9;
+    padding: 5px 10px;
+    /* border: 1px solid #d1ede7; */
+    margin: 5px 5px;
+    border-radius: 2px;
+    font-size: 13px;
+    float: left;
+}
+
+.DentistListSecRow .appointment {
+    width: max-content;
+    background-color: #f6f7f9;
+    padding: 5px 10px;
+    /* border: 1px solid #d1ede7; */
+    margin: 5px 5px;
+    border-radius: 2px;
+    font-size: 13px;
+    float: left;
+}
 
 #mat-tab-content-0-0 .mat-select-value , #mat-tab-content-0-2 .mat-select-value {font-size: 14px!important; vertical-align: middle;}
 
@@ -2073,6 +2097,12 @@ body .mat-gray {
     padding-top: 90px !important;
 }
 
+.reminders-table .mat-header-cell,
+.reminders-table .mat-cell {
+    width: 33.33%;
+    max-width: 33.33%;
+    min-width: 33.33%;
+}
 
 .stepper_content .logo_jeeve {
     margin-bottom: 20px;

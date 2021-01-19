@@ -401,7 +401,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           autoSkip: false,
           userCallback: (label: string) => {
             const names = this.splitName(label);
-            return `${names[0][0]} ${names[1]}`;
+            if (names.length > 1) {
+              return `${names[0][0]} ${names[1]}`
+            } else return `${names[0]}`;
           }
         },
       }],
@@ -543,7 +545,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           autoSkip: false,
           userCallback: (label: any) => {
             const names = typeof label === "string" ? this.splitName(label) : this.splitName(label[0]);
-            return `${names[0][0]} ${names[1]}`;
+            if (names.length > 1) {
+              return `${names[0][0]} ${names[1]}`
+            } else return `${names[0]}`;
           }
         }
       }],
@@ -1697,7 +1701,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           autoSkip: false,
           userCallback: (label: string) => {
             const names = this.splitName(label);
-            return `${names[0][0]} ${names[1]}`;
+            if (names.length>1) {
+              return `${names[0][0]} ${names[1]}`
+            } else return `${names[0]}`;
           }
         }
       }],

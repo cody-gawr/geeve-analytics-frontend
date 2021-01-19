@@ -74,20 +74,22 @@ customOptions: OwlOptions = {
   public bottomLabel = '65';
   public childid;
   public user_type;
-  public options = {
+  public options: any = {
       hasNeedle: false,
-      arcColors: ['rgba(0, 164, 137,0.8)','rgba(0, 164, 137,0.8)','rgba(0, 164, 137,0.8)'],
+      arcColors: ['rgba(166, 178, 255, 1)', 'rgba(166, 178, 255, 0.8)'],
       thick: 15,
       size: 251,
       cap: 'round',    
   };
-  public options1 = {
+  public options1: any = {
+    arcColors: ['#fff0bb', '#fffae7'],
     hasNeedle: false,
-    arcColors: ['rgb(255, 211, 45, 0.9)', 'rgb(255, 211, 45, 0.9)', 'rgb(255, 211, 45, 0.9)'],
+    needleUpdateSpeed: 1000,
+    needleStartValue: 0,
   }
   public optionsunscheduled = {
     hasNeedle: false,
-    arcColors: ['rgb(171, 179, 255, 0.9)', 'rgb(171, 179, 255, 0.9)','rgb(171, 179, 255), 0.9'],
+    arcColors: ['rgba(255, 195, 194, 1)', 'rgba(255, 195, 194, 0.8)' ],
   }
   public selectedDentist;
   public dentists;
@@ -229,8 +231,11 @@ customOptions: OwlOptions = {
           this.visits_p = data.data.visits_p;
           this.visits_f = data.data.visits_f;
           this.utilisation_rate_f = Math.round(data.data.utilisation_rate_f);
+          this.options1 = {
+            ...this.options1,
+            arcDelimiters: [this.utilisation_rate_f]
+          };
           this.unscheduled_production_f = data.data.unscheduled_production_f;
-
           this.profit_g = data.data.profit_g;          
           this.visits_g = data.data.visits_g;          
           this.production_g = data.data.production_g;          

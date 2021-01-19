@@ -105,7 +105,7 @@
         <div class="card-body">
           <div  style="height: 300px">
             <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels" *ngIf="buildChartLoader == false" [legend]="barChartLegend"
-              [chartType]="barChartType" [options]="barChartOptionsDP">
+              [chartType]="barChartType" [options]="barChartOptionsDP"  [colors]="DPcolors">
             </canvas>
             <!--  <div *ngIf="barChartLabels.length <= 0 && buildChartLoader == false" class="sa_nodata_div">
                 <h4>No Data</h4>
