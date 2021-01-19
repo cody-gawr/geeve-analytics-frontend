@@ -46,7 +46,7 @@
             <span class="change_value">$ {{profit_c| number:'1.0-0'}}</span>
           </div>
           <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="profit_dif">
-            <div [ngClass]="(profit_dif > 0) ? 'plus': 'minus'">{{ profit_dif > 0 ? '+ ' : '- ' }} ${{profit_dif | number:'1.0-0'}}</div>
+            <div [ngClass]="(profit_dif > 0) ? 'plus': 'minus'">{{ profit_dif > 0 ? '+ ' : '' }} ${{profit_dif | number:'1.0-0'}}</div>
           </div>
         </div>
       </mat-card-content>
@@ -66,7 +66,7 @@
             <span class="change_value">{{visits_c}}</span>
           </div>
           <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="visits_dif">
-            <div [ngClass]="(visits_dif > 0) ? 'plus': 'minus'">{{ visits_dif > 0 ? '+ ' : '- ' }} {{visits_dif}}</div>
+            <div [ngClass]="(visits_dif > 0) ? 'plus': 'minus'">{{ visits_dif > 0 ? '+ ' : '' }} {{visits_dif}}</div>
           </div>
         </div>
       </mat-card-content>

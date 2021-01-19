@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , ViewChild,ElementRef } from '@angular/core';
 import { FinancesService } from './finances.service';
 import { DentistService } from '../../dentist/dentist.service';
-
+import * as moment from 'moment';
 import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe } from '@angular/common';
 import {
@@ -170,7 +170,7 @@ single = [
         $('.header_filters').addClass('flex_direct_mar');
          $('.external_clinic').show();
         $('.external_dentist').show();
-  $('#title').html('<span>Finances</span>  <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');
+         $('#title').html('<span>Finances</span>  <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY"))+'</span>');
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();
@@ -1183,7 +1183,7 @@ public labelBarPercentOptions: any = {
 
   loadDentist(newValue) {
 
-  $('#title').html('<span>Finances</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');
+    $('#title').html('<span>Finances</span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY"))+'</span>');
   if(newValue == 'all') {
     $(".trend_toggle").hide();
     this.finTotalProduction();
