@@ -236,10 +236,10 @@ export class MenuItems {
     type: 'sub-child',
     icon: 'fas fa-user-cog',
     children: [
-      { state: 'clinic', name: 'Clinics', type: 'link'},
-      { state: 'dentist', name: 'Dentists', type: 'link'},
-      { state: 'roles-users', name: 'Users', type: 'link'},
-      { state: 'profile-settings', name: 'Profile Settings', type: 'link'},   {
+      { state: 'clinic', name: 'Clinics', type: 'link', role:['2','3','4','5']},
+      { state: 'dentist', name: 'Dentists', type: 'link', role:['2','3','4','5']},
+      { state: 'roles-users', name: 'Users', type: 'link', role:['2','3','4','5']},
+      { state: 'profile-settings', name: 'Profile Settings', type: 'link', role:['2','3','5']},   {
     state: '',
     name: 'Goals',
     type: 'subchild',
