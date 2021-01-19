@@ -16,6 +16,7 @@ import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+import * as moment from 'moment';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -136,7 +137,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     if (this._cookieService.get("childid"))
       this.childid = this._cookieService.get("childid");
     //   $('.external_dentist').val('all');
-    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.myDateParser(this.startDate) + '-' + this.myDateParser(this.endDate) + '</span>');
+    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY")) + '</span>');
     $('.external_clinic').show();
     $('.dentist_dropdown').show();
     $('.header_filters').removeClass('flex_direct_mar');
@@ -401,7 +402,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           autoSkip: false,
           userCallback: (label: string) => {
             const names = this.splitName(label);
-            return `${names[0][0]} ${names[1]}`;
+            if (names.length > 1) {
+              return `${names[0][0]} ${names[1]}`
+            } else return `${names[0]}`;
           }
         },
       }],
@@ -543,7 +546,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           autoSkip: false,
           userCallback: (label: any) => {
             const names = typeof label === "string" ? this.splitName(label) : this.splitName(label[0]);
-            return `${names[0][0]} ${names[1]}`;
+            if (names.length > 1) {
+              return `${names[0][0]} ${names[1]}`
+            } else return `${names[0]}`;
           }
         }
       }],
@@ -820,11 +825,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     return validDate
   }
+
+getFormattedDate(date) {
+  return moment(date).format("DD MMM YYYY");
+}
   //Load Dentist Data
  loadDentist(newValue) {
   if(newValue =='')
     newValue='all';
-  $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.myDateParser(this.startDate) + '-' + this.myDateParser(this.endDate) + '</span>');
+   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY")) + '</span>');
   //this.getAccountingDentist();
   //this.getStatusDentist();
   this.changePrebookRate('recall');
@@ -1697,7 +1706,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           autoSkip: false,
           userCallback: (label: string) => {
             const names = this.splitName(label);
-            return `${names[0][0]} ${names[1]}`;
+            if (names.length>1) {
+              return `${names[0][0]} ${names[1]}`
+            } else return `${names[0]}`;
           }
         }
       }],

@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , ViewChild,ElementRef } from '@angular/core';
 import { FrontDeskService } from './frontdesk.service';
 import { DentistService } from '../../dentist/dentist.service';
-
+import * as moment from 'moment';
 import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe } from '@angular/common';
 import {
@@ -79,14 +79,14 @@ export class FrontDeskComponent implements AfterViewInit {
         this.getClinics();
       this.initiate_clinic();
         
-      $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>'); 
+      $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+(moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY"))+'</span>'); 
 
         
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
         $('.header_filters').removeClass('hide_header');
-        $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>'); 
+        $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+(moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY"))+'</span>'); 
         $('.external_clinic').show();
         $('.external_dentist').show();
         $(document).on('click', function(e) {

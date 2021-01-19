@@ -36,6 +36,7 @@ import { NgxSmartModalModule } from 'ngx-smart-modal';
 import 'chartjs-plugin-annotation';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { DentistProductionChartComponent } from './charts/dentist-production-chart/dentist-production-chart.component';
+import { CurrencySuffixPipe } from '../currency-suffix.pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -57,7 +58,7 @@ import { DentistProductionChartComponent } from './charts/dentist-production-cha
     NgxSmartModalModule.forRoot(),
     CarouselModule
   ],
-  providers: [ ClinicianAnalysisService,MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe,DecimalPipe, HealthScreenService],
-  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, DentistProductionChartComponent]
+  providers: [ClinicianAnalysisService, MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, DecimalPipe, HealthScreenService],
+  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, CurrencySuffixPipe, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, DentistProductionChartComponent]
 })
 export class DashboardsModule {}

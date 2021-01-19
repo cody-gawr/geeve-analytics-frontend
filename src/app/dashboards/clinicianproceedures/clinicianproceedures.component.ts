@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
+import * as moment from 'moment'
 import { ChartService } from '../chart.service';
 export interface Dentist {
   providerId: string;
@@ -145,7 +146,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
         $('.dentist_dropdown').show();
         $('.header_filters').removeClass('flex_direct_mar');
         $('.header_filters').removeClass('hide_header');
-        $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');        
+   $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + ' - ' + (moment(new Date()).format("DD MMM YYYY"))+'</span>');        
         $('.external_clinic').show();
         $('.external_dentist').show();
         if(this.childid != ''){
@@ -924,7 +925,7 @@ public pieChartLabelsres: string[] = [
   $('.pr1').addClass('active');
   $('.predictor_ratio_main').find('.sa_tab_btn').removeClass('active');
   $('.prmain1').addClass('active');
-  $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">'+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+'</span>');
+   $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + ' - ' + (moment(new Date()).format("DD MMM YYYY"))+'</span>');
   if(newValue == 'all') {
     $(".predicted1Tool").show();
     $(".referral1Tool").show();
