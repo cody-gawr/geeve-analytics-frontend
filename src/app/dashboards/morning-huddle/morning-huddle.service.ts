@@ -66,36 +66,36 @@ export class MorningHuddleService {
         );
     }
 
-     getPatients( clinic_id,currentDentist, user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+     getPatients( clinic_id,currentDentist,previousDay, user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDay+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
 
-     getNewPatients( clinic_id, currentDentist,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+     getNewPatients( clinic_id, currentDentist,previousDay,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getNewPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getNewPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDay+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
 
-     getScheduleHours( clinic_id, currentDentist,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+     getScheduleHours( clinic_id, currentDentist,previousDay,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getScheduledHours?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getScheduledHours?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDay+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
     
-     getUnscheduleHours( clinic_id, currentDentist,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+     getUnscheduleHours( clinic_id, currentDentist,previousDay,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getUnscheduled?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getUnscheduled?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDay+"&provider_id="+currentDentist+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

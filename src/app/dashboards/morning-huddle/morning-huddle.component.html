@@ -257,8 +257,9 @@
           <mat-select  (selectionChange)="refreshScheduleTab($event.value)" id="setPreviousDay2" [(ngModel)]="currentDentistSchedule">
             <mat-option [value]="0">All Dentist</mat-option>
             <mat-option [value]="dentist.providerId" *ngFor="let dentist of clinicDentists">{{ dentist.name }}</mat-option>
-          </mat-select>
+          </mat-select>          
         </mat-form-field>        
+        <strong> {{ schedulePatielDate  }}</strong>
       </div>
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
@@ -270,7 +271,7 @@
                   <div class="ttl_value">{{ schedulePatieltd }}</div>
                   Patients </mat-card-title>
               </mat-card-content>
-            </mat-card>
+            </mat-card> 
             <div class="graph_image" ></div>
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mr0-md mh-matcard mh-matcard-red">
@@ -419,7 +420,7 @@
           <strong> {{ production.date | date: 'fullDate' }} </strong>
         
       </div> -->
-      <h3>Yesterday</h3>
+      <div class="morning-huddle-date"><strong *ngIf="reAppointmentdate">{{ reAppointmentdate }}</strong> </div>
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
           <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-purple">
             <mat-card class="dentistProduction sa_hccard">
@@ -455,7 +456,7 @@
             <div class="graph_image"></div>
           </div>
         </div>
-         <h3>Today</h3>
+        <div class="morning-huddle-date"><strong *ngIf="todayPatientsDate"> {{ todayPatientsDate }}</strong></div>
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
             <mat-card class="dentistProduction sa_hccard">
@@ -509,6 +510,10 @@
 
   <!-- Dentist Performance Tab -->  
   <mat-tab label="Reminders">
+
+     <div class="morning-huddle-date">
+        <strong>{{ remindersRecallsOverdueDate }}</strong>        
+      </div>
 <mat-card class="table-card">
   <mat-card-title>Recalls Overdue</mat-card-title>
   <mat-card-content> 
@@ -659,7 +664,9 @@
   <!-- Dentist Performance Tab -->
 
   <mat-tab label="Followups">
-    
+      <div class="morning-huddle-date">
+        <strong>{{ followupsUnscheduledPatientsDate }}</strong>        
+      </div>    
 <mat-card class="table-card">
   <mat-card-title>Unscheduled Patients</mat-card-title>
   <mat-card-content> 
