@@ -67,7 +67,7 @@ export class MorningHuddleComponent implements OnInit {
     public followupsUnscheduledPatientsDate:any = '';
     public followupPostOpCalls:any = [];
     public clinicDentists:any = [];
-    public currentDentist:any = 1;
+    public currentDentist:any = 0;
     public currentDentistSchedule:any = 0;
     
     public dentistListLoading:boolean = false;
