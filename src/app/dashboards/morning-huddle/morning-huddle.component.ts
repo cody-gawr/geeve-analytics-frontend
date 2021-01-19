@@ -72,7 +72,6 @@ export class MorningHuddleComponent implements OnInit {
     
     public dentistListLoading:boolean = false;
 
-
     
 
 
