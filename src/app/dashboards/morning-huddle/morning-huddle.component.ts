@@ -422,7 +422,7 @@ initiate_clinic() {
   }
   
   toggleUpdate(event,pid,cid,uid,type) {    
-    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,uid,type).subscribe((update:any) => {
+    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,uid,type, this.previousDays).subscribe((update:any) => {
       console.log(update,'***');
     });
   }

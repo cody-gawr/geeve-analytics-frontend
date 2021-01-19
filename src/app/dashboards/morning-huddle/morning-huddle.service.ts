@@ -226,9 +226,9 @@ export class MorningHuddleService {
         );
     }
 
-    updateFollowUpStatus(event,pid,cid,uid,type,token = this._cookieService.get("token")): Observable<any> {
+    updateFollowUpStatus(event,pid,cid,uid,type,previousDays,token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/updateFollowUpStatus?event="+event+"&pid="+pid+"&cid="+cid+"&uid="+uid+"&type="+type, { headers: header })
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/updateFollowUpStatus?event="+event+"&pid="+pid+"&cid="+cid+"&uid="+uid+"&previous_days="+previousDays+"&type="+type, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
