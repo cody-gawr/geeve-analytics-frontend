@@ -1,10 +1,19 @@
 
-<mat-card >
+<mat-card class="lost-header-background-remove" style="box-shadow: none !important;" >
 	<mat-card-content>
+		<div class="header-section">
+			<img src="../assets/images/lost-heder.jpg" alt="lost-heder" />
+			<div class="header-caption">
+				<h2>Total Production - ${{ production }}<span class="uptrend"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>131,131</span></h2>
+				<p>Your current Total Production for the last 365 days is shown above. Adjust
+					the slider below to see how small improvements in key areas can boost your
+					overall production.</p>  
+			</div> 
+		</div>
 		<input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
 		<input type="text" id="page_title" value="Lost Opportunity" [style.display]="'none'">
 		<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-			<div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+			<!-- <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
 				<div class="lo-content">
 					<ul>
 						<li><span class="left-lo-content">Total Discounts:</span> <span class="right-lo-content" id="TotalDiscounts">${{ discounts }} <small id="TotalDiscountsImprovement">${{ discountsImp }} improvement</small></span></li>
@@ -13,11 +22,11 @@
 					</ul>
 					<p>Total Lost Opportunity: <span  id="TotalLostOpportunity">${{ lostOpportunity }}</span></p>
 					<p>Total Production: <span id="TotalProduction">${{ production }}<small id="TotalProductionImproment">+${{ productionImp }}</small></span></p>
-				</div>
-			</div>
-			<div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="text-center">
+				</div> 
+			</div> -->
+			<!-- <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="text-center">
 				<img src="./assets/images/lost-opportunity.png" alt="">
-			</div>
+			</div> -->
 		</div>
 		<div class="card-loading" *ngIf="isLoading">
 	<img class="tableLoader" src="../../assets/images/loader.gif">
@@ -25,25 +34,85 @@
 	</mat-card-content>
 </mat-card>
 
-<mat-card >
+<mat-card class="oppertunity-background" style="box-shadow: none !important; padding: 30px !important;">
 	<mat-card-content>
+		<div class="lost-header">
+			<h2>Total Lost Opportunity- <span  id="TotalLostOpportunity">${{ lostOpportunity }}</span></h2>
+		</div>
+
+		<div class="oppertunity-row">
+			<div class="oppertunity-col">
+				<div class="prodction_main_box oppertunity-col-background">
+					<img src="../assets/images/info-1.png" alt="info" class="info-icon-set" />
+						<div class="production_images opertunity-img">
+						  <img src="../assets/images/total-discount-1.png" alt="total-discount" /> 
+						</div>
+						<div class="production_description oppertunity-description">
+						  <h4>Total Discounts</h4>
+						  <div class="price-section oppertunity-discount">
+							<h2 class="right-lo-content" id="TotalDiscounts">${{ discounts }} <span class="dowan-trend" style="float: none !important; font-size: 14px !important; color:#29d673 !important;"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>131,131</span></h2>
+						  </div>
+						</div>
+				</div>
+			</div>
+			<div class="oppertunity-col second-col-margin">
+				<div class="prodction_main_box oppertunity-col-background">
+					<img src="../assets/images/info-1.png" alt="info" class="info-icon-set" />
+						<div class="production_images opertunity-img">
+						  <img src="../assets/images/oppertunity-payment.png" alt="oppertunity-payment" /> 
+						</div>
+						<div class="production_description oppertunity-description">
+						  <h4>Collection vs Production</h4>
+						  <div class="price-section oppertunity-discount">
+							<h2 class="right-lo-content" id="CollectionProduction">$ {{ collectionProduction }} <span class="dowan-trend collection-up" style="float: none !important; font-size: 14px !important; color:#29d673 !important;"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>131,131</span></h2>
+						  </div>
+						</div>
+				</div>
+			</div>
+			<div class="oppertunity-col">
+				<div class="prodction_main_box oppertunity-col-background">
+					<img src="../assets/images/info-1.png" alt="info" class="info-icon-set" />
+						<div class="production_images opertunity-img">
+						  <img src="../assets/images/opertunity-case.png" alt="opertunity-case" /> 
+						</div>
+						<div class="production_description oppertunity-description">
+						  <h4>Case Acceptance</h4>
+						  <div class="price-section oppertunity-discount">
+							<h2 class="right-lo-content" id="CaseAcceptance">${{ caseAcceptance }}<span class="dowan-trend collection-up" style="float: none !important; font-size: 14px !important; color:#29d673 !important;"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>131,131</span></h2>
+						  </div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</mat-card-content>
+</mat-card>
+
+<mat-card class="improvement-range" style="box-shadow: none !important;" >
+	<h4>{{ improvement }}% improvement</h4>
+	<mat-card-content class="range-background">
 		<div class="lo-slider">
-			<h4>{{ improvement }}% improvement</h4>
-				<mat-slider #mySlider min="0" max="100" step="10" value="{{ improvement }}" (slideend)="sliderOnChange(mySlider.value)"
+			
+				<mat-slider  #mySlider min="0" max="100" step="10" value="{{ improvement }}" (slideend)="sliderOnChange(mySlider.value)"
   (pointerup)="sliderOnChange(mySlider.value)"  (input)="sliderOnChange(mySlider.value)"></mat-slider>
-				<ul>
-					<li style="left:0%;">0</li>
-					<li style="left:10%;">10</li>
-					<li style="left:20%;">20</li>
-					<li style="left:30%;">30</li>
-					<li style="left:40%;">40</li>
-					<li style="left:50%;">50</li>
-					<li style="left:60%;">60</li>
-					<li style="left:70%;">70</li>
-					<li style="left:80%;">80</li>
-					<li style="left:90%;">90</li>
-					<li style="left:100%;">100</li>
-				</ul>
+
         </div>
 	</mat-card-content>
+
+	<div class="custom-lo-slider">
+		<div class="lo-slider">
+			<ul>
+				<li style="left:0%;">0</li>
+				<li style="left:10%;">10</li>
+				<li style="left:20%;">20</li>
+				<li style="left:30%;">30</li>
+				<li style="left:40%;">40</li>
+				<li style="left:50%;">50</li>
+				<li style="left:60%;">60</li>
+				<li style="left:70%;">70</li>
+				<li style="left:80%;">80</li>
+				<li style="left:90%;">90</li>
+				<li style="left:100%;">100</li>
+			</ul>
+		</div>
+	</div>
  </mat-card>
