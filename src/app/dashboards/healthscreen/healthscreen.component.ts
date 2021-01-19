@@ -142,7 +142,7 @@ customOptions: OwlOptions = {
   public loadHealthScreen() {
        var date = new Date();
      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth()-1, 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
          this.healthCheckStats();
         this.hourlyRateChart();
         this.mkNewPatientsByReferral();
