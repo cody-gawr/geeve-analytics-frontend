@@ -1692,7 +1692,6 @@ filterDate(duration) {
             this.loadDentist('all');
     }
     else if (duration == 'lm') {
-      this.duration = 'lm';
       this.trendText = 'Previous Month';
       this.currentText = 'Last Month';
 

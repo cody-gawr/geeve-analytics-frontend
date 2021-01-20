@@ -3428,7 +3428,7 @@ ul.download-sync-list {
 }
 
 .price-section .ttl_value_left{
-    background-color: #1d9781;
+  
     color: #fff;
     font-size: 12px;
     border-radius: 5px;
@@ -3459,10 +3459,19 @@ ul.download-sync-list {
 
 .recall-retail-rate{
     display:flex;
+    align-items: center;
+}
+
+.profit {
+  background-color: #1d9781;
+}
+
+.loss {
+  background-color: #ff6565;
 }
 
 .recall-retail-rate .ttl_value_left{
-    background-color: #ff6565;
+  
     color: #fff;
     font-size: 12px;
     border-radius: 5px;

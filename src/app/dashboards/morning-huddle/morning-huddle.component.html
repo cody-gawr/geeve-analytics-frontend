@@ -41,8 +41,12 @@
                       <h4>Production</h4>
                       <div class="price-section" *ngIf="production">
                         <span class="change_value">${{ production.total | number:'1.0-0'}}</span>
-                        <div class="ttl_value_left">+ ${{ production.goal| number:'1.0-0'}}</div>
-                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                        <div
+                         [ngClass]="(production.total > production.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
+                          >Goal: {{production.total > production.goal ? '+' : '-'}} ${{ (getdifference(production.total, production.goal)) | number:'1.0-0'}}
+                        </div>                       
+                        <img *ngIf="production.total > production.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                        <img *ngIf="production.total < production.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
                       </div>
                     </div>
                   </div>
@@ -78,9 +82,16 @@
                     <div class="production_description">
                       <h4>Rebook Recall Rate</h4>
                       <div class="recall-retail-rate" *ngIf="recallRate">
-                        <span class="change_value">{{ recallRate.rate}}%</span>
-                        <div class="ttl_value_left">- {{ recallRate.goal}}%</div>
-                        <img src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                        <span class="change_value">{{ recallRate.rate }}%</span>
+                        <!-- <div class="ttl_value_left">Goal: {{ recallRate.goal}}%</div> -->
+                        <div class="ttl_value_left profit" *ngIf="!recallRate.goal">0%</div>
+                        <div
+                          [ngClass]="(recallRate.rate > recallRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
+                          *ngIf="recallRate.goal">
+                          Goal: {{recallRate.rate > recallRate.goal ? '+' : '-'}} {{ getdifference(recallRate.rate,recallRate.goal) }}%                     
+                        </div>
+                        <img *ngIf="recallRate.rate > recallRate.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                        <img *ngIf="recallRate.rate < recallRate.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
                       </div>
                     </div>
                   </div>
@@ -124,9 +135,16 @@
                     <div class="production_description">
                       <h4>Rebook Treatment Rate</h4>
                       <div class="price-section" *ngIf="treatmentRate">
-                        <span class="change_value">{{ treatmentRate.total}}%</span>
-                        <div class="ttl_value_left">+30%</div>
-                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                          
+                          <span class="change_value">{{ treatmentRate.total}}%</span>
+                          <div class="ttl_value_left profit" *ngIf="!treatmentRate.goal">Goal: 0%</div>
+                          <div 
+                            [ngClass]="(treatmentRate.rate > treatmentRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
+                            *ngIf="treatmentRate.goal">
+                            Goal: {{treatmentRate.rate > treatmentRate.goal ? '+' : '-'}} {{ getdifference(treatmentRate.total, treatmentRate.goal) }}%                     
+                          </div>
+                          <img *ngIf="treatmentRate.total > treatmentRate.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                          <img *ngIf="treatmentRate.total < treatmentRate.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
                       </div>
                     </div>
                   </div>
@@ -334,7 +352,7 @@
                     <div class="production_description">
                       <h4>Patients</h4>
                       <div class="patients-num">
-                        <span class="change_value">{{ schedulePatieltd.patient }}</span>
+                        <span class="change_value">{{ schedulePatieltd }}</span>
                         <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
                       </div>
                     </div>
@@ -342,7 +360,7 @@
 
               </mat-card-content>
             </mat-card> 
-            <div class="graph_image" ></div>
+            <!-- <div class="graph_image" ></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mr0-md mh-matcard mh-matcard-red">
             <mat-card class="dentistProduction sa_hccard">
@@ -566,7 +584,7 @@
                     <div class="production_description">
                       <h4>Re-Appointment %</h4>
                       <div class="patients-num" *ngIf="reAppointment">
-                        <span class="change_value">{{ reAppointment.reappointment }}</span>
+                        <span class="change_value">{{ reAppointment }}</span>
                       </div>
                     </div>
                   </div>
@@ -587,9 +605,9 @@
                       <span class="material-icons">access_alarm</span>
                     </div>
                     <div class="production_description">
-                      <h4>Unscheduled Value</h4>
+                      <h4>Unscheduled Balance</h4>
                       <div class="patients-num">
-                        <span class="change_value">{{ unscheduledValue }}</span>
+                        <span class="change_value">${{ unscheduledValue | number:'1.2-2' }}</span>
                       </div>
                     </div>
                   </div>
@@ -607,7 +625,7 @@
                     <div class="production_description">
                       <h4>No Shows</h4>
                       <div class="patients-num">
-                        <span class="change_value">35</span>
+                        <span class="change_value">3</span>
                       </div>
                     </div>
                   </div>
@@ -632,7 +650,7 @@
                     <div class="production_description">
                       <h4>Patients</h4>
                       <div class="patients-num" *ngIf="todayPatients">
-                        <span class="change_value">{{ todayPatients.patient }}</span>
+                        <span class="change_value">{{ todayPatients }}</span>
                       </div>
                     </div>
                   </div>

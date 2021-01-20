@@ -25,7 +25,9 @@
               <span class="change_value">$ {{ production_c | number:'1.0-0'}}</span>
             </div>
             <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
-              <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">{{ production_dif > 0 ? '+ ' : '- ' }} ${{(production_dif<0 ? production_dif.toString().split('-').join('') : production_dif) | number:'1.0-0'}}</div>
+              <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
+                {{ production_dif > 0 ? '+ ' : '- ' }} 
+                ${{(production_dif<0 ? production_dif.toString().split('-').join('') : production_dif) | number:'1.0-0'}}</div>
             </div>
           </div> 
       </mat-card-content>
@@ -46,7 +48,9 @@
             <span class="change_value">$ {{profit_c| number:'1.0-0'}}</span>
           </div>
           <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="profit_dif">
-            <div [ngClass]="(profit_dif > 0) ? 'plus': 'minus'">{{ profit_dif > 0 ? '+ ' : '' }} ${{profit_dif | number:'1.0-0'}}</div>
+            <div [ngClass]="(profit_dif > 0) ? 'plus': 'minus'">
+              {{ profit_dif > 0 ? '+ ' : '- ' }} 
+              ${{(profit_dif<0 ? profit_dif.toString().split('-').join('') : profit_dif) | number:'1.0-0'}}</div>
           </div>
         </div>
       </mat-card-content>
