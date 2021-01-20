@@ -409,7 +409,9 @@ initiate_clinic() {
 
 
   getdifference (a, b) { 
-    return Math.abs(a - b); 
+    let difference: any = Math.abs(a - b);
+    difference = difference>0 ? difference : (difference.toString().split('-').join());
+    return difference; 
   }
 
 
