@@ -2286,8 +2286,7 @@ this.trendxero=false;
  
   this.netProfitPercentChartTrend1= [];
          this.expensesChartTrendLabels1=[];
-          this.expensesChartTrend =[
-    {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
+          this.expensesChartTrend =[];
 
     this.finNetProfitPMSTrendLoader = false;
         this.finNetProfitTrendLoader = false;
@@ -2338,9 +2337,13 @@ this.trendxero=false;
                       result.expenses.forEach((res) => {  
                         tempO.push(Math.round(res));
                       });                      
+                      let temp = {data: [],label: '' };
+                      temp.data = tempO;
+                      temp.label = result.meta_key;
+          this.expensesChartTrend.push(temp);
+                     // this.expensesChartTrend[key]['data'] = tempO;
+                     // this.expensesChartTrend[key]['label'] = result.meta_key;           
 
-                     this.expensesChartTrend[key]['data'] = tempO;
-                     this.expensesChartTrend[key]['label'] = result.meta_key;                  
                    }
                  }); 
                  this.expensesChartTrendLabels = data.data.duration; 
