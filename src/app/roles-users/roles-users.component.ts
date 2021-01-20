@@ -96,7 +96,6 @@ initiate_clinic() {
     $('.header_filters').removeClass('flex_direct_mar'); 
     this.initiate_clinic();
 
-    this.clinic_id = this.route.snapshot.paramMap.get("id");
         $('#title').html('Users');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
