@@ -142,7 +142,7 @@
 
 .sa_dentist_graphs_area .reading-block { color: #454649; font-size: 37px!important;font-family: 'Gilroy-Bold'; }
 
-.sa_dentist_graphs_area .mat-card { box-shadow: none!important; margin: 0; height: 100%; }
+.sa_dentist_graphs_area .mat-card { box-shadow: none!important; margin: 0; height: 100%; padding: 0; }
 
 .sa_dentist_graphs_area .mat-card .mat-card-content {height: 100%; display: -webkit-box; display: -ms-flexbox;display: flex; -webkit-box-orient: vertical;-webkit-box-direction: normal;-ms-flex-direction: column;flex-direction: column;}
 
