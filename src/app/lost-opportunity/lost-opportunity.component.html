@@ -2,18 +2,21 @@
 <mat-card class="lost-header-background-remove" style="box-shadow: none !important;" >
 	<mat-card-content>
 		<div class="header-section">
-			<img src="../assets/images/lost-heder.jpg" alt="lost-heder" />
 			<div class="header-caption">
-				<h2>Total Production : ${{ production | number:'1.0-0' }}<span class="uptrend"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>131,131</span></h2>
+				<h2>Total Production : ${{ production | number:'1.0-0' }}<span class="uptrend"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>+${{ productionImp | number:'1.0-0' }}</span></h2>
 				<p>Your current Total Production for the last 365 days is shown above. Adjust
 					the slider below to see how small improvements in key areas can boost your
 					overall production.</p>  
-			</div> 
+			</div>
+			
+			<div class="right-vector-img">
+				<img src="../assets/images/vector_smart.png" alt="vector_smart.png" />
+			</div>
 		</div>
 		<input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
 		<input type="text" id="page_title" value="Lost Opportunity" [style.display]="'none'">
-		<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-			<!-- <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
+		<!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
+			<div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
 				<div class="lo-content">
 					<ul>
 						<li><span class="left-lo-content">Total Discounts:</span> <span class="right-lo-content" id="TotalDiscounts">${{ discounts }} <small id="TotalDiscountsImprovement">${{ discountsImp }} improvement</small></span></li>
@@ -23,14 +26,14 @@
 					<p>Total Lost Opportunity: <span  id="TotalLostOpportunity">${{ lostOpportunity }}</span></p>
 					<p>Total Production: <span id="TotalProduction">${{ production }}<small id="TotalProductionImproment">+${{ productionImp }}</small></span></p>
 				</div> 
-			</div> -->
-			<!-- <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="text-center">
+			</div> 
+			<div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="text-center">
 				<img src="./assets/images/lost-opportunity.png" alt="">
-			</div> -->
-		</div>
+			</div>
+		</div> -->
 		<div class="card-loading" *ngIf="isLoading">
-	<img class="tableLoader" src="../../assets/images/loader.gif">
-</div>
+			<img class="tableLoader" src="../../assets/images/loader.gif">
+		</div>
 	</mat-card-content>
 </mat-card>
 
@@ -50,7 +53,10 @@
 						<div class="production_description oppertunity-description">
 						  <h4>Total Discounts</h4>
 						  <div class="price-section oppertunity-discount">
-							<h2 class="right-lo-content" id="TotalDiscounts">${{ discounts }} <span class="dowan-trend" style="float: none !important; font-size: 14px !important; color:#29d673 !important;"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>131,131</span></h2>
+							<h2 class="right-lo-content" id="TotalDiscounts">${{ discounts | number:'1.0-0' }}</h2>
+							<span class="dowan-trend" id="TotalDiscountsImprovement" style="float: none !important; font-size: 14px !important; color:#fff !important;">
+								${{ discountsImp | number:'1.0-0' }}</span>
+								<!-- <img src="../assets/images/uptrend-production.png" alt="uptrend-production"/><div class="ttl_value_left">- {{ recallRate.goal}}%</div>	 -->
 						  </div>
 						</div>
 				</div>
@@ -64,7 +70,9 @@
 						<div class="production_description oppertunity-description">
 						  <h4>Collection vs Production</h4>
 						  <div class="price-section oppertunity-discount">
-							<h2 class="right-lo-content" id="CollectionProduction">$ {{ collectionProduction }} <span class="dowan-trend collection-up" style="float: none !important; font-size: 14px !important; color:#29d673 !important;"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>131,131</span></h2>
+							<h2 class="right-lo-content" id="CollectionProduction">$ {{ collectionProduction | number:'1.0-0' }}</h2>
+							<span class="dowan-trend" id="CollectionProductionImprovement" style="float: none !important; font-size: 14px !important; color:#fff !important;">
+								${{ collectionProductionImp | number:'1.0-0' }}</span>
 						  </div>
 						</div>
 				</div>
@@ -78,7 +86,9 @@
 						<div class="production_description oppertunity-description">
 						  <h4>Case Acceptance</h4>
 						  <div class="price-section oppertunity-discount">
-							<h2 class="right-lo-content" id="CaseAcceptance">${{ caseAcceptance }}<span class="dowan-trend collection-up" style="float: none !important; font-size: 14px !important; color:#29d673 !important;"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>131,131</span></h2>
+							<h2 class="right-lo-content" id="CaseAcceptance">${{ caseAcceptance | number:'1.0-0' }}</h2>
+							<span class="dowan-trend" id="CaseAcceptanceImprovement" style="float: none !important; font-size: 14px !important; color:#fff !important;">
+								${{ caseAcceptanceImp | number:'1.0-0' }}</span>
 						  </div>
 						</div>
 				</div>
