@@ -1315,6 +1315,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
     height: 52px;
     display: flex;
     align-items: center;
+    min-width: 60px;
 }
 .info-icon {
     width: 15px;
@@ -3418,6 +3419,7 @@ ul.download-sync-list {
     font-weight: 500;
     color: #4d4d4d;
     background-color: transparent !important;
+    min-width: 60px;
 }
 
 .price-section{

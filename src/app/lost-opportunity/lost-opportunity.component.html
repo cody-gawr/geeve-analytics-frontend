@@ -4,7 +4,7 @@
 		<div class="header-section">
 			<img src="../assets/images/lost-heder.jpg" alt="lost-heder" />
 			<div class="header-caption">
-				<h2>Total Production - ${{ production }}<span class="uptrend"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>131,131</span></h2>
+				<h2>Total Production : ${{ production | number:'1.0-0' }}<span class="uptrend"><img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>131,131</span></h2>
 				<p>Your current Total Production for the last 365 days is shown above. Adjust
 					the slider below to see how small improvements in key areas can boost your
 					overall production.</p>  
@@ -37,7 +37,7 @@
 <mat-card class="oppertunity-background" style="box-shadow: none !important; padding: 30px !important;">
 	<mat-card-content>
 		<div class="lost-header">
-			<h2>Total Lost Opportunity- <span  id="TotalLostOpportunity">${{ lostOpportunity }}</span></h2>
+			<h2>Total Lost Opportunity : <span  id="TotalLostOpportunity">${{ lostOpportunity | number:'1.0-0' }}</span></h2>
 		</div>
 
 		<div class="oppertunity-row">
