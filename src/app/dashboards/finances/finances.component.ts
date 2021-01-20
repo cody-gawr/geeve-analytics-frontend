@@ -94,7 +94,7 @@ single = [
   public percentOfCurrentOverdue$ = new BehaviorSubject<number>(0);
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-
+  profitChartTitles = ['Net Profit', 'Net Profit % Xero', 'Net Profit % PMS'];
   constructor(
     private toastr: ToastrService,
     private financesService: FinancesService, 
@@ -1690,6 +1690,17 @@ filterDate(duration) {
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
             this.loadDentist('all');
+    }
+    else if (duration == 'lm') {
+      this.duration = 'lm';
+      this.trendText = 'Previous Month';
+      this.currentText = 'Last Month';
+
+      const date = new Date();
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      this.duration = 'lm';
+      this.loadDentist('all');
     }
     else if (duration == 'q') {
         this.duration='q';
