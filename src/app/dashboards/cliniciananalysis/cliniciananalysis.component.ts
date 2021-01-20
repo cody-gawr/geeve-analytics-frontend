@@ -16,7 +16,6 @@ import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import * as moment from 'moment';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -137,7 +136,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     if (this._cookieService.get("childid"))
       this.childid = this._cookieService.get("childid");
     //   $('.external_dentist').val('all');
-    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + ' - ' + (moment(new Date()).format("DD MMM YYYY")) + '</span>');
+    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.startDate + ' - ' + this.endDate + '</span>');
     $('.external_clinic').show();
     $('.dentist_dropdown').show();
     $('.header_filters').removeClass('flex_direct_mar');
@@ -826,14 +825,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     return validDate
   }
 
-getFormattedDate(date) {
-  return moment(date).format("DD MMM YYYY");
-}
   //Load Dentist Data
  loadDentist(newValue) {
   if(newValue =='')
     newValue='all';
-   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + ' - ' + (moment(new Date()).format("DD MMM YYYY")) + '</span>');
+   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.startDate + ' - ' + this.endDate + '</span>');
   //this.getAccountingDentist();
   //this.getStatusDentist();
   this.changePrebookRate('recall');
@@ -2408,9 +2404,9 @@ getFormattedDate(date) {
         var last = first + 6;
         var sd = new Date(now.setDate(first));
 
-        this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd MMM yyyy');
         var end = now.setDate(sd.getDate() + 6);
-        this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'dd MMM yyyy');
         this.loadDentist(dentistVal);
       }
       else if (duration == 'm') {
@@ -2420,8 +2416,8 @@ getFormattedDate(date) {
         this.currentText = 'This Month';
 
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
         console.log(this.startDate + " " + this.endDate);
 
         this.loadDentist(dentistVal);
@@ -2434,8 +2430,8 @@ getFormattedDate(date) {
         this.currentText = 'Last Month';
 
         const date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd MMM yyyy');
         console.log(this.startDate + " " + this.endDate);
 
         this.loadDentist(dentistVal);
@@ -2452,23 +2448,23 @@ getFormattedDate(date) {
         var cyear = now.getFullYear();
 
         if (cmonth >= 1 && cmonth <= 3) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy');
         }
         else if (cmonth >= 4 && cmonth <= 6) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy');
         }
         else if (cmonth >= 7 && cmonth <= 9) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');
         }
         else if (cmonth >= 10 && cmonth <= 12) {
           1
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd MMM yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd MMM yyyy');
         }
-        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
         this.loadDentist(dentistVal);
 
       }
@@ -2483,20 +2479,20 @@ getFormattedDate(date) {
         var cyear = now.getFullYear();
 
         if (cmonth >= 1 && cmonth <= 3) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'dd MMM yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'dd MMM yyyy');
         }
         else if (cmonth >= 4 && cmonth <= 6) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy');
         }
         else if (cmonth >= 7 && cmonth <= 9) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy');
         }
         else if (cmonth >= 10 && cmonth <= 12) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');
         }
         this.loadDentist(dentistVal);
       }
@@ -2505,10 +2501,10 @@ getFormattedDate(date) {
         this.currentText = 'This Year';
 
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd MMM yyyy');
         console.log(this.startDate);
 
-        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
         this.goalCount = difMonths + 1;
         this.loadDentist(dentistVal);
@@ -2519,12 +2515,12 @@ getFormattedDate(date) {
 
         var date = new Date();
         if ((date.getMonth() + 1) <= 3) {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd MMM yyyy');
         } else {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd MMM yyyy');
         }
 
-        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
         this.goalCount = Math.abs(difMonths + 1);
         this.loadDentist(dentistVal);
@@ -2548,8 +2544,8 @@ getFormattedDate(date) {
   choosedDate(val) {
     val = (val.chosenLabel);
     var val = val.toString().split(' - ');
-    this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
-    this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
+    this.startDate = this.datePipe.transform(val[0], 'dd MMM yyyy');
+    this.endDate = this.datePipe.transform(val[1], 'dd MMM yyyy');
     this.filterDate('custom');
     // $('.filter_custom').val(this.startDate + " - " + this.endDate);
     $('.customRange').css('display', 'none');
