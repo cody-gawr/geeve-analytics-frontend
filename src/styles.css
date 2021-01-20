@@ -3876,6 +3876,71 @@ ul.download-sync-list {
     margin-bottom: 25px;
 }
 
+.uptrend {
+    padding: 11px 35px;
+    font-size: 14px;
+    color: #42fdac;
+    position: relative;
+    top: -5px;
+    margin-left: 0;
+    display: flex;
+    height: 35px;
+    width: 100px;
+    align-items: center;
+    justify-content: center;
+    margin-left:24px;
+    margin-top: 7px;
+}
+
+.header-section .header-caption {
+    width: 60%;
+    margin-top: 20px;
+}
+
+.right-vector-img {
+    width: 40%;
+}
+
+.right-vector-img img{
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.header-section{
+    padding: 10px 30px 30px 30px;
+}
+
+.oppertunity-background{
+    margin: 30px 0 !important;
+}
+
+.lost-header-background-remove{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.improvement-range{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.header-section .header-caption h2{
+    display: flex;
+}
+
+.second-col-margin {
+    margin: 0 34px;
+}
+
+.oppertunity-col {
+    flex: 0 0 30%;
+    max-width: 30%;
+}
+
+.opertunity-img img{
+    height: auto;
+}
+
 
 }
 
@@ -3920,6 +3985,130 @@ ul.download-sync-list {
         overflow-x: auto;
         margin-bottom:25px;
     }
+
+    /* -----This is  Lost page Style---- */
+
+    .header-section{
+        flex-flow: column;
+        background:url("./assets/images/round-mobile.png");
+        padding: 10px 15px 15px 15px;
+    }
+    
+    .header-section .header-caption{
+        width: 100%;
+        order:2;
+    }
+
+    .right-vector-img{
+        width: 100%;
+        order:1;
+    }
+
+    .header-section .header-caption h2{
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+    }
+
+    .uptrend {
+        padding: 11px 35px;
+        font-size: 14px;
+        color: #42fdac;
+        position: relative;
+        top: -5px;
+        margin-left: 0;
+        display: flex;
+        height: 35px;
+        width: 100px;
+        align-items: center;
+        justify-content: center;
+        margin-left:24px;
+        margin-top: 7px;
+    }
+
+    .oppertunity-background{
+        padding: 15px !important;
+    }
+
+    .oppertunity-col {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .second-col-margin {
+        margin: 0;
+        margin-bottom: 15px;
+    }
+
+    .info-icon-set{
+        right: 15px;
+    }
+
+    .opertunity-img img{
+        height: auto;
+    }
+
+    .production_description h4 {
+        font-size: 14px;
+    }
+
+    .oppertunity-discount h2 {
+        font-size: 16px !important;
+    }
+
+    .lost-header-background-remove {
+        padding: 0 !important;
+    }
+
+    .improvement-range {
+        margin: 30px 15px 15px 15px !important;
+        padding: 0 !important;
+    }
+
+    .dowan-trend {
+        margin-left: 10px;
+    }
+
+    .range-background{
+        padding: 40px 10px !important;
+    }
+}
+
+@media(max-width:767px){
+    .lost-header-background-remove {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .oppertunity-background {
+        padding: 15px !important;
+        margin: 30px 0 20px 0 !important;
+    }
+
+    .improvement-range{
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .custom-lo-slider{
+        display: none;
+    }
+
+    .uptrend{
+        margin-left:15px;
+    }
+
+    /* .header-section{
+        position: relative;
+        background-size:cover;
+        background-repeat: no-repeat;
+        padding: 10px 30px 0 30px;
+        height: 100%;
+        width: 100%;
+        border-radius: 10px;
+        display: flex;
+    } */
 }
 
 @media(max-width:375px){
@@ -3947,5 +4136,7 @@ ul.download-sync-list {
         max-width: 64px;
         min-height: auto;
     }
+
+
 }
 

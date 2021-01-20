@@ -37,7 +37,7 @@
 	</mat-card-content>
 </mat-card>
 
-<mat-card class="oppertunity-background" style="box-shadow: none !important; padding: 30px !important;">
+<mat-card class="oppertunity-background" style="box-shadow: none !important;">
 	<mat-card-content>
 		<div class="lost-header">
 			<h2>Total Lost Opportunity : <span  id="TotalLostOpportunity">${{ lostOpportunity | number:'1.0-0' }}</span></h2>
@@ -70,7 +70,7 @@
 						<div class="production_description oppertunity-description">
 						  <h4>Collection vs Production</h4>
 						  <div class="price-section oppertunity-discount">
-							<h2 class="right-lo-content" id="CollectionProduction">$ {{ collectionProduction | number:'1.0-0' }}</h2>
+							<h2 class="right-lo-content" id="CollectionProduction">${{ collectionProduction | number:'1.0-0' }}</h2>
 							<span class="dowan-trend" id="CollectionProductionImprovement" style="float: none !important; font-size: 14px !important; color:#fff !important;">
 								${{ collectionProductionImp | number:'1.0-0' }}</span>
 						  </div>
