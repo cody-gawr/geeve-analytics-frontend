@@ -1250,7 +1250,7 @@ public netProfitTrendTotal;
         this.netProfitIcon = "-";
              
         this.netProfitVal = this.netProfitVal; 
-        console.log(this.netProfitVal,this.netProfitTrendTotal);
+        // console.log(this.netProfitVal,this.netProfitTrendTotal);
       if(this.netProfitVal>=this.netProfitTrendTotal)
             this.netProfitTrendIcon = "up"; 
        }
@@ -2412,7 +2412,7 @@ this.trendxero=false;
         this.finNetProfitTrendLoader = false;
           this.finNetProfitPercentTrendLoader = false;
                 data.data.net_profit.forEach(res => {  
-                  console.log(res.val.net);
+                  // console.log(res.val.net);
                      if (res.val.net != null)
                      this.netProfitChartTrend1.push(Math.round(res.val.net));
                      else

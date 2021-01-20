@@ -22,11 +22,14 @@
             </div>
             <div class="production_description production_description-grow">
               <h4>Production</h4>
-              <span class="change_value">$ {{ production_c | number:'1.0-0'}}</span>
+              <span class="change_value">
+                {{production_c >= 0 ? ' ' : '- ' }} 
+                ${{ (production_c<0 ? production_c.toString().split('-').join('') : production_c) | number:'1.0-0'}}
+              </span>
             </div>
             <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
               <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
-                {{ production_dif > 0 ? '+ ' : '- ' }} 
+                {{ production_dif >= 0 ? '+ ' : '- ' }} 
                 ${{(production_dif<0 ? production_dif.toString().split('-').join('') : production_dif) | number:'1.0-0'}}</div>
             </div>
           </div> 
@@ -45,11 +48,13 @@
           </div>
           <div class="production_description production_description-grow">
             <h4>Profit</h4>
-            <span class="change_value">$ {{profit_c| number:'1.0-0'}}</span>
+            <span class="change_value">
+              {{profit_c >= 0 ? ' ' : '- ' }} 
+              ${{ (profit_c<0 ? profit_c.toString().split('-').join('') : profit_c) | number:'1.0-0'}}</span>
           </div>
           <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="profit_dif">
-            <div [ngClass]="(profit_dif > 0) ? 'plus': 'minus'">
-              {{ profit_dif > 0 ? '+ ' : '- ' }} 
+            <div [ngClass]="(profit_dif >= 0) ? 'plus': 'minus'">
+              {{ profit_dif >= 0 ? '+ ' : '- ' }} 
               ${{(profit_dif<0 ? profit_dif.toString().split('-').join('') : profit_dif) | number:'1.0-0'}}</div>
           </div>
         </div>
@@ -70,7 +75,7 @@
             <span class="change_value">{{visits_c}}</span>
           </div>
           <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="visits_dif">
-            <div [ngClass]="(visits_dif > 0) ? 'plus': 'minus'">{{ visits_dif > 0 ? '+ ' : '' }} {{visits_dif}}</div>
+            <div [ngClass]="(visits_dif >= 0) ? 'plus': 'minus'">{{ visits_dif >= 0 ? '+ ' : '' }} {{visits_dif}}</div>
           </div>
         </div>
       </mat-card-content>

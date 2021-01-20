@@ -43,7 +43,7 @@
                         <span class="change_value">${{ production.total | number:'1.0-0'}}</span>
                         <div
                          [ngClass]="(production.total > production.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
-                          >Goal: {{production.total > production.goal ? '+' : '-'}} ${{ (getdifference(production.total, production.goal)) | number:'1.0-0'}}
+                          >Goal: {{production.total > production.goal ? '+' : '-'}} ${{  (production.goal || 0) | number:'1.0-0'}}
                         </div>                       
                         <img *ngIf="production.total > production.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
                         <img *ngIf="production.total < production.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
@@ -88,7 +88,7 @@
                         <div
                           [ngClass]="(recallRate.rate > recallRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
                           *ngIf="recallRate.goal">
-                          Goal: {{recallRate.rate > recallRate.goal ? '+' : '-'}} {{ getdifference(recallRate.rate,recallRate.goal) }}%                     
+                          Goal: {{recallRate.rate > recallRate.goal ? '+' : '-'}} {{ recallRate.goal }}%                     
                         </div>
                         <img *ngIf="recallRate.rate > recallRate.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
                         <img *ngIf="recallRate.rate < recallRate.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
@@ -141,7 +141,7 @@
                           <div 
                             [ngClass]="(treatmentRate.rate > treatmentRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
                             *ngIf="treatmentRate.goal">
-                            Goal: {{treatmentRate.rate > treatmentRate.goal ? '+' : '-'}} {{ getdifference(treatmentRate.total, treatmentRate.goal) }}%                     
+                            Goal: {{treatmentRate.rate > treatmentRate.goal ? '+' : '-'}} {{  treatmentRate.goal }}%                     
                           </div>
                           <img *ngIf="treatmentRate.total > treatmentRate.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
                           <img *ngIf="treatmentRate.total < treatmentRate.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
