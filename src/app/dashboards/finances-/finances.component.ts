@@ -83,7 +83,7 @@ single = [
     this.clinic_id = this.route.snapshot.paramMap.get("id");
         this.filterDate('cytd');
         this.getDentists(); 
-    $('#title').html('Finances (' + (moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY"))+')');
+    $('#title').html('Finances (' + (moment(this.startDate).format("DD MMM YYYY")) + ' - ' + (moment(new Date()).format("DD MMM YYYY"))+')');
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');

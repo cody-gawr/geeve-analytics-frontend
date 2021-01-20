@@ -137,7 +137,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     if (this._cookieService.get("childid"))
       this.childid = this._cookieService.get("childid");
     //   $('.external_dentist').val('all');
-    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY")) + '</span>');
+    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + ' - ' + (moment(new Date()).format("DD MMM YYYY")) + '</span>');
     $('.external_clinic').show();
     $('.dentist_dropdown').show();
     $('.header_filters').removeClass('flex_direct_mar');
@@ -833,7 +833,7 @@ getFormattedDate(date) {
  loadDentist(newValue) {
   if(newValue =='')
     newValue='all';
-   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY")) + '</span>');
+   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + (moment(this.startDate).format("DD MMM YYYY")) + ' - ' + (moment(new Date()).format("DD MMM YYYY")) + '</span>');
   //this.getAccountingDentist();
   //this.getStatusDentist();
   this.changePrebookRate('recall');

@@ -79,14 +79,14 @@ export class FrontDeskComponent implements AfterViewInit {
         this.getClinics();
       this.initiate_clinic();
         
-      $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+(moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY"))+'</span>'); 
+      $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+(moment(this.startDate).format("DD MMM YYYY")) + ' - ' + (moment(new Date()).format("DD MMM YYYY"))+'</span>'); 
 
         
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
         $('.header_filters').removeClass('hide_header');
-        $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+(moment(this.startDate).format("DD MMM YYYY")) + '-' + (moment(new Date()).format("DD MMM YYYY"))+'</span>'); 
+        $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+(moment(this.startDate).format("DD MMM YYYY")) + ' - ' + (moment(new Date()).format("DD MMM YYYY"))+'</span>'); 
         $('.external_clinic').show();
         $('.external_dentist').show();
         $(document).on('click', function(e) {
