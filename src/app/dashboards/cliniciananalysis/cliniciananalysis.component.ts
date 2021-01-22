@@ -1203,7 +1203,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           this.productionTotal = Math.round(data.data.total);
          }
           this.productionTotalPrev = Math.round(data.total_ta);
-          this.productionTotalAverage= Math.round(data.total_average);
+          this.productionTotalAverage= Math.round(data.total);
           this.productionGoal = data.goals;
 
           if (this.productionTotal > this.productionTotalPrev){
@@ -1891,13 +1891,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartTreatmentDentistLoader = false;
         this.gaugeValueTreatmentP = 0;
         this.gaugeValueTreatmentC = 0;
-        this.gaugeValueTreatment = 0;
-        if (data.data != null) {
-          if (data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
-            this.gaugeValueTreatmentC = Math.round(data.data.plan_fee_completed[0].average_cost_completed);
-          if (data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
-            this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
-          this.gaugeLabelTreatment = (data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider || "");
+        this.gaugeValueTreatment =0;
+        if(data.data != null) {
+          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
+          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_cost_completed);
+          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
+          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
+           if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider != undefined)
+          this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider;
           this.planTotalAll = Math.round(data.total_all);
           this.planTotalCompleted = Math.round(data.total_completed);
           this.planTotal = this.planTotalAll;
