@@ -6,7 +6,7 @@
 				<h2>Total Production : ${{ production | number:'1.0-0' }}
 					<span class="uptrend" *ngIf="productionImp">
 						<img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>
-						+ ${{ productionImp | number:'1.0-0' }}
+						+${{ productionImp | number:'1.0-0' }}
 					</span>
 				</h2>
 				<p>Your current Total Production for the last 365 days is shown above. Adjust
@@ -64,7 +64,7 @@
 								class="dowan-trend" 
 								id="TotalDiscountsImprovement" 
 								style="float: none !important; font-size: 14px !important; color:#fff !important;">
-								+ ${{ discountsImp | number:'1.0-0' }}</span>
+								+${{ discountsImp | number:'1.0-0' }}</span>
 								<!-- <img src="../assets/images/uptrend-production.png" alt="uptrend-production"/><div class="ttl_value_left">- {{ recallRate.goal}}%</div>	 -->
 						  </div>
 						</div>
@@ -79,13 +79,13 @@
 						<div class="production_description oppertunity-description">
 						  <h4>Collection vs Production</h4>
 						  <div class="price-section oppertunity-discount">
-							<h2 class="right-lo-content" id="CollectionProduction">$ {{ collectionProduction | number:'1.0-0' }}</h2>
+							<h2 class="right-lo-content" id="CollectionProduction">${{ collectionProduction | number:'1.0-0' }}</h2>
 							<span 
 								*ngIf="collectionProductionImp"
 								class="dowan-trend" 
 								id="CollectionProductionImprovement" 
 								style="float: none !important; font-size: 14px !important; color:#fff !important;">
-								+ ${{ collectionProductionImp | number:'1.0-0' }}</span>
+								+${{ collectionProductionImp | number:'1.0-0' }}</span>
 						  </div>
 						</div>
 				</div>
@@ -105,7 +105,7 @@
 								class="dowan-trend" 
 								id="CaseAcceptanceImprovement" 
 								style="float: none !important; font-size: 14px !important; color:#fff !important;">
-								+ ${{ caseAcceptanceImp | number:'1.0-0' }}</span>
+								+${{ caseAcceptanceImp | number:'1.0-0' }}</span>
 						  </div>
 						</div>
 				</div>
