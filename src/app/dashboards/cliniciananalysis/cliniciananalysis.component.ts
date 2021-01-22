@@ -1751,6 +1751,7 @@ this.treatmentPreLabel = '';
           this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_cost_completed);
           if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
           this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
+           if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider != undefined)
           this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider;
           this.planTotalAll = Math.round(data.total_all);
           this.planTotalCompleted = Math.round(data.total_completed);
