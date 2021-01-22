@@ -395,10 +395,12 @@ this.preoceedureChartColors = [
             ticks: {
               userCallback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
-                     if (Math.floor(label) === label) {
-                         return "$"+label;
-                     }
-                 },
+                    if (Math.floor(label) === label) {
+                      let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
+                      currency = currency.split(/(?=(?:...)*$)/).join(',');
+                      return `${label < 0 ? '- $' : '$'}${currency}`;
+                    }
+                },
             }, 
             }],
         },legend: {
@@ -471,7 +473,9 @@ this.preoceedureChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
-          return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
+        let currency = tooltipItems.yLabel.toString();
+        currency = currency.split('-').join('').split(/(?=(?:...)*$)/).join(',');
+        return data.datasets[tooltipItems.datasetIndex].label + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;;
      },
      
   }
@@ -505,8 +509,9 @@ this.preoceedureChartColors = [
           userCallback: function (label, index, labels) {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              const currencyLabel = label>1000 ? label/1000 : label;
-              return "$ " + currencyLabel + "K";
+              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
+              currency = currency.split(/(?=(?:...)*$)/).join(',');
+              return `${label < 0 ? '- $' : '$'}${currency}`;
             }
           },
           autoSkip: false
@@ -556,10 +561,17 @@ this.preoceedureChartColors = [
           yAxes: [{ 
             stacked:false,
             ticks: {
-              userCallback: function(label, index, labels) {
+              callback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
-                         return "$" +label;
+                       let currency = label<0 ? label.toString().split('-').join('') : label.toString();
+                      //  if (currency.length > 3) {
+                      //    currency = currency.substring(0, 1) + 'K'
+                      //  } else{
+                          currency = currency.split(/(?=(?:...)*$)/).join(',');
+                      //  }
+                      
+                       return `${label<0 ? '- $' : '$'}${currency}`;
                      }
                  },
             }, 
@@ -576,7 +588,9 @@ this.preoceedureChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
-         return tooltipItems.xLabel + ": $" + tooltipItems.yLabel;
+        let currency = tooltipItems.yLabel;
+        currency = currency.toString().split('-').join('').split(/(?=(?:...)*$)/).join(',');
+        return tooltipItems.xLabel + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;
      },
        title: function(tooltipItem, data) {
           return;

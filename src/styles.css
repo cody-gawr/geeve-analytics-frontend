@@ -3470,6 +3470,13 @@ ul.download-sync-list {
   background-color: #ff6565;
 }
 
+.productionVisit .reading-block .reading-affix {
+    color: #444649;
+    opacity: 1;
+    font-size: 37px;
+    font-family: 'Gilroy-Bold';
+}
+
 .recall-retail-rate .ttl_value_left{
   
     color: #fff;
