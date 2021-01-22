@@ -3589,11 +3589,13 @@ ul.download-sync-list {
 .lost-header-background-remove{
     background-color: transparent !important;
     box-shadow: none !important;
+    padding: 0 !important;
 }
 
 .improvement-range{
     background-color: transparent !important;
     box-shadow: none !important;
+    padding: 0 !important;
     margin-top: 80px !important;
 }
 
@@ -3663,6 +3665,7 @@ ul.download-sync-list {
     background-color: #eeeef7 !important;
     border-radius: 10px !important;
     margin-top: 40px !important;
+    padding: 30px !important;
 }
 
 .oppertunity-background .mat-card-content{
@@ -3785,7 +3788,29 @@ ul.download-sync-list {
     font-family: "Gilroy-Bold";
 }
 
+@media(min-width:1200px) and (max-width:1869px){
+    .oppertunity-col {
+        flex: 0 0 31%;
+        max-width: 31%;
+    }
 
+    .opertunity-img img{
+        height: auto;
+    }
+
+    .header-section{
+        padding: 10px 30px 30px 30px;
+    }
+
+    .right-vector-img img{
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .second-col-margin {
+        margin: 0 29px;
+    }
+}
 
 @media(min-width:1200px) and (max-width:1500px){
     
@@ -3821,6 +3846,10 @@ ul.download-sync-list {
     .icon i, .icon span {
         line-height: 70px;
         font-size: 28px;
+    }
+
+    .dowan-trend {
+        margin-left: 9px;
     }
 
 }
@@ -3887,14 +3916,9 @@ ul.download-sync-list {
 
 .uptrend {
     padding: 11px 35px;
-    font-size: 14px;
-    color: #42fdac;
-    position: relative;
-    top: -5px;
     margin-left: 0;
     display: flex;
     height: 35px;
-    width: 100px;
     align-items: center;
     justify-content: center;
     margin-left:24px;
@@ -3938,16 +3962,21 @@ ul.download-sync-list {
 }
 
 .second-col-margin {
-    margin: 0 34px;
+    margin: 0 22px;
 }
 
 .oppertunity-col {
-    flex: 0 0 30%;
-    max-width: 30%;
+    flex: 0 0 31%;
+    max-width: 31%;
 }
 
 .opertunity-img img{
     height: auto;
+}
+
+.dowan-trend{
+    padding: 2px 5px;
+    margin-left:0;
 }
 
 
@@ -4001,6 +4030,8 @@ ul.download-sync-list {
         flex-flow: column;
         background:url("./assets/images/round-mobile.png");
         padding: 10px 15px 15px 15px;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
     
     .header-section .header-caption{
@@ -4028,7 +4059,7 @@ ul.download-sync-list {
         margin-left: 0;
         display: flex;
         height: 35px;
-        width: 100px;
+        width: 122px;
         align-items: center;
         justify-content: center;
         margin-left:24px;
@@ -4106,6 +4137,10 @@ ul.download-sync-list {
 
     .uptrend{
         margin-left:15px;
+    }
+
+    .oppertunity-description h4{
+        margin-bottom: 0;
     }
 
     /* .header-section{
