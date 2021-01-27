@@ -231,10 +231,12 @@ customOptions: OwlOptions = {
           this.visits_p = data.data.visits_p;
           this.visits_f = data.data.visits_f;
           this.utilisation_rate_f = Math.round(data.data.utilisation_rate_f);
-          this.options1 = {
-            ...this.options1,
-            arcDelimiters: [this.utilisation_rate_f]
-          };
+          if(this.utilisation_rate_f){
+            this.options1 = {
+              ...this.options1,
+              arcDelimiters: [this.utilisation_rate_f]
+            };
+          }
           this.unscheduled_production_f = data.data.unscheduled_production_f;
           this.profit_g = data.data.profit_g;          
           this.visits_g = data.data.visits_g;          
