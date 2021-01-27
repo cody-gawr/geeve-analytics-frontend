@@ -161,36 +161,40 @@
  </div>    
 </mat-step>
 <mat-step id="step3" [completed]="step3Completed" [editable]="step3editable">
- <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px">
+ <div fxLayout="row wrap" fxLayoutGap="30px Grid" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px">
    <div fxFlex="calc(40% - 15px)" fxFlex.md="calc(40% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box">
-    <form [formGroup]="inviteFormGroup">
+    <form [formGroup]="inviteFormGroup" class="sa_forms_design">
   <div class="intro_title">
       <h2>Invite your staff to <span>use Jeeve Analytics</span> </h2>
       <h4>Your account has full access to all Jeeve Analytics settings. Create a more limited role for your front desk staff. Each user requires a unique email address</h4>
 
     </div>
         <div formArrayName="itemRows">
-<div mat-dialog-content class="sa_forms_design invite_section" *ngFor="let itemrow of inviteFormGroup.controls.itemRows['controls']; let i=index"  [formGroupName]="i">
+<div mat-dialog-content class="sa_forms_design" *ngFor="let itemrow of inviteFormGroup.controls.itemRows['controls']; let i=index"  [formGroupName]="i">
  <div class="invite_row invite-setup-form-group">
-    <div class="sa-form-group">
-    <label>Display Name</label>
+  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+    <div fxFlex="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
+        <label>Display Name</label>
          <input tabindex="1" class="form-control" (keypress)="omit_special_char($event)" formControlName="display_name" placeholder="Display Name">
          <small *ngIf="itemrow.controls.display_name.touched && itemrow.controls.display_name.hasError('required')" class="text-danger support-text">Display Name is Required.</small>
     </div>
-    <div class="sa-form-group">
-    <label>Email</label>
-    <input tabindex="1" class="form-control" placeholder="Email" formControlName="email" (click)="abc(inviteFormGroup)">
-     <small *ngIf="itemrow.controls.email.errors?.email  && itemrow.controls.email.touched" class="text-danger support-text">You must include a valid email address.</small>
-    </div>
-   <div class="sa-form-group">
-    <label>User Type</label>
-      <select class="form-control" required="true" class="sa_select form-control" name="user_type"  formControlName="user_type">
-      <option value ="" selected>Select User Type</option>
-      <option value ="3">Receptionist</option>
-      <option value ="4">Manager</option>
-     </select> 
-     <small *ngIf="itemrow.controls.user_type.hasError('required') && itemrow.controls.user_type.touched" class="text-danger support-text">User Type is Required.</small>
-   </div> 
+  </div>
+  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+    <div fxFlex="calc(48% - 15px)" fxFlex.md="50" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
+      <label>Email</label>
+      <input tabindex="1" class="form-control" placeholder="Email" formControlName="email" (click)="abc(inviteFormGroup)">
+      <small *ngIf="itemrow.controls.email.errors?.email  && itemrow.controls.email.touched" class="text-danger support-text">You must include a valid email address.</small>
+      </div>
+      <div fxFlex="calc(48% - 15px)" fxFlex.md="50" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
+      <label>User Type</label>
+        <select class="form-control" required="true" class="sa_select form-control" name="user_type"  formControlName="user_type">
+        <option value ="" selected>Select User Type</option>
+        <option value ="3">Receptionist</option>
+        <option value ="4">Manager</option>
+      </select> 
+      <small *ngIf="itemrow.controls.user_type.hasError('required') && itemrow.controls.user_type.touched" class="text-danger support-text">User Type is Required.</small>
+    </div> 
+  </div>
    <div class="cross_icon">
     <a  *ngIf="inviteFormGroup.controls.itemRows.controls.length > 1" (click)="deleteRow(i)"><img src="assets/img/cross_icon.png" alt=" " /></a>
    </div>
@@ -202,11 +206,17 @@
 </div>
 
 <div class="add_another_sec" (click)="addNewRow()">
-<span _ngcontent-fuo-c19="" class="material-icons icon-image-preview circle_plus">add_circle_outline</span>
+<span _ngcontent-fuo-c19="" class="material-icons icon-image-preview circle_plus">add_circle</span>
 <span class="add_Another">Add Another</span>
 </div>
 </div>
-  </form>
+  <div class="order3">
+    <div class="text-center mt-2">
+      <Button class="setup-stepper-button" (click)="saveInvites()" [disabled]="!inviteFormGroup.valid">Continue</Button>
+      <button mat-button (click)="saveInvites()">Skip</button>
+    </div>
+  </div> 
+</form>
 </div>
 
    <div fxFlex="calc(50% - 15px)" fxFlex.md="calc(50% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
@@ -215,19 +225,14 @@
     </div>   
 </div>
 </div>
- <div class="order3">
-   <div class="skipwizard bottom_btns_page">
-  <button mat-raised-button color="green" (click)="saveInvites()" [disabled]="!inviteFormGroup.valid">Next</button>
-  <button mat-button (click)="saveInvites()">Skip</button>
-  </div>
- </div>
 </mat-step>
 
 <mat-step id="step4" [completed]="step4Completed" [editable]="step4editable">
    <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px" class="download-sync">
-   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
+   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box">
     <div class="intro_title">
-    <h2>Download PMS to <span>sync</span></h2>
+      <h2>Download PMS to <span>sync</span></h2>
+    </div>
 <ul class="download-sync-list">
   <li><span>Download Sync Utility.</span></li>
   <li><span>Login to the desktop application using analytics credentials.</span></li>
@@ -235,11 +240,11 @@
   <li><span>Start Sync</span></li>
 </ul>
 
-     <div class="skipwizard bottom_btns_page">
+     <div class="skipwizard text-center">
    <a>
-       <button mat-raised-button color="green" (click)="downloadPMS()">Download Sync Utility</button>
+       <button class="setup-stepper-button" (click)="downloadPMS()"><i class="fas fa-cloud-download-alt"></i> Download Sync Utility</button>
      </a>
-  </div>
+  
    </div>
    </div>
  <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
@@ -255,20 +260,23 @@
 
 <mat-step  id="step5" [completed]="step5Completed" [editable]="step5editable">
    <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px" class="">
-   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
-    
+   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box">
+    <div fxLayout="column" fxLayoutAlign="center center" class="h-full">
     <div class="downloading-wrap">
     <!--<div class="bounceball"></div>
     <div class="text-loading">Data Synchronizing...</div>-->
-    <div class="text-loading">Data Synchronizing  <div class="dots-loading-main"><div class="dots-loading">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="shadow"></div>
-        <div class="shadow"></div>
-        <div class="shadow"></div>
+    <div class="intro_title">
+      <h2 class="text-loading">Data <span>Synchronizing</span>  
+        <div class="dots-loading-main"><div class="dots-loading">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="shadow"></div>
+          <div class="shadow"></div>
+          <div class="shadow"></div>
+      </div>
     </div>
-  </div>
+    </h2>
 </div>
     <ul>
     <li class="not-start" *ngIf="!reportsStatusInfo">We are collecting data.</li>
@@ -301,12 +309,12 @@
 </div>
 
 
-  <div class="skipwizard bottom_btns_page again-download-btn">
+  <!-- <div class="skipwizard bottom_btns_page again-download-btn">
    <a class="text-left">
        <button mat-raised-button color="green" *ngIf="reportsStatus.length <= 0" (click)="downloadPMSAgain()">Download Sync Utility</button>
      </a>
+  </div> -->
   </div>
-
    </div>
  <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
      <div class="right-img">

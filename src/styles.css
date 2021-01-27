@@ -41,7 +41,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
+.h-full {height: 100%;}
 .mat-sidenav { color: #fff!important; font-size: 13px!important; border: none!important;  
     background: rgb(24,166,137); /* Old browsers */
     background: -moz-linear-gradient(top,  rgba(24,166,137,1) 0%, rgba(0,111,115,1) 99%); /* FF3.6-15 */
@@ -1674,7 +1674,7 @@ img { max-width: 100%; max-height: 100%; }
     padding-bottom: 5px;
     padding-top: 0px;
     width: 100%;
-    font-weight: 400;
+    font-family: 'Gilroy-Medium';
     display: block;
     font-size: 14px;
 }
@@ -2114,7 +2114,7 @@ body .mat-gray {
 
 
 .stepper_innner {top: 0px;background: #fff;border-radius: 20px;position: relative;
-    min-height: -webkit-fit-content;min-height: 530px;left: 0px;width: 100%;display: inline-table;margin-bottom: 25px;}
+    min-height: -webkit-fit-content; min-height: calc(100vh - 92px); min-height: -moz-calc(100vh - 92px); min-height: -webkit-calc(100vh - 92px);left: 0px;width: 100%;display: inline-table;}
 
 .stepper_innner .half-bg {
     height: 100%;
@@ -2212,9 +2212,9 @@ body .mat-gray {
 }
 .stepper_content .intro_title h2 {
     font-size: 35px;
-    font-family: 'Gilroy-Medium';
+    font-family: 'Gilroy-Bold';
     font-weight: 800;
-    color: #1d2a49;
+    color: #333333;
     line-height: 1.1;
     margin-top: 0px;
     margin-bottom: 0;
@@ -2237,9 +2237,10 @@ body .mat-gray {
     font-family: 'Gilroy-Medium';
 }
 .stepper_content .intro_title h4 {
-    color: #263a5b;
+    color: #777777;
     font-size: 22px !important;
     line-height: 31px;
+    font-family: 'Gilroy-Medium';
     margin-top: 25px;
 }
 .sa_forms_design.mat-dialog-content {
@@ -2248,7 +2249,8 @@ body .mat-gray {
 .stepper_content .sa-form-group {
     margin-bottom: 25px;
 }
-.stepper_content .sa_forms_design input {
+.stepper_content .sa_forms_design input,
+.stepper_content .sa_forms_design select {
     font-size: 14px;
     height: 43px;
     border: 2px solid #b4d6d6;
@@ -2348,6 +2350,9 @@ body .mat-gray {
     font-size: 14px;
     text-transform: uppercase;
 }
+.setup-stepper-button i {
+    margin-right: 5px;
+}
 
 .stepper_content .comman_input input {
     padding-left: 55px;
@@ -2405,10 +2410,7 @@ body .mat-gray {
 }
 .stepper_content .mat-button {
     background: #e8e9ec;
-    font-size: 22px;
     color: #828282;
-    padding: 10px 40px;
-    border-radius: 45px;
     margin-left: 20px;
 }
 
@@ -2437,7 +2439,7 @@ body .mat-gray {
     float: left;
     width: 100%;
     padding-bottom: 0px;
-    padding-right: 15px;
+    padding-top: 5px;
 }
 
 .stepper_content .invite_section .sa-form-group {
@@ -2465,13 +2467,18 @@ body .mat-gray {
     position: absolute;
     right: 0;
     cursor: pointer;
-    top: 35px;
+    top: 0px;
+}
+.invite-setup-form-group .cross_icon img {
+    max-width: 20px;
 }
 .stepper_content .circle_plus {
     position: relative;
     top: 6px;
     margin-right: 9px;
+    color: #7f7f7f;
     cursor: pointer;
+    font-size: 22px;
 }
 .stepper_content span.add_Another {
     cursor: pointer;
@@ -2512,36 +2519,50 @@ body .mat-gray {
 .mat-dialog-title{position: relative;}
 
 ul.download-sync-list {
-    padding: 0;
-    margin-top: 30px !important;
-    max-width: 450px;
+    padding: 30px 0;
 }
 .download-sync-list li {
     background-size: auto;
     position: relative;
-    padding-left: 120px;
+    padding-top: 30px;
     align-items: center;
     font-size: 16px;
+    margin-bottom: 30px;
     display: flex;
     font-weight: 500;
-    padding-right: 20px;
+    margin-top: 20px;
     list-style: none;
+    font-family: 'Gilroy-Regular';
     background-repeat: no-repeat;
     background-position: left top;
 }
-
+.download-sync-list {
+    counter-reset: step;
+}
 .download-sync-list li::before {
     position: absolute;
-    content: "step";
-    transform: rotate(-90deg);
-    left: 80px;
+    content: "Step " counter(step);
+    left: 0px;
+    top: 0;
+    font-family: 'Gilroy-Bold';
     color: #18a689;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: 13px;
-    font-weight: 500;
+    counter-increment: step;
+    font-size: 14px;
+    z-index: 1;
+    padding-right: 10px;
+    background-color: #fff;
 }
-.download-sync-list li:nth-last-child(4) {
+.download-sync-list li::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 9px;
+    border-top: 1px solid #f6f6f6;
+    z-index: 0;
+}
+/* .download-sync-list li:nth-last-child(4) {
     background-image: url(assets/images/1step.png);
     padding-top: 15px;
     padding-bottom: 7px;
@@ -2564,9 +2585,9 @@ padding-top: 0px;
 padding-top: 0px;
     padding-bottom: 40px;
     height: 117px;
-}
+} */
 
-.download-sync-list li:nth-last-child(4)::before {
+/* .download-sync-list li:nth-last-child(4)::before {
     top: 42px;
 }
 .download-sync-list li:nth-last-child(3)::before {
@@ -2577,7 +2598,7 @@ padding-top: 0px;
 }
 .download-sync-list li:nth-last-child(1)::before {
 top: 29px;
-}
+} */
 .stepper_content .download-sync .bottom_btns_page {
     float: left;
     margin-top: 20px;
@@ -2663,18 +2684,18 @@ top: 29px;
 }
 .dots-loading{
     width:70px;
-    height:50px;
+    height:35px;
     position: absolute;
     left:50%;
     top:50%;
     transform: translate(-50%, -50%);
 }
 .circle{
-    width:12px;
-    height:12px;
+    width:6px;
+    height:6px;
     position: absolute;
     border-radius: 50%;
-    background-color: #2f3d4a;
+    background-color: #18a689;
     left:15%;
     transform-origin: 50%;
     animation: circle .9s alternate infinite ease;
@@ -2682,14 +2703,9 @@ top: 29px;
 
 @keyframes circle{
     0%{
-        top:20px;
-        height:5px;
-        border-radius: 50px 50px 25px 25px;
-        transform: scaleX(0.7);
+        top:10px;
     }
     40%{
-        height:10px;
-        border-radius: 50%;
         transform: scaleX(1);
     }
     100%{
@@ -2770,7 +2786,7 @@ top: 29px;
 
 
 .downloading-wrap ul {
-    padding: 0px 0 0 22px;
+    padding: 0px;
 }
 .downloading-wrap ul li {
     list-style: none;
