@@ -4,7 +4,8 @@ import { MarketingService } from './marketing.service';
 import { FinancesService } from '../finances/finances.service';
 import { DentistService } from '../../dentist/dentist.service';
 import * as frLocale from 'date-fns/locale/fr';
-import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import {
   FormControl,
   FormGroupDirective,
@@ -24,6 +25,11 @@ import {MenuItem} from 'primeng/api';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';/**/
+import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { ChartService } from '../chart.service';
+
 export interface Dentist {
   providerId: string;
   name: string;
@@ -34,6 +40,7 @@ export interface Dentist {
 })
 export class MarketingComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas2: ElementRef;
+    @ViewChild("revenueRefChart") revenueRefChart: BaseChartDirective;
   closeResult: string;
   lineChartColors;
   predictedChartColors;
@@ -45,9 +52,29 @@ export class MarketingComponent implements AfterViewInit {
   public trendText;
   public filteredCountriesMultiple: any[];
   public selectedCategories:any[] =[];
+  public newPatientsReferral$ = new BehaviorSubject<number>(0);
+  revenueByReferralCount$ = new BehaviorSubject<number>(0);
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  constructor(private toastr: ToastrService,private marketingService: MarketingService, private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,public ngxSmartModalService: NgxSmartModalService){
+  pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  revenuePluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+  public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
+
+  constructor(
+    private toastr: ToastrService,
+    private marketingService: MarketingService, 
+    private financesService: FinancesService, 
+    private dentistService: DentistService, 
+    private datePipe: DatePipe, 
+    private route: ActivatedRoute,  
+    private headerService: HeaderService,
+    private _cookieService: CookieService, 
+    private router: Router,
+    public ngxSmartModalService: NgxSmartModalService,
+    public decimalPipe: DecimalPipe,
+    private chartService: ChartService
+  ){
   }
   private warningMessage: string; 
   private myTemplate: any = "";
@@ -77,6 +104,22 @@ export class MarketingComponent implements AfterViewInit {
    }
   }
   ngAfterViewInit() {
+    // plugin observable for the center text in doughnut chart to subscribe the no patients count
+    this.pluginObservable$ = this.newPatientsReferral$.pipe(
+      takeUntil(this.destroyed$),
+      map((productionCount) => {
+        return this.chartService.beforeDrawChart(productionCount)
+      })
+    );
+
+    this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
+      takeUntil(this.destroyed$),
+      map((revenueCount) => {
+        return this.chartService.beforeDrawChart(revenueCount, true)
+      })
+    );
+    // end of plugin observable logic
+
       $('#currentDentist').attr('did','all');
       this.checkPermission('dashboard4');
  this.route.params.subscribe(params => {
@@ -90,7 +133,7 @@ export class MarketingComponent implements AfterViewInit {
         $('.dentist_dropdown').hide();
         $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
-  $('#title').html('Marketing ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');        
+  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.startDate + ' - ' + this.endDate +'</span>');        
         
         // $('.external_clinic').show();
         // $('.external_dentist').show();
@@ -217,21 +260,24 @@ this.preoceedureChartColors = [
         tooltip.displayColors = false;
       },
   callbacks: {
-     label: function(tooltipItems, data) { 
-          return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
+     label: (tooltipItems, data) => { 
+          return tooltipItems.xLabel+": "+ this.decimalPipe.transform(tooltipItems.yLabel);
      },
+     title: function() {
+       return '';
+     }
      
   }
 },
   };
 
   public stackedChartColors: Array<any> = [
-    { backgroundColor: '#07BEB8' },
+    { backgroundColor: '#119682' },
     { backgroundColor: '#6BE6EF' },
     { backgroundColor: '#68D8D6' },
     { backgroundColor: '#3DCCC7' },
     { backgroundColor: '#68FFF9' },
-    { backgroundColor: '#07BEB8' }
+    { backgroundColor: '#119682' }
   ];
   public stackedChartType = 'bar';
   public stackedChartLegend = true;
@@ -297,7 +343,8 @@ this.preoceedureChartColors = [
   public  gaugeValue = '';
   public  gaugeLabel = "";
   public  gaugeThick = "20";
-  public  foregroundColor= "rgba(0, 150, 136,0.7)";
+  public foregroundColor = "#4ccfae";
+  public backgroundColor = '#f4f0fa';
   public  cap= "round";
   public  size = "250"
   public gaugePrependText ='$';
@@ -307,13 +354,79 @@ this.preoceedureChartColors = [
   public selectedDentist;
   public dentists;
   public pieChartType = 'doughnut';
-    public pieChartOptions: any = {
+  public pieChartColors = [
+    {
+      backgroundColor: [
+        '#6edbbb',
+        '#b0fffa',
+        '#abb3ff',
+        '#ffb4b5',
+        '#fffcac',
+        '#D7F8EF',
+        '#FEEFB8'
+      ]
+    }
+  ]
+
+  public totalRevenueByReferral = '$ 0';
+  public totalNewPatientsReferral = 0;
+
+
+  public noNewPatientsByReferralChartOptions: any = {
     responsive: true,
     maintainAspectRatio: false,
+    tooltips: {
+      callbacks: {
+        label: (tooltipItem, data) => {
+          return data.labels[tooltipItem.index] + ": " + this.decimalPipe.transform(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
+        }
+      }
+    },
     legend: {
-            display: true,
-            position:'right'
-         }
+      display: true,
+      position: 'bottom',
+      labels: {
+        usePointStyle: true,
+        padding: 20
+      },
+      onClick: function(e) {
+        e.stopPropagation();
+      }
+    },
+    
+    elements: {
+      center: {
+        text: ''
+      }
+    }
+  };
+
+  public pieChartOptions: any = {
+    responsive: true,
+    maintainAspectRatio: false,
+    tooltips: {
+      callbacks: {
+        label: (tooltipItem, data) => {
+          return data.labels[tooltipItem.index] + ": $ " + this.decimalPipe.transform(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
+        }
+      }
+    },
+    legend: {
+      display: true,
+      position: 'bottom',
+      labels: {
+        usePointStyle: true,
+        padding: 20
+      },
+      onClick: function (e) {
+        e.stopPropagation();
+      }
+    },
+    elements: {
+      center: {
+        text: ''
+      }
+    }
   };
     myDateParser(dateStr : string) : string {
     // 2018-01-01T12:12:12.123456; - converting valid date format like this
@@ -327,7 +440,7 @@ this.preoceedureChartColors = [
     return validDate
   }
   loadDentist(newValue) {
-  $('#title').html('Marketing ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');        
+  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.startDate + ' - ' + this.endDate +'</span>');        
 
     if(newValue == 'all') {
       this.mkNewPatientsByReferral();
@@ -357,6 +470,9 @@ public mkNewPatientsByReferralLoader:any;
     var clinic_id;
   this.marketingService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
+      this.totalNewPatientsReferral = Math.round(data.total);
+         this.newPatientsReferral$.next(this.totalNewPatientsReferral)
+      // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
     this.mkNewPatientsByReferralLoader = false;
             this.newPatientsTimeData1 =[];
             this.newPatientsTimeLabelsl2 =[];
@@ -429,6 +545,13 @@ public mkRevenueByReferralLoader:any;
   this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.mkRevenueByReferralLoader = false;
+        this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(data.total || 0));
+         this.revenueByReferralCount$.next(Math.round(data.total || 0));
+        // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
+        if (this.revenueRefChart) {
+         this.revenueRefChart.ngOnDestroy();
+         this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
+        }
             this.revenueReferralData1 =[];
             this.revenueReferralLabelsl2 =[];
             this.revenueReferralLabels1 =[];
@@ -614,12 +737,12 @@ public currentText;
 
        var first = now.getDate() - day +1;
        var last = first + 6; 
-       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd-MM-yyyy');
+       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd MMM yyyy');
        var end = new Date();
         end.setFullYear(now.getFullYear());
         end.setMonth(now.getMonth()+1);
         end.setDate(last);
-       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
+       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd MMM yyyy');
        this.duration='w';
         this.loadDentist('all');
     }
@@ -629,11 +752,21 @@ public currentText;
 
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
       this.duration='m';
             this.loadDentist('all');
         
+    }
+    else if (duration == 'lm') {
+      this.trendText = 'Previous Month';
+      this.currentText = 'Last Month';
+
+      const date = new Date();
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd MMM yyyy');
+      this.duration='lm';
+      this.loadDentist('all');  
     }
     else if (duration == 'q') {
       this.trendText= 'Last Quarter';
@@ -644,20 +777,25 @@ public currentText;
       var cmonth = now.getMonth()+1;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy')
+        ;
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); 
+      }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy'); 
+      }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  }
-        this.duration='q';
-            this.loadDentist('all');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd MMM yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd MMM yyyy');  
+      }
+      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.duration='q';
+      this.loadDentist('all');
     
     }
     else if (duration == 'lq') {
@@ -670,18 +808,18 @@ public currentText;
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd MMM yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');  }
         this.duration='lq';
             this.loadDentist('all');
    
@@ -692,8 +830,8 @@ public currentText;
 
 
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
       this.duration='cytd';
       this.loadDentist('all');
     }
@@ -704,11 +842,11 @@ public currentText;
 
      var date = new Date();
       if ((date.getMonth() + 1) <= 3) {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd MMM yyyy');
         } else {
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd MMM yyyy');
     }
-      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
       this.duration='fytd';
       this.loadDentist('all');
     }
@@ -721,7 +859,7 @@ public currentText;
     }
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
       
 
   }
@@ -733,10 +871,10 @@ choosedDate(val) {
      var date1:any= new Date(val[0]);
       var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
 if(diffTime<=365){
-this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
+this.startDate = this.datePipe.transform(val[0], 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(val[1], 'dd MMM yyyy');
       this.loadDentist('all');      
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
    }
    else {
@@ -754,18 +892,18 @@ toggleFilter(val) {
     $('.target_'+val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
     var date = new Date();
-    this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+    this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
     if(val == 'current') {
      this.toggleChecked = true;
      this.trendValue = 'c';
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, date.getMonth(), 1), 'dd-MM-yyyy');
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, date.getMonth(), 1), 'dd MMM yyyy');
 
      this.toggleChangeProcess();
     }
     else if(val == 'historic') {
        this.toggleChecked = true;
        this.trendValue = 'h';
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-10, date.getMonth(), 1), 'dd-MM-yyyy');
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-10, date.getMonth(), 1), 'dd MMM yyyy');
 
        this.toggleChangeProcess();
     }
@@ -916,12 +1054,11 @@ public barChartOptions: any = {
           yAxes: [{  
             ticks: {
              suggestedMin:0,
-              userCallback: function(label, index, labels) {
+              userCallback: (label, index, labels)=> {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
-                         return '$'+label;
+                         return '$'+this.decimalPipe.transform(label);
                      }
-
                  },
             }, 
             }],
@@ -934,9 +1071,12 @@ public barChartOptions: any = {
         tooltip.displayColors = false;
       },
   callbacks: {
-     label: function(tooltipItems, data) { 
-          return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
+     label: (tooltipItems, data) => { 
+          return tooltipItems.xLabel+": $"+ this.decimalPipe.transform(tooltipItems.yLabel);
      },
+     title: function() {
+       return '';
+     }
      
   }
 },

@@ -42,6 +42,8 @@ export class ClinicService {
     const formData = new FormData();
 
     formData.append('id', clinic_id);
+     formData.append('user_id', this._cookieService.get("userid"));
+    
     var header = this.getHeaders();
         return this.http.post(this.apiUrl +"/Practices/delete", formData, { headers: header })
         .pipe(map((response: Response) => {

@@ -1,0 +1,38 @@
+.sa_matcard_content {
+  position: relative;
+  .info-button {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    img {
+        width: 15px;
+    }
+  }
+ 
+  .total-dicount-title {
+    justify-content: start; 
+    .title {
+      flex-grow: 1;
+    } 
+  }
+
+  .chart-spacing {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    padding-right: 32px;
+  }
+
+  .clinician-center-chart {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    justify-content: center;
+  }
+}
+
+.w-100 {
+  width: 100%;
+}

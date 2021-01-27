@@ -7,7 +7,7 @@
     </div>
 
     <div class="sa_sidebar_usersec">
-        <div class="suer_image_sidebar"><img src="{{user_image}}"></div>
+        <div class="suer_image_sidebar"><span><img src="{{user_image}}"></span></div>
         <div class="suer_text_sidebar">{{display_name | uppercase}}</div>
 
     </div>
@@ -100,7 +100,7 @@
         </a>
         <mat-nav-list class="sub-item" *ngIf="menuitem.type === 'sub-child' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5">
             <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="selected">
-                <a [routerLink]="['/', childitem.state ]" *ngIf="childitem.type === 'link' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5" class="relative"
+                <a [routerLink]="['/', childitem.state ]" *ngIf="childitem.type === 'link'  && childitem.role.indexOf(user_type) !== -1 && login_status != 5" class="relative"
                     routerLinkActive="selected"><i class="{{childitem.icon}}"></i>{{ childitem.name}}</a>
             </mat-list-item>
             <mat-list-item *ngFor="let childitem of menuitem.children">

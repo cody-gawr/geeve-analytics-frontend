@@ -29,7 +29,7 @@ declare var Chart: any;
 })
 export class HealthScreenComponent implements AfterViewInit {
    @ViewChild("myCanvas") canvas: ElementRef;
-
+  mockupColors = ['#6edbbb', '#ffd32d', '#abb3ff', '#b0fffa', '#ffb4b5'];
 customOptions: OwlOptions = {
     loop: true,
     mouseDrag: false,
@@ -74,21 +74,22 @@ customOptions: OwlOptions = {
   public bottomLabel = '65';
   public childid;
   public user_type;
-  public options = {
+  public options: any = {
       hasNeedle: false,
-      arcColors: ['rgba(0, 164, 137,0.8)','rgba(0, 164, 137,0.8)','rgba(0, 164, 137,0.8)'],
+      arcColors: ['rgba(166, 178, 255, 1)', 'rgba(166, 178, 255, 0.8)'],
       thick: 15,
-      foregroundColor: "#ff7586",   
-      backgroundColor: "#e2e2e2",
       size: 251,
-      cap: 'round',
-
-    
+      cap: 'round',    
+  };
+  public options1: any = {
+    arcColors: ['#fff0bb', '#fffae7'],
+    hasNeedle: false,
+    needleUpdateSpeed: 1000,
+    needleStartValue: 0,
   }
   public optionsunscheduled = {
-      hasNeedle: false,
-      arcColors: ['rgba(80,167,232)','rgba(0, 164, 137,0.7)','rgba(0, 164, 137,0.7)'],
-
+    hasNeedle: false,
+    arcColors: ['rgba(255, 195, 194, 1)', 'rgba(255, 195, 194, 0.8)' ],
   }
   public selectedDentist;
   public dentists;
@@ -102,7 +103,7 @@ customOptions: OwlOptions = {
 
       
  //   $('.external_dentist').val('all');
-    $('#title').html('Health Check Screen');
+    $('#title').html('Clinic Health');
        $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').removeClass('hide_header');
@@ -139,10 +140,15 @@ customOptions: OwlOptions = {
     this.loadHealthScreen();
   }
   }
+
+  getShortName(fullName: string) {
+    return fullName.split(' ').map(n => n[0]).join('');
+  }
+
   public loadHealthScreen() {
        var date = new Date();
-     this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth()-1, 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'yyyy-MM-dd');
+     this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
+      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
          this.healthCheckStats();
         this.hourlyRateChart();
         this.mkNewPatientsByReferral();
@@ -225,8 +231,13 @@ customOptions: OwlOptions = {
           this.visits_p = data.data.visits_p;
           this.visits_f = data.data.visits_f;
           this.utilisation_rate_f = Math.round(data.data.utilisation_rate_f);
+          if(this.utilisation_rate_f){
+            this.options1 = {
+              ...this.options1,
+              arcDelimiters: [this.utilisation_rate_f]
+            };
+          }
           this.unscheduled_production_f = data.data.unscheduled_production_f;
-
           this.profit_g = data.data.profit_g;          
           this.visits_g = data.data.visits_g;          
           this.production_g = data.data.production_g;          
@@ -274,6 +285,7 @@ public hourlyRateChartLabels;
 public hourlyRateChartClinic;
 public hourlyRateChartInitials =[];
 public maxHourlyRate =0 ;
+public hourlyRateColors = [];
  private hourlyRateChart() {
     this.hourlyRateChartLoader = true;
     this.hourlyRateChartLabels = [];
@@ -281,19 +293,23 @@ public maxHourlyRate =0 ;
     this.hourlyRateChartClinic=[];
     this.hourlyRateChartData =[];
     this.maxHourlyRate=0;
+    let colorCount = 0;
     this.healthscreenService.hourlyRateChart(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
          data.data.forEach(res => {
           this.hourlyRateChartData.push(Math.abs(res.hourlyRate).toFixed(1));
           var name = res.provider;
           var clinic = res.clinic;
-
+          if(colorCount>=this.mockupColors.length){
+            colorCount = 0; // reset color count
+          }
           var initials = name.match(/\b\w/g) || [];
           initials = ((initials[initials.length-2] || '') + (initials.pop() || '')).toUpperCase();
            this.hourlyRateChartInitials.push(initials);
            this.hourlyRateChartLabels.push(name);
            this.hourlyRateChartClinic.push(clinic);
-
+          this.hourlyRateColors.push(this.mockupColors[colorCount]);
+          colorCount++;
          });
          if(this.hourlyRateChartData.length >0)
          this.maxHourlyRate = Math.max(...this.hourlyRateChartData);
@@ -315,6 +331,7 @@ public maxHourlyRate =0 ;
     public newPatientsTimeLabels = [];  
     public newPatientsTimeLabels1 = [];
     public newPatientsTimeData1 : number[] = [];
+  public newPatientsTimeColors = [];
     public newPatientsTimeLabelsl2 = [];  
     public mkNewPatientsByReferralLoader:any;
 public maxNewPatients =0;
@@ -337,6 +354,10 @@ public newPatientsTimeClinic=[];
             this.newPatientsTimeLabels1 =[];
             if(data.data.patients_reftype.length >0) {
               var i=0;
+              let colorCount = 0;
+              if(colorCount>= this.mockupColors.length){
+                colorCount = 0
+              }
               if(this.clinic_id =='all')
                 var limit=5;
               else
@@ -346,6 +367,8 @@ public newPatientsTimeClinic=[];
                this.newPatientsTimeData.push(res.patients_visits);
                this.newPatientsTimeLabels.push(res.reftype_name);
            this.newPatientsTimeClinic.push(res.clinic);
+                  this.newPatientsTimeColors.push(this.mockupColors[colorCount]);
+                  colorCount++;
                 i++;
               }
              });

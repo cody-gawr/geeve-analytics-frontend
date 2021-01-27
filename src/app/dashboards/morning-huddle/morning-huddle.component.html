@@ -6,9 +6,9 @@
   <mat-tab label="Dentist Performance">
     <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
       <div class="morning-huddle-date">
-        <mat-form-field>
-          <mat-label>Previous Days</mat-label>
-          <mat-select (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
+        <mat-form-field floatLabel="never">
+          <!-- <mat-label>Previous Days</mat-label> -->
+          <mat-select  placeholder="Previous Days" (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
             <mat-option [value]="1">1</mat-option>
             <mat-option [value]="2">2</mat-option>
             <mat-option [value]="3">3</mat-option>
@@ -25,20 +25,39 @@
     <!-- Top Cards -->
     <div>
 
-      <div class="sa_dentist_graphs_area sa_profit_bar dentist-performance">
+      <div class="sa_dentist_graphs_area sa_profit_bar dentist-performance custom-row">
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard" [ngClass]="production.goal > production.total? 'mh-matcard-down' : 'mh-matcard-up'">
+          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard custom_production_match" [ngClass]="production.goal > production.total? 'mh-matcard-down' : 'mh-matcard-up'">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><span class="material-icons">room_preferences</span></div>
+                <!-- <div class="card-icon"><span class="material-icons">room_preferences</span></div> -->
                 <mat-card-title class="">
-                   <div class="ttl_value">${{ production.total}}</div>
-                <!-- <div class="ttl_value_left">$ {{ production.goal}}</div> -->
-                  Production
+
+                  <div class="prodction_main_box">
+                    <div class="production_images">
+                      <img src="../assets/images/product-chart.png" alt="product-chart" /> 
+                    </div>
+                    <div class="production_description">
+                      <h4>Production</h4>
+                      <div class="price-section" *ngIf="production">
+                        <span class="change_value">${{ production.total | number:'1.0-0'}}</span>
+                        <div
+                         [ngClass]="(production.total > production.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
+                          >Goal: ${{  (production.goal || 0) | number:'1.0-0'}}
+                        </div>                       
+                        <img *ngIf="production.total > production.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                        <img *ngIf="production.total < production.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                      </div>
+                    </div>
+                  </div>
+
+                  
+                
+                  
                 </mat-card-title>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" >
+            <!-- <div class="graph_image" >
               <div class="change_value">
                     <span class="range_icon" *ngIf="production.goal < production.total">
                       <i class="fa fa-plus"></i>
@@ -47,23 +66,48 @@
                       <i class="fa fa-minus"></i>
                     </span>${{ getdifference(production.total,production.goal) }}
                   </div>
-              </div>
+            </div> -->
           </div>
 
-          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard" [ngClass]="recallRate.goal > recallRate.rate? 'mh-matcard-down' : 'mh-matcard-up'" >
-            <mat-card  class="treatmentPlan sa_hccard">
+          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard custom_rebook_recall_rate" [ngClass]="recallRate.goal > recallRate.rate? 'mh-matcard-down' : 'mh-matcard-up'" >
+            <mat-card  class="treatmentPlan sa_hccard"> 
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fab fa-rev"></i></div>
+                <!-- <div class="card-icon"><i class="fab fa-rev"></i></div> -->
                 <mat-card-title class="text-center">
-                  <div class="ttl_value">{{ recallRate.rate}}%</div>
+
+                  <div class="prodction_main_box">
+                    <div class="production_images">
+                      <img src="../assets/images/profit.png" alt="product-chart" /> 
+                    </div>
+                    <div class="production_description">
+                      <h4>Rebook Recall Rate</h4>
+                      <div class="recall-retail-rate" *ngIf="recallRate">
+                        <span class="change_value">{{ recallRate.rate }}%</span>
+                        <!-- <div class="ttl_value_left">Goal: {{ recallRate.goal}}%</div> -->
+                        <div class="ttl_value_left profit" *ngIf="!recallRate.goal">0%</div>
+                        <div
+                          [ngClass]="(recallRate.rate > recallRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
+                          *ngIf="recallRate.goal">
+                          Goal: {{ recallRate.goal }}%                     
+                        </div>
+                        <img *ngIf="recallRate.rate > recallRate.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                        <img *ngIf="recallRate.rate < recallRate.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                      </div>
+                    </div>
+                  </div>
+
+
+                  
                 <!--  <img class="trend_ico" src="../assets/images/trend_up.png" *ngIf="recallRate.goal < recallRate.rate">
                    <img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="recallRate.goal > recallRate.rate"> -->
-                   Rebook Recall Rate
-                </mat-card-title>
-                <!-- <div class="ttl_value_left">{{ recallRate.goal}}%</div> -->
+                  
+                  
+
+              </mat-card-title>
+
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" >
+            <!-- <div class="graph_image" >
               <div class="change_value">
                     <span class="range_icon" *ngIf="recallRate.goal < recallRate.rate">
                       <i class="fa fa-plus"></i>
@@ -76,20 +120,39 @@
                       {{ getdifference(recallRate.rate,recallRate.goal) }}%                     
                     </span>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard" [ngClass]="treatmentRate.goal > treatmentRate.total ? 'mh-matcard-down' : 'mh-matcard-up'" >
             <mat-card  class="noPatients sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><span class="material-icons">medical_services</span></div>
+                <!-- <div class="card-icon"><span class="material-icons">medical_services</span></div> -->
                 <mat-card-title class="text-center">
-                <div class="ttl_value">{{ treatmentRate.total}}%</div>
-                  Rebook Treatment Rate
+                  <div class="prodction_main_box">
+                    <div class="production_images">
+                      <img src="../assets/images/product-chart.png" alt="product-chart" /> 
+                    </div>
+                    <div class="production_description">
+                      <h4>Rebook Treatment Rate</h4>
+                      <div class="price-section" *ngIf="treatmentRate">
+                          
+                          <span class="change_value">{{ treatmentRate.total}}%</span>
+                          <div class="ttl_value_left profit" *ngIf="!treatmentRate.goal">Goal: 0%</div>
+                          <div 
+                            [ngClass]="(treatmentRate.rate > treatmentRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
+                            *ngIf="treatmentRate.goal">
+                            Goal: {{  treatmentRate.goal }}%                     
+                          </div>
+                          <img *ngIf="treatmentRate.total > treatmentRate.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                          <img *ngIf="treatmentRate.total < treatmentRate.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                      </div>
+                    </div>
+                  </div>
+                  
                 </mat-card-title>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" >
+            <!-- <div class="graph_image" >
               <div class="change_value">
                     <span class="range_icon" *ngIf="treatmentRate.goal < treatmentRate.total">
                       <i class="fa fa-plus"></i>
@@ -102,7 +165,7 @@
                         {{ getdifference(treatmentRate.total, treatmentRate.goal) }}%                     
                     </span>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>                                                                                                        
       </div>
@@ -115,61 +178,71 @@
 <div class="card-loading d-none">
   <img class="tableLoader" src="../../assets/images/loader.gif">
 </div>
-<table mat-table [dataSource]="dentistList" class="mat-elevation-z8">
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef> No. </th>
-    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+<div class="respopnsive-table-set">
+  <table mat-table [dataSource]="dentistList" class="mat-elevation-z8">
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="production">
+      <th mat-header-cell *matHeaderCellDef> Production Total </th>
+      <td mat-cell *matCellDef="let element"> 
+        <span [ngClass] = "(element.production.total >= element.production.goal)? 'mht-value-up' : 'mht-value-down'">
+          ${{ element.production.total | number:'1.0-0' }} 
+        </span>
+      <span class="goal custom_goal">Goal: ${{ element.production.goal | number:'1.0-0' }}</span> </td>
+    </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="recall">
+      <th mat-header-cell *matHeaderCellDef> Recall Rate </th>
+      <td mat-cell *matCellDef="let element"> <span [ngClass] = "(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}}% </span>
+      <span class="goal custom_goal">Goal: {{ element.recall.goal}}%</span>
+  </td>
+    </ng-container>
+  <ng-container matColumnDef="treatment">
+      <th mat-header-cell *matHeaderCellDef> Treatment Rate </th>
+      <td mat-cell *matCellDef="let element"> <span [ngClass] = "(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}%</span>
+      <span class="goal custom_goal">Goal: {{ element.treatment.goal}}%</span>
+      </td>
+    </ng-container>
+
+    <!--<ng-container matColumnDef="isDataAvailable">
+    <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" >
+        No Data found
+    </mat-footer-cell>
   </ng-container>
+    <ng-container matColumnDef="loading" class="card-loading">
+    <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" [attr.align]="center" >
+      <img class="tableLoader" src="../../../assets/images/loader.gif">
+    </mat-footer-cell>
+  </ng-container>-->
+    
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-  <!-- Weight Column -->
-  <ng-container matColumnDef="production">
-    <th mat-header-cell *matHeaderCellDef> Production Total </th>
-    <td mat-cell *matCellDef="let element"> <span [ngClass] = "(element.production.total >= element.production.goal)? 'mht-value-up' : 'mht-value-down'">${{ element.production.total }} </span>
-    <span class="goal">Goal: ${{ element.production.goal}}</span> </td>
-  </ng-container>
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="recall">
-    <th mat-header-cell *matHeaderCellDef> Recall Rate </th>
+    <!--<mat-footer-row *matFooterRowDef="['isDataAvailable']" [ngClass]="(dentistList.data.length == 0 && dentistListLoading)? 'show' : 'hide'">
+    </mat-footer-row>
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="(dentistList.data.length == 0 && !dentistListLoading)? 'show' : 'hide'">
+    </mat-footer-row>-->
 
-    <td mat-cell *matCellDef="let element"> <span [ngClass] = "(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}}% </span>
+  </table>
+</div>
 
-    <span class="goal">Goal: {{ element.recall.goal}}%</span>
-</td>
-  </ng-container>
- <ng-container matColumnDef="treatment">
-    <th mat-header-cell *matHeaderCellDef> Treatment Rate </th>
-    <td mat-cell *matCellDef="let element"> <span [ngClass] = "(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}%</span>
-    <span class="goal">Goal: {{ element.treatment.goal}}%</span>
-     </td>
-  </ng-container>
 
-  <!--<ng-container matColumnDef="isDataAvailable">
-   <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" >
-      No Data found
-   </mat-footer-cell>
-</ng-container>
-  <ng-container matColumnDef="loading" class="card-loading">
-   <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" [attr.align]="center" >
-     <img class="tableLoader" src="../../../assets/images/loader.gif">
-   </mat-footer-cell>
-</ng-container>-->
-  
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-  <!--<mat-footer-row *matFooterRowDef="['isDataAvailable']" [ngClass]="(dentistList.data.length == 0 && dentistListLoading)? 'show' : 'hide'">
-   </mat-footer-row>
-   <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="(dentistList.data.length == 0 && !dentistListLoading)? 'show' : 'hide'">
-   </mat-footer-row>-->
-
-</table>
+  <ul class="main_pagination" *ngIf="dentistList.data && dentistList.data.length>10">
+    <li><a href="javascript:void(0)" class="first-page active">1</a></li>
+    <li><a href="javascript:void(0)" class="second-page">2</a></li>
+    <li><a href="javascript:void(0)" class="third-page">3</a></li>
+  </ul>
 
 <div class="data-loading-main">
    <div class="no-data" [ngClass]="(dentistList.data.length == 0 && dentistListLoading)? 'show' : 'hide'">
@@ -183,10 +256,10 @@
 
 
 
-<mat-paginator  [length]="dentistList.length"
+<!-- <mat-paginator  [length]="dentistList.length"
                [pageSize]="25"
                [pageSizeOptions]="[5, 10, 25, 100]">
-</mat-paginator>
+</mat-paginator> -->
           <!-- <table class="table">
             <thead>
               <tr>
@@ -253,58 +326,110 @@
   <mat-tab label="Patient Schedule">
      <div class="morning-huddle-date">
         <mat-form-field>
-          <mat-label>Select Dentist</mat-label>
+          <!-- <mat-label>Select Dentist</mat-label> -->
           <mat-select  (selectionChange)="refreshScheduleTab($event.value)" id="setPreviousDay2" [(ngModel)]="currentDentistSchedule">
             <mat-option [value]="0">All Dentist</mat-option>
             <mat-option [value]="dentist.providerId" *ngFor="let dentist of clinicDentists">{{ dentist.name }}</mat-option>
-          </mat-select>
+          </mat-select>          
         </mat-form-field>        
+        <strong> {{ schedulePatielDate  }}</strong>
       </div>
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-user-alt"></i></div>
-                <mat-card-title class="">
+                <!-- <div class="card-icon"><i class="fas fa-user-alt"></i></div> -->
+                <!-- <mat-card-title class="">
                   <div class="ttl_value">{{ schedulePatieltd }}</div>
-                  Patients </mat-card-title>
+                  Patients
+                </mat-card-title> -->
+
+                  <div class="prodction_main_box">
+                    <div class="icon purple">
+                      <i class="fas fa-user-alt"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Patients</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ schedulePatieltd }}</span>
+                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                      </div>
+                    </div>
+                  </div>
+
               </mat-card-content>
-            </mat-card>
-            <div class="graph_image" ></div>
+            </mat-card> 
+            <!-- <div class="graph_image" ></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mr0-md mh-matcard mh-matcard-red">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-user-plus"></i></div>
-                <mat-card-title class="">
+                <!-- <div class="card-icon"><i class="fas fa-user-plus"></i></div> -->
+                <!-- <mat-card-title class="">
                   <div class="ttl_value">{{ scheduleNewPatieltd }}</div>
-                  New Patients </mat-card-title>
+                  New Patients </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon red">
+                      <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>New Patients</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ scheduleNewPatieltd }}</span>
+                        <img src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" ></div>
+            <!-- <div class="graph_image" ></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-green">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><span class="material-icons">access_alarm</span></div>
-                <mat-card-title class="">
+                <!-- <div class="card-icon"><span class="material-icons">access_alarm</span></div> -->
+                <!-- <mat-card-title class="">
                   <div class="ttl_value">{{ schedulehours }}</div>
-                  Scheduled Hours </mat-card-title>
+                  Scheduled Hours </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon green">
+                      <span class="material-icons">access_alarm</span>
+                    </div>
+                    <div class="production_description">
+                      <h4>Scheduled Hours</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ schedulehours }}</span>
+                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" ></div>
+            <!-- <div class="graph_image" ></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-blue">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-coins"></i></div>
-                <mat-card-title class="">
+                <!-- <div class="card-icon"><i class="fas fa-coins"></i></div> -->
+                <!-- <mat-card-title class="">
                   <div class="ttl_value">${{ unSchedulehours }}</div>
-                  Unscheduled </mat-card-title>
+                  Unscheduled </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon blue">
+                      <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Unscheduled</h4>
+                      <div class="patients-num">
+                        <span class="change_value" *ngIf="unSchedulehours">${{ unSchedulehours | number:'1.0-0' }}</span>
+                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image" ></div>
+            <!-- <div class="graph_image" ></div> -->
           </div>
         </div>
       </div>
@@ -329,27 +454,28 @@
 
   <!-- Weight Column -->
 <ng-container matColumnDef="card">
-    <th mat-header-cell *matHeaderCellDef>Appointment</th>
+    <th mat-header-cell *matHeaderCellDef>Notifications</th>
     <td mat-cell *matCellDef="let element"> 
       
       <div class="appointment" *ngIf="element.noRecall == 'true'"> 
-        <span class="warning" title="{{ element.lastRecall | date: 'MMM d, y':'UTC' }}"><span class="material-icons font-16">phone_callback</span> No Recall for > 6 Months</span>
+        <span class="warning" title="{{ element.lastRecall | date: 'MMM d, y':'UTC' }}"><span> <img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> No Recall for > 6 Months</span>
       </div>
       <div class="appointment" *ngIf="element.noRecall == 'No previous recalls'"> 
-        <span class="warning" ><span class="material-icons font-16">phone_callback</span>  No previous recalls</span>
+        <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span>  No previous recalls</span>
       </div>
        
-      <div class="appointment" *ngIf="element.outstanding.outstandingDollar != 0"> <span class="warning" ><i class="fas fa-procedures font-16"></i> Outstanding Treatment ${{ element.outstanding.outstandingDollar }}</span></div>
+      <div class="appointment" *ngIf="element.outstanding.outstandingDollar != 0"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Outstanding Treatment ${{ element.outstanding.outstandingDollar | number:'1.0-0' }}</span></div>
       <div class="appointment" *ngIf="element.xray.first == 'true' && element.xray.second == 'true'">
-          <span class="warning" title="022,037 "><i class="fas fa-x-ray font-16"></i> Xrays Overdue</span>
+          <span class="warning" title="022,037 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xrays Overdue</span> 
+          <!-- <img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> -->
       </div>
       <div class="appointment" *ngIf="element.xray.first != 'true' && element.xray.second == 'true'">
-          <span class="warning" title="037 "><i class="fas fa-x-ray font-16"></i> Xrays Overdue</span>
+          <span class="warning" title="037 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xrays Overdue</span>
       </div>
       <div class="appointment" *ngIf="element.xray.first == 'true' && element.xray.second != 'true'">
-          <span class="warning" title="022 "><i class="fas fa-x-ray font-16"></i> Xrays Overdue</span>
+          <span class="warning" title="022 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xrays Overdue</span>
       </div>
-      <div class="appointment" *ngIf="element.noshows > 3"> <span class="warning" ><i class="fas fa-x-ray font-16"></i> History of No Shows (Patient has >=3 FTA/UTA)</span></div>
+      <div class="appointment" *ngIf="element.noshows > 3"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> History of No Shows (Patient has >=3 FTA/UTA)</span></div>
     </td>
   </ng-container>
 
@@ -399,7 +525,7 @@
   <!-- Dentist Performance Tab -->
 
 
-  <!-- Dentist Performance Tab -->  
+  <!-- Front desk Tab -->  
   <mat-tab label="Front Desk">
     <div class="sa_dentist_graphs_area sa_profit_bar front-desk">
        <!--  <div class="morning-huddle-date">
@@ -419,121 +545,226 @@
           <strong> {{ production.date | date: 'fullDate' }} </strong>
         
       </div> -->
-      <h3>Yesterday</h3>
+      <div class="morning-huddle-date"><strong *ngIf="reAppointmentdate">{{ reAppointmentdate }}</strong> </div>
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-purple">
+           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100"  class="sa_flexbg mh-matcard mh-matcard-red">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="far fa-calendar-check"></i></div>
-                <mat-card-title class="">
-                  <div class="ttl_value">{{ reAppointment }}%</div>
-                  Re-Appointment </mat-card-title>
-              </mat-card-content>
-            </mat-card>
-            <div class="graph_image"></div>
-          </div>
-          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-red">
-            <mat-card class="dentistProduction sa_hccard">
-              <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="far fa-calendar"></i></div>
+                <!-- <div class="card-icon"><i class="far fa-calendar"></i></div>
                 <mat-card-title class="">
                   <div class="ttl_value">{{ unscheduledPatients }}</div>
-                  Unscheduled Patients </mat-card-title>
+                  Unscheduled Patients</mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon red">
+                      <i class="far fa-calendar"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Unscheduled Patients</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ unscheduledPatients }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
-          <div fxFlex="calc(33% - 10px)" fxFlex.md="calc(33% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-blue">
+
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100"  class="sa_flexbg mh-matcard mh-matcard-purple">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-coins"></i></div>
+                <!-- <div class="card-icon"><i class="far fa-calendar-check"></i></div>
                 <mat-card-title class="">
-                  <div class="ttl_value">${{ unscheduledValue }}</div>
-                  Unscheduled Value </mat-card-title>
+                  <div class="ttl_value">{{ reAppointment }}%</div>
+                  Re-Appointment </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon purple">
+                      <i class="far fa-calendar-check"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Re-Appointment %</h4>
+                      <div class="patients-num" *ngIf="reAppointment">
+                        <span class="change_value">{{ reAppointment }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
+          </div>
+         
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100"  class="sa_flexbg mh-matcard mh-matcard-blue">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <!-- <div class="card-icon"><i class="fas fa-coins"></i></div>
+                <mat-card-title class="">
+                  <div class="ttl_value">${{ unscheduledValue }}</div>
+                  Unscheduled Value </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon blue">
+                      <span class="material-icons">access_alarm</span>
+                    </div>
+                    <div class="production_description">
+                      <h4>Unscheduled Balance</h4>
+                      <div class="patients-num">
+                        <span class="change_value">${{ unscheduledValue | number:'1.0-0' }}</span>
+                      </div>
+                    </div>
+                  </div>
+              </mat-card-content>
+            </mat-card>
+            <!-- <div class="graph_image"></div> -->
+          </div>
+           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100"  class="sa_flexbg last mh-matcard mh-matcard-red">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                  <div class="prodction_main_box">
+                    <div class="icon red">
+                      <i class="far fa-calendar"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>No Shows</h4>
+                      <div class="patients-num">
+                        <span class="change_value">3</span>
+                      </div>
+                    </div>
+                  </div>
+              </mat-card-content>
+            </mat-card>
+            <!-- <div class="graph_image"></div> -->
           </div>
         </div>
-         <h3>Today</h3>
+        <div class="morning-huddle-date"><strong *ngIf="todayPatientsDate"> {{ todayPatientsDate }}</strong></div>
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-user-alt"></i></div>
+                <!-- <div class="card-icon"><i class="fas fa-user-alt"></i></div>
                 <mat-card-title class="">
                   <div class="ttl_value"> {{ todayPatients }}</div>
-                  Patients </mat-card-title>
+                  Patients </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon black">
+                      <i class="fas fa-user-alt"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Patients</h4>
+                      <div class="patients-num" *ngIf="todayPatients">
+                        <span class="change_value">{{ todayPatients }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mr0-md mh-matcard-green">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><span class="material-icons">access_alarm</span></div>
+                <!-- <div class="card-icon"><span class="material-icons">access_alarm</span></div>
                 <mat-card-title class="">
                   <div class="ttl_value">{{ todayUnscheduledHours }}</div>
-                  Unscheduled Hours </mat-card-title>
+                  Unscheduled Hours </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon green">
+                      <span class="material-icons">access_alarm</span>
+                    </div>
+                    <div class="production_description">
+                      <h4>Unscheduled Hours</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ todayUnscheduledHours }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-orange">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-coins"></i></div>
+                <!-- <div class="card-icon"><i class="fas fa-coins"></i></div>
                 <mat-card-title class="">
                   <div class="ttl_value">${{ todayUnscheduledBal }}</div>
-                  Unscheduled Bal </mat-card-title>
+                  Unscheduled Bal </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon orange">
+                      <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Unscheduled Balance</h4>
+                      <div class="patients-num" *ngIf="todayUnscheduledBal">
+                        <span class="change_value">${{ todayUnscheduledBal | number:'1.0-0' }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-brown">
             <mat-card class="dentistProduction sa_hccard">
               <mat-card-content class="sa_matcard_content">
-                <div class="card-icon"><i class="fas fa-phone-alt"></i></div>
+                <!-- <div class="card-icon"><i class="fas fa-phone-alt"></i></div>
                 <mat-card-title class="">
                   <div class="ttl_value">{{ todayPostopCalls }}</div>
-                  Post op Calls </mat-card-title>
+                  Post op Calls </mat-card-title> -->
+                  <div class="prodction_main_box">
+                    <div class="icon purple">
+                      <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="production_description">
+                      <h4>Post Op Calls</h4>
+                      <div class="patients-num">
+                        <span class="change_value">{{ todayPostopCalls }}</span>
+                      </div>
+                    </div>
+                  </div>
               </mat-card-content>
             </mat-card>
-            <div class="graph_image"></div>
+            <!-- <div class="graph_image"></div> -->
           </div>
         </div>
       </div>
   </mat-tab>
-  <!-- Dentist Performance Tab -->
+  <!-- Front desk Tab -->
 
 
-  <!-- Dentist Performance Tab -->  
+  <!-- Reminders Tab -->  
   <mat-tab label="Reminders">
+
+     <div class="morning-huddle-date">
+        <strong>{{ remindersRecallsOverdueDate }}</strong>        
+      </div>
 <mat-card class="table-card">
   <mat-card-title>Recalls Overdue</mat-card-title>
   <mat-card-content> 
 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
-          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
-              <div class="DentistListSecRow mh-table" style="height: 500px; overflow: auto;">
-<table mat-table [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8">
-  <!-- Name Column -->
+          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="responsive_patient_data" >
+              <div class="DentistListSecRow mh-table patient_data-table_responsive" style="height: 500px; overflow: auto;">
+<table mat-table [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8 reminders-table">
+ 
+  <!-- Appointment Column -->
+  <ng-container matColumnDef="start">
+    <th mat-header-cell *matHeaderCellDef> Appointment Time </th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.start | date: 'h:mm a':'UTC' }}
+    </td>
+  </ng-container>
+
+  <!-- Patient name Column --> 
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Patient Name </th>
     <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
   </ng-container>
 
-  <!-- Weight Column -->
+  <!-- Dentist Column -->
   <ng-container matColumnDef="dentist">
     <th mat-header-cell *matHeaderCellDef> Dentist Name  </th>
     <td mat-cell *matCellDef="let element">{{element.app_book_description}} </td>
   </ng-container>
 
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="start">
-    <th mat-header-cell *matHeaderCellDef> Appointment Start </th>
-    <td mat-cell *matCellDef="let element"> {{ element.start | date: 'h:mm a':'UTC' }}
-</td>
-  </ng-container>
+  
 <ng-container matColumnDef="isDataAvailable">
   <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns1.length">
       No Data found
@@ -564,22 +795,22 @@
 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
           <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
               <div class="DentistListSecRow mh-table" style="height: 500px; overflow: auto;">
-<table mat-table [dataSource]="treatmentOutstanding" class="mat-elevation-z8">
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
-  </ng-container>
-
-  <!-- Weight Column -->
+<table mat-table [dataSource]="treatmentOutstanding" class="mat-elevation-z8 reminders-table">
+  <!-- Appointment Column -->
   <ng-container matColumnDef="start">
-    <th mat-header-cell *matHeaderCellDef> Appointment Start </th>
+    <th mat-header-cell *matHeaderCellDef> Appointment Time </th>
     <td mat-cell *matCellDef="let element"> {{element.start | date: 'h:mm a':'UTC' }} </td>
   </ng-container>
 
-  <!-- Symbol Column -->
+  <!-- Patient name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
+  </ng-container>  
+
+  <!-- Outstanding Column -->
   <ng-container matColumnDef="outstanding">
-    <th mat-header-cell *matHeaderCellDef> Treat Code </th>
+    <th mat-header-cell *matHeaderCellDef> Treatment Codes </th>
     <td mat-cell *matCellDef="let element"> {{element.code}}</td>
   </ng-container>
 
@@ -613,27 +844,25 @@
 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
           <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
               <div class="DentistListSecRow mh-table" style="height: 500px; overflow: auto;">
-<table mat-table [dataSource]="outstandingBalances" class="mat-elevation-z8">
- 
-
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
-  </ng-container>
-
-  <!-- Weight Column -->
+<table mat-table [dataSource]="outstandingBalances" class="mat-elevation-z8 reminders-table">
+ <!-- Appointment Column -->
   <ng-container matColumnDef="start">
-    <th mat-header-cell *matHeaderCellDef> Start</th>
+    <th mat-header-cell *matHeaderCellDef> Appointment Time </th>
     <td mat-cell *matCellDef="let element">{{element.start | date: 'h:mm a':'UTC' }}  </td>
   </ng-container>
 
-  <!-- Symbol Column -->
+ <!-- Patient name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
+  </ng-container>  
+
+ <!-- Outstanding Column -->
   <ng-container matColumnDef="outstanding">
-    <th mat-header-cell *matHeaderCellDef> Outstanding </th>
+    <th mat-header-cell *matHeaderCellDef> Outstanding Amount </th>
     <td mat-cell *matCellDef="let element">$
       <span *ngIf="element.outstanding %1 == 0">{{ element.outstanding }}</span>
-      <span *ngIf="element.outstanding %1 != 0">{{ element.outstanding | number:'1.2-2'}}</span>
+      <span *ngIf="element.outstanding %1 != 0">{{ element.outstanding | number:'1.0-0'}}</span>
   </td>
   </ng-container>
 <ng-container matColumnDef="isDataAvailable">
@@ -656,42 +885,50 @@
 </mat-card>
 
   </mat-tab>
-  <!-- Dentist Performance Tab -->
+  <!-- Reminders Tab end -->
 
+
+  <!-- Followups Tab start -->
   <mat-tab label="Followups">
-    
+      <div class="morning-huddle-date">
+        <strong>{{ followupsUnscheduledPatientsDate }}</strong>        
+      </div>    
 <mat-card class="table-card">
   <mat-card-title>Unscheduled Patients</mat-card-title>
   <mat-card-content> 
 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
-          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
-              <div class="DentistListSecRow mh-table">
+          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="responsive_patient_data" >
+              <div class="DentistListSecRow mh-table patient_data-table_responsive" style="height: 500px; overflow: auto;">
 <table mat-table [dataSource]="followupsUnscheduledPatients" class="mat-elevation-z8">
 
-  <!-- Name Column -->
+  <!-- Patient Name Column -->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <th mat-header-cell *matHeaderCellDef> Patient Name </th>
     <td mat-cell *matCellDef="let element"> {{element.title}} {{element.firstname}} {{element.surname}} </td>
   </ng-container>
 
-  <!-- Weight Column -->
+  <!-- Phone Number Column -->
   <ng-container matColumnDef="phone">
-    <th mat-header-cell *matHeaderCellDef> Phone </th>
+    <th mat-header-cell *matHeaderCellDef> Phone Number </th>
     <td mat-cell *matCellDef="let element">
-      <span *ngIf="element.phone_home">{{element.phone_home}}</span>
-      <span *ngIf="!element.phone_home">{{element.phone_work}}</span>
-      <span *ngIf="!element.phone_home && !element.phone_work">{{element.mobile}}</span>
+      <div class="phone_align_center">        
+        <img src="../assets/images/follow-up-call.png" alt="follow-up-call"  />
+        <span class="phone_no" *ngIf="element.phone_home && !element.phone_work">{{element.phone_home}}</span>
+        <span class="phone_no" *ngIf="!element.phone_home && element.phone_work">{{element.phone_work}}</span>
+        <span class="phone_no" *ngIf="!element.phone_home && !element.phone_work">{{element.mobile}}</span>
+      </div>
   </td>
   </ng-container>
 
-  <!-- Symbol Column -->
+  <!-- Unscheduled Treatment Column -->
   <ng-container matColumnDef="code">
-    <th mat-header-cell *matHeaderCellDef> Code </th>
+    <th mat-header-cell *matHeaderCellDef> Unscheduled Treatment </th>
     <td mat-cell *matCellDef="let element"> {{element.code}}</td>
   </ng-container>
   <ng-container matColumnDef="status">
     <th mat-header-cell *matHeaderCellDef>Status</th>
-    <td mat-cell *matCellDef="let element"> <mat-slide-toggle checked="{{ element.status }}" name="status" (change)="toggleUpdate($event,element.pid,element.cid,element.uid,'Unscheduled Patients')"></mat-slide-toggle></td>
+    <!-- "{{ element.status }}" -->
+    <td mat-cell *matCellDef="let element"> <mat-slide-toggle checked="false" name="status" (change)="toggleUpdate($event,element.pid,element.cid,element.uid,'Unscheduled Patients')"></mat-slide-toggle></td>
   </ng-container>
 
 <ng-container matColumnDef="isDataAvailable">
@@ -706,7 +943,7 @@
 </div>
    </div>
           <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
-            <img src="./assets/images/unscheduled-patients.png">
+            <img src="./assets/images/unsheild-patient.png" alt="unsheild-patient">
           </div>
         </div>
   </mat-card-content>
@@ -714,30 +951,37 @@
 
 
 
-<mat-card class="table-card">
+<mat-card class="table-card post_call_responsive_border">
   <mat-card-title>Post op Calls</mat-card-title>
   <mat-card-content> 
 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
-          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
-              <div class="DentistListSecRow mh-table">
+          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="respopnsive_leptop_post_call">
+              <div class="DentistListSecRow mh-table patient_data-table_responsive" style="height: 500px; overflow: auto;">
 <table mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8">
   
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.provider_firstname}} {{element.provider_surname}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.Dentists.name }} </td>
   </ng-container>
 
   <!-- Weight Column -->
   <ng-container matColumnDef="phone">
-    <th mat-header-cell *matHeaderCellDef> Phone </th>
-    <td mat-cell *matCellDef="let element">{{element.phone_home}}</td>
+    <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="phone_align_center">
+        <img src="../assets/images/follow-up-call.png" alt="follow-up-call"  />
+        <span class="phone_no" *ngIf="element.phone_home && !element.phone_work">{{element.phone_home}}</span>
+        <span class="phone_no" *ngIf="!element.phone_home && element.phone_work">{{element.phone_work}}</span>
+        <span class="phone_no" *ngIf="!element.phone_home && !element.phone_work">{{element.mobile}}</span>
+      </div>
+    </td>
   </ng-container>
 
   <!-- Symbol Column -->
   <ng-container matColumnDef="code">
-    <th mat-header-cell *matHeaderCellDef> Code </th>
+    <th mat-header-cell *matHeaderCellDef> Treatment Name </th>
     <td mat-cell *matCellDef="let element">{{ element.treat_item }}</td>
   </ng-container>
    <ng-container matColumnDef="status">
@@ -756,7 +1000,7 @@
 </div>
    </div>
            <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
-            <img src="./assets/images/post-op-calls.png">
+            <img src="./assets/images/post-op-call-2.png" alt="post-op-call-2">
           </div>
         </div>
   </mat-card-content>

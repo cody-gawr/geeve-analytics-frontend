@@ -65,6 +65,8 @@ export class RolesUsersService {
     const formData = new FormData();
 
     formData.append('id', user_id);
+       formData.append('user_id', this._cookieService.get("userid"));
+    
     var header = this.getHeaders(); 
 
         return this.http.post(this.apiUrl +"/Users/delete", formData, { headers: header })

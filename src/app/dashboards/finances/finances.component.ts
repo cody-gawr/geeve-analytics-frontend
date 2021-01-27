@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , ViewChild,ElementRef } from '@angular/core';
 import { FinancesService } from './finances.service';
 import { DentistService } from '../../dentist/dentist.service';
-
+import * as moment from 'moment';
 import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe } from '@angular/common';
 import {
@@ -20,14 +20,21 @@ import { CookieService } from "angular2-cookie/core";
 import { colorSets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
+import { map, takeUntil } from 'rxjs/operators';
+import { ChartService } from '../chart.service';
+
 export interface Dentist {
   providerId: string;
   name: string;
 }
 
 @Component({
-  templateUrl: './finances.component.html'
+  templateUrl: './finances.component.html',
+  styleUrls: ['./finances.component.scss']
 })
+
 export class FinancesComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas: ElementRef;
     @ViewChild("myCanvas2") canvas2: ElementRef;
@@ -52,9 +59,9 @@ export class FinancesComponent implements AfterViewInit {
    public duration='m';
    public predictedChartColors;
    public trendText;
-     colorScheme = {
-    domain: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']
-  };
+   colorScheme = {
+    domain: ['#6edbba', '#abb3ff', '#b0fffa', '#ffb4b5', '#d7f8ef', '#fffdac', '#fef0b8', '#4ccfae']
+   };
 single = [
 ];
  dateData: any[];
@@ -78,10 +85,27 @@ single = [
   doughnut = false;
   arcWidth = 0.65;
   rangeFillOpacity = 0.75;
-   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
+  pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  totalDiscountPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  currentOverduePluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
+  destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+  public percentOfProductionCount$ = new BehaviorSubject<number>(99);
+  public percentOfTotalDiscount$ = new BehaviorSubject<number>(0);
+  public percentOfCurrentOverdue$ = new BehaviorSubject<number>(0);
+  chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  constructor(private toastr: ToastrService,private financesService: FinancesService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
-  }
+  profitChartTitles = ['Net Profit', 'Net Profit % Xero', 'Net Profit % PMS'];
+  constructor(
+    private toastr: ToastrService,
+    private financesService: FinancesService, 
+    private dentistService: DentistService, 
+    private datePipe: DatePipe, 
+    private route: ActivatedRoute,  
+    private headerService: HeaderService,
+    private _cookieService: CookieService, 
+    private router: Router,
+    private chartService: ChartService){
+    }
     private checkPermission(role) { 
   this.headerService.checkPermission(role).subscribe((res) => {
        if(res.message == 'success'){
@@ -110,6 +134,30 @@ single = [
    }
   }
   ngAfterViewInit() {
+    //plugin for Percentage of Production by Clinician chart
+    this.pluginObservable$ = this.percentOfProductionCount$.pipe(
+      takeUntil(this.destroyed$),
+      map((productionCount) => {
+        return this.chartService.beforeDrawChart(productionCount)
+      })
+    );
+
+    //plugin for Total Discounts chart
+    this.totalDiscountPluginObservable$ = this.percentOfTotalDiscount$.pipe(
+      takeUntil(this.destroyed$),
+      map((discountCount) => {
+        return this.chartService.beforeDrawChart(discountCount, true)
+      })
+    )
+
+    //plugin for Current Overdue chart
+    this.currentOverduePluginObservable$ = this.percentOfCurrentOverdue$.pipe(
+      takeUntil(this.destroyed$),
+      map((overDueCount) => {
+        return this.chartService.beforeDrawChart(overDueCount, true)
+      })
+    )
+
       $('#currentDentist').attr('did','all');
      this.checkPermission('dashboard5');
         //this.filterDate('cytd');
@@ -122,7 +170,7 @@ single = [
         $('.header_filters').addClass('flex_direct_mar');
          $('.external_clinic').show();
         $('.external_dentist').show();
-  $('#title').html('Finances  ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');
+         $('#title').html('<span>Finances</span>  <span class="page-title-date">' + this.startDate + ' - ' + this.endDate+'</span>');
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();
@@ -347,10 +395,12 @@ this.preoceedureChartColors = [
             ticks: {
               userCallback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
-                     if (Math.floor(label) === label) {
-                         return "$"+label;
-                     }
-                 },
+                    if (Math.floor(label) === label) {
+                      let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
+                      currency = currency.split(/(?=(?:...)*$)/).join(',');
+                      return `${label < 0 ? '- $' : '$'}${currency}`;
+                    }
+                },
             }, 
             }],
         },legend: {
@@ -423,7 +473,9 @@ this.preoceedureChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
-          return data.datasets[tooltipItems.datasetIndex].label+": $"+tooltipItems.yLabel;
+        let currency = tooltipItems.yLabel.toString();
+        currency = currency.split('-').join('').split(/(?=(?:...)*$)/).join(',');
+        return data.datasets[tooltipItems.datasetIndex].label + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;;
      },
      
   }
@@ -431,58 +483,55 @@ this.preoceedureChartColors = [
   };
 
 
-   public labelBarOptionsTC: any = {
-      elements: {
-      point: {
-        radius: 5,
-        hoverRadius: 7,
-        pointStyle:'rectRounded',
-        hoverBorderWidth:7
-      },
-    },
-    scaleOverride : true,
-        scaleSteps : 1000000,
-        scaleStepWidth : 50,
-        scaleStartValue : 500000,
-    scaleShowVerticalLines: false,
-           responsive: true,
+  public labelBarOptionsTC: any = {
+    pointHoverBackgroundColor: 'none',
+    responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
-      animation: {
-        duration: 500,
-        easing: 'easeOutSine'
-      },
+    animation: {
+      duration: 500,
+      easing: 'easeOutSine'
+    },
     scales: {
-          xAxes: [{ 
-            stacked:false,
-            ticks: {
-                suggestedMin:0,
-               userCallback: function(label, index, labels) {
-                     // when the floored value is the same as the value we have a whole number
-                     if (Math.floor(label) === label) {
-                         return "$" +label;
-                     }
-                 },
-                autoSkip: false
+      xAxes: [{
+        stacked: false,
+        barPercentage: 0.4,
+        gridLines: {
+          color: "transparent",
+        }
+      }],
+      yAxes: [{
+        stacked: false,
+        gridLines: {
+          color: "transparent",
+        },
+        ticks: {
+          suggestedMin: 0,
+          userCallback: function (label, index, labels) {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              let currency = label < 0 ? label.toString().split('-').join('') : label.toString();
+              currency = currency.split(/(?=(?:...)*$)/).join(',');
+              return `${label < 0 ? '- $' : '$'}${currency}`;
             }
-            }],
-          yAxes: [{ 
-            stacked:false,
-            ticks: {
-           
-            }, 
-            }],
-        },legend: {
-            display: true
-         },
-          tooltips: {
-            mode: 'x-axis',
-  callbacks: {
-     label: function(tooltipItems, data) { 
-        return "$"+data['datasets'][0]['data'][tooltipItems['index']];
-     },
-  }
-}
+          },
+          autoSkip: false
+        },
+      }],
+    },
+    legend: {
+      display: true
+    },
+    tooltips: {
+      mode: 'x-axis',
+      callbacks: {
+        label: function (tooltipItems, data) {
+          let currency = data['datasets'][0]['data'][tooltipItems['index']].toString();
+          // Convert the number to a string and split the string every 3 characters from the end and join comma separator
+          currency = currency.split(/(?=(?:...)*$)/).join(',');
+          return "$ " + currency;
+        },
+      }
+    }
   };
 
     public labelBarOptions: any = {
@@ -512,10 +561,17 @@ this.preoceedureChartColors = [
           yAxes: [{ 
             stacked:false,
             ticks: {
-              userCallback: function(label, index, labels) {
+              callback: function(label, index, labels) {
                      // when the floored value is the same as the value we have a whole number
                      if (Math.floor(label) === label) {
-                         return "$" +label;
+                       let currency = label<0 ? label.toString().split('-').join('') : label.toString();
+                      //  if (currency.length > 3) {
+                      //    currency = currency.substring(0, 1) + 'K'
+                      //  } else{
+                          currency = currency.split(/(?=(?:...)*$)/).join(',');
+                      //  }
+                      
+                       return `${label<0 ? '- $' : '$'}${currency}`;
                      }
                  },
             }, 
@@ -532,7 +588,9 @@ this.preoceedureChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
-         return tooltipItems.xLabel + ": $" + tooltipItems.yLabel;
+        let currency = tooltipItems.yLabel;
+        currency = currency.toString().split('-').join('').split(/(?=(?:...)*$)/).join(',');
+        return tooltipItems.xLabel + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;
      },
        title: function(tooltipItem, data) {
           return;
@@ -706,33 +764,57 @@ public labelBarPercentOptions: any = {
 }
   };
 
-    public pieChartOptions: any = {
-    responsive: true,
-    maintainAspectRatio: false,
-    legend: {
-            display: true,
-             position:'right'
-         },
-        tooltips: {
+  public pieChartOptions: any = {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          padding: 20
+        },
+        onClick : (event: MouseEvent) => {
+            event.stopPropagation();
+        }
+      },
+      elements: {
+        center: {
+          text: '',
+          // sidePadding: 60
+        }
+      },
+      tooltips: {
         callbacks: {
-          label: function(tooltipItem, data) {
-            return data['labels'][tooltipItem['index']] +": "+data['datasets'][0]['data'][tooltipItem['index']]+ "%";
+          label: function (tooltipItem, data) {
+            return data['labels'][tooltipItem['index']] + ": " + data['datasets'][0]['data'][tooltipItem['index']] + "%";
           }
         }
-      }
+      },
   };
+  
 
       public pieChartOptions2: any = {
     responsive: true,
     maintainAspectRatio: false,
-    legend: {
-            display: true,
-             position:'right'
-         },
+        legend: {
+          display: true,
+          position: 'right',
+          labels: {
+            usePointStyle: true,
+            padding: 20
+          },
+          onClick: (event: MouseEvent) => {
+            event.stopPropagation();
+          }
+        },
               tooltips: {
   callbacks: {
-        label: function(tooltipItem, data,index) {        
-          return data['labels'][tooltipItem['index']] +": $"+data['datasets'][0]['data'][tooltipItem['index']];
+        label: function(tooltipItem, data,index) { 
+          let currency = data['datasets'][0]['data'][tooltipItem['index']].toString();      
+          // Convert the number to a string and split the string every 3 characters from the end and join comma separator
+          currency = currency.split(/(?=(?:...)*$)/).join(',');          
+          return data['labels'][tooltipItem['index']] +": $"+currency;
         } 
   }
 }
@@ -1085,8 +1167,9 @@ public labelBarPercentOptions: any = {
   public  gaugeValue = '';
   public  totalProductionLabel = "";
   public  gaugeThick = "20";
-  public  foregroundColor= "rgba(0, 150, 136,0.5)";
-  public  foregroundColor2= "#106E9D";
+  public  foregroundColor= "#4ccfae";
+  public  foregroundColor2= "#4ccfae";
+  public  backgroundColor = '#f4f0fa';
   public  cap= "round";
   public  size = "250"
   public  totalProductionVal:any = 10;
@@ -1114,7 +1197,7 @@ public labelBarPercentOptions: any = {
 
   loadDentist(newValue) {
 
-  $('#title').html('Finances ('+this.myDateParser(this.startDate)+'-'+this.myDateParser(this.endDate)+')');
+    $('#title').html('<span>Finances</span> <span class="page-title-date">' + this.startDate + ' - ' + this.endDate+'</span>');
   if(newValue == 'all') {
     $(".trend_toggle").hide();
     this.finTotalProduction();
@@ -1181,7 +1264,7 @@ public netProfitTrendTotal;
         this.netProfitIcon = "-";
              
         this.netProfitVal = this.netProfitVal; 
-        console.log(this.netProfitVal,this.netProfitTrendTotal);
+        // console.log(this.netProfitVal,this.netProfitTrendTotal);
       if(this.netProfitVal>=this.netProfitTrendTotal)
             this.netProfitTrendIcon = "up"; 
        }
@@ -1305,7 +1388,6 @@ public categoryExpensesLoader:any;
          this.pieChartDatares = [];
          this.pieChartDataPercentres =[];
           data.data.forEach((res,key) => {
-            if(res.expenses_percent>0) {
           var temp= {name:'',value:1};
           temp.name =res.meta_key;
           temp.value =res.expenses;  
@@ -1318,13 +1400,13 @@ public categoryExpensesLoader:any;
            this.pieChartDataPercentres.push(Math.round(res.expenses_percent));
            this.pieChartLabelsres.push(res.meta_key);
            this.pieChartTotal = this.pieChartTotal + parseInt(res.expenses);
-         }
  });
         this.expensescChartTrendTotal = data.data_ta;
         if(Math.round(this.pieChartTotal)>=Math.round(this.expensescChartTrendTotal))
             this.expensescChartTrendIcon = "up";  
        this.pieChartData = this.pieChartDatares;
        this.pieChartLabels = this.pieChartLabelsres;
+       
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1399,6 +1481,7 @@ public categoryExpensesLoader:any;
          }
         });
            this.totalDiscountChartTotal = Math.round(data.data.total_production.total);
+         this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
            if(data.data.trend_total_production.total)
            this.totalDiscountChartTrendTotal = Math.round(data.data.trend_total_production.total);
           else
@@ -1416,8 +1499,14 @@ public categoryExpensesLoader:any;
   }
     public totalProductionTrendIcon;
     public totalProductionTrendVal;
-    public totalProductionCollection1: any[] = [
-    {data: [], label: ''}];
+  public totalProductionCollection1: any[] = [
+    { 
+      data: [], 
+      label: '',
+      backgroundColor: [],
+      hoverBackgroundColor: []
+    }
+  ];
 public totalProductionCollectionLabel1 =[];
   public finTotalProductionLoader:any;
 
@@ -1450,7 +1539,7 @@ public totalProductionCollectionLabel1 =[];
          this.totalProductionTrendVal = 0;  
 
           this.totalProductionCollection1[0]['data'].push(this.totalProductionVal);
-
+                   
         if(Math.round(this.totalProductionVal)>=Math.round(this.totalProductionTrendVal))
             this.totalProductionTrendIcon = "up";  
        }
@@ -1494,6 +1583,8 @@ isDecimal(value) {
         this.collectionTrendVal = (data.data.paym_total_ta)?  Math.round(data.data.paym_total_ta) : 0;    
           this.totalProductionCollection1[0]['data'].push(this.collectionVal);
           this.totalProductionCollectionLabel1 = ['Total Production','Collection'];
+         this.totalProductionCollection1[0]['hoverBackgroundColor'] = ['#ffb4b5', '#4ccfae'];
+          this.totalProductionCollection1[0]['backgroundColor'] = ['#ffb4b5', '#4ccfae']; //as label are static we can add background color for that particular column as static
            this.totalProductionCollectionMax = Math.max(...this.totalProductionCollection1[0]['data']);
            if(this.totalProductionVal)
            this.collectionPercentageC=Math.round((this.collectionVal/this.totalProductionVal)*100);
@@ -1562,6 +1653,7 @@ isDecimal(value) {
          }
                   });
            this.totalOverdueAccount = data.total;
+         this.percentOfCurrentOverdue$.next(data.total);
        this.totalOverdueAccountData = this.totalOverdueAccountres;
        this.totalOverdueAccountLabels = this.totalOverdueAccountLabelsres; 
        this.totalOverdueAccountDataMax = Math.max(...this.totalOverdueAccountData);
@@ -1598,9 +1690,9 @@ filterDate(duration) {
        var last = first + 6; 
        var sd =new Date(now.setDate(first));
 
-       this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd-MM-yyyy');
+       this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd MMM yyyy');
        var end = now.setDate(sd.getDate()+6);
-       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
+       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd MMM yyyy');
         this.loadDentist('all');
     }
     else if (duration == 'm') {
@@ -1609,9 +1701,19 @@ filterDate(duration) {
       this.currentText= 'This Month';
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() + 1, 0), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
             this.loadDentist('all');
+    }
+    else if (duration == 'lm') {
+      this.trendText = 'Previous Month';
+      this.currentText = 'Last Month';
+
+      const date = new Date();
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd MMM yyyy');
+      this.duration = 'lm';
+      this.loadDentist('all');
     }
     else if (duration == 'q') {
         this.duration='q';
@@ -1622,19 +1724,23 @@ filterDate(duration) {
       var cmonth = now.getMonth()+1;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy')
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); 
+      }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy'); 
+      }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  }
-            this.loadDentist('all');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd MMM yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd MMM yyyy');  
+      }
+      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.loadDentist('all');
     }
     else if (duration == 'lq') {
         this.duration='lq';
@@ -1646,18 +1752,18 @@ filterDate(duration) {
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd MMM yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');  }
             this.loadDentist('all');
    
     }
@@ -1667,8 +1773,8 @@ filterDate(duration) {
 
       this.duration='cytd';
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
       this.loadDentist('all');
     }
      else if (duration == 'fytd') {
@@ -1678,11 +1784,11 @@ filterDate(duration) {
       
      var date = new Date();
       if ((date.getMonth() + 1) <= 3) {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd MMM yyyy');
         } else {
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd MMM yyyy');
     }
-      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
       this.loadDentist('all');
     }
      else if (duration == 'custom') {
@@ -1692,7 +1798,7 @@ filterDate(duration) {
     }
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
 
   }
 
@@ -1734,7 +1840,7 @@ filterDate(duration) {
      }
   } 
   ytd_load(val) {
-    alert(this.datePipe.transform(val, 'dd-MM-yyyy'));
+    alert(this.datePipe.transform(val, 'dd MMM yyyy'));
   }
 choosedDate(val) {
     val = (val.chosenLabel);
@@ -1744,10 +1850,10 @@ choosedDate(val) {
      var date1:any= new Date(val[0]);
       var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
 if(diffTime<=365){
-this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
+this.startDate = this.datePipe.transform(val[0], 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(val[1], 'dd MMM yyyy');
       this.loadDentist('all');      
-      $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
    }
    else {
@@ -1772,27 +1878,54 @@ this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
     return validDate
   }
 toggleFilter(val) {
-   $('.target_filter').removeClass('mat-button-toggle-checked');
-    $('.target_'+val).addClass('mat-button-toggle-checked');
-    $('.filter').removeClass('active');
-    if(val == 'current') {
-     this.toggleChecked = true;
-     this.trendValue = 'c';
-     this.toggleChangeProcess();
-     this.displayProfit(1);
-    }
-    else if(val == 'historic') {
-       this.toggleChecked = true;
-       this.trendValue = 'h';
-       this.toggleChangeProcess();
-     this.displayProfit(1);
+  $('.target_filter').removeClass('mat-button-toggle-checked');
+  $('.target_' + val).addClass('mat-button-toggle-checked');
+  $('.filter').removeClass('active');
+  var date = new Date();
+  this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+  if (val == 'current') {
+    this.toggleChecked = true;
+    this.trendValue = 'c';
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, date.getMonth(), 1), 'dd MMM yyyy');
 
-    }
-    else if(val == 'off') {
-        this.filterDate('m');
-          $('.trendMode').hide();
-    $('.nonTrendMode').css('display','block');
-    }
+    this.toggleChangeProcess();
+    this.displayProfit(1);
+  }
+  else if (val == 'historic') {
+    this.toggleChecked = true;
+    this.trendValue = 'h';
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 10, date.getMonth(), 1), 'dd MMM yyyy');
+
+    this.toggleChangeProcess();
+    this.displayProfit(1);
+  }
+  else if (val == 'off') {
+    this.filterDate('m');
+    $('.trendMode').hide();
+    $('.nonTrendMode').css('display', 'block');
+  }
+
+  //  $('.target_filter').removeClass('mat-button-toggle-checked');
+  //   $('.target_'+val).addClass('mat-button-toggle-checked');
+  //   $('.filter').removeClass('active');
+  //   if(val == 'current') {
+  //    this.toggleChecked = true;
+  //    this.trendValue = 'c';
+  //    this.toggleChangeProcess();
+  //    this.displayProfit(1);
+  //   }
+  //   else if(val == 'historic') {
+  //      this.toggleChecked = true;
+  //      this.trendValue = 'h';
+  //      this.toggleChangeProcess();
+  //    this.displayProfit(1);
+
+  //   }
+  //   else if(val == 'off') {
+  //       this.filterDate('m');
+  //         $('.trendMode').hide();
+  //   $('.nonTrendMode').css('display','block');
+  //   }
      $('.expenses_card').removeClass('active');
 
 }
@@ -2286,14 +2419,13 @@ this.trendxero=false;
  
   this.netProfitPercentChartTrend1= [];
          this.expensesChartTrendLabels1=[];
-          this.expensesChartTrend =[
-    {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
+          this.expensesChartTrend =[];
 
     this.finNetProfitPMSTrendLoader = false;
         this.finNetProfitTrendLoader = false;
           this.finNetProfitPercentTrendLoader = false;
                 data.data.net_profit.forEach(res => {  
-                  console.log(res.val.net);
+                  // console.log(res.val.net);
                      if (res.val.net != null)
                      this.netProfitChartTrend1.push(Math.round(res.val.net));
                      else
@@ -2338,9 +2470,13 @@ this.trendxero=false;
                       result.expenses.forEach((res) => {  
                         tempO.push(Math.round(res));
                       });                      
+                      let temp = {data: [],label: '' };
+                      temp.data = tempO;
+                      temp.label = result.meta_key;
+          this.expensesChartTrend.push(temp);
+                     // this.expensesChartTrend[key]['data'] = tempO;
+                     // this.expensesChartTrend[key]['label'] = result.meta_key;           
 
-                     this.expensesChartTrend[key]['data'] = tempO;
-                     this.expensesChartTrend[key]['label'] = result.meta_key;                  
                    }
                  }); 
                  this.expensesChartTrendLabels = data.data.duration; 
@@ -2380,6 +2516,7 @@ private finExpensesByCategoryTrend() {
                   
                  });
                  this.expensesChartTrendLabels =this.expensesChartTrendLabels1; 
+                 console.log('this.expensesChartTrendLabels', this.expensesChartTrendLabels)
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

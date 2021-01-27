@@ -11,30 +11,36 @@
                   <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
                 <input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
 <div class="sa_dashboard_inner_content sa_dentist_graphs_area">
-   <div class="sa_card gridshadow">
+   <div class="sa_card topbar-strip">
     <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 
       <div fxFlex>
-         <div class="sa_tabs_design"><span class="filter_w active filter sa_filter_span" (click)="filterDate('w')">This Week</span><span (click)="filterDate('m')" class="filter_m filter sa_filter_span">This Month</span><span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span><span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span><span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Current YTD</span><span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span
-          ">Financial YTD</span>
+         <div class="sa_tabs_design">
+           <span (click)="filterDate('m')" class="filter_m filter sa_filter_span active">This Month</span>
+           <span class="filter_lm active filter sa_filter_span" (click)="filterDate('lm')">Last Month</span>
+           <span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span>
+           <span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span>
+           <span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Calendar Year</span>
+           <span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span
+          ">Financial Year</span>
           <div class="custom_date">
-          <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="" (click)="filterDate('custom')" />
+          <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="Select Date Range" placeholder="Select Date Range" readonly (click)="filterDate('custom')" />
            <ngx-daterangepicker-material class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'" [locale]="{  displayFormat: 'DD-MM-YYYY',firstDay: 1}"></ngx-daterangepicker-material></div>
         </div>
       </div>
 
      <div class="dh-target">
          <div class="onofftoogle">
-          <span class="trend_mode_title">Trend Mode:</span>
-              <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group" aria-label="Font Style" >
+          <span class="trend_mode_title">Trend:</span>
+              <mat-button-toggle-group #group = "matButtonToggleGroup"  name="fontStyle" class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style" >
                <mat-button-toggle checked value = "off" class = "target_off target_filter" (click)="toggleFilter('off')">
                   <span>Off</span>
                </mat-button-toggle>
                <mat-button-toggle value = "current" class = "target_current target_filter" (click)="toggleFilter('current')">
-                  <span>Current</span>
+                  <span>Monthly</span>
                </mat-button-toggle>
                <mat-button-toggle value = "historic" class = "target_historic target_filter" (click)="toggleFilter('historic')">
-                  <span>Historic</span>
+                  <span>Annual</span>
                </mat-button-toggle>
             </mat-button-toggle-group>
           </div>
@@ -53,7 +59,8 @@
   <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg items_predictor md_mrn" >
     <mat-card class="itemsPredictor">
       <mat-card-content class="sa_matcard_content">
-        <mat-card-title class="text-center">No. New Patients By Referral
+        <mat-card-title class="text-center">
+            No. New Patients By Referral
           <div class="sa_box_title_right_buttons">
                <!--  <button mat-icon-button ><i class="fas fa-expand"></i></button>
                 <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -62,16 +69,18 @@
                     <button mat-menu-item>Download PDF</button>
                 </mat-menu> -->
             </div>
-         
+            <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
-        <div class="py-2">
-         <div style="height: 300px">
-         <div class="sa_back_btn_holder"><span *ngIf="newPatientsTimeLabelsl2.length > 0" (click) ="changeLevel('newPatient')">Back</span></div>
+        <div class="card-body">
+         <div style="height: 326px; position: relative;">
+         <div class="sa_back_btn_holder" *ngIf="newPatientsTimeLabelsl2.length > 0"><span (click) ="changeLevel('newPatient')">Back</span></div>
        <canvas *ngIf="newPatientsTimeLabels.length > 0"  #myCanvas2 baseChart [data]="newPatientsTimeData" [labels]="newPatientsTimeLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event,'newPatients')"  [options]="pieChartOptions" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]">
+        [plugins]="pluginObservable$ | async"  
+        (chartClick)="chartClicked($event,'newPatients')"  [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
         </canvas>
          <canvas *ngIf="newPatientsTimeLabelsl2.length > 0"  #myCanvas2 baseChart [data]="newPatientsTimeData" [labels]="newPatientsTimeLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-          [options]="pieChartOptions" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]">
+        [plugins]="pluginObservable$ | async"
+          [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
         </canvas>
 
 <div *ngIf="newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false" class="sa_nodata_div">
@@ -88,7 +97,10 @@
    <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg items_predictor md_mrn last" >
     <mat-card class="itemsPredictor">
       <mat-card-content class="sa_matcard_content">
-        <mat-card-title class="text-center">Revenue by Referral
+        <mat-card-title class="text-center">
+          <div>
+          Revenue by Referral
+          </div>
           <div class="sa_box_title_right_buttons">
                <!--  <button mat-icon-button ><i class="fas fa-expand"></i></button>
                 <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -97,24 +109,27 @@
                     <button mat-menu-item>Download PDF</button>
                 </mat-menu> -->
             </div>
-         
+            <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
-          
-        <div class="py-2">
-         <div  style="height: 300px">
-           <div class="sa_back_btn_holder"><span *ngIf="revenueReferralLabelsl2.length > 0" (click) ="changeLevel('revenue')">Back</span></div>
-       <canvas *ngIf="revenueReferralLabels.length > 0"  #myCanvas2 baseChart [data]="revenueReferralData" [labels]="revenueReferralLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event,'revenue')" [options]="pieChartOptions" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]">
+        <div class="card-body">
+        
+         <div  style="height: 326px;position: relative;">
+           <div class="sa_back_btn_holder" *ngIf="revenueReferralLabelsl2.length > 0"><span (click) ="changeLevel('revenue')">Back</span></div>
+       <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabels.length > 0" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event,'revenue')" 
+          [plugins]="revenuePluginObservable$ | async"
+          [options]="pieChartOptions" [colors]="pieChartColors">
         </canvas>
-         <canvas *ngIf="revenueReferralLabelsl2.length > 0"  #myCanvas2 baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-          [options]="pieChartOptions" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]">
+         <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabelsl2.length > 0" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+          [options]="pieChartOptions" [colors]="pieChartColors">
         </canvas>
 
          <div *ngIf="revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
           </div>
-      </div>
+      
+    </div>
     </div>
       </mat-card-content>
     </mat-card>
@@ -126,17 +141,23 @@
 <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
-         <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
-        <mat-card-title class="text-center">No. New Patients
+        <mat-card-title class="text-center">
+          <div>
+          <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{newPatientsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
+          No. New Patients
+          </div>
             <div class="sa_box_title_right_buttons">
             </div>  
+            <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
+        <div class="card-body">
           <div class="chart py-2">
           <div *ngIf="showTrend == false" style="height: 190px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newPatientsTotal" 
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
+           [backgroundColor]="backgroundColor"
            [cap] ="cap"
            [max] = "maxnewPatientsGoal"
            [size] = "size">
@@ -157,22 +178,25 @@
               <p></p>
           </div>
       </div>
-          <div *ngIf="showTrend == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
+        </div>
+        <div class="card-footer">
+          <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{newPatientsTotal | number:'1.0-0'}}</h3>
-                         <small *ngIf="currentText != ''">{{currentText}}</small>
-                        <small *ngIf="currentText == ''">Current</small>
+                        <h3 class="m-0 value-num">{{newPatientsTotal | number:'1.0-0'}}</h3>
+                         <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                        <span class="value-text" *ngIf="currentText == ''">Current</span>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 font-light">{{newPatientsPrevTotal | number:'1.0-0'}}</h3>
-                        <small *ngIf="trendText != ''">{{trendText}}</small>
-                        <small *ngIf="trendText == ''">Previous</small>
+                        <h3 class="m-0 value-num">{{newPatientsPrevTotal | number:'1.0-0'}}</h3>
+                        <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                        <span class="value-text" *ngIf="trendText == ''">Previous</span>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 font-light">{{newPatientsGoal | number:'1.0-0'}}</h3>
-                        <small>Goal</small>
+                        <h3 class="m-0 value-num">{{newPatientsGoal | number:'1.0-0'}}</h3>
+                        <span class="value-text">Goal</span>
                     </div>
-                </div>       
+                </div>   
+                </div>    
       </mat-card-content>
     </mat-card>
     <div *ngIf="fdnewPatientsRatioLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div>
@@ -181,15 +205,15 @@
   <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
-         <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
         <mat-card-title class="text-center">
-          <div fxLayout="row wrap" fxLayoutGap="10px">
-  <div fxFlex>
-  Cost of New Patient Acquisition
-</div>
-                <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-raised-button mat-gray mat-button-sm mat-green-button" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Set Categories</button></div>
+            <div>
+              <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
+              Cost of New Patient Acquisition
             </div>
+            <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Set Categories</button></div>
+            <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png" *ngIf="showTrend == true">
         </mat-card-title>
+        <div class="card-body">
           <div class="chart py-2">
           <div>  
             
@@ -198,6 +222,7 @@
            [value]="newAcqValue" 
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
+           [backgroundColor]="backgroundColor"
            [cap] ="cap"
            [prepend] ="gaugePrependText"
            [size] = "size">
@@ -219,26 +244,32 @@
           </div>
     </div>
       </div>  
+        </div>
+        <div class="card-footer">
       <div *ngIf="showTrend == false && newAcqValue>0" fxLayout="row wrap" class="pieChartDetails sa_chart_details_sec">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">$ {{newAcqValue | number:'0.0-0'}}</h3>
-                         <small *ngIf="currentText != ''">{{currentText}}</small>
-                        <small *ngIf="currentText == ''">Current</small>
+                        <h3 class="m-0 value-num">$ {{newAcqValue | number:'0.0-0'}}</h3>
+                         <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                        <span class="value-text" *ngIf="currentText == ''">Current</span>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">$ {{newAcqValuePrev | number:'0.0-0'}}</h3>
-                        <small *ngIf="trendText != ''">{{trendText}}</small>
-                        <small *ngIf="trendText == ''">Previous</small>
+                        <h3 class="m-0 value-num">$ {{newAcqValuePrev | number:'0.0-0'}}</h3>
+                        <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                        <span class="value-text" *ngIf="trendText == ''">Previous</span>
                     </div>
-                </div>      
+                </div>   
+                </div>   
       </mat-card-content>
     </mat-card>
   </div>                                                                                                                                                                                
    <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians last">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
-         <span *ngIf="showTrend == false  && trendText" class="referral_cliniciansrral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{visitsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{visitsTooltip}}.png"></span>         
-        <mat-card-title class="text-center">Total Visits
+        <mat-card-title class="text-center">
+          <div>
+          <span *ngIf="showTrend == false  && trendText" class="referral_cliniciansrral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{visitsPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{visitsTooltip}}.png"></span>         
+          Total Visits
+          </div>
             <div class="sa_box_title_right_buttons">
                 <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
                 <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -247,7 +278,9 @@
                     <button mat-menu-item>Download PDF</button>                                                                                                                
                 </mat-menu> -->
             </div>  
-        </mat-card-title>                                         
+            <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
+        </mat-card-title>      
+        <div class="card-body">                                   
            <div class="chart py-2">           
           
           <div *ngIf="showTrend == false" style="height: 190px">
@@ -255,6 +288,7 @@
            [value]="visitsTotal" 
            [thick]="gaugeThick"  
            [foregroundColor]="foregroundColor"
+           [backgroundColor]="backgroundColor"
            [cap] ="cap"
            [size] = "size">
           </ngx-gauge>
@@ -275,19 +309,22 @@
               <p></p>
           </div>
       </div>
-          <div *ngIf="showTrend == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails">
+        </div>
+        <div class="card-footer">
+          <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 font-light">{{visitsTotal | number:'1.0-0'}}</h3>
-                        <small *ngIf="currentText != ''">{{currentText}}</small>
-                        <small *ngIf="currentText == ''">Current</small>
+                        <h3 class="m-0 value-num">{{visitsTotal | number:'1.0-0'}}</h3>
+                        <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                        <span class="value-text" *ngIf="currentText == ''">Current</span>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                       <h3 class="m-0 font-light">{{visitsPrevTotal | number:'1.0-0'}}</h3>
-                       <small *ngIf="trendText != ''">{{trendText}}</small>
-                       <small *ngIf="trendText == ''">Previous</small>
+                       <h3 class="m-0 value-num">{{visitsPrevTotal | number:'1.0-0'}}</h3>
+                       <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                       <span class="value-text" *ngIf="trendText == ''">Previous</span>
                     </div>
                     
-                </div>       
+                </div> 
+                </div>      
       </mat-card-content>
     </mat-card>
     <div *ngIf="fdvisitsRatioLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>

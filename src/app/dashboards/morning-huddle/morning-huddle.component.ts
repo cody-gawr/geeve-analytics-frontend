@@ -40,6 +40,7 @@ export class MorningHuddleComponent implements OnInit {
 
 
     public schedulePatieltd:any = 0;
+    public schedulePatielDate:any = '';
     public scheduleNewPatieltd:any = 0;
     public schedulehours:any = 0;
     public unSchedulehours:any = 0;
@@ -49,20 +50,24 @@ export class MorningHuddleComponent implements OnInit {
 
     
     public reAppointment:any = 0;
+    public reAppointmentdate:any = '';
     public unscheduledPatients:any = 0;
     public unscheduledValue:any = 0;
     public todayPatients:any = 0;
+    public todayPatientsDate:any = '';
     public todayUnscheduledHours:any = 0;
     public todayUnscheduledBal:any = 0;
     public todayPostopCalls:any = 0;
    
     public remindersRecallsOverdue:any = [];
+    public remindersRecallsOverdueDate:any = '';
     public treatmentOutstanding:any = [];
     public outstandingBalances:any = [];
     public followupsUnscheduledPatients:any = [];
+    public followupsUnscheduledPatientsDate:any = '';
     public followupPostOpCalls:any = [];
     public clinicDentists:any = [];
-    public currentDentist:any = 1;
+    public currentDentist:any = 0;
     public currentDentistSchedule:any = 0;
     
     public dentistListLoading:boolean = false;
@@ -72,9 +77,9 @@ export class MorningHuddleComponent implements OnInit {
 
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
-  displayedColumns1: string[] = ['name', 'dentist', 'start'];
-  displayedColumns2: string[] = ['name', 'start', 'code'];
-  displayedColumns3: string[] = ['name', 'start', 'outstanding'];
+  displayedColumns1: string[] = ['start', 'name', 'dentist',];
+  displayedColumns2: string[] = ['start', 'name', 'code'];
+  displayedColumns3: string[] = ['start', 'name', 'outstanding'];
   displayedColumns4: string[] = ['name', 'phone', 'code','status'];
   displayedColumns5: string[] = ['name', 'phone', 'code','status'];
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
@@ -154,11 +159,45 @@ initiate_clinic() {
 
   refreshPerformanceTab(event){
     this.previousDays = event;
+    /*******Tab 1 *******/
     this.getDentistPerformance();
     this.getRecallRate();
     this.getTreatmentRate();
     this.getDentistList();
+    /*******Tab 1 *******/
+
+    /*******Tab 2 *******/
+    if(this.currentDentist == 0){
+        this.currentDentist = null;
+    }
+    this.getSchedulePatients(this.currentDentist);
+    this.getScheduleNewPatients(this.currentDentist);
+    this.getScheduleHours(this.currentDentist);
+    this.getUnscheduleHours(this.currentDentist);
+    this.getAppointmentCards(this.currentDentist);
+    /*******Tab 2 *******/
+
+    /*******Tab 3 *******/
+    this.getReAppointment();
+    this.getUnscheduledPatients();
+    this.getUnscheduledValues();
+    this.getTodayPatients();
+    this.getTodayUnscheduledHours();
+    this.getTodayUnscheduledBal();
+    this.getTodayPostopCalls();
+    /*******Tab 3 *******/
+    /*******Tab 4 *******/
+     this.getReminders();
+    this.getRemindersTreatmentOutstanding();
+    this.getRemindersOutstandingBalances();
+    /*******Tab 4 *******/
+    
+    /*******Tab 5 *******/
+    this.getFollowupsUnscheduledPatients();
+    this.getFollowupPostOpCalls();
+    /*******Tab 5 *******/
   }
+
   refreshScheduleTab(event){
     this.currentDentist = event;
     if(this.currentDentist == 0){
@@ -184,6 +223,7 @@ initiate_clinic() {
     this.morningHuddleService.getReminders( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.remindersRecallsOverdue = production.data;     
+        this.remindersRecallsOverdueDate = production.date;     
       }
     }); 
   } 
@@ -209,6 +249,7 @@ initiate_clinic() {
     this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.followupsUnscheduledPatients = production.data;     
+        this.followupsUnscheduledPatientsDate = production.date;     
       }
     }); 
   } 
@@ -227,7 +268,8 @@ initiate_clinic() {
    getReAppointment(){
     this.morningHuddleService.getReAppointment( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
-        this.reAppointment = production.data;     
+        this.reAppointment = production.data.reappointment;     
+        this.reAppointmentdate = production.data.date;     
       }
     }); 
   } 
@@ -251,7 +293,8 @@ initiate_clinic() {
    getTodayPatients(){
     this.morningHuddleService.getTodayPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
-        this.todayPatients = production.data;
+        this.todayPatients = production.data.patient;
+        this.todayPatientsDate = production.data.date;
       }
     }); 
   }
@@ -286,14 +329,15 @@ initiate_clinic() {
   
 /***** Tab 2 ***/
    getSchedulePatients(dentist){
-    this.morningHuddleService.getPatients( this.clinic_id,dentist,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getPatients( this.clinic_id,dentist,this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
-        this.schedulePatieltd = production.data;
+        this.schedulePatieltd = production.data.patient;
+        this.schedulePatielDate = production.data.date;
       }
     }); 
   }
    getScheduleNewPatients(dentist){
-    this.morningHuddleService.getNewPatients( this.clinic_id, dentist,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getNewPatients( this.clinic_id, dentist,this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.scheduleNewPatieltd = production.data;
       }
@@ -301,14 +345,14 @@ initiate_clinic() {
   }
 
    getScheduleHours(dentist){
-    this.morningHuddleService.getScheduleHours( this.clinic_id,  dentist,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getScheduleHours( this.clinic_id,  dentist, this.previousDays, this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.schedulehours = production.data;
       }
     }); 
   }
    getUnscheduleHours(dentist){
-    this.morningHuddleService.getUnscheduleHours( this.clinic_id, dentist,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getUnscheduleHours( this.clinic_id, dentist, this.previousDays, this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.unSchedulehours = production.data;
       }
@@ -316,7 +360,7 @@ initiate_clinic() {
   }
 
    getAppointmentCards(dentist){
-    this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist, this.previousDays,  this.user_type ).subscribe((production:any) => {
+    this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays, this.previousDays,  this.user_type ).subscribe((production:any) => {
       if(production.status == true) {
         this.appointmentCards.data = production.data;
       }
@@ -365,7 +409,9 @@ initiate_clinic() {
 
 
   getdifference (a, b) { 
-    return Math.abs(a - b); 
+    let difference: any = Math.abs(a - b);
+    difference = difference>0 ? difference : (difference.toString().split('-').join());
+    return difference; 
   }
 
 
@@ -378,7 +424,7 @@ initiate_clinic() {
   }
   
   toggleUpdate(event,pid,cid,uid,type) {    
-    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,uid,type).subscribe((update:any) => {
+    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,uid,type, this.previousDays).subscribe((update:any) => {
       console.log(update,'***');
     });
   }

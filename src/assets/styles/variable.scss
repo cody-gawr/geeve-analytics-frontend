@@ -8,8 +8,9 @@ File: scss
 
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
 
-$bodyfont:'Poppins', sans-serif;
-$headingfont:'Poppins', sans-serif; 
+$bodyfont: 'Gilroy-Regular';
+$headingfont: 'Gilroy-Regular'; 
+
 
 @import '~@angular/material/theming';
 
@@ -95,6 +96,6 @@ $border: rgba(120, 130, 140, 0.13);
 $table-border:#f3f1f1;
 $card-brd:#d7dfe3;
 $dark-text: #848a96;
-$radius: 4px;
+$radius: 10px;
 $form-brd: #d9d9d9;
 
