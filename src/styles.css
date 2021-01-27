@@ -606,10 +606,6 @@ html .page-wrapper { height: 100vh!important }
 
 .sa_seprate_toogle_options { margin-left: 16px; border-left: 1px solid #ccc; padding-left: 13px; padding-right: 15px; }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {background-image: linear-gradient(to top, #11998e 0%, #38ef7d 100%);}
-
-.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {    box-shadow: inset 3px 4px 5px rgba(242, 226, 226, 0.75);
-    background-color: #e5ffec!important; }
 
 .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
     background: rgb(24,166,137); /* Old browsers */
@@ -2088,12 +2084,13 @@ body .mat-gray {
 .d-none {display: none;}
 
 .page-content.stepper_content {
-    background: url(/assets/img/background_stepper.jpg);
-    padding-left: 25px !important;
+    /* background: url(/assets/img/background_stepper.jpg); */
+    padding-left: 0px !important;
     background-size: cover;
-    padding-right: 25px !important;
+    padding-right: 0px !important;
     background-attachment: fixed;
     padding-bottom: 0px !important;
+    background: white;
     position: relative;
     min-height: 770px;
     height: 100%;
@@ -2108,6 +2105,7 @@ body .mat-gray {
 }
 
 .stepper_content .logo_jeeve {
+    padding-left: 15px;
     margin-bottom: 20px;
     margin-top: -70px;
     max-width: 160px;
@@ -2115,17 +2113,38 @@ body .mat-gray {
 
 
 
-.stepper_innner {top: 0px;background: #fff;border-radius: 20px;box-shadow: -20px -20px 22px rgb(0, 0, 0, 0.04);position: relative;
+.stepper_innner {top: 0px;background: #fff;border-radius: 20px;position: relative;
     min-height: -webkit-fit-content;min-height: 530px;left: 0px;width: 100%;display: inline-table;margin-bottom: 25px;}
 
+.stepper_innner .half-bg {
+    height: 100%;
+    width: 20%;
+    background-color: #047676;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
 
-
-.stepper_content .cross_icon_top {width: 120px;opacity: 1;position: absolute;right: 26px;top: 25px;z-index: 999;background: #1d2949;
-    border-radius: 25px;padding: 8px 9px;color: #fff;font-weight: 500;height: 40px;text-align: center;cursor: pointer;}
+.stepper_content .cross_icon_top {
+    background: #088a8a;
+    border-radius: 25px;
+    padding: 11px 9px 2px;
+    width: 120px;
+    opacity: 1;
+    position: absolute;
+    right: 26px;
+    top: 25px;
+    z-index: 999;
+    color: #fff;
+    font-weight: 500;
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
 
 .stepper_content .fas.fa-power-off { margin-right: 6px;}
 
-.stepper_content .mat-stepper-vertical { padding-top: 70px; position: relative;}
+.stepper_content .mat-stepper-vertical { padding: 70px 0px; position: relative;}
 
 .stepper_content .mat-stepper-vertical {background-color: transparent;}
 
@@ -2179,26 +2198,43 @@ body .mat-gray {
     background-color: #b0c6c6;
     border: 1px solid #b0c6c6;
 }
+.setup-form-box {
+    background: white;
+    padding: 42px 30px;
+    border-radius: 8px;
+    box-shadow: 2px 0px 32px 0px rgb(3 51 99 / 17%);
+}
 .stepper_content .mat-vertical-content-container {
     margin-left: 50px;
 }
 .stepper_content .mat-vertical-content {
-    padding: 0 24px 24px 75px;
+    padding: 24px 24px 24px 75px;
 }
 .stepper_content .intro_title h2 {
-    font-size: 42px;
+    font-size: 35px;
+    font-family: 'Gilroy-Medium';
     font-weight: 800;
     color: #1d2a49;
-    line-height: 60px;
+    line-height: 1.1;
     margin-top: 0px;
     margin-bottom: 0;
+    text-align: center;
 }
 .stepper_content .intro_title h3 {
-    color: #263a5b;
-    font-size: 26px;
+    color: #777777;
+    font-family: 'Gilroy-Medium';
+    font-size: 25px;
     margin-top: 0px;
     line-height: 36px;
     margin-bottom: 0;
+    text-align: center;
+}
+.step-2-content {
+    text-align: center;
+    margin: 24px auto 0px;
+    line-height: 1.1;
+    color: #777777;
+    font-family: 'Gilroy-Medium';
 }
 .stepper_content .intro_title h4 {
     color: #263a5b;
@@ -2214,9 +2250,10 @@ body .mat-gray {
 }
 .stepper_content .sa_forms_design input {
     font-size: 14px;
-    font-family: 'Gilroy-Regular';
     height: 43px;
-    border: 1px solid #b8c6cc;
+    border: 2px solid #b4d6d6;
+    background-color: #f8fafa;
+    font-family: 'Gilroy-Medium'
 }
 .stepper_content .right_upload_btn {
     position: relative;
@@ -2300,6 +2337,16 @@ body .mat-gray {
 .stepper_content .sa_forms_design .comman_input input {
     height: 45px;
     font-size: 16px;
+}
+.setup-stepper-button {
+    padding: 10px 20px 8px;
+    border-radius: 4px;
+    border: none;
+    background-image: linear-gradient(to top, #047676 0%, #0c9696 100%);   
+    color: #feffff;
+    font-family: 'Gilroy-Medium';
+    font-size: 14px;
+    text-transform: uppercase;
 }
 
 .stepper_content .comman_input input {
@@ -2764,9 +2811,10 @@ top: 29px;
 
 .connect-xero-btn {
     padding: 70px 0;
+    text-align: center;
     background-image: url(assets/img/Xero.png); 
     background-repeat: no-repeat;
-    background-position: center left;
+    background-position: center;
     background-size:contain;
 }
 
@@ -2942,8 +2990,9 @@ body .stepper_content .invite_section .sa-form-group {
     margin-right: 30px;
 }
 .page-content.stepper_content {
-    padding-left: 15px !important;
-    padding-right: 15px !important;
+    /* padding-left: 15px !important;
+    padding-right: 15px !important; */
+  
 }
 .stepper_content .right-img {
     margin: auto;
@@ -3551,7 +3600,7 @@ ul.download-sync-list {
 }
 
 .mat-slide-toggle-thumb{
-    background-color: #bab7b7 !important;
+    background-color: #bab7b7;
 }
 
 .mat-slide-toggle-thumb{
@@ -3559,6 +3608,17 @@ ul.download-sync-list {
     height: 18px !important;
     position: relative;
     top: 3px;
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+    /* background-image: linear-gradient(to top, #11998e 0%, #38ef7d 100%); */
+    background-color: #fff !important;
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    /* box-shadow: inset 3px 4px 5px rgba(242, 226, 226, 0.75); */
+    box-shadow: inset 3px 4px 5px rgba(138, 255, 255, 0.17);
+    background-color: #088a8a !important;
 }
 
 .mat-slide-toggle-bar{

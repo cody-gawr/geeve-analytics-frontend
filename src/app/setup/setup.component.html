@@ -14,7 +14,7 @@
   </ng-template>
 <mat-step  id="datata" state="home" [completed]="step1Completed" [editable]="step1editable">
 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" id="step2">
-   <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(48% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
+  <div fxFlex="calc(35% - 10px)" fxFlex.md="calc(35% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box">
   <div class="intro_title">
      <h2>Welcome To <span>Jeeve Analytics !</span></h2>
      <h3>Tell Us about your practice</h3>
@@ -23,14 +23,18 @@
 <div mat-dialog-content class="sa_forms_design">
   <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
      <div fxFlex="calc(48% - 15px)" fxFlex.md="50" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
-         <input tabindex="1" [(ngModel)]="displayName" placeholder="Display Name" class="form-control-dialog" [formControl]="firstFormGroup.controls['displayName']">
+         <input tabindex="1" [(ngModel)]="displayName" placeholder="Your Name" class="form-control-dialog" [formControl]="firstFormGroup.controls['displayName']">
           <small *ngIf="firstFormGroup.controls['displayName'].hasError('required') && firstFormGroup.controls['displayName'].touched" class="text-danger support-text">Display Name is Required.</small>
     </div>
-  </div>
-  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
      <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
          <input tabindex="1" [(ngModel)]="name" placeholder="Clinic Name" class="form-control-dialog" (keypress)="omit_special_char($event)" [formControl]="firstFormGroup.controls['name']">
          <small *ngIf="firstFormGroup.controls['name'].hasError('required') && firstFormGroup.controls['name'].touched" class="text-danger support-text">Clinic Name is Required.</small>
+    </div>
+  </div>
+  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+    <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
+         <input tabindex="1" [(ngModel)]="clinicEmail" placeholder="Clinic Email" class="form-control-dialog" [formControl]="firstFormGroup.controls['clinicEmail']">
+          <small *ngIf="(firstFormGroup.controls['clinicEmail'].errors?.email && firstFormGroup.controls['clinicEmail'].touched) ||(firstFormGroup.controls['clinicEmail'].hasError('required') && firstFormGroup.controls['clinicEmail'].touched)" class="text-danger support-text">You must include a valid email address.</small>
     </div>
       <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
         <input tabindex="1" type="text" [(ngModel)]="phone_no" placeholder="Phone No" class="form-control-dialog" oninput="this.value = this.value.slice(0,12);" [formControl]="firstFormGroup.controls['phone_no']" (keypress)="numberOnly($event)"  >
@@ -40,10 +44,7 @@
 
    </div>
   <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
-     <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
-         <input tabindex="1" [(ngModel)]="clinicEmail" placeholder="Clinic Email" class="form-control-dialog" [formControl]="firstFormGroup.controls['clinicEmail']">
-          <small *ngIf="(firstFormGroup.controls['clinicEmail'].errors?.email && firstFormGroup.controls['clinicEmail'].touched) ||(firstFormGroup.controls['clinicEmail'].hasError('required') && firstFormGroup.controls['clinicEmail'].touched)" class="text-danger support-text">You must include a valid email address.</small>
-    </div>
+     
      <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
        <input tabindex="1" [(ngModel)]="address" [formControl]="firstFormGroup.controls['address']" placeholder="Address" class="form-control-dialog address_input">
        <small *ngIf="firstFormGroup.controls['address'].hasError('required') && firstFormGroup.controls['address'].touched" class="text-danger support-text">Address is Required.</small>
@@ -104,39 +105,46 @@
   
       </div> -->
 </div>
- </form>
+<div class="order2">
+   <div class="text-center mt-2">
+      <Button class="setup-stepper-button" (click)="saveclinic(stepper)" [disabled]="!firstFormGroup.valid">Continue</Button>
+   </div>
+  </div> 
+</form>
 </div>
-  <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(48% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order3">
+  <div fxFlex="calc(45% - 15px)" fxFlex.md="calc(45% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order3" fxFlexAlign="center">
   <div class="right-img">
      <img src="assets/stepper/Gif1.gif">
    </div>
  </div>
 </div>
-<div class="order2">
+<!-- <div class="order2">
    <div class="skipwizard bottom_btns_page">
     <button mat-raised-button color="green" (click)="saveclinic(stepper)" [disabled]="!firstFormGroup.valid">Continue</button>
   </div>
- </div>
+ </div> -->
 </mat-step>
 <mat-step id="step2" [completed]="step2Completed" [editable]="step2editable">
  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="30px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-  <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
-  <div class="intro_title stripe_payment">
-     <div class="intro_title stripe_payment">
+  <div fxFlex="calc(35% - 15px)" fxFlex.md="calc(35% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box">
+  <div class="intro_title stripe_payment relative-box">
+     <div class="intro_title stripe_payment absolute-center">
     <h2>Connect To <span>Xero</span></h2>
-    <h4>Xero is online accounting software for your small business. Please sign up for an account or connect your existing Xero account</h4>
+    <h4 class="step-2-content">Xero is online accounting software for your small business. Please sign up for an account or connect your existing Xero account</h4>
     <h5 *ngIf="xeroOrganization != ''">You are now connected to <span>{{xeroOrganization}}</span> organization</h5>
    <div class="connect-xero-btn">
+      
+    <Button class="setup-stepper-button" (click)="xeroConnect ? disconnectXero() : openXero()">{{ xeroConnect ? 'Disconnect >>' : 'Connect >>' }}</Button>
+ 
+   <!-- <button mat-raised-button color="green"  class="mat-gray connect-xero" *ngIf ="xeroConnect == false" mat-raised-button (click) = "openXero()">Connect</button>
 
-   <button mat-raised-button color="green"  class="mat-gray connect-xero" *ngIf ="xeroConnect == false" mat-raised-button (click) = "openXero()">Connect</button>
-
-   <button mat-raised-button color="green" class="disconnect-xero" *ngIf ="xeroConnect == true" mat-raised-button (click) = "disconnectXero()">Disconnect</button>
+   <button mat-raised-button color="green" class="disconnect-xero" *ngIf ="xeroConnect == true" mat-raised-button (click) = "disconnectXero()">Disconnect</button> -->
  
   </div>
   </div>
   </div>
   </div>
-  <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
+  <div fxFlex="calc(45% - 15px)" fxFlex.md="calc(45% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
     <div class="right-img">
       <img src="assets/stepper/GifXero3.gif">
     </div>   
@@ -154,7 +162,7 @@
 </mat-step>
 <mat-step id="step3" [completed]="step3Completed" [editable]="step3editable">
  <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px">
-   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
+   <div fxFlex="calc(40% - 15px)" fxFlex.md="calc(40% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box">
     <form [formGroup]="inviteFormGroup">
   <div class="intro_title">
       <h2>Invite your staff to <span>use Jeeve Analytics</span> </h2>
@@ -201,7 +209,7 @@
   </form>
 </div>
 
-   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
+   <div fxFlex="calc(50% - 15px)" fxFlex.md="calc(50% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
     <div class="right-img">
       <img src="assets/stepper/Gif4.gif">
     </div>   
