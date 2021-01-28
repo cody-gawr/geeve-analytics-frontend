@@ -2267,7 +2267,7 @@ body .mat-gray {
     border: 1px solid #18a689;
 }
 .stepper_content .intro_title h2 span {
-    color: #18a689;
+    color: #088a8a;
 }
 .stepper_content .right_upload_btn input {
     position: absolute;
@@ -2545,7 +2545,7 @@ ul.download-sync-list {
     left: 0px;
     top: 0;
     font-family: 'Gilroy-Bold';
-    color: #18a689;
+    color: #088a8a;
     text-transform: uppercase;
     counter-increment: step;
     font-size: 14px;
