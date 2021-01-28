@@ -425,7 +425,7 @@ html .page-wrapper { height: 100vh!important }
 
 .sa_logout_icon { position: fixed; left: 0; bottom: 0; text-align: center; width: 250px; padding: 20px 0px; background-color: #027475; overflow: hidden; }
 
-.sa_logout_icon button {width: auto; height: auto; padding: 0px 50px 0 50px; background: rgb(255 255 255 / 15%)!important;font-size: 16px; color: #84c2be;position: unset; margin: auto; display: block; border-radius: 6px;}
+.sa_logout_icon button {font-family: 'Gilroy-Medium'; width: auto; height: auto; padding: 0px 50px 0 50px; background: rgb(255 255 255 / 15%)!important;font-size: 16px; color: #84c2be;position: unset; margin: auto; display: block; border-radius: 6px;}
 
 .sa_main_grid_dashboard { overflow: hidden; position: relative; background-color: #fff; float: left;width: 100%; margin-bottom: 20px; padding: 30px; border-radius: 10px;box-shadow: 0 11px 54px rgba(0,98,83,0.1);}
 
