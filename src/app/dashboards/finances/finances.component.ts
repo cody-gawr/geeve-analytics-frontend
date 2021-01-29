@@ -50,11 +50,11 @@ export class FinancesComponent implements AfterViewInit {
    public clinic_id:any ={};
    public dentistCount:any ={};
    public netProfitIcon:string ='';
-   public netProfitPercentIcon:string ='';
+   public netProfitProductionIcon:string ='';
    public netProfitPmsIcon:string ='';
 
    public netProfitVal:any= 0;
-   public netProfitPercentVal:any =0;
+   public netProfitProductionVal:any =0;
    public netProfitPmsVal:any =0;
    public duration='m';
    public predictedChartColors;
@@ -1275,27 +1275,27 @@ public netProfitTrendTotal;
     );
   }
 
-  public netProfitPercentTrendIcon;
- public  netProfitPercentTrendTotal;
+  public netProfitProductionTrendIcon;
+ public  netProfitProductionTrendTotal;
     //netProfit
   private netProfitPercent() {
 
     var user_id;
     var clinic_id;
-    this.netProfitPercentTrendIcon = "down";
-           this.netProfitPercentTrendTotal=0;
+    this.netProfitProductionTrendIcon = "down";
+           this.netProfitProductionTrendTotal=0;
   this.financesService.NetProfitPercent(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
        if(data.message == 'success'){
-        this.netProfitPercentVal = data.data;  
-        this.netProfitPercentTrendTotal=data.data_ta;  
+        this.netProfitProductionVal = data.data;  
+        this.netProfitProductionTrendTotal=data.data_ta;  
 
-        if(this.netProfitPercentVal>=0)
-        this.netProfitPercentIcon = "";
+        if(this.netProfitProductionVal>=0)
+        this.netProfitProductionIcon = "";
         else
-        this.netProfitPercentIcon = "-";
-        this.netProfitPercentVal =data.data;    
-        if(this.netProfitPercentVal>=this.netProfitPercentTrendTotal)
-            this.netProfitPercentTrendIcon = "up"; 
+        this.netProfitProductionIcon = "-";
+        this.netProfitProductionVal =data.data;    
+        if(this.netProfitProductionVal>=this.netProfitProductionTrendTotal)
+            this.netProfitProductionTrendIcon = "up"; 
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1313,8 +1313,8 @@ public netProfitPmsTrendTotal;
     var clinic_id;
  this.netProfitPmsTrendIcon = "down";
            this.netProfitPmsTrendTotal=0;
-           this.netProfitPercentTrendIcon = "down";
-           this.netProfitPercentTrendTotal=0;
+           this.netProfitProductionTrendIcon = "down";
+           this.netProfitProductionTrendTotal=0;
                var clinic_id;
            this.netProfitTrendIcon = "down";
            this.netProfitTrendTotal=0;
@@ -1342,15 +1342,15 @@ public netProfitPmsTrendTotal;
       if(this.netProfitVal>=this.netProfitTrendTotal)
             this.netProfitTrendIcon = "up";     
 
-        this.netProfitPercentVal = Math.round(data.data.net_profit_percent);  
-        this.netProfitPercentTrendTotal=Math.round(data.data_ta.net_profit_percent);  
+        this.netProfitProductionVal = Math.round(data.data.net_profit_production);  
+        this.netProfitProductionTrendTotal=Math.round(data.data_ta.net_profit_production);  
 
-        if(this.netProfitPercentVal>=0)
-        this.netProfitPercentIcon = "";
+        if(this.netProfitProductionVal>=0)
+        this.netProfitProductionIcon = "";
         else
-        this.netProfitPercentIcon = "-";
-        if(this.netProfitPercentVal>=this.netProfitPercentTrendTotal)
-            this.netProfitPercentTrendIcon = "up";       
+        this.netProfitProductionIcon = "-";
+        if(this.netProfitProductionVal>=this.netProfitProductionTrendTotal)
+            this.netProfitProductionTrendIcon = "up";       
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -2430,8 +2430,8 @@ this.trendxero=false;
                      this.netProfitChartTrend1.push(Math.round(res.val.net));
                      else
                      this.netProfitChartTrend1.push(0);
-                     if(res.val.percent) 
-                     this.netProfitPercentChartTrend1.push(Math.round(res.val.percent));       
+                     if(res.val.production) 
+                     this.netProfitPercentChartTrend1.push(Math.round(res.val.production));
                      else
                      this.netProfitPercentChartTrend1.push(0);       
                     if(res.val.pms)

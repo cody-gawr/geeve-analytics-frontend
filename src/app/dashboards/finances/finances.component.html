@@ -80,6 +80,25 @@
     <!-- Column-->
     <div class="nonTrendMode">
       <div class="pb-2" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+
+        <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="md_mrn">
+          <mat-card-content class="sa_matcard_content"> 
+            <!-- column -->
+            <div class="sa_main_grid_dashboard profit-yellow d-flex no-block align-items-center">
+              <div class="stats-icon">
+                <img src="../assets/images/net-profit-xero.png" alt/>
+                <i class="fas fa-chart-bar"></i>
+              </div>
+              <div class="stats">
+                <h3 class="m-0"> Production</h3>
+                <h1 class="m-0">$ {{netProfitProductionVal | number:'1.0-0'}}</h1>
+              </div>
+              <div class="info-button"><img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png"></div>
+
+              <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPercentIcon}}-alt"></i></div> --> 
+            </div>
+          </mat-card-content>
+        </div>
         <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="md_mrn">
           <mat-card-content class="sa_matcard_content"> 
             <!-- column -->
@@ -98,24 +117,7 @@
             </div>            
           </mat-card-content>
         </div>
-        <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="md_mrn">
-          <mat-card-content class="sa_matcard_content"> 
-            <!-- column -->
-            <div class="sa_main_grid_dashboard profit-yellow d-flex no-block align-items-center">
-              <div class="stats-icon">
-                <img src="../assets/images/net-profit-xero.png" alt/>
-                <i class="fas fa-chart-bar"></i>
-              </div>
-              <div class="stats">
-                <h3 class="m-0"> Net Profit % (Xero)</h3>
-                <h1 class="m-0">{{netProfitPercentVal | number:'1.0-0'}}%</h1>
-              </div>
-              <div class="info-button"><img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png"></div>
-
-              <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPercentIcon}}-alt"></i></div> --> 
-            </div>
-          </mat-card-content>
-        </div>
+        
         <div fxFlex="calc(32% - 10px)" fxFlex.md="calc(32% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last md_mrn">
           <mat-card-content class="sa_matcard_content"> 
             <!-- column -->
@@ -125,7 +127,7 @@
                 <i class="fas fa-chart-bar"></i>
               </div>
               <div class="stats">
-                <h3 class="m-0">Net Profit % (PMS)</h3>
+                <h3 class="m-0">Net Profit % </h3>
                 <h1 class="m-0"> {{netProfitPmsVal | number:'1.0-0'}}%</h1>
               </div>
               <div class="info-button"><img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png"></div>
@@ -482,17 +484,17 @@ expenses_card custom_ngx_cw01" >
               <div class="card-body">
                 <div class="sa_tabs_main_sec">
                   <div fxLayout="row wrap" fxLayoutGap="20px grid">
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"> <small class="sa_tab_btn profit_btn netProfit1 active" (click) = "displayProfit('1')">Net Profit</small> </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"> <small class="sa_tab_btn profit_btn netProfit2" (click) = "displayProfit('2')">Net Profit % Xero</small> </div>
-                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"> <small class="sa_tab_btn profit_btn netProfit3" (click) = "displayProfit('3')">Net Profit % PMS</small> </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"> <small class="sa_tab_btn profit_btn netProfit1 active" (click) = "displayProfit('1')">Production</small> </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"> <small class="sa_tab_btn profit_btn netProfit2" (click) = "displayProfit('2')">Net Profit</small> </div>
+                    <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"> <small class="sa_tab_btn profit_btn netProfit3" (click) = "displayProfit('3')">Net Profit % </small> </div>
                   </div>
                 </div>
               <div  style="height: 280px"  >
-                <canvas *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  >0" class="profit1 net_profit" baseChart [datasets]="netProfitChartTrend" [labels]="netProfitChartTrendLabels" [options]="labelBarOptions" [legend]="false"
+                <canvas *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  >0" class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrend" [labels]="netProfitChartTrendLabels" [options]="labelBarOptions" [legend]="false"
           [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar" (chartClick)="chartClicked($event)"> </canvas>
                 <img src='../assets/images/nodata02.png' *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  <=0 && finNetProfitTrendLoader == false" class="blankChart">
-                <canvas *ngIf="netProfitDisplayVal == 2 && netProfitPercentChartTrendLabels.length  >0" class="profit2 net_profit" baseChart [datasets]="netProfitPercentChartTrend" [labels]="netProfitPercentChartTrendLabels" [options]="labelBarPercentOptions" [legend]="false"
-          [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar" (chartClick)="chartClicked($event)" > </canvas>
+               <canvas *ngIf="netProfitDisplayVal == 2 && netProfitChartTrendLabels.length  >0" class="profit1 net_profit" baseChart [datasets]="netProfitChartTrend" [labels]="netProfitChartTrendLabels" [options]="labelBarOptions" [legend]="false"
+          [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar" (chartClick)="chartClicked($event)"> </canvas>
                 <img src='../assets/images/nodata02.png' *ngIf="netProfitDisplayVal == 2  && netProfitPercentChartTrendLabels.length <=0 && finNetProfitPercentTrendLoader == false"  class="blankChart">
                 <canvas *ngIf="netProfitDisplayVal == 3 && netProfitPmsChartTrendLabels.length  > 0" #myCanvas2 class="profit3 net_profit" baseChart [datasets]="netProfitPmsChartTrend" [labels]="netProfitPmsChartTrendLabels" [options]="labelBarPercentOptions" [legend]="false"
           [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar" (chartClick)="chartClicked($event)"> </canvas>
