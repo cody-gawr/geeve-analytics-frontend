@@ -125,7 +125,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       })
     );
 
-    $('#currentDentist').attr('did', 'all');
+    // $('#currentDentist').attr('did', 'all');
 
     // this.clinic_id = this.route.snapshot.paramMap.get("id");
     //  this.getDentists();

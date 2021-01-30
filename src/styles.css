@@ -4272,3 +4272,8 @@ ul.download-sync-list {
     height: 20px;
 }
 
+.compare-button {
+    padding: 4px 10px;
+    font-size: 14px;
+}
+
