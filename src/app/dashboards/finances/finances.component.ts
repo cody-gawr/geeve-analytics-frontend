@@ -133,6 +133,15 @@ single = [
      this.filterDate('m');
    }
   }
+
+  formatDate(date) {
+    var dateArray = date.split("-")
+    const d = new Date();
+    d.setFullYear(+dateArray[2], (+dateArray[1]-1), +dateArray[0])
+    const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
+    return formattedDate;
+  }
+
   ngAfterViewInit() {
     //plugin for Percentage of Production by Clinician chart
     this.pluginObservable$ = this.percentOfProductionCount$.pipe(
@@ -170,8 +179,8 @@ single = [
         $('.header_filters').addClass('flex_direct_mar');
          $('.external_clinic').show();
         $('.external_dentist').show();
-         $('#title').html('<span>Finances</span>  <span class="page-title-date">' + this.startDate + ' - ' + this.endDate+'</span>');
-        $(document).on('click', function(e) {
+         $('#title').html('<span>Finances</span>  <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
+         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();
         }
@@ -1197,7 +1206,7 @@ public labelBarPercentOptions: any = {
 
   loadDentist(newValue) {
 
-    $('#title').html('<span>Finances</span> <span class="page-title-date">' + this.startDate + ' - ' + this.endDate+'</span>');
+    $('#title').html('<span>Finances</span> <span class="page-title-date">' + this.formatDate(this.startDate)  + ' - ' + this.formatDate(this.endDate) +'</span>');
   if(newValue == 'all') {
     $(".trend_toggle").hide();
     this.finTotalProduction();
@@ -1690,9 +1699,9 @@ filterDate(duration) {
        var last = first + 6; 
        var sd =new Date(now.setDate(first));
 
-       this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd MMM yyyy');
+       this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd-MM-yyyy');
        var end = now.setDate(sd.getDate()+6);
-       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd MMM yyyy');
+       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
         this.loadDentist('all');
     }
     else if (duration == 'm') {
@@ -1701,8 +1710,8 @@ filterDate(duration) {
       this.currentText= 'This Month';
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
             this.loadDentist('all');
     }
     else if (duration == 'lm') {
@@ -1710,8 +1719,8 @@ filterDate(duration) {
       this.currentText = 'Last Month';
 
       const date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
       this.duration = 'lm';
       this.loadDentist('all');
     }
@@ -1724,22 +1733,22 @@ filterDate(duration) {
       var cmonth = now.getMonth()+1;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy')
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy')
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); 
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); 
       }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy'); 
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); 
       }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd MMM yyyy');  
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
       }
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
     else if (duration == 'lq') {
@@ -1752,18 +1761,18 @@ filterDate(duration) {
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
             this.loadDentist('all');
    
     }
@@ -1773,8 +1782,8 @@ filterDate(duration) {
 
       this.duration='cytd';
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
      else if (duration == 'fytd') {
@@ -1784,11 +1793,11 @@ filterDate(duration) {
       
      var date = new Date();
       if ((date.getMonth() + 1) <= 3) {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
         } else {
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
     }
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
      else if (duration == 'custom') {
@@ -1840,7 +1849,7 @@ filterDate(duration) {
      }
   } 
   ytd_load(val) {
-    alert(this.datePipe.transform(val, 'dd MMM yyyy'));
+    alert(this.datePipe.transform(val, 'dd-MM-yyyy'));
   }
 choosedDate(val) {
     val = (val.chosenLabel);
@@ -1850,8 +1859,8 @@ choosedDate(val) {
      var date1:any= new Date(val[0]);
       var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
 if(diffTime<=365){
-this.startDate = this.datePipe.transform(val[0], 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(val[1], 'dd MMM yyyy');
+this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.loadDentist('all');      
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
@@ -1882,11 +1891,11 @@ toggleFilter(val) {
   $('.target_' + val).addClass('mat-button-toggle-checked');
   $('.filter').removeClass('active');
   var date = new Date();
-  this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+  this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
   if (val == 'current') {
     this.toggleChecked = true;
     this.trendValue = 'c';
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, date.getMonth(), 1), 'dd MMM yyyy');
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, date.getMonth(), 1), 'dd-MM-yyyy');
 
     this.toggleChangeProcess();
     this.displayProfit(1);
@@ -1894,7 +1903,7 @@ toggleFilter(val) {
   else if (val == 'historic') {
     this.toggleChecked = true;
     this.trendValue = 'h';
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 10, date.getMonth(), 1), 'dd MMM yyyy');
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 10, date.getMonth(), 1), 'dd-MM-yyyy');
 
     this.toggleChangeProcess();
     this.displayProfit(1);

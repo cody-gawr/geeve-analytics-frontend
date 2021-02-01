@@ -283,7 +283,7 @@
      <li class="not-start" *ngIf="reportsStatus.length <= 0 && reportsStatusInfo">Sync not yet started - Please download and install the Sync Utility on your Dental 4 Windows server to continue</li>
      <li *ngFor="let itemrow of reportsStatus; let i=index">
       <span *ngIf="itemrow.status == 'Pending'">
-        <i class="fas fa-check" ></i>  
+        <!-- <i class="fas fa-check" ></i>   -->
         {{ itemrow.report }}
       </span>
       <span *ngIf="itemrow.status == 'In Process'"  class="in-progress">
