@@ -104,14 +104,14 @@
           </mat-card-title>
         <div class="card-body">
           <div  style="height: 300px">
-            <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels" *ngIf="buildChartLoader == false" [legend]="barChartLegend"
+            <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels" [legend]="barChartLegend"
               [chartType]="barChartType" [options]="barChartOptionsDP"  [colors]="DPcolors">
             </canvas>
-            <!--  <div *ngIf="barChartLabels.length <= 0 && buildChartLoader == false" class="sa_nodata_div">
-                <h4>No Data</h4>
-                <p>Oops! Looks like we don't have any data to show you</p>
-            </div> -->
-
+            <div *ngIf="barChartData.length<= 0 && buildChartLoader===false" >
+                <div class="sa_nodata_div">              
+                </div>
+                <p class="chart-placeholder-text">You have no dentist production in this period</p>
+            </div>
           </div>
         </div>
         <div class="card-footer">
@@ -167,12 +167,12 @@
             </canvas>
           </div>
     </div>
-      
-  <!--      <div *ngIf="dentistProductionTrendLabels.length <= 0 && gaugeValue <= 0 && buildChartDentistLoader == false" class="sa_nodata_div">
-            <h4>No Data</h4>
-            <p>Oops! Looks like we don't have any data to show you</p>
-        </div>
- -->
+          <div *ngIf="showTrendChart == true &&  dentistProdTrend.length <= 0 && buildChartDentistLoader===false" >
+              <div class="sa_nodata_div">              
+              </div>
+              <p class="chart-placeholder-text">You have no dentist production in this period</p>
+          </div>
+          
         <div class="card-footer">
           <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false" fxLayoutAlign="center center">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -239,10 +239,11 @@
           (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event)" [colors]="TPACCcolors"></canvas>
         </div>
-   <!--       <div *ngIf="planChartLabels1.length <= 0 && buildChartTreatmentLoader == false" class="sa_nodata_div">
-            <h4>No Data</h4>
-            <p>Oops! Looks like we don't have any data to show you</p>
-        </div>  --> 
+        <div *ngIf="(!planChartDataP.length || !planChartDataC.length) && buildChartTreatmentLoader===false" >
+          <div class="sa_nodata_div">              
+          </div>
+          <p class="chart-placeholder-text">You have no treatment plan in this period</p>
+        </div>
           </div>
           <div class="card-footer">
          <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false" fxLayoutAlign="center center">
@@ -299,6 +300,11 @@
               [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
               </canvas>
           </div>
+          <div *ngIf="showTrendChart===true && treatPlanTrend.length<= 0 && buildChartTreatmentLoader===false" >
+            <div class="sa_nodata_div">              
+            </div>
+            <p class="chart-placeholder-text">You have no treatment plan in this period</p>
+          </div>
           </div>
           <div class="card-footer">
           <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false" fxLayoutAlign="center center">
@@ -345,10 +351,10 @@
           (chartClick)="chartClicked($event)" [colors]="npColors"></canvas>
         </div>
         </div>
-         <div *ngIf="doughnutChartLabels.length<= 0 && buildChartNopatientsLoader===false" >
+         <div *ngIf="showTrendChart == false && doughnutChartData.length<= 0 && buildChartNopatientsLoader===false" >
             <div class="sa_nodata_div">              
             </div>
-            <h4 class="chart-placeholder-text">You have no patient complaints in this period</h4>
+            <p class="chart-placeholder-text">You have no patient complaints in this period</p>
          </div>
          
           </div>
@@ -396,21 +402,17 @@
            [size] = "size"
            [duration]= "gaugeDuration">
           </ngx-gauge>
-        <!-- 
-           <div *ngIf="patientComplaintsTrendLabels.length <= 0 && gaugeValuePatients <=0 && buildChartNopatientsDentistLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
-          </div> -->
-          <div *ngIf="patientComplaintsTrendLabels.length<=0 && gaugeValuePatients<=0 && buildChartNopatientsDentistLoader===false">
-            <div class="sa_nodata_div">              
-            </div>
-            <h4 class="chart-placeholder-text">You have no patient complaints in this period</h4>
-         </div>
+         
           </div>
           <div *ngIf="showTrendChart == true" style="height: 292px">
             <canvas #myCanvas  id="patientComplaintsTrend" baseChart [datasets]="patientComplaintTrend" [labels]="patientComplaintsTrendLabels"  [legend]="barChartLegend"
             [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
             </canvas>
+          </div>
+          <div *ngIf="showTrendChart == true && patientComplaintTrend.length<=0 && buildChartNopatientsDentistLoader===false">
+            <div class="sa_nodata_div">              
+            </div>
+            <p class="chart-placeholder-text">You have no patient complaints in this period</p>
           </div>
         </div>
         <div class="card-footer">
@@ -464,10 +466,10 @@
           (chartClick)="chartClicked($event)" [colors]="newpColors"></canvas>
         </div>
         </div>
-         
-          <div *ngIf="newPatientsDataMax <= 0 && buildChartNewpatientsLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+          <div *ngIf="newPatientChartData.length<=0 && buildChartNewpatientsLoader===false">
+            <div class="sa_nodata_div">              
+            </div>
+            <p class="chart-placeholder-text">You have no new patients in this period</p>
           </div>
           <div class="card-footer">
           <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false" fxLayoutAlign="center center">
@@ -536,6 +538,11 @@
                 <canvas #myCanvas  id="newPatientsTrend" baseChart [datasets]="newPatientsChartTrend" [labels]="newPatientsChartTrendLabels"  [legend]="barChartLegend"
                 [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
                 </canvas>
+              </div>
+              <div *ngIf="newPatientsChartTrend.length<=0 && showTrendChart == true && buildChartNewpatientsDentistLoader===false">
+                <div class="sa_nodata_div">              
+                </div>
+                <p class="chart-placeholder-text">You have no new patients in this period</p>
               </div>
           </div>
           <div class="card-footer">
@@ -691,14 +698,16 @@ Prebook Rate</small>
           [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsPercentTrend" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
           </canvas>
       </div>
-    <!--    <div *ngIf="patientComplaintsTrendLabels.length <= 0 && recallValue <= 0  && prebook=='recall'" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
+          <div *ngIf="showTrendChart===true && recallPrebookChartTrend.length<=0 && prebook=='recall' && treatmentPrebookDentistLoader===false">
+            <div class="sa_nodata_div">              
+            </div>
+            <p class="chart-placeholder-text">You have recall in this period</p>
           </div>
-           <div *ngIf="patientComplaintsTrendLabels.length <= 0 && treatmentPreValue <= 0  && prebook=='treatment'" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
-          </div> -->
+          <div *ngIf="treatmentPrebookChartTrend.length<=0 && showTrendChart===true && prebook=='treatment' && treatmentPrebookDentistLoader===false">
+            <div class="sa_nodata_div">              
+            </div>
+            <p class="chart-placeholder-text">You have prebook in this period</p>
+          </div>
           </div>
           <div class="card-footer">
           <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && prebook=='recall'" fxLayoutAlign="center center">
@@ -763,11 +772,11 @@ Prebook Rate</small>
         <canvas #myCanvas id="HourlyRate" baseChart *ngIf="hourlyRateChartLoader == false" [datasets]="hourlyRateChartData" [labels]="hourlyRateChartLabels"  [legend]="barChartLegend"
           [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR" [colors]="HRcolors" (chartClick)="chartClicked($event)">
         </canvas>
-<!--         <div *ngIf="hourlyRateChartLabels.length <= 0 && hourlyRateChartLoader == false" class="sa_nodata_div">
-            <h4>No Data</h4>
-            <p>Oops! Looks like we don't have any data to show you</p>
-        </div> -->
-
+        <div *ngIf="hourlyRateChartData.length<=0 && hourlyRateChartLoader===false">
+          <div class="sa_nodata_div">              
+          </div>
+          <p class="chart-placeholder-text">You have no hourly rate in this period</p>
+        </div>
       </div>
     </div>
           </div>
@@ -819,10 +828,11 @@ Prebook Rate</small>
           </canvas>
       </div>
 
-      <!--  <div *ngIf="hourlyRateChartTrendLabels.length <= 0 && hourlyValue <= 0 && hourlyRateDentistLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
-          </div> -->
+          <div *ngIf="showTrendChart == true && hourlyRateChartTrend.length<=0 && hourlyRateDentistLoader===false">
+            <div class="sa_nodata_div">              
+            </div>
+            <p class="chart-placeholder-text">You have no hourly rate in this period</p>
+          </div>
           </div>
           <div class="card-footer">
           <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false" fxLayoutAlign="center center">
@@ -862,10 +872,11 @@ Prebook Rate</small>
         <canvas #myCanvas baseChart *ngIf="treatmentPlanRateLoader == false" [datasets]="treatmentChartData" [labels]="treatmentChartLabels"  [legend]="barChartLegend"
           [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP" [colors]="TPRcolors" (chartClick)="chartClicked($event)">
         </canvas>
-<!--         <div *ngIf="treatmentChartLabels.length <= 0 && treatmentPlanRateLoader == false" class="sa_nodata_div">
-            <h4>No Data</h4>
-            <p>Oops! Looks like we don't have any data to show you</p>
-        </div> -->
+          <div *ngIf="treatmentChartData.length<=0 && treatmentPlanRateLoader===false">
+            <div class="sa_nodata_div">              
+            </div>
+            <p class="chart-placeholder-text">You have no treatment plan completion in this period</p>
+          </div>
         </div>
       </div>
       <div class="card-footer">
@@ -918,10 +929,11 @@ Prebook Rate</small>
           </canvas>
       </div>
 
-     <!--   <div *ngIf="treatmentPlanChartTrendLabels.length <= 0 && treatmentPlanValue<=0 && treatmentPlanRateDentistLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p>Oops! Looks like we don't have any data to show you</p>
-          </div> -->
+          <div *ngIf="showTrendChart == true && treatmentPlanChartTrend.length<=0 && treatmentPlanRateDentistLoader===false">
+            <div class="sa_nodata_div">              
+            </div>
+            <p class="chart-placeholder-text">You have no treatment plan completion in this period</p>
+          </div>
           </div>
           <div class="card-footer">
           <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false" fxLayoutAlign="center center">

@@ -105,11 +105,13 @@ export class MarketingComponent implements AfterViewInit {
   }
 
   formatDate(date) {
-    var dateArray = date.split("-")
-    const d = new Date();
-    d.setFullYear(+dateArray[2], (+dateArray[1]-1), +dateArray[0])
-    const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
-    return formattedDate;
+    if(date) {
+      var dateArray = date.split("-")
+      const d = new Date();
+      d.setFullYear(+dateArray[2], (+dateArray[1]-1), +dateArray[0])
+      const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
+      return formattedDate;
+    } else return date;
   }
 
   ngAfterViewInit() {
