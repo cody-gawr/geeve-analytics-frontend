@@ -3290,8 +3290,12 @@ ul.download-sync-list {
     width: 100%;
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url(assets/images/nodata02.jpg);
+    background-image: url(assets/images/bar-placeholder.png);
     background-size: auto 100%;
+}
+.chart-placeholder-text {
+    margin-top: 0;
+    text-align: center;
 }
 .mat-raised-button[disabled] {
     cursor: none !important;

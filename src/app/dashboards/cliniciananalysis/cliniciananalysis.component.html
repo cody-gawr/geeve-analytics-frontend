@@ -345,11 +345,12 @@
           (chartClick)="chartClicked($event)" [colors]="npColors"></canvas>
         </div>
         </div>
+         <div *ngIf="doughnutChartLabels.length<= 0 && buildChartNopatientsLoader===false" >
+            <div class="sa_nodata_div">              
+            </div>
+            <h4 class="chart-placeholder-text">You have no patient complaints in this period</h4>
+         </div>
          
-          <div *ngIf="doughnutChartLabels.length <= 0 && buildChartNopatientsLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div>
           </div>
           <div class="card-footer">
 
@@ -400,6 +401,11 @@
               <h4>No Data</h4>
               <p>Oops! Looks like we don't have any data to show you</p>
           </div> -->
+          <div *ngIf="patientComplaintsTrendLabels.length<=0 && gaugeValuePatients<=0 && buildChartNopatientsDentistLoader===false">
+            <div class="sa_nodata_div">              
+            </div>
+            <h4 class="chart-placeholder-text">You have no patient complaints in this period</h4>
+         </div>
           </div>
           <div *ngIf="showTrendChart == true" style="height: 292px">
             <canvas #myCanvas  id="patientComplaintsTrend" baseChart [datasets]="patientComplaintTrend" [labels]="patientComplaintsTrendLabels"  [legend]="barChartLegend"
