@@ -18,7 +18,8 @@ export interface Dentist {
 }
 
 @Component({
-  templateUrl: './clinicianproceedures.component.html'
+  templateUrl: './clinicianproceedures.component.html',
+  styleUrls: ['./clinicianproceedures.component.scss']
 })
   /**
   *Clinician Proceedure Graph Dashboard
@@ -1138,7 +1139,9 @@ public predictedT:any=[];
 public predictedTotal0;
 public predictedTotal;
 public predictedTP:any=[];
-public predictedMax;
+public isPredictorRatio1: boolean = false;
+public isPredictorRatio2: boolean = false;
+public isPredictorRatio3: boolean = false;
 public buildChartPredictorLoader:any;
 public prKey:any[] =[];
 public PRcolors;
@@ -1208,7 +1211,7 @@ public predictedstackedChartLabels3=[];
                       crowns = Math.round(result.crowns/result.crowns);
                       large_fillings = Math.round(result.large_fillings/result.crowns);
                      }
-
+                     this.isPredictorRatio1 = true;
                  this.predictedstackedChartData1[0]['data'].push(crowns);
                  this.crowns= parseInt(this.crowns)+parseInt(result.crowns);
                  this.crowns_ta= parseInt(this.crowns_ta)+parseInt(result.crowns_trend);
@@ -1242,7 +1245,7 @@ public predictedstackedChartLabels3=[];
                       extractions = Math.round(result.extractions/result.root_canals);
                      }
 
-
+                     this.isPredictorRatio2 = true;
                      this.predictedstackedChartLabels2.push(result.provider);
                  this.predictedstackedChartData2[0]['data'].push(root_canals);
                   this.extractions= parseInt(this.extractions)+parseInt(result.extractions);
@@ -1276,7 +1279,7 @@ public predictedstackedChartLabels3=[];
                       rct_completed = Math.round(result.rct_completed/result.rct_started);
                      }
 
-
+                     this.isPredictorRatio3 = true;
                      this.predictedstackedChartLabels3.push(result.provider);
                  this.predictedstackedChartData3[0]['data'].push(rct_started);
                  this.rct_completed= parseInt(this.rct_completed)+parseInt(result.rct_completed);
