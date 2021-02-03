@@ -94,7 +94,7 @@ single = [
   public percentOfCurrentOverdue$ = new BehaviorSubject<number>(0);
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  profitChartTitles = ['Net Profit', 'Net Profit % Xero', 'Net Profit % PMS'];
+  profitChartTitles = ['Production', 'Net Profit', 'Net Profit %'];
   constructor(
     private toastr: ToastrService,
     private financesService: FinancesService, 
