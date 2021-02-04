@@ -139,6 +139,7 @@ var header = this.getHeaders();
 
     getCardDetails(customer_id): Observable<any> {
       const formData = new FormData();
+         formData.append('user_id', this._cookieService.get("userid"));
             formData.append('customer_id', customer_id);
              var header = this.getHeaders(); 
             return this.http.post(this.apiUrl +"/users/getCardDetails", formData, { headers: header })
