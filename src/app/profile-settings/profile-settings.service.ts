@@ -137,10 +137,10 @@ var header = this.getHeaders();
         );
     }
 
-             getCardDetails(customer_id): Observable<any> {
-            const formData = new FormData();
+    getCardDetails(customer_id): Observable<any> {
+      const formData = new FormData();
             formData.append('customer_id', customer_id);
-            return this.http.post(this.apiUrl +"/users/getCardDetails", formData)
+            return this.http.post(this.apiUrl +"/users/getCardDetails", formData, { headers: header })
             .pipe(map((response: Response) => {
                    return response;
                })
