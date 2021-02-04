@@ -3299,6 +3299,16 @@ ul.download-sync-list {
     font-size: 16px;
     line-height: 1.1;
 }
+.hide-item{
+    opacity: 0;
+    pointer-events: none;
+}
+.no-data-placeholder{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 .mat-raised-button[disabled] {
     cursor: none !important;
     background-color: #cecece !important;

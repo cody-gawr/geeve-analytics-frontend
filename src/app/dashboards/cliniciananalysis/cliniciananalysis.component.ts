@@ -1221,7 +1221,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           }
 
         if(this.gaugeValue > this.productionGoal)
-          this.maxProductionGoal= this.gaugeValue;
+          this.maxProductionGoal = this.gaugeValue;
         else
           this.maxProductionGoal = this.productionGoal;
         if (this.maxProductionGoal == 0)
@@ -2110,8 +2110,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           }
         });
 
-        console.log('\n this.newPatientChartData1 : ', this.newPatientChartData1);
-        console.log('\n this.newPatDientChartLabels : ', this.newPatientChartLabels1);
         this.newPatientChartData = this.newPatientChartData1;
         this.newPatientChartLabels = this.newPatientChartLabels1;
 
@@ -2784,7 +2782,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.patientComplaintsTrendLoader = false;
         if (data.data) {
           data.data.forEach(res => {
-            this.patientComplaintsTrend1.push(res.val.treat_item);
+            if(res.val.treat_item)
+              this.patientComplaintsTrend1.push(res.val.treat_item);
             if (this.trendValue == 'c')
               this.patientComplaintsTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else
@@ -2989,7 +2988,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.hourlyRateChartTrend1 = [];
         data.data.forEach(res => {
           if (res.val) {
-            this.hourlyRateChartTrend1.push(Math.round(res.val.hourlyRate));
+            if(res.val.hourlyRate)
+              this.hourlyRateChartTrend1.push(Math.round(res.val.hourlyRate));
             if (this.trendValue == 'c')
               this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else
@@ -3134,7 +3134,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         if (data.data) {
           data.data.forEach(res => {
             if (res.val) {
-              this.treatmentPlanChartTrend1.push(Math.round(res.val.percent));
+              if(res.val.percent)
+                this.treatmentPlanChartTrend1.push(Math.round(res.val.percent));
               if (this.trendValue == 'c')
                 this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
               else

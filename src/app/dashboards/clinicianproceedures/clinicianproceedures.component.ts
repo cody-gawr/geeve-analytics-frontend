@@ -1324,6 +1324,9 @@ public predictedstackedChartLabels3=[];
     $('.predictedToolMain').hide();
     $('.predicted'+val+'Tool').show();
     $('.predicted_main.predicted'+val).css('display','flex');
+    console.log('isPredictorRatio1 && predictedstackedChartData == predictedstackedChartData1', this.isPredictorRatio1 )
+    console.log('isPredictorRatio2 && predictedstackedChartData == predictedstackedChartData2', this.isPredictorRatio2 )
+    console.log('isPredictorRatio3 && predictedstackedChartData == predictedstackedChartData3', this.isPredictorRatio3)
     if(this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
                 { backgroundColor: [] }
