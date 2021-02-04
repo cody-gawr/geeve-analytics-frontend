@@ -89,7 +89,10 @@ export class LoginComponent implements OnInit {
                 this._cookieService.put("clinicid", datares['clinicid'], opts);
 
                this._cookieService.put("dentistid", datares['dentistid'], opts);
+               if(datares['user_type'] == '4')
                this.router.navigate(['/dashboards/cliniciananalysis']);
+                else
+               this.router.navigate(['/profile-settings']);
             }
         }    
       } else if(res.message == 'error'){
