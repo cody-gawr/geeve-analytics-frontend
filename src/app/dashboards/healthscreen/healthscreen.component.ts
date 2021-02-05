@@ -297,6 +297,7 @@ public hourlyRateColors = [];
     this.healthscreenService.hourlyRateChart(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
          data.data.forEach(res => {
+          if(res.hourlyRate>0) {
           this.hourlyRateChartData.push(Math.abs(res.hourlyRate).toFixed(1));
           var name = res.provider;
           var clinic = res.clinic;
@@ -310,6 +311,7 @@ public hourlyRateColors = [];
            this.hourlyRateChartClinic.push(clinic);
           this.hourlyRateColors.push(this.mockupColors[colorCount]);
           colorCount++;
+        }
          });
          if(this.hourlyRateChartData.length >0)
          this.maxHourlyRate = Math.max(...this.hourlyRateChartData);
