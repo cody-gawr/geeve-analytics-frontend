@@ -135,7 +135,7 @@
       <mat-card class="itemsPredictorSingle sa_no_tabs_area" [style.display]="'none'">
         <mat-card-content class="sa_matcard_content">
 
-          <mat-card-title class="text-center">Item Predictor
+          <mat-card-title class="text-center">Item Predictor >>> {{itemPredictedChartDataMax}}
 
             <div class="sa_box_title_right_buttons">
             </div>
@@ -312,7 +312,7 @@
     <mat-card class="ratioPredictor">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">
-          Predictor Ratio 
+          Predictor Ratio
           <div class="sa_box_title_right_buttons">
 
           </div>
@@ -332,15 +332,13 @@
             </div>
           </div>
 
-          <div style="height: 350px" *ngIf="(isPredictorRatio1 && predictedstackedChartData == predictedstackedChartData1) || 
-                      (isPredictorRatio2 && predictedstackedChartData == predictedstackedChartData2) ||
-                      (isPredictorRatio3 && predictedstackedChartData == predictedstackedChartData3)">
+          <div style="height: 350px" *ngIf="predictedstackedChartData[0]['data'].length > 0 || predictedstackedChartData[1]['data'].length > 0">
             <canvas baseChart class="chart" [datasets]="predictedstackedChartData"
               [labels]="predictedstackedChartLabels" [options]="stackedChartOptions" [chartType]="stackedChartType"
               (chartHover)="chartHovered($event)" [colors]="predictorRatioColors"
               (chartClick)="chartClicked($event)"></canvas>
           </div>
-          <div *ngIf="!isPredictorRatio1 && predictedstackedChartData1[0]['data'].length <= 0 && predictorRatioTab == 1"
+          <div *ngIf="(predictedstackedChartData1[0]['data'].length <= 0 && predictedstackedChartData1[1]['data'].length <= 0) && predictorRatioTab == '1'"
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
@@ -348,14 +346,14 @@
             </p>
           </div>
 
-          <div *ngIf="predictedstackedChartData2[0]['data'].length <= 0 && predictorRatioTab == 2"
+          <div *ngIf="(predictedstackedChartData2[0]['data'].length <= 0 && predictedstackedChartData2[1]['data'].length <= 0) && predictorRatioTab == '2'"
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
             <p class="chart-placeholder-text">You have no predictor ratio for RCT to extraction in this period</p>
           </div>
 
-          <div *ngIf="predictedstackedChartData3[0]['data'].length <= 0 && predictorRatioTab == 3"
+          <div *ngIf="(predictedstackedChartData3[0]['data'].length <= 0 && predictedstackedChartData3[1]['data'].length <= 0) && predictorRatioTab == '3'"
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
@@ -441,24 +439,46 @@
           </div>
 
 
-          <div style="height: 250px" *ngIf="toggleChecked == false && gaugeValuePredicted>0">
+          <div style="height: 250px" *ngIf="toggleChecked == false && gaugeValuePredicted > 0">
             <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="gaugeValuePredicted"
               [label]="gaugeLabelPredicted" [thick]="gaugeThick" [max]="predictedDentistTotal"
               [foregroundColor]="foregroundColor" [cap]="cap" [size]="size" [duration]="gaugeDuration">
             </ngx-gauge>
           </div>
-          <div *ngIf="toggleChecked == false && gaugeValuePredicted<=0 && buildChartPredictorDentistLoader == false"
+          <div *ngIf="toggleChecked == false && gaugeValuePredicted <= 0 && buildChartPredictorDentistLoader == false"
             class="sa_nodata_div">
             <h4>You have no predictor ratio in this period</h4>
             <p></p>
           </div>
-          <div style="height: 250px" *ngIf="toggleChecked == true ">
+          <div style="height: 250px" *ngIf="toggleChecked == true && ratioChartData[0]['data'].length > 0">
             <canvas class="trendRatio" baseChart [datasets]="ratioChartData" [labels]="ratioChartLabels"
               [options]="stackedChartOptions" [legend]="false" [options]="stackedChartOptions"
               [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors"
               (chartClick)="chartClicked($event)">
             </canvas>
           </div>
+          <div *ngIf="(ratioChartData1[0]['data'].length <= 0 && ratioChartData1[1]['data'].length <= 0) && predictorRatioTab == '1' && toggleChecked == true"
+          class="no-data-placeholder">
+          <div class="sa_nodata_div">
+          </div>
+          <p class="chart-placeholder-text">You have no predictor ratio for crown to large filling in this period
+          </p>
+        </div>
+
+        <div *ngIf="(ratioChartData2[0]['data'].length <= 0 && ratioChartData2[1]['data'].length <= 0) && predictorRatioTab == '2' && toggleChecked == true"
+          class="no-data-placeholder">
+          <div class="sa_nodata_div">
+          </div>
+          <p class="chart-placeholder-text">You have no predictor ratio for RCT to extraction in this period</p>
+        </div>
+
+        <div *ngIf="(ratioChartData3[0]['data'].length <= 0 && ratioChartData3[1]['data'].length <= 0) && predictorRatioTab == '3' && toggleChecked == true"
+          class="no-data-placeholder">
+          <div class="sa_nodata_div">
+          </div>
+          <p class="chart-placeholder-text">You have no predictor ratio for RCT conversion in this period</p>
+        </div>
+
         </div>
         <div class="card-footer">
           <div fxLayout="row wrap" class="predicted1 sa_chart_details_sec predictorRatioDetails"
@@ -503,6 +523,7 @@
           <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
         <div class="card-body">
+      
           <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec hide-item"
             *ngIf="proceedureChartData1.length <= 0 && buildChartProceedureLoader == false">
             <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
@@ -592,16 +613,34 @@
           <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
         </mat-card-title>
         <div class="card-body">
-          <div style="height: 474px" *ngIf="proceedureDentistChartLabels.length>0">
+          <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec hide-item">
+            <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <small class="sa_tab_btn prmain1 active" (click)="changeDentistPredictorMain('1')">Crown to Large
+                Filling</small>
+            </div>
+            <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <small class="sa_tab_btn prmain2" (click)="changeDentistPredictorMain('2')">RCT to Extraction</small>
+            </div>
+            <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <small class="sa_tab_btn prmain3" (click)="changeDentistPredictorMain('3')">RCT Conversion</small>
+            </div>
+          </div>
+          <div style="height: 474px" *ngIf="proceedureChartData1.length>0">
             <canvas baseChart class="chart" [datasets]="proceedureDentistChartData"
               [labels]="proceedureDentistChartLabels" [options]="proceedureChartOptions" [legend]="false"
               [chartType]="proceedureChartType" (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
           </div>
-          <div *ngIf="proceedureDentistChartLabels.length <= 0 && buildChartProceedureDentistLoader == false"
+          <!-- <div *ngIf="proceedureDentistChartLabels.length <= 0 && buildChartProceedureDentistLoader == false"
             class="sa_nodata_div">
             <h4>You have no total revenue per procedure in this period</h4>
             <p></p>
+          </div> -->
+          <div *ngIf="proceedureChartData1.length <= 0 && buildChartProceedureLoader == false"
+            class="no-data-placeholder">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no total revenue per procedure in this period</p>
           </div>
         </div>
       </mat-card-content>

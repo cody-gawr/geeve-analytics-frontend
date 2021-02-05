@@ -1080,7 +1080,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       this.barChartLabels1 = [];
       this.barChartLabels = [];
       this.productionTotal = 0;
-      console.log('data.data', data.data);
       if (data.message == 'success') {
         this.buildChartLoader = false;
         this.productionTooltip = 'down';
@@ -1579,7 +1578,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.treatmentPlanRateLoader = false;
         this.treatmentChartTooltip = 'down';
         var i = 0;
-        console.log('data.data', data.data)
         data.data.forEach(res => {
           if (res.percent) {
             this.treatmentChartData1.push(Math.round(res.percent));

@@ -1139,10 +1139,7 @@ public predictedT:any=[];
 public predictedTotal0;
 public predictedTotal;
 public predictedTP:any=[];
-public isPredictorRatio1: boolean = false;
-public isPredictorRatio2: boolean = false;
-public isPredictorRatio3: boolean = false;
-public predictorRatioTab: number = 1;
+public predictorRatioTab;
 public buildChartPredictorLoader:any;
 public prKey:any[] =[];
 public PRcolors;
@@ -1212,7 +1209,6 @@ public predictedstackedChartLabels3=[];
                       crowns = Math.round(result.crowns/result.crowns);
                       large_fillings = Math.round(result.large_fillings/result.crowns);
                      }
-                     this.isPredictorRatio1 = true;
                  this.predictedstackedChartData1[0]['data'].push(crowns);
                  this.crowns= parseInt(this.crowns)+parseInt(result.crowns);
                  this.crowns_ta= parseInt(this.crowns_ta)+parseInt(result.crowns_trend);
@@ -1245,8 +1241,6 @@ public predictedstackedChartLabels3=[];
                       root_canals = Math.round(result.root_canals/result.root_canals);
                       extractions = Math.round(result.extractions/result.root_canals);
                      }
-
-                     this.isPredictorRatio2 = true;
                      this.predictedstackedChartLabels2.push(result.provider);
                  this.predictedstackedChartData2[0]['data'].push(root_canals);
                   this.extractions= parseInt(this.extractions)+parseInt(result.extractions);
@@ -1279,8 +1273,6 @@ public predictedstackedChartLabels3=[];
                       rct_started = Math.round(result.rct_started/result.rct_started);
                       rct_completed = Math.round(result.rct_completed/result.rct_started);
                      }
-
-                     this.isPredictorRatio3 = true;
                      this.predictedstackedChartLabels3.push(result.provider);
                  this.predictedstackedChartData3[0]['data'].push(rct_started);
                  this.rct_completed= parseInt(this.rct_completed)+parseInt(result.rct_completed);
@@ -1305,6 +1297,11 @@ public predictedstackedChartLabels3=[];
              });
            }
         });
+        this.predictorRatioTab = '1';
+        if(this.predictedstackedChartData1[0]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[0]['data'] = []
+        if(this.predictedstackedChartData1[1]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[1]['data'] = []
         this.predictedstackedChartData= this.predictedstackedChartData1;
         this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
 
@@ -1318,7 +1315,7 @@ public predictedstackedChartLabels3=[];
   }
 //Chnage predictor tab
   changeDentistPredictorMain(val) {
-  this.predictorRatioTab = val;
+ this.predictorRatioTab = val;
     $('.predictor_ratio_main .sa_tab_btn').removeClass('active');
     $('.prmain'+val).addClass('active');
     $('.predicted_main').hide();
@@ -1335,16 +1332,28 @@ public predictedstackedChartLabels3=[];
           else
             this.PRcolors= this.predictedChartColors;
     if(val =='1') {
+      if(this.predictedstackedChartData1[0]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[0]['data'] = []
+      if(this.predictedstackedChartData1[1]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[1]['data'] = []
        this.predictedstackedChartData = this.predictedstackedChartData1;
          this.predictedstackedChartLabels = this.predictedstackedChartLabels1;
 
      }
     else if(val =='2'){
+      if(this.predictedstackedChartData2[0]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData2[0]['data'] = []
+      if(this.predictedstackedChartData2[1]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData2[1]['data'] = []
    this.predictedstackedChartData = this.predictedstackedChartData2;
          this.predictedstackedChartLabels = this.predictedstackedChartLabels2;
 
      }
     else if(val =='3') {
+      if(this.predictedstackedChartData3[0]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData3[0]['data'] = []
+      if(this.predictedstackedChartData3[1]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData3[1]['data'] = []
  this.predictedstackedChartData = this.predictedstackedChartData3;
          this.predictedstackedChartLabels = this.predictedstackedChartLabels3;
      }
@@ -1485,7 +1494,10 @@ public rct_started_ta :any=0;
 
               }
              });
-
+        if(this.predictedstackedChartData1[0]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[0]['data'] = []
+        if(this.predictedstackedChartData1[1]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[1]['data'] = []
         this.predictedstackedChartData= this.predictedstackedChartData1;
         this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
 
@@ -1634,7 +1646,7 @@ public doughnutChartColors1;
           this.pieChartExternalPrevTooltip = 'up'
         if(this.pieChartCombinedTotal>=this.pieChartCombinedPrevTotal)
            this.pieChartCombinedPrevTooltip = 'up'
-           console.log('this.pieChartDatares1', this.pieChartDatares1)
+
          this.pieChartData1 = this.pieChartDatares1;
          this.pieChartData2 = this.pieChartDatares2;
          this.pieChartData3 = this.pieChartDatares3;
@@ -1722,7 +1734,7 @@ this.pieChartLabelsres1 = [];
           this.pieChartExternalPrevTooltip = 'up'
         if(this.pieChartCombinedTotal>=this.pieChartCombinedPrevTotal)
            this.pieChartCombinedPrevTooltip = 'up'
-        console.log('this.pieChartDatares1233', this.pieChartDatares1)
+
        this.pieChartData1 = this.pieChartDatares1;
        this.pieChartData2 = this.pieChartDatares2;
        this.pieChartData3 = this.pieChartDatares3;
@@ -1963,6 +1975,7 @@ public currentText;
   }
   //Load Individual Dentist Item Predictor tab
   changeDentistPredictor(val){
+    this.predictorRatioTab = val;
      $('.predictedToolMain').hide();
     $('.predicted'+val+'Tool').show();
     $('.ratioPredictorSingle .predictor_ratio .sa_tab_btn').removeClass('active');
@@ -2362,6 +2375,14 @@ toggleChangeProcess(){
                     else
                    this.ratioChartLabels1.push(res.duration);
                  });
+                 if(this.ratioChartData1[0]['data'].every((item) => item == 0 )) this.ratioChartData1[0]['data'] = [];
+                 if(this.ratioChartData1[1]['data'].every((item) => item == 0 )) this.ratioChartData1[1]['data'] = [];
+                 if(this.ratioChartData2[0]['data'].every((item) => item == 0 )) this.ratioChartData2[0]['data'] = [];
+                 if(this.ratioChartData2[1]['data'].every((item) => item == 0 )) this.ratioChartData2[1]['data'] = [];
+                 if(this.ratioChartData3[0]['data'].every((item) => item == 0 )) this.ratioChartData3[0]['data'] = [];
+                 if(this.ratioChartData3[1]['data'].every((item) => item == 0 )) this.ratioChartData3[1]['data'] = [];
+
+
                 if(this.ratio ==1)
                this.ratioChartData = this.ratioChartData1;
                else if(this.ratio ==2)
