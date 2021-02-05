@@ -450,7 +450,7 @@
             <h4>You have no predictor ratio in this period</h4>
             <p></p>
           </div>
-          <div style="height: 250px" *ngIf="toggleChecked == true && ratioChartData[0]['data'].length > 0">
+          <div style="height: 250px" *ngIf="toggleChecked == true && (ratioChartData[0]['data'].length > 0 || ratioChartData[1]['data'].length) ">
             <canvas class="trendRatio" baseChart [datasets]="ratioChartData" [labels]="ratioChartLabels"
               [options]="stackedChartOptions" [legend]="false" [options]="stackedChartOptions"
               [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="IPcolors"
