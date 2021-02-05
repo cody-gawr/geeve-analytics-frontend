@@ -1142,6 +1142,7 @@ public predictedTP:any=[];
 public isPredictorRatio1: boolean = false;
 public isPredictorRatio2: boolean = false;
 public isPredictorRatio3: boolean = false;
+public predictorRatioTab: number = 1;
 public buildChartPredictorLoader:any;
 public prKey:any[] =[];
 public PRcolors;
@@ -1317,16 +1318,13 @@ public predictedstackedChartLabels3=[];
   }
 //Chnage predictor tab
   changeDentistPredictorMain(val) {
-  
+  this.predictorRatioTab = val;
     $('.predictor_ratio_main .sa_tab_btn').removeClass('active');
     $('.prmain'+val).addClass('active');
     $('.predicted_main').hide();
     $('.predictedToolMain').hide();
     $('.predicted'+val+'Tool').show();
     $('.predicted_main.predicted'+val).css('display','flex');
-    console.log('isPredictorRatio1 && predictedstackedChartData == predictedstackedChartData1', this.isPredictorRatio1 )
-    console.log('isPredictorRatio2 && predictedstackedChartData == predictedstackedChartData2', this.isPredictorRatio2 )
-    console.log('isPredictorRatio3 && predictedstackedChartData == predictedstackedChartData3', this.isPredictorRatio3)
     if(this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
                 { backgroundColor: [] }
@@ -1636,6 +1634,7 @@ public doughnutChartColors1;
           this.pieChartExternalPrevTooltip = 'up'
         if(this.pieChartCombinedTotal>=this.pieChartCombinedPrevTotal)
            this.pieChartCombinedPrevTooltip = 'up'
+           console.log('this.pieChartDatares1', this.pieChartDatares1)
          this.pieChartData1 = this.pieChartDatares1;
          this.pieChartData2 = this.pieChartDatares2;
          this.pieChartData3 = this.pieChartDatares3;
@@ -1723,7 +1722,7 @@ this.pieChartLabelsres1 = [];
           this.pieChartExternalPrevTooltip = 'up'
         if(this.pieChartCombinedTotal>=this.pieChartCombinedPrevTotal)
            this.pieChartCombinedPrevTooltip = 'up'
-
+        console.log('this.pieChartDatares1233', this.pieChartDatares1)
        this.pieChartData1 = this.pieChartDatares1;
        this.pieChartData2 = this.pieChartDatares2;
        this.pieChartData3 = this.pieChartDatares3;

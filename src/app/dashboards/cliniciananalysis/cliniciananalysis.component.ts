@@ -1031,8 +1031,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     $('.treatmentPlanSingle .tcmain' + val).addClass('active');
     this.tcmain = val;
     if (val == '1') {
-      if (this.toggleChecked)
+      if (this.toggleChecked) {
+        if(this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
+      }
       else {
         this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentP);
         this.planTotalPrev = this.planAllTotalTrend;
@@ -1040,8 +1042,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
     }
     else {
-      if (this.toggleChecked)
+      if (this.toggleChecked){
+        if(this.treatmentPlanTrend2.every((value) => value == 0)) this.treatmentPlanTrend2 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend2;
+      }
       else {
         this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentC);
         this.planTotalPrev = this.planCompletedTotalTrend;
@@ -1060,7 +1064,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public productionTooltip = 'down';
   public productionTotalPrev;
   public barChartOptionsDP: any = this.barChartOptions;
-  public buildChartLoader: any;
+  public buildChartLoader: boolean;
   public dentistKey;
   public DPcolors: any;
   //Dentist Production Chart for all Dentist
@@ -1183,7 +1187,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     );
   }
 
-  public buildChartDentistLoader: any;
+  public buildChartDentistLoader: boolean;
   public maxProductionGoal: any = 0;
   //Individual Dentist Production Chart
   private buildChartDentist() {
@@ -1262,7 +1266,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public recallChartAveragePrev;
   public recallChartTooltip = 'down';
   public barChartOptionsRP: any = this.barChartOptionsPercent;
-  public recallPrebookLoader: any;
+  public recallPrebookLoader: boolean;
   public rpKey: any;
   public RPcolors: any;
   private recallPrebook() {
@@ -1352,7 +1356,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     }
     );
   }
-  public recallPrebookDentistLoader: any;
+  public recallPrebookDentistLoader: boolean;
   public maxrecallGoal: any = 0;
   //Individual Dentist Production Chart
   private recallPrebookDentist() {
@@ -1419,7 +1423,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public treatmentPreChartTooltip = 'down';
   public barChartOptionsTPB: any = this.barChartOptionstrend;
   public prebook = 'recall';
-  public treatmentPrebookLoader: any;
+  public treatmentPrebookLoader: boolean;
   public tpKey: any;
   public TPcolors: any;
   //All dentist Treatment Prebook Chart
@@ -1509,7 +1513,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     }
     );
   }
-  public treatmentPrebookDentistLoader: any;
+  public treatmentPrebookDentistLoader: boolean;
 
   //Individual Treatment Prebook Chart
   private treatmentPrePrebookDentist() {
@@ -1553,7 +1557,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public treatmentChartAveragePrev;
   public treatmentChartTooltip = 'down';
   public barChartOptionsTP: any = this.barChartOptionsPercent;
-  public treatmentPlanRateLoader: any;
+  public treatmentPlanRateLoader: boolean;
   public TPRKey: any;
   public TPRcolors: any;
   //Treatment pLAn Rate chart for all dentists
@@ -1575,6 +1579,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.treatmentPlanRateLoader = false;
         this.treatmentChartTooltip = 'down';
         var i = 0;
+        console.log('data.data', data.data)
         data.data.forEach(res => {
           if (res.percent) {
             this.treatmentChartData1.push(Math.round(res.percent));
@@ -1750,7 +1755,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
     }
   };
-  public buildChartTreatmentLoader: any;
+  public buildChartTreatmentLoader: boolean;
   public TPACAcolors: any;
   public TPACCcolors: any;
   public tpacAKey;
@@ -1886,7 +1891,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public gaugeValueTreatmentP: any = 0;
   public gaugeValueTreatmentC: any = 0;
   public maxplanTotalGoal: any = 0;
-  public buildChartTreatmentDentistLoader: any;
+  public buildChartTreatmentDentistLoader: boolean;
 
   //Individual Treatment Plan Average Cost
   private buildChartTreatmentDentist() {
@@ -1972,7 +1977,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public doughnutTotalTooltip = 'up';
   public doughnutTotalPrev = 0;
-  public buildChartNopatientsLoader: any;
+  public buildChartNopatientsLoader: boolean;
   public npKey: any;
   public npColors: any;
   public doughnutChartColors1: any;
@@ -2023,7 +2028,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     );
   }
 
-  public buildChartNopatientsDentistLoader: any;
+  public buildChartNopatientsDentistLoader: boolean;
   public maxdoughnutGoals: any = 0;
   //Indvidual No pf patients complaint chart
   private buildChartNopatientsDentist() {
@@ -2096,10 +2101,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartNewpatientsLoader = false;
         this.newPatientTotalTooltip = 'down';
         var i = 0;
-        console.log('\n data : ', data);
 
         data.data.forEach(res => {
-          console.log('\n res : ', res);
 
           if (res.getX) {
             this.newPatientChartData1.push(parseInt(res.getX));
@@ -2619,7 +2622,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public dentistProductionTrend1 = [];
   public dentistProductionTrendLabels = [];
   public dentistProductionTrendLabels1 = [];
-  public dentistProductionTrendLoader: any;
+  public dentistProductionTrendLoader: boolean;
   //Trend mode for dentist Production
   private dentistProductionTrend() {
     this.dentistProductionTrendLoader = true;
@@ -2635,12 +2638,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       if (data.message == 'success') {
         this.dentistProductionTrendLoader = false;
         data.data.forEach(res => {
-          this.dentistProductionTrend1.push(Math.round(res.val.total));
+          if(res.val.total)
+            this.dentistProductionTrend1.push(Math.round(res.val.total));
           if (this.trendValue == 'c')
             this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
           else
             this.dentistProductionTrendLabels1.push(res.duration);
         });
+        if(this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
         this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
         this.dentistProductionTrendLabels = this.dentistProductionTrendLabels1;
         if (this.dentistProductionTrendLabels.length <= 0) {
@@ -2719,7 +2724,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             else
               this.treatmentPlanTrendLabels1.push(res.duration);
           });
+          
+          
         }
+        if(this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
         this.treatmentPlanTrendLabels = this.treatmentPlanTrendLabels1;
 
@@ -2766,7 +2774,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public patientComplaintsTrend1 = [];
   public patientComplaintsTrendLabels = [];
   public patientComplaintsTrendLabels1 = [];
-  public patientComplaintsTrendLoader: any;
+  public patientComplaintsTrendLoader: boolean;
   //Trend mode for Pateint Complaints chart
   private patientComplaintsTrend() {
     this.patientComplaintsTrendLoader = true;
@@ -2840,7 +2848,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public recallPrebookChartTrend1 = [];
   public recallPrebookChartTrendLabels = [];
   public recallPrebookChartTrendLabels1 = [];
-  public fdRecallPrebookRateTrendLoader: any;
+  public fdRecallPrebookRateTrendLoader: boolean;
   //Recall Prebook Rate Chart trend mode
   private fdRecallPrebookRateTrend() {
     this.fdRecallPrebookRateTrendLoader = true;

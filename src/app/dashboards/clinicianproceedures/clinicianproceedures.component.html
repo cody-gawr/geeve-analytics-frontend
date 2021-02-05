@@ -312,7 +312,7 @@
     <mat-card class="ratioPredictor">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">
-          Predictor Ratio
+          Predictor Ratio 
           <div class="sa_box_title_right_buttons">
 
           </div>
@@ -340,8 +340,7 @@
               (chartHover)="chartHovered($event)" [colors]="predictorRatioColors"
               (chartClick)="chartClicked($event)"></canvas>
           </div>
-
-          <div *ngIf="!isPredictorRatio1 && predictedstackedChartData == predictedstackedChartData1"
+          <div *ngIf="!isPredictorRatio1 && predictedstackedChartData1[0]['data'].length <= 0 && predictorRatioTab == 1"
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
@@ -349,14 +348,14 @@
             </p>
           </div>
 
-          <div *ngIf="!isPredictorRatio2 && predictedstackedChartData == predictedstackedChartData2"
+          <div *ngIf="predictedstackedChartData2[0]['data'].length <= 0 && predictorRatioTab == 2"
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
             <p class="chart-placeholder-text">You have no predictor ratio for RCT to extraction in this period</p>
           </div>
 
-          <div *ngIf="!isPredictorRatio3 && predictedstackedChartData == predictedstackedChartData3"
+          <div *ngIf="predictedstackedChartData3[0]['data'].length <= 0 && predictorRatioTab == 3"
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>

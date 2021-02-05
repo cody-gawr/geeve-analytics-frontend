@@ -183,13 +183,13 @@
                 </div>
               </div>
               <div class="chart" fxLayout="row" fxLayoutAlign="start end" style="height: 300px"
-                *ngIf="showTrendChart == false && gaugeValue > 0">
+                *ngIf="showTrendChart == false && gaugeValue > 0 && !buildChartDentistLoader">
                 <ngx-gauge [type]="gaugeType" [value]="gaugeValue" [label]="gaugeLabel" [thick]="gaugeThick"
                   [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor" [max]="maxProductionGoal"
                   [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
                 </ngx-gauge>
               </div>
-              <div *ngIf="showTrendChart == true" style="height: 300px">
+              <div *ngIf="showTrendChart == true && !dentistProductionTrendLoader" style="height: 300px">
                 <canvas #myCanvas id="dentistProductionTrend" baseChart [datasets]="dentistProdTrend"
                   [labels]="dentistProductionTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
@@ -197,7 +197,8 @@
                 </canvas>
               </div>
             </div>
-            <div *ngIf="((showTrendChart == false && gaugeValue <= 0 )|| (showTrendChart == true && dentistProdTrend.length <= 0)) && buildChartDentistLoader===false">
+            <div
+              *ngIf="((showTrendChart == false && gaugeValue <= 0 )|| (showTrendChart == true && dentistProdTrend.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader">
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">You have no dentist production in this period</p>
@@ -223,20 +224,21 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="buildChartLoader" class="loader_container loader_container_middle"><img class="loader_ico"
+                src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="buildChartDentistLoader" class="loader_container loader_container_middle"><img
+                class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="dentistProductionTrendLoader" class="loader_container loader_container_middle"><img
+                class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
           </mat-card-content>
         </mat-card>
-        <div *ngIf="buildChartLoader == true" class="loader_container loader_container_middle"><img class="loader_ico"
-            src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="buildChartDentistLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="dentistProductionTrendLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
+
 
       </div>
       <!-- Column-->
@@ -333,21 +335,26 @@
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Completed Fees</small>
                 </div>
               </div>
-              <div class="chart" *ngIf="showTrendChart == false && gaugeValueTreatment > 0" fxLayout="row" fxLayoutAlign="start end" style="height: 300px">
-                <ngx-gauge [type]="gaugeType" [value]="gaugeValueTreatment"
-                  [label]="gaugeLabelTreatment" [thick]="gaugeThick" [foregroundColor]="foregroundColor"
-                  [backgroundColor]="backgroundColor" [cap]="cap" [max]="maxplanTotalGoal" [duration]="gaugeDuration"
-                  [prepend]="gaugePrependText" [size]="size">
+              <div class="chart"
+                *ngIf="showTrendChart == false && gaugeValueTreatment > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
+                fxLayout="row" fxLayoutAlign="start end" style="height: 300px">
+                <ngx-gauge [type]="gaugeType" [value]="gaugeValueTreatment" [label]="gaugeLabelTreatment"
+                  [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
+                  [cap]="cap" [max]="maxplanTotalGoal" [duration]="gaugeDuration" [prepend]="gaugePrependText"
+                  [size]="size">
                 </ngx-gauge>
               </div>
-              <div *ngIf="showTrendChart == true" style="height: 300px">
+              <div
+                *ngIf="showTrendChart == true && treatPlanTrend[0]['data'].length > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
+                style="height: 300px">
                 <canvas #myCanvas id="treatmentPlanTrend" baseChart [datasets]="treatPlanTrend"
                   [labels]="treatmentPlanTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
                   (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-              <div *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend.length<= 0)) && buildChartTreatmentLoader===false"
+              <div
+                *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
                 class="no-data-placeholder">
                 <div class="sa_nodata_div">
                 </div>
@@ -372,16 +379,16 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
+              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="buildChartTreatmentDentistLoader && !buildChartTreatmentLoader"
+              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
           </mat-card-content>
         </mat-card>
-        <div *ngIf="buildChartTreatmentLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="buildChartTreatmentDentistLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
       </div>
       <!-- Column-->
       <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
@@ -483,7 +490,7 @@
                 </canvas>
               </div>
               <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && gaugeValuePatients <= 0) || (showTrendChart == true && patientComplaintsTrend1.length <= 0)) && buildChartNopatientsDentistLoader===false">
+                *ngIf="((showTrendChart == false && gaugeValuePatients <= 0) || (showTrendChart == true && patientComplaintsTrend1.length <= 0)) && !buildChartNopatientsDentistLoader && !patientComplaintsTrendLoader">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no patient complaints in this period</p>
@@ -507,20 +514,20 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="buildChartNopatientsLoader" class="loader_container loader_container_middle"><img
+                class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="buildChartNopatientsDentistLoader" class="loader_container loader_container_middle"><img
+                class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="patientComplaintsTrendLoader" class="loader_container loader_container_middle"><img
+                class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
           </mat-card-content>
         </mat-card>
-        <div *ngIf="buildChartNopatientsLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="buildChartNopatientsDentistLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="patientComplaintsTrendLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
       </div>
 
       <!-- Column-->
@@ -615,8 +622,7 @@
 
             </mat-card-title>
             <div class="card-body">
-              <div fxLayout="row wrap" class="row_Patients" fxLayoutAlign="center end" style="height: 305px"
-                >
+              <div fxLayout="row wrap" class="row_Patients" fxLayoutAlign="center end" style="height: 305px">
                 <!--   <div *ngIf="newPatientsChartTrendLabels.length <= 0 && newPatientPercent<=0 && buildChartNewpatientsDentistLoader == false" class="sa_nodata_div">
                             <h4>No Data</h4>
                             <p></p>
@@ -626,13 +632,14 @@
                             <span class="sa_new_patients_text">New Patients</span>
                           </div>
                         </div> -->
-                <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49"  *ngIf="showTrendChart == false && newPatientPercent > 0" >
+                <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49"
+                  *ngIf="showTrendChart == false && newPatientPercent > 0">
                   <div class="chart">
 
-                    <ngx-gauge [type]="gaugeType" [value]="newPatientPercent"
-                      [label]="newPatientValuePatients" [thick]="gaugeThick" [cap]="cap"
-                      [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [append]="gaugeAppendText"
-                      [size]="size" [duration]="gaugeDuration">
+                    <ngx-gauge [type]="gaugeType" [value]="newPatientPercent" [label]="newPatientValuePatients"
+                      [thick]="gaugeThick" [cap]="cap" [foregroundColor]="foregroundColor"
+                      [backgroundColor]="backgroundColor" [append]="gaugeAppendText" [size]="size"
+                      [duration]="gaugeDuration">
                     </ngx-gauge>
 
                   </div>
@@ -801,17 +808,18 @@
                 </div>
               </div>
 
-              <ngx-gauge *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0" [type]="gaugeType" [value]="recallValue"
-                [label]="recallLabel" [thick]="gaugeThick" [foregroundColor]="foregroundColor"
+              <ngx-gauge *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0" [type]="gaugeType"
+                [value]="recallValue" [label]="recallLabel" [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                 [backgroundColor]="backgroundColor" [max]="maxrecallGoal" [cap]="cap" [duration]="gaugeDuration"
                 [append]="gaugeAppendText" [size]="size">
               </ngx-gauge>
-              <ngx-gauge *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0" [type]="gaugeType"
-                [value]="treatmentPreValue" [label]="treatmentPreLabel" [thick]="gaugeThick"
+              <ngx-gauge *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
+                [type]="gaugeType" [value]="treatmentPreValue" [label]="treatmentPreLabel" [thick]="gaugeThick"
                 [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="recallGoal" [cap]="cap"
                 [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
               </ngx-gauge>
-              <div *ngIf="showTrendChart == true  && prebook=='recall' && recallPrebookDentistLoader == false && recallPrebookChartTrend1.length > 0"
+              <div
+                *ngIf="showTrendChart == true  && prebook=='recall' && !recallPrebookDentistLoader && recallPrebookChartTrend1.length > 0"
                 style="height: 250px">
                 <canvas #myCanvas id="RecallRateTrend" baseChart [datasets]="recallPrebookChartTrend"
                   [labels]="recallPrebookChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
@@ -819,7 +827,8 @@
                   (chartClick)="chartClicked($event)">
                 </canvas>{{recallPrebookChartTrend1.length}}
               </div>
-              <div *ngIf="showTrendChart == true && prebook=='treatment' && treatmentPrebookDentistLoader == false && treatmentPrebookChartTrend1.length > 0"
+              <div
+                *ngIf="showTrendChart == true && prebook=='treatment' && !treatmentPlanRateLoader && treatmentPrebookChartTrend1.length > 0"
                 style="height: 250px">
                 <canvas #myCanvas id="PrebookRateTrend" baseChart [datasets]="treatmentPrebookChartTrend"
                   [labels]="treatmentPrebookChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
@@ -828,13 +837,13 @@
                 </canvas>
               </div>
               <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && recallValue <= 0) || (showTrendChart == true && recallPrebookChartTrend1.length <= 0)) && prebook=='recall' && treatmentPrebookDentistLoader===false">
+                *ngIf="((showTrendChart == false && recallValue <= 0) || (showTrendChart == true && recallPrebookChartTrend1.length <= 0)) && prebook=='recall' && !recallPrebookDentistLoader">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no recall in this period</p>
               </div>
               <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && treatmentPreValue <= 0) || (showTrendChart == true && treatmentPrebookChartTrend1.length <= 0)) && prebook == 'treatment' && treatmentPrebookDentistLoader === false">
+                *ngIf="((showTrendChart == false && treatmentPreValue <= 0) || (showTrendChart == true && treatmentPrebookChartTrend1.length <= 0)) && prebook == 'treatment' && !treatmentPrebookDentistLoader">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no prebook in this period</p>
@@ -876,16 +885,20 @@
             </div>
           </mat-card-content>
         </mat-card>
-        <div *ngIf="recallPrebookLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
+        <div *ngIf="recallPrebookLoader && !fdRecallPrebookRateTrendLoader && !recallPrebookDentistLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>
-        <div *ngIf="recallPrebookDentistLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
+        <div *ngIf="recallPrebookDentistLoader && !fdRecallPrebookRateTrendLoader && !recallPrebookLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>
-        <div *ngIf="fdRecallPrebookRateTrendLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
+        <div *ngIf="fdRecallPrebookRateTrendLoader && !recallPrebookDentistLoader && !recallPrebookLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
+        <div *ngIf="treatmentPrebookDentistLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>
       </div>
@@ -916,7 +929,8 @@
               <div class="relative">
 
                 <div style="height: 250px">
-                  <canvas #myCanvas id="HourlyRate" baseChart *ngIf="hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
+                  <canvas #myCanvas id="HourlyRate" baseChart
+                    *ngIf="hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
                     [datasets]="hourlyRateChartData" [labels]="hourlyRateChartLabels" [legend]="barChartLegend"
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
@@ -965,9 +979,10 @@
             </mat-card-title>
             <div class="card-body">
 
-              <ngx-gauge *ngIf="showTrendChart == false && hourlyValue > 0" [type]="gaugeType" [value]="hourlyValue" [label]="hourlyLabel"
-                [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
-                [max]="maxhourlyGoal" [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
+              <ngx-gauge *ngIf="showTrendChart == false && hourlyValue > 0" [type]="gaugeType" [value]="hourlyValue"
+                [label]="hourlyLabel" [thick]="gaugeThick" [foregroundColor]="foregroundColor"
+                [backgroundColor]="backgroundColor" [max]="maxhourlyGoal" [cap]="cap" [duration]="gaugeDuration"
+                [prepend]="gaugePrependText" [size]="size">
               </ngx-gauge>
               <div *ngIf="showTrendChart == true && hourlyRateChartTrend1.length > 0" style="height: 250px">
                 <canvas #myCanvas id="HourlyRateTrend" baseChart [datasets]="hourlyRateChartTrend"
@@ -977,8 +992,8 @@
                 </canvas>
               </div>
 
-              <div class="no-data-placeholder" 
-              *ngIf="((showTrendChart == false && hourlyValue <= 0) || (showTrendChart == true && hourlyRateChartTrend1.length <= 0)) && hourlyRateDentistLoader===false">
+              <div class="no-data-placeholder"
+                *ngIf="((showTrendChart == false && hourlyValue <= 0) || (showTrendChart == true && hourlyRateChartTrend1.length <= 0)) && hourlyRateDentistLoader===false">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no hourly rate in this period</p>
@@ -1033,10 +1048,10 @@
 
             <div class="card-body">
               <div style="height: 250px">
-                <canvas #myCanvas baseChart *ngIf="treatmentChartData1.length > 0 && treatmentPlanRateLoader == false" [datasets]="treatmentChartData"
-                  [labels]="treatmentChartLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTP" [colors]="TPRcolors"
-                  (chartClick)="chartClicked($event)">
+                <canvas #myCanvas baseChart *ngIf="treatmentChartData1.length > 0 && treatmentPlanRateLoader == false"
+                  [datasets]="treatmentChartData" [labels]="treatmentChartLabels" [legend]="barChartLegend"
+                  [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
+                  [colors]="TPRcolors" (chartClick)="chartClicked($event)">
                 </canvas>
                 <div *ngIf="treatmentChartData1.length <= 0 && treatmentPlanRateLoader===false">
                   <div class="sa_nodata_div">
@@ -1084,10 +1099,10 @@
             </mat-card-title>
 
             <div class="card-body">
-              <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue > 0" [type]="gaugeType" [value]="treatmentPlanValue"
-                [label]="treatmentPlanLabel" [thick]="gaugeThick" [foregroundColor]="foregroundColor"
-                [backgroundColor]="backgroundColor" [max]="maxtreatmentPlanGoal" [cap]="cap" [duration]="gaugeDuration"
-                [append]="gaugeAppendText" [size]="size">
+              <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue > 0" [type]="gaugeType"
+                [value]="treatmentPlanValue" [label]="treatmentPlanLabel" [thick]="gaugeThick"
+                [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxtreatmentPlanGoal"
+                [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
               </ngx-gauge>
               <div *ngIf="showTrendChart == true && treatmentPlanChartTrend1.length > 0" style="height: 250px">
                 <canvas #myCanvas id="completionRate" baseChart [datasets]="treatmentPlanChartTrend"
@@ -1096,9 +1111,9 @@
                   (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-             
+
               <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && treatmentPlanValue <= 0) || (showTrendChart == true && treatmentPlanChartTrend1.length <= 0)) && treatmentPlanRateDentistLoader===false">
+                *ngIf="((showTrendChart == false && treatmentPlanValue <= 0) || (showTrendChart == true && treatmentPlanChartTrend1.length <= 0)) ">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no treatment plan completion in this period</p>
@@ -1124,16 +1139,16 @@
             </div>
           </mat-card-content>
         </mat-card>
-        <div *ngIf="treatmentPlanRateLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
+        <div *ngIf="treatmentPlanRateLoader && !treatmentPlanRateDentistLoader && !fdtreatmentPlanRateTrendLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>
-        <div *ngIf="treatmentPlanRateDentistLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
+        <div *ngIf="treatmentPlanRateDentistLoader && !treatmentPlanRateLoader && !fdtreatmentPlanRateTrendLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>
-        <div *ngIf="fdtreatmentPlanRateTrendLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
+        <div *ngIf="fdtreatmentPlanRateTrendLoader && !treatmentPlanRateLoader && !treatmentPlanRateDentistLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>
       </div>
