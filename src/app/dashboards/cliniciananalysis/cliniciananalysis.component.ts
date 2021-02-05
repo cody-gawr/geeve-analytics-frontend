@@ -3121,7 +3121,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         if (data.data) {
           data.data.forEach(res => {
             if (res.val) {
-              this.treatmentPlanChartTrend1.push(Math.round(res.val.percent));
+              this.treatmentPlanChartTrend1.push(Math.round(res.val));
               if (this.trendValue == 'c')
                 this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
               else
