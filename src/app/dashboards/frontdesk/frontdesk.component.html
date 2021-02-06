@@ -79,7 +79,7 @@
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">
           <div>
-            <span *ngIf="showTrend == false && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{prevWorkTimeTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{prevWorkTimeTooltip}}.png"></span>
+            <span *ngIf="!showTrend && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{prevWorkTimeTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{prevWorkTimeTooltip}}.png"></span>
             Utilisation Rate
           </div>
           <div class="sa_box_title_right_buttons">
@@ -97,25 +97,27 @@
          <div style="height: 330px; width: 100%;">
           
 
-        <canvas *ngIf="showTrend == false && workTimeLabels.length > 0" #myCanvas baseChart [datasets]="workTimeData" [labels]="workTimeLabels" [options]="stackedChartOptions" 
+        <canvas *ngIf="!showTrend && workTimeData1.length > 0 && !fdWorkTimeAnalysisLoader" #myCanvas baseChart [datasets]="workTimeData" [labels]="workTimeLabels" [options]="stackedChartOptions" 
           [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
         </canvas>
-          <div *ngIf="showTrend == false && workTimeLabels.length <= 0 && fdWorkTimeAnalysisLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div>
-
-         <canvas *ngIf="showTrend == true && wtaChartTrendLabels.length > 0" #myCanvas baseChart [datasets]="wtaChartTrend" [labels]="wtaChartTrendLabels" [options]="stackedChartOptions" 
+         <canvas *ngIf="showTrend && wtaChartTrend1.length > 0 && !fdwtaRatioTrendLoader" #myCanvas baseChart [datasets]="wtaChartTrend" [labels]="wtaChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
-<div *ngIf="showTrend == true && wtaChartTrendLabels.length <= 0 && fdwtaRatioTrendLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+
+          <div *ngIf="!showTrend && workTimeData1.length <= 0 && !fdWorkTimeAnalysisLoader">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no utilisation rate in this period</p>
+          </div>
+          <div *ngIf="showTrend && wtaChartTrend1.length <= 0 && !fdwtaRatioTrendLoader">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no utilisation rate in this period</p>
           </div>
       </div></div>
         </div>
         <div class="card-footer">
-       <div *ngIf="showTrend == false && workTimeLabels.length > 0" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 predicted_main predicted1 sa_chart_details_sec">
+       <div *ngIf="!showTrend && workTimeLabels.length > 0" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 predicted_main predicted1 sa_chart_details_sec">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                    <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                         <h3 class="m-0 value-num">{{workTimeTotal | number }}%</h3>
@@ -137,8 +139,8 @@
                 </div> 
       </mat-card-content>
     </mat-card>
-    <div *ngIf="fdWorkTimeAnalysisLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
-    <div *ngIf="fdwtaRatioTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+    <div *ngIf="fdWorkTimeAnalysisLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+    <div *ngIf="fdwtaRatioTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
   </div>
  <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians">
    
@@ -146,7 +148,7 @@
       <mat-card-content class="sa_matcard_content"> 
         <mat-card-title class="text-center">
           <div>
-            <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{ftaPrevTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{ftaTooltip}}.png"></span>
+            <span *ngIf="!showTrend  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{ftaPrevTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{ftaTooltip}}.png"></span>
             FTA ratio (%)
           </div>
             <div class="sa_box_title_right_buttons">
@@ -163,7 +165,7 @@
           <div class="chart">
          
 
-          <div *ngIf="showTrend == false" style="height: 190px;width: 100%">
+          <div *ngIf="!showTrend && ftaTotal > 0" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="ftaTotal" 
            [thick]="gaugeThick"  
@@ -175,22 +177,31 @@
            [size] = "size">
           </ngx-gauge>
       </div>
+      <div *ngIf="!showTrend && ftaTotal <= 0">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">You have no FTA ratio in this period</p>
+      </div>
        
 <!-- <div *ngIf="showTrend == false && ftaTotal <= 0 && fdFtaRatioLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
           </div> -->
 
-       <div *ngIf="showTrend == true && ftaChartTrendLabels.length > 0" style="height: 300px;width: 100%">
+       <div *ngIf="showTrend && ftaChartTrend1.length > 0 && !fdFtaRatioTrendLoader" style="height: 300px;width: 100%">
           <canvas #myCanvas baseChart [datasets]="ftaChartTrend" [labels]="ftaChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="lineChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-        <img src='../assets/images/nodata02.png' *ngIf="showTrend == false && ftaChartTrendLabels.length <= 0 && fdFtaRatioTrendLoader == false" class="blankChart">
+        <div *ngIf="showTrend && ftaChartTrend1.length <= 0 && !fdFtaRatioTrendLoader">
+          <div class="sa_nodata_div">
+          </div>
+          <p class="chart-placeholder-text">You have no FTA ratio in this period</p>
+        </div>
       </div>
         </div>
         <div class="card-footer">
-          <div *ngIf="showTrend == false"  fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
+          <div *ngIf="!showTrend"  fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">{{ftaTotal | number:'1.0-0'}}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
@@ -209,14 +220,14 @@
                 </div>     
       </mat-card-content>
     </mat-card>
-    <div *ngIf="fdFtaRatioTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+    <div *ngIf="fdFtaRatioTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
   </div>
   <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians last">
     <mat-card>
       <mat-card-content class="sa_matcard_content"> 
         <mat-card-title class="text-center">
           <div>
-          <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{utaPrevTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{utaTooltip}}.png"></span>
+          <span *ngIf="!showTrend && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{utaPrevTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{utaTooltip}}.png"></span>
           UTA ratio (%)
           </div>
             <div class="sa_box_title_right_buttons">
@@ -233,7 +244,7 @@
           <div class="chart">
           
 
-          <div *ngIf="showTrend == false" style="height: 190px;width: 100%">
+          <div *ngIf="!showTrend && utaTotal > 0 && !fdUtaRatioLoader" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="utaTotal" 
            [thick]="gaugeThick"  
@@ -245,25 +256,26 @@
            [size] = "size">
           </ngx-gauge>
       </div>
-       <!--   <div *ngIf="showTrend == false && utaTotal <= 0 && fdUtaRatioLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div> -->
+      <div *ngIf="!showTrend && utaTotal <= 0 && !fdUtaRatioLoader">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">You have no UTA ratio in this period</p>
+      </div>
 
-       <div *ngIf="showTrend == true && utaChartTrendLabels.length > 0" style="height: 300px;width: 100%">
+       <div *ngIf="showTrend && utaChartTrend1.length > 0 && !fdUtaRatioTrendLoader" style="height: 300px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="utaChartTrend" [labels]="utaChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="lineChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-
- <div *ngIf="showTrend == true && utaChartTrendLabels.length <= 0 && fdUtaRatioTrendLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+          <div *ngIf="showTrend && utaChartTrend1.length <= 0 && !fdUtaRatioTrendLoader">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no UTA ratio in this period</p>
           </div>
       </div>
         </div>
         <div class="card-footer">
-          <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
+          <div *ngIf="!showTrend" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">{{utaTotal | number:'1.0-0'}}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
@@ -282,8 +294,8 @@
               </div>    
       </mat-card-content>
     </mat-card>
-    <div *ngIf="fdUtaRatioLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
-      <div *ngIf="fdUtaRatioTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+    <div *ngIf="fdUtaRatioLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+      <div *ngIf="fdUtaRatioTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
   </div>
   <!-- Column--> 
 <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians">
@@ -292,7 +304,7 @@
       <mat-card-content class="sa_matcard_content"> 
         <mat-card-title class="text-center">
           <div>
-          <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{ticksPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{ticksTooltip}}.png"></span>
+          <span *ngIf="!showTrend && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{ticksPrevTotal}}"><img class="trend_ico" src="../assets/images/trend_{{ticksTooltip}}.png"></span>
           Number of Ticks
           </div>
             <div class="sa_box_title_right_buttons">
@@ -303,7 +315,7 @@
         <div class="card-body">
           <div class="chart">
          
-          <div *ngIf="showTrend == false" style="height: 190px;width: 100%">
+          <div *ngIf="!showTrend && ticksTotal > 0 && !fdNumberOfTicksLoader" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="ticksTotal" 
            [thick]="gaugeThick"  
@@ -313,19 +325,21 @@
            [size] = "size">
           </ngx-gauge>
       </div>
-        <!--   <div *ngIf="showTrend == false && ticksTotal<=0 && fdNumberOfTicksLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div> -->
+      <div *ngIf="!showTrend && ticksTotal <= 0 && !fdNumberOfTicksLoader">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">You have no number of ticks in this period</p>
+      </div>
 
-      <div *ngIf="showTrend == true && tickChartTrendLabels.length > 0" style="height: 300px;width: 100%">
+      <div *ngIf="showTrend && tickChartTrend1.length > 0 && !fdNumberOfTicksTrendLoader" style="height: 300px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="tickChartTrend" [labels]="tickChartTrendLabels" [options]="numOfTicksChartOptionsticks" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-<div *ngIf="showTrend == true && tickChartTrendLabels.length <= 0 && fdNumberOfTicksTrendLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+          <div *ngIf="showTrend && tickChartTrend1.length <= 0 && !fdNumberOfTicksTrendLoader">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no number of ticks in this period</p>
           </div>
       </div>
         </div>
@@ -345,8 +359,8 @@
                 </div>       
       </mat-card-content>
     </mat-card>
-     <div *ngIf="fdNumberOfTicksLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
- <div *ngIf="fdNumberOfTicksTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+     <div *ngIf="fdNumberOfTicksLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+ <div *ngIf="fdNumberOfTicksTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
   </div>
     <!-- Column--> 
 <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians">
@@ -355,7 +369,7 @@
       <mat-card-content class="sa_matcard_content"> 
         <mat-card-title class="text-center">
           <div>
-          <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{recallPrebookPrevTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{recallPrebookTooltip}}.png"></span>
+          <span *ngIf="!showTrend && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{recallPrebookPrevTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{recallPrebookTooltip}}.png"></span>
           Recall prebook rate (%)
           </div>
             <div class="sa_box_title_right_buttons">
@@ -367,7 +381,7 @@
           <div class="chart">
          
 
-          <div *ngIf="showTrend == false && recallPrebookTotal>0" style="height: 190px;width: 100%">
+          <div *ngIf="!showTrend && recallPrebookTotal > 0 && !fdRecallPrebookRateLoader" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="recallPrebookTotal" 
            [thick]="gaugeThick"  
@@ -379,12 +393,17 @@
            [size] = "size">
           </ngx-gauge>
          </div>
-         <div *ngIf="showTrend == false && recallPrebookTotal<=0 && fdRecallPrebookRateLoader == false" class="sa_nodata_div">
+         <!-- <div *ngIf="showTrend == false && recallPrebookTotal <=0 && fdRecallPrebookRateLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
+          </div> -->
+          <div *ngIf="!showTrend && recallPrebookTotal <=0 && !fdRecallPrebookRateLoader">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no recall prebook rate in this period</p>
           </div>
 
-        <div *ngIf="showTrend == true && recallPrebookChartTrendLabels.length > 0" style="height: 300px;width: 100%">
+        <div *ngIf="showTrend && recallPrebookChartTrend1.length > 0 && !fdRecallPrebookRateTrendLoader" style="height: 300px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="recallPrebookChartTrend" [labels]="recallPrebookChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
@@ -394,6 +413,11 @@
               <h4>No Data</h4>
               <p></p>
           </div> -->
+          <div *ngIf="showTrend && recallPrebookChartTrend1.length <=0 && !fdRecallPrebookRateTrendLoader">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no recall prebook rate in this period</p>
+          </div>
       </div>
         </div>
         <div class="card-footer">
@@ -416,8 +440,8 @@
                 </div>    
       </mat-card-content>
     </mat-card>
-    <div *ngIf="fdRecallPrebookRateLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
-    <div *ngIf="fdRecallPrebookRateTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+    <div *ngIf="fdRecallPrebookRateLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+    <div *ngIf="fdRecallPrebookRateTrendLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
   </div>
       <!-- Column--> 
 <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians last">
@@ -426,7 +450,7 @@
       <mat-card-content class="sa_matcard_content"> 
         <mat-card-title class="text-center">
           <div>
-          <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{treatmentPrebookPrevTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{treatmentPrebookTooltip}}.png"></span>
+          <span *ngIf="!showTrend && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{treatmentPrebookPrevTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{treatmentPrebookTooltip}}.png"></span>
           Treatment prebook rate (%)
           </div>
             <div class="sa_box_title_right_buttons">
@@ -438,7 +462,7 @@
           <div class="chart">
           
 
-          <div *ngIf="showTrend == false && treatmentPrebookTotal>0" style="height: 190px;width: 100%">
+          <div *ngIf="!showTrend && treatmentPrebookTotal > 0 && !fdtreatmentPrebookRateLoader" style="height: 190px;width: 100%">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="treatmentPrebookTotal" 
            [thick]="gaugeThick"  
@@ -451,20 +475,30 @@
           </ngx-gauge>
       </div>
 
-     <div *ngIf="showTrend == false && treatmentPrebookTotal<=0 && fdtreatmentPrebookRateLoader == false" class="sa_nodata_div">
+     <!-- <div *ngIf="showTrend == false && treatmentPrebookTotal<=0 && fdtreatmentPrebookRateLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
+          </div> -->
+          <div *ngIf="!showTrend && treatmentPrebookTotal <= 0 && !fdtreatmentPrebookRateLoader">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no treatment prebook rate in this period</p>
           </div>
 
-<div *ngIf="showTrend == true && treatmentPrebookChartTrendLabels.length > 0" style="height: 300px;width: 100%">
+<div *ngIf="showTrend && treatmentPrebookChartTrend1.length > 0 && !fdTreatmentPrebookRateTrendLoader" style="height: 300px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="treatmentPrebookChartTrend" [labels]="treatmentPrebookChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
  
-        <div *ngIf="showTrend == true && treatmentPrebookChartTrendLabels.length <= 0 && fdTreatmentPrebookRateTrendLoader == false" class="sa_nodata_div">
+        <!-- <div *ngIf="showTrend == true && treatmentPrebookChartTrendLabels.length <= 0 && fdTreatmentPrebookRateTrendLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
+          </div> -->
+          <div *ngIf="showTrend && treatmentPrebookChartTrend1.length <= 0 && !fdTreatmentPrebookRateTrendLoader">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no treatment prebook rate in this period</p>
           </div>
       </div>
         </div>
@@ -488,8 +522,8 @@
                 </div>      
       </mat-card-content>
     </mat-card>
-    <div *ngIf="fdtreatmentPrebookRateLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
-  <div *ngIf="fdTreatmentPrebookRateTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+    <div *ngIf="fdtreatmentPrebookRateLoader && !showTrend" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
+  <div *ngIf="fdTreatmentPrebookRateTrendLoader && showTrend" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"></div>
   </div>
 </div>
 </div>

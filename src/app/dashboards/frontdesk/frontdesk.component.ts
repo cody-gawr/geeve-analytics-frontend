@@ -478,7 +478,7 @@ public dentists;
   public prevWorkTimeTooltip ='down';
   public goalchecked='off';
     public stackedChartOptionssWT:any =this.stackedChartOptions;
-public fdWorkTimeAnalysisLoader:any;
+public fdWorkTimeAnalysisLoader:boolean;
 
   //Items Predictor Analysis 
   private fdWorkTimeAnalysis() {
@@ -598,7 +598,7 @@ public utaTotal;
 public utaPrevTotal;
 public utaTooltip='down';
 public utaGoal;
-public fdUtaRatioLoader:any;
+public fdUtaRatioLoader:boolean;
 public maxutaGoal:any=0;
 //Predictor Ratio :
   private fdUtaRatio() {
@@ -639,7 +639,7 @@ public maxutaGoal:any=0;
 public ticksTotal;
 public ticksPrevTotal;
 public ticksTooltip='down';
-public fdNumberOfTicksLoader:any;
+public fdNumberOfTicksLoader:boolean;
 
 //Predictor Ratio :
   private fdNumberOfTicks() {
@@ -671,7 +671,7 @@ public recallPrebookTotal;
 public recallPrebookGoal=0;
 public recallPrebookPrevTotal;
 public recallPrebookTooltip='down';
-public fdRecallPrebookRateLoader:any;
+public fdRecallPrebookRateLoader:boolean;
 public maxrecallPrebookGoal:any=0;
 
 //Predictor Ratio :
@@ -711,7 +711,7 @@ public treatmentPrebookGoal=0;
 
 public treatmentPrebookPrevTotal;
 public treatmentPrebookTooltip='down';
-public fdtreatmentPrebookRateLoader:any;
+public fdtreatmentPrebookRateLoader: boolean;
 public maxtreatmentPrebookGoal:any=0;
 //Predictor Ratio :
   private fdtreatmentPrebookRate() {
@@ -965,7 +965,7 @@ toggleFilter(val) {
   isDisabled =true;
   isChecked =true;
   mode='Internal';
-  showTrend= false;
+  showTrend: boolean = false;
 toggleChangeProcess(){
       this.showTrend = true;
       this.fdwtaRatioTrend();
@@ -992,7 +992,7 @@ toggleChangeProcess(){
     public ftaChartTrend1=[];
   public ftaChartTrendLabels =[];
   public ftaChartTrendLabels1 =[];
-  public fdFtaRatioTrendLoader:any;
+  public fdFtaRatioTrendLoader:boolean;
   private fdFtaRatioTrend() {
     this.fdFtaRatioTrendLoader =true;
   this.ftaChartTrendLabels=[];
@@ -1041,7 +1041,7 @@ toggleChangeProcess(){
     public wtaChartTrend1=[];
   public wtaChartTrendLabels =[];
   public wtaChartTrendLabels1 =[];
-  public fdwtaRatioTrendLoader:any;
+  public fdwtaRatioTrendLoader:boolean;
   private fdwtaRatioTrend() {
     this.fdwtaRatioTrendLoader =true;
   this.wtaChartTrendLabels=[];
@@ -1090,7 +1090,7 @@ toggleChangeProcess(){
     public utaChartTrend1=[];
   public utaChartTrendLabels =[];
   public utaChartTrendLabels1 =[];
-  public fdUtaRatioTrendLoader:any;
+  public fdUtaRatioTrendLoader:boolean;
 
   private fdUtaRatioTrend() {
     this.fdUtaRatioTrendLoader = true;
@@ -1141,7 +1141,7 @@ toggleChangeProcess(){
     public tickChartTrend1=[];
   public tickChartTrendLabels =[];
   public tickChartTrendLabels1 =[];
-  public fdNumberOfTicksTrendLoader:any;
+  public fdNumberOfTicksTrendLoader:boolean;
 
   private fdNumberOfTicksTrend() {
     this.fdNumberOfTicksTrendLoader = true;
@@ -1190,7 +1190,7 @@ toggleChangeProcess(){
     public recallPrebookChartTrend1=[];
   public recallPrebookChartTrendLabels =[];
   public recallPrebookChartTrendLabels1 =[];
-  public fdRecallPrebookRateTrendLoader:any;
+  public fdRecallPrebookRateTrendLoader:boolean;
 
   private fdRecallPrebookRateTrend() {
     this.fdRecallPrebookRateTrendLoader = true;
@@ -1240,7 +1240,7 @@ toggleChangeProcess(){
     public treatmentPrebookChartTrend1=[];
   public treatmentPrebookChartTrendLabels =[];
   public treatmentPrebookChartTrendLabels1 =[];
-  public fdTreatmentPrebookRateTrendLoader:any=false;
+  public fdTreatmentPrebookRateTrendLoader:boolean = false;
 
   private fdTreatmentPrebookRateTrend() {
     this.fdTreatmentPrebookRateTrendLoader = true;

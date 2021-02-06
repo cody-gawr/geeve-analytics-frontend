@@ -83,9 +83,10 @@
           [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
         </canvas>
 
-<div *ngIf="newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+          <div *ngIf="newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no new patients by referral in this period</p>
           </div>
       </div>
     </div>
@@ -114,26 +115,27 @@
         <div class="card-body">
         
          <div  style="height: 326px;position: relative;">
-           <div class="sa_back_btn_holder" *ngIf="revenueReferralLabelsl2.length > 0"><span (click) ="changeLevel('revenue')">Back</span></div>
+           <div class="sa_back_btn_holder" *ngIf="revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false"><span (click) ="changeLevel('revenue')">Back</span></div>
        <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabels.length > 0" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event,'revenue')" 
           [plugins]="revenuePluginObservable$ | async"
           [options]="pieChartOptions" [colors]="pieChartColors">
         </canvas>
-         <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabelsl2.length > 0" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+         <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           [options]="pieChartOptions" [colors]="pieChartColors">
         </canvas>
 
-         <div *ngIf="revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+          <div *ngIf="revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no revenue by referral in this period</p>
           </div>
       
     </div>
     </div>
       </mat-card-content>
     </mat-card>
-    <div *ngIf="mkRevenueByReferralLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
+    <div *ngIf="mkRevenueByReferralLoader == true && showTrend == false" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
 </div>
   <!-- Column--> 
@@ -152,7 +154,7 @@
         </mat-card-title>
         <div class="card-body">
           <div class="chart py-2">
-          <div *ngIf="showTrend == false" style="height: 190px">
+          <div *ngIf="showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false" style="height: 190px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newPatientsTotal" 
            [thick]="gaugeThick"  
@@ -163,19 +165,25 @@
            [size] = "size">
           </ngx-gauge>
       </div>
+      <div *ngIf="showTrend == false && newPatientsTotal <= 0 && fdnewPatientsRatioLoader == false">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">You have no new patients in this period</p>
+      </div>
  <!--         <div *ngIf="showTrend == false && newPatientsTotal<0" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
           </div> -->
-       <div *ngIf="showTrend == true" style="height: 300px">
+       <div *ngIf="showTrend == true && newPatientsChartTrend1.length > 0" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend" [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-      
-      <div *ngIf="showTrend == true && visitsChartTrendLabels.length <=0" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+    
+          <div *ngIf="showTrend == true && newPatientsChartTrend1.length <=0">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no new patients in this period</p>
           </div>
       </div>
         </div>
@@ -229,19 +237,22 @@
             </ngx-gauge>
                        
         </div>
-    <div *ngIf="showTrend == false && newAcqValue<=0" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+  
+          <div *ngIf="showTrend == false && newAcqValue<=0">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no cost of new patient acquisition in this period</p>
           </div>
-       <div *ngIf="showTrend == true" style="height: 300px">
+       <div *ngIf="showTrend == true && expenseDataTrend1.length > 0" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="expenseDataTrend" [labels]="expenseDataTrendLabels" [options]="barChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-        <div *ngIf="showTrend == true && visitsChartTrendLabels.length <=0" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div>
+      <div *ngIf="showTrend == true && expenseDataTrend1.length<=0">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">You have no cost of new patient acquisition in this period</p>
+      </div>
     </div>
       </div>  
         </div>
@@ -283,7 +294,7 @@
         <div class="card-body">                                   
            <div class="chart py-2">           
           
-          <div *ngIf="showTrend == false" style="height: 190px">
+          <div *ngIf="showTrend == false && visitsTotal > 0" style="height: 190px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="visitsTotal" 
            [thick]="gaugeThick"  
@@ -293,21 +304,27 @@
            [size] = "size">
           </ngx-gauge>
       </div>
+      <div *ngIf="showTrend == false && visitsTotal<=0">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">You have no total visits in this period</p>
+      </div>
 
      <!--   <div *ngIf="showTrend == false && visitsTotal<=0 && fdvisitsRatioLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
        </div> -->
-       <div *ngIf="showTrend == true" style="height: 300px">
+       <div *ngIf="showTrend == true && visitsChartTrend1.length > 0" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="visitsChartTrend" [labels]="visitsChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
 
-      <div *ngIf="showTrend == true && visitsChartTrendLabels.length <=0" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div>
+      </div>
+      <div *ngIf="showTrend == true && visitsChartTrend1.length <=0">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">You have no total visits in this period</p>
       </div>
         </div>
         <div class="card-footer">

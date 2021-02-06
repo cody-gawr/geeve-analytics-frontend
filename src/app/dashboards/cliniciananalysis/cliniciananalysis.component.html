@@ -1048,12 +1048,12 @@
 
             <div class="card-body">
               <div style="height: 250px">
-                <canvas #myCanvas baseChart *ngIf="treatmentChartData1.length > 0 && treatmentPlanRateLoader == false"
+                <canvas #myCanvas baseChart *ngIf="treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
                   [datasets]="treatmentChartData" [labels]="treatmentChartLabels" [legend]="barChartLegend"
                   [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
                   [colors]="TPRcolors" (chartClick)="chartClicked($event)">
                 </canvas>
-                <div *ngIf="treatmentChartData1.length <= 0 && treatmentPlanRateLoader===false">
+                <div *ngIf="treatmentChartData1.length <= 0 && treatmentPlanRateLoader===false && !treatmentPlanRateLoader">
                   <div class="sa_nodata_div">
                   </div>
                   <p class="chart-placeholder-text">You have no treatment plan completion in this period</p>
@@ -1099,12 +1099,12 @@
             </mat-card-title>
 
             <div class="card-body">
-              <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue > 0" [type]="gaugeType"
+              <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue > 0 && !treatmentPlanRateDentistLoader" [type]="gaugeType"
                 [value]="treatmentPlanValue" [label]="treatmentPlanLabel" [thick]="gaugeThick"
                 [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxtreatmentPlanGoal"
                 [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
               </ngx-gauge>
-              <div *ngIf="showTrendChart == true && treatmentPlanChartTrend1.length > 0" style="height: 250px">
+              <div *ngIf="showTrendChart == true && treatmentPlanChartTrend1.length > 0 && fdtreatmentPlanRateTrendLoader" style="height: 250px">
                 <canvas #myCanvas id="completionRate" baseChart [datasets]="treatmentPlanChartTrend"
                   [labels]="treatmentPlanChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsPercentTrend" [colors]="lineChartColors"
@@ -1113,7 +1113,7 @@
               </div>
 
               <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && treatmentPlanValue <= 0) || (showTrendChart == true && treatmentPlanChartTrend1.length <= 0)) ">
+                *ngIf="((showTrendChart == false && treatmentPlanValue <= 0 && !treatmentPlanRateDentistLoader) || (showTrendChart == true && treatmentPlanChartTrend1.length <= 0 && !fdtreatmentPlanRateTrendLoader)) ">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no treatment plan completion in this period</p>

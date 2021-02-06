@@ -135,7 +135,7 @@
       <mat-card class="itemsPredictorSingle sa_no_tabs_area" [style.display]="'none'">
         <mat-card-content class="sa_matcard_content">
 
-          <mat-card-title class="text-center">Item Predictor >>> {{itemPredictedChartDataMax}}
+          <mat-card-title class="text-center">Item Predictor
 
             <div class="sa_box_title_right_buttons">
             </div>
@@ -443,7 +443,7 @@
             <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="gaugeValuePredicted"
               [label]="gaugeLabelPredicted" [thick]="gaugeThick" [max]="predictedDentistTotal"
               [foregroundColor]="foregroundColor" [cap]="cap" [size]="size" [duration]="gaugeDuration">
-            </ngx-gauge>
+            </ngx-gauge>a
           </div>
           <div *ngIf="toggleChecked == false && gaugeValuePredicted <= 0 && buildChartPredictorDentistLoader == false"
             class="sa_nodata_div">
