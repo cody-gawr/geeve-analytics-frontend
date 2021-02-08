@@ -109,7 +109,7 @@
             <div *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false">
               <div class="sa_nodata_div">
               </div>
-              <p class="chart-placeholder-text">You have no item predictor in this period</p>
+              <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio or Extractions in this period</p>
             </div>
           </div>
 
@@ -167,7 +167,7 @@
             <div *ngIf="itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false">
               <div class="sa_nodata_div">
               </div>
-              <p class="chart-placeholder-text">You have no item predictor in this period</p>
+              <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio or Extractions in this period</p>
             </div>
           </div>
     
@@ -198,7 +198,7 @@
               matTooltip="{{trendText}} : {{pieChartCombinedPrevTotal}}" [style.display]="'none'"><img class="trend_ico"
                 src="../assets/images/trend_{{pieChartCombinedPrevTooltip}}.png"></span>
             Clinician Referrals
-          </div>
+          </div> 
 
           <div class="sa_box_title_right_buttons">
             <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -224,19 +224,19 @@
 
           </div>
           <div class="chart">
-            <div *ngIf="showInternal == true && pieChartDataMax1 > 0" style="height: 250px">
+            <div *ngIf="showInternal == true && pieChartDataMax1 > 0 && showTrend == false" style="height: 250px">
               <canvas baseChart [data]="pieChartData1" [labels]="pieChartLabels1" [chartType]="pieChartType"
                 (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [legend]="true"
                 [options]="pieChartOptions" [colors]="doughnutChartColors">
               </canvas>
             </div>
-            <div *ngIf="pieChartDataMax1 <= 0 && showInternal == true">
+            <div *ngIf="pieChartDataMax1 <= 0 && showInternal == true && showTrend == false">
               <div class="sa_nodata_div">
               </div>
-              <p class="chart-placeholder-text">You have no internal clinician referrals in this period</p>
+              <p class="chart-placeholder-text">You have no internal referrals in the selected period</p>
             </div>
 
-            <div *ngIf="showExternal == true && pieChartDataMax2 > 0" style="height: 250px">
+            <div *ngIf="showExternal == true && pieChartDataMax2 > 0 && showTrend == false" style="height: 250px">
               <canvas baseChart [data]="pieChartData2" [labels]="pieChartLabels2" [chartType]="pieChartType"
                 (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [options]="pieChartOptions"
                 [colors]="doughnutChartColors">
@@ -246,13 +246,13 @@
               <p></p>
           </div> -->
             </div>
-            <div *ngIf="pieChartDataMax2 <= 0 && showExternal == true">
+            <div *ngIf="pieChartDataMax2 <= 0 && showExternal == true && showTrend == false">
               <div class="sa_nodata_div">
               </div>
-              <p class="chart-placeholder-text">You have no external clinician referrals in this period</p>
+              <p class="chart-placeholder-text">You have no external referrals in the selected period</p>
             </div>
 
-            <div *ngIf="showCombined == true  && pieChartDataMax3 > 0" style="height: 250px">
+            <div *ngIf="showCombined == true  && pieChartDataMax3 > 0  && showTrend == false" style="height: 250px">
               <canvas baseChart [data]="pieChartData3" [labels]="pieChartLabels3" [chartType]="pieChartType"
                 (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)" [options]="pieChartOptions"
                 [colors]="doughnutChartColors">
@@ -262,10 +262,10 @@
               <p></p>
           </div> -->
             </div>
-            <div *ngIf="pieChartDataMax3 <= 0 && showCombined == true">
+            <div *ngIf="pieChartDataMax3 <= 0 && showCombined == true && showTrend == false">
               <div class="sa_nodata_div">
               </div>
-              <p class="chart-placeholder-text">You have no clinician referrals in this period</p>
+              <p class="chart-placeholder-text">You have no referrals in the selected period</p>
             </div>
 
             <div *ngIf="showTrend == true && stackedChartTrendDataMax > 0" style="height: 340px">
@@ -278,10 +278,20 @@
               <p></p>
           </div> -->
             </div>
-            <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true">
+            <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showInternal == true" class="no-data-placeholder">
               <div class="sa_nodata_div">
               </div>
-              <p class="chart-placeholder-text">You have no clinician referrals in this period</p>
+              <p class="chart-placeholder-text">You have no referrals in the selected period</p>
+            </div>
+            <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showExternal == true" class="no-data-placeholder">
+              <div class="sa_nodata_div">
+              </div>
+              <p class="chart-placeholder-text">You have no referrals in the selected period</p>
+            </div>
+            <div *ngIf="stackedChartTrendDataMax <= 0 && showTrend == true && showCombined == true">
+              <div class="sa_nodata_div">
+              </div>
+              <p class="chart-placeholder-text">You have no referrals in the selected period</p>
             </div>
 
           </div>
@@ -342,7 +352,7 @@
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no predictor ratio for crown to large filling in this period
+            <p class="chart-placeholder-text">You have no crowns or large fillings in the selected period
             </p>
           </div>
 
@@ -350,14 +360,14 @@
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no predictor ratio for RCT to extraction in this period</p>
+            <p class="chart-placeholder-text">You have no RCTs or extractions in the selected period</p>
           </div>
 
           <div *ngIf="(predictedstackedChartData3[0]['data'].length <= 0 && predictedstackedChartData3[1]['data'].length <= 0) && predictorRatioTab == '3'"
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no predictor ratio for RCT conversion in this period</p>
+            <p class="chart-placeholder-text">You have no RCTs in the selected period</p>
           </div>
 
           <!-- <div *ngIf="(predictedMax <= 0 || predictedMax == ''  ) && buildChartPredictorLoader == false" class="sa_nodata_div">
@@ -461,7 +471,7 @@
           class="no-data-placeholder">
           <div class="sa_nodata_div">
           </div>
-          <p class="chart-placeholder-text">You have no predictor ratio for crown to large filling in this period
+          <p class="chart-placeholder-text">You have no crowns or large fillings in the selected period
           </p>
         </div>
 
@@ -469,14 +479,14 @@
           class="no-data-placeholder">
           <div class="sa_nodata_div">
           </div>
-          <p class="chart-placeholder-text">You have no predictor ratio for RCT to extraction in this period</p>
+          <p class="chart-placeholder-text">You have no RCTs or extractions in the selected period</p>
         </div>
 
         <div *ngIf="(ratioChartData3[0]['data'].length <= 0 && ratioChartData3[1]['data'].length <= 0) && predictorRatioTab == '3' && toggleChecked == true"
           class="no-data-placeholder">
           <div class="sa_nodata_div">
           </div>
-          <p class="chart-placeholder-text">You have no predictor ratio for RCT conversion in this period</p>
+          <p class="chart-placeholder-text">You have no RCTs in the selected period</p>
         </div>
 
         </div>
@@ -548,7 +558,7 @@
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no total revenue per procedure in this period</p>
+            <p class="chart-placeholder-text">You have no revenue in the selected period</p>
           </div>
           <!-- <img src='../assets/images/nodata02.png'
               *ngIf="proceedureChartLabels.length <= 0 && buildChartProceedureLoader == false" class="blankChart"> -->
@@ -640,7 +650,7 @@
             class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no total revenue per procedure in this period</p>
+            <p class="chart-placeholder-text">You have no revenue in the selected period</p>
           </div>
         </div>
       </mat-card-content>

@@ -1755,10 +1755,9 @@ this.pieChartLabelsres1 = [];
   }
 // Change Referral Chart Tabs
    changePieReferral(chart){
-    this.showInternal =false;
+    this.showInternal = false;
     this.showExternal = false;
     this.showCombined = false;
-    
     $('.referral').hide();
     if(!this.toggleChecked){
     if(chart == 'Internal') {
@@ -1767,7 +1766,7 @@ this.pieChartLabelsres1 = [];
 
     }
     else if(chart == 'External') {
-      this. showExternal =true;
+      this.showExternal = true;
       $('.referral2Tool').show();
     }
     else if(chart == 'Combined') {
@@ -1778,16 +1777,15 @@ this.pieChartLabelsres1 = [];
   else {
       if(chart == 'Internal') {
       this.showInternal = true;
-
     }
     else if(chart == 'External') {
-      this. showExternal =true;
+      this.showExternal = true;
     }
     else if(chart == 'Combined') {
       this.showCombined = true;
     }
 
-    this.mode=chart;
+    this.mode = chart;
     this.referralTrendSingle();
   }
     if($('.external_dentist').val() != 'all'){
@@ -2168,9 +2166,9 @@ toggleChangeProcess(){
     {data: [], label: 'Implants' }  ];
     
       this.showTrend =true;
-      this.showInternal =false;
-      this.showExternal =false;
-      this.showCombined =false;
+      // this.showInternal =false;
+      // this.showExternal =false;
+      // this.showCombined =false;
       this.stackedChartTrendLabels1=[];
       this.stackedChartTrendData1 =[];
       this.stackedChartTrendData2 =[];
@@ -2181,9 +2179,9 @@ toggleChangeProcess(){
       this.stackedChartTrendData7 =[];
       this.stackedChartTrendData8 =[];
   this.clinicianproceeduresService.ClinicianReferralTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
-    this.showInternal =false;
-      this.showExternal =false;
-      this.showCombined =false;
+    // this.showInternal =false;
+    //   this.showExternal =false;
+    //   this.showCombined =false;
       this.stackedChartTrendLabels1=[];
       this.stackedChartTrendData1 =[];
       this.stackedChartTrendData2 =[];
