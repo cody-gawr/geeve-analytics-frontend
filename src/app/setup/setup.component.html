@@ -3,256 +3,260 @@
 </button-->
 
 <mat-vertical-stepper #stepper [selectedIndex]="selectedIndex"  > 
-    <ng-template matStepperIcon="home">
-    <mat-icon>home</mat-icon>
-  </ng-template>
-  <ng-template matStepperIcon="form">
-    <mat-icon>format_align_center</mat-icon>
-  </ng-template>
-  <ng-template matStepperIcon="last">
-    <mat-icon>done_all</mat-icon>
-  </ng-template>
+  <ng-template matStepperIcon="home">
+  <mat-icon>home</mat-icon>
+</ng-template>
+<ng-template matStepperIcon="form">
+  <mat-icon>format_align_center</mat-icon>
+</ng-template>
+<ng-template matStepperIcon="last">
+  <mat-icon>done_all</mat-icon>
+</ng-template>
 <mat-step  id="datata" state="home" [completed]="step1Completed" [editable]="step1editable">
 <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" id="step2">
-   <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(48% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
-  <div class="intro_title">
-     <h2>Welcome To <span>Jeeve Analytics !</span></h2>
-     <h3>Tell Us about your practice</h3>
-   </div>
-    <form [formGroup]="firstFormGroup" id="step1">        
+<div fxFlex="calc(35% - 10px)" fxFlex.md="calc(35% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box">
+<div class="intro_title">
+   <h2>Welcome To <span>Jeeve Analytics !</span></h2>
+   <h3>Tell Us about your practice</h3>
+ </div>
+  <form [formGroup]="firstFormGroup" id="step1">        
 <div mat-dialog-content class="sa_forms_design">
-  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
-     <div fxFlex="calc(48% - 15px)" fxFlex.md="50" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
-         <input tabindex="1" [(ngModel)]="displayName" placeholder="Display Name" class="form-control-dialog" [formControl]="firstFormGroup.controls['displayName']">
-          <small *ngIf="firstFormGroup.controls['displayName'].hasError('required') && firstFormGroup.controls['displayName'].touched" class="text-danger support-text">Display Name is Required.</small>
+<div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+   <div fxFlex="calc(48% - 15px)" fxFlex.md="50" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
+       <input tabindex="1" [(ngModel)]="displayName" placeholder="Your Name" class="form-control-dialog" [formControl]="firstFormGroup.controls['displayName']">
+        <small *ngIf="firstFormGroup.controls['displayName'].hasError('required') && firstFormGroup.controls['displayName'].touched" class="text-danger support-text">Display Name is Required.</small>
+  </div>
+   <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
+       <input tabindex="1" [(ngModel)]="name" placeholder="Clinic Name" class="form-control-dialog" (keypress)="omit_special_char($event)" [formControl]="firstFormGroup.controls['name']">
+       <small *ngIf="firstFormGroup.controls['name'].hasError('required') && firstFormGroup.controls['name'].touched" class="text-danger support-text">Clinic Name is Required.</small>
+  </div>
+</div>
+<div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+  <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
+       <input tabindex="1" [(ngModel)]="clinicEmail" placeholder="Clinic Email" class="form-control-dialog" [formControl]="firstFormGroup.controls['clinicEmail']">
+        <small *ngIf="(firstFormGroup.controls['clinicEmail'].errors?.email && firstFormGroup.controls['clinicEmail'].touched) ||(firstFormGroup.controls['clinicEmail'].hasError('required') && firstFormGroup.controls['clinicEmail'].touched)" class="text-danger support-text">You must include a valid email address.</small>
+  </div>
+    <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
+      <input tabindex="1" type="text" [(ngModel)]="phone_no" placeholder="Phone No" class="form-control-dialog" oninput="this.value = this.value.slice(0,12);" [formControl]="firstFormGroup.controls['phone_no']" (keypress)="numberOnly($event)"  >
+      <small *ngIf="firstFormGroup.controls['phone_no'].hasError('required') && firstFormGroup.controls['phone_no'].touched" class="text-danger support-text">Phone No is Required.</small>
+  </div>
+ 
+
+ </div>
+<div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+   
+   <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
+     <input tabindex="1" [(ngModel)]="address" [formControl]="firstFormGroup.controls['address']" placeholder="Address" class="form-control-dialog address_input">
+     <small *ngIf="firstFormGroup.controls['address'].hasError('required') && firstFormGroup.controls['address'].touched" class="text-danger support-text">Address is Required.</small>
+  </div>
+ </div>
+ <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+   
+ 
+  
+
+   <div class="working-days" fxFlex="calc(48% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">  
+            <h4>Clinic Working Days</h4>
+            <mat-slide-toggle checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Sunday</mat-slide-toggle>
+            <mat-slide-toggle checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Monday</mat-slide-toggle>
+            <mat-slide-toggle checked="{{ workingDays.tuesday }}" name="tuesday" (change)="toggle($event)">Tuesday</mat-slide-toggle>
+            <mat-slide-toggle checked="{{ workingDays.wednesday }}" name="wednesday" (change)="toggle($event)">Wednesday</mat-slide-toggle>
+            <mat-slide-toggle checked="{{ workingDays.thursday }}" name="thursday" (change)="toggle($event)">Thursday</mat-slide-toggle>
+            <mat-slide-toggle checked="{{ workingDays.friday }}" name="friday" (change)="toggle($event)">Friday</mat-slide-toggle>
+            <mat-slide-toggle checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
+          </div>
+ </div>
+
+<!--    <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="30px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+    <div fxFlex="130px" fxFlex.xs="100" class="right_upload_btn">
+     <input class="form-control b-b" type="file" name= "file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
+
+     <div class="upload_logo" *ngIf="imageURL == '' ">
+      <img src="assets/img/upload_icon.png" alt=" " />
+      <p>Upload Logo</p>
+     </div>
+     <div class="upload_logo" *ngIf="imageURL != ''">
+      <img src="{{ imageURL }}" alt=" " />
+      <p>Upload Logo</p>
+     </div>
+  </div>
+   <div fxFlex>
+    <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+      <div fxFlex="calc(49% - 15px)" fxFlex.md="100" fxFlex.sm="calc(49% - 15px)" fxFlex.xs="100" class="sa-form-group facebook_input comman_input">
+          <span class="social_media"><i class="fab fa-facebook-f"></i></span><input tabindex="1" [(ngModel)]="facebook" placeholder="" class="form-control-dialog" [formControl]="firstFormGroup.controls['facebook']">
+          <small *ngIf="firstFormGroup.controls['facebook'].hasError('pattern') && firstFormGroup.controls['facebook'].touched" class="text-danger support-text">Please enter valid url.</small>
+        </div>
+        <div fxFlex="calc(49% - 15px)" fxFlex.md="100" fxFlex.sm="calc(49% - 15px)" fxFlex.xs="100" class="sa-form-group twiter_input comman_input">
+        <span class="social_media"><i class="fab fa-twitter"></i></span><input tabindex="1" [(ngModel)]="twitter" placeholder="" class="form-control-dialog" [formControl]="firstFormGroup.controls['twitter']">
+           <small *ngIf="firstFormGroup.controls['twitter'].hasError('pattern') && firstFormGroup.controls['twitter'].touched" class="text-danger support-text">Please enter valid url.</small>
+        </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+        <div fxFlex="calc(49% - 15px)" fxFlex.md="100" fxFlex.sm="calc(49% - 15px)" fxFlex.xs="100" class="sa-form-group youtube comman_input">
+          <span class="social_media"><i class="fab fa-linkedin-in"></i></span><input tabindex="1" [(ngModel)]="linkedin" placeholder="" class="form-control-dialog" [formControl]="firstFormGroup.controls['linkedin']">
+          <small *ngIf="firstFormGroup.controls['linkedin'].hasError('pattern') && firstFormGroup.controls['linkedin'].touched" class="text-danger support-text">Please enter valid url.</small>
+        </div>
+      <div fxFlex="calc(49% - 15px)" fxFlex.md="100" fxFlex.sm="calc(49% - 15px)" fxFlex.xs="100" class="sa-form-group instagram comman_input">
+         <span class="social_media"><i class="fab fa-instagram"></i></span><input tabindex="1" [(ngModel)]="instagram" placeholder="" class="form-control-dialog" [formControl]="firstFormGroup.controls['instagram']">
+         <small *ngIf="firstFormGroup.controls['instagram'].hasError('pattern') && firstFormGroup.controls['instagram'].touched" class="text-danger support-text">Please enter valid url.</small>
+      </div>
     </div>
   </div>
-  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
-     <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
-         <input tabindex="1" [(ngModel)]="name" placeholder="Clinic Name" class="form-control-dialog" (keypress)="omit_special_char($event)" [formControl]="firstFormGroup.controls['name']">
-         <small *ngIf="firstFormGroup.controls['name'].hasError('required') && firstFormGroup.controls['name'].touched" class="text-danger support-text">Clinic Name is Required.</small>
-    </div>
-      <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
-        <input tabindex="1" type="text" [(ngModel)]="phone_no" placeholder="Phone No" class="form-control-dialog" oninput="this.value = this.value.slice(0,12);" [formControl]="firstFormGroup.controls['phone_no']" (keypress)="numberOnly($event)"  >
-        <small *ngIf="firstFormGroup.controls['phone_no'].hasError('required') && firstFormGroup.controls['phone_no'].touched" class="text-danger support-text">Phone No is Required.</small>
-    </div>
-   
 
-   </div>
-  <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
-     <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
-         <input tabindex="1" [(ngModel)]="clinicEmail" placeholder="Clinic Email" class="form-control-dialog" [formControl]="firstFormGroup.controls['clinicEmail']">
-          <small *ngIf="(firstFormGroup.controls['clinicEmail'].errors?.email && firstFormGroup.controls['clinicEmail'].touched) ||(firstFormGroup.controls['clinicEmail'].hasError('required') && firstFormGroup.controls['clinicEmail'].touched)" class="text-danger support-text">You must include a valid email address.</small>
-    </div>
-     <div fxFlex="calc(48% - 15px)" fxFlex.md="100" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
-       <input tabindex="1" [(ngModel)]="address" [formControl]="firstFormGroup.controls['address']" placeholder="Address" class="form-control-dialog address_input">
-       <small *ngIf="firstFormGroup.controls['address'].hasError('required') && firstFormGroup.controls['address'].touched" class="text-danger support-text">Address is Required.</small>
-    </div>
-   </div>
-   <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
-     
-   
-    
-
-     <div class="working-days" fxFlex="calc(48% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">  
-              <h4>Clinic Working Days</h4>
-              <mat-slide-toggle checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Sunday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Monday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.tuesday }}" name="tuesday" (change)="toggle($event)">Tuesday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.wednesday }}" name="wednesday" (change)="toggle($event)">Wednesday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.thursday }}" name="thursday" (change)="toggle($event)">Thursday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.friday }}" name="friday" (change)="toggle($event)">Friday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
-            </div>
-   </div>
-
-  <!--    <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="30px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
-      <div fxFlex="130px" fxFlex.xs="100" class="right_upload_btn">
-       <input class="form-control b-b" type="file" name= "file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
-
-       <div class="upload_logo" *ngIf="imageURL == '' ">
-        <img src="assets/img/upload_icon.png" alt=" " />
-        <p>Upload Logo</p>
-       </div>
-       <div class="upload_logo" *ngIf="imageURL != ''">
-        <img src="{{ imageURL }}" alt=" " />
-        <p>Upload Logo</p>
-       </div>
-    </div>
-     <div fxFlex>
-      <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
-        <div fxFlex="calc(49% - 15px)" fxFlex.md="100" fxFlex.sm="calc(49% - 15px)" fxFlex.xs="100" class="sa-form-group facebook_input comman_input">
-            <span class="social_media"><i class="fab fa-facebook-f"></i></span><input tabindex="1" [(ngModel)]="facebook" placeholder="" class="form-control-dialog" [formControl]="firstFormGroup.controls['facebook']">
-            <small *ngIf="firstFormGroup.controls['facebook'].hasError('pattern') && firstFormGroup.controls['facebook'].touched" class="text-danger support-text">Please enter valid url.</small>
-          </div>
-          <div fxFlex="calc(49% - 15px)" fxFlex.md="100" fxFlex.sm="calc(49% - 15px)" fxFlex.xs="100" class="sa-form-group twiter_input comman_input">
-          <span class="social_media"><i class="fab fa-twitter"></i></span><input tabindex="1" [(ngModel)]="twitter" placeholder="" class="form-control-dialog" [formControl]="firstFormGroup.controls['twitter']">
-             <small *ngIf="firstFormGroup.controls['twitter'].hasError('pattern') && firstFormGroup.controls['twitter'].touched" class="text-danger support-text">Please enter valid url.</small>
-          </div>
+    </div> -->
+</div>
+<div class="order2">
+ <div class="text-center mt-2">
+    <Button class="setup-stepper-button" (click)="saveclinic(stepper)" [disabled]="!firstFormGroup.valid">Continue</Button>
+ </div>
+</div> 
+</form>
+</div>
+<div fxFlex="calc(45% - 15px)" fxFlex.md="calc(45% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order3" fxFlexAlign="center">
+<div class="right-img">
+   <img src="assets/stepper/Gif1.gif">
+ </div>
+</div>
+</div>
+<!-- <div class="order2">
+ <div class="skipwizard bottom_btns_page">
+  <button mat-raised-button color="green" (click)="saveclinic(stepper)" [disabled]="!firstFormGroup.valid">Continue</button>
+</div>
+</div> -->
+</mat-step>
+<mat-step id="step2" [completed]="step2Completed" [editable]="step2editable">
+<div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="30px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
+  <div fxFlex="calc(35% - 15px)" fxFlex.md="calc(35% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box step-2-center">
+    <div class="intro_title stripe_payment relative-box">
+      <div class="intro_title stripe_payment absolute-center">
+        <h2>Connect To <span>Xero</span></h2>
+        <h4 class="step-2-content">Xero is online accounting software for your small business. Please sign up for an account or connect your existing Xero account</h4>
+        <h5 *ngIf="xeroOrganization != ''">You are now connected to <span>{{xeroOrganization}}</span> organization</h5>
+        <div class="connect-xero-btn">    
+          <Button class="setup-stepper-button" (click)="xeroConnect ? disconnectXero() : openXero()">{{ xeroConnect ? 'Disconnect >>' : 'Connect >>' }}</Button>
         </div>
-        <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
-          <div fxFlex="calc(49% - 15px)" fxFlex.md="100" fxFlex.sm="calc(49% - 15px)" fxFlex.xs="100" class="sa-form-group youtube comman_input">
-            <span class="social_media"><i class="fab fa-linkedin-in"></i></span><input tabindex="1" [(ngModel)]="linkedin" placeholder="" class="form-control-dialog" [formControl]="firstFormGroup.controls['linkedin']">
-            <small *ngIf="firstFormGroup.controls['linkedin'].hasError('pattern') && firstFormGroup.controls['linkedin'].touched" class="text-danger support-text">Please enter valid url.</small>
-          </div>
-        <div fxFlex="calc(49% - 15px)" fxFlex.md="100" fxFlex.sm="calc(49% - 15px)" fxFlex.xs="100" class="sa-form-group instagram comman_input">
-           <span class="social_media"><i class="fab fa-instagram"></i></span><input tabindex="1" [(ngModel)]="instagram" placeholder="" class="form-control-dialog" [formControl]="firstFormGroup.controls['instagram']">
-           <small *ngIf="firstFormGroup.controls['instagram'].hasError('pattern') && firstFormGroup.controls['instagram'].touched" class="text-danger support-text">Please enter valid url.</small>
+        <div class="step2-next-skip-btn">
+          <button mat-raised-button color="green" (click)="saveStripe()" *ngIf ="xeroConnect == true">Next</button>
+          <button mat-button (click)="saveStripe()" *ngIf ="xeroConnect == false">Skip</button>
         </div>
       </div>
     </div>
-  
-      </div> -->
-</div>
- </form>
-</div>
-  <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(48% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order3">
-  <div class="right-img">
-     <img src="assets/stepper/Gif1.gif">
-   </div>
- </div>
-</div>
-<div class="order2">
-   <div class="skipwizard bottom_btns_page">
-    <button mat-raised-button color="green" (click)="saveclinic(stepper)" [disabled]="!firstFormGroup.valid">Continue</button>
   </div>
- </div>
-</mat-step>
-<mat-step id="step2" [completed]="step2Completed" [editable]="step2editable">
- <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="30px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-  <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
-  <div class="intro_title stripe_payment">
-     <div class="intro_title stripe_payment">
-    <h2>Connect To <span>Xero</span></h2>
-    <h4>Xero is online accounting software for your small business. Please sign up for an account or connect your existing Xero account</h4>
-    <h5 *ngIf="xeroOrganization != ''">You are now connected to <span>{{xeroOrganization}}</span> organization</h5>
-   <div class="connect-xero-btn">
-
-   <button mat-raised-button color="green"  class="mat-gray connect-xero" *ngIf ="xeroConnect == false" mat-raised-button (click) = "openXero()">Connect</button>
-
-   <button mat-raised-button color="green" class="disconnect-xero" *ngIf ="xeroConnect == true" mat-raised-button (click) = "disconnectXero()">Disconnect</button>
- 
-  </div>
-  </div>
-  </div>
-  </div>
-  <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
+  <div fxFlex="calc(45% - 15px)" fxFlex.md="calc(45% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
     <div class="right-img">
       <img src="assets/stepper/GifXero3.gif">
     </div>   
   </div>
- 
- </div> 
-   <div class="order2">
-   <div class="skipwizard bottom_btns_page">
-
-  <button mat-raised-button color="green" (click)="saveStripe()" *ngIf ="xeroConnect == true">Next</button>
-  <button mat-button (click)="saveStripe()" *ngIf ="xeroConnect == false">Skip</button>
-
-  </div>
- </div>    
+</div>     
 </mat-step>
 <mat-step id="step3" [completed]="step3Completed" [editable]="step3editable">
- <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px">
-   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
-    <form [formGroup]="inviteFormGroup">
-  <div class="intro_title">
-      <h2>Invite your staff to <span>use Jeeve Analytics</span> </h2>
-      <h4>Your account has full access to all Jeeve Analytics settings. Create a more limited role for your front desk staff. Each user requires a unique email address</h4>
+<div fxLayout="row wrap" fxLayoutGap="30px Grid" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px">
+ <div fxFlex="calc(40% - 15px)" fxFlex.md="calc(40% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box">
+  <form [formGroup]="inviteFormGroup" class="sa_forms_design">
+<div class="intro_title">
+    <h2>Invite your staff to <span>use Jeeve Analytics</span> </h2>
+    <h4>Your account has full access to all Jeeve Analytics settings. Create a more limited role for your front desk staff. Each user requires a unique email address</h4>
 
-    </div>
-        <div formArrayName="itemRows">
-<div mat-dialog-content class="sa_forms_design invite_section" *ngFor="let itemrow of inviteFormGroup.controls.itemRows['controls']; let i=index"  [formGroupName]="i">
- <div class="invite_row invite-setup-form-group">
-    <div class="sa-form-group">
-    <label>Display Name</label>
-         <input tabindex="1" class="form-control" (keypress)="omit_special_char($event)" formControlName="display_name" placeholder="Display Name">
-         <small *ngIf="itemrow.controls.display_name.touched && itemrow.controls.display_name.hasError('required')" class="text-danger support-text">Display Name is Required.</small>
-    </div>
-    <div class="sa-form-group">
+  </div>
+      <div formArrayName="itemRows">
+<div mat-dialog-content class="sa_forms_design" *ngFor="let itemrow of inviteFormGroup.controls.itemRows['controls']; let i=index"  [formGroupName]="i">
+<div class="invite_row invite-setup-form-group">
+<div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+  <div fxFlex="100" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa-form-group">
+      <label>Display Name</label>
+       <input tabindex="1" class="form-control" (keypress)="omit_special_char($event)" formControlName="display_name" placeholder="Display Name">
+       <small *ngIf="itemrow.controls.display_name.touched && itemrow.controls.display_name.hasError('required')" class="text-danger support-text">Display Name is Required.</small>
+  </div>
+</div>
+<div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.md="0px" fxLayoutGap.sm="30px" fxLayoutGap.xs="0px">
+  <div fxFlex="calc(48% - 15px)" fxFlex.md="50" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
     <label>Email</label>
     <input tabindex="1" class="form-control" placeholder="Email" formControlName="email" (click)="abc(inviteFormGroup)">
-     <small *ngIf="itemrow.controls.email.errors?.email  && itemrow.controls.email.touched" class="text-danger support-text">You must include a valid email address.</small>
+    <small *ngIf="itemrow.controls.email.errors?.email  && itemrow.controls.email.touched" class="text-danger support-text">You must include a valid email address.</small>
     </div>
-   <div class="sa-form-group">
+    <div fxFlex="calc(48% - 15px)" fxFlex.md="50" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
     <label>User Type</label>
       <select class="form-control" required="true" class="sa_select form-control" name="user_type"  formControlName="user_type">
       <option value ="" selected>Select User Type</option>
       <option value ="3">Receptionist</option>
       <option value ="4">Manager</option>
-     </select> 
-     <small *ngIf="itemrow.controls.user_type.hasError('required') && itemrow.controls.user_type.touched" class="text-danger support-text">User Type is Required.</small>
-   </div> 
-   <div class="cross_icon">
-    <a  *ngIf="inviteFormGroup.controls.itemRows.controls.length > 1" (click)="deleteRow(i)"><img src="assets/img/cross_icon.png" alt=" " /></a>
-   </div>
-   </div>
+    </select> 
+    <small *ngIf="itemrow.controls.user_type.hasError('required') && itemrow.controls.user_type.touched" class="text-danger support-text">User Type is Required.</small>
+  </div> 
+</div>
+ <div class="cross_icon">
+  <a  *ngIf="inviteFormGroup.controls.itemRows.controls.length > 1" (click)="deleteRow(i)"><img src="assets/img/cross_icon.png" alt=" " /></a>
+ </div>
+ </div>
 
- 
+
 <!--  <small *ngIf="inviteFormGroup.controls['user_type'].hasError('required') && inviteFormGroup.controls['user_type'].touched" class="text-danger support-text">User Type is Required.</small> -->
 
 </div>
 
 <div class="add_another_sec" (click)="addNewRow()">
-<span _ngcontent-fuo-c19="" class="material-icons icon-image-preview circle_plus">add_circle_outline</span>
+<span _ngcontent-fuo-c19="" class="material-icons icon-image-preview circle_plus">add_circle</span>
 <span class="add_Another">Add Another</span>
 </div>
 </div>
-  </form>
+<div class="order3">
+  <div class="text-center mt-2">
+    <Button class="setup-stepper-button" (click)="saveInvites()" [disabled]="!inviteFormGroup.valid">Continue</Button>
+    <button mat-button (click)="saveInvites()">Skip</button>
+  </div>
+</div> 
+</form>
 </div>
 
-   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
-    <div class="right-img">
-      <img src="assets/stepper/Gif4.gif">
-    </div>   
+ <div fxFlex="calc(50% - 15px)" fxFlex.md="calc(50% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
+  <div class="right-img">
+    <img src="assets/stepper/Gif4.gif">
+  </div>   
 </div>
 </div>
- <div class="order3">
-   <div class="skipwizard bottom_btns_page">
-  <button mat-raised-button color="green" (click)="saveInvites()" [disabled]="!inviteFormGroup.valid">Next</button>
-  <button mat-button (click)="saveInvites()">Skip</button>
-  </div>
- </div>
 </mat-step>
 
 <mat-step id="step4" [completed]="step4Completed" [editable]="step4editable">
-   <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px" class="download-sync">
-   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
-    <div class="intro_title">
+ <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px" class="download-sync">
+ <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box">
+  <div class="intro_title">
     <h2>Download PMS to <span>sync</span></h2>
+  </div>
 <ul class="download-sync-list">
-  <li><span>Download Sync Utility.</span></li>
-  <li><span>Login to the desktop application using analytics credentials.</span></li>
-  <li><span>Map your clinics.</span></li>
-  <li><span>Start Sync</span></li>
+<li><span>Download Sync Utility.</span></li>
+<li><span>Login to the desktop application using analytics credentials.</span></li>
+<li><span>Map your clinics.</span></li>
+<li><span>Start Sync</span></li>
 </ul>
 
-     <div class="skipwizard bottom_btns_page">
-   <a>
-       <button mat-raised-button color="green" (click)="downloadPMS()">Download Sync Utility</button>
-     </a>
-  </div>
-   </div>
-   </div>
- <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
-     <div class="right-img download-sync-img">
-      <img src="assets/stepper/sync_downloading.gif">
-    </div> 
-  </div>
-   
+   <div class="skipwizard text-center">
+ <a>
+     <button class="setup-stepper-button" (click)="downloadPMS()"><i class="fas fa-cloud-download-alt"></i> Download Sync Utility</button>
+   </a>
+
+ </div>
+ </div>
+<div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
+   <div class="right-img download-sync-img">
+    <img src="assets/stepper/sync_downloading.gif">
+  </div> 
+</div>
+ 
 </div>
 
 </mat-step>
 
 
 <mat-step  id="step5" [completed]="step5Completed" [editable]="step5editable">
-   <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px" class="">
-   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
-    
-    <div class="downloading-wrap">
-    <!--<div class="bounceball"></div>
-    <div class="text-loading">Data Synchronizing...</div>-->
-    <div class="text-loading">Data Synchronizing  <div class="dots-loading-main"><div class="dots-loading">
+ <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px" class="">
+ <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box">
+  <div fxLayout="column" fxLayoutAlign="center center" class="h-full">
+  <div class="downloading-wrap">
+  <!--<div class="bounceball"></div>
+  <div class="text-loading">Data Synchronizing...</div>-->
+  <div class="intro_title">
+    <h2 class="text-loading">Data <span>Synchronizing</span>  
+      <div class="dots-loading-main"><div class="dots-loading">
         <div class="circle"></div>
         <div class="circle"></div>
         <div class="circle"></div>
@@ -261,79 +265,79 @@
         <div class="shadow"></div>
     </div>
   </div>
+  </h2>
 </div>
-    <ul>
-    <li class="not-start" *ngIf="!reportsStatusInfo">We are collecting data.</li>
-     <li class="not-start" *ngIf="reportsStatus.length <= 0 && reportsStatusInfo">Sync not yet started - Please download and install the Sync Utility on your Dental 4 Windows server to continue</li>
-     <li *ngFor="let itemrow of reportsStatus; let i=index">
-      <span *ngIf="itemrow.status == 'Pending'">
-        <!-- <i class="fas fa-check" ></i>   -->
-        {{ itemrow.report }}
-      </span>
-      <span *ngIf="itemrow.status == 'In Process'"  class="in-progress">
-         <i class="fas fa-spinner fa-pulse"></i> 
-        {{ itemrow.report }}
-      </span>
-      <span *ngIf="itemrow.status == 'Completed'" class="complete">
-        <i class="fas fa-check"></i> 
-        {{ itemrow.report }}
-      </span>     
-    </li>
+  <ul>
+  <li class="not-start" *ngIf="!reportsStatusInfo">We are collecting data.</li>
+   <li class="not-start" *ngIf="reportsStatus.length <= 0 && reportsStatusInfo">Sync not yet started - Please download and install the Sync Utility on your Dental 4 Windows server to continue</li>
+   <li *ngFor="let itemrow of reportsStatus; let i=index">
+    <span *ngIf="itemrow.status == 'Pending'">
+      <!-- <i class="fas fa-check" ></i>   -->
+      {{ itemrow.report }}
+    </span>
+    <span *ngIf="itemrow.status == 'In Process'"  class="in-progress">
+       <i class="fas fa-spinner fa-pulse"></i> 
+      {{ itemrow.report }}
+    </span>
+    <span *ngIf="itemrow.status == 'Completed'" class="complete">
+      <i class="fas fa-check"></i> 
+      {{ itemrow.report }}
+    </span>     
+  </li>
 
 
 
 <!--      <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
-     <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
-     <li class="in-progress"><i class="fas fa-spinner fa-pulse"></i> It is a long established fact that a reader will be distracted by the </li>
-     <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
-     <li class="complete"><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
-     <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li> -->
+   <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
+   <li class="in-progress"><i class="fas fa-spinner fa-pulse"></i> It is a long established fact that a reader will be distracted by the </li>
+   <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
+   <li class="complete"><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li>
+   <li><i class="fas fa-check"></i> It is a long established fact that a reader will be distracted by the </li> -->
 
-    </ul>
+  </ul>
 </div>
 
 
-  <div class="skipwizard bottom_btns_page again-download-btn">
-   <a class="text-left">
-       <button mat-raised-button color="green" *ngIf="reportsStatus.length <= 0" (click)="downloadPMSAgain()">Download Sync Utility</button>
-     </a>
-  </div>
-
-   </div>
- <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
-     <div class="right-img">
-      <img src="assets/stepper/sync_downloading.gif">
-    </div> 
-  </div>
-   
+<!-- <div class="skipwizard bottom_btns_page again-download-btn">
+ <a class="text-left">
+     <button mat-raised-button color="green" *ngIf="reportsStatus.length <= 0" (click)="downloadPMSAgain()">Download Sync Utility</button>
+   </a>
+</div> -->
+</div>
+ </div>
+<div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
+   <div class="right-img">
+    <img src="assets/stepper/sync_downloading.gif">
+  </div> 
+</div>
+ 
 </div>
 
 
 </mat-step>
 
 <mat-step  id="step6" [completed]="step6Completed" [editable]="step6editable">
-   <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px" class="you_are_set_sec">
-   <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
-    <div class="you-are-set">
-    <h2>You're <span>All Set.</span></h2>
-    <br/>
-     <button mat-raised-button color="green" (click)="finish()">Finish</button>
-   </div>
-   </div>
- <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
-     <div class="right-img">
-      <img src="assets/stepper/Gif5.gif">
-    </div> 
-  </div>
-   
+ <div fxLayout="row wrap" fxlayoutgap="30px" fxlayoutgap.md="30px" fxlayoutgap.sm="0px" fxlayoutgap.xs="0px" class="you_are_set_sec">
+ <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1">
+  <div class="you-are-set">
+  <h2>You're <span>All Set.</span></h2>
+  <br/>
+   <button mat-raised-button color="green" (click)="finish()">Finish</button>
+ </div>
+ </div>
+<div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
+   <div class="right-img">
+    <img src="assets/stepper/Gif5.gif">
+  </div> 
+</div>
+ 
 </div>
 <div class="order3">
-   <div class="skipwizard bottom_btns_page">
-   <a class="text-center">
-      
-     </a>
-  </div>
- </div>
+ <div class="skipwizard bottom_btns_page">
+ <a class="text-center">
+    
+   </a>
+</div>
+</div>
 </mat-step>
 </mat-vertical-stepper>
-
