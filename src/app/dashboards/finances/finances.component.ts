@@ -24,6 +24,7 @@ import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs'
 import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
+// import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 
 export interface Dentist {
   providerId: string;
@@ -104,6 +105,7 @@ single = [
     private headerService: HeaderService,
     private _cookieService: CookieService, 
     private router: Router,
+    // private clinicSettingsService: ClinicSettingsService,
     private chartService: ChartService){
     }
     private checkPermission(role) { 
@@ -1456,6 +1458,7 @@ public categoryExpensesLoader:any;
            this.productionChartTrendTotal = data.total_ta;
         if(Math.round(this.productionChartTotal)>=Math.round(this.productionChartTrendTotal))
             this.productionChartTrendIcon = "up";  
+       if(this.productionChartDatares.every((item) => item == 0)) this.productionChartDatares =[];
        this.productionChartData = this.productionChartDatares;
        this.productionChartLabels = this.productionChartLabelsres;
        }
@@ -1499,6 +1502,7 @@ public categoryExpensesLoader:any;
             this.totalDiscountChartTrendTotal=0;
            if(Math.round(this.totalDiscountChartTotal)>=Math.round(this.totalDiscountChartTrendTotal))
             this.totalDiscountChartTrendIcon = "up";
+            if(this.totalDiscountChartDatares.every((item) => item == 0)) this.totalDiscountChartDatares = []
        this.totalDiscountChartData = this.totalDiscountChartDatares;
        this.totalDiscountChartLabels = this.totalDiscountChartLabelsres;
        }
@@ -2076,6 +2080,7 @@ private finTotalDiscountsTrend() {
                    this.discountsChartTrendLabels1.push(res.duration);
                   
                  });
+                 if(this.discountsChartTrend1.every((item) => item == 0)) this.discountsChartTrend1 = [];
                  this.discountsChartTrend[0]['data'] = this.discountsChartTrend1;
 
                  this.discountsChartTrendLabels =this.discountsChartTrendLabels1; 
@@ -2394,6 +2399,30 @@ private finTotalDiscountsTrend() {
   public netProfitPmsChartTrendLabels1 =[];
   public finNetProfitPMSTrendLoader:any;
 
+//   public checkXeroStatus(){
+//     this.clinicSettingsService.checkXeroStatus(this.id).subscribe((res) => {
+//        if(res.message == 'success'){
+//         if(res.data.xero_connect == 1) {
+//           this.xeroConnect = true;
+//           this.xeroOrganization = res.data.Name;
+//         }
+//         else {
+//           this.xeroConnect = false;
+//            this.xeroOrganization = '';          
+//           this.disconnectXero();
+//         }
+//        }
+//        else {
+//         this.xeroConnect = false;
+//            this.xeroOrganization = ''; 
+//           this.disconnectXero();
+//       }
+//     }, error => {
+//       this.warningMessage = "Please Provide Valid Inputs!";
+//     });  
+//  }
+
+
 trendxero=false;
   private finNetProfitPMSTrend() {
       this.netProfitChartTrendLabels1=[];
@@ -2435,6 +2464,8 @@ this.trendxero=false;
     this.finNetProfitPMSTrendLoader = false;
         this.finNetProfitTrendLoader = false;
           this.finNetProfitPercentTrendLoader = false;
+          console.log('data.data', data.data)
+              if(data.data.net_profit)
                 data.data.net_profit.forEach(res => {  
                   // console.log(res.val.net);
                      if (res.val.net != null)
@@ -2506,6 +2537,7 @@ public expensesChartTrend: any[]  = [
     {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
 public expensesChartTrendLabels =[];
 public expensesChartTrendLabels1 =[];
+
 private finExpensesByCategoryTrend() {
   this.expensesChartTrendLabels1=[];
     var user_id;

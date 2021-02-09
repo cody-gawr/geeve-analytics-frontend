@@ -107,12 +107,12 @@
           <div *ngIf="!showTrend && workTimeData1.length <= 0 && !fdWorkTimeAnalysisLoader">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no utilisation rate in this period</p>
+            <p class="chart-placeholder-text">You have no appointments in the selected period</p>
           </div>
           <div *ngIf="showTrend && wtaChartTrend1.length <= 0 && !fdwtaRatioTrendLoader">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no utilisation rate in this period</p>
+            <p class="chart-placeholder-text">You have no appointments in the selected period</p>
           </div>
       </div></div>
         </div>
@@ -180,7 +180,7 @@
       <div *ngIf="!showTrend && ftaTotal <= 0">
         <div class="sa_nodata_div">
         </div>
-        <p class="chart-placeholder-text">You have no FTA ratio in this period</p>
+        <p class="chart-placeholder-text">You have no FTA's in the selected period</p>
       </div>
        
 <!-- <div *ngIf="showTrend == false && ftaTotal <= 0 && fdFtaRatioLoader == false" class="sa_nodata_div">
@@ -196,7 +196,7 @@
         <div *ngIf="showTrend && ftaChartTrend1.length <= 0 && !fdFtaRatioTrendLoader">
           <div class="sa_nodata_div">
           </div>
-          <p class="chart-placeholder-text">You have no FTA ratio in this period</p>
+          <p class="chart-placeholder-text">You have no FTA's in the selected period</p>
         </div>
       </div>
         </div>
@@ -259,7 +259,7 @@
       <div *ngIf="!showTrend && utaTotal <= 0 && !fdUtaRatioLoader">
         <div class="sa_nodata_div">
         </div>
-        <p class="chart-placeholder-text">You have no UTA ratio in this period</p>
+        <p class="chart-placeholder-text">You have no UTA's in the selected period</p>
       </div>
 
        <div *ngIf="showTrend && utaChartTrend1.length > 0 && !fdUtaRatioTrendLoader" style="height: 300px;width: 100%">
@@ -270,7 +270,7 @@
           <div *ngIf="showTrend && utaChartTrend1.length <= 0 && !fdUtaRatioTrendLoader">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no UTA ratio in this period</p>
+            <p class="chart-placeholder-text">You have no UTA's in the selected period</p>
           </div>
       </div>
         </div>
@@ -328,7 +328,7 @@
       <div *ngIf="!showTrend && ticksTotal <= 0 && !fdNumberOfTicksLoader">
         <div class="sa_nodata_div">
         </div>
-        <p class="chart-placeholder-text">You have no number of ticks in this period</p>
+        <p class="chart-placeholder-text">You have no TICKs in the selected period</p>
       </div>
 
       <div *ngIf="showTrend && tickChartTrend1.length > 0 && !fdNumberOfTicksTrendLoader" style="height: 300px;width: 100%">
@@ -339,7 +339,7 @@
           <div *ngIf="showTrend && tickChartTrend1.length <= 0 && !fdNumberOfTicksTrendLoader">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no number of ticks in this period</p>
+            <p class="chart-placeholder-text">You have no TICKs in the selected period</p>
           </div>
       </div>
         </div>
@@ -400,7 +400,7 @@
           <div *ngIf="!showTrend && recallPrebookTotal <=0 && !fdRecallPrebookRateLoader">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no recall prebook rate in this period</p>
+            <p class="chart-placeholder-text">You have no recall prebookings in the selected period</p>
           </div>
 
         <div *ngIf="showTrend && recallPrebookChartTrend1.length > 0 && !fdRecallPrebookRateTrendLoader" style="height: 300px;width: 100%">
@@ -416,7 +416,7 @@
           <div *ngIf="showTrend && recallPrebookChartTrend1.length <=0 && !fdRecallPrebookRateTrendLoader">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no recall prebook rate in this period</p>
+            <p class="chart-placeholder-text">You have no recall prebookings in the selected period</p>
           </div>
       </div>
         </div>
@@ -482,7 +482,7 @@
           <div *ngIf="!showTrend && treatmentPrebookTotal <= 0 && !fdtreatmentPrebookRateLoader">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no treatment prebook rate in this period</p>
+            <p class="chart-placeholder-text">You have no treatment prebookings in the selected period</p>
           </div>
 
 <div *ngIf="showTrend && treatmentPrebookChartTrend1.length > 0 && !fdTreatmentPrebookRateTrendLoader" style="height: 300px;width: 100%">
@@ -498,7 +498,7 @@
           <div *ngIf="showTrend && treatmentPrebookChartTrend1.length <= 0 && !fdTreatmentPrebookRateTrendLoader">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no treatment prebook rate in this period</p>
+            <p class="chart-placeholder-text">You have no treatment prebookings in the selected period</p>
           </div>
       </div>
         </div>

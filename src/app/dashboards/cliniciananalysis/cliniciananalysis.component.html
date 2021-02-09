@@ -134,7 +134,7 @@
               <div *ngIf="barChartData.length <= 0 && buildChartLoader===false" class="no-data-placeholder">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no dentist production in this period</p>
+                <p class="chart-placeholder-text">You have no production in the selected period</p>
               </div>
             </div>
             <div class="card-footer">
@@ -201,7 +201,7 @@
               *ngIf="((showTrendChart == false && gaugeValue <= 0 )|| (showTrendChart == true && dentistProdTrend.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader">
               <div class="sa_nodata_div">
               </div>
-              <p class="chart-placeholder-text">You have no dentist production in this period</p>
+              <p class="chart-placeholder-text">You have no production in the selected period</p>
             </div>
 
             <div class="card-footer">
@@ -280,13 +280,13 @@
                   class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no proposed fees in this period</p>
+                  <p class="chart-placeholder-text">You have no proposed treatment in the selected period</p>
                 </div>
                 <div *ngIf="planChartData2.length <= 0 && buildChartTreatmentLoader===false && tcmain == 2"
                   class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no completed fees in this period</p>
+                  <p class="chart-placeholder-text">You have no completed treatment in the selected priod</p>
                 </div>
               </div>
             </div>
@@ -354,12 +354,19 @@
                 </canvas>
               </div>
               <div
-                *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
+                *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && treatmentPlanAverageCostTab == '1'"
                 class="no-data-placeholder">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no treatment plan in this period</p>
+                <p class="chart-placeholder-text">You have no proposed treatment in the selected period</p>
               </div>
+              <div
+              *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && treatmentPlanAverageCostTab == '2'"
+              class="no-data-placeholder">
+              <div class="sa_nodata_div">
+              </div>
+              <p class="chart-placeholder-text">You have no completed treatment in the selected priod</p>
+            </div>
             </div>
             <div class="card-footer">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
@@ -425,7 +432,7 @@
                 *ngIf="showTrendChart == false && doughnutChartData.length<= 0 && buildChartNopatientsLoader===false">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no patient complaints in this period</p>
+                <p class="chart-placeholder-text">You have no patient complaints in the selected priod</p>
               </div>
 
             </div>
@@ -493,7 +500,7 @@
                 *ngIf="((showTrendChart == false && gaugeValuePatients <= 0) || (showTrendChart == true && patientComplaintsTrend1.length <= 0)) && !buildChartNopatientsDentistLoader && !patientComplaintsTrendLoader">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no patient complaints in this period</p>
+                <p class="chart-placeholder-text">You have no patient complaints in the selected priod</p>
               </div>
             </div>
             <div class="card-footer">
@@ -622,7 +629,9 @@
 
             </mat-card-title>
             <div class="card-body">
-              <div fxLayout="row wrap" class="row_Patients" fxLayoutAlign="center end" style="height: 305px">
+              <!-- <div class="relative"></div> -->
+              <div fxLayout="row wrap" class="row_Patients relative" fxLayoutAlign="center end" style="height: 305px">
+              <!-- *ngIf="showTrendChart == false"> -->
                 <!--   <div *ngIf="newPatientsChartTrendLabels.length <= 0 && newPatientPercent<=0 && buildChartNewpatientsDentistLoader == false" class="sa_nodata_div">
                             <h4>No Data</h4>
                             <p></p>
@@ -645,7 +654,7 @@
                   </div>
                 </div>
                 <div *ngIf="showTrendChart == true && newPatientsChartTrend1.length > 0" style="height: 300px">
-                  <canvas #myCanvas id="newPatientsTrend" baseChart [datasets]="newPatientsChartTrend"
+                  <canvas #myCanvas id="newPatientsTrend" baseChart [datasets]="newPatientsChartTrend" width="300"
                     [labels]="newPatientsChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                     (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors"
                     (chartClick)="chartClicked($event)">
@@ -655,7 +664,7 @@
                   *ngIf="((showTrendChart == true && newPatientsChartTrend1.length <= 0) || (showTrendChart == false && newPatientPercent <= 0)) && buildChartNewpatientsDentistLoader===false">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no new patients in this period</p>
+                  <p class="chart-placeholder-text">You have no new patients in the selected period</p>
                 </div>
               </div>
             </div>
@@ -731,12 +740,12 @@
                 <div *ngIf="recallChartData1.length <= 0 && prebook=='recall'" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no recall prebook rate in this period</p>
+                  <p class="chart-placeholder-text">You have no recall prebookings in the selected period</p>
                 </div>
                 <div *ngIf="treatmentPreChartData1.length <= 0 && prebook=='treatment'" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no treatment prebook rate in this period</p>
+                  <p class="chart-placeholder-text">You have no treatment prebookings in the selected period</p>
                 </div>
               </div>
             </div>
@@ -840,13 +849,13 @@
                 *ngIf="((showTrendChart == false && recallValue <= 0) || (showTrendChart == true && recallPrebookChartTrend1.length <= 0)) && prebook=='recall' && !recallPrebookDentistLoader">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no recall in this period</p>
+                <p class="chart-placeholder-text">You have no recall prebookings in the selected period</p>
               </div>
               <div class="no-data-placeholder"
                 *ngIf="((showTrendChart == false && treatmentPreValue <= 0) || (showTrendChart == true && treatmentPrebookChartTrend1.length <= 0)) && prebook == 'treatment' && !treatmentPrebookDentistLoader">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no prebook in this period</p>
+                <p class="chart-placeholder-text">You have no treatment prebookings in the selected period</p>
               </div>
             </div>
             <div class="card-footer">
@@ -938,7 +947,7 @@
                   <div *ngIf="hourlyRateChartData1.length <= 0 && hourlyRateChartLoader===false">
                     <div class="sa_nodata_div">
                     </div>
-                    <p class="chart-placeholder-text">You have no hourly rate in this period</p>
+                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
                   </div>
                 </div>
               </div>
@@ -996,7 +1005,7 @@
                 *ngIf="((showTrendChart == false && hourlyValue <= 0) || (showTrendChart == true && hourlyRateChartTrend1.length <= 0)) && hourlyRateDentistLoader===false">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no hourly rate in this period</p>
+                <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
               </div>
             </div>
             <div class="card-footer">
@@ -1056,7 +1065,7 @@
                 <div *ngIf="treatmentChartData1.length <= 0 && treatmentPlanRateLoader===false && !treatmentPlanRateLoader">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no treatment plan completion in this period</p>
+                  <p class="chart-placeholder-text">You have no treatment plan items completed in the selected period</p>
                 </div>
               </div>
             </div>
@@ -1116,7 +1125,7 @@
                 *ngIf="((showTrendChart == false && treatmentPlanValue <= 0 && !treatmentPlanRateDentistLoader) || (showTrendChart == true && treatmentPlanChartTrend1.length <= 0 && !fdtreatmentPlanRateTrendLoader)) ">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no treatment plan completion in this period</p>
+                <p class="chart-placeholder-text">You have no treatment plan items completed in the selected period</p>
               </div>
             </div>
             <div class="card-footer">

@@ -86,7 +86,7 @@
           <div *ngIf="newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no new patients by referral in this period</p>
+            <p class="chart-placeholder-text">You have no new patients from referral sources in the selected period</p>
           </div>
       </div>
     </div>
@@ -128,7 +128,7 @@
           <div *ngIf="revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no revenue by referral in this period</p>
+            <p class="chart-placeholder-text">You have no revenue from referral sources in the selected period</p>
           </div>
       
     </div>
@@ -168,7 +168,7 @@
       <div *ngIf="showTrend == false && newPatientsTotal <= 0 && fdnewPatientsRatioLoader == false">
         <div class="sa_nodata_div">
         </div>
-        <p class="chart-placeholder-text">You have no new patients in this period</p>
+        <p class="chart-placeholder-text">You have no new patients in the selected period</p>
       </div>
  <!--         <div *ngIf="showTrend == false && newPatientsTotal<0" class="sa_nodata_div">
               <h4>No Data</h4>
@@ -183,7 +183,7 @@
           <div *ngIf="showTrend == true && newPatientsChartTrend1.length <=0">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no new patients in this period</p>
+            <p class="chart-placeholder-text">You have no new patients in the selected period</p>
           </div>
       </div>
         </div>
@@ -241,7 +241,7 @@
           <div *ngIf="showTrend == false && newAcqValue<=0">
             <div class="sa_nodata_div">
             </div>
-            <p class="chart-placeholder-text">You have no cost of new patient acquisition in this period</p>
+            <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
           </div>
        <div *ngIf="showTrend == true && expenseDataTrend1.length > 0" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="expenseDataTrend" [labels]="expenseDataTrendLabels" [options]="barChartOptions" 
@@ -251,7 +251,7 @@
       <div *ngIf="showTrend == true && expenseDataTrend1.length<=0">
         <div class="sa_nodata_div">
         </div>
-        <p class="chart-placeholder-text">You have no cost of new patient acquisition in this period</p>
+        <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
       </div>
     </div>
       </div>  
@@ -307,7 +307,7 @@
       <div *ngIf="showTrend == false && visitsTotal<=0">
         <div class="sa_nodata_div">
         </div>
-        <p class="chart-placeholder-text">You have no total visits in this period</p>
+        <p class="chart-placeholder-text">You have no visits in the selected period</p>
       </div>
 
      <!--   <div *ngIf="showTrend == false && visitsTotal<=0 && fdvisitsRatioLoader == false" class="sa_nodata_div">
@@ -321,10 +321,10 @@
       </div>
 
       </div>
-      <div *ngIf="showTrend == true && visitsChartTrend1.length <=0">
+      <div *ngIf="showTrend == true && visitsChartTrend1.length <=0" class="no-data-placeholder"> 
         <div class="sa_nodata_div">
         </div>
-        <p class="chart-placeholder-text">You have no total visits in this period</p>
+        <p class="chart-placeholder-text">You have no visits in the selected period</p>
       </div>
         </div>
         <div class="card-footer">

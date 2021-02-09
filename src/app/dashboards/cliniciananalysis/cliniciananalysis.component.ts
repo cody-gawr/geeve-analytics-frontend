@@ -377,6 +377,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public size = "300"
 
   public gaugeValueTreatment = 0;
+  public treatmentPlanAverageCostTab = '1'; 
+
   public gaugeLabelTreatment = "";
 
   public gaugeValuePatients = 0;
@@ -1030,6 +1032,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
     $('.treatmentPlanSingle .tcmain' + val).addClass('active');
     this.tcmain = val;
+    this.treatmentPlanAverageCostTab = val;
     if (val == '1') {
       if (this.toggleChecked) {
         if(this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
