@@ -24,6 +24,7 @@ import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs'
 import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
+import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 // import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 
 export interface Dentist {
@@ -45,6 +46,7 @@ export class FinancesComponent implements AfterViewInit {
   stackedChartColors;
   stackedChartColorsBar;
   stackedChartColorsBar1;
+  public xeroConnect: boolean = false;
 
   preoceedureChartColors;
   subtitle: string;
@@ -105,7 +107,7 @@ single = [
     private headerService: HeaderService,
     private _cookieService: CookieService, 
     private router: Router,
-    // private clinicSettingsService: ClinicSettingsService,
+    private clinicSettingsService: ClinicSettingsService,
     private chartService: ChartService){
     }
     private checkPermission(role) { 
@@ -129,10 +131,11 @@ single = [
   private warningMessage: string;
    initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
-      if(val != undefined && val !='all') {
-    this.clinic_id = val;
-    this.getDentists();
-     this.filterDate('m');
+    if(val != undefined && val !='all') {
+      this.clinic_id = val;
+      this.checkXeroStatus()
+      this.getDentists();
+      this.filterDate('m');
    }
   }
 
@@ -147,6 +150,7 @@ single = [
   }
 
   ngAfterViewInit() {
+    
     //plugin for Percentage of Production by Clinician chart
     this.pluginObservable$ = this.percentOfProductionCount$.pipe(
       takeUntil(this.destroyed$),
@@ -2399,28 +2403,24 @@ private finTotalDiscountsTrend() {
   public netProfitPmsChartTrendLabels1 =[];
   public finNetProfitPMSTrendLoader:any;
 
-//   public checkXeroStatus(){
-//     this.clinicSettingsService.checkXeroStatus(this.id).subscribe((res) => {
-//        if(res.message == 'success'){
-//         if(res.data.xero_connect == 1) {
-//           this.xeroConnect = true;
-//           this.xeroOrganization = res.data.Name;
-//         }
-//         else {
-//           this.xeroConnect = false;
-//            this.xeroOrganization = '';          
-//           this.disconnectXero();
-//         }
-//        }
-//        else {
-//         this.xeroConnect = false;
-//            this.xeroOrganization = ''; 
-//           this.disconnectXero();
-//       }
-//     }, error => {
-//       this.warningMessage = "Please Provide Valid Inputs!";
-//     });  
-//  }
+  public checkXeroStatus(){
+    this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
+      console.log('res', res)
+       if(res.message == 'success'){
+        if(res.data.xero_connect == 1) {
+          this.xeroConnect = true;
+        }
+        else {
+          this.xeroConnect = false; 
+        }
+       }
+       else {
+        this.xeroConnect = false;
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });  
+ }
 
 
 trendxero=false;

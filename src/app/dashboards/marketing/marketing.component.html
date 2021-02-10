@@ -225,7 +225,7 @@
           <div class="chart py-2">
           <div>  
             
-          <div  *ngIf="showTrend == false && newAcqValue>0" style="height: 200px">
+          <div  *ngIf="showTrend == false && newAcqValue > 0 && xeroConnect" style="height: 200px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newAcqValue" 
            [thick]="gaugeThick"  
@@ -238,20 +238,25 @@
                        
         </div>
   
-          <div *ngIf="showTrend == false && newAcqValue<=0">
+          <div *ngIf="showTrend == false && newAcqValue<=0 && xeroConnect">
             <div class="sa_nodata_div">
             </div>
             <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
           </div>
-       <div *ngIf="showTrend == true && expenseDataTrend1.length > 0" style="height: 300px">
+       <div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && xeroConnect" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="expenseDataTrend" [labels]="expenseDataTrendLabels" [options]="barChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-      <div *ngIf="showTrend == true && expenseDataTrend1.length<=0">
+      <div *ngIf="showTrend == true && expenseDataTrend1.length<=0 && xeroConnect">
         <div class="sa_nodata_div">
         </div>
         <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
+      </div>
+      <div *ngIf="!xeroConnect">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
       </div>
     </div>
       </div>  

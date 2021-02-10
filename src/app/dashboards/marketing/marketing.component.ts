@@ -29,6 +29,7 @@ import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'n
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
+import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 
 export interface Dentist {
   providerId: string;
@@ -50,6 +51,7 @@ export class MarketingComponent implements AfterViewInit {
   public dentistCount:any ={};
   public clinicsData:any[] = [];
   public trendText;
+  public xeroConnect: boolean = false;
   public filteredCountriesMultiple: any[];
   public selectedCategories:any[] =[];
   public newPatientsReferral$ = new BehaviorSubject<number>(0);
@@ -72,6 +74,7 @@ export class MarketingComponent implements AfterViewInit {
     private _cookieService: CookieService, 
     private router: Router,
     public ngxSmartModalService: NgxSmartModalService,
+    private clinicSettingsService: ClinicSettingsService,
     public decimalPipe: DecimalPipe,
     private chartService: ChartService
   ){
@@ -100,6 +103,7 @@ export class MarketingComponent implements AfterViewInit {
     var val = $('#currentClinic').attr('cid');
       if(val != undefined && val !='all') {
     this.clinic_id = val;
+    this.checkXeroStatus();
      this.filterDate('m');
    }
   }
@@ -1201,4 +1205,23 @@ this.newAcqValue = 0;
     this.categories.push(this.selectedCategories[index]);
     this.selectedCategories.splice(index, 1);
   }
+
+  public checkXeroStatus(){
+    this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
+      console.log('res', res)
+       if(res.message == 'success'){
+        if(res.data.xero_connect == 1) {
+          this.xeroConnect = true;
+        }
+        else {
+          this.xeroConnect = false; 
+        }
+       }
+       else {
+        this.xeroConnect = false;
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });  
+ }
   }
