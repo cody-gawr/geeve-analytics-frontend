@@ -1582,18 +1582,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.treatmentChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.percent) {
-            this.treatmentChartData1.push(Math.round(res.percent));
-            var name = res.provider;
-            if (res.provider != null && res.provider != 'Anonymous') {
-              name = res.provider.split(',');
-              /*if(name.length>0)
-                name =name[1]+ " "+ name[0];*/
+          if (res.treatment_percentage) {
+            this.treatmentChartData1.push(Math.round(res.treatment_percentage));
+            var name = res.provider_name;
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
               this.treatmentChartLabels1.push(name);
               this.TPRKey = i;
             }
             else
-              this.treatmentChartLabels1.push(res.provider);
+              this.treatmentChartLabels1.push(res.provider_name);
             i++;
           }
         });
@@ -1673,8 +1670,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.treatmentPlanRateDentistLoader = false;
         this.treatmentPlanValue = '0';
         if (data.data.length > 0) {
-          this.treatmentPlanValue = Math.round(data.data[0].percent);
-          this.treatmentPlanLabel = data.data[0].provider;
+          this.treatmentPlanValue = Math.round(data.data[0].treatment_percentage);
+          this.treatmentPlanLabel = data.data[0].provider_name;
         }
         this.treatmentPlanGoal = Math.round(data.goals);
         this.treatmentChartAveragePrev = Math.round(data.total_ta);
