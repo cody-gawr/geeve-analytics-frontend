@@ -116,6 +116,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     return color;
   }
 
+  formatDate(date) {
+    if(date){
+      var dateArray = date.split("-")
+      const d = new Date();
+      d.setFullYear(+dateArray[2], (+dateArray[1] - 1), +dateArray[0])
+      const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
+      return formattedDate;
+    } else return date;
+  }
+
   //initialize component
   ngAfterViewInit() {
     this.newPatientPluginObservable$ = this.newPatientTotalAverage$.pipe(
@@ -125,7 +135,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       })
     );
 
-    $('#currentDentist').attr('did', 'all');
+    // $('#currentDentist').attr('did', 'all');
 
     // this.clinic_id = this.route.snapshot.paramMap.get("id");
     //  this.getDentists();
@@ -136,7 +146,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     if (this._cookieService.get("childid"))
       this.childid = this._cookieService.get("childid");
     //   $('.external_dentist').val('all');
-    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.startDate + ' - ' + this.endDate + '</span>');
+    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
     $('.external_clinic').show();
     $('.dentist_dropdown').show();
     $('.header_filters').removeClass('flex_direct_mar');
@@ -367,6 +377,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public size = "300"
 
   public gaugeValueTreatment = 0;
+  public treatmentPlanAverageCostTab = '1'; 
+
   public gaugeLabelTreatment = "";
 
   public gaugeValuePatients = 0;
@@ -829,7 +841,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
  loadDentist(newValue) {
   if(newValue =='')
     newValue='all';
-   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.startDate + ' - ' + this.endDate + '</span>');
+   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
   //this.getAccountingDentist();
   //this.getStatusDentist();
   this.changePrebookRate('recall');
@@ -1020,9 +1032,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
     $('.treatmentPlanSingle .tcmain' + val).addClass('active');
     this.tcmain = val;
+    this.treatmentPlanAverageCostTab = val;
     if (val == '1') {
-      if (this.toggleChecked)
+      if (this.toggleChecked) {
+        if(this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
+      }
       else {
         this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentP);
         this.planTotalPrev = this.planAllTotalTrend;
@@ -1030,8 +1045,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
     }
     else {
-      if (this.toggleChecked)
+      if (this.toggleChecked){
+        if(this.treatmentPlanTrend2.every((value) => value == 0)) this.treatmentPlanTrend2 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend2;
+      }
       else {
         this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentC);
         this.planTotalPrev = this.planCompletedTotalTrend;
@@ -1050,7 +1067,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public productionTooltip = 'down';
   public productionTotalPrev;
   public barChartOptionsDP: any = this.barChartOptions;
-  public buildChartLoader: any;
+  public buildChartLoader: boolean;
   public dentistKey;
   public DPcolors: any;
   //Dentist Production Chart for all Dentist
@@ -1066,7 +1083,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       this.barChartLabels1 = [];
       this.barChartLabels = [];
       this.productionTotal = 0;
-      console.log('data.data', data.data);
       if (data.message == 'success') {
         this.buildChartLoader = false;
         this.productionTooltip = 'down';
@@ -1173,7 +1189,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     );
   }
 
-  public buildChartDentistLoader: any;
+  public buildChartDentistLoader: boolean;
   public maxProductionGoal: any = 0;
   //Individual Dentist Production Chart
   private buildChartDentist() {
@@ -1211,7 +1227,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           }
 
         if(this.gaugeValue > this.productionGoal)
-          this.maxProductionGoal= this.gaugeValue;
+          this.maxProductionGoal = this.gaugeValue;
         else
           this.maxProductionGoal = this.productionGoal;
         if (this.maxProductionGoal == 0)
@@ -1252,7 +1268,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public recallChartAveragePrev;
   public recallChartTooltip = 'down';
   public barChartOptionsRP: any = this.barChartOptionsPercent;
-  public recallPrebookLoader: any;
+  public recallPrebookLoader: boolean;
   public rpKey: any;
   public RPcolors: any;
   private recallPrebook() {
@@ -1342,7 +1358,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     }
     );
   }
-  public recallPrebookDentistLoader: any;
+  public recallPrebookDentistLoader: boolean;
   public maxrecallGoal: any = 0;
   //Individual Dentist Production Chart
   private recallPrebookDentist() {
@@ -1409,7 +1425,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public treatmentPreChartTooltip = 'down';
   public barChartOptionsTPB: any = this.barChartOptionstrend;
   public prebook = 'recall';
-  public treatmentPrebookLoader: any;
+  public treatmentPrebookLoader: boolean;
   public tpKey: any;
   public TPcolors: any;
   //All dentist Treatment Prebook Chart
@@ -1499,7 +1515,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     }
     );
   }
-  public treatmentPrebookDentistLoader: any;
+  public treatmentPrebookDentistLoader: boolean;
 
   //Individual Treatment Prebook Chart
   private treatmentPrePrebookDentist() {
@@ -1543,7 +1559,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public treatmentChartAveragePrev;
   public treatmentChartTooltip = 'down';
   public barChartOptionsTP: any = this.barChartOptionsPercent;
-  public treatmentPlanRateLoader: any;
+  public treatmentPlanRateLoader: boolean;
   public TPRKey: any;
   public TPRcolors: any;
   //Treatment pLAn Rate chart for all dentists
@@ -1737,7 +1753,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
     }
   };
-  public buildChartTreatmentLoader: any;
+  public buildChartTreatmentLoader: boolean;
   public TPACAcolors: any;
   public TPACCcolors: any;
   public tpacAKey;
@@ -1873,7 +1889,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public gaugeValueTreatmentP: any = 0;
   public gaugeValueTreatmentC: any = 0;
   public maxplanTotalGoal: any = 0;
-  public buildChartTreatmentDentistLoader: any;
+  public buildChartTreatmentDentistLoader: boolean;
 
   //Individual Treatment Plan Average Cost
   private buildChartTreatmentDentist() {
@@ -1959,7 +1975,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public doughnutTotalTooltip = 'up';
   public doughnutTotalPrev = 0;
-  public buildChartNopatientsLoader: any;
+  public buildChartNopatientsLoader: boolean;
   public npKey: any;
   public npColors: any;
   public doughnutChartColors1: any;
@@ -2010,7 +2026,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     );
   }
 
-  public buildChartNopatientsDentistLoader: any;
+  public buildChartNopatientsDentistLoader: boolean;
   public maxdoughnutGoals: any = 0;
   //Indvidual No pf patients complaint chart
   private buildChartNopatientsDentist() {
@@ -2083,10 +2099,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartNewpatientsLoader = false;
         this.newPatientTotalTooltip = 'down';
         var i = 0;
-        console.log('\n data : ', data);
 
         data.data.forEach(res => {
-          console.log('\n res : ', res);
 
           if (res.getX) {
             this.newPatientChartData1.push(parseInt(res.getX));
@@ -2097,8 +2111,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           }
         });
 
-        console.log('\n this.newPatientChartData1 : ', this.newPatientChartData1);
-        console.log('\n this.newPatDientChartLabels : ', this.newPatientChartLabels1);
         this.newPatientChartData = this.newPatientChartData1;
         this.newPatientChartLabels = this.newPatientChartLabels1;
 
@@ -2402,9 +2414,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         var last = first + 6;
         var sd = new Date(now.setDate(first));
 
-        this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd-MM-yyyy');
         var end = now.setDate(sd.getDate() + 6);
-        this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
         this.loadDentist(dentistVal);
       }
       else if (duration == 'm') {
@@ -2414,8 +2426,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.currentText = 'This Month';
 
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         console.log(this.startDate + " " + this.endDate);
 
         this.loadDentist(dentistVal);
@@ -2428,8 +2440,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.currentText = 'Last Month';
 
         const date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
         console.log(this.startDate + " " + this.endDate);
 
         this.loadDentist(dentistVal);
@@ -2446,23 +2458,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         var cyear = now.getFullYear();
 
         if (cmonth >= 1 && cmonth <= 3) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 4 && cmonth <= 6) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 7 && cmonth <= 9) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 10 && cmonth <= 12) {
           1
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd MMM yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');
         }
-        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         this.loadDentist(dentistVal);
 
       }
@@ -2477,20 +2489,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         var cyear = now.getFullYear();
 
         if (cmonth >= 1 && cmonth <= 3) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'dd MMM yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'dd-MM-yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 4 && cmonth <= 6) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 7 && cmonth <= 9) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 10 && cmonth <= 12) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
         }
         this.loadDentist(dentistVal);
       }
@@ -2499,10 +2511,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.currentText = 'This Year';
 
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
         console.log(this.startDate);
 
-        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
         this.goalCount = difMonths + 1;
         this.loadDentist(dentistVal);
@@ -2513,12 +2525,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
         var date = new Date();
         if ((date.getMonth() + 1) <= 3) {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
         } else {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
         }
 
-        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
         this.goalCount = Math.abs(difMonths + 1);
         this.loadDentist(dentistVal);
@@ -2542,8 +2554,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   choosedDate(val) {
     val = (val.chosenLabel);
     var val = val.toString().split(' - ');
-    this.startDate = this.datePipe.transform(val[0], 'dd MMM yyyy');
-    this.endDate = this.datePipe.transform(val[1], 'dd MMM yyyy');
+    this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+    this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
     this.filterDate('custom');
     // $('.filter_custom').val(this.startDate + " - " + this.endDate);
     $('.customRange').css('display', 'none');
@@ -2608,7 +2620,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public dentistProductionTrend1 = [];
   public dentistProductionTrendLabels = [];
   public dentistProductionTrendLabels1 = [];
-  public dentistProductionTrendLoader: any;
+  public dentistProductionTrendLoader: boolean;
   //Trend mode for dentist Production
   private dentistProductionTrend() {
     this.dentistProductionTrendLoader = true;
@@ -2624,12 +2636,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       if (data.message == 'success') {
         this.dentistProductionTrendLoader = false;
         data.data.forEach(res => {
-          this.dentistProductionTrend1.push(Math.round(res.val.total));
+          if(res.val.total)
+            this.dentistProductionTrend1.push(Math.round(res.val.total));
           if (this.trendValue == 'c')
             this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
           else
             this.dentistProductionTrendLabels1.push(res.duration);
         });
+        if(this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
         this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
         this.dentistProductionTrendLabels = this.dentistProductionTrendLabels1;
         if (this.dentistProductionTrendLabels.length <= 0) {
@@ -2708,7 +2722,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             else
               this.treatmentPlanTrendLabels1.push(res.duration);
           });
+          
+          
         }
+        if(this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
         this.treatmentPlanTrendLabels = this.treatmentPlanTrendLabels1;
 
@@ -2755,7 +2772,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public patientComplaintsTrend1 = [];
   public patientComplaintsTrendLabels = [];
   public patientComplaintsTrendLabels1 = [];
-  public patientComplaintsTrendLoader: any;
+  public patientComplaintsTrendLoader: boolean;
   //Trend mode for Pateint Complaints chart
   private patientComplaintsTrend() {
     this.patientComplaintsTrendLoader = true;
@@ -2771,7 +2788,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.patientComplaintsTrendLoader = false;
         if (data.data) {
           data.data.forEach(res => {
-            this.patientComplaintsTrend1.push(res.val.treat_item);
+            if(res.val.treat_item)
+              this.patientComplaintsTrend1.push(res.val.treat_item);
             if (this.trendValue == 'c')
               this.patientComplaintsTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else
@@ -2828,7 +2846,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public recallPrebookChartTrend1 = [];
   public recallPrebookChartTrendLabels = [];
   public recallPrebookChartTrendLabels1 = [];
-  public fdRecallPrebookRateTrendLoader: any;
+  public fdRecallPrebookRateTrendLoader: boolean;
   //Recall Prebook Rate Chart trend mode
   private fdRecallPrebookRateTrend() {
     this.fdRecallPrebookRateTrendLoader = true;
@@ -2976,7 +2994,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.hourlyRateChartTrend1 = [];
         data.data.forEach(res => {
           if (res.val) {
-            this.hourlyRateChartTrend1.push(Math.round(res.val.hourlyRate));
+            if(res.val.hourlyRate)
+              this.hourlyRateChartTrend1.push(Math.round(res.val.hourlyRate));
             if (this.trendValue == 'c')
               this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else
@@ -3121,7 +3140,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         if (data.data) {
           data.data.forEach(res => {
             if (res.val) {
-              this.treatmentPlanChartTrend1.push(Math.round(res.val));
+              if(res.val.percent)
+                this.treatmentPlanChartTrend1.push(Math.round(res.val.percent));
               if (this.trendValue == 'c')
                 this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
               else
