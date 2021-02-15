@@ -1472,7 +1472,7 @@ public categoryExpensesLoader:any;
     }
     );
   }
-  public totalDiscountChartTrendIcon;
+  public totalDiscountChartTrendIcon = "down";
   public totalDiscountChartTrendTotal;
   public finTotalDiscountsLoader:any;
 

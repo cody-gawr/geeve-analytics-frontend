@@ -279,7 +279,7 @@ expenses_card custom_ngx_cw01" >
                   class="predicted3Tool sa_inc_dec_arrows trend_arrow" 
                   mat-icon-button matTooltip="{{trendText}} : ${{totalDiscountChartTrendTotal | number:'1.0-0'}}" 
                   *ngIf="trendText">
-                  <img class="trend_ico" src="../assets/images/trend_{{totalDiscountChartTrendIcon}}.png">
+                  <img class="trend_ico" src="../assets/images/trend_reverse_{{totalDiscountChartTrendIcon}}.png">
                 </span> 
                 <span class="title">
                   Total Discounts
@@ -468,8 +468,13 @@ expenses_card custom_ngx_cw01" >
         <div fxFlex="calc(36% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="total_val sa_flexbg predictor_ratio md_mrn last custom_ngx_cw07">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content"> 
-              <!-- <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionTrendVal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{productionTrendIcon}}.png"></span> -->
-              <mat-card-title class="text-center">Production Per Visit <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
+             
+              <mat-card-title class="text-center">
+                <div>
+                  <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionTrendVal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_reverse_{{productionTrendIcon}}.png"></span>
+                  Production Per Visit 
+                </div>
+                <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 <!--<div class="sa_box_title_right_buttons"> 
                    <button mat-icon-button ><i class="fas fa-expand"></i></button>
                   <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
