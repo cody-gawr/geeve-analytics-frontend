@@ -1,7 +1,10 @@
-<mat-card>
+<mat-accordion class="clinic-expansion-panel">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Clinics </mat-panel-title>
+    </mat-expansion-panel-header>
     <mat-card-content>
-      
-        <mat-card-title>Clinics 
+        <mat-card-title>
          <button class="sa-pull-right mat-raised-button mat-gray" mat-raised-button (click)="openDialog()" disabled ="false"  *ngIf= "clinicscount > createdClinicsCount">Add Clinic</button>
        <button class="sa-pull-right mat-raised-button mat-gray m-l-10" mat-raised-button (click)="openLimitDialog()" *ngIf= "clinicscount <= createdClinicsCount">Add Clinic</button> </mat-card-title>
 
@@ -67,4 +70,8 @@
       </ngx-datatable-column>
         </ngx-datatable>
     </mat-card-content>
-</mat-card>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<app-goals-settings [clinicId]="clinic_id"></app-goals-settings>
+<app-dentist-settings [clinicId]="clinic_id"></app-dentist-settings>

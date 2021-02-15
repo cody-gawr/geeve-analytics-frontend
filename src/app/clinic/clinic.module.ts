@@ -1,30 +1,42 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material';
 import { DemoMaterialModule } from '../demo-material-module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ClinicService } from './clinic.service';
 import { ClinicComponent,
   DialogOverviewExampleDialogComponent,DialogOverviewExampleLimitDialogComponent  } from './clinic.component';
 import { ClinicRoutes } from './clinic.routing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedMatModule } from '../shared-mat.module';
+import { BaseComponent } from './base/base.component';
+import { DentistComponent } from './dentist/dentist.component';
+import { GoalsComponent } from './goals/goals.component';
+import { DentistService } from '../dentist/dentist.service';
+import { DentistGoalsService } from '../dentist-goals/dentist-goals.service';
+import { ClinicGoalsService } from '../clinic-goals/clinic-goals.service';
 
 @NgModule({
   imports: [
-    CommonModule,
+    SharedMatModule.forRoot(),
     RouterModule.forChild(ClinicRoutes),
-    MatInputModule,
     NgxDatatableModule,
-    DemoMaterialModule,
-    FormsModule,
-    ReactiveFormsModule
+    DemoMaterialModule
   ],
   providers: [
-    ClinicService
+    ClinicService, DentistService, DentistGoalsService, ClinicGoalsService
   ],
   entryComponents: [DialogOverviewExampleDialogComponent,DialogOverviewExampleLimitDialogComponent],
-  declarations: [ ClinicComponent,
-    DialogOverviewExampleDialogComponent,DialogOverviewExampleLimitDialogComponent ]
+  declarations: [ 
+    ClinicComponent,
+    DialogOverviewExampleDialogComponent,
+    DialogOverviewExampleLimitDialogComponent,
+    BaseComponent,
+    DentistComponent,
+    GoalsComponent
+  ],
+  exports: [
+    BaseComponent,
+    DentistComponent,
+    GoalsComponent
+  ]
 })
 export class ClinicModule { }

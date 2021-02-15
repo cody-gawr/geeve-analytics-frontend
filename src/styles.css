@@ -1567,11 +1567,18 @@ ul { margin: 0px !important; }
 
 .mh-table .mat-row:nth-child(even) { background-color: #f6f7f9;}
 
+.DentistListSecRow .mat-row:nth-child(even) {
+   background-color: #f5f5fb;
+}
+
 #mat-tab-content-0-1 .mh-table .mat-row:nth-child(even) .appointment { background-color: #fff; }
 
 .DentistListSecRow .mat-row:nth-child(even) .appointment { background-color: #fff; }
 
-.mh-table .mat-row:nth-child(odd) { background-color: #ffffff;}
+.mh-table .mat-row:nth-child(odd), 
+.DentistListSecRow .mat-row:nth-child(odd) {
+    background-color: #ffffff;
+}
 
 .mh-table td.mat-cell, .mh-table td.mat-footer-cell { padding: 7px 20px !important; font-weight: 400; border-bottom: none !important; font-size: 14px; color: #303030; white-space: nowrap; }
 
@@ -1587,7 +1594,42 @@ ul { margin: 0px !important; }
 
 .morning-huddle .table-card { margin-left: 0; margin-right: 0; margin-bottom: 10px; margin-top: 10px; width: 100%; float: left; }
 
-.table-card .mat-card-title { padding: 15px 20px; font-size: 16px !important; margin-bottom: 0 !important;font-family: 'Gilroy-Medium'; color: rgba(0, 0, 0, 1) !important;}
+.table-card .mat-card-title,
+.settings-table-card .mat-card-title {
+    padding: 15px 20px;
+    font-size: 16px !important;
+    margin-bottom: 0 !important;
+}
+.settings-table-card .mat-card-title {
+     font-family: 'Gilroy-Medium';
+     color: rgba(0, 0, 0, 1) !important;
+}
+
+.settings-table-card .sa_mat_select_topbar {
+    background-color: #f5f5fb !important;
+    border-radius: 2px;
+}
+
+.clinic-expansion-panel .mat-expansion-panel {
+    margin: 16px;
+}
+
+.clinic-expansion-panel .mat-expansion-panel-header {
+    border-bottom: 2px solid #f4f0fa;
+}
+
+.clinic-expansion-panel .mat-expansion-panel-body {
+    padding-top: 16px;
+}
+.mat-accordion>.mat-expansion-panel-spacing:last-child,
+.mat-accordion>:last-child:not(.mat-expansion-panel) .mat-expansion-panel-spacing {
+    margin-bottom: 16px !important;
+}
+.mat-accordion>.mat-expansion-panel-spacing:first-child,
+.mat-accordion>:first-child:not(.mat-expansion-panel) .mat-expansion-panel-spacing {
+    margin-top: 16px !important;
+}
+
 
 .table-card .mat-table { box-shadow: none; margin: 0; border: 1px solid #e7e9eb; }
 
@@ -2010,6 +2052,7 @@ body .mat-gray {
    padding: 50px;
    font-size: 16px;
 }
+
 .mat-paginator {
     box-shadow: 10px 5px 10px 0 rgba(0,0,0,.05)!important;
     border-radius: 5px;
@@ -2912,7 +2955,26 @@ top: 29px;
     margin: 0px auto 55px;
 }
 
+.settings-table-card {
+    padding: 0 !important;
+}
 
+.settings-table-card .mat-card-title {
+    margin-bottom: 16px !important;
+    /* border-bottom: 2px solid #f4f0fa; */
+    padding: 26px 26px 20px;
+}
+
+.settings-table-card.mat-card .mat-card-content {
+    padding: 20px 26px;
+}
+
+.settings-table-loader {
+    /* border: 1px solid #e7e9eb; */
+    border-top: 0;
+    margin-top: -5px;
+    box-shadow: none !important;
+}
 
 @media (max-width: 1366px){
 .text-loading {
@@ -3645,7 +3707,11 @@ ul.download-sync-list {
     padding: 25px 0;
 }
 
-.main_pagination li a{
+.settings-table-pagination {
+    justify-content: flex-end;
+}
+
+.main_pagination li a, .main_pagination li .page {
     width: 44px;
     height:44px;
     display:flex;
@@ -3660,9 +3726,11 @@ ul.download-sync-list {
     user-select: none;
 }
 
-.main_pagination li a:hover{
+.main_pagination li a:hover,
+.main_pagination li .page:hover {
     background-color: #0a857c;
     color:#fff;
+    cursor: pointer;
 }
 
 .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
@@ -3677,7 +3745,8 @@ ul.download-sync-list {
 }
 
 
-.main_pagination .active{
+.main_pagination .active,
+.main_pagination li .page.active {
     background-color: #0a857c;
     border:1px solid #0a857c;
     color: #fff;
@@ -3928,6 +3997,32 @@ ul.download-sync-list {
     font-size: 20px;
     font-family: "Gilroy-Bold";
 }
+
+.denstist-search-form-field .mat-form-field-wrapper {
+    max-width: 320px;
+}
+.denstist-search-form-field .mat-form-field-flex {
+    align-items: flex-start;
+    background-color: #f5f5fb !important;
+}
+
+.denstist-search-form-field .mat-form-field-flex .mat-form-field-infix {
+    border-top: none;
+}
+
+.save-button {
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #FFF;
+    background-image: linear-gradient(14deg, #17a5aa 0%, #18a689 100%);
+    box-shadow: none;
+    border: 0;
+    padding: 10px 24px 6px;
+    margin-top: 24px;
+    font-family: 'Gilroy-Medium';
+    border-radius: 2px;
+}
+
 
 @media(min-width:1200px) and (max-width:1869px){
     .oppertunity-col {

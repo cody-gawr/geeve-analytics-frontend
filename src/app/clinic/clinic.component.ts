@@ -98,6 +98,7 @@ export class ClinicComponent implements AfterViewInit {
   address: string;
   contact_name: string;
   fileInput: any;
+  clinic_id: any;
 //initialize component
   ngAfterViewInit() {
     this.getUserDetails();
@@ -110,6 +111,7 @@ export class ClinicComponent implements AfterViewInit {
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('hide_header');
+    this.clinic_id = $('#currentClinicid').attr('cid');
   }
   editing = {};
   rows = [];
