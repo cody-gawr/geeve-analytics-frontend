@@ -195,7 +195,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
         label: this.tabsConstants.front_desk,
         form: this.frontDeskForm,
         startIndex: 15,
-        endIndex: 22,
+        endIndex: 21,
         controls: [
           {
             label: 'Items Predictor Analysis value',
@@ -237,8 +237,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
         patchValues: [],
         label: this.tabsConstants.marketing,
         form: this.marketingForm,
-        startIndex: 23,
-        endIndex: 27,
+        startIndex: 22,
+        endIndex: 26,
         controls: [
           {
             label: 'No. New Patients By Referral value',
@@ -268,8 +268,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
         patchValues: [],
         label: this.tabsConstants.finances,
         form: this.financesForm,
-        startIndex: 28,
-        endIndex: 38,
+        startIndex: 27,
+        endIndex: 36,
         controls: [
           {
             label: 'Net Profit value',
@@ -341,7 +341,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
         switch (selectedGoalCategory) {
           case 1:
             console.log('get clinic goals');
-            this.clinicGoalsService.getClinicGoals(id || 16).subscribe((res) => {
+            this.clinicGoalsService.getClinicGoals(id).subscribe((res) => {
               if (res.message == 'success') {
                 console.log('goad res', res);
                 this.getGoalsForTabs(res.data);
@@ -355,7 +355,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
 
           case 2:
             console.log('get dentist goals');
-            this.dentistGoalsService.getDentistGoals(id || 16).subscribe((res) => {
+            this.dentistGoalsService.getDentistGoals(id).subscribe((res) => {
               if (res.message == 'success') {
                 console.log('dentist res', res);
                 this.getGoalsForTabs(res.data);
