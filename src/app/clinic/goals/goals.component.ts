@@ -398,16 +398,24 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     });
   }
 
+  getFormsData() {
+    let formattedData: any = {};
+    let start = 0;
+    let end = 0;
+    Object.keys(this.tabs).map(key => {
+      start = this.tabs[key].startIndex;
+      end = this.tabs[key].endIndex;
+      let index = 0;
+      for (let i = start; i <= end; i++) {
+        formattedData[i] = this.tabs[key].form.get(this.tabs[key].controls[index].name).value;        
+        index++;
+      }
+    });
+    return formattedData;
+  }
+
   onSubmit() {
-    // combine all forms before api call
-    const allFormsData = {
-      ...this.clinicAnalysisForm.value, 
-      ...this.clinicProcedureForm.value, 
-      ...this.frontDeskForm.value, 
-      ...this.marketingForm.value, 
-      ...this.financesForm.value 
-    };
-    console.log('allFormsData', allFormsData);
+    const allFormsData = this.getFormsData();
     let myJsonString = JSON.stringify(allFormsData);
     $('.ajax-loader').show();
     switch (this.selectedGoalCategory$.value) {
