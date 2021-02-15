@@ -92,7 +92,7 @@
     <mat-card-content>
       <div class="Goals-dropdowns mb-2" fxLayout="row wrap" fxLayoutGap="20px">
         <div
-          class="sa_mat_select_topbar"
+          class="sa_mat_select_topbar mat_selectbox"
           fxFlex="20"
           fxFlex.md="20"
           fxFlex.sm="30"
@@ -111,7 +111,7 @@
           </mat-form-field>
         </div>
         <div
-          class="sa_mat_select_topbar"
+          class="sa_mat_select_topbar mat_selectbox"
           fxFlex="20"
           fxFlex.md="20"
           fxFlex.sm="30"
@@ -164,14 +164,14 @@
               </form>
             </div>
           </div>
-
-          <button
-            class="btn save-button"
-            mat-raised-button
-            (click)="onSubmit()"
-          >
-            Save
-          </button>
+          <div class="sa-form-group-btn">
+            <button
+              class="btn save-button"
+              (click)="onSubmit()"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </mat-card-content>
