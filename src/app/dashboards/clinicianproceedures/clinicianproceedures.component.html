@@ -418,6 +418,12 @@
             </div>
           </div>
         </div>
+
+        <div *ngIf="buildChartPredictorLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+        </div>
+
       </mat-card-content>
     </mat-card>
     <mat-card class="ratioPredictorSingle" [style.display]="'none'">

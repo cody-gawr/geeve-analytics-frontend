@@ -13,6 +13,7 @@ import { GoalsComponent } from './goals/goals.component';
 import { DentistService } from '../dentist/dentist.service';
 import { DentistGoalsService } from '../dentist-goals/dentist-goals.service';
 import { ClinicGoalsService } from '../clinic-goals/clinic-goals.service';
+import { ToastrService } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -22,7 +23,7 @@ import { ClinicGoalsService } from '../clinic-goals/clinic-goals.service';
     DemoMaterialModule
   ],
   providers: [
-    ClinicService, DentistService, DentistGoalsService, ClinicGoalsService
+    ClinicService, DentistService, DentistGoalsService, ClinicGoalsService, ToastrService
   ],
   entryComponents: [DialogOverviewExampleDialogComponent,DialogOverviewExampleLimitDialogComponent],
   declarations: [ 

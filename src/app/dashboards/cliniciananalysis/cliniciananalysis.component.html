@@ -125,13 +125,13 @@
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
                 </div>
               </div>
-              <div style="height: 300px" *ngIf="barChartData.length > 0 && buildChartLoader===false">
+              <div style="height: 300px" *ngIf="barChartData[0].data.length && !buildChartLoader">
                 <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
                   [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
                   [colors]="DPcolors">
                 </canvas>
               </div>
-              <div *ngIf="barChartData.length <= 0 && buildChartLoader===false" class="no-data-placeholder">
+              <div *ngIf="!barChartData[0].data.length && !buildChartLoader" class="no-data-placeholder">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no production in the selected period</p>
@@ -157,6 +157,10 @@
                   <span class="value-text">Goal</span>
                 </div>
               </div>
+            </div>
+            <div *ngIf="buildChartLoader"
+              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
             </div>
           </mat-card-content>
         </mat-card>
@@ -311,6 +315,10 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="buildChartTreatmentLoader || buildChartTreatmentDentistLoader"
+              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
           </mat-card-content>
         </mat-card>
         <mat-card class="treatmentPlanSingle" [style.display]="'none'">
@@ -386,11 +394,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
-              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
-              <div class="loader-text">Calculating...</div>
-            </div>
-            <div *ngIf="buildChartTreatmentDentistLoader && !buildChartTreatmentLoader"
+            <div *ngIf="buildChartTreatmentLoader || buildChartTreatmentDentistLoader"
               class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
@@ -457,6 +461,10 @@
                   <span class="value-text">Goal</span>
                 </div>
               </div>
+            </div>
+            <div *ngIf="buildChartNopatientsLoader"
+              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
             </div>
           </mat-card-content>
         </mat-card>

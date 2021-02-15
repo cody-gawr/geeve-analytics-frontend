@@ -1067,7 +1067,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public productionTooltip = 'down';
   public productionTotalPrev;
   public barChartOptionsDP: any = this.barChartOptions;
-  public buildChartLoader: boolean;
+  public buildChartLoader: boolean = false;
   public dentistKey;
   public DPcolors: any;
   //Dentist Production Chart for all Dentist
@@ -1753,7 +1753,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
     }
   };
-  public buildChartTreatmentLoader: boolean;
+  public buildChartTreatmentLoader: boolean = false;
   public TPACAcolors: any;
   public TPACCcolors: any;
   public tpacAKey;

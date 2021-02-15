@@ -2,6 +2,7 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie';
+import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ClinicGoalsService } from '../../clinic-goals/clinic-goals.service';
@@ -50,7 +51,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     private dentistGoalsService: DentistGoalsService,
     private _cookieService: CookieService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastr: ToastrService
   ) { 
     super();
   }
@@ -335,15 +337,12 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       takeUntil(this.destroyed$)   
     ).subscribe(inputs => {
       const [id, selectedGoalCategory] = inputs;
-      console.log('selectedGoalCategory', selectedGoalCategory);
-      console.log('id', id);
       if (id) {
         switch (selectedGoalCategory) {
           case 1:
-            console.log('get clinic goals');
             this.clinicGoalsService.getClinicGoals(id).subscribe((res) => {
               if (res.message == 'success') {
-                console.log('goad res', res);
+                console.log('goal res', res);
                 this.getGoalsForTabs(res.data);
               } else if (res.status == '401') {
                 this.handleUnAuthorization();
@@ -354,7 +353,6 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             break;
 
           case 2:
-            console.log('get dentist goals');
             this.dentistGoalsService.getDentistGoals(id).subscribe((res) => {
               if (res.message == 'success') {
                 console.log('dentist res', res);
@@ -375,12 +373,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   }
 
   onTabChanged(event) {
-    console.log('event', event);
     this.selectedTab = event;
   }
 
   handleGoalCategorySelection(event) {
-    console.log('event', event);
     this.selectedGoalCategory$.next(event);
   }
 
@@ -403,7 +399,57 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   }
 
   onSubmit() {
+    // combine all forms before api call
+    const allFormsData = {
+      ...this.clinicAnalysisForm.value, 
+      ...this.clinicProcedureForm.value, 
+      ...this.frontDeskForm.value, 
+      ...this.marketingForm.value, 
+      ...this.financesForm.value 
+    };
+    console.log('allFormsData', allFormsData);
+    let myJsonString = JSON.stringify(allFormsData);
+    $('.ajax-loader').show();
+    switch (this.selectedGoalCategory$.value) {
+      case 1:
+        this.updateClinicGoals(myJsonString);
+        break;
+      case 2:
+        this.updateDentistGoals(myJsonString);
+        break;
+      default:
+        break;
+    }
+  
+  }
 
+  updateClinicGoals(formData) {
+    this.clinicGoalsService.updateClinicGoals(formData, this.clinic_id$.value).subscribe((res) => {
+      $('.ajax-loader').hide();
+      if (res.message == 'success') {
+        this.toastr.success('Clinic Goals Updated');
+      }
+      else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error);
+      $('.ajax-loader').hide();
+    });
+  }
+
+  updateDentistGoals(formData) {
+    this.dentistGoalsService.updateDentistGoals(formData, this.clinic_id$.value, '').subscribe((res) => {
+      $('.ajax-loader').hide();
+      if (res.message == 'success') {
+        this.toastr.success('Dentist Goals Updated');
+      } else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error);
+      $('.ajax-loader').hide();
+    });
   }
 
   handleUnAuthorization() {
