@@ -7,6 +7,7 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ClinicGoalsService } from '../../clinic-goals/clinic-goals.service';
 import { DentistGoalsService } from '../../dentist-goals/dentist-goals.service';
+import { DentistService } from '../../dentist/dentist.service';
 import { BaseComponent } from '../base/base.component';
 
 @Component({
@@ -21,6 +22,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   frontDeskForm: FormGroup;
   marketingForm: FormGroup;
   financesForm: FormGroup;
+  dentists: any = [];
   clinicAnalysisGoals: any = [];
   tabs: any = [];
   tabsConstants = {
@@ -30,17 +32,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     marketing: 'Marketing',
     finances: 'Finances'
   }
-  goalsCategories: any = [
-    { 
-      id: 1,
-      name: 'Entire Clinic'
-    },
-    {
-      id: 2,
-      name: 'Dentist Goals'
-    },
-  ];
-  selectedGoalCategory$ = new BehaviorSubject<number>(1);
+  selectedGoalCategory$ = new BehaviorSubject<any>('');
   selectedTab: string = this.tabsConstants.clinic_analysis;
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
@@ -52,7 +44,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     private _cookieService: CookieService,
     private router: Router,
     private fb: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dentistService: DentistService
   ) { 
     super();
   }
@@ -108,7 +101,6 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       discount: [null, Validators.compose([Validators.required])],
       overdueaccount: [null, Validators.compose([Validators.required])]
     });
-
 
     this.tabs = {
       clinic_analysis: {
@@ -326,6 +318,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       },
     }
 
+    this.getDentists(this.clinic_id$.value);
+
   }
 
   ngAfterViewInit() {
@@ -337,12 +331,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       takeUntil(this.destroyed$)   
     ).subscribe(inputs => {
       const [id, selectedGoalCategory] = inputs;
-      if (id) {
-        switch (selectedGoalCategory) {
-          case 1:
+      if (id) {        
+        if (selectedGoalCategory === '') {        
             this.clinicGoalsService.getClinicGoals(id).subscribe((res) => {
               if (res.message == 'success') {
-                console.log('goal res', res);
                 this.getGoalsForTabs(res.data);
               } else if (res.status == '401') {
                 this.handleUnAuthorization();
@@ -350,12 +342,9 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             }, error => {
               console.log('error', error)
             });
-            break;
-
-          case 2:
-            this.dentistGoalsService.getDentistGoals(id).subscribe((res) => {
+        } else {
+          this.dentistGoalsService.getDentistGoals(id, selectedGoalCategory).subscribe((res) => {
               if (res.message == 'success') {
-                console.log('dentist res', res);
                 this.getGoalsForTabs(res.data);
               } else if (res.status == '401') {
                 this.handleUnAuthorization();
@@ -363,12 +352,21 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             }, error => {
               console.log('error', error)
             });
-            break;
-        
-          default:
-            break;
         }
       }
+    });
+  }
+
+  getDentists(clinicID) {
+    this.dentistService.getDentists(clinicID).subscribe((res) => {
+      if (res.message == 'success') {
+        this.dentists = res.data;
+      }
+      else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error)
     });
   }
 
@@ -418,17 +416,11 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     const allFormsData = this.getFormsData();
     let myJsonString = JSON.stringify(allFormsData);
     $('.ajax-loader').show();
-    switch (this.selectedGoalCategory$.value) {
-      case 1:
-        this.updateClinicGoals(myJsonString);
-        break;
-      case 2:
-        this.updateDentistGoals(myJsonString);
-        break;
-      default:
-        break;
+    if(this.selectedGoalCategory$.value === '') {
+      this.updateClinicGoals(myJsonString);
+    } else {
+      this.updateDentistGoals(myJsonString);
     }
-  
   }
 
   updateClinicGoals(formData) {
@@ -447,7 +439,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   }
 
   updateDentistGoals(formData) {
-    this.dentistGoalsService.updateDentistGoals(formData, this.clinic_id$.value, '').subscribe((res) => {
+    this.dentistGoalsService.updateDentistGoals(formData, this.clinic_id$.value, this.selectedGoalCategory$.value).subscribe((res) => {
       $('.ajax-loader').hide();
       if (res.message == 'success') {
         this.toastr.success('Dentist Goals Updated');

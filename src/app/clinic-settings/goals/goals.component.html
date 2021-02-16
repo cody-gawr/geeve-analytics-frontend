@@ -17,9 +17,10 @@
             [(ngModel)]="selectedGoalCategory$.value"
             (ngModelChange)="handleGoalCategorySelection($event)"
           >
-            <mat-option *ngFor="let cat of goalsCategories" [value]="cat.id">
-              {{ cat.name }}</mat-option
-            >
+            <mat-option value="">Entire Clinic</mat-option>
+            <mat-option *ngFor="let dentist of dentists" [value]="dentist.providerId">
+              {{dentist.name}}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
