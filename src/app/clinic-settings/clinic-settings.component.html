@@ -27,9 +27,9 @@
       </div> -->
 
         <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
+          <h4 class="clinic-settings-form-title" >Clinic Settings</h4>
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-            <div fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
-              <h4>Clinic Settings</h4>
+            <div class="clinic-setting-form" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
               <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"> 
                 <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
                   <div class="sa-form-group">
@@ -71,26 +71,26 @@
               </div>
             </div>            
           </div>
-          <div class="working-days" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">  
-              <h4>Clinic Working Days</h4>
-              <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Sunday</mat-slide-toggle>
-                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Monday</mat-slide-toggle>
-                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.tuesday }}" name="tuesday" (change)="toggle($event)">Tuesday</mat-slide-toggle>
-                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.wednesday }}" name="wednesday" (change)="toggle($event)">Wednesday</mat-slide-toggle>
-                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.thursday }}" name="thursday" (change)="toggle($event)">Thursday</mat-slide-toggle>
-                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.friday }}" name="friday" (change)="toggle($event)">Friday</mat-slide-toggle>
-                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
+          <div class="working-days">  
+              <h4 class="clinic-settings-form-title">Clinic Working Days</h4>
+              <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Sunday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Monday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.tuesday }}" name="tuesday" (change)="toggle($event)">Tuesday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.wednesday }}" name="wednesday" (change)="toggle($event)">Wednesday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.thursday }}" name="thursday" (change)="toggle($event)">Thursday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.friday }}" name="friday" (change)="toggle($event)">Friday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
               </div>
           </div>
-          <div class="post-op-codes" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
-            <h4>Post Op Calls</h4>          
-            <div class="sa-form-group">
+          <div class="post-op-codes">
+            <h4 class="clinic-settings-form-title">Post Op Calls</h4>          
+            <div class="sa-form-group clinic-setting-form">
               <input placeholder="" [formControl]="form.controls['post_op_calls']" [(ngModel)]="post_op_calls">
             </div>
           </div>
-          <mat-card-actions>
-            <button mat-raised-button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
+          <mat-card-actions class="sa-form-group-btn">
+            <button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
           </mat-card-actions>          
         </form>
     </mat-card-content>

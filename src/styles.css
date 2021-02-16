@@ -2056,13 +2056,20 @@ body .mat-gray {
 .working-days .mat-slide-toggle {
     float: left;
     width: 25%;
-    margin-bottom: 15px;
     padding-right: 15px;
     font-weight: 400;
 }
-.working-days h4 {
-    margin-top: 0px;
-    margin-bottom: 15px;
+.clinic-settings-form-title {
+    margin: 0;
+    padding: 0px 8px 16px;
+    color: #0d0d0d;
+    font-family: 'Gilroy-Medium';
+    font-size: 16px;
+}
+.clinic-setting-form {
+    background-color: #f8fafc;
+    padding: 20px 26px;
+    margin-bottom: 24px;
 }
 .mat-card-title .mat-button-sm {
     font-size: 11px;
