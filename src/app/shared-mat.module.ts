@@ -1,9 +1,14 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAccordion, MatCardModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatTableModule, MatTabsModule } from '@angular/material';
+import { MatAccordion, MatCardModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatTableModule, MatTabsModule, MatTreeModule } from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ClinicService } from './clinic/clinic.service';
+import { DentistService } from './dentist/dentist.service';
+import { DentistGoalsService } from './dentist-goals/dentist-goals.service';
+import { ClinicGoalsService } from './clinic-goals/clinic-goals.service';
+import { ToastrService } from 'ngx-toastr';
 
 /**
 * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -23,7 +28,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         MatIconModule,
         MatSelectModule,
         FlexLayoutModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatTreeModule,
+        MatDatepickerModule,
     ],
     exports: [
         CommonModule,
@@ -39,14 +46,22 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         MatIconModule,
         MatSelectModule,
         FlexLayoutModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatTreeModule,
+        MatDatepickerModule,
     ]
 })
 export class SharedMatModule {
     static forRoot(): ModuleWithProviders<SharedMatModule> {
         return {
             ngModule: SharedMatModule,
-            providers: [],
+            providers: [
+                ClinicService, 
+                DentistService, 
+                DentistGoalsService, 
+                ClinicGoalsService, 
+                ToastrService
+            ],
         };
     }
 }

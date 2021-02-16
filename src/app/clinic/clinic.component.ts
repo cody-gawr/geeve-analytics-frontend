@@ -12,7 +12,6 @@ import {
 } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { NotifierService } from 'angular-notifier';
-import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -99,20 +98,19 @@ export class ClinicComponent implements AfterViewInit {
   address: string;
   contact_name: string;
   fileInput: any;
-  clinic_id$ = new BehaviorSubject<any>(null);
 
 //initialize component
   ngAfterViewInit() {
     this.getUserDetails();
     this.getClinics();
-    $('.header_filters').removeClass('hide_header'); 
-    $('.header_filters').addClass('flex_direct_mar');
-    $('#title').html('<span>Settings</span>')
+    $('.header_filters').removeClass('hide_header');
+    $('.header_filters').removeClass('flex_direct_mar');
+
+    $('#title').html('Clinics');
     //$('.header_filters').hide();
     $('.external_clinic').show();
     $('.dentist_dropdown').hide();
-    this.initiate_clinic();
-        // $('.header_filters').addClass('hide_header');
+    $('.header_filters').addClass('hide_header');
   }
   editing = {};
   rows = [];
@@ -212,7 +210,7 @@ public createdClinicsCount=0;
 
   }
 //delete clinic
-  private deleteClinic(row) {
+  deleteClinic(row) {
       
     Swal.fire({
       title: 'Are you sure?',
@@ -301,11 +299,6 @@ public createdClinicsCount=0;
   enableEditing(rowIndex, cell) {
     this.editing[rowIndex + '-' + cell] = true;
 
-  }
-
-  initiate_clinic() {
-    var val = $('#currentClinic').attr('cid');
-    this.clinic_id$.next(val);
   }
 
 }

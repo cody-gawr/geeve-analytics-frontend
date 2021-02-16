@@ -7,13 +7,6 @@ import { ClinicComponent,
   DialogOverviewExampleDialogComponent,DialogOverviewExampleLimitDialogComponent  } from './clinic.component';
 import { ClinicRoutes } from './clinic.routing';
 import { SharedMatModule } from '../shared-mat.module';
-import { BaseComponent } from './base/base.component';
-import { DentistComponent } from './dentist/dentist.component';
-import { GoalsComponent } from './goals/goals.component';
-import { DentistService } from '../dentist/dentist.service';
-import { DentistGoalsService } from '../dentist-goals/dentist-goals.service';
-import { ClinicGoalsService } from '../clinic-goals/clinic-goals.service';
-import { ToastrService } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -23,21 +16,13 @@ import { ToastrService } from 'ngx-toastr';
     DemoMaterialModule
   ],
   providers: [
-    ClinicService, DentistService, DentistGoalsService, ClinicGoalsService, ToastrService
+    ClinicService
   ],
   entryComponents: [DialogOverviewExampleDialogComponent,DialogOverviewExampleLimitDialogComponent],
   declarations: [ 
     ClinicComponent,
     DialogOverviewExampleDialogComponent,
-    DialogOverviewExampleLimitDialogComponent,
-    BaseComponent,
-    DentistComponent,
-    GoalsComponent
-  ],
-  exports: [
-    BaseComponent,
-    DentistComponent,
-    GoalsComponent
+    DialogOverviewExampleLimitDialogComponent
   ]
 })
 export class ClinicModule { }

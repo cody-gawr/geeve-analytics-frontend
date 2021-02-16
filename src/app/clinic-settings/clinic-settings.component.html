@@ -2,22 +2,38 @@
 <!-- Card Grid-->
 <!-- ============================================================== -->
 
-<mat-card>
-  <mat-card-content>
-    <div fxLayout="row wrap">
-      <div fxFlex>
-        <mat-card-title>Clinic Settings</mat-card-title>
-  </div>
-  <div fxFlex="450px" fxFlex.sm="100" fxFlex.xs="100" class="xero-main"><button class="sa-pull-right mat-raised-button mat-gray connect-xero" *ngIf ="xeroConnect == false" mat-raised-button (click) = "openXero()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-      <span class="org_xero xero-company-name" *ngIf="xeroOrganization != ''" ><span class="material-icons">done</span> {{xeroOrganization}}</span>
-      <button class="sa-pull-right mat-raised-button mat-red disconnect-xero" *ngIf ="xeroConnect == true" mat-raised-button (click) = "disconnectXero()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></div>
-</div>
-    <!-- ============================================================== --> 
-    <!-- column --> 
-    <!-- ============================================================== -->
+<mat-accordion class="settings-table-card clinic-expansion-panel">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Clinic </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+       <!-- <div fxLayout="row wrap">
+        <div fxFlex="450px" fxFlex.sm="100" fxFlex.xs="100" class="xero-main">
+          <button 
+            class="sa-pull-right mat-raised-button mat-gray connect-xero" 
+            *ngIf ="xeroConnect == false" 
+            mat-raised-button 
+            (click) = "openXero()">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </button>
+          <span class="org_xero xero-company-name" *ngIf="xeroOrganization != ''" >
+            <span class="material-icons">done</span> 
+            {{xeroOrganization}}
+          </span>
+          <button 
+            class="sa-pull-right mat-raised-button mat-red disconnect-xero" 
+            *ngIf ="xeroConnect == true" 
+            mat-raised-button (click) = "disconnectXero()">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </button>
+        </div> 
+      </div> -->
+
         <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-            <div fxFlex="calc(60% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
+            <div fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
+              <h4>Clinic Settings</h4>
               <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"> 
                 <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
                   <div class="sa-form-group">
@@ -32,7 +48,6 @@
                   </div>
                 </div>
               </div>
-
               <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"> 
                 <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
                   <div class="sa-form-group">
@@ -47,108 +62,45 @@
                   </div>
                 </div>
               </div>
-
-
               <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"> 
-                 <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+                <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
                   <div class="sa-form-group">
                     <label>Address</label>
                     <input placeholder="" [formControl]="form.controls['address']" [(ngModel)]="address">
                   </div>
                 </div>
-                 <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-                     <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"><!-- <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-                  <div class="sa-form-group">
-                    <label>Practice Size</label>
-                    <input placeholder="" [formControl]="form.controls['practice_size']" [(ngModel)]="practice_size">
-                  </div>
-                </div> -->
                 <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
-                   <div class="sa-form-group">
-                    <label>Post Op Calls Treatments</label>
-                    <input placeholder="" [formControl]="form.controls['post_op_calls']" [(ngModel)]="post_op_calls">
-                  </div>
+                  <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"></div>
                 </div>
               </div>
-                 </div>
-              </div>
-           
-
-    <!--   <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0px">
-     <div fxFlex class="social_media">
-      <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0px">
-         <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100" class="sa-form-group facebook_input comman_input">
-         <div class="sa-form-group">
-            <label>Facebook</label>
-            <div class="icon-group">
-              <i class="fab fa-facebook-f"></i>
-              <input [(ngModel)]="facebook" placeholder="" [formControl]="form.controls['facebook']">
-            </div>
+            </div>            
           </div>
-          </div>
-           <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100" class="sa-form-group twiter_input comman_input">
-             <div class="sa-form-group">
-              <label>Twitter</label>
-          <div class="icon-group">
-            <i class="fab fa-twitter"></i>
-            <input [(ngModel)]="twitter" placeholder="" [formControl]="form.controls['twitter']">
-          </div>
-        </div>
-        </div>
-        </div>
-        <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0px">
-           <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100" class="sa-form-group youtube comman_input">
-             <div class="sa-form-group">
-              <label>Linkedin</label>
-            <div class="icon-group">
-              <i class="fab fa-linkedin-in"></i>
-              <input [(ngModel)]="linkedin" placeholder=""   [formControl]="form.controls['linkedin']">
-            </div>
-            </div>
-          </div>
-        <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100" class="sa-form-group instagram comman_input">
-           <div class="sa-form-group">
-            <label>Instagram</label>
-           <div class="icon-group">
-            <i class="fab fa-instagram"></i>
-           <input [(ngModel)]="instagram" placeholder=""  [formControl]="form.controls['instagram']">
-         </div>
-         </div>
-         </div>      
-        </div>
-         
-
-    </div> -->
-   <!--  <div fxFlex="130px" fxFlex.xs="100" class="right_upload_btn">
-          <input class="upload-input" type="file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
-
-          <div class="upload_logo" *ngIf="logo == '' ">
-            <img src="assets/img/upload_icon.png" alt=" " />
-            <p>Upload Logo</p>
-          </div>
-          <div class="upload_logo" *ngIf="logo != ''">
-            <img src="{{ logo }}" alt=" " />
-            <p>Upload Logo</p>
-          </div>
-          </div> -->
-      <!-- </div> -->
-            </div>
-            <div class="working-days" fxFlex="calc(30% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">  
+          <div class="working-days" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">  
               <h4>Clinic Working Days</h4>
-              <mat-slide-toggle checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Sunday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Monday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.tuesday }}" name="tuesday" (change)="toggle($event)">Tuesday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.wednesday }}" name="wednesday" (change)="toggle($event)">Wednesday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.thursday }}" name="thursday" (change)="toggle($event)">Thursday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.friday }}" name="friday" (change)="toggle($event)">Friday</mat-slide-toggle>
-              <mat-slide-toggle checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
+              <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Sunday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Monday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.tuesday }}" name="tuesday" (change)="toggle($event)">Tuesday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.wednesday }}" name="wednesday" (change)="toggle($event)">Wednesday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.thursday }}" name="thursday" (change)="toggle($event)">Thursday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.friday }}" name="friday" (change)="toggle($event)">Friday</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="10" fxFlex.xs="30" checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
+              </div>
+          </div>
+          <div class="post-op-codes" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
+            <h4>Post Op Calls</h4>          
+            <div class="sa-form-group">
+              <input placeholder="" [formControl]="form.controls['post_op_calls']" [(ngModel)]="post_op_calls">
             </div>
           </div>
           <mat-card-actions>
             <button mat-raised-button color="green" type="submit" [disabled]="!form.valid">Save</button>
-          </mat-card-actions>
-          <!-- column -->
-          
+          </mat-card-actions>          
         </form>
-  </mat-card-content>
-</mat-card>
+    </mat-card-content>
+  </mat-expansion-panel>
+</mat-accordion>
+
+
+<app-goals-settings [clinicId]="id"></app-goals-settings>
+<app-dentist-settings [clinicId]="id"></app-dentist-settings>
