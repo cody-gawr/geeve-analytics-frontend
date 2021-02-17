@@ -1630,7 +1630,7 @@ ul { margin: 0px !important; }
 }
 
 .settings-table-card .sa_mat_select_topbar {
-    background-color: #f5f5fb !important;
+    background-color: #eeeef7 !important;
     border-radius: 2px;
 }
 
@@ -1683,7 +1683,7 @@ ul { margin: 0px !important; }
 }
 .mat_selectbox {
     height: 55px;
-    border-radius: 5px !important;
+    border-radius: 4px !important;
 }
 .mat_selectbox .mat-form-field-appearance-legacy .mat-form-field-infix {
     padding: 20px 10px;

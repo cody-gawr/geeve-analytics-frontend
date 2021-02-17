@@ -4,6 +4,7 @@
   </mat-expansion-panel-header>
   <mat-card-content>
     <div class="Goals-dropdowns mb-2" fxLayout="row wrap" fxLayoutGap="20px">
+      <!--Goals dropdown-->
       <div
         class="sa_mat_select_topbar mat_selectbox"
         fxFlex="20"
@@ -17,13 +18,18 @@
             [(ngModel)]="selectedGoalCategory$.value"
             (ngModelChange)="handleGoalCategorySelection($event)"
           >
-            <mat-option value="">Entire Clinic</mat-option>
-            <mat-option *ngFor="let dentist of dentists" [value]="dentist.providerId">
-              {{dentist.name}}
+            <mat-option value="">Clinic Goals</mat-option>
+            <mat-option
+              *ngFor="let dentist of dentists"
+              [value]="dentist.providerId"
+            >
+              {{ dentist.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
+
+      <!--Dashboard dropdown-->
       <div
         class="sa_mat_select_topbar mat_selectbox"
         fxFlex="20"
@@ -33,20 +39,23 @@
       >
         <mat-form-field floatLabel="never">
           <mat-select
+            *ngIf="tabsOptions.length"
             class="external_dentist"
             [(ngModel)]="selectedTab"
             (ngModelChange)="onTabChanged($event)"
           >
             <mat-option
-              *ngFor="let tab of tabs | keyvalue"
-              [value]="tabsConstants[tab.key]"
+              *ngFor="let tab of tabsOptions"
+              [value]="tab"
             >
-              {{ tabsConstants[tab.key] }}</mat-option
-            >
+              {{ tab }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
+
+    <!--Dashboard Forms-->
     <div fxLayout="row wrap goals-form-container">
       <div
         fxFlex.gt-sm="100%"
@@ -61,19 +70,14 @@
               *ngIf="selectedTab === tabsConstants[tab.key]"
             >
               <div class="matInput-form-group">
-                <div
-                  class="sa-form-group"
-                  *ngFor="let control of tabs[tab.key].controls"
-                >
-                  <label class="goals-form-field-label">{{
-                    control.label
-                  }}</label>
-                  <input
-                    class="goals-form-input-field"
-                    matInput
-                    [formControl]="tab.value.form.controls[control.name]"
-                  />
-                </div>
+                <mat-form-field class="sa-form-group" *ngFor="let control of tabs[tab.key].controls">
+                  <mat-label class="goals-form-field-label">
+                    {{ control.label }}
+                  </mat-label>
+                  <span matPrefix [ngStyle]="{'opacity': control.prefix ? '1' : '0'}">$ &nbsp;</span>
+                  <input class="goals-form-input-field" matInput [formControl]="tab.value.form.controls[control.name]" />
+                  <span matSuffix *ngIf="control.postfix">&nbsp; {{ control.postfix }}</span>
+                </mat-form-field>                
               </div>
             </form>
           </div>

@@ -2,6 +2,7 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie';
+import { map } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,7 +14,7 @@ import { BaseComponent } from '../base/base.component';
 @Component({
   selector: 'app-goals-settings',
   templateUrl: './goals.component.html',
-  styleUrls: ['./goals.component.css']
+  styleUrls: ['./goals.component.scss']
 })
 export class GoalsComponent extends BaseComponent implements OnInit, AfterViewInit {
   clinic_id$ = new BehaviorSubject<any>(null);
@@ -26,12 +27,13 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   clinicAnalysisGoals: any = [];
   tabs: any = [];
   tabsConstants = {
-    clinic_analysis: 'Clinic Analysis',
-    clinic_procedure_and_referrals: 'Clinic Procedure & Referrals',
-    front_desk : 'Front Desk',
+    clinic_analysis: 'Clinician Analysis',
+    clinic_procedure_and_referrals: 'Clinician Procedures & Referrals',
+    front_desk: 'Front Desk',
     marketing: 'Marketing',
     finances: 'Finances'
   }
+  tabsOptions: string[] = [];
   selectedGoalCategory$ = new BehaviorSubject<any>('');
   selectedTab: string = this.tabsConstants.clinic_analysis;
   @Input() set clinicId(value: any) {
@@ -46,7 +48,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     private fb: FormBuilder,
     private toastr: ToastrService,
     private dentistService: DentistService
-  ) { 
+  ) {
     super();
   }
 
@@ -62,13 +64,13 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       hourlyrate: [null, Validators.compose([Validators.required])]
     });
 
-    this.clinicProcedureForm = this.fb.group({     
+    this.clinicProcedureForm = this.fb.group({
       itempredictor: [null, Validators.compose([Validators.required])],
       ratio1: [null, Validators.compose([Validators.required])],
       ratio2: [null, Validators.compose([Validators.required])],
       ratio3: [null, Validators.compose([Validators.required])],
       totalrevenue: [null, Validators.compose([Validators.required])],
-      referralclinician: [null, Validators.compose([Validators.required])]     
+      referralclinician: [null, Validators.compose([Validators.required])]
     });
 
     this.frontDeskForm = this.fb.group({
@@ -318,6 +320,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       },
     }
 
+    Object.keys(this.tabs).map(value => {
+      this.tabsOptions.push(this.tabsConstants[value]);
+    });
+
     this.getDentists(this.clinic_id$.value);
 
   }
@@ -327,12 +333,12 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       this.clinic_id$,
       this.selectedGoalCategory$
     ])
-    .pipe(
-      takeUntil(this.destroyed$)   
-    ).subscribe(inputs => {
-      const [id, selectedGoalCategory] = inputs;
-      if (id) {        
-        if (selectedGoalCategory === '') {        
+      .pipe(
+        takeUntil(this.destroyed$)
+      ).subscribe(inputs => {
+        const [id, selectedGoalCategory] = inputs;
+        if (id) {
+          if (selectedGoalCategory === '') {
             this.clinicGoalsService.getClinicGoals(id).subscribe((res) => {
               if (res.message == 'success') {
                 this.getGoalsForTabs(res.data);
@@ -342,8 +348,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             }, error => {
               console.log('error', error)
             });
-        } else {
-          this.dentistGoalsService.getDentistGoals(id, selectedGoalCategory).subscribe((res) => {
+          } else {
+            this.dentistGoalsService.getDentistGoals(id, selectedGoalCategory).subscribe((res) => {
               if (res.message == 'success') {
                 this.getGoalsForTabs(res.data);
               } else if (res.status == '401') {
@@ -352,9 +358,9 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             }, error => {
               console.log('error', error)
             });
+          }
         }
-      }
-    });
+      });
   }
 
   getDentists(clinicID) {
@@ -381,11 +387,11 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   getGoalsForTabs(allGoals) {
     let start = 0;
     let end = 0;
-    Object.keys(this.tabs).map(key => {     
+    Object.keys(this.tabs).map(key => {
       start = this.tabs[key].startIndex;
       end = this.tabs[key].endIndex;
       let index = 0;
-      for (let i=start; i <= end; i++) {
+      for (let i = start; i <= end; i++) {
         this.tabs[key].patchValues = {
           ...this.tabs[key].patchValues,
           [this.tabs[key].controls[index].name]: allGoals[i].value
@@ -405,7 +411,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       end = this.tabs[key].endIndex;
       let index = 0;
       for (let i = start; i <= end; i++) {
-        formattedData[i] = this.tabs[key].form.get(this.tabs[key].controls[index].name).value;        
+        formattedData[i] = this.tabs[key].form.get(this.tabs[key].controls[index].name).value;
         index++;
       }
     });
@@ -416,7 +422,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     const allFormsData = this.getFormsData();
     let myJsonString = JSON.stringify(allFormsData);
     $('.ajax-loader').show();
-    if(this.selectedGoalCategory$.value === '') {
+    if (this.selectedGoalCategory$.value === '') {
       this.updateClinicGoals(myJsonString);
     } else {
       this.updateDentistGoals(myJsonString);
