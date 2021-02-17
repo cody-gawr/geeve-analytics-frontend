@@ -324,7 +324,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       this.tabsOptions.push(this.tabsConstants[value]);
     });
 
-    this.getDentists(this.clinic_id$.value);
+    if (this.clinic_id$.value) this.getDentists(this.clinic_id$.value);
 
   }
 
