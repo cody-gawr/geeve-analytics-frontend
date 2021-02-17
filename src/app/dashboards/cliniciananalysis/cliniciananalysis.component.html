@@ -127,7 +127,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">${{productionGoal*goalCount| number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -197,7 +197,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">${{productionGoal*goalCount| number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -284,7 +284,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">${{planTotalGoal*goalCount| number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="planTotalGoal && goalCount">${{ (planTotalGoal * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -363,7 +363,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">${{planTotalGoal*goalCount| number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="planTotalGoal && goalCount">${{ (planTotalGoal * goalCount )| number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -431,7 +431,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{doughnutGoals*goalCount| number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="doughnutGoals && goalCount">{{ (doughnutGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -498,7 +498,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{doughnutGoals*goalCount| number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="doughnutGoals && goalCount">{{ (doughnutGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -589,7 +589,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{newPatientGoals*goalCount| number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="newPatientGoals && goalCount">{{ (newPatientGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -685,7 +685,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{newPatientGoals*goalCount| number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="newPatientGoals && goalCount">{{ (newPatientGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -766,7 +766,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{recallChartGoal*goalCount| number:'1.0-0'}}%</h3>
+                  <h3 class="m-0 value-num" *ngIf="recallChartGoal && goalCount">{{ (recallChartGoal * goalCount) | number:'1.0-0'}}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -787,7 +787,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration != 'custom'">
-                  <h3 class="m-0 value-num">{{treatmentPreChartGoal*goalCount| number:'1.0-0'}}%</h3>
+                  <h3 class="m-0 value-num" *ngIf="treatmentPreChartGoal && goalCount">{{ (treatmentPreChartGoal * goalCount) | number:'1.0-0'}}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -873,7 +873,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration != 'custom'">
-                  <h3 class="m-0 value-num">{{recallGoal*goalCount}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="recallGoal && goalCount">{{ recallGoal * goalCount }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -889,7 +889,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration != 'custom'">
-                  <h3 class="m-0 value-num">{{treatmentPreGoal*goalCount}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="treatmentPreGoal && goalCount">{{ treatmentPreGoal * goalCount }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -968,7 +968,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">${{hourlyRateChartGoal| number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">${{ hourlyRateChartGoal | number:'1.0-0' }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -1025,7 +1025,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">${{hourlyGoal}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="hourlyGoal">${{ hourlyGoal }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -1092,7 +1092,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{treatmentChartGoal*goalCount| number:'1.0-0'}}%</h3>
+                  <h3 class="m-0 value-num" *ngIf="treatmentChartGoal && goalCount">{{ (treatmentChartGoal * goalCount) | number:'1.0-0' }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -1149,7 +1149,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">${{treatmentPlanGoal*goalCount}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="treatmentPlanGoal && goalCount">${{ treatmentPlanGoal * goalCount }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>

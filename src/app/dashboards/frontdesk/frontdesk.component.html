@@ -120,7 +120,7 @@
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
             <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                        <h3 class="m-0 value-num">{{workTimeGoal | number }}%</h3>
+                        <h3 class="m-0 value-num" *ngIf="workTimeGoal">{{workTimeGoal | number }}%</h3>
                         <small>Goal</small>
                     </div>
                 </div>
@@ -201,7 +201,7 @@
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num">{{ftaGoal | number:'1.0-0'}}%</h3>
+                        <h3 class="m-0 value-num" *ngIf="ftaGoal">{{ftaGoal | number:'1.0-0'}}%</h3>
                         <small>Goal</small>
                     </div>
                 </div>  
@@ -275,7 +275,7 @@
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num">{{utaGoal | number:'1.0-0'}}%</h3>
+                        <h3 class="m-0 value-num" *ngIf="utaGoal">{{utaGoal | number:'1.0-0'}}%</h3>
                         <small>Goal</small>
                     </div>
                 </div>   
@@ -421,7 +421,7 @@
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num">{{maxrecallPrebookGoal}}%</h3>
+                        <h3 class="m-0 value-num" *ngIf="maxrecallPrebookGoal">{{maxrecallPrebookGoal}}%</h3>
                         <small>Goal</small>
                     </div>
                 </div>   
@@ -503,7 +503,7 @@
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num">{{treatmentPrebookGoal}}%</h3>
+                        <h3 class="m-0 value-num" *ngIf="treatmentPrebookGoal">{{treatmentPrebookGoal}}%</h3>
                         <small>Goal</small>
                     </div>
                 </div> 
