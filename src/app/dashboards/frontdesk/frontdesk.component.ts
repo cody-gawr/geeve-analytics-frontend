@@ -19,6 +19,7 @@ import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerri
 import { CookieService } from "angular2-cookie/core";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ToastrService } from 'ngx-toastr';
+import { ChartService } from '../chart.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -40,7 +41,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public trendText;
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  constructor(private toastr: ToastrService,private frontdeskService: FrontDeskService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
+  constructor(private toastr: ToastrService,private frontdeskService: FrontDeskService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router, private chartService: ChartService){
   }
   private warningMessage: string; 
  private myTemplate: any = "";
@@ -174,7 +175,7 @@ this.predictedChartColors = [
   }
 ];
 
-
+    this.filterDate(this.chartService.duration$.value);
   }
 
   public date =new Date();

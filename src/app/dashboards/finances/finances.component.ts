@@ -373,6 +373,7 @@ this.preoceedureChartColors = [
   }
 ];
 
+    this.filterDate(this.chartService.duration$.value);
   }
 
   public date =new Date();

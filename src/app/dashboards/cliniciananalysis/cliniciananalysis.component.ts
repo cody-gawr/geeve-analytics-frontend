@@ -229,6 +229,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           '#d7f8ef'
         ]
       }];
+
+    this.filterDate(this.chartService.duration$.value);
   }
 
   //Load Clinic Data

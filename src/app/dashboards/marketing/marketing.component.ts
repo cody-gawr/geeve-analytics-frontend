@@ -225,6 +225,7 @@ this.preoceedureChartColors = [
     hoverBorderColor: '#1CA49F'
   }
 ];
+    this.filterDate(this.chartService.duration$.value);
   }
 
   public date =new Date();
