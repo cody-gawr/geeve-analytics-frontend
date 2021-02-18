@@ -1788,12 +1788,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         var ia = 0;
         this.treatmentPlanProposedProvidersByInx = [];
         data.data.plan_fee_all.forEach(res => {
-          if (res.average_cost_all > 0) {
-            if (res.provider != null) {
-              this.planChartData1.push(Math.round(res.average_cost_all));
-              this.planChartLabels1.push(res.provider);
-              this.treatmentPlanProposedProvidersByInx.push(res.provider);
-              if (res.provider != 'Anonymous')
+          if (res.average_fees > 0) {
+            if (res.provider_name != null) {
+              this.planChartData1.push(Math.round(res.average_fees));
+              this.planChartLabels1.push(res.provider_name);
+              this.treatmentPlanProposedProvidersByInx.push(res.provider_name);
+              if (res.provider_name != 'Anonymous')
                 this.tpacAKey = ia;
               ia++;
             }
@@ -1804,11 +1804,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
         var ic = 0;
         data.data.plan_fee_completed.forEach(res => {
-          if (res.average_cost_completed) {
-            this.planChartData2.push(Math.round(res.average_cost_completed));
-            this.planChartLabels2.push(res.provider);
-            this.treatmentPlanProposedProvidersByInx.push(res.provider);
-            if (res.provider != 'Anonymous')
+          if (res.average_fees) {
+            this.planChartData2.push(Math.round(res.average_fees));
+            this.planChartLabels2.push(res.provider_name);
+            this.treatmentPlanProposedProvidersByInx.push(res.provider_name);
+            if (res.provider_name != 'Anonymous')
               this.tpacCKey = ic;
             ic++;
           }
@@ -1821,7 +1821,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.planChartDataC[0]['data'] = this.planChartData2;
         this.planChartDataP[0]['label'] = '';
         this.planChartDataC[0]['label'] = '';
-
         this.planChartLabels = this.planChartLabels1;
         this.planTotalAverage = this.planAllTotal;
         this.planTotalGoal = data.goals;
@@ -1906,12 +1905,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.gaugeValueTreatmentC = 0;
         this.gaugeValueTreatment =0;
         if(data.data != null) {
-          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
-          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_cost_completed);
-          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
-          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
-           if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider != undefined)
-          this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider;
+          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_fees != undefined)
+          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_fees);
+          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_fees != undefined)
+          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_fees);
+           if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider_name != undefined)
+          this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider_name;
           this.planTotalAll = Math.round(data.total_all);
           this.planTotalCompleted = Math.round(data.total_completed);
           this.planTotal = this.planTotalAll;
