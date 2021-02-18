@@ -67,7 +67,7 @@
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">
           <div>
-            <span *ngIf="!showTrend && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{prevWorkTimeTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{prevWorkTimeTooltip}}.png"></span>
+            <span *ngIf="!showTrend && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : {{prevWorkTimeTotal > 100 ? 100 : prevWorkTimeTotal}}%"><img class="trend_ico" src="../assets/images/trend_{{prevWorkTimeTooltip}}.png"></span>
             Utilisation Rate
           </div>
           <div class="sa_box_title_right_buttons">
@@ -108,19 +108,19 @@
        <div *ngIf="!showTrend && workTimeLabels.length > 0" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 predicted_main predicted1 sa_chart_details_sec">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                    <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                        <h3 class="m-0 value-num">{{workTimeTotal | number }}%</h3>
+                        <h3 class="m-0 value-num">{{( workTimeTotal > 100 ? 100 : workTimeTotal ) | number }}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}} Average</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
             <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                        <h3 class="m-0 value-num">{{prevWorkTimeTotal | number }}%</h3>
+                        <h3 class="m-0 value-num">{{ ( prevWorkTimeTotal > 100 ? 100 : prevWorkTimeTotal) | number }}%</h3>
                         <small *ngIf="trendText != ''">{{trendText}} Average</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
             <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-                        <h3 class="m-0 value-num" *ngIf="workTimeGoal">{{workTimeGoal | number }}%</h3>
+                        <h3 class="m-0 value-num" *ngIf="workTimeGoal">{{ ( workTimeGoal > 100 ? 100 : workTimeGoal ) | number }}%</h3>
                         <small>Goal</small>
                     </div>
                 </div>
@@ -191,17 +191,17 @@
         <div class="card-footer">
           <div *ngIf="!showTrend"  fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 value-num">{{ftaTotal | number:'1.0-0'}}%</h3>
+                        <h3 class="m-0 value-num">{{ (ftaTotal > 100 ? 100 : ftaTotal) | number:'1.0-0'}}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num">{{ftaPrevTotal | number:'1.0-0'}}%</h3>
+                        <h3 class="m-0 value-num">{{ (ftaPrevTotal > 100 ? 100 : ftaPrevTotal) | number:'1.0-0'}}%</h3>
                          <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num" *ngIf="ftaGoal">{{ftaGoal | number:'1.0-0'}}%</h3>
+                        <h3 class="m-0 value-num" *ngIf="ftaGoal">{{ (ftaGoal > 100 ? 100 : ftaGoal) | number:'1.0-0'}}%</h3>
                         <small>Goal</small>
                     </div>
                 </div>  
@@ -265,17 +265,17 @@
         <div class="card-footer">
           <div *ngIf="!showTrend" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 value-num">{{utaTotal | number:'1.0-0'}}%</h3>
+                        <h3 class="m-0 value-num">{{ (utaTotal > 100 ? 100 : utaTotal) | number:'1.0-0'}}%</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num">{{utaPrevTotal | number:'1.0-0'}}%</h3>
+                        <h3 class="m-0 value-num">{{ (utaPrevTotal > 100 ? 100 : utaPrevTotal) | number:'1.0-0'}}%</h3>
                         <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num" *ngIf="utaGoal">{{utaGoal | number:'1.0-0'}}%</h3>
+                        <h3 class="m-0 value-num" *ngIf="utaGoal">{{ (utaGoal > 100 ? 100 : utaGoal) | number:'1.0-0'}}%</h3>
                         <small>Goal</small>
                     </div>
                 </div>   
@@ -334,12 +334,12 @@
         <div class="card-footer">
           <div fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails" *ngIf="showTrend == false ">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-                        <h3 class="m-0 value-num">{{ticksTotal | number}}</h3>
+                        <h3 class="m-0 value-num">{{ (ticksTotal > 100 ? 100 : ticksTotal) | number}}</h3>
                         <small *ngIf="currentText != ''">{{currentText}}</small>
                         <small *ngIf="currentText == ''">Current</small>
                     </div>
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num">{{ticksPrevTotal | number}}</h3>
+                        <h3 class="m-0 value-num">{{ (ticksPrevTotal > 100 ? 100 : ticksPrevTotal) | number}}</h3>
                         <small *ngIf="trendText != ''">{{trendText}}</small>
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>

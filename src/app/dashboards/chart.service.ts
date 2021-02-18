@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ChartService {
-    duration$ = new BehaviorSubject<string>('');
+    duration$ = new BehaviorSubject<string>('m');
     constructor() { }
 
     colors = {

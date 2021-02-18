@@ -138,16 +138,16 @@
           <img src="assets/images/myob.png" alt="" />
         </div>
         <div class="button-container">
-            <button class="connect-button">
-              Connect to MYOB 
+            <button class="connect-button" (click)="xeroConnect ? disconnectXero() : openXero()">
+              {{ !xeroConnect  ? 'Connect to MYOB' : 'Disconnect from MYOB' }}
               <img class="fast-forward-icon" src="assets/images/fast_forward_arrows.png" alt="" />
             </button>
         </div>
-        <div class="company-container">
+        <div class="company-container" *ngIf="xeroOrganization?.length">
           <div class="company-icon">
             <img src="assets/images/company_icon.png" alt="" />
           </div>
-          <div class="company-name">Demo Company (AU)</div>
+          <div class="company-name">{{ xeroOrganization }}</div> <!-- Demo Company (AU) -->
         </div>
       </div>
     </mat-card-content>

@@ -74,24 +74,20 @@
             <!-- column -->
             <div class="sa_main_grid_dashboard profit-yellow d-flex no-block align-items-center">
               
-                <div class="stats-icon" *ngIf="xeroConnect">
+                <div class="stats-icon">
                   <img src="../assets/images/net-profit-xero.png" alt/>
                   <i class="fas fa-chart-bar"></i>
                 </div>
-                <div class="stats" *ngIf="xeroConnect">
+                <div class="stats">
                   <h3 class="m-0"> Production</h3>
                   <h1 class="m-0">$ {{netProfitProductionVal | number:'1.0-0'}}</h1>
                 </div>
-                <div class="info-button" *ngIf="xeroConnect">
+                <div class="info-button">
                   <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
                 </div>
 
               <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitPercentIcon}}-alt"></i></div> --> 
-              <div *ngIf="!xeroConnect" class="w-100"> 
-                <div class="sa_nodata_div no-found-data ">
-                  <p>Please connect to Xero/MYOB to display this chart</p>
-                </div>
-              </div>
+              
             </div>
           </mat-card-content>
         </div>
@@ -99,24 +95,30 @@
           <mat-card-content class="sa_matcard_content"> 
             <!-- column -->
             <div class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
-              <div class="stats-icon" *ngIf="xeroConnect">
-                <img src="../assets/images/net-profit.png" alt/>
-                <i class="fas fa-chart-bar"></i>
-              </div>
-              <div class="stats" *ngIf="xeroConnect">
-                <h3 class="m-0">Net Profit</h3>
-                <h1 class="m-0">${{netProfitVal | number:'1.0-0'}}</h1>
-              </div>
-              <div class="info-button" *ngIf="xeroConnect">
-                <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
-              </div>
+              <ng-container *ngIf="xeroConnect;else NoXeroConnectProfitValuePlaceholder">
+                <div class="stats-icon">
+                  <img src="../assets/images/net-profit.png" alt />
+                  <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="stats">
+                  <h3 class="m-0">Net Profit</h3>
+                  <h1 class="m-0">${{netProfitVal | number:'1.0-0'}}</h1>
+                </div>
+                <div class="info-button">
+                  <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
+                </div>
+              </ng-container>
+              <ng-template #NoXeroConnectProfitValuePlaceholder>
+                <div *ngIf="!xeroConnect" class="w-100"> 
+                  <div class="sa_nodata_div no-found-data ">
+                    <p>Please connect to Xero/MYOB to display this chart</p>
+                  </div>
+                </div>
+              </ng-template>
+              
               
               <!-- <div class="spark-count ml-auto"> <i class="fas fa-sort-amount-{{netProfitIcon}}-alt"></i></div>  -->
-              <div *ngIf="!xeroConnect" class="w-100"> 
-                <div class="sa_nodata_div no-found-data ">
-                  <p>Please connect to Xero/MYOB to display this chart</p>
-                </div>
-              </div>
+              
             </div>            
           </mat-card-content>
         </div>
@@ -125,24 +127,29 @@
           <mat-card-content class="sa_matcard_content"> 
             <!-- column -->
             <div class="sa_main_grid_dashboard profit-green d-flex no-block align-items-center">
-              <div class="stats-icon" *ngIf="xeroConnect">
-                <img src="../assets/images/net-profit-PMS.png" alt/>
-                <i class="fas fa-chart-bar"></i>
-              </div>
-              <div class="stats" *ngIf="xeroConnect">
-                <h3 class="m-0">Net Profit % </h3>
-                <h1 class="m-0"> {{netProfitPmsVal | number:'1.0-0'}}%</h1>
-              </div>
-              <div class="info-button" *ngIf="xeroConnect">
-                <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
-              </div>
+              <ng-container *ngIf="xeroConnect;else NoXeroConnectProfitPlaceholder">
+                <div class="stats-icon" >
+                  <img src="../assets/images/net-profit-PMS.png" alt />
+                  <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="stats" >
+                  <h3 class="m-0">Net Profit % </h3>
+                  <h1 class="m-0"> {{netProfitPmsVal | number:'1.0-0'}}%</h1>
+                </div>
+                <div class="info-button" >
+                  <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png">
+                </div>
+              </ng-container>
+              <ng-template #NoXeroConnectProfitPlaceholder>
+                <div class="w-100">
+                  <div class="sa_nodata_div no-found-data ">
+                    <p>Please connect to Xero/MYOB to display this chart</p>
+                  </div>
+                </div>
+              </ng-template>
 
               <!-- <div class="spark-count ml-auto"> <i class="fa s fa-sort-amount-{{netProfitPmsIcon}}-alt"></i></div> --> 
-              <div *ngIf="!xeroConnect" class="w-100"> 
-                <div class="sa_nodata_div no-found-data ">
-                  <p>Please connect to Xero/MYOB to display this chart</p>
-                </div>
-              </div>
+              
             </div>
           </mat-card-content>
         </div>
