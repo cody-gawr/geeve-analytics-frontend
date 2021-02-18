@@ -41,6 +41,7 @@ import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.co
 import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-huddle.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
  import { MatMenuModule} from '@angular/material/menu';
+import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -131,6 +132,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AuthGuard, 
     HeaderService,
     StepperHeaderService,
+    ClinicSettingsService,
     StepperHeaderrightService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

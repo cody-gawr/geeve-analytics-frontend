@@ -29,6 +29,7 @@ import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'n
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
+import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 
 export interface Dentist {
   providerId: string;
@@ -50,6 +51,7 @@ export class MarketingComponent implements AfterViewInit {
   public dentistCount:any ={};
   public clinicsData:any[] = [];
   public trendText;
+  public xeroConnect: boolean = false;
   public filteredCountriesMultiple: any[];
   public selectedCategories:any[] =[];
   public newPatientsReferral$ = new BehaviorSubject<number>(0);
@@ -72,6 +74,7 @@ export class MarketingComponent implements AfterViewInit {
     private _cookieService: CookieService, 
     private router: Router,
     public ngxSmartModalService: NgxSmartModalService,
+    private clinicSettingsService: ClinicSettingsService,
     public decimalPipe: DecimalPipe,
     private chartService: ChartService
   ){
@@ -100,9 +103,21 @@ export class MarketingComponent implements AfterViewInit {
     var val = $('#currentClinic').attr('cid');
       if(val != undefined && val !='all') {
     this.clinic_id = val;
+    this.checkXeroStatus();
      this.filterDate('m');
    }
   }
+
+  formatDate(date) {
+    if(date) {
+      var dateArray = date.split("-")
+      const d = new Date();
+      d.setFullYear(+dateArray[2], (+dateArray[1]-1), +dateArray[0])
+      const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
+      return formattedDate;
+    } else return date;
+  }
+
   ngAfterViewInit() {
     // plugin observable for the center text in doughnut chart to subscribe the no patients count
     this.pluginObservable$ = this.newPatientsReferral$.pipe(
@@ -134,7 +149,7 @@ export class MarketingComponent implements AfterViewInit {
         $('.dentist_dropdown').hide();
         $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
-  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.startDate + ' - ' + this.endDate +'</span>');        
+  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
         
         // $('.external_clinic').show();
         // $('.external_dentist').show();
@@ -430,7 +445,7 @@ this.preoceedureChartColors = [
     }
   };
     myDateParser(dateStr : string) : string {
-    // 2018-01-01T12:12:12.123456; - converting valid date format like this
+    // 2018-01-01T12:12:12.123456; - converting valid date f74ormat like this
 
     let date = dateStr.substring(0, 10);
     let time = dateStr.substring(11, 19);
@@ -441,7 +456,7 @@ this.preoceedureChartColors = [
     return validDate
   }
   loadDentist(newValue) {
-  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.startDate + ' - ' + this.endDate +'</span>');        
+  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
 
     if(newValue == 'all') {
       this.mkNewPatientsByReferral();
@@ -757,12 +772,12 @@ public currentText;
 
        var first = now.getDate() - day +1;
        var last = first + 6; 
-       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd MMM yyyy');
+       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd-MM-yyyy');
        var end = new Date();
         end.setFullYear(now.getFullYear());
         end.setMonth(now.getMonth()+1);
         end.setDate(last);
-       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd MMM yyyy');
+       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
        this.duration='w';
         this.loadDentist('all');
     }
@@ -772,8 +787,8 @@ public currentText;
 
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='m';
             this.loadDentist('all');
         
@@ -783,8 +798,8 @@ public currentText;
       this.currentText = 'Last Month';
 
       const date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
       this.duration='lm';
       this.loadDentist('all');  
     }
@@ -797,23 +812,23 @@ public currentText;
       var cmonth = now.getMonth()+1;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy')
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy')
         ;
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); 
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); 
       }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy'); 
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); 
       }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd MMM yyyy');  
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
       }
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='q';
       this.loadDentist('all');
     
@@ -828,18 +843,18 @@ public currentText;
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
         this.duration='lq';
             this.loadDentist('all');
    
@@ -850,8 +865,8 @@ public currentText;
 
 
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='cytd';
       this.loadDentist('all');
     }
@@ -862,11 +877,11 @@ public currentText;
 
      var date = new Date();
       if ((date.getMonth() + 1) <= 3) {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
         } else {
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
     }
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='fytd';
       this.loadDentist('all');
     }
@@ -891,8 +906,8 @@ choosedDate(val) {
      var date1:any= new Date(val[0]);
       var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
 if(diffTime<=365){
-this.startDate = this.datePipe.transform(val[0], 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(val[1], 'dd MMM yyyy');
+this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.loadDentist('all');      
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
@@ -912,18 +927,18 @@ toggleFilter(val) {
     $('.target_'+val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
     var date = new Date();
-    this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+    this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
     if(val == 'current') {
      this.toggleChecked = true;
      this.trendValue = 'c';
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, date.getMonth(), 1), 'dd MMM yyyy');
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, date.getMonth(), 1), 'dd-MM-yyyy');
 
      this.toggleChangeProcess();
     }
     else if(val == 'historic') {
        this.toggleChecked = true;
        this.trendValue = 'h';
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-10, date.getMonth(), 1), 'dd MMM yyyy');
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-10, date.getMonth(), 1), 'dd-MM-yyyy');
 
        this.toggleChangeProcess();
     }
@@ -1220,4 +1235,23 @@ this.newAcqValue = 0;
     this.xeroCategories.push(this.selectedCategories[index]);
     this.selectedCategories.splice(index, 1);
   }
+
+  public checkXeroStatus(){
+    this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
+      console.log('res', res)
+       if(res.message == 'success'){
+        if(res.data.xero_connect == 1) {
+          this.xeroConnect = true;
+        }
+        else {
+          this.xeroConnect = false; 
+        }
+       }
+       else {
+        this.xeroConnect = false;
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });  
+ }
   }
