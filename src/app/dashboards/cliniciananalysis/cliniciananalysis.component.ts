@@ -2836,7 +2836,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.cliniciananalysisService.cpRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       if (data.message == 'success') {
         this.fdRecallPrebookRateTrendLoader = false;
         this.recallPrebookChartTrendLabels1 = [];

@@ -74,7 +74,7 @@ public token_id;
                     })
         );
     }
-                            //Referral to Other Clinicians Internal / External
+    //Referral to Other Clinicians Internal / External
     mkNoNewPatientsTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketings/mkNoNewPatientsTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
@@ -83,6 +83,23 @@ public token_id;
                     })
         );
     }
-               
+    //Get Xero Categories
+   getOrganisationCategory(clinic_id='1',user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Marketings/getOrganisationCategory?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+     //Get Xero Categories
+   saveSelectedCategories(clinic_id='1',categories, user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Marketings/saveSelectedCategories?user_id="+user_id+"&clinic_id="+clinic_id+"&categories="+categories, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }             
 
 }

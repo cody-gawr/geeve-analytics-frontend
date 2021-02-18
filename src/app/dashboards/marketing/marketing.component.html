@@ -348,14 +348,14 @@
           <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50" class="SelectCategories sa_flexbg referral_clinicians">
             <h5 class="mt-0 other_cat">Other Categories</h5>
             <ul class="list-categories">
-              <li *ngFor="let category of categories; let i = index"><span (click)="add_category(i)"><i class="fa fa-plus"></i></span>
+              <li *ngFor="let category of xeroCategories; let i = index"><span (click)="add_category(i)"><i class="fa fa-plus"></i></span>
                 <span>{{category}}</span></li>
             </ul>
             
           </div>
           
         </div>
-        <button class="mat-raised-button mat-gray" mat-raised-button (click)="load_chart_acq()">Save</button>
+        <button class="mat-raised-button mat-gray" mat-raised-button (click)="save_category()">Save</button>
   <button (click)="myModal.close()" class="close_modal" style="display:none">Close</button>
 </ngx-smart-modal>
 <canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1" [chartType]="pieChartType"></canvas>

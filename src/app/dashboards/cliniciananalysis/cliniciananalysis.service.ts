@@ -289,8 +289,17 @@ export class ClinicianAnalysisService {
     var header = this.getHeaders();
         return this.http.post(this.apiUrl +"/AccountingInvoicesAndReceipts/saveDentistMapping/", formData, { headers: header })
         .pipe(map((response: Response) => {
-                        return response;
+            return response;
        })
       );
     }
+
+       cpRecallPrebookRateTrend(dentist_id,clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpRecallPrebookRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }  
 }

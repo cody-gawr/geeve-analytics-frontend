@@ -126,6 +126,7 @@ export class MarketingComponent implements AfterViewInit {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
        //  this.filterDate('cytd');
         this.getClinics();
+
       this.initiate_clinic();
         
        $('#title').html('Marketing');
@@ -450,6 +451,7 @@ this.preoceedureChartColors = [
 
       this.fdnewPatientsAcq();
       this.fdvisitsRatio();
+        this.getOrganisationCategory();
 
       //this.fdWorkTimeAnalysis();
     }
@@ -639,8 +641,26 @@ public fdvisitsRatioLoader:any;
     );
     }
   }
+  public xeroCategories=[];
+private getOrganisationCategory() {
+  this.marketingService.getOrganisationCategory(this.clinic_id).subscribe((data) => {
+    this.xeroCategories=[];
+    this.selectedCategories=[];
+       if(data.message == 'success'){
+        for (let key in data.data.categories) {
+          this.xeroCategories.push(data.data.categories[key]);
+        }
+         for (let key in data.data.selectedCategories) {
+          this.selectedCategories.push(data.data.selectedCategories[key]);
+        }
 
-
+        }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+    }
+  
 public newPatientsTotal =0;
 public newPatientsPrevTotal =0;
 public newPatientsTooltip='down';
@@ -701,7 +721,7 @@ public newAcqValuePrev =0;
              data.data.forEach((res,key) => {
               this.expenseData[res.meta_key] = res.expenses;
               //this.categories.push(res.meta_key);
-              this.selectedCategories.push(res.meta_key);
+              //this.selectedCategories.push(res.meta_key);
 
              });
              if(this.newPatientsPrevTotal>0)
@@ -1161,6 +1181,16 @@ public dataY:any=0;
     }
   }
 
+save_category() {      
+var selectedCategories=JSON.stringify(Object.assign({}, this.selectedCategories));                           
+   this.marketingService.saveSelectedCategories(this.clinic_id,escape(selectedCategories)).subscribe((data) => {
+        if(data.message == 'success'){
+          this.getOrganisationCategory();
+          this.load_chart_acq();
+        }
+    });
+}
+
   public newAcqValue:any=0;
 load_chart_acq() {
   var totalY=0;                                             
@@ -1181,13 +1211,13 @@ this.newAcqValue = 0;
       this.mkRevenueByReferral();
   }
   add_category(index) {
-    if(!this.selectedCategories.includes(this.categories[index]))
-    this.selectedCategories.push(this.categories[index]);
-    this.categories.splice(index, 1);
+    if(!this.selectedCategories.includes(this.xeroCategories[index]))
+    this.selectedCategories.push(this.xeroCategories[index]);
+    this.xeroCategories.splice(index, 1);
   }
   remove_category(index) {
-    if(!this.categories.includes(this.selectedCategories[index]))
-    this.categories.push(this.selectedCategories[index]);
+    if(!this.xeroCategories.includes(this.selectedCategories[index]))
+    this.xeroCategories.push(this.selectedCategories[index]);
     this.selectedCategories.splice(index, 1);
   }
   }
