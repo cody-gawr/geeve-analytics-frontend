@@ -132,7 +132,7 @@
             </div>
             <div class="chart" *ngIf="itemPredictedChartDataMax > 0">
               <div style="height: 408px">
-                <canvas baseChart [datasets]="pieChartData1" [labels]="itemPredictedChartLabels"
+                <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels"
                   [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType"
                   (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
                 </canvas>
