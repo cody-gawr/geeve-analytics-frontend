@@ -227,7 +227,8 @@ this.predictedChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
-        return tooltipItems.xLabel+": "+tooltipItems.yLabel+ "%";
+      let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;
+        return tooltipItems.xLabel+": "+ total + "%";
      },
      title: function() {
        return "";
@@ -488,7 +489,7 @@ public fdWorkTimeAnalysisLoader:boolean;
     this.fdWorkTimeAnalysisLoader = true;
     this.workTimeLabels= [];
 
-  this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+  this.clinic_id && this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
 
        if(data.message == 'success'){
         this.fdWorkTimeAnalysisLoader = false;
@@ -539,7 +540,7 @@ public fdWorkTimeAnalysisLoader:boolean;
          ]
         }
        }
-           console.log(this.stackedChartOptionssWT);
+          //  console.log(this.stackedChartOptionssWT);
 
           
        }
@@ -566,7 +567,7 @@ public fdFtaRatioLoader:any;
 
        var user_id;
        var clinic_id;
-  this.frontdeskService.fdFtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+  this.clinic_id && this.frontdeskService.fdFtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     this.ftaTotal = 0;
           this.ftaPrevTotal = 0;
        if(data.message == 'success'){
@@ -609,7 +610,7 @@ public maxutaGoal:any=0;
 
        var user_id;
        var clinic_id;
-  this.frontdeskService.fdUtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+  this.clinic_id && this.frontdeskService.fdUtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
      this.utaTotal = 0;
           this.utaPrevTotal = 0;
        if(data.message == 'success'){
@@ -650,7 +651,7 @@ public fdNumberOfTicksLoader:boolean;
 
        var user_id;
        var clinic_id;
-      this.frontdeskService.fdNumberOfTicks(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.clinic_id &&  this.frontdeskService.fdNumberOfTicks(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.fdNumberOfTicksLoader = false;
           this.ticksPrevTotal = 0;
@@ -682,7 +683,7 @@ public maxrecallPrebookGoal:any=0;
       this.recallPrebookTotal =0;
        var user_id;
        var clinic_id;
-      this.frontdeskService.fdRecallPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+     this.clinic_id && this.frontdeskService.fdRecallPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.fdRecallPrebookRateLoader = false;
           this.recallPrebookPrevTotal = 0;
@@ -722,7 +723,7 @@ public maxtreatmentPrebookGoal:any=0;
 
        var user_id;
        var clinic_id;
-      this.frontdeskService.fdTreatmentPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+     this.clinic_id && this.frontdeskService.fdTreatmentPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.fdtreatmentPrebookRateLoader = false;
           this.treatmentPrebookPrevTotal = 0;
@@ -1002,7 +1003,7 @@ toggleChangeProcess(){
   this.ftaChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdFtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.fdFtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.ftaChartTrendLabels1=[];
   this.ftaChartTrend1=[];
        if(data.message == 'success'){
@@ -1051,7 +1052,7 @@ toggleChangeProcess(){
   this.wtaChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdWorkTimeAnalysisTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+    this.clinic_id && this.frontdeskService.fdWorkTimeAnalysisTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        this.wtaChartTrendLabels1=[];
   this.wtaChartTrend1=[];
        if(data.message == 'success'){
@@ -1101,7 +1102,7 @@ toggleChangeProcess(){
   this.utaChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdUtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.fdUtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.utaChartTrendLabels1=[];
   this.utaChartTrend1=[];
        if(data.message == 'success'){
@@ -1151,7 +1152,7 @@ toggleChangeProcess(){
   this.tickChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdNumberOfTicksTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.fdNumberOfTicksTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.tickChartTrendLabels1=[];
   this.tickChartTrend1=[];
        if(data.message == 'success'){
@@ -1201,7 +1202,7 @@ toggleChangeProcess(){
   this.recallPrebookChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
         this.fdRecallPrebookRateTrendLoader = false;
           this.recallPrebookChartTrendLabels1=[];
@@ -1251,7 +1252,7 @@ toggleChangeProcess(){
   this.treatmentPrebookChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.frontdeskTreatmentPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.frontdeskTreatmentPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
         this.fdTreatmentPrebookRateTrendLoader = false;
           this.treatmentPrebookChartTrendLabels1=[];

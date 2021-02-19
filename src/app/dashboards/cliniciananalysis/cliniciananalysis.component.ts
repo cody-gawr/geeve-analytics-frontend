@@ -36,7 +36,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   lineChartColors;
   subtitle: string;
   public id: any = {};
-  public clinic_id: any = {};
+  public clinic_id: any;
   public UrlSegment: any = {};
   public dentistCount: any = {};
   public doughnutChartColors = [];
@@ -988,7 +988,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
     });
     var myJsonString = JSON.stringify(this.final_map);
-    this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe((res) => {
+   this.clinic_id && this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe((res) => {
       if (res.data.message == 'success') {
         alert('Mapping Saved!');
         $('.nsm-dialog-btn-close').click();
@@ -1080,7 +1080,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.productionTotal = 0;
     this.barChartLabels = [];
     this.barChartOptionsDP.annotation = [];
-    this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+   this.clinic_id && this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.barChartData1 = [];
       this.barChartLabels1 = [];
       this.barChartLabels = [];
@@ -1198,7 +1198,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.buildChartDentistLoader = true;
     this.gaugeLabel = '';
     this.productionTooltip = 'down';
-    this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+  this.clinic_id && this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       //this.barChartOptionsDP.annotation = [];
       this.productionTotal = 0;
        this.productionTotalPrev = 0;
@@ -1280,7 +1280,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.recallChartLabels = [];
     this.barChartOptionsRP.annotation = [];
 
-    this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.recallChartData1 = [];
       this.recallChartLabels1 = [];
 
@@ -1368,7 +1368,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.recallValue = 0;
     this.recallChartTooltip = 'down';
     this.recallLabel = '';
-    this.cliniciananalysisService.RecallPrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.RecallPrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.maxrecallGoal = 0;
 
       if (data.message == 'success') {
@@ -1440,7 +1440,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.treatmentPreChartLabels = [];
     this.barChartOptionsTPB.annotation = [];
 
-    this.cliniciananalysisService.treatmentPrePrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+   this.clinic_id && this.cliniciananalysisService.treatmentPrePrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.treatmentPreChartData1 = [];
       this.treatmentPreChartLabels1 = [];
 
@@ -1524,7 +1524,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.treatmentPrebookDentistLoader = true;
     this.treatmentPreValue = '0';
     this.treatmentPreLabel = '';
-    this.cliniciananalysisService.treatmentPrePrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+   this.clinic_id && this.cliniciananalysisService.treatmentPrePrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.message == 'success') {
         this.treatmentPrebookDentistLoader = false;
         if (data.data.length > 0) {
@@ -1573,7 +1573,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.treatmentChartLabels = [];
     this.barChartOptionsTP.annotation = []
 
-    this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+   this.clinic_id && this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.treatmentChartData1 = [];
       this.treatmentChartLabels1 = [];
 
@@ -1667,7 +1667,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.treatmentPlanLabel = '';
     this.treatmentChartAveragePrev = 0;
     this.treatmentChartTooltip = 'down';
-    this.cliniciananalysisService.TreatmentPlanRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlanRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.message == 'success') {
         this.treatmentPlanRateDentistLoader = false;
         this.treatmentPlanValue = '0';
@@ -1775,7 +1775,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.planTotal = 0;
     this.planChartLabels = [];
     this.barChartOptionsTC.annotation = [];
-    this.cliniciananalysisService.TreatmentPlan(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlan(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.tcmain = 1;
       this.planChartData1 = [];
       this.planChartData2 = [];
@@ -1900,7 +1900,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.buildChartTreatmentDentistLoader = true;
 
 
-    this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.gaugeValueTreatment = 0;
       if (data.message == 'success') {
         this.buildChartTreatmentDentistLoader = false;
@@ -1954,7 +1954,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   private recallChartTreatment() {
     this.planTotal = 0;
-    this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.planTotal = 0;
       if (data.message == 'success') {
         data.data.forEach(res => {
@@ -1986,7 +1986,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.buildChartNopatientsLoader = true;
     this.doughnutTotalPrev = 0;
     this.doughnutTotalAverage = 0;
-    this.cliniciananalysisService.NoPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.NoPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.doughnutChartData1 = [];
       this.doughnutChartLabels1 = [];
       this.doughnutTotal = 0;
@@ -2034,7 +2034,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   private buildChartNopatientsDentist() {
     this.buildChartNopatientsDentistLoader = true;
     this.gaugeLabelPatients = '';
-    this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.doughnutTotal = 0;
       this.maxdoughnutGoals = 0;
       if (data.message == 'success') {
@@ -2096,12 +2096,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.newPatientChartLabels = [];
     this.newPatientsDataMax = 0;
 
-    this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       if (data.message == 'success') {
         this.buildChartNewpatientsLoader = false;
         this.newPatientTotalTooltip = 'down';
         var i = 0;
-
+        this.newPatientChartLabels1 = []; // reset on api call
+        this.newPatientChartData1 = []; // reset on api call
         data.data.forEach(res => {
 
           if (res.getX) {
@@ -2147,7 +2148,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.buildChartNewpatientsDentistLoader = true;
     this.newPatientPercent = 0;
 
-    this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.message == 'success') {
         this.buildChartNewpatientsDentistLoader = false;
         if (data.data != null && data.data[0] && data.data[0].getX != undefined) {
@@ -2215,7 +2216,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     this.hourlyRateChartLabels = [];
     this.barChartOptionsHR.annotation = [];
-    this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.hourlyRateChartData1 = [];
       this.hourlyRateChartLabels1 = [];
 
@@ -2319,7 +2320,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.hourlyLabel = '';
-    this.cliniciananalysisService.hourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.hourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.hourlyValue = '0';
       if (data.message == 'success') {
         this.hourlyRateDentistLoader = false;
@@ -2630,7 +2631,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       this.dentistProductionTrendLabels1 = [];
       this.dentistProductionTrend1 = [];
       this.dentistProductionTrendLabels = [];
@@ -2699,7 +2700,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.treatmentPlanTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.caTreatmentPlanAverageCostTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.caTreatmentPlanAverageCostTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       this.treatmentPlanTrendLabels1 = [];
       this.treatmentPlanTrendLabels = [];
 
@@ -2781,7 +2782,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       this.patientComplaintsTrendLabels1 = [];
       this.patientComplaintsTrendLabels = [];
 
@@ -2988,7 +2989,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.fdhourlyRateRateTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       this.hourlyRateChartTrendLabels = [];
       if (data.message == 'success') {
         this.fdhourlyRateRateTrendLoader = false;
@@ -3060,7 +3061,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       if (data != null && data.message == 'success') {
         this.fdnewPatientsRateTrendLoader = false;
         this.newPatientsChartTrendLabels1 = [];
@@ -3134,7 +3135,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.catreatmentPlanRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.catreatmentPlanRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       if (data.message == 'success') {
         this.fdtreatmentPlanRateTrendLoader = false;
         this.treatmentPlanChartTrendLabels1 = [];
