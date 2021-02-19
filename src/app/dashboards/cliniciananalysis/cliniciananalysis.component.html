@@ -37,7 +37,7 @@
         <app-date-menu-bar #dateBar (filter)="filterDate($event)" (changeDate)="choosedDate($event)"></app-date-menu-bar>
       </div>
 
-      <div class="dh-target">
+      <div class="dh-target" fxHide.lt-lg>
         <div class="onofftoogle2" *ngIf="dentistVal == 'all' && childid == ''">
 
           <span class="trend_mode_title">Average:</span>
