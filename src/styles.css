@@ -1715,7 +1715,7 @@ ul { margin: 0px !important; }
 }
 
 .clinic-expansion-panel .mat-expansion-panel-body {
-    padding: 36px 40px;
+    padding: 30px 36px;
 }
 .mat-accordion>.mat-expansion-panel-spacing:last-child,
 .mat-accordion>:last-child:not(.mat-expansion-panel) .mat-expansion-panel-spacing {

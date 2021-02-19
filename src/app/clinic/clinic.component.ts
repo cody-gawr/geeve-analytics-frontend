@@ -93,7 +93,7 @@ const data: any = require('assets/company.json');
   *AUTHOR - Teq Mavens
   */
 export class ClinicComponent implements AfterViewInit {
-   private readonly notifier: NotifierService;
+  private readonly notifier: NotifierService;
   name: string;
   address: string;
   contact_name: string;
@@ -139,79 +139,79 @@ export class ClinicComponent implements AfterViewInit {
       data: { name: this.name, address: this.address, contact_name: this.contact_name }
     });
     dialogRef.afterClosed().subscribe(result => {
-  this.clinicService.addClinic(result.name, result.address, result.contact_name).subscribe((res) => {
-       if(res.message == 'success'){
+      this.clinicService.addClinic(result.name, result.address, result.contact_name).subscribe((res) => {
+        if(res.message == 'success'){
           this.toastr.success('Clinic Added!' );
           //this.notifier.notify( 'success',  ,'vertical');
           this.getClinics();
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );  
+        }
+      }, error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+      }
+      );
     });
   }
-//open clinic limit dialog
+  //open clinic limit dialog
   openLimitDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleLimitDialogComponent, {
-        
+
     });
- 
-  dialogRef.afterClosed().subscribe(result => {
+
+    dialogRef.afterClosed().subscribe(result => {
 
     });
   }
-//get list of clinics
-public clinicscount=0;
-public createdClinicsCount=0;
+  //get list of clinics
+  public clinicscount=0;
+  public createdClinicsCount=0;
   private getClinics() {
-  this.clinicService.getClinics().subscribe((res) => {
-       if(res.message == 'success'){
+    this.clinicService.getClinics().subscribe((res) => {
+      if(res.message == 'success'){
         this.rows = res.data;
         if(res.data.length>0) {
-        this.temp = [...res.data];   
-        this.clinicscount= res.data[0]['Users'].clinics_count;
-        this.createdClinicsCount = res.data.length;     
-        this.table = data;
+          this.temp = [...res.data];
+          this.clinicscount= res.data[0]['Users'].clinics_count;
+          this.createdClinicsCount = res.data.length;
+          this.table = data;
+        }
+      } else if(res.status == '401'){
+        this._cookieService.put("username",'');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
       }
-       } else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-              this.router.navigateByUrl('/login');
-           }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
-    }    
+    }
     );
 
   }
-//get count of clinics allowed
+  //get count of clinics allowed
   private getUserDetails() {
     this.rows=[];
     this.clinicService.getUserDetails().subscribe((res) => {
-       if(res.message == 'success'){
-          if(res.data) {
+      if(res.message == 'success'){
+        if(res.data) {
           this.clinicscount= res.data.clinics_count;
         }
-       }
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
+      }
+      else if(res.status == '401'){
+        this._cookieService.put("username",'');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
-    }    
+    }
     );
 
   }
-//delete clinic
+  //delete clinic
   deleteClinic(row) {
-      
+
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete Clinic?',
@@ -221,37 +221,37 @@ public createdClinicsCount=0;
       cancelButtonText: 'No'
     }).then((result) => {
       if(result.value){
-       $('.ajax-loader').show();
-    if(this.rows[row]['id']) {
-  this.clinicService.deleteClinic(this.rows[row]['id']).subscribe((res) => {
-       $('.ajax-loader').hide();
-       if(res.message == 'success'){
-          this.toastr.success('Clinic Removed!' );
-          //this.notifier.notify( 'success', 'Clinic Removed!' ,'vertical');
-          this.getClinics();
-       }
-        else if(res.status == '401'){
-            this._cookieService.put("username",'');
+        $('.ajax-loader').show();
+        if(this.rows[row]['id']) {
+          this.clinicService.deleteClinic(this.rows[row]['id']).subscribe((res) => {
+            $('.ajax-loader').hide();
+            if(res.message == 'success'){
+              this.toastr.success('Clinic Removed!' );
+              //this.notifier.notify( 'success', 'Clinic Removed!' ,'vertical');
+              this.getClinics();
+            }
+            else if(res.status == '401'){
+              this._cookieService.put("username",'');
               this._cookieService.put("email", '');
               this._cookieService.put("token", '');
               this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
-    }, error => {
-      $('.ajax-loader').hide();
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
-    }
-    else {
-      this.rows.splice(row, 1);
-    this.rows = [...this.rows];
+              this.router.navigateByUrl('/login');
+            }
+          }, error => {
+            $('.ajax-loader').hide();
+            this.warningMessage = "Please Provide Valid Inputs!";
+          }
+          );
+        }
+        else {
+          this.rows.splice(row, 1);
+          this.rows = [...this.rows];
 
-    }
-   } else {
-     $('.ajax-loader').hide();
-   }
-   })
+        }
+      } else {
+        $('.ajax-loader').hide();
+      }
+    })
   }
   //craete dentist for clinic
   addDentist() {
@@ -261,11 +261,11 @@ public createdClinicsCount=0;
     var length = this.rows.length;
     this.editing[length + '-providerId'] = true;
     this.editing[length + '-name'] = true;
-    
+
     this.rows.push(temp);
     this.table =data;
   }
-//fileter data
+  //fileter data
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
 
@@ -283,11 +283,11 @@ public createdClinicsCount=0;
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
     this.clinicService.updateClinic(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
-       if(res.message == 'success'){
+      if(res.message == 'success'){
         this.toastr.success('Clinic Details Updated!' );
-          //this.notifier.notify( 'success', 'Clinic Details Updated!' ,'vertical');
-          this.getClinics();
-       }
+        //this.notifier.notify( 'success', 'Clinic Details Updated!' ,'vertical');
+        this.getClinics();
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
