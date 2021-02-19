@@ -2859,11 +2859,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.recallPrebookChartTrendLabels1 = [];
         this.recallPrebookChartTrend1 = [];
         data.data.forEach(res => {
-          this.recallPrebookChartTrend1.push(Math.round(res.percent));
+          this.recallPrebookChartTrend1.push(Math.round(res.val));
           if (this.trendValue == 'c')
-            this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
+            this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
           else
-            this.recallPrebookChartTrendLabels1.push(res.treat_date);
+            this.recallPrebookChartTrendLabels1.push(res.duration);
 
         });
         this.recallPrebookChartTrend[0]['data'] = this.recallPrebookChartTrend1;
