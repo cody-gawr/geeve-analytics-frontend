@@ -101,18 +101,20 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     const providerId = this.dentistList.data[index].providerId;
     const updatedValue = event.target.value;
     this.dentistList.data[index][column] = updatedValue;
-    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value).pipe(
-      takeUntil(this.destroyed$)
-    ).subscribe((res) => {
+    if (oldValue !== updatedValue) {
+      this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value).pipe(
+        takeUntil(this.destroyed$)
+      ).subscribe((res) => {
         if (res.message == 'success') {
           this.toastr.success('Dentist Updated');
           this.getDentists(this.clinic_id$.value);
         }
-      },(error) => {
+      }, (error) => {
         console.log('error', error);
         this.dentistList.data[index][column] = oldValue;
         this.toastr.success('Opps, Error occurs in updating dentist!');
-    });  
+      });  
+    }    
   }
 
 }
