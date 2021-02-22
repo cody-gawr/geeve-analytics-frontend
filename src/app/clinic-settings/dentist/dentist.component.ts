@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie';
+import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DentistService } from '../../dentist/dentist.service';
@@ -24,15 +25,17 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
   displayedColumns: string[] = ['providerId', 'name'];
+  editing = {};
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private _cookieService: CookieService,
     private dentistService: DentistService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     super();
-   }
+  }
 
   ngAfterViewInit() {
     this.dentistList.paginator = this.paginator;
@@ -40,17 +43,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       takeUntil(this.destroyed$)
     ).subscribe(id => {
       if (id) {
-        this.dentistService.getDentists(id).subscribe((res) => {
-          if (res.message == 'success') {
-            this.dentistList.data = res.data;
-            this.setPaginationButtons(this.dentistList.data.length);
-          }
-          else if (res.status == '401') {
-            this.handleUnAuthorization();
-          }
-        }, error => {
-          console.log('error', error)
-        });
+        this.getDentists(id);
       }
     })
   }
@@ -64,20 +57,67 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   }
 
   handlePageChange(goPage: number) {
-    if(this.currentPage<goPage) this.paginator.nextPage();
+    if (this.currentPage < goPage) this.paginator.nextPage();
     else this.paginator.previousPage();
     this.currentPage = goPage; //make the page active by class
   }
 
   setPaginationButtons(totalDentist) {
-    const totalPages = Math.ceil(totalDentist/this.dentistPageSize);
-    for (let i=0; i<totalPages; i++) {
-        this.dentistTablePages.push(i+1);
+    const totalPages = Math.ceil(totalDentist / this.dentistPageSize);
+    for (let i = 0; i < totalPages; i++) {
+      this.dentistTablePages.push(i + 1);
     }
   }
 
   doFilter = (value: string) => {
     this.dentistList.filter = value.trim().toLocaleLowerCase();
+  }
+
+  getDentists(id) {
+    this.dentistService.getDentists(id).subscribe((res) => {
+      if (res.message == 'success') {
+        this.dentistList.data = res.data;
+        this.setPaginationButtons(this.dentistList.data.length);
+      }
+      else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error)
+    });
+  }
+
+  enableEditing(index, column) {
+    // this.dentistList.data[index].isEditable = true; 
+    this.editing[index + '-' + column] = true;
+    Object.keys(this.editing).map(key => {
+      console.log('key string',` ${index}-${column}`);
+      console.log('key', key)
+      this.editing[key] = (key === `${index}-${column}`) ? true : false;
+    });
+    console.log('this.editing', this.editing)
+  }
+
+  updateValue(event, column, index) {
+    let oldValue = this.dentistList.data[index][column];
+    // this.dentistList.data[index].isEditable = false; 
+    this.editing[index + '-' + column] = false;
+    const providerId = this.dentistList.data[index].providerId;
+    const updatedValue = event.target.value;
+    this.dentistList.data[index][column] = updatedValue;
+    console.log('on blur this.editing', this.editing)
+    // this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value).pipe(
+    //   takeUntil(this.destroyed$)
+    // ).subscribe((res) => {
+    //     if (res.message == 'success') {
+    //       this.toastr.success('Dentist Updated');
+    //       this.getDentists(this.clinic_id$.value);
+    //     }
+    //   },(error) => {
+    //     console.log('error', error);
+    //     this.dentistList.data[index][column] = oldValue;
+    //     this.toastr.success('Opps, Error occurs in updating dentist!');
+    // });  
   }
 
 }
