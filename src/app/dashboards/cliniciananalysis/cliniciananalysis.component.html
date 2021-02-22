@@ -1122,7 +1122,7 @@
                 [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
               </ngx-gauge>
               <div
-                *ngIf="showTrendChart == true && treatmentPlanChartTrend1.length > 0 && fdtreatmentPlanRateTrendLoader"
+                *ngIf="showTrendChart == true && treatmentPlanChartTrend1.length > 0 && !fdtreatmentPlanRateTrendLoader"
                 style="height: 250px">
                 <canvas #myCanvas id="completionRate" baseChart [datasets]="treatmentPlanChartTrend"
                   [labels]="treatmentPlanChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"

@@ -1790,12 +1790,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         var ia = 0;
         this.treatmentPlanProposedProvidersByInx = [];
         data.data.plan_fee_all.forEach(res => {
-          if (res.average_cost_all > 0) {
-            if (res.provider != null) {
-              this.planChartData1.push(Math.round(res.average_cost_all));
-              this.planChartLabels1.push(res.provider);
-              this.treatmentPlanProposedProvidersByInx.push(res.provider);
-              if (res.provider != 'Anonymous')
+          if (res.average_fees > 0) {
+            if (res.provider_name != null) {
+              this.planChartData1.push(Math.round(res.average_fees));
+              this.planChartLabels1.push(res.provider_name);
+              this.treatmentPlanProposedProvidersByInx.push(res.provider_name);
+              if (res.provider_name != 'Anonymous')
                 this.tpacAKey = ia;
               ia++;
             }
@@ -1806,11 +1806,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
         var ic = 0;
         data.data.plan_fee_completed.forEach(res => {
-          if (res.average_cost_completed) {
-            this.planChartData2.push(Math.round(res.average_cost_completed));
-            this.planChartLabels2.push(res.provider);
-            this.treatmentPlanProposedProvidersByInx.push(res.provider);
-            if (res.provider != 'Anonymous')
+          if (res.average_fees) {
+            this.planChartData2.push(Math.round(res.average_fees));
+            this.planChartLabels2.push(res.provider_name);
+            this.treatmentPlanProposedProvidersByInx.push(res.provider_name);
+            if (res.provider_name != 'Anonymous')
               this.tpacCKey = ic;
             ic++;
           }
@@ -1823,7 +1823,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.planChartDataC[0]['data'] = this.planChartData2;
         this.planChartDataP[0]['label'] = '';
         this.planChartDataC[0]['label'] = '';
-
         this.planChartLabels = this.planChartLabels1;
         this.planTotalAverage = this.planAllTotal;
         this.planTotalGoal = data.goals;
@@ -1908,12 +1907,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.gaugeValueTreatmentC = 0;
         this.gaugeValueTreatment =0;
         if(data.data != null) {
-          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
-          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_cost_completed);
-          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
-          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
-           if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider != undefined)
-          this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider;
+          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_fees != undefined)
+          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_fees);
+          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_fees != undefined)
+          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_fees);
+           if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider_name != undefined)
+          this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider_name;
           this.planTotalAll = Math.round(data.total_all);
           this.planTotalCompleted = Math.round(data.total_completed);
           this.planTotal = this.planTotalAll;
@@ -2857,17 +2856,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.cliniciananalysisService.cpRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       if (data.message == 'success') {
         this.fdRecallPrebookRateTrendLoader = false;
         this.recallPrebookChartTrendLabels1 = [];
         this.recallPrebookChartTrend1 = [];
         data.data.forEach(res => {
-          this.recallPrebookChartTrend1.push(Math.round(res.percent));
+          this.recallPrebookChartTrend1.push(Math.round(res.val));
           if (this.trendValue == 'c')
-            this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
+            this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
           else
-            this.recallPrebookChartTrendLabels1.push(res.treat_date);
+            this.recallPrebookChartTrendLabels1.push(res.duration);
 
         });
         this.recallPrebookChartTrend[0]['data'] = this.recallPrebookChartTrend1;
@@ -3143,8 +3142,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         if (data.data) {
           data.data.forEach(res => {
             if (res.val) {
-              if(res.val.percent)
-                this.treatmentPlanChartTrend1.push(Math.round(res.val.percent));
+              if(res.val)
+                this.treatmentPlanChartTrend1.push(Math.round(res.val));
               if (this.trendValue == 'c')
                 this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
               else
