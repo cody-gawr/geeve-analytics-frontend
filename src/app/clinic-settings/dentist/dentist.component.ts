@@ -91,33 +91,28 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     // this.dentistList.data[index].isEditable = true; 
     this.editing[index + '-' + column] = true;
     Object.keys(this.editing).map(key => {
-      console.log('key string',` ${index}-${column}`);
-      console.log('key', key)
       this.editing[key] = (key === `${index}-${column}`) ? true : false;
     });
-    console.log('this.editing', this.editing)
   }
 
   updateValue(event, column, index) {
     let oldValue = this.dentistList.data[index][column];
-    // this.dentistList.data[index].isEditable = false; 
     this.editing[index + '-' + column] = false;
     const providerId = this.dentistList.data[index].providerId;
     const updatedValue = event.target.value;
     this.dentistList.data[index][column] = updatedValue;
-    console.log('on blur this.editing', this.editing)
-    // this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value).pipe(
-    //   takeUntil(this.destroyed$)
-    // ).subscribe((res) => {
-    //     if (res.message == 'success') {
-    //       this.toastr.success('Dentist Updated');
-    //       this.getDentists(this.clinic_id$.value);
-    //     }
-    //   },(error) => {
-    //     console.log('error', error);
-    //     this.dentistList.data[index][column] = oldValue;
-    //     this.toastr.success('Opps, Error occurs in updating dentist!');
-    // });  
+    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value).pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((res) => {
+        if (res.message == 'success') {
+          this.toastr.success('Dentist Updated');
+          this.getDentists(this.clinic_id$.value);
+        }
+      },(error) => {
+        console.log('error', error);
+        this.dentistList.data[index][column] = oldValue;
+        this.toastr.success('Opps, Error occurs in updating dentist!');
+    });  
   }
 
 }
