@@ -19,13 +19,15 @@ import { CookieService } from "angular2-cookie/core";
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 export interface Dentist {
   providerId: string;
   name: string;
 }
 declare var Chart: any; 
 @Component({
-  templateUrl: './healthscreen.component.html'
+  templateUrl: './healthscreen.component.html',
+  styleUrls: ['./healthscreen.component.scss']
 })
 export class HealthScreenComponent implements AfterViewInit {
    @ViewChild("myCanvas") canvas: ElementRef;
@@ -94,7 +96,9 @@ customOptions: OwlOptions = {
   public selectedDentist;
   public dentists;
   public filter_val ='c';
-  constructor(private healthscreenService: HealthScreenService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,private toastr:ToastrService){   
+  xeroConnect:boolean = false;
+  constructor(private healthscreenService: HealthScreenService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,private toastr:ToastrService,
+    private clinicSettingsService: ClinicSettingsService){   
   }
   private warningMessage: string;
   ngAfterViewInit() {  
@@ -138,6 +142,7 @@ customOptions: OwlOptions = {
     if(val != undefined) {
     this.clinic_id = val;
     this.loadHealthScreen();
+    this.checkXeroStatus();
   }
   }
 
@@ -297,6 +302,7 @@ public hourlyRateColors = [];
     this.healthscreenService.hourlyRateChart(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
        if(data.message == 'success'){
          data.data.forEach(res => {
+          if(res.hourlyRate>0) {
           this.hourlyRateChartData.push(Math.abs(res.hourlyRate).toFixed(1));
           var name = res.provider;
           var clinic = res.clinic;
@@ -310,6 +316,7 @@ public hourlyRateColors = [];
            this.hourlyRateChartClinic.push(clinic);
           this.hourlyRateColors.push(this.mockupColors[colorCount]);
           colorCount++;
+        }
          });
          if(this.hourlyRateChartData.length >0)
          this.maxHourlyRate = Math.max(...this.hourlyRateChartData);
@@ -386,5 +393,23 @@ public newPatientsTimeClinic=[];
   }
 
 
+  checkXeroStatus() {
+    this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
+      console.log('res', res)
+      if (res.message == 'success') {
+        if (res.data.xero_connect == 1) {
+          this.xeroConnect = true;
+        }
+        else {
+          this.xeroConnect = false;
+        }
+      }
+      else {
+        this.xeroConnect = false;
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
 
 }

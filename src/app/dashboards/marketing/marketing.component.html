@@ -15,18 +15,7 @@
     <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 
       <div fxFlex>
-         <div class="sa_tabs_design">
-           <span (click)="filterDate('m')" class="filter_m filter sa_filter_span active">This Month</span>
-           <span class="filter_lm active filter sa_filter_span" (click)="filterDate('lm')">Last Month</span>
-           <span class="filter_q filter sa_filter_span" (click)="filterDate('q')">This Quarter</span>
-           <span (click)="filterDate('lq')" class="filter_lq filter sa_filter_span">Last Quarter</span>
-           <span (click)="filterDate('cytd')" class="filter_cytd filter sa_filter_span">Calendar Year</span>
-           <span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span
-          ">Financial Year</span>
-          <div class="custom_date">
-          <input class="filter_custom filter sa_datepicker" id='sa_datepicker' value="Select Date Range" placeholder="Select Date Range" readonly (click)="filterDate('custom')" />
-           <ngx-daterangepicker-material class="customRange"  id="customRange" (choosedDate)="choosedDate($event)" [style.display]="'none'" [locale]="{  displayFormat: 'DD-MM-YYYY',firstDay: 1}"></ngx-daterangepicker-material></div>
-        </div>
+        <app-date-menu-bar #dateBar (filter)="filterDate($event)" (changeDate)="choosedDate($event)"></app-date-menu-bar>
       </div>
 
      <div class="dh-target">
@@ -83,9 +72,10 @@
           [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
         </canvas>
 
-<div *ngIf="newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+          <div *ngIf="newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no new patients from referral sources in the selected period</p>
           </div>
       </div>
     </div>
@@ -114,26 +104,27 @@
         <div class="card-body">
         
          <div  style="height: 326px;position: relative;">
-           <div class="sa_back_btn_holder" *ngIf="revenueReferralLabelsl2.length > 0"><span (click) ="changeLevel('revenue')">Back</span></div>
+           <div class="sa_back_btn_holder" *ngIf="revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false"><span (click) ="changeLevel('revenue')">Back</span></div>
        <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabels.length > 0" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           (chartClick)="chartClicked($event,'revenue')" 
           [plugins]="revenuePluginObservable$ | async"
           [options]="pieChartOptions" [colors]="pieChartColors">
         </canvas>
-         <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabelsl2.length > 0" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+         <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           [options]="pieChartOptions" [colors]="pieChartColors">
         </canvas>
 
-         <div *ngIf="revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+          <div *ngIf="revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no revenue from referral sources in the selected period</p>
           </div>
       
     </div>
     </div>
       </mat-card-content>
     </mat-card>
-    <div *ngIf="mkRevenueByReferralLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
+    <div *ngIf="mkRevenueByReferralLoader == true && showTrend == false" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
   </div>
 </div>
   <!-- Column--> 
@@ -152,7 +143,7 @@
         </mat-card-title>
         <div class="card-body">
           <div class="chart py-2">
-          <div *ngIf="showTrend == false" style="height: 190px">
+          <div *ngIf="showTrend == false && newPatientsTotal > 0 && fdnewPatientsRatioLoader == false" style="height: 190px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newPatientsTotal" 
            [thick]="gaugeThick"  
@@ -163,19 +154,25 @@
            [size] = "size">
           </ngx-gauge>
       </div>
+      <div *ngIf="showTrend == false && newPatientsTotal <= 0 && fdnewPatientsRatioLoader == false">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">You have no new patients in the selected period</p>
+      </div>
  <!--         <div *ngIf="showTrend == false && newPatientsTotal<0" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
           </div> -->
-       <div *ngIf="showTrend == true" style="height: 300px">
+       <div *ngIf="showTrend == true && newPatientsChartTrend1.length > 0" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend" [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-      
-      <div *ngIf="showTrend == true && visitsChartTrendLabels.length <=0" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+    
+          <div *ngIf="showTrend == true && newPatientsChartTrend1.length <=0">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no new patients in the selected period</p>
           </div>
       </div>
         </div>
@@ -207,7 +204,7 @@
       <mat-card-content class="sa_matcard_content"> 
         <mat-card-title class="text-center">
             <div>
-              <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_{{newPatientsTooltip}}.png"></span>
+              <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_reverse_{{newPatientsTooltip}}.png"></span>
               Cost of New Patient Acquisition
             </div>
             <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Set Categories</button></div>
@@ -217,7 +214,7 @@
           <div class="chart py-2">
           <div>  
             
-          <div  *ngIf="showTrend == false && newAcqValue>0" style="height: 200px">
+          <div  *ngIf="showTrend == false && newAcqValue > 0 && xeroConnect" style="height: 200px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newAcqValue" 
            [thick]="gaugeThick"  
@@ -229,19 +226,27 @@
             </ngx-gauge>
                        
         </div>
-    <div *ngIf="showTrend == false && newAcqValue<=0" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
+  
+          <div *ngIf="showTrend == false && newAcqValue<=0 && xeroConnect">
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
           </div>
-       <div *ngIf="showTrend == true" style="height: 300px">
+       <div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && xeroConnect" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="expenseDataTrend" [labels]="expenseDataTrendLabels" [options]="barChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-        <div *ngIf="showTrend == true && visitsChartTrendLabels.length <=0" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div>
+      <div *ngIf="showTrend == true && expenseDataTrend1.length<=0 && xeroConnect">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
+      </div>
+      <div *ngIf="!xeroConnect">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
+      </div>
     </div>
       </div>  
         </div>
@@ -283,7 +288,7 @@
         <div class="card-body">                                   
            <div class="chart py-2">           
           
-          <div *ngIf="showTrend == false" style="height: 190px">
+          <div *ngIf="showTrend == false && visitsTotal > 0" style="height: 190px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="visitsTotal" 
            [thick]="gaugeThick"  
@@ -293,21 +298,27 @@
            [size] = "size">
           </ngx-gauge>
       </div>
+      <div *ngIf="showTrend == false && visitsTotal<=0">
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">You have no visits in the selected period</p>
+      </div>
 
      <!--   <div *ngIf="showTrend == false && visitsTotal<=0 && fdvisitsRatioLoader == false" class="sa_nodata_div">
               <h4>No Data</h4>
               <p></p>
        </div> -->
-       <div *ngIf="showTrend == true" style="height: 300px">
+       <div *ngIf="showTrend == true && visitsChartTrend1.length > 0" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="visitsChartTrend" [labels]="visitsChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
 
-      <div *ngIf="showTrend == true && visitsChartTrendLabels.length <=0" class="sa_nodata_div">
-              <h4>No Data</h4>
-              <p></p>
-          </div>
+      </div>
+      <div *ngIf="showTrend == true && visitsChartTrend1.length <=0" class="no-data-placeholder"> 
+        <div class="sa_nodata_div">
+        </div>
+        <p class="chart-placeholder-text">You have no visits in the selected period</p>
       </div>
         </div>
         <div class="card-footer">
@@ -348,14 +359,14 @@
           <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50" class="SelectCategories sa_flexbg referral_clinicians">
             <h5 class="mt-0 other_cat">Other Categories</h5>
             <ul class="list-categories">
-              <li *ngFor="let category of categories; let i = index"><span (click)="add_category(i)"><i class="fa fa-plus"></i></span>
+              <li *ngFor="let category of xeroCategories; let i = index"><span (click)="add_category(i)"><i class="fa fa-plus"></i></span>
                 <span>{{category}}</span></li>
             </ul>
             
           </div>
           
         </div>
-        <button class="mat-raised-button mat-gray" mat-raised-button (click)="load_chart_acq()">Save</button>
+        <button class="mat-raised-button mat-gray" mat-raised-button (click)="save_category()">Save</button>
   <button (click)="myModal.close()" class="close_modal" style="display:none">Close</button>
 </ngx-smart-modal>
 <canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1" [chartType]="pieChartType"></canvas>

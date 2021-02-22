@@ -1,0 +1,61 @@
+.goals-form-field-label {
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.goals-form-input-field {
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+  background-color: #fff;
+}
+
+.mb-2 {
+  margin-bottom: 3rem;
+}
+
+::ng-deep .sa-form-group {
+    margin-bottom: 26px;
+  .mat-form-field-flex {
+    border: 2px solid #b3d0cd !important;
+    padding: 10px 12px 6px;
+    align-items: center;
+    border-radius: 4px !important;
+    font-family: 'GILROY-MEDIUM';
+    font-size: 16px;
+    color: #545959;
+    &:hover, &:focus, &:active {
+        border: 2px solid #088a8a !important;
+    }
+  }
+
+  .mat-form-field-infix {
+    padding: 0;
+    border-top: 0;
+  }
+  .mat-form-field-label-wrapper {
+    top: -30px;
+    left: -30px;
+  }
+  .mat-form-field-underline {
+    display: none;
+  }
+}
+
+::ng-deep .Goals-dropdowns{
+    .sa_mat_select_topbar {
+        height: 46px;
+       .mat-form-field-infix {
+           padding: 14px 10px 10px;
+       }
+       .mat-select-value-text {
+           color: #3a3a3a;
+            font-family: 'GILROY-MEDIUM';
+            font-size: 16px;
+       }
+    }
+}
+
+.save-button {
+  margin-top: 0px;
+}

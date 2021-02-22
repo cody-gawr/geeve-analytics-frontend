@@ -237,21 +237,21 @@ export class MenuItems {
     icon: 'fas fa-cog',
     children: [
       { state: 'clinic', name: 'Clinics', type: 'link', role:['2','3','4','5']},
-      { state: 'dentist', name: 'Dentists', type: 'link', role:['2','3','4','5']},
+      // { state: 'dentist', name: 'Dentists', type: 'link', role:['2','3','4','5']},
       { state: 'roles-users', name: 'Users', type: 'link', role:['2','3','4','5']},
-      { state: 'profile-settings', name: 'Profile Settings', type: 'link', role:['2','3','5']},   {
-    state: '',
-    name: 'Goals',
-    type: 'subchild',
-    icon: 'fas fa-user-cog',
-    subchildren: [
-      { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
-      { state: 'dentist-goals', name: 'Dentist Goals', type: 'link'}
+      { state: 'profile-settings', name: 'Profile Settings', type: 'link', role:['2','3','5']},   
+      // {
+      //   state: '',
+      //   name: 'Goals',
+      //   type: 'subchild',
+      //   icon: 'fas fa-user-cog',
+      //   subchildren: [
+      //     { state: 'clinic-goals', name: 'Clinic Goals', type: 'link'},
+      //     { state: 'dentist-goals', name: 'Dentist Goals', type: 'link'}
 
-    ],
-    role:['1','2']
-
-  }
+      //   ],
+      //   role:['1','2']
+      // }
     ],
     role:['2','3','4','5']
 

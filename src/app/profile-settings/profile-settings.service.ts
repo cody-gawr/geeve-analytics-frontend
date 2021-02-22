@@ -137,10 +137,12 @@ var header = this.getHeaders();
         );
     }
 
-             getCardDetails(customer_id): Observable<any> {
-            const formData = new FormData();
+    getCardDetails(customer_id): Observable<any> {
+      const formData = new FormData();
+         formData.append('user_id', this._cookieService.get("userid"));
             formData.append('customer_id', customer_id);
-            return this.http.post(this.apiUrl +"/users/getCardDetails", formData)
+             var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/users/getCardDetails", formData, { headers: header })
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -150,7 +152,8 @@ var header = this.getHeaders();
      createSetupIntent(customer): Observable<any> {
             const formData = new FormData();
             formData.append('customer', customer);
-            return this.http.post(this.apiUrl +"/users/createSetupIntent", formData)
+             var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/users/createSetupIntent", formData, { headers: header })
             .pipe(map((response: Response) => {
                    return response;
                })

@@ -36,7 +36,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   lineChartColors;
   subtitle: string;
   public id: any = {};
-  public clinic_id: any = {};
+  public clinic_id: any;
   public UrlSegment: any = {};
   public dentistCount: any = {};
   public doughnutChartColors = [];
@@ -116,6 +116,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     return color;
   }
 
+  formatDate(date) {
+    if(date){
+      var dateArray = date.split("-")
+      const d = new Date();
+      d.setFullYear(+dateArray[2], (+dateArray[1] - 1), +dateArray[0])
+      const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
+      return formattedDate;
+    } else return date;
+  }
+
   //initialize component
   ngAfterViewInit() {
     this.newPatientPluginObservable$ = this.newPatientTotalAverage$.pipe(
@@ -125,7 +135,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       })
     );
 
-    $('#currentDentist').attr('did', 'all');
+    // $('#currentDentist').attr('did', 'all');
 
     // this.clinic_id = this.route.snapshot.paramMap.get("id");
     //  this.getDentists();
@@ -136,7 +146,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     if (this._cookieService.get("childid"))
       this.childid = this._cookieService.get("childid");
     //   $('.external_dentist').val('all');
-    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.startDate + ' - ' + this.endDate + '</span>');
+    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
     $('.external_clinic').show();
     $('.dentist_dropdown').show();
     $('.header_filters').removeClass('flex_direct_mar');
@@ -219,6 +229,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           '#d7f8ef'
         ]
       }];
+
+    this.filterDate(this.chartService.duration$.value);
   }
 
   //Load Clinic Data
@@ -367,6 +379,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public size = "300"
 
   public gaugeValueTreatment = 0;
+  public treatmentPlanAverageCostTab = '1'; 
+
   public gaugeLabelTreatment = "";
 
   public gaugeValuePatients = 0;
@@ -829,7 +843,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
  loadDentist(newValue) {
   if(newValue =='')
     newValue='all';
-   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.startDate + ' - ' + this.endDate + '</span>');
+   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
   //this.getAccountingDentist();
   //this.getStatusDentist();
   this.changePrebookRate('recall');
@@ -974,7 +988,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
     });
     var myJsonString = JSON.stringify(this.final_map);
-    this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe((res) => {
+   this.clinic_id && this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe((res) => {
       if (res.data.message == 'success') {
         alert('Mapping Saved!');
         $('.nsm-dialog-btn-close').click();
@@ -1020,9 +1034,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     $('.treatmentPlanSingle .treatment_cost .sa_tab_btn').removeClass('active');
     $('.treatmentPlanSingle .tcmain' + val).addClass('active');
     this.tcmain = val;
+    this.treatmentPlanAverageCostTab = val;
     if (val == '1') {
-      if (this.toggleChecked)
+      if (this.toggleChecked) {
+        if(this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
+      }
       else {
         this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentP);
         this.planTotalPrev = this.planAllTotalTrend;
@@ -1030,8 +1047,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
     }
     else {
-      if (this.toggleChecked)
+      if (this.toggleChecked){
+        if(this.treatmentPlanTrend2.every((value) => value == 0)) this.treatmentPlanTrend2 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend2;
+      }
       else {
         this.gaugeValueTreatment = Math.floor(this.gaugeValueTreatmentC);
         this.planTotalPrev = this.planCompletedTotalTrend;
@@ -1050,7 +1069,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public productionTooltip = 'down';
   public productionTotalPrev;
   public barChartOptionsDP: any = this.barChartOptions;
-  public buildChartLoader: any;
+  public buildChartLoader: boolean = false;
   public dentistKey;
   public DPcolors: any;
   //Dentist Production Chart for all Dentist
@@ -1061,12 +1080,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.productionTotal = 0;
     this.barChartLabels = [];
     this.barChartOptionsDP.annotation = [];
-    this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+   this.clinic_id && this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.barChartData1 = [];
       this.barChartLabels1 = [];
       this.barChartLabels = [];
       this.productionTotal = 0;
-      console.log('data.data', data.data);
       if (data.message == 'success') {
         this.buildChartLoader = false;
         this.productionTooltip = 'down';
@@ -1173,14 +1191,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     );
   }
 
-  public buildChartDentistLoader: any;
+  public buildChartDentistLoader: boolean;
   public maxProductionGoal: any = 0;
   //Individual Dentist Production Chart
   private buildChartDentist() {
     this.buildChartDentistLoader = true;
     this.gaugeLabel = '';
     this.productionTooltip = 'down';
-    this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+  this.clinic_id && this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       //this.barChartOptionsDP.annotation = [];
       this.productionTotal = 0;
        this.productionTotalPrev = 0;
@@ -1211,7 +1229,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           }
 
         if(this.gaugeValue > this.productionGoal)
-          this.maxProductionGoal= this.gaugeValue;
+          this.maxProductionGoal = this.gaugeValue;
         else
           this.maxProductionGoal = this.productionGoal;
         if (this.maxProductionGoal == 0)
@@ -1252,7 +1270,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public recallChartAveragePrev;
   public recallChartTooltip = 'down';
   public barChartOptionsRP: any = this.barChartOptionsPercent;
-  public recallPrebookLoader: any;
+  public recallPrebookLoader: boolean;
   public rpKey: any;
   public RPcolors: any;
   private recallPrebook() {
@@ -1262,7 +1280,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.recallChartLabels = [];
     this.barChartOptionsRP.annotation = [];
 
-    this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.recallChartData1 = [];
       this.recallChartLabels1 = [];
 
@@ -1342,7 +1360,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     }
     );
   }
-  public recallPrebookDentistLoader: any;
+  public recallPrebookDentistLoader: boolean;
   public maxrecallGoal: any = 0;
   //Individual Dentist Production Chart
   private recallPrebookDentist() {
@@ -1350,7 +1368,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.recallValue = 0;
     this.recallChartTooltip = 'down';
     this.recallLabel = '';
-    this.cliniciananalysisService.RecallPrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.RecallPrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.maxrecallGoal = 0;
 
       if (data.message == 'success') {
@@ -1409,7 +1427,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public treatmentPreChartTooltip = 'down';
   public barChartOptionsTPB: any = this.barChartOptionstrend;
   public prebook = 'recall';
-  public treatmentPrebookLoader: any;
+  public treatmentPrebookLoader: boolean;
   public tpKey: any;
   public TPcolors: any;
   //All dentist Treatment Prebook Chart
@@ -1422,7 +1440,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.treatmentPreChartLabels = [];
     this.barChartOptionsTPB.annotation = [];
 
-    this.cliniciananalysisService.treatmentPrePrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+   this.clinic_id && this.cliniciananalysisService.treatmentPrePrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.treatmentPreChartData1 = [];
       this.treatmentPreChartLabels1 = [];
 
@@ -1499,14 +1517,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     }
     );
   }
-  public treatmentPrebookDentistLoader: any;
+  public treatmentPrebookDentistLoader: boolean;
 
   //Individual Treatment Prebook Chart
   private treatmentPrePrebookDentist() {
     this.treatmentPrebookDentistLoader = true;
     this.treatmentPreValue = '0';
     this.treatmentPreLabel = '';
-    this.cliniciananalysisService.treatmentPrePrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+   this.clinic_id && this.cliniciananalysisService.treatmentPrePrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.message == 'success') {
         this.treatmentPrebookDentistLoader = false;
         if (data.data.length > 0) {
@@ -1543,7 +1561,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public treatmentChartAveragePrev;
   public treatmentChartTooltip = 'down';
   public barChartOptionsTP: any = this.barChartOptionsPercent;
-  public treatmentPlanRateLoader: any;
+  public treatmentPlanRateLoader: boolean;
   public TPRKey: any;
   public TPRcolors: any;
   //Treatment pLAn Rate chart for all dentists
@@ -1555,7 +1573,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.treatmentChartLabels = [];
     this.barChartOptionsTP.annotation = []
 
-    this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+   this.clinic_id && this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.treatmentChartData1 = [];
       this.treatmentChartLabels1 = [];
 
@@ -1566,18 +1584,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.treatmentChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.percent) {
-            this.treatmentChartData1.push(Math.round(res.percent));
-            var name = res.provider;
-            if (res.provider != null && res.provider != 'Anonymous') {
-              name = res.provider.split(',');
-              /*if(name.length>0)
-                name =name[1]+ " "+ name[0];*/
+          if (res.treatment_percentage) {
+            this.treatmentChartData1.push(Math.round(res.treatment_percentage));
+            var name = res.provider_name;
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
               this.treatmentChartLabels1.push(name);
               this.TPRKey = i;
             }
             else
-              this.treatmentChartLabels1.push(res.provider);
+              this.treatmentChartLabels1.push(res.provider_name);
             i++;
           }
         });
@@ -1652,13 +1667,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.treatmentPlanLabel = '';
     this.treatmentChartAveragePrev = 0;
     this.treatmentChartTooltip = 'down';
-    this.cliniciananalysisService.TreatmentPlanRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlanRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.message == 'success') {
         this.treatmentPlanRateDentistLoader = false;
         this.treatmentPlanValue = '0';
         if (data.data.length > 0) {
-          this.treatmentPlanValue = Math.round(data.data[0].percent);
-          this.treatmentPlanLabel = data.data[0].provider;
+          this.treatmentPlanValue = Math.round(data.data[0].treatment_percentage);
+          this.treatmentPlanLabel = data.data[0].provider_name;
         }
         this.treatmentPlanGoal = Math.round(data.goals);
         this.treatmentChartAveragePrev = Math.round(data.total_ta);
@@ -1740,7 +1755,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
     }
   };
-  public buildChartTreatmentLoader: any;
+  public buildChartTreatmentLoader: boolean = false;
   public TPACAcolors: any;
   public TPACCcolors: any;
   public tpacAKey;
@@ -1760,7 +1775,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.planTotal = 0;
     this.planChartLabels = [];
     this.barChartOptionsTC.annotation = [];
-    this.cliniciananalysisService.TreatmentPlan(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlan(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.tcmain = 1;
       this.planChartData1 = [];
       this.planChartData2 = [];
@@ -1775,12 +1790,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         var ia = 0;
         this.treatmentPlanProposedProvidersByInx = [];
         data.data.plan_fee_all.forEach(res => {
-          if (res.average_cost_all > 0) {
-            if (res.provider != null) {
-              this.planChartData1.push(Math.round(res.average_cost_all));
-              this.planChartLabels1.push(res.provider);
-              this.treatmentPlanProposedProvidersByInx.push(res.provider);
-              if (res.provider != 'Anonymous')
+          if (res.average_fees > 0) {
+            if (res.provider_name != null) {
+              this.planChartData1.push(Math.round(res.average_fees));
+              this.planChartLabels1.push(res.provider_name);
+              this.treatmentPlanProposedProvidersByInx.push(res.provider_name);
+              if (res.provider_name != 'Anonymous')
                 this.tpacAKey = ia;
               ia++;
             }
@@ -1791,11 +1806,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
         var ic = 0;
         data.data.plan_fee_completed.forEach(res => {
-          if (res.average_cost_completed) {
-            this.planChartData2.push(Math.round(res.average_cost_completed));
-            this.planChartLabels2.push(res.provider);
-            this.treatmentPlanProposedProvidersByInx.push(res.provider);
-            if (res.provider != 'Anonymous')
+          if (res.average_fees) {
+            this.planChartData2.push(Math.round(res.average_fees));
+            this.planChartLabels2.push(res.provider_name);
+            this.treatmentPlanProposedProvidersByInx.push(res.provider_name);
+            if (res.provider_name != 'Anonymous')
               this.tpacCKey = ic;
             ic++;
           }
@@ -1808,7 +1823,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.planChartDataC[0]['data'] = this.planChartData2;
         this.planChartDataP[0]['label'] = '';
         this.planChartDataC[0]['label'] = '';
-
         this.planChartLabels = this.planChartLabels1;
         this.planTotalAverage = this.planAllTotal;
         this.planTotalGoal = data.goals;
@@ -1876,7 +1890,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public gaugeValueTreatmentP: any = 0;
   public gaugeValueTreatmentC: any = 0;
   public maxplanTotalGoal: any = 0;
-  public buildChartTreatmentDentistLoader: any;
+  public buildChartTreatmentDentistLoader: boolean;
 
   //Individual Treatment Plan Average Cost
   private buildChartTreatmentDentist() {
@@ -1885,7 +1899,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.buildChartTreatmentDentistLoader = true;
 
 
-    this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlanDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.gaugeValueTreatment = 0;
       if (data.message == 'success') {
         this.buildChartTreatmentDentistLoader = false;
@@ -1893,12 +1907,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.gaugeValueTreatmentC = 0;
         this.gaugeValueTreatment =0;
         if(data.data != null) {
-          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_cost_completed != undefined)
-          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_cost_completed);
-          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_cost_all != undefined)
-          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_cost_all);
-           if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider != undefined)
-          this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider;
+          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_fees != undefined)
+          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_fees);
+          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_fees != undefined)
+          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_fees);
+           if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider_name != undefined)
+          this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider_name;
           this.planTotalAll = Math.round(data.total_all);
           this.planTotalCompleted = Math.round(data.total_completed);
           this.planTotal = this.planTotalAll;
@@ -1939,7 +1953,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   private recallChartTreatment() {
     this.planTotal = 0;
-    this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.RecallPrebook(this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.planTotal = 0;
       if (data.message == 'success') {
         data.data.forEach(res => {
@@ -1962,7 +1976,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   public doughnutTotalTooltip = 'up';
   public doughnutTotalPrev = 0;
-  public buildChartNopatientsLoader: any;
+  public buildChartNopatientsLoader: boolean;
   public npKey: any;
   public npColors: any;
   public doughnutChartColors1: any;
@@ -1971,7 +1985,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.buildChartNopatientsLoader = true;
     this.doughnutTotalPrev = 0;
     this.doughnutTotalAverage = 0;
-    this.cliniciananalysisService.NoPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.NoPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.doughnutChartData1 = [];
       this.doughnutChartLabels1 = [];
       this.doughnutTotal = 0;
@@ -2013,13 +2027,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     );
   }
 
-  public buildChartNopatientsDentistLoader: any;
+  public buildChartNopatientsDentistLoader: boolean;
   public maxdoughnutGoals: any = 0;
   //Indvidual No pf patients complaint chart
   private buildChartNopatientsDentist() {
     this.buildChartNopatientsDentistLoader = true;
     this.gaugeLabelPatients = '';
-    this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.NoPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.doughnutTotal = 0;
       this.maxdoughnutGoals = 0;
       if (data.message == 'success') {
@@ -2081,15 +2095,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.newPatientChartLabels = [];
     this.newPatientsDataMax = 0;
 
-    this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.NewPatients(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       if (data.message == 'success') {
         this.buildChartNewpatientsLoader = false;
         this.newPatientTotalTooltip = 'down';
         var i = 0;
-        console.log('\n data : ', data);
-
+        this.newPatientChartLabels1 = []; // reset on api call
+        this.newPatientChartData1 = []; // reset on api call
         data.data.forEach(res => {
-          console.log('\n res : ', res);
 
           if (res.getX) {
             this.newPatientChartData1.push(parseInt(res.getX));
@@ -2100,8 +2113,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           }
         });
 
-        console.log('\n this.newPatientChartData1 : ', this.newPatientChartData1);
-        console.log('\n this.newPatDientChartLabels : ', this.newPatientChartLabels1);
         this.newPatientChartData = this.newPatientChartData1;
         this.newPatientChartLabels = this.newPatientChartLabels1;
 
@@ -2136,7 +2147,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.buildChartNewpatientsDentistLoader = true;
     this.newPatientPercent = 0;
 
-    this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.message == 'success') {
         this.buildChartNewpatientsDentistLoader = false;
         if (data.data != null && data.data[0] && data.data[0].getX != undefined) {
@@ -2204,7 +2215,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     this.hourlyRateChartLabels = [];
     this.barChartOptionsHR.annotation = [];
-    this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.hourlyRateChart(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data) => {
       this.hourlyRateChartData1 = [];
       this.hourlyRateChartLabels1 = [];
 
@@ -2308,7 +2319,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.hourlyRateChartAverage = 0;
     this.hourlyRateChartTooltip = 'down';
     this.hourlyLabel = '';
-    this.cliniciananalysisService.hourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.hourlyRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       this.hourlyValue = '0';
       if (data.message == 'success') {
         this.hourlyRateDentistLoader = false;
@@ -2405,9 +2416,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         var last = first + 6;
         var sd = new Date(now.setDate(first));
 
-        this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(sd.toUTCString(), 'dd-MM-yyyy');
         var end = now.setDate(sd.getDate() + 6);
-        this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
         this.loadDentist(dentistVal);
       }
       else if (duration == 'm') {
@@ -2417,8 +2428,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.currentText = 'This Month';
 
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         console.log(this.startDate + " " + this.endDate);
 
         this.loadDentist(dentistVal);
@@ -2431,8 +2442,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.currentText = 'Last Month';
 
         const date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
         console.log(this.startDate + " " + this.endDate);
 
         this.loadDentist(dentistVal);
@@ -2449,23 +2460,23 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         var cyear = now.getFullYear();
 
         if (cmonth >= 1 && cmonth <= 3) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 4 && cmonth <= 6) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 7 && cmonth <= 9) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 10 && cmonth <= 12) {
           1
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd MMM yyyy');
-          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
+          // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');
         }
-        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         this.loadDentist(dentistVal);
 
       }
@@ -2480,20 +2491,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         var cyear = now.getFullYear();
 
         if (cmonth >= 1 && cmonth <= 3) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'dd MMM yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 9, 1), 'dd-MM-yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear() - 1, 12, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 4 && cmonth <= 6) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 7 && cmonth <= 9) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy');
         }
         else if (cmonth >= 10 && cmonth <= 12) {
-          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+          this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
         }
         this.loadDentist(dentistVal);
       }
@@ -2502,10 +2513,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.currentText = 'This Year';
 
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
         console.log(this.startDate);
 
-        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
         this.goalCount = difMonths + 1;
         this.loadDentist(dentistVal);
@@ -2516,12 +2527,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
         var date = new Date();
         if ((date.getMonth() + 1) <= 3) {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
         } else {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd MMM yyyy');
+          this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
         }
 
-        this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
         this.goalCount = Math.abs(difMonths + 1);
         this.loadDentist(dentistVal);
@@ -2545,8 +2556,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   choosedDate(val) {
     val = (val.chosenLabel);
     var val = val.toString().split(' - ');
-    this.startDate = this.datePipe.transform(val[0], 'dd MMM yyyy');
-    this.endDate = this.datePipe.transform(val[1], 'dd MMM yyyy');
+    this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+    this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
     this.filterDate('custom');
     // $('.filter_custom').val(this.startDate + " - " + this.endDate);
     $('.customRange').css('display', 'none');
@@ -2611,7 +2622,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public dentistProductionTrend1 = [];
   public dentistProductionTrendLabels = [];
   public dentistProductionTrendLabels1 = [];
-  public dentistProductionTrendLoader: any;
+  public dentistProductionTrendLoader: boolean;
   //Trend mode for dentist Production
   private dentistProductionTrend() {
     this.dentistProductionTrendLoader = true;
@@ -2619,7 +2630,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       this.dentistProductionTrendLabels1 = [];
       this.dentistProductionTrend1 = [];
       this.dentistProductionTrendLabels = [];
@@ -2627,12 +2638,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       if (data.message == 'success') {
         this.dentistProductionTrendLoader = false;
         data.data.forEach(res => {
-          this.dentistProductionTrend1.push(Math.round(res.val.total));
+          if(res.val.total)
+            this.dentistProductionTrend1.push(Math.round(res.val.total));
           if (this.trendValue == 'c')
             this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
           else
             this.dentistProductionTrendLabels1.push(res.duration);
         });
+        if(this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
         this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
         this.dentistProductionTrendLabels = this.dentistProductionTrendLabels1;
         if (this.dentistProductionTrendLabels.length <= 0) {
@@ -2686,7 +2699,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.treatmentPlanTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.caTreatmentPlanAverageCostTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.caTreatmentPlanAverageCostTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       this.treatmentPlanTrendLabels1 = [];
       this.treatmentPlanTrendLabels = [];
 
@@ -2711,7 +2724,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             else
               this.treatmentPlanTrendLabels1.push(res.duration);
           });
+          
+          
         }
+        if(this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
         this.treatmentPlanTrendLabels = this.treatmentPlanTrendLabels1;
 
@@ -2758,14 +2774,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public patientComplaintsTrend1 = [];
   public patientComplaintsTrendLabels = [];
   public patientComplaintsTrendLabels1 = [];
-  public patientComplaintsTrendLoader: any;
+  public patientComplaintsTrendLoader: boolean;
   //Trend mode for Pateint Complaints chart
   private patientComplaintsTrend() {
     this.patientComplaintsTrendLoader = true;
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       this.patientComplaintsTrendLabels1 = [];
       this.patientComplaintsTrendLabels = [];
 
@@ -2774,7 +2790,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.patientComplaintsTrendLoader = false;
         if (data.data) {
           data.data.forEach(res => {
-            this.patientComplaintsTrend1.push(res.val.treat_item);
+            if(res.val.treat_item)
+              this.patientComplaintsTrend1.push(res.val.treat_item);
             if (this.trendValue == 'c')
               this.patientComplaintsTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else
@@ -2831,7 +2848,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public recallPrebookChartTrend1 = [];
   public recallPrebookChartTrendLabels = [];
   public recallPrebookChartTrendLabels1 = [];
-  public fdRecallPrebookRateTrendLoader: any;
+  public fdRecallPrebookRateTrendLoader: boolean;
   //Recall Prebook Rate Chart trend mode
   private fdRecallPrebookRateTrend() {
     this.fdRecallPrebookRateTrendLoader = true;
@@ -2839,17 +2856,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.cliniciananalysisService.cpRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       if (data.message == 'success') {
         this.fdRecallPrebookRateTrendLoader = false;
         this.recallPrebookChartTrendLabels1 = [];
         this.recallPrebookChartTrend1 = [];
         data.data.forEach(res => {
-          this.recallPrebookChartTrend1.push(Math.round(res.percent));
+          this.recallPrebookChartTrend1.push(Math.round(res.val));
           if (this.trendValue == 'c')
-            this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
+            this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
           else
-            this.recallPrebookChartTrendLabels1.push(res.treat_date);
+            this.recallPrebookChartTrendLabels1.push(res.duration);
 
         });
         this.recallPrebookChartTrend[0]['data'] = this.recallPrebookChartTrend1;
@@ -2971,7 +2988,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.fdhourlyRateRateTrendLoader = true;
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       this.hourlyRateChartTrendLabels = [];
       if (data.message == 'success') {
         this.fdhourlyRateRateTrendLoader = false;
@@ -2979,7 +2996,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.hourlyRateChartTrend1 = [];
         data.data.forEach(res => {
           if (res.val) {
-            this.hourlyRateChartTrend1.push(Math.round(res.val.hourlyRate));
+            if(res.val.hourlyRate)
+              this.hourlyRateChartTrend1.push(Math.round(res.val.hourlyRate));
             if (this.trendValue == 'c')
               this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else
@@ -3042,7 +3060,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       if (data != null && data.message == 'success') {
         this.fdnewPatientsRateTrendLoader = false;
         this.newPatientsChartTrendLabels1 = [];
@@ -3116,7 +3134,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.catreatmentPlanRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.clinic_id && this.cliniciananalysisService.catreatmentPlanRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       if (data.message == 'success') {
         this.fdtreatmentPlanRateTrendLoader = false;
         this.treatmentPlanChartTrendLabels1 = [];
@@ -3124,7 +3142,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         if (data.data) {
           data.data.forEach(res => {
             if (res.val) {
-              this.treatmentPlanChartTrend1.push(Math.round(res.val.percent));
+              if(res.val)
+                this.treatmentPlanChartTrend1.push(Math.round(res.val));
               if (this.trendValue == 'c')
                 this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
               else

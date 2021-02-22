@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ChartService {
+    duration$ = new BehaviorSubject<string>('m');
     constructor() { }
 
     colors = {
@@ -46,6 +48,10 @@ export class ChartService {
         }
       }]
       return array
+    }
+
+    changeDuration(period: string) {
+      this.duration$.next(period);
     }
 
 }

@@ -19,6 +19,7 @@ import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerri
 import { CookieService } from "angular2-cookie/core";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ToastrService } from 'ngx-toastr';
+import { ChartService } from '../chart.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -40,7 +41,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public trendText;
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  constructor(private toastr: ToastrService,private frontdeskService: FrontDeskService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router){
+  constructor(private toastr: ToastrService,private frontdeskService: FrontDeskService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router, private chartService: ChartService){
   }
   private warningMessage: string; 
  private myTemplate: any = "";
@@ -70,6 +71,17 @@ export class FrontDeskComponent implements AfterViewInit {
      this.filterDate('m');
    }
   }
+
+  formatDate(date) {
+    if(date) {
+      var dateArray = date.split("-");
+      const d = new Date();
+      d.setFullYear(+dateArray[2], (+dateArray[1]-1), +dateArray[0]);
+      const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
+      return formattedDate;
+    } else return date;
+  }
+
   ngAfterViewInit() {
      this.checkPermission('dashboard3');
       $('#currentDentist').attr('did','all');
@@ -79,14 +91,14 @@ export class FrontDeskComponent implements AfterViewInit {
         this.getClinics();
       this.initiate_clinic();
         
-      $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+this.startDate + ' - ' + this.endDate+'</span>'); 
+      $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>'); 
 
         
         $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
         $('.header_filters').removeClass('hide_header');
-        $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+this.startDate + ' - ' + this.endDate+'</span>'); 
+        $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>'); 
         $('.external_clinic').show();
         $('.external_dentist').show();
         $(document).on('click', function(e) {
@@ -163,7 +175,7 @@ this.predictedChartColors = [
   }
 ];
 
-
+    this.filterDate(this.chartService.duration$.value);
   }
 
   public date =new Date();
@@ -215,7 +227,8 @@ this.predictedChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
-        return tooltipItems.xLabel+": "+tooltipItems.yLabel+ "%";
+      let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;
+        return tooltipItems.xLabel+": "+ total + "%";
      },
      title: function() {
        return "";
@@ -410,7 +423,7 @@ public dentists;
     return validDate
   }
  loadDentist(newValue) {
-   $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+this.startDate+' - '+this.endDate+'</span>'); 
+   $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+ this.formatDate(this.startDate) +' - '+ this.formatDate(this.endDate) +'</span>'); 
 
     if(newValue == 'all') {
       this.fdWorkTimeAnalysis();
@@ -467,7 +480,7 @@ public dentists;
   public prevWorkTimeTooltip ='down';
   public goalchecked='off';
     public stackedChartOptionssWT:any =this.stackedChartOptions;
-public fdWorkTimeAnalysisLoader:any;
+public fdWorkTimeAnalysisLoader:boolean;
 
   //Items Predictor Analysis 
   private fdWorkTimeAnalysis() {
@@ -476,7 +489,7 @@ public fdWorkTimeAnalysisLoader:any;
     this.fdWorkTimeAnalysisLoader = true;
     this.workTimeLabels= [];
 
-  this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+  this.clinic_id && this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
 
        if(data.message == 'success'){
         this.fdWorkTimeAnalysisLoader = false;
@@ -527,7 +540,7 @@ public fdWorkTimeAnalysisLoader:any;
          ]
         }
        }
-           console.log(this.stackedChartOptionssWT);
+          //  console.log(this.stackedChartOptionssWT);
 
           
        }
@@ -554,7 +567,7 @@ public fdFtaRatioLoader:any;
 
        var user_id;
        var clinic_id;
-  this.frontdeskService.fdFtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+  this.clinic_id && this.frontdeskService.fdFtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     this.ftaTotal = 0;
           this.ftaPrevTotal = 0;
        if(data.message == 'success'){
@@ -587,7 +600,7 @@ public utaTotal;
 public utaPrevTotal;
 public utaTooltip='down';
 public utaGoal;
-public fdUtaRatioLoader:any;
+public fdUtaRatioLoader:boolean;
 public maxutaGoal:any=0;
 //Predictor Ratio :
   private fdUtaRatio() {
@@ -597,7 +610,7 @@ public maxutaGoal:any=0;
 
        var user_id;
        var clinic_id;
-  this.frontdeskService.fdUtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+  this.clinic_id && this.frontdeskService.fdUtaRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
      this.utaTotal = 0;
           this.utaPrevTotal = 0;
        if(data.message == 'success'){
@@ -628,7 +641,7 @@ public maxutaGoal:any=0;
 public ticksTotal;
 public ticksPrevTotal;
 public ticksTooltip='down';
-public fdNumberOfTicksLoader:any;
+public fdNumberOfTicksLoader:boolean;
 
 //Predictor Ratio :
   private fdNumberOfTicks() {
@@ -638,7 +651,7 @@ public fdNumberOfTicksLoader:any;
 
        var user_id;
        var clinic_id;
-      this.frontdeskService.fdNumberOfTicks(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.clinic_id &&  this.frontdeskService.fdNumberOfTicks(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.fdNumberOfTicksLoader = false;
           this.ticksPrevTotal = 0;
@@ -660,7 +673,7 @@ public recallPrebookTotal;
 public recallPrebookGoal=0;
 public recallPrebookPrevTotal;
 public recallPrebookTooltip='down';
-public fdRecallPrebookRateLoader:any;
+public fdRecallPrebookRateLoader:boolean;
 public maxrecallPrebookGoal:any=0;
 
 //Predictor Ratio :
@@ -670,7 +683,7 @@ public maxrecallPrebookGoal:any=0;
       this.recallPrebookTotal =0;
        var user_id;
        var clinic_id;
-      this.frontdeskService.fdRecallPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+     this.clinic_id && this.frontdeskService.fdRecallPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.fdRecallPrebookRateLoader = false;
           this.recallPrebookPrevTotal = 0;
@@ -700,7 +713,7 @@ public treatmentPrebookGoal=0;
 
 public treatmentPrebookPrevTotal;
 public treatmentPrebookTooltip='down';
-public fdtreatmentPrebookRateLoader:any;
+public fdtreatmentPrebookRateLoader: boolean;
 public maxtreatmentPrebookGoal:any=0;
 //Predictor Ratio :
   private fdtreatmentPrebookRate() {
@@ -710,7 +723,7 @@ public maxtreatmentPrebookGoal:any=0;
 
        var user_id;
        var clinic_id;
-      this.frontdeskService.fdTreatmentPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+     this.clinic_id && this.frontdeskService.fdTreatmentPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.fdtreatmentPrebookRateLoader = false;
           this.treatmentPrebookPrevTotal = 0;
@@ -754,12 +767,12 @@ public currentText;
 
        var first = now.getDate() - day +1;
        var last = first + 6; 
-       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd MMM yyyy');
+       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd-MM-yyyy');
        var end = new Date();
         end.setFullYear(now.getFullYear());
         end.setMonth(now.getMonth()+1);
         end.setDate(last);
-       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd MMM yyyy');
+       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
        this.duration='w';
         this.loadDentist('all');
     }
@@ -768,8 +781,8 @@ public currentText;
       this.currentText= 'This Month';
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         this.duration='m';
         
             this.loadDentist('all');
@@ -780,8 +793,8 @@ public currentText;
       this.currentText = 'Last Month';
 
       const date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
     else if (duration == 'q') {
@@ -792,24 +805,24 @@ public currentText;
       var cmonth = now.getMonth()+1;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy')
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy')
         ;
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); 
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); 
       }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy'); 
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); 
       }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd MMM yyyy');  
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
       }
       this.duration='q';
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
     else if (duration == 'lq') {
@@ -821,18 +834,18 @@ public currentText;
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
         this.duration='lq';
             this.loadDentist('all');
    
@@ -843,8 +856,8 @@ public currentText;
 
       this.duration = 'cytd';
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
     else if (duration == 'fytd') {
@@ -854,11 +867,11 @@ public currentText;
 
       var date = new Date();
       if ((date.getMonth() + 1) <= 3) {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
       } else {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
       }
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
      else if (duration == 'custom') {
@@ -877,8 +890,8 @@ public currentText;
 choosedDate(val) {
     val = (val.chosenLabel);
     var val= val.toString().split(' - ');
-      this.startDate = this.datePipe.transform(val[0], 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(val[1], 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.duration = 'custom';
       this.loadDentist('all');
       
@@ -954,7 +967,7 @@ toggleFilter(val) {
   isDisabled =true;
   isChecked =true;
   mode='Internal';
-  showTrend= false;
+  showTrend: boolean = false;
 toggleChangeProcess(){
       this.showTrend = true;
       this.fdwtaRatioTrend();
@@ -981,7 +994,7 @@ toggleChangeProcess(){
     public ftaChartTrend1=[];
   public ftaChartTrendLabels =[];
   public ftaChartTrendLabels1 =[];
-  public fdFtaRatioTrendLoader:any;
+  public fdFtaRatioTrendLoader:boolean;
   private fdFtaRatioTrend() {
     this.fdFtaRatioTrendLoader =true;
   this.ftaChartTrendLabels=[];
@@ -990,7 +1003,7 @@ toggleChangeProcess(){
   this.ftaChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdFtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.fdFtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.ftaChartTrendLabels1=[];
   this.ftaChartTrend1=[];
        if(data.message == 'success'){
@@ -1030,7 +1043,7 @@ toggleChangeProcess(){
     public wtaChartTrend1=[];
   public wtaChartTrendLabels =[];
   public wtaChartTrendLabels1 =[];
-  public fdwtaRatioTrendLoader:any;
+  public fdwtaRatioTrendLoader:boolean;
   private fdwtaRatioTrend() {
     this.fdwtaRatioTrendLoader =true;
   this.wtaChartTrendLabels=[];
@@ -1039,7 +1052,7 @@ toggleChangeProcess(){
   this.wtaChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdWorkTimeAnalysisTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+    this.clinic_id && this.frontdeskService.fdWorkTimeAnalysisTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        this.wtaChartTrendLabels1=[];
   this.wtaChartTrend1=[];
        if(data.message == 'success'){
@@ -1079,7 +1092,7 @@ toggleChangeProcess(){
     public utaChartTrend1=[];
   public utaChartTrendLabels =[];
   public utaChartTrendLabels1 =[];
-  public fdUtaRatioTrendLoader:any;
+  public fdUtaRatioTrendLoader:boolean;
 
   private fdUtaRatioTrend() {
     this.fdUtaRatioTrendLoader = true;
@@ -1089,7 +1102,7 @@ toggleChangeProcess(){
   this.utaChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdUtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.fdUtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.utaChartTrendLabels1=[];
   this.utaChartTrend1=[];
        if(data.message == 'success'){
@@ -1130,7 +1143,7 @@ toggleChangeProcess(){
     public tickChartTrend1=[];
   public tickChartTrendLabels =[];
   public tickChartTrendLabels1 =[];
-  public fdNumberOfTicksTrendLoader:any;
+  public fdNumberOfTicksTrendLoader:boolean;
 
   private fdNumberOfTicksTrend() {
     this.fdNumberOfTicksTrendLoader = true;
@@ -1139,7 +1152,7 @@ toggleChangeProcess(){
   this.tickChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdNumberOfTicksTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.fdNumberOfTicksTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.tickChartTrendLabels1=[];
   this.tickChartTrend1=[];
        if(data.message == 'success'){
@@ -1179,7 +1192,7 @@ toggleChangeProcess(){
     public recallPrebookChartTrend1=[];
   public recallPrebookChartTrendLabels =[];
   public recallPrebookChartTrendLabels1 =[];
-  public fdRecallPrebookRateTrendLoader:any;
+  public fdRecallPrebookRateTrendLoader:boolean;
 
   private fdRecallPrebookRateTrend() {
     this.fdRecallPrebookRateTrendLoader = true;
@@ -1189,7 +1202,7 @@ toggleChangeProcess(){
   this.recallPrebookChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
         this.fdRecallPrebookRateTrendLoader = false;
           this.recallPrebookChartTrendLabels1=[];
@@ -1229,7 +1242,7 @@ toggleChangeProcess(){
     public treatmentPrebookChartTrend1=[];
   public treatmentPrebookChartTrendLabels =[];
   public treatmentPrebookChartTrendLabels1 =[];
-  public fdTreatmentPrebookRateTrendLoader:any=false;
+  public fdTreatmentPrebookRateTrendLoader:boolean = false;
 
   private fdTreatmentPrebookRateTrend() {
     this.fdTreatmentPrebookRateTrendLoader = true;
@@ -1239,7 +1252,7 @@ toggleChangeProcess(){
   this.treatmentPrebookChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.frontdeskService.frontdeskTreatmentPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.frontdeskTreatmentPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
         this.fdTreatmentPrebookRateTrendLoader = false;
           this.treatmentPrebookChartTrendLabels1=[];

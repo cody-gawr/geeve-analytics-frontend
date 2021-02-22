@@ -18,7 +18,8 @@ export interface Dentist {
 }
 
 @Component({
-  templateUrl: './clinicianproceedures.component.html'
+  templateUrl: './clinicianproceedures.component.html',
+  styleUrls: ['./clinicianproceedures.component.scss']
 })
   /**
   *Clinician Proceedure Graph Dashboard
@@ -117,6 +118,17 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
     let validDate = date;
     return validDate
   }
+
+  formatDate(date) {
+    if (date) {
+      var dateArray = date.split("-")
+      const d = new Date();
+      d.setFullYear(+dateArray[2], (+dateArray[1]-1), +dateArray[0])
+      const formattedDate = this.datePipe.transform(d, 'dd MMM yyyy');
+      return formattedDate;
+    } else return date;
+  }
+
   //Initialize compoenent
   ngAfterViewInit() {
       $('#currentDentist').attr('did','all');
@@ -145,7 +157,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
         $('.dentist_dropdown').show();
         $('.header_filters').removeClass('flex_direct_mar');
         $('.header_filters').removeClass('hide_header');
-   $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">' + this.startDate + ' - ' + this.endDate+'</span>');        
+        $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
         $('.external_clinic').show();
         $('.external_dentist').show();
         if(this.childid != ''){
@@ -430,7 +442,7 @@ this.preoceedureChartColors = [
     hoverBorderColor: '#1CA49F'
   }
 ];
-
+  this.filterDate(this.chartService.duration$.value);
   }
 
   public date =new Date();
@@ -924,7 +936,7 @@ public pieChartLabelsres: string[] = [
   $('.pr1').addClass('active');
   $('.predictor_ratio_main').find('.sa_tab_btn').removeClass('active');
   $('.prmain1').addClass('active');
-   $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">' + this.startDate + ' - ' + this.endDate +'</span>');
+   $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');
   if(newValue == 'all') {
     $(".predicted1Tool").show();
     $(".referral1Tool").show();
@@ -1009,7 +1021,7 @@ public pieChartLabelsres: string[] = [
     {data: [], label: 'Surgical Extractions' }  ];
 
 
-  this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
+  this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
        if(data.message == 'success'){
    
         this.buildChartLoader =false;
@@ -1020,11 +1032,11 @@ public pieChartLabelsres: string[] = [
           this.stackedChartData5 = [];
           this.stackedChartLabels1 =[];
           this.stackedChartLabels =[];
-        if(data.data.length <=0) {
+        if(data && data.data && data.data.length <=0) {
 
         }else {
           var i=0
-        data.data.forEach(res => {
+       data && data.data && data.data.length && data.data.forEach(res => {
           if(res.provider != null){
             if(parseInt(res.crowns)+parseInt(res.splints)+parseInt(res.root_canals)+parseInt(res.perio)+parseInt(res.surgical_extractions) >0){
           
@@ -1087,7 +1099,7 @@ public pieChartLabelsres: string[] = [
     var user_id;
     var clinic_id;
   this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
-       if(data.message == 'success'){
+       if(data.message == 'success' && data.data && data.data.length){
         this.buildChartDentistLoader = false;
           this.itemPredictedChartData1 = [];
            this.itemPredictedChartLabels=[];
@@ -1104,7 +1116,7 @@ public pieChartLabelsres: string[] = [
           var tupleArray=[];
    for (var key in temp) tupleArray.push([key, temp[key]]);
     tupleArray.sort(function (a, b) { return b[1] - a[1] });
-
+      
 tupleArray.forEach((res,key) => {
 
   this.itemPredictedChartData1.push(res[1]);
@@ -1127,7 +1139,7 @@ public predictedT:any=[];
 public predictedTotal0;
 public predictedTotal;
 public predictedTP:any=[];
-public predictedMax;
+public predictorRatioTab;
 public buildChartPredictorLoader:any;
 public prKey:any[] =[];
 public PRcolors;
@@ -1163,8 +1175,8 @@ public predictedstackedChartLabels3=[];
      if(this.duration){
       this.buildChartLoader = true;
        var user_id;
-    var clinic_id;
-  this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
+      var clinic_id;
+  this.clinic_id && this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
      this.buildChartLoader = false;
     this. predictedstackedChartData1 = [
     {data: [], label: 'Crowns'},
@@ -1184,7 +1196,7 @@ public predictedstackedChartLabels3=[];
     this.crowns=this.crowns_ta =this.large_fillings=this.large_fillings_ta =this.extractions=this.extractions_ta =this.root_canals=this.root_canals_ta =this.rct_completed=this.rct_completed_ta=this.rct_started =this.rct_started_ta =0
       if(data.message == 'success'){
 
-        data.data.forEach((res,key) => {
+        data.data && data.data.length && data.data.forEach((res,key) => {
           var i=0;
           if(key == 0) {
              res.forEach((result) => {
@@ -1197,7 +1209,6 @@ public predictedstackedChartLabels3=[];
                       crowns = Math.round(result.crowns/result.crowns);
                       large_fillings = Math.round(result.large_fillings/result.crowns);
                      }
-
                  this.predictedstackedChartData1[0]['data'].push(crowns);
                  this.crowns= parseInt(this.crowns)+parseInt(result.crowns);
                  this.crowns_ta= parseInt(this.crowns_ta)+parseInt(result.crowns_trend);
@@ -1230,8 +1241,6 @@ public predictedstackedChartLabels3=[];
                       root_canals = Math.round(result.root_canals/result.root_canals);
                       extractions = Math.round(result.extractions/result.root_canals);
                      }
-
-
                      this.predictedstackedChartLabels2.push(result.provider);
                  this.predictedstackedChartData2[0]['data'].push(root_canals);
                   this.extractions= parseInt(this.extractions)+parseInt(result.extractions);
@@ -1264,8 +1273,6 @@ public predictedstackedChartLabels3=[];
                       rct_started = Math.round(result.rct_started/result.rct_started);
                       rct_completed = Math.round(result.rct_completed/result.rct_started);
                      }
-
-
                      this.predictedstackedChartLabels3.push(result.provider);
                  this.predictedstackedChartData3[0]['data'].push(rct_started);
                  this.rct_completed= parseInt(this.rct_completed)+parseInt(result.rct_completed);
@@ -1290,6 +1297,11 @@ public predictedstackedChartLabels3=[];
              });
            }
         });
+        this.predictorRatioTab = '1';
+        if(this.predictedstackedChartData1[0]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[0]['data'] = []
+        if(this.predictedstackedChartData1[1]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[1]['data'] = []
         this.predictedstackedChartData= this.predictedstackedChartData1;
         this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
 
@@ -1303,7 +1315,7 @@ public predictedstackedChartLabels3=[];
   }
 //Chnage predictor tab
   changeDentistPredictorMain(val) {
-  
+ this.predictorRatioTab = val;
     $('.predictor_ratio_main .sa_tab_btn').removeClass('active');
     $('.prmain'+val).addClass('active');
     $('.predicted_main').hide();
@@ -1320,16 +1332,28 @@ public predictedstackedChartLabels3=[];
           else
             this.PRcolors= this.predictedChartColors;
     if(val =='1') {
+      if(this.predictedstackedChartData1[0]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[0]['data'] = []
+      if(this.predictedstackedChartData1[1]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[1]['data'] = []
        this.predictedstackedChartData = this.predictedstackedChartData1;
          this.predictedstackedChartLabels = this.predictedstackedChartLabels1;
 
      }
     else if(val =='2'){
+      if(this.predictedstackedChartData2[0]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData2[0]['data'] = []
+      if(this.predictedstackedChartData2[1]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData2[1]['data'] = []
    this.predictedstackedChartData = this.predictedstackedChartData2;
          this.predictedstackedChartLabels = this.predictedstackedChartLabels2;
 
      }
     else if(val =='3') {
+      if(this.predictedstackedChartData3[0]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData3[0]['data'] = []
+      if(this.predictedstackedChartData3[1]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData3[1]['data'] = []
  this.predictedstackedChartData = this.predictedstackedChartData3;
          this.predictedstackedChartLabels = this.predictedstackedChartLabels3;
      }
@@ -1360,7 +1384,7 @@ public rct_started_ta :any=0;
       this.buildChartDentistLoader = true;
        var user_id;
     var clinic_id;
-  this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+  this.clinic_id && this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     this.buildChartDentistLoader = false;
     this. predictedstackedChartData1 = [
     {data: [], label: 'Crowns'},
@@ -1378,10 +1402,10 @@ public rct_started_ta :any=0;
     this.predictedstackedChartLabels2=[];
     this.predictedstackedChartLabels3=[];
     this.crowns=this.crowns_ta =this.large_fillings=this.large_fillings_ta =this.extractions=this.extractions_ta =this.root_canals=this.root_canals_ta =this.rct_completed=this.rct_completed_ta=this.rct_started =this.rct_started_ta =0;
-      if(data.message == 'success'){
+    if (data.message == 'success' && data.data){
 
 
-             data.data.ratio1.forEach((result) => {
+      data.data.ratio1 && data.data.ratio1.length  && data.data.ratio1.forEach((result) => {
               if(result.provider != null){
                      this.predictedstackedChartLabels1.push(result.provider);
 
@@ -1411,7 +1435,7 @@ public rct_started_ta :any=0;
 
               }
              });
-             data.data.ratio2.forEach((result) => {
+      data.data.ratio2 && data.data.ratio2.length && data.data.ratio2.forEach((result) => {
               if(result.provider != null){
                      this.predictedstackedChartLabels2.push(result.provider);
 
@@ -1440,7 +1464,7 @@ public rct_started_ta :any=0;
 
               }
              });
-             data.data.ratio3.forEach((result) => {
+      data.data.ratio3 && data.data.ratio3.length && data.data.ratio3.forEach((result) => {
               if(result.provider != null){
 
 
@@ -1470,7 +1494,10 @@ public rct_started_ta :any=0;
 
               }
              });
-
+        if(this.predictedstackedChartData1[0]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[0]['data'] = []
+        if(this.predictedstackedChartData1[1]['data'].every((item)=> item == 0)) 
+          this.predictedstackedChartData1[1]['data'] = []
         this.predictedstackedChartData= this.predictedstackedChartData1;
         this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
 
@@ -1488,11 +1515,8 @@ public rct_started_ta :any=0;
 public buildChartProceedureLoader:any;
 
   private buildChartProceedure() {
-    this.buildChartProceedureLoader =true;
-        var user_id;
-    var clinic_id;
-          
-  this.clinicianproceeduresService.ClinicianProceedure( this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
+    this.buildChartProceedureLoader =true;          
+  this.clinic_id && this.clinicianproceeduresService.ClinicianProceedure( this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
     this.proceedureChartData1 =[];
            this.proceedureChartLabels1 = [];
        if(data.message == 'success'){
@@ -1520,15 +1544,13 @@ public buildChartProceedureDentistLoader:any;
 
   private buildChartProceedureDentist() {
     this.buildChartProceedureDentistLoader =true;
-        var user_id;
-    var clinic_id;
-    
-  this.clinicianproceeduresService.ClinicianProceedureDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
-       if(data.message == 'success'){
+   
+  this.clinic_id && this.clinicianproceeduresService.ClinicianProceedureDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
+    if (data.message == 'success' && data.data){
         this.buildChartProceedureDentistLoader =false;
         this.proceedureChartData1 = [];
            this.proceedureChartLabels1 = [];
-        data.data.forEach(res => {
+         data.data.length && data.data.forEach(res => {
            this.proceedureChartData1.push(Math.round(res.total));
            this.proceedureChartLabels1.push(res.treat_item);
         });
@@ -1560,7 +1582,7 @@ public doughnutChartColors1;
            this.pieChartLabelsres = [];
           this.pieChartLabelsres3=[];
 
-    this.clinicianproceeduresService.ClinicianReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+    this.clinic_id && this.clinicianproceeduresService.ClinicianReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
          this.pieChartDatares1 = [];
            this.pieChartDatares2 = [];
            this.pieChartDatares3 = [];
@@ -1581,7 +1603,7 @@ public doughnutChartColors1;
         this.pieChartInternalPrevTooltip = 'down';
         this.pieChartExternalPrevTooltip = 'down';
         this.pieChartCombinedPrevTooltip = 'down';
-       if(data.message == 'success'){
+      if (data.message == 'success' && data.data && data.data.length) {
 
 
            var i=0;
@@ -1619,6 +1641,7 @@ public doughnutChartColors1;
           this.pieChartExternalPrevTooltip = 'up'
         if(this.pieChartCombinedTotal>=this.pieChartCombinedPrevTotal)
            this.pieChartCombinedPrevTooltip = 'up'
+
          this.pieChartData1 = this.pieChartDatares1;
          this.pieChartData2 = this.pieChartDatares2;
          this.pieChartData3 = this.pieChartDatares3;
@@ -1661,8 +1684,8 @@ this.pieChartDataMax3=0;
         this.pieChartInternalPrevTooltip = 'down';
         this.pieChartExternalPrevTooltip = 'down';
         this.pieChartCombinedPrevTooltip = 'down';
-  this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success'){
+ this.clinic_id && this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+       if(data.message == 'success' && data.data.length){
 this.pieChartLabelsres1 = [];
            this.pieChartLabelsres2 = [];
           this.pieChartLabelsres3=[];
@@ -1727,10 +1750,9 @@ this.pieChartLabelsres1 = [];
   }
 // Change Referral Chart Tabs
    changePieReferral(chart){
-    this.showInternal =false;
+    this.showInternal = false;
     this.showExternal = false;
     this.showCombined = false;
-    
     $('.referral').hide();
     if(!this.toggleChecked){
     if(chart == 'Internal') {
@@ -1739,7 +1761,7 @@ this.pieChartLabelsres1 = [];
 
     }
     else if(chart == 'External') {
-      this. showExternal =true;
+      this.showExternal = true;
       $('.referral2Tool').show();
     }
     else if(chart == 'Combined') {
@@ -1750,16 +1772,15 @@ this.pieChartLabelsres1 = [];
   else {
       if(chart == 'Internal') {
       this.showInternal = true;
-
     }
     else if(chart == 'External') {
-      this. showExternal =true;
+      this.showExternal = true;
     }
     else if(chart == 'Combined') {
       this.showCombined = true;
     }
 
-    this.mode=chart;
+    this.mode = chart;
     this.referralTrendSingle();
   }
     if($('.external_dentist').val() != 'all'){
@@ -1801,12 +1822,12 @@ public currentText;
 
        var first = now.getDate() - day +1;
        var last = first + 6; 
-       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd MMM yyyy');
+       this.startDate = this.datePipe.transform(new Date(now.setDate(first)).toUTCString(), 'dd-MM-yyyy');
        var end = new Date();
         end.setFullYear(now.getFullYear());
         end.setMonth(now.getMonth()+1);
         end.setDate(last);
-       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd MMM yyyy');
+       this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
        this.duration='w';
         this.loadDentist(dentistVal);
     }
@@ -1817,8 +1838,8 @@ public currentText;
 
 
       var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
       console.log(this.startDate+" "+this.endDate);
             this.loadDentist(dentistVal);
@@ -1829,8 +1850,8 @@ public currentText;
       this.currentText = 'Last Month';
 
       const date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
       console.log(this.startDate + " " + this.endDate);
       this.loadDentist(dentistVal);
     }
@@ -1842,23 +1863,23 @@ public currentText;
       var cmonth = now.getMonth()+1;
       var cyear = now.getFullYear();
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); 
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); 
       }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy'); 
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy'); 
       }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd MMM yyyy');
-        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd MMM yyyy');  
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
+        // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
       }
       
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='q';
       this.loadDentist(dentistVal);
     }
@@ -1871,18 +1892,18 @@ public currentText;
       var cyear = now.getFullYear();
      
       if(cmonth >=1 && cmonth <=3) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear() -1, 9, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear()-1, 12, 0), 'dd-MM-yyyy');
       }
       else if(cmonth >=4 && cmonth <=6) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd MMM yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=7 && cmonth <=9) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd MMM yyyy'); }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 3, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 0), 'dd-MM-yyyy'); }
       else if(cmonth >=10 && cmonth <=12) {
-        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd MMM yyyy');
-        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd MMM yyyy');  }
+        this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
         this.duration='lq';
             this.loadDentist(dentistVal);
    
@@ -1892,8 +1913,8 @@ public currentText;
       this.currentText= 'This Year';
 
      var date = new Date();
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='cytd';
       this.loadDentist(dentistVal);
     }
@@ -1903,11 +1924,11 @@ public currentText;
 
      var date = new Date();
       if ((date.getMonth() + 1) <= 3) {
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd MMM yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
         } else {
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
     }
-      this.endDate = this.datePipe.transform(new Date(), 'dd MMM yyyy');
+      this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.duration='fytd';
       this.loadDentist(dentistVal);
     }
@@ -1928,7 +1949,7 @@ public currentText;
 
   // Get Dentist
     getDentists() {
-      this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+      this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
            if(res.message == 'success'){
               this.dentists= res.data;
               this.dentistCount= res.data.length;
@@ -1947,6 +1968,7 @@ public currentText;
   }
   //Load Individual Dentist Item Predictor tab
   changeDentistPredictor(val){
+    this.predictorRatioTab = val;
      $('.predictedToolMain').hide();
     $('.predicted'+val+'Tool').show();
     $('.ratioPredictorSingle .predictor_ratio .sa_tab_btn').removeClass('active');
@@ -1972,14 +1994,14 @@ public currentText;
      }
   } 
   ytd_load(val) {
-    alert(this.datePipe.transform(val, 'dd MMM yyyy'));
+    alert(this.datePipe.transform(val, 'dd-MM-yyyy'));
   }
 choosedDate(val) {
 
     val = (val.chosenLabel);
     var val= val.toString().split(' - ');
-      this.startDate = this.datePipe.transform(val[0], 'dd MMM yyyy');
-      this.endDate = this.datePipe.transform(val[1], 'dd MMM yyyy');
+      this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.filterDate('custom');
       
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
@@ -2072,14 +2094,14 @@ toggleChangeProcess(){
       this.stackedChartData4 =[];
       this.stackedChartData5 =[] ;
       this.stackedChartLabels1 = [];
-  this.clinicianproceeduresService.ItemsPredictorAnalysisTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
+    this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
        this.stackedChartData1 =[];
       this.stackedChartData2 =[];
       this.stackedChartData3 =[];
       this.stackedChartData4 =[];
       this.stackedChartData5 =[] ;
       this.stackedChartLabels1 = [];
-       if(data.message == 'success'){
+       if(data.message == 'success' && data.data){
          if(data.data.length <=0) {
                 }else {
                 data.data.forEach(res => {
@@ -2139,9 +2161,9 @@ toggleChangeProcess(){
     {data: [], label: 'Implants' }  ];
     
       this.showTrend =true;
-      this.showInternal =false;
-      this.showExternal =false;
-      this.showCombined =false;
+      // this.showInternal =false;
+      // this.showExternal =false;
+      // this.showCombined =false;
       this.stackedChartTrendLabels1=[];
       this.stackedChartTrendData1 =[];
       this.stackedChartTrendData2 =[];
@@ -2151,10 +2173,10 @@ toggleChangeProcess(){
       this.stackedChartTrendData6 =[];
       this.stackedChartTrendData7 =[];
       this.stackedChartTrendData8 =[];
-  this.clinicianproceeduresService.ClinicianReferralTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
-    this.showInternal =false;
-      this.showExternal =false;
-      this.showCombined =false;
+   this.clinic_id && this.clinicianproceeduresService.ClinicianReferralTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
+    // this.showInternal =false;
+    //   this.showExternal =false;
+    //   this.showCombined =false;
       this.stackedChartTrendLabels1=[];
       this.stackedChartTrendData1 =[];
       this.stackedChartTrendData2 =[];
@@ -2165,7 +2187,7 @@ toggleChangeProcess(){
       this.stackedChartTrendData7 =[];
       this.stackedChartTrendData8 =[];
     if(this.mode== 'Internal') {
-       if(data.message == 'success'){
+       if(data.message == 'success' && data.data){
          if(data.data.internal.length >0) {
                 data.data.internal.forEach(res => {
                    this.stackedChartTrendData1.push(res.val[0].treat_item_count);
@@ -2307,9 +2329,9 @@ toggleChangeProcess(){
     {data: [], label: "RCT's Completed" } ];
 
       this.ratioChartLabels1=[];
-  this.clinicianproceeduresService.CpPredictorRatioTrend(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.clinicianproceeduresService.CpPredictorRatioTrend(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
       this.ratioChartLabels1=[];
-       if(data.message == 'success'){
+       if(data.message == 'success' && data.data){
          if(data.data.length <=0) {
                 }else {
                 data.data.forEach(res => {
@@ -2346,6 +2368,14 @@ toggleChangeProcess(){
                     else
                    this.ratioChartLabels1.push(res.duration);
                  });
+                 if(this.ratioChartData1[0]['data'].every((item) => item == 0 )) this.ratioChartData1[0]['data'] = [];
+                 if(this.ratioChartData1[1]['data'].every((item) => item == 0 )) this.ratioChartData1[1]['data'] = [];
+                 if(this.ratioChartData2[0]['data'].every((item) => item == 0 )) this.ratioChartData2[0]['data'] = [];
+                 if(this.ratioChartData2[1]['data'].every((item) => item == 0 )) this.ratioChartData2[1]['data'] = [];
+                 if(this.ratioChartData3[0]['data'].every((item) => item == 0 )) this.ratioChartData3[0]['data'] = [];
+                 if(this.ratioChartData3[1]['data'].every((item) => item == 0 )) this.ratioChartData3[1]['data'] = [];
+
+
                 if(this.ratio ==1)
                this.ratioChartData = this.ratioChartData1;
                else if(this.ratio ==2)

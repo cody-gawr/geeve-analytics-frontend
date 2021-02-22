@@ -20,9 +20,13 @@ export interface Dentist {
 })
 export class AppHeaderrightComponent implements AfterViewInit  {   
     private _routerSub = Subscription.EMPTY;
+  providerIdDentist;
+  isToggleDentistChart = false;
+  user_type_dentist;
   constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router) {
-     
-
+    this.providerIdDentist = this._cookieService.get("dentistid");
+    this.user_type_dentist = this._cookieService.get("user_type");
+  
     this._routerSub = this.router.events
          .filter(event => event instanceof NavigationEnd)
          .subscribe((value) => {
@@ -44,8 +48,20 @@ export class AppHeaderrightComponent implements AfterViewInit  {
  ngAfterViewInit() {
   //  this.clinic_id = '1';
      this.getClinics();
-      
+    if (this.user_type_dentist === '4') {
+      setTimeout(() => {
+        this.toggler()
+      }, 1000); 
+    }
   }
+
+  toggler(){
+    this.isToggleDentistChart = !this.isToggleDentistChart;
+    const dentistID = this.isToggleDentistChart ? this.providerIdDentist : 'all';
+    console.log('dentistID', dentistID)
+    this.loadDentist(dentistID);
+  }
+  
   public route:any;
   public title;
    public clinicsData:any[] = [];
@@ -112,7 +128,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   public selectedDentist;
     // Get Dentist
     getDentists() {
-      this.dentistService.getDentists(this.clinic_id) && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
+      this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
           this.showAll = true;
            if(res.message == 'success'){
               this.dentists= res.data;

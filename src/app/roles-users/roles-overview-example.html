@@ -11,8 +11,8 @@
    </select> 
  </div>
   <div class="SetRoles_checkbox">
-    <mat-checkbox class="role_permissions" *ngIf="selected_id <=4" [(ngModel)]="data.selectedRole['dashboard1_'+selected_id]">Clinician Analysis</mat-checkbox>
-    <mat-checkbox class="role_permissions" *ngIf="selected_id <=4" [(ngModel)]="data.selectedRole['dashboard2_'+selected_id]">Clinician Procedures & Referrals</mat-checkbox>
+    <mat-checkbox class="role_permissions" *ngIf="selected_id <=4|| selected_id ==5" [(ngModel)]="data.selectedRole['dashboard1_'+selected_id]">Clinician Analysis</mat-checkbox>
+    <mat-checkbox class="role_permissions" *ngIf="selected_id <=4|| selected_id ==5" [(ngModel)]="data.selectedRole['dashboard2_'+selected_id]">Clinician Procedures & Referrals</mat-checkbox>
     <mat-checkbox class="role_permissions" *ngIf="selected_id <4 || selected_id ==5" [(ngModel)]="data.selectedRole['dashboard3_'+selected_id]">Front Desk</mat-checkbox>
     <mat-checkbox class="role_permissions" *ngIf="selected_id <4 || selected_id ==5" [(ngModel)]="data.selectedRole['dashboard4_'+selected_id]">Marketing</mat-checkbox>
     <mat-checkbox class="role_permissions" *ngIf="selected_id!=4 && selected_id>=1" [(ngModel)]="data.selectedRole['dashboard5_'+selected_id]">Finances</mat-checkbox>

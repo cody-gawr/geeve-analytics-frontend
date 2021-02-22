@@ -248,6 +248,17 @@ initiate_clinic() {
   getFollowupsUnscheduledPatients(){
     this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
+        production.data.map((item) => {
+          const phoneNumber  = item.phone_home ? item.phone_home : ( item.phone_work ? item.phone_work : item.mobile);
+          if(phoneNumber) {
+            let str = phoneNumber.split(" ").join("");
+            if (phoneNumber.substring(0, 2) == '04') {
+              item.phoneNumber = [str.slice(0, 4), str.slice(4, 7), str.slice(7)].join(' ')
+            } else {
+              item.phoneNumber = phoneNumber;
+            }
+          }
+        })
         this.followupsUnscheduledPatients = production.data;     
         this.followupsUnscheduledPatientsDate = production.date;     
       }
