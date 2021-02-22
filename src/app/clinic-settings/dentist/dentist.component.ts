@@ -63,6 +63,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   }
 
   setPaginationButtons(totalDentist) {
+    this.dentistTablePages = [];
     const totalPages = Math.ceil(totalDentist / this.dentistPageSize);
     for (let i = 0; i < totalPages; i++) {
       this.dentistTablePages.push(i + 1);
