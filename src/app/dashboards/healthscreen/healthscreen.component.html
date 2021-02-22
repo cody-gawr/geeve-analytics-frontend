@@ -47,22 +47,32 @@
             <mat-card class="treatmentPlan sa_hccard">
               <mat-card-content class="sa_matcard_content">
                 <div class="prodction_main_box">
-                  <div class="production_images clinic-health-top-icon">
-                    <img src="../assets/images/profit.png" alt="product-chart" />
-                  </div>
-                  <div class="production_description production_description-grow">
-                    <h4>Profit</h4>
-                    <span class="change_value">
-                      {{profit_c >= 0 ? ' ' : '- ' }}
-                      ${{ (profit_c<0 ? profit_c.toString().split('-').join('') : profit_c) | number:'1.0-0'}}</span>
-                  </div>
-                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="profit_dif">
-                    <div [ngClass]="(profit_dif >= 0) ? 'plus': 'minus'">
-                      {{ profit_dif >= 0 ? '+ ' : '- ' }}
-                      ${{(profit_dif<0 ? profit_dif.toString().split('-').join('') : profit_dif) | number:'1.0-0'}}
-                    </div>
-                  </div>
+                    <ng-container *ngIf="xeroConnect;else NoXeroConnectProfitValuePlaceholder">
+                      <div class="production_images clinic-health-top-icon">
+                        <img src="../assets/images/profit.png" alt="product-chart" />
+                      </div>
+                      <div class="production_description production_description-grow">
+                        <h4>Profit</h4>
+                        <span class="change_value">
+                          {{profit_c >= 0 ? ' ' : '- ' }}
+                          ${{ (profit_c<0 ? profit_c.toString().split('-').join('') : profit_c) | number:'1.0-0'}}</span>
+                      </div>
+                      <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="profit_dif">
+                        <div [ngClass]="(profit_dif >= 0) ? 'plus': 'minus'">
+                          {{ profit_dif >= 0 ? '+ ' : '- ' }}
+                          ${{(profit_dif<0 ? profit_dif.toString().split('-').join('') : profit_dif) | number:'1.0-0'}}
+                        </div>
+                      </div>
+                    </ng-container>
+                    <ng-template #NoXeroConnectProfitValuePlaceholder>
+                      <div *ngIf="!xeroConnect" class="w-100"> 
+                        <div class="sa_nodata_div no-found-data ">
+                          <p>Please connect to Xero/MYOB to display this chart</p>
+                        </div>
+                      </div>
+                    </ng-template>
                 </div>
+                
               </mat-card-content>
             </mat-card>
           </div>
