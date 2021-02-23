@@ -1241,14 +1241,17 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 .dashboard-top-header > div {width: 100%;}
 .sa_responsive_tabs .sa_tabs_list {width: 90%;}
 .sa_responsive_tabs .sa_tabs_data {display: flex;overflow-x: auto;}
-.sa_responsive_tabs.sa_tabs_design .sa_filter_span {flex: 0 0 auto; margin: 0; display: block; border-bottom: 1px solid #eee; padding-left: 30px; width: 100%;}
+.sa_responsive_tabs.sa_tabs_design .sa_filter_span {flex: 0 0 auto;}
 .topbar-strip { padding: 0px 44px}
 }
 @media (max-width:959px) {
 .xero-main {
     padding-bottom: 20px !important;
 }
+.topbar-strip {top : 96px}
+
 .sa_profile_setting .mat-card-content { min-height: 100%; }
+.sa_responsive_tabs.sa_tabs_design .sa_filter_span {flex: 0 0 auto; margin: 0; display: block; border-bottom: 1px solid #eee; padding-left: 30px; width: 100%;}
 
 .top_referal { margin-right: 0px !important; }
 
@@ -1268,7 +1271,7 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 
 @media (max-width:600px) {
 
-
+.topbar-strip {top : 157px}
 .SetRoles_checkbox .mat-checkbox {padding: 7px 0px;width: 100%;}
 
 .sa_chart_details_sec > .text-center { margin-bottom: 15px; }
