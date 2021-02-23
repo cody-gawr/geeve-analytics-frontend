@@ -1,7 +1,7 @@
 <div class="sa_tabs_design sa_responsive_tabs">
   <div class="sa_tabs_list" [fxHide.lt-md]="true">
     <div class="sa_tabs_data">
-      <span (click)="filterDate(option.value)" class="filter sa_filter_span active">
+      <span (click)="filterDate('m')" class="filter_m filter sa_filter_span active">
         This Month
       </span>
       <span (click)="filterDate('lm')" class="filter_lm filter sa_filter_span">
@@ -27,8 +27,8 @@
         <mat-select class="external_clinic"  
           [(value)]="currentSelectedPeriod"  
           (selectionChange)="handleSelection($event)">
-          <mat-option *ngFor="let option of DateOptions" [value]="option.value" >
-              {{ option.name }}
+          <mat-option *ngFor="let clinicData of DateOptions" [value]="clinicData.value" >
+              {{ clinicData.name }}
           </mat-option>
         </mat-select>
       </div>     
