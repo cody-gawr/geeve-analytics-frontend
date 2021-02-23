@@ -230,11 +230,13 @@
 </ul>
 
    <div class="skipwizard text-center">
- <a>
-     <button class="setup-stepper-button" (click)="downloadPMS()"><i class="fas fa-cloud-download-alt"></i> Download Sync Utility</button>
-   </a>
-
- </div>
+    <div class="text-center mt-2">
+      <a>
+        <button class="setup-stepper-button" (click)="downloadPMS()"><i class="fas fa-cloud-download-alt"></i> Download Sync Utility</button>
+      </a>
+      <button mat-button (click)="skipDownloadSyncUtility()">Skip</button>
+    </div>
+  </div>
  </div>
 <div fxFlex="calc(49% - 15px)" fxFlex.md="calc(49% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order2">
    <div class="right-img download-sync-img">
