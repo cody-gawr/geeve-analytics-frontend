@@ -183,26 +183,37 @@ expenses_card custom_ngx_cw01" >
                             </canvas> -->
                     <div fxLayout="row wrap">
                       <div class="ngx-charts-fix " fxFlex.lg="70" fxFlex.xl="70" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70">
+                        <ng-container *ngIf="xeroConnect;else NoExpensePlaceholder">
                           <ngx-charts-pie-chart *ngIf="pieChartLabels.length > 0"
-                              class="chart-container sa_chart_custom"
-                              [view]="[500, 300]"
-                              [scheme]="colorScheme"
-                              [trimLabels] ="true"
-                              [maxLabelLength] ="15"
-                              [results]="single"
-                              [legend]="false"
-                              [explodeSlices]="explodeSlices"
-                              [labels]="showLabels"
-                              [doughnut]="doughnut"
-                              [gradient]="gradient"
-                              [tooltipDisabled]="tooltipDisabled"
-                              [tooltipText]="pieTooltipText"
-                            > </ngx-charts-pie-chart>
-                          <div *ngIf="pieChartLabels.length <= 0 && categoryExpensesLoader == false" class="no-data-placeholder"> 
-                            <div class="sa_nodata_div">
+                                class="chart-container sa_chart_custom"
+                                [view]="[500, 300]"
+                                [scheme]="colorScheme"
+                                [trimLabels] ="true"
+                                [maxLabelLength] ="15"
+                                [results]="single"
+                                [legend]="false"
+                                [explodeSlices]="explodeSlices"
+                                [labels]="showLabels"
+                                [doughnut]="doughnut"
+                                [gradient]="gradient"
+                                [tooltipDisabled]="tooltipDisabled"
+                                [tooltipText]="pieTooltipText"
+                              > </ngx-charts-pie-chart>
+                            <div *ngIf="pieChartLabels.length <= 0 && categoryExpensesLoader == false" class="no-data-placeholder"> 
+                                <div class="sa_nodata_div">
+                                </div>
+                                <p class="chart-placeholder-text">No expenses found for the selected period</p>
                             </div>
-                            <p class="chart-placeholder-text">No expenses found for the selected period</p>
-                          </div>
+                          </ng-container> 
+                          <ng-template #NoExpensePlaceholder>
+                            <div class="d-flex align-center h-100" *ngIf="categoryExpensesLoader == false">
+                              <div class="w-100"> 
+                                <div class="sa_nodata_div no-found-data no-finance-expense-data">
+                                  <p>Please connect to Xero/MYOB to display this chart</p>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-template>   
                       </div>
                       <div class="" fxFlex.lg="30" fxFlex.xl="30" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="30">
                         <div class="sa_pie_chart_txtdata">
