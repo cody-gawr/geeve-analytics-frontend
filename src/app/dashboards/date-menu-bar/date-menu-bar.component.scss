@@ -1,0 +1,44 @@
+.date-options {
+    left: 44px;
+    position: absolute;
+    top: 50px;
+    width: 80%;
+    background: #fff;
+    box-shadow: 1px 2px 8px 2px #eee;
+}
+
+.dropdown-select {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-menu {
+    width: 100%;
+    border-radius: 4px;
+    background: hsl(0, 0%, 97%);
+    padding: 10px 8px 7px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #626262;
+}
+
+.dropdown-menu::after {
+    content: "\f078";
+    font-family: 'Font Awesome 5 Free';
+    border-radius: 100%;
+    font-weight: 900;
+    transform: none;
+    border-width: 2px;
+    height: 15px;
+    width: 15px;
+    line-height: 15px;
+    text-align: center;
+    color: #a8a8b0;
+    float: right;
+    transition: 0.3s ease-in-out;
+}
+
+.toggle-down::after {
+    transform: rotate(180deg);
+}

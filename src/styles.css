@@ -257,7 +257,7 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .sa_forwhite_label { color: #424242; float: left; padding: 4px 0; }
 
-.vertical_center_header_content { padding: 4px 0; width: 100%; text-align: right; }
+.vertical_center_header_content { padding: 4px 0; width: 100%; text-align: right; min-width: 100%; max-width: 100%;}
 
 .mr15 { margin-right: 15px; }
 
@@ -1241,7 +1241,8 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 .dashboard-top-header > div {width: 100%;}
 .sa_responsive_tabs .sa_tabs_list {width: 90%;}
 .sa_responsive_tabs .sa_tabs_data {display: flex;overflow-x: auto;}
-.sa_responsive_tabs.sa_tabs_design .sa_filter_span {flex: 0 0 auto;}
+.sa_responsive_tabs.sa_tabs_design .sa_filter_span {flex: 0 0 auto; margin: 0; display: block; border-bottom: 1px solid #eee; padding-left: 30px; width: 100%;}
+.topbar-strip { padding: 0px 44px}
 }
 @media (max-width:959px) {
 .xero-main {
@@ -2017,7 +2018,7 @@ body .AddCard-main .AddCard-box .mat-card-title { font-size: 1rem !important; fl
 
 .action_btn.danger { background: transparent !important; color: #fc4b6c !important; }
 
-.header_first_select, .dentist_dropdown { padding: 0 5px; }
+.header_first_select, .dentist_dropdown { padding: 0 5px; width: 100%; }
 
 .header_filters { margin-right: -5px; }
 
