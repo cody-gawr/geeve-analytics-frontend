@@ -1294,7 +1294,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         data.data.forEach(res => {
           if (res.percent > 0) {
             if (res.provider != null) {
-              this.recallChartData1.push(Math.round(res.percent));
+              this.recallChartData1.push(Math.round(res.recall_percent));
               this.recallChartLabels1.push(res.provider);
               if (res.provider != 'Anonymous')
                 this.rpKey = i;
