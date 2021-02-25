@@ -22,3 +22,10 @@
   }
 
 }
+
+.hccard-container {
+  @media screen and (min-width: 991px) {
+    max-width: 340px !important;  
+    justify-content: space-between !important;  
+  }
+}
