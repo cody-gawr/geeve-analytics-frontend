@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import { ChartService } from '../chart.service';
-
+interface IDateOption {
+  name: string,
+  value: string
+}
 @Component({
   selector: 'app-date-menu-bar',
   templateUrl: './date-menu-bar.component.html',
@@ -10,7 +13,8 @@ export class DateMenuBarComponent implements AfterViewInit {
   @Output() filter: EventEmitter<string> = new EventEmitter();
   @Output() changeDate: EventEmitter<any> = new EventEmitter();
   currentSelectedPeriod: string = 'm';
-  DateOptions = [
+  
+  DateOptions: Array<IDateOption> = [
     {
       name: 'This Month',
       value: 'm'

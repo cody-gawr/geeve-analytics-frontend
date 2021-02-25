@@ -93,7 +93,7 @@
 
 .sa_tabs_design.sa_responsive_tabs {display: -webkit-box; display: -ms-flexbox; display: flex;align-items: center; float: none;}
 
-.sa_tabs_design .sa_filter_span {float: left; min-width: 47px; font-weight: 500;color: #919191;padding: 18px 0px 10px;margin: 0 15px;font-family: 'Gilroy-Medium';border-bottom: 2px solid transparent;font-size: 13px;cursor: pointer;}
+.sa_tabs_design .sa_filter_span {float: left; min-width: 47px; font-weight: 500;color: #919191;padding: 18px 0px 10px;margin: 0 8px;font-family: 'Gilroy-Medium';border-bottom: 2px solid transparent;font-size: 13px;cursor: pointer;}
 
 .sa_tabs_design .sa_filter_span:first-child {margin-left: 0;}
 

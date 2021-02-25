@@ -204,16 +204,16 @@ expenses_card custom_ngx_cw01" >
                                 </div>
                                 <p class="chart-placeholder-text">No expenses found for the selected period</p>
                             </div>
-                          </ng-container> 
-                          <ng-template #NoExpensePlaceholder>
-                            <div class="d-flex align-center h-100" *ngIf="categoryExpensesLoader == false">
-                              <div class="w-100"> 
-                                <div class="sa_nodata_div no-found-data no-finance-expense-data">
-                                  <p>Please connect to Xero/MYOB to display this chart</p>
-                                </div>
+                        </ng-container> 
+                        <ng-template #NoExpensePlaceholder>
+                          <div class="d-flex align-center h-100" *ngIf="categoryExpensesLoader == false">
+                            <div class="w-100"> 
+                              <div class="sa_nodata_div no-found-data no-finance-expense-data">
+                                <p>Please connect to Xero/MYOB to display this chart</p>
                               </div>
                             </div>
-                          </ng-template>   
+                          </div>
+                        </ng-template>   
                       </div>
                       <div class="" fxFlex.lg="30" fxFlex.xl="30" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="30">
                         <div class="sa_pie_chart_txtdata">
