@@ -129,7 +129,7 @@
   <div fxFlex="calc(35% - 15px)" fxFlex.md="calc(35% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box step-2-center">
     <div class="intro_title stripe_payment relative-box">
       <div class="intro_title stripe_payment absolute-center">
-        <h2>Connect your Accounting Software</h2>
+        <h2>Connect your <span>Accounting Software</span></h2>
         <h4 class="step-2-content">
           We integrate with <span>Xero</span> and <span>MYOB</span> to bridge the gap between
           your PMS and Accounting software.
@@ -165,7 +165,7 @@
             <img src="assets/images/myob.png" alt="" />
           </div>
           <div class="button-container">
-              <button class="connect-button" (click)="xeroConnect ? disconnectXero() : openXero()">
+              <button class="connect-button disabled-connect-button" disabled (click)="xeroConnect ? disconnectXero() : openXero()">
                 {{ !xeroConnect  ? 'Connect to MYOB' : 'Disconnect from MYOB' }}
                 <img class="fast-forward-icon" src="assets/images/fast_forward_arrows.png" alt="" />
               </button>

@@ -46,6 +46,11 @@
     background: #fff;
 }
 
+.disabled-connect-button {
+    opacity: 0.6;
+    cursor: auto;
+}
+
 .step-2-content span {
     color: #333;
     font-family: 'Gilroy-Bold';
