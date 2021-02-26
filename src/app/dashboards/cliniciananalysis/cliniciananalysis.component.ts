@@ -1292,10 +1292,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.recallChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.percent > 0) {
-            if (res.provider != null) {
-              this.recallChartData1.push(Math.round(res.percent));
-              this.recallChartLabels1.push(res.provider);
+          if (res.recall_percent > 0) {
+            if (res.provider_name != null) {
+              this.recallChartData1.push(Math.round(res.recall_percent));
+              this.recallChartLabels1.push(res.provider_name);
               if (res.provider != 'Anonymous')
                 this.rpKey = i;
               i++;
@@ -1375,8 +1375,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.recallPrebookDentistLoader = false;
         this.recallValue = '0';
         if (data.data.length > 0) {
-          this.recallValue = Math.round(data.data[0].percent);
-          this.recallLabel = data.data[0].provider;
+          this.recallValue = Math.round(data.data[0].recall_percent);
+          this.recallLabel = data.data[0].provider_name;
 
         }
         this.recallChartAveragePrev = data.total_ta;
