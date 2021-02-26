@@ -129,16 +129,59 @@
   <div fxFlex="calc(35% - 15px)" fxFlex.md="calc(35% - 15px)" fxFlex.sm="100" fxFlex.xs="100" class="order1 setup-form-box step-2-center">
     <div class="intro_title stripe_payment relative-box">
       <div class="intro_title stripe_payment absolute-center">
-        <h2>Connect To <span>Xero</span></h2>
-        <h4 class="step-2-content">Xero is online accounting software for your small business. Please sign up for an account or connect your existing Xero account</h4>
-        <h5 *ngIf="xeroOrganization != ''">You are now connected to <span>{{xeroOrganization}}</span> organization</h5>
+        <h2>Connect your Accounting Software</h2>
+        <h4 class="step-2-content">
+          We integrate with <span>Xero</span> and <span>MYOB</span> to bridge the gap between
+          your PMS and Accounting software.
+        </h4>
+        <!-- <h5 *ngIf="xeroOrganization != ''">You are now connected to <span>{{xeroOrganization}}</span> organization</h5>
         <div class="connect-xero-btn">    
           <Button class="setup-stepper-button" (click)="xeroConnect ? disconnectXero() : openXero()">{{ xeroConnect ? 'Disconnect >>' : 'Connect >>' }}</Button>
+        </div> -->
+        <!-- Xero connect  -->
+        <div class="text-center text-center-divider">
+          <div class="image-container">
+            <img src="assets/images/xero_settings.png" alt="" />
+          </div>
+          <div class="button-container">
+              <button class="connect-button" (click)="xeroConnect ? disconnectXero() : openXero()">
+                {{ !xeroConnect  ? 'Connect to Xero' : 'Disconnect from XERO' }}
+                <img class="fast-forward-icon" src="assets/images/fast_forward_arrows.png" alt="" />
+              </button>
+          </div>
+          <div class="company-container" *ngIf="xeroOrganization?.length">
+            <div class="company-icon">
+              <img src="assets/images/company_icon.png" alt="" />
+            </div>
+            <div class="company-name">{{ xeroOrganization }}</div> <!-- Demo Company (AU) -->
+          </div>
+          <div class="or">OR</div>
         </div>
+
+
+        <!-- Myob connect  -->
+        <div class="text-center">
+          <div class="image-container">
+            <img src="assets/images/myob.png" alt="" />
+          </div>
+          <div class="button-container">
+              <button class="connect-button" (click)="xeroConnect ? disconnectXero() : openXero()">
+                {{ !xeroConnect  ? 'Connect to MYOB' : 'Disconnect from MYOB' }}
+                <img class="fast-forward-icon" src="assets/images/fast_forward_arrows.png" alt="" />
+              </button>
+          </div>
+          <div class="company-container" *ngIf="xeroOrganization?.length">
+            <div class="company-icon">
+              <img src="assets/images/company_icon.png" alt="" />
+            </div>
+            <div class="company-name">{{ xeroOrganization }}</div> <!-- Demo Company (AU) -->
+          </div>
+        </div>
+
         <div class="step2-next-skip-btn">
           <button mat-raised-button color="green" (click)="saveStripe()" *ngIf ="xeroConnect == true">Next</button>
           <button mat-button (click)="saveStripe()" *ngIf ="xeroConnect == false">Skip</button>
-        </div>
+        </div> 
       </div>
     </div>
   </div>
