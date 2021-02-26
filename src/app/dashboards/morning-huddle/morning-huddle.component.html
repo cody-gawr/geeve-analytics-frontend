@@ -1,6 +1,6 @@
 <div class="sa_dashboard_inner_content morning-huddle">
 
-<mat-tab-group  (selectedTabChange)="onTabChanged($event);">
+<mat-tab-group [selectedIndex]="selectedTab">
 
   <!-- Dentist Performance Tab -->  
   <mat-tab label="Dentist Performance">
@@ -1031,7 +1031,19 @@
   <!-- Dentist Performance Tab -->
 
 
-
+ <!-- responsive tabs dropdown -->
+  <mat-tab label="responsive-tab-group" disabled>
+    <ng-template mat-tab-label>
+      <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+          {{ morningHuddleTabs[selectedTab] }}
+      </button>
+      <mat-menu #menu="matMenu">
+        <ng-container *ngFor="let tab of morningHuddleTabs; let i=index">
+          <button mat-menu-item (click)="changeTab(i)">{{ tab }}</button>
+        </ng-container>
+      </mat-menu>
+    </ng-template>
+  </mat-tab>
 
 </mat-tab-group>
 

@@ -24,12 +24,21 @@ export interface PeriodicElement {
 
 
 
+
 @Component({
   selector: 'app-morning-huddle',
   templateUrl: './morning-huddle.component.html',
   styleUrls: ['./morning-huddle.component.css']
 })
 export class MorningHuddleComponent implements OnInit,OnDestroy {
+  selectedTab = 0;
+  morningHuddleTabs = [
+    'Dentist Performance',
+    'Patient Schedule',
+    'Front Desk',
+    'Reminders',
+    'Followups'
+  ];
 	 public id:any = '';
   	public clinic_id:any = '';
   	public user_type:any = '';
@@ -158,6 +167,10 @@ initiate_clinic() {
     }
   }
 
+  
+  changeTab(tabIndex: number) {
+    this.selectedTab = tabIndex;
+  }
 
   onTabChanged(event){
    // console.log(event.tab.textLabel,'((((((((((((((');
