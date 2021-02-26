@@ -322,7 +322,7 @@
   <!-- Dentist Performance Tab -->
 
 
-  <!-- Dentist Performance Tab -->  
+  <!-- Patient Schedule Tab start -->  
   <mat-tab label="Patient Schedule">
      <div class="morning-huddle-date">
         <mat-form-field>
@@ -522,10 +522,10 @@
 </table>
 </div>
   </mat-tab>
-  <!-- Dentist Performance Tab -->
+  <!-- Patient Schedule Tab end -->
 
 
-  <!-- Front desk Tab -->  
+  <!-- Front desk Tab start -->  
   <mat-tab label="Front Desk">
     <div class="sa_dentist_graphs_area sa_profit_bar front-desk">
        <!--  <div class="morning-huddle-date">
@@ -727,10 +727,10 @@
         </div>
       </div>
   </mat-tab>
-  <!-- Front desk Tab -->
+  <!-- Front desk Tab end -->
 
 
-  <!-- Reminders Tab -->  
+  <!-- Reminders Tab start -->  
   <mat-tab label="Reminders">
 
      <div class="morning-huddle-date">
@@ -1028,7 +1028,7 @@
 
 
   </mat-tab>
-  <!-- Dentist Performance Tab -->
+  <!-- Followups Tab end -->
 
 
  <!-- responsive tabs dropdown -->
@@ -1039,7 +1039,7 @@
       </button>
       <mat-menu #menu="matMenu">
         <ng-container *ngFor="let tab of morningHuddleTabs; let i=index">
-          <button mat-menu-item (click)="changeTab(i)">{{ tab }}</button>
+          <button mat-menu-item (click)="changeTab(i)" [ngClass]="{'active': i===selectedTab}">{{ tab }}</button>
         </ng-container>
       </mat-menu>
     </ng-template>
