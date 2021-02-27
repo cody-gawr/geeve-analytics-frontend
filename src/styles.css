@@ -3369,6 +3369,15 @@ body .sa_sidebar_logo {
 body .sa_mobile_header {
     padding: 0px 0 0px 0;
 }
+    .user_rate_listing li {
+        padding: 0px;
+    }
+    .user-reffrance .user_value {
+        padding: 16px 0 !important;
+    }
+    .ur_users {
+        width: 14%;
+    }
     .mat-tab-label:not(.mat-tab-disabled) {
         display: none;
     }
