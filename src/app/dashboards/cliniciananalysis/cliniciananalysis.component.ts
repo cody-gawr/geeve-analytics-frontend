@@ -239,7 +239,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
       this.getDentists();
-      this.filterDate('m');
+      // this.filterDate('m');
     }
   }
 
@@ -841,6 +841,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
 
   //Load Dentist Data
  loadDentist(newValue) {
+   console.log('startDate', this.startDate);
   if(newValue =='')
     newValue='all';
    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');

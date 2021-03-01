@@ -135,7 +135,7 @@ single = [
       this.clinic_id = val;
       this.checkXeroStatus()
       this.getDentists();
-      this.filterDate('m');
+      // this.filterDate('m');
    }
   }
 

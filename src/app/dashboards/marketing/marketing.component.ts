@@ -104,7 +104,7 @@ export class MarketingComponent implements AfterViewInit {
       if(val != undefined && val !='all') {
     this.clinic_id = val;
     this.checkXeroStatus();
-     this.filterDate('m');
+    //  this.filterDate('m');
    }
   }
 
