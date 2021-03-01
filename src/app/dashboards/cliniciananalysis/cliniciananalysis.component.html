@@ -102,7 +102,7 @@
               <div style="height: 300px" *ngIf="barChartData[0].data.length && !buildChartLoader">
                 <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
                   [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP">
-                </canvas>
+                </canvas> <!-- dynamic colors of bar --> 
               </div>
               <div *ngIf="!barChartData[0].data.length && !buildChartLoader" class="no-data-placeholder">
                 <div class="sa_nodata_div">
