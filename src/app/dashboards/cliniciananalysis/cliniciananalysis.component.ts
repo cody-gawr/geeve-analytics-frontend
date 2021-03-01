@@ -1119,7 +1119,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
       else
          this.DPcolors = this.lineChartColors;
-
          this.barChartData[0]['data'] = this.barChartData1;
          const colors = [
           this.chartService.colors.odd,
@@ -1129,8 +1128,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
           this.chartService.colors.odd,
           this.chartService.colors.even,
           this.chartService.colors.odd
-        ];
-        this.barChartData[0].backgroundColor = colors;
+        ]; // this is static array for colors of bars
+       
+        let dynamicColors = [];
+        this.barChartLabels1.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.even : this.chartService.colors.odd);
+        }); // This is dynamic array for colors of bars
+        
+        this.barChartData[0].backgroundColor = dynamicColors;
          this.barChartLabels = this.barChartLabels1;
          this.productionTotalAverage =Math.round(this.productionTotal/this.barChartData1.length);
          this.productionTotalPrev =Math.round(data.total_ta);
