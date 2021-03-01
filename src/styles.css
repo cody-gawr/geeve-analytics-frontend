@@ -230,7 +230,14 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 .sa_select_outer { position: relative; float: left; width: 100%; }
 
 .sa_select_outer:after { content: ''; position: absolute; right: 4px; width: 0; height: 0; top: 46%; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid; margin: 0 4px; color: rgba(0, 0, 0, 0.54) }
-
+.fixed-top-sidebar-logo {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    left: 0;
+    background: #fff;
+    z-index: 99;
+}
 .sa_heading_bar {
     width: 100%;
     color: #424242;
@@ -3361,7 +3368,9 @@ body .stepper_content .invite_section .sa-form-group {
 
 }
 .page-content.stepper_content {padding-top: 20px !important;}
-
+#snav .mat-nav-list .sub-item a {
+    padding-left: 36px !important;
+}
 body .sa_sidebar_logo {
     padding: 5px 20px 0px 0;
     margin-bottom: 0px;
@@ -3551,6 +3560,7 @@ body .sa_mobile_header {
 ul.download-sync-list {
     margin-top: 15px !important;
 }
+
 
 .download-sync-list li::before {
     transform: rotate(0deg);
