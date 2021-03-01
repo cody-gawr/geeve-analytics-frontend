@@ -52,7 +52,9 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', endColorstr='#006f73',GradientType=0 ); /* IE6-9 */
 }
 .sidebar_menu {padding: 20px;}
-
+.justify-between {
+    justify-content: space-between !important;
+}
 #snav .app-sidebar > .mat-nav-list.mat-list-base { padding-bottom: 70px; }
 
 #snav .mat-nav-list .mat-list-item a { font-size: 15px!important; color: #89cdc2!important; }
@@ -168,7 +170,17 @@
 
 .file-upload-filename { padding: 0 6px 0 15px; }
 
-.mat-flat-button.mat-dc, .mat-raised-button.mat-dc, .mat-fab.mat-dc, .mat-mini-fab.mat-dc { background: #18a689 !important; color: #fff; }
+.mat-flat-button.mat-dc, .mat-raised-button.mat-dc, .mat-fab.mat-dc, .mat-mini-fab.mat-dc { 
+    /* background: #18a689 !important; color: #fff;  */
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #FFF;
+    background-image: linear-gradient(14deg, #17a5aa 0%, #18a689 100%);
+    box-shadow: none !important;
+    border: 0;
+    font-family: 'Gilroy-Medium';
+    border-radius: 5px;
+}
 
 .action_btn {
     width: 27px!important;
@@ -2075,11 +2087,24 @@ body .AddCard-main .AddCard-box .mat-card-title { font-size: 1rem !important; fl
     box-shadow: none !important;
 }
 body .mat-gray {
-    background: rgba(14,52,89,1);
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #18a689;
+    background: #FFF;
+    box-shadow: none !important;
+    border: 1px solid #18a689;
+    font-family: 'Gilroy-Medium';
+    border-radius: 5px;
 }
 .mat-flat-button.mat-.basic_details_form .mat-card-title, .mat-raised-button.mat-green, .mat-fab.mat-green, .mat-mini-fab.mat-green {
-    background: #18a689;
-    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #FFF;
+    background-image: linear-gradient(14deg, #17a5aa 0%, #18a689 100%);
+    box-shadow: none !important;
+    border: 0;
+    font-family: 'Gilroy-Medium';
+    border-radius: 5px;
 }
 
 .title_btn .mat-raised-button {
@@ -2091,7 +2116,7 @@ body .mat-gray {
 
 .mat-raised-button {
     padding: 0px 20px !important;
-    border-radius: 50px !important;
+    border-radius: 4px !important;
 }
 
 
@@ -2100,11 +2125,11 @@ body .mat-gray {
    
 }
 .mat-raised-button:active, .mat-raised-button:hover, .mat-raised-button:focus {
-    box-shadow: 0px 15px 15px -7px rgba(41, 56, 79, 0.4) !important;
+    box-shadow: 0px 4px 16px -7px #7a7a7a !important;
 }
 
 .mat-raised-button.mat-green, .mat-raised-button.mat-dc {
-    box-shadow: 0px 10px 13px -5px rgba(24, 166, 137, 0.3) !important;
+    box-shadow: 0px 10px 13px -5px rgba(24, 166, 137, 0.3);
 }
 .mat-raised-button.mat-green:active 
 .mat-raised-button.mat-dc:active, 
