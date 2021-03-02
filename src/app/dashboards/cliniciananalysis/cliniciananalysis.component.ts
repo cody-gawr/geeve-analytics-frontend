@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ClinicianAnalysisService } from './cliniciananalysis.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { FrontDeskService } from '../frontdesk/frontdesk.service';
@@ -28,7 +28,7 @@ export interface Dentist {
   *Clinician analysis graph Dashboard
   *AUTHOR - Teq Mavens
   */
-export class ClinicianAnalysisComponent implements AfterViewInit {
+export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild("myCanvas") canvas: ElementRef;
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
@@ -82,6 +82,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         if (this._cookieService.get("childid"))
           this.childid = this._cookieService.get("childid");
       });
+     
+
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    $('.topbar-strip').removeClass('responsive-top');
   }
   /**
   *Check If logged in user is eligible to access this page.
@@ -175,7 +183,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         $('.customRange').hide();
       }
     })
-
+    $('.topbar-strip').addClass('responsive-top');
     //this.canvas = (<HTMLElement>document.getElementById('#'))
 
     // let gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0,0,0,400);
@@ -236,10 +244,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   //Load Clinic Data
   initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
-    if (val != undefined && val != 'all') {
+    if (val != undefined || val != 'all') {
       this.clinic_id = val;
       this.getDentists();
-      // this.filterDate('m');
+      this.filterDate(this.chartService.duration$.value);
     }
   }
 

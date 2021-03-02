@@ -1,5 +1,5 @@
 import * as $ from 'jquery';
-import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , ViewChild,ElementRef } from '@angular/core';
+import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , ViewChild,ElementRef, OnDestroy } from '@angular/core';
 import { ClinicianProceeduresService } from './clinicianproceedures.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
@@ -25,7 +25,7 @@ export interface Dentist {
   *Clinician Proceedure Graph Dashboard
   *AUTHOR - Teq Mavens
   */
-export class ClinicianProceeduresComponent implements AfterViewInit {
+export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     @ViewChild("myCanvas") canvas: ElementRef;
   lineChartColors;
   doughnutChartColors;
@@ -70,9 +70,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
          this.childid = this._cookieService.get("childid");
           $('.internal_dentist').val('all');
           $('.external_dentist').val('all');
-
+          
        }
     });
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    $('.topbar-strip').removeClass('responsive-top');
   }
   private warningMessage: string;
   private myTemplate: any = "";
@@ -105,7 +111,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
      if(val != undefined && val !='all') {
     this.clinic_id = val;
     this.getDentists();
-    //  this.filterDate('m');
+    this.filterDate(this.chartService.duration$.value);
    }
   }
   myDateParser(dateStr : string) : string {
@@ -175,6 +181,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
             $('.customRange').hide();
         }
         })
+
+        $('.topbar-strip').addClass('responsive-top');
      });
  
       let gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);

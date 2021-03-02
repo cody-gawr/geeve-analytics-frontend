@@ -131,6 +131,13 @@
 
 /*linear-gradient(142deg, rgb(24, 166, 137) 10%, rgb(14, 52, 89) 100%) !important */
 
+#snav .mat-nav-list .sub-item a {
+    padding-left: 36px !important;
+}
+
+.nsm-dialog {
+    max-width: 70%;
+}
 
 .sa_box_title_right_buttons { float: right; margin-top: -10px; }
 
@@ -1279,6 +1286,16 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 .top_referal .ng-star-inserted:last-child { margin-right: 0px !important; }
 }
 @media (max-width:767px) {
+    .nsm-dialog {
+        max-width: 90%;
+    }
+
+    .page_title span {
+        width: unset;
+        margin-right: 12px;
+    }
+    .topbar-strip {top : 116px}
+
 
 .sa_tabs_design .sa_filter_span { margin-bottom: 0; }
 
@@ -1289,10 +1306,9 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 .doughnut-chart-center-text{margin-top: -24px;}
 }
 
-
 @media (max-width:600px) {
-
-.topbar-strip {top : 157px}
+    .topbar-strip {top : 116px}
+.responsive-top {top :157px}
 .SetRoles_checkbox .mat-checkbox {padding: 7px 0px;width: 100%;}
 
 .sa_chart_details_sec > .text-center { margin-bottom: 15px; }
@@ -3393,9 +3409,7 @@ body .stepper_content .invite_section .sa-form-group {
 
 }
 .page-content.stepper_content {padding-top: 20px !important;}
-#snav .mat-nav-list .sub-item a {
-    padding-left: 36px !important;
-}
+
 body .sa_sidebar_logo {
     padding: 5px 20px 0px 0;
     margin-bottom: 0px;
@@ -4770,4 +4784,5 @@ ul.download-sync-list {
     padding: 4px 10px;
     font-size: 14px;
 }
+
 

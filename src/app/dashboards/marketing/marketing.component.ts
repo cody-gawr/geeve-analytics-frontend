@@ -104,7 +104,7 @@ export class MarketingComponent implements AfterViewInit {
       if(val != undefined && val !='all') {
     this.clinic_id = val;
     this.checkXeroStatus();
-    //  this.filterDate('m');
+    this.filterDate(this.chartService.duration$.value);
    }
   }
 
@@ -326,8 +326,10 @@ this.preoceedureChartColors = [
       // get the internal index of slice in pie chart
       const clickedElementIndex = activePoints[0]._index;
       const label = chart.data.labels[clickedElementIndex];
-      // get value by index
-      const value = chart.data.datasets[0].data[clickedElementIndex];
+      // get colors of segment
+      let color = activePoints[0].$previousStyle.backgroundColor;
+      this.individualSegmentColor[0].backgroundColor = [color];
+
       if(labels === 'newPatients') {
       this.drilldownNewPatients(label);
     }
@@ -371,6 +373,11 @@ this.preoceedureChartColors = [
   public selectedDentist;
   public dentists;
   public pieChartType = 'doughnut';
+  public individualSegmentColor = [
+    {
+      backgroundColor: []
+    }
+  ];
   public pieChartColors = [
     {
       backgroundColor: [
@@ -534,6 +541,7 @@ public mkNewPatientsByReferralLoader:any;
              data.data.patients_refname[label].forEach(res => {
               if(i<10) {
                this.newPatientsTimeData1.push(res.patients_visits);
+               this.newPatientsReferral$.next(res.patients_visits);
                this.newPatientsTimeLabels1.push(res.referral_name);
                 i++;
               }
@@ -611,6 +619,7 @@ public mkRevenueByReferralLoader:any;
              data.data.patients_refname[label].forEach(res => {
                 if(i<10) {
                this.revenueReferralData1.push(res.total);
+               this.revenueByReferralCount$.next(Math.round(res.total || 0));
                this.revenueReferralLabels1.push(res.referral_name);
                   i++;
               }

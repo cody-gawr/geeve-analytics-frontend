@@ -68,7 +68,7 @@ export class FrontDeskComponent implements AfterViewInit {
       if(val != undefined && val !='all') {
     this.clinic_id = val;
    // this.getDentists();
-    //  this.filterDate('m');
+   this.filterDate(this.chartService.duration$.value);
    }
   }
 
