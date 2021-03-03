@@ -1011,11 +1011,11 @@ toggleChangeProcess(){
                 data.data.forEach(res => {  
                   if(res.val>100)
                     res.val =100;
-                     this.ftaChartTrend1.push(Math.round(res.val));
+                     this.ftaChartTrend1.push(Math.round(res.fta_ratio));
                    if(this.trendValue == 'c')
-                   this.ftaChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.ftaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.ftaChartTrendLabels1.push(res.duration);
+                   this.ftaChartTrendLabels1.push(res.year);
                   
                  });
                  this.ftaChartTrend[0]['data'] = this.ftaChartTrend1;
@@ -1110,11 +1110,11 @@ toggleChangeProcess(){
                 data.data.forEach(res => {  
                   if(res.val>100)
                     res.val =100;
-                     this.utaChartTrend1.push(Math.round(res.val));
+                     this.utaChartTrend1.push(Math.round(res.uta_ratio));
                    if(this.trendValue == 'c')
-                   this.utaChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.utaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.utaChartTrendLabels1.push(res.duration);
+                   this.utaChartTrendLabels1.push(res.year);
                   
                  });
                  this.utaChartTrend[0]['data'] = this.utaChartTrend1;
