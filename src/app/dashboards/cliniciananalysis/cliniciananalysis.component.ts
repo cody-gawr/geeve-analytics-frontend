@@ -2638,12 +2638,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       if (data.message == 'success') {
         this.dentistProductionTrendLoader = false;
         data.data.forEach(res => {
-          if(res.val.total)
-            this.dentistProductionTrend1.push(Math.round(res.val.total));
+          if(res.production)
+            this.dentistProductionTrend1.push(Math.round(res.production));
           if (this.trendValue == 'c')
-            this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+            this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else
-            this.dentistProductionTrendLabels1.push(res.duration);
+            this.dentistProductionTrendLabels1.push(res.year);
         });
         if(this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
         this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
@@ -2790,12 +2790,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.patientComplaintsTrendLoader = false;
         if (data.data) {
           data.data.forEach(res => {
-            if(res.val.treat_item)
-              this.patientComplaintsTrend1.push(res.val.treat_item);
+            if(res.num_complaints)
+              this.patientComplaintsTrend1.push(res.num_complaints);
             if (this.trendValue == 'c')
-              this.patientComplaintsTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+              this.patientComplaintsTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
             else
-              this.patientComplaintsTrendLabels1.push(res.duration);
+              this.patientComplaintsTrendLabels1.push(res.year);
           });
         }
         this.patientComplaintTrend[0]['data'] = this.patientComplaintsTrend1;
@@ -2862,11 +2862,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.recallPrebookChartTrendLabels1 = [];
         this.recallPrebookChartTrend1 = [];
         data.data.forEach(res => {
-          this.recallPrebookChartTrend1.push(Math.round(res.val));
+          this.recallPrebookChartTrend1.push(Math.round(res.recall_patient));
           if (this.trendValue == 'c')
-            this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+            this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else
-            this.recallPrebookChartTrendLabels1.push(res.duration);
+            this.recallPrebookChartTrendLabels1.push(res.year);
 
         });
         this.recallPrebookChartTrend[0]['data'] = this.recallPrebookChartTrend1;
@@ -3066,15 +3066,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.newPatientsChartTrendLabels1 = [];
         this.newPatientsChartTrend1 = [];
         data.data.forEach(res => {
-          if (res.val)
-            this.newPatientsChartTrend1.push(Math.round(res.val.getX));
+          if (res.new_patients)
+            this.newPatientsChartTrend1.push(Math.round(res.new_patients));
           else
             this.newPatientsChartTrend1.push(0);
 
           if (this.trendValue == 'c')
-            this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+            this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else
-            this.newPatientsChartTrendLabels1.push(res.duration);
+            this.newPatientsChartTrendLabels1.push(res.year);
 
         });
         this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
@@ -3141,13 +3141,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.treatmentPlanChartTrend1 = [];
         if (data.data) {
           data.data.forEach(res => {
-            if (res.val) {
-              if(res.val)
-                this.treatmentPlanChartTrend1.push(Math.round(res.val));
+            if (res.treatment_per_plan_percentage) {
+              if(res.treatment_per_plan_percentage)
+                this.treatmentPlanChartTrend1.push(Math.round(res.treatment_per_plan_percentage));
               if (this.trendValue == 'c')
-                this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
               else
-                this.treatmentPlanChartTrendLabels1.push(res.duration);
+                this.treatmentPlanChartTrendLabels1.push(res.year);
             }
           });
         }
