@@ -69,7 +69,7 @@
         </canvas>
          <canvas *ngIf="newPatientsTimeLabelsl2.length > 0"  #myCanvas2 baseChart [data]="newPatientsTimeData" [labels]="newPatientsTimeLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
         [plugins]="pluginObservable$ | async"
-          [options]="noNewPatientsByReferralChartOptions" [colors]="individualSegmentColor">
+          [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
         </canvas>
 
           <div *ngIf="newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false">
@@ -114,7 +114,7 @@
            baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2" 
            [chartType]="pieChartType" (chartHover)="chartHovered($event)"
           [plugins]="revenuePluginObservable$ | async"
-          [options]="pieChartOptions" [colors]="individualSegmentColor">
+          [options]="pieChartOptions" [colors]="pieChartColors">
         </canvas>
 
           <div *ngIf="revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false">

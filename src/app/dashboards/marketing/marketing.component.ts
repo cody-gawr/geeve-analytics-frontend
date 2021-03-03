@@ -326,10 +326,6 @@ this.preoceedureChartColors = [
       // get the internal index of slice in pie chart
       const clickedElementIndex = activePoints[0]._index;
       const label = chart.data.labels[clickedElementIndex];
-      // get colors of segment
-      let color = activePoints[0].$previousStyle.backgroundColor;
-      this.individualSegmentColor[0].backgroundColor = [color];
-
       if(labels === 'newPatients') {
       this.drilldownNewPatients(label);
     }
@@ -373,11 +369,7 @@ this.preoceedureChartColors = [
   public selectedDentist;
   public dentists;
   public pieChartType = 'doughnut';
-  public individualSegmentColor = [
-    {
-      backgroundColor: []
-    }
-  ];
+  
   public pieChartColors = [
     {
       backgroundColor: [
@@ -538,10 +530,12 @@ public mkNewPatientsByReferralLoader:any;
 
             if(data.data.patients_refname[label].length >0) {
                var i=0;
+               let totalVisits = 0;
              data.data.patients_refname[label].forEach(res => {
               if(i<10) {
+               totalVisits = totalVisits + parseInt(res.patients_visits);
                this.newPatientsTimeData1.push(res.patients_visits);
-               this.newPatientsReferral$.next(res.patients_visits);
+               this.newPatientsReferral$.next(totalVisits);
                this.newPatientsTimeLabels1.push(res.referral_name);
                 i++;
               }
@@ -616,10 +610,12 @@ public mkRevenueByReferralLoader:any;
 
             if(data.data.patients_refname[label].length >0) {
                var i=0;
+               let totalRevenue = 0;
              data.data.patients_refname[label].forEach(res => {
                 if(i<10) {
+                  totalRevenue = totalRevenue + Math.round(res.total);
                this.revenueReferralData1.push(res.total);
-               this.revenueByReferralCount$.next(Math.round(res.total || 0));
+               this.revenueByReferralCount$.next(totalRevenue);
                this.revenueReferralLabels1.push(res.referral_name);
                   i++;
               }
