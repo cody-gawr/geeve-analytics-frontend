@@ -1158,11 +1158,11 @@ toggleChangeProcess(){
        if(data.message == 'success'){
         this.fdNumberOfTicksTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.tickChartTrend1.push(res.val);
+                     this.tickChartTrend1.push(res.num_ticks);
                    if(this.trendValue == 'c')
-                   this.tickChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.tickChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.tickChartTrendLabels1.push(res.duration);
+                   this.tickChartTrendLabels1.push(res.year);
                   
                  });
                  this.tickChartTrend[0]['data'] = this.tickChartTrend1;
