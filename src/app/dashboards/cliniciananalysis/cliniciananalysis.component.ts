@@ -2709,8 +2709,39 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       if (data.message == 'success') {
         this.treatmentPlanTrendLoader = false;
         if (data.data) {
-          data.data.forEach(res => {
-            if (res.val.average_cost)
+          if(data.data.plan_fee_all){
+              data.data.plan_fee_all.forEach(res => {
+            if (res.average_fees > 0) {
+              if (res.average_cost)
+                this.treatmentPlanTrend1.push(Math.round(res.average_fees));
+              else
+                this.treatmentPlanTrend1.push(0);
+            }
+            if (this.trendValue == 'c')
+                this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+              else
+                this.treatmentPlanTrendLabels1.push(res.year);
+          });    
+          }
+        
+      if(data.data.plan_fee_completed){
+        data.data.plan_fee_completed.forEach(res => {
+          if (res.total_fee_all > 0) {
+            if (res.total_fee_all)
+              this.treatmentPlanTrend1.push(Math.round(res.total_fee_all));
+            else
+              this.treatmentPlanTrend1.push(0);
+          }
+          if (this.trendValue == 'c')
+              this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+            else
+              this.treatmentPlanTrendLabels1.push(res.year);
+        });
+    }
+
+
+       /*   data.data.forEach(res => {
+            if (res.val.total_fee_all)
               this.treatmentPlanTrend1.push(Math.round(res.val.average_cost));
             else
               this.treatmentPlanTrend1.push(0);
@@ -2723,7 +2754,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
               this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
             else
               this.treatmentPlanTrendLabels1.push(res.duration);
-          });
+          });*/
           
           
         }
@@ -2790,7 +2821,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.patientComplaintsTrendLoader = false;
         if (data.data) {
           data.data.forEach(res => {
-            if(res.num_complaints)
+            if(res.val.num_complaints)
               this.patientComplaintsTrend1.push(res.num_complaints);
             if (this.trendValue == 'c')
               this.patientComplaintsTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
