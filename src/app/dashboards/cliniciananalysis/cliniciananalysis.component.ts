@@ -2710,9 +2710,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.treatmentPlanTrendLoader = false;
         if (data.data) {
           if(data.data.plan_fee_all){
-              data.data.plan_fee_all.forEach(res => {
+             data.data.plan_fee_all.forEach(res => {
             if (res.average_fees > 0) {
-              if (res.average_cost)
+              if (res.average_fees)
                 this.treatmentPlanTrend1.push(Math.round(res.average_fees));
               else
                 this.treatmentPlanTrend1.push(0);
@@ -2728,14 +2728,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         data.data.plan_fee_completed.forEach(res => {
           if (res.total_fee_all > 0) {
             if (res.total_fee_all)
-              this.treatmentPlanTrend1.push(Math.round(res.total_fee_all));
+              this.treatmentPlanTrend2.push(Math.round(res.total_fee_all));
             else
-              this.treatmentPlanTrend1.push(0);
+              this.treatmentPlanTrend2.push(0);
           }
-          if (this.trendValue == 'c')
+         /* if (this.trendValue == 'c')
               this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
             else
-              this.treatmentPlanTrendLabels1.push(res.year);
+              this.treatmentPlanTrendLabels1.push(res.year);*/
         });
     }
 
