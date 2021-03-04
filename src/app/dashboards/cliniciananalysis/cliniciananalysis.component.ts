@@ -1090,19 +1090,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.productionTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.total > 0) {
-            this.barChartData1.push(Math.round(res.total));
-            var name = res.name;
-            if (res.name != null && res.name != 'Anonymous') {
-              this.barChartLabels1.push(res.name);
+          if (res.production > 0) {
+            this.barChartData1.push(Math.round(res.production));
+            var name = res.provider_name;
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              this.barChartLabels1.push(res.provider_name);
               this.dentistKey = i;
             }
             else {
-              this.barChartLabels1.push(res.firstname);
+              this.barChartLabels1.push(res.provider_name);
             }
 
             if (res.total != null)
-              this.productionTotal = this.productionTotal + parseFloat(res.total);
+              this.productionTotal = this.productionTotal + parseFloat(res.provider_name);
             i++;
           }
         });
@@ -2104,9 +2104,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.newPatientChartData1 = []; // reset on api call
         data.data.forEach(res => {
 
-          if (res.getX) {
-            this.newPatientChartData1.push(parseInt(res.getX));
-            this.newPatientChartLabels1.push(res.provider);
+          if (res.new_patients) {
+            this.newPatientChartData1.push(parseInt(res.new_patients));
+            this.newPatientChartLabels1.push(res.provider_name);
             if (res.provider != 'Anonymous')
               this.newpKey = i;
             i++;
@@ -2226,22 +2226,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.hourlyRateChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.hourlyRate) {
+          if (res.hourly_rate) {
 
-            this.hourlyRateChartData1.push(Math.round(res.hourlyRate));
+            this.hourlyRateChartData1.push(Math.round(res.hourly_rate));
 
-            if (res.provider != null && res.provider != 'Anonymous') {
-              if (res.provider.includes(',')) {
-                let namet: any = res.provider.split(',');
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              if (res.provider_name.includes(',')) {
+                let namet: any = res.provider_name.split(',');
                 var name: any = namet[1] + " " + namet[0];
               } else {
-                var name: any = res.provider;
+                var name: any = res.provider_name;
               }
               this.hourlyRateChartLabels1.push(name);
               this.hrKey = i;
             }
             else
-              this.hourlyRateChartLabels1.push(res.provider);
+              this.hourlyRateChartLabels1.push(res.provider_name);
             i++;
           }
 
