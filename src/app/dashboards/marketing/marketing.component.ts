@@ -1011,11 +1011,11 @@ public fdvisitsRatioTrendLoader:any;
        if(data.message == 'success'){
                 this.fdvisitsRatioTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.visitsChartTrend1.push(res.val);
+                     this.visitsChartTrend1.push(res.num_visits);
                    if(this.trendValue == 'c')
-                   this.visitsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.visitsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.visitsChartTrendLabels1.push(res.duration);
+                   this.visitsChartTrendLabels1.push(res.year);
                  });
                  this.visitsChartTrend[0]['data'] = this.visitsChartTrend1;
 

@@ -1667,7 +1667,7 @@ isDecimal(value) {
              this.totalOverdueAccountres =[];
      this.totalOverdueAccountLabelsres = [];
         data.data.forEach(res => {
-          if(res.overdue >0) {
+          if(res.overdue > 0) {
            this.totalOverdueAccountres.push(Math.round(res.overdue));
            this.totalOverdueAccountLabelsres.push(res.label);
          }
