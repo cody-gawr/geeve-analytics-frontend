@@ -645,10 +645,10 @@ public fdvisitsRatioLoader:any;
           this.visitsPrevTotal = 0;
        if(data.message == 'success'){
         this.fdvisitsRatioLoader = false;
-          this.visitsTotal = data.total;
-          this.visitsPrevTotal = data.total_ta;
+          this.visitsTotal = data.data.total;
+          this.visitsPrevTotal = data.data.total_ta;
           this.visitsGoal = data.goals;
-          if(this.visitsTotal>=this.visitsPrevTotal)
+          if(this.visitsTotal >= this.visitsPrevTotal)
             this.visitsTooltip = 'up';
         }
     }, error => {
