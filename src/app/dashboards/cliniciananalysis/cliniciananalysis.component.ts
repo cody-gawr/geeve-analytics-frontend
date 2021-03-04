@@ -2821,7 +2821,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.patientComplaintsTrendLoader = false;
         if (data.data) {
           data.data.forEach(res => {
-            if(res.val.num_complaints)
+            if(res.num_complaints)
               this.patientComplaintsTrend1.push(res.num_complaints);
             if (this.trendValue == 'c')
               this.patientComplaintsTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -3026,13 +3026,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.hourlyRateChartTrendLabels1 = [];
         this.hourlyRateChartTrend1 = [];
         data.data.forEach(res => {
-          if (res.val) {
-            if(res.val.hourlyRate)
-              this.hourlyRateChartTrend1.push(Math.round(res.val.hourlyRate));
+          if (res.hourly_rate) {
+            if(res.hourly_rate)
+              this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
             if (this.trendValue == 'c')
-              this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+              this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
             else
-              this.hourlyRateChartTrendLabels1.push(res.duration);
+              this.hourlyRateChartTrendLabels1.push(res.year);
           }
         });
         this.hourlyRateChartTrend[0]['data'] = this.hourlyRateChartTrend1;
