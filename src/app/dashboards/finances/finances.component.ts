@@ -1455,9 +1455,9 @@ public categoryExpensesLoader:any;
     this.productionChartDatares = [];
         data.data.forEach(res => {
           if(res.percent>0) {
-           this.productionChartDatares.push(Math.round(res.percent));
-           this.productionChartLabelsres.push(res.name);
-           this.productionChartTotal = this.productionChartTotal + parseInt(res.expenses);
+           this.productionChartDatares.push(Math.round(res.prod_per_clinician));
+           this.productionChartLabelsres.push(res.provider_name);
+           this.productionChartTotal = this.productionChartTotal + parseInt(res.prod_per_clinician);
          }
     });
            this.productionChartTrendTotal = data.total_ta;
@@ -1541,20 +1541,22 @@ public totalProductionCollectionLabel1 =[];
   this.financesService.finTotalProduction(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
      this.finCollection();
        if(data.message == 'success'){
+
         this.finTotalProductionLoader = false;
         this.totalProductionCollection1[0]['data'] =[];
-        if(data.data[0].total)
-        this.totalProductionVal = Math.round(data.data[0].total); 
+        
+        if(data.total)
+          this.totalProductionVal = Math.round(data.total); 
         else
-        this.totalProductionVal = 0; 
+          this.totalProductionVal = 0; 
 
-        if(data.data[0].name)    
-        this.totalProductionLabel = data.data[0].name;    
+        if(data.data[0].provider_name)    
+          this.totalProductionLabel = data.data[0].provider_name;    
         else
-        this.totalProductionLabel ='';    
+         this.totalProductionLabel ='';    
 
-        if(data.data[0].total_ta)
-         this.totalProductionTrendVal = Math.round(data.data[0].total_ta);  
+        if(data.total_ta)
+         this.totalProductionTrendVal = Math.round(data.total_ta);  
         else    
          this.totalProductionTrendVal = 0;  
 
@@ -2031,13 +2033,13 @@ private finProductionByClinicianTrend() {
           this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(res => {  
                    res.val.forEach((result,key) => {
-                     this.productionChartTrend[key]['data'].push(Math.round(result.total));
-                     this.productionChartTrend[key]['label'] = result.name;
+                     this.productionChartTrend[key]['data'].push(Math.round(result.prod_per_clinician));
+                     this.productionChartTrend[key]['label'] = result.provider_name;
                    });
                    if(this.trendValue == 'c')
-                   this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.productionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.productionChartTrendLabels1.push(res.duration);
+                   this.productionChartTrendLabels1.push(res.year);
                   
                  });
                  this.productionChartTrendLabels =this.productionChartTrendLabels1; 
@@ -2078,11 +2080,11 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
          this.finTotalDiscountsTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.discountsChartTrend1.push(Math.round(res.val.total));
+                     this.discountsChartTrend1.push(Math.round(res.discounts));
                    if(this.trendValue == 'c')
-                   this.discountsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.discountsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.discountsChartTrendLabels1.push(res.duration);
+                   this.discountsChartTrendLabels1.push(res.year);
                   
                  });
                  if(this.discountsChartTrend1.every((item) => item == 0)) this.discountsChartTrend1 = [];
@@ -2172,11 +2174,11 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finTotalProductionTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.totalProductionChartTrend1.push(Math.round(res.val.total));
+                     this.totalProductionChartTrend1.push(Math.round(res.production));
                    if(this.trendValue == 'c')
-                   this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.totalProductionChartTrendLabels1.push(res.duration);
+                   this.totalProductionChartTrendLabels1.push(res.year);
                   
                  });
               
@@ -2220,11 +2222,11 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finCollectionTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.collectionChartTrend1.push(Math.round(res.val.total));
+                     this.collectionChartTrend1.push(Math.round(res.collection));
                    if(this.trendValue == 'c')
-                   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.collectionChartTrendLabels1.push(res.duration);
+                   this.collectionChartTrendLabels1.push(res.year);
                   
                  });
                   this.totalProductionCollection[0]['data'] =  this.totalProductionChartTrend1;
