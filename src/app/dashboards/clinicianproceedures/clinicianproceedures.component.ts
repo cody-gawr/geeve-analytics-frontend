@@ -1041,16 +1041,16 @@ public pieChartLabelsres: string[] = [
         }else {
           var i=0
        data && data.data && data.data.length && data.data.forEach(res => {
-          if(res.provider_name != null){
-            if(parseInt(res.crowns)+parseInt(res.splints)+parseInt(res.rct)+parseInt(res.perio)+parseInt(res.extract) > 0){
+          if(res.provider != null){
+            if(parseInt(res.crowns)+parseInt(res.splints)+parseInt(res.root_canals)+parseInt(res.perio)+parseInt(res.surgical_extractions) >0){
           
              this.stackedChartData1.push(res.crowns);
              this.stackedChartData2.push(res.splints);
-             this.stackedChartData3.push(res.rct);
+             this.stackedChartData3.push(res.root_canals);
              this.stackedChartData4.push(res.perio);
-             this.stackedChartData5.push(res.extract);
-             this.stackedChartLabels1.push(res.provider_name);
-             if(res.provider_name != 'Anonymous')
+             this.stackedChartData5.push(res.surgical_extractions);
+             this.stackedChartLabels1.push(res.provider);
+             if(res.provider != 'Anonymous')
               this.ipKey =i;
              i++;
            }
@@ -1089,6 +1089,7 @@ public pieChartLabelsres: string[] = [
      }
        }
     }, error => {
+      alert('dsfs');
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
@@ -1111,11 +1112,11 @@ public pieChartLabelsres: string[] = [
           
           temp['Splints'] = data.data[0].splints;
          
-          temp['Root Canals'] = data.data[0].rct;
+          temp['Root Canals'] = data.data[0].root_canals;
          
           temp['Perio'] = data.data[0].perio;
          
-          temp['Surgical Extractions'] = data.data[0].extract;
+          temp['Surgical Extractions'] = data.data[0].surgical_extractions;
           var tupleArray=[];
    for (var key in temp) tupleArray.push([key, temp[key]]);
     tupleArray.sort(function (a, b) { return b[1] - a[1] });
@@ -2108,15 +2109,15 @@ toggleChangeProcess(){
          if(data.data.length <=0) {
                 }else {
                 data.data.forEach(res => {
-                   this.stackedChartData1.push(res.crowns);
-                   this.stackedChartData2.push(res.splints);
-                   this.stackedChartData3.push(res.rct);
-                   this.stackedChartData4.push(res.perio);
-                   this.stackedChartData5.push(res.extract);
+                   this.stackedChartData1.push(res.val.crowns);
+                   this.stackedChartData2.push(res.val.splints);
+                   this.stackedChartData3.push(res.val.root_canals);
+                   this.stackedChartData4.push(res.val.perio);
+                   this.stackedChartData5.push(res.val.surgical_extractions);
                    if(this.trendValue == 'c')
-                   this.stackedChartLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                   this.stackedChartLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
-                   this.stackedChartLabels1.push(res.year);
+                   this.stackedChartLabels1.push(res.duration);
 
                  });
                this.stackedChartData[0]['data'] = this.stackedChartData1;

@@ -1455,9 +1455,9 @@ public categoryExpensesLoader:any;
     this.productionChartDatares = [];
         data.data.forEach(res => {
           if(res.percent>0) {
-           this.productionChartDatares.push(Math.round(res.prod_per_clinician));
-           this.productionChartLabelsres.push(res.provider_name);
-           this.productionChartTotal = this.productionChartTotal + parseInt(res.prod_per_clinician);
+           this.productionChartDatares.push(Math.round(res.percent));
+           this.productionChartLabelsres.push(res.name);
+           this.productionChartTotal = this.productionChartTotal + parseInt(res.expenses);
          }
     });
            this.productionChartTrendTotal = data.total_ta;
@@ -1541,22 +1541,20 @@ public totalProductionCollectionLabel1 =[];
   this.financesService.finTotalProduction(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
      this.finCollection();
        if(data.message == 'success'){
-
         this.finTotalProductionLoader = false;
         this.totalProductionCollection1[0]['data'] =[];
-        
-        if(data.total)
-          this.totalProductionVal = Math.round(data.total); 
+        if(data.data[0].total)
+        this.totalProductionVal = Math.round(data.data[0].total); 
         else
-          this.totalProductionVal = 0; 
+        this.totalProductionVal = 0; 
 
-        if(data.data[0].provider_name)    
-          this.totalProductionLabel = data.data[0].provider_name;    
+        if(data.data[0].name)    
+        this.totalProductionLabel = data.data[0].name;    
         else
-         this.totalProductionLabel ='';    
+        this.totalProductionLabel ='';    
 
-        if(data.total_ta)
-         this.totalProductionTrendVal = Math.round(data.total_ta);  
+        if(data.data[0].total_ta)
+         this.totalProductionTrendVal = Math.round(data.data[0].total_ta);  
         else    
          this.totalProductionTrendVal = 0;  
 
@@ -1669,7 +1667,7 @@ isDecimal(value) {
              this.totalOverdueAccountres =[];
      this.totalOverdueAccountLabelsres = [];
         data.data.forEach(res => {
-          if(res.overdue > 0) {
+          if(res.overdue >0) {
            this.totalOverdueAccountres.push(Math.round(res.overdue));
            this.totalOverdueAccountLabelsres.push(res.label);
          }
@@ -2033,13 +2031,13 @@ private finProductionByClinicianTrend() {
           this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(res => {  
                    res.val.forEach((result,key) => {
-                     this.productionChartTrend[key]['data'].push(Math.round(result.prod_per_clinician));
-                     this.productionChartTrend[key]['label'] = result.provider_name;
+                     this.productionChartTrend[key]['data'].push(Math.round(result.total));
+                     this.productionChartTrend[key]['label'] = result.name;
                    });
                    if(this.trendValue == 'c')
-                   this.productionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                   this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
-                   this.productionChartTrendLabels1.push(res.year);
+                   this.productionChartTrendLabels1.push(res.duration);
                   
                  });
                  this.productionChartTrendLabels =this.productionChartTrendLabels1; 
@@ -2080,11 +2078,11 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
          this.finTotalDiscountsTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.discountsChartTrend1.push(Math.round(res.discounts));
+                     this.discountsChartTrend1.push(Math.round(res.val.total));
                    if(this.trendValue == 'c')
-                   this.discountsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                   this.discountsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
-                   this.discountsChartTrendLabels1.push(res.year);
+                   this.discountsChartTrendLabels1.push(res.duration);
                   
                  });
                  if(this.discountsChartTrend1.every((item) => item == 0)) this.discountsChartTrend1 = [];
@@ -2174,11 +2172,11 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finTotalProductionTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.totalProductionChartTrend1.push(Math.round(res.production));
+                     this.totalProductionChartTrend1.push(Math.round(res.val.total));
                    if(this.trendValue == 'c')
-                   this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                   this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
-                   this.totalProductionChartTrendLabels1.push(res.year);
+                   this.totalProductionChartTrendLabels1.push(res.duration);
                   
                  });
               
@@ -2222,11 +2220,11 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finCollectionTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.collectionChartTrend1.push(Math.round(res.collection));
+                     this.collectionChartTrend1.push(Math.round(res.val.total));
                    if(this.trendValue == 'c')
-                   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                   this.collectionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
-                   this.collectionChartTrendLabels1.push(res.year);
+                   this.collectionChartTrendLabels1.push(res.duration);
                   
                  });
                   this.totalProductionCollection[0]['data'] =  this.totalProductionChartTrend1;
