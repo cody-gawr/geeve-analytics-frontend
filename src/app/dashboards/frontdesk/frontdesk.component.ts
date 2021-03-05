@@ -572,12 +572,12 @@ public fdFtaRatioLoader:any;
           this.ftaPrevTotal = 0;
        if(data.message == 'success'){
         this.fdFtaRatioLoader = false;
-          if(data.data>100)
-            data.data =100;
-          if(data.data_ta>100)
-            data.data_ta =100;
-          this.ftaTotal = Math.round(data.data);
-          this.ftaPrevTotal = Math.round(data.data_ta);
+          if(data.total>100)
+            data.total =100;
+          if(data.total_ta>100)
+            data.total_ta =100;
+          this.ftaTotal = Math.round(data.total);
+          this.ftaPrevTotal = Math.round(data.total_ta);
           this.ftaGoal = data.goals;
           if(this.ftaTotal> this.ftaGoal)
             this.maxftaGoal = this.ftaTotal;
@@ -615,12 +615,12 @@ public maxutaGoal:any=0;
           this.utaPrevTotal = 0;
        if(data.message == 'success'){
         this.fdUtaRatioLoader = false;
-          if(data.data>100)
-            data.data =100;
-          if(data.data_ta>100)
+          if(data.total>100)
+            data.total =100;
+          if(data.total_ta>100)
             data.data_ta =100;
-          this.utaTotal = Math.round(data.data);
-          this.utaPrevTotal = Math.round(data.data_ta);
+          this.utaTotal = Math.round(data.total);
+          this.utaPrevTotal = Math.round(data.total_ta);
           this.utaGoal = data.goals;
  if(this.utaTotal> this.utaGoal)
             this.maxutaGoal = this.utaTotal;
@@ -654,12 +654,12 @@ public fdNumberOfTicksLoader:boolean;
     this.clinic_id &&  this.frontdeskService.fdNumberOfTicks(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.fdNumberOfTicksLoader = false;
-          this.ticksPrevTotal = 0;
+        this.ticksPrevTotal = 0;
         this.ticksTotal = 0;
         if(data.data.length > 0)
-          this.ticksTotal = Math.round(data.data[0].treat_item);
-          this.ticksPrevTotal = Math.round(data.data_ta);
-          if(this.ticksTotal>=this.ticksPrevTotal)
+          this.ticksTotal = Math.round(data.total);
+          this.ticksPrevTotal = Math.round(data.total_ta);
+          if(this.ticksTotal >= this.ticksPrevTotal)
             this.ticksTooltip = 'up';
         }
     }, error => {
