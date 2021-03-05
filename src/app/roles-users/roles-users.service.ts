@@ -31,9 +31,9 @@ export class RolesUsersService {
     }
 
    // Get Dentist
-    getUsers(clinic_id='1',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+    getUsers(user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/getRolesUsers?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Users/getRolesUsers?user_id="+user_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -62,13 +62,11 @@ export class RolesUsersService {
 
        // Delete Clinic
     deleteUser(user_id, token = this._cookieService.get("token")): Observable<any> {
-    const formData = new FormData();
-
-    formData.append('id', user_id);
-       formData.append('user_id', this._cookieService.get("userid"));
-    
-    var header = this.getHeaders(); 
-
+        const formData = new FormData();
+        formData.append('id', user_id);
+        formData.append('user_id', this._cookieService.get("userid"));
+        
+        var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/Users/delete", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
@@ -93,15 +91,16 @@ export class RolesUsersService {
     }
 
         // Update Clinic
-    addRoleUser(display_name, email, user_type,password, clinic_id,dentist_id, token = this._cookieService.get("token")): Observable<any> {
+    addRoleUser(display_name, email, user_type,selectedClinic,password,selected_dentist, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
-
+    var dentist= JSON.stringify(selected_dentist);
+    console.log(selected_dentist,dentist);
     formData.append('display_name', display_name);
     formData.append('email', email);
     formData.append('user_type', user_type);
-    formData.append('clinic_id', clinic_id);
     formData.append('password', password);
-    formData.append('dentist_id', dentist_id);
+    formData.append('selected_dentist', dentist);
+    formData.append('selectedClinic', selectedClinic);
      
 
     formData.append('user_id', this._cookieService.get("userid"));

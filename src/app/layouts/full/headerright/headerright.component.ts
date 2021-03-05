@@ -79,17 +79,6 @@ export class AppHeaderrightComponent implements AfterViewInit  {
        if(res.message == 'success'){
         this.clinicsData = res.data;
         if(res.data.length>0) {
-        if(this._cookieService.get("user_type") != '2') {
-          this.clinic_id = this._cookieService.get("clinicid");
-          this.selectedClinic = this._cookieService.get("clinicid");
-          this.clinicsData.forEach((res,key) => {
-            if(res.id != this.clinic_id)
-              this.clinicsData.splice(key, 1);
-          });
-              this.placeHolder =res.data[0].clinicName;
-
-        }
-        else {
         if(this.route == '/dashboards/healthscreen'){
             if(this.clinicsData.length>1) {
               this.clinic_id ='all';
@@ -108,9 +97,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
           this.clinic_id = res.data[0].id;
           this.selectedClinic = res.data[0].id;
               this.placeHolder =res.data[0].clinicName;
-          
         }
-       }
         this.title = $('#page_title').val();
         this.loadClinic(this.selectedClinic);
     }
@@ -161,10 +148,22 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     this.clinic_id = this.selectedClinic;
     this.getDentists(); 
     $('.internal_clinic').val(newValue);
-    $('#clinic_initiate').click();
+    if(this._cookieService.get("user_type") != '2' )
+      this.getChildID(newValue);
+    else
+    $('#clinic_initiate').click();      
   }
  }
+ getChildID(clinic_id) {
+      this.clinic_id && this.dentistService.getChildID(clinic_id).subscribe((res) => {
+        this._cookieService.put("dentistid", res.data);
+    $('#clinic_initiate').click();
 
+        }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        }    
+        );
+  }
   
   loadDentist(newValue){
     if($('body').find('span#currentDentist').length <= 0){

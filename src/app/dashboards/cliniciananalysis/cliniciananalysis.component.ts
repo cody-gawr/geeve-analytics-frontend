@@ -79,8 +79,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       .filter(event => event instanceof NavigationEnd)
       .subscribe((value) => {
         this.user_type = this._cookieService.get("user_type");
-        if (this._cookieService.get("childid"))
-          this.childid = this._cookieService.get("childid");
+        if (this._cookieService.get("dentistid"))
+          this.childid = this._cookieService.get("dentistid");
       });
   }
   /**
@@ -135,16 +135,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       })
     );
 
-    // $('#currentDentist').attr('did', 'all');
-
-    // this.clinic_id = this.route.snapshot.paramMap.get("id");
-    //  this.getDentists();
-    // this.changeLoginStatus();
     this.checkPermission('dashboard1');
     this.initiate_clinic();
     this.user_type = this._cookieService.get("user_type");
-    if (this._cookieService.get("childid"))
-      this.childid = this._cookieService.get("childid");
+    if (this._cookieService.get("dentistid"))
+      this.childid = this._cookieService.get("dentistid");
+
     //   $('.external_dentist').val('all');
     $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
     $('.external_clinic').show();
@@ -176,47 +172,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
       }
     })
 
-    //this.canvas = (<HTMLElement>document.getElementById('#'))
-
-    // let gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0,0,0,400);
-    // gradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
-    // gradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
-    // let gradient1 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-    // gradient1.addColorStop(1, 'rgba(12, 209,169,0.8)');
-    // gradient1.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    // let gradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-    // gradient2.addColorStop(1, 'rgba(59, 227,193,0.8');
-    // gradient2.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    // let gradient3 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-    // gradient3.addColorStop(1, 'rgba(94, 232,205,0.8)');
-    // gradient3.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    // let gradient4 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-    // gradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
-    // gradient4.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-    // let gradient5 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-    // gradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
-    // gradient5.addColorStop(0, 'rgba(22, 82, 141, 0.9)');
-
-
-    // this.lineChartColors = [
-    //   {
-    //     backgroundColor: gradient1,
-    //     hoverBorderWidth: 2,
-    //     hoverBorderColor: '#1CA49F'
-    //   },
-    //   {
-    //     backgroundColor: gradient2,
-    //     hoverBorderWidth: 2,
-    //     hoverBorderColor: '#1CA49F'
-    //   }
-    // ];
-
-    // let doughnutGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
-    // doughnutGradient.addColorStop(0, 'rgba(104, 255, 249, 1)');
-    // doughnutGradient.addColorStop(1, 'rgba(28, 164, 159, 1)');
-    // let doughnutGradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-    // doughnutGradient2.addColorStop(1, '#4FC1D1');
-    // doughnutGradient2.addColorStop(0, '#BFE8EE');
     this.doughnutChartColors = [
       {
         backgroundColor: [
@@ -236,6 +191,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   //Load Clinic Data
   initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
+    if( this._cookieService.get("dentistid"))
+         this.childid = this._cookieService.get("dentistid");
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
       this.getDentists();
@@ -322,10 +279,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   public doughnutDataset = {
     ...this.chartService.baseChartData
   };
-  /*  public recallChartData: any[] = [
-      {data: [50,30,20], label: 'Recall Rate'},
-      {data: [50,30,20], label: 'Rebook Rate'}  
-    ];  */
   public doughnutChartData: number[] = [350, 450, 100];
   public selectedDentist: string;
   public barChartData1: any[] = [];
@@ -847,8 +800,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
   //this.getAccountingDentist();
   //this.getStatusDentist();
   this.changePrebookRate('recall');
-   if( this._cookieService.get("childid"))
-         this.childid = this._cookieService.get("childid");
+   if( this._cookieService.get("dentistid"))
+         this.childid = this._cookieService.get("dentistid");
   if(newValue == 'all') {
       this.dentistVal='all';
       this.showTrend= false;

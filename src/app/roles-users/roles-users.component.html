@@ -3,23 +3,12 @@
         <mat-card-title>Users <div class="sa-pull-right"><button class="mat-raised-button mat-gray mr-15" mat-raised-button (click)="openRoleDialog()">Set Roles</button><button class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()">Add User</button></div>
            <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
         </mat-card-title>
-
         <mat-form-field>
             <input matInput type='text' class="form-control" placeholder='Type to filter Users name...' (keyup)='updateFilter($event)'
             />
         </mat-form-field>
         <ngx-datatable #table class='material responsive-datatable' [columns]="columns" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
             [rowHeight]="'auto'" [limit]="10" [rows]='rows'>
-       <ngx-datatable-column name="Sr">
-         <ng-template let-column="column" ngx-datatable-header-template>
-        <span>Id</span>
-      </ng-template>
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-          <span>
-            {{value}}
-          </span>
-        </ng-template>
-      </ngx-datatable-column>
       <ngx-datatable-column name="displayName">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Display Name</span>
@@ -27,13 +16,10 @@
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span>
             {{value}}
-          </span>
-          <input autofocus (blur)="updateValue($event, 'displayName', rowIndex)" *ngIf="editing[rowIndex+ '-displayName']" type="text" [value]="value"
-          />
+          </span>         
         </ng-template>
       </ngx-datatable-column>
-       <ngx-datatable-column name="Email">
-       
+       <ngx-datatable-column name="Email">       
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span >
             {{value}}
@@ -45,6 +31,18 @@
        <ngx-datatable-column name="usertype">
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>User Type</span>
+      </ng-template>
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <span >
+            {{value}}
+          </span>
+          <input autofocus (blur)="updateValue($event, 'contactName', rowIndex)" *ngIf="editing[rowIndex+ '-contactName']" type="text" [value]="value"
+          />
+        </ng-template>
+      </ngx-datatable-column>
+       <ngx-datatable-column name="Clinics">
+         <ng-template let-column="column" ngx-datatable-header-template>
+        <span>Users Clinics</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
           <span >

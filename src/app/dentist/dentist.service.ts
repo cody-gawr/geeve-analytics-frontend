@@ -31,7 +31,6 @@ export class DentistService {
 
    // Get Dentist
     getDentists(clinic_id, user_id=this._cookieService.get("userid") , token = this._cookieService.get("token")): Observable<any> {
-
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/dentists?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
@@ -82,6 +81,15 @@ export class DentistService {
     var header = this.getHeaders(); 
     
         return this.http.post(this.apiUrl +"/Dentists/add", formData, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    // Get ChildDentist
+    getChildID(clinic_id , token = this._cookieService.get("token")): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Users/getChildDentist?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

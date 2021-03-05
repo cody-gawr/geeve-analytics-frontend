@@ -5,7 +5,9 @@ import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
+import { ClinicService } from '../clinic/clinic.service';
 import { ToastrService } from 'ngx-toastr';
+import {FormControl} from '@angular/forms';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
@@ -18,26 +20,65 @@ show_dentist = false;
 
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,private clinicService: ClinicService,private _cookieService: CookieService, private router: Router
   ) {}
   onNoClick(): void {
     this.dialogRef.close();
   }
     @Output() public onDentist: EventEmitter<any> = new EventEmitter();
-   public selected_id;
-
+   public selected_dentist ={};
+   public user_type;
+   public dentist_id;
     loadDentist(val) {
+      this.user_type= val;
       if(val == '4')
         this.show_dentist = true;
     }
     save(data) {
     $('.mat-form-control').click();
-    if(data.display_name != undefined && data.email != undefined && data.user_type != ''  ){
-      if(this.show_dentist == true && data.dentist_id !='')
+    if(data.display_name != undefined && data.email != undefined && data.user_type != '' &&  this.selectedClinics.value != ''){
+      data.selectedClinics= this.selectedClinics.value;
+      data.selected_dentist = this.selected_dentist;
+      if(this.show_dentist == true)
         this.dialogRef.close(data);
       else if(this.show_dentist == false)
          this.dialogRef.close(data);
     }
+  }
+  public selectedClinics=new FormControl();
+   clinicSelect(event) {
+    if(event == false)
+      this.unselectDentist();
+    if(this.user_type == '4'){
+       this.show_dentist = true;
+       if(this.selectedClinics.value != null)
+        this.getClinicProviders(); 
+    } 
+    else{
+      this.selected_dentist=[];
+    }
+  }
+  unselectDentist() {
+    var tempArray={};
+    var clinicArray = this.selectedClinics.value.toString().split(',');
+    clinicArray.forEach(res => {
+     tempArray['clinic'+res] = this.selected_dentist['clinic'+res];
+    });
+    this.selected_dentist = tempArray;
+  }
+  selectedDentist(event,i,clinic_id) {
+    this.selected_dentist['clinic'+clinic_id]= event;
+  }
+public clinics=[];
+public selectedClinicProviders=[];
+  getClinicProviders() {
+  this.clinicService.getClinicProviders(this.selectedClinics.value).subscribe((res) => {
+      if(res.message == 'success'){
+        this.selectedClinicProviders = res.data;
+      } else if(res.status == '401'){       
+      }
+    }, error => {
+    });
   }
 }
 
@@ -57,9 +98,6 @@ export class RolesOverviewExampleDialogComponent {
   onNoClick(): void {
     this.rolesRef.close();
   }
-  //   loadPermisions(val) {
-  //   data.selected_id = val;
-  // }
    @Output() public onAdd: EventEmitter<any> = new EventEmitter();
    public selected_id;
     loadPermisions(val) {
@@ -87,6 +125,7 @@ dentists:any=[];
 initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     this.clinic_id = val;
+    this.getClinics();    
      this.getUsers();
     this.getRoles();
     this.getDentists();
@@ -97,7 +136,7 @@ initiate_clinic() {
     this.initiate_clinic();
 
         $('#title').html('Users');
-        $('.external_clinic').show();
+        $('.external_clinic').hide();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
   }
@@ -111,7 +150,7 @@ initiate_clinic() {
   columns = [{ prop: 'sr' }, { name: 'displayName' }, { name: 'email' }, { name: 'usertype' }, { name: 'created' }];
 
   @ViewChild(RolesUsersComponent) table: RolesUsersComponent;
-  constructor(private toastr: ToastrService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService) {
+  constructor(private toastr: ToastrService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService,private clinicService: ClinicService) {
     this.rows = data;
     this.temp = [...data];
     setTimeout(() => {
@@ -123,14 +162,15 @@ initiate_clinic() {
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
        width: '400px',
-      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,dentist_id:this.dentist_id }
+      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,clinics:this.clinics,dentist_id:this.dentist_id }
     });
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
        if(result != undefined) {
      this.rolesUsersService.checkUserEmail(result.email).subscribe((res) => {
            if(res.message == 'success'){
            if(res.data <=0)
-           this.add_user(result.display_name, result.email, result.user_type, 'jeeveanalytics',this.clinic_id,result.dentist_id);
+           this.add_user(result.display_name, result.email, result.user_type,result.selectedClinics, 'jeeveanalytics',result.selected_dentist);
             else
            this.toastr.error("Email Already Exists!");
            }
@@ -176,6 +216,26 @@ initiate_clinic() {
     }
     });
   }
+  public clinics=[];
+//Get Clinics
+  private getClinics() {
+    this.clinicService.getClinics().subscribe((res) => {
+      if(res.message == 'success'){
+        this.clinics = res.data;
+      } else if(res.status == '401'){
+        this._cookieService.put("username",'');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+
+  }
+
     // Get Dentist
     getDentists() {
       this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
@@ -189,16 +249,15 @@ initiate_clinic() {
             });
            }
         }, error => {
+
           this.warningMessage = "Please Provide Valid Inputs!";
         }    
         );
   }
 
-  add_user(display_name, email, user_type, password,clinic_id,dentist_id) {
-  if(dentist_id =='' || dentist_id == undefined)
-    dentist_id ='';
+  add_user(display_name, email, user_type, selectedClinic, password,selected_dentist) {
   $('.ajax-loader').show();
-  this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
+  this.rolesUsersService.addRoleUser(display_name, email, user_type, selectedClinic, password,selected_dentist).subscribe((res) => {
     $('.ajax-loader').hide();
        if(res.message == 'success'){
         this.toastr.success('User has been added successfully!');
@@ -210,7 +269,7 @@ initiate_clinic() {
   }
 
   private getUsers() {
-    this.rolesUsersService.getUsers(this.clinic_id).subscribe((res) => {
+    this.rolesUsersService.getUsers().subscribe((res) => {
       this.rows=[];
        if(res.message == 'success'){
         this.rows = res.data;
@@ -258,9 +317,9 @@ initiate_clinic() {
   }
 
   private deleteUser(row) {
-           Swal.fire({
+    Swal.fire({
       title: 'Are you sure?',
-      text: 'You want to delete user?',
+      text: 'You want to  delete user?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
@@ -287,10 +346,6 @@ initiate_clinic() {
             }
  }
 });
-
-
-
-
   }
 
   addDentist() {
@@ -329,14 +384,12 @@ initiate_clinic() {
     this.rolesUsersService.updateRoleUser(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
        if(res.message == 'success'){
         this.toastr.success('User Details Updated');
-         // this.getDentists();
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }    
     );  
     this.rows = [...this.rows];
-    console.log('UPDATED!', this.rows[rowIndex][cell]);
   }
   }
 

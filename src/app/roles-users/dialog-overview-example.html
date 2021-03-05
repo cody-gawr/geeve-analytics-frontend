@@ -12,21 +12,29 @@
   <div class="sa-form-group">
     <label>Select User Type</label>
      <select required="true" class="sa_select mat-form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
-      <!--<option value ="Select User Type" selected></option>-->
       <option value ="3">Practice Manager</option>
       <option value ="4">Clinician</option>
       <option value ="5">Staff</option>
    </select> 
 </div>
+ <div class="sa-form-group">
+    <label>Select Clinics</label>
+     <mat-select [formControl]="selectedClinics" multiple (openedChange)="clinicSelect($event)">
+    <mat-option *ngFor="let clinics of data.clinics" [value]="clinics.id">{{clinics.clinicName}}</mat-option>
+  </mat-select>
+</div>
+
 <div class="sa-form-group" *ngIf="show_dentist == true">
-  <label>Select Dentist</label>
-  <select class="sa_select sa_select_set_roles mat-form-control" name="dentist_id" required="true" [(ngModel)]="data.dentist_id" >
-      <!--<option value ="Select Dentist" selected="true"></option>-->
-      <option *ngFor="let dentist of data.dentists" value ="{{dentist.providerId}}">{{dentist.name}}</option>
-   </select> 
- 
-   <input type='hidden' tabindex="1" [(ngModel)]="data.password"  placeholder="Email">
-  <!--  <input type="file" (change)="onChange($event)"> -->
+<div  *ngFor="let clinicProviders of selectedClinicProviders; let i=index">
+  <span>{{clinicProviders.clinicName}}</span>
+  <span>  
+    <select (ngModelChange)="selectedDentist($event,i,clinicProviders.id)" [(ngModel)]="dentist_id" class="sa_select sa_select_set_roles mat-form-control" name="dentist_id" required="true" *ngIf="clinicProviders.dentists.length>0">
+      <option *ngFor="let dentist of clinicProviders.dentists" value ="{{dentist.providerId}}">{{dentist.name}}</option>
+   </select>
+   <span *ngIf="clinicProviders.dentists.length<=0"> No Dentist Found</span>
+  </span>
+</div>
+
 </div>
 </div>
 <div mat-dialog-actions>

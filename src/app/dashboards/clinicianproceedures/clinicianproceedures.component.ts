@@ -66,8 +66,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
          .filter(event => event instanceof NavigationEnd)
          .subscribe((value) => {
       this.user_type = this._cookieService.get("user_type");          
- if( this._cookieService.get("childid")){
-         this.childid = this._cookieService.get("childid");
+ if( this._cookieService.get("dentistid")){
+         this.childid = this._cookieService.get("dentistid");
           $('.internal_dentist').val('all');
           $('.external_dentist').val('all');
 
@@ -104,6 +104,11 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
     var val = $('#currentClinic').attr('cid');
      if(val != undefined && val !='all') {
     this.clinic_id = val;
+ if( this._cookieService.get("dentistid")) {
+             this.childid = this._cookieService.get("dentistid");
+             this.dentistid = this._cookieService.get("dentistid");
+           }
+           console.log(this.childid+" "+this.dentistid);
     this.getDentists();
      this.filterDate('m');
    }
@@ -140,11 +145,10 @@ export class ClinicianProceeduresComponent implements AfterViewInit {
      //   this.getDentists(); 
       this.initiate_clinic();
         
-           if( this._cookieService.get("childid")) {
-             this.childid = this._cookieService.get("childid");
+           if( this._cookieService.get("dentistid")) {
+             this.childid = this._cookieService.get("dentistid");
              this.dentistid = this._cookieService.get("dentistid");
            }
-
           if($('body').find('span#currentDentist').length > 0){
              var did= $('body').find('span#currentDentist').attr('did');
              $('.external_dentist').val(did);

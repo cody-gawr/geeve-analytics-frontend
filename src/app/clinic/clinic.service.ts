@@ -93,4 +93,17 @@ export class ClinicService {
                     })
         );
     }
+      // Get Dentist
+    getClinicProviders(selectedClinics,user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+        const formData = new FormData();
+        formData.append('user_id', user_id);
+        formData.append('selectedClinics', selectedClinics);
+
+         var header = this.getHeaders();
+        return this.http.post(this.apiUrl +"/Practices/getClinicProviders/", formData, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 }
