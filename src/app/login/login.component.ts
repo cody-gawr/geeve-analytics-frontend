@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
                this._cookieService.put("userid", datares['parentid'], opts);
                this._cookieService.put("childid", datares['userid'], opts);
                 this._cookieService.put("clinicid", datares['clinicid'], opts);
-
+ this._cookieService.put("dentist_toggle", 'false', opts);
                if(datares['user_type'] == '4')
                this.router.navigate(['/dashboards/cliniciananalysis']);
                 else

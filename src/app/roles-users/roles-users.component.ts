@@ -291,7 +291,6 @@ initiate_clinic() {
        if(res.message == 'success'){ 
         this.roles=[];
          res.data.forEach(result => {
-          if(result.id != '1' && result.id != '2') {
           this.selectedRole['dashboard1_'+result.role_id] = false;
           this.selectedRole['dashboard2_'+result.role_id] = false;
           this.selectedRole['dashboard3_'+result.role_id] = false;
@@ -307,8 +306,8 @@ initiate_clinic() {
             dashboards.forEach(results=>{
                this.selectedRole[results+'_'+result.role_id] = true;
             })
-          }
          });
+         console.log(this.selectedRole);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

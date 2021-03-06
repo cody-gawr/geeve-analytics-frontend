@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService,  CookieOptionsArgs  } from "angular2-cookie/core";
 
 import { Router, NavigationEnd } from '@angular/router';
 import { HeaderService } from '../header/header.service';
@@ -21,7 +21,7 @@ export interface Dentist {
 export class AppHeaderrightComponent implements AfterViewInit  {   
     private _routerSub = Subscription.EMPTY;
   providerIdDentist;
-  isToggleDentistChart = false;
+  isToggleDentistChart:string;
   user_type_dentist;
   constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router) {
     this.user_type_dentist = this._cookieService.get("user_type");
@@ -50,10 +50,13 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   }
 
   toggler(){
-    this.isToggleDentistChart = !this.isToggleDentistChart;
-    const dentistID = this.isToggleDentistChart ? this.providerIdDentist : 'all';
-    console.log('dentistID', dentistID)
-    this.loadDentist(dentistID);
+     let opts: CookieOptionsArgs = {
+            expires: new Date('2030-07-19')
+        };
+    this.isToggleDentistChart = (this.isToggleDentistChart=='true')?"false": "true";
+      this._cookieService.put("dentist_toggle", this.isToggleDentistChart, opts);
+    $('#clinic_initiate').click();
+
   }
   
   public route:any;
@@ -152,7 +155,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
       this.clinic_id && this.dentistService.getChildID(clinic_id).subscribe((res) => {
         this._cookieService.put("dentistid", res.data);
         this.providerIdDentist = res.data;
-         this.toggler();
+        // this.toggler();
     $('#clinic_initiate').click();
 
         }, error => {
