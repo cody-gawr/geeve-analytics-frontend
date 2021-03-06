@@ -645,10 +645,10 @@ public fdvisitsRatioLoader:any;
           this.visitsPrevTotal = 0;
        if(data.message == 'success'){
         this.fdvisitsRatioLoader = false;
-          this.visitsTotal = data.total;
-          this.visitsPrevTotal = data.total_ta;
+          this.visitsTotal = data.data.total;
+          this.visitsPrevTotal = data.data.total_ta;
           this.visitsGoal = data.goals;
-          if(this.visitsTotal>=this.visitsPrevTotal)
+          if(this.visitsTotal >= this.visitsPrevTotal)
             this.visitsTooltip = 'up';
         }
     }, error => {
@@ -1011,11 +1011,11 @@ public fdvisitsRatioTrendLoader:any;
        if(data.message == 'success'){
                 this.fdvisitsRatioTrendLoader = false;
                 data.data.forEach(res => {  
-                     this.visitsChartTrend1.push(res.val);
+                     this.visitsChartTrend1.push(res.num_visits);
                    if(this.trendValue == 'c')
-                   this.visitsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.visitsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.visitsChartTrendLabels1.push(res.duration);
+                   this.visitsChartTrendLabels1.push(res.year);
                  });
                  this.visitsChartTrend[0]['data'] = this.visitsChartTrend1;
 

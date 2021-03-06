@@ -24,7 +24,6 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   isToggleDentistChart = false;
   user_type_dentist;
   constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router) {
-    this.providerIdDentist = this._cookieService.get("dentistid");
     this.user_type_dentist = this._cookieService.get("user_type");
   
     this._routerSub = this.router.events
@@ -48,11 +47,6 @@ export class AppHeaderrightComponent implements AfterViewInit  {
  ngAfterViewInit() {
   //  this.clinic_id = '1';
      this.getClinics();
-    if (this.user_type_dentist === '4') {
-      setTimeout(() => {
-        this.toggler()
-      }, 1000); 
-    }
   }
 
   toggler(){
@@ -157,6 +151,8 @@ export class AppHeaderrightComponent implements AfterViewInit  {
  getChildID(clinic_id) {
       this.clinic_id && this.dentistService.getChildID(clinic_id).subscribe((res) => {
         this._cookieService.put("dentistid", res.data);
+        this.providerIdDentist = res.data;
+         this.toggler();
     $('#clinic_initiate').click();
 
         }, error => {
