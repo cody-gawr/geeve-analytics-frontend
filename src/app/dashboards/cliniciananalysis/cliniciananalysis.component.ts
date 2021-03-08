@@ -460,7 +460,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         },
       }],
     },
-    tooltips: {
+    tooltips: { 
       mode: 'x-axis',
       custom: function (tooltip) {
         if (!tooltip) return;
@@ -1954,10 +1954,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.doughnutTotalTooltip = 'up';
         var i = 0;
         data.data.forEach(res => {
-          if (res.provider != null && res.treat_item > 0) {
-            this.doughnutChartData1.push(Math.round(res.treat_item));
-            this.doughnutChartLabels1.push(res.provider);
-            this.doughnutTotal = this.doughnutTotal + parseInt(res.treat_item);
+          if (res.provider_name != null && res.num_complaints > 0) {
+            this.doughnutChartData1.push(Math.round(res.num_complaints));
+            this.doughnutChartLabels1.push(res.provider_name);
+            this.doughnutTotal = this.doughnutTotal + parseInt(res.num_complaints);
             if (res.provider != 'Anonymous')
               this.npKey = i;
             i++;
