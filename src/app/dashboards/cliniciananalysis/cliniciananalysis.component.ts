@@ -74,7 +74,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     private toastr: ToastrService,
     private decimalPipe: DecimalPipe,
     private chartService: ChartService
-  ) {
+  )  {
     this._routerSub = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((value) => {
@@ -460,7 +460,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         },
       }],
     },
-    tooltips: {
+    tooltips: { 
       mode: 'x-axis',
       custom: function (tooltip) {
         if (!tooltip) return;
@@ -1060,9 +1060,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             else {
               this.barChartLabels1.push(res.provider_name);
             }
-
-            if (res.total != null)
-              this.productionTotal = this.productionTotal + parseFloat(res.provider_name);
+            
             i++;
           }
         });
@@ -1092,8 +1090,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         ];
         this.barChartData[0].backgroundColor = colors;
          this.barChartLabels = this.barChartLabels1;
-         this.productionTotalAverage =Math.round(this.productionTotal/this.barChartData1.length);
-         this.productionTotalPrev =Math.round(data.total_ta);
+         this.productionTotal =  Math.round(data.total);    
+         this.productionTotalAverage = Math.round(data.total_average);
+         this.productionTotalPrev = Math.round(data.total_ta);
          this.productionGoal = data.goals;
         
   if(this.productionTotal >= this.productionTotalPrev)
@@ -1955,10 +1954,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.doughnutTotalTooltip = 'up';
         var i = 0;
         data.data.forEach(res => {
-          if (res.provider != null && res.treat_item > 0) {
-            this.doughnutChartData1.push(Math.round(res.treat_item));
-            this.doughnutChartLabels1.push(res.provider);
-            this.doughnutTotal = this.doughnutTotal + parseInt(res.treat_item);
+          if (res.provider_name != null && res.num_complaints > 0) {
+            this.doughnutChartData1.push(Math.round(res.num_complaints));
+            this.doughnutChartLabels1.push(res.provider_name);
+            this.doughnutTotal = this.doughnutTotal + parseInt(res.num_complaints);
             if (res.provider != 'Anonymous')
               this.npKey = i;
             i++;
