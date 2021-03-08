@@ -74,7 +74,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     private toastr: ToastrService,
     private decimalPipe: DecimalPipe,
     private chartService: ChartService
-  ) {
+  )  {
     this._routerSub = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((value) => {
@@ -1060,9 +1060,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             else {
               this.barChartLabels1.push(res.provider_name);
             }
-
-            if (res.total != null)
-              this.productionTotal = this.productionTotal + parseFloat(res.provider_name);
+            
             i++;
           }
         });
@@ -1092,8 +1090,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         ];
         this.barChartData[0].backgroundColor = colors;
          this.barChartLabels = this.barChartLabels1;
-         this.productionTotalAverage =Math.round(this.productionTotal/this.barChartData1.length);
-         this.productionTotalPrev =Math.round(data.total_ta);
+         this.productionTotal =  Math.round(data.total);    
+         this.productionTotalAverage = Math.round(data.total_average);
+         this.productionTotalPrev = Math.round(data.total_ta);
          this.productionGoal = data.goals;
         
   if(this.productionTotal >= this.productionTotalPrev)
