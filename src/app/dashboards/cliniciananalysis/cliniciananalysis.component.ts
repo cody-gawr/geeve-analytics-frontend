@@ -78,6 +78,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this._routerSub = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((value) => {
+        this.initiate_clinic();
         this.user_type = this._cookieService.get("user_type");
         if (this._cookieService.get("childid"))
           this.childid = this._cookieService.get("dentistid");
@@ -136,7 +137,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     );
 
     this.checkPermission('dashboard1');
-    this.initiate_clinic();
+    //this.initiate_clinic();
     this.user_type = this._cookieService.get("user_type");
     if (this._cookieService.get("dentistid"))
       this.childid = this._cookieService.get("dentistid");
@@ -2387,8 +2388,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         var date = new Date();
         this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-        console.log(this.startDate + " " + this.endDate);
-
         this.loadDentist(dentistVal);
 
       }
