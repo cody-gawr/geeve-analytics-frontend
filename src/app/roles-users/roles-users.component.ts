@@ -497,25 +497,25 @@ initiate_clinic() {
     this.table = data;
   }
 
- updateValue(event, cell, rowIndex) {
-  if((this.rows[rowIndex]['providerId']  == 'Enter Provider Id') || (this.rows[rowIndex]['name']  == 'Enter Name')) {
-    this.editing[length + '-providerId'] = true;
-    this.editing[length + '-name'] = true;
-  }
-  else {
-    this.editing[rowIndex + '-' + cell] = false;
-    this.rows[rowIndex][cell] = event.target.value;
-    this.rolesUsersService.updateRoleUser(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
-       if(res.message == 'success'){
-        this.toastr.success('User Details Updated');
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );  
-    this.rows = [...this.rows];
-  }
-  }
+ // updateValue(event, cell, rowIndex) {
+ //  if((this.rows[rowIndex]['providerId']  == 'Enter Provider Id') || (this.rows[rowIndex]['name']  == 'Enter Name')) {
+ //    this.editing[length + '-providerId'] = true;
+ //    this.editing[length + '-name'] = true;
+ //  }
+ //  else {
+ //    this.editing[rowIndex + '-' + cell] = false;
+ //    this.rows[rowIndex][cell] = event.target.value;
+ //    this.rolesUsersService.updateRoleUser(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
+ //       if(res.message == 'success'){
+ //        this.toastr.success('User Details Updated');
+ //       }
+ //    }, error => {
+ //      this.warningMessage = "Please Provide Valid Inputs!";
+ //    }    
+ //    );  
+ //    this.rows = [...this.rows];
+ //  }
+ //  }
 
   enableEditing(rowIndex, cell) {
     this.editing[rowIndex + '-' + cell] = true;
