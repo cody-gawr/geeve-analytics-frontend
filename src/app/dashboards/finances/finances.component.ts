@@ -1454,10 +1454,10 @@ public categoryExpensesLoader:any;
 
     this.productionChartDatares = [];
         data.data.forEach(res => {
-          if(res.percent>0) {
-           this.productionChartDatares.push(Math.round(res.prod_per_clinician));
+          if(res.production_per_clinic>0) {
+           this.productionChartDatares.push(Math.round(res.production_per_clinic));
            this.productionChartLabelsres.push(res.provider_name);
-           this.productionChartTotal = this.productionChartTotal + parseInt(res.prod_per_clinician);
+           this.productionChartTotal = this.productionChartTotal + parseInt(res.production_per_clinic);
          }
     });
            this.productionChartTrendTotal = data.total_ta;
