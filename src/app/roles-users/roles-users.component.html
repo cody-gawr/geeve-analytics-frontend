@@ -63,9 +63,8 @@
          <ng-template let-column="column" ngx-datatable-header-template>
         <span>Actions</span>
       </ng-template>
-        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
-           
-        <!--   <a [routerLink]="['/importcsv',value]" class="action_btn golden" title= 'Import CSV'><i class="ti-pencil  m-r-10"></i></a> -->
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;"> 
+          <a (click) = "editDialog(rowIndex)" class="action_btn golden" title= 'Import CSV'><i class="ti-pencil  m-r-10"></i></a>
           <button class="action_btn danger" mat-menu-item (click) = "deleteUser(rowIndex)">
          <i class="ti-trash text-danger m-r-10"></i></button>
         </ng-template>

@@ -78,6 +78,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this._routerSub = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((value) => {
+        this.initiate_clinic();
         this.user_type = this._cookieService.get("user_type");
         if (this._cookieService.get("childid"))
           this.childid = this._cookieService.get("dentistid");
