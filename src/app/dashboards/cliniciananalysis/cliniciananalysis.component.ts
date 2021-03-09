@@ -1158,42 +1158,39 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     this.buildChartDentistLoader = true;
     this.gaugeLabel = '';
     this.productionTooltip = 'down';
-  this.clinic_id && this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
-      //this.barChartOptionsDP.annotation = [];
-      this.productionTotal = 0;
+  this.clinic_id && this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => 
+    {
+       this.productionTotal = 0;
        this.productionTotalPrev = 0;
        this.productionTotalAverage=0;
        this.maxProductionGoal=0;
        if(data.message == 'success' ){
-        this.buildChartDentistLoader =false;
-         this.gaugeValue = 0;
-        if(data.data != null ) {
-
-          data.data.forEach((res)=>{
+          this.buildChartDentistLoader =false;
+          this.gaugeValue = 0;
+          if(data.data != null ) {
+            data.data.forEach((res)=>{
               if(res.production)
                 this.gaugeValue = Math.round(res.production);
 
               this.gaugeLabel = res.provider_name;
               this.gaugeLabel = res.provider_name;
           });       
-
-            this.productionTotal = Math.round(data.total_average);
+          this.productionTotal = Math.round(data.total_average);
           this.productionTotalPrev = Math.round(data.total_ta);
           this.productionTotalAverage= Math.round(data.total);
           this.productionGoal = data.goals;
-
           if (this.productionTotal > this.productionTotalPrev){
             this.productionTooltip = 'up';
           }
-
           if(this.gaugeValue > this.productionGoal)
             this.maxProductionGoal = this.gaugeValue;
           else
             this.maxProductionGoal = this.productionGoal;
-          
+
           if (this.maxProductionGoal == 0)
             this.maxProductionGoal = '';
-        } else if (data.status == '401') {
+         } 
+      } else if (data.status == '401') {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("token", '');
@@ -1203,8 +1200,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
+    });
   }
 
 
