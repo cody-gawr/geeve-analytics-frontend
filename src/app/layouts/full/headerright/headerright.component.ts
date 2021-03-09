@@ -29,15 +29,12 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     this._routerSub = this.router.events
          .filter(event => event instanceof NavigationEnd)
          .subscribe((value) => {
+          console.log('route changed');
           this.route = router.url; 
-          if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
-          { 
+          // if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
+          // { 
             this.getClinics();
-          }
-          if(($('body').find('span#currentDentist').length >= 0 || $('#currentDentist').attr('did') == 'all') && this.route == '/dentist-goals')
-          { 
-            //this.getDentists();
-          }
+          //}
         this.getDentists();
     });
   }
@@ -72,6 +69,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     public placeHolder='';
    public showAll:boolean = true;
    private getClinics() { 
+    console.log('clinic called');
   this.headerService.getClinics().subscribe((res) => {
        if(res.message == 'success'){
         this.clinicsData = res.data;
