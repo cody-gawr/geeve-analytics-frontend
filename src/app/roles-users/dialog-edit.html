@@ -2,16 +2,12 @@
 <h1 mat-dialog-title>Edit User</h1>
 <div mat-dialog-content class="sa_forms_design">
   <div class="sa-form-group">
-    <label>Display Name</label>
-    <input tabindex="1" [(ngModel)]="data.display_name"  class="mat-form-control" required="true"placeholder="">
-  </div>
-  <div class="sa-form-group">
-    <label>Email</label>
-    <input matInput type="email" tabindex="1" [(ngModel)]="data.email"  class="mat-form-control" required="true"placeholder="">
+    <label>Display Name{{data.id}}</label>
+    <input tabindex="1" [(ngModel)]="userData.display_name"  class="mat-form-control" required="true"placeholder="">
   </div>
   <div class="sa-form-group">
     <label>Select User Type</label>
-     <select required="true" class="sa_select mat-form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
+     <select required="true" class="sa_select mat-form-control" name="user_type" [(ngModel)]="userData.user_type" (ngModelChange)="loadDentist($event)">
       <option value ="3">Practice Manager</option>
       <option value ="4">Clinician</option>
       <option value ="5">Staff</option>
@@ -38,7 +34,7 @@
 </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc">Ok</button>
+  <button mat-button (click)="save(userData)"  tabindex="2" class="mat-raised-button mat-dc">Ok</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">No Thanks</button>
 </div>
 </div>

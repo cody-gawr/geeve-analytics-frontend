@@ -50,6 +50,16 @@ export class RolesUsersService {
         );
     }
 
+           // Get Dentist
+    getRoleUserDetails(role_id,token = this._cookieService.get("token")): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Users/getRoleUserDetails?role_id="+role_id, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
        // checkUserEmail
     checkUserEmail( email, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
@@ -113,19 +123,28 @@ console.log(role_id);
         );
     }
 
-        // Update Clinic
-    updateRoleUser(user_id, value, column, token = this._cookieService.get("token")): Observable<any> {
+      // Update Clinic
+    updateRoleUser(id,display_name, email, user_type,selectedClinic,selected_dentist, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
+    var dentist= JSON.stringify(selected_dentist);
+    console.log(dentist);
+    formData.append('id', id);    
+    formData.append('display_name', display_name);
+    formData.append('email', email);
+    formData.append('user_type', user_type);
+    formData.append('selected_dentist', dentist);
+    formData.append('selectedClinic', selectedClinic);
+     
 
-    formData.append('id', user_id);
-    formData.append(column, value);
- var header = this.getHeaders(); 
+    formData.append('user_id', this._cookieService.get("userid"));
+     var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Users/updateUser/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/updateRoleUser/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
+
 }
 

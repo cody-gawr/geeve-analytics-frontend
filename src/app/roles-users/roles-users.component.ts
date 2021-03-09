@@ -21,10 +21,12 @@ show_dentist = false;
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private clinicService: ClinicService,private _cookieService: CookieService, private router: Router
-  ) {}
+  ) {
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }
+
     @Output() public onDentist: EventEmitter<any> = new EventEmitter();
    public selected_dentist ={};
    public user_type;
@@ -94,8 +96,30 @@ show_dentist = false;
 
   constructor(
     public dialogEdit: MatDialogRef<DialogOverviewExampleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,private clinicService: ClinicService,private _cookieService: CookieService, private router: Router
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: any,private clinicService: ClinicService,private _cookieService: CookieService, private router: Router,private rolesUsersService: RolesUsersService
+  ) {
+    this.loadUserData();    
+  }
+  public selClinics=[];
+  public userData:any=[];
+  loadUserData(){
+    this.rolesUsersService.getRoleUserDetails(this.data.id).subscribe((res) => {
+      if(res.message == 'success'){
+        this.userData = res.data;
+        this.userData.users_clinics.forEach(res => {
+         this.selClinics.push(res.clinic_id);
+         //this.selected_dentist.push(res.dentist_id);
+        });
+        this.selectedClinics.setValue(this.selClinics);
+        if(this.userData.user_type == '4')
+        this.show_dentist = true;
+         this.getClinicProviders(); 
+      } else if(res.status == '401'){       
+      }
+    }, error => {
+    });
+  }
+
   onNoClick(): void {
     this.dialogEdit.close();
   }
@@ -104,26 +128,26 @@ show_dentist = false;
    public user_type;
    public dentist_id;
     loadDentist(val) {
-      this.user_type= val;
+      this.userData.user_type= val;
       if(val == '4')
         this.show_dentist = true;
     }
-    save(data) {
+    save(userData) {
     $('.mat-form-control').click();
-    if(data.display_name != undefined && data.email != undefined && data.user_type != '' &&  this.selectedClinics.value != ''){
-      data.selectedClinics= this.selectedClinics.value;
-      data.selected_dentist = this.selected_dentist;
+    if(userData.display_name != undefined && userData.email != undefined && userData.user_type != '' &&  this.selectedClinics.value != ''){
+      userData.selectedClinics= this.selectedClinics.value;
+      userData.selected_dentist = this.selected_dentist;
       if(this.show_dentist == true)
-        this.dialogEdit.close(data);
+        this.dialogEdit.close(userData);
       else if(this.show_dentist == false)
-         this.dialogEdit.close(data);
+         this.dialogEdit.close(userData);
     }
   }
   public selectedClinics=new FormControl();
    clinicSelect(event) {
     if(event == false)
       this.unselectDentist();
-    if(this.user_type == '4'){
+    if(this.userData.user_type == '4'){
        this.show_dentist = true;
        if(this.selectedClinics.value != null)
         this.getClinicProviders(); 
@@ -292,24 +316,15 @@ initiate_clinic() {
   }
 
 
-  editDialog(): void {
+  editDialog(row): void {
     const dialogEdit = this.dialog.open(EditDialogComponent, {
        width: '400px',
-      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,clinics:this.clinics,dentist_id:this.dentist_id }
+      data: { id: this.rows[row]['id'],clinics:this.clinics }
     });
     dialogEdit.afterClosed().subscribe(result => {
        if(result != undefined) {
-     this.rolesUsersService.checkUserEmail(result.email).subscribe((res) => {
-           if(res.message == 'success'){
-           if(res.data <=0)
-           this.add_user(result.display_name, result.email, result.user_type,result.selectedClinics, 'jeeveanalytics',result.selected_dentist);
-            else
-           this.toastr.error("Email Already Exists!");
+           this.update_user(this.rows[row]['id'],result.display_name, result.email, result.user_type,result.selectedClinics,result.selected_dentist);
            }
-        }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
-   }
     });
   }
 
@@ -366,6 +381,19 @@ initiate_clinic() {
     });
   }
 
+  update_user(id,display_name, email, user_type, selectedClinic,selected_dentist) {
+  $('.ajax-loader').show();
+  this.rolesUsersService.updateRoleUser(id,display_name, email, user_type, selectedClinic,selected_dentist).subscribe((res) => {
+    $('.ajax-loader').hide();
+       if(res.message == 'success'){
+        this.toastr.success('User has been updated successfully!');
+        this.getUsers();
+       }
+    }, error => {
+      this.toastr.error('Please Provide Valid Inputs!');
+    });
+  }
+
   private getUsers() {
     this.rolesUsersService.getUsers().subscribe((res) => {
       this.rows=[];
@@ -405,7 +433,6 @@ initiate_clinic() {
                this.selectedRole[results+'_'+result.role_id] = true;
             })
          });
-         console.log(this.selectedRole);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
