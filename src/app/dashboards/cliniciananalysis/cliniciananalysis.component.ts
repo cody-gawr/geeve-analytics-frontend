@@ -1167,18 +1167,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
         this.buildChartDentistLoader =false;
          this.gaugeValue = 0;
         if(data.data != null ) {
-          if(data.data.total)
-          this.gaugeValue = Math.round(data.data.total);
-          this.gaugeLabel = data.data.name;
-          var name = data.data.name;
-          if(name != null) {
-           this.gaugeLabel = name;
-         }
-           else
-           this.gaugeLabel =  data.data.firstname;
-           if(data.data.total)
-          this.productionTotal = Math.round(data.data.total);
-         }
+
+          data.data.forEach((res)=>{
+              if(res.production)
+                this.gaugeValue = Math.round(res.production);
+
+              this.gaugeLabel = res.provider_name;
+              this.gaugeLabel = res.provider_name;
+          });       
+
+            this.productionTotal = Math.round(data.total_average);
           this.productionTotalPrev = Math.round(data.total_ta);
           this.productionTotalAverage= Math.round(data.total);
           this.productionGoal = data.goals;
@@ -1187,14 +1185,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit {
             this.productionTooltip = 'up';
           }
 
-        if(this.gaugeValue > this.productionGoal)
-          this.maxProductionGoal = this.gaugeValue;
-        else
-          this.maxProductionGoal = this.productionGoal;
-        if (this.maxProductionGoal == 0)
-          this.maxProductionGoal = '';
-      }
-      else if (data.status == '401') {
+          if(this.gaugeValue > this.productionGoal)
+            this.maxProductionGoal = this.gaugeValue;
+          else
+            this.maxProductionGoal = this.productionGoal;
+          
+          if (this.maxProductionGoal == 0)
+            this.maxProductionGoal = '';
+        } else if (data.status == '401') {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("token", '');
