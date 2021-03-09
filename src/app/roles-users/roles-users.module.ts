@@ -7,7 +7,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { RolesUsersService } from './roles-users.service';
 import { RolesUsersComponent,
   DialogOverviewExampleDialogComponent,
-  RolesOverviewExampleDialogComponent  } from './roles-users.component';
+  RolesOverviewExampleDialogComponent ,
+  EditDialogComponent  } from './roles-users.component';
 import { RolesUsersRoutes } from './roles-users.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -25,8 +26,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   providers: [
     RolesUsersService
   ],
-  entryComponents: [DialogOverviewExampleDialogComponent,RolesOverviewExampleDialogComponent],
+  entryComponents: [DialogOverviewExampleDialogComponent,RolesOverviewExampleDialogComponent, EditDialogComponent],
   declarations: [ RolesUsersComponent,
-    DialogOverviewExampleDialogComponent,RolesOverviewExampleDialogComponent ]
+    DialogOverviewExampleDialogComponent,RolesOverviewExampleDialogComponent ,EditDialogComponent]
 })
 export class RolesUsersModule { }
