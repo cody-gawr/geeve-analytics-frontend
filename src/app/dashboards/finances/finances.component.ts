@@ -1490,21 +1490,26 @@ public categoryExpensesLoader:any;
            this.totalDiscountChartTrendIcon = "down";
            this.totalDiscountChartTrendTotal=0;
        if(data.message == 'success'){
-        this.finTotalDiscountsLoader = false;
-             this.totalDiscountChartDatares = [];
-                   this.totalDiscountChartTotal = 0;
-        data.data.total_production_by_provider.forEach(res => {
-          if(res.total!=0) {
-           this.totalDiscountChartDatares.push(Math.round(res.total)); 
-           this.totalDiscountChartLabelsres.push(res.name);
-         }
+          this.finTotalDiscountsLoader = false;
+          this.totalDiscountChartDatares = [];
+          this.totalDiscountChartTotal = 0;
+          data.data.forEach(res => {
+            if(res.total!=0) {
+              this.totalDiscountChartDatares.push(Math.round(res.discounts)); 
+              var name = '';
+              if(res.provider_name != '' && res.provider_name != null){
+                name = res.provider_name;
+              } 
+              this.totalDiscountChartLabelsres.push(name);           
+          }
         });
-           this.totalDiscountChartTotal = Math.round(data.data.total_production.total);
-         this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
-           if(data.data.trend_total_production.total)
-           this.totalDiscountChartTrendTotal = Math.round(data.data.trend_total_production.total);
+          this.totalDiscountChartTotal = Math.round(data.total);
+          this.percentOfTotalDiscount$.next(this.totalDiscountChartTotal);
+           if(data.total_ta)
+            this.totalDiscountChartTrendTotal = Math.round(data.total_ta);
           else
             this.totalDiscountChartTrendTotal=0;
+
            if(Math.round(this.totalDiscountChartTotal)>=Math.round(this.totalDiscountChartTrendTotal))
             this.totalDiscountChartTrendIcon = "up";
             if(this.totalDiscountChartDatares.every((item) => item == 0)) this.totalDiscountChartDatares = []
@@ -1600,13 +1605,14 @@ isDecimal(value) {
        if(data.message == 'success'){
         this.finCollectionLoader = false;
         this.collectionVal =0;
-        this.collectionVal = (data.data.paym_total)? Math.round(data.data.paym_total) : 0;      
-        this.collectionPercentage = (data.data.percent)? Math.round(data.data.percent) : 0; 
-        this.collectionTrendVal = (data.data.paym_total_ta)?  Math.round(data.data.paym_total_ta) : 0;    
-          this.totalProductionCollection1[0]['data'].push(this.collectionVal);
-          this.totalProductionCollectionLabel1 = ['Total Production','Collection'];
-         this.totalProductionCollection1[0]['hoverBackgroundColor'] = ['#ffb4b5', '#4ccfae'];
-          this.totalProductionCollection1[0]['backgroundColor'] = ['#ffb4b5', '#4ccfae']; //as label are static we can add background color for that particular column as static
+        this.collectionVal = (data.total)? Math.round(data.total) : 0;      
+        this.collectionPercentage = (data.total_average)? Math.round(data.total_average) : 0; 
+        this.collectionTrendVal = (data.total_ta)?  Math.round(data.total_ta) : 0;    
+
+        this.totalProductionCollection1[0]['data'].push(this.collectionVal);
+        this.totalProductionCollectionLabel1 = ['Total Production','Collection'];
+        this.totalProductionCollection1[0]['hoverBackgroundColor'] = ['#ffb4b5', '#4ccfae'];
+        this.totalProductionCollection1[0]['backgroundColor'] = ['#ffb4b5', '#4ccfae']; //as label are static we can add background color for that particular column as static
            this.totalProductionCollectionMax = Math.max(...this.totalProductionCollection1[0]['data']);
            if(this.totalProductionVal)
            this.collectionPercentageC=Math.round((this.collectionVal/this.totalProductionVal)*100);
