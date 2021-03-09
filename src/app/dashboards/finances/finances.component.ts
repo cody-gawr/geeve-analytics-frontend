@@ -1454,10 +1454,10 @@ public categoryExpensesLoader:any;
 
     this.productionChartDatares = [];
         data.data.forEach(res => {
-          if(res.production_per_clinic>0) {
-           this.productionChartDatares.push(Math.round(res.production_per_clinic));
+          if(res.prod_per_clinician>0) {
+           this.productionChartDatares.push(Math.round(res.prod_per_clinician));
            this.productionChartLabelsres.push(res.provider_name);
-           this.productionChartTotal = this.productionChartTotal + parseInt(res.production_per_clinic);
+           this.productionChartTotal = this.productionChartTotal + parseInt(res.prod_per_clinician);
          }
     });
            this.productionChartTrendTotal = data.total_ta;
@@ -1645,8 +1645,8 @@ isDecimal(value) {
   this.financesService.finProductionPerVisit(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.finProductionPerVisitLoader = false;
-        this.productionVal = Math.round(data.data);  
-        this.productionTrendVal = Math.round( data.data_ta);  
+        this.productionVal = Math.round(data.total);  
+        this.productionTrendVal = Math.round( data.total_ta);  
         if(Math.round(this.productionVal)>=Math.round(this.productionTrendVal))
             this.productionTrendIcon = "up";            
        }
@@ -2030,25 +2030,23 @@ private finProductionByClinicianTrend() {
   this.finProductionByClinicianTrendLoader = true;
   this.productionChartTrendLabels=[];
   this.productionChartTrendLabels1=[];
-  this.productionChartTrend =[
-    {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
+  this.productionChartTrend =[];
     var user_id;
     var clinic_id;
     this.financesService.finProductionByClinicianTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
-          this.finProductionByClinicianTrendLoader = false;
-                data.data.forEach(res => {  
-                   res.val.forEach((result,key) => {
-                     this.productionChartTrend[key]['data'].push(Math.round(result.prod_per_clinician));
-                     this.productionChartTrend[key]['label'] = result.provider_name;
-                   });
-                   if(this.trendValue == 'c')
-                   this.productionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                    else
-                   this.productionChartTrendLabels1.push(res.year);
-                  
-                 });
-                 this.productionChartTrendLabels =this.productionChartTrendLabels1; 
+          this.finProductionByClinicianTrendLoader = false;     
+          data.data.forEach((result,key) => {
+            var temp = {};
+            temp['data'] = Math.round(result.prod_per_clinician);
+            temp['label'] = result.provider_name;
+             this.productionChartTrend.push(temp); 
+            if(this.trendValue == 'c')
+              this.productionChartTrendLabels1.push(this.datePipe.transform(result.year_month, 'MMM y'));
+            else
+              this.productionChartTrendLabels1.push(result.year);
+          });
+          this.productionChartTrendLabels =this.productionChartTrendLabels1; 
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
