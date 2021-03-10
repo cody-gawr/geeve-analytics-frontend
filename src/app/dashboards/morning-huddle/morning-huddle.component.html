@@ -422,7 +422,7 @@
                     <div class="production_description">
                       <h4>Unscheduled</h4>
                       <div class="patients-num">
-                        <span class="change_value" *ngIf="unSchedulehours">${{ unSchedulehours | number:'1.0-0' }}</span>
+                        <span class="change_value">${{ unSchedulehours | number:'1.0-0' }}</span>
                         <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
                       </div>
                     </div>
@@ -583,7 +583,7 @@
                     </div>
                     <div class="production_description">
                       <h4>Re-Appointment %</h4>
-                      <div class="patients-num" *ngIf="reAppointment">
+                      <div class="patients-num" >
                         <span class="change_value">{{ reAppointment }} %</span>
                       </div>
                     </div>
@@ -625,7 +625,7 @@
                     <div class="production_description">
                       <h4>No Shows</h4>
                       <div class="patients-num">
-                        <span class="change_value">3</span>
+                        <span class="change_value"> {{ noShow }}</span>
                       </div>
                     </div>
                   </div>

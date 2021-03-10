@@ -53,6 +53,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public scheduleNewPatieltd:any = 0;
     public schedulehours:any = 0;
     public unSchedulehours:any = 0;
+    public noShow:any = 0;
     //public appointmentCards:any = [];
     public appointmentCards = new MatTableDataSource();
     public dentistList = new MatTableDataSource([]);
@@ -154,6 +155,7 @@ initiate_clinic() {
     this.getTodayPatients();
     this.getTodayUnscheduledHours();
     this.getTodayUnscheduledBal();
+    this.getNoShow();
     this.getTodayPostopCalls();
     /***** Tab 3 ***/
     
@@ -203,6 +205,7 @@ initiate_clinic() {
     this.getTodayPatients();
     this.getTodayUnscheduledHours();
     this.getTodayUnscheduledBal();
+    this.getNoShow();
     this.getTodayPostopCalls();
     /*******Tab 3 *******/
     /*******Tab 4 *******/
@@ -344,6 +347,15 @@ initiate_clinic() {
         this.todayUnscheduledBal = production.data;       
       }
     }); 
+  }  
+
+
+  getNoShow(){
+    this.morningHuddleService.getNoShow( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+      if(production.status == true) {
+        this.noShow = production.data;       
+      }
+    }); 
   }
   
    getTodayPostopCalls(){
@@ -388,6 +400,8 @@ initiate_clinic() {
       }
     }); 
   }
+
+  
 
    getAppointmentCards(dentist){
     this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays, this.previousDays,  this.user_type ).subscribe((production:any) => {

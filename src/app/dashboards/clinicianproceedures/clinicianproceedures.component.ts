@@ -972,9 +972,9 @@ if(this._cookieService.get("user_type") == '4'){
     (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';    
     if(this.childid == '') {
     this.buildChart();
-      this.buildChartReferral();
+    this.buildChartReferral();
     this.buildChartPredictor();      
-      this.buildChartProceedure();
+    this.buildChartProceedure();
 
       $('.revenueProceedureSingle').hide();
       $('.revenueProceedure').show();
@@ -1532,22 +1532,21 @@ public buildChartProceedureLoader:any;
 
   private buildChartProceedure() {
     this.buildChartProceedureLoader =true;          
-  this.clinic_id && this.clinicianproceeduresService.ClinicianProceedure( this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
+    this.clinic_id && this.clinicianproceeduresService.ClinicianProceedure( this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
     this.proceedureChartData1 =[];
-           this.proceedureChartLabels1 = [];
-       if(data.message == 'success'){
+      this.proceedureChartLabels1 = [];
+      if(data.message == 'success'){
         this.buildChartProceedureLoader =false;
-        data.data.forEach(res => {
-          if(res.total >0) {
-           this.proceedureChartData1.push(Math.round(res.total));
-           this.proceedureChartLabels1.push(res.treat_item);
-       //    this.productionTotal = this.productionTotal + parseInt(res.total);
-     }
-        });
-      
+
+        data.data.forEach(res => {          
+          if(res.total > 0) {
+            this.proceedureChartData1.push(Math.round(res.total));
+            this.proceedureChartLabels1.push(res.item_name);
+           }
+        });      
        this.proceedureChartData[0]['data'] = this.proceedureChartData1;
-       this.proceedureChartLabels = this.proceedureChartLabels1;
-       }
+       this.proceedureChartLabels = this.proceedureChartLabels1; 
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     }
@@ -1568,7 +1567,7 @@ public buildChartProceedureDentistLoader:any;
            this.proceedureChartLabels1 = [];
          data.data.length && data.data.forEach(res => {
            this.proceedureChartData1.push(Math.round(res.total));
-           this.proceedureChartLabels1.push(res.treat_item);
+           this.proceedureChartLabels1.push(res.item_name);
         });
        this.proceedureDentistChartData[0]['data'] = this.proceedureChartData1;
        this.proceedureDentistChartLabels = this.proceedureChartLabels1;
@@ -1702,17 +1701,16 @@ this.pieChartDataMax3=0;
         this.pieChartCombinedPrevTooltip = 'down';
  this.clinic_id && this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success' && data.data.length){
-this.pieChartLabelsres1 = [];
-           this.pieChartLabelsres2 = [];
+          this.pieChartLabelsres1 = [];
+          this.pieChartLabelsres2 = [];
           this.pieChartLabelsres3=[];
-
-           this.pieChartInternalTotal = 0;
-           this.pieChartExternalTotal = 0;
-           this.pieChartCombinedTotal =0;
-           this.pieChartDatares1 = [];
-           this.pieChartDatares2 = [];
-           this.pieChartDatares3 = [];
-           this.pieChartLabelsres = [];
+          this.pieChartInternalTotal = 0;
+          this.pieChartExternalTotal = 0;
+          this.pieChartCombinedTotal =0;
+          this.pieChartDatares1 = [];
+          this.pieChartDatares2 = [];
+          this.pieChartDatares3 = [];
+          this.pieChartLabelsres = [];
         data.data.forEach(res => {
               if(res.total>0) {
           if(res.i_count>0) {
