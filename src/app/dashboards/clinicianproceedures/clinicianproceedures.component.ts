@@ -964,9 +964,9 @@ if(this._cookieService.get("user_type") == '4'){
     (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';    
     if(this.childid == '') {
     this.buildChart();
-      this.buildChartReferral();
+    this.buildChartReferral();
     this.buildChartPredictor();      
-      this.buildChartProceedure();
+    this.buildChartProceedure();
 
       $('.revenueProceedureSingle').hide();
       $('.revenueProceedure').show();
