@@ -1,6 +1,6 @@
 <div class="sa_dashboard_inner_content morning-huddle">
 
-<mat-tab-group  (selectedTabChange)="onTabChanged($event);">
+<mat-tab-group [selectedIndex]="selectedTab">
 
   <!-- Dentist Performance Tab -->  
   <mat-tab label="Dentist Performance">
@@ -322,7 +322,7 @@
   <!-- Dentist Performance Tab -->
 
 
-  <!-- Dentist Performance Tab -->  
+  <!-- Patient Schedule Tab start -->  
   <mat-tab label="Patient Schedule">
      <div class="morning-huddle-date">
         <mat-form-field>
@@ -433,7 +433,7 @@
           </div>
         </div>
       </div>
-      <div class="DentistListSecRow mh-table">
+      <div class="DentistListSecRow mh-table patient_data-table_responsive">
 <table mat-table [dataSource]="appointmentCards" class="mat-elevation-z8">
   <!-- Name Column -->
   <ng-container matColumnDef="start">
@@ -522,10 +522,10 @@
 </table>
 </div>
   </mat-tab>
-  <!-- Dentist Performance Tab -->
+  <!-- Patient Schedule Tab end -->
 
 
-  <!-- Front desk Tab -->  
+  <!-- Front desk Tab start -->  
   <mat-tab label="Front Desk">
     <div class="sa_dentist_graphs_area sa_profit_bar front-desk">
        <!--  <div class="morning-huddle-date">
@@ -584,7 +584,7 @@
                     <div class="production_description">
                       <h4>Re-Appointment %</h4>
                       <div class="patients-num" *ngIf="reAppointment">
-                        <span class="change_value">{{ reAppointment }}</span>
+                        <span class="change_value">{{ reAppointment }} %</span>
                       </div>
                     </div>
                   </div>
@@ -727,10 +727,10 @@
         </div>
       </div>
   </mat-tab>
-  <!-- Front desk Tab -->
+  <!-- Front desk Tab end -->
 
 
-  <!-- Reminders Tab -->  
+  <!-- Reminders Tab start -->  
   <mat-tab label="Reminders">
 
      <div class="morning-huddle-date">
@@ -1028,10 +1028,22 @@
 
 
   </mat-tab>
-  <!-- Dentist Performance Tab -->
+  <!-- Followups Tab end -->
 
 
-
+ <!-- responsive tabs dropdown -->
+  <mat-tab label="responsive-tab-group" disabled>
+    <ng-template mat-tab-label>
+      <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+          {{ morningHuddleTabs[selectedTab] }}
+      </button>
+      <mat-menu #menu="matMenu">
+        <ng-container *ngFor="let tab of morningHuddleTabs; let i=index">
+          <button mat-menu-item (click)="changeTab(i)" [ngClass]="{'active': i===selectedTab}">{{ tab }}</button>
+        </ng-container>
+      </mat-menu>
+    </ng-template>
+  </mat-tab>
 
 </mat-tab-group>
 

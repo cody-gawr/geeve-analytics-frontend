@@ -10,7 +10,7 @@
         <div class="vertical_center_header_content">
             <div class="sa_mat_select_topbar">
                 <mat-form-field floatLabel="never">
-         <mat-select class="external_clinic"  [(ngModel)]="selectedClinic"  (ngModelChange)="loadClinic($event)" [placeholder]="placeHolder">
+                    <mat-select class="external_clinic"  [(ngModel)]="selectedClinic"  (ngModelChange)="loadClinic($event)" [placeholder]="placeHolder">
                     <mat-option value="all" *ngIf="route == '/dashboards/healthscreen' && clinicsData.length>1">All Clinics</mat-option>
                     <mat-option *ngFor="let clinicData of clinicsData" [value]="clinicData.id" >
                                     {{clinicData.clinicName}}

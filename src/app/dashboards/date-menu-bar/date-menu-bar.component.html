@@ -1,5 +1,5 @@
 <div class="sa_tabs_design sa_responsive_tabs">
-  <div class="sa_tabs_list">
+  <div class="sa_tabs_list" fxHide [fxShow.gt-sm]="true">
     <div class="sa_tabs_data">
       <span (click)="filterDate('m')" class="filter_m filter sa_filter_span active">
         This Month
@@ -19,6 +19,19 @@
       <span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span">
         Financial Year
       </span>
+    </div>
+  </div>
+  <div class="sa_tabs_list" [fxHide.gt-sm]="true">
+    <div class="sa_tabs_data">
+      <div class="sa_mat_select_topbar dropdown-select ">
+        <mat-select class="external_clinic"  
+          [(value)]="currentSelectedPeriod"  
+          (selectionChange)="handleSelection($event)">
+          <mat-option *ngFor="let clinicData of DateOptions" [value]="clinicData.value" >
+              {{ clinicData.name }}
+          </mat-option>
+        </mat-select>
+      </div>     
     </div>
   </div>
   <div class="custom_date">

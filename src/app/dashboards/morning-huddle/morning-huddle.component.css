@@ -72,3 +72,7 @@ span.green_title {
     width: 100%;
 }
 
+.active {
+    background-color: #eee;
+}
+

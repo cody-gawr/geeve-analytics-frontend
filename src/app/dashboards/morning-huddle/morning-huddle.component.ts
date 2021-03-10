@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit,ViewChild } from '@angular/core';
 import { MorningHuddleService } from './morning-huddle.service';
 import { CookieService } from "angular2-cookie/core";
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,12 +24,21 @@ export interface PeriodicElement {
 
 
 
+
 @Component({
   selector: 'app-morning-huddle',
   templateUrl: './morning-huddle.component.html',
   styleUrls: ['./morning-huddle.component.css']
 })
-export class MorningHuddleComponent implements OnInit {
+export class MorningHuddleComponent implements OnInit,OnDestroy {
+  selectedTab = 0;
+  morningHuddleTabs = [
+    'Dentist Performance',
+    'Patient Schedule',
+    'Front Desk',
+    'Reminders',
+    'Followups'
+  ];
 	 public id:any = '';
   	public clinic_id:any = '';
   	public user_type:any = '';
@@ -94,7 +103,13 @@ export class MorningHuddleComponent implements OnInit {
  }
 ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;
+    $('.dentist_dropdown').parent().hide(); // added
+    $('.sa_heading_bar').addClass("filter_single"); // added
   }
+ngOnDestroy() {
+  $('.dentist_dropdown').parent().show(); // added
+  $('.sa_heading_bar').removeClass("filter_single"); // added
+}
 initiate_clinic() {
     $('.external_clinic').show();
     $('.dentist_dropdown').hide();
@@ -102,12 +117,12 @@ initiate_clinic() {
     $('.header_filters').removeClass('hide_header');
 
 
-
     var val = $('#currentClinic').attr('cid');
    if(val != undefined && val !='all') {
       this.clinic_id = val;
       
      $('#title').html('Morning Huddle');
+     
     /***** Tab 1 ***/
     this.getDentistPerformance();
     this.getRecallRate();
@@ -152,6 +167,10 @@ initiate_clinic() {
     }
   }
 
+  
+  changeTab(tabIndex: number) {
+    this.selectedTab = tabIndex;
+  }
 
   onTabChanged(event){
    // console.log(event.tab.textLabel,'((((((((((((((');

@@ -626,6 +626,11 @@ checkUserEmail(display_name, email, user_type) {
     this.stepVal = 3;
     this.updateStepperStatus(); 
   }*/
+  skipDownloadSyncUtility() {
+    this.stepVal = 4;
+    this.updateStepperStatus(); 
+  }
+
   downloadPMS(){
     var winP = window.open(this.apiUrl+'/users/getPMS', "_blank");      
     this.stepVal = 4;
