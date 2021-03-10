@@ -2278,11 +2278,11 @@ private finTotalDiscountsTrend() {
        if(data.message == 'success'){
           this.finProductionPerVisitTrendLoader = false;        
                 data.data.forEach(res => {  
-                     this.productionVisitChartTrend1.push(Math.round(res.val));
-                   if(this.trendValue == 'c')
-                   this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                   this.productionVisitChartTrendLabels1.push(res.duration);
+                  this.productionVisitChartTrend1.push(Math.round(res.production));
+                  if(this.trendValue == 'c')
+                    this.productionVisitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                  else
+                    this.productionVisitChartTrendLabels1.push(res.year);
                   
                  });
                  this.productionVisitChartTrend[0]['data'] = this.productionVisitChartTrend1;
