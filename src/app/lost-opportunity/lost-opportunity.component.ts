@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LostOpportunityService } from './lost-opportunity.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { LostOpportunityService } from './lost-opportunity.service';
   templateUrl: './lost-opportunity.component.html',
   styleUrls: ['./lost-opportunity.component.css']
 })
-export class LostOpportunityComponent implements OnInit {	
+export class LostOpportunityComponent implements OnInit, OnDestroy {	
 	public clinic_id:any = '';
 	public improvement:number = 0;
 	public isLoading: boolean = true;
@@ -32,8 +32,15 @@ export class LostOpportunityComponent implements OnInit {
   	ngOnInit() {
   		  $('#currentDentist').attr('did','all');
   		 this.initiate_clinic();
+			$('.dentist_dropdown').parent().hide(); // added
+			$('.sa_heading_bar').addClass("filter_single"); // added
   	}
 
+	
+	ngOnDestroy() {
+		$('.dentist_dropdown').parent().show(); // added
+		$('.sa_heading_bar').removeClass("filter_single"); // added
+	}
 
   	initiate_clinic() {
 	    $('.external_clinic').show();

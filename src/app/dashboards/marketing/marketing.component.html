@@ -110,7 +110,10 @@
           [plugins]="revenuePluginObservable$ | async"
           [options]="pieChartOptions" [colors]="pieChartColors">
         </canvas>
-         <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false" baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+         <canvas #revenueRefChart="base-chart" *ngIf="revenueReferralLabelsl2.length > 0  && mkRevenueByReferralLoader == false"
+           baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2" 
+           [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+          [plugins]="revenuePluginObservable$ | async"
           [options]="pieChartOptions" [colors]="pieChartColors">
         </canvas>
 
@@ -366,7 +369,7 @@
           </div>
           
         </div>
-        <button class="mat-raised-button mat-gray" mat-raised-button (click)="save_category()">Save</button>
+        <button class="mat-raised-button mat-dc float-right" mat-raised-button (click)="save_category()">Save</button>
   <button (click)="myModal.close()" class="close_modal" style="display:none">Close</button>
 </ngx-smart-modal>
 <canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1" [chartType]="pieChartType"></canvas>

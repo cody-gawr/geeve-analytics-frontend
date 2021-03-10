@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, Pipe, PipeTransform, ViewChild, ElementRef  } from '@angular/core';
+import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, Pipe, PipeTransform, ViewChild, ElementRef, OnDestroy  } from '@angular/core';
 import { HealthScreenService } from './healthscreen.service';
 import { DentistService } from '../../dentist/dentist.service';
 
@@ -29,7 +29,7 @@ declare var Chart: any;
   templateUrl: './healthscreen.component.html',
   styleUrls: ['./healthscreen.component.scss']
 })
-export class HealthScreenComponent implements AfterViewInit {
+export class HealthScreenComponent implements AfterViewInit, OnDestroy {
    @ViewChild("myCanvas") canvas: ElementRef;
   mockupColors = ['#6edbbb', '#ffd32d', '#abb3ff', '#b0fffa', '#ffb4b5'];
 customOptions: OwlOptions = {
@@ -110,6 +110,8 @@ customOptions: OwlOptions = {
     $('#title').html('Clinic Health');
        $('.external_clinic').show();
         $('.dentist_dropdown').hide();
+        $('.dentist_dropdown').parent().hide(); // added
+        $('.sa_heading_bar').addClass("filter_single"); // added
         $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
          if($('body').find('span#currentClinic').length > 0){
@@ -137,6 +139,12 @@ customOptions: OwlOptions = {
        // this.loadHealthScreen();
     
   }
+
+  ngOnDestroy() {
+    $('.dentist_dropdown').parent().show(); // added
+    $('.sa_heading_bar').removeClass("filter_single"); // added
+  }
+
   initiate_clinic() {
     var val = $('#currentClinic').attr('cid');    
     if(val != undefined) {

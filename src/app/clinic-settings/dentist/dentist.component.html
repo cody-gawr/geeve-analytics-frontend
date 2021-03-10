@@ -25,13 +25,35 @@
         <!-- ProviderID Column -->
         <ng-container matColumnDef="providerId">
           <th mat-header-cell *matHeaderCellDef>ProviderID</th>
-          <td mat-cell *matCellDef="let element">{{ element.providerId }}</td>
+          <td mat-cell *matCellDef="let element; let i=index">
+            <input readonly (dblclick)="enableEditing(i, 'providerId')" *ngIf="!editing[i+ '-providerId']"
+              [value]="element.providerId"
+            />
+            <input 
+              autofocus 
+              (blur)="updateValue($event, 'providerId', i)"
+              *ngIf="editing[i+ '-providerId']" 
+              type="text" 
+              [value]="element.providerId"
+            />
+          </td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Name</th>
-          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          <td mat-cell *matCellDef="let element; let i=index">            
+            <input readonly (dblclick)="enableEditing(i, 'name')" *ngIf="!editing[i+ '-name']"
+              [value]="element.name"
+            />
+            <input 
+              autoFocus 
+              (blur)="updateValue($event, 'name', i)"
+              *ngIf="editing[i+ '-name']" 
+              type="text" 
+              [value]="element.name"
+            />
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

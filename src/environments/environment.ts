@@ -6,10 +6,15 @@
 
 export const environment = {
   production: true,
+<<<<<<< HEAD
   apiUrl : "http://localhost:4000/staging/analytics",
   // apiUrl : "https://staging-api.jeeve.com.au/staging/analytics",
+=======
+   //apiUrl : "http://localhost:4000/staging/analytics",
+    apiUrl : "https://api.jeeve.com.au/analytics",
+>>>>>>> b12363e1a260adaf1d1a6821541031f58ea7bb32
    homeUrl:"http://localhost/jeeveanalytics/client2/",
-   solutionsUrl : "https://api.jeeve.com.au/staging/solutions"     
+   solutionsUrl : "https://api.jeeve.com.au/solutions"     
   //	apiUrl : "https://api.jeeve.com.au/analytics",
   	//homeUrl:"https://staging-analytics.jeeve.com.au/",
 	//solutionsUrl : "https://api.jeeve.com.au/staging/solutions"

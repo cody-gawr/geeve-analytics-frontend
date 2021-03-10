@@ -1,18 +1,60 @@
 import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { BaseComponent } from '../../clinic-settings/base/base.component';
 import { ChartService } from '../chart.service';
-
+interface IDateOption {
+  name: string,
+  value: string
+}
 @Component({
   selector: 'app-date-menu-bar',
   templateUrl: './date-menu-bar.component.html',
   styleUrls: ['./date-menu-bar.component.scss']
 })
-export class DateMenuBarComponent implements AfterViewInit {
+export class DateMenuBarComponent extends BaseComponent implements AfterViewInit {
   @Output() filter: EventEmitter<string> = new EventEmitter();
   @Output() changeDate: EventEmitter<any> = new EventEmitter();
+  currentSelectedPeriod: string = 'm';
+  
+  DateOptions: Array<IDateOption> = [
+    {
+      name: 'This Month',
+      value: 'm'
+    },
+    {
+      name: 'Last Month',
+      value: 'lm'
+    },
+    {
+      name: 'This Quarter',
+      value: 'q'
+    },
+    {
+      name: 'Last Quarter',
+      value: 'lq'
+    },
+    {
+      name: 'Calender Year',
+      value: 'cytd'
+    },
+    {
+      name: 'Financial Year',
+      value: 'fytd'
+    }
+  ];
 
-  constructor(private chartService: ChartService) { }
+  constructor(private chartService: ChartService) {
+    super();
+    chartService.duration$.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(value => this.currentSelectedPeriod = value);
+  }
 
   ngAfterViewInit() {
+  }
+
+  handleSelection(event) {
+    this.filterDate(event.value);
   }
 
   filterDate(duration: string) {
