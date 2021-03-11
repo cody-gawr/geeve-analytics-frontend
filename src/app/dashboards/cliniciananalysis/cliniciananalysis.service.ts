@@ -29,7 +29,7 @@ export class ClinicianAnalysisService {
     // Dentist Production Service
     DentistProduction( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caDentistProtection?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/dentistProduction?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -47,7 +47,7 @@ export class ClinicianAnalysisService {
     // Dentist Production Single Service
     DentistProductionSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caDentistProtection?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/dentistProduction?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -57,7 +57,7 @@ export class ClinicianAnalysisService {
         // Dentist Production Single Service
     caDentistProtectionTrend(dentist_id, clinic_id, mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caDentistProtectionTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/dentistProductionTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -67,7 +67,7 @@ export class ClinicianAnalysisService {
     //Treatment Plan Average Cost service
     TreatmentPlan( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/txPlanAvgCost?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -77,7 +77,7 @@ export class ClinicianAnalysisService {
     //Treatment Plan Average Cost Single service
     TreatmentPlanDentist(dentist_id,clinic_id, startDate = '', endDate = '', duration='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/txPlanAvgCost?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -87,7 +87,7 @@ export class ClinicianAnalysisService {
         // Dentist Production Single Service
     caNumberPatientComplaintsTrend(dentist_id, clinic_id, mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caNumberPatientComplaintsTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/numComplaintsTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -96,7 +96,7 @@ export class ClinicianAnalysisService {
             // Dentist Production Single Service
     caTreatmentPlanAverageCostTrend(dentist_id, clinic_id, mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCostTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/txPlanAvgCostTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -105,7 +105,7 @@ export class ClinicianAnalysisService {
     
     //Recall Prebook Rate service
 /*    RecallPrebook(clinic_id, startDate = '', endDate = '', duration='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token") ): Observable<any> {
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/caTreatmentPlanAverageCost?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -115,7 +115,7 @@ export class ClinicianAnalysisService {
     //Hourly Rate service
     NoPatients(clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caNumberPatientComplaints?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/numComplaints?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -125,7 +125,7 @@ export class ClinicianAnalysisService {
     //Hourly Rate service
     NoPatientsDentist(dentist_id,clinic_id, startDate = '', endDate = '', duration='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caNumberPatientComplaints?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/numComplaints?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -135,7 +135,7 @@ export class ClinicianAnalysisService {
         // Dentist Production Service
     RecallPrebook( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpRecallPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/recallRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -145,7 +145,7 @@ export class ClinicianAnalysisService {
         // Dentist Production Service
     RecallPrebookSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpRecallPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/recallRate?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -155,7 +155,7 @@ export class ClinicianAnalysisService {
         // Dentist Production Service
     treatmentPrePrebook( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpTreatmentPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/rebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -165,7 +165,7 @@ export class ClinicianAnalysisService {
         // Dentist Production Service
     treatmentPrePrebookSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpTreatmentPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/rebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -177,7 +177,7 @@ export class ClinicianAnalysisService {
             // Dentist Production Service
     TreatmentPlanRate( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpTreatmentPlanRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/txPlanCompRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -187,7 +187,7 @@ export class ClinicianAnalysisService {
                 // Dentist Production Service
     TreatmentPlanRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpTreatmentPlanRate?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/txPlanCompRate?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -196,7 +196,7 @@ export class ClinicianAnalysisService {
         //Hourly Rate service
     NewPatients(clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caNoNewPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/numNewPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -204,7 +204,7 @@ export class ClinicianAnalysisService {
     } 
     NewPatientsDentist(dentist_id,clinic_id, startDate = '', endDate = '', duration='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caNoNewPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/numNewPatients?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
             return response;
                     })
@@ -213,7 +213,7 @@ export class ClinicianAnalysisService {
 
     hourlyRateChart( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caHourlyRateChart?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/hourlyRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
             return response;
                     })
@@ -223,7 +223,7 @@ export class ClinicianAnalysisService {
                 // Dentist Production Single Service
     cahourlyRateRateTrend(dentist_id,clinic_id, mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caHourlyRateChartTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/hourlyRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -234,7 +234,7 @@ export class ClinicianAnalysisService {
                 // Dentist Production Single Service
     canewPatientsRateTrend(dentist_id,clinic_id, mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/canewPatientsRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/canewPatientsRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -244,7 +244,7 @@ export class ClinicianAnalysisService {
                     // Dentist Production Single Service
     catreatmentPlanRateTrend(dentist_id,clinic_id, mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpTreatmentPlanRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/txPlanCompRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -254,7 +254,7 @@ export class ClinicianAnalysisService {
         //Treatment Plan Average Cost service
     hourlyRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/caHourlyRateChart?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/hourlyRate?user_id="+user_id+"&clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
             return response;
                     })
@@ -263,7 +263,7 @@ export class ClinicianAnalysisService {
 
     getAccountingDentist(clinic_id, user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getAccountingDentist?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/getAccountingDentist?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
             return response;
                     })
@@ -271,7 +271,7 @@ export class ClinicianAnalysisService {
     } 
     getStatusDentist(clinic_id, user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/getStatusDentist?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/getStatusDentist?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
             return response;
         })
@@ -287,7 +287,7 @@ export class ClinicianAnalysisService {
     formData.append('clinic_id', clinic_id);
   
     var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/AccountingInvoicesAndReceipts/saveDentistMapping/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/ClinicianAnalysis/saveDentistMapping/", formData, { headers: header })
         .pipe(map((response: Response) => {
             return response;
        })
@@ -296,7 +296,7 @@ export class ClinicianAnalysisService {
 
        cpRecallPrebookRateTrend(dentist_id,clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/AccountingInvoicesAndReceipts/cpRecallPrebookRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/recallRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

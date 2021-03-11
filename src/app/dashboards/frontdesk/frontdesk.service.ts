@@ -29,7 +29,7 @@ export class FrontDeskService {
     // Items Predictor Analysis 
     fdWorkTimeAnalysis(clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdWorkTimeAnalysis?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/utilisationRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -39,7 +39,7 @@ export class FrontDeskService {
     // Items Predictor Analysis  
     fdFtaRatio(clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdFtaRatio?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/ftaRatio?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -49,7 +49,7 @@ export class FrontDeskService {
         // Items Predictor Analysis  
     fdUtaRatio(clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdUtaRatio?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/utaRatio?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -59,7 +59,7 @@ export class FrontDeskService {
         // Items Predictor Analysis  
     fdNumberOfTicks(clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdNumberOfTicks?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/numTicks?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -68,7 +68,7 @@ export class FrontDeskService {
             //Referral to Other Clinicians Internal / External
     fdWorkTimeAnalysisTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdWorkTimeAnalysisTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/utilisationRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -77,7 +77,7 @@ export class FrontDeskService {
                 //Referral to Other Clinicians Internal / External
     fdFtaRatioTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdFtaRatioTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/ftaRatioTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -86,7 +86,7 @@ export class FrontDeskService {
                     //Referral to Other Clinicians Internal / External
     fdUtaRatioTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdUtaRatioTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/utaRatioTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -96,7 +96,7 @@ export class FrontDeskService {
                         //Referral to Other Clinicians Internal / External
     fdNumberOfTicksTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdNumberOfTicksTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/numTicksTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -106,7 +106,7 @@ export class FrontDeskService {
         // Items Predictor Analysis  
     fdRecallPrebookRate(clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdRecallPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/recallRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -116,7 +116,7 @@ export class FrontDeskService {
         // Items Predictor Analysis  
     fdTreatmentPrebookRate(clinic_id='1', startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdTreatmentPrebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/rebookRate?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -126,7 +126,7 @@ export class FrontDeskService {
                                //Referral to Other Clinicians Internal / External
     fdRecallPrebookRateTrend(dentist_id,clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdRecallPrebookRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/recallRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -134,7 +134,7 @@ export class FrontDeskService {
     }  
     frontdeskdRecallPrebookRateTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdRecallPrebookRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/recallRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -143,7 +143,7 @@ export class FrontDeskService {
                                    //Referral to Other Clinicians Internal / External
     fdTreatmentPrebookRateTrend(dentist_id,clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdTreatmentPrebookRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/rebookRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -151,7 +151,7 @@ export class FrontDeskService {
     }    
       frontdeskTreatmentPrebookRateTrend(clinic_id='1', mode ='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesks/fdTreatmentPrebookRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/rebookRateTrend?user_id="+user_id+"&clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
