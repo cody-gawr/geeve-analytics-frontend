@@ -89,7 +89,7 @@ export class FrontDeskComponent implements AfterViewInit {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
      //    this.filterDate('cytd');
         this.getClinics();
-      this.initiate_clinic();
+     // this.initiate_clinic();
         
       $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>'); 
 

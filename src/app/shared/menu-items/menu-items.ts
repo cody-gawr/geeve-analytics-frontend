@@ -190,13 +190,19 @@ export class MenuItems {
  public dashboard3role=['1','2'];
  public dashboard4role=['1','2'];
  public dashboard5role=['1','2'];
+ public healthscreenrole=['1','2'];
+ public morninghuddlerole=['1','2'];
+ public lostoppurtunityrole=['1','2'];
+ public clinicsrole=['1','2'];
+ public usersrole=['1','2'];
+ public profilesettingsrole=['1','2'];
   public menu = [
   {
     state: 'healthscreen',
     name: 'Clinic Health',
     type: 'link-healthscreen',
     icon: 'fas fa-clinic-medical',
-    role:['2'],
+    role:this.healthscreenrole,
     param2 : 'dashboards',
   },
   {
@@ -204,7 +210,7 @@ export class MenuItems {
     name: 'Morning Huddle',
     type: 'link-morning-huddle',
     icon: 'fas fa-coffee',
-    role:['2','3','4','5'],
+    role:this.morninghuddlerole,
      param2 : '',
   },
   {
@@ -212,7 +218,7 @@ export class MenuItems {
     name: 'Lost Opportunity',
     type: 'link-lost-opportunity',
     icon: 'fas fa-briefcase',
-    role:['2'],
+    role:this.lostoppurtunityrole,
     param2 : '',
   }, 
   {
@@ -236,9 +242,9 @@ export class MenuItems {
     type: 'sub-child',
     icon: 'fas fa-cog',
     children: [
-      { state: 'clinic', name: 'Clinics', type: 'link', role:['2','3','4','5']},
-      { state: 'roles-users', name: 'Users', type: 'link', role:['2','3','4','5']},
-      { state: 'profile-settings', name: 'Profile Settings', type: 'link', role:['2']},   
+      { state: 'clinic', name: 'Clinics', type: 'link', role:this.clinicsrole,},
+      { state: 'roles-users', name: 'Users', type: 'link', role:this.usersrole},
+      { state: 'profile-settings', name: 'Profile Settings', type: 'link', role:['2','3','4','5']},   
   
     ],
     role:['2','3','4','5']
@@ -260,6 +266,19 @@ export class MenuItems {
               this.dashboard4role.push(result.role_id.toString());
             if(dashboards.includes("dashboard5")) 
               this.dashboard5role.push(result.role_id.toString());
+            if(dashboards.includes("healthscreen")) 
+              this.healthscreenrole.push(result.role_id.toString());
+            if(dashboards.includes("morninghuddle")) 
+              this.morninghuddlerole.push(result.role_id.toString());
+            if(dashboards.includes("lostoppurtunity")) 
+              this.lostoppurtunityrole.push(result.role_id.toString());
+            if(dashboards.includes("clinics")) 
+              this.clinicsrole.push(result.role_id.toString());
+            if(dashboards.includes("users")) 
+              this.usersrole.push(result.role_id.toString());            
+            if(dashboards.includes("profilesettings")) 
+              this.profilesettingsrole.push(result.role_id.toString());            
+
          });
        }
     }, error => {

@@ -142,7 +142,7 @@ export class MarketingComponent implements AfterViewInit {
        //  this.filterDate('cytd');
         this.getClinics();
 
-      this.initiate_clinic();
+  //    this.initiate_clinic();
         
        $('#title').html('Marketing');
         $('.external_clinic').show();

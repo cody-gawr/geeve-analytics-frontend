@@ -149,7 +149,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
     this.user_type = this._cookieService.get("user_type");
      //   this.getDentists(); 
-      this.initiate_clinic();
+     // this.initiate_clinic();
         
            if( this._cookieService.get("dentistid")) {
              this.childid = this._cookieService.get("dentistid");

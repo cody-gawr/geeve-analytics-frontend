@@ -301,6 +301,18 @@ initiate_clinic() {
             checkedRoles.push('dashboard4');
            if(result.selectedRole['dashboard5_'+res1.id])
             checkedRoles.push('dashboard5');
+          if(result.selectedRole['healthscreen_'+res1.id])
+            checkedRoles.push('healthscreen');
+           if(result.selectedRole['morninghuddle_'+res1.id])
+            checkedRoles.push('morninghuddle');
+           if(result.selectedRole['lostoppurtunity_'+res1.id])
+            checkedRoles.push('lostoppurtunity');
+           if(result.selectedRole['clinics_'+res1.id])
+            checkedRoles.push('clinics');
+           if(result.selectedRole['users_'+res1.id])
+            checkedRoles.push('users');
+           if(result.selectedRole['profilesettings_'+res1.id])
+            checkedRoles.push('profilesettings');
             var checkedRoles1 = checkedRoles.join();
               this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
                  if(res.message == 'success'){

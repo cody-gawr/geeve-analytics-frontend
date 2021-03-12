@@ -133,7 +133,7 @@ single = [
     var val = $('#currentClinic').attr('cid');
     if(val != undefined && val !='all') {
       this.clinic_id = val;
-      this.checkXeroStatus()
+      this.checkXeroStatus();
       this.getDentists();
       this.filterDate(this.chartService.duration$.value);
    }
@@ -180,7 +180,7 @@ single = [
         //this.filterDate('cytd');
       //  this.getDentists(); 
        this.route.params.subscribe(params => {
-      this.initiate_clinic();
+     // this.initiate_clinic();
     $('.external_clinic').show();
         $('.dentist_dropdown').hide();
         $('.header_filters').removeClass('hide_header');

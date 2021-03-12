@@ -35,9 +35,7 @@ export class LoginComponent implements OnInit {
           this.errorLogin  =false;
 
   this.loginService.login(this.form.value.uname, this.form.value.password).subscribe((res) => {
-       if(res.message == 'success'){
-        
-        
+       if(res.message == 'success'){        
         var datares = [];
         datares['username'] = res.data.data.username;
         datares['email'] = res.data.data.email;
@@ -98,6 +96,7 @@ export class LoginComponent implements OnInit {
           this.errorLogin  =true;
        }
     }, error => {
+       this.errorLogin  =true;
     }    
     );
 
