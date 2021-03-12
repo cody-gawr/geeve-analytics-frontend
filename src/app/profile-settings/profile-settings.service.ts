@@ -43,10 +43,6 @@ export class ProfileSettingsService {
             formData.append('displayName', displayName);
             formData.append('email', email);
             formData.append('user_image', imageURL);   
-            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')         
-            formData.append('id', this._cookieService.get("childid"));
-            else
-            formData.append('id', this._cookieService.get("userid"));
 
            var header = this.getHeaders(); 
 
@@ -61,11 +57,7 @@ export class ProfileSettingsService {
             const formData = new FormData();
             formData.append('oldpassword', currentPassword);
             formData.append('password', newPassword);
-            formData.append('confirm_password', newPassword);            
-            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')         
-            formData.append('id', this._cookieService.get("childid"));
-            else
-            formData.append('id', this._cookieService.get("userid"));
+            formData.append('confirm_password', newPassword); 
 
             var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/Users/changePasswordApi/", formData, { headers: header })

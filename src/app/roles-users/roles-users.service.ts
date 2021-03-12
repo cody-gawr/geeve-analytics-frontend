@@ -33,7 +33,7 @@ export class RolesUsersService {
    // Get Dentist
     getUsers(user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/getRolesUsers?user_id="+user_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Users/getRolesUsers", { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -43,7 +43,7 @@ export class RolesUsersService {
        // Get Dentist
     getRoles(user_id= this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Roles/getRoles?user_id="+user_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Roles/getRoles", { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -74,7 +74,6 @@ export class RolesUsersService {
     deleteUser(user_id, token = this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
         formData.append('id', user_id);
-        formData.append('user_id', this._cookieService.get("userid"));
         
         var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/Users/delete", formData, { headers: header })
@@ -90,7 +89,6 @@ export class RolesUsersService {
 console.log(role_id);
     formData.append('role_id', role_id);
     formData.append('permisions', checkedRoles);
-       formData.append('user_id', this._cookieService.get("userid"));
    
      var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/Roles/saveRoles/", formData, { headers: header })
@@ -112,8 +110,6 @@ console.log(role_id);
     formData.append('selected_dentist', dentist);
     formData.append('selectedClinic', selectedClinic);
      
-
-    formData.append('user_id', this._cookieService.get("userid"));
      var header = this.getHeaders(); 
     
         return this.http.post(this.apiUrl +"/Users/addRoleUser/", formData, { headers: header })
@@ -135,8 +131,6 @@ console.log(role_id);
     formData.append('selected_dentist', dentist);
     formData.append('selectedClinic', selectedClinic);
      
-
-    formData.append('user_id', this._cookieService.get("userid"));
      var header = this.getHeaders(); 
     
         return this.http.post(this.apiUrl +"/Users/updateRoleUser/", formData, { headers: header })
