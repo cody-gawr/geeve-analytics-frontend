@@ -47,7 +47,7 @@ export class HealthScreenService {
         // Items Predictor Analysis 
     mkNewPatientsByReferral(clinic_id, startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token"),limit=5  ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/analytics/health/referralLeaders?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&limit="+limit, { headers: header })
+        return this.http.get(this.apiUrl +"/health/referralLeaders?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&limit="+limit, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
