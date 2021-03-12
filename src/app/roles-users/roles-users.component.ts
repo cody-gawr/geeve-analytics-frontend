@@ -1,13 +1,15 @@
 import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
 import { RolesUsersService } from './roles-users.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatInputModule } from '@angular/material';
-import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
 import { ClinicService } from '../clinic/clinic.service';
 import { ToastrService } from 'ngx-toastr';
 import {FormControl} from '@angular/forms';
+import { CookieService } from "angular2-cookie/core";
+
+import { HeaderService } from '../layouts/full/header/header.service';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
@@ -231,12 +233,30 @@ initiate_clinic() {
   ngAfterViewInit() {
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
+    this.checkPermission('users');
+
     this.initiate_clinic();
 
         $('#title').html('Users');
         $('.external_clinic').hide();
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
+  }
+    private checkPermission(role) {
+    this.headerService.checkPermission(role).subscribe((res) => {
+
+      if (res.message == 'success') {
+      }
+      else if (res.status == '401') {
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+    }
+    );
   }
   editing = {};
   rows = [];
@@ -248,7 +268,7 @@ initiate_clinic() {
   columns = [{ prop: 'sr' }, { name: 'displayName' }, { name: 'email' }, { name: 'usertype' }, { name: 'created' }];
 
   @ViewChild(RolesUsersComponent) table: RolesUsersComponent;
-  constructor(private toastr: ToastrService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService,private clinicService: ClinicService) {
+  constructor(private toastr: ToastrService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService,private clinicService: ClinicService, private headerService: HeaderService) {
     this.rows = data;
     this.temp = [...data];
     setTimeout(() => {

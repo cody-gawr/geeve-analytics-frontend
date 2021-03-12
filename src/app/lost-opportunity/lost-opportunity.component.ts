@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LostOpportunityService } from './lost-opportunity.service';
-
+import { CookieService } from "angular2-cookie/core";
+import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
+import { HeaderService } from './../layouts/full/header/header.service';
 @Component({
   selector: 'app-lost-opportunity',
   templateUrl: './lost-opportunity.component.html',
@@ -27,16 +30,37 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 	public production:number = 0;
 	public productionReal:number = 0;
 	public productionImp:number = 0;
-	constructor(public lostOpportunityService: LostOpportunityService) { }
+	constructor(public lostOpportunityService: LostOpportunityService, private _cookieService: CookieService,private router: Router,
+    private toastr: ToastrService,
+    private headerService: HeaderService) { }
 
   	ngOnInit() {
   		  $('#currentDentist').attr('did','all');
+    this.checkPermission('lostoppurtunity');
+
   		 this.initiate_clinic();
 			$('.dentist_dropdown').parent().hide(); // added
 			$('.sa_heading_bar').addClass("filter_single"); // added
   	}
 
-	
+	  private checkPermission(role) {
+    this.headerService.checkPermission(role).subscribe((res) => {
+
+      if (res.message == 'success') {
+      }
+      else if (res.status == '401') {
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+      //    $('.ajax-loader').hide(); 
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }
+    );
+  }
 	ngOnDestroy() {
 		$('.dentist_dropdown').parent().show(); // added
 		$('.sa_heading_bar').removeClass("filter_single"); // added

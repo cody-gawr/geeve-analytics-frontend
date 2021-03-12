@@ -3,7 +3,10 @@ import { MorningHuddleService } from './morning-huddle.service';
 import { CookieService } from "angular2-cookie/core";
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 
+import { HeaderService } from '../../layouts/full/header/header.service';
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -95,11 +98,13 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   
  @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService) { 
+  constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService) { 
   }
  ngOnInit(){
     $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
+    this.checkPermission('morninghuddle');
+
      this.initiate_clinic();
  }
 ngAfterViewInit(): void {
@@ -111,6 +116,24 @@ ngOnDestroy() {
   $('.dentist_dropdown').parent().show(); // added
   $('.sa_heading_bar').removeClass("filter_single"); // added
 }
+  private checkPermission(role) {
+    this.headerService.checkPermission(role).subscribe((res) => {
+
+      if (res.message == 'success') {
+      }
+      else if (res.status == '401') {
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+      //    $('.ajax-loader').hide(); 
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }
+    );
+  }
 initiate_clinic() {
     $('.external_clinic').show();
     $('.dentist_dropdown').hide();
