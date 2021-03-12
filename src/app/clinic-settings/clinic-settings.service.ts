@@ -29,7 +29,7 @@ export class ClinicSettingsService {
    // Get ClinicSettings
     getClinicSettings( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Clinics/getClinics?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -55,7 +55,7 @@ export class ClinicSettingsService {
     var social_info = JSON.stringify({facebook: facebook, twitter: twitter, linkedin: linkedin, instagram: instagram});
     formData.append('social_info', social_info);
     var header = this.getHeaders();
-    return this.http.post(this.apiUrl +"/Practices/update/", formData, { headers: header})
+    return this.http.post(this.apiUrl +"/Clinics/updateClinic/", formData, { headers: header})
         .pipe(map((response: Response) => {
                         return response;
                     })

@@ -30,7 +30,7 @@ export class ClinicService {
    // Get Dentist
     getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Practices/getPractices?user_id="+user_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Clinics/getClinics?user_id="+user_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -45,7 +45,7 @@ export class ClinicService {
      formData.append('user_id', this._cookieService.get("userid"));
     
     var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/Practices/delete", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Clinics/delete", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -61,7 +61,7 @@ export class ClinicService {
         formData.append('user_id', this._cookieService.get("userid"));
         formData.append('clinic_id', '1');
         var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Practices/update/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Clinics/updateClinic/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -78,7 +78,7 @@ export class ClinicService {
 
     formData.append('user_id', this._cookieService.get("userid"));
     var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/Practices/add/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Clinics/add/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -100,7 +100,7 @@ export class ClinicService {
         formData.append('selectedClinics', selectedClinics);
 
          var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/Practices/getClinicProviders/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Clinics/getClinicProviders/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
