@@ -469,7 +469,7 @@
        
       <div class="appointment" *ngIf="element.outstanding_item_value > 0"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Outstanding Treatment ${{ element.outstanding_item_value | number:'1.0-0' }}</span></div>
       
-     <!--  <div class="appointment" *ngIf="element.overdue_037 == 'Yes' && element.overdue_022 == 'Yes'">
+       <div class="appointment" *ngIf="element.overdue_037 == 'Yes' && element.overdue_022 == 'Yes'">
           <span class="warning" title="022,037 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xrays Overdue</span> 
       </div>
       <div class="appointment" *ngIf="element.overdue_037 == 'Yes' && element.overdue_022 == 'No'">
@@ -477,7 +477,7 @@
       </div>
       <div class="appointment" *ngIf="element.overdue_022 == 'Yes' && element.overdue_037 == 'No'">
           <span class="warning" title="022 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xrays Overdue</span>
-      </div> -->
+      </div>
       <div class="appointment" *ngIf="element.noshows == 'Yes'"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> History of No Shows (Patient has >=3 FTA/UTA)</span></div>
     </td>
   </ng-container>
