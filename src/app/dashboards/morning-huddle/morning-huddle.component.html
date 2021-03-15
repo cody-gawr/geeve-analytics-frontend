@@ -458,15 +458,18 @@
     <td mat-cell *matCellDef="let element"> 
       
       <div class="appointment" *ngIf="element.recall_overdue == 'yes'"> 
-        <span class="warning" title="{{ element.lastRecall | date: 'MMM d, y':'UTC' }}"><span> <img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> No Recall for > 6 Months</span>
+        <span class="warning" ><span> <img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> No Recall for > 6 Months</span>
       </div>
       <div class="appointment" *ngIf="element.noRecall == 'No'"> 
         <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span>  No previous recalls</span>
       </div>
+      <div class="appointment" *ngIf="element.is_birthday == 'Yes'"> 
+        <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span>Birthday</span>
+      </div>
        
       <div class="appointment" *ngIf="element.outstanding_item_value > 0"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Outstanding Treatment ${{ element.outstanding_item_value | number:'1.0-0' }}</span></div>
       
-     <!--  <div class="appointment" *ngIf="element.overdue_037 == 'Yes' && element.overdue_022 == 'Yes'">
+       <div class="appointment" *ngIf="element.overdue_037 == 'Yes' && element.overdue_022 == 'Yes'">
           <span class="warning" title="022,037 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xrays Overdue</span> 
       </div>
       <div class="appointment" *ngIf="element.overdue_037 == 'Yes' && element.overdue_022 == 'No'">
@@ -474,7 +477,7 @@
       </div>
       <div class="appointment" *ngIf="element.overdue_022 == 'Yes' && element.overdue_037 == 'No'">
           <span class="warning" title="022 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xrays Overdue</span>
-      </div> -->
+      </div>
       <div class="appointment" *ngIf="element.noshows == 'Yes'"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> History of No Shows (Patient has >=3 FTA/UTA)</span></div>
     </td>
   </ng-container>

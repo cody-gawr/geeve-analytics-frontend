@@ -76,6 +76,8 @@ customOptions: OwlOptions = {
   public bottomLabel = '65';
   public childid;
   public user_type;
+  public finProductionPerVisitLoader:any;
+  public productionVal = 0;  
   public options: any = {
       hasNeedle: false,
       arcColors: ['rgba(166, 178, 255, 1)', 'rgba(166, 178, 255, 0.8)'],
@@ -168,7 +170,8 @@ customOptions: OwlOptions = {
     if(val != undefined) {
     this.clinic_id = val;
     this.loadHealthScreen();
-    this.checkXeroStatus();
+    //this.checkXeroStatus();
+    this.finProductionPerVisit();
   }
   }
 
@@ -419,7 +422,7 @@ public newPatientsTimeClinic=[];
   }
 
 
-  checkXeroStatus() {
+/*  checkXeroStatus() {
     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
       console.log('res', res)
       if (res.message == 'success') {
@@ -435,6 +438,22 @@ public newPatientsTimeClinic=[];
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }*/
+
+  private finProductionPerVisit() {
+    this.finProductionPerVisitLoader = true;
+    this.productionVal = 0;  
+    var user_id;
+    var clinic_id;
+    this.healthscreenService.finProductionPerVisit(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+       if(data.message == 'success'){
+        this.finProductionPerVisitLoader = false;
+        this.productionVal = Math.round(data.total);  
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+ 
     });
   }
 
