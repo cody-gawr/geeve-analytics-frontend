@@ -732,8 +732,8 @@ public newAcqValuePrev =0;
      if(this.duration){
        var user_id;
        var clinic_id;
-       this.fdnewPatientsAcqLoader = true;
-       this.financesService.categoryExpenses(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+       this.fdnewPatientsAcqLoader = true; 
+       this.marketingService.categoryExpenses(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
           if(data.message == 'success'){
        this.fdnewPatientsAcqLoader = false;
             this.categories=[];

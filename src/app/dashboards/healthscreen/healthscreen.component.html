@@ -45,35 +45,28 @@
             fxFlex.xs="100" class="sa_flexbg" [ngClass]="{'arrow-up': profit_dif>=0, 'arrow-down':profit_dif<=0, 'hccard-container': true}">
 
             <mat-card class="treatmentPlan sa_hccard">
-              <mat-card-content class="sa_matcard_content">
-                <div class="prodction_main_box">
-                    <ng-container *ngIf="xeroConnect;else NoXeroConnectProfitValuePlaceholder">
-                      <div class="production_images clinic-health-top-icon">
-                        <img src="../assets/images/profit.png" alt="product-chart" />
-                      </div>
-                      <div class="production_description production_description-grow">
-                        <h4>Profit</h4>
-                        <span class="change_value">
-                          {{profit_c >= 0 ? ' ' : '- ' }}
-                          ${{ (profit_c<0 ? profit_c.toString().split('-').join('') : profit_c) | number:'1.0-0'}}</span>
-                      </div>
-                      <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="profit_dif">
-                        <div [ngClass]="(profit_dif >= 0) ? 'plus': 'minus'">
-                          {{ profit_dif >= 0 ? '+ ' : '- ' }}
-                          ${{(profit_dif<0 ? profit_dif.toString().split('-').join('') : profit_dif) | number:'1.0-0'}}
-                        </div>
-                      </div>
-                    </ng-container>
-                    <ng-template #NoXeroConnectProfitValuePlaceholder>
-                      <div *ngIf="!xeroConnect" class="w-100"> 
-                        <div class="sa_nodata_div no-found-data ">
-                          <p>Please connect to Xero/MYOB to display this chart</p>
-                        </div>
-                      </div>
-                    </ng-template>
-                </div>
-                
-              </mat-card-content>
+                <mat-card-content class="sa_matcard_content"> 
+             <mat-card-title class="text-center">Production Per Visit
+                <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon" />
+              </mat-card-title>
+              <div class="card-body clinician-center-chart">
+              <div  style="height: 150px; width: 100%;" *ngIf="productionVal > 0 && finProductionPerVisitLoader == false">
+                <ngx-gauge class="productionVisit" [type]="gaugeType" 
+           [value]="productionVal" 
+           [thick]="gaugeThick"  
+           [prepend]= "gaugePrependText"
+           [foregroundColor]="foregroundColor"
+           [backgroundColor]="backgroundColor"
+           [cap] ="cap"
+           [size] = "size"> </ngx-gauge> 
+              </div>
+          <div *ngIf="productionVal <= 0 && finProductionPerVisitLoader == false" class="no-data-placeholder"> 
+            <div class="sa_nodata_div">
+            </div>
+            <p class="chart-placeholder-text">You have no production in the selected period</p>
+          </div>
+              </div>
+            </mat-card-content>
             </mat-card>
           </div>
           <!-- Column-->

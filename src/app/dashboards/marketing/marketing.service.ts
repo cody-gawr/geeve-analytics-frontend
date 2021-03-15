@@ -102,4 +102,14 @@ public token_id;
         );
     }             
 
+                // categoryExpenses
+    categoryExpenses(clinic_id='1', startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Marketing/newPatientAcq?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
 }
