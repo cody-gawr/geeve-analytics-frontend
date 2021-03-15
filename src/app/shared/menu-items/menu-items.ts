@@ -242,12 +242,11 @@ export class MenuItems {
     type: 'sub-child',
     icon: 'fas fa-cog',
     children: [
-      { state: 'clinic', name: 'Clinics', type: 'link', role:this.clinicsrole,},
-      { state: 'roles-users', name: 'Users', type: 'link', role:this.usersrole},
-      { state: 'profile-settings', name: 'Profile Settings', type: 'link', role:['2','3','4','5']},   
-  
+      { state: 'clinic', name: 'Clinics', type: 'link',role:this.profilesettingsrole},
+      { state: 'roles-users', name: 'Users', type: 'link',role:this.profilesettingsrole},
+      { state: 'profile-settings', name: 'Profile Settings', type: 'link',role:this.profilesettingsrole},
     ],
-    role:['2','3','4','5']
+    role:this.profilesettingsrole
 
    },  
 ];
@@ -272,13 +271,8 @@ export class MenuItems {
               this.morninghuddlerole.push(result.role_id.toString());
             if(dashboards.includes("lostoppurtunity")) 
               this.lostoppurtunityrole.push(result.role_id.toString());
-            if(dashboards.includes("clinics")) 
-              this.clinicsrole.push(result.role_id.toString());
-            if(dashboards.includes("users")) 
-              this.usersrole.push(result.role_id.toString());            
             if(dashboards.includes("profilesettings")) 
-              this.profilesettingsrole.push(result.role_id.toString());            
-
+              this.profilesettingsrole.push(result.role_id.toString());
          });
        }
     }, error => {
