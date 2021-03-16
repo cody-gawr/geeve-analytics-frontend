@@ -244,9 +244,9 @@ export class MenuItems {
     children: [
       { state: 'clinic', name: 'Clinics', type: 'link',role:this.profilesettingsrole},
       { state: 'roles-users', name: 'Users', type: 'link',role:this.profilesettingsrole},
-      { state: 'profile-settings', name: 'Profile Settings', type: 'link',role:this.profilesettingsrole},
+      { state: 'profile-settings', name: 'Profile Settings', type: 'link',role:['2','3','4','5']},
     ],
-    role:this.profilesettingsrole
+    role:['2','3','4','5']
 
    },  
 ];
@@ -273,6 +273,7 @@ export class MenuItems {
               this.lostoppurtunityrole.push(result.role_id.toString());
             if(dashboards.includes("profilesettings")) 
               this.profilesettingsrole.push(result.role_id.toString());
+
          });
        }
     }, error => {

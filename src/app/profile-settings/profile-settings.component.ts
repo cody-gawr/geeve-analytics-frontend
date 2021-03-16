@@ -13,6 +13,7 @@ import {
 } from '@stripe/stripe-js';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import { RolesUsersService } from '../roles-users/roles-users.service';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './profile-settings.component.html',
@@ -140,7 +141,7 @@ public cvcStyle = {
           public xeroConnect = false;
           public xeroOrganization='';
           public email;
-  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute,private stripeService: StripeService, private router: Router,private toastr: ToastrService) {
+  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute,private stripeService: StripeService, private router: Router,private toastr: ToastrService,private rolesUsersService: RolesUsersService) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -152,9 +153,9 @@ public cvcStyle = {
       this.id = this.route.snapshot.paramMap.get("id");
       this.displayName = this._cookieService.get("display_name");
       this.email = this._cookieService.get("email");  
-      this.imageURL = this._cookieService.get("user_image");
+      this.imageURL = this._cookieService.get("user_image");        
+        this.getRoles();
         this.getPaymentDetails();
-
         this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
             this.stripeTest = this.fb.group({
             name: ['', [Validators.required]]
@@ -197,7 +198,19 @@ public cvcStyle = {
 
     });
   }
-
+  public permisions='';
+getRoles() {      
+   this.rolesUsersService.getRoles().subscribe((res) => {
+       if(res.message == 'success'){ 
+         res.data.forEach(result => {
+          if(result.role_id == this._cookieService.get("user_type"))
+            this.permisions =result.permisions;
+         });
+         //console.log((this.permissions.split(",")).indexOf("profilesettings"));
+       }
+    }, error => {
+    });
+  }
   // Sufix and prefix
   hide = true;
 public customer_id;
@@ -399,7 +412,6 @@ public imageURL:any;
         this._cookieService.put("user_image", this.imageURL, opts);
       }
         $(".suer_text_sidebar").html(this.display_name.toUpperCase());
-       // this.notifier.notify( 'success', 'Profile Settings Updated' ,'vertical');
          this.toastr.success('Profile Settings Updated .');  
        }
     }, error => {
@@ -428,19 +440,13 @@ public repeatPassword;
        this.profileSettingsService.updatePassword(this.currentPassword, this.newPassword).subscribe((res) => {
            if(res.message == 'success'){
             this.toastr.success(res.data);
-            /*this.successLogin = true;
-            this.successtext = res.data;*/
             this.form.reset();
            }
            else{
-              /*this.errorLogin = true;     
-              this.errortext = res.data;*/
               this.toastr.error(res.data);
             }
         }, error => {
           this.toastr.error('Please Provide Valid Inputs!');
-          /*this.errorLogin = true;
-          this.errortext = "Please Provide Valid Inputs!";*/
         }    
         );
      }
@@ -456,7 +462,6 @@ public fileToUpload;
     if(this.fileToUpload.size <2097152) {
     let formData = new FormData();
     formData.append('file', this.fileToUpload, this.fileToUpload.name);
-    console.log(this.fileToUpload);
     this.profileSettingsService.logoUpload(formData).subscribe((res) => {
              $('.ajax-loader').hide();
 
