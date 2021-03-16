@@ -940,7 +940,7 @@
       <th mat-header-cell *matHeaderCellDef>Status</th>
       <!-- "{{ element.status }}" -->
       <td mat-cell *matCellDef="let element">
-        <mat-slide-toggle checked="false" name="status"
+        <mat-slide-toggle checked="{{element.status}}" name="status"
           (change)="toggleUpdate($event,element.pid,element.cid,element.uid,'Unscheduled Patients')"></mat-slide-toggle>
       </td>
     </ng-container>
