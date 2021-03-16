@@ -1567,8 +1567,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.treatment_percentage) {
-            this.treatmentChartData1.push(Math.round(res.treatment_percentage));
+          if (res.treatment_per_plan_percentage) {
+            this.treatmentChartData1.push(Math.round(res.treatment_per_plan_percentage));
             var name = res.provider_name;
             if (res.provider_name != null && res.provider_name != 'Anonymous') {
               this.treatmentChartLabels1.push(name);
@@ -1663,7 +1663,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPlanRateDentistLoader = false;
         this.treatmentPlanValue = '0';
         if (data.data.length > 0) {
-          this.treatmentPlanValue = Math.round(data.data[0].treatment_percentage);
+          this.treatmentPlanValue = Math.round(data.data[0].treatment_per_plan_percentage);
           this.treatmentPlanLabel = data.data[0].provider_name;
         }
         this.treatmentPlanGoal = Math.round(data.goals);

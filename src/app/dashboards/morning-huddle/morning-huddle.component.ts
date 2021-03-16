@@ -246,21 +246,25 @@ initiate_clinic() {
   refreshScheduleTab(event){
     $('.temP').remove();
     if(event == 0){
+      this.currentDentist = 'null';
       $('.DentistListSecRow').find("tr").removeClass('hide');
     } else {
+      this.currentDentist = event;
       $('.DentistListSecRow table tbody').find("tr").addClass('hide');
       $('.DentistListSecRow table tbody').find("td[id='"+event+"']").parent().removeClass('hide');
     }
     
-    if($('.DentistListSecRow table tbody').find("td[id='"+event+"']").length == 0){
+    if($('.DentistListSecRow table tbody').find("td[id='"+event+"']").length == 0 && event != 0){
         $('.DentistListSecRow table tbody').append('<tr class="temP"><td align="center" colspan="4"> No Data found</td></tr>');
     }
-
- /*   this.getSchedulePatients(this.currentDentist);
+    
+    this.getSchedulePatients(this.currentDentist);
     this.getScheduleNewPatients(this.currentDentist);
     this.getScheduleHours(this.currentDentist);
     this.getUnscheduleHours(this.currentDentist);
-    this.getAppointmentCards(this.currentDentist);*/
+ /* 
+    this.getAppointmentCards(this.currentDentist);
+    */
   }
 /*  frontDeskTab(event){
     this.previousDays = event;
@@ -500,7 +504,7 @@ initiate_clinic() {
   
   toggleUpdate(event,pid,cid,uid,type) {    
     this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,uid,type, this.previousDays).subscribe((update:any) => {
-      console.log(update,'***');
+      console.log(update,'***'); 
     });
   }
 
