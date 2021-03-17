@@ -258,10 +258,9 @@ customOptions: OwlOptions = {
 
        if(data.message == 'success'){
           this.production_c = data.data.production_c;
-          this.profit_c = data.data.profit_c;
+          
           this.visits_c = data.data.visits_c;
-          this.production_p = data.data.production_p;
-          this.profit_p = data.data.profit_p;
+          this.production_p = data.data.production_p;          
           this.visits_p = data.data.visits_p;
           this.visits_f = data.data.visits_f;
           this.utilisation_rate_f = Math.round(data.data.utilisation_rate_f);
@@ -272,7 +271,6 @@ customOptions: OwlOptions = {
             };
           }
           this.unscheduled_production_f = data.data.unscheduled_production_f;
-          this.profit_g = data.data.profit_g;          
           this.visits_g = data.data.visits_g;          
           this.production_g = data.data.production_g;          
           this.utilisation_rate_f_g = data.data.utilisation_rate_f_g;          
