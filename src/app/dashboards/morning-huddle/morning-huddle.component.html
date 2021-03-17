@@ -871,7 +871,7 @@
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.Dentists.name }} </td>
+      <td mat-cell *matCellDef="let element"> {{element.patient_name }} </td>
     </ng-container>
 
     <!-- Weight Column -->
@@ -880,9 +880,9 @@
       <td mat-cell *matCellDef="let element">
         <div class="phone_align_center">
           <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
-          <span class="phone_no" *ngIf="element.phone_home && !element.phone_work">{{element.phone_home}}</span>
-          <span class="phone_no" *ngIf="!element.phone_home && element.phone_work">{{element.phone_work}}</span>
-          <span class="phone_no" *ngIf="!element.phone_home && !element.phone_work">{{element.mobile}}</span>
+          <span class="phone_no" *ngIf="element.mobile">{{element.mobile}}</span>
+          <span class="phone_no" *ngIf="!element.mobile && element.phone_work">{{element.phone_work}}</span>
+          <span class="phone_no" *ngIf="!element.mobile && !element.phone_work">{{element.phone_home}}</span>
         </div>
       </td>
     </ng-container>
@@ -890,7 +890,7 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="code">
       <th mat-header-cell *matHeaderCellDef> Treatment Name </th>
-      <td mat-cell *matCellDef="let element">{{ element.treat_item }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.post_op_codes }}</td>
     </ng-container>
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef>Status</th>
