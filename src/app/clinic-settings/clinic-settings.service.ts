@@ -29,31 +29,25 @@ export class ClinicSettingsService {
    // Get ClinicSettings
     getClinicSettings( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Clinics/getClinics?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Clinics/getClinics?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
        // Get ClinicSettings
-   
-    updateClinicSettings(clinic_id, name, address, contact_name, practice_size,workingDays,postOpCalls,phoneNo,clinicEmail,facebook,twitter,linkedin,instagram,logo, user_id = '23', token = this._cookieService.get("token")): Observable<any> {
-
+    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta, user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
-    formData.append('clinicName', name);
-    formData.append('address', address);
-    formData.append('contactName', contact_name);
-    formData.append('practice_size', practice_size);
-    formData.append('id', clinic_id);
-    formData.append('user_id', this._cookieService.get("userid"));
-    formData.append('days', workingDays);
-    formData.append('logo', logo);
-    formData.append('phoneNo', phoneNo);
-    formData.append('clinicEmail', clinicEmail);
-    formData.append('post_op_calls', postOpCalls);
-
-    var social_info = JSON.stringify({facebook: facebook, twitter: twitter, linkedin: linkedin, instagram: instagram});
-    formData.append('social_info', social_info);
+        formData.append('id', clinic_id);
+        formData.append('clinicName', name);
+        formData.append('address', address);
+        formData.append('contactName', contact_name);
+        formData.append('days', workingDays);
+        formData.append('post_op_calls', postOpCalls);
+        formData.append('phoneNo', phoneNo);
+        formData.append('clinicEmail', clinicEmail);
+        formData.append('fta_uta', ftaUta);
+        formData.append('user_id', this._cookieService.get("userid"));
     var header = this.getHeaders();
     return this.http.post(this.apiUrl +"/Clinics/updateClinic/", formData, { headers: header})
         .pipe(map((response: Response) => {

@@ -184,11 +184,11 @@ initiate_clinic() {
     
     /***** Tab 4 ***/
     this.getReminders();
-    this.getRemindersTreatmentOutstanding();
-    this.getRemindersOutstandingBalances();
+    /***** Tab 4 ***/
+    /***** Tab 5 ***/
     this.getFollowupsUnscheduledPatients();
     this.getFollowupPostOpCalls();
-    /***** Tab 4 ***/
+    /***** Tab 5 ***/
     }
   }
 
@@ -233,8 +233,6 @@ initiate_clinic() {
     /*******Tab 3 *******/
     /*******Tab 4 *******/
      this.getReminders();
-    this.getRemindersTreatmentOutstanding();
-    this.getRemindersOutstandingBalances();
     /*******Tab 4 *******/
     
     /*******Tab 5 *******/
@@ -285,22 +283,10 @@ initiate_clinic() {
     }); 
   } 
 
-  getRemindersTreatmentOutstanding(){
-    this.morningHuddleService.getRemindersTreatmentOutstanding( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
-        this.treatmentOutstanding = production.data;     
-      }
-    }); 
-  }
 
 
-  getRemindersOutstandingBalances(){
-    this.morningHuddleService.getRemindersOutstandingBalances( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
-        this.outstandingBalances = production.data;     
-      }
-    }); 
-  } 
+
+
 
   getFollowupsUnscheduledPatients(){
     this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
