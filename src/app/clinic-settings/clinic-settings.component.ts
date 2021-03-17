@@ -29,7 +29,11 @@ export class ClinicSettingsComponent implements OnInit {
           public contactName =0;
           public phoneNo =0;
           public clinicEmail = '';
-          
+          public ftaUta:any = "";
+         public ftaUtaStatus:boolean = true;
+         public ftaUtaItem:boolean = false;
+    
+  
           public facebook:string = '';
           public twitter:string = '';
           public linkedin:string = '';
@@ -73,6 +77,8 @@ export class ClinicSettingsComponent implements OnInit {
       address: [null, Validators.compose([Validators.required])],
       // practice_size: [null, Validators.compose([Validators.required])],
       post_op_calls: [null, Validators.compose([Validators.required])],      
+      fta_uta: [null, Validators.compose([Validators.required])],      
+        
       // facebook: [null],
       // twitter: [null],
       // linkedin: [null],
@@ -105,15 +111,10 @@ export class ClinicSettingsComponent implements OnInit {
         this.practice_size = res.data[0].practice_size;
         this.post_op_calls = res.data[0].post_op_calls;        
         this.phoneNo = res.data[0].phoneNo;        
-        this.clinicEmail = res.data[0].clinicEmail;        
-        this.logo = res.data[0].logo;        
-        if(res.data[0].social_info){
-          var social_info = JSON.parse(res.data[0].social_info);        
-          this.facebook = social_info.facebook;
-          this.twitter = social_info.twitter;
-          this.linkedin = social_info.linkedin;
-          this.instagram = social_info.instagram;
-        }
+        this.clinicEmail = res.data[0].clinicEmail; 
+        this.ftaUta = res.data[0].fta_uta;   
+        if(this.ftaUta == '')
+          this.ftaUta = "status";
        
         if(res.data[0].days != null && res.data[0].days != 0){
           this.workingDays = JSON.parse(res.data[0].days);
@@ -135,35 +136,28 @@ export class ClinicSettingsComponent implements OnInit {
   onSubmit() {
        $('.ajax-loader').show();
   this.clinicName = this.form.value.clinicName;
-  this.contactName = this.form.value.contactName;
   this.address = this.form.value.address;
-  this.practice_size = this.form.value.practice_size;
+  this.contactName = this.form.value.contactName;
+  let days = JSON.stringify(this.workingDays);
   this.post_op_calls = this.form.value.post_op_calls;
-  
   this.phoneNo = this.form.value.phoneNo;
   this.clinicEmail = this.form.value.clinicEmail;
-  this.facebook = this.form.value.facebook;
-  this.twitter = this.form.value.twitter;
-  this.linkedin = this.form.value.linkedin;
-  this.instagram = this.form.value.instagram;
-
-  let days = JSON.stringify(this.workingDays);
-  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, this.practice_size,days,this.post_op_calls, this.phoneNo, this.clinicEmail, this.facebook, this.twitter, this.linkedin, this.instagram, this.logo ).subscribe((res) => {
-       $('.ajax-loader').hide();
-       if(res.message == 'success'){
+  this.ftaUta = this.form.value.fta_uta;
+  
+  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta ).subscribe((res) => {
+      $('.ajax-loader').hide();
+      if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );
-       }
-        else if(res.status == '401'){
-            this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
+      } else if(res.status == '401'){
+        this._cookieService.put("username",'');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
+    });
   } 
 //get xero authorization link
   getXeroLink(){
