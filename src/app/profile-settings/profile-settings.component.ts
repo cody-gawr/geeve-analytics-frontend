@@ -153,7 +153,8 @@ public cvcStyle = {
       this.id = this.route.snapshot.paramMap.get("id");
       this.displayName = this._cookieService.get("display_name");
       this.email = this._cookieService.get("email");  
-      this.imageURL = this._cookieService.get("user_image");        
+      this.imageURL = this._cookieService.get("user_image");   
+      if( this._cookieService.get("user_type") != '2')     
         this.getRoles();
         this.getPaymentDetails();
         this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
@@ -199,6 +200,7 @@ public cvcStyle = {
     });
   }
   public permisions='';
+  public showCard = true;
 getRoles() {      
    this.rolesUsersService.getRoles().subscribe((res) => {
        if(res.message == 'success'){ 
@@ -206,7 +208,8 @@ getRoles() {
           if(result.role_id == this._cookieService.get("user_type"))
             this.permisions =result.permisions;
          });
-         //console.log((this.permissions.split(",")).indexOf("profilesettings"));
+    if(this.permisions,(this.permisions.split(",")).indexOf("profilesettings")<0)
+      this.showCard= false;
        }
     }, error => {
     });

@@ -104,7 +104,7 @@ export class MorningHuddleService {
     
      getAppointmentCards( clinic_id,currentDentist, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/apptTable?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician+"&provider_id="+currentDentist, { headers: header })
+        return this.http.get(this.apiUrl +"/MorningHuddle/apptTable?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&provider_id="+currentDentist, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
