@@ -457,7 +457,7 @@
     <th mat-header-cell *matHeaderCellDef>Notifications</th>
     <td mat-cell *matCellDef="let element"> 
       
-      <div class="appointment" *ngIf="element.recall_overdue == 'yes'"> 
+      <div class="appointment" *ngIf="element.recall_overdue == 'Yes'"> 
         <span class="warning" ><span> <img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> No Recall for > 6 Months</span>
       </div>
       <div class="appointment" *ngIf="element.noRecall == 'No'"> 
@@ -740,163 +740,55 @@
         <strong>{{ remindersRecallsOverdueDate }}</strong>        
       </div>
 <mat-card class="table-card">
-  <mat-card-title>Recalls Overdue</mat-card-title>
-  <mat-card-content> 
-    <div class="responsive_patient_data">
-      <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
-        <table mat-table [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8 reminders-table">
-    
-          <!-- Appointment Column -->
-          <ng-container matColumnDef="start">
-            <th mat-header-cell *matHeaderCellDef> Appointment Time </th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.start | date: 'h:mm a':'UTC' }}
-            </td>
-          </ng-container>
-    
-          <!-- Patient name Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Patient Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
-          </ng-container>
-    
-          <!-- Dentist Column -->
-          <ng-container matColumnDef="dentist">
-            <th mat-header-cell *matHeaderCellDef> Dentist Name </th>
-            <td mat-cell *matCellDef="let element">{{element.app_book_description}} </td>
-          </ng-container>
-    
-    
-          <ng-container matColumnDef="isDataAvailable">
-            <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns1.length">
-              No Data found
-            </mat-footer-cell>
-          </ng-container>
-    
-          <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
-    
-    
-          <mat-footer-row *matFooterRowDef="['isDataAvailable']"
-            [ngClass]="(remindersRecallsOverdue.length == 0)? 'show' : 'hide'"></mat-footer-row>
-        </table>
+        <div class="DentistListSecRow mh-table patient_data-table_responsive">
+<table mat-table  matSort [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8">
+  <!-- Name Column -->
+  <ng-container matColumnDef="start">
+    <th mat-header-cell *matHeaderCellDef>Time </th>
+    <td id="{{ element.provider_id }}" mat-cell *matCellDef="let element"><span class="newpatient"></span>{{ element.app_date +" " + element.start | date :'h:mm a' }} - {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }} 
+    <span class="newpatient" *ngIf="element.is_new_patient != 'No'"></span></td>
+  </ng-container>
+
+   <ng-container matColumnDef="dentist">
+    <th mat-header-cell *matHeaderCellDef>Dentist </th>
+    <td mat-cell *matCellDef="let element"> {{element.provider_name }} </td>
+  </ng-container>
+
+   <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Patient  </th>
+    <td mat-cell *matCellDef="let element"> {{ element.patient_name }} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+<ng-container matColumnDef="card">
+    <th mat-header-cell *matHeaderCellDef>Notifications</th>
+    <td mat-cell *matCellDef="let element"> 
+      
+      <div class="appointment" *ngIf="element.recall_overdue == 'Yes'"> 
+        <span class="warning" ><span> <img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> No Recall for > 6 Months</span>
       </div>
-    </div>
-<!--<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
-          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="responsive_patient_data" >
-             
-   </div>
-          <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
-            <img src="./assets/images/recalls-overdue.png">
-          </div>
-        </div> -->
-  </mat-card-content>
-</mat-card>
+      <div class="appointment" *ngIf="element.noRecall == 'No'"> 
+        <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> No previous recalls</span>
+      </div>
 
+      <div class="appointment" *ngIf="element.due_balance > 0"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Due Balance ${{ element.due_balance | number:'1.0-0' }}</span></div>
+      <div class="appointment" *ngIf="element.code != ''">
+          <span class="warning" title="022 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> {{ element.code }}</span>
+      </div>
+    </td>
+  </ng-container>
+ <ng-container matColumnDef="isDataAvailable">
+   <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns6.length">
+      No Data found
+   </mat-footer-cell>
+</ng-container>
+ 
+  <tr  mat-header-row *matHeaderRowDef="displayedColumns6"></tr>
+  <tr id="" mat-row *matRowDef="let row; columns: displayedColumns6;"></tr>
 
-
-
-<mat-card class="table-card">
-  <mat-card-title>Treatment Outstanding</mat-card-title>
-  <mat-card-content> 
-  <div>
-    <div class="DentistListSecRow mh-table" style="max-height: 500px; overflow: auto;">
-      <table mat-table [dataSource]="treatmentOutstanding" class="mat-elevation-z8 reminders-table">
-        <!-- Appointment Column -->
-        <ng-container matColumnDef="start">
-          <th mat-header-cell *matHeaderCellDef> Appointment Time </th>
-          <td mat-cell *matCellDef="let element"> {{element.start | date: 'h:mm a':'UTC' }} </td>
-        </ng-container>
-  
-        <!-- Patient name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Patient Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
-        </ng-container>
-  
-        <!-- Outstanding Column -->
-        <ng-container matColumnDef="outstanding">
-          <th mat-header-cell *matHeaderCellDef> Treatment Codes </th>
-          <td mat-cell *matCellDef="let element"> {{element.code}}</td>
-        </ng-container>
-  
-        <ng-container matColumnDef="isDataAvailable">
-          <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
-            No Data found
-          </mat-footer-cell>
-        </ng-container>
-  
-        <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
-  
-        <mat-footer-row *matFooterRowDef="['isDataAvailable']"
-          [ngClass]="(treatmentOutstanding.length == 0)? 'show' : 'hide'"></mat-footer-row>
-      </table>
-    </div>
-  </div>
-<!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
-          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
-              
-   </div>
-          <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
-            <img src="./assets/images/treatment-outstanding.png">
-          </div>
-        </div> -->
-  </mat-card-content>
-</mat-card>
-
-
-
-
-
-<mat-card class="table-card">
-  <mat-card-title>Outstanding Balance</mat-card-title>
-  <mat-card-content> 
-  <div>
-    <div class="DentistListSecRow mh-table" style="max-height: 500px; overflow: auto;">
-      <table mat-table [dataSource]="outstandingBalances" class="mat-elevation-z8 reminders-table">
-        <!-- Appointment Column -->
-        <ng-container matColumnDef="start">
-          <th mat-header-cell *matHeaderCellDef> Appointment Time </th>
-          <td mat-cell *matCellDef="let element">{{element.start | date: 'h:mm a':'UTC' }} </td>
-        </ng-container>
-  
-        <!-- Patient name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Patient Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.patient_name}} </td>
-        </ng-container>
-  
-        <!-- Outstanding Column -->
-        <ng-container matColumnDef="outstanding">
-          <th mat-header-cell *matHeaderCellDef> Outstanding Amount </th>
-          <td mat-cell *matCellDef="let element">$
-            <span *ngIf="element.outstanding %1 == 0">{{ element.outstanding }}</span>
-            <span *ngIf="element.outstanding %1 != 0">{{ element.outstanding | number:'1.0-0'}}</span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="isDataAvailable">
-          <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
-            No Data found
-          </mat-footer-cell>
-        </ng-container>
-  
-        <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
-        <mat-footer-row *matFooterRowDef="['isDataAvailable']"
-          [ngClass]="(outstandingBalances.length == 0)? 'show' : 'hide'"></mat-footer-row>
-      </table>
-    </div>
-  </div>
-<!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
-          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
-             
-   </div>
-          <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
-            <img src="./assets/images/outstanding-balance.png">
-          </div>
-        </div> -->
-  </mat-card-content>
+  <mat-footer-row *matFooterRowDef="['isDataAvailable']" [ngClass]="(appointmentCards.data.length == 0)? 'show' : 'hide'"></mat-footer-row>
+</table>
+</div>  
 </mat-card>
 
   </mat-tab>

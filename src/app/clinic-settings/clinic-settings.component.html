@@ -89,6 +89,17 @@
               <input placeholder="" [formControl]="form.controls['post_op_calls']" [(ngModel)]="post_op_calls">
             </div>
           </div>
+          <div class="post-op-codes">
+            <h4 class="clinic-settings-form-title">FTA/UTA</h4>          
+            <div class="sa-form-group clinic-setting-form">
+              <span>Status</span>
+              <input  type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="status">
+            </div>
+             <div class="sa-form-group clinic-setting-form">
+              <span>Item</span>
+              <input  type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="item">
+            </div>
+          </div>
           <div class="sa-form-group-btn">
             <button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
           </div>

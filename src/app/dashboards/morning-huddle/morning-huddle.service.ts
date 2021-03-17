@@ -167,7 +167,7 @@ export class MorningHuddleService {
     
      getNoShow( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/huddleFDNoShow?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/MorningHuddle/noShowPrev?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -184,30 +184,13 @@ export class MorningHuddleService {
     
     getReminders( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/recallOverdueTable?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/MorningHuddle/reminders?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
-    
-    getRemindersTreatmentOutstanding( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/treatOutstandTable?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
-        );
-    }
-    
-    getRemindersOutstandingBalances( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
-        var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/outstandBalTable?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
-        );
-    }
+
     getFollowupsUnscheduledPatients( clinic_id, previousDays,  user_type, clinician ="", user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/MorningHuddle/unschedPatTable?user_id="+user_id+"&clinic_id="+clinic_id+"&previous_days="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })

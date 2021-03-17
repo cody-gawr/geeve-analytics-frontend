@@ -105,7 +105,7 @@ console.log(role_id);
     console.log(selected_dentist,dentist);
     formData.append('display_name', display_name);
     formData.append('email', email);
-    formData.append('user_type', user_type);
+    formData.append('usertype', user_type);
     formData.append('password', password);
     formData.append('selected_dentist', dentist);
     formData.append('selectedClinic', selectedClinic);
@@ -127,7 +127,7 @@ console.log(role_id);
     formData.append('id', id);    
     formData.append('display_name', display_name);
     formData.append('email', email);
-    formData.append('user_type', user_type);
+    formData.append('usertype', user_type);
     formData.append('selected_dentist', dentist);
     formData.append('selectedClinic', selectedClinic);
      
