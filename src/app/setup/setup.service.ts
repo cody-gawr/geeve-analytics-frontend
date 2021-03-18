@@ -58,7 +58,8 @@ export class SetupService {
     }
 
     checkReportsStatus( clinicId, user_id = this._cookieService.get("userid")): Observable<any> {
-        return this.http.get(this.apiUrl +"/users/userCheckStatus/"+user_id+"/"+clinicId, { headers: this.headers })
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/users/userCheckStatus/"+user_id+"/"+clinicId, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
