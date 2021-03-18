@@ -503,7 +503,7 @@ checkUserEmail(display_name, email, user_type) {
             this.refreshTabs();
 
             if(this.selectedIndex == 2)
-              //this.getPlans();
+              this.getPlans();
           } else {
              this._cookieService.put("stepper", "7");
              this.router.navigateByUrl('/dashboards');
