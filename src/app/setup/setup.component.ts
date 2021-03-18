@@ -170,7 +170,7 @@ usersArray = new Array(this.userRows);
                                   classes:"myclass custom-class"
                                 }; 
     this.getClinics();
-    this.checkXeroStatus(false);
+    //this.checkXeroStatus(false);
   }
 
 /*  ngAfterViewChecked(){
@@ -249,7 +249,7 @@ usersArray = new Array(this.userRows);
             this.clinic_id = res.data[0]['id'];
             if(this.clinic_id){
               //this.getClinicSettings();
-
+              this.checkXeroStatus(false);
             }            
           }          
           if(this._cookieService.get("stepper"))
@@ -503,7 +503,7 @@ checkUserEmail(display_name, email, user_type) {
             this.refreshTabs();
 
             if(this.selectedIndex == 2)
-              this.getPlans();
+              //this.getPlans();
           } else {
              this._cookieService.put("stepper", "7");
              this.router.navigateByUrl('/dashboards');
