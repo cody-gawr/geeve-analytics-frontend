@@ -91,7 +91,7 @@ export class ProfileSettingsService {
         );
     }
        
-         updateCardRetryPayment(token:any,customer_id,last_invoic_id): Observable<any> {
+         updateCardRetryPayment(token:any,customer_id,last_invoic_id): Observable<any> { 
             const formData = new FormData();
             
             formData.append('customer_id', customer_id);
@@ -155,7 +155,7 @@ var header = this.getHeaders();
             const formData = new FormData();
             formData.append('customer', customer);
 
-            return this.http.post(this.apiUrl +"/users/userUpdateCard", formData)
+            return this.http.post(this.apiUrl +"/users/userUpdateCustomerCard", formData)
             .pipe(map((response: Response) => {
                    return response;
                })
