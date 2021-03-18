@@ -48,7 +48,7 @@ export class HeaderService {
 
        checkPermission(role,user_id = this._cookieService.get("userid"), user_type=this._cookieService.get("user_type"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();   
-        return this.http.get(this.apiUrl +"/Roles/checkPermission?user_id="+this._cookieService.get("userid")+"&user_type="+this._cookieService.get("user_type")+"&role="+role, { headers: header })
+        return this.http.get(this.apiUrl +"/Roles/rolesCheckPermission?user_id="+this._cookieService.get("userid")+"&user_type="+this._cookieService.get("user_type")+"&role="+role, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

@@ -58,7 +58,7 @@ export class SetupService {
     }
 
     checkReportsStatus( clinicId, user_id = this._cookieService.get("userid")): Observable<any> {
-        return this.http.get(this.apiUrl +"/users/checkReportsStatus/"+user_id+"/"+clinicId, { headers: this.headers })
+        return this.http.get(this.apiUrl +"/users/userCheckStatus/"+user_id+"/"+clinicId, { headers: this.headers })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -67,7 +67,7 @@ export class SetupService {
 
     sendCompleteEmail( user_id = this._cookieService.get("userid")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/users/sendCompleteEmail/"+user_id, { headers: header })
+        return this.http.get(this.apiUrl +"/users/userSendCompleteEmail/"+user_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -79,7 +79,7 @@ export class SetupService {
             formData.append('user_id', this._cookieService.get("userid"));
             formData.append('stepper_status', this._cookieService.get("stepper"));
             var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/users/updateStepperStatus", formData,  { headers: header })
+            return this.http.post(this.apiUrl +"/users/userUpdateStepper", formData,  { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -145,7 +145,7 @@ export class SetupService {
             formData.append('id', this._cookieService.get("userid"));
             var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Users/logoUpload/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userLogoUpload/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

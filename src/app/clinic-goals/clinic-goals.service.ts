@@ -33,7 +33,7 @@ export class ClinicGoalsService {
    // Get ClinicGoals
     getClinicGoals(clinic_id='', user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Goals/getClinicGoals?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Goals/goalGetClinic?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -46,7 +46,7 @@ export class ClinicGoalsService {
         formData.append('user_id', user_id);
         formData.append('clinic_id', clinic_id);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/Goals/addClinicGoal/", formData,{ headers: header })
+        return this.http.post(this.apiUrl +"/Goals/goalAddClinic/", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

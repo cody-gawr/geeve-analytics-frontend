@@ -30,7 +30,7 @@ export class LoginService {
             const formData = new FormData();
 
             formData.append('email', email);
-            return this.http.post(this.apiUrl +"/users/forgotPasswordApi", formData)
+            return this.http.post(this.apiUrl +"/users/userForgotPasswordApi", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -42,7 +42,7 @@ export class LoginService {
             formData.append('password', password);
             formData.append('confirm_password', password);
             formData.append('id', id);
-            return this.http.post(this.apiUrl +"/users/resetPasswordApi", formData)
+            return this.http.post(this.apiUrl +"/users/userResetPasswordApi", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -52,7 +52,7 @@ export class LoginService {
     checkEmailExists(email): Observable<any> {
             const formData = new FormData();
             formData.append('email', email);
-            return this.http.post(this.apiUrl +"/users/checkEmailExists", formData)
+            return this.http.post(this.apiUrl +"/users/userCheckEmailExists", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })

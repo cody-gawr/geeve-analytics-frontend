@@ -33,7 +33,7 @@ export class RolesUsersService {
    // Get Dentist
     getUsers(user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/getRolesUsers", { headers: header })
+        return this.http.get(this.apiUrl +"/Users/userGetRoles", { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -63,7 +63,7 @@ export class RolesUsersService {
        // checkUserEmail
     checkUserEmail( email, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/checkUserEmail?email="+email, { headers: header })
+        return this.http.get(this.apiUrl +"/Users/userCheckEmail?email="+email, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
          })
@@ -76,7 +76,7 @@ export class RolesUsersService {
         formData.append('id', user_id);
         
         var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Users/delete", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userDelete", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -112,7 +112,7 @@ console.log(role_id);
      
      var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Users/addRoleUser/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userAddRole/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -133,7 +133,7 @@ console.log(role_id);
      
      var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Users/updateRoleUser/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userUpdateRole/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

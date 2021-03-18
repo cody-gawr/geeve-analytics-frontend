@@ -46,7 +46,7 @@ export class ProfileSettingsService {
 
            var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Users/updateprofileSettings/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userUpdateProfile/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -60,7 +60,7 @@ export class ProfileSettingsService {
             formData.append('confirm_password', newPassword); 
 
             var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Users/changePasswordApi/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userChangePasswordApi/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -75,7 +75,7 @@ export class ProfileSettingsService {
 
            var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Users/logoUpload/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userLogoUpload/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -97,7 +97,7 @@ export class ProfileSettingsService {
             formData.append('customer_id', customer_id);
             formData.append('last_invoic_id', last_invoic_id);
 var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/Users/updateCardRetryPayment", formData, { headers: header })
+            return this.http.post(this.apiUrl +"/Users/userUpdateCard", formData, { headers: header })
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -109,7 +109,7 @@ var header = this.getHeaders();
             formData.append('customer_id', customer_id);
             formData.append('last_invoic_id', last_invoic_id);
             var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/Users/retryPayment", formData, { headers: header })
+            return this.http.post(this.apiUrl +"/Users/userRetryPayment", formData, { headers: header })
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -134,7 +134,7 @@ var header = this.getHeaders();
          formData.append('user_id', this._cookieService.get("userid"));
             formData.append('customer_id', customer_id);
              var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/users/getCardDetails", formData, { headers: header })
+            return this.http.post(this.apiUrl +"/users/userGetCard", formData, { headers: header })
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -145,7 +145,7 @@ var header = this.getHeaders();
             const formData = new FormData();
             formData.append('customer', customer);
              var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/users/createSetupIntent", formData, { headers: header })
+            return this.http.post(this.apiUrl +"/users/userCreateSetupIntent", formData, { headers: header })
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -155,7 +155,7 @@ var header = this.getHeaders();
             const formData = new FormData();
             formData.append('customer', customer);
 
-            return this.http.post(this.apiUrl +"/users/updateCustomerCard", formData)
+            return this.http.post(this.apiUrl +"/users/userUpdateCard", formData)
             .pipe(map((response: Response) => {
                    return response;
                })
