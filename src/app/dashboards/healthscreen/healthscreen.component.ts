@@ -271,9 +271,9 @@ customOptions: OwlOptions = {
             };
           }
           this.unscheduled_production_f = data.data.unscheduled_production_f;
-          this.visits_g = data.data.visits_g;          
-          this.production_g = data.data.production_g;          
-          this.utilisation_rate_f_g = data.data.utilisation_rate_f_g;          
+          //this.visits_g = data.data.visits_g;          
+          //this.production_g = data.data.production_g;          
+          //this.utilisation_rate_f_g  = data.data.utilisation_rate_f_g;          
          // this.options_profit.arcDelimiters[1] = this.profit_g;
           // this.options_profit.arcDelimiters[0] =Math.floor(this.profit_g/2);
           // this.options_visits.arcDelimiters[1] = this.visits_g;
