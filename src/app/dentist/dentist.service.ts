@@ -89,7 +89,7 @@ export class DentistService {
     // Get ChildDentist
     getChildID(clinic_id , token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/getChildDentist?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Users/userGetChildDentist?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
