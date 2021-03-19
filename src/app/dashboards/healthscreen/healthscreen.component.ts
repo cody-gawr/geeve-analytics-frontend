@@ -104,44 +104,40 @@ customOptions: OwlOptions = {
   }
   private warningMessage: string;
   ngAfterViewInit() {  
-      $('#currentDentist').attr('did','all');
-      this.initiate_clinic();
+   
+    $('#currentDentist').attr('did','all');
+    this.initiate_clinic();
     this.checkPermission('healthscreen');
-
-      
- //   $('.external_dentist').val('all');
+    //   $('.external_dentist').val('all');
     $('#title').html('Clinic Health');
-       $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
-        $('.dentist_dropdown').parent().hide(); // added
-        $('.sa_heading_bar').addClass("filter_single"); // added
-        $('.header_filters').removeClass('hide_header');
-        $('.header_filters').addClass('flex_direct_mar');
-         if($('body').find('span#currentClinic').length > 0){
-             var cid= $('body').find('span#currentClinic').attr('cid');
-             $('.external_clinic').val(cid);
-          }
-          else {
-             $('.external_clinic').val('all');
-          }
-          this.clinic_id = cid;
-           this.user_type = this._cookieService.get("user_type");
-      if( this._cookieService.get("childid"))
-         this.childid = this._cookieService.get("childid");
-        $(document).on('click', function(e) {
-        if ($(document.activeElement).attr('id') == 'sa_datepicker') {
-           $('.customRange').show();
-        }
-        else if ($(document.activeElement).attr('id') == 'customRange') {
-           $('.customRange').show();
-        } 
-        else {
-            $('.customRange').hide();
-        }
-      })
-       // this.loadHealthScreen();
-    
+    $('.external_clinic').show();
+    $('.dentist_dropdown').hide();
+    $('.dentist_dropdown').parent().hide(); // added
+    $('.sa_heading_bar').addClass("filter_single"); // added
+    $('.header_filters').removeClass('hide_header');
+    $('.header_filters').addClass('flex_direct_mar');
+    if($('body').find('span#currentClinic').length > 0){
+      var cid= $('body').find('span#currentClinic').attr('cid');
+      $('.external_clinic').val(cid);
+    } else {
+      $('.external_clinic').val('all');
+    }
+    this.clinic_id = cid;
+    this.user_type = this._cookieService.get("user_type");
+    if( this._cookieService.get("childid"))
+      this.childid = this._cookieService.get("childid");
+    $(document).on('click', function(e) {
+      if ($(document.activeElement).attr('id') == 'sa_datepicker') {
+        $('.customRange').show();
+      } else if ($(document.activeElement).attr('id') == 'customRange') {
+        $('.customRange').show();
+      } else {
+        $('.customRange').hide();
+      }
+    })
+       // this.loadHealthScreen();    
   }
+
   private checkPermission(role) {
     this.headerService.checkPermission(role).subscribe((res) => {
 
@@ -180,12 +176,12 @@ customOptions: OwlOptions = {
   }
 
   public loadHealthScreen() {
-       var date = new Date();
-     this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
-      this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-         this.healthCheckStats();
-        this.hourlyRateChart();
-        this.mkNewPatientsByReferral();
+    var date = new Date();
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
+    this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.healthCheckStats();
+    this.hourlyRateChart();
+    this.mkNewPatientsByReferral();
   }
   public doughnutTotal = 0;
   public doughnutTotalAverage = 0;  
