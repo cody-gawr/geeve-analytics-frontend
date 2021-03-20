@@ -43,7 +43,7 @@ export class RolesUsersService {
        // Get Dentist
     getRoles(user_id= this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Roles/getRoles", { headers: header })
+        return this.http.get(this.apiUrl +"/Roles/rolesGet", { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -91,7 +91,7 @@ console.log(role_id);
     formData.append('permisions', checkedRoles);
    
      var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Roles/saveRoles/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Roles/rolesSave/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
