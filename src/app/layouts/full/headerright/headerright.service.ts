@@ -32,7 +32,7 @@ export class HeaderrightService {
             const formData = new FormData();
 
             formData.append('user_id', id);
-            return this.http.post(this.apiUrl +"/users/applogout", formData)
+            return this.http.post(this.apiUrl +"/users/userAppLogout", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })

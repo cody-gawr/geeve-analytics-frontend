@@ -34,7 +34,7 @@ export class StepperHeaderService  {
             const formData = new FormData();
 
             formData.append('user_id', this._cookieService.get("userid"));
-            return this.http.post(this.apiUrl +"/users/applogout", formData)
+            return this.http.post(this.apiUrl +"/users/userAppLogout", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })

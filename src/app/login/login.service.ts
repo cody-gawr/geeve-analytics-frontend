@@ -26,7 +26,7 @@ export class LoginService {
 
             formData.append('email', uname);
             formData.append('password', password);
-            return this.http.post(this.apiUrl +"/users/applogin", formData,{ headers: this.headers })
+            return this.http.post(this.apiUrl +"/users/userAppLogin", formData,{ headers: this.headers })
             .pipe(map((response: Response) => {
                             return response;
                         })
