@@ -78,7 +78,7 @@ export class UsersService {
     formData.append('user_id', this._cookieService.get("userid"));
     var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Clinics/add/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/clinics/clinicAdd/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

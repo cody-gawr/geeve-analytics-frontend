@@ -29,7 +29,7 @@ export class ClinicSettingsService {
    // Get ClinicSettings
     getClinicSettings( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Clinics/getClinics?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/clinics/clinicGet?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -49,7 +49,7 @@ export class ClinicSettingsService {
         formData.append('fta_uta', ftaUta);
         formData.append('user_id', this._cookieService.get("userid"));
     var header = this.getHeaders();
-    return this.http.post(this.apiUrl +"/Clinics/updateClinic/", formData, { headers: header})
+    return this.http.post(this.apiUrl +"/clinics/clinicUpdate/", formData, { headers: header})
         .pipe(map((response: Response) => {
                         return response;
                     })
