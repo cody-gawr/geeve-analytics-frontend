@@ -46,7 +46,7 @@ export class ProfileSettingsService {
 
            var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Users/userUpdateProfile/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userUpdateProfile", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -60,7 +60,7 @@ export class ProfileSettingsService {
             formData.append('confirm_password', newPassword); 
 
             var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Users/userChangePassword/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userChangePassword", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -75,7 +75,7 @@ export class ProfileSettingsService {
 
            var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Users/userLogoUpload/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userLogoUpload", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

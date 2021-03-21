@@ -46,7 +46,7 @@ export class ClinicGoalsService {
         formData.append('user_id', user_id);
         formData.append('clinic_id', clinic_id);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/Goals/goalAddClinic/", formData,{ headers: header })
+        return this.http.post(this.apiUrl +"/Goals/goalAddClinic", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

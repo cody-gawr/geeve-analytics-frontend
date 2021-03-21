@@ -44,7 +44,7 @@ export class RolesService {
             formData.append('id', this._cookieService.get("userid"));
              var header = this.getHeaders();
 
-        return this.http.post(this.apiUrl +"/Users/userUpdateProfile/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userUpdateProfile", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -59,7 +59,7 @@ export class RolesService {
             formData.append('id', this._cookieService.get("userid"));
             var header = this.getHeaders();
 
-        return this.http.post(this.apiUrl +"/Users/userChangePassword/", formData,{ headers: header })
+        return this.http.post(this.apiUrl +"/Users/userChangePassword", formData,{ headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -70,7 +70,7 @@ export class RolesService {
         formData.append('id', this._cookieService.get("userid"));
           var header = this.getHeaders();
 
-        return this.http.post(this.apiUrl +"/Users/userLogoUpload/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userLogoUpload", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

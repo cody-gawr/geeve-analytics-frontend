@@ -91,7 +91,7 @@ console.log(role_id);
     formData.append('permisions', checkedRoles);
    
      var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Roles/rolesSave/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Roles/rolesUpdate", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -112,7 +112,7 @@ console.log(role_id);
      
      var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Users/userAddRole/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userAdd", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -133,7 +133,7 @@ console.log(role_id);
      
      var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Users/userUpdateRole/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userUpdate", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

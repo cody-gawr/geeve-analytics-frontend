@@ -49,7 +49,7 @@ export class ClinicSettingsService {
         formData.append('fta_uta', ftaUta);
         formData.append('user_id', this._cookieService.get("userid"));
     var header = this.getHeaders();
-    return this.http.post(this.apiUrl +"/clinics/clinicUpdate/", formData, { headers: header})
+    return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, { headers: header})
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -89,7 +89,7 @@ export class ClinicSettingsService {
             else
             formData.append('id', this._cookieService.get("userid"));
             var header = this.getHeaders();            
-            return this.http.post(this.apiUrl +"/Users/userLogoUpload/", formData, { headers: header})
+            return this.http.post(this.apiUrl +"/Users/userLogoUpload", formData, { headers: header})
             .pipe(map((response: Response) => {
                         return response;
                     })

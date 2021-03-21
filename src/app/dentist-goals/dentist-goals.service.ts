@@ -48,7 +48,7 @@ export class DentistGoalsService {
     formData.append('dentist_id', dentist_id);
     var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Goals/goalAddDentist/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Goals/goalAddDentist", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
        })
