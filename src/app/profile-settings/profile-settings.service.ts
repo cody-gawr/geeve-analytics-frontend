@@ -60,7 +60,7 @@ export class ProfileSettingsService {
             formData.append('confirm_password', newPassword); 
 
             var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Users/userChangePasswordApi/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userChangePassword/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

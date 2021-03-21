@@ -31,7 +31,7 @@ export class HeaderService {
 
             formData.append('user_id', id);
            var header = this.getHeaders();            
-            return this.http.post(this.apiUrl +"/users/userAppLogout", formData,  { headers: header })
+            return this.http.post(this.apiUrl +"/users/userLogout", formData,  { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })

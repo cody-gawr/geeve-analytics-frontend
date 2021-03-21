@@ -32,7 +32,7 @@ export class StepperHeaderrightService {
             const formData = new FormData();
 
             formData.append('user_id', id);
-            return this.http.post(this.apiUrl +"/users/userAppLogout", formData)
+            return this.http.post(this.apiUrl +"/users/userLogout", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })

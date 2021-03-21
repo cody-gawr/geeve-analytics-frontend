@@ -26,7 +26,7 @@ export class LoginService {
 
             formData.append('email', uname);
             formData.append('password', password);
-            return this.http.post(this.apiUrl +"/users/userAppLogin", formData,{ headers: this.headers })
+            return this.http.post(this.apiUrl +"/users/userLogin", formData,{ headers: this.headers })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -37,7 +37,7 @@ export class LoginService {
             const formData = new FormData();
 
             formData.append('email', email);
-            return this.http.post(this.apiUrl +"/users/userForgotPasswordApi", formData)
+            return this.http.post(this.apiUrl +"/users/userForgotPassword", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -49,7 +49,7 @@ export class LoginService {
             formData.append('password', password);
             formData.append('confirm_password', password);
             formData.append('id', id);
-            return this.http.post(this.apiUrl +"/users/userSetPasswordApi", formData)
+            return this.http.post(this.apiUrl +"/users/userSetPassword", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
