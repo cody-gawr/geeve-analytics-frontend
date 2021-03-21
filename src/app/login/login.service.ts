@@ -49,7 +49,7 @@ export class LoginService {
             formData.append('password', password);
             formData.append('confirm_password', password);
             formData.append('id', id);
-            return this.http.post(this.apiUrl +"/users/userResetPasswordApi", formData)
+            return this.http.post(this.apiUrl +"/users/userSetPasswordApi", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
