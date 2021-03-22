@@ -90,12 +90,9 @@ export class ClinicService {
         );
     }
       // Get Dentist
-    getClinicProviders(selectedClinics,user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
-        const formData = new FormData();
-        formData.append('selectedClinics', selectedClinics);
-
-         var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/clinics/clinicGetProviders", formData, { headers: header })
+    getClinicProviders(selectedClinics,user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {  
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/clinics/clinicGetProviders?clinic_id="+selectedClinics+"&user_id="+user_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
