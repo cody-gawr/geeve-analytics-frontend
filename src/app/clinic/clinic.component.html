@@ -55,11 +55,7 @@
         <span>Actions</span>
       </ng-template>
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value" style="width:266px!important;">
-         <!--  <a [routerLink]="['/importcsv']" class="action_btn golden" title= 'Import CSV'><i class="ti-upload"></i></a> 
-          <a [routerLink]="['/dentist']" class="action_btn golden" title= 'List Dentist'><i class="ti-view-list-alt "></i></a>
-             <a [routerLink]="['/clinic-goals']" class="action_btn golden" title= 'Clinic Goals'><i class="fas fa-stethoscope"></i></a>
-          <a [routerLink]="['/dentist-goals']" class="action_btn golden" title= 'Dentist Goals'><i class="fas fa-tooth"></i></a> -->
-          <a [routerLink]="['/clinic-settings',value]" class="action_btn golden" title= 'Clinic Settings'><i class="ti-settings  m-r-10"></i></a>
+         <a [routerLink]="['/clinic-settings',value]" class="action_btn golden" title= 'Clinic Settings'><i class="ti-settings  m-r-10"></i></a>
           <button class="action_btn danger" mat-menu-item (click) = "deleteClinic(rowIndex)">
          <i class="ti-trash text-danger"></i></button>
         </ng-template>

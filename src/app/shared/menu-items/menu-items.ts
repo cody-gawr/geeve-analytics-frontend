@@ -154,13 +154,6 @@ const MENUITEMS = [
     role:['1','2']
   },
   {
-    state: 'importcsv',
-    name: 'Data Upload',
-    type: 'link',
-    icon: 'fas fa-upload',
-    role:['2']
-  },
-  {
     state: 'profile-settings',
     name: 'Profile Settings',
     type: 'link',

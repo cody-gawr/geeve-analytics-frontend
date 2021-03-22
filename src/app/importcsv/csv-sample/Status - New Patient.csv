@@ -1,5 +1,0 @@
-app_date_from,app_date_to,surname,dob,phone_home,app_date,needed_appoint_id,duration,total_sum,start,app_book_id,app_book_description,status,firstname,middlename,patient_count,patient_id,patient_unique_count,preferred_name,patient_name
-15/04/1900,15/04/2099,,8/05/1945,7485 3698,30/08/2002,2543,120,,09:45:00,1,Dr Frank Spencer,New patient,,,1,22,1,,"Rogers, Mrs Mary"
-15/04/1900,15/04/2099,,,,12/04/2019,3136,30,,15:45:00,1,Dr Frank Spencer,New patient,,,1,58,1,,"Totten, Dr Gerry"
-15/04/1900,15/04/2099,,8/05/1945,7485 3698,30/08/2002,2545,105,0,11:15:00,2,Dr Yuri Gargarin,New patient,,,1,22,0,,"Rogers, Mrs Mary"
-15/04/1900,15/04/2099,,8/05/1945,7485 3698,30/08/2002,2544,60,0,12:00:00,3,3 Treat Room ,New patient,,,1,22,0,,"Rogers, Mrs Mary"

@@ -15,17 +15,8 @@ export const AppRoutes: Routes = [
       {
       
         path: '',
-        redirectTo: '/home',
+        redirectTo: '/login',
         pathMatch: 'full'
-      },
-      {
-        path: 'dashboard',
-        loadChildren: './dashboard/dashboard.module#DashboardModule'
-      },
-      {
-        path: 'importcsv',
-        loadChildren: './importcsv/importcsv.module#ImportcsvModule',
-        canActivate: [AuthGuard]
       },
       {
         path: 'dashboards',
@@ -93,15 +84,6 @@ export const AppRoutes: Routes = [
         path: 'dentist-goals',
         loadChildren: './dentist-goals/dentist-goals.module#DentistGoalsModule',
         canActivate: [AuthGuard]
-      },
-      {
-        path: 'material',
-        loadChildren:
-          './material-component/material.module#MaterialComponentsModule'
-      },
-      {
-        path: 'apps',
-        loadChildren: './apps/apps.module#AppsModule'
       }
     ]
   },
@@ -138,11 +120,6 @@ export const AppRoutes: Routes = [
           './login/login.module#LoginModule'
       },
       {
-        path: 'home',
-        loadChildren:
-          './home/home.module#HomeModule'
-      },
-      {
         path: 'xero',
         loadChildren:
           './xero/xero.module#XeroModule'
@@ -151,21 +128,6 @@ export const AppRoutes: Routes = [
         path: 'support',
         loadChildren:
           './support/support.module#SupportModule'
-      },
-      {
-        path: 'subscription',
-        loadChildren:
-          './subscription/subscription.module#SubscriptionModule'
-      },
-      {
-        path: 'payment',
-        loadChildren:
-          './payment/payment.module#PaymentModule'
-      },
-      {
-        path: 'planpayment',
-        loadChildren:
-          './planpayment/planpayment.module#PlanpaymentModule'
       },
     ]
   },
