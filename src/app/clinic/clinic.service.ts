@@ -51,12 +51,11 @@ export class ClinicService {
     }
 
     // Update Clinic
-    updateClinic(clinic_id, value, column, token = this._cookieService.get("token")): Observable<any> {
-    const formData = new FormData();
-
-        formData.append('id', clinic_id);
+    updateClinic(clinic_id, value, column, token = this._cookieService.get("token"),user_id = this._cookieService.get("userid")): Observable<any> {
+        const formData = new FormData();
         formData.append(column, value);
         formData.append('clinic_id', '1');
+        formData.append('user_id', user_id);
         var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, { headers: header })
         .pipe(map((response: Response) => {
