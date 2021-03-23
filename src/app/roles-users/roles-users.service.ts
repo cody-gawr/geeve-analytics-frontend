@@ -104,14 +104,12 @@ console.log(role_id);
     console.log(selected_dentist,dentist);
     formData.append('display_name', display_name);
     formData.append('email', email);
-    formData.append('usertype', user_type);
+    formData.append('userType', user_type);
     formData.append('password', password);
     formData.append('selected_dentist', dentist);
-    formData.append('selectedClinic', selectedClinic);
-     
-     var header = this.getHeaders(); 
-    
-        return this.http.post(this.apiUrl +"/Users/userAdd", formData, { headers: header })
+    formData.append('clinic_id', selectedClinic);     
+    var header = this.getHeaders();     
+    return this.http.post(this.apiUrl +"/Users/userAdd", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
