@@ -425,7 +425,7 @@ initiate_clinic() {
   
 
    getAppointmentCards(dentist){
-    this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays, this.previousDays,  this.user_type ).subscribe((production:any) => {
+    this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((production:any) => {
       if(production.status == true) {
         this.appointmentCards.data = production.data;
       }

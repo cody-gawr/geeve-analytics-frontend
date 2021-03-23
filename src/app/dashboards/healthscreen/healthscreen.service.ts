@@ -30,7 +30,7 @@ export class HealthScreenService {
     // Dentist Production Service
     healthCheckStats( clinic_id, user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/health/healthCheckStats?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/health/chHealthCheckStats?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -38,7 +38,7 @@ export class HealthScreenService {
     }
    hourlyRateChart( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='',user_id = this._cookieService.get("userid"), token = this._cookieService.get("token"),limit=5 ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/health/hourlyLeaders?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician+"&limit=5", { headers: header })
+        return this.http.get(this.apiUrl +"/health/chHourlyLeaders?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician+"&limit=5", { headers: header })
         .pipe(map((response: Response) => {
             return response;
                     })
@@ -47,7 +47,7 @@ export class HealthScreenService {
         // Items Predictor Analysis 
     mkNewPatientsByReferral(clinic_id, startDate = '', endDate = '',duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token"),limit=5  ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/health/referralLeaders?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&limit="+limit, { headers: header })
+        return this.http.get(this.apiUrl +"/health/chReferralLeaders?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&limit="+limit, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -57,7 +57,7 @@ export class HealthScreenService {
                        // finProductionPerVisit
     finProductionPerVisit(clinic_id='1', startDate = '', endDate = '', duration='', user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Health/productionPerVisit?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Health/chProductionPerVisit?user_id="+user_id+"&clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

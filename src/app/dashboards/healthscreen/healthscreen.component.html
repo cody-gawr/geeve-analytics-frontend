@@ -253,7 +253,7 @@
               </mat-card-title>
               <div class="card-body no-data-placeholder">
                 <rg-gauge-chart class="yellow_guagechart" *ngIf="utilisation_rate_f > 0" [canvasWidth]="canvasWidth"
-                  [needleValue]="utilisation_rate_f" [options]="options1" [centralLabel]="utilisation_rate_f + '%'">
+                  [needleValue]="100" [options]="options1" [centralLabel]="utilisation_rate_f + '%'">
                 </rg-gauge-chart>
                 <div *ngIf="utilisation_rate_f <= 0">
                   <div class="sa_nodata_div">
@@ -273,15 +273,11 @@
                 <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon" />
               </mat-card-title>
               <div class="chart card-body no-data-placeholder">
-                <rg-gauge-chart
-                  [ngClass]="{'small-fonts': (unscheduled_production_f.toString().length>5), 'blue_guagechart': true}"
-                  *ngIf="unscheduled_production_f > 0" [canvasWidth]="canvasWidth"
-                  [needleValue]="unscheduled_production_f" [options]="optionsunscheduled"
-                  [centralLabel]="'$' + (unscheduled_production_f| currencySuffix:2)"></rg-gauge-chart>
+                <rg-gauge-chart [ngClass]="{'small-fonts': (unscheduled_production_f.toString().length>5), 'blue_guagechart': true}" *ngIf="unscheduled_production_f > 0" [canvasWidth]="canvasWidth" [needleValue]="unscheduled_production_f" [options]="optionsunscheduled" [centralLabel]="'$' + (unscheduled_production_f| currencySuffix:2)"></rg-gauge-chart>
                   <div *ngIf="unscheduled_production_f <= 0">
                     <div class="sa_nodata_div">
+                      <p class="chart-placeholder-text">You have no unscheduled production in the next 7 days</p>
                     </div>
-                    <p class="chart-placeholder-text">You have no unscheduled production in the next 7 days</p>
                   </div>
               </div>
             </mat-card-content>

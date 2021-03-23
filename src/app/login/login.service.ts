@@ -26,7 +26,7 @@ export class LoginService {
 
             formData.append('email', uname);
             formData.append('password', password);
-            return this.http.post(this.apiUrl +"/users/applogin", formData,{ headers: this.headers })
+            return this.http.post(this.apiUrl +"/users/userLogin", formData,{ headers: this.headers })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -37,7 +37,7 @@ export class LoginService {
             const formData = new FormData();
 
             formData.append('email', email);
-            return this.http.post(this.apiUrl +"/users/forgotPasswordApi", formData)
+            return this.http.post(this.apiUrl +"/users/userForgotPassword", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -49,7 +49,7 @@ export class LoginService {
             formData.append('password', password);
             formData.append('confirm_password', password);
             formData.append('id', id);
-            return this.http.post(this.apiUrl +"/users/resetPasswordApi", formData)
+            return this.http.post(this.apiUrl +"/users/userSetPassword", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -59,7 +59,7 @@ export class LoginService {
     checkEmailExists(email): Observable<any> {
             const formData = new FormData();
             formData.append('email', email);
-            return this.http.post(this.apiUrl +"/users/checkEmailExists", formData)
+            return this.http.post(this.apiUrl +"/users/userCheckEmailExists", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -93,7 +93,7 @@ export class LoginService {
             formData.append('plan_id', plan_id);
             formData.append('user_id', user_id);
             
-            return this.http.post(this.apiUrl +"/users/checkuserplan", formData)
+            return this.http.post(this.apiUrl +"/users/userCheckPlan", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -130,7 +130,7 @@ export class LoginService {
             const formData = new FormData();
 
             formData.append('id', id);
-            return this.http.post(this.apiUrl +"/users/checkValidString", formData)
+            return this.http.post(this.apiUrl +"/users/userCheckValidString", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })

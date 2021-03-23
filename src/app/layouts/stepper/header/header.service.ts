@@ -34,7 +34,7 @@ export class StepperHeaderService  {
             const formData = new FormData();
 
             formData.append('user_id', this._cookieService.get("userid"));
-            return this.http.post(this.apiUrl +"/users/applogout", formData)
+            return this.http.post(this.apiUrl +"/users/userLogout", formData)
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -43,7 +43,7 @@ export class StepperHeaderService  {
     
     getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Clinics/getClinics", { headers: header})
+        return this.http.get(this.apiUrl +"/clinics/clinicGet", { headers: header})
         .pipe(map((response: Response) => {
                         return response;
                     })
