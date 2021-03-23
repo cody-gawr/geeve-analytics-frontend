@@ -30,8 +30,6 @@ export class HeaderrightService {
     // Items Predictor Analysis 
     logout(id): Observable<any> {
             const formData = new FormData();
-
-            formData.append('user_id', id);
             return this.http.post(this.apiUrl +"/users/userLogout", formData)
             .pipe(map((response: Response) => {
                             return response;
@@ -39,7 +37,7 @@ export class HeaderrightService {
             );
     } 
     
-    getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {        
+    getClinics(clinic_id='1', token = this._cookieService.get("token")): Observable<any> {        
         var header = this.getHeaders();         
         return this.http.get(this.apiUrl +"/clinics/clinicGet", { headers: header })
         .pipe(map((response: Response) => {

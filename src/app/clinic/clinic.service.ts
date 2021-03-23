@@ -28,7 +28,7 @@ export class ClinicService {
     }
 
    // Get Dentist
-    getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    getClinics(clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/clinics/clinicGet", { headers: header })
         .pipe(map((response: Response) => {
@@ -51,11 +51,10 @@ export class ClinicService {
     }
 
     // Update Clinic
-    updateClinic(clinic_id, value, column, token = this._cookieService.get("token"),user_id = this._cookieService.get("userid")): Observable<any> {
+    updateClinic(clinic_id, value, column, token = this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
         formData.append(column, value);
         formData.append('clinic_id', '1');
-        formData.append('user_id', user_id);
         var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, { headers: header })
         .pipe(map((response: Response) => {
@@ -80,7 +79,7 @@ export class ClinicService {
         );
     }
 
-    getUserDetails(user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+    getUserDetails(token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/users/userInfo", { headers: header })
         .pipe(map((response: Response) => {
@@ -89,9 +88,9 @@ export class ClinicService {
         );
     }
       // Get Dentist
-    getClinicProviders(selectedClinics,user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {  
+    getClinicProviders(selectedClinics,clinic_id='1', token = this._cookieService.get("token")): Observable<any> {  
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/clinics/clinicGetProviders?clinic_id="+selectedClinics+"&user_id="+user_id, { headers: header })
+        return this.http.get(this.apiUrl +"/clinics/clinicGetProviders?clinic_id="+selectedClinics, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

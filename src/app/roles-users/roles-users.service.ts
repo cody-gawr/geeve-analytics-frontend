@@ -31,7 +31,7 @@ export class RolesUsersService {
     }
 
    // Get Dentist
-    getUsers(user_id = this._cookieService.get("userid"), token = this._cookieService.get("token")): Observable<any> {
+    getUsers( token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Users/userGetRoles", { headers: header })
         .pipe(map((response: Response) => {
@@ -41,7 +41,7 @@ export class RolesUsersService {
     }
 
        // Get Dentist
-    getRoles(user_id= this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+    getRoles(token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Roles/rolesGet", { headers: header })
         .pipe(map((response: Response) => {
@@ -71,10 +71,9 @@ export class RolesUsersService {
     }
 
        // Delete Clinic
-    deleteUser(user_id, token = this._cookieService.get("token")): Observable<any> {
+    deleteUser(userId, token = this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
-        formData.append('id', user_id);
-        
+        formData.append('id', userId);        
         var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/Users/userDelete", formData, { headers: header })
         .pipe(map((response: Response) => {

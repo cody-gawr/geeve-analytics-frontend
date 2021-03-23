@@ -28,16 +28,14 @@ export class HeaderService {
     // Items Predictor Analysis 
     logout(id): Observable<any> {
             const formData = new FormData();
-
-            formData.append('user_id', id);
-           var header = this.getHeaders();            
+            var header = this.getHeaders();            
             return this.http.post(this.apiUrl +"/users/userLogout", formData,  { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
             );
     }
-    getClinics(user_id = this._cookieService.get("userid"), clinic_id='1', token = this._cookieService.get("token")): Observable<any> {        
+    getClinics(clinic_id='1', token = this._cookieService.get("token")): Observable<any> {        
         var header = this.getHeaders();   
         return this.http.get(this.apiUrl +"/clinics/clinicGet",  { headers: header })
         .pipe(map((response: Response) => {
@@ -46,9 +44,9 @@ export class HeaderService {
         );
     }
 
-       checkPermission(role,user_id = this._cookieService.get("userid"), user_type=this._cookieService.get("user_type"), token = this._cookieService.get("token")): Observable<any> {
+       checkPermission(role, user_type=this._cookieService.get("user_type"), token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();   
-        return this.http.get(this.apiUrl +"/Roles/rolesCheckPermission?user_id="+this._cookieService.get("userid")+"&user_type="+this._cookieService.get("user_type")+"&role="+role, { headers: header })
+        return this.http.get(this.apiUrl +"/Roles/rolesCheckPermission?user_type="+this._cookieService.get("user_type")+"&role="+role, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

@@ -88,11 +88,9 @@ export class LoginService {
             );
     }
      // Items Predictor Analysis 
-    checkuser(plan_id, user_id): Observable<any> {
+    checkuser(plan_id): Observable<any> {
             const formData = new FormData();
-            formData.append('plan_id', plan_id);
-            formData.append('user_id', user_id);
-            
+            formData.append('plan_id', plan_id);            
             return this.http.post(this.apiUrl +"/users/userCheckPlan", formData)
             .pipe(map((response: Response) => {
                             return response;
@@ -101,13 +99,11 @@ export class LoginService {
     }
 
          // Items Predictor Analysis 
-    createSubscription(token:any,plan_id, user_id): Observable<any> {
+    createSubscription(token:any,plan_id): Observable<any> {
             const formData = new FormData();
             formData.append('token', token.id);
-            formData.append('email', token.email);
-            
+            formData.append('email', token.email);            
             formData.append('plan_id', plan_id);
-            formData.append('user_id', user_id);
             
             return this.http.post(this.apiUrl +"/users/createSubscription", formData)
             .pipe(map((response: Response) => {
@@ -116,10 +112,8 @@ export class LoginService {
             );
     }
     // Items Predictor Analysis 
-    autoLogin(user_id): Observable<any> {
+    autoLogin(userId): Observable<any> {
             const formData = new FormData();
-
-            formData.append('user_id', user_id);
             return this.http.post(this.apiUrl +"/users/autologin", formData)
             .pipe(map((response: Response) => {
                             return response;

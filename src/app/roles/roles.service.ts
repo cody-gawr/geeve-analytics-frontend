@@ -27,9 +27,9 @@ export class RolesService {
     }
 
    // Get profileSettings
-    getprofileSettings( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+    getprofileSettings( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/Users/getPractices?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Users/getPractices?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -77,9 +77,9 @@ export class RolesService {
         );
     }
 
-    clearSession( clinic_id='1', user_id = this._cookieService.get("userid"),token = this._cookieService.get("token")): Observable<any> {
+    clearSession( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

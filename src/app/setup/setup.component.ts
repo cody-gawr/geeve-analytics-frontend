@@ -502,8 +502,7 @@ checkUserEmail(display_name, email, user_type) {
            this._cookieService.put("stepper", stepper1.toString());
             this.refreshTabs();
 
-            if(this.selectedIndex == 2)
-              this.getPlans();
+            
           } else {
              this._cookieService.put("stepper", "7");
              this.router.navigateByUrl('/dashboards');
@@ -524,50 +523,7 @@ checkUserEmail(display_name, email, user_type) {
     }
 
 
-  private getPlans() {
-    this.rows= [];
-    this.plansService.getPlans(this.clinic_id).subscribe((res) => {
-        if(res.message == 'success'){
-          if(res.data.length <=0) {
-              this.setupService.addPlans(
-                'Sample Plan',
-                1,
-                'MONTHLY',
-                 100,
-                 10,
-                 'Sample Plan',
-                 this.clinic_id,
-                 'true',
-                 JSON.stringify(this.preventative_plan_selected),
-                 2,
-                 JSON.stringify(this.treatment_inclusions_selected),
-                 JSON.stringify(this.treatment_exclusions_selected),
-                 10
-                 ).subscribe((res) => {
-            $('.ajax-loader').hide();  
-            if(res.message == 'success'){           
-                 this.getPlans();
-               }
-            }, error => {
-              this.warningMessage = "Please Provide Valid Inputs!";
-            });  
-          }
-          else {
-        this.rows = res.data[0];
-            
-          }
-        }
-         else if(res.status == '401'){
-            this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
-  }
+
 
 
 
