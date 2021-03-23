@@ -110,24 +110,7 @@ single = [
     private clinicSettingsService: ClinicSettingsService,
     private chartService: ChartService){
     }
-    private checkPermission(role) { 
-  this.headerService.checkPermission(role).subscribe((res) => {
-       if(res.message == 'success'){
-       }
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
-    }, error => {
-     //    $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
-    }    
-    );
 
-  }
   private warningMessage: string;
    initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
@@ -176,7 +159,7 @@ single = [
     )
 
       $('#currentDentist').attr('did','all');
-     this.checkPermission('dashboard5');
+     
         //this.filterDate('cytd');
       //  this.getDentists(); 
        this.route.params.subscribe(params => {

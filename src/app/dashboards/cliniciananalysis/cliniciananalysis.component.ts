@@ -97,24 +97,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   *AUTHOR - Teq Mavens
   */
   private warningMessage: string;
-  private checkPermission(role) {
-    this.headerService.checkPermission(role).subscribe((res) => {
 
-      if (res.message == 'success') {
-      }
-      else if (res.status == '401') {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      //    $('.ajax-loader').hide(); 
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-    }
-    );
-  }
 
   private getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
@@ -144,7 +127,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       })
     );
 
-    this.checkPermission('dashboard1');
     //this.initiate_clinic();
     this.user_type = this._cookieService.get("user_type");
     if (this._cookieService.get("dentistid"))

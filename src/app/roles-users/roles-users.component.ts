@@ -233,7 +233,7 @@ initiate_clinic() {
   ngAfterViewInit() {
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
-    this.checkPermission('users');
+
 
     this.initiate_clinic();
 
@@ -242,22 +242,7 @@ initiate_clinic() {
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
   }
-    private checkPermission(role) {
-    this.headerService.checkPermission(role).subscribe((res) => {
 
-      if (res.message == 'success') {
-      }
-      else if (res.status == '401') {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-    }
-    );
-  }
   editing = {};
   rows = [];
   temp = [...data];

@@ -36,31 +36,13 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 
   	ngOnInit() {
   		  $('#currentDentist').attr('did','all');
-    this.checkPermission('lostoppurtunity');
 
   		 this.initiate_clinic();
 			$('.dentist_dropdown').parent().hide(); // added
 			$('.sa_heading_bar').addClass("filter_single"); // added
   	}
 
-	  private checkPermission(role) {
-    this.headerService.checkPermission(role).subscribe((res) => {
 
-      if (res.message == 'success') {
-      }
-      else if (res.status == '401') {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      //    $('.ajax-loader').hide(); 
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-    }
-    );
-  }
 	ngOnDestroy() {
 		$('.dentist_dropdown').parent().show(); // added
 		$('.sa_heading_bar').removeClass("filter_single"); // added

@@ -505,7 +505,7 @@ checkUserEmail(display_name, email, user_type) {
             
           } else {
              this._cookieService.put("stepper", "7");
-             this.router.navigateByUrl('/dashboards');
+             this.router.navigateByUrl('/dashboards/cliniciananalysis');
           }
            // console.log(this._cookieService.get("stepper"));
            // this.ClickNext('step'+this._cookieService.get("stepper"),stepper);

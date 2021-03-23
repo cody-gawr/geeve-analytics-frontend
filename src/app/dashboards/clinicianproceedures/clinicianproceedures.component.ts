@@ -86,24 +86,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   *Check If logged in user is eligible to access this page.
   *AUTHOR - Teq Mavens
   */
-  private checkPermission(role) { 
-  this.headerService.checkPermission(role).subscribe((res) => {
-       if(res.message == 'success'){
-       }
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-               this.router.navigateByUrl('/login');
-           }
-    }, error => {
-     //    $('.ajax-loader').hide(); 
-        this.toastr.error('Some Error Occured, Please try Again.');
-    }    
-    );
 
-  }
 
   //Load Clinic Data
   initiate_clinic() {
@@ -144,7 +127,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
       $('#currentDentist').attr('did','all');
     
-       this.checkPermission('dashboard2');
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
     this.user_type = this._cookieService.get("user_type");

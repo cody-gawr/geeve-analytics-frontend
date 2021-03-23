@@ -99,31 +99,13 @@ export class ClinicComponent implements AfterViewInit {
   address: string;
   contact_name: string;
   fileInput: any;
-  private checkPermission(role) {
-    this.headerService.checkPermission(role).subscribe((res) => {
-
-      if (res.message == 'success') {
-      }
-      else if (res.status == '401') {
-        this._cookieService.put("username", '');
-        this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
-        this._cookieService.put("userid", '');
-        this.router.navigateByUrl('/login');
-      }
-    }, error => {
-      //    $('.ajax-loader').hide(); 
-      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-    }
-    );
-  }
 //initialize component
   ngAfterViewInit() {
     this.getUserDetails();
     this.getClinics();
     $('.header_filters').removeClass('hide_header');
     $('.header_filters').removeClass('flex_direct_mar');
-    this.checkPermission('clinics');
+    
 
     $('#title').html('Clinics');
     //$('.header_filters').hide();

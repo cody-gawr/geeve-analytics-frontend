@@ -220,9 +220,9 @@
     <div fxFlex="calc(48% - 15px)" fxFlex.md="50" fxFlex.sm="calc(48% - 15px)" fxFlex.xs="100" class="sa-form-group">
     <label>User Type</label>
       <select class="form-control" required="true" class="sa_select form-control" name="user_type"  formControlName="user_type">
-      <option value ="" selected>Select User Type</option>
-      <option value ="3">Receptionist</option>
-      <option value ="4">Manager</option>
+        <option value ="3" selected>Practice Manager</option>
+        <option value ="4">Clinician</option>
+        <option value ="5">Staff</option>
     </select> 
     <small *ngIf="itemrow.controls.user_type.hasError('required') && itemrow.controls.user_type.touched" class="text-danger support-text">User Type is Required.</small>
   </div> 
