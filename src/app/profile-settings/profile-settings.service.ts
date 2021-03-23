@@ -153,8 +153,8 @@ var header = this.getHeaders();
      updateCustomerCard(customer): Observable<any> {
             const formData = new FormData();
             formData.append('customer', customer);
-
-            return this.http.post(this.apiUrl +"/users/userUpdateCustomerCard", formData)
+             var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/users/userUpdateCustomerCard", formData,  { headers: header })
             .pipe(map((response: Response) => {
                    return response;
                })
