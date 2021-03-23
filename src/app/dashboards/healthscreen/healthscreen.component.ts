@@ -305,6 +305,7 @@ public hourlyRateColors = [];
     this.maxHourlyRate=0;
     let colorCount = 0;
     this.healthscreenService.hourlyRateChart(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
+      this.hourlyRateChartData =[];
        if(data.message == 'success'){
          data.data.forEach(res => {
           if(res.hourlyRate>0) {
