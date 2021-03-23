@@ -627,18 +627,7 @@ checkUserEmail(display_name, email, user_type) {
                 selfO.checkRepotrs();
               }, 10000);
             }
-          } else if(res.message == 'Completed') {
-             selfO.setupService.sendCompleteEmail().subscribe((emailstatus) => {
-                if(emailstatus.status != 200){
-                  alert("Sending email have some problem.");
-                }                
-             }, error => {
-                selfO._cookieService.put("username",'');
-                selfO._cookieService.put("email", '');
-                selfO._cookieService.put("token", '');
-                selfO._cookieService.put("userid", '');
-                selfO.router.navigateByUrl('/login');
-            }); 
+          } else if(res.message == 'Completed') {            
             selfO.stepVal = 5;
             selfO.updateStepperStatus(); 
           }

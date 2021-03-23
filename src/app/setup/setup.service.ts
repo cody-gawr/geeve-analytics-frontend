@@ -66,14 +66,7 @@ export class SetupService {
         );
     }
 
-    sendCompleteEmail( userId = this._cookieService.get("userid")): Observable<any> {
-        var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/users/userSendCompleteEmail/"+userId, { headers: header })
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
-        );
-    }
+
 
      updateStepperStatus(): Observable<any> {
             const formData = new FormData();
