@@ -588,7 +588,7 @@ checkUserEmail(display_name, email, user_type) {
   }
 
   downloadPMS(){
-    var winP = window.open(this.apiUrl+'/users/userGetPMS', "_blank");      
+    var winP = window.open(this.apiUrl+'/users/userGetPMS?token='+this._cookieService.get("token")+'&token_id='+ this._cookieService.get("userid")+'&clinic_id='+this.clinic_id, "_blank");      
     this.stepVal = 4;
     this.updateStepperStatus(); 
   }
