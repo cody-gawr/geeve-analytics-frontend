@@ -472,19 +472,18 @@ public fdWorkTimeAnalysisLoader:boolean;
     this.workTimeLabels= [];
 
   this.clinic_id && this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-
-       if(data.message == 'success'){
-        this.fdWorkTimeAnalysisLoader = false;
-              this.workTimeData1 =[];
+    if(data.message == 'success'){
+      this.fdWorkTimeAnalysisLoader = false;
+      this.workTimeData1 =[];
       this.workTimeLabels1 =[];
       this.prevWorkTimeTooltip = 'down';
-        if(data.data.length >0) {
-         data.data.forEach(res => {
-          if(res.wta>0) {
-           this.workTimeData1.push(Math.round(res.wta));
-           this.workTimeLabels1.push(res.app_book_name);
-         }
-         });
+     if(data.data.length >0) {
+        data.data.forEach(res => {
+          if(res.util_rate > 0) {
+             this.workTimeData1.push(Math.round(res.util_rate));
+            this.workTimeLabels1.push(res.app_book_name);
+          }
+        });
      }
         this.workTimeData[0]['data'] = this.workTimeData1;
          this.workTimeLabels= this.workTimeLabels1;
@@ -1185,16 +1184,16 @@ toggleChangeProcess(){
     var user_id;
     var clinic_id;
    this.clinic_id && this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data.message == 'success'){
-        this.fdRecallPrebookRateTrendLoader = false;
+      if(data.message == 'success'){
+          this.fdRecallPrebookRateTrendLoader = false;
           this.recallPrebookChartTrendLabels1=[];
-  this.recallPrebookChartTrend1=[];
-                data.data.forEach(res => {  
-                     this.recallPrebookChartTrend1.push(Math.round(res.percent));
-                   if(this.trendValue == 'c')
-                   this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
+          this.recallPrebookChartTrend1=[];
+          data.data.forEach(res => {  
+            this.recallPrebookChartTrend1.push(Math.round(res.recall_percent));
+             if(this.trendValue == 'c')
+                    this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.recallPrebookChartTrendLabels1.push(res.treat_date);
+                   this.recallPrebookChartTrendLabels1.push(res.year);
                   
                  });
                  this.recallPrebookChartTrend[0]['data'] = this.recallPrebookChartTrend1;

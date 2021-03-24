@@ -112,4 +112,14 @@ public token_id;
         );
     }
 
+                 // finExpensesByCategoryTrend
+    categoryExpensesTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Marketing/mkNewPatientAcqTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
 }

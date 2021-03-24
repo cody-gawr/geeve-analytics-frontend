@@ -1601,37 +1601,32 @@ public doughnutChartColors1;
         this.pieChartExternalPrevTooltip = 'down';
         this.pieChartCombinedPrevTooltip = 'down';
       if (data.message == 'success' && data.data && data.data.length) {
-
-
-           var i=0;
+        var i=0;
         data.data.forEach(res => {
-
-          if(res.i_count>0) {
-           this.pieChartDatares1.push(res.i_count);
-           this.pieChartLabelsres1.push(res.label);
-         }
-         if(res.e_count>0) {
-           this.pieChartDatares2.push(res.e_count);
-           this.pieChartLabelsres2.push(res.label);
-
+          if(res.internal > 0) {
+           this.pieChartDatares1.push(res.internal);
+           this.pieChartLabelsres1.push(res.treat_item_name);
+          }
+          if(res.external>0) {
+           this.pieChartDatares2.push(res.external);
+           this.pieChartLabelsres2.push(res.treat_item_name);
          }
          if(res.total>0) {
            this.pieChartDatares3.push(res.total);
-           this.pieChartLabelsres3.push(res.label);
+           this.pieChartLabelsres3.push(res.treat_item_name);
 
          }
-           this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.i_count);
-           this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.e_count);
+           this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.internal);
+           this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.external);
            this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
-
-           this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(res.i_count_ta);
-           this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(res.e_count_ta);
-           this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(res.total_ta);
            if(res.label != 'Anonymous')
             this.crKey= i;
             i++;
           
-          });
+        });
+        this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(data.total_ta.internal);
+        this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(data.total_ta.external);
+        this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(data.total_ta.total);
         if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
           this.pieChartInternalPrevTooltip = 'up'
         if(this.pieChartExternalTotal>=this.pieChartExternalPrevTotal)
@@ -1682,7 +1677,7 @@ this.pieChartDataMax3=0;
         this.pieChartExternalPrevTooltip = 'down';
         this.pieChartCombinedPrevTooltip = 'down';
  this.clinic_id && this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success' && data.data.length){
+       if(data.message == 'success'){
           this.pieChartLabelsres1 = [];
           this.pieChartLabelsres2 = [];
           this.pieChartLabelsres3=[];
@@ -1694,31 +1689,30 @@ this.pieChartDataMax3=0;
           this.pieChartDatares3 = [];
           this.pieChartLabelsres = [];
         data.data.forEach(res => {
-              if(res.total>0) {
-          if(res.i_count>0) {
-           this.pieChartDatares1.push(res.i_count);
-           this.pieChartLabelsres1.push(res.label);
-         }
-         if(res.e_count>0) {
-           this.pieChartDatares2.push(res.e_count);
-           this.pieChartLabelsres2.push(res.label);
+          if(res.total>0) {
+              if(res.internal>0) {
+                 this.pieChartDatares1.push(res.internal);
+                 this.pieChartLabelsres1.push(res.treat_item_name);
+               }
+               if(res.external>0) {
+                 this.pieChartDatares2.push(res.external);
+                 this.pieChartLabelsres2.push(res.treat_item_name);
 
-         }
-         if(res.total>0) {
-           this.pieChartDatares3.push(res.total);
-           this.pieChartLabelsres3.push(res.label);
+               }
+               if(res.total>0) {
+                 this.pieChartDatares3.push(res.total);
+                 this.pieChartLabelsres3.push(res.treat_item_name);
 
-         }
-           this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.i_count);
-           this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.e_count);
-           this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
+               }
+               this.pieChartInternalTotal = this.pieChartInternalTotal + parseInt(res.internal);
+               this.pieChartExternalTotal = this.pieChartExternalTotal + parseInt(res.external);
+               this.pieChartCombinedTotal = this.pieChartCombinedTotal + parseInt(res.total);
+            }
+       });
+      this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(data.total_ta.internal);
+      this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(data.total_ta.external);
+      this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(data.total_ta.total);
 
-
-           this.pieChartInternalPrevTotal = this.pieChartInternalPrevTotal + parseInt(res.i_count_ta);
-           this.pieChartExternalPrevTotal = this.pieChartExternalPrevTotal + parseInt(res.e_count_ta);
-           this.pieChartCombinedPrevTotal = this.pieChartCombinedPrevTotal + parseInt(res.total_ta);
-         }
- });
          if(this.pieChartInternalTotal>=this.pieChartInternalPrevTotal)
           this.pieChartInternalPrevTooltip = 'up'
         if(this.pieChartExternalTotal>=this.pieChartExternalPrevTotal)
@@ -2182,9 +2176,10 @@ toggleChangeProcess(){
       this.stackedChartTrendData6 =[];
       this.stackedChartTrendData7 =[];
       this.stackedChartTrendData8 =[];
-    if(this.mode== 'Internal') {
+      alert(this.mode);
+    if(this.mode == 'Internal') {
        if(data.message == 'success' && data.data){
-         if(data.data.internal.length >0) {
+         if(data.data.internal.length > 0) {
                 data.data.internal.forEach(res => {
                    this.stackedChartTrendData1.push(res.val[0].treat_item_count);
                    this.stackedChartTrendData2.push(res.val[1].treat_item_count);

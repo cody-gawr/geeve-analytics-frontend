@@ -100,7 +100,7 @@
             class="sa_flexbg">
             <mat-card class="dentistProduction">
               <mat-card-content class="sa_matcard_content">
-                <mat-card-title class="text-center mb-0">Hourly Rate Leaders {{hourlyRateChartData}}
+                <mat-card-title class="text-center mb-0">Hourly Rate Leaders 
                   <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon" />
                 </mat-card-title>
                 <!--$ {{production_p+production_c}}-->
@@ -114,7 +114,7 @@
         </div>
          <div *ngIf="maxHourlyRate == 0">No Top Leaders Yet!</div> -->
                 <div class="card-body">
-                  <div class="user_rate_listing" *ngIf="maxHourlyRate > 0">
+                  <div class="user_rate_listing" *ngIf="hourlyRateChartData.length > 0">
                     <ul>
                       <div>
                         <li *ngFor="let hourlyRateChartD of hourlyRateChartData; let i = index">
@@ -128,14 +128,14 @@
                                 <!-- <div class="ur_pic">
                             <img class="" src="../assets/images/image1.jpg">
                           </div> -->
-                                <span class="user-icon" [ngStyle]="{ 'background-color': hourlyRateColors[i] }">
-                                  {{getShortName(hourlyRateChartLabels[i])}}
+                                <span class="user-icon" [ngStyle]="{ 'background-color': mockupColors[i] }">
+                                  {{getShortName(hourlyRateChartD.provider_name )}}
                                 </span>
-                                <span class="client-name">{{hourlyRateChartLabels[i]}}</span>
-                                <!-- <p class="ur_clinic" *ngIf="clinic_id =='all'">{{hourlyRateChartClinic[i]}}</p> -->
+                                <span class="client-name">{{ hourlyRateChartD.provider_name }}</span>
+                                <p class="ur_clinic" *ngIf="clinic_id =='all'">{{ hourlyRateChartD.clinic_name }}</p>
                               </div>
                               <div class="ur_users_number">
-                                ${{hourlyRateChartD| number:'1.0-0'}}
+                                ${{ hourlyRateChartD.hourly_rate | number:'1.0-0'}}
                               </div>
                             </div>
                           </div>
@@ -145,7 +145,7 @@
                     </ul>
                   </div>
 
-                  <div *ngIf="maxHourlyRate <= 0" class="no-data-placeholder">
+                  <div *ngIf="hourlyRateChartData.length <= 0" class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">No hourly rates have been calculated yet this month</p>
@@ -164,7 +164,7 @@
                   <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon" />
                 </mat-card-title>
                 <div class="card-body">
-                  <div class="user_rate_listing" *ngIf="maxNewPatients > 0">
+                  <div class="user_rate_listing" *ngIf="newPatientsTimeData.length > 0">
                     <ul class="user-reffrance">
                       <li class="list_rep r{{i+1}}" *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
                         <div class="ur_users">
@@ -172,17 +172,19 @@
                         </div>
 
                         <div class="user_name">
-                          <span [ngStyle]="{ 'background-color': newPatientsTimeColors[i] }">
-                            {{getShortName(newPatientsTimeLabels[i])}}
+                          <span [ngStyle]="{ 'background-color': mockupColors[i] }">
+                            {{getShortName(newPatientsTimeD.referral_name)}}
                           </span>
-                          {{newPatientsTimeLabels[i]}}</div>
-                        <div class="user_value">{{newPatientsTimeD}}</div>
+                          {{newPatientsTimeD.referral_name}}
+                          <p class="ur_clinic" >{{ newPatientsTimeD.clinic_name }}</p>
+                        </div>
+                        <div class="user_value">{{newPatientsTimeD.patient_num}}</div>
 
                       </li>
                     </ul>
                   </div>
 
-                  <div *ngIf="maxNewPatients <= 0" class="no-data-placeholder">
+                  <div *ngIf="newPatientsTimeData.length <= 0" class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no referrals this month</p>

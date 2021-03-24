@@ -307,25 +307,7 @@ public hourlyRateColors = [];
     this.healthscreenService.hourlyRateChart(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
       this.hourlyRateChartData =[];
        if(data.message == 'success'){
-         data.data.forEach(res => {
-          if(res.hourlyRate>0) {
-          this.hourlyRateChartData.push(Math.abs(res.hourlyRate).toFixed(1));
-          var name = res.provider;
-          var clinic = res.clinic;
-          if(colorCount>=this.mockupColors.length){
-            colorCount = 0; // reset color count
-          }
-          var initials = name.match(/\b\w/g) || [];
-          initials = ((initials[initials.length-2] || '') + (initials.pop() || '')).toUpperCase();
-           this.hourlyRateChartInitials.push(initials);
-           this.hourlyRateChartLabels.push(name);
-           this.hourlyRateChartClinic.push(clinic);
-          this.hourlyRateColors.push(this.mockupColors[colorCount]);
-          colorCount++;
-        }
-         });
-         if(this.hourlyRateChartData.length >0)
-         this.maxHourlyRate = Math.max(...this.hourlyRateChartData);
+        this.hourlyRateChartData = data.data;        
 
        }
     }, error => {
@@ -359,38 +341,7 @@ public newPatientsTimeClinic=[];
     var clinic_id;
     this.healthscreenService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
-         this.newPatientsTimeData =[];
-            this.newPatientsTimeLabels =[];
-            this.mkNewPatientsByReferralLoader = false;
-            this.newPatientsTimeData1 =[];
-            this.newPatientsTimeLabelsl2 =[];
-            this.newPatientsTimeLabels1 =[];
-            if(data.data.patients_reftype.length >0) {
-              var i=0;
-              let colorCount = 0;
-              if(colorCount>= this.mockupColors.length){
-                colorCount = 0
-              }
-              if(this.clinic_id =='all')
-                var limit=5;
-              else
-                var limit =3;
-             data.data.patients_reftype.forEach(res => {
-               if(i<limit) {
-               this.newPatientsTimeData.push(res.patients_visits);
-               this.newPatientsTimeLabels.push(res.reftype_name);
-           this.newPatientsTimeClinic.push(res.clinic);
-                  this.newPatientsTimeColors.push(this.mockupColors[colorCount]);
-                  colorCount++;
-                i++;
-              }
-             });
-        }
-        if(this.newPatientsTimeData.length>0)
-          this.maxNewPatients = Math.max(...this.newPatientsTimeData);
-        else
-           this.maxNewPatients = 0;
-
+         this.newPatientsTimeData = data.data;           
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

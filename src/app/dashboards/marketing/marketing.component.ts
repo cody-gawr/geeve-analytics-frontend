@@ -82,7 +82,7 @@ export class MarketingComponent implements AfterViewInit {
   private warningMessage: string; 
   private myTemplate: any = "";
 
-     initiate_clinic() {
+  initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
       if(val != undefined && val !='all') {
     this.clinic_id = val;
@@ -1039,11 +1039,11 @@ public fdvisitsRatioTrendLoader:any;
        if(data.message == 'success'){
         this.newPatientsChartTemp = data.data;
                 data.data.forEach(res => {  
-                     this.newPatientsChartTrend1.push(res.val);
+                     this.newPatientsChartTrend1.push(res.new_patients);
                    if(this.trendValue == 'c')
-                   this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.newPatientsChartTrendLabels1.push(res.duration);
+                   this.newPatientsChartTrendLabels1.push(res.year);
                   
                  });
                  this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
@@ -1143,7 +1143,7 @@ public dataY:any=0;
      if(this.duration){
        var user_id;
        var clinic_id;
-       this.financesService.finExpensesByCategoryMktTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+       this.marketingService.categoryExpensesTrend(this.clinic_id,this.trendValue).subscribe((data) => {
           if(data.message == 'success'){
 
             this.expenseDataTrend1=[];

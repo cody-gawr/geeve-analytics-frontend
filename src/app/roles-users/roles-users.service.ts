@@ -126,7 +126,7 @@ console.log(role_id);
     formData.append('email', email);
     formData.append('usertype', user_type);
     formData.append('selected_dentist', dentist);
-    formData.append('selectedClinic', selectedClinic);
+    formData.append('clinic_id', selectedClinic);
      
      var header = this.getHeaders(); 
     
