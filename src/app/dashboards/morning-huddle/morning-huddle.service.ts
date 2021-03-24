@@ -220,7 +220,7 @@ export class MorningHuddleService {
 
     updateFollowUpStatus(event,pid,cid,uid,type,previousDays,token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/mhUpdateFollowupStatus?event="+event+"&pid="+pid+"&cid="+cid+"&uid="+uid+"&previous_days="+previousDays+"&type="+type, { headers: header })
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhUpdateFollowupStatus?event="+event+"&patient_id="+pid+"&clinic_id="+cid+"&previous_days="+previousDays+"&type="+type, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
