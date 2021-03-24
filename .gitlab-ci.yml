@@ -9,6 +9,35 @@ stages:
 # This command is run before the execution of stages    
 before_script:
   - npm install
+
+   # Make test Build
+build_test: 
+  stage: build
+  script:
+  - npm run build-test
+  artifacts:
+    paths:
+    - dist
+    expire_in: 1 day
+  only: ['test']
+
+# Deploy test Build
+deploy_test:
+  image: python:latest  
+  stage: deploy
+  before_script:
+    - pip install awscli 
+  script:
+    - echo "test - Update AWS Keys"
+    - export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID
+    - export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY
+    - echo "test - Deploy to S3"    
+    - aws s3api put-public-access-block --bucket $TEST_S3  --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
+    - aws s3 sync ./dist s3://$TEST_S3/ --exclude "assets/protected/*" --exclude "assets/uploads/*" --acl=public-read --delete
+    - aws s3api put-public-access-block --bucket $TEST_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+    - echo "test - Invalidate Cloudfront"
+    - aws cloudfront create-invalidation --distribution-id $TEST_CLOUDFRONT --paths "/*"
+  only: ['test']
   
   # Make Staging Build
 build_staging: 
