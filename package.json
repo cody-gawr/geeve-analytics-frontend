@@ -8,6 +8,7 @@
     "build": "ng build",
     "build-prod": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build -c=production",
     "build-prod-non-optimized": "ng build -c=prod-non-optimized",
+    "build-test": "ng build -c=test",
     "build-staging": "ng build -c=staging",
     "build-dev": "ng build -c=dev",
     "test": "ng test",
