@@ -176,7 +176,7 @@
                             {{getShortName(newPatientsTimeD.referral_name)}}
                           </span>
                           {{newPatientsTimeD.referral_name}}
-                          <p class="ur_clinic" >{{ newPatientsTimeD.clinic_name }}</p>
+                          <p class="ur_clinic" *ngIf="clinic_id =='all'">{{ newPatientsTimeD.clinic_name }}</p>
                         </div>
                         <div class="user_value">{{newPatientsTimeD.patient_num}}</div>
 

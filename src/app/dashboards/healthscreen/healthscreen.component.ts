@@ -104,9 +104,8 @@ customOptions: OwlOptions = {
   }
   private warningMessage: string;
   ngAfterViewInit() {  
-   
     $('#currentDentist').attr('did','all');
-    this.initiate_clinic();
+    //this.initiate_clinic();
     //   $('.external_dentist').val('all');
     $('#title').html('Clinic Health');
     $('.external_clinic').show();

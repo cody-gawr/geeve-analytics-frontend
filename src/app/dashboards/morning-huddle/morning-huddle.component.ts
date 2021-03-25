@@ -104,7 +104,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
 
-     this.initiate_clinic();
+     //this.initiate_clinic();
  }
 ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;

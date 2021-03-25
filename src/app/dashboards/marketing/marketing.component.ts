@@ -63,32 +63,17 @@ export class MarketingComponent implements AfterViewInit {
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
 
-  constructor(
-    private toastr: ToastrService,
-    private marketingService: MarketingService, 
-    private financesService: FinancesService, 
-    private dentistService: DentistService, 
-    private datePipe: DatePipe, 
-    private route: ActivatedRoute,  
-    private headerService: HeaderService,
-    private _cookieService: CookieService, 
-    private router: Router,
-    public ngxSmartModalService: NgxSmartModalService,
-    private clinicSettingsService: ClinicSettingsService,
-    public decimalPipe: DecimalPipe,
-    private chartService: ChartService
-  ){
-  }
+  constructor( private toastr: ToastrService, private marketingService: MarketingService,  private financesService: FinancesService, private dentistService: DentistService,  private datePipe: DatePipe,  private route: ActivatedRoute,   private headerService: HeaderService,private _cookieService: CookieService,  private router: Router, public ngxSmartModalService: NgxSmartModalService,private clinicSettingsService: ClinicSettingsService, public decimalPipe: DecimalPipe, private chartService: ChartService) { }
+  
   private warningMessage: string; 
   private myTemplate: any = "";
-
   initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
-      if(val != undefined && val !='all') {
-    this.clinic_id = val;
-    this.checkXeroStatus();
-    this.filterDate(this.chartService.duration$.value);
-   }
+    if(val != undefined && val !='all') {
+      this.clinic_id = val;
+      this.checkXeroStatus();
+      this.filterDate(this.chartService.duration$.value);
+    }
   }
 
   formatDate(date) {
@@ -208,7 +193,7 @@ this.preoceedureChartColors = [
     hoverBorderColor: '#1CA49F'
   }
 ];
-    this.filterDate(this.chartService.duration$.value);
+    //this.filterDate(this.chartService.duration$.value);
   }
 
   public date =new Date();
@@ -886,86 +871,84 @@ public currentText;
       
 
   }
-choosedDate(val) {
-    val = (val.chosenLabel);
-    var val= val.toString().split(' - ');
-      
-     var date2:any= new Date(val[1]);
-     var date1:any= new Date(val[0]);
-      var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
-if(diffTime<=365){
-this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
-      this.loadDentist('all');      
-      // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
-     $('.customRange').css('display','none');
-   }
-   else {
-            Swal.fire({
-      text: 'Please select date range within 365 Days',
-      icon: 'warning',
-      showCancelButton: false,
-      confirmButtonText: 'Ok',
-    }).then((result) => {
-    });
-   }
-}
-toggleFilter(val) {
-    $('.target_filter').removeClass('mat-button-toggle-checked');
-    $('.target_'+val).addClass('mat-button-toggle-checked');
-    $('.filter').removeClass('active');
-    var date = new Date();
-    this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-    if(val == 'current') {
-     this.toggleChecked = true;
-     this.trendValue = 'c';
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, date.getMonth(), 1), 'dd-MM-yyyy');
-
-     this.toggleChangeProcess();
-    }
-    else if(val == 'historic') {
-       this.toggleChecked = true;
-       this.trendValue = 'h';
-    this.startDate = this.datePipe.transform(new Date(date.getFullYear()-10, date.getMonth(), 1), 'dd-MM-yyyy');
-
-       this.toggleChangeProcess();
-    }
-    else if(val == 'off') {
-      this.showTrend = false;
-    }
-}
- private getClinics() { 
-  this.headerService.getClinics().subscribe((res) => {
-       if(res.message == 'success'){
-        this.clinicsData = res.data;
-       }
-    }, error => {
-     // this.warningMessage = "Please Provide Valid Inputs!";
-    }    
-    );
-
-  }
-  initiate_dentist() {
-    var val = $('.internal_dentist').val();
-    this.loadDentist(val);
-  }
-  toggleChecked = false;
-  trendValue ='';
-  isDisabled =true;
-  isChecked =true;
-  mode='Internal';
-  showTrend= false;
-toggleChangeProcess(){
-      this.showTrend = true;
-      this.mkNewPatientsByReferral();
-      this.mkRevenueByReferral();
-      
-            this.mkNoNewPatientsTrend();
-      this.fdvisitsRatioTrend();
-
    
+    choosedDate(val) {
+      val = (val.chosenLabel);
+      var val= val.toString().split(' - ');
+      var date2:any= new Date(val[1]);
+      var date1:any= new Date(val[0]);
+      var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+      if(diffTime<=365){
+        this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
+        this.loadDentist('all');      
+        // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+        $('.customRange').css('display','none');
+      } else {
+        Swal.fire({
+          text: 'Please select date range within 365 Days',
+          icon: 'warning',
+          showCancelButton: false,
+          confirmButtonText: 'Ok',
+        }).then((result) => {});
+      }
+    }
 
-}
+    toggleFilter(val) {
+        $('.target_filter').removeClass('mat-button-toggle-checked');
+        $('.target_'+val).addClass('mat-button-toggle-checked');
+        $('.filter').removeClass('active');
+        var date = new Date();
+        this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+        if(val == 'current') {
+         this.toggleChecked = true;
+         this.trendValue = 'c';
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, date.getMonth(), 1), 'dd-MM-yyyy');
+
+         this.toggleChangeProcess();
+        }
+        else if(val == 'historic') {
+           this.toggleChecked = true;
+           this.trendValue = 'h';
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear()-10, date.getMonth(), 1), 'dd-MM-yyyy');
+
+           this.toggleChangeProcess();
+        }
+        else if(val == 'off') {
+          this.showTrend = false;
+        }
+    }
+   
+    private getClinics() { 
+      this.headerService.getClinics().subscribe((res) => {
+        if(res.message == 'success'){
+          this.clinicsData = res.data;
+        }
+      }, error => {});
+    }
+
+    initiate_dentist() {
+      var val = $('.internal_dentist').val();
+      this.loadDentist(val);
+    }
+
+    toggleChecked = false;
+    trendValue ='';
+    isDisabled =true;
+    isChecked =true;
+    mode='Internal';
+    showTrend= false;
+    toggleChangeProcess(){
+    this.showTrend = true;
+    this.mkNewPatientsByReferral();
+    this.mkRevenueByReferral();
+
+    this.mkNoNewPatientsTrend();
+    this.fdvisitsRatioTrend();
+
+
+
+  }
 
 
  public visitsChartTrend: any[]  = [
@@ -1226,20 +1209,17 @@ this.newAcqValue = 0;
 
   public checkXeroStatus(){
     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
-      console.log('res', res)
-       if(res.message == 'success'){
+      if(res.message == 'success'){
         if(res.data.xero_connect == 1) {
           this.xeroConnect = true;
-        }
-        else {
+        } else {
           this.xeroConnect = false; 
         }
-       }
-       else {
+       } else {
         this.xeroConnect = false;
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });  
  }
-  }
+}

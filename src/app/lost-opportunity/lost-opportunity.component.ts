@@ -37,7 +37,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
   	ngOnInit() {
   		  $('#currentDentist').attr('did','all');
 
-  		 this.initiate_clinic();
+  		 //this.initiate_clinic();
 			$('.dentist_dropdown').parent().hide(); // added
 			$('.sa_heading_bar').addClass("filter_single"); // added
   	}

@@ -132,8 +132,8 @@ single = [
     } else return date;
   }
 
+  
   ngAfterViewInit() {
-    
     //plugin for Percentage of Production by Clinician chart
     this.pluginObservable$ = this.percentOfProductionCount$.pipe(
       takeUntil(this.destroyed$),
@@ -158,55 +158,49 @@ single = [
       })
     )
 
-      $('#currentDentist').attr('did','all');
-     
-        //this.filterDate('cytd');
-      //  this.getDentists(); 
-       this.route.params.subscribe(params => {
-     // this.initiate_clinic();
-    $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
-        $('.header_filters').removeClass('hide_header');
-        $('.header_filters').addClass('flex_direct_mar');
-         $('.external_clinic').show();
-        $('.external_dentist').show();
-         $('#title').html('<span>Finances</span>  <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
-         $(document).on('click', function(e) {
+    $('#currentDentist').attr('did','all');
+    this.route.params.subscribe(params => {
+      $('.external_clinic').show();
+      $('.dentist_dropdown').hide();
+      $('.header_filters').removeClass('hide_header');
+      $('.header_filters').addClass('flex_direct_mar');
+      $('.external_clinic').show();
+      $('.external_dentist').show();
+      $('#title').html('<span>Finances</span>  <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
+      $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
-           $('.customRange').show();
+          $('.customRange').show();
+        } else if ($(document.activeElement).attr('id') == 'customRange') {
+          $('.customRange').show();
+        }  else {
+          $('.customRange').hide();
         }
-        else if ($(document.activeElement).attr('id') == 'customRange') {
-           $('.customRange').show();
-        } 
-        else {
-            $('.customRange').hide();
-        }
-        })
-             });
-      let gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
-      gradient.addColorStop(0, '#17a2a6');
-      gradient.addColorStop(1, '#17a2a6');
-      let gradient1 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-      gradient1.addColorStop(1, '#82edd8');
-      gradient1.addColorStop(0,  '#82edd8');
-      let gradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-      gradient2.addColorStop(1, '#2C7294');
-      gradient2.addColorStop(0,  '#2C7294');
-      let gradient3 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-      gradient3.addColorStop(1, '#3c7cb7');
-      gradient3.addColorStop(0,  '#3c7cb7');
-      let gradient4 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-      gradient4.addColorStop(1, '#175088');
-      gradient4.addColorStop(0,  '#175088');
-      let gradient5 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-      gradient5.addColorStop(1, '#1fd6b1');
-      gradient5.addColorStop(0,  '#1fd6b1');
-      let gradient6 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-      gradient6.addColorStop(1, '#09b391');
-      gradient6.addColorStop(0,  '#09b391');
-      let gradient7 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-      gradient7.addColorStop(1, '#168F7F');
-      gradient7.addColorStop(0,  '#168F7F');
+      })
+    });
+    let gradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, '#17a2a6');
+    gradient.addColorStop(1, '#17a2a6');
+    let gradient1 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    gradient1.addColorStop(1, '#82edd8');
+    gradient1.addColorStop(0,  '#82edd8');
+    let gradient2 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    gradient2.addColorStop(1, '#2C7294');
+    gradient2.addColorStop(0,  '#2C7294');
+    let gradient3 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    gradient3.addColorStop(1, '#3c7cb7');
+    gradient3.addColorStop(0,  '#3c7cb7');
+    let gradient4 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    gradient4.addColorStop(1, '#175088');
+    gradient4.addColorStop(0,  '#175088');
+    let gradient5 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    gradient5.addColorStop(1, '#1fd6b1');
+    gradient5.addColorStop(0,  '#1fd6b1');
+    let gradient6 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    gradient6.addColorStop(1, '#09b391');
+    gradient6.addColorStop(0,  '#09b391');
+    let gradient7 = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    gradient7.addColorStop(1, '#168F7F');
+    gradient7.addColorStop(0,  '#168F7F');
 
     this.doughnutChartColors = [{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}];
 
@@ -230,139 +224,124 @@ single = [
     stackedGradient5.addColorStop(0,  'rgba(12, 209,169,1)');
 
 
-this.stackedChartColors = [
-  {
-    backgroundColor: stackedGradient,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(255,255,255,0.6)'
-  },
-   {
-    backgroundColor: stackedGradient1,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(255,255,255,0.6)'
+    this.stackedChartColors = [
+      {
+        backgroundColor: stackedGradient,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(255,255,255,0.6)'
+      },
+      {
+        backgroundColor: stackedGradient1,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(255,255,255,0.6)'
+      },
+      {
+        backgroundColor: stackedGradient2,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(255,255,255,0.6)'
+      },
+      {
+        backgroundColor: stackedGradient3,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(255,255,255,0.6)'
+      },
+      {
+        backgroundColor: stackedGradient4,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(255,255,255,0.6)'
+      },
+      {
+        backgroundColor: stackedGradient5,
+        hoverBorderWidth: 2,
+        hoverBorderColor: 'rgba(255,255,255,0.6)'
+      }
+    ];
+    let stackedGradient6 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    stackedGradient6.addColorStop(1, 'rgba(22, 82, 141, 0.4)');
+    stackedGradient6.addColorStop(0,  'rgba(12, 209,169,0.4)');
+    this.stackedChartColorsBar = [
+    {
+      backgroundColor: stackedGradient6,
+      hoverBorderWidth: 2,
+      hoverBorderColor: '#1CA49F',
+      borderColor: '#1CA49F'
+    }];
+    let stackedGradient7 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    stackedGradient7.addColorStop(1, 'rgba(94, 232,205,0.8)');
+    stackedGradient7.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
+    this.stackedChartColorsBar1 = [
+    {
+      backgroundColor: stackedGradient7,
+      hoverBorderWidth: 2,
+      hoverBorderColor: '#1CA49F',
+      borderColor: '#1CA49F'
+    }];
+    let proceedureGradient = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
+    proceedureGradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
+    proceedureGradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
+    let proceedureGradient1 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    proceedureGradient1.addColorStop(1, 'rgba(12, 209,169,0.8)');
+    proceedureGradient1.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
+    let proceedureGradient2 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    proceedureGradient2.addColorStop(1, 'rgba(59, 227,193,0.8');
+    proceedureGradient2.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
+    let proceedureGradient3 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    proceedureGradient3.addColorStop(1, 'rgba(94, 232,205,0.8)');
+    proceedureGradient3.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
+    let proceedureGradient4 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    proceedureGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
+    proceedureGradient4.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
+    let proceedureGradient5 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
+    proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
+    proceedureGradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
 
-  },
-  {
-    backgroundColor: stackedGradient2,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(255,255,255,0.6)'
-
-  },
-   {
-    backgroundColor: stackedGradient3,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(255,255,255,0.6)'
-
-  },
-  {
-    backgroundColor: stackedGradient4,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(255,255,255,0.6)'
-
-  },
-   {
-    backgroundColor: stackedGradient5,
-    hoverBorderWidth: 2,
-    hoverBorderColor: 'rgba(255,255,255,0.6)'
-  }
-];
-let stackedGradient6 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-stackedGradient6.addColorStop(1, 'rgba(22, 82, 141, 0.4)');
-stackedGradient6.addColorStop(0,  'rgba(12, 209,169,0.4)');
-
-
-this.stackedChartColorsBar = [
-  {
-    backgroundColor: stackedGradient6,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: '#1CA49F'
-  }];
-let stackedGradient7 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-stackedGradient7.addColorStop(1, 'rgba(94, 232,205,0.8)');
-stackedGradient7.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-
-
-this.stackedChartColorsBar1 = [
-  {
-    backgroundColor: stackedGradient7,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: '#1CA49F'
-  }];
- let proceedureGradient = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
-proceedureGradient.addColorStop(0, 'rgba(22, 82, 141, 0.8)');
-proceedureGradient.addColorStop(1, 'rgba(12, 209,169,0.9)');
-let proceedureGradient1 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-proceedureGradient1.addColorStop(1, 'rgba(12, 209,169,0.8)');
-proceedureGradient1.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-let proceedureGradient2 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-proceedureGradient2.addColorStop(1, 'rgba(59, 227,193,0.8');
-proceedureGradient2.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-let proceedureGradient3 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-proceedureGradient3.addColorStop(1, 'rgba(94, 232,205,0.8)');
-proceedureGradient3.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-let proceedureGradient4 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-proceedureGradient4.addColorStop(1, 'rgba(148, 240,221,0.8)');
-proceedureGradient4.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-let proceedureGradient5 = this.canvas2.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 100);
-proceedureGradient5.addColorStop(1, 'rgba(201, 247,238,0.8)');
-proceedureGradient5.addColorStop(0,  'rgba(22, 82, 141, 0.9)');
-
-this.preoceedureChartColors = [
-  {
-    backgroundColor: proceedureGradient,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
-  },
-   {
-    backgroundColor: proceedureGradient1,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
-
-  },
-  {
-    backgroundColor: proceedureGradient2,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
-
-  },
-   {
-    backgroundColor: proceedureGradient3,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
-
-  },
-  {
-    backgroundColor: proceedureGradient4,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F',
-    borderColor: 'rgba(25,179,148,0.7)'
-
-  },
-   {
-    backgroundColor: proceedureGradient5,
-    hoverBorderWidth: 2,
-    hoverBorderColor: '#1CA49F'
-  }
-];
-
-    this.filterDate(this.chartService.duration$.value);
+    this.preoceedureChartColors = [
+      {
+        backgroundColor: proceedureGradient,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
+      },
+      {
+        backgroundColor: proceedureGradient1,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
+      },
+      {
+        backgroundColor: proceedureGradient2,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
+      },
+      {
+        backgroundColor: proceedureGradient3,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
+      },
+      {
+        backgroundColor: proceedureGradient4,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F',
+        borderColor: 'rgba(25,179,148,0.7)'
+      },
+      {
+        backgroundColor: proceedureGradient5,
+        hoverBorderWidth: 2,
+        hoverBorderColor: '#1CA49F'
+      }
+    ];
+    //this.filterDate(this.chartService.duration$.value);
   }
 
   public date =new Date();
- public lineChartOptions: any = {
-    responsive: true
-  };
+  public lineChartOptions: any = { responsive: true };
 
   dentists: Dentist[] = [
    { providerId: 'all', name: 'All Dentists' },
