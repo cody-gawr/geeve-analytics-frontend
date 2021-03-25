@@ -20,13 +20,11 @@ export class UsersComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getUsers();
-        $('#title').html('Registered Clinic Owners');
-         // $('.external_clinic').hide();
-         //  $('.dentist_dropdown').hide();
-          $('.header_filters').addClass('hide_header'); 
-           // $('.header_filters').hide();
-        
+    $('#title').html('Registered Clinic Owners');
+    $('.header_filters').addClass('hide_header'); 
   }
+
+
   data = [
     {
         "dentist": "Ethel Price",

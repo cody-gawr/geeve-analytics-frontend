@@ -226,7 +226,7 @@ initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     this.clinic_id = val;
     this.getClinics();    
-     this.getUsers();
+    this.getUsers();
     this.getRoles();
     this.getDentists();
   }
@@ -235,7 +235,7 @@ initiate_clinic() {
     $('.header_filters').removeClass('flex_direct_mar'); 
 
 
-    this.initiate_clinic();
+   // this.initiate_clinic();
 
         $('#title').html('Users');
         $('.external_clinic').hide();
