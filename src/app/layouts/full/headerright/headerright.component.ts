@@ -29,7 +29,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
             console.log('route changed');
             this.route = router.url; 
             this.getClinics();
-            this.getDentists();
+           // this.getDentists();
           // if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
           // { 
           //}
