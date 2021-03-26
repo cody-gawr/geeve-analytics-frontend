@@ -5,7 +5,6 @@ import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RolesRoutes } from './roles.routing';
-import { QuillModule } from 'ngx-quill';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
@@ -21,7 +20,6 @@ import { RolesService } from './roles.service';
     DemoMaterialModule,
     FlexLayoutModule,
     FormsModule,
-    QuillModule,
     ReactiveFormsModule,
     MatTreeModule,
     MatDatepickerModule,

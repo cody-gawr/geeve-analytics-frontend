@@ -5,7 +5,6 @@ import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ProfileSettingsRoutes } from './profile-settings.routing';
-import { QuillModule } from 'ngx-quill';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NotifierService } from 'angular-notifier';
@@ -23,7 +22,6 @@ import { NgxEditorModule } from 'ngx-editor';
     DemoMaterialModule,
     FlexLayoutModule,
     FormsModule,
-    QuillModule,
     ReactiveFormsModule,
     MatTreeModule,
     MatDatepickerModule,
