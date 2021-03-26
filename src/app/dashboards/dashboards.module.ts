@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { DashboardsRoutes } from './dashboards.routing';
-import { ChartistModule } from 'ng-chartist';
 import { ClinicianAnalysisService } from './cliniciananalysis/cliniciananalysis.service';
 import { MorningHuddleService } from './morning-huddle/morning-huddle.service';
 import { ClinicianAnalysisComponent } from './cliniciananalysis/cliniciananalysis.component';
@@ -47,7 +46,6 @@ import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';
     ReactiveFormsModule,
     FlexLayoutModule,
     CdkTableModule,
-    ChartistModule,
     ChartsModule,
     NgxChartsModule,
     NgxGaugeModule,
