@@ -17,9 +17,6 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "angular2-cookie/core";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import {AutoCompleteModule} from 'primeng/autocomplete';
-import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
-import {MenuItem} from 'primeng/api'; 
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';/**/
