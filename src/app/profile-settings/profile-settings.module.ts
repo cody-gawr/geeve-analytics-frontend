@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ProfileSettingsRoutes } from './profile-settings.routing';
 import { QuillModule } from 'ngx-quill';
-import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NotifierService } from 'angular-notifier';
@@ -26,7 +25,6 @@ import { NgxEditorModule } from 'ngx-editor';
     FormsModule,
     QuillModule,
     ReactiveFormsModule,
-    FileUploadModule,
     MatTreeModule,
     MatDatepickerModule,
     NgxEditorModule,
