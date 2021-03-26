@@ -134,20 +134,12 @@ initiate_clinic() {
     this.getRecallRate();
     this.getTreatmentRate();
     this.getDentistList();
-    /***** Tab 1 ***/
-
-
-    this.morningHuddleService.getDentists(this.clinic_id).subscribe((dentist:any) =>{ 
-      if(dentist.status == 200 && dentist.data){
-        this.clinicDentists = dentist.data;
-        /*this.currentDentist = dentist.data[0].providerId;        */
-        this.getSchedulePatients(null);
-        this.getScheduleNewPatients(null);
-        this.getScheduleHours(null);
-        this.getUnscheduleHours(null);
-        this.getAppointmentCards(null);
-      }
-    });
+    /***** Tab 1 ***/    
+    this.getSchedulePatients(null);
+    this.getScheduleNewPatients(null);
+    this.getScheduleHours(null);
+    this.getUnscheduleHours(null);
+    this.getAppointmentCards(null);
     /***** Tab 2 ***/
     
     /***** Tab 2 ***/
@@ -409,7 +401,15 @@ initiate_clinic() {
    getAppointmentCards(dentist){
     this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((production:any) => {
       if(production.status == true) {
-        this.appointmentCards.data = production.data;
+        this.appointmentCards.data = production.data; 
+        production.data.forEach(val => {
+          // check for duplicate values        
+          var isExsist = this.clinicDentists.filter(function (person) { return person.provider_id == val.provider_id });
+          if(isExsist.length <= 0){
+            var temp = {'provider_id' : val.provider_id, 'provider_name' : val.provider_name};
+            this.clinicDentists.push(temp);  
+          }          
+        });               
       }
     }); 
   }
