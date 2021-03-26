@@ -632,7 +632,9 @@ public labelBarPercentOptions: any = {
       }
     },
   };
-  public labelBarPercentOptionsStacked: any = {
+
+
+    public labelBarPercentOptionsStacked: any = {
       elements: {
       point: {
         radius: 5,
@@ -1991,8 +1993,7 @@ private finProductionByClinicianTrend() {
   this.finProductionByClinicianTrendLoader = true;
   this.productionChartTrendLabels=[];
   this.productionChartTrendLabels1=[];
-  this.productionChartTrend =[
-    {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
+  this.productionChartTrend =[];
     var user_id;
     var clinic_id;
     this.financesService.finProductionByClinicianTrend(this.clinic_id,this.trendValue).subscribe((data) => {
@@ -2000,16 +2001,22 @@ private finProductionByClinicianTrend() {
           this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(res => {  
                    res.val.forEach((result,key) => {
+                      if(typeof(this.productionChartTrend[key]) == 'undefined'){
+                        this.productionChartTrend[key] = [];
+                      }
+                      if(typeof(this.productionChartTrend[key]['data']) == 'undefined'){
+                        this.productionChartTrend[key]['data'] = [];
+                      }
                      this.productionChartTrend[key]['data'].push(Math.round(result.prod_per_clinician));
                      this.productionChartTrend[key]['label'] = result.provider_name;
                    });
-                   if(this.trendValue == 'c')
-                   this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                   this.productionChartTrendLabels1.push(res.duration);
-                  
+                  if(this.trendValue == 'c')
+                    this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                  else
+                   this.productionChartTrendLabels1.push(res.duration);                  
                  });
                  this.productionChartTrendLabels =this.productionChartTrendLabels1; 
+                 console.log(this.productionChartTrend,'*****');
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
