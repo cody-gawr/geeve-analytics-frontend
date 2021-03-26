@@ -8,7 +8,6 @@ import {
   FormControl
 } from '@angular/forms';
 import { PaymentService } from './payment.service';
-import { StripeService, StripeCardComponent, ElementOptions, ElementsOptions } from "@nomadreservations/ngx-stripe";
 
 
 @Component({
@@ -20,21 +19,5 @@ export class PaymentComponent implements OnInit {
   ngOnInit() {
 
   }
-  openCheckout() {
-    var handler = (<any>window).StripeCheckout.configure({
-      key: 'pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc',
-      locale: 'auto',
-      token: function (token: any) {
-        alert(token.id);
-        console.log(token);
-      }
-    });
 
-    handler.open({
-      name: 'Demo Site',
-      description: '2 widgets',
-      amount: 2000
-    });
-
-  }
 }

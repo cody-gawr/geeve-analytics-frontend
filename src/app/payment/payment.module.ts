@@ -14,13 +14,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { PaymentRoutes } from './payment.routing';
 import { PaymentComponent } from './payment.component';
 import { PaymentService } from './payment.service';
-import { NgxStripeModule } from '@nomadreservations/ngx-stripe';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(PaymentRoutes),
-    NgxStripeModule.forRoot('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc'),
     MatIconModule,
     MatCardModule,
     MatInputModule,
@@ -34,7 +32,7 @@ import { NgxStripeModule } from '@nomadreservations/ngx-stripe';
     PaymentService
   ],
   declarations: [
-    PaymentComponent,
+    PaymentComponent
   ]
 })
 export class PaymentModule {}

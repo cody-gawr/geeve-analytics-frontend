@@ -10,7 +10,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ProfileSettingsComponent } from './profile-settings.component';
 import { ProfileSettingsService } from './profile-settings.service';
 import { NgxStripeModule } from 'ngx-stripe';
-import { NgxEditorModule } from 'ngx-editor';
 
 @NgModule({
   imports: [
@@ -22,7 +21,6 @@ import { NgxEditorModule } from 'ngx-editor';
     ReactiveFormsModule,
     MatTreeModule,
     MatDatepickerModule,
-    NgxEditorModule,
     NgxStripeModule.forRoot(''),
   ],
   providers: [
