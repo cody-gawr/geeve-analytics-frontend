@@ -4,7 +4,6 @@ import { FormControl, Validators } from '@angular/forms';
 import { ClinicGoalsService } from './clinic-goals.service';
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NotifierService } from 'angular-notifier';
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-formlayout',
@@ -16,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
   *AUTHOR - Teq Mavens
   */
 export class ClinicGoalsComponent implements OnInit {
-     private readonly notifier: NotifierService;
+
    public clinic_id:any ={};
 
    public form: FormGroup;
@@ -69,9 +68,8 @@ export class ClinicGoalsComponent implements OnInit {
 
   options: FormGroup;
 //initialize component
-  constructor(private toastr: ToastrService,notifierService: NotifierService,private fb: FormBuilder,  private clinicGoalsService: ClinicGoalsService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
+  constructor(private toastr: ToastrService,private fb: FormBuilder,  private clinicGoalsService: ClinicGoalsService, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router) {
 //  this.clinic_id = this.route.snapshot.paramMap.get("id");
-this.notifier = notifierService;
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'

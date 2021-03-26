@@ -27,7 +27,6 @@ import { HeaderService } from './layouts/full/header/header.service';
 import { StepperHeaderService } from './layouts/stepper/header/header.service';
 import { StepperHeaderrightService } from './layouts/stepper/headerright/headerright.service';
 import { DentistService } from './dentist/dentist.service';
-import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { ToastrModule } from 'ngx-toastr';
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
@@ -37,46 +36,6 @@ import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
 import { SharedMatModule } from './shared-mat.module';
 
-const customNotifierOptions: NotifierOptions = {
-  position: {
-    horizontal: {
-      position: 'right',
-      distance: 12
-    },
-    vertical: {
-      position: 'top',
-      distance: 12,
-      gap: 10
-    }
-  },
-  theme: 'material',
-  behaviour: {
-    autoHide: 5000,
-    onClick: 'hide',
-    onMouseover: 'pauseAutoHide',
-    showDismissButton: true,
-    stacking: 4
-  },
-  animations: {
-    enabled: true,
-    show: {
-      preset: 'slide',
-      speed: 300,
-      easing: 'ease'
-    },
-    hide: {
-      preset: 'fade',
-      speed: 300,
-      easing: 'ease',
-      offset: 50
-    },
-    shift: {
-      speed: 300,
-      easing: 'ease'
-    },
-    overlap: 150
-  }
-};
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 2,
@@ -111,15 +70,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SharedMatModule.forRoot(),
     HttpModule,
     RouterModule.forRoot(AppRoutes),
-
-        NotifierModule.withConfig(customNotifierOptions),
-          ToastrModule.forRoot({ 
-    timeOut: 2000,
-    positionClass: 'toast-top-right',
-    preventDuplicates: true,
-    closeButton :true,
-    progressBar :true
-    //tapToDismiss:false
+    ToastrModule.forRoot({ 
+      timeOut: 2000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      closeButton :true,
+      progressBar :true
+      //tapToDismiss:false
   })
   ],
   providers: [

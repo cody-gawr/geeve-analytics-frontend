@@ -12,7 +12,6 @@ import {
   FormControl
 } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -94,7 +93,6 @@ const data: any = require('assets/company.json');
   *AUTHOR - Teq Mavens
   */
 export class ClinicComponent implements AfterViewInit {
-  private readonly notifier: NotifierService;
   name: string;
   address: string;
   contact_name: string;
@@ -123,8 +121,7 @@ export class ClinicComponent implements AfterViewInit {
   columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
 
   @ViewChild(ClinicComponent) table: ClinicComponent;
-  constructor(private toastr: ToastrService,notifierService: NotifierService,private clinicService: ClinicService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router,private headerService: HeaderService) {
-      this.notifier = notifierService;
+  constructor(private toastr: ToastrService,private clinicService: ClinicService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router,private headerService: HeaderService) {
 
     this.rows = data;
     this.temp = [...data];
@@ -143,7 +140,6 @@ export class ClinicComponent implements AfterViewInit {
       this.clinicService.addClinic(result.name, result.address, result.contact_name).subscribe((res) => {
         if(res.message == 'success'){
           this.toastr.success('Clinic Added!' );
-          //this.notifier.notify( 'success',  ,'vertical');
           this.getClinics();
         }
       }, error => {
@@ -228,7 +224,6 @@ export class ClinicComponent implements AfterViewInit {
             $('.ajax-loader').hide();
             if(res.message == 'success'){
               this.toastr.success('Clinic Removed!' );
-              //this.notifier.notify( 'success', 'Clinic Removed!' ,'vertical');
               this.getClinics();
             }
             else if(res.status == '401'){
@@ -286,7 +281,6 @@ export class ClinicComponent implements AfterViewInit {
     this.clinicService.updateClinic(this.rows[rowIndex]['id'], this.rows[rowIndex][cell],cell).subscribe((res) => {
       if(res.message == 'success'){
         this.toastr.success('Clinic Details Updated!' );
-        //this.notifier.notify( 'success', 'Clinic Details Updated!' ,'vertical');
         this.getClinics();
       }
     }, error => {

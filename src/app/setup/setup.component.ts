@@ -1,11 +1,7 @@
 import { Component, Inject ,EventEmitter,Output, ViewChild, AfterViewInit } from '@angular/core';
 import { SetupService } from './setup.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NotifierService } from 'angular-notifier';
-import { empty } from 'rxjs';
-import {MatChipsModule} from '@angular/material/chips';
 import { ClinicService } from '../clinic/clinic.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 import { PlansService } from '../plans/plans.service';
@@ -33,7 +29,6 @@ export class SetupComponent implements AfterViewInit {
 
   @ViewChild('stepper') stepper;
   private apiUrl = environment.apiUrl;
-  private readonly notifier: NotifierService;
   public form: FormGroup;
   isLinear = true;
   firstFormGroup: FormGroup;

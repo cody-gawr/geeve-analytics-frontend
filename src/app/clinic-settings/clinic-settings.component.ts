@@ -5,8 +5,6 @@ import { ClinicSettingsService } from './clinic-settings.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
 import { Router, NavigationEnd, Event  } from '@angular/router';
-import { NotifierService } from 'angular-notifier';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-formlayout',
@@ -22,7 +20,6 @@ export class ClinicSettingsComponent implements OnInit {
    public form: FormGroup;
    public errorLogin = false;
    public clinic_id:any ={};
-        private readonly notifier: NotifierService;
           private warningMessage: string;
           public id:any ={};
           public clinicName:any =0;
@@ -49,8 +46,7 @@ export class ClinicSettingsComponent implements OnInit {
           public xeroConnect = false;
           public xeroOrganization='';
           public workingDays:any = {sunday: false,monday: false,tuesday: false,wednesday: false,thursday: false,friday: false,saturday: false};       
-  constructor( private toastr: ToastrService,notifierService: NotifierService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
-   this.notifier = notifierService;
+  constructor( private toastr: ToastrService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'

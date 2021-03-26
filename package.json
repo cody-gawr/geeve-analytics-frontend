@@ -34,7 +34,6 @@
     "@swimlane/ngx-charts": "^12.1.0",
     "@swimlane/ngx-datatable": "^15.0.2",
     "angular-gauge-chart": "^0.6.0",
-    "angular-notifier": "^6.0.1",
     "angular2-cookie": "^1.2.6",
     "chart.js": "^2.9.3",
     "jquery": "^3.6.0",

@@ -5,7 +5,6 @@ import { DentistGoalsService } from './dentist-goals.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DentistService } from '../dentist/dentist.service';
 import { CookieService } from "angular2-cookie/core";
-import { NotifierService } from 'angular-notifier';
 import { ToastrService } from 'ngx-toastr';
 export interface Dentist {
   providerId: string;
@@ -17,7 +16,6 @@ export interface Dentist {
   styleUrls: ['./dentist-goals.component.scss']
 })
 export class DentistGoalsComponent implements OnInit {
-       private readonly notifier: NotifierService;
    public clinic_id:any ={};
    public dentistCount:any ={};
     dentists: Dentist[] = [
@@ -75,8 +73,8 @@ export class DentistGoalsComponent implements OnInit {
           public user_id;
   options: FormGroup;
 
-  constructor(private toastr: ToastrService,notifierService: NotifierService,private fb: FormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute, private dentistService: DentistService,private _cookieService: CookieService, private router: Router) {
-  this.notifier = notifierService;
+  constructor(private toastr: ToastrService,private fb: FormBuilder,  private dentistGoalsService: DentistGoalsService, private route: ActivatedRoute, private dentistService: DentistService,private _cookieService: CookieService, private router: Router) {
+
     this.clinic_id = this.route.snapshot.paramMap.get("id");
     this.options = fb.group({
       hideRequired: false,
