@@ -1981,35 +1981,35 @@ toggleChangeProcess(){
 }
 
 
+public productionChartTrend: any[]  = [
+    {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
 public productionChartTrendLabels =[];
 public productionChartTrendLabels1 =[];
-public productionChartTrend:any[] =[];
-public finProductionByClinicianTrendLoader:any;
+  public finProductionByClinicianTrendLoader:any;
 
 private finProductionByClinicianTrend() {
   this.finProductionByClinicianTrendLoader = true;
   this.productionChartTrendLabels=[];
   this.productionChartTrendLabels1=[];
-  this.productionChartTrend  = [
+  this.productionChartTrend =[
     {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
     var user_id;
     var clinic_id;
     this.financesService.finProductionByClinicianTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
-          this.finProductionByClinicianTrendLoader = false;     
-            for(const [key, value] of Object.entries(data.data)) {
-              var i = 0; 
-              for(const [key1,result] of Object.entries(value)) {
-               this.productionChartTrend[i]['data'].push(Math.round(result.prod_per_clinician));
-               this.productionChartTrend[i]['label'] = result.provider_name;
-               i++;
-             }
-             if(this.trendValue == 'c')
-             this.productionChartTrendLabels1.push(this.datePipe.transform(key, 'MMM y'));
-              else
-             this.productionChartTrendLabels1.push(key);
-         }
-         this.productionChartTrendLabels =this.productionChartTrendLabels1; 
+          this.finProductionByClinicianTrendLoader = false;
+                data.data.forEach(res => {  
+                   res.val.forEach((result,key) => {
+                     this.productionChartTrend[key]['data'].push(Math.round(result.prod_per_clinician));
+                     this.productionChartTrend[key]['label'] = result.provider_name;
+                   });
+                   if(this.trendValue == 'c')
+                   this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                    else
+                   this.productionChartTrendLabels1.push(res.duration);
+                  
+                 });
+                 this.productionChartTrendLabels =this.productionChartTrendLabels1; 
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
