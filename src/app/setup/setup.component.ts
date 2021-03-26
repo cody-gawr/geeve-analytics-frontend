@@ -5,7 +5,6 @@ import { CookieService } from "angular2-cookie/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NotifierService } from 'angular-notifier';
 import { empty } from 'rxjs';
-import { Angular5Csv } from 'angular5-csv/dist/Angular5-csv';
 import {MatChipsModule} from '@angular/material/chips';
 import { ClinicService } from '../clinic/clinic.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';
