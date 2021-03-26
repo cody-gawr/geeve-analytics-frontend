@@ -4,7 +4,6 @@ import { DentistService } from '../../dentist/dentist.service';
 import { FrontDeskService } from '../frontdesk/frontdesk.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
-import 'chartjs-plugin-style';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from "angular2-cookie/core";
 import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';

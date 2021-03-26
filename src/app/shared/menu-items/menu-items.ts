@@ -11,11 +11,9 @@ import {
   Validators
 } from '@angular/forms';
 import { ActivatedRoute, Router , NavigationEnd } from "@angular/router";
-import 'chartjs-plugin-style';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { CookieService } from "angular2-cookie/core";
 import { BaseChartDirective } from 'ng2-charts';
-import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/do';

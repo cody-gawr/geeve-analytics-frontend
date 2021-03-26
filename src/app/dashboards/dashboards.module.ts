@@ -32,7 +32,6 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GaugeChartModule } from 'angular-gauge-chart';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
-import 'chartjs-plugin-annotation';
 import { DentistProductionChartComponent } from './charts/dentist-production-chart/dentist-production-chart.component';
 import { CurrencySuffixPipe } from '../currency-suffix.pipe';
 import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';

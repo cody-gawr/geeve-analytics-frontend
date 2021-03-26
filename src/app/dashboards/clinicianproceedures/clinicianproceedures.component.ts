@@ -4,7 +4,6 @@ import { ClinicianProceeduresService } from './clinicianproceedures.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router , NavigationEnd } from "@angular/router";
-import 'chartjs-plugin-style';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from "angular2-cookie/core";
 import { ToastrService } from 'ngx-toastr';

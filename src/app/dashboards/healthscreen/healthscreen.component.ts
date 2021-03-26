@@ -11,7 +11,6 @@ import {
   Validators
 } from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
-import 'chartjs-plugin-style';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
