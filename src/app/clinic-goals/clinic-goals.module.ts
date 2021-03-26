@@ -5,8 +5,6 @@ import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ClinicGoalsRoutes } from './clinic-goals.routing';
-import { QuillModule } from 'ngx-quill';
-import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
@@ -22,9 +20,7 @@ import { ClinicGoalsService } from './clinic-goals.service';
     DemoMaterialModule,
     FlexLayoutModule,
     FormsModule,
-    QuillModule,
     ReactiveFormsModule,
-    FileUploadModule,
     MatTreeModule,
     MatDatepickerModule,
     NgMultiSelectDropDownModule.forRoot()

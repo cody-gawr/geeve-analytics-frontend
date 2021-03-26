@@ -29,7 +29,6 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import {MatButtonToggleModule, MatIconModule} from '@angular/material';
 import { NgxChartsModule } from '@swimlane/ngx-charts';               
 import { GaugeChartModule } from 'angular-gauge-chart';
-import {AutoCompleteModule} from 'primeng/autocomplete';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { DentistProductionChartComponent } from './charts/dentist-production-chart/dentist-production-chart.component';
 import { CurrencySuffixPipe } from '../currency-suffix.pipe';
@@ -46,8 +45,7 @@ import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';
     CdkTableModule,
     ChartsModule,
     NgxChartsModule,
-    NgxGaugeModule,
-    AutoCompleteModule,                                                                                                                 
+    NgxGaugeModule,                                                                                                               
      NgxDaterangepickerMd.forRoot(),
      MatButtonToggleModule, MatIconModule,
      GaugeChartModule,

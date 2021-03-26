@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DemoMaterialModule } from '../demo-material-module';
 import { ClinicSettingsRoutes } from './clinic-settings.routing';
-import { QuillModule } from 'ngx-quill';
-import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
@@ -20,8 +18,6 @@ import { AutofocusDirective } from './auto-focus.directive';
     RouterModule.forChild(ClinicSettingsRoutes),
     DemoMaterialModule,
     SharedMatModule,
-    QuillModule,    
-    FileUploadModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
