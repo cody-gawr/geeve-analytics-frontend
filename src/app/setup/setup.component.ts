@@ -463,8 +463,6 @@ checkUserEmail(display_name, email, user_type) {
            this.add_user(display_name, email, user_type, randomPassword,this.clinic_id,this.inviteFormGroup.value.dentist_id);
             else
              this.toastr.error('Email Already Exists!');
-
-            //this.notifier.notify( 'success', 'Email Already Exists!' ,'vertical');
            }
         }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -479,10 +477,7 @@ checkUserEmail(display_name, email, user_type) {
       $('.ajax-loader').hide();      
              //this.toastr.success('User Added');
 
-       //if(res.message == 'success'){
-      //  this.notifier.notify( 'success', 'User Added' ,'vertical');
-   //     this.getUsers();
-     //  }
+
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
@@ -535,7 +530,6 @@ checkUserEmail(display_name, email, user_type) {
           this.imageURL= res.data;
          // this.toastr.success('Logo Uploaded.');
 
-         // this.notifier.notify( 'success', 'Logo Uploaded' ,'vertical');
         }
         else if(res.status == '401'){
               this._cookieService.put("username",'');
