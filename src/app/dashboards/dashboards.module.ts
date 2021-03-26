@@ -34,7 +34,6 @@ import { GaugeChartModule } from 'angular-gauge-chart';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import 'chartjs-plugin-annotation';
-import { CarouselModule } from 'ngx-owl-carousel-o';
 import { DentistProductionChartComponent } from './charts/dentist-production-chart/dentist-production-chart.component';
 import { CurrencySuffixPipe } from '../currency-suffix.pipe';
 import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';
@@ -56,8 +55,7 @@ import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';
      NgxDaterangepickerMd.forRoot(),
      MatButtonToggleModule, MatIconModule,
      GaugeChartModule,
-    NgxSmartModalModule.forRoot(),
-    CarouselModule
+    NgxSmartModalModule.forRoot()
   ],
   providers: [ClinicianAnalysisService, MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, DecimalPipe, HealthScreenService],
   declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, CurrencySuffixPipe, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, DentistProductionChartComponent, DateMenuBarComponent]
