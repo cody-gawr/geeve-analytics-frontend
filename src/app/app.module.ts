@@ -6,33 +6,26 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutes } from './app.routing';
 import { AppComponent } from './app.component';
-
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FullComponent } from './layouts/full/full.component';
-
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './demo-material-module';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { StepperComponent } from './layouts/stepper/stepper.component';
 import { StepperSidebarComponent } from './layouts/stepper/sidebar/sidebar.component';
-
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-
 import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
 import { CookieService, CookieOptions } from "angular2-cookie/core";
 import { HttpModule } from '@angular/http'; 
 import { AuthGuard } from './auth/authguard.service';
-
 import { HeaderService } from './layouts/full/header/header.service';
 import { StepperHeaderService } from './layouts/stepper/header/header.service';
 import { StepperHeaderrightService } from './layouts/stepper/headerright/headerright.service';
-import { Globals } from 'globals';
 import { DentistService } from './dentist/dentist.service';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { ToastrModule } from 'ngx-toastr';
@@ -40,7 +33,7 @@ import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-huddle.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
- import { MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
 import { SharedMatModule } from './shared-mat.module';
 
@@ -117,7 +110,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SharedModule,
     SharedMatModule.forRoot(),
     HttpModule,
-    NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot(AppRoutes),
 
         NotifierModule.withConfig(customNotifierOptions),

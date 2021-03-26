@@ -7,12 +7,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ClinicGoalsRoutes } from './clinic-goals.routing';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-
 import { ClinicGoalsComponent } from './clinic-goals.component';
-
 import { ClinicGoalsService } from './clinic-goals.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -22,8 +19,7 @@ import { ClinicGoalsService } from './clinic-goals.service';
     FormsModule,
     ReactiveFormsModule,
     MatTreeModule,
-    MatDatepickerModule,
-    NgMultiSelectDropDownModule.forRoot()
+    MatDatepickerModule
   ],
   providers: [
     ClinicGoalsService

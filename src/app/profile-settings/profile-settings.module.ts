@@ -7,14 +7,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ProfileSettingsRoutes } from './profile-settings.routing';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { NotifierService } from 'angular-notifier';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-
 import { ProfileSettingsComponent } from './profile-settings.component';
-
 import { ProfileSettingsService } from './profile-settings.service';
 import { NgxStripeModule } from 'ngx-stripe';
 import { NgxEditorModule } from 'ngx-editor';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +23,6 @@ import { NgxEditorModule } from 'ngx-editor';
     MatTreeModule,
     MatDatepickerModule,
     NgxEditorModule,
-    NgMultiSelectDropDownModule.forRoot(),
     NgxStripeModule.forRoot(''),
   ],
   providers: [

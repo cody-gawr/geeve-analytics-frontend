@@ -39,7 +39,6 @@
     "chart.js": "^2.9.3",
     "jquery": "^3.3.1",
     "moment": "^2.22.2",
-    "ng-multiselect-dropdown": "^0.2.3",
     "ng2-charts": "^2.2.5",
     "ng2-validation": "^4.2.0",
     "ngx-bootstrap": "^5.5.0",

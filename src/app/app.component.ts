@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CookieService } from "angular2-cookie/core";
 import * as Chart from 'chart.js';
 
 @Component({

@@ -7,9 +7,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { RolesRoutes } from './roles.routing';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-
 import { RolesComponent } from './roles.component';
 
 import { RolesService } from './roles.service';
@@ -22,8 +19,7 @@ import { RolesService } from './roles.service';
     FormsModule,
     ReactiveFormsModule,
     MatTreeModule,
-    MatDatepickerModule,
-    NgMultiSelectDropDownModule.forRoot()
+    MatDatepickerModule
   ],
   providers: [
     RolesService

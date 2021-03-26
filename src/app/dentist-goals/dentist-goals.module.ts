@@ -7,11 +7,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DentistGoalsRoutes } from './dentist-goals.routing';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-
 import { DentistGoalsComponent } from './dentist-goals.component';
-
 import { DentistGoalsService } from './dentist-goals.service';
 import { DentistService } from '../dentist/dentist.service';
 
@@ -24,8 +20,7 @@ import { DentistService } from '../dentist/dentist.service';
     FormsModule,
     ReactiveFormsModule,
     MatTreeModule,
-    MatDatepickerModule,
-    NgMultiSelectDropDownModule.forRoot()
+    MatDatepickerModule
   ],
   providers: [
     DentistGoalsService, DentistService
