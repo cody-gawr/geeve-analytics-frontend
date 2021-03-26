@@ -3,7 +3,6 @@ import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , 
 import { FrontDeskService } from './frontdesk.service';
 import { DentistService } from '../../dentist/dentist.service';
 import * as moment from 'moment';
-import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe } from '@angular/common';
 import {
   FormControl,
