@@ -122,7 +122,7 @@ var header = this.getHeaders();
         formData.append('type', "analytics");
         formData.append('user_id', this._cookieService.get("userid"));
         var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/users/getUserPaymentData", formData)
+        return this.http.post(this.apiUrl +"/users/getUserPaymentData", formData, { headers: header })
             .pipe(map((response: Response) => {
                 return response;
             })
