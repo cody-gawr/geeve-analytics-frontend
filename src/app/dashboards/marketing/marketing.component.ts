@@ -3,7 +3,6 @@ import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , 
 import { MarketingService } from './marketing.service';
 import { FinancesService } from '../finances/finances.service';
 import { DentistService } from '../../dentist/dentist.service';
-import * as frLocale from 'date-fns/locale/fr';
 import * as moment from 'moment';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import {

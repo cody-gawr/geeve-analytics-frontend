@@ -2,7 +2,6 @@ import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, P
 import { HealthScreenService } from './healthscreen.service';
 import { DentistService } from '../../dentist/dentist.service';
 
-import * as frLocale from 'date-fns/locale/fr';
 import { DatePipe } from '@angular/common';
 import {
   FormControl,
