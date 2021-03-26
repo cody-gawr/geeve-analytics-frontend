@@ -118,14 +118,14 @@ var header = this.getHeaders();
        
 
     getPaymentDetails(): Observable<any> {
-     const formData = new FormData();
-     formData.append('type', "analytics");
-     formData.append('user_id', this._cookieService.get("userid"));
-     var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/users/getUserPaymentData", formData)
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
+        const formData = new FormData();
+        formData.append('type', "analytics");
+        formData.append('user_id', this._cookieService.get("userid"));
+        var header = this.getHeaders(); 
+            return this.http.post(this.apiUrl +"/users/getUserPaymentData", formData)
+            .pipe(map((response: Response) => {
+                return response;
+            })
         );
     }
 
