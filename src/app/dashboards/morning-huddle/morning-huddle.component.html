@@ -38,15 +38,15 @@
                       <img src="../assets/images/product-chart.png" alt="product-chart" /> 
                     </div>
                     <div class="production_description">
-                      <h4>Production</h4>
+                     <!--  <h4>Production</h4> -->
                       <div class="price-section" *ngIf="production">
                         <span class="change_value">${{ production.total | number:'1.0-0'}}</span>
-                        <div
+                       <!--  <div
                          [ngClass]="(production.total > production.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
                           >Goal: ${{  (production.goal || 0) | number:'1.0-0'}}
                         </div>                       
                         <img *ngIf="production.total > production.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
-                        <img *ngIf="production.total < production.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                        <img *ngIf="production.total < production.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" /> -->
                       </div>
                     </div>
                   </div>
@@ -80,7 +80,7 @@
                       <img src="../assets/images/profit.png" alt="product-chart" /> 
                     </div>
                     <div class="production_description">
-                      <h4>Rebook Recall Rate</h4>
+                    <!--   <h4>Rebook Recall Rate</h4> -->
                       <div class="recall-retail-rate" *ngIf="recallRate">
                         <span class="change_value">{{ recallRate.rate }}%</span>
                         <!-- <div class="ttl_value_left">Goal: {{ recallRate.goal}}%</div> -->
@@ -133,7 +133,7 @@
                       <img src="../assets/images/product-chart.png" alt="product-chart" /> 
                     </div>
                     <div class="production_description">
-                      <h4>Rebook Treatment Rate</h4>
+                     <!--  <h4>Rebook Treatment Rate</h4> -->
                       <div class="price-section" *ngIf="treatmentRate">
                           
                           <span class="change_value">{{ treatmentRate.total}}%</span>
@@ -198,7 +198,7 @@
         <span [ngClass] = "(element.production.total >= element.production.goal)? 'mht-value-up' : 'mht-value-down'">
           ${{ element.production.total | number:'1.0-0' }} 
         </span>
-      <span class="goal custom_goal">Goal: ${{ element.production.goal | number:'1.0-0' }}</span> </td>
+     <!--  <span class="goal custom_goal">Goal: ${{ element.production.goal | number:'1.0-0' }}</span> </td> -->
     </ng-container>
     <!-- Symbol Column -->
     <ng-container matColumnDef="recall">
@@ -329,8 +329,8 @@
           <!-- <mat-label>Select Dentist</mat-label> -->
           <mat-select  (selectionChange)="refreshScheduleTab($event.value)" id="setPreviousDay2" [(ngModel)]="currentDentistSchedule">
             <mat-option [value]="0">All Dentist</mat-option>
-            <mat-option [value]="dentist.providerId" *ngFor="let dentist of clinicDentists">{{ dentist.name }}</mat-option>
-          </mat-select>          
+            <mat-option [value]="dentist.provider_id" *ngFor="let dentist of clinicDentists">{{ dentist.provider_name }}</mat-option>
+          </mat-select>                   
         </mat-form-field>        
         <strong> {{ schedulePatielDate  }}</strong>
       </div>
@@ -439,7 +439,7 @@
   <ng-container matColumnDef="start">
     <th mat-header-cell *matHeaderCellDef>Time </th>
     <td id="{{ element.provider_id }}" mat-cell *matCellDef="let element"><span class="newpatient"></span>{{ element.app_date +" " + element.start | date :'h:mm a' }} - {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }} 
-    <span class="newpatient" *ngIf="element.is_new_patient != 'No'"></span></td>
+   </td>
   </ng-container>
 
    <ng-container matColumnDef="dentist">
@@ -465,6 +465,9 @@
       </div>
       <div class="appointment" *ngIf="element.is_birthday == 'Yes'"> 
         <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span>Birthday</span>
+      </div>
+      <div class="appointment" *ngIf="element.is_new_patient == 'Yes'"> 
+        <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> New Patient</span>
       </div>
        
       <div class="appointment" *ngIf="element.outstanding_item_value > 0"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Outstanding Treatment ${{ element.outstanding_item_value | number:'1.0-0' }}</span></div>
