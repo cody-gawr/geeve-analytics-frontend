@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { SetupComponent } from './setup.component';
 import { SetupRoutes } from './setup.routing';
 import { MatInputModule } from '@angular/material';
-import { DemoMaterialModule } from '../demo-material-module';
 import { SetupService } from './setup.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClinicService } from '../clinic/clinic.service';
@@ -16,7 +15,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CommonModule,
     RouterModule.forChild(SetupRoutes),
     MatInputModule,
-    DemoMaterialModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule

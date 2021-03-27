@@ -12,7 +12,6 @@ import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DemoMaterialModule } from './demo-material-module';
 import { StepperComponent } from './layouts/stepper/stepper.component';
 import { StepperSidebarComponent } from './layouts/stepper/sidebar/sidebar.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -34,7 +33,6 @@ import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-hudd
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
-import { SharedMatModule } from './shared-mat.module';
 import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-tabs/dashboard-duration-tabs.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -63,13 +61,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   MatMenuModule,
     BrowserModule,
     BrowserAnimationsModule,
-    DemoMaterialModule,
     FormsModule,
     FlexLayoutModule,
     HttpClientModule,
     PerfectScrollbarModule,
     SharedModule,
-    SharedMatModule.forRoot(),
     HttpModule,
     RouterModule.forRoot(AppRoutes),
     ToastrModule.forRoot({ 

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ClinicGoalsRoutes } from './clinic-goals.routing';
@@ -14,7 +13,6 @@ import { ClinicGoalsService } from './clinic-goals.service';
   imports: [
     CommonModule,
     RouterModule.forChild(ClinicGoalsRoutes),
-    DemoMaterialModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
