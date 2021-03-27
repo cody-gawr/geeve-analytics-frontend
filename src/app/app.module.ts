@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutes } from './app.routing';
 import { AppComponent } from './app.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
@@ -62,6 +63,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BrowserAnimationsModule,
     DemoMaterialModule,
     FormsModule,
+    FlexLayoutModule,
     HttpClientModule,
     PerfectScrollbarModule,
     SharedModule,

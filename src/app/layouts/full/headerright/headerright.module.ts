@@ -10,6 +10,7 @@ import {
 } from '@angular/material';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { HeaderrightService } from './headerright.service';
 
 
@@ -21,6 +22,7 @@ import { HeaderrightService } from './headerright.service';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
+    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule
   ],

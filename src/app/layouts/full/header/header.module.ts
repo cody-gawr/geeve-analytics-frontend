@@ -9,6 +9,7 @@ import {
   MatButtonModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { HeaderService } from './header.service';
 
@@ -21,6 +22,7 @@ import { HeaderService } from './header.service';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
+    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule
   ],

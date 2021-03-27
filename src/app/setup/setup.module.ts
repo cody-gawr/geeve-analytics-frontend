@@ -9,6 +9,7 @@ import { SetupService } from './setup.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClinicService } from '../clinic/clinic.service';
 import { PlansService } from '../plans/plans.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
   declarations: [SetupComponent],
   imports: [
@@ -18,6 +19,7 @@ import { PlansService } from '../plans/plans.service';
     DemoMaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    FlexLayoutModule
   ],
   providers: [
        SetupService,ClinicService,PlansService

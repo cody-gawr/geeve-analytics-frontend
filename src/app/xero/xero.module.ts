@@ -9,6 +9,7 @@ import {
   MatButtonModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { XeroRoutes } from './xero.routing';
 import { XeroComponent } from './xero.component';
@@ -24,6 +25,7 @@ import { XeroService } from './xero.service';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
+    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule
   ],

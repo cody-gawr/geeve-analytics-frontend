@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { ProfileSettingsRoutes } from './profile-settings.routing';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -15,6 +16,7 @@ import { NgxStripeModule } from 'ngx-stripe';
     CommonModule,
     RouterModule.forChild(ProfileSettingsRoutes),
     DemoMaterialModule,
+    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
     MatTreeModule,
