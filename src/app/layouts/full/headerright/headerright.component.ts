@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { CookieService,  CookieOptionsArgs  } from "angular2-cookie/core";
+import { CookieService,  CookieOptions  } from "ngx-cookie";
 
 import { Router, NavigationEnd } from '@angular/router';
 import { HeaderService } from '../header/header.service';
@@ -44,7 +44,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   }
 
   toggler(){
-    let opts: CookieOptionsArgs = { expires: new Date('2030-07-19') };
+    let opts = { expires: new Date('2030-07-19') } as CookieOptions;
     this.isToggleDentistChart = (this.isToggleDentistChart=='true')?"false": "true";
     this._cookieService.put("dentist_toggle", this.isToggleDentistChart, opts);
     $('#clinic_initiate').click();

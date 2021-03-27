@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit,ViewChild } from '@angular/core';
 import { MorningHuddleService } from './morning-huddle.service';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';

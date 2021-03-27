@@ -18,7 +18,7 @@ import { StepperSidebarComponent } from './sidebar/sidebar.component';
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { StepperHeaderService } from './header/header.service';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 
 import { StepperHeaderrightComponent } from '../../layouts/stepper/headerright/headerright.component';
 

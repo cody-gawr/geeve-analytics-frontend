@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { DentistGoalsService } from './dentist-goals.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DentistService } from '../dentist/dentist.service';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
 export interface Dentist {
   providerId: string;

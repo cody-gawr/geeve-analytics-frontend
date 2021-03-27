@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { RolesService } from './roles.service';
 import { ActivatedRoute } from "@angular/router";
-import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
+import { CookieService, CookieOptions } from "ngx-cookie";
 
 @Component({
   selector: 'app-formlayout',
@@ -77,9 +77,7 @@ public display_name;
 
    this.rolesService.updateprofileSettings(this.displayName, this.email, this.imageURL).subscribe((res) => {
        if(res.message == 'success'){
-        let opts: CookieOptionsArgs = {
-            expires: new Date('2030-07-19')
-        };
+        let opts = { expires: new Date('2030-07-19') } as CookieOptions;
         this._cookieService.put("display_name", this.displayName, opts);
         this._cookieService.put("user_image", this.imageURL, opts);
         this.display_name = this.displayName;

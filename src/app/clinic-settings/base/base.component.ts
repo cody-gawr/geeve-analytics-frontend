@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService } from 'angular2-cookie';
 import { ReplaySubject } from 'rxjs';
 
 @Component({

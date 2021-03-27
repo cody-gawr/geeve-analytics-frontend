@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router , NavigationEnd } from "@angular/router";
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 import { BaseChartDirective } from 'ng2-charts';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Subscription } from 'rxjs/Subscription';

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ClinicSettingsService } from './clinic-settings.service';
 import { ActivatedRoute } from "@angular/router";
-import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 import { Router, NavigationEnd, Event  } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 @Component({

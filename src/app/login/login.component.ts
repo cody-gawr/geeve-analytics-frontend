@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
+import { CookieService, CookieOptions } from "ngx-cookie";
 import {
   FormBuilder,
   FormGroup,
@@ -50,9 +50,7 @@ export class LoginComponent implements OnInit {
         datares['display_name'] = res.data.data.display_name;  
         datares['dentistid'] = res.data.data.dentist_id;        
 
-        let opts: CookieOptionsArgs = {
-            expires: new Date('2030-07-19')
-        };
+        let opts = { expires: new Date('2030-07-19') } as CookieOptions;
         var nextStep = (parseInt(res.data.data.stepper_status) + 1).toString();
         this._cookieService.put("stepper", nextStep , opts);
         this._cookieService.put("userid", '', opts);

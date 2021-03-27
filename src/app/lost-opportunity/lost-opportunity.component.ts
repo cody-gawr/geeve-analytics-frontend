@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LostOpportunityService } from './lost-opportunity.service';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { HeaderService } from './../layouts/full/header/header.service';

@@ -6,7 +6,7 @@
     '@angular/router';
     import { Location } from "@angular/common";
     import { Observable } from 'rxjs/Observable';
-	import { CookieService } from "angular2-cookie/core";
+	import { CookieService } from "ngx-cookie";
 
   @Injectable()
   export class AuthGuard implements CanActivate {

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
+import { CookieService, CookieOptions } from "ngx-cookie";
 import {
   FormBuilder,
   FormGroup,
@@ -87,9 +87,7 @@ export class XeroComponent implements OnInit {
         datares['display_name'] = res.data.data.display_name;  
         datares['dentistid'] = res.data.data.dentist_id;        
 
-        let opts: CookieOptionsArgs = {
-            expires: new Date('2030-07-19')
-        };
+        let opts = { expires: new Date('2030-07-19') } as CookieOptions;
         this._cookieService.put("userid", '', opts);
         this._cookieService.put("childid", '', opts);
         this._cookieService.put("dentistid", '', opts);

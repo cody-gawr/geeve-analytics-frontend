@@ -18,7 +18,7 @@ import { AppSidebarComponent } from './sidebar/sidebar.component';
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { HeaderService } from './header/header.service';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 

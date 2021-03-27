@@ -2,7 +2,7 @@ import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
 import { DentistService } from './dentist.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Router } from "@angular/router";
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 @Component({

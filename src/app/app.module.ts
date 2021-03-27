@@ -20,7 +20,7 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
-import { CookieService, CookieOptions } from "angular2-cookie/core";
+import { CookieModule } from "ngx-cookie";
 import { AuthGuard } from './auth/authguard.service';
 import { HeaderService } from './layouts/full/header/header.service';
 import { StepperHeaderService } from './layouts/stepper/header/header.service';
@@ -69,6 +69,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     SharedModule,
     SharedMatModule.forRoot(),
+    CookieModule.forRoot(),
     RouterModule.forRoot(AppRoutes),
     ToastrModule.forRoot({ 
       timeOut: 2000,
@@ -89,9 +90,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
-      CookieService,
-      DentistService,
-      { provide: CookieOptions, useValue: false }
+      DentistService
   ],
   bootstrap: [AppComponent]
 })

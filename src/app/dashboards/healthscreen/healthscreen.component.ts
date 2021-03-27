@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';

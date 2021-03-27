@@ -5,7 +5,7 @@ import { Response } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs';
 
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 import { Router, NavigationEnd, Event  } from '@angular/router';
 
 import { environment } from "../../../../environments/environment";

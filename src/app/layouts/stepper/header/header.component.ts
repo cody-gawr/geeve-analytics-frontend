@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 
 import { Router } from '@angular/router';
 import { StepperHeaderService } from './header.service';

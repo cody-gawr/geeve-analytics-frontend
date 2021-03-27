@@ -1,6 +1,6 @@
 import { Component, Inject ,EventEmitter,Output, ViewChild, AfterViewInit } from '@angular/core';
 import { SetupService } from './setup.service';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ClinicService } from '../clinic/clinic.service';
 import { RolesUsersService } from '../roles-users/roles-users.service';

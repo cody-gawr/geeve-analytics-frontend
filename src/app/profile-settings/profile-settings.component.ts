@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ProfileSettingsService } from './profile-settings.service';
 import { ActivatedRoute } from "@angular/router";
-import { CookieService, CookieOptionsArgs } from "angular2-cookie/core";
+import { CookieService, CookieOptions } from "ngx-cookie";
 import { Router, NavigationEnd, Event  } from '@angular/router';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 import { StripeService, StripeCardComponent } from 'ngx-stripe';
@@ -293,9 +293,7 @@ public subscription_id='';
          if(this.subscription_id)
           this.getCardDetails();
         if(!this.last_invoic_id){
-          let opts: CookieOptionsArgs = {
-            expires: new Date('2030-07-19')
-        };
+          let opts  = { expires: new Date('2030-07-19') } as CookieOptions;
         this._cookieService.put("login_status", '1', opts);
         }
        }

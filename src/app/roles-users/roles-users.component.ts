@@ -7,7 +7,7 @@ import { DentistService } from '../dentist/dentist.service';
 import { ClinicService } from '../clinic/clinic.service';
 import { ToastrService } from 'ngx-toastr';
 import {FormControl} from '@angular/forms';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 
 import { HeaderService } from '../layouts/full/header/header.service';
 import Swal from 'sweetalert2';

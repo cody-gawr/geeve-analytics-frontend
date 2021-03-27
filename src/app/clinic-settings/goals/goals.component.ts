@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CookieService } from 'angular2-cookie';
+import { CookieService } from "ngx-cookie";
 import { map } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, combineLatest } from 'rxjs';

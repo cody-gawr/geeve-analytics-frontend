@@ -1,7 +1,7 @@
 import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
 import { ClinicService } from './clinic.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from "ngx-cookie";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { HeaderService } from './../layouts/full/header/header.service';
