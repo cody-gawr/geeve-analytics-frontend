@@ -33,6 +33,7 @@ import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-hudd
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
+import { SharedMatModule } from './shared-mat.module';
 import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-tabs/dashboard-duration-tabs.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -66,6 +67,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpClientModule,
     PerfectScrollbarModule,
     SharedModule,
+    SharedMatModule.forRoot(),
     HttpModule,
     RouterModule.forRoot(AppRoutes),
     ToastrModule.forRoot({ 

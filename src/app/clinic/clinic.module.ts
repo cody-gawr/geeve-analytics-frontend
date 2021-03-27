@@ -5,11 +5,13 @@ import { ClinicService } from './clinic.service';
 import { ClinicComponent,
   DialogOverviewExampleDialogComponent,DialogOverviewExampleLimitDialogComponent  } from './clinic.component';
 import { ClinicRoutes } from './clinic.routing';
+import { SharedMatModule } from '../shared-mat.module';
 
 @NgModule({
   imports: [
+    SharedMatModule.forRoot(),
     RouterModule.forChild(ClinicRoutes),
-    NgxDatatableModule,
+    NgxDatatableModule
   ],
   providers: [
     ClinicService
