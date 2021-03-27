@@ -102,7 +102,7 @@ deploy_dev:
 build_master: 
   stage: build
   script:
-  - npm run build-prod-non-optimized
+  - npm run build-prod
   artifacts:
     paths:
     - dist
