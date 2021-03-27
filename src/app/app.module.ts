@@ -35,6 +35,7 @@ import { StepperHeaderrightComponent } from './layouts/stepper/headerright/heade
 import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
 import { SharedMatModule } from './shared-mat.module';
+import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-tabs/dashboard-duration-tabs.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -55,7 +56,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MorningHuddleComponent,
     StepperComponent,
     StepperSidebarComponent,
-    StepperHeaderrightComponent
+    StepperHeaderrightComponent,
+    DashboardDurationTabsComponent
   ],
   imports: [
   MatMenuModule,
