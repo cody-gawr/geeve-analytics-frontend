@@ -272,7 +272,6 @@ public toggle(event){
           console.log(this.logo);
           this.toastr.success('Logo Uploaded.');
 
-         // this.notifier.notify( 'success', 'Logo Uploaded' ,'vertical');
         }
         else if(res.status == '401'){
               this._cookieService.put("username",'');

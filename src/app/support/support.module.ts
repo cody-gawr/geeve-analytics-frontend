@@ -9,7 +9,6 @@ import {
   MatButtonModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { SupportRoutes } from './support.routing';
 import { SupportComponent } from './support.component';
@@ -25,7 +24,6 @@ import { SupportService } from './support.service';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
-    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule
   ],

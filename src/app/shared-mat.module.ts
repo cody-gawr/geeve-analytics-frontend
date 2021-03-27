@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAccordion, MatCardModule, MatDatepickerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSelectModule, MatTableModule, MatTabsModule, MatTreeModule } from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ClinicService } from './clinic/clinic.service';
 import { DentistService } from './dentist/dentist.service';
 import { DentistGoalsService } from './dentist-goals/dentist-goals.service';
@@ -27,7 +26,6 @@ import { ToastrService } from 'ngx-toastr';
         MatInputModule,
         MatIconModule,
         MatSelectModule,
-        FlexLayoutModule,
         MatExpansionModule,
         MatTreeModule,
         MatDatepickerModule,
@@ -45,7 +43,6 @@ import { ToastrService } from 'ngx-toastr';
         MatInputModule,
         MatIconModule,
         MatSelectModule,
-        FlexLayoutModule,
         MatExpansionModule,
         MatTreeModule,
         MatDatepickerModule,

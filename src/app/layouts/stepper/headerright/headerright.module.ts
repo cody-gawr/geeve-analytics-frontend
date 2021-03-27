@@ -10,7 +10,6 @@ import {
 } from '@angular/material';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { StepperHeaderrightService } from './headerright.service';
 
 
@@ -22,7 +21,6 @@ import { StepperHeaderrightService } from './headerright.service';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
-    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule
   ],

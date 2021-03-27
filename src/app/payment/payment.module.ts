@@ -9,7 +9,6 @@ import {
   MatButtonModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { PaymentRoutes } from './payment.routing';
 import { PaymentComponent } from './payment.component';
@@ -24,7 +23,6 @@ import { PaymentService } from './payment.service';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
-    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule
   ],

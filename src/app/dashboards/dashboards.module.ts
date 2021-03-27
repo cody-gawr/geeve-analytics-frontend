@@ -7,7 +7,6 @@ import { DemoMaterialModule } from '../demo-material-module';
 import { CdkTableModule } from '@angular/cdk/table';
 import { ChartsModule } from 'ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { DashboardsRoutes } from './dashboards.routing';
 import { ClinicianAnalysisService } from './cliniciananalysis/cliniciananalysis.service';
@@ -41,7 +40,6 @@ import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
     CdkTableModule,
     ChartsModule,
     NgxChartsModule,

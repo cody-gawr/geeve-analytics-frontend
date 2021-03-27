@@ -8,7 +8,6 @@ import { PlansService } from './plans.service';
 import { PlansComponent,DialogOverviewExampleDialogComponent  } from './plans.component';
 import { PlansRoutes } from './plans.routing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,7 +15,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatInputModule,
     NgxDatatableModule,
     DemoMaterialModule,
-    FlexLayoutModule,
     FormsModule,ReactiveFormsModule
   ],
   providers: [
