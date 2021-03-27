@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DemoMaterialModule } from '../demo-material-module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ClinicService } from './clinic.service';
 import { ClinicComponent,
@@ -11,7 +12,8 @@ import { SharedMatModule } from '../shared-mat.module';
   imports: [
     SharedMatModule.forRoot(),
     RouterModule.forChild(ClinicRoutes),
-    NgxDatatableModule
+    NgxDatatableModule,
+    DemoMaterialModule
   ],
   providers: [
     ClinicService

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RolesRoutes } from './roles.routing';
@@ -13,6 +14,7 @@ import { RolesService } from './roles.service';
   imports: [
     CommonModule,
     RouterModule.forChild(RolesRoutes),
+    DemoMaterialModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,

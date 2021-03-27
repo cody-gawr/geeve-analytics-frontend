@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DemoMaterialModule } from '../demo-material-module';
 import { ClinicSettingsRoutes } from './clinic-settings.routing';
 import { ClinicSettingsComponent } from './clinic-settings.component';
 import { ClinicSettingsService } from './clinic-settings.service';
@@ -12,6 +13,7 @@ import { AutofocusDirective } from './auto-focus.directive';
 @NgModule({
   imports: [
     RouterModule.forChild(ClinicSettingsRoutes),
+    DemoMaterialModule,
     SharedMatModule
   ],
   providers: [

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ProfileSettingsRoutes } from './profile-settings.routing';
@@ -14,6 +15,7 @@ import { NgxStripeModule } from 'ngx-stripe';
   imports: [
     CommonModule,
     RouterModule.forChild(ProfileSettingsRoutes),
+    DemoMaterialModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,

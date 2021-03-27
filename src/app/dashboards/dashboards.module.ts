@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HttpModule } from '@angular/http';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { DemoMaterialModule } from '../demo-material-module';
 import { CdkTableModule } from '@angular/cdk/table';
 import { ChartsModule } from 'ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -33,7 +33,7 @@ import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';
   imports: [
     CommonModule,
     RouterModule.forChild(DashboardsRoutes),
-    HttpModule,
+    DemoMaterialModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,

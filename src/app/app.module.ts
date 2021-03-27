@@ -12,6 +12,7 @@ import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DemoMaterialModule } from './demo-material-module';
 import { StepperComponent } from './layouts/stepper/stepper.component';
 import { StepperSidebarComponent } from './layouts/stepper/sidebar/sidebar.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -20,7 +21,6 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
 import { CookieService, CookieOptions } from "angular2-cookie/core";
-import { HttpModule } from '@angular/http'; 
 import { AuthGuard } from './auth/authguard.service';
 import { HeaderService } from './layouts/full/header/header.service';
 import { StepperHeaderService } from './layouts/stepper/header/header.service';
@@ -62,13 +62,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   MatMenuModule,
     BrowserModule,
     BrowserAnimationsModule,
+    DemoMaterialModule,
     FormsModule,
     FlexLayoutModule,
     HttpClientModule,
     PerfectScrollbarModule,
     SharedModule,
     SharedMatModule.forRoot(),
-    HttpModule,
     RouterModule.forRoot(AppRoutes),
     ToastrModule.forRoot({ 
       timeOut: 2000,
