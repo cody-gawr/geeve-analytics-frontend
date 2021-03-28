@@ -107,7 +107,7 @@ build_master:
     paths:
     - dist
     expire_in: 1 day
-  only: ['master']
+  only: ['production']
 
 # Deploy Production Build
 deploy_master:
@@ -125,4 +125,4 @@ deploy_master:
     - aws s3api put-public-access-block --bucket $PROD_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
     - echo "Production - Invalidate Cloudfront"
     - aws cloudfront create-invalidation --distribution-id $PROD_CLOUDFRONT --paths "/*"
-  only: ['master']
+  only: ['production']
