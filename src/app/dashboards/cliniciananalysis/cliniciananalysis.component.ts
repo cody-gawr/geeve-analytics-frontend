@@ -333,7 +333,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public gaugeValuePatients = 0;
   public gaugeLabelPatients = "";
 
-  public newPatientValuePatients: string = '0 New Patients';
+  public newPatientValuePatients: number = 0;
   public newPatientLabelPatients = "";
   public recallValue: any;
   public recallLabel = "";
@@ -2027,11 +2027,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (data.message == 'success') {
         this.doughnutTotalTooltip = 'up';
         this.buildChartNopatientsDentistLoader = false;
-        if (data.data != null) {
-          this.gaugeValuePatients = data.data.treat_item;
-          this.gaugeLabelPatients = data.data.provider;
-          this.doughnutTotal = data.data.treat_item;
-
+        if (data.data[0]) {
+          this.gaugeValuePatients = data.data[0].num_complaints;
+          this.gaugeLabelPatients = data.data[0].provider_name;
+          this.doughnutTotal = data.total;
           this.doughnutTotalPrev = data.total_ta;
         }
         else {
@@ -2138,29 +2137,21 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.clinic_id && this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data) => {
       if (data.message == 'success') {
         this.buildChartNewpatientsDentistLoader = false;
-        if (data.data != null && data.data[0] && data.data[0].getX != undefined) {
-          this.newPatientValuePatients = data.data[0].getX + ' New Patients';
-          this.newPatientLabelPatients = data.data[0].provider;
-          if (data.data[0].percent)
-            this.newPatientPercent = Math.round(data.data[0].percent);
+        if (data.data != null && data.data[0]) {
+          this.newPatientValuePatients = data.data[0].new_patients;
+          this.newPatientLabelPatients = data.data[0].provider_name;
           this.newPatientTotalAverage = Math.round(data.total);
-          this.newPatientTotalAverage$.next(this.newPatientTotalAverage);
+          this.newPatientTotalAverage = data.total_average;
           this.newPatientTotalPrev = Math.round(data.total_ta);
-        }
-        else {
-          this.newPatientValuePatients = 0 + ' New Patients';
+        } else {
+          this.newPatientValuePatients = 0;
           this.newPatientLabelPatients = "";
           this.newPatientTotalPrev = 0;
           this.newPatientTotalAverage = 0;
-          this.newPatientTotalAverage$.next(0);
+          this.newPatientTotalAverage = data.total_average;
         }
-        // this.doughnutChartOptions.elements.center.text = this.newPatientTotalAverage;
-        this.newPatientGoals = data.goals;
-        if (this.newPatientPercent > this.newPatientGoals)
-          this.maxnewPatientGoal = this.newPatientPercent;
-        else
-          this.maxnewPatientGoal = this.newPatientGoals;
-
+        this.doughnutChartOptions.elements.center.text = this.newPatientValuePatients;
+        this.maxnewPatientGoal = data.goals;
         if (this.maxnewPatientGoal == 0)
           this.maxnewPatientGoal = '';
       }
@@ -2320,8 +2311,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateDentistLoader = false;
         this.hourlyValue = '0';
         if (data.data.length > 0) {
-          this.hourlyValue = Math.round(data.data[0].hourlyRate);
-          var name = data.data[0].provider;
+          this.hourlyValue = Math.round(data.data[0].hourly_rate);
+          var name = data.data[0].provider_name;
           if (name != null) {
             name = name.split(')');
             if (name.length > 0 && name[1] != undefined) {

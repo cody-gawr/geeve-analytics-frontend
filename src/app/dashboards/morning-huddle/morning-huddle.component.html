@@ -420,7 +420,7 @@
                       <i class="fas fa-coins"></i>
                     </div>
                     <div class="production_description">
-                      <h4>Unscheduled</h4>
+                      <h4>Unscheduled Tx</h4>
                       <div class="patients-num">
                         <span class="change_value">${{ unSchedulehours | number:'1.0-0' }}</span>
                         <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
@@ -472,11 +472,11 @@
        
       <div class="appointment" *ngIf="element.outstanding_item_value > 0"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Outstanding Treatment ${{ element.outstanding_item_value | number:'1.0-0' }}</span></div>
       
-       <div class="appointment" *ngIf="element.overdue_037 == 'Yes' && element.overdue_022 == 'Yes'">
-          <span class="warning" title="022,037 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xrays Overdue</span> 
+       <div class="appointment" *ngIf="element.overdue_022 == 'Yes'">
+          <span class="warning" title="022 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xray Overdue</span> 
       </div>
-      <div class="appointment" *ngIf="element.overdue_037 == 'Yes' && element.overdue_022 == 'No'">
-          <span class="warning" title="037 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xrays Overdue</span>
+      <div class="appointment" *ngIf="element.overdue_037 == 'Yes'">
+          <span class="warning" title="037 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> OPG Overdue</span>
       </div>
       <div class="appointment" *ngIf="element.overdue_022 == 'Yes' && element.overdue_037 == 'No'">
           <span class="warning" title="022 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xrays Overdue</span>
@@ -868,7 +868,7 @@
   <mat-card-title>Post op Calls</mat-card-title>
   <mat-card-content> 
 <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
-  <table mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8">
+  <table mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8" *ngIf="followupPostOpCalls">
 
 
     <!-- Name Column -->
