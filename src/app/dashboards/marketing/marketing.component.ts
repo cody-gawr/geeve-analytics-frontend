@@ -421,6 +421,7 @@ this.preoceedureChartColors = [
   $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
 
     if(newValue == 'all') {
+      this.getAccounts();
       this.mkNewPatientsByReferral();
 
       this.mkRevenueByReferral();
@@ -428,7 +429,7 @@ this.preoceedureChartColors = [
 
       this.fdnewPatientsAcq();
       this.fdvisitsRatio();
-        this.getOrganisationCategory();
+      
 
       //this.fdWorkTimeAnalysis();
     }
@@ -624,25 +625,27 @@ public fdvisitsRatioLoader:any;
     );
     }
   }
-  public xeroCategories=[];
-private getOrganisationCategory() {
-  this.marketingService.getOrganisationCategory(this.clinic_id).subscribe((data) => {
-    this.xeroCategories=[];
-    this.selectedCategories=[];
-       if(data.message == 'success'){
-        for (let key in data.data.categories) {
-          this.xeroCategories.push(data.data.categories[key]);
-        }
-         for (let key in data.data.selectedCategories) {
-          this.selectedCategories.push(data.data.selectedCategories[key]);
-        }
 
+  public xeroCategories=[];
+  
+    private getAccounts() {
+      this.marketingService.getAccounts(this.clinic_id).subscribe((data) => {
+        this.xeroCategories=[];
+        this.selectedCategories=[];
+           if(data.message == 'success'){
+            for (let key in data.data.categories) {
+              this.xeroCategories.push(data.data.categories[key]);
+            }
+             for (let key in data.data.selectedCategories) {
+              this.selectedCategories.push(data.data.selectedCategories[key]);
+            }
+    
+            }
+        }, error => {
+          this.warningMessage = "Please Provide Valid Inputs!";
         }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    }
-    );
-    }
+        );
+        }
   
 public newPatientsTotal =0;
 public newPatientsPrevTotal =0;
@@ -700,8 +703,13 @@ public newAcqValuePrev =0;
        this.fdnewPatientsAcqLoader = false;
             this.categories=[];
             this.expenseData=[];
-            this.selectedCategories=[];
-             data.data.forEach((res,key) => {
+            this.xeroCategories = this.xeroCategories.concat(data.data_expense_category_report);
+            this.xeroCategories = this.xeroCategories.filter((item,index)=>{
+              return (this.xeroCategories.indexOf(item) == index)
+           })
+           this.xeroCategories = this.xeroCategories.filter(x => !this.selectedCategories.includes(x));
+             
+           data.data.forEach((res,key) => {
               this.expenseData[res.meta_key] = res.expenses;
               //this.categories.push(res.meta_key);
               //this.selectedCategories.push(res.meta_key);
@@ -1162,11 +1170,11 @@ public dataY:any=0;
     }
   }
 
-save_category() {      
+save_category() {   
 var selectedCategories=JSON.stringify(Object.assign({}, this.selectedCategories));                           
    this.marketingService.saveSelectedCategories(this.clinic_id,escape(selectedCategories)).subscribe((data) => {
         if(data.message == 'success'){
-          this.getOrganisationCategory();
+          //this.getOrganisationCategory();
           this.load_chart_acq();
         }
     });
