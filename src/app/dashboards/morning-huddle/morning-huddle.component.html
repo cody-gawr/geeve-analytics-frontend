@@ -19,7 +19,7 @@
           </mat-select>
         </mat-form-field>
         
-          <strong> {{ production.date  }}</strong>
+          <strong>Previous Day: {{ production.date  }}</strong>
         
       </div>
     <!-- Top Cards -->
@@ -38,15 +38,15 @@
                       <img src="../assets/images/product-chart.png" alt="product-chart" /> 
                     </div>
                     <div class="production_description">
-                     <!--  <h4>Production</h4> -->
+                      <h4>Production</h4>
                       <div class="price-section" *ngIf="production">
                         <span class="change_value">${{ production.total | number:'1.0-0'}}</span>
                        <!--  <div
                          [ngClass]="(production.total > production.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
                           >Goal: ${{  (production.goal || 0) | number:'1.0-0'}}
-                        </div>                       
-                        <img *ngIf="production.total > production.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
-                        <img *ngIf="production.total < production.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" /> -->
+                        </div>  -->                     
+                        <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
+
                       </div>
                     </div>
                   </div>
@@ -80,7 +80,7 @@
                       <img src="../assets/images/profit.png" alt="product-chart" /> 
                     </div>
                     <div class="production_description">
-                    <!--   <h4>Rebook Recall Rate</h4> -->
+                      <h4>Recall Rebook Rate</h4>
                       <div class="recall-retail-rate" *ngIf="recallRate">
                         <span class="change_value">{{ recallRate.rate }}%</span>
                         <!-- <div class="ttl_value_left">Goal: {{ recallRate.goal}}%</div> -->
@@ -90,8 +90,8 @@
                           *ngIf="recallRate.goal">
                           Goal: {{ recallRate.goal }}%                     
                         </div>
-                        <img *ngIf="recallRate.rate > recallRate.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
-                        <img *ngIf="recallRate.rate < recallRate.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                        <img *ngIf="recallRate.rate > recallRate.goal" src="../assets/images/green-swirl.png" alt="production-chart-1" />
+                        <img *ngIf="recallRate.rate < recallRate.goal" src="../assets/images/red-swirl.png" alt="rebook-chart" />
                       </div>
                     </div>
                   </div>
@@ -133,7 +133,7 @@
                       <img src="../assets/images/product-chart.png" alt="product-chart" /> 
                     </div>
                     <div class="production_description">
-                     <!--  <h4>Rebook Treatment Rate</h4> -->
+                      <h4>Treatment Rebook Rate</h4>
                       <div class="price-section" *ngIf="treatmentRate">
                           
                           <span class="change_value">{{ treatmentRate.total}}%</span>
@@ -143,8 +143,8 @@
                             *ngIf="treatmentRate.goal">
                             Goal: {{  treatmentRate.goal }}%                     
                           </div>
-                          <img *ngIf="treatmentRate.total > treatmentRate.goal" src="../assets/images/production-chart-1.png" alt="production-chart-1" />
-                          <img *ngIf="treatmentRate.total < treatmentRate.goal" src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                          <img *ngIf="treatmentRate.total > treatmentRate.goal" src="../assets/images/green-swirl.png" alt="production-chart-1" />
+                          <img *ngIf="treatmentRate.total < treatmentRate.goal" src="../assets/images/red-swirl.png" alt="rebook-chart" />
                       </div>
                     </div>
                   </div>
@@ -202,13 +202,13 @@
     </ng-container>
     <!-- Symbol Column -->
     <ng-container matColumnDef="recall">
-      <th mat-header-cell *matHeaderCellDef> Recall Rate </th>
+      <th mat-header-cell *matHeaderCellDef> Recall Rebook Rate </th>
       <td mat-cell *matCellDef="let element"> <span [ngClass] = "(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}}% </span>
       <span class="goal custom_goal">Goal: {{ element.recall.goal}}%</span>
   </td>
     </ng-container>
   <ng-container matColumnDef="treatment">
-      <th mat-header-cell *matHeaderCellDef> Treatment Rate </th>
+      <th mat-header-cell *matHeaderCellDef> Treatment Rebook Rate </th>
       <td mat-cell *matCellDef="let element"> <span [ngClass] = "(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}%</span>
       <span class="goal custom_goal">Goal: {{ element.treatment.goal}}%</span>
       </td>
@@ -332,7 +332,7 @@
             <mat-option [value]="dentist.provider_id" *ngFor="let dentist of clinicDentists">{{ dentist.provider_name }}</mat-option>
           </mat-select>                   
         </mat-form-field>        
-        <strong> {{ schedulePatielDate  }}</strong>
+        <strong> Current Day: {{ schedulePatielDate  }}</strong>
       </div>
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
@@ -353,7 +353,7 @@
                       <h4>Patients</h4>
                       <div class="patients-num">
                         <span class="change_value">{{ schedulePatieltd }}</span>
-                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                        <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
                       </div>
                     </div>
                   </div>
@@ -377,7 +377,7 @@
                       <h4>New Patients</h4>
                       <div class="patients-num">
                         <span class="change_value">{{ scheduleNewPatieltd }}</span>
-                        <img src="../assets/images/rebook-chart.png" alt="rebook-chart" />
+                        <img src="../assets/images/red-swirl.png" alt="rebook-chart" />
                       </div>
                     </div>
                   </div>
@@ -400,7 +400,7 @@
                       <h4>Scheduled Hours</h4>
                       <div class="patients-num">
                         <span class="change_value">{{ schedulehours }}</span>
-                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                        <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
                       </div>
                     </div>
                   </div>
@@ -423,7 +423,7 @@
                       <h4>Unscheduled</h4>
                       <div class="patients-num">
                         <span class="change_value">${{ unSchedulehours | number:'1.0-0' }}</span>
-                        <img src="../assets/images/production-chart-1.png" alt="production-chart-1" />
+                        <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
                       </div>
                     </div>
                   </div>
@@ -740,7 +740,7 @@
   <mat-tab label="Reminders">
 
      <div class="morning-huddle-date">
-        <strong>{{ remindersRecallsOverdueDate }}</strong>        
+        <strong>Current Day: {{ remindersRecallsOverdueDate }}</strong>        
       </div>
 <mat-card class="table-card">
         <div class="DentistListSecRow mh-table patient_data-table_responsive">
@@ -801,7 +801,7 @@
   <!-- Followups Tab start -->
   <mat-tab label="Followups">
       <div class="morning-huddle-date">
-        <strong>{{ followupsUnscheduledPatientsDate }}</strong>        
+        <strong>Previous Day: {{ followupsUnscheduledPatientsDate }}</strong>        
       </div>    
 <mat-card class="table-card">
   <mat-card-title>Unscheduled Patients</mat-card-title>
