@@ -2008,7 +2008,7 @@ private finProductionByClinicianTrend() {
                         this.productionChartTrend[key]['data'] = [];
                       }
                      this.productionChartTrend[key]['data'].push(Math.round(result.prod_per_clinician));
-                     this.productionChartTrend[key]['label'] = result.provider_name;
+                     this.productionChartTrend[key]['label'] = result.provide_name;
                    });
                   if(this.trendValue == 'c')
                     this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
@@ -2016,8 +2016,7 @@ private finProductionByClinicianTrend() {
                    this.productionChartTrendLabels1.push(res.duration);                  
                  });
                  this.productionChartTrendLabels =this.productionChartTrendLabels1; 
-                 console.log(this.productionChartTrend,'*****');
-       }
+                      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
  

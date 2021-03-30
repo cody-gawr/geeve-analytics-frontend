@@ -1091,7 +1091,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
          this.productionTotal =  Math.round(data.total);    
          this.productionTotalAverage = Math.round(data.total_average);
          this.productionTotalPrev = Math.round(data.total_ta);
-         this.productionGoal = data.goals;
+         this.productionGoal = data.goals; 
         
   if(this.productionTotal >= this.productionTotalPrev)
           this.productionTooltip = 'up';
@@ -2375,6 +2375,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public planTotalCompleted = 0;
   // Filter By Date
   filterDate(duration) {
+    
     this.showTrendChart = false;
     this.toggleChecked = false;
     if (this.clinic_id != undefined && this.clinic_id != 'all') {
@@ -2498,8 +2499,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         var date = new Date();
         this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        console.log(this.startDate);
-
+        console.log();
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
         this.goalCount = difMonths + 1;
