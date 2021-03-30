@@ -1133,29 +1133,35 @@ public dataY:any=0;
             
             this.expenseDataTrend1=[];
             this.expenseDataTrendLabels1=[];
+            console.log( this.newPatientsChartTemp);
            this.newPatientsChartTemp.forEach((res,key) => {
              data.data.forEach((res1,key1) => {
-                if(res1.duration == res.duration) {
+                if(res1.duration == res.year_month) {
                   let dataX:number=0;
+                  this.dataY=0;
                   let percent:any =0;
                   if(res1.val != undefined) {
                     res1.val.forEach((res2,key2) => {
+                      console.log(res2.expenses); 
                       if(res2.meta_key != 'Total Operating Expenses')
                       this.dataY = parseInt(this.dataY) + parseInt(res2.expenses);
                      });
                   }
 
                   if(res.val != '') {
-                    dataX = res.val;
+                    dataX = res.new_patients;
                   }
+                  console.log( dataX, 'dataX');
 
                   if(dataX != 0) 
                     percent = this.dataY/dataX;
+            console.log( this.expenseDataTrend1);
+
                   this.expenseDataTrend1.push(Math.round(percent));
                    if(this.trendValue == 'c')
-                   this.expenseDataTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.expenseDataTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.expenseDataTrendLabels1.push(res.duration);
+                   this.expenseDataTrendLabels1.push(res.year_month);
                 }
              });    
              });   
