@@ -1133,7 +1133,7 @@ public dataY:any=0;
             
             this.expenseDataTrend1=[];
             this.expenseDataTrendLabels1=[];
-            console.log( this.newPatientsChartTemp);
+            //console.log( this.newPatientsChartTemp);
            this.newPatientsChartTemp.forEach((res,key) => {
              data.data.forEach((res1,key1) => {
                 if(res1.duration == res.year_month) {
@@ -1142,7 +1142,7 @@ public dataY:any=0;
                   let percent:any =0;
                   if(res1.val != undefined) {
                     res1.val.forEach((res2,key2) => {
-                      console.log(res2.expenses); 
+                      //console.log(res2.expenses); 
                       if(res2.meta_key != 'Total Operating Expenses')
                       this.dataY = parseInt(this.dataY) + parseInt(res2.expenses);
                      });
@@ -1151,17 +1151,18 @@ public dataY:any=0;
                   if(res.val != '') {
                     dataX = res.new_patients;
                   }
-                  console.log( dataX, 'dataX');
+                  //console.log( dataX, 'dataX');
 
                   if(dataX != 0) 
                     percent = this.dataY/dataX;
-            console.log( this.expenseDataTrend1);
+                 //console.log( this.expenseDataTrend1);
 
                   this.expenseDataTrend1.push(Math.round(percent));
                    if(this.trendValue == 'c')
                    this.expenseDataTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
                    this.expenseDataTrendLabels1.push(res.year_month);
+                   //console.log(this.expenseDataTrendLabels1);
                 }
              });    
              });   
