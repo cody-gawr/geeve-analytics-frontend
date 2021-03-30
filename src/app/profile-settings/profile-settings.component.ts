@@ -148,57 +148,59 @@ public cvcStyle = {
     });
   }
     
-  ngOnInit() {
+    ngOnInit() {
       this.route.params.subscribe(params => {
-      this.id = this.route.snapshot.paramMap.get("id");
-      this.displayName = this._cookieService.get("display_name");
-      this.email = this._cookieService.get("email");  
-      this.imageURL = this._cookieService.get("user_image");   
-      if( this._cookieService.get("user_type") != '2')     
-        this.getRoles();
-        this.getPaymentDetails();
-        this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
-            this.stripeTest = this.fb.group({
+        this.id = this.route.snapshot.paramMap.get("id");
+        this.displayName = this._cookieService.get("display_name");
+        this.email = this._cookieService.get("email");  
+        this.imageURL = this._cookieService.get("user_image");   
+        if( this._cookieService.get("user_type") != '2')     
+          this.getRoles();
+          this.getPaymentDetails();
+          this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
+          this.stripeTest = this.fb.group({
             name: ['', [Validators.required]]
-            });
-            this.stripeService.elements(this.elementsOptions)
-            .subscribe(elements => {
-            this.elements = elements;
-            // Only mount the element the first time
-            if (!this.card) {
-              this.cardNumber = this.elements.create('cardNumber', {
+          });
+
+        //  this.getprofileSettings();
+        $('#title').html('Profile Settings');
+        $('.header_filters').addClass('hide_header'); 
+      // this.checkXeroStatus();
+      });
+      this.form = this.fb.group({
+        currentPassword: [null, Validators.compose([Validators.required])],
+        newPassword: [null, Validators.compose([Validators.required])],
+        repeatPassword: [null, Validators.compose([Validators.required])]      
+      });
+      this.formSettings = this.fb.group({
+        email: [null, Validators.compose([Validators.required])],
+        displayName: [null, Validators.compose([Validators.required])],
+      });
+    }
+
+
+    ngAfterViewInit(){
+      this.stripeService.elements(this.elementsOptions).subscribe(elements => {
+        this.elements = elements;
+        // Only mount the element the first time
+        if (!this.card) {
+          this.cardNumber = this.elements.create('cardNumber', {
             style: this.cardStyle
           });
-          this.cardExpiry = this.elements.create('cardExpiry', {
-            style: this.expStyle
-          });
+        this.cardExpiry = this.elements.create('cardExpiry', {
+          style: this.expStyle
+        });
+        this.cardCvc = this.elements.create('cardCvc', {
+          style: this.cvcStyle
+        });
+        this.cardNumber.mount('#example3-card-number');
+        this.cardExpiry.mount('#example3-card-expiry');
+        this.cardCvc.mount('#example3-card-cvc');   
+        }
+      });
+    }
 
-            this.cardCvc = this.elements.create('cardCvc', {
-            style: this.cvcStyle
-          });
-             this.cardNumber.mount('#example3-card-number');
-             this.cardExpiry.mount('#example3-card-expiry');
-             this.cardCvc.mount('#example3-card-cvc');   
-            }
-            });
-    //  this.getprofileSettings();
-          $('#title').html('Profile Settings');
-      $('.header_filters').addClass('hide_header'); 
-         // this.checkXeroStatus();
-     });
-  
 
-      this.form = this.fb.group({
-      currentPassword: [null, Validators.compose([Validators.required])],
-      newPassword: [null, Validators.compose([Validators.required])],
-      repeatPassword: [null, Validators.compose([Validators.required])]      
-    });
-         this.formSettings = this.fb.group({
-      email: [null, Validators.compose([Validators.required])],
-      displayName: [null, Validators.compose([Validators.required])],
-
-    });
-  }
   public permisions='';
   public showCard = true;
 getRoles() {      

@@ -643,14 +643,14 @@
             </div> -->
             <div class="card-body">
               <div fxLayout="row wrap" class="row_Patients" fxLayoutAlign="center end" style="height: 305px"
-                *ngIf="showTrendChart == false && newPatientPercent > 0">
+                *ngIf="showTrendChart == false && newPatientValuePatients > 0">
 
                 <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49">
                   <div class="chart">
 
-                    <ngx-gauge *ngIf="showTrendChart == false" [type]="gaugeType" [value]="newPatientPercent"
-                      [label]="newPatientValuePatients" [thick]="gaugeThick" [cap]="cap"
-                      [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [append]="gaugeAppendText"
+                    <ngx-gauge *ngIf="showTrendChart == false" [type]="gaugeType" [value]="newPatientValuePatients"
+                      [label]="newPatientLabelPatients" [thick]="gaugeThick" [cap]="cap"
+                      [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" 
                       [size]="size" [duration]="gaugeDuration">
                     </ngx-gauge>
 
@@ -665,7 +665,7 @@
                 </canvas>
               </div>
               <div class="no-data-placeholder"
-              *ngIf="((showTrendChart == true && newPatientsChartTrend1.length <= 0) || (showTrendChart == false && newPatientPercent <= 0)) && buildChartNewpatientsDentistLoader == false">
+              *ngIf="((showTrendChart == true && newPatientsChartTrend1.length <= 0) || (showTrendChart == false && newPatientValuePatients != '')) && buildChartNewpatientsDentistLoader == false">
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">You have no new patients in the selected period</p>
