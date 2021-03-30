@@ -210,7 +210,7 @@
               <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_reverse_{{newPatientsTooltip}}.png"></span>
               Cost of New Patient Acquisition
             </div>
-            <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Set Categories</button></div>
+            <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Set Accounts</button></div>
             <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png" *ngIf="showTrend == true">
         </mat-card-title>
         <div class="card-body">
@@ -348,10 +348,10 @@
 </div>
 
   <ngx-smart-modal #myModal identifier="myModal">
-  <h4 class="mt-0">Select Categories</h4>
+  <h4 class="mt-0">Select Accounts</h4>
    <div fxLayout="row wrap" class="row_sc" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
           <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50" class="SelectCategories sa_flexbg referral_clinicians">
-            <h5 class="mt-0">Selected Categories</h5>
+            <h5 class="mt-0">Selected Accounts</h5>
             <ul class="list-categories">
            <li *ngFor="let category of selectedCategories; let i = index">
             <span (click)="remove_category(i)"><i class="fa fa-times"></i></span>
@@ -360,7 +360,7 @@
             
           </div>
           <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50" class="SelectCategories sa_flexbg referral_clinicians">
-            <h5 class="mt-0 other_cat">Other Categories</h5>
+            <h5 class="mt-0 other_cat">Other Accounts</h5>
             <ul class="list-categories">
               <li *ngFor="let category of xeroCategories; let i = index"><span (click)="add_category(i)"><i class="fa fa-plus"></i></span>
                 <span>{{category}}</span></li>
