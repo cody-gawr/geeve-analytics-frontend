@@ -698,9 +698,11 @@ public newAcqValuePrev =0;
        var user_id;
        var clinic_id;
        this.fdnewPatientsAcqLoader = true; 
+       
        this.marketingService.categoryExpenses(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
           if(data.message == 'success'){
        this.fdnewPatientsAcqLoader = false;
+       // checking if any new account name found in report then we are saving that one in existing accounts
             this.categories=[];
             this.expenseData=[];
             this.xeroCategories = this.xeroCategories.concat(data.data_expense_category_report);
@@ -711,9 +713,6 @@ public newAcqValuePrev =0;
              
            data.data.forEach((res,key) => {
               this.expenseData[res.meta_key] = res.expenses;
-              //this.categories.push(res.meta_key);
-              //this.selectedCategories.push(res.meta_key);
-
              });
              if(this.newPatientsPrevTotal>0)
              this.newAcqValuePrev= Math.round(data.data_ta/this.newPatientsPrevTotal);
@@ -1131,7 +1130,7 @@ public dataY:any=0;
        var clinic_id;
        this.marketingService.categoryExpensesTrend(this.clinic_id,this.trendValue).subscribe((data) => {
           if(data.message == 'success'){
-
+            
             this.expenseDataTrend1=[];
             this.expenseDataTrendLabels1=[];
            this.newPatientsChartTemp.forEach((res,key) => {
