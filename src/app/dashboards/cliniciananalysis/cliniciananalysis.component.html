@@ -665,7 +665,7 @@
                 </canvas>
               </div>
               <div class="no-data-placeholder"
-              *ngIf="((showTrendChart == true && newPatientsChartTrend1.length <= 0) || (showTrendChart == false && newPatientValuePatients != '')) && buildChartNewpatientsDentistLoader == false">
+              *ngIf="((showTrendChart == true && newPatientsChartTrend1.length <= 0) || (showTrendChart == false && newPatientValuePatients <= 0)) && buildChartNewpatientsDentistLoader == false">
               <div class="sa_nodata_div">
               </div>
               <p class="chart-placeholder-text">You have no new patients in the selected period</p>
