@@ -413,6 +413,11 @@ initiate_clinic() {
             this.clinicDentists.push(temp);  
           }          
         });               
+        this.clinicDentists.sort(function (x, y) {
+            let a = x.provider_name.toUpperCase(),
+            b = y.provider_name.toUpperCase();
+            return a == b ? 0 : a > b ? 1 : -1;
+        });
       }
     }); 
   }
