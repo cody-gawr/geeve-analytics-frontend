@@ -126,7 +126,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   }
 
   getShortName(fullName: string) {
-    return fullName.split(' ').map(n => n[0]).join('');
+    return fullName.charAt(0);
   }
 
   public loadHealthScreen() {
