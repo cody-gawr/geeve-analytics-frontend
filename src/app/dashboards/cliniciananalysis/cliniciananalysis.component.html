@@ -559,7 +559,7 @@
               </div>
               <div class="chart vertical-center-box" *ngIf="newPatientsDataMax > 0">
                 <div *ngIf="showTrendChart == false" style="height: 326px; position: relative; width: 100%;">
-                  <canvas #myCanvas baseChart id="newPatients" class="chart" [data]="newPatientChartData"
+                  <canvas  #myCanvas baseChart id="newPatients" class="chart" [data]="newPatientChartData"
                     [labels]="newPatientChartLabels" [legend]="legendSettings" [options]="doughnutChartOptions"
                     [chartType]="doughnutChartType" [plugins]="newPatientPluginObservable$ | async"
                     (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"

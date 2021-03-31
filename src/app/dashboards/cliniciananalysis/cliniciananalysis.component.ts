@@ -2150,7 +2150,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.newPatientTotalAverage = 0;
           this.newPatientTotalAverage = data.total_average;
         }
-        this.doughnutChartOptions.elements.center.text = this.newPatientValuePatients;
+        //this.doughnutChartOptions.elements.center.text = this.newPatientValuePatients;
         this.maxnewPatientGoal = data.goals;
         if (this.maxnewPatientGoal == 0)
           this.maxnewPatientGoal = '';

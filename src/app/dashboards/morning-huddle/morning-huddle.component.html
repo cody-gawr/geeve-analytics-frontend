@@ -840,15 +840,15 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="isDataAvailable">
+    <ng-container matColumnDef="isDataAvailable2">
       <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns4.length">
         No Data found
       </mat-footer-cell>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns4;"></tr>
-    <mat-footer-row *matFooterRowDef="['isDataAvailable']"
-      [ngClass]="(followupsUnscheduledPatients.length == 0)? 'show' : 'hide'"></mat-footer-row>
+    <mat-footer-row *matFooterRowDef="['isDataAvailable2']"
+      [ngClass]="(!followupsUnscheduledPatients)? 'show' : 'hide'"></mat-footer-row>
   </table>
 </div>
 <!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
@@ -868,7 +868,7 @@
   <mat-card-title>Post op Calls</mat-card-title>
   <mat-card-content> 
 <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
-  <table mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8" *ngIf="followupPostOpCalls">
+  <table mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8">
 
 
     <!-- Name Column -->
@@ -902,15 +902,15 @@
           (change)="toggleUpdate($event,element.patient_id,element.cid,element.uid,'Post op Calls')"></mat-slide-toggle>
       </td>
     </ng-container>
-    <ng-container matColumnDef="isDataAvailable">
+    <ng-container matColumnDef="isDataAvailable1">
       <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns5.length">
-        No Data found
+       You have no post op followup calls today
       </mat-footer-cell>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns5"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns5;"></tr>
-    <mat-footer-row *matFooterRowDef="['isDataAvailable']"
-      [ngClass]="(followupPostOpCalls.length == 0)? 'show' : 'hide'"></mat-footer-row>
+    <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
+      [ngClass]="(!followupPostOpCalls)? 'show' : 'hide'"></mat-footer-row>
   </table>
 </div>
   <!--<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">

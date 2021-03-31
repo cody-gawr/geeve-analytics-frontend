@@ -1524,7 +1524,7 @@ public buildChartProceedureLoader:any;
             if(res.item_name != null){
               this.proceedureChartLabels1.push(res.item_name);
             } else {
-              this.proceedureChartLabels1.push('Other');
+              this.proceedureChartLabels1.push(res.treat_code);
             }
            }
         });      

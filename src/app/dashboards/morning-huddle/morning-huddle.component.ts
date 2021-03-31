@@ -403,6 +403,7 @@ initiate_clinic() {
    getAppointmentCards(dentist){
     this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((production:any) => {
       if(production.status == true) {
+        this.clinicDentists = [];
         this.appointmentCards.data = production.data; 
         this.appointmentCardsTemp = production.data; 
         production.data.forEach(val => {
