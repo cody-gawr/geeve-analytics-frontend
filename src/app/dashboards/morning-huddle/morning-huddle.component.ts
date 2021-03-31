@@ -57,7 +57,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public schedulehours:any = 0;
     public unSchedulehours:any = 0;
     public noShow:any = 0;
-    //public appointmentCards:any = [];
+    public appointmentCardsTemp:any = [];
     public appointmentCards = new MatTableDataSource();
     public dentistList = new MatTableDataSource([]);
 
@@ -230,22 +230,24 @@ initiate_clinic() {
         $('.DentistListSecRow table tbody').append('<tr class="temP"><td align="center" colspan="4"> No Data found</td></tr>');
     }
     */
-     this.currentDentist = event;
+    this.currentDentist = event;
     this.getSchedulePatients(this.currentDentist);
     this.getScheduleNewPatients(this.currentDentist);
     this.getScheduleHours(this.currentDentist);
     this.getUnscheduleHours(this.currentDentist);
-    this.getAppointmentCards(this.currentDentist);
-    
+    //this.getAppointmentCards(this.currentDentist);
+    if(this.currentDentist != 0){
+      var temp = [];
+      this.appointmentCardsTemp.forEach(val => {
+        if(val.provider_id == this.currentDentist){
+          temp.push(val);
+        }
+      });
+      this.appointmentCards.data = temp;   
+    } else {
+      this.appointmentCards.data = this.appointmentCardsTemp;   
+    }    
   }
-/*  frontDeskTab(event){
-    this.previousDays = event;
-    this.getSchedulePatients();
-    this.getScheduleNewPatients();
-    this.getScheduleHours();
-    this.getUnscheduleHours();
-    this.getAppointmentCards();
-  }*/
 
   /***** Tab 4 ***/
    getReminders(){
@@ -402,6 +404,7 @@ initiate_clinic() {
     this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((production:any) => {
       if(production.status == true) {
         this.appointmentCards.data = production.data; 
+        this.appointmentCardsTemp = production.data; 
         production.data.forEach(val => {
           // check for duplicate values        
           var isExsist = this.clinicDentists.filter(function (person) { return person.provider_id == val.provider_id });
