@@ -129,6 +129,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     return $.trim(fullName).charAt(0);
   }
 
+  getShortNameLeader(fullName: string) {
+    return fullName.split(' ').map(n => n[0]).join('');
+  }
+
   public loadHealthScreen() {
     var date = new Date();
     this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');

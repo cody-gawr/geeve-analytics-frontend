@@ -129,7 +129,7 @@
                             <img class="" src="../assets/images/image1.jpg">
                           </div> -->
                                 <span class="user-icon" [ngStyle]="{ 'background-color': mockupColors[i] }">
-                                  {{getShortName(hourlyRateChartD.provider_name )}}
+                                  {{ getShortNameLeader(hourlyRateChartD.provider_name )}}
                                 </span>
                                 <span class="client-name">{{ hourlyRateChartD.provider_name }}</span>
                                 <p class="ur_clinic" *ngIf="clinic_id =='all'">{{ hourlyRateChartD.clinic_name }}</p>
