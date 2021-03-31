@@ -6,6 +6,8 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from "ngx-cookie";
+import { Chart } from 'chart.js';
+import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { ToastrService } from 'ngx-toastr';
@@ -177,6 +179,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }];
 
     this.filterDate(this.chartService.duration$.value);
+  }
+
+  ngOnInit() {
+    let namedChartAnnotation = ChartAnnotation;
+    namedChartAnnotation["id"] = "annotation";
+    Chart.pluginService.register( namedChartAnnotation);
   }
 
   //Load Clinic Data
@@ -972,7 +980,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }
     if (this.planTotalAverage >= this.planTotalPrev)
       this.planTotalTooltip = 'up';
-    if (this.goalchecked == 'average') {
+    if (this.goalchecked == 'average') { 
       if (this.barChartOptionsTC.annotation.annotations)
         this.barChartOptionsTC.annotation.annotations[0].value = this.planTotalAverage;
     }
