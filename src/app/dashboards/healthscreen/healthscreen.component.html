@@ -26,7 +26,7 @@
                     <h4>Production</h4>
                     <span class="change_value">
                       {{production_c >= 0 ? ' ' : '- ' }}
-                      ${{ (production_c<0 ? production_c.toString().split('-').join('') : production_c) | number:'1.0-0'}}
+                      ${{ (production_c < 0 ? production_c.toString().split('-').join('') : production_c) | number:'1.0-0'}}
                     </span>
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
