@@ -14,14 +14,14 @@
               <mat-form-field>
                 <input matInput placeholder="Password" type="password" [formControl]="form.controls['password']">
               </mat-form-field>
-              <small *ngIf="errorLogin ==true && errorLoginText != ''" class="text-danger support-text">{{errorLoginText}}</small>
+                <small *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched" class="text-danger support-text">You must include password.</small>
+                <small *ngIf="form.controls['password'].hasError('minlength') && form.controls['password'].touched" class="text-danger support-text">Password should contain minimum 10 characters.</small>
+                <small *ngIf="form.controls['password'].hasError('pattern') && form.controls['password'].touched" class="text-danger support-text">Password must contain one lowercase letter, one uppercase letter and one special character.</small>
                 <mat-form-field>
                 <input matInput placeholder="Confirm Password" type="password" [formControl]="form.controls['cpassword']">
               </mat-form-field>
-              <small *ngIf="form.controls['password'].hasError('') && form.controls['password'].touched" class="text-danger">Password should contain minimum 10 characters.</small>
-               <small *ngIf="form.controls['password'].hasError('minlength') && form.controls['password'].touched" class="text-danger">Password should contain minimum 10 characters.</small>
-                <small *ngIf="form.controls['password'].hasError('pattern') && !form.controls['password'].hasError('minlength') &&  form.controls['password'].touched" class="text-danger">Password must contain one lowercase letter,one uppercase letter, alphanumeric and one special character.</small>
-              <small *ngIf="form.controls['password'].value !=  form.controls['cpassword'].value" class="text-danger support-text">Password and Confirm Password does not match.</small>
+                <small *ngIf="form.controls['cpassword'].hasError('required') && form.controls['cpassword'].touched" class="text-danger support-text">You must include confirm password.</small>
+                <small *ngIf="form.controls['cpassword'].errors?.equalTo && form.controls['cpassword'].touched"   class="text-danger support-text">Password and confirmation password do not match.</small>              
 
                 <small *ngIf="successLogin ==true && successLoginText != ''"  class="text-success support-text">Password changed successfully . <a mat-raised-button color="primary" [routerLink]="['/login']" class="m-t-10 mat-dc" align="center" *ngIf="isPasswordSet">Login</a></small> 
 

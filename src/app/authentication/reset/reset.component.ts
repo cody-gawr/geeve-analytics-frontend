@@ -10,6 +10,10 @@ import { CustomValidators } from 'ng2-validation';
 import { LoginService } from '../../login/login.service';
 import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
+
+
+const passwordValidation = new FormControl('', [Validators.required, Validators.minLength(10),Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]);
+const confirmPasswordValidation = new FormControl('', CustomValidators.equalTo(passwordValidation));
 @Component({
   selector: 'app-reset',
   templateUrl: './reset.component.html',
@@ -26,8 +30,8 @@ export class ResetComponent implements OnInit {
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService, private route: ActivatedRoute,private toastr: ToastrService) {}
   ngOnInit() {
     this.form = this.fb.group({ 
-      password: [null, Validators.compose([Validators.required, Validators.minLength(10),Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')])],
-      cpassword: [null, Validators.compose([Validators.required])]
+      password: passwordValidation,
+      cpassword: confirmPasswordValidation
     });
           this.route.params.subscribe(params => {
                 this.string = this.route.snapshot.paramMap.get("id");
