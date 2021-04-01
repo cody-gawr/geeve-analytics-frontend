@@ -496,8 +496,8 @@ public mkNewPatientsByReferralLoader:any;
                let totalVisits = 0;
              data.data.patients_refname[label].forEach(res => {
               if(i<10) {
-               totalVisits = totalVisits + parseInt(res.patients_visits);
-               this.newPatientsTimeData1.push(res.patients_visits);
+               totalVisits = totalVisits + parseInt(res.num_referrals);
+               this.newPatientsTimeData1.push(res.num_referrals);
                this.newPatientsReferral$.next(totalVisits);
                this.newPatientsTimeLabels1.push(res.referral_name);
                 i++;
