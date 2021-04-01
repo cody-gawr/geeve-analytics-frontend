@@ -2907,7 +2907,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.recallPrebookChartTrendLabels1 = [];
         this.recallPrebookChartTrend1 = [];
         data.data.forEach(res => {
-          this.recallPrebookChartTrend1.push(Math.round(res.recall_patient));
+          this.recallPrebookChartTrend1.push(Math.round(res.recall_percent));
           if (this.trendValue == 'c')
             this.recallPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else

@@ -217,7 +217,7 @@
           <div class="chart py-2">
           <div>  
             
-          <div  *ngIf="showTrend == false && newAcqValue > 0 && xeroConnect" style="height: 200px">
+          <div  *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  xeroConnect" style="height: 200px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newAcqValue" 
            [thick]="gaugeThick"  
@@ -229,12 +229,13 @@
             </ngx-gauge>
                        
         </div>
-  
-          <div *ngIf="showTrend == false && newAcqValue<=0 && xeroConnect">
+      <div *ngIf="fdnewPatientsAcqLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div>
+    </div>
+         <!--  <div *ngIf="showTrend == false && fdnewPatientsAcqLoader && xeroConnect">
             <div class="sa_nodata_div">
             </div>
             <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
-          </div>
+          </div> -->
        <div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && xeroConnect" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="expenseDataTrend" [labels]="expenseDataTrendLabels" [options]="barChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
