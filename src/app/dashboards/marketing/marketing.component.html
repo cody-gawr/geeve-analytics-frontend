@@ -229,7 +229,7 @@
             </ngx-gauge>
                        
         </div>
-      <div *ngIf="fdnewPatientsAcqLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div>
+      <div *ngIf="fdnewPatientsAcqLoader == true && xeroConnect" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div>
     </div>
          <!--  <div *ngIf="showTrend == false && fdnewPatientsAcqLoader && xeroConnect">
             <div class="sa_nodata_div">
