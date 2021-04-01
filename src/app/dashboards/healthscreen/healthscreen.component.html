@@ -58,7 +58,13 @@
                       {{ productionVal >= 0 ? ' ' : '- ' }}
                       ${{ productionVal | number:'1.0-0'}}
                     </span>
-                  </div>                
+                  </div>  
+                    <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
+                    <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
+                      {{ finProductionPerVisit_dif >= 0 ? '+ ' : '- ' }}
+                      ${{(finProductionPerVisit_dif<0 ? finProductionPerVisit_dif.toString().split('-').join('') : finProductionPerVisit_dif) | number:'1.0-0'}}
+                    </div>              
+                </div>
                 </div>
               </mat-card-content>
             </mat-card>
