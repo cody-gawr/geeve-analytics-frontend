@@ -83,15 +83,6 @@ public token_id;
                     })
         );
     }
-    //Get Xero Categories
-   getOrganisationCategory(clinic_id='1',token = this._cookieService.get("token") ): Observable<any> {
-        var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Marketing/mkGetOrganisationCategory?clinic_id="+clinic_id, { headers: header })
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
-        );
-    }
 
      //Get Xero Accounts
    getAccounts(clinic_id='1',user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {

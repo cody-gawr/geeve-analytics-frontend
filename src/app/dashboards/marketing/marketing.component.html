@@ -207,7 +207,7 @@
       <mat-card-content class="sa_matcard_content"> 
         <mat-card-title class="text-center">
             <div>
-              <span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_reverse_{{newPatientsTooltip}}.png"></span>
+              <span *ngIf="showTrend == false  && trendText" class=" referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_reverse_{{newPatientsTooltip}}.png"></span>
               Cost of New Patient Acquisition
             </div>
             <div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Set Accounts</button></div>
@@ -217,7 +217,7 @@
           <div class="chart py-2">
           <div>  
             
-          <div  *ngIf="showTrend == false && newAcqValue > 0 && xeroConnect" style="height: 200px">
+          <div  *ngIf="showTrend == false  && xeroConnect" style="height: 200px">
           <ngx-gauge class="singleRatio" [type]="gaugeType"
            [value]="newAcqValue" 
            [thick]="gaugeThick"  
@@ -230,17 +230,13 @@
                        
         </div>
   
-          <div *ngIf="showTrend == false && newAcqValue<=0 && xeroConnect">
-            <div class="sa_nodata_div">
-            </div>
-            <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
-          </div>
-       <div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && xeroConnect" style="height: 300px">
+        
+       <div *ngIf="fdnewPatientsAcqLoader == false && showTrend == true && expenseDataTrend1.length > 0 && xeroConnect" style="height: 300px">
       <canvas #myCanvas baseChart [datasets]="expenseDataTrend" [labels]="expenseDataTrendLabels" [options]="barChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-      <div *ngIf="showTrend == true && expenseDataTrend1.length<=0 && xeroConnect">
+      <div *ngIf="fdnewPatientsAcqLoader == false && showTrend == true && expenseDataTrend1.length<=0 && xeroConnect">
         <div class="sa_nodata_div">
         </div>
         <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
@@ -254,7 +250,7 @@
       </div>  
         </div>
         <div class="card-footer">
-      <div *ngIf="showTrend == false && newAcqValue>0" fxLayout="row wrap" class="pieChartDetails sa_chart_details_sec">
+      <div *ngIf="fdnewPatientsAcqLoader == false && showTrend == false && newAcqValue>0" fxLayout="row wrap" class="pieChartDetails sa_chart_details_sec">
                     <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
                         <h3 class="m-0 value-num">$ {{newAcqValue | number:'0.0-0'}}</h3>
                          <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
@@ -269,6 +265,8 @@
                 </div>   
       </mat-card-content>
     </mat-card>
+    <div *ngIf="fdnewPatientsAcqLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div>
+      </div>
   </div>                                                                                                                                                                                
    <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians last">
     <mat-card>
@@ -353,8 +351,8 @@
           <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50" class="SelectCategories sa_flexbg referral_clinicians">
             <h5 class="mt-0">Selected Accounts</h5>
             <ul class="list-categories">
-           <li *ngFor="let category of selectedCategories; let i = index">
-            <span (click)="remove_category(i)"><i class="fa fa-times"></i></span>
+           <li *ngFor="let category of selectedAccounts; let i = index">
+            <span (click)="remove_account(i)"><i class="fa fa-times"></i></span>
                 <span>{{category}}</span></li>
             </ul>
             
@@ -362,7 +360,7 @@
           <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50" class="SelectCategories sa_flexbg referral_clinicians">
             <h5 class="mt-0 other_cat">Other Accounts</h5>
             <ul class="list-categories">
-              <li *ngFor="let category of xeroCategories; let i = index"><span (click)="add_category(i)"><i class="fa fa-plus"></i></span>
+              <li *ngFor="let category of Accounts; let i = index"><span (click)="add_account(i)"><i class="fa fa-plus"></i></span>
                 <span>{{category}}</span></li>
             </ul>
             

@@ -48,7 +48,7 @@ export class MarketingComponent implements AfterViewInit {
   public trendText;
   public xeroConnect: boolean = false;
   public filteredCountriesMultiple: any[];
-  public selectedCategories:any[] =[];
+  public selectedAccounts:any[] =[];
   public newPatientsReferral$ = new BehaviorSubject<number>(0);
   revenueByReferralCount$ = new BehaviorSubject<number>(0);
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
@@ -626,18 +626,18 @@ public fdvisitsRatioLoader:any;
     }
   }
 
-  public xeroCategories=[];
+  public Accounts=[];
   
     private getAccounts() {
       this.marketingService.getAccounts(this.clinic_id).subscribe((data) => {
-        this.xeroCategories=[];
-        this.selectedCategories=[];
+        this.Accounts=[];
+        this.selectedAccounts=[];
            if(data.message == 'success'){
-            for (let key in data.data.categories) {
-              this.xeroCategories.push(data.data.categories[key]);
+            for (let key in data.data.accountsData) {
+              this.Accounts.push(data.data.accountsData[key]);
             }
-             for (let key in data.data.selectedCategories) {
-              this.selectedCategories.push(data.data.selectedCategories[key]);
+             for (let key in data.data.selectedAccountsData) {
+              this.selectedAccounts.push(data.data.selectedAccountsData[key]);
             }
     
             }
@@ -705,18 +705,18 @@ public newAcqValuePrev =0;
        // checking if any new account name found in report then we are saving that one in existing accounts
             this.categories=[];
             this.expenseData=[];
-            this.xeroCategories = this.xeroCategories.concat(data.data_expense_category_report);
-            this.xeroCategories = this.xeroCategories.filter((item,index)=>{
-              return (this.xeroCategories.indexOf(item) == index)
+            this.Accounts = this.Accounts.concat(data.data_expense_category_report);
+            this.Accounts = this.Accounts.filter((item,index)=>{
+              return (this.Accounts.indexOf(item) == index)
            })
-           this.xeroCategories = this.xeroCategories.filter(x => !this.selectedCategories.includes(x));
+           this.Accounts = this.Accounts.filter(x => !this.selectedAccounts.includes(x));
              
            data.data.forEach((res,key) => {
               this.expenseData[res.meta_key] = res.expenses;
              });
              if(this.newPatientsPrevTotal>0)
              this.newAcqValuePrev= Math.round(data.data_ta/this.newPatientsPrevTotal);
-              if(this.selectedCategories.length>0) 
+              if(this.selectedAccounts.length>0) 
                 this.load_chart_acq();
               
            }
@@ -1193,10 +1193,9 @@ public dataY:any=0;
   }
 
 save_category() {   
-var selectedCategories=JSON.stringify(Object.assign({}, this.selectedCategories));                           
-   this.marketingService.saveSelectedCategories(this.clinic_id,escape(selectedCategories)).subscribe((data) => {
+var selectedAccounts=JSON.stringify(Object.assign({}, this.selectedAccounts));                           
+   this.marketingService.saveSelectedCategories(this.clinic_id,escape(selectedAccounts)).subscribe((data) => {
         if(data.message == 'success'){
-          //this.getOrganisationCategory();
           this.load_chart_acq();
         }
     });
@@ -1205,7 +1204,7 @@ var selectedCategories=JSON.stringify(Object.assign({}, this.selectedCategories)
   public newAcqValue:any=0;
 load_chart_acq() {
   var totalY=0;                                             
-    this.selectedCategories.forEach((res,key) => {
+    this.selectedAccounts.forEach((res,key) => {
       if(this.expenseData[res])
       totalY = totalY+parseInt(this.expenseData[res]);
     });
@@ -1221,15 +1220,15 @@ this.newAcqValue = 0;
   else if(val == 'revenue')
       this.mkRevenueByReferral();
   }
-  add_category(index) {
-    if(!this.selectedCategories.includes(this.xeroCategories[index]))
-    this.selectedCategories.push(this.xeroCategories[index]);
-    this.xeroCategories.splice(index, 1);
+  add_account(index) {
+    if(!this.selectedAccounts.includes(this.Accounts[index]))
+    this.selectedAccounts.push(this.Accounts[index]);
+    this.Accounts.splice(index, 1);
   }
-  remove_category(index) {
-    if(!this.xeroCategories.includes(this.selectedCategories[index]))
-    this.xeroCategories.push(this.selectedCategories[index]);
-    this.selectedCategories.splice(index, 1);
+  remove_account(index) {
+    if(!this.Accounts.includes(this.selectedAccounts[index]))
+    this.Accounts.push(this.selectedAccounts[index]);
+    this.selectedAccounts.splice(index, 1);
   }
 
   public checkXeroStatus(){
