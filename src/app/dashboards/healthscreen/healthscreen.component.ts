@@ -358,7 +358,7 @@ public newPatientsTimeClinic=[];
        if(data.message == 'success'){
         this.finProductionPerVisitLoader = false;
         this.productionVal = Math.round(data.total);  
-        this.finProductionPerVisit_dif = Math.round(data.total_ta - data.total);
+        this.finProductionPerVisit_dif = Math.round(data.total - data.total_ta);
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
