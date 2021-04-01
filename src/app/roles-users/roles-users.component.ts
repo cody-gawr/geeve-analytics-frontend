@@ -62,17 +62,21 @@ show_dentist = false;
       this.selected_dentist=[];
     }
   }
-  unselectDentist() {
+
+unselectDentist() {
     var tempArray={};
     var clinicArray = this.selectedClinics.value.toString().split(',');
     clinicArray.forEach(res => {
      tempArray['clinic'+res] = this.selected_dentist['clinic'+res];
     });
     this.selected_dentist = tempArray;
-  }
-  selectedDentist(event,i,clinic_id) {
+}
+
+selectedDentist(event,i,clinic_id) {
     this.selected_dentist['clinic'+clinic_id]= event;
-  }
+}
+
+
 public clinics=[];
 public selectedClinicProviders=[];
   getClinicProviders() {
@@ -104,13 +108,15 @@ show_dentist = false;
   }
   public selClinics=[];
   public userData:any=[];
+  public selectedDentistList:any = []; 
   loadUserData(){
     this.rolesUsersService.getRoleUserDetails(this.data.id).subscribe((res) => {
       if(res.message == 'success'){
         this.userData = res.data;
         this.userData.users_clinics.forEach(res => {
          this.selClinics.push(res.clinic_id);
-         //this.selected_dentist.push(res.dentist_id);
+         this.selectedDentistList.push('clinic'+res.clinic_id+'-'+res.dentist_id);
+         this.selected_dentist['clinic'+res.clinic_id]= res.dentist_id;
         });
         this.selectedClinics.setValue(this.selClinics);
         if(this.userData.user_type == '4')
@@ -167,8 +173,13 @@ show_dentist = false;
     this.selected_dentist = tempArray;
   }
   selectedDentist(event,i,clinic_id) {
-    this.selected_dentist['clinic'+clinic_id]= event;
+    if(event != 0){
+      this.selected_dentist['clinic'+clinic_id]= parseInt(event);    
+    } else {
+      delete this.selected_dentist['clinic'+clinic_id];    
+    }
   }
+
 public clinics=[];
 public selectedClinicProviders=[];
   getClinicProviders() {
