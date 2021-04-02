@@ -101,7 +101,7 @@
               </div>
               <div style="height: 300px" *ngIf="barChartData[0].data.length && !buildChartLoader">
                 <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
-                  [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP">
+                  [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP" [colors]="DPcolors">
                 </canvas> <!-- dynamic colors of bar --> 
               </div>
               <div *ngIf="!barChartData[0].data.length && !buildChartLoader" class="no-data-placeholder">
@@ -837,7 +837,7 @@
                   [labels]="recallPrebookChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsPercentTrend" [colors]="lineChartColors"
                   (chartClick)="chartClicked($event)">
-                </canvas>{{recallPrebookChartTrend1.length}}
+                </canvas>
               </div>
               <div
                 *ngIf="showTrendChart == true && prebook=='treatment' && !treatmentPlanRateLoader && treatmentPrebookChartTrend1.length > 0"

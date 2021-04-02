@@ -1057,11 +1057,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (res.provider_name != null && res.provider_name != 'Anonymous') {
               this.barChartLabels1.push(res.provider_name);
               this.dentistKey = i;
-            }
-            else {
+            } else {
               this.barChartLabels1.push(res.provider_name);
-            }
-            
+            }            
             i++;
           }
         });
@@ -1255,7 +1253,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (res.provider_name != null) {
               this.recallChartData1.push(Math.round(res.recall_percent));
               this.recallChartLabels1.push(res.provider_name);
-              if (res.provider != 'Anonymous')
+              if (res.provider_name != 'Anonymous')
                 this.rpKey = i;
               i++;
             }
@@ -1995,7 +1993,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             this.doughnutChartData1.push(Math.round(res.num_complaints));
             this.doughnutChartLabels1.push(res.provider_name);
             this.doughnutTotal = this.doughnutTotal + parseInt(res.num_complaints);
-            if (res.provider != 'Anonymous')
+            if (res.provider_name != 'Anonymous')
               this.npKey = i;
             i++;
           }
@@ -2098,11 +2096,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.newPatientChartLabels1 = []; // reset on api call
         this.newPatientChartData1 = []; // reset on api call
         data.data.forEach(res => {
-
           if (res.new_patients) {
             this.newPatientChartData1.push(parseInt(res.new_patients));
             this.newPatientChartLabels1.push(res.provider_name);
-            if (res.provider != 'Anonymous')
+            if (res.provider_name != 'Anonymous')
               this.newpKey = i;
             i++;
           }
@@ -2975,7 +2972,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     var user_id;
     var clinic_id;
-    this.frontdeskService.fdTreatmentPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
+    this.cliniciananalysisService.treatmentPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data) => {
       if (data.message == 'success') {
         this.fdTreatmentPrebookRateTrendLoader = false;
         this.treatmentPrebookChartTrendLabels1 = [];
