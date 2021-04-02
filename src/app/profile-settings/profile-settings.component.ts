@@ -7,6 +7,7 @@ import { CookieService, CookieOptions } from "ngx-cookie";
 import { Router, NavigationEnd, Event  } from '@angular/router';
 import { StripeInstance, StripeFactoryService } from "ngx-stripe";
 import { StripeService, StripeCardComponent } from 'ngx-stripe';
+import { CustomValidators } from 'ng2-validation';
 import {
   StripeCardElementOptions,
   StripeElementsOptions
@@ -14,6 +15,10 @@ import {
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { RolesUsersService } from '../roles-users/roles-users.service';
+
+const passwordValidation = new FormControl('', [Validators.required, Validators.minLength(10),Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]);
+const confirmPasswordValidation = new FormControl('', CustomValidators.equalTo(passwordValidation));
+
 @Component({
   selector: 'app-formlayout',
   templateUrl: './profile-settings.component.html',
@@ -169,8 +174,8 @@ public cvcStyle = {
       });
       this.form = this.fb.group({
         currentPassword: [null, Validators.compose([Validators.required])],
-        newPassword: [null, Validators.compose([Validators.required])],
-        repeatPassword: [null, Validators.compose([Validators.required])]      
+        newPassword: passwordValidation,
+        repeatPassword: confirmPasswordValidation      
       });
       this.formSettings = this.fb.group({
         email: [null, Validators.compose([Validators.required])],

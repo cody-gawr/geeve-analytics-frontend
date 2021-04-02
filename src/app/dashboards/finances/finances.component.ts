@@ -2465,9 +2465,9 @@ this.trendxero=false;
 
                  }
                  else {
-                   this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
-                   this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));                    
-                   this.netProfitPmsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
+                   this.netProfitChartTrendLabels1.push(res.duration);
+                   this.netProfitPercentChartTrendLabels1.push(res.duration);                    
+                   this.netProfitPmsChartTrendLabels1.push(res.duration);
                    //this.expensesChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
 
                  }

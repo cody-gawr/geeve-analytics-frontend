@@ -395,8 +395,7 @@ if(selectedIndex >= 2) {
     let clinicEmail =this.firstFormGroup.controls.clinicEmail.value;
     let address  =this.firstFormGroup.controls.address.value;
     let displayName  =this.firstFormGroup.controls.displayName.value;
-    let days = JSON.stringify(this.workingDays);
-    console.log(this.workingDays);
+    let days = JSON.stringify(this.workingDays);   
   /*  let facebook =this.firstFormGroup.controls.facebook.value;
     let twitter  =this.firstFormGroup.controls.twitter.value;
     let linkedin =this.firstFormGroup.controls.linkedin.value;
@@ -407,6 +406,7 @@ if(selectedIndex >= 2) {
        $('.ajax-loader').hide();
         if(res.message == 'success'){
           this.clinic_id = res.data.id;
+          this._cookieService.put("display_name", displayName);
           this.getXeroLink();  
 
           //this.getClinicSettings();

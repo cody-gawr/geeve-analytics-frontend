@@ -27,15 +27,6 @@ export class HealthScreenService {
         return headers;
     }
 
-    // Dentist Production Service
-    healthCheckStats( clinic_id, token = this._cookieService.get("token") ): Observable<any> {
-        var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/health/chHealthCheckStats?clinic_id="+clinic_id, { headers: header })
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
-        );
-    }
    hourlyRateChart( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='', token = this._cookieService.get("token"),limit=5 ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/health/chHourlyLeaders?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician+"&limit=5", { headers: header })
@@ -63,4 +54,16 @@ export class HealthScreenService {
                     })
         );
     }
+
+    // Added by Hanney Sharma on 01-04-2021    
+    commonCall(clinic_id, functionName): Observable<any> { // Top production card service
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/health/"+functionName+"?clinic_id="+clinic_id, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+            })
+        );
+    }
+
+
 }

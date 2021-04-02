@@ -496,8 +496,8 @@ public mkNewPatientsByReferralLoader:any;
                let totalVisits = 0;
              data.data.patients_refname[label].forEach(res => {
               if(i<10) {
-               totalVisits = totalVisits + parseInt(res.patients_visits);
-               this.newPatientsTimeData1.push(res.patients_visits);
+               totalVisits = totalVisits + parseInt(res.num_referrals);
+               this.newPatientsTimeData1.push(res.num_referrals);
                this.newPatientsReferral$.next(totalVisits);
                this.newPatientsTimeLabels1.push(res.referral_name);
                 i++;
@@ -633,11 +633,11 @@ public fdvisitsRatioLoader:any;
         this.Accounts=[];
         this.selectedAccounts=[];
            if(data.message == 'success'){
-            for (let key in data.data.accountsData) {
-              this.Accounts.push(data.data.accountsData[key]);
+            for (let key in data.data.categories) {
+              this.Accounts.push(data.data.categories[key]);
             }
-             for (let key in data.data.selectedAccountsData) {
-              this.selectedAccounts.push(data.data.selectedAccountsData[key]);
+             for (let key in data.data.selectedCategories) {
+              this.selectedAccounts.push(data.data.selectedCategories[key]);
             }
     
             }
@@ -1192,7 +1192,7 @@ public dataY:any=0;
     }
   }
 
-save_category() {   
+save_account() {   
 var selectedAccounts=JSON.stringify(Object.assign({}, this.selectedAccounts));                           
    this.marketingService.saveSelectedCategories(this.clinic_id,escape(selectedAccounts)).subscribe((data) => {
         if(data.message == 'success'){

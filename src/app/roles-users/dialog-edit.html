@@ -24,8 +24,9 @@
 <div  *ngFor="let clinicProviders of selectedClinicProviders; let i=index">
   <span>{{clinicProviders.clinicName}}</span>
   <span>  
-    <select (ngModelChange)="selectedDentist($event,i,clinicProviders.id)" [(ngModel)]="dentist_id" class="sa_select sa_select_set_roles mat-form-control" name="dentist_id" required="true" *ngIf="clinicProviders.dentists.length>0">
-      <option *ngFor="let dentist of clinicProviders.dentists" value ="{{dentist.providerId}}">{{dentist.name}}</option>
+    <select (change)="selectedDentist($event.target.value,i,clinicProviders.id)" class="sa_select sa_select_set_roles mat-form-control" name="dentist_id" required="true" *ngIf="clinicProviders.dentists.length>0">
+      <option value ="0">Select Dentist</option>
+      <option *ngFor="let dentist of clinicProviders.dentists" [selected] = " selectedDentistList.includes('clinic'+clinicProviders.id+'-'+dentist.providerId)"  value ="{{dentist.providerId}}">{{dentist.name}}</option>
    </select>
    <span *ngIf="clinicProviders.dentists.length<=0"> No Dentist Found</span>
   </span>

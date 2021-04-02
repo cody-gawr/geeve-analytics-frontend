@@ -96,7 +96,6 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
              this.childid = this._cookieService.get("dentistid");
              this.dentistid = this._cookieService.get("dentistid");
            }
-           console.log(this.childid+" "+this.dentistid);
     this.getDentists();
     this.filterDate(this.chartService.duration$.value);
    }
@@ -1520,9 +1519,13 @@ public buildChartProceedureLoader:any;
         this.buildChartProceedureLoader =false;
 
         data.data.forEach(res => {          
-          if(res.total > 0) {
+          if(res.total > 0 ) {
             this.proceedureChartData1.push(Math.round(res.total));
-            this.proceedureChartLabels1.push(res.item_name);
+            if(res.item_name != null){
+              this.proceedureChartLabels1.push(res.item_name);
+            } else {
+              this.proceedureChartLabels1.push(res.treat_code);
+            }
            }
         });      
        this.proceedureChartData[0]['data'] = this.proceedureChartData1;

@@ -1023,6 +1023,7 @@ toggleChangeProcess(){
   public wtaChartTrendLabels =[];
   public wtaChartTrendLabels1 =[];
   public fdwtaRatioTrendLoader:boolean;
+  
   private fdwtaRatioTrend() {
     this.fdwtaRatioTrendLoader =true;
   this.wtaChartTrendLabels=[];
@@ -1037,11 +1038,11 @@ toggleChangeProcess(){
        if(data.message == 'success'){
         this.fdwtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
-                     this.wtaChartTrend1.push(Math.round(res.val));
+                     this.wtaChartTrend1.push(Math.round(res.util_rate));
                    if(this.trendValue == 'c')
-                   this.wtaChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   this.wtaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.wtaChartTrendLabels1.push(res.duration);
+                   this.wtaChartTrendLabels1.push(res.year);
                   
                  });
                  this.wtaChartTrend[0]['data'] = this.wtaChartTrend1;

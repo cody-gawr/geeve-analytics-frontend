@@ -91,7 +91,13 @@ export class AppHeaderrightComponent implements AfterViewInit  {
         this._cookieService.removeAll();
         this.router.navigateByUrl('/login');
       }
-    }, error => {});
+    }, (error) => {
+        if(error.status == 401){
+          this._cookieService.removeAll();
+          this.router.navigateByUrl('/login');
+        }
+        
+    });
   }
 
   public selectedDentist;

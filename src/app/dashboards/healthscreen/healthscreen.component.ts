@@ -50,6 +50,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public childid;
   public user_type;
   public finProductionPerVisitLoader:any;
+  public finProductionPerVisit_dif:any = 0;
   public productionVal = 0;  
   public options: any = {
       hasNeedle: false,
@@ -126,6 +127,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   }
 
   getShortName(fullName: string) {
+    return $.trim(fullName).charAt(0);
+  }
+
+  getShortNameLeader(fullName: string) {
     return fullName.split(' ').map(n => n[0]).join('');
   }
 
@@ -133,7 +138,12 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     var date = new Date();
     this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
     this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    this.healthCheckStats();
+    this.chProduction();
+    this.chTotalVists();
+    this.chPrebookedVisits();
+    this.chUtilisationRate();
+    this.chUnscheduledProd();
+
     this.hourlyRateChart();
     this.mkNewPatientsByReferral();
   }
@@ -182,84 +192,82 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public production_dif;
   public profit_dif;
   public visits_dif;
-  //Dentist Production Chart
-  private healthCheckStats() {  
-  $('.ajax-loader').show();
+
+
+ /* Added by Hanney Sharma*/
+ // Functions to get the data for the Production, Total Visits, Pre-booked Visits, Chair Utilisation Rate, Unscheduled Production
+ // Start Block
+
+  public chProduction(){ // Production top Card
     this.production_c = 0;
-          this.profit_c = 0;
-          this.visits_c =0;
-          this.production_p = 0;
-          this.profit_p = 0;
-          this.visits_p = 0;
-          this.visits_f = 0;
-          this.utilisation_rate_f = 0;
-          this.unscheduled_production_f = 0;
-
-          this.profit_g = 0;       
-          this.visits_g = 0;     
-          this.production_g = 0;      
-          this.utilisation_rate_f_g = 0;     
-          this.production_dif =  0;  
-          this.profit_dif = 0;  
-          this.visits_dif =  0; 
-    this.healthscreenService.healthCheckStats(this.clinic_id).subscribe((data) => {
-  $('.ajax-loader').hide();
-       
-
-       if(data.message == 'success'){
-          this.production_c = data.data.production_c;
-          
-          this.visits_c = data.data.visits_c;
-          this.production_p = data.data.production_p;          
-          this.visits_p = data.data.visits_p;
-          this.visits_f = data.data.visits_f;
-          this.utilisation_rate_f = Math.round(data.data.utilisation_rate_f) ;
-          if(this.utilisation_rate_f){
-            this.options1 = {
-              ...this.options1,
-              arcDelimiters: [this.utilisation_rate_f]
-            };
-          }
-          this.unscheduled_production_f = data.data.unscheduled_production_f;
-          //this.visits_g = data.data.visits_g;          
-          //this.production_g = data.data.production_g;          
-          //this.utilisation_rate_f_g  = data.data.utilisation_rate_f_g;          
-         // this.options_profit.arcDelimiters[1] = this.profit_g;
-          // this.options_profit.arcDelimiters[0] =Math.floor(this.profit_g/2);
-          // this.options_visits.arcDelimiters[1] = this.visits_g;
-          // this.options_visits.arcDelimiters[0] = Math.floor(this.visits_g/2);
-         // this.options_production.arcDelimiters[1] = this.production_g;
-         // this.options_production.arcDelimiters[0] = Math.floor(this.production_g/2);
-         //  this.options_utilisation.arcDelimiters[1] = this.utilisation_rate_f_g;
-        //  this.options_utilisation.arcDelimiters[0] = Math.floor(this.utilisation_rate_f_g/2);
-
-          this.production_dif = Math.round(this.production_c - this.production_p);
-          this.profit_dif =Math.round(this.profit_c - this.profit_p);
-          this.visits_dif = Math.round(this.visits_c - this.visits_p);
-          if(data.data.profit_c == 'error') {
-            if(this.clinic_id == 'all') {
-              Swal.fire({
-              title: "<i>Error Connection to Xero</i>", 
-              html: "There was an error retrieving your xero data, please reconnect your xero account . Please go to clinic settings to connect your clinic.",  
-              });    
-            }
-            else
-            {
-               Swal.fire({
-              title: "<i>Error Connection to Xero</i>", 
-              html: "There was an error retrieving your xero data, please reconnect your xero account . Please <a href='/clinic-settings/"+this.clinic_id+"'>click here</a> to connect",  
-              }); 
-
-            }
-          }
-       }
+    this.production_dif = 0;
+    this.healthscreenService.commonCall(this.clinic_id,'chProduction').subscribe((data) => {
+      if(data.message == 'success'){
+        this.production_c = data.total;
+        this.production_dif = Math.round(data.total - data.total_ta);
+      }        
     }, error => {
       $('.ajax-loader').hide();
-        this.toastr.error('There was an error retrieving your report data, please contact our support team.');
-    }
-    );
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
   }
-  public hourlyRateChartLoader;
+
+  public chTotalVists(){ // Total Vists top Card
+    this.visits_c = 0;
+    this.visits_dif = 0;
+    this.healthscreenService.commonCall(this.clinic_id,'chTotalVists').subscribe((data) => {
+      if(data.message == 'success'){
+        this.visits_c = data.total;
+        this.visits_dif = Math.round(data.total - data.total_ta);
+      }        
+    }, error => {
+      $('.ajax-loader').hide();
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
+  }
+
+  public chPrebookedVisits(){ //Prebooked Visits graph in bottom
+    this.visits_f = 0;
+    this.healthscreenService.commonCall(this.clinic_id,'chPrebookedVisits').subscribe((data) => {
+      if(data.message == 'success'){
+        this.visits_f = data.data;
+      }        
+    }, error => {
+      $('.ajax-loader').hide();
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
+  } 
+
+  public chUtilisationRate(){ //Utilisation Rate graph in bottom
+    this.utilisation_rate_f = 0;
+    this.healthscreenService.commonCall(this.clinic_id,'chUtilisationRate').subscribe((data) => {
+      if(data.message == 'success'){
+        this.utilisation_rate_f = data.data;
+      }        
+    }, error => {
+      $('.ajax-loader').hide();
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
+  } 
+
+  public chUnscheduledProd(){ //Unscheduled Production graph in bottom
+    this.unscheduled_production_f = 0;
+    this.healthscreenService.commonCall(this.clinic_id,'chUnscheduledProd').subscribe((data) => {
+      if(data.message == 'success'){
+        this.unscheduled_production_f = data.data;
+      }        
+    }, error => {
+      $('.ajax-loader').hide();
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
+  }
+
+ // End Block
+
+
+
+
+public hourlyRateChartLoader;
 public hourlyRateChartData =[];
 public hourlyRateChartLabels1;
 public productionTotal;
@@ -350,6 +358,7 @@ public newPatientsTimeClinic=[];
        if(data.message == 'success'){
         this.finProductionPerVisitLoader = false;
         this.productionVal = Math.round(data.total);  
+        this.finProductionPerVisit_dif = Math.round(data.total - data.total_ta);
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
