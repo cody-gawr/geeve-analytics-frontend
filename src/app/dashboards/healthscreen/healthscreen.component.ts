@@ -201,7 +201,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public chProduction(){ // Production top Card
     this.production_c = 0;
     this.production_dif = 0;
-    this.healthscreenService.commonCall(this.clinic_id,'chProduction').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chProduction').subscribe((data) => {
       if(data.message == 'success'){
         this.production_c = data.total;
         this.production_dif = Math.round(data.total - data.total_ta);
@@ -215,7 +215,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public chTotalVists(){ // Total Vists top Card
     this.visits_c = 0;
     this.visits_dif = 0;
-    this.healthscreenService.commonCall(this.clinic_id,'chTotalVists').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTotalVists').subscribe((data) => {
       if(data.message == 'success'){
         this.visits_c = data.total;
         this.visits_dif = Math.round(data.total - data.total_ta);
@@ -227,8 +227,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   }
 
   public chPrebookedVisits(){ //Prebooked Visits graph in bottom
+    var date = new Date();
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), 'yyyy-MM-dd');
+    this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7), 'yyyy-MM-dd');
     this.visits_f = 0;
-    this.healthscreenService.commonCall(this.clinic_id,'chPrebookedVisits').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chPrebookedVisits').subscribe((data) => {
       if(data.message == 'success'){
         this.visits_f = data.data;
       }        
@@ -239,8 +242,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   } 
 
   public chUtilisationRate(){ //Utilisation Rate graph in bottom
+    var date = new Date();
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), 'yyyy-MM-dd');
+    this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7), 'yyyy-MM-dd');
     this.utilisation_rate_f = 0;
-    this.healthscreenService.commonCall(this.clinic_id,'chUtilisationRate').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chUtilisationRate').subscribe((data) => {
       if(data.message == 'success'){
         this.utilisation_rate_f = data.data;
       }        
@@ -251,8 +257,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   } 
 
   public chUnscheduledProd(){ //Unscheduled Production graph in bottom
+    var date = new Date();
+    this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1), 'yyyy-MM-dd');
+    this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7), 'yyyy-MM-dd');
     this.unscheduled_production_f = 0;
-    this.healthscreenService.commonCall(this.clinic_id,'chUnscheduledProd').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chUnscheduledProd').subscribe((data) => {
       if(data.message == 'success'){
         this.unscheduled_production_f = data.data;
       }        
