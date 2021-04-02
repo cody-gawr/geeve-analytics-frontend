@@ -56,9 +56,9 @@ export class HealthScreenService {
     }
 
     // Added by Hanney Sharma on 01-04-2021    
-    commonCall(clinic_id, functionName): Observable<any> { // Top production card service
+    commonCall(clinic_id,startDate, endDate, functionName): Observable<any> { // Top production card service
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/health/"+functionName+"?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/health/"+functionName+"?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
             })

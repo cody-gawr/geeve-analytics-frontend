@@ -350,7 +350,7 @@
                       <i class="fas fa-user-alt"></i>
                     </div>
                     <div class="production_description">
-                      <h4>Patients</h4>
+                      <h4>Appointments</h4>
                       <div class="patients-num">
                         <span class="change_value">{{ schedulePatieltd }}</span>
                         <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
@@ -517,7 +517,7 @@
 
  <ng-container matColumnDef="isDataAvailable">
    <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns6.length">
-      No Data found
+      You have no appointments scheduled today
    </mat-footer-cell>
 </ng-container>
  
@@ -654,7 +654,7 @@
                       <i class="fas fa-user-alt"></i>
                     </div>
                     <div class="production_description">
-                      <h4>Patients</h4>
+                      <h4>Appointments</h4>
                       <div class="patients-num" >
                         <span class="change_value">{{ todayPatients }}</span>
                       </div>
@@ -782,7 +782,7 @@
   </ng-container>
  <ng-container matColumnDef="isDataAvailable">
    <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns6.length">
-      No Data found
+      You have no Reminders today
    </mat-footer-cell>
 </ng-container>
  

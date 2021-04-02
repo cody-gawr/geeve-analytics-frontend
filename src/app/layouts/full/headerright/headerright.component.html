@@ -1,6 +1,6 @@
 <div fxLayout="row wrap" class="header_filters" >   
     <div fxLayout="row" fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
-        <div fxFlexAlign="center" *ngIf="user_type_dentist==='4'">
+        <div fxFlexAlign="center" *ngIf="user_type_dentist==='4' && showCompare">
             <button 
                 class="sa_tab_btn compare-button"
                 [ngClass]="{'active': isToggleDentistChart}"

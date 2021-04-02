@@ -161,6 +161,15 @@ export class ClinicianAnalysisService {
         );
     } 
 
+    treatmentPrebookRateTrend(dentist_id,clinic_id, mode, token = this._cookieService.get("token") ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/caRebookRateTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
         // Dentist Production Service
     treatmentPrePrebookSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
