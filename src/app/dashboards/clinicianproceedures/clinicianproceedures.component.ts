@@ -1548,10 +1548,14 @@ public buildChartProceedureDentistLoader:any;
     if (data.message == 'success' && data.data){
         this.buildChartProceedureDentistLoader =false;
         this.proceedureChartData1 = [];
-           this.proceedureChartLabels1 = [];
-         data.data.length && data.data.forEach(res => {
+        this.proceedureChartLabels1 = [];
+         data.data.forEach(res => {
            this.proceedureChartData1.push(Math.round(res.total));
-           this.proceedureChartLabels1.push(res.item_name);
+           if(res.item_name != null){
+              this.proceedureChartLabels1.push(res.item_name);
+            } else {
+              this.proceedureChartLabels1.push(res.treat_code);
+            }
         });
        this.proceedureDentistChartData[0]['data'] = this.proceedureChartData1;
        this.proceedureDentistChartLabels = this.proceedureChartLabels1;
