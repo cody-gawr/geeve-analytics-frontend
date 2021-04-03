@@ -171,25 +171,31 @@
                 </mat-card-title>
                 <div class="card-body">
                   <div class="user_rate_listing" *ngIf="newPatientsTimeData.length > 0">
-                    <ul class="user-reffrance">
-                      <li class="list_rep r{{i+1}}" *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
-                        <div class="ur_users">
-                          <div class="ur_rank">{{i+1}}</div>
-                        </div>
+                    <ul>
+                      <div>
+                        <li *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
+                          <div class="hourly-rate-li-hover">
+                            <div class="ur_users">
+                              <div class="ur_rank">{{i+1}}</div>
+                            </div>
+                            <div class="ur_users_main">
+                              <div class="ur_user_name">
+                                <span class="user-icon" [ngStyle]="{ 'background-color': mockupColors[i] }">
+                                  {{ getShortName(newPatientsTimeD.referral_name )}}
+                                </span>
+                                <span class="client-name"> {{newPatientsTimeD.referral_name}}</span>
+                                <p class="ur_clinic" *ngIf="clinic_id =='all'">({{  newPatientsTimeD.clinic_name }})</p>
+                              </div>
+                              <div class="ur_users_number">
+                                {{newPatientsTimeD.patient_num}}
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </div>
 
-                        <div class="user_name">
-                          <span [ngStyle]="{ 'background-color': mockupColors[i] }">
-                            {{getShortName(newPatientsTimeD.referral_name)}}
-                          </span>
-                          {{newPatientsTimeD.referral_name}}
-                          <p class="ur_clinic" *ngIf="clinic_id =='all'">{{ newPatientsTimeD.clinic_name }}</p>
-                        </div>
-                        <div class="user_value">{{newPatientsTimeD.patient_num}}</div>
-
-                      </li>
                     </ul>
                   </div>
-
                   <div *ngIf="newPatientsTimeData.length <= 0" class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
