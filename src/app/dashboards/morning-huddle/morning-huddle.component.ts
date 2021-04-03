@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
+import { DatePipe } from '@angular/common'
 
 import { HeaderService } from '../../layouts/full/header/header.service';
 export interface PeriodicElement {
@@ -98,7 +99,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   
  @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService) { 
+  constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService, private datepipe: DatePipe) { 
   }
  ngOnInit(){
     $('#currentDentist').attr('did','all');
@@ -258,9 +259,6 @@ initiate_clinic() {
       }
     }); 
   } 
-
-
-
 
 
 
@@ -489,6 +487,15 @@ initiate_clinic() {
     var date = app_date + " "+start;
     var currentDate = new Date(date);
     return  new Date(currentDate.getTime() + duration*60000);
+  }
+
+  subtractDays(daysToSubtract) {
+    let todaysDate = new Date();
+    let selectedDate = new Date();
+    selectedDate.setDate(todaysDate.getDate()-daysToSubtract)
+    // console.log(`Todays date: ${todaysDate}`)
+    // console.log(`Selected date: ${selectedDate}`)
+    return selectedDate;
   }
 
 }
