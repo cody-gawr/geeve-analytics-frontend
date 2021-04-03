@@ -6,16 +6,15 @@
   <mat-tab label="Dentist Performance">
     <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
       <div class="morning-huddle-date">
-        <mat-form-field floatLabel="never">
-          <!-- <mat-label>Previous Days</mat-label> -->
-          <mat-select placeholder="Huddle Date" (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
-            <mat-option [value]="1">{{ subtractDays(1) | date:'MMM d, y'}} </mat-option>
-            <mat-option [value]="2">{{ subtractDays(2) | date:'MMM d, y'}}</mat-option>
-            <mat-option [value]="3">{{ subtractDays(3) | date:'MMM d, y'}}</mat-option>
-            <mat-option [value]="4">{{ subtractDays(4) | date:'MMM d, y'}}</mat-option>
-            <mat-option [value]="5">{{ subtractDays(5) | date:'MMM d, y'}}</mat-option>
-            <mat-option [value]="6">{{ subtractDays(6) | date:'MMM d, y'}}</mat-option>
-            <mat-option [value]="7">{{ subtractDays(7) | date:'MMM d, y'}}</mat-option>
+        <mat-form-field floatLabel="never" class="setPreviousDay">
+          <mat-select placeholder="Morning Huddle - {{  subtractDays(1) | date:'MMM d, y'}}" (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
+            <mat-option [value]="1">Morning Huddle - {{ subtractDays(1) | date:'MMM d, y'}} </mat-option>
+            <mat-option [value]="2">Morning Huddle - {{ subtractDays(2) | date:'MMM d, y'}}</mat-option>
+            <mat-option [value]="3">Morning Huddle - {{ subtractDays(3) | date:'MMM d, y'}}</mat-option>
+            <mat-option [value]="4">Morning Huddle - {{ subtractDays(4) | date:'MMM d, y'}}</mat-option>
+            <mat-option [value]="5">Morning Huddle - {{ subtractDays(5) | date:'MMM d, y'}}</mat-option>
+            <mat-option [value]="6">Morning Huddle - {{ subtractDays(6) | date:'MMM d, y'}}</mat-option>
+            <mat-option [value]="7">Morning Huddle - {{ subtractDays(7) | date:'MMM d, y'}}</mat-option>
           </mat-select>
         </mat-form-field>
         
@@ -531,7 +530,7 @@
   <!-- Patient Schedule Tab end -->
 
   <!-- Reminders Tab start -->  
-  <mat-tab label="Frontdesk Reminders">
+  <mat-tab label="Front Desk Reminders">
 
      <div class="morning-huddle-date">
         <strong>Current Day: {{ remindersRecallsOverdueDate }}</strong>        
@@ -666,7 +665,7 @@
 
 
   <!-- Followups Tab start -->
-  <mat-tab label="Frontdesk Followups">
+  <mat-tab label="Front Desk Followups">
       <div class="morning-huddle-date">
         <strong>Previous Day: {{ followupsUnscheduledPatientsDate }}</strong>        
       </div>    
