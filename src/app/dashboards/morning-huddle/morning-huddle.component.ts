@@ -5,7 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
-import { DatePipe } from '@angular/common'
 
 import { HeaderService } from '../../layouts/full/header/header.service';
 export interface PeriodicElement {
@@ -99,7 +98,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   
  @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService, private datepipe: DatePipe) { 
+  constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService) { 
   }
  ngOnInit(){
     $('#currentDentist').attr('did','all');
