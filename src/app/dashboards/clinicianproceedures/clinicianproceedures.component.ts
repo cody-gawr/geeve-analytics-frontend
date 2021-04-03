@@ -194,7 +194,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
       gradient7.addColorStop(1, '#168F7F');
       gradient7.addColorStop(0,  '#168F7F');
 
-this.doughnutChartColors = [{backgroundColor: [gradient7,gradient6,gradient5,gradient4,gradient3,gradient2,gradient1,gradient]}];
+this.doughnutChartColors = [{backgroundColor: [
+  '#6cd8ba',
+  '#b0fffa',
+  '#abb3ff',
+  '#feefb8',
+  '#ffb4b5',
+  '#fffcac',
+  '#d7f8ef'
+]}];
 this.lineChartColors = [
   {
     backgroundColor: gradient,
@@ -692,6 +700,14 @@ this.preoceedureChartColors = [
     { backgroundColor: '#68FFF9' },
     { backgroundColor: '#07BEB8' }
   ];
+  public ItemPredictorColors = [
+    { backgroundColor: '#6cd8ba' },
+    { backgroundColor: '#b0fffa' },
+    { backgroundColor: '#abb3ff' },
+    { backgroundColor: '#feefb8' },
+    { backgroundColor: '#ffb4b5' },
+    { backgroundColor: '#fffcac' }
+  ];
   public predictorRatioColors = [
     {
       backgroundColor: '#119682'
@@ -1075,7 +1091,7 @@ if(this._cookieService.get("user_type") == '4'){
         this.IPcolors= this.barChartColors;
       }
       else
-        this.IPcolors= this.stackedChartColors;
+        this.IPcolors= this.ItemPredictorColors;
       
        this.stackedChartDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data']);
        //this.productionTotalAverage = this.productionTotal/this.barChartData1.length;

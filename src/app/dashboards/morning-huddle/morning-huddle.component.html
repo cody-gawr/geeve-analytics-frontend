@@ -80,7 +80,7 @@
                       <img src="../assets/images/profit.png" alt="product-chart" /> 
                     </div>
                     <div class="production_description">
-                      <h4>Recall Rebook Rate</h4>
+                      <h4>Rebook Recall Rate</h4>
                       <div class="recall-retail-rate" *ngIf="recallRate">
                         <span class="change_value">{{ recallRate.rate }}%</span>
                         <!-- <div class="ttl_value_left">Goal: {{ recallRate.goal}}%</div> -->
@@ -130,10 +130,10 @@
                 <mat-card-title class="text-center">
                   <div class="prodction_main_box">
                     <div class="production_images">
-                      <img src="../assets/images/product-chart.png" alt="product-chart" /> 
+                      <img src="../assets/images/prod_rate.png" alt="total-visit" /> 
                     </div>
                     <div class="production_description">
-                      <h4>Treatment Rebook Rate</h4>
+                      <h4>Rebook Treatment Rate</h4>
                       <div class="price-section" *ngIf="treatmentRate">
                           
                           <span class="change_value">{{ treatmentRate.total}}%</span>
@@ -742,6 +742,79 @@
      <div class="morning-huddle-date">
         <strong>Current Day: {{ remindersRecallsOverdueDate }}</strong>        
       </div>
+      <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
+        <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="icon black">
+                    <i class="fas fa-user-alt"></i>
+                  </div>
+                  <div class="production_description">
+                    <h4>Appointments</h4>
+                    <div class="patients-num" >
+                      <span class="change_value">{{ todayPatients }}</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card> 
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mr0-md mh-matcard mh-matcard-red">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="icon orange">
+                    <i class="fas fa-coins"></i>
+                  </div>
+                  <div class="production_description">
+                    <h4>Due Balance</h4>
+                    <div class="patients-num">
+                      <span class="change_value">${{ todayUnscheduledBal | number:'1.0-0' }}</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-green">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="icon green">
+                    <span class="material-icons">access_alarm</span>
+                  </div>
+                  <div class="production_description">
+                    <h4>Unscheduled Hours</h4>
+                    <div class="patients-num">
+                      <span class="change_value">{{ todayUnscheduledHours }}</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-blue">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="icon purple">
+                    <i class="fas fa-phone-alt"></i>
+                  </div>
+                  <div class="production_description">
+                    <h4>Chair Utilisation Rate</h4>
+                    <div class="patients-num">
+                      <span class="change_value">50%</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+
 <mat-card class="table-card">
         <div class="DentistListSecRow mh-table patient_data-table_responsive">
 <table mat-table  matSort [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8">
@@ -803,6 +876,78 @@
       <div class="morning-huddle-date">
         <strong>Previous Day: {{ followupsUnscheduledPatientsDate }}</strong>        
       </div>    
+      <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
+        <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="icon red">
+                    <i class="far fa-calendar"></i>
+                  </div>
+                  <div class="production_description">
+                    <h4>Unscheduled Patients</h4>
+                    <div class="patients-num">
+                      <span class="change_value">{{ unscheduledPatients }}</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card> 
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mr0-md mh-matcard mh-matcard-red">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="icon blue">
+                    <span class="material-icons">access_alarm</span>
+                  </div>
+                  <div class="production_description">
+                    <h4>Unscheduled Tx</h4>
+                    <div class="patients-num">
+                      <span class="change_value">${{ unscheduledValue | number:'1.0-0' }}</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-green">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="icon red">
+                    <i class="far fa-calendar"></i>
+                  </div>
+                  <div class="production_description">
+                    <h4>No Shows</h4>
+                    <div class="patients-num">
+                      <span class="change_value"> {{ noShow }}</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg last mh-matcard mh-matcard-blue">
+            <mat-card class="dentistProduction sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="icon purple">
+                    <i class="fas fa-phone-alt"></i>
+                  </div>
+                  <div class="production_description">
+                    <h4>Post Op Calls</h4>
+                    <div class="patients-num">
+                      <span class="change_value">{{ todayPostopCalls }}</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
 <mat-card class="table-card">
   <mat-card-title>Unscheduled Patients</mat-card-title>
   <mat-card-content> 
