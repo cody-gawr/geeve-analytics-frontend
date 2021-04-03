@@ -138,7 +138,7 @@
                                   {{ getShortNameLeader(hourlyRateChartD.provider_name )}}
                                 </span>
                                 <span class="client-name">{{ hourlyRateChartD.provider_name }}</span>
-                                <p class="ur_clinic" *ngIf="clinic_id =='all'">{{ hourlyRateChartD.clinic_name }}</p>
+                                <p class="ur_clinic" *ngIf="clinic_id =='all'">({{ hourlyRateChartD.clinic_name }})</p>
                               </div>
                               <div class="ur_users_number">
                                 ${{ hourlyRateChartD.hourly_rate | number:'1.0-0'}}
