@@ -338,7 +338,7 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .sa_matcard_content .mat-card-title a i { color: #717272; }
 
-.sa_matcard_content .mat-card-title {text-align: left!important;font-size: 17px!important;color: #686d6c!important; align-items: center;border-bottom: 2px solid #f3f3f3!important;padding: 15px 30px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
+.sa_matcard_content .mat-card-title {text-align: left!important;font-size: 17px!important;color: #686d6c!important; align-items: center;border-bottom: 2px solid #f3f3f3!important;padding: 18px 30px 14px; display: -webkit-box; display: -ms-flexbox;display: flex;font-family: 'Gilroy-Bold';-webkit-box-pack: justify;-ms-flex-pack: justify;justify-content: space-between;}
 
 .card-body {padding: 20px}
 
@@ -1417,7 +1417,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .sa_hccard { background: transparent!important; }
 
-.ur_users { position: relative; width: 20%; float: left; margin-right: 8px; }
+.ur_users { position: relative; width: 24%; float: left; margin-right: 8px; }
 
 .ur_rank { color: #000; text-align: left;  font-size: 15px; font-weight: 600; height: 52px; display: flex; align-items: center; }
 
@@ -3769,6 +3769,8 @@ ul.download-sync-list {
     font-weight: 100;
     font-size: 12px;
     margin: 0px;
+    padding-left: 8px;
+    padding-top: 1px;
 }
 #snav .mat-nav-list .sub-item .child-sub-item {
     margin-top: 0px !important;
@@ -3897,7 +3899,6 @@ ul.download-sync-list {
 }
 
 .client-name{
-    margin-left:15px;
     color: #4d4d4d;
     font-size: 16px;
     font-weight: 500;
@@ -3932,7 +3933,7 @@ ul.download-sync-list {
     height: 32px;
     background-color: #c2c2c2;
     border-radius: 50%;
-    margin-right:15px;
+    margin-right:30px;
     text-align: center;
     display: flex;
     align-items: center;

@@ -204,14 +204,6 @@ export class MenuItems {
      param2 : '',
   },
   {
-    state: 'lost-opportunity',
-    name: 'Lost Opportunity',
-    type: 'link-lost-opportunity',
-    icon: 'fas fa-briefcase',
-    role:this.lostoppurtunityrole,
-    param2 : '',
-  }, 
-  {
     state: 'dashboards',
     name: 'Dashboards',
     type: 'sub-dashboards',
@@ -226,6 +218,14 @@ export class MenuItems {
     role:['2','3','4','5']
 
   },
+  {
+    state: 'lost-opportunity',
+    name: 'Lost Opportunity',
+    type: 'link-lost-opportunity',
+    icon: 'fas fa-briefcase',
+    role:this.lostoppurtunityrole,
+    param2 : '',
+  }, 
   {
     state: 'Settings',
     name: 'Settings',

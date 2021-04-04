@@ -261,9 +261,6 @@ initiate_clinic() {
 
 
 
-
-
-
   getFollowupsUnscheduledPatients(){
     this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
@@ -489,6 +486,15 @@ initiate_clinic() {
     var date = app_date + " "+start;
     var currentDate = new Date(date);
     return  new Date(currentDate.getTime() + duration*60000);
+  }
+
+  subtractDays(daysToSubtract) {
+    let todaysDate = new Date();
+    let selectedDate = new Date();
+    selectedDate.setDate(todaysDate.getDate()-daysToSubtract)
+    // console.log(`Todays date: ${todaysDate}`)
+    // console.log(`Selected date: ${selectedDate}`)
+    return selectedDate;
   }
 
 }
