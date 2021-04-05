@@ -25,7 +25,7 @@ import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 // import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 
-export interface Dentist {
+export interface Dentist { 
   providerId: string;
   name: string;
 }
@@ -1444,6 +1444,7 @@ public categoryExpensesLoader:any;
     var user_id;
     var clinic_id;
     this.totalDiscountChartLabels =[];
+    this.totalDiscountChartData = [];
     this.finTotalDiscountsLoader = true;    
   this.financesService.finTotalDiscounts(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
      this.totalDiscountChartDatares =[];
@@ -1773,7 +1774,7 @@ filterDate(duration) {
       this.currentText= 'This Financial Year';
       
      var date = new Date();
-      if ((date.getMonth() + 1) <= 3) {
+      if ((date.getMonth() + 1) <= 6) {
         this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
         } else {
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
@@ -2146,14 +2147,22 @@ private finTotalDiscountsTrend() {
     this.financesService.finTotalProductionTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
           this.finTotalProductionTrendLoader = false;
+          this.netProfitPercentChartTrend = [];
+                this.netProfitPercentChartTrendLabels = []; 
                 data.data.forEach(res => {  
                      this.totalProductionChartTrend1.push(Math.round(res.production));
-                   if(this.trendValue == 'c')
-                   this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                    else
+                     this.netProfitPercentChartTrend1.push(Math.round(res.production));
+                   if(this.trendValue == 'c'){
+                    this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                    this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                  } else{
                    this.totalProductionChartTrendLabels1.push(res.year);
+                    this.netProfitChartTrendLabels1.push(res.year);
+                  }
                   
                  });
+                this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
+                this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
               
               //console.log(this.totalProductionCollectionLabel);
                  //this.totalProductionChartTrend[0]['data'] = this.totalProductionChartTrend1;
@@ -2476,9 +2485,9 @@ this.trendxero=false;
                  this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
                  this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
             
-                 this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
+                // this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
 
-                 this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
+                 //this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
                  this.netProfitPmsChartTrend[0]['data'] = this.netProfitPmsChartTrend1;
 
                  this.netProfitPmsChartTrendLabels =this.netProfitPmsChartTrendLabels1;

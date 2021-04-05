@@ -99,7 +99,7 @@ deploy_dev:
   only: ['design']
 
 # Make Production Build
-build_master: 
+build_production: 
   stage: build
   script:
   - npm run build-prod
@@ -110,7 +110,7 @@ build_master:
   only: ['production']
 
 # Deploy Production Build
-deploy_master:
+deploy_production:
   image: python:latest  
   stage: deploy
   before_script:
