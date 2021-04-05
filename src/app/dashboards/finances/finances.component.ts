@@ -2148,12 +2148,18 @@ private finTotalDiscountsTrend() {
           this.finTotalProductionTrendLoader = false;
                 data.data.forEach(res => {  
                      this.totalProductionChartTrend1.push(Math.round(res.production));
-                   if(this.trendValue == 'c')
-                   this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                    else
+                     this.netProfitPercentChartTrend1.push(Math.round(res.production));
+                   if(this.trendValue == 'c'){
+                    this.totalProductionChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                    this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                  } else{
                    this.totalProductionChartTrendLabels1.push(res.year);
+                    this.netProfitChartTrendLabels1.push(res.year);
+                  }
                   
                  });
+                this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
+                this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
               
               //console.log(this.totalProductionCollectionLabel);
                  //this.totalProductionChartTrend[0]['data'] = this.totalProductionChartTrend1;
@@ -2476,9 +2482,9 @@ this.trendxero=false;
                  this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
                  this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
             
-                 this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
+                // this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
 
-                 this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
+                 //this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
                  this.netProfitPmsChartTrend[0]['data'] = this.netProfitPmsChartTrend1;
 
                  this.netProfitPmsChartTrendLabels =this.netProfitPmsChartTrendLabels1;
