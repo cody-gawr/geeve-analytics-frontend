@@ -1464,7 +1464,18 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
     color: #FFF;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.5s ease-in-out;
+    animation: tooltipIn 0.5s ease-in-out;    
+    z-index: 999;
+}
+@keyframes tooltipIn {
+    from {
+        visibility: hidden;
+        opacity: 0;
+    }
+    to {
+        visibility: visible;
+        opacity: 1;
+    }
 }
 .info-icon-container:hover .custom-tooltip {
    opacity: 1;

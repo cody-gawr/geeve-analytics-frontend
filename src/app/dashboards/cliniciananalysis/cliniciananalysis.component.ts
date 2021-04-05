@@ -17,6 +17,7 @@ import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+import { TooltipLayoutComponent } from '../../shared/tooltip/tooltip-layout.component';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -30,7 +31,7 @@ export interface Dentist {
   *AUTHOR - Teq Mavens
   */
 export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
-
+  TooltipLayout = TooltipLayoutComponent;
   @ViewChild("myCanvas") canvas: ElementRef;
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 

@@ -107,7 +107,11 @@
             <mat-card class="dentistProduction">
               <mat-card-content class="sa_matcard_content">
                 <mat-card-title class="text-center mb-0">Hourly Rate Leaders 
-                  <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon" />
+                 <div class="info-icon-container">
+                  <img tooltip="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+                    src="../assets/images/info-icon.png" 
+                    alt="info-icon" class="info-icon"/>                
+                </div>
                 </mat-card-title>
                 <!--$ {{production_p+production_c}}-->
                 <!-- <div *ngIf="maxHourlyRate > 0">
@@ -167,7 +171,11 @@
             <mat-card class="treatmentPlan">
               <mat-card-content class="sa_matcard_content">
                 <mat-card-title class="text-center">Referral Leaders
-                  <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon" />
+                <div class="info-icon-container">
+                  <img tooltip="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+                    src="../assets/images/info-icon.png" 
+                    alt="info-icon" class="info-icon"/>                
+                </div> 
                 </mat-card-title>
                 <div class="card-body">
                   <div class="user_rate_listing" *ngIf="newPatientsTimeData.length > 0">
@@ -243,7 +251,11 @@
           <mat-card class="dentistProduction">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">Pre-booked Visits
-                <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon" />
+                <div class="info-icon-container">
+                  <img tooltip="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+                    src="../assets/images/info-icon.png" 
+                    alt="info-icon" class="info-icon"/>                
+                </div>
               </mat-card-title>
               <div class="card-body no-data-placeholder">
                 <rg-gauge-chart class="green_guagechart" *ngIf="visits_f > 0" [canvasWidth]="canvasWidth"
@@ -263,7 +275,11 @@
           <mat-card class="treatmentPlan">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">Chair Utilisation Rate
-                <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon" />
+                <div class="info-icon-container">
+                  <img tooltip="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+                    src="../assets/images/info-icon.png" 
+                    alt="info-icon" class="info-icon"/>                
+                </div>
               </mat-card-title>
               <div class="card-body no-data-placeholder">
                 <rg-gauge-chart class="yellow_guagechart" *ngIf="utilisation_rate_f > 0" [canvasWidth]="canvasWidth"
@@ -284,7 +300,11 @@
           <mat-card class="noPatients">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">Unscheduled Production
-                <img class="info-icon" src="../assets/images/info-icon.png" alt="info-icon" />
+                <div class="info-icon-container">
+                  <img tooltip="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+                    src="../assets/images/info-icon.png" 
+                    alt="info-icon" class="info-icon"/>                
+                </div>
               </mat-card-title>
               <div class="chart card-body no-data-placeholder">
                 <rg-gauge-chart [ngClass]="{'small-fonts': (unscheduled_production_f.toString().length>5), 'blue_guagechart': true}" *ngIf="unscheduled_production_f > 0" [canvasWidth]="canvasWidth" [needleValue]="unscheduled_production_f" [options]="optionsunscheduled" [centralLabel]="'$' + (unscheduled_production_f| currencySuffix:2)"></rg-gauge-chart>
