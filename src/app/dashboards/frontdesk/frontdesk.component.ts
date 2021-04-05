@@ -845,7 +845,6 @@ public currentText;
       this.currentText = 'This Financial Year';
 
       var date = new Date();
-      alert(date.getMonth());
       if ((date.getMonth() + 1) <= 6) {
         this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
       } else {
