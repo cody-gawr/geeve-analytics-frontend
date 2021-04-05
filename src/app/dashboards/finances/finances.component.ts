@@ -1444,6 +1444,7 @@ public categoryExpensesLoader:any;
     var user_id;
     var clinic_id;
     this.totalDiscountChartLabels =[];
+    this.totalDiscountChartData = [];
     this.finTotalDiscountsLoader = true;    
   this.financesService.finTotalDiscounts(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
      this.totalDiscountChartDatares =[];
