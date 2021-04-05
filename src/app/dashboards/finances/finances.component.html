@@ -543,7 +543,7 @@ expenses_card custom_ngx_cw01" >
                   </div>
                 </div>
               <div  style="height: 280px" >
-                <canvas *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  >0" class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrend" [labels]="netProfitChartTrendLabels" [options]="labelBarOptions" [legend]="false"
+                <canvas *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  > 0" class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrend" [labels]="netProfitChartTrendLabels" [options]="labelBarOptions" [legend]="false"
           [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar" (chartClick)="chartClicked($event)"> </canvas>
                 <!-- <img src='../assets/images/nodata02.png' *ngIf="" class="blankChart"> -->
                 <div *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  <=0 && finNetProfitTrendLoader == false" class="no-data-placeholder"> 
