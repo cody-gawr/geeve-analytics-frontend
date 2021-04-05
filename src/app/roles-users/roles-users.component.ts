@@ -40,7 +40,7 @@ show_dentist = false;
     }
     save(data) {
     $('.mat-form-control').click();
-    if(data.display_name != undefined && data.email != undefined && data.user_type != '' &&  this.selectedClinics.value != ''){
+    if(data.display_name != undefined && data.email != undefined && data.user_type != '' &&  this.selectedClinics.value != ''){      
       data.selectedClinics= this.selectedClinics.value;
       data.selected_dentist = this.selected_dentist;
       if(this.show_dentist == true)
@@ -73,7 +73,11 @@ unselectDentist() {
 }
 
 selectedDentist(event,i,clinic_id) {
-    this.selected_dentist['clinic'+clinic_id]= event;
+   if(event != 0){
+      this.selected_dentist['clinic'+clinic_id]= parseInt(event);    
+    } else {
+      delete this.selected_dentist['clinic'+clinic_id];    
+    }
 }
 
 
