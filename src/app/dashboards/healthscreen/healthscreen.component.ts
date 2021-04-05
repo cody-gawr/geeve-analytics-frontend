@@ -248,7 +248,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.utilisation_rate_f = 0;
     this.healthscreenService.commonCall(this.clinic_id,startDate,endDate,'chUtilisationRate').subscribe((data) => {
       if(data.message == 'success'){
-        this.utilisation_rate_f = data.data;
+        this.utilisation_rate_f = Math.round(data.data);
       }        
     }, error => {
       $('.ajax-loader').hide();
