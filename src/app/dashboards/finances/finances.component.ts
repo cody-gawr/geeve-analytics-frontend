@@ -2147,6 +2147,8 @@ private finTotalDiscountsTrend() {
     this.financesService.finTotalProductionTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
           this.finTotalProductionTrendLoader = false;
+          this.netProfitPercentChartTrend = [];
+                this.netProfitPercentChartTrendLabels = []; 
                 data.data.forEach(res => {  
                      this.totalProductionChartTrend1.push(Math.round(res.production));
                      this.netProfitPercentChartTrend1.push(Math.round(res.production));
