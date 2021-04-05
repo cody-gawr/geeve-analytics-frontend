@@ -45,7 +45,33 @@ export class FinancesComponent implements AfterViewInit {
   stackedChartColorsBar;
   stackedChartColorsBar1;
   public xeroConnect: boolean = false;
-
+  ProdByClinicianColors = [
+    { backgroundColor: '#6edbba' },
+    { backgroundColor: '#fffcac' },  
+    { backgroundColor: '#ffb4c5' },  
+    { backgroundColor: '#feefb8' },  
+    { backgroundColor: '#d7f8ef' },  
+    { backgroundColor: '#b0fffb' },  
+    { backgroundColor: '#b0ffga' },  
+    { backgroundColor: '#abb3ff' },
+    { backgroundColor: '#b0fffa' },
+    { backgroundColor: '#ffb4b5' },
+    { backgroundColor: '#d7f8ef' },
+    { backgroundColor: '#fffdac' },
+    { backgroundColor: '#feg0b8' },
+    { backgroundColor: '#4cdfae' }  ,
+    { backgroundColor: '#6edcba' },
+    { backgroundColor: '#ffdcac' },  
+    { backgroundColor: '#ffa4c5' },  
+    { backgroundColor: '#fecfb8' },  
+    { backgroundColor: '#d7d8ef' },  
+    { backgroundColor: '#b0dffb' },  
+    { backgroundColor: '#b0faga' },     
+    { backgroundColor: '#c0fbga' },     
+    { backgroundColor: '#b0facb' },     
+    { backgroundColor: '#c0ecdb' },     
+    { backgroundColor: '#c0ecef' },     
+  ]
   preoceedureChartColors;
   subtitle: string;
    public clinic_id:any ={};
@@ -2000,16 +2026,17 @@ private finProductionByClinicianTrend() {
     this.financesService.finProductionByClinicianTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
           this.finProductionByClinicianTrendLoader = false;
-                data.data.forEach(res => {  
+                data.data.forEach(res => {                   
                    res.val.forEach((result,key) => {
                       if(typeof(this.productionChartTrend[key]) == 'undefined'){
-                        this.productionChartTrend[key] = [];
+                        this.productionChartTrend[key] = { data: [],label: '' };
                       }
                       if(typeof(this.productionChartTrend[key]['data']) == 'undefined'){
                         this.productionChartTrend[key]['data'] = [];
                       }
-                     this.productionChartTrend[key]['data'].push(Math.round(result.prod_per_clinician));
-                     this.productionChartTrend[key]['label'] = result.provide_name;
+                     this.productionChartTrend[key]['data'].push(Math.round(parseInt(result.prod_per_clinician)));
+                     this.productionChartTrend[key]['label'] = result.provider_name;
+                    
                    });
                   if(this.trendValue == 'c')
                     this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
