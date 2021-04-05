@@ -2457,9 +2457,9 @@ this.trendxero=false;
                      this.netProfitChartTrend1.push(Math.round(res.val.net));
                      else
                      this.netProfitChartTrend1.push(0);
-                     if(res.val.production) 
+                     //if(res.val.production) 
                     // this.netProfitPercentChartTrend1.push(Math.round(res.val.production));
-                     else
+                     //else
                     // this.netProfitPercentChartTrend1.push(0);       
                     if(res.val.pms)
                      this.netProfitPmsChartTrend1.push(Math.round(res.val.pms));
