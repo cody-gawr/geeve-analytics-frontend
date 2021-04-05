@@ -45,7 +45,7 @@ export class ClinicSettingsComponent implements OnInit {
           public xero_link;
           public xeroConnect = false;
           public xeroOrganization='';
-          public workingDays:any = {sunday: false,monday: false,tuesday: false,wednesday: false,thursday: false,friday: false,saturday: false};       
+          public workingDays:any = {sunday: false,monday: true,tuesday: true,wednesday: true,thursday: true,friday: true,saturday: true};       
   constructor( private toastr: ToastrService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
     this.options = fb.group({
       hideRequired: false,
@@ -67,14 +67,13 @@ export class ClinicSettingsComponent implements OnInit {
     
      this.form = this.fb.group({
       clinicName: [null, Validators.compose([Validators.required])],
-      contactName: [null, Validators.compose([Validators.required])],
-      phoneNo: [null, Validators.compose([Validators.required])],
-      clinicEmail: [null, Validators.compose([Validators.required])],
-      address: [null, Validators.compose([Validators.required])],
+      contactName: [null],
+      phoneNo: [null],
+      clinicEmail: [null],
+      address: [null],
       // practice_size: [null, Validators.compose([Validators.required])],
-      post_op_calls: [null, Validators.compose([Validators.required])],      
-      fta_uta: [null, Validators.compose([Validators.required])],      
-        
+      post_op_calls: [null],      
+      fta_uta: [null, Validators.compose([Validators.required])],              
       // facebook: [null],
       // twitter: [null],
       // linkedin: [null],

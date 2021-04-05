@@ -2515,7 +2515,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.currentText = 'This Financial Year';
 
         var date = new Date();
-        if ((date.getMonth() + 1) <= 3) {
+        if ((date.getMonth() + 1) <= 6) {
           this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
         } else {
           this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
