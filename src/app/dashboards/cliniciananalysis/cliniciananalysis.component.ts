@@ -1178,9 +1178,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.gaugeLabel = res.provider_name;
               this.gaugeLabel = res.provider_name;
           });       
-          this.productionTotal = Math.round(data.total_average);
+          this.productionTotal = Math.round(data.total);
           this.productionTotalPrev = Math.round(data.total_ta);
-          this.productionTotalAverage= Math.round(data.total);
+          this.productionTotalAverage= Math.round(data.total_average);
           this.productionGoal = data.goals;
           if (this.productionTotal > this.productionTotalPrev){
             this.productionTooltip = 'up';
