@@ -417,7 +417,7 @@ expenses_card custom_ngx_cw01" >
         <div fxFlex="calc(64% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio total_val md_mrn custom_ngx_cw05">
           <mat-card class="" >
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Total Production & Collection<div class="info-icon-container">
+              <mat-card-title class="text-center">Total Production & Collection 123<div class="info-icon-container">
                 <img tooltip="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
                   src="../assets/images/info-icon.png" 
                   alt="info-icon" class="info-icon"/>                
@@ -771,7 +771,7 @@ expenses_card custom_ngx_cw01" >
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="" >
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Total Production & Collection<div class="info-icon-container">
+              <mat-card-title class="text-center">Total Production & Collection 000<div class="info-icon-container">
                 <img tooltip="Lorem Ipsum is simply dummy text of the printing and typesetting industry."
                   src="../assets/images/info-icon.png" 
                   alt="info-icon" class="info-icon"/>                
@@ -787,8 +787,10 @@ expenses_card custom_ngx_cw01" >
               </mat-card-title>
               <div class="card-body">
               <div  style="height: 280px">
-                <canvas class="trendtotalProduction" *ngIf="totalProductionCollectionLabel.length  > 0" baseChart [datasets]="totalProductionCollection" [labels]="totalProductionCollectionLabel" [options]="labelBarOptions" [legend]="true"
-          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors" (chartClick)="chartClicked($event)"> </canvas>
+                <canvas class="trendtotalProduction" *ngIf="totalProductionCollectionLabel.length  > 0" baseChart 
+                  [datasets]="totalProductionCollection" [labels]="totalProductionCollectionLabel" 
+                  [options]="labelBarOptions" [legend]="true"
+          [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [colors]="barChartColors" (chartClick)="chartClicked($event)"> </canvas>
                 <div *ngIf="totalProductionCollectionLabel.length  <=0 && finCollectionTrendLoader == false" class="no-data-placeholder"> 
                   <div class="sa_nodata_div">
                   </div>

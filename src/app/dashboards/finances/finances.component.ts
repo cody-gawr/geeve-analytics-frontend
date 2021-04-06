@@ -122,6 +122,7 @@ single = [
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   profitChartTitles = ['Production', 'Net Profit', 'Net Profit %'];
+  barChartColors=[{backgroundColor: '#39acac'}, {backgroundColor: '#48daba'}];
   constructor(
     private toastr: ToastrService,
     private financesService: FinancesService, 
@@ -584,21 +585,22 @@ single = [
             display: true
          },
           tooltips: {
-            mode: 'x-axis',
-             custom: function(tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
+//             mode: 'x-axis',
+//              custom: function(tooltip) {
+//         if (!tooltip) return;
+//         // disable displaying the color box;
+//         tooltip.displayColors = false;
+//       },
   callbacks: {
      label: function(tooltipItems, data) { 
+       let label = data['datasets'][tooltipItems.datasetIndex]['label'];
         let currency = tooltipItems.yLabel;
         currency = currency.toString().split('-').join('').split(/(?=(?:...)*$)/).join(',');
-        return tooltipItems.xLabel + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;
+        return `${label} : ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;
      },
-       title: function(tooltipItem, data) {
-          return;
-        }
+      //  title: function(tooltipItem, data) {
+      //     return;
+      //   }
   }
 }
   };
@@ -2176,6 +2178,11 @@ private finTotalDiscountsTrend() {
           this.finTotalProductionTrendLoader = false;
           this.netProfitPercentChartTrend = [];
                 this.netProfitPercentChartTrendLabels = []; 
+                if(!this.netProfitPercentChartTrend[0]) {
+                  this.netProfitPercentChartTrend[0] = {
+                    data: []
+                  }
+                }
                 data.data.forEach(res => {  
                      this.totalProductionChartTrend1.push(Math.round(res.production));
                      this.netProfitPercentChartTrend1.push(Math.round(res.production));
