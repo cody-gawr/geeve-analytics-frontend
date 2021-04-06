@@ -478,7 +478,7 @@ public fdWorkTimeAnalysisLoader:boolean;
      if(data.data.length >0) {
         data.data.forEach(res => {
           if(res.util_rate > 0) {
-             this.workTimeData1.push(Math.round(res.util_rate));
+             this.workTimeData1.push(Math.round(res.util_rate * 100));
             this.workTimeLabels1.push(res.app_book_name);
           }
         });
@@ -1038,7 +1038,7 @@ toggleChangeProcess(){
        if(data.message == 'success'){
         this.fdwtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
-                     this.wtaChartTrend1.push(Math.round(res.util_rate));
+                     this.wtaChartTrend1.push(Math.round(res.util_rate * 100));
                    if(this.trendValue == 'c')
                    this.wtaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
