@@ -18,6 +18,7 @@ import { ChartService } from '../chart.service';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { TooltipLayoutComponent } from '../../shared/tooltip/tooltip-layout.component';
+import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -34,7 +35,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   TooltipLayout = TooltipLayoutComponent;
   @ViewChild("myCanvas") canvas: ElementRef;
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
-
+  tooltipData: ITooltipData = {
+    title: 'Open quick search',
+    info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+  }; 
   lineChartColors;
   subtitle: string;
   public id: any = {};

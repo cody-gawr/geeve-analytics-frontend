@@ -1481,6 +1481,11 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
    opacity: 1;
    visibility: visible;
 }
+.lost-opportunity-info-icon {
+    position: absolute;
+    right: 20px;
+    top: 16px;
+}
 .tooltip-title-container {
     display: flex;
     justify-content: space-between;

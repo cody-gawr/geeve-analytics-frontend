@@ -25,6 +25,7 @@ import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
+import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 
 export interface Dentist {
   providerId: string;
@@ -37,6 +38,10 @@ export interface Dentist {
 export class MarketingComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas2: ElementRef;
     @ViewChild("revenueRefChart") revenueRefChart: BaseChartDirective;
+    tooltipData: ITooltipData = {
+      title: 'Open quick search',
+      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+  };
   closeResult: string;
   lineChartColors;
   predictedChartColors;

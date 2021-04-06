@@ -17,6 +17,7 @@ import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
+import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -30,6 +31,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
    @ViewChild("myCanvas") canvas: ElementRef;
   mockupColors = ['#6edbbb', '#ffd32d', '#abb3ff', '#b0fffa', '#ffb4b5'];
   lineChartColors;
+  tooltipData: ITooltipData = {
+    title: 'Open quick search',
+    info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+};
   subtitle: string;
   public id:any ={};
   public clinic_id:any ={};

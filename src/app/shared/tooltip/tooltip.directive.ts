@@ -1,6 +1,10 @@
 
-import { ComponentFactoryResolver, ComponentRef, Directive, ElementRef, HostListener, Injector, Input, ReflectiveInjector, Renderer2, TemplateRef, Type, ViewContainerRef, ViewRef } from '@angular/core';
+import { ComponentFactoryResolver, ComponentRef, Directive, ElementRef, HostListener, Input, ReflectiveInjector, ViewContainerRef } from '@angular/core';
 import { TooltipComponent } from './tooltip.component';
+export interface ITooltipData {
+  title: string,
+  info?: string
+};
 
 @Directive({
   selector: '[tooltip]'
@@ -8,12 +12,10 @@ import { TooltipComponent } from './tooltip.component';
 
 export class TooltipDirective {
   // We can pass string, template or component
-  @Input('tooltip') content : string | TemplateRef<any> | Type<any>;
+  @Input('tooltip') content : ITooltipData;
   private componentRef : ComponentRef<TooltipComponent>;
-
+  
   constructor( private element : ElementRef,
-               private renderer : Renderer2,
-               private injector: Injector,
                private resolver : ComponentFactoryResolver,
                private vcr : ViewContainerRef ) {
   }
@@ -28,32 +30,19 @@ export class TooltipDirective {
         useValue: {
           host: this.element.nativeElement
         }
+      },
+      {
+        provide:  'data',
+        useValue: this.content
       }
     ]);
-    this.componentRef = this.vcr.createComponent(factory, 0, injector, this.generateNgContent());
+    this.componentRef = this.vcr.createComponent(factory, 0, injector);
   }
 
-  generateNgContent() {
-    if ( typeof this.content === 'string' ) {
-      const element = this.renderer.createText(this.content);
-      return [ [ element ] ];
-    }
-
-    if ( this.content instanceof TemplateRef ) {
-      const viewRef = this.content.createEmbeddedView({});
-      return [ viewRef.rootNodes ];
-    }
-
-    // Else it's a component
-    const factory = this.resolver.resolveComponentFactory(this.content);
-    const viewRef = factory.create(this.injector);
-    return [ [ viewRef.location.nativeElement ] ];
+  @HostListener('mouseout')
+  mouseout() {
+    this.destroy();
   }
-
-  // @HostListener('mouseout')
-  // mouseout() {
-  //   this.destroy();
-  // }
 
   destroy() {
     this.componentRef && this.componentRef.destroy();
