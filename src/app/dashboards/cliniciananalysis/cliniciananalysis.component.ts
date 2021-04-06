@@ -2233,7 +2233,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.hourlyRateChartData[0]['data'] = this.hourlyRateChartData1;
         this.hourlyRateChartLabels = this.hourlyRateChartLabels1;
-        this.hourlyRateChartAverage = Math.round(data.total);
+        this.hourlyRateChartAverage = Math.round(data.total_average);
         this.hourlyRateChartAveragePrev = Math.round(data.total_ta);
         this.hourlyRateChartGoal = data.goals;
         if (this.user_type == '4' && this.childid != '') {
@@ -2333,7 +2333,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         this.hourlyGoal = data.goals;
         this.hourlyRateChartAveragePrev = data.total_ta;
-        this.hourlyRateChartAverage = data.total;
+        this.hourlyRateChartAverage = data.total_average;
         if (this.hourlyValue >= this.hourlyRateChartAveragePrev)
           this.hourlyRateChartTooltip = 'up';
         if (this.hourlyValue > this.hourlyGoal)
