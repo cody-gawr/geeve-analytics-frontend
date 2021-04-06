@@ -110,7 +110,7 @@ single = [
   showLabels = true;
   explodeSlices = false;
   doughnut = false;
-  arcWidth = 0.65;
+  arcWidth = 0.75;
   rangeFillOpacity = 0.75;
   pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
   totalDiscountPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
