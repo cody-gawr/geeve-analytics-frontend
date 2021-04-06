@@ -32,7 +32,8 @@ export class StepperHeaderService  {
     // Items Predictor Analysis 
     logout(id): Observable<any> {
             const formData = new FormData();
-            return this.http.post(this.apiUrl +"/users/userLogout", formData)
+            var header = this.getHeaders();
+            return this.http.post(this.apiUrl +"/users/userLogout", formData,{ headers: header})
             .pipe(map((response: Response) => {
                             return response;
                         })

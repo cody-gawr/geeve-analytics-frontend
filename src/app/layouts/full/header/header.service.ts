@@ -26,7 +26,7 @@ export class HeaderService {
         return headers;
     }
     // Items Predictor Analysis 
-    logout(id): Observable<any> {
+    logout(): Observable<any> {
             const formData = new FormData();
             var header = this.getHeaders();            
             return this.http.post(this.apiUrl +"/users/userLogout", formData,  { headers: header })
