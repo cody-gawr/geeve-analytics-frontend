@@ -1996,7 +1996,7 @@ toggleChangeProcess(){
     this.finTotalDiscountsTrend();
   //  this.finOverdueAccountsTrend();
     this.finTotalProductionTrend();
-    this.finCollectionTrend();
+    //this.finCollectionTrend();
     this.finProductionPerVisitTrend();
   //  this.finNetProfitTrend();
    // this.finNetProfitPercentTrend();
@@ -2173,16 +2173,13 @@ private finTotalDiscountsTrend() {
   this.totalProductionChartTrend1=[];
     var user_id;
     var clinic_id;
-    this.financesService.finTotalProductionTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+    this.financesService.finTotalProductionTrend(this.clinic_id,this.trendValue).subscribe((data) => {      
+      this.netProfitChartTrendLabels=[];
+      this.netProfitChartTrendLabels1=[];
+      this.totalProductionChartTrendLabels1=[];
        if(data.message == 'success'){
-          this.finTotalProductionTrendLoader = false;
-          this.netProfitPercentChartTrend = [];
-                this.netProfitPercentChartTrendLabels = []; 
-                if(!this.netProfitPercentChartTrend[0]) {
-                  this.netProfitPercentChartTrend[0] = {
-                    data: []
-                  }
-                }
+          this.finTotalProductionTrendLoader = false;    
+      
                 data.data.forEach(res => {  
                      this.totalProductionChartTrend1.push(Math.round(res.production));
                      this.netProfitPercentChartTrend1.push(Math.round(res.production));
@@ -2196,12 +2193,10 @@ private finTotalDiscountsTrend() {
                   
                  });
                 this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
-                this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
-              
-              //console.log(this.totalProductionCollectionLabel);
-                 //this.totalProductionChartTrend[0]['data'] = this.totalProductionChartTrend1;
-
-                // this.totalProductionChartTrendLabels =this.totalProductionChartTrendLabels1; 
+                this.netProfitChartTrendLabels = this.netProfitChartTrendLabels1;             
+                this.totalProductionChartTrend[0]['data'] = this.totalProductionChartTrend1;
+                this.totalProductionChartTrendLabels =this.totalProductionChartTrendLabels1; 
+                this.finCollectionTrend();
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -2245,7 +2240,7 @@ private finTotalDiscountsTrend() {
                    this.collectionChartTrendLabels1.push(res.year);
                   
                  });
-                  this.totalProductionCollection[0]['data'] =  this.totalProductionChartTrend1;
+                this.totalProductionCollection[0]['data'] =  this.totalProductionChartTrend1;
                 this.totalProductionCollection[1]['data'] =   this.collectionChartTrend1;
                 this.totalProductionCollectionLabel = this.totalProductionChartTrendLabels1;
 
@@ -2445,7 +2440,7 @@ private finTotalDiscountsTrend() {
 trendxero=false;
   private finNetProfitPMSTrend() {
       this.netProfitChartTrendLabels1=[];
-  this.netProfitChartTrendLabels=[];
+  
   this.netProfitChartTrend1= [];
   this.finNetProfitTrendLoader = true;
     this.finNetProfitPMSTrendLoader = true;
@@ -2469,7 +2464,7 @@ this.trendxero=false;
 
        if(data.message == 'success'){
          this.netProfitChartTrendLabels1=[];
-  this.netProfitChartTrendLabels=[];
+  
   this.netProfitChartTrend1= [];
         this.netProfitPmsChartTrendLabels1=[];
   this.netProfitPmsChartTrend1= [];
@@ -2491,24 +2486,24 @@ this.trendxero=false;
                      this.netProfitChartTrend1.push(Math.round(res.val.net));
                      else
                      this.netProfitChartTrend1.push(0);
-                     if(res.val.production) 
-                     this.netProfitPercentChartTrend1.push(Math.round(res.val.production));
-                     else
-                     this.netProfitPercentChartTrend1.push(0);       
+                     //if(res.val.production) 
+                    // this.netProfitPercentChartTrend1.push(Math.round(res.val.production));
+                     //else
+                    // this.netProfitPercentChartTrend1.push(0);       
                     if(res.val.pms)
                      this.netProfitPmsChartTrend1.push(Math.round(res.val.pms));
                    else
                      this.netProfitPmsChartTrend1.push(0);
 
                    if(this.trendValue == 'c'){
-                   this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+                   //this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                    this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));                    
                    this.netProfitPmsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
              //      this.expensesChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
 
                  }
                  else {
-                   this.netProfitChartTrendLabels1.push(res.duration);
+                  // this.netProfitChartTrendLabels1.push(res.duration);
                    this.netProfitPercentChartTrendLabels1.push(res.duration);                    
                    this.netProfitPmsChartTrendLabels1.push(res.duration);
                    //this.expensesChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
@@ -2517,11 +2512,11 @@ this.trendxero=false;
                   
                  });
                  this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
-                 this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
-            
-                // this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
 
-                 //this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
+                 //this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1;             
+                 //this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
+
+                this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
                  this.netProfitPmsChartTrend[0]['data'] = this.netProfitPmsChartTrend1;
 
                  this.netProfitPmsChartTrendLabels =this.netProfitPmsChartTrendLabels1;
