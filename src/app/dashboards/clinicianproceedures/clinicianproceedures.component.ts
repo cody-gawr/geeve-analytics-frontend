@@ -1035,16 +1035,17 @@ if(this._cookieService.get("user_type") == '4'){
 
 
   this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
-       if(data.message == 'success'){
-   
         this.buildChartLoader =false;
-          this.stackedChartData1 = [];
-          this.stackedChartData2 = [];
-          this.stackedChartData3 = [];
-          this.stackedChartData4 = [];
-          this.stackedChartData5 = [];
-          this.stackedChartLabels1 =[];
-          this.stackedChartLabels =[];
+        this.stackedChartData1 = [];
+        this.stackedChartData2 = [];
+        this.stackedChartData3 = [];
+        this.stackedChartData4 = [];
+        this.stackedChartData5 = [];
+        this.stackedChartLabels1 =[];
+        this.stackedChartLabels =[];
+        this.stackedChartDataMax = 0;
+       if(data.message == 'success'){   
+
         if(data && data.data && data.data.length <=0) {
 
         }else {
@@ -1112,6 +1113,7 @@ if(this._cookieService.get("user_type") == '4'){
     var clinic_id;
   this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
         this.buildChartDentistLoader = false;
+        this.itemPredictedChartDataMax = 0;
        if(data.message == 'success' && data.data && data.data.length){
           this.itemPredictedChartData1 = [];
            this.itemPredictedChartLabels=[];
@@ -1139,8 +1141,6 @@ if(this._cookieService.get("user_type") == '4'){
           //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
 
           this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
-       } else {
-          this.itemPredictedChartDataMax = 0;
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1618,7 +1618,9 @@ public doughnutChartColors1;
         this.pieChartInternalTotal = 0;
         this.pieChartExternalTotal =0;
         this.pieChartCombinedTotal = 0;
-
+        this.pieChartDataMax1 = 0;
+        this.pieChartDataMax2 = 0;
+        this.pieChartDataMax3 = 0;
         this.pieChartInternalPrevTotal = 0;
         this.pieChartExternalPrevTotal = 0;
         this.pieChartCombinedPrevTotal = 0;
@@ -1687,32 +1689,33 @@ public doughnutChartColors1;
 
   //Referral to Other Clinicians Internal / External
   private buildChartReferralDentist() {
-        var user_id;
-    var clinic_id;
-    this.pieChartDataMax1=0;
-this.pieChartDataMax2=0;
-this.pieChartDataMax3=0;
- this.pieChartLabelsres1 = [];
-           this.pieChartLabelsres2 = [];
-          this.pieChartLabelsres3=[];
-        this.pieChartInternalPrevTotal = 0;
-        this.pieChartExternalPrevTotal = 0;
-        this.pieChartCombinedPrevTotal = 0;
-        this.pieChartInternalPrevTooltip = 'down';
-        this.pieChartExternalPrevTooltip = 'down';
-        this.pieChartCombinedPrevTooltip = 'down';
+      var user_id;
+      var clinic_id;
+      this.pieChartLabelsres1 = [];
+      this.pieChartLabelsres2 = [];
+      this.pieChartLabelsres3=[];
+      this.pieChartInternalPrevTotal = 0;
+      this.pieChartExternalPrevTotal = 0;
+      this.pieChartCombinedPrevTotal = 0;
+      this.pieChartInternalPrevTooltip = 'down';
+      this.pieChartExternalPrevTooltip = 'down';
+      this.pieChartCombinedPrevTooltip = 'down';
  this.clinic_id && this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success'){
-          this.pieChartLabelsres1 = [];
-          this.pieChartLabelsres2 = [];
-          this.pieChartLabelsres3=[];
-          this.pieChartInternalTotal = 0;
-          this.pieChartExternalTotal = 0;
-          this.pieChartCombinedTotal =0;
-          this.pieChartDatares1 = [];
-          this.pieChartDatares2 = [];
-          this.pieChartDatares3 = [];
-          this.pieChartLabelsres = [];
+      this.pieChartLabelsres1 = [];
+      this.pieChartLabelsres2 = [];
+      this.pieChartLabelsres3=[];
+      this.pieChartInternalTotal = 0;
+      this.pieChartExternalTotal = 0;
+      this.pieChartCombinedTotal =0;
+      this.pieChartDatares1 = [];
+      this.pieChartDatares2 = [];
+      this.pieChartDatares3 = [];
+      this.pieChartLabelsres = [];
+      this.pieChartDataMax1 = 0;
+      this.pieChartDataMax2 = 0;
+      this.pieChartDataMax3 = 0;
+       if(data.message == 'success' && data.data.length){
+     
         data.data.forEach(res => {
           if(res.total>0) {
               if(res.internal>0) {
@@ -1755,10 +1758,6 @@ this.pieChartDataMax3=0;
        this.pieChartDataMax1 = Math.max(...this.pieChartData1);
        this.pieChartDataMax2 = Math.max(...this.pieChartData2);
        this.pieChartDataMax3 = Math.max(...this.pieChartData3);
-       } else {
-        this.pieChartDataMax1 = 0;
-        this.pieChartDataMax2 = 0;
-        this.pieChartDataMax3 = 0;
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
