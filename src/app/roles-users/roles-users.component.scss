@@ -5,3 +5,9 @@
     position: relative;
     background: none;
 }
+::ng-deep .mat-select-panel{
+    min-width: 100% !important;
+}
+::ng-deep .cdk-overlay-pane {
+    transform: none !important;
+}

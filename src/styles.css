@@ -2039,12 +2039,46 @@ img { max-width: 100%; max-height: 100%; }
     max-width: calc(100% - 20px);
     margin: auto;
 }
-.sa_forms_design .sa_select {
+.sa_forms_design .sa_select,  .sa_forms_design .mat-select{
     background: url(/assets/img/angle-arrow-down.png) 96% 16px/12px no-repeat;
     padding-right: 25px!important;
- background-position: calc(100% - 10px) 16px;
+    background-position: calc(100% - 10px) 14px;
     background-size: 10px;
 }
+.sa_forms_design .mat-select .mat-select-arrow-wrapper {
+    opacity: 0;    
+}
+.select-client .mat-select .mat-select-trigger {
+    width: 100%;
+}
+.select-client .mat-select .mat-select-value {
+    padding: 10px;
+    width: 100%;
+    display: block;
+    max-width: 100%;
+}
+.select-client .mat-select {
+    padding: 0px!important;
+}
+.select-client .mat-select .mat-select-panel {
+    transform: none !important;
+    min-width: 100% !important;
+    width: 100%;
+}
+.panel-class-name .mat-select-panel {
+    transform: none !important;
+    min-width: 100% !important;
+    width: 100%;
+}
+/* .sa_forms_design .mat-select-arrow-wrapper{
+    visibility: hidden;
+} */
+
+
+
+/*  test */
+
+
 
 .sa-form-group { margin-bottom: 15px; }
 
