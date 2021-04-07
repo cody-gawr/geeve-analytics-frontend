@@ -54,6 +54,15 @@ export class FinancesService {
                     })
         );
     }
+     // NetProfitPercentage
+    netProfitPercentage(clinic_id='1', startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentage?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
             // categoryExpenses
     categoryExpenses(clinic_id='1', startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
