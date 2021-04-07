@@ -1217,6 +1217,7 @@ public labelBarPercentOptions: any = {
     //this.netProfit();
    // this.netProfitPercent();
     this.netProfitPms();
+    this.netProfitPercentage();
     this.categoryExpenses();
     this.finProductionByClinician();
     this.finTotalDiscounts();
@@ -1291,7 +1292,6 @@ public netProfitTrendTotal;
  public  netProfitProductionTrendTotal;
     //netProfit
   private netProfitPercent() {
-
     var user_id;
     var clinic_id;
     this.netProfitProductionTrendIcon = "down";
@@ -1320,56 +1320,31 @@ public netProfitPmsTrendIcon;
 public netProfitPmsTrendTotal;
     //netProfit
   private netProfitPms() {
-
-    var user_id;
-    var clinic_id;
- this.netProfitPmsTrendIcon = "down";
-           this.netProfitPmsTrendTotal=0;
-           this.netProfitProductionTrendIcon = "down";
-           this.netProfitProductionTrendTotal=0;
-               var clinic_id;
-           this.netProfitTrendIcon = "down";
-           this.netProfitTrendTotal=0;
-  this.financesService.NetProfitPms(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
-       if(data.message == 'success'){
-        this.netProfitPmsVal = Math.round(data.data.net_profit_pms); 
-        this.netProfitPmsTrendTotal=Math.round(data.data_ta.net_profit_pms);  
-
-        if(this.netProfitPmsVal>=0)
-        this.netProfitPmsIcon = "";
-        else
-        this.netProfitPmsIcon = "-";
-        this.netProfitPmsVal = Math.round(data.data.net_profit_pms);
-         if(this.netProfitPmsVal>=this.netProfitPmsTrendTotal)
-            this.netProfitPmsTrendIcon = "up";      
-
-       this.netProfitVal = Math.round(data.data.net_profit);   
-        this.netProfitTrendTotal=Math.round(data.data_ta.net_profit);  
-        if(this.netProfitVal>=0)
-        this.netProfitIcon = "";
-        else
-        this.netProfitIcon = "-";
-             
-        this.netProfitVal = Math.round(this.netProfitVal); 
-      if(this.netProfitVal>=this.netProfitTrendTotal)
-            this.netProfitTrendIcon = "up";     
-
-        this.netProfitProductionVal = Math.round(data.data.net_profit_production);  
-        this.netProfitProductionTrendTotal=Math.round(data.data_ta.net_profit_production);  
-
-        if(this.netProfitProductionVal>=0)
-        this.netProfitProductionIcon = "";
-        else
-        this.netProfitProductionIcon = "-";
-        if(this.netProfitProductionVal>=this.netProfitProductionTrendTotal)
-            this.netProfitProductionTrendIcon = "up";       
+    this.netProfitTrendTotal=0;
+    this.financesService.NetProfitPms(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
+       if(data.message == 'success'){       
+        this.netProfitVal = Math.round(data.data);  
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
- 
-    }
-    );
+    });
   }
+
+  // Added by Hanney Sharma on 07-04-2021 for Net Profit %
+  private netProfitPercentage() {
+    var user_id;
+    var clinic_id;
+    this.netProfitPmsVal=0;
+    this.financesService.netProfitPercentage(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
+      if(data.message == 'success') {       
+        this.netProfitPmsVal = Math.round(data.data);  
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
+
  pieTooltipText({ data }) {
     const label = data.name;
     const val = data.value;
@@ -1545,10 +1520,13 @@ public totalProductionCollectionLabel1 =[];
         this.finTotalProductionLoader = false;
         this.totalProductionCollection1[0]['data'] =[];
         
-        if(data.total)
-          this.totalProductionVal = Math.round(data.total); 
+        if(data.total){
+            this.totalProductionVal = Math.round(data.total); 
+            this.netProfitProductionVal = Math.round(data.total); 
+        }
         else
           this.totalProductionVal = 0; 
+
 
         if(data.data[0].provider_name)    
           this.totalProductionLabel = data.data[0].provider_name;    

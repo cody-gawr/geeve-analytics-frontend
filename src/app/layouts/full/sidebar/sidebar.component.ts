@@ -68,10 +68,17 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-      logout() {
-      this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
-       console.log(res);
-       if(res.message == 'success'){
+  
+  logout() {
+      this.headerService.logout().subscribe((res) => {
+        this._cookieService.put("username",'');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this._cookieService.put("childid", '');
+        this._cookieService.put("dentistid", '');
+        this.router.navigate(['/login']);       
+    }, error => {
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');
         this._cookieService.put("token", '');
@@ -79,10 +86,6 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
         this._cookieService.put("childid", '');
         this._cookieService.put("dentistid", '');
         this.router.navigate(['/login']);
-       }
-    }, error => {
-    }    
-    );
+    });
   }
-
 }

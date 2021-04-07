@@ -175,17 +175,19 @@ export class MenuItems {
     return this.menu;
   }
   public MENUITEMS;
-  public dashboard1role=['1','2'];
- public dashboard2role=['1','2'];
- public dashboard3role=['1','2'];
- public dashboard4role=['1','2'];
- public dashboard5role=['1','2'];
- public healthscreenrole=['1','2'];
- public morninghuddlerole=['1','2'];
- public lostoppurtunityrole=['1','2'];
- public clinicsrole=['1','2'];
- public usersrole=['1','2'];
- public profilesettingsrole=['1','2'];
+  
+  public dashboard1role=['1','2','3','4'];
+  public dashboard2role=['1','2','3','4'];
+  public dashboard3role=['1','2','3','5'];
+  public dashboard4role=['1','2','3','5'];
+  public dashboard5role=['1','2'];
+  public healthscreenrole=['1','2','3'];
+  public morninghuddlerole=['1','2','3','4','5'];
+  public lostoppurtunityrole=['1','2','3'];
+  public clinicsrole=['1','2','3'];
+  public usersrole=['1','2','3'];
+  public profilesettingsrole=['1','2','3'];
+
   public menu = [
   {
     state: 'healthscreen',

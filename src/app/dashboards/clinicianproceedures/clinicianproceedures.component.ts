@@ -948,7 +948,7 @@ if(this._cookieService.get("user_type") == '4'){
     if(this._cookieService.get("dentist_toggle") === 'true')
       newValue = this.dentistid;
     else
-      newValue = '';
+      newValue = this.dentistid;
   }
   $('.ratioPredictorSingle .predictor_ratio .sa_tab_btn').removeClass('active');
   $('.pr1').addClass('active');

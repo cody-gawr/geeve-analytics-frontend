@@ -15,21 +15,6 @@ export class AppHeaderComponent {
   constructor(private _cookieService: CookieService, private headerService: HeaderService, private router: Router) {}
 
   public config: PerfectScrollbarConfigInterface = {};
-  logout() {
-      this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
-       console.log(res);
-       if(res.message == 'success'){
-        this._cookieService.put("username",'');
-        this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
-        this._cookieService.put("userid", '');
-
-        this.router.navigate(['/login']);
-       }
-    }, error => {
-    }    
-    );
-  }
   // This is for Notifications
   notifications: Object[] = [
     {

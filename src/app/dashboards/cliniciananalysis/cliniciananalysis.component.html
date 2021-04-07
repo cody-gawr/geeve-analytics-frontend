@@ -1053,9 +1053,8 @@
                   (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-
               <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && hourlyValue <= 0) || (showTrendChart == true && hourlyRateChartTrend1.length <= 0)) && hourlyRateDentistLoader===false && fdhourlyRateRateTrendLoader == false">
+                *ngIf="((showTrendChart == false && hourlyValue <= 0 && hourlyRateDentistLoader===false) || (showTrendChart == true && hourlyRateChartTrend1.length <= 0 && fdhourlyRateRateTrendLoader == false)) ">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
