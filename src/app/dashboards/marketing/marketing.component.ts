@@ -527,32 +527,31 @@ public mkRevenueByReferralLoader:any;
     var clinic_id;
   this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
-        this.mkRevenueByReferralLoader = false;
-        this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(data.total || 0));
-         this.revenueByReferralCount$.next(Math.round(data.total || 0));
-        // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
-        if (this.revenueRefChart) {
-         this.revenueRefChart.ngOnDestroy();
-         this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
-        }
-            this.revenueReferralData1 =[];
-            this.revenueReferralLabelsl2 =[];
-            this.revenueReferralLabels1 =[];
-            if(data.data.patients_reftype.length >0) {
-               var i=0;
-             data.data.patients_reftype.forEach(res => {
-              if(res.total>0) {
-               if(i<10) {
-               this.revenueReferralData1.push(Math.round(res.total));
-               this.revenueReferralLabels1.push(res.reftype_name);
-                i++;
+          this.mkRevenueByReferralLoader = false;
+          this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(data.total || 0));
+          this.revenueByReferralCount$.next(Math.round(data.total || 0));
+          // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
+          if (this.revenueRefChart) {
+            this.revenueRefChart.ngOnDestroy();
+            this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
+          }
+          this.revenueReferralData1 =[];
+          this.revenueReferralLabelsl2 =[];
+          this.revenueReferralLabels1 =[];
+          if(data.data.patients_reftype.length >0) {
+            var i=0;
+            data.data.patients_reftype.forEach(res => {
+              if(res.invoice_amount>0) {
+                if(i<10) {
+                  this.revenueReferralData1.push(Math.round(res.invoice_amount));
+                  this.revenueReferralLabels1.push(res.reftype_name);
+                  i++;
+                }
               }
-            }
-             });
-        }
-         this.revenueReferralData = this.revenueReferralData1;
-         this.revenueReferralLabels= this.revenueReferralLabels1;
-         
+            });
+          }
+          this.revenueReferralData = this.revenueReferralData1;
+          this.revenueReferralLabels= this.revenueReferralLabels1;         
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -576,8 +575,8 @@ public mkRevenueByReferralLoader:any;
                let totalRevenue = 0;
              data.data.patients_refname[label].forEach(res => {
                 if(i<10) {
-                  totalRevenue = totalRevenue + Math.round(res.total);
-               this.revenueReferralData1.push(res.total);
+                  totalRevenue = totalRevenue + Math.round(res.invoice_amount);
+               this.revenueReferralData1.push(res.invoice_amount);
                this.revenueByReferralCount$.next(totalRevenue);
                this.revenueReferralLabels1.push(res.referral_name);
                   i++;

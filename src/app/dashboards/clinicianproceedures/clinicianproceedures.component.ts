@@ -1111,8 +1111,8 @@ if(this._cookieService.get("user_type") == '4'){
     var user_id;
     var clinic_id;
   this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
-       if(data.message == 'success' && data.data && data.data.length){
         this.buildChartDentistLoader = false;
+       if(data.message == 'success' && data.data && data.data.length){
           this.itemPredictedChartData1 = [];
            this.itemPredictedChartLabels=[];
           var temp=[];
@@ -1129,15 +1129,18 @@ if(this._cookieService.get("user_type") == '4'){
    for (var key in temp) tupleArray.push([key, temp[key]]);
     tupleArray.sort(function (a, b) { return b[1] - a[1] });
       
-tupleArray.forEach((res,key) => {
+      tupleArray.forEach((res,key) => {
 
-  this.itemPredictedChartData1.push(res[1]);
-  this.itemPredictedChartLabels.push(res[0]);
-});
+        this.itemPredictedChartData1.push(res[1]);
+        this.itemPredictedChartLabels.push(res[0]);
+      });
           this.itemPredictedChartData[0]['data'] = this.itemPredictedChartData1;
           this.itemPredictedChartData[0]['label'] = data.data[0].provider;
           //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
-          this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data'])
+
+          this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
+       } else {
+          this.itemPredictedChartDataMax = 0;
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1752,6 +1755,10 @@ this.pieChartDataMax3=0;
        this.pieChartDataMax1 = Math.max(...this.pieChartData1);
        this.pieChartDataMax2 = Math.max(...this.pieChartData2);
        this.pieChartDataMax3 = Math.max(...this.pieChartData3);
+       } else {
+        this.pieChartDataMax1 = 0;
+        this.pieChartDataMax2 = 0;
+        this.pieChartDataMax3 = 0;
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1852,9 +1859,7 @@ public currentText;
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-
-      console.log(this.startDate+" "+this.endDate);
-            this.loadDentist(dentistVal);
+      this.loadDentist(dentistVal);
     }
     else if (duration == 'lm') {
       this.duration = 'lm';
