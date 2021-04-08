@@ -29,6 +29,7 @@ import { GaugeChartModule } from 'angular-gauge-chart';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { CurrencySuffixPipe } from '../currency-suffix.pipe';
 import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';
+import { SharedModule } from '../shared/shared.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -44,7 +45,8 @@ import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';
      NgxDaterangepickerMd.forRoot(),
      MatButtonToggleModule, MatIconModule,
      GaugeChartModule,
-    NgxSmartModalModule.forRoot()
+    NgxSmartModalModule.forRoot(),
+    SharedModule
   ],
   providers: [ClinicianAnalysisService, MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, DecimalPipe, HealthScreenService],
   declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, CurrencySuffixPipe, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, DateMenuBarComponent]

@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
+  styleUrls: ['./roles-users.component.scss']
 })
 
 export class DialogOverviewExampleDialogComponent {

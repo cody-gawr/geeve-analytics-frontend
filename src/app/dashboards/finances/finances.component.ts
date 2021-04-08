@@ -23,6 +23,7 @@ import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
+import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 // import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 
 export interface Dentist { 
@@ -38,14 +39,43 @@ export interface Dentist {
 export class FinancesComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas: ElementRef;
     @ViewChild("myCanvas2") canvas2: ElementRef;
-
+    tooltipData: ITooltipData = {
+      title: 'Open quick search',
+      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+  };
   lineChartColors;
   doughnutChartColors ;
   stackedChartColors;
   stackedChartColorsBar;
   stackedChartColorsBar1;
   public xeroConnect: boolean = false;
-
+  ProdByClinicianColors = [
+    { backgroundColor: '#6edbba' },
+    { backgroundColor: '#fffcac' },  
+    { backgroundColor: '#ffb4c5' },  
+    { backgroundColor: '#feefb8' },  
+    { backgroundColor: '#d7f8ef' },  
+    { backgroundColor: '#b0fffb' },  
+    { backgroundColor: '#b0ffga' },  
+    { backgroundColor: '#abb3ff' },
+    { backgroundColor: '#b0fffa' },
+    { backgroundColor: '#ffb4b5' },
+    { backgroundColor: '#d7f8ef' },
+    { backgroundColor: '#fffdac' },
+    { backgroundColor: '#feg0b8' },
+    { backgroundColor: '#4cdfae' }  ,
+    { backgroundColor: '#6edcba' },
+    { backgroundColor: '#ffdcac' },  
+    { backgroundColor: '#ffa4c5' },  
+    { backgroundColor: '#fecfb8' },  
+    { backgroundColor: '#d7d8ef' },  
+    { backgroundColor: '#b0dffb' },  
+    { backgroundColor: '#b0faga' },     
+    { backgroundColor: '#c0fbga' },     
+    { backgroundColor: '#b0facb' },     
+    { backgroundColor: '#c0ecdb' },     
+    { backgroundColor: '#c0ecef' },     
+  ]
   preoceedureChartColors;
   subtitle: string;
    public clinic_id:any ={};
@@ -84,7 +114,7 @@ single = [
   showLabels = true;
   explodeSlices = false;
   doughnut = false;
-  arcWidth = 0.65;
+  arcWidth = 0.75;
   rangeFillOpacity = 0.75;
   pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
   totalDiscountPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
@@ -96,6 +126,7 @@ single = [
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   profitChartTitles = ['Production', 'Net Profit', 'Net Profit %'];
+  barChartColors=[{backgroundColor: '#39acac'}, {backgroundColor: '#48daba'}];
   constructor(
     private toastr: ToastrService,
     private financesService: FinancesService, 
@@ -558,21 +589,22 @@ single = [
             display: true
          },
           tooltips: {
-            mode: 'x-axis',
-             custom: function(tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = false;
-      },
+//             mode: 'x-axis',
+//              custom: function(tooltip) {
+//         if (!tooltip) return;
+//         // disable displaying the color box;
+//         tooltip.displayColors = false;
+//       },
   callbacks: {
      label: function(tooltipItems, data) { 
+       let label = data['datasets'][tooltipItems.datasetIndex]['label'];
         let currency = tooltipItems.yLabel;
         currency = currency.toString().split('-').join('').split(/(?=(?:...)*$)/).join(',');
-        return tooltipItems.xLabel + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;
+        return `${label} : ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;
      },
-       title: function(tooltipItem, data) {
-          return;
-        }
+      //  title: function(tooltipItem, data) {
+      //     return;
+      //   }
   }
 }
   };
@@ -1978,16 +2010,17 @@ private finProductionByClinicianTrend() {
     this.financesService.finProductionByClinicianTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
           this.finProductionByClinicianTrendLoader = false;
-                data.data.forEach(res => {  
+                data.data.forEach(res => {                   
                    res.val.forEach((result,key) => {
                       if(typeof(this.productionChartTrend[key]) == 'undefined'){
-                        this.productionChartTrend[key] = [];
+                        this.productionChartTrend[key] = { data: [],label: '' };
                       }
                       if(typeof(this.productionChartTrend[key]['data']) == 'undefined'){
                         this.productionChartTrend[key]['data'] = [];
                       }
-                     this.productionChartTrend[key]['data'].push(Math.round(result.prod_per_clinician));
-                     this.productionChartTrend[key]['label'] = result.provide_name;
+                     this.productionChartTrend[key]['data'].push(Math.round(parseInt(result.prod_per_clinician)));
+                     this.productionChartTrend[key]['label'] = result.provider_name;
+                    
                    });
                   if(this.trendValue == 'c')
                     this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));

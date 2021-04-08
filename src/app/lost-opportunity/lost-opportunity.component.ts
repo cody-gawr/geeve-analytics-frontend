@@ -4,6 +4,7 @@ import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { HeaderService } from './../layouts/full/header/header.service';
+import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 @Component({
   selector: 'app-lost-opportunity',
   templateUrl: './lost-opportunity.component.html',
@@ -16,7 +17,10 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 	public discounts:number = 0;
 	public discountsReal:number = 0;
 	public discountsImp:number = 0;
-
+	tooltipData: ITooltipData = {
+		title: 'Open quick search',
+		info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+	};
 	public collectionProduction:number = 0;
 	public collectionProductionReal:number = 0;
 	public collectionProductionImp:number = 0;
