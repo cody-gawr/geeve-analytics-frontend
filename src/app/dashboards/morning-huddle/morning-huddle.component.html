@@ -81,7 +81,8 @@
                     <div class="production_description">
                       <h4>Recall Rebook Rate</h4>
                       <div class="recall-retail-rate" *ngIf="recallRate">
-                        <span class="change_value">{{ recallRate.rate }}%</span>
+                        <span class="change_value" *ngIf="recallRate.rate != 'N/A'">{{ recallRate.rate }}%</span>
+                        <span class="change_value" *ngIf="recallRate.rate == 'N/A'">{{ recallRate.rate }}</span>
                         <!-- <div class="ttl_value_left">Goal: {{ recallRate.goal}}%</div> -->
                         <div class="ttl_value_left profit" *ngIf="!recallRate.goal">0%</div>
                         <div
@@ -323,10 +324,10 @@
 
   <!-- Patient Schedule Tab start -->  
   <mat-tab label="Dentist Schedule">
-     <div class="morning-huddle-date">
-        <mat-form-field>
+     <div class="morning-huddle-date" *ngIf="clinicDentists.length > 0">
+        <mat-form-field >
           <!-- <mat-label>Select Dentist</mat-label> -->
-          <mat-select  (selectionChange)="refreshScheduleTab($event.value)" id="setPreviousDay2" [(ngModel)]="currentDentistSchedule">
+          <mat-select  (selectionChange)="refreshScheduleTab($event.value)" id="setPreviousDay2" [(ngModel)]="currentDentistSchedule" >
             <mat-option [value]="0">All Dentists</mat-option>
             <mat-option [value]="dentist.provider_id" *ngFor="let dentist of clinicDentists">{{ dentist.provider_name }}</mat-option>
           </mat-select>                   
@@ -777,13 +778,13 @@
 
     <ng-container matColumnDef="isDataAvailable2">
       <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns4.length">
-        No Data found
+        No Unscheduled Treatment found for selected date
       </mat-footer-cell>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns4;"></tr>
     <mat-footer-row *matFooterRowDef="['isDataAvailable2']"
-      [ngClass]="(!followupsUnscheduledPatients)? 'show' : 'hide'"></mat-footer-row>
+      [ngClass]="(followupsUnscheduledPatients.length <= 0)? 'show' : 'hide'"></mat-footer-row>
   </table>
 </div>
 <!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
@@ -845,7 +846,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns5"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns5;"></tr>
     <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
-      [ngClass]="(!followupPostOpCalls)? 'show' : 'hide'"></mat-footer-row>
+      [ngClass]="(followupPostOpCalls.length <= 0)? 'show' : 'hide'"></mat-footer-row>
   </table>
 </div>
   <!--<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">

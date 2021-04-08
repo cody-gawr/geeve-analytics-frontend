@@ -1171,7 +1171,10 @@ public PRcolors;
   public predictedstackedChartLabels3=[];
   public predictedstackedChartLabels1Avr = 0;
   public predictedstackedChartLabels2Avr = 0;
-  public predictedstackedChartLabels3Avr = 0;    
+  public predictedstackedChartLabels3Avr = 0;  
+  public predictedstackedChartLabels1AvrPre = 0;
+  public predictedstackedChartLabels2AvrPre = 0;
+  public predictedstackedChartLabels3AvrPre = 0;    
   public predictedstackedChartAvr:any = '0:0';    
 
   //Predictor Ratio :All Dentist
@@ -1188,7 +1191,13 @@ public PRcolors;
       this.predictedstackedChartLabels1Avr = 0;
       this.predictedstackedChartLabels2Avr = 0;
       this.predictedstackedChartLabels3Avr = 0;    
+      this.predictedstackedChartLabels1AvrPre = 0;
+      this.predictedstackedChartLabels2AvrPre = 0;
+      this.predictedstackedChartLabels3AvrPre = 0; 
       if(data.message == 'success'){        
+        this.predictedstackedChartLabels1AvrPre = data.total_ta[0];
+        this.predictedstackedChartLabels2AvrPre = data.total_ta[1];
+        this.predictedstackedChartLabels3AvrPre = data.total_ta[2]; 
         data.data.forEach((res,key) => {
           var provider = res.provider_name;
           if(!provider)

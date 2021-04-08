@@ -80,7 +80,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {  
     $('#currentDentist').attr('did','all');
     //this.initiate_clinic();
-    //   $('.external_dentist').val('all');
+     $('.external_dentist').hide();
     $('#title').html('Clinic Health');
     $('.external_clinic').show();
     $('.dentist_dropdown').hide();
@@ -123,6 +123,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.loadHealthScreen();
     //this.checkXeroStatus();
     this.finProductionPerVisit();
+     $('.external_dentist').hide();
   }
   }
 

@@ -122,7 +122,6 @@ initiate_clinic() {
     $('.header_filters').addClass('flex_direct_mar');
     $('.header_filters').removeClass('hide_header');
 
-
     var val = $('#currentClinic').attr('cid');
    if(val != undefined && val !='all') {
       this.clinic_id = val;

@@ -35,7 +35,7 @@ export const DashboardsRoutes: Routes = [
       {
         path: 'healthscreen',
         component: HealthScreenComponent
-      }
+      }      
     ]
   }
 ];
