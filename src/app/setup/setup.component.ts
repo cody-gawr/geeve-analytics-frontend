@@ -27,7 +27,7 @@ import { CustomValidators } from 'ng2-validation';
 export class SetupComponent implements AfterViewInit {
 
 
-  @ViewChild('stepper', {static: false}) stepper;
+  @ViewChild('stepper') stepper;
   private apiUrl = environment.apiUrl;
   public form: FormGroup;
   isLinear = true;

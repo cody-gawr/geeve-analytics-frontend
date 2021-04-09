@@ -36,8 +36,8 @@ export interface Dentist {
 })
 
 export class FinancesComponent implements AfterViewInit {
-    @ViewChild("myCanvas", {static: false}) canvas: ElementRef;
-    @ViewChild("myCanvas2", {static: false}) canvas2: ElementRef;
+    @ViewChild("myCanvas") canvas: ElementRef;
+    @ViewChild("myCanvas2") canvas2: ElementRef;
     tooltipData: ITooltipData = {
       title: 'Open quick search',
       info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'

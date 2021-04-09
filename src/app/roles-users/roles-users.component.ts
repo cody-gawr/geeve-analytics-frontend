@@ -268,7 +268,7 @@ initiate_clinic() {
 
   columns = [{ prop: 'sr' }, { name: 'displayName' }, { name: 'email' }, { name: 'usertype' }, { name: 'created' }];
 
-  @ViewChild(RolesUsersComponent, {static: false}) table: RolesUsersComponent;
+  @ViewChild(RolesUsersComponent) table: RolesUsersComponent;
   constructor(private toastr: ToastrService,private rolesUsersService: RolesUsersService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router, private route: ActivatedRoute, private dentistService: DentistService,private clinicService: ClinicService, private headerService: HeaderService) {
     this.rows = data;
     this.temp = [...data];

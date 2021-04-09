@@ -26,7 +26,7 @@ export interface Dentist {
   *AUTHOR - Teq Mavens
   */
 export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
-    @ViewChild("myCanvas", {static: false}) canvas: ElementRef;
+    @ViewChild("myCanvas") canvas: ElementRef;
   lineChartColors;
   doughnutChartColors;
   predictedChartColors;

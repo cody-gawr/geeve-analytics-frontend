@@ -27,7 +27,7 @@ export interface Dentist {
   templateUrl: './frontdesk.component.html'
 })
 export class FrontDeskComponent implements AfterViewInit {
-    @ViewChild("myCanvas", {static: false}) canvas: ElementRef;
+    @ViewChild("myCanvas") canvas: ElementRef;
     tooltipData: ITooltipData = {
       title: 'Open quick search',
       info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'

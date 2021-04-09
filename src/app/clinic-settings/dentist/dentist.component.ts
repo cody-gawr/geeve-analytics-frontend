@@ -26,7 +26,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   dentistListLoading: boolean = false;
   displayedColumns: string[] = ['providerId', 'name'];
   editing = {};
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private _cookieService: CookieService,

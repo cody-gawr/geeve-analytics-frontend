@@ -74,7 +74,7 @@ export class DentistComponent implements AfterViewInit {
 
   columns = [{ prop: 'sr' },{ prop: 'providerId' }, { name: 'name' }, { name: 'Action' }];
 
-  @ViewChild(DentistComponent, {static: false}) table: DentistComponent;
+  @ViewChild(DentistComponent) table: DentistComponent;
   constructor(private dentistService: DentistService, public dialog: MatDialog, private route: ActivatedRoute,private _cookieService: CookieService, private router: Router,private toastr: ToastrService) {
   this.clinic_id = this.route.snapshot.paramMap.get("id");
 
