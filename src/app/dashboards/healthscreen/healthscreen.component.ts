@@ -11,7 +11,6 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
@@ -85,7 +84,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {  
     $('#currentDentist').attr('did','all');
     //this.initiate_clinic();
-    //   $('.external_dentist').val('all');
+     $('.external_dentist').hide();
     $('#title').html('Clinic Health');
     $('.external_clinic').show();
     $('.dentist_dropdown').hide();
@@ -128,6 +127,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.loadHealthScreen();
     //this.checkXeroStatus();
     this.finProductionPerVisit();
+     $('.external_dentist').hide();
   }
   }
 

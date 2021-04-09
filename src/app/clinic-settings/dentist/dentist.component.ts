@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { CookieService } from "ngx-cookie";

@@ -370,13 +370,13 @@
             fxLayoutAlign="center center">
             <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
               <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-              <h3 class="m-0 value-num">{{large_fillings}}:{{crowns}}</h3>
+              <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
               <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
               <span class="value-text" *ngIf="currentText == ''">Average</span>
             </div>
             <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
               <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
-              <h3 class="m-0 value-num">{{large_fillings_ta}}:{{crowns_ta}}</h3>
+              <h3 class="m-0 value-num">{{ predictedstackedChartLabels1AvrPre }}</h3>
               <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
               <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
             </div>
@@ -384,12 +384,12 @@
           <div fxLayout="row wrap" fxLayoutAlign="center center"
             class="m-t-40 predicted_main predicted2 sa_chart_details_sec" [style.display]="'none'">
             <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-              <h3 class="m-0 value-num">{{root_canals}}:{{extractions}}</h3>
+              <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
               <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
               <span class="value-text" *ngIf="currentText == ''">Average</span>
             </div>
             <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-              <h3 class="m-0 value-num">{{root_canals_ta}}:{{extractions_ta}}</h3>
+              <h3 class="m-0 value-num">{{ predictedstackedChartLabels2AvrPre }}</h3>
               <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
               <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
             </div>
@@ -397,12 +397,12 @@
           <div fxLayout="row wrap" fxLayoutAlign="center center"
             class="m-t-40 predicted_main predicted3 sa_chart_details_sec" [style.display]="'none'">
             <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
-              <h3 class="m-0 value-num">{{rct_started}}:{{rct_completed}}</h3>
+              <h3 class="m-0 value-num">{{ predictedstackedChartAvr }}</h3>
               <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
               <span class="value-text" *ngIf="currentText == ''">Average</span>
             </div>
             <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration!= 'custom'">
-              <h3 class="m-0 value-num">{{rct_started_ta}}:{{rct_completed}}</h3>
+              <h3 class="m-0 value-num">{{ predictedstackedChartLabels3AvrPre }}</h3>
               <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
               <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
             </div>

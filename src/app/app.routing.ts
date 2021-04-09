@@ -20,44 +20,44 @@ export const AppRoutes: Routes = [
       },
       {
         path: 'dashboards',
-        loadChildren: './dashboards/dashboards.module#DashboardsModule',
+        loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule),
         canActivate: [AuthGuard]
       },
       {
         path: 'header',
-        loadChildren: './layouts/full/header/header.module#HeaderModule'
+        loadChildren: () => import('./layouts/full/header/header.module').then(m => m.HeaderModule)
       },
       {
         path: 'roles',
-        loadChildren: './roles/roles.module#RolesModule'
+        loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)
       },
       {
         path: 'roles-users',
-        loadChildren: './roles-users/roles-users.module#RolesUsersModule'
+        loadChildren: () => import('./roles-users/roles-users.module').then(m => m.RolesUsersModule)
       },
       {
         path: 'clinic',
-        loadChildren: './clinic/clinic.module#ClinicModule',
+        loadChildren: () => import('./clinic/clinic.module').then(m => m.ClinicModule),
         canActivate: [AuthGuard]
       },
       {
         path: 'users',
-        loadChildren: './users/users.module#UsersModule',
+        loadChildren: () => import('./users/users.module').then(m => m.UsersModule),
         canActivate: [AuthGuard]
       },
       {
         path: 'plans',
-        loadChildren: './plans/plans.module#PlansModule',
+        loadChildren: () => import('./plans/plans.module').then(m => m.PlansModule),
         canActivate: [AuthGuard]
       },
       {
         path: 'dentist',
-        loadChildren: './dentist/dentist.module#DentistModule',
+        loadChildren: () => import('./dentist/dentist.module').then(m => m.DentistModule),
         canActivate: [AuthGuard]
       },
       {
         path: 'clinic-goals',
-        loadChildren: './clinic-goals/clinic-goals.module#ClinicGoalsModule',
+        loadChildren: () => import('./clinic-goals/clinic-goals.module').then(m => m.ClinicGoalsModule),
         canActivate: [AuthGuard]
       },
       {
@@ -72,17 +72,17 @@ export const AppRoutes: Routes = [
       },
       {
         path: 'clinic-settings/:id',
-        loadChildren: './clinic-settings/clinic-settings.module#ClinicSettingsModule',
+        loadChildren: () => import('./clinic-settings/clinic-settings.module').then(m => m.ClinicSettingsModule),
         canActivate: [AuthGuard]
       },
       {
         path: 'profile-settings',
-        loadChildren: './profile-settings/profile-settings.module#ProfileSettingsModule',
+        loadChildren: () => import('./profile-settings/profile-settings.module').then(m => m.ProfileSettingsModule),
         canActivate: [AuthGuard]
       },
       {
         path: 'dentist-goals',
-        loadChildren: './dentist-goals/dentist-goals.module#DentistGoalsModule',
+        loadChildren: () => import('./dentist-goals/dentist-goals.module').then(m => m.DentistGoalsModule),
         canActivate: [AuthGuard]
       }
     ]
@@ -94,7 +94,7 @@ export const AppRoutes: Routes = [
       {
         path: 'authentication',
         loadChildren:
-          './authentication/authentication.module#AuthenticationModule'
+          () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)
       }
     ]
   },
@@ -105,7 +105,7 @@ export const AppRoutes: Routes = [
       {
         path: 'setup',
         loadChildren:
-           './setup/setup.module#SetupModule',
+           () => import('./setup/setup.module').then(m => m.SetupModule),
         canActivate: [AuthGuard]
       }
     ]
@@ -117,17 +117,17 @@ export const AppRoutes: Routes = [
       {
         path: 'login',
         loadChildren:
-          './login/login.module#LoginModule'
+          () => import('./login/login.module').then(m => m.LoginModule)
       },
       {
         path: 'xero',
         loadChildren:
-          './xero/xero.module#XeroModule'
+          () => import('./xero/xero.module').then(m => m.XeroModule)
       },
       {
         path: 'support',
         loadChildren:
-          './support/support.module#SupportModule'
+          () => import('./support/support.module').then(m => m.SupportModule)
       },
     ]
   },

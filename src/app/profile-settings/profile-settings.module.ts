@@ -14,8 +14,8 @@ import { NgxStripeModule } from 'ngx-stripe';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(ProfileSettingsRoutes),
     DemoMaterialModule,
+    RouterModule.forChild(ProfileSettingsRoutes),
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,

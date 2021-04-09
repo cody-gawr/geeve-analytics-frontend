@@ -1,7 +1,8 @@
 import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
 import { UsersService } from './users.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { CookieService } from "ngx-cookie";
+import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';import { CookieService } from "ngx-cookie";
 import { ActivatedRoute, Router } from "@angular/router";
 
 declare var require: any;

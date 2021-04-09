@@ -1040,16 +1040,17 @@ if(this._cookieService.get("user_type") == '4'){
 
 
   this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
-       if(data.message == 'success'){
-   
         this.buildChartLoader =false;
-          this.stackedChartData1 = [];
-          this.stackedChartData2 = [];
-          this.stackedChartData3 = [];
-          this.stackedChartData4 = [];
-          this.stackedChartData5 = [];
-          this.stackedChartLabels1 =[];
-          this.stackedChartLabels =[];
+        this.stackedChartData1 = [];
+        this.stackedChartData2 = [];
+        this.stackedChartData3 = [];
+        this.stackedChartData4 = [];
+        this.stackedChartData5 = [];
+        this.stackedChartLabels1 =[];
+        this.stackedChartLabels =[];
+        this.stackedChartDataMax = 0;
+       if(data.message == 'success'){   
+
         if(data && data.data && data.data.length <=0) {
 
         }else {
@@ -1116,8 +1117,9 @@ if(this._cookieService.get("user_type") == '4'){
     var user_id;
     var clinic_id;
   this.clinicianproceeduresService.ItemsPredictorAnalysisDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
-       if(data.message == 'success' && data.data && data.data.length){
         this.buildChartDentistLoader = false;
+        this.itemPredictedChartDataMax = 0;
+       if(data.message == 'success' && data.data && data.data.length){
           this.itemPredictedChartData1 = [];
            this.itemPredictedChartLabels=[];
           var temp=[];
@@ -1134,15 +1136,16 @@ if(this._cookieService.get("user_type") == '4'){
    for (var key in temp) tupleArray.push([key, temp[key]]);
     tupleArray.sort(function (a, b) { return b[1] - a[1] });
       
-tupleArray.forEach((res,key) => {
+      tupleArray.forEach((res,key) => {
 
-  this.itemPredictedChartData1.push(res[1]);
-  this.itemPredictedChartLabels.push(res[0]);
-});
+        this.itemPredictedChartData1.push(res[1]);
+        this.itemPredictedChartLabels.push(res[0]);
+      });
           this.itemPredictedChartData[0]['data'] = this.itemPredictedChartData1;
           this.itemPredictedChartData[0]['label'] = data.data[0].provider;
           //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
-          this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data'])
+
+          this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -1164,218 +1167,103 @@ public PRcolors;
     {data: [], label: ''},
     {data: [], label: '' } ];
 
-      public predictedstackedChartData1 = [
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Large Fillings' } ];
+  public predictedstackedChartData1 = [{data: [], label: 'Crowns'},{data: [], label: 'Large Fillings' } ];
+  public predictedstackedChartData2 = [{data: [], label: 'RCT'},{data: [], label: 'Extractions' } ];
+  public predictedstackedChartData3 = [{data: [], label: "RCT's Started" },{data: [], label: "RCT's Completed" } ];
+  public predictedstackedChartLabels=[];
+  public predictedstackedChartLabels1=[];
+  public predictedstackedChartLabels2=[];
+  public predictedstackedChartLabels3=[];
+  public predictedstackedChartLabels1Avr = 0;
+  public predictedstackedChartLabels2Avr = 0;
+  public predictedstackedChartLabels3Avr = 0;  
+  public predictedstackedChartLabels1AvrPre = 0;
+  public predictedstackedChartLabels2AvrPre = 0;
+  public predictedstackedChartLabels3AvrPre = 0;    
+  public predictedstackedChartAvr:any = '0:0';    
 
-      public predictedstackedChartData2 = [
-    {data: [], label: 'RCT'},
-    {data: [], label: 'Extractions' } ];
-
-      public predictedstackedChartData3 = [
-
-    {data: [], label: "RCT's Started" },
-    {data: [], label: "RCT's Completed" } ];
-
-public predictedstackedChartLabels=[];
-
-public predictedstackedChartLabels1=[];
-public predictedstackedChartLabels2=[];
-
-public predictedstackedChartLabels3=[];
-
-//Predictor Ratio :All Dentist
+  //Predictor Ratio :All Dentist
   private buildChartPredictor() {
-     this.predictedTotalAverageTooltip1 = 'down';
-    this.predictedTotalAverageTooltip2 = 'down';
-    this.predictedTotalAverageTooltip3 = 'down';
-     if(this.duration){
-      this.buildChartLoader = true;
-       var user_id;
-      var clinic_id;
-  this.clinic_id && this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
-     this.buildChartLoader = false;
-    this. predictedstackedChartData1 = [
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Large Fillings' } ];
-    this.predictedstackedChartData2 = [
-    {data: [], label: 'RCT'},
-    {data: [], label: 'Extractions' } ];
-    this.predictedstackedChartData3 = [
-
-    {data: [], label: "RCT's Started" },
-    {data: [], label: "RCT's Completed" } ];
-
-
-    this.predictedstackedChartLabels1=[];
-    this.predictedstackedChartLabels2=[];
-    this.predictedstackedChartLabels3=[];
-    this.crowns=this.crowns_ta =this.large_fillings=this.large_fillings_ta =this.extractions=this.extractions_ta =this.root_canals=this.root_canals_ta =this.rct_completed=this.rct_completed_ta=this.rct_started =this.rct_started_ta =0
-      if(data.message == 'success'){
-
-        data.data && data.data.length && data.data.forEach((res,key) => {
-          var i=0;
+    this.buildChartLoader = true;
+    this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
+      this.buildChartLoader = false;
+      this.predictedstackedChartData1 = [{data: [], label: 'Crowns'},{data: [], label: 'Large Fillings' } ];
+      this.predictedstackedChartData2 = [{data: [], label: 'RCT'},{data: [], label: 'Extractions' } ];
+      this.predictedstackedChartData3 = [{data: [], label: "RCT's Started" },{data: [], label: "RCT's Completed" } ];
+      this.predictedstackedChartLabels1 = [];
+      this.predictedstackedChartLabels2 = [];
+      this.predictedstackedChartLabels3 = [];
+      this.predictedstackedChartLabels1Avr = 0;
+      this.predictedstackedChartLabels2Avr = 0;
+      this.predictedstackedChartLabels3Avr = 0;    
+      this.predictedstackedChartLabels1AvrPre = 0;
+      this.predictedstackedChartLabels2AvrPre = 0;
+      this.predictedstackedChartLabels3AvrPre = 0; 
+      if(data.message == 'success'){        
+        this.predictedstackedChartLabels1AvrPre = data.total_ta[0];
+        this.predictedstackedChartLabels2AvrPre = data.total_ta[1];
+        this.predictedstackedChartLabels3AvrPre = data.total_ta[2]; 
+        data.data.forEach((res,key) => {
+          var provider = res.provider_name;
+          if(!provider)
+            provider = '';
           if(key == 0) {
-             res.forEach((result) => {
-              if(result.provider != null){
-                if(parseInt(result.crowns)+parseInt(result.large_fillings)>0){
-                     this.predictedstackedChartLabels1.push(result.provider);
-                     var crowns = result.crowns;
-                     var large_fillings = result.large_fillings;
-                     if(result.crowns>1) {
-                      crowns = Math.round(result.crowns/result.crowns);
-                      large_fillings = Math.round(result.large_fillings/result.crowns);
-                     }
-                 this.predictedstackedChartData1[0]['data'].push(crowns);
-                 this.crowns= parseInt(this.crowns)+parseInt(result.crowns);
-                 this.crowns_ta= parseInt(this.crowns_ta)+parseInt(result.crowns_trend);
-
-                 this.predictedstackedChartData1[1]['data'].push(large_fillings);
-                  this.large_fillings= parseInt(this.large_fillings)+parseInt(result.large_fillings);
-                  if(this.crowns>1) {
-                    this.large_fillings = Math.round(this.large_fillings/this.crowns);
-                   this.crowns= Math.round(this.crowns/this.crowns);
-                   
-                  }
-                 this.large_fillings_ta= parseInt(this.large_fillings_ta)+parseInt(result.large_fillings_trend);
-                  if(this.crowns_ta>1) {
-                    this.large_fillings_ta = Math.round(this.large_fillings_ta/this.crowns_ta);
-                    this.crowns_ta= Math.round(this.crowns_ta/this.crowns_ta);
-                    
-                  }
-               }
-              }
-             });
-           }
-           if(key == 1) {
-             res.forEach((result) => {
-              if(result.provider != null){
-                  if(parseInt(result.extractions)+parseInt(result.root_canals)>0){
-
-                    var extractions = result.extractions;
-                     var root_canals = result.root_canals;
-                     if(result.root_canals>1) {
-                      root_canals = Math.round(result.root_canals/result.root_canals);
-                      extractions = Math.round(result.extractions/result.root_canals);
-                     }
-                     this.predictedstackedChartLabels2.push(result.provider);
-                 this.predictedstackedChartData2[0]['data'].push(root_canals);
-                  this.extractions= parseInt(this.extractions)+parseInt(result.extractions);
-                 this.extractions_ta= parseInt(this.extractions_ta)+parseInt(result.extractions_trend);
-                 this.predictedstackedChartData2[1]['data'].push(extractions);
-                 this.root_canals= parseInt(this.root_canals)+parseInt(result.root_canals);
-                 this.root_canals_ta= parseInt(this.root_canals_ta)+parseInt(result.root_canals_trend);
-                 if(this.root_canals>1) {
-                    this.extractions = Math.round(this.extractions/this.root_canals);
-                   this.root_canals= Math.round(this.root_canals/this.root_canals);
-                   
-                  }
-                  if(this.root_canals_ta>1) {
-                    this.extractions_ta = Math.round(this.extractions_ta/this.root_canals_ta);
-                   this.root_canals_ta= Math.round(this.root_canals_ta/this.root_canals_ta);
-                   
-                  }
-               }
-              }
-             });
-           }
-           if(key == 2) {
-             res.forEach((result) => {
-              if(result.provider != null){
-                 if(parseInt(result.rct_completed)+parseInt(result.rct_started)>0){
-
-                  var rct_completed = result.rct_completed;
-                     var rct_started = result.rct_started;
-                     if(result.rct_started>1) {
-                      rct_started = Math.round(result.rct_started/result.rct_started);
-                      rct_completed = Math.round(result.rct_completed/result.rct_started);
-                     }
-                     this.predictedstackedChartLabels3.push(result.provider);
-                 this.predictedstackedChartData3[0]['data'].push(rct_started);
-                 this.rct_completed= parseInt(this.rct_completed)+parseInt(result.rct_completed);
-                 this.rct_completed_ta= parseInt(this.rct_completed_ta)+parseInt(result.rct_completed_trend);
-                 this.predictedstackedChartData3[1]['data'].push(rct_completed);
-                 this.rct_started= parseInt(this.rct_started)+parseInt(result.rct_started);
-                 this.rct_started_ta= parseInt(this.rct_started_ta)+parseInt(result.rct_started_trend);
-
-                 if(this.rct_started>1) {
-                    this.rct_completed = Math.round(this.rct_completed/this.rct_started);
-                   this.rct_started= Math.round(this.rct_started/this.rct_started);
-                   
-                  }
-                  if(this.rct_started_ta>1) {
-                    this.rct_completed_ta = Math.round(this.rct_completed_ta/this.rct_started_ta);
-                   this.rct_started_ta= Math.round(this.rct_started_ta/this.rct_started_ta  );
-                   
-                  }
-
-               }
-              }
-             });
-           }
+            this.predictedstackedChartData1[0]['data'].push(parseInt(res.first_value));
+            this.predictedstackedChartData1[1]['data'].push(parseInt(res.second_value));
+            this.predictedstackedChartLabels1Avr = res.ratio;
+            this.predictedstackedChartLabels1.push(provider);            
+          } else if(key == 1) {
+            this.predictedstackedChartData2[0]['data'].push(parseInt(res.first_value));
+            this.predictedstackedChartData2[1]['data'].push(parseInt(res.second_value));
+            this.predictedstackedChartLabels2Avr = res.ratio;
+            this.predictedstackedChartLabels2.push(provider);
+          } else if(key == 2) {
+            this.predictedstackedChartData3[0]['data'].push(parseInt(res.first_value));
+            this.predictedstackedChartData3[1]['data'].push(parseInt(res.second_value));
+            this.predictedstackedChartLabels3Avr = res.ratio;
+            this.predictedstackedChartLabels3.push(provider);
+          } 
         });
         this.predictorRatioTab = '1';
-        if(this.predictedstackedChartData1[0]['data'].every((item)=> item == 0)) 
-          this.predictedstackedChartData1[0]['data'] = []
-        if(this.predictedstackedChartData1[1]['data'].every((item)=> item == 0)) 
-          this.predictedstackedChartData1[1]['data'] = []
         this.predictedstackedChartData= this.predictedstackedChartData1;
         this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
-
-       }
+        this.predictedstackedChartAvr = this.predictedstackedChartLabels1Avr;
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
- 
-    }
-    );
-}
+    });
   }
-//Chnage predictor tab
-  changeDentistPredictorMain(val) {
- this.predictorRatioTab = val;
-    $('.predictor_ratio_main .sa_tab_btn').removeClass('active');
-    $('.prmain'+val).addClass('active');
-    $('.predicted_main').hide();
-    $('.predictedToolMain').hide();
-    $('.predicted'+val+'Tool').show();
-    $('.predicted_main.predicted'+val).css('display','flex');
-    if(this.user_type == '4' && this.childid != '') {
-          this.barChartColors = [
-                { backgroundColor: [] }
-              ];
-            this.barChartColors[0].backgroundColor[this.prKey[val-1]] = '#1CA49F';
-            this.PRcolors= this.barChartColors;
-          }
-          else
-            this.PRcolors= this.predictedChartColors;
-    if(val =='1') {
-      if(this.predictedstackedChartData1[0]['data'].every((item)=> item == 0)) 
-          this.predictedstackedChartData1[0]['data'] = []
-      if(this.predictedstackedChartData1[1]['data'].every((item)=> item == 0)) 
-          this.predictedstackedChartData1[1]['data'] = []
-       this.predictedstackedChartData = this.predictedstackedChartData1;
-         this.predictedstackedChartLabels = this.predictedstackedChartLabels1;
 
-     }
-    else if(val =='2'){
-      if(this.predictedstackedChartData2[0]['data'].every((item)=> item == 0)) 
-          this.predictedstackedChartData2[0]['data'] = []
-      if(this.predictedstackedChartData2[1]['data'].every((item)=> item == 0)) 
-          this.predictedstackedChartData2[1]['data'] = []
-   this.predictedstackedChartData = this.predictedstackedChartData2;
-         this.predictedstackedChartLabels = this.predictedstackedChartLabels2;
-
-     }
-    else if(val =='3') {
-      if(this.predictedstackedChartData3[0]['data'].every((item)=> item == 0)) 
-          this.predictedstackedChartData3[0]['data'] = []
-      if(this.predictedstackedChartData3[1]['data'].every((item)=> item == 0)) 
-          this.predictedstackedChartData3[1]['data'] = []
- this.predictedstackedChartData = this.predictedstackedChartData3;
-         this.predictedstackedChartLabels = this.predictedstackedChartLabels3;
-     }
-
-  } 
+    //Chnage predictor tab
+    changeDentistPredictorMain(val) { 
+      this.predictedstackedChartAvr = 0;
+      this.predictorRatioTab = val;
+      $('.predictor_ratio_main .sa_tab_btn').removeClass('active');
+      $('.prmain'+val).addClass('active');
+      $('.predicted_main').hide();
+      $('.predictedToolMain').hide();
+      $('.predicted'+val+'Tool').show();
+      $('.predicted_main.predicted'+val).css('display','flex');
+      if(this.user_type == '4' && this.childid != '') {
+        this.barChartColors = [ { backgroundColor: [] } ];
+        this.barChartColors[0].backgroundColor[this.prKey[val-1]] = '#1CA49F';
+        this.PRcolors= this.barChartColors;
+      } else
+        this.PRcolors= this.predictedChartColors;
+      if(val =='1') {     
+        this.predictedstackedChartData = this.predictedstackedChartData1;
+        this.predictedstackedChartLabels = this.predictedstackedChartLabels1;
+        this.predictedstackedChartAvr = this.predictedstackedChartLabels1Avr;
+      } else if(val =='2'){      
+        this.predictedstackedChartData = this.predictedstackedChartData2;
+        this.predictedstackedChartLabels = this.predictedstackedChartLabels2;
+        this.predictedstackedChartAvr = this.predictedstackedChartLabels2Avr;
+      } else if(val =='3') {
+        this.predictedstackedChartData = this.predictedstackedChartData3;
+        this.predictedstackedChartLabels = this.predictedstackedChartLabels3;
+        this.predictedstackedChartAvr = this.predictedstackedChartLabels3Avr;
+      }
+    } 
 public gaugeValuePredictedPrev1;
 public gaugeValuePredictedPrev2;
 public gaugeValuePredictedPrev3;
@@ -1392,140 +1280,57 @@ public rct_completed:any=0;
 public rct_completed_ta:any=0; 
 public rct_started :any=0; 
 public rct_started_ta :any=0; 
-  //Predictor Ratio : Individual Dentist
+
+
+
+ //Predictor Ratio :All Dentist
   private buildChartPredictorDentist() {
-     this.predictedTotalAverageTooltip1 = 'down';
-    this.predictedTotalAverageTooltip2 = 'down';
-    this.predictedTotalAverageTooltip3 = 'down';
-     if(this.duration){
-      this.buildChartDentistLoader = true;
-       var user_id;
-    var clinic_id;
-  this.clinic_id && this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-    this.buildChartDentistLoader = false;
-    this. predictedstackedChartData1 = [
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Large Fillings' } ];
-    this.predictedstackedChartData2 = [
-    {data: [], label: 'RCT'},
-    {data: [], label: 'Extractions' } ];
-    this.predictedstackedChartData3 = [
-
-    {data: [], label: "RCT's Started" },
-    {data: [], label: "RCT's Completed" } ];
-
-
-    this.predictedstackedChartLabels1=[];
-    this.predictedstackedChartLabels2=[];
-    this.predictedstackedChartLabels3=[];
-    this.crowns=this.crowns_ta =this.large_fillings=this.large_fillings_ta =this.extractions=this.extractions_ta =this.root_canals=this.root_canals_ta =this.rct_completed=this.rct_completed_ta=this.rct_started =this.rct_started_ta =0;
-    if (data.message == 'success' && data.data){
-
-
-      data.data.ratio1 && data.data.ratio1.length  && data.data.ratio1.forEach((result) => {
-              if(result.provider != null){
-                     this.predictedstackedChartLabels1.push(result.provider);
-
-                     var crowns = result.crowns;
-                     var large_fillings = result.large_fillings;
-                     if(result.crowns>1) {
-                      crowns = Math.round(result.crowns/result.crowns);
-                      large_fillings = Math.round(result.large_fillings/result.crowns);
-                     }
-                 this.predictedstackedChartData1[0]['data'].push(crowns);
-                 this.crowns= parseInt(this.crowns)+parseInt(result.crowns);
-                 this.crowns_ta= parseInt(this.crowns_ta)+parseInt(result.crowns_trend);
-
-                 this.predictedstackedChartData1[1]['data'].push(large_fillings);
-                  this.large_fillings= parseInt(this.large_fillings)+parseInt(result.large_fillings);
-                 this.large_fillings_ta= parseInt(this.large_fillings_ta)+parseInt(result.large_fillings_trend);
-                  if(this.crowns>1) {
-                    this.large_fillings = Math.round(this.large_fillings/this.crowns);
-                   this.crowns= Math.round(this.crowns/this.crowns);
-                   
-                  }
-                   if(this.crowns_ta>1) {
-                    this.large_fillings_ta = Math.round(this.large_fillings_ta/this.crowns_ta);
-                    this.crowns_ta= Math.round(this.crowns_ta/this.crowns_ta);
-                    
-                  }
-
-              }
-             });
-      data.data.ratio2 && data.data.ratio2.length && data.data.ratio2.forEach((result) => {
-              if(result.provider != null){
-                     this.predictedstackedChartLabels2.push(result.provider);
-
-                      var extractions = result.extractions;
-                     var root_canals = result.root_canals;
-                     if(result.root_canals>1) {
-                      root_canals = Math.round(result.root_canals/result.root_canals);
-                      extractions = Math.round(result.extractions/result.root_canals);
-                     }
-                 this.predictedstackedChartData2[0]['data'].push(root_canals);
-                  this.extractions= parseInt(this.extractions)+parseInt(result.extractions);
-                 this.extractions_ta= parseInt(this.extractions_ta)+parseInt(result.extractions_trend);
-                 this.predictedstackedChartData2[1]['data'].push(extractions);
-                 this.root_canals= parseInt(this.root_canals)+parseInt(result.root_canals);
-                 this.root_canals_ta= parseInt(this.root_canals_ta)+parseInt(result.root_canals_trend);
-                  if(this.root_canals>1) {
-                    this.extractions = Math.round(this.extractions/this.root_canals);
-                   this.root_canals= Math.round(this.root_canals/this.root_canals);
-                   
-                  }
-                  if(this.root_canals_ta>1) {
-                    this.extractions_ta = Math.round(this.extractions_ta/this.root_canals_ta);
-                   this.root_canals_ta= Math.round(this.root_canals_ta/this.root_canals_ta);
-                   
-                  }
-
-              }
-             });
-      data.data.ratio3 && data.data.ratio3.length && data.data.ratio3.forEach((result) => {
-              if(result.provider != null){
-
-
-                  var rct_completed = result.rct_completed;
-                     var rct_started = result.rct_started;
-                     if(result.rct_started>1) {
-                      rct_started = Math.round(result.rct_started/result.rct_started);
-                      rct_completed = Math.round(result.rct_completed/result.rct_started);
-                     }
-                     this.predictedstackedChartLabels3.push(result.provider);
-                 this.predictedstackedChartData3[0]['data'].push(rct_started);
-                 this.rct_completed= parseInt(this.rct_completed)+parseInt(result.rct_completed);
-                 this.rct_completed_ta= parseInt(this.rct_completed_ta)+parseInt(result.rct_completed_trend);
-                 this.predictedstackedChartData3[1]['data'].push(rct_completed);
-                 this.rct_started= parseInt(this.rct_started)+parseInt(result.rct_started);
-                 this.rct_started_ta= parseInt(this.rct_started_ta)+parseInt(result.rct_started_trend);
-                 if(this.rct_started>1) {
-                    this.rct_completed = Math.round(this.rct_completed/this.rct_started);
-                   this.rct_started= Math.round(this.rct_started/this.rct_started);
-                   
-                  }
-                  if(this.rct_started_ta>1) {
-                    this.rct_completed_ta = Math.round(this.rct_completed_ta/this.rct_started_ta);
-                   this.rct_started_ta= Math.round(this.rct_started_ta/this.rct_started_ta  );
-                   
-                  }
-
-              }
-             });
-        if(this.predictedstackedChartData1[0]['data'].every((item)=> item == 0)) 
-          this.predictedstackedChartData1[0]['data'] = []
-        if(this.predictedstackedChartData1[1]['data'].every((item)=> item == 0)) 
-          this.predictedstackedChartData1[1]['data'] = []
+    this.buildChartLoader = true;
+    this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+      this.buildChartLoader = false;
+      this.predictedstackedChartData1 = [{data: [], label: 'Crowns'},{data: [], label: 'Large Fillings' } ];
+      this.predictedstackedChartData2 = [{data: [], label: 'RCT'},{data: [], label: 'Extractions' } ];
+      this.predictedstackedChartData3 = [{data: [], label: "RCT's Started" },{data: [], label: "RCT's Completed" } ];
+      this.predictedstackedChartLabels1 = [];
+      this.predictedstackedChartLabels2 = [];
+      this.predictedstackedChartLabels3 = [];
+      this.predictedstackedChartLabels1Avr = 0;
+      this.predictedstackedChartLabels2Avr = 0;
+      this.predictedstackedChartLabels3Avr = 0;    
+      if(data.message == 'success'){        
+        data.data.forEach((res,key) => {
+          var provider = res.provider_name;
+          if(!provider)
+            provider = '';
+          if(key == 0) {
+            this.predictedstackedChartData1[0]['data'].push(parseInt(res.first_value));
+            this.predictedstackedChartData1[1]['data'].push(parseInt(res.second_value));
+            this.predictedstackedChartLabels1Avr = res.ratio;
+            this.predictedstackedChartLabels1.push(provider);            
+          } else if(key == 1) {
+            this.predictedstackedChartData2[0]['data'].push(parseInt(res.first_value));
+            this.predictedstackedChartData2[1]['data'].push(parseInt(res.second_value));
+            this.predictedstackedChartLabels2Avr = res.ratio;
+            this.predictedstackedChartLabels2.push(provider);
+          } else if(key == 2) {
+            this.predictedstackedChartData3[0]['data'].push(parseInt(res.first_value));
+            this.predictedstackedChartData3[1]['data'].push(parseInt(res.second_value));
+            this.predictedstackedChartLabels3Avr = res.ratio;
+            this.predictedstackedChartLabels3.push(provider);
+          } 
+        });
+        this.predictorRatioTab = '1';
         this.predictedstackedChartData= this.predictedstackedChartData1;
         this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
-
-       }
+        this.predictedstackedChartAvr = this.predictedstackedChartLabels1Avr;
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
- 
-    }
-    );
-}
+    });
   }
+
+
+
 
 //Total Revenue of Clinician Per Procedure
 
@@ -1620,7 +1425,9 @@ public doughnutChartColors1;
         this.pieChartInternalTotal = 0;
         this.pieChartExternalTotal =0;
         this.pieChartCombinedTotal = 0;
-
+        this.pieChartDataMax1 = 0;
+        this.pieChartDataMax2 = 0;
+        this.pieChartDataMax3 = 0;
         this.pieChartInternalPrevTotal = 0;
         this.pieChartExternalPrevTotal = 0;
         this.pieChartCombinedPrevTotal = 0;
@@ -1689,32 +1496,33 @@ public doughnutChartColors1;
 
   //Referral to Other Clinicians Internal / External
   private buildChartReferralDentist() {
-        var user_id;
-    var clinic_id;
-    this.pieChartDataMax1=0;
-this.pieChartDataMax2=0;
-this.pieChartDataMax3=0;
- this.pieChartLabelsres1 = [];
-           this.pieChartLabelsres2 = [];
-          this.pieChartLabelsres3=[];
-        this.pieChartInternalPrevTotal = 0;
-        this.pieChartExternalPrevTotal = 0;
-        this.pieChartCombinedPrevTotal = 0;
-        this.pieChartInternalPrevTooltip = 'down';
-        this.pieChartExternalPrevTooltip = 'down';
-        this.pieChartCombinedPrevTooltip = 'down';
+      var user_id;
+      var clinic_id;
+      this.pieChartLabelsres1 = [];
+      this.pieChartLabelsres2 = [];
+      this.pieChartLabelsres3=[];
+      this.pieChartInternalPrevTotal = 0;
+      this.pieChartExternalPrevTotal = 0;
+      this.pieChartCombinedPrevTotal = 0;
+      this.pieChartInternalPrevTooltip = 'down';
+      this.pieChartExternalPrevTooltip = 'down';
+      this.pieChartCombinedPrevTooltip = 'down';
  this.clinic_id && this.clinicianproceeduresService.ClinicianReferralDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success'){
-          this.pieChartLabelsres1 = [];
-          this.pieChartLabelsres2 = [];
-          this.pieChartLabelsres3=[];
-          this.pieChartInternalTotal = 0;
-          this.pieChartExternalTotal = 0;
-          this.pieChartCombinedTotal =0;
-          this.pieChartDatares1 = [];
-          this.pieChartDatares2 = [];
-          this.pieChartDatares3 = [];
-          this.pieChartLabelsres = [];
+      this.pieChartLabelsres1 = [];
+      this.pieChartLabelsres2 = [];
+      this.pieChartLabelsres3=[];
+      this.pieChartInternalTotal = 0;
+      this.pieChartExternalTotal = 0;
+      this.pieChartCombinedTotal =0;
+      this.pieChartDatares1 = [];
+      this.pieChartDatares2 = [];
+      this.pieChartDatares3 = [];
+      this.pieChartLabelsres = [];
+      this.pieChartDataMax1 = 0;
+      this.pieChartDataMax2 = 0;
+      this.pieChartDataMax3 = 0;
+       if(data.message == 'success' && data.data.length){
+     
         data.data.forEach(res => {
           if(res.total>0) {
               if(res.internal>0) {
@@ -1857,9 +1665,7 @@ public currentText;
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-
-      console.log(this.startDate+" "+this.endDate);
-            this.loadDentist(dentistVal);
+      this.loadDentist(dentistVal);
     }
     else if (duration == 'lm') {
       this.duration = 'lm';
