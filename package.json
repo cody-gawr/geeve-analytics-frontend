@@ -29,7 +29,6 @@
     "@angular/platform-browser": "^8.2.14",
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
-    "@nguniversal/express-engine": "^11.2.1",
     "@stripe/stripe-js": "^1.11.0",
     "@swimlane/ngx-charts": "^12.1.0",
     "@swimlane/ngx-datatable": "^15.0.2",
