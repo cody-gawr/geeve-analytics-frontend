@@ -1941,6 +1941,8 @@ toggleChangeProcess(){
     $('.trendMode').css('display','block');
     $('.nonTrendMode').hide();
     this.finNetProfitPMSTrend();
+    this.finNetProfitPMSPercentTrend();
+    this.finExpensesByCategoryTrend();
     
     this.finProductionByClinicianTrend();
     this.finTotalDiscountsTrend();
@@ -1950,7 +1952,6 @@ toggleChangeProcess(){
     this.finProductionPerVisitTrend();
   //  this.finNetProfitTrend();
    // this.finNetProfitPercentTrend();
-    //this.finExpensesByCategoryTrend();
     this.netProfitDisplayVal ='1';
 /*    this.totalProductionCollection[0]['data'] = this.totalProductionChartTrend1;
     this.totalProductionCollection[1]['data'] = this.collectionChartTrend1;
@@ -2386,149 +2387,96 @@ private finTotalDiscountsTrend() {
  }
 
 
-trendxero=false;
+  public trendxero = false;
   private finNetProfitPMSTrend() {
-      this.netProfitChartTrendLabels1=[];
-  
-  this.netProfitChartTrend1= [];
-  this.finNetProfitTrendLoader = true;
-    this.finNetProfitPMSTrendLoader = true;
-  this.netProfitPmsChartTrendLabels1=[];
-  this.netProfitPmsChartTrend1= [];
-   this.netProfitPercentChartTrendLabels1=[];
-  this.netProfitPercentChartTrendLabels=[];
- 
-  this.netProfitPercentChartTrend1= [];
-  this.finNetProfitPercentTrendLoader = true;
-    var user_id;
-    var clinic_id;
-     this.expensesChartTrendLabels=[];
-    
-this.trendxero=true;
-  this.expensesChartTrend =[
-    {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
-
+    this.netProfitChartTrend1= [];
+    this.netProfitPercentChartTrendLabels1=[];
+    this.netProfitPercentChartTrendLabels=[];    
+    this.trendxero=true;
     this.financesService.finNetProfitPMSTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-this.trendxero=false;
-
-       if(data.message == 'success'){
-         this.netProfitChartTrendLabels1=[];
-  
-  this.netProfitChartTrend1= [];
-        this.netProfitPmsChartTrendLabels1=[];
-  this.netProfitPmsChartTrend1= [];
-  this.netProfitPercentChartTrendLabels1=[];
-  this.netProfitPercentChartTrendLabels=[];
- 
-  this.netProfitPercentChartTrend1= [];
-         this.expensesChartTrendLabels1=[];
-          this.expensesChartTrend =[];
-
-    this.finNetProfitPMSTrendLoader = false;
-        this.finNetProfitTrendLoader = false;
-          this.finNetProfitPercentTrendLoader = false;
-          console.log('data.data', data.data)
-              if(data.data.net_profit)
-                data.data.net_profit.forEach(res => {  
-                  // console.log(res.val.net);
-                     if (res.val.net != null)
-                     this.netProfitChartTrend1.push(Math.round(res.val.net));
-                     else
-                     this.netProfitChartTrend1.push(0);
-                     //if(res.val.production) 
-                    // this.netProfitPercentChartTrend1.push(Math.round(res.val.production));
-                     //else
-                    // this.netProfitPercentChartTrend1.push(0);       
-                    if(res.val.pms)
-                     this.netProfitPmsChartTrend1.push(Math.round(res.val.pms));
-                   else
-                     this.netProfitPmsChartTrend1.push(0);
-
-                   if(this.trendValue == 'c'){
-                   //this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-                   this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));                    
-                   this.netProfitPmsChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-             //      this.expensesChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-
-                 }
-                 else {
-                  // this.netProfitChartTrendLabels1.push(res.duration);
-                   this.netProfitPercentChartTrendLabels1.push(res.duration);                    
-                   this.netProfitPmsChartTrendLabels1.push(res.duration);
-                   //this.expensesChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
-
-                 }
-                  
-                 });
-                 this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
-
-                 //this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1;             
-                 //this.netProfitPercentChartTrend[0]['data'] = this.netProfitPercentChartTrend1;
-
-                this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
-                 this.netProfitPmsChartTrend[0]['data'] = this.netProfitPmsChartTrend1;
-
-                 this.netProfitPmsChartTrendLabels =this.netProfitPmsChartTrendLabels1;
-                 data.data.expenses.forEach((result,key) => {  
-                    if(result.meta_key != 'Total Operating Expenses') {
-                      let tempO:any = [];
-                      result.expenses.forEach((res) => {  
-                        tempO.push(Math.round(res));
-                      });                      
-                      let temp = {data: [],label: '' };
-                      temp.data = tempO;
-                      temp.label = result.meta_key;
-          this.expensesChartTrend.push(temp);
-                     // this.expensesChartTrend[key]['data'] = tempO;
-                     // this.expensesChartTrend[key]['label'] = result.meta_key;           
-
-                   }
-                 }); 
-                 this.expensesChartTrendLabels = data.data.duration; 
-
-                 console.log('this.expensesChartTrend',  this.expensesChartTrend);
-                 console.log('this.expensesChartTrendLabels',  this.expensesChartTrendLabels);
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
- 
-    });
-  }
-
-
-public expensesChartTrend: any[]  = [
-    {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
-public expensesChartTrendLabels =[];
-public expensesChartTrendLabels1 =[];
-
-private finExpensesByCategoryTrend() {
-  this.expensesChartTrendLabels1=[];
-    var user_id;
-    var clinic_id;
-     this.expensesChartTrendLabels=[];
-  this.expensesChartTrend =[
-    {data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''},{data: [], label: ''}];
-    this.financesService.finExpensesByCategoryTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data.message == 'success'){
+       this.trendxero=false;
+       if(data.message == 'success'){       
+          if(data.data)
                 data.data.forEach(res => {  
-                   res.val.expense.forEach((result,key) => {
-                     this.expensesChartTrend[key]['data'].push(Math.round(result.expenses));
-                     this.expensesChartTrend[key]['label'] = result.meta_key;
-                   });
-                   if(this.trendValue == 'c')
-                   this.expensesChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                   this.expensesChartTrendLabels1.push(res.duration);
-                  
-                 });
-                 this.expensesChartTrendLabels =this.expensesChartTrendLabels1; 
-                 console.log('this.expensesChartTrendLabels', this.expensesChartTrendLabels)
-       }
+                   if (res.net_profit != null)
+                     this.netProfitChartTrend1.push(Math.round(res.net_profit));
+                   else
+                     this.netProfitChartTrend1.push(0);
+                   if(this.trendValue == 'c'){
+                   this.netProfitPercentChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));                    
+                   } else {
+                  this.netProfitPercentChartTrendLabels1.push(res.duration);                    
+                }
+              });
+                 this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
+                this.netProfitPercentChartTrendLabels =this.netProfitPercentChartTrendLabels1; 
+                       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
  
     });
   }
+
+
+
+  // Added by Hanney Sharma on 09-04-2021 for net profit %
+
+  private finNetProfitPMSPercentTrend() {
+    this.netProfitPmsChartTrend1= [];
+    this.netProfitChartTrendLabels1=[]; 
+    this.trendxero = true;
+    this.financesService.finNetProfitPMSPercentTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      this.trendxero=false;
+      if(data.message == 'success'){   
+        this.netProfitPmsChartTrend1= [];
+        this.netProfitChartTrendLabels1=[];     
+        if(data.data) {
+          data.data.forEach(res => {  
+            if (res.net_profit_percentage != null)
+              this.netProfitPmsChartTrend1.push(Math.round(res.net_profit_percentage));
+            else
+              this.netProfitPmsChartTrend1.push(0);
+            if(this.trendValue == 'c'){
+              this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));                    
+            } else {
+              this.netProfitChartTrendLabels1.push(res.duration);                    
+            }
+          });
+          this.netProfitPmsChartTrend[0]['data'] = this.netProfitPmsChartTrend1;
+          this.netProfitPmsChartTrendLabels =this.netProfitChartTrendLabels1; 
+         } 
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
+    public expensesChartTrend: any[] = [];
+    public expensesChartTrendLabels =[];
+    public expensesChartTrendLabels1 =[];
+
+    private finExpensesByCategoryTrend() {
+      this.expensesChartTrendLabels=[];
+      this.expensesChartTrend =[];
+      this.financesService.finExpensesByCategoryTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+        if(data.message == 'success'){
+           data.data.expenses.forEach((result,key) => {  
+            if(result.meta_key != 'Total Operating Expenses') {
+              let tempO:any = [];
+              result.expenses.forEach((res) => {  tempO.push(Math.round(res)); });                      
+              let temp = {data: [],label: '' };
+              temp.data = tempO;
+              temp.label = result.meta_key;
+              this.expensesChartTrend.push(temp);
+            }
+          }); 
+          this.expensesChartTrendLabels = data.data.duration;
+        }
+      }, error => {
+        this.warningMessage = "Please Provide Valid Inputs!";
+
+      });
+    }
 
   displayProfit(val) {
     $(".net_profit").hide();

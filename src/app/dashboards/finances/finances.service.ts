@@ -219,6 +219,16 @@ export class FinancesService {
                     })
         );
     }
+
+    // finNetProfitPMSTrend
+    finNetProfitPMSPercentTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
              // finExpensesByCategoryTrend
     finExpensesByCategoryTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
