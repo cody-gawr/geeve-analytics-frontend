@@ -10,7 +10,7 @@ import {
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AppHeaderComponent } from './header.component';
+import { StepperHeaderComponent } from './header.component';
 import { StepperHeaderService } from './header.service';
  import { MatMenuModule} from '@angular/material/menu';
 
@@ -31,7 +31,7 @@ import { StepperHeaderService } from './header.service';
     StepperHeaderService
   ],
   declarations: [
-  AppHeaderComponent
+    StepperHeaderComponent
   ]
 })
 export class HeaderModule {}

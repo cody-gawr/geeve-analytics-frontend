@@ -10,6 +10,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
+import { StepperHeaderComponent } from './layouts/stepper/header/header.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './demo-material-module';
@@ -47,6 +48,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppComponent,
     FullComponent,
     AppHeaderComponent,
+    StepperHeaderComponent,
     SpinnerComponent,
     AppBlankComponent,
     AppSidebarComponent,
