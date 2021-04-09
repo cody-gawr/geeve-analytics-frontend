@@ -33,8 +33,8 @@ export interface Dentist {
   */
 export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   TooltipLayout = TooltipLayoutComponent;
-  @ViewChild("myCanvas") canvas: ElementRef;
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+  @ViewChild("myCanvas", {static: false}) canvas: ElementRef;
+  @ViewChild(BaseChartDirective, {static: false}) chart: BaseChartDirective;
   tooltipData: ITooltipData = {
     title: 'Open quick search',
     info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'

@@ -97,7 +97,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns5: string[] = ['name', 'phone', 'code','status'];
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   
- @ViewChild(MatPaginator) paginator: MatPaginator;
+ @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService) { 
   }
  ngOnInit(){

@@ -36,8 +36,8 @@ export interface Dentist {
   templateUrl: './marketing.component.html'
 })
 export class MarketingComponent implements AfterViewInit {
-    @ViewChild("myCanvas") canvas2: ElementRef;
-    @ViewChild("revenueRefChart") revenueRefChart: BaseChartDirective;
+    @ViewChild("myCanvas", {static: false}) canvas2: ElementRef;
+    @ViewChild("revenueRefChart", {static: false}) revenueRefChart: BaseChartDirective;
     tooltipData: ITooltipData = {
       title: 'Open quick search',
       info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'

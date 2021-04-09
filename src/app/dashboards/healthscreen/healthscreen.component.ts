@@ -28,7 +28,7 @@ declare var Chart: any;
   styleUrls: ['./healthscreen.component.scss']
 })
 export class HealthScreenComponent implements AfterViewInit, OnDestroy {
-   @ViewChild("myCanvas") canvas: ElementRef;
+   @ViewChild("myCanvas", {static: false}) canvas: ElementRef;
   mockupColors = ['#6edbbb', '#ffd32d', '#abb3ff', '#b0fffa', '#ffb4b5'];
   lineChartColors;
   tooltipData: ITooltipData = {

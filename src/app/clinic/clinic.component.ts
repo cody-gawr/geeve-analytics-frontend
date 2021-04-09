@@ -120,7 +120,7 @@ export class ClinicComponent implements AfterViewInit {
 
   columns = [{ prop: 'sr' }, { name: 'clinicName' }, { name: 'address' }, { name: 'contactName' }, { name: 'created' }];
 
-  @ViewChild(ClinicComponent) table: ClinicComponent;
+  @ViewChild(ClinicComponent, {static: false}) table: ClinicComponent;
   constructor(private toastr: ToastrService,private clinicService: ClinicService, public dialog: MatDialog,private _cookieService: CookieService, private router: Router,private headerService: HeaderService) {
 
     this.rows = data;

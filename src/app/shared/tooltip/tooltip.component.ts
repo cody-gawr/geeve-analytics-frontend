@@ -24,7 +24,7 @@ export class TooltipContainerDirective {
 })
 export class TooltipComponent implements OnInit {
   top : string;
-  @ViewChild(TooltipContainerDirective, { read: ElementRef }) private tooltipContainer;
+  @ViewChild(TooltipContainerDirective, { read: ElementRef, static: false }) private tooltipContainer;
   constructor( @Inject('tooltipConfig') private config, @Inject('data') public tooltipData ) {
   }
 
