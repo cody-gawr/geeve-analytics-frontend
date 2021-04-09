@@ -170,7 +170,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     })
 
     $('.topbar-strip').addClass('responsive-top');
-    this.doughnutChartColors = [
+    this.doughnutChartColors = [ 
       {
         backgroundColor: [
           '#6cd8ba',
