@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
+import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -30,6 +31,10 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   doughnutChartColors;
   predictedChartColors;
   preoceedureChartColors;
+  tooltipData: ITooltipData = {
+    title: 'Open quick search',
+    info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+  };
   subtitle: string;
    public clinic_id:any ={};
    public dentistCount:any ={};

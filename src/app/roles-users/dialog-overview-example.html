@@ -17,13 +17,14 @@
       <option value ="5">Staff</option>
    </select> 
 </div>
- <div class="sa-form-group">
+ <div class="sa-form-group select-client">
     <label>Select Clinics</label>
-     <mat-select [formControl]="selectedClinics" multiple (openedChange)="clinicSelect($event)">
-    <mat-option *ngFor="let clinics of data.clinics" [value]="clinics.id">{{clinics.clinicName}}</mat-option>
-  </mat-select>
-</div>
+  
+      <mat-select [formControl]="selectedClinics" multiple (openedChange)="clinicSelect($event)">
+       <mat-option *ngFor="let clinics of data.clinics" [value]="clinics.id">{{clinics.clinicName}}</mat-option>
+     </mat-select>
 
+</div>
 <div class="sa-form-group" *ngIf="show_dentist == true">
 <div  *ngFor="let clinicProviders of selectedClinicProviders; let i=index">
   <span>{{clinicProviders.clinicName}}</span>

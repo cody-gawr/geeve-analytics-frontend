@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material';
-import { DemoMaterialModule } from '../demo-material-module';
+import {MatInputModule} from '@angular/material/input';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { UsersService } from './users.service';
 import { UsersComponent  } from './users.component';
 import { UsersRoutes } from './users.routing';
+import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -15,8 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RouterModule.forChild(UsersRoutes),
     MatInputModule,
     NgxDatatableModule,
-    DemoMaterialModule,
-    FormsModule
+    FormsModule,
+    DemoMaterialModule
   ],
   providers: [
     UsersService

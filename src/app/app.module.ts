@@ -10,9 +10,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
+import { StepperHeaderComponent } from './layouts/stepper/header/header.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DemoMaterialModule } from './demo-material-module';
 import { StepperComponent } from './layouts/stepper/stepper.component';
 import { StepperSidebarComponent } from './layouts/stepper/sidebar/sidebar.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -34,6 +34,8 @@ import { StepperHeaderrightComponent } from './layouts/stepper/headerright/heade
 import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
 import { SharedMatModule } from './shared-mat.module';
+import { DemoMaterialModule } from './demo-material-module';
+
 import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-tabs/dashboard-duration-tabs.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -47,6 +49,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppComponent,
     FullComponent,
     AppHeaderComponent,
+    StepperHeaderComponent,
     SpinnerComponent,
     AppBlankComponent,
     AppSidebarComponent,
@@ -60,9 +63,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   imports: [
   MatMenuModule,
+  DemoMaterialModule,
     BrowserModule,
     BrowserAnimationsModule,
-    DemoMaterialModule,
     FormsModule,
     FlexLayoutModule,
     HttpClientModule,

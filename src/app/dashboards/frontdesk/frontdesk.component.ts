@@ -12,12 +12,12 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "ngx-cookie";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ToastrService } from 'ngx-toastr';
 import { ChartService } from '../chart.service';
+import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -28,6 +28,10 @@ export interface Dentist {
 })
 export class FrontDeskComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas: ElementRef;
+    tooltipData: ITooltipData = {
+      title: 'Open quick search',
+      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+  };
   lineChartColors;
   doughnutChartColors;
   predictedChartColors;

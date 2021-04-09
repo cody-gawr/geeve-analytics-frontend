@@ -7,18 +7,32 @@ import {
   AccordionLinkDirective,
   AccordionDirective
 } from './accordion';
+import { TooltipComponent, TooltipContainerDirective } from './tooltip/tooltip.component';
+import { TooltipDirective } from './tooltip/tooltip.directive';
+import { CommonModule } from '@angular/common';
+import { TooltipLayoutComponent } from './tooltip/tooltip-layout.component';
 
 @NgModule({
   declarations: [
     AccordionAnchorDirective,
     AccordionLinkDirective,
-    AccordionDirective
+    AccordionDirective,
+    TooltipComponent,
+    TooltipDirective,
+    TooltipContainerDirective, 
+    TooltipLayoutComponent
   ],
   exports: [
     AccordionAnchorDirective,
     AccordionLinkDirective,
-    AccordionDirective
+    AccordionDirective,
+    TooltipDirective,
+    TooltipContainerDirective
   ],
-  providers: [MenuItems,RolesUsersService]
+  imports: [
+    CommonModule
+  ],
+  providers: [MenuItems,RolesUsersService],
+  entryComponents: [TooltipLayoutComponent, TooltipComponent]
 })
 export class SharedModule {}

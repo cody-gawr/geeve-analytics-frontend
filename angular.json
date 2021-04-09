@@ -11,6 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -23,19 +24,26 @@
             "styles": [
               "src/styles.css",
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
-              "node_modules/@swimlane/ngx-datatable/release/index.css",
-              "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
+              "./node_modules/@swimlane/ngx-datatable/index.css",
+              "./node_modules/@swimlane/ngx-datatable/themes/material.css",
+              "./node_modules/@swimlane/ngx-datatable/assets/icons.css",
               "src/assets/styles/style.scss",
                "node_modules/ngx-toastr/toastr.css" 
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "src/assets/js/jquery.sparkline.min.js",
-               "./node_modules/jquery/dist/jquery.min.js",
+               "./node_modules/jquery/dist/jquery.min.js"
             ]
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -52,7 +60,13 @@
                 }
               ]
             },
-             "prod-non-optimized": {              
+             "prod-non-optimized": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],              
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -60,7 +74,13 @@
                 }
               ]
             },
-            "test": {   
+            "test": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],   
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -77,7 +97,13 @@
                 }
               ]
             },
-             "staging": {   
+             "staging": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],   
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -94,7 +120,13 @@
                 }
               ]
             },
-            "dev": {     
+            "dev": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],     
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -210,7 +242,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "css"
+      "style": "css"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

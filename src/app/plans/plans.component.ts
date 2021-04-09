@@ -1,6 +1,8 @@
 import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
 import { PlansService } from './plans.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from "ngx-cookie";
 import { ActivatedRoute, Router } from "@angular/router";
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";

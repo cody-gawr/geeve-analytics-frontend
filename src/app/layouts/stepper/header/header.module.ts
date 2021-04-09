@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {
-  MatIconModule,
-  MatCardModule,
-  MatInputModule,
-  MatCheckboxModule,
-  MatButtonModule
-} from '@angular/material';
+import {MatIconModule} from '@angular/material/icon';
+import {MatCardModule} from '@angular/material/card';
+import {MatInputModule} from '@angular/material/input';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatButtonModule} from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AppHeaderComponent } from './header.component';
+import { StepperHeaderComponent } from './header.component';
 import { StepperHeaderService } from './header.service';
  import { MatMenuModule} from '@angular/material/menu';
 
@@ -31,7 +29,7 @@ import { StepperHeaderService } from './header.service';
     StepperHeaderService
   ],
   declarations: [
-  AppHeaderComponent
+    StepperHeaderComponent
   ]
 })
 export class HeaderModule {}
