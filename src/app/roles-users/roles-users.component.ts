@@ -1,6 +1,8 @@
 import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
 import { RolesUsersService } from './roles-users.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatInputModule } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from "@angular/router";
 import { EventEmitter , Output, Input} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';

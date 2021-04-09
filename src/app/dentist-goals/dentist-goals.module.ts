@@ -15,8 +15,8 @@ import { DentistService } from '../dentist/dentist.service';
   imports: [
     CommonModule,
     RouterModule.forChild(DentistGoalsRoutes),
-    DemoMaterialModule,
     FlexLayoutModule,
+    DemoMaterialModule,
     FormsModule,
     ReactiveFormsModule,
     MatTreeModule,

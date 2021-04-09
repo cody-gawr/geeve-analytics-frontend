@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
-import { DemoMaterialModule } from '../demo-material-module';
 import { CdkTableModule } from '@angular/cdk/table';
 import { ChartsModule } from 'ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,18 +22,22 @@ import { MarketingService } from './marketing/marketing.service';
 import { DentistService } from '../dentist/dentist.service';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import {MatButtonToggleModule, MatIconModule} from '@angular/material';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatIconModule } from '@angular/material/icon';
 import { NgxChartsModule } from '@swimlane/ngx-charts';               
 import { GaugeChartModule } from 'angular-gauge-chart';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { CurrencySuffixPipe } from '../currency-suffix.pipe';
 import { DateMenuBarComponent } from './date-menu-bar/date-menu-bar.component';
 import { SharedModule } from '../shared/shared.module';
+import { DemoMaterialModule } from '../demo-material-module';
+
+
+
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(DashboardsRoutes),
-    DemoMaterialModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
@@ -46,7 +49,8 @@ import { SharedModule } from '../shared/shared.module';
      MatButtonToggleModule, MatIconModule,
      GaugeChartModule,
     NgxSmartModalModule.forRoot(),
-    SharedModule
+    SharedModule,
+    DemoMaterialModule
   ],
   providers: [ClinicianAnalysisService, MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, DecimalPipe, HealthScreenService],
   declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, CurrencySuffixPipe, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, DateMenuBarComponent]
