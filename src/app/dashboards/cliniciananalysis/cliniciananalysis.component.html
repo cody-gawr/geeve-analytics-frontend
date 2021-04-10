@@ -229,322 +229,147 @@
       <!-- Column-->
       <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg ">
-        <mat-card class="treatmentPlan">
+        <mat-card class="hourlyRate sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
               <div>
                 <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
-                  mat-icon-button matTooltip="{{trendText}} : $ {{planTotalPrev| number:'1.0-0'}}"><img
-                    class="trend_ico" src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
-                Treatment Plan Average Cost
+                  mat-icon-button matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
+                Hourly Rate
               </div>
-              <div class="info-icon-container">
+              <!--   <div class="sa_box_title_right_buttons">
+                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
+                  <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Item 1</button>
+                      <button mat-menu-item>Item 2</button>
+                  </mat-menu>
+              </div> -->
+              <!--   <div class="settingsBtn"><button class="mat-raised-button mat-button-sm mat-green-button sa_smtable_btn" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Settings</button></div> -->
+               <div class="info-icon-container">
                 <img [tooltip]="tooltipData"
                   src="../assets/images/info-icon.png" 
                   alt="info-icon" class="info-icon"/>                
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec">
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
-                </div>
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
-                </div>
-              </div>
+              <div class="relative">
 
-              <div style="height: 300px">
-                <canvas #myCanvas id="treatmentPlanProposed"
-                  *ngIf="tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
-                  class="chart" [datasets]="planChartDataP" [labels]="planChartLabels1" [options]="barChartOptionsTC"
-                  [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)" [colors]="TPACAcolors"></canvas>
-                <canvas #myCanvas id="treatmentPlanCompleted"
-                  *ngIf="tcmain == 2 && buildChartTreatmentLoader == false && planChartData2.length > 0" baseChart
-                  class="chart" [datasets]="planChartDataC" [labels]="planChartLabels2" [options]="barChartOptionsTC"
-                  [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)" [colors]="TPACCcolors"></canvas>
-                <div *ngIf="planChartData1.length <= 0 && buildChartTreatmentLoader===false && tcmain == 1"
-                  class="no-data-placeholder">
-                  <div class="sa_nodata_div">
+                <div style="height: 250px">
+                  <canvas #myCanvas id="HourlyRate" baseChart
+                    *ngIf="hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
+                    [datasets]="hourlyRateChartData" [labels]="hourlyRateChartLabels" [legend]="barChartLegend"
+                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
+                    [colors]="HRcolors" (chartClick)="chartClicked($event)">
+                  </canvas>
+                  <div *ngIf="hourlyRateChartData1.length <= 0 && hourlyRateChartLoader===false">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
                   </div>
-                  <p class="chart-placeholder-text">You have no proposed treatment in the selected period</p>
-                </div>
-                <div *ngIf="planChartData2.length <= 0 && buildChartTreatmentLoader===false && tcmain == 2"
-                  class="no-data-placeholder">
-                  <div class="sa_nodata_div">
-                  </div>
-                  <p class="chart-placeholder-text">You have no completed treatment in the selected priod</p>
                 </div>
               </div>
             </div>
             <div class="card-footer">
-              <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
-                fxLayoutAlign="center center">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">${{planTotalAverage | number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num">${{hourlyRateChartAverage| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
                   <span class="value-text" *ngIf="currentText == ''">Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">${{planTotalPrev | number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
-                  <span class="value-text" *ngIf="trendText == ''">Average</span>
+                  <h3 class="m-0 value-num">${{hourlyRateChartAveragePrev| number:'1.0-0'}}</h3>
+                  <span class="value-text">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="planTotalGoal && goalCount">${{ (planTotalGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">${{ hourlyRateChartGoal | number:'1.0-0' }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
             </div>
-            <div *ngIf="buildChartTreatmentLoader || buildChartTreatmentDentistLoader"
-              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
-              <div class="loader-text">Calculating...</div>
-            </div>
           </mat-card-content>
         </mat-card>
-        <mat-card class="treatmentPlanSingle" [style.display]="'none'">
+
+        <mat-card class="hourlyRateSingle sa_no_tabs_area" [style.display]="'none'">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
               <div>
                 <span *ngIf="trendText && showTrendChart == false"
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
-                  matTooltip="{{trendText}} : $ {{planTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
-                    src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
-                Treatment Plan Average Cost
+                  matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img class="trend_ico"
+                    src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
+                Hourly Rate
               </div>
                <div class="info-icon-container">
                 <img [tooltip]="tooltipData"
                   src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>
+                  alt="info-icon" class="info-icon"/>                
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div fxLayout="row wrap" fxLayoutAlign="start end" class="treatment_cost sa_tabs_main_sec">
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCostSingle('1')">Proposed
-                    Fees</small>
-                </div>
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Completed Fees</small>
-                </div>
-              </div>
-              <div class="chart"
-                *ngIf="showTrendChart == false && gaugeValueTreatment > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
-                fxLayout="row" fxLayoutAlign="start end" style="height: 300px">
-                <ngx-gauge [type]="gaugeType" [value]="gaugeValueTreatment" [label]="gaugeLabelTreatment"
-                  [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
-                  [cap]="cap" [max]="maxplanTotalGoal" [duration]="gaugeDuration" [prepend]="gaugePrependText"
-                  [size]="size">
-                </ngx-gauge>
-              </div>
+
+              <ngx-gauge *ngIf="showTrendChart == false && hourlyValue > 0 && hourlyRateDentistLoader == false"
+                [type]="gaugeType" [value]="hourlyValue" [label]="hourlyLabel" [thick]="gaugeThick"
+                [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxhourlyGoal"
+                [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
+              </ngx-gauge>
               <div
-                *ngIf="showTrendChart == true && treatPlanTrend[0]['data'].length > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
-                style="height: 300px">
-                <canvas #myCanvas id="treatmentPlanTrend" baseChart [datasets]="treatPlanTrend"
-                  [labels]="treatmentPlanTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                *ngIf="showTrendChart == true && hourlyRateChartTrend1.length > 0 && fdhourlyRateRateTrendLoader == false"
+                style="height: 250px">
+                <canvas #myCanvas id="HourlyRateTrend" baseChart [datasets]="hourlyRateChartTrend"
+                  [labels]="hourlyRateChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
                   (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-              <div
-                *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && treatmentPlanAverageCostTab == '1'"
-                class="no-data-placeholder">
+              <div class="no-data-placeholder"
+                *ngIf="((showTrendChart == false && hourlyValue <= 0 && hourlyRateDentistLoader===false) || (showTrendChart == true && hourlyRateChartTrend1.length <= 0 && fdhourlyRateRateTrendLoader == false)) ">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no proposed treatment in the selected period</p>
-              </div>
-              <div
-                *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && treatmentPlanAverageCostTab == '2'"
-                class="no-data-placeholder">
-                <div class="sa_nodata_div">
-                </div>
-                <p class="chart-placeholder-text">You have no completed treatment in the selected priod</p>
+                <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
               </div>
             </div>
             <div class="card-footer">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">${{gaugeValueTreatment | number:'1.0-0' }}</h3>
+                  <h3 class="m-0 value-num">${{hourlyValue| number:'1.0-0'}}</h3>
                   <span class="value-text">Current</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">${{planTotal | number:'1.0-0' }}</h3>
+                  <h3 class="m-0 value-num">${{hourlyRateChartAverage| number:'1.0-0'}}</h3>
                   <span class="value-text">Clinic Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="planTotalGoal && goalCount">${{ (planTotalGoal * goalCount )| number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="hourlyGoal">${{ hourlyGoal }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
             </div>
-            <div *ngIf="buildChartTreatmentLoader || buildChartTreatmentDentistLoader"
-              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
-              <div class="loader-text">Calculating...</div>
-            </div>
           </mat-card-content>
         </mat-card>
+        <div *ngIf="hourlyRateChartLoader == true" class="loader_container loader_container_middle"><img
+            class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
+        <div *ngIf="hourlyRateDentistLoader == true" class="loader_container loader_container_middle"><img
+            class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
+        <div *ngIf="fdhourlyRateRateTrendLoader == true" class="loader_container loader_container_middle"><img
+            class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
+        
+
       </div>
       <!-- Column-->
       <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg last">
-        <mat-card class="noPatients sa_no_tabs_area">
-          <mat-card-content class="sa_matcard_content">
-            <mat-card-title class="text-center">
-              <div>
-                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
-                  mat-icon-button matTooltip="{{trendText}} :  {{doughnutTotalPrev| number:'1.0-0'}}"><img
-                    class="trend_ico" src="../assets/images/trend_reverse_{{doughnutTotalTooltip}}.png"></span>
-                No. Patient Complaints
-              </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
-              </div>
-            </mat-card-title>
-            <div class="card-body">
-              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
-                </div>
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
-                </div>
-              </div>
-              <div class="chart">
-                <div *ngIf="showTrendChart == false && doughnutChartLabels.length > 0" style="height: 300px">
-                  <canvas #myCanvas id="patientComplaints" baseChart class="chart" [data]="doughnutChartData"
-                    [labels]="doughnutChartLabels" [legend]="true" [options]="doughnutChartOptions"
-                    [chartType]="doughnutChartType" (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)" [colors]="npColors"></canvas>
-                </div>
-              </div>
-              <div class="no-data-placeholder"
-                *ngIf="showTrendChart == false && doughnutChartData.length<= 0 && buildChartNopatientsLoader===false">
-                <div class="sa_nodata_div">
-                </div>
-                <p class="chart-placeholder-text">You have no patient complaints in the selected priod</p>
-              </div>
-
-            </div>
-            <div class="card-footer">
-
-              <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
-                fxLayoutAlign="center center">
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">{{doughnutTotal| number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                  <span class="value-text" *ngIf="currentText == ''">Current</span>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{doughnutTotalPrev| number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="doughnutGoals && goalCount">{{ (doughnutGoals * goalCount) | number:'1.0-0'}}</h3>
-                  <span class="value-text">Goal</span>
-                </div>
-              </div>
-            </div>
-            <div *ngIf="buildChartNopatientsLoader"
-              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
-              <div class="loader-text">Calculating...</div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-        <mat-card class="noPatientsSingle sa_no_tabs_area" [style.display]="'none'">
-          <mat-card-content class="sa_matcard_content">
-            <mat-card-title class="text-center">
-              <div>
-                <span *ngIf="trendText && showTrendChart == false"
-                  class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
-                  matTooltip="{{trendText}} :  {{doughnutTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
-                    src="../assets/images/trend_reverse_{{doughnutTotalTooltip}}.png"></span>
-                No. Patient Complaints
-              </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
-              </div>
-            </mat-card-title>
-            <div class="card-body">
-              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
-                </div>
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
-                </div>
-              </div>
-              <div class="chart" fxLayout="row" fxLayoutAlign="start end" style="height: 300px"
-                *ngIf="showTrendChart == false && gaugeValuePatients > 0">
-                <ngx-gauge [type]="gaugeType" [value]="gaugeValuePatients" [label]="gaugeLabelPatients"
-                  [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
-                  [max]="maxdoughnutGoals" [cap]="cap" [size]="size" [duration]="gaugeDuration">
-                </ngx-gauge>
-
-              </div>
-              <div *ngIf="showTrendChart == true && patientComplaintsTrend1.length > 0" style="height: 292px">
-                <canvas #myCanvas id="patientComplaintsTrend" baseChart [datasets]="patientComplaintTrend"
-                  [labels]="patientComplaintsTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-              <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && gaugeValuePatients <= 0) || (showTrendChart == true && patientComplaintsTrend1.length <= 0)) && !buildChartNopatientsDentistLoader && !patientComplaintsTrendLoader">
-                <div class="sa_nodata_div">
-                </div>
-                <p class="chart-placeholder-text">You have no patient complaints in the selected priod</p>
-              </div>
-            </div>
-            <div class="card-footer">
-              <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
-                fxLayoutAlign="center center">
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">{{doughnutTotal| number:'1.0-0'}}</h3>
-                  <span class="value-text">Current</span>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">{{doughnutTotalAverage| number:'1.0-0'}}</h3>
-                  <span class="value-text">Clinic Total</span>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="doughnutGoals && goalCount">{{ (doughnutGoals * goalCount) | number:'1.0-0'}}</h3>
-                  <span class="value-text">Goal</span>
-                </div>
-              </div>
-            </div>
-            <div *ngIf="buildChartNopatientsLoader" class="loader_container loader_container_middle"><img
-                class="loader_ico" src="../assets/images/720.gif">
-              <div class="loader-text">Calculating...</div>
-            </div>
-            <div *ngIf="buildChartNopatientsDentistLoader" class="loader_container loader_container_middle"><img
-                class="loader_ico" src="../assets/images/720.gif">
-              <div class="loader-text">Calculating...</div>
-            </div>
-            <div *ngIf="patientComplaintsTrendLoader" class="loader_container loader_container_middle"><img
-                class="loader_ico" src="../assets/images/720.gif">
-              <div class="loader-text">Calculating...</div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-      <!-- Column-->
-      <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-        class="sa_flexbg">
         <mat-card class="newPatients sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -725,10 +550,311 @@
             </div>
           </mat-card-content>
         </mat-card>
+      </div>
+
+      <!-- Column-->
+      <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg">
+   <mat-card class="treatmentPlan">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : $ {{planTotalPrev| number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
+                Treatment Plan Average Cost
+              </div>
+              <div class="info-icon-container">
+                <img [tooltip]="tooltipData"
+                  src="../assets/images/info-icon.png" 
+                  alt="info-icon" class="info-icon"/>                
+              </div>
+            </mat-card-title>
+            <div class="card-body">
+              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec">
+                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
+                </div>
+                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
+                </div>
+              </div>
+
+              <div style="height: 300px">
+                <canvas #myCanvas id="treatmentPlanProposed"
+                  *ngIf="tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
+                  class="chart" [datasets]="planChartDataP" [labels]="planChartLabels1" [options]="barChartOptionsTC"
+                  [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)" [colors]="TPACAcolors"></canvas>
+                <canvas #myCanvas id="treatmentPlanCompleted"
+                  *ngIf="tcmain == 2 && buildChartTreatmentLoader == false && planChartData2.length > 0" baseChart
+                  class="chart" [datasets]="planChartDataC" [labels]="planChartLabels2" [options]="barChartOptionsTC"
+                  [legend]="false" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)" [colors]="TPACCcolors"></canvas>
+                <div *ngIf="planChartData1.length <= 0 && buildChartTreatmentLoader===false && tcmain == 1"
+                  class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no proposed treatment in the selected period</p>
+                </div>
+                <div *ngIf="planChartData2.length <= 0 && buildChartTreatmentLoader===false && tcmain == 2"
+                  class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no completed treatment in the selected priod</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
+                fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{planTotalAverage | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
+                  <span class="value-text" *ngIf="currentText == ''">Average</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{planTotalPrev | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
+                  <span class="value-text" *ngIf="trendText == ''">Average</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num" *ngIf="planTotalGoal && goalCount">${{ (planTotalGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="buildChartTreatmentLoader || buildChartTreatmentDentistLoader"
+              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="treatmentPlanSingle" [style.display]="'none'">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText && showTrendChart == false"
+                  class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
+                  matTooltip="{{trendText}} : $ {{planTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
+                    src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
+                Treatment Plan Average Cost
+              </div>
+               <div class="info-icon-container">
+                <img [tooltip]="tooltipData"
+                  src="../assets/images/info-icon.png" 
+                  alt="info-icon" class="info-icon"/>
+              </div>
+            </mat-card-title>
+            <div class="card-body">
+              <div fxLayout="row wrap" fxLayoutAlign="start end" class="treatment_cost sa_tabs_main_sec">
+                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCostSingle('1')">Proposed
+                    Fees</small>
+                </div>
+                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Completed Fees</small>
+                </div>
+              </div>
+              <div class="chart"
+                *ngIf="showTrendChart == false && gaugeValueTreatment > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
+                fxLayout="row" fxLayoutAlign="start end" style="height: 300px">
+                <ngx-gauge [type]="gaugeType" [value]="gaugeValueTreatment" [label]="gaugeLabelTreatment"
+                  [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
+                  [cap]="cap" [max]="maxplanTotalGoal" [duration]="gaugeDuration" [prepend]="gaugePrependText"
+                  [size]="size">
+                </ngx-gauge>
+              </div>
+              <div
+                *ngIf="showTrendChart == true && treatPlanTrend[0]['data'].length > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
+                style="height: 300px">
+                <canvas #myCanvas id="treatmentPlanTrend" baseChart [datasets]="treatPlanTrend"
+                  [labels]="treatmentPlanTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <div
+                *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && treatmentPlanAverageCostTab == '1'"
+                class="no-data-placeholder">
+                <div class="sa_nodata_div">
+                </div>
+                <p class="chart-placeholder-text">You have no proposed treatment in the selected period</p>
+              </div>
+              <div
+                *ngIf="((showTrendChart == false && gaugeValueTreatment <= 0 ) || (showTrendChart == true && treatPlanTrend[0]['data'].length <= 0)) && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader && treatmentPlanAverageCostTab == '2'"
+                class="no-data-placeholder">
+                <div class="sa_nodata_div">
+                </div>
+                <p class="chart-placeholder-text">You have no completed treatment in the selected priod</p>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
+                fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{gaugeValueTreatment | number:'1.0-0' }}</h3>
+                  <span class="value-text">Current</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{planTotal | number:'1.0-0' }}</h3>
+                  <span class="value-text">Clinic Average</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num" *ngIf="planTotalGoal && goalCount">${{ (planTotalGoal * goalCount )| number:'1.0-0'}}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="buildChartTreatmentLoader || buildChartTreatmentDentistLoader"
+              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+          </mat-card-content>
+        </mat-card>
 
       </div>
       <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg last">
+      
+        <mat-card class="treatmentPlanRate sa_no_tabs_area">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : {{treatmentChartAveragePrev| number:'1.0-0'}}%"><img
+                    class="trend_ico" src="../assets/images/trend_{{treatmentChartTooltip}}.png"></span>
+                Treatment Plan Completion Rate (%)
+              </div>
+               <div class="info-icon-container">
+                <img [tooltip]="tooltipData"
+                  src="../assets/images/info-icon.png" 
+                  alt="info-icon" class="info-icon"/>                
+              </div>
+            </mat-card-title>
+
+            <div class="card-body">
+              <div style="height: 250px">
+                <canvas #myCanvas baseChart *ngIf="treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
+                  [datasets]="treatmentChartData" [labels]="treatmentChartLabels" [legend]="barChartLegend"
+                  [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
+                  [colors]="TPRcolors" (chartClick)="chartClicked($event)">
+                </canvas>
+                <div
+                  *ngIf="treatmentChartData1.length <= 0 && treatmentPlanRateLoader===false && !treatmentPlanRateLoader">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no treatment plan items completed in the selected period
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 *ngIf="treatmentChartAverage > 0" class="m-0 value-num">{{treatmentChartAverage| number:'1.0-0'}}%
+                  </h3>
+                  <h3 *ngIf="treatmentChartAverage <= 0" class="m-0 value-num">
+                    {{treatmentChartAverage| number:'1.0-0'}}%</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
+                  <span class="value-text" *ngIf="currentText == ''">Average</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">{{treatmentChartAveragePrev| number:'1.0-0'}}%</h3>
+                  <span class="value-text">Previous Average</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num" *ngIf="treatmentChartGoal && goalCount">{{ (treatmentChartGoal * goalCount) | number:'1.0-0' }}%</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="treatmentPlanRateSingle sa_no_tabs_area" [style.display]="'none'">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText && showTrendChart == false"
+                  class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
+                  matTooltip="{{trendText}} : {{treatmentChartAveragePrev| number:'1.0-0'}}%"><img class="trend_ico"
+                    src="../assets/images/trend_{{treatmentChartTooltip}}.png"></span>
+                Treatment Plan Completion Rate (%)
+              </div>
+               <div class="info-icon-container">
+                <img [tooltip]="tooltipData"
+                  src="../assets/images/info-icon.png" 
+                  alt="info-icon" class="info-icon"/>                
+              </div>
+            </mat-card-title>
+
+            <div class="card-body">
+              <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue > 0 && !treatmentPlanRateDentistLoader"
+                [type]="gaugeType" [value]="treatmentPlanValue" [label]="treatmentPlanLabel" [thick]="gaugeThick"
+                [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxtreatmentPlanGoal"
+                [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
+              </ngx-gauge>
+              <div
+                *ngIf="showTrendChart == true && treatmentPlanChartTrend1.length > 0 && !fdtreatmentPlanRateTrendLoader"
+                style="height: 250px">
+                <canvas #myCanvas id="completionRate" baseChart [datasets]="treatmentPlanChartTrend"
+                  [labels]="treatmentPlanChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsPercentTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+
+              <div class="no-data-placeholder"
+                *ngIf="((showTrendChart == false && treatmentPlanValue <= 0 && !treatmentPlanRateDentistLoader) || (showTrendChart == true && treatmentPlanChartTrend1.length <= 0 && !fdtreatmentPlanRateTrendLoader)) ">
+                <div class="sa_nodata_div">
+                </div>
+                <p class="chart-placeholder-text">You have no treatment plan items completed in the selected period</p>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
+                fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">{{treatmentPlanValue| number:'1.0-0'}}%</h3>
+                  <span class="value-text">Current</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">{{treatmentChartAverage| number:'1.0-0'}}%</h3>
+                  <span class="value-text">Clinic Average</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num" *ngIf="treatmentPlanGoal && goalCount">{{ treatmentPlanGoal * goalCount }}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div *ngIf="treatmentPlanRateLoader && !treatmentPlanRateDentistLoader && !fdtreatmentPlanRateTrendLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
+        <div *ngIf="treatmentPlanRateDentistLoader && !treatmentPlanRateLoader && !fdtreatmentPlanRateTrendLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
+        <div *ngIf="fdtreatmentPlanRateTrendLoader && !treatmentPlanRateLoader && !treatmentPlanRateDentistLoader"
+          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
+
+
+      </div>
+
+      <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg">
         <mat-card class="recallPrebook">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -736,7 +862,7 @@
                 <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
                   mat-icon-button matTooltip="{{trendText}} : {{recallChartAveragePrev| number:'1.0-0'}}%"><img
                     class="trend_ico" src="../assets/images/trend_{{recallChartTooltip}}.png"></span>
-                Recall Prebook Rate
+                    Prebooking Rate
               </div>
               <!--   <div class="sa_box_title_right_buttons">
                   <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -953,156 +1079,18 @@
             class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>
-      </div>
 
-      <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-        class="sa_flexbg">
-        <mat-card class="hourlyRate sa_no_tabs_area">
-          <mat-card-content class="sa_matcard_content">
-            <mat-card-title class="text-center">
-              <div>
-                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
-                  mat-icon-button matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img
-                    class="trend_ico" src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
-                Hourly Rate
-              </div>
-              <!--   <div class="sa_box_title_right_buttons">
-                  <button mat-icon-button ><i class="fas fa-expand"></i></button>
-                  <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
-                  <mat-menu #menu="matMenu">
-                      <button mat-menu-item>Item 1</button>
-                      <button mat-menu-item>Item 2</button>
-                  </mat-menu>
-              </div> -->
-              <!--   <div class="settingsBtn"><button class="mat-raised-button mat-button-sm mat-green-button sa_smtable_btn" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Settings</button></div> -->
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
-              </div>
-            </mat-card-title>
-            <div class="card-body">
-              <div class="relative">
-
-                <div style="height: 250px">
-                  <canvas #myCanvas id="HourlyRate" baseChart
-                    *ngIf="hourlyRateChartData1.length > 0 && hourlyRateChartLoader == false"
-                    [datasets]="hourlyRateChartData" [labels]="hourlyRateChartLabels" [legend]="barChartLegend"
-                    [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
-                    [colors]="HRcolors" (chartClick)="chartClicked($event)">
-                  </canvas>
-                  <div *ngIf="hourlyRateChartData1.length <= 0 && hourlyRateChartLoader===false">
-                    <div class="sa_nodata_div">
-                    </div>
-                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer">
-              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">${{hourlyRateChartAverage| number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
-                  <span class="value-text" *ngIf="currentText == ''">Average</span>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">${{hourlyRateChartAveragePrev| number:'1.0-0'}}</h3>
-                  <span class="value-text">Previous Average</span>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">${{ hourlyRateChartGoal | number:'1.0-0' }}</h3>
-                  <span class="value-text">Goal</span>
-                </div>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="hourlyRateSingle sa_no_tabs_area" [style.display]="'none'">
-          <mat-card-content class="sa_matcard_content">
-            <mat-card-title class="text-center">
-              <div>
-                <span *ngIf="trendText && showTrendChart == false"
-                  class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
-                  matTooltip="{{trendText}} : ${{hourlyRateChartAveragePrev| number:'1.0-0'}}"><img class="trend_ico"
-                    src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
-                Hourly Rate
-              </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
-              </div>
-            </mat-card-title>
-            <div class="card-body">
-
-              <ngx-gauge *ngIf="showTrendChart == false && hourlyValue > 0 && hourlyRateDentistLoader == false"
-                [type]="gaugeType" [value]="hourlyValue" [label]="hourlyLabel" [thick]="gaugeThick"
-                [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxhourlyGoal"
-                [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
-              </ngx-gauge>
-              <div
-                *ngIf="showTrendChart == true && hourlyRateChartTrend1.length > 0 && fdhourlyRateRateTrendLoader == false"
-                style="height: 250px">
-                <canvas #myCanvas id="HourlyRateTrend" baseChart [datasets]="hourlyRateChartTrend"
-                  [labels]="hourlyRateChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-              <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && hourlyValue <= 0 && hourlyRateDentistLoader===false) || (showTrendChart == true && hourlyRateChartTrend1.length <= 0 && fdhourlyRateRateTrendLoader == false)) ">
-                <div class="sa_nodata_div">
-                </div>
-                <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
-              </div>
-            </div>
-            <div class="card-footer">
-              <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
-                fxLayoutAlign="center center">
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">${{hourlyValue| number:'1.0-0'}}</h3>
-                  <span class="value-text">Current</span>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">${{hourlyRateChartAverage| number:'1.0-0'}}</h3>
-                  <span class="value-text">Clinic Average</span>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="hourlyGoal">${{ hourlyGoal }}</h3>
-                  <span class="value-text">Goal</span>
-                </div>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-        <div *ngIf="hourlyRateChartLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="hourlyRateDentistLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="fdhourlyRateRateTrendLoader == true" class="loader_container loader_container_middle"><img
-            class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
       </div>
       <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg last">
-        <mat-card class="treatmentPlanRate sa_no_tabs_area">
+       <mat-card class="noPatients sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
               <div>
                 <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
-                  mat-icon-button matTooltip="{{trendText}} : {{treatmentChartAveragePrev| number:'1.0-0'}}%"><img
-                    class="trend_ico" src="../assets/images/trend_{{treatmentChartTooltip}}.png"></span>
-                Treatment Plan Completion Rate (%)
+                  mat-icon-button matTooltip="{{trendText}} :  {{doughnutTotalPrev| number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_reverse_{{doughnutTotalTooltip}}.png"></span>
+                No. Patient Complaints
               </div>
                <div class="info-icon-container">
                 <img [tooltip]="tooltipData"
@@ -1110,57 +1098,68 @@
                   alt="info-icon" class="info-icon"/>                
               </div>
             </mat-card-title>
-
             <div class="card-body">
-              <div style="height: 250px">
-                <canvas #myCanvas baseChart *ngIf="treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
-                  [datasets]="treatmentChartData" [labels]="treatmentChartLabels" [legend]="barChartLegend"
-                  [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
-                  [colors]="TPRcolors" (chartClick)="chartClicked($event)">
-                </canvas>
-                <div
-                  *ngIf="treatmentChartData1.length <= 0 && treatmentPlanRateLoader===false && !treatmentPlanRateLoader">
-                  <div class="sa_nodata_div">
-                  </div>
-                  <p class="chart-placeholder-text">You have no treatment plan items completed in the selected period
-                  </p>
+              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
+                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
+                </div>
+                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
                 </div>
               </div>
+              <div class="chart">
+                <div *ngIf="showTrendChart == false && doughnutChartLabels.length > 0" style="height: 300px">
+                  <canvas #myCanvas id="patientComplaints" baseChart class="chart" [data]="doughnutChartData"
+                    [labels]="doughnutChartLabels" [legend]="true" [options]="doughnutChartOptions"
+                    [chartType]="doughnutChartType" (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)" [colors]="npColors"></canvas>
+                </div>
+              </div>
+              <div class="no-data-placeholder"
+                *ngIf="showTrendChart == false && doughnutChartData.length<= 0 && buildChartNopatientsLoader===false">
+                <div class="sa_nodata_div">
+                </div>
+                <p class="chart-placeholder-text">You have no patient complaints in the selected priod</p>
+              </div>
+
             </div>
             <div class="card-footer">
-              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+
+              <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
+                fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 *ngIf="treatmentChartAverage > 0" class="m-0 value-num">{{treatmentChartAverage| number:'1.0-0'}}%
-                  </h3>
-                  <h3 *ngIf="treatmentChartAverage <= 0" class="m-0 value-num">
-                    {{treatmentChartAverage| number:'1.0-0'}}%</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
-                  <span class="value-text" *ngIf="currentText == ''">Average</span>
+                  <h3 class="m-0 value-num">{{doughnutTotal| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{treatmentChartAveragePrev| number:'1.0-0'}}%</h3>
-                  <span class="value-text">Previous Average</span>
+                  <h3 class="m-0 value-num">{{doughnutTotalPrev| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="treatmentChartGoal && goalCount">{{ (treatmentChartGoal * goalCount) | number:'1.0-0' }}%</h3>
+                  <h3 class="m-0 value-num" *ngIf="doughnutGoals && goalCount">{{ (doughnutGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
             </div>
+            <div *ngIf="buildChartNopatientsLoader"
+              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
           </mat-card-content>
         </mat-card>
-
-        <mat-card class="treatmentPlanRateSingle sa_no_tabs_area" [style.display]="'none'">
+        <mat-card class="noPatientsSingle sa_no_tabs_area" [style.display]="'none'">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
               <div>
                 <span *ngIf="trendText && showTrendChart == false"
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
-                  matTooltip="{{trendText}} : {{treatmentChartAveragePrev| number:'1.0-0'}}%"><img class="trend_ico"
-                    src="../assets/images/trend_{{treatmentChartTooltip}}.png"></span>
-                Treatment Plan Completion Rate (%)
+                  matTooltip="{{trendText}} :  {{doughnutTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
+                    src="../assets/images/trend_reverse_{{doughnutTotalTooltip}}.png"></span>
+                No. Patient Complaints
               </div>
                <div class="info-icon-container">
                 <img [tooltip]="tooltipData"
@@ -1168,62 +1167,69 @@
                   alt="info-icon" class="info-icon"/>                
               </div>
             </mat-card-title>
-
             <div class="card-body">
-              <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue > 0 && !treatmentPlanRateDentistLoader"
-                [type]="gaugeType" [value]="treatmentPlanValue" [label]="treatmentPlanLabel" [thick]="gaugeThick"
-                [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxtreatmentPlanGoal"
-                [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
-              </ngx-gauge>
-              <div
-                *ngIf="showTrendChart == true && treatmentPlanChartTrend1.length > 0 && !fdtreatmentPlanRateTrendLoader"
-                style="height: 250px">
-                <canvas #myCanvas id="completionRate" baseChart [datasets]="treatmentPlanChartTrend"
-                  [labels]="treatmentPlanChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                  (chartHover)="chartHovered($event)" [options]="barChartOptionsPercentTrend" [colors]="lineChartColors"
+              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
+                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
+                </div>
+                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
+                </div>
+              </div>
+              <div class="chart" fxLayout="row" fxLayoutAlign="start end" style="height: 300px"
+                *ngIf="showTrendChart == false && gaugeValuePatients > 0">
+                <ngx-gauge [type]="gaugeType" [value]="gaugeValuePatients" [label]="gaugeLabelPatients"
+                  [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
+                  [max]="maxdoughnutGoals" [cap]="cap" [size]="size" [duration]="gaugeDuration">
+                </ngx-gauge>
+
+              </div>
+              <div *ngIf="showTrendChart == true && patientComplaintsTrend1.length > 0" style="height: 292px">
+                <canvas #myCanvas id="patientComplaintsTrend" baseChart [datasets]="patientComplaintTrend"
+                  [labels]="patientComplaintsTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors"
                   (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-
               <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && treatmentPlanValue <= 0 && !treatmentPlanRateDentistLoader) || (showTrendChart == true && treatmentPlanChartTrend1.length <= 0 && !fdtreatmentPlanRateTrendLoader)) ">
+                *ngIf="((showTrendChart == false && gaugeValuePatients <= 0) || (showTrendChart == true && patientComplaintsTrend1.length <= 0)) && !buildChartNopatientsDentistLoader && !patientComplaintsTrendLoader">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no treatment plan items completed in the selected period</p>
+                <p class="chart-placeholder-text">You have no patient complaints in the selected priod</p>
               </div>
             </div>
             <div class="card-footer">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">{{treatmentPlanValue| number:'1.0-0'}}%</h3>
+                  <h3 class="m-0 value-num">{{doughnutTotal| number:'1.0-0'}}</h3>
                   <span class="value-text">Current</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">{{treatmentChartAverage| number:'1.0-0'}}%</h3>
-                  <span class="value-text">Clinic Average</span>
+                  <h3 class="m-0 value-num">{{doughnutTotalAverage| number:'1.0-0'}}</h3>
+                  <span class="value-text">Clinic Total</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="treatmentPlanGoal && goalCount">{{ treatmentPlanGoal * goalCount }}</h3>
+                  <h3 class="m-0 value-num" *ngIf="doughnutGoals && goalCount">{{ (doughnutGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
             </div>
+            <div *ngIf="buildChartNopatientsLoader" class="loader_container loader_container_middle"><img
+                class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="buildChartNopatientsDentistLoader" class="loader_container loader_container_middle"><img
+                class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <div *ngIf="patientComplaintsTrendLoader" class="loader_container loader_container_middle"><img
+                class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
           </mat-card-content>
         </mat-card>
-        <div *ngIf="treatmentPlanRateLoader && !treatmentPlanRateDentistLoader && !fdtreatmentPlanRateTrendLoader"
-          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="treatmentPlanRateDentistLoader && !treatmentPlanRateLoader && !fdtreatmentPlanRateTrendLoader"
-          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
-        <div *ngIf="fdtreatmentPlanRateTrendLoader && !treatmentPlanRateLoader && !treatmentPlanRateDentistLoader"
-          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
-        </div>
       </div>
     </div>
   </div>

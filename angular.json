@@ -28,12 +28,12 @@
               "./node_modules/@swimlane/ngx-datatable/themes/material.css",
               "./node_modules/@swimlane/ngx-datatable/assets/icons.css",
               "src/assets/styles/style.scss",
-               "node_modules/ngx-toastr/toastr.css" 
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "src/assets/js/jquery.sparkline.min.js",
-               "./node_modules/jquery/dist/jquery.min.js"
+              "./node_modules/jquery/dist/jquery.min.js"
             ]
           },
           "configurations": {
@@ -60,13 +60,13 @@
                 }
               ]
             },
-             "prod-non-optimized": {
+            "prod-non-optimized": {
               "budgets": [
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
-              ],              
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -80,7 +80,7 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
-              ],   
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -89,7 +89,7 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,           
+              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -97,13 +97,13 @@
                 }
               ]
             },
-             "staging": {
+            "staging": {
               "budgets": [
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
-              ],   
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -112,7 +112,7 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,           
+              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -126,7 +126,7 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
-              ],     
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -135,7 +135,7 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,         
+              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -189,11 +189,10 @@
               "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
               "node_modules/@swimlane/ngx-datatable/release/assets/icons.css",
               "src/assets/styles/style.scss",
-              "node_modules/ngx-toastr/toastr.css" 
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "assets": [
               "src/assets",
-
               "src/favicon.ico"
             ]
           }
@@ -247,5 +246,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

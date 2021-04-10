@@ -230,8 +230,8 @@ single = [
     gradient7.addColorStop(1, '#168F7F');
     gradient7.addColorStop(0,  '#168F7F');
 
-    this.doughnutChartColors = [{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}];
-
+    // this.doughnutChartColors = [{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}];
+    this.doughnutChartColors = [{backgroundColor: ['#6cd8ba','#b0fffa','#abb3ff','#feefb8','#ffb4b5','#fffcac','#d7f8ef']}];
     let stackedGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
     stackedGradient.addColorStop(0, '#168F7F');
     stackedGradient.addColorStop(1, '#168F7F');
