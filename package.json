@@ -30,7 +30,7 @@
     "@angular/platform-browser-dynamic": "^9.1.13",
     "@angular/router": "^9.1.13",
     "@stripe/stripe-js": "^1.11.0",
-    "@swimlane/ngx-charts": "^17.0.1",
+    "@swimlane/ngx-charts": "^9.1.1",
     "@swimlane/ngx-datatable": "^19.0.0",
     "angular-gauge-chart": "^0.7.2",
     "chart.js": "^2.9.3",
