@@ -56,6 +56,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public finProductionPerVisitLoader:any;
   public finProductionPerVisit_dif:any = 0;
   public productionVal = 0;  
+  public productionPrev = 0;
   public options: any = {
       hasNeedle: false,
       arcColors: ['rgba(166, 178, 255, 1)', 'rgba(166, 178, 255, 0.8)'],
@@ -209,6 +210,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chProduction').subscribe((data) => {
       if(data.message == 'success'){
         this.production_c = data.total;
+        this.production_p = Math.round(data.total_ta);
         this.production_dif = Math.round(data.total - data.total_ta);
       }        
     }, error => {
@@ -223,6 +225,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTotalVists').subscribe((data) => {
       if(data.message == 'success'){
         this.visits_c = data.total;
+        this.visits_p = data.total_ta;
         this.visits_dif = Math.round(data.total - data.total_ta);
       }        
     }, error => {
@@ -366,12 +369,14 @@ public newPatientsTimeClinic=[];
   private finProductionPerVisit() {
     this.finProductionPerVisitLoader = true;
     this.productionVal = 0;  
+    this.productionPrev = 0;
     var user_id;
     var clinic_id;
     this.healthscreenService.finProductionPerVisit(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.finProductionPerVisitLoader = false;
-        this.productionVal = Math.round(data.total);  
+        this.productionVal = Math.round(data.total);
+        this.productionPrev = Math.round(data.total_ta);  
         this.finProductionPerVisit_dif = Math.round(data.total - data.total_ta);
       }
     }, error => {
