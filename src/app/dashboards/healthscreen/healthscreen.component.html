@@ -31,8 +31,7 @@
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
-                      {{ production_dif >= 0 ? '+ ' : '- ' }}
-                      ${{(production_dif<0 ? production_dif.toString().split('-').join('') : production_dif) | number:'1.0-0'}}
+                      Last Month: ${{ production_p | number: '2.' }}
                     </div>
                   </div>
                 </div>
@@ -60,9 +59,8 @@
                     </span>
                   </div>  
                     <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
-                    <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
-                      {{ finProductionPerVisit_dif >= 0 ? '+ ' : '- ' }}
-                      ${{(finProductionPerVisit_dif<0 ? finProductionPerVisit_dif.toString().split('-').join('') : finProductionPerVisit_dif) | number:'1.0-0'}}
+                    <div [ngClass]="(production_dif <= 0) ? 'plus': 'minus'">
+                      Last Month: ${{ productionPrev | number: '2.' }}
                     </div>              
                 </div>
                 </div>
@@ -84,8 +82,9 @@
                     <span class="change_value">{{visits_c}}</span>
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="visits_dif">
-                    <div [ngClass]="(visits_dif >= 0) ? 'plus': 'minus'">{{ visits_dif >= 0 ? '+ ' : '' }}
-                      {{visits_dif}}</div>
+                    <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">{{ visits_dif >= 0 ? '+ ' : '' }}
+                      Last Month: {{ visits_p | number: '2.' }}
+                    </div>
                   </div>
                 </div>
               </mat-card-content>
