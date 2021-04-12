@@ -870,7 +870,10 @@ public currentText;
       this.trendText= '';
       this.duration='custom';
       this.currentText= '';
-       this.loadDentist('all');
+      let selectedDate = this.chartService.customSelectedDate$.value;
+     this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
+     this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
+     this.loadDentist('all');
      $('.customRange').css('display','block');
     }
     $('.filter').removeClass('active');

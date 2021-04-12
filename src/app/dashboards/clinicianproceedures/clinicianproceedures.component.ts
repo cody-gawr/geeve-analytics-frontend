@@ -1761,6 +1761,9 @@ public currentText;
       this.currentText= '';
       this.duration='custom';
      $('.customRange').css('display','block');
+     let selectedDate = this.chartService.customSelectedDate$.value;
+     this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
+     this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
        this.loadDentist(dentistVal);
     }
     $('.filter').removeClass('active');

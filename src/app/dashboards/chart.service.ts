@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { BehaviorSubject } from 'rxjs';
@@ -5,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class ChartService {
     duration$ = new BehaviorSubject<string>('m');
+    customSelectedDate$ = new BehaviorSubject<any>(null);
     constructor() { }
 
     colors = {
@@ -52,6 +54,17 @@ export class ChartService {
 
     changeDuration(period: string) {
       this.duration$.next(period);
+    }
+
+    selectDateFromCalender(event) {
+      let val = (event.chosenLabel);
+        val = val.toString().split(' - ');
+        let startDate = val[0];
+        let endDate = val[1];
+        this.customSelectedDate$.next({
+          startDate,
+          endDate
+        })
     }
 
 }

@@ -1,3 +1,4 @@
+
 import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '../../clinic-settings/base/base.component';
@@ -48,6 +49,7 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
     chartService.duration$.pipe(
       takeUntil(this.destroyed$)
     ).subscribe(value => this.currentSelectedPeriod = value);
+    
   }
 
   ngAfterViewInit() {
@@ -63,7 +65,10 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
   }
 
   choosedDate(event) {
-    this.changeDate.emit(event);
+    // console.log(`event`, event);    
+    this.chartService.selectDateFromCalender(event);
+    this.filterDate('custom');
+    this.changeDate.emit(event)
   }
 
 }

@@ -2535,6 +2535,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.trendText = '';
         this.currentText = '';
         $('.customRange').css('display', 'block');
+        let selectedDate = this.chartService.customSelectedDate$.value;
+        this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
         this.loadDentist(dentistVal);
       }
       $('.filter').removeClass('active');
@@ -2542,7 +2545,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
     }
   }
-  //Load Individual dentits Chart
+  //Load Individual dentits Chartc
   initiate_dentist() {
     var val = $('.internal_dentist').val();
     this.loadDentist(val);
@@ -2553,7 +2556,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
     this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
     this.filterDate('custom');
-    // $('.filter_custom').val(this.startDate + " - " + this.endDate);
+    $('.page-title-date').val(this.startDate + " - " + this.endDate);
     $('.customRange').css('display', 'none');
   }
 
