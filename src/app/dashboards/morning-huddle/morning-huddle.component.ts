@@ -96,6 +96,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns4: string[] = ['name', 'phone', 'code','status'];
   displayedColumns5: string[] = ['name', 'phone', 'code','status'];
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
+
+  timezone: string = '+1000';
   
  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService) { 
