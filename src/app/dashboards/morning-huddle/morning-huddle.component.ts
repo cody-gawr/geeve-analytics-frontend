@@ -266,7 +266,7 @@ initiate_clinic() {
     this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         production.data.map((item) => {
-          const phoneNumber  = item.phone_home ? item.phone_home : ( item.phone_work ? item.phone_work : item.mobile);
+          const phoneNumber  = item.phone_number ? item.phone_number : ( item.phone_work ? item.phone_work : item.mobile);
           if(phoneNumber) {
             let str = phoneNumber.split(" ").join("");
             if (phoneNumber.substring(0, 2) == '04') {
