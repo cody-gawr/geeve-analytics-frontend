@@ -1224,10 +1224,11 @@ public PRcolors;
             this.predictedstackedChartLabels3.push(provider);
           } 
         });
-        this.predictorRatioTab = '1';
-        this.predictedstackedChartData= this.predictedstackedChartData1;
-        this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
-        this.predictedstackedChartAvr = this.predictedstackedChartLabels1Avr;
+        this.changeDentistPredictorMain('1')
+        // this.predictorRatioTab = '1';
+        // this.predictedstackedChartData= this.predictedstackedChartData1;
+        // this.predictedstackedChartLabels= this.predictedstackedChartLabels1;
+        // this.predictedstackedChartAvr = this.predictedstackedChartLabels1Avr;
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
