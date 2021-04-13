@@ -76,7 +76,7 @@ No. New Patients By Referral
 [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
 </canvas>
 
-<div *ngIf="newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false">
+<div class="no-data-placeholder" *ngIf="newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false">
 <div class="sa_nodata_div">
 </div>
 <p class="chart-placeholder-text">You have no new patients from referral sources in the selected period</p>
@@ -125,7 +125,7 @@ baseChart [data]="revenueReferralData" [labels]="revenueReferralLabelsl2"
 [options]="pieChartOptions" [colors]="pieChartColors">
 </canvas>
 
-<div *ngIf="revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false">
+<div class="no-data-placeholder" *ngIf="revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false">
 <div class="sa_nodata_div">
 </div>
 <p class="chart-placeholder-text">You have no revenue from referral sources in the selected period</p>

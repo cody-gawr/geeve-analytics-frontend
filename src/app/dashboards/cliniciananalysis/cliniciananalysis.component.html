@@ -253,8 +253,8 @@
                   alt="info-icon" class="info-icon"/>                
               </div>
             </mat-card-title>
-            <div class="card-body">
-              <div class="relative">
+            <div class="card-body h-100">
+              <div class="relative h-100" fxLayout="row" fxLayoutAlign="center center">
 
                 <div style="height: 250px">
                   <canvas #myCanvas id="HourlyRate" baseChart
@@ -263,7 +263,7 @@
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
-                  <div *ngIf="hourlyRateChartData1.length <= 0 && hourlyRateChartLoader===false">
+                  <div class="no-data-placeholder" *ngIf="hourlyRateChartData1.length <= 0 && hourlyRateChartLoader===false">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
@@ -397,7 +397,7 @@
                 class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
-            <div class="card-body">
+            <div class="card-body h-100">
               <div fxLayout="row wrap" fxLayoutAlign="center center"
                 class="prebook_rate sa_tabs_main_sec btn-right hide-item"
                 *ngIf="newPatientChartData.length<=0 && buildChartNewpatientsLoader===false">
@@ -410,7 +410,7 @@
                     Prebook Rate</small>
                 </div>
               </div>
-              <div class="chart vertical-center-box" *ngIf="newPatientsDataMax > 0">
+              <div fxLayout="row " fxLayoutAlign="center end"  class="chart vertical-center-box" *ngIf="newPatientsDataMax > 0">
                 <div *ngIf="showTrendChart == false" style="height: 326px; position: relative; width: 100%;">
                   <canvas  #myCanvas baseChart id="newPatients" class="chart" [data]="newPatientChartData"
                     [labels]="newPatientChartLabels" [legend]="legendSettings" [options]="doughnutChartOptions"
@@ -580,7 +580,7 @@
                 </div>
               </div>
 
-              <div style="height: 300px">
+              <div style="height: 350px">
                 <canvas #myCanvas id="treatmentPlanProposed"
                   *ngIf="tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
                   class="chart" [datasets]="planChartDataP" [labels]="planChartLabels1" [options]="barChartOptionsTC"
@@ -736,14 +736,23 @@
               </div>
             </mat-card-title>
 
-            <div class="card-body">
-              <div style="height: 250px">
+            <div class="card-body" >
+              <div fxLayout="row wrap" class="hide treatment_cost sa_tabs_main_sec">
+                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain1 active">Proposed Fees</small>
+                </div>
+                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain2">Completed Fees</small>
+                </div>
+              </div>
+              <div class="chart"
+                fxLayout="row" fxLayoutAlign="center end" style="height: 350px">
                 <canvas #myCanvas baseChart *ngIf="treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
                   [datasets]="treatmentChartData" [labels]="treatmentChartLabels" [legend]="barChartLegend"
                   [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
                   [colors]="TPRcolors" (chartClick)="chartClicked($event)">
                 </canvas>
-                <div
+                <div class="no-data-placeholder"               
                   *ngIf="treatmentChartData1.length <= 0 && treatmentPlanRateLoader===false && !treatmentPlanRateLoader">
                   <div class="sa_nodata_div">
                   </div>
@@ -889,7 +898,7 @@
                     Prebook Rate</small>
                 </div>
               </div>
-              <div style="height: 292px">
+              <div style="height: 300px">
                 <canvas id="RecallRate"
                   *ngIf="prebook=='recall' && recallPrebookLoader == false && recallChartData1.length > 0" #myCanvas
                   baseChart [datasets]="recallChartData" [labels]="recallChartLabels" [legend]="barChartLegend"
@@ -1184,7 +1193,7 @@
                 </ngx-gauge>
 
               </div>
-              <div *ngIf="showTrendChart == true && patientComplaintsTrend1.length > 0" style="height: 292px">
+              <div *ngIf="showTrendChart == true && patientComplaintsTrend1.length > 0" style="height: 300px">
                 <canvas #myCanvas id="patientComplaintsTrend" baseChart [datasets]="patientComplaintTrend"
                   [labels]="patientComplaintsTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors"

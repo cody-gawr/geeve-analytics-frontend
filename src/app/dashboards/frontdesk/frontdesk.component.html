@@ -96,12 +96,12 @@
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="predictedChartColors" (chartClick)="chartClicked($event)">
         </canvas>
 
-          <div *ngIf="!showTrend && workTimeData1.length <= 0 && !fdWorkTimeAnalysisLoader">
+          <div class="no-data-placeholder" *ngIf="!showTrend && workTimeData1.length <= 0 && !fdWorkTimeAnalysisLoader">
             <div class="sa_nodata_div">
             </div>
             <p class="chart-placeholder-text">You have no appointments in the selected period</p>
           </div>
-          <div *ngIf="showTrend && wtaChartTrend1.length <= 0 && !fdwtaRatioTrendLoader">
+          <div class="no-data-placeholder" *ngIf="showTrend && wtaChartTrend1.length <= 0 && !fdwtaRatioTrendLoader">
             <div class="sa_nodata_div">
             </div>
             <p class="chart-placeholder-text">You have no appointments in the selected period</p>
