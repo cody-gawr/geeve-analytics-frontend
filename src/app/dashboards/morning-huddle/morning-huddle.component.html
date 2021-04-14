@@ -8,13 +8,13 @@
       <div class="morning-huddle-date">
         <mat-form-field floatLabel="never" class="setPreviousDay">
           <mat-select placeholder="Morning Huddle - {{  subtractDays(0) | date:'MMM d, y':'timezone'}}" (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
-            <mat-option [value]="1">Morning Huddle - {{ subtractDays(0) | date:'MMM d, y':'timezone'}} </mat-option>
-            <mat-option [value]="2">Morning Huddle - {{ subtractDays(1) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="3">Morning Huddle - {{ subtractDays(2) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="4">Morning Huddle - {{ subtractDays(3) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="5">Morning Huddle - {{ subtractDays(4) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="6">Morning Huddle - {{ subtractDays(5) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="7">Morning Huddle - {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(0) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(1) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(2) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(3) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(4) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(5) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
           </mat-select>
         </mat-form-field>
         
@@ -596,7 +596,7 @@
                   <div class="production_description">
                     <h4>Chair Utilisation Rate</h4>
                     <div class="patients-num">
-                      <span class="change_value">50%</span>
+                      <span class="change_value">{{ todayChairUtilisationRate }}%</span>
                     </div>
                   </div>
                 </div>

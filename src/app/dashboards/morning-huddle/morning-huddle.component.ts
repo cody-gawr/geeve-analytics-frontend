@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
-
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { HeaderService } from '../../layouts/full/header/header.service';
 export interface PeriodicElement {
   name: string;
@@ -48,7 +48,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public production:any = '';
     public recallRate:any = '';
     public treatmentRate:any = '';
-    public previousDays:any = 1;
+    public previousDays:any;
 
 
     public schedulePatieltd:any = 0;
@@ -69,6 +69,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public todayPatients:any = 0;
     public todayPatientsDate:any = '';
     public todayUnscheduledHours:any = 0;
+    public todayChairUtilisationRate:any = 0;
     public todayUnscheduledBal:any = 0;
     public todayPostopCalls:any = 0;
    
@@ -100,12 +101,12 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   timezone: string = '+1000';
   
  @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService) { 
+  constructor(private datepipe: DatePipe, private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService) { 
   }
  ngOnInit(){
     $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
-
+    
      //this.initiate_clinic();
  }
 ngAfterViewInit(): void {
@@ -129,7 +130,7 @@ initiate_clinic() {
       this.clinic_id = val;
       
      $('#title').html('Morning Huddle');
-     
+    this.previousDays = this.datepipe.transform(new Date(), 'dd-MM-yyyy');
     /***** Tab 1 ***/
     this.getDentistPerformance();
     this.getRecallRate();
@@ -152,6 +153,7 @@ initiate_clinic() {
     this.getUnscheduledValues();
     this.getTodayPatients();
     this.getTodayUnscheduledHours();
+    this.getChairUtilisationRate();
     this.getTodayUnscheduledBal();
     this.getNoShow();
     this.getTodayPostopCalls();
@@ -201,7 +203,7 @@ initiate_clinic() {
     this.getUnscheduledPatients();
     this.getUnscheduledValues();
     this.getTodayPatients();
-    this.getTodayUnscheduledHours();
+    this.getChairUtilisationRate();
     this.getTodayUnscheduledBal();
     this.getNoShow();
     this.getTodayPostopCalls();
@@ -331,6 +333,15 @@ initiate_clinic() {
     this.morningHuddleService.getTodayUnscheduledHours( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.todayUnscheduledHours = production.data;
+
+    
+      }
+    }); 
+  }
+   getChairUtilisationRate(){
+    this.morningHuddleService.getChairUtilisationRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+      if(production.status == true) {
+        this.todayChairUtilisationRate = production.data;
 
     
       }

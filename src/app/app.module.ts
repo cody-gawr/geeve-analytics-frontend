@@ -35,7 +35,7 @@ import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
 import { SharedMatModule } from './shared-mat.module';
 import { DemoMaterialModule } from './demo-material-module';
-
+import { DatePipe } from '@angular/common';
 import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-tabs/dashboard-duration-tabs.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -89,6 +89,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     StepperHeaderService,
     ClinicSettingsService,
     StepperHeaderrightService,
+    DatePipe,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
