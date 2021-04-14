@@ -12,6 +12,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import Swal from 'sweetalert2';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -1824,14 +1825,36 @@ public currentText;
   }
 choosedDate(val) {
 
-    val = (val.chosenLabel);
-    var val= val.toString().split(' - ');
-      this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
-      this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
-      this.filterDate('custom');
+    // val = (val.chosenLabel);
+    // var val= val.toString().split(' - ');
+    //   this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
+    //   this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
+    //   this.filterDate('custom');
       
+    //   // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
+    //  $('.customRange').css('display','none');
+
+    val = val.chosenLabel;
+    var val = val.toString().split(" - ");
+
+    var date2: any = new Date(val[1]);
+    var date1: any = new Date(val[0]);
+    var diffTime: any = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+    if (diffTime <= 365) {
+      this.startDate = this.datePipe.transform(val[0], "dd-MM-yyyy");
+      this.endDate = this.datePipe.transform(val[1], "dd-MM-yyyy");
+      this.loadDentist("all");
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
-     $('.customRange').css('display','none');
+      $(".customRange").css("display", "none");
+    } else {
+      Swal.fire({
+        text: "Please select date range within 365 Days",
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonText: "Ok",
+      }).then((result) => {});
+    }
+
 }
 toggleFilter(val) {
     $('.target_filter').removeClass('mat-button-toggle-checked');
