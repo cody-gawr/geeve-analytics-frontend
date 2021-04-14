@@ -204,7 +204,7 @@ expenses_card custom_ngx_cw01">
                           fxFlex.xl="70" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70">
                           <ng-container *ngIf="xeroConnect;else NoExpensePlaceholder">
                             <ngx-charts-pie-chart fxFlexAlign="center" *ngIf="pieChartLabels.length > 0"
-                              class="chart-container sa_chart_custom" [view]="[500, 400]" [scheme]="colorScheme"
+                              class="chart-container sa_chart_custom" [view]="[500, 320]" [scheme]="colorScheme"
                               [trimLabels]="true" [maxLabelLength]="15" [results]="single" [legend]="false"
                               [explodeSlices]="explodeSlices" [labels]="showLabels" [arcWidth]="arcWidth"
                               [doughnut]="doughnut" [gradient]="gradient" [tooltipDisabled]="tooltipDisabled"
