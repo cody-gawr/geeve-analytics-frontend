@@ -572,15 +572,23 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec">
+              <!-- <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
                 </div>
+              </div> -->
+              <div fxLayout="row wrap" fxLayoutAlign="center center" class="prebook_rate sa_tabs_main_sec btn-right">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed
+                    Fees</small>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
+                </div>
               </div>
-
               <div style="height: 350px">
                 <canvas #myCanvas id="treatmentPlanProposed"
                   *ngIf="tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
@@ -650,7 +658,7 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div fxLayout="row wrap" fxLayoutAlign="start end" class="treatment_cost sa_tabs_main_sec">
+              <!-- <div fxLayout="row wrap" fxLayoutAlign="start end" class="treatment_cost sa_tabs_main_sec">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCostSingle('1')">Proposed
                     Fees</small>
@@ -658,7 +666,18 @@
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Completed Fees</small>
                 </div>
+              </div> -->
+              <div fxLayout="row wrap" fxLayoutAlign="center center" class="prebook_rate sa_tabs_main_sec btn-right">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCostSingle('1')">Proposed
+                    Fees</small>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Completed Fees</small>
+                </div>
               </div>
+
+
               <div class="chart"
                 *ngIf="showTrendChart == false && gaugeValueTreatment > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
                 fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
