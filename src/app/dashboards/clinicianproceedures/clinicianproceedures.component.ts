@@ -1185,6 +1185,8 @@ public PRcolors;
 
   //Predictor Ratio :All Dentist
   private buildChartPredictor() {
+    if(this.clinic_id == null || this.clinic_id == 'null')
+      return true;
     this.buildChartLoader = true;
     this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
       this.buildChartLoader = false;
