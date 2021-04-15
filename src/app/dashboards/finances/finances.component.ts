@@ -231,7 +231,12 @@ single = [
     gradient7.addColorStop(0,  '#168F7F');
 
     // this.doughnutChartColors = [{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}];
-    this.doughnutChartColors = [{backgroundColor: ['#6cd8ba','#b0fffa','#abb3ff','#feefb8','#ffb4b5','#fffcac','#d7f8ef']}];
+    this.doughnutChartColors =  [
+      '#6cd8ba','#b0fffa','#abb3ff','#feefb8','#ffb4b5','#fffcac','#d7f8ef',  '#ffb4b5', '#abb3ff','#abb3ff',
+      '#fffdac', '#6cd8ba','#b0fffa','#abb3ff','#6cd8ba', '#fef0b8' , 
+   '#fbefb8','#d7f8ff', '#fffcbc','#abb3ff','#ffc4b5', '#abb3fg','#fef0b8', 
+   '#b0fffc','#d7f8ef', '#6cd8bc', '#ffb4b5',
+    '#feefb8','#ffb4b5'];
     let stackedGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
     stackedGradient.addColorStop(0, '#168F7F');
     stackedGradient.addColorStop(1, '#168F7F');
@@ -2022,10 +2027,12 @@ private finProductionByClinicianTrend() {
                       if(typeof(this.productionChartTrend[key]['data']) == 'undefined'){
                         this.productionChartTrend[key]['data'] = [];
                       }
+                      // console.log(`key`, this.doughnutChartColors[key])
                      this.productionChartTrend[key]['data'].push(Math.round(parseInt(result.prod_per_clinician)));
                      this.productionChartTrend[key]['label'] = result.provider_name;
-                    
-                   });
+                     this.productionChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
+                     this.productionChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+                    });
                   if(this.trendValue == 'c')
                     this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                   else
@@ -2487,7 +2494,8 @@ private finTotalDiscountsTrend() {
     });
   }
 
-    public expensesChartTrend: any[] = [];
+    public expensesChartTrend: any[] = [
+    ];
     public expensesChartTrendLabels =[];
     public expensesChartTrendLabels1 =[];
 
@@ -2500,8 +2508,10 @@ private finTotalDiscountsTrend() {
             if(result.meta_key != 'Total Operating Expenses') {
               let tempO:any = [];
               result.expenses.forEach((res) => {  tempO.push(Math.round(res)); });                      
-              let temp = {data: [],label: '' };
+              let temp = {data: [],label: '', backgroundColor:'', hoverBackgroundColor: '' };
               temp.data = tempO;
+              temp.backgroundColor = this.doughnutChartColors[key];
+              temp.hoverBackgroundColor = this.doughnutChartColors[key];
               temp.label = result.meta_key;
               this.expensesChartTrend.push(temp);
             }

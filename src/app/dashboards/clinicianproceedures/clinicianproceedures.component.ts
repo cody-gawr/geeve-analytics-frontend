@@ -12,6 +12,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import Swal from 'sweetalert2';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -1184,6 +1185,8 @@ public PRcolors;
 
   //Predictor Ratio :All Dentist
   private buildChartPredictor() {
+    if(this.clinic_id == null || this.clinic_id == 'null')
+      return true;
     this.buildChartLoader = true;
     this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
       this.buildChartLoader = false;
@@ -1833,6 +1836,7 @@ choosedDate(val) {
       
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
+
 }
 toggleFilter(val) {
     $('.target_filter').removeClass('mat-button-toggle-checked');

@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
           this.errorLogin  =false;
 
-  this.loginService.login(this.form.value.uname, this.form.value.password).subscribe((res) => {
+  this.loginService.login(this.form.value.uname.trim(), this.form.value.password).subscribe((res) => {
        if(res.message == 'success'){        
         var datares = [];
         datares['username'] = res.data.data.username;

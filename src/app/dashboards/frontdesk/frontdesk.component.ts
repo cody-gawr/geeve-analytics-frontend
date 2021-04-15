@@ -18,6 +18,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ToastrService } from 'ngx-toastr';
 import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import Swal from 'sweetalert2';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -884,6 +885,7 @@ choosedDate(val) {
       
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
+
 }
 toggleFilter(val) {
     $('.target_filter').removeClass('mat-button-toggle-checked');
@@ -1015,7 +1017,30 @@ toggleChangeProcess(){
   }
 
   public wtaChartTrend: any[]  = [
-    {data: [], label: '',  shadowOffsetX: 3,
+    {data: [], label: '',  
+    backgroundColor: [
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even
+  ], 
+  shadowOffsetX: 3,
             shadowOffsetY: 2,
             shadowBlur: 3,
             shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -1117,6 +1142,27 @@ toggleChangeProcess(){
 
     public tickChartTrend: any[]  = [
     {data: [], label: '',  shadowOffsetX: 3,
+    backgroundColor: [
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+  ], 
             shadowOffsetY: 2,
             shadowBlur: 3,
             shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -1166,6 +1212,27 @@ toggleChangeProcess(){
 
  public recallPrebookChartTrend: any[]  = [
     {data: [], label: '',  shadowOffsetX: 3,
+    backgroundColor: [
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+  ],
             shadowOffsetY: 2,
             shadowBlur: 3,
             shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -1216,6 +1283,27 @@ toggleChangeProcess(){
 
  public treatmentPrebookChartTrend: any[]  = [
     {data: [], label: '',  shadowOffsetX: 3,
+    backgroundColor: [
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+  ],
             shadowOffsetY: 2,
             shadowBlur: 3,
             shadowColor: 'rgba(0, 0, 0, 0.3)',

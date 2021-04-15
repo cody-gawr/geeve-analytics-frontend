@@ -42,7 +42,20 @@ export class MarketingComponent implements AfterViewInit {
       info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
   };
   closeResult: string;
-  lineChartColors;
+  lineChartColors = [
+    this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even
+  ];
   predictedChartColors;
   preoceedureChartColors;
   subtitle: string;
@@ -103,6 +116,7 @@ export class MarketingComponent implements AfterViewInit {
     // end of plugin observable logic
 
       $('#currentDentist').attr('did','all');
+      $('.dentist_dropdown').hide();
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
        //  this.filterDate('cytd');
@@ -112,7 +126,7 @@ export class MarketingComponent implements AfterViewInit {
         
        $('#title').html('Marketing');
         $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
+        $('.dentist_dropdown').addClass('hide');
         $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
   $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
@@ -293,11 +307,11 @@ this.preoceedureChartColors = [
       const clickedElementIndex = activePoints[0]._index;
       const label = chart.data.labels[clickedElementIndex];
       if(labels === 'newPatients') {
-      this.drilldownNewPatients(label);
-    }
-      else if(labels == 'revenue'){
-      this.drilldownRevenueReferral(label);
-    }
+        this.drilldownNewPatients(label);
+      } 
+      if(labels === 'revenue'){
+        this.drilldownRevenueReferral(label);
+      }
     }
   }
 }
@@ -439,12 +453,13 @@ this.preoceedureChartColors = [
     }
   }
 
-  public newPatientsTimeData: number[] = [];
-  public newPatientsTimeLabels = [];  
-  public newPatientsTimeLabels1 = [];
-  public newPatientsTimeData1 : number[] = [];
-   public newPatientsTimeLabelsl2 = [];  
-public mkNewPatientsByReferralLoader:any;
+    public newPatientsTimeData: number[] = [];
+    public newPatientsTimeLabels = [];  
+    public newPatientsTimeLabels1 = [];
+    public newPatientsTimeData1 : number[] = [];
+    public newPatientsTimeLabelsl2 = [];  
+    public mkNewPatientsByReferralLoader:any;
+    public mkNewPatientsByReferralAll:any = [];
 
   //Items Predictor Analysis 
   private mkNewPatientsByReferral() {
@@ -454,6 +469,7 @@ public mkNewPatientsByReferralLoader:any;
     var clinic_id;
   this.marketingService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
+      this.mkNewPatientsByReferralAll = data;
       this.totalNewPatientsReferral = Math.round(data.total);
          this.newPatientsReferral$.next(this.totalNewPatientsReferral)
       // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
@@ -483,48 +499,37 @@ public mkNewPatientsByReferralLoader:any;
     );
   }
 
-    private drilldownNewPatients(label) {
-      
-    var user_id;
-    var clinic_id;
-  this.marketingService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success'){
-            this.newPatientsTimeData1 =[];
-            this.newPatientsTimeLabels1 =[];
-            this.newPatientsTimeData = [];
-            this.newPatientsTimeLabels= [];
-            this.newPatientsTimeLabelsl2 =[];
-
-            if(data.data.patients_refname[label].length >0) {
-               var i=0;
-               let totalVisits = 0;
-             data.data.patients_refname[label].forEach(res => {
-              if(i<10) {
-               totalVisits = totalVisits + parseInt(res.num_referrals);
-               this.newPatientsTimeData1.push(res.num_referrals);
-               this.newPatientsReferral$.next(totalVisits);
-               this.newPatientsTimeLabels1.push(res.referral_name);
-                i++;
-              }
-             });
+  private drilldownNewPatients(label) {
+    this.newPatientsTimeData1 =[];
+    this.newPatientsTimeLabels1 =[];
+    this.newPatientsTimeData = [];
+    this.newPatientsTimeLabels= [];
+    this.newPatientsTimeLabelsl2 =[];
+    if(this.mkNewPatientsByReferralAll.data.patients_refname[label].length >0) {
+      var i=0;
+      let totalVisits = 0;
+      this.mkNewPatientsByReferralAll.data.patients_refname[label].forEach(res => {
+        if(i<10) {
+          totalVisits = totalVisits + parseInt(res.num_referrals);
+          this.newPatientsTimeData1.push(res.num_referrals);
+          this.newPatientsReferral$.next(totalVisits);
+          this.newPatientsTimeLabels1.push(res.referral_name);
+          i++;
         }
-         this.newPatientsTimeData = this.newPatientsTimeData1;
-         this.newPatientsTimeLabelsl2= this.newPatientsTimeLabels1;
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+      });
     }
-    );
+    this.newPatientsTimeData = this.newPatientsTimeData1;
+    this.newPatientsTimeLabelsl2= this.newPatientsTimeLabels1;
   }
 
-  public revenueReferralData: number[] = [];
-  public revenueReferralLabels = [];  
-  public revenueReferralLabels1 = [];
-  public revenueReferralData1 : number[] = [];
-   public revenueReferralLabelsl2 = [];  
-public mkRevenueByReferralLoader:any;
+    public revenueReferralData: number[] = [];
+    public revenueReferralLabels = [];  
+    public revenueReferralLabels1 = [];
+    public revenueReferralData1 : number[] = [];
+    public revenueReferralLabelsl2 = [];  
+    public mkRevenueByReferralLoader:any;
 
-public reffralAllData:any = [];
+    public reffralAllData:any = [];
 
   //Items Predictor Analysis 
   private mkRevenueByReferral() {
@@ -886,23 +891,14 @@ public currentText;
     choosedDate(val) {
       val = (val.chosenLabel);
       var val= val.toString().split(' - ');
-      var date2:any= new Date(val[1]);
-      var date1:any= new Date(val[0]);
-      var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
-      if(diffTime<=365){
         this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
-        this.loadDentist('all');      
+        this.duration = 'custom';
+        this.loadDentist('all');
+        
         // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
-        $('.customRange').css('display','none');
-      } else {
-        Swal.fire({
-          text: 'Please select date range within 365 Days',
-          icon: 'warning',
-          showCancelButton: false,
-          confirmButtonText: 'Ok',
-        }).then((result) => {});
-      }
+       $('.customRange').css('display','none');
+
     }
 
     toggleFilter(val) {
@@ -964,8 +960,23 @@ public currentText;
 
  public visitsChartTrend: any[]  = [
     {data: [], label: '',  shadowOffsetX: 3,
+    backgroundColor: [
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even
+  ],
             shadowOffsetY: 2,
             shadowBlur: 3,
+            // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
             shadowColor: 'rgba(0, 0, 0, 0.3)',
             pointBevelWidth: 2,
             pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
@@ -1009,6 +1020,20 @@ public fdvisitsRatioTrendLoader:any;
 
  public newPatientsChartTrend: any[]  = [
     {data: [], label: '',  shadowOffsetX: 3,
+    backgroundColor: [
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even
+  ],
             shadowOffsetY: 2,
             shadowBlur: 3,
             shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -1117,6 +1142,20 @@ public barChartOptions: any = {
   };
  public expenseDataTrend: any[]  = [
     {data: [], label: '',  shadowOffsetX: 3,
+    backgroundColor: [
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even
+  ],
             shadowOffsetY: 2,
             shadowBlur: 3,
             shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -1224,9 +1263,30 @@ this.newAcqValue = 0;
 }
 
   public changeLevel(val) {
-    if(val == 'newPatient') 
-      this.mkNewPatientsByReferral();
-  else if(val == 'revenue')
+    if(val == 'newPatient') {
+      this.newPatientsTimeLabelsl2 = [];
+      this.totalNewPatientsReferral = Math.round(this.mkNewPatientsByReferralAll.total);
+      this.newPatientsReferral$.next(this.totalNewPatientsReferral);
+      this.newPatientsTimeData1 =[];
+      this.newPatientsTimeLabelsl2 =[];
+      this.newPatientsTimeLabels1 =[];
+      if(this.mkNewPatientsByReferralAll.data.patients_reftype.length >0) {
+        var i=0;
+        this.mkNewPatientsByReferralAll.data.patients_reftype.forEach(res => {
+          if(res.patients_visits > 0) {
+            if(i < 10) {
+              this.newPatientsTimeData1.push(res.patients_visits);
+              this.newPatientsTimeLabels1.push(res.reftype_name);
+              i++;
+            }
+          }
+        });
+      }
+      this.newPatientsTimeData = this.newPatientsTimeData1;
+      this.newPatientsTimeLabels= this.newPatientsTimeLabels1;
+      //   this.mkNewPatientsByReferral();
+    }  else if(val == 'revenue') {
+      this.revenueReferralLabelsl2 = [];
       this.mkRevenueByReferralLoader = false;
         this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
         this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
@@ -1252,7 +1312,9 @@ this.newAcqValue = 0;
         }
         this.revenueReferralData = this.revenueReferralData1;
         this.revenueReferralLabels= this.revenueReferralLabels1; 
+    }
   }
+
   add_account(index) {
     if(!this.selectedAccounts.includes(this.Accounts[index]))
     this.selectedAccounts.push(this.Accounts[index]);

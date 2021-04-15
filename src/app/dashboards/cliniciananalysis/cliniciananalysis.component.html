@@ -572,15 +572,14 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec">
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+              <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec" fxLayoutAlign="center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
                 </div>
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
                 </div>
               </div>
-
               <div style="height: 350px">
                 <canvas #myCanvas id="treatmentPlanProposed"
                   *ngIf="tcmain == 1 && buildChartTreatmentLoader == false && planChartData1.length > 0" baseChart
@@ -650,15 +649,26 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div fxLayout="row wrap" fxLayoutAlign="start end" class="treatment_cost sa_tabs_main_sec">
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+              <div fxLayout="row wrap" fxLayoutAlign="center" class="treatment_cost sa_tabs_main_sec">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCostSingle('1')">Proposed
                     Fees</small>
                 </div>
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Completed Fees</small>
                 </div>
               </div>
+              <!-- <div fxLayout="row wrap" fxLayoutAlign="center center" class="prebook_rate sa_tabs_main_sec btn-right">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCostSingle('1')">Proposed
+                    Fees</small>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Completed Fees</small>
+                </div>
+              </div> -->
+
+
               <div class="chart"
                 *ngIf="showTrendChart == false && gaugeValueTreatment > 0 && !buildChartTreatmentLoader && !buildChartTreatmentDentistLoader"
                 fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
@@ -813,11 +823,15 @@
                   <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
                 </div>
               </div>
-              <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue > 0 && !treatmentPlanRateDentistLoader"
-                [type]="gaugeType" [value]="treatmentPlanValue" [label]="treatmentPlanLabel" [thick]="gaugeThick"
-                [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxtreatmentPlanGoal"
-                [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
-              </ngx-gauge>
+              <div class="chart"
+                *ngIf="showTrendChart == false && treatmentPlanValue > 0 && !treatmentPlanRateDentistLoader"
+                fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
+                <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue > 0 && !treatmentPlanRateDentistLoader"
+                  [type]="gaugeType" [value]="treatmentPlanValue" [label]="treatmentPlanLabel" [thick]="gaugeThick"
+                  [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxtreatmentPlanGoal"
+                  [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
+                </ngx-gauge>
+              </div>
               <div
                 *ngIf="showTrendChart == true && treatmentPlanChartTrend1.length > 0 && !fdtreatmentPlanRateTrendLoader"
                 style="height: 300px">
@@ -1003,17 +1017,24 @@
                     Prebook Rate</small>
                 </div>
               </div>
-
-              <ngx-gauge *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0" [type]="gaugeType"
-                [value]="recallValue" [label]="recallLabel" [thick]="gaugeThick" [foregroundColor]="foregroundColor"
-                [backgroundColor]="backgroundColor" [max]="maxrecallGoal" [cap]="cap" [duration]="gaugeDuration"
-                [append]="gaugeAppendText" [size]="size">
-              </ngx-gauge>
-              <ngx-gauge *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
-                [type]="gaugeType" [value]="treatmentPreValue" [label]="treatmentPreLabel" [thick]="gaugeThick"
-                [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="recallGoal" [cap]="cap"
-                [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
-              </ngx-gauge>
+              <div class="chart"
+                *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0"
+                fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
+                <ngx-gauge *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0" [type]="gaugeType"
+                  [value]="recallValue" [label]="recallLabel" [thick]="gaugeThick" [foregroundColor]="foregroundColor"
+                  [backgroundColor]="backgroundColor" [max]="maxrecallGoal" [cap]="cap" [duration]="gaugeDuration"
+                  [append]="gaugeAppendText" [size]="size">
+                </ngx-gauge>
+              </div>
+              <div class="chart"
+              *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
+                fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
+                <ngx-gauge *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
+                  [type]="gaugeType" [value]="treatmentPreValue" [label]="treatmentPreLabel" [thick]="gaugeThick"
+                  [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="recallGoal" [cap]="cap"
+                  [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
+                </ngx-gauge>
+              </div>
               <div
                 *ngIf="showTrendChart == true  && prebook=='recall' && !recallPrebookDentistLoader && recallPrebookChartTrend1.length > 0"
                 style="height: 300px">
