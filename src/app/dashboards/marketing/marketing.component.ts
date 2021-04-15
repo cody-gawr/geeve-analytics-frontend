@@ -307,11 +307,11 @@ this.preoceedureChartColors = [
       const clickedElementIndex = activePoints[0]._index;
       const label = chart.data.labels[clickedElementIndex];
       if(labels === 'newPatients') {
-      this.drilldownNewPatients(label);
-    }
-      else if(labels == 'revenue'){
-      this.drilldownRevenueReferral(label);
-    }
+        this.drilldownNewPatients(label);
+      } 
+      if(labels === 'revenue'){
+        this.drilldownRevenueReferral(label);
+      }
     }
   }
 }
@@ -497,7 +497,7 @@ public mkNewPatientsByReferralLoader:any;
     );
   }
 
-    private drilldownNewPatients(label) {
+  private drilldownNewPatients(label) {
       
     var user_id;
     var clinic_id;
@@ -588,8 +588,8 @@ public reffralAllData:any = [];
        if(data.message == 'success'){*/
       this.revenueReferralData1 =[];
       this.revenueReferralLabels1 =[];
-      this.revenueReferralData = [];
-      this.revenueReferralLabels= [];
+      //this.revenueReferralData = [];
+      //this.revenueReferralLabels= [];
       this.revenueReferralLabelsl2 =[];
       if(this.reffralAllData.data.patients_refname[label].length  >0) {
         var i=0;
