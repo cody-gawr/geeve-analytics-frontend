@@ -43,8 +43,11 @@ export class ClinicSettingsComponent implements OnInit {
           public practice_size:any ={};
           options: FormGroup;
           public xero_link;
+          public myob_link;
           public xeroConnect = false;
           public xeroOrganization='';
+          public myobConnect = false;
+          public myobOrganization='';
           public workingDays:any = {sunday: false,monday: true,tuesday: true,wednesday: true,thursday: true,friday: true,saturday: true};       
   constructor( private toastr: ToastrService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
     this.options = fb.group({
@@ -62,6 +65,7 @@ export class ClinicSettingsComponent implements OnInit {
         $('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
         this.checkXeroStatus();
+        this.checkMyobStatus();
 
      });
     
@@ -155,10 +159,27 @@ export class ClinicSettingsComponent implements OnInit {
     });
   } 
 //get xero authorization link
-  getXeroLink(){
+  getXeroLink(){  
     this.clinicSettingsService.getXeroLink(this.id).subscribe((res) => {
        if(res.message == 'success'){
         this.xero_link = res.data;
+       } else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );  
+  }
+//get xero authorization link
+    getMyobLink(){ //alert('wkk');
+    this.clinicSettingsService.getMyobLink(this.id).subscribe((res) => {
+       if(res.message == 'success'){
+        this.myob_link = res.data;
        } else if(res.status == '401'){
             this._cookieService.put("username",'');
               this._cookieService.put("email", '');
@@ -184,8 +205,20 @@ export class ClinicSettingsComponent implements OnInit {
         }
       }, 1000);
   }
+//create myob connection model
+ public openMyob(){ 
+  var success;
 
-//check status of xeroc onnection
+  var win = window.open(this.myob_link, "MsgWindow", "width=400,height=400");
+  var self = this;
+ var timer = setInterval(function() { 
+    if(win.closed) {
+      self.checkMyobStatus();
+      clearTimeout(timer);
+    }
+  }, 1000);
+}
+//check status of xero connection
   public checkXeroStatus(){
     this.clinicSettingsService.checkXeroStatus(this.id).subscribe((res) => {
        if(res.message == 'success'){
@@ -208,8 +241,32 @@ export class ClinicSettingsComponent implements OnInit {
       this.warningMessage = "Please Provide Valid Inputs!";
     });  
  }
+ //check status of myob connection
+ public checkMyobStatus(){
+  this.clinicSettingsService.checkMyobStatus(this.id).subscribe((res) => {
+     if(res.message == 'success'){
+      if(res.data.myob_connect == 1) {
+        this.myobConnect = true;
+        this.myobOrganization = res.data.Name;
+        //alert(this.myobOrganization);
+      }
+      else {
+        this.myobConnect = false;
+         this.myobOrganization = '';          
+        this.disconnectMyob();
+      }
+     }
+     else {
+      this.myobConnect = false;
+         this.myobOrganization = ''; 
+        this.disconnectMyob();
+    }
+  }, error => {
+    this.warningMessage = "Please Provide Valid Inputs!";
+  });  
+}
  //disconnect xero connection
- public disconnectXero() {
+ public disconnectXero() { 
     this.clinicSettingsService.clearSession(this.id).subscribe((res) => {
        if(res.message == 'success'){
           this.xeroConnect = false;
@@ -223,7 +280,21 @@ export class ClinicSettingsComponent implements OnInit {
       this.warningMessage = "Please Provide Valid Inputs!";
     });   
  }
-
+ //disconnect myob connection
+ public disconnectMyob() { 
+  this.clinicSettingsService.clearSessionMyob(this.id).subscribe((res) => {
+     if(res.message == 'success'){
+        this.myobConnect = false;
+        this.myobOrganization = '';   
+        this.getMyobLink();
+     }
+     else {
+      this.myobConnect = true;
+    }
+  }, error => {
+    this.warningMessage = "Please Provide Valid Inputs!";
+  });   
+}
 public toggle(event){
   if(event.source.name == 'sunday'){
     this.workingDays.sunday = event.checked;

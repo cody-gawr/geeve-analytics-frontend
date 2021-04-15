@@ -122,10 +122,12 @@
           <img src="assets/images/xero_settings.png" alt="" />
         </div>
         <div class="button-container">
-            <button class="save-button" (click)="xeroConnect ? disconnectXero() : openXero()">
+          
+            <button class="save-button" *ngIf="myobConnect == false" (click)="xeroConnect ? disconnectXero() : openXero()">
               {{ !xeroConnect  ? 'Connect to Xero' : 'Disconnect from XERO' }}
               <img class="fast-forward-icon" src="assets/images/fast_forward_arrows.png" alt="" />
             </button>
+
         </div>
         <div class="company-container" *ngIf="xeroOrganization?.length">
           <div class="company-icon">
@@ -149,16 +151,16 @@
           <img src="assets/images/myob.png" alt="" />
         </div>
         <div class="button-container">
-            <button class="save-button" (click)="xeroConnect ? disconnectXero() : openXero()">
-              {{ !xeroConnect  ? 'Connect to MYOB' : 'Disconnect from MYOB' }}
+            <button class="save-button" *ngIf="xeroConnect == false" (click)="myobConnect ? disconnectMyob() : openMyob()">
+              {{ !myobConnect  ? 'Connect to Myob' : 'Disconnect from Myob' }}
               <img class="fast-forward-icon" src="assets/images/fast_forward_arrows.png" alt="" />
             </button>
         </div>
-        <div class="company-container" *ngIf="xeroOrganization?.length">
+        <div class="company-container" *ngIf="myobOrganization?.length">
           <div class="company-icon">
             <img src="assets/images/company_icon.png" alt="" />
           </div>
-          <div class="company-name">{{ xeroOrganization }}</div> <!-- Demo Company (AU) -->
+          <div class="company-name">{{ myobOrganization }}</div> <!-- Demo Company (AU) -->
         </div>
       </div>
     </mat-card-content>

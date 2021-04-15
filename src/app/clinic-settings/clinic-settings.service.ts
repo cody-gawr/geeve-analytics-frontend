@@ -72,9 +72,35 @@ export class ClinicSettingsService {
         );
     }
 
+    getMyobLink( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Myob/getAuthorizeUrl?=1&clinic_id="+clinic_id, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    checkMyobStatus( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Myob/getMyobStatus?getxero=1&clinic_id="+clinic_id, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+   
+
     clearSession( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Xeros2/disconnectXero/?clinic_id="+clinic_id, { headers: header})
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    clearSessionMyob( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Myob/disconnectMyob/?clinic_id="+clinic_id, { headers: header})
         .pipe(map((response: Response) => {
                         return response;
                     })
