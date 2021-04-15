@@ -615,9 +615,9 @@ expenses_card custom_ngx_cw01">
                     <p class="chart-placeholder-text">You have no production in the selected period</p>
                   </div>
 
-                  <canvas *ngIf="netProfitDisplayVal == 2 && netProfitChartTrendLabels.length  >0"
+                  <canvas *ngIf="netProfitDisplayVal == 2 && netProfitPmsChartTrendLabels.length  >0"
                     class="profit1 net_profit" baseChart [datasets]="netProfitChartTrend"
-                    [labels]="netProfitChartTrendLabels" [options]="labelBarOptions" [legend]="false"
+                    [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptions" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <!-- <img src='../assets/images/nodata02.png' *ngIf="netProfitDisplayVal == 2  && netProfitPercentChartTrendLabels.length <=0 && finNetProfitPercentTrendLoader == false"  class="blankChart"> -->

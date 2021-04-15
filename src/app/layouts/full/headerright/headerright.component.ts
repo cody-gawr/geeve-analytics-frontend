@@ -22,8 +22,9 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   private _routerSub = Subscription.EMPTY;
   providerIdDentist;
   isToggleDentistChart:string;
-  user_type_dentist;
+  user_type_dentist; 
   showCompare:boolean = false;
+  showDropDown:boolean = false;
 
   constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router) {
       this.user_type_dentist = this._cookieService.get("user_type");
@@ -34,6 +35,12 @@ export class AppHeaderrightComponent implements AfterViewInit  {
               this.showCompare = false;
             } else {
               this.showCompare = true;
+            }
+
+            if(this.route == '/dashboards/healthscreen'){
+              this.showDropDown = false;
+            } else {
+              this.showDropDown = true;
             }
             this.getClinics();
            // this.getDentists();
