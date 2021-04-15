@@ -180,7 +180,8 @@ No. New Patients
 </div> -->
 <div *ngIf="showTrend == true && newPatientsChartTrend1.length > 0" style="height: 300px">
 <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend" [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions" 
-[chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
+[chartType]="stackedChartType"  [colors]="lineChartColors" (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
+<!-- [colors]="stackedChartColors" -->
 </canvas>
 </div>
 
@@ -250,7 +251,8 @@ Cost of New Patient Acquisition
 </div> -->
 <div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && xeroConnect" style="height: 300px">
 <canvas #myCanvas baseChart [datasets]="expenseDataTrend" [labels]="expenseDataTrendLabels" [options]="barChartOptions" 
-[chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
+[chartType]="stackedChartType"  [colors]="lineChartColors"  (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
+<!-- [colors]="stackedChartColors" -->
 </canvas>
 </div>
 <div *ngIf="showTrend == true && expenseDataTrend1.length<=0 && xeroConnect">
@@ -330,7 +332,8 @@ Total Visits
 </div> -->
 <div *ngIf="showTrend == true && visitsChartTrend1.length > 0" style="height: 300px">
 <canvas #myCanvas baseChart [datasets]="visitsChartTrend" [labels]="visitsChartTrendLabels" [options]="stackedChartOptions" 
-[chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
+[chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" [colors]="lineChartColors" (chartClick)="chartClicked($event)">
+<!-- [colors]="stackedChartColors"  -->
 </canvas>
 </div>
 

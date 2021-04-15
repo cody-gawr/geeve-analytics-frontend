@@ -42,7 +42,20 @@ export class MarketingComponent implements AfterViewInit {
       info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
   };
   closeResult: string;
-  lineChartColors;
+  lineChartColors = [
+    this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even
+  ];
   predictedChartColors;
   preoceedureChartColors;
   subtitle: string;
@@ -103,6 +116,7 @@ export class MarketingComponent implements AfterViewInit {
     // end of plugin observable logic
 
       $('#currentDentist').attr('did','all');
+      $('.dentist_dropdown').hide();
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
        //  this.filterDate('cytd');
@@ -112,7 +126,7 @@ export class MarketingComponent implements AfterViewInit {
         
        $('#title').html('Marketing');
         $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
+        $('.dentist_dropdown').addClass('hide');
         $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
   $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
@@ -886,23 +900,14 @@ public currentText;
     choosedDate(val) {
       val = (val.chosenLabel);
       var val= val.toString().split(' - ');
-      var date2:any= new Date(val[1]);
-      var date1:any= new Date(val[0]);
-      var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
-      if(diffTime<=365){
         this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
-        this.loadDentist('all');      
+        this.duration = 'custom';
+        this.loadDentist('all');
+        
         // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
-        $('.customRange').css('display','none');
-      } else {
-        Swal.fire({
-          text: 'Please select date range within 365 Days',
-          icon: 'warning',
-          showCancelButton: false,
-          confirmButtonText: 'Ok',
-        }).then((result) => {});
-      }
+       $('.customRange').css('display','none');
+
     }
 
     toggleFilter(val) {
@@ -964,8 +969,23 @@ public currentText;
 
  public visitsChartTrend: any[]  = [
     {data: [], label: '',  shadowOffsetX: 3,
+    backgroundColor: [
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even
+  ],
             shadowOffsetY: 2,
             shadowBlur: 3,
+            // hoverBackgroundColor: 'rgba(0, 0, 0, 0.6)',
             shadowColor: 'rgba(0, 0, 0, 0.3)',
             pointBevelWidth: 2,
             pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
@@ -1009,6 +1029,20 @@ public fdvisitsRatioTrendLoader:any;
 
  public newPatientsChartTrend: any[]  = [
     {data: [], label: '',  shadowOffsetX: 3,
+    backgroundColor: [
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even
+  ],
             shadowOffsetY: 2,
             shadowBlur: 3,
             shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -1117,6 +1151,20 @@ public barChartOptions: any = {
   };
  public expenseDataTrend: any[]  = [
     {data: [], label: '',  shadowOffsetX: 3,
+    backgroundColor: [
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
+      this.chartService.colors.even
+  ],
             shadowOffsetY: 2,
             shadowBlur: 3,
             shadowColor: 'rgba(0, 0, 0, 0.3)',

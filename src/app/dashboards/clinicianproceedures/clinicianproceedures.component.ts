@@ -12,6 +12,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import Swal from 'sweetalert2';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -1833,6 +1834,7 @@ choosedDate(val) {
       
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
+
 }
 toggleFilter(val) {
     $('.target_filter').removeClass('mat-button-toggle-checked');

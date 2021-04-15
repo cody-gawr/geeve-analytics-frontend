@@ -1,6 +1,7 @@
 
 import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 import { BaseComponent } from '../../clinic-settings/base/base.component';
 import { ChartService } from '../chart.service';
 interface IDateOption {
@@ -65,10 +66,27 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
   }
 
   choosedDate(event) {
-    // console.log(`event`, event);    
-    this.chartService.selectDateFromCalender(event);
-    this.filterDate('custom');
-    this.changeDate.emit(event)
+    // console.log(`event`, event); 
+    var val = event.chosenLabel;
+    val = val.toString().split(" - ");
+    var date2: any = new Date(val[1]);
+    var date1: any = new Date(val[0]);
+    var diffTime: any = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+    if (diffTime <= 365) {
+      this.chartService.selectDateFromCalender(event);
+      this.filterDate('custom');
+      this.changeDate.emit(event)
+      $(".customRange").css("display", "none");
+    } else {
+      Swal.fire({
+        text: "Please select date range within 365 Days",
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonText: "Ok",
+      }).then((result) => {});
+    }
+
+  
   }
 
 }
