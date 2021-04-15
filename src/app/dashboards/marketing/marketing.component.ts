@@ -453,12 +453,13 @@ this.preoceedureChartColors = [
     }
   }
 
-  public newPatientsTimeData: number[] = [];
-  public newPatientsTimeLabels = [];  
-  public newPatientsTimeLabels1 = [];
-  public newPatientsTimeData1 : number[] = [];
-   public newPatientsTimeLabelsl2 = [];  
-public mkNewPatientsByReferralLoader:any;
+    public newPatientsTimeData: number[] = [];
+    public newPatientsTimeLabels = [];  
+    public newPatientsTimeLabels1 = [];
+    public newPatientsTimeData1 : number[] = [];
+    public newPatientsTimeLabelsl2 = [];  
+    public mkNewPatientsByReferralLoader:any;
+    public mkNewPatientsByReferralAll:any = [];
 
   //Items Predictor Analysis 
   private mkNewPatientsByReferral() {
@@ -468,6 +469,7 @@ public mkNewPatientsByReferralLoader:any;
     var clinic_id;
   this.marketingService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
+      this.mkNewPatientsByReferralAll = data;
       this.totalNewPatientsReferral = Math.round(data.total);
          this.newPatientsReferral$.next(this.totalNewPatientsReferral)
       // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
@@ -498,47 +500,36 @@ public mkNewPatientsByReferralLoader:any;
   }
 
   private drilldownNewPatients(label) {
-      
-    var user_id;
-    var clinic_id;
-  this.marketingService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
-       if(data.message == 'success'){
-            this.newPatientsTimeData1 =[];
-            this.newPatientsTimeLabels1 =[];
-            this.newPatientsTimeData = [];
-            this.newPatientsTimeLabels= [];
-            this.newPatientsTimeLabelsl2 =[];
-
-            if(data.data.patients_refname[label].length >0) {
-               var i=0;
-               let totalVisits = 0;
-             data.data.patients_refname[label].forEach(res => {
-              if(i<10) {
-               totalVisits = totalVisits + parseInt(res.num_referrals);
-               this.newPatientsTimeData1.push(res.num_referrals);
-               this.newPatientsReferral$.next(totalVisits);
-               this.newPatientsTimeLabels1.push(res.referral_name);
-                i++;
-              }
-             });
+    this.newPatientsTimeData1 =[];
+    this.newPatientsTimeLabels1 =[];
+    this.newPatientsTimeData = [];
+    this.newPatientsTimeLabels= [];
+    this.newPatientsTimeLabelsl2 =[];
+    if(this.mkNewPatientsByReferralAll.data.patients_refname[label].length >0) {
+      var i=0;
+      let totalVisits = 0;
+      this.mkNewPatientsByReferralAll.data.patients_refname[label].forEach(res => {
+        if(i<10) {
+          totalVisits = totalVisits + parseInt(res.num_referrals);
+          this.newPatientsTimeData1.push(res.num_referrals);
+          this.newPatientsReferral$.next(totalVisits);
+          this.newPatientsTimeLabels1.push(res.referral_name);
+          i++;
         }
-         this.newPatientsTimeData = this.newPatientsTimeData1;
-         this.newPatientsTimeLabelsl2= this.newPatientsTimeLabels1;
-       }
-    }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
+      });
     }
-    );
+    this.newPatientsTimeData = this.newPatientsTimeData1;
+    this.newPatientsTimeLabelsl2= this.newPatientsTimeLabels1;
   }
 
-  public revenueReferralData: number[] = [];
-  public revenueReferralLabels = [];  
-  public revenueReferralLabels1 = [];
-  public revenueReferralData1 : number[] = [];
-   public revenueReferralLabelsl2 = [];  
-public mkRevenueByReferralLoader:any;
+    public revenueReferralData: number[] = [];
+    public revenueReferralLabels = [];  
+    public revenueReferralLabels1 = [];
+    public revenueReferralData1 : number[] = [];
+    public revenueReferralLabelsl2 = [];  
+    public mkRevenueByReferralLoader:any;
 
-public reffralAllData:any = [];
+    public reffralAllData:any = [];
 
   //Items Predictor Analysis 
   private mkRevenueByReferral() {
@@ -588,8 +579,8 @@ public reffralAllData:any = [];
        if(data.message == 'success'){*/
       this.revenueReferralData1 =[];
       this.revenueReferralLabels1 =[];
-      //this.revenueReferralData = [];
-      //this.revenueReferralLabels= [];
+      this.revenueReferralData = [];
+      this.revenueReferralLabels= [];
       this.revenueReferralLabelsl2 =[];
       if(this.reffralAllData.data.patients_refname[label].length  >0) {
         var i=0;
@@ -1272,9 +1263,30 @@ this.newAcqValue = 0;
 }
 
   public changeLevel(val) {
-    if(val == 'newPatient') 
-      this.mkNewPatientsByReferral();
-  else if(val == 'revenue')
+    if(val == 'newPatient') {
+      this.newPatientsTimeLabelsl2 = [];
+      this.totalNewPatientsReferral = Math.round(this.mkNewPatientsByReferralAll.total);
+      this.newPatientsReferral$.next(this.totalNewPatientsReferral);
+      this.newPatientsTimeData1 =[];
+      this.newPatientsTimeLabelsl2 =[];
+      this.newPatientsTimeLabels1 =[];
+      if(this.mkNewPatientsByReferralAll.data.patients_reftype.length >0) {
+        var i=0;
+        this.mkNewPatientsByReferralAll.data.patients_reftype.forEach(res => {
+          if(res.patients_visits > 0) {
+            if(i < 10) {
+              this.newPatientsTimeData1.push(res.patients_visits);
+              this.newPatientsTimeLabels1.push(res.reftype_name);
+              i++;
+            }
+          }
+        });
+      }
+      this.newPatientsTimeData = this.newPatientsTimeData1;
+      this.newPatientsTimeLabels= this.newPatientsTimeLabels1;
+      //   this.mkNewPatientsByReferral();
+    }  else if(val == 'revenue') {
+      this.revenueReferralLabelsl2 = [];
       this.mkRevenueByReferralLoader = false;
         this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
         this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
@@ -1300,7 +1312,9 @@ this.newAcqValue = 0;
         }
         this.revenueReferralData = this.revenueReferralData1;
         this.revenueReferralLabels= this.revenueReferralLabels1; 
+    }
   }
+
   add_account(index) {
     if(!this.selectedAccounts.includes(this.Accounts[index]))
     this.selectedAccounts.push(this.Accounts[index]);
