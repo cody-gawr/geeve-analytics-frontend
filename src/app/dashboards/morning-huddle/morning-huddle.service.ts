@@ -184,7 +184,7 @@ export class MorningHuddleService {
     }
      getTodayPostopCalls( clinic_id, previousDays,  user_type, clinician ="", token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/mhPostOpCurrent?clinic_id="+clinic_id+"&date="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhPostOpPrev?clinic_id="+clinic_id+"&date="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
