@@ -203,6 +203,7 @@ initiate_clinic() {
     this.getUnscheduledPatients();
     this.getUnscheduledValues();
     this.getTodayPatients();
+    this.getTodayUnscheduledHours();
     this.getChairUtilisationRate();
     this.getTodayUnscheduledBal();
     this.getNoShow();
@@ -340,7 +341,7 @@ initiate_clinic() {
   }
    getChairUtilisationRate(){
     this.morningHuddleService.getChairUtilisationRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
+      if(production.status == 'success') {
         this.todayChairUtilisationRate = production.data;
 
     
