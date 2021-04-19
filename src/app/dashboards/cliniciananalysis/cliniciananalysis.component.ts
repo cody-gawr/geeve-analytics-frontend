@@ -61,7 +61,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private _routerSub = Subscription.EMPTY;
   newPatientPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
-  newPatientTotalAverage$ = new BehaviorSubject<number>(0);
+  newPatientTotal$ = new BehaviorSubject<number>(0);
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -127,7 +127,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   //initialize component
   ngAfterViewInit() {
-    this.newPatientPluginObservable$ = this.newPatientTotalAverage$.pipe(
+    this.newPatientPluginObservable$ = this.newPatientTotal$.pipe(
       takeUntil(this.destroyed$),
       map((count) => {
         return this.chartService.beforeDrawChart(count)
@@ -2115,9 +2115,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.newPatientChartData = this.newPatientChartData1;
         this.newPatientChartLabels = this.newPatientChartLabels1;
 
-        this.newPatientTotalAverage = data.total;
-        this.newPatientTotalAverage$.next(data.total);
-        // this.doughnutChartOptions.elements.center.text = this.newPatientTotalAverage;
+        this.newPatientTotal = data.total;
+        this.newPatientTotal$.next(data.total);
+        this.doughnutChartOptions.elements.center.text = this.newPatientTotal;
         this.newPatientTotalPrev = data.total_ta;
         this.newPatientGoals = data.goals;
         if (this.user_type == '4' && this.childid != '') {
@@ -2128,7 +2128,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else
           this.newpColors = this.doughnutChartColors;
-        if (this.newPatientTotalAverage >= this.newPatientTotalPrev)
+        if (this.newPatientTotal >= this.newPatientTotalPrev)
           this.newPatientTotalTooltip = 'up';
         this.newPatientsDataMax = Math.max(...this.newPatientChartData);
       }
@@ -2152,15 +2152,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if (data.data != null && data.data[0]) {
           this.newPatientValuePatients = data.data[0].new_patients;
           this.newPatientLabelPatients = data.data[0].provider_name;
-          this.newPatientTotalAverage = Math.round(data.total);
-          this.newPatientTotalAverage = data.total_average;
+          this.newPatientTotal = Math.round(data.total);
+          // this.newPatientTotalAverage = data.total_average;
           this.newPatientTotalPrev = Math.round(data.total_ta);
         } else {
           this.newPatientValuePatients = 0;
           this.newPatientLabelPatients = "";
           this.newPatientTotalPrev = 0;
-          this.newPatientTotalAverage = 0;
-          this.newPatientTotalAverage = data.total_average;
+          // this.newPatientTotalAverage = 0;
+          // this.newPatientTotalAverage = data.total_average;
         }
         //this.doughnutChartOptions.elements.center.text = this.newPatientValuePatients;
         this.maxnewPatientGoal = data.goals;
@@ -2240,7 +2240,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.hourlyRateChartData[0]['data'] = this.hourlyRateChartData1;
         this.hourlyRateChartLabels = this.hourlyRateChartLabels1;
-        this.hourlyRateChartAverage = Math.round(data.total_average);
+        this.hourlyRateChartAverage = Math.round(data.total);
         this.hourlyRateChartAveragePrev = Math.round(data.total_ta);
         this.hourlyRateChartGoal = data.goals;
         if (this.user_type == '4' && this.childid != '') {
@@ -2340,7 +2340,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         this.hourlyGoal = data.goals;
         this.hourlyRateChartAveragePrev = data.total_ta;
-        this.hourlyRateChartAverage = data.total_average;
+        this.hourlyRateChartAverage = data.total;
         if (this.hourlyValue >= this.hourlyRateChartAveragePrev)
           this.hourlyRateChartTooltip = 'up';
         if (this.hourlyValue > this.hourlyGoal)
