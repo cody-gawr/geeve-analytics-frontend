@@ -120,14 +120,14 @@ export class MorningHuddleService {
         );
     } 
 
-     getUnscheduledPatients( clinic_id, previousDays,  user_type, clinician ="", token = this._cookieService.get("token") ): Observable<any> {
+     /*getUnscheduledPatients( clinic_id, previousDays,  user_type, clinician ="", token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/MorningHuddle/mhUnschedPatPrev?clinic_id="+clinic_id+"&date="+previousDays+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
-    }
+    }*/
     
      getUnscheduledValues( clinic_id, previousDays,  user_type, clinician ="", token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 

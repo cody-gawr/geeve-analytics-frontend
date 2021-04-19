@@ -1,10 +1,8 @@
+<input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
 <div class="sa_dashboard_inner_content morning-huddle">
-
 <mat-tab-group [selectedIndex]="selectedTab">
-
   <!-- Dentist Performance Tab -->  
-  <mat-tab label="Dentist Performance">
-    <input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
+  <mat-tab label="Dentist Performance">    
       <div class="morning-huddle-date">
         <mat-form-field floatLabel="never" class="setPreviousDay">
           <mat-select placeholder="Morning Huddle - {{  subtractDays(0) | date:'MMM d, y':'timezone'}}" (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
@@ -203,7 +201,9 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="recall">
       <th mat-header-cell *matHeaderCellDef> Recall Rebook Rate </th>
-      <td mat-cell *matCellDef="let element"> <span [ngClass] = "(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}}% </span>
+      <td mat-cell *matCellDef="let element"> 
+        <span *ngIf="element.recall.rate == 'N/A'" [ngClass] = "(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}}  </span>
+        <span *ngIf="element.recall.rate != 'N/A'" [ngClass] = "(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}} % </span>
       <span class="goal custom_goal">Goal: {{ element.recall.goal}}%</span>
   </td>
     </ng-container>
@@ -354,7 +354,9 @@
                     <div class="production_description">
                       <h4>Appointments</h4>
                       <div class="patients-num">
-                        <span class="change_value">{{ schedulePatieltd }}</span>
+                       <span class="change_value" *ngIf="appointmentCards">{{ appointmentCards.length }}</span>
+                        <span class="change_value" *ngIf="!appointmentCards">0</span>
+                       <!--  <span class="change_value">{{ schedulePatieltd }}</span> -->
                         <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
                       </div>
                     </div>
@@ -480,7 +482,7 @@
       <div class="appointment" *ngIf="element.overdue_037 == 'Yes'">
           <span class="warning" title="037 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> OPG Overdue</span>
       </div>
-      <div class="appointment" *ngIf="element.noshows == 'Yes'"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> History of No Shows (Patient has >=3 FTA/UTA)</span></div>
+      <div class="appointment" *ngIf="element.no_shows == 'Yes'"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> History of No Shows</span></div>
     </td>
   </ng-container>
 
@@ -547,7 +549,9 @@
                   <div class="production_description">
                     <h4>Appointments</h4>
                     <div class="patients-num" >
-                      <span class="change_value">{{ todayPatients }}</span>
+                      <span class="change_value" *ngIf="remindersRecallsOverdue">{{ remindersRecallsOverdue.length }}</span>
+                      <span class="change_value" *ngIf="!remindersRecallsOverdue">0</span> 
+                      <!-- <span class="change_value">{{ todayPatients }}</span> -->
                     </div>
                   </div>
                 </div>
@@ -608,9 +612,9 @@
         </div>
       </div>
 
-<mat-card class="table-card">
+
         <div class="DentistListSecRow mh-table patient_data-table_responsive">
-<table mat-table  matSort [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8 mh-table">
+<table mat-table  matSort [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8">
   <!-- Name Column -->
   <ng-container matColumnDef="start">
     <th mat-header-cell *matHeaderCellDef>Time </th>
@@ -644,6 +648,12 @@
       <div class="appointment" *ngIf="element.code != ''">
           <span class="warning" title="022 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> {{ element.code }}</span>
       </div>
+       <div class="appointment" *ngIf="element.is_birthday == 'Yes'"> 
+        <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span>Birthday</span>
+      </div>
+      <div class="appointment" *ngIf="element.is_new_patient == 'Yes'"> 
+        <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> New Patient</span>
+      </div>
     </td>
   </ng-container>
  <ng-container matColumnDef="isDataAvailable">
@@ -658,7 +668,7 @@
   <mat-footer-row *matFooterRowDef="['isDataAvailable']" [ngClass]="(appointmentCards.data.length == 0)? 'show' : 'hide'"></mat-footer-row>
 </table>
 </div>  
-</mat-card>
+
 
   </mat-tab>
   <!-- Reminders Tab end -->
@@ -681,7 +691,8 @@
                   <div class="production_description">
                     <h4>Unscheduled Patients</h4>
                     <div class="patients-num">
-                      <span class="change_value">{{ unscheduledPatients }}</span>
+                     <span class="change_value" *ngIf="followupsUnscheduledPatients">{{ followupsUnscheduledPatients.length }}</span><span class="change_value" *ngIf="!followupsUnscheduledPatients">0</span>
+                     <!--  <span class="change_value">{{ unscheduledPatients }}</span> -->
                     </div>
                   </div>
                 </div>
@@ -732,7 +743,10 @@
                   <div class="production_description">
                     <h4>Post Op Calls</h4>
                     <div class="patients-num">
-                      <span class="change_value">{{ todayPostopCalls }}</span>
+                       <span class="change_value" *ngIf="followupPostOpCalls">{{followupPostOpCalls.length }}</span>
+                       <span class="change_value" *ngIf="!followupPostOpCalls">0</span>
+                       
+                      <!-- <span class="change_value">{{ todayPostopCalls }}</span> -->
                     </div>
                   </div>
                 </div>
@@ -767,7 +781,7 @@
     <!-- Unscheduled Treatment Column -->
     <ng-container matColumnDef="code">
       <th mat-header-cell *matHeaderCellDef> Unscheduled Treatment </th>
-      <td mat-cell *matCellDef="let element"> {{element.code}}</td>
+      <td mat-cell *matCellDef="let element"> {{ element.code }}</td>
     </ng-container>
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef>Status</th>
