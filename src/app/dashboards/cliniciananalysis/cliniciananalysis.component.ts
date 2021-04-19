@@ -2240,7 +2240,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.hourlyRateChartData[0]['data'] = this.hourlyRateChartData1;
         this.hourlyRateChartLabels = this.hourlyRateChartLabels1;
-        this.hourlyRateChartAverage = Math.round(data.total_average);
+        this.hourlyRateChartAverage = Math.round(data.total);
         this.hourlyRateChartAveragePrev = Math.round(data.total_ta);
         this.hourlyRateChartGoal = data.goals;
         if (this.user_type == '4' && this.childid != '') {
