@@ -354,8 +354,8 @@
                     <div class="production_description">
                       <h4>Appointments</h4>
                       <div class="patients-num">
-                       <span class="change_value" *ngIf="appointmentCards">{{ appointmentCards.length }}</span>
-                        <span class="change_value" *ngIf="!appointmentCards">0</span>
+                       <span class="change_value" *ngIf="appointmentCards.data.length > 0">{{ appointmentCards.data.length }}</span>
+                        <span class="change_value" *ngIf="appointmentCards.data.length <= 0">0</span>
                        <!--  <span class="change_value">{{ schedulePatieltd }}</span> -->
                         <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
                       </div>
