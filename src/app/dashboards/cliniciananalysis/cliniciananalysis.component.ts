@@ -2117,7 +2117,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.newPatientTotal = data.total;
         this.newPatientTotal$.next(data.total);
-        this.doughnutChartOptions.elements.center.text = this.newPatientTotal;
+        //this.doughnutChartOptions.elements.center.text = this.newPatientTotal;
         this.newPatientTotalPrev = data.total_ta;
         this.newPatientGoals = data.goals;
         if (this.user_type == '4' && this.childid != '') {
