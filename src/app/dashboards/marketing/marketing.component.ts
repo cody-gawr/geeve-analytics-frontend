@@ -67,7 +67,7 @@ export class MarketingComponent implements AfterViewInit {
   public filteredCountriesMultiple: any[];
   public selectedAccounts:any[] =[];
   public newPatientsReferral$ = new BehaviorSubject<number>(0);
-  revenueByReferralCount$ = new BehaviorSubject<number>(0);
+  public revenueByReferralCount$ = new BehaviorSubject<number>(0);
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
@@ -106,11 +106,17 @@ export class MarketingComponent implements AfterViewInit {
         return this.chartService.beforeDrawChart(productionCount)
       })
     );
-
-    this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
+    /*this.revenuePluginObservable$ = this.revenueByReferralCount$.pipe(
       takeUntil(this.destroyed$),
-      map((revenueCount) => {
-        return this.chartService.beforeDrawChart(revenueCount, true)
+      map((revenueCount) => {      
+        return this.chartService.beforeDrawChart(revenueCount);
+      })
+    );*/
+    this.revenuePluginObservable$ =  this.revenueByReferralCount$.pipe(
+      takeUntil(this.destroyed$),
+      map((revenueCount) => {      
+        this.pieChartOptions.elements.center.text = revenueCount;
+        return [];
       })
     );
     // end of plugin observable logic
@@ -432,7 +438,7 @@ this.preoceedureChartColors = [
     let millisecond = dateStr.substring(20)
 
     let validDate = date;
-    console.log(validDate)
+
     return validDate
   }
   loadDentist(newValue) {
@@ -538,12 +544,14 @@ this.preoceedureChartColors = [
     var clinic_id;
   this.marketingService.mkRevenueByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
           this.reffralAllData = [];
+          this.revenueReferralData = [];
+          this.revenueReferralLabels= [];         
        if(data.message == 'success'){
         this.reffralAllData = data;
           this.mkRevenueByReferralLoader = false;
           this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
           this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
-          // this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
+          //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
           if (this.revenueRefChart) {
             this.revenueRefChart.ngOnDestroy();
             this.revenueRefChart.chart = this.revenueRefChart.getChartBuilder(this.revenueRefChart.ctx);
