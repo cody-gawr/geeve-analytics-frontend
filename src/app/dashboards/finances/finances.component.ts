@@ -2162,6 +2162,7 @@ private finTotalDiscountsTrend() {
 
   private finTotalProductionTrend() {
     this.finTotalProductionTrendLoader = true;
+    this.finNetProfitTrendLoader = true;
   this.totalProductionChartTrendLabels1=[];
   this.totalProductionChartTrend1=[];
     var user_id;
@@ -2171,9 +2172,10 @@ private finTotalDiscountsTrend() {
       this.netProfitChartTrendLabels1=[];
       this.totalProductionChartTrendLabels1=[];
       this.netProfitPercentChartTrend1 = [];
+      
        if(data.message == 'success'){
           this.finTotalProductionTrendLoader = false;    
-      
+          this.finNetProfitTrendLoader = false;      
                 data.data.forEach(res => {  
                      this.totalProductionChartTrend1.push(Math.round(res.production));
                      this.netProfitPercentChartTrend1.push(Math.round(res.production));
@@ -2276,6 +2278,8 @@ private finTotalDiscountsTrend() {
     var user_id;
     var clinic_id;
     this.financesService.finProductionPerVisitTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+        this.productionVisitChartTrendLabels=[];
+        this.productionVisitChartTrendLabels1=[];
        if(data.message == 'success'){
           this.finProductionPerVisitTrendLoader = false;        
                 data.data.forEach(res => {  
