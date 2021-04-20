@@ -459,9 +459,7 @@ single = [
               var bodyLines = tooltip.body.map(getBody);
               var innerHtml = '<table><thead>';             
               innerHtml += '</thead><tbody>';
-              titleLines.forEach(function (title) {
-                innerHtml += '<tr><th style="text-align: left;">' + title + '</th></tr>';
-              });
+
               var total = 0;
               bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
@@ -470,7 +468,9 @@ single = [
                   total += parseInt(amount);
                 }                
               });
-              innerHtml += '<tr><td style="padding: 0px">&nbsp;</td></tr><tr><td style="padding: 0px">Total: $'+total+'</td></tr>';
+              titleLines.forEach(function (title) {
+                innerHtml += '<tr><th style="text-align: left;">' + title + ': $'+total+'</th></tr>';
+              });          
               bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
                   innerHtml += '<tr><td style="padding: 0px">'+body[0]+'</td></tr>';
