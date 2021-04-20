@@ -132,7 +132,7 @@ initiate_clinic() {
     $('#title').html('Morning Huddle');
     if(this.previousDays  == '')
     {
-      this.previousDays = this.datepipe.transform(new Date(), 'dd-MM-yyyy');
+      this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
     /***** Tab 1 ***/
     this.getDentistPerformance();
