@@ -1114,6 +1114,9 @@ if(this._cookieService.get("user_type") == '4'){
   public buildChartDentistLoader:any;
   //Items Predictor Analysis Single
   private buildChartDentist() {
+    if(!this.clinic_id){
+      return false;
+    }
     this.buildChartDentistLoader = true;
     var user_id;
     var clinic_id;
@@ -1289,6 +1292,9 @@ public rct_started_ta :any=0;
 
  //Predictor Ratio :All Dentist
   private buildChartPredictorDentist() {
+    if(!this.clinic_id){
+      return false;
+    }
     this.buildChartLoader = true;
     this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
       this.buildChartLoader = false;
@@ -1341,6 +1347,9 @@ public rct_started_ta :any=0;
 public buildChartProceedureLoader:any;
 
   private buildChartProceedure() {
+    if(!this.clinic_id){
+      return false;
+    }
     this.buildChartProceedureLoader =true;          
     this.clinic_id && this.clinicianproceeduresService.ClinicianProceedure( this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
     this.proceedureChartData1 =[];
