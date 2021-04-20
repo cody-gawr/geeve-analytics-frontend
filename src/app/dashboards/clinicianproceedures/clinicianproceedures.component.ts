@@ -737,8 +737,8 @@ this.preoceedureChartColors = [
   public proceedureDentistChartLabels: string[] = [];
   //data
   public stackedChartData: any[] = [
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Splints ' },
+    {data: [], label: 'Crowns & Onlays'},
+    {data: [], label: 'Splints' },
     {data: [], label: 'Root Canals' },
     {data: [], label: 'Perio Charts' },
     {data: [], label: 'Surgical Extractions' }  ];
@@ -1033,8 +1033,8 @@ if(this._cookieService.get("user_type") == '4'){
     var user_id;
     var clinic_id;
        this.stackedChartData = [
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Splints ' },
+    {data: [], label: 'Crowns & Onlays'},
+    {data: [], label: 'Splints' },
     {data: [], label: 'Root Canals' },
     {data: [], label: 'Perio Charts' },
     {data: [], label: 'Surgical Extractions' }  ];
