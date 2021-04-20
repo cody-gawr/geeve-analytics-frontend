@@ -2170,6 +2170,7 @@ private finTotalDiscountsTrend() {
       this.netProfitChartTrendLabels=[];
       this.netProfitChartTrendLabels1=[];
       this.totalProductionChartTrendLabels1=[];
+      this.netProfitPercentChartTrend1 = [];
        if(data.message == 'success'){
           this.finTotalProductionTrendLoader = false;    
       
@@ -2333,9 +2334,9 @@ private finTotalDiscountsTrend() {
                    this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
                   
                  });
-                 this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
+                 //this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
 
-                 this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
+                 //this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
