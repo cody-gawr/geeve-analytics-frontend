@@ -1334,11 +1334,11 @@ toggleChangeProcess(){
           this.treatmentPrebookChartTrendLabels1=[];
           this.treatmentPrebookChartTrend1=[];
                 data.data.forEach(res => {  
-                     this.treatmentPrebookChartTrend1.push(Math.round(res.percent));
+                     this.treatmentPrebookChartTrend1.push(Math.round(res.reappoint_rate));
                    if(this.trendValue == 'c')
-                   this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
+                   this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_year_monthdate, 'MMM y'));
                     else
-                   this.treatmentPrebookChartTrendLabels1.push(res.treat_date);
+                   this.treatmentPrebookChartTrendLabels1.push(res.year);
                   
                  });
                  this.treatmentPrebookChartTrend[0]['data'] = this.treatmentPrebookChartTrend1;

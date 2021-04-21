@@ -156,7 +156,7 @@ export class ClinicianAnalysisService {
         return this.http.get(this.apiUrl +"/ClinicianAnalysis/caRebookRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
-                    })
+                    }) 
         );
     } 
 

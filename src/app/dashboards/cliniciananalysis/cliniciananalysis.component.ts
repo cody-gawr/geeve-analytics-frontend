@@ -1420,10 +1420,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPreChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.percent > 0) {
-            if (res.provider != null) {
-              this.treatmentPreChartData1.push(Math.round(res.percent));
-              this.treatmentPreChartLabels1.push(res.provider);
+          if (res.reappoint_rate > 0) {
+            if (res.provider_name != null) {
+              this.treatmentPreChartData1.push(Math.round(res.reappoint_rate));
+              this.treatmentPreChartLabels1.push(res.provider_name);
               if (res.provider != 'Anonymous')
                 this.tpKey = i;
               i++;
@@ -1505,8 +1505,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (data.message == 'success') {
         this.treatmentPrebookDentistLoader = false;
         if (data.data.length > 0) {
-          this.treatmentPreValue = Math.round(data.data[0].percent);
-          this.treatmentPreLabel = data.data[0].provider;
+          this.treatmentPreValue = Math.round(data.data[0].reappoint_rate);
+          this.treatmentPreLabel = data.data[0].provider_name;
           this.treatmentPreGoal = data.goals;
         }
       }
@@ -2990,11 +2990,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPrebookChartTrendLabels1 = [];
         this.treatmentPrebookChartTrend1 = [];
         data.data.forEach(res => {
-          this.treatmentPrebookChartTrend1.push(Math.round(res.percent));
+          this.treatmentPrebookChartTrend1.push(Math.round(res.reappoint_rate));
           if (this.trendValue == 'c')
-            this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
+            this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else
-            this.treatmentPrebookChartTrendLabels1.push(res.treat_date);
+            this.treatmentPrebookChartTrendLabels1.push(res.year);
 
         });
         this.treatmentPrebookChartTrend[0]['data'] = this.treatmentPrebookChartTrend1;

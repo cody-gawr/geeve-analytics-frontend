@@ -146,7 +146,7 @@ export class FrontDeskService {
         .pipe(map((response: Response) => {
                         return response;
                     })
-        );
+        ); 
     }    
       frontdeskTreatmentPrebookRateTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
