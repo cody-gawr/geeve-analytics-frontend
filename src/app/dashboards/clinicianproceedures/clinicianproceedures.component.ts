@@ -102,7 +102,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
              this.childid = this._cookieService.get("dentistid");
              this.dentistid = this._cookieService.get("dentistid");
            }
-    this.getDentists();
+    this.getDentists();   
     this.filterDate(this.chartService.duration$.value);
    }
   }
@@ -448,7 +448,7 @@ this.preoceedureChartColors = [
     hoverBorderColor: '#1CA49F'
   }
 ];
-  this.filterDate(this.chartService.duration$.value);
+  //this.filterDate(this.chartService.duration$.value);
   }
 
   public date =new Date();
@@ -949,8 +949,9 @@ if(this._cookieService.get("user_type") == '4'){
     if(this._cookieService.get("dentist_toggle") === 'true')
       newValue = this.dentistid;
     else
-      newValue = this.dentistid;
+      newValue = '';
   }
+
   $('.ratioPredictorSingle .predictor_ratio .sa_tab_btn').removeClass('active');
   $('.pr1').addClass('active');
   $('.predictor_ratio_main').find('.sa_tab_btn').removeClass('active');
@@ -1672,12 +1673,13 @@ public currentText;
     else if (duration == 'm') {
       this.trendText= 'Last Month';
       this.currentText= 'This Month';
-   this.duration='m';
+      this.duration='m';
 
 
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+
       this.loadDentist(dentistVal);
     }
     else if (duration == 'lm') {
