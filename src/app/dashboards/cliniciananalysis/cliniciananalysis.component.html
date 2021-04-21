@@ -918,8 +918,7 @@
                     Rate</small>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment')">Treatment
-                    Prebook Rate</small>
+                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment')">Reappointment Rate</small>
                 </div>
               </div>
               <div style="height: 300px">
@@ -943,7 +942,7 @@
                 <div *ngIf="treatmentPreChartData1.length <= 0 && prebook=='treatment'" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no treatment prebookings in the selected period</p>
+                  <p class="chart-placeholder-text">You have no reappointment rate in the selected period</p>
                 </div>
               </div>
             </div>
@@ -1017,8 +1016,7 @@
                     Rate</small>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment')">Treatment
-                    Prebook Rate</small>
+                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment')">Reappointment Rate</small>
                 </div>
               </div>
               <div class="chart"
@@ -1067,7 +1065,7 @@
                 *ngIf="((showTrendChart == false && treatmentPreValue <= 0) || (showTrendChart == true && treatmentPrebookChartTrend1.length <= 0)) && prebook == 'treatment' && !treatmentPrebookDentistLoader">
                 <div class="sa_nodata_div">
                 </div>
-                <p class="chart-placeholder-text">You have no treatment prebookings in the selected period</p>
+                <p class="chart-placeholder-text">You have no reappointment rate in the selected period</p>
               </div>
             </div>
             <div class="card-footer">

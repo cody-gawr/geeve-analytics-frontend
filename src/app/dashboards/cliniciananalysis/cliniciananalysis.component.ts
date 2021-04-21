@@ -2830,10 +2830,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.clinic_id && this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.patientComplaintsTrendLabels1 = [];
       this.patientComplaintsTrendLabels = [];
-
+       this.patientComplaintsTrendLoader = false;
       this.patientComplaintsTrend1 = [];
       if (data.message == 'success') {
-        this.patientComplaintsTrendLoader = false;
+       
         if (data.data) {
           data.data.forEach(res => {
             if(res.num_complaints)
