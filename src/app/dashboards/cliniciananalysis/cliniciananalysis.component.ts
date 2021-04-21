@@ -2991,6 +2991,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPrebookChartTrend1 = [];
         data.data.forEach(res => {
           this.treatmentPrebookChartTrend1.push(Math.round(res.reappoint_rate));
+          
           if (this.trendValue == 'c')
             this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else
