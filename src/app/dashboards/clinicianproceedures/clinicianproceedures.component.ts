@@ -714,6 +714,17 @@ this.preoceedureChartColors = [
     { backgroundColor: '#ffb4b5' },
     { backgroundColor: '#fffcac' }
   ];
+
+  public ItemPredictorSpecialColors = [
+    { backgroundColor: '#6cd8ba' },
+    { backgroundColor: '#b0fffa' },
+    { backgroundColor: '#abb3ff' },
+    { backgroundColor: '#feefb8' },
+    { backgroundColor: '#ffb4b5' },
+    { backgroundColor: '#fffcac' },
+    { backgroundColor: '#6cd8ba' },
+    { backgroundColor: '#feefb8' },
+  ];
   public predictorRatioColors = [
     {
       backgroundColor: '#119682'
@@ -742,6 +753,16 @@ this.preoceedureChartColors = [
     {data: [], label: 'Root Canals' },
     {data: [], label: 'Perio Charts' },
     {data: [], label: 'Surgical Extractions' }  ];
+
+  public stackedChartDataItemSpecial: any[] = [
+      {data: [], label: 'Important Surgery'},
+        {data: [], label: 'Ortho Fix' },
+        {data: [], label: 'Ortho Align' },
+        {data: [], label: 'Sleep' },
+        {data: [], label: 'Perio Surgery' }, 
+        {data: [], label: 'Endo Retreat' },  
+        {data: [], label: 'Veneers Ind' } 
+     ];
 
   public stackedChartData1: any[] = [];
   public stackedChartData2: any[] = [];
@@ -945,6 +966,7 @@ public pieChartLabelsres: string[] = [
   public dentistid ='';
   //lOad individula dentist Chart
  loadDentist(newValue) {  
+
 if(this._cookieService.get("user_type") == '4'){
     if(this._cookieService.get("dentist_toggle") === 'true')
       newValue = this.dentistid;
@@ -974,11 +996,11 @@ if(this._cookieService.get("user_type") == '4'){
     (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';    
     if(this.childid == '') {
-    this.buildChart();
-    this.buildChartReferral();
-    this.buildChartPredictor();      
-    this.buildChartProceedure();
-
+      this.buildChart();
+      this.predictorAnalysisSpecial();
+      this.buildChartReferral();
+      this.buildChartPredictor();      
+      this.buildChartProceedure();
       $('.revenueProceedureSingle').hide();
       $('.revenueProceedure').show();
     }else {
@@ -1110,6 +1132,114 @@ if(this._cookieService.get("user_type") == '4'){
     }
     );
   }
+
+/****** Item Predictor Specail *********/
+  public ItemsPredictorAnalysisSpecialStatus:boolean = false;
+  public predictorAnalysis1 = [];
+  public predictorAnalysis2 = [];
+  public predictorAnalysis3 = [];
+  public predictorAnalysis4 = [];
+  public predictorAnalysis5 = [];
+  public predictorAnalysis6 = [];
+  public predictorAnalysis7 = []; 
+  public predictorAnalysisLables =[];
+  public predictorAnalysisLablesTemp =[];
+  public predictorAnalysisDataMax = 0;  
+  public predictorAnalysisChartColors;  
+
+  //Items Predictor Analysis special - All dentist Chart
+  private predictorAnalysisSpecial() {
+    this.ItemsPredictorAnalysisSpecialStatus =true;
+    this.stackedChartDataItemSpecial = [
+        {data: [], label: 'Important Surgery'},
+        {data: [], label: 'Ortho Fix' },
+        {data: [], label: 'Ortho Align' },
+        {data: [], label: 'Sleep' },
+        {data: [], label: 'Perio Surgery' }, 
+        {data: [], label: 'Endo Retreat' },  
+        {data: [], label: 'Veneers Ind' }  
+        ];
+  this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisSpecial(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
+        this.ItemsPredictorAnalysisSpecialStatus =false;
+        this.predictorAnalysis1 = [];
+        this.predictorAnalysis2 = [];
+        this.predictorAnalysis3 = [];
+        this.predictorAnalysis4 = [];
+        this.predictorAnalysis5 = [];
+        this.predictorAnalysis6 = [];
+        this.predictorAnalysis7 = [];
+
+        this.predictorAnalysisLables =[];
+        this.predictorAnalysisLablesTemp =[];
+        this.predictorAnalysisDataMax = 0;
+       if(data.message == 'success'){   
+        if(data && data.data && data.data.length <= 0) {
+        } else {
+          var i=0
+          var currentUser = 0;
+          data && data.data && data.data.length && data.data.forEach(res => {
+            if(res.provider_name != null){
+              if(parseInt(res.imp_surg) + parseInt(res.ortho_fix) + parseInt(res.sleep) + parseInt(res.perio) + parseInt(res.perio_surg) > 0){
+                this.predictorAnalysis1.push(res.imp_surg);
+                this.predictorAnalysis2.push(res.ortho_fix);
+                this.predictorAnalysis3.push(res.ortho_align);
+                this.predictorAnalysis4.push(res.sleep);
+                this.predictorAnalysis5.push(res.perio_surg);
+                this.predictorAnalysis6.push(res.endo_retreat);
+                this.predictorAnalysis7.push(res.veneers_ind);
+
+                this.predictorAnalysisLablesTemp.push(res.provider_name);
+                if(res.provider_name != 'Anonymous')
+                    currentUser = i;
+                    i++;
+                }
+              }
+          });
+          this.stackedChartDataItemSpecial[0]['data'] = this.stackedChartData1;
+          this.stackedChartDataItemSpecial[1]['data'] = this.stackedChartData2;
+          this.stackedChartDataItemSpecial[2]['data'] = this.stackedChartData3;
+          this.stackedChartDataItemSpecial[3]['data'] = this.stackedChartData4;
+          this.stackedChartDataItemSpecial[4]['data'] = this.stackedChartData5;
+          this.predictorAnalysisLables = this.stackedChartLabels1;
+          if(this.user_type == '4' && this.childid != '') {
+            this.predictorAnalysisChartColors = [
+              { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
+              { backgroundColor: ['#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7'] },
+              { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
+              { backgroundColor: ['#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD'] },
+              { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
+              { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
+              { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
+            ];
+            this.predictorAnalysisChartColors[0].backgroundColor[currentUser] = '#1CA49F';
+            this.predictorAnalysisChartColors[1].backgroundColor[currentUser] = '#1fd6b1';
+            this.predictorAnalysisChartColors[2].backgroundColor[currentUser] = '#09b391';
+            this.predictorAnalysisChartColors[3].backgroundColor[currentUser] = '#82EDD8';
+            this.predictorAnalysisChartColors[4].backgroundColor[currentUser] = 'rgba(22, 82, 141, 1)';
+            this.predictorAnalysisChartColors[5].backgroundColor[currentUser] = '#1CA49F';
+            this.predictorAnalysisChartColors[6].backgroundColor[currentUser] = '#09b391';
+          } else
+            this.predictorAnalysisChartColors = this.ItemPredictorSpecialColors;
+
+          this.predictorAnalysisDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data']);
+          //this.productionTotalAverage = this.productionTotal/this.barChartData1.length;
+        }
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+  }
+
+/****** Item Predictor Specail *********/
+
+
+
+
+
+
+
+
 
   public itemPredictedChartDataMax;
   public buildChartDentistLoader:any;
@@ -1648,7 +1778,9 @@ public currentText;
         dentistVal = $('.internal_dentist').val();
      else
         dentistVal = $('.external_dentist').val();
-      
+    if(dentistVal == ''){
+      dentistVal = 'all';
+    } 
     if(duration == 'w') {
       this.trendText= 'Last Week';
       this.currentText= 'This Week';

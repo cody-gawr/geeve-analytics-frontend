@@ -47,7 +47,7 @@
     </div>
 
     <!-- Column-->
-    <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+    <div fxFlex="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
       class="sa_flexbg items_predictor md_mrn">
       <mat-card class="itemsPredictor sa_no_tabs_area">
         <mat-card-content class="sa_matcard_content">
@@ -165,8 +165,8 @@
   </div>
 
 <!--  Item predictor Specialist -->
-  <!--
-    <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+  
+    <div fxFlex="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
       class="sa_flexbg items_predictor md_mrn">
       <mat-card class="itemsPredictor sa_no_tabs_area">
         <mat-card-content class="sa_matcard_content">
@@ -181,7 +181,7 @@
           </mat-card-title>
           <div class="card-body">
             <div fxLayout="row wrap" class="sa_tabs_main_sec sa_tabs_clinician_referrals hide-item"
-              *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false">
+              *ngIf="stackedChartDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false">
               <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
                 <small class="sa_tab_btn referall_btn Combined active"
                   (click)="changePieReferral('Combined')">All</small>
@@ -196,21 +196,21 @@
 
             <div class="Item_Predictor_clinicianproceedures">
               
-              <div style="height: 408px" *ngIf="stackedChartDataMax > 0">
-                <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
+              <div style="height: 408px" *ngIf="predictorAnalysisDataMax > 0">
+                <canvas #myCanvas baseChart [datasets]="stackedChartDataItemSpecial" [labels]="predictorAnalysisLables"
                   [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
-                  [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
+                  [legend]="true" [colors]="predictorAnalysisChartColors" (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
             </div>
-            <div *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false">
+            <div *ngIf="predictorAnalysisDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false">
               <div class="sa_nodata_div">
               </div>
-              <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio or Extractions in this period</p>
+              <p class="chart-placeholder-text">You have records for this period</p>
             </div>
           </div>
 
-          <div class="card-footer hide-item" *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false">
+          <div class="card-footer hide-item" *ngIf="predictorAnalysisDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false">
             <div *ngIf="toggleChecked == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails"
               fxLayoutAlign="center center">
               <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -283,12 +283,12 @@
       <div class="loader-text">Calculating...</div>
     </div>
   </div>
--->
+
 <!--  Item predictor Specialist -->
 
 
 
-  <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+  <div fxFlex="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
     class="sa_flexbg referral_clinicians last">
     <mat-card>
       <mat-card-content class="sa_matcard_content">

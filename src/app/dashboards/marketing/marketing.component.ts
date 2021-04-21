@@ -594,10 +594,10 @@ this.preoceedureChartColors = [
         var i=0;
         let totalRevenue = 0;
         this.reffralAllData.data.patients_refname[label].forEach(res => {
+          totalRevenue = totalRevenue + Math.round(res.invoice_amount);
+          this.revenueByReferralCount$.next(totalRevenue);
           if(i<10) {
-            totalRevenue = totalRevenue + Math.round(res.invoice_amount);
             this.revenueReferralData1.push(res.invoice_amount);
-            this.revenueByReferralCount$.next(totalRevenue);
             this.revenueReferralLabels1.push(res.referral_name);
             i++;
           }

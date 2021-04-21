@@ -1424,7 +1424,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             if (res.provider_name != null) {
               this.treatmentPreChartData1.push(Math.round(res.reappoint_rate));
               this.treatmentPreChartLabels1.push(res.provider_name);
-              if (res.provider != 'Anonymous')
+              if (res.provider_name != 'Anonymous')
                 this.tpKey = i;
               i++;
             }
@@ -2991,7 +2991,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPrebookChartTrend1 = [];
         data.data.forEach(res => {
           this.treatmentPrebookChartTrend1.push(Math.round(res.reappoint_rate));
-          
           if (this.trendValue == 'c')
             this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else

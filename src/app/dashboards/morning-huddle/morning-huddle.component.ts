@@ -343,7 +343,7 @@ initiate_clinic() {
   }
    getChairUtilisationRate(){
     this.morningHuddleService.getChairUtilisationRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == 'success') {
+      if(production.message == 'success') {
         this.todayChairUtilisationRate = production.data;
 
     
