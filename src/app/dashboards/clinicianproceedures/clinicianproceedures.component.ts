@@ -1165,7 +1165,7 @@ if(this._cookieService.get("user_type") == '4'){
   public predictorAnalysis5 = [];
   public predictorAnalysis6 = [];
   public predictorAnalysis7 = []; 
-  public predictorAnalysisLables =[];
+  public predictorAnalysisLablesSpe =[];
   public predictorAnalysisLablesTemp =[];
   public predictorAnalysisDataMax = 0;  
   public predictorAnalysisChartColors;  
