@@ -188,8 +188,8 @@ expenses_card custom_ngx_cw01">
                         </mat-menu> -->
                 <!-- </div> -->
               </mat-card-title>
-              <div class="px-3">
-                <div class=" sa_chart_summary_flip_main">
+              <div class="card-body">
+                <div class="sa_chart_summary_flip_main">
                   <div class=" sa_chart_summary_flip">
                     <div class="chart sa_chart_flip sa_flip">
 
@@ -203,13 +203,13 @@ expenses_card custom_ngx_cw01">
                         <div class="ngx-charts-fix" fxLayout="row" fxLayoutAlign="space-around center" fxFlex.lg="70"
                           fxFlex.xl="70" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70">
                           <ng-container *ngIf="xeroConnect;else NoExpensePlaceholder">
-                            <ngx-charts-pie-chart fxFlexAlign="center" *ngIf="pieChartLabels.length > 0"
+                            <ngx-charts-pie-chart fxFlexAlign="center" *ngIf="pieChartLabels && pieChartLabels.length > 0"
                               class="chart-container sa_chart_custom" [view]="[500, 320]" [scheme]="colorScheme"
                               [trimLabels]="true" [maxLabelLength]="15" [results]="single" [legend]="false"
                               [explodeSlices]="explodeSlices" [labels]="showLabels" [arcWidth]="arcWidth"
                               [doughnut]="doughnut" [gradient]="gradient" [tooltipDisabled]="tooltipDisabled"
                               [tooltipText]="pieTooltipText"> </ngx-charts-pie-chart>
-                            <div *ngIf="pieChartLabels.length <= 0 && categoryExpensesLoader == false"
+                            <div *ngIf="pieChartLabels && pieChartLabels.length <= 0 && categoryExpensesLoader == false"
                               class="no-data-placeholder">
                               <div class="sa_nodata_div">
                               </div>
@@ -238,7 +238,7 @@ expenses_card custom_ngx_cw01">
                         </div>
                       </div>
                     </div>
-                    <div class="sa_summary_flip sa_flip" *ngIf="pieChartLabels.length > 0">
+                    <div class="sa_summary_flip sa_flip" *ngIf="pieChartLabels && pieChartLabels.length > 0">
                       <div class="sa_list_show" *ngFor="let a of pieChartData; let i = index"> <span
                           class="sa_clr_box sa_clr{{i}}m"></span> <span class="frl">{{pieChartLabels[i]}}</span> <span
                           class="frv">{{a | number:'1.0-0'}} ({{pieChartDataPercentres[i]}}%)</span> </div>
@@ -342,7 +342,7 @@ expenses_card custom_ngx_cw01">
                 </div>  -->
               </mat-card-title>
               <div class="card-body chart-spacing">
-                <div class="chart w-100" *ngIf="totalDiscountChartData.length > 0 && showInternal == true">
+                <div class="chart w-100" *ngIf="totalDiscountChartData && totalDiscountChartData.length > 0 && showInternal == true">
                   <div style="height: 280px; width: 100%;">
                     <canvas class="totalDiscount" #myCanvas baseChart [data]="totalDiscountChartData"
                       [labels]="totalDiscountChartLabels" [chartType]="totalDiscountChartType"
@@ -352,7 +352,7 @@ expenses_card custom_ngx_cw01">
                       '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac','#D7F8EF','#FEEFB8']}]"> </canvas>
                   </div>
                 </div>
-                <div *ngIf="totalDiscountChartData.length <= 0 && finTotalDiscountsLoader == false"
+                <div *ngIf="totalDiscountChartData && totalDiscountChartData.length <= 0 && finTotalDiscountsLoader == false"
                   class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
@@ -602,14 +602,14 @@ expenses_card custom_ngx_cw01">
                   </div>
                 </div>
                 <div style="height: 280px">
-                  <canvas *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  > 0"
+                  <canvas *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  > 0 && finNetProfitTrendLoader == false"
                     class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrend"
                     [labels]="netProfitChartTrendLabels" [options]="labelBarOptions" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <!-- <img src='../assets/images/nodata02.png' *ngIf="" class="blankChart"> -->
                   <div
-                    *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  <=0 && finNetProfitTrendLoader == false"
+                    *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  <= 0 && finNetProfitTrendLoader == false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
@@ -661,11 +661,12 @@ expenses_card custom_ngx_cw01">
             <div class="loader-text">Calculating...</div>
           </div>
         </div>
-        <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+
+            <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Production Per Visit<div class="info-icon-container">
+              <mat-card-title class="text-center">Production Per Visit trend<div class="info-icon-container">
                   <img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
                 <!--<div class="sa_box_title_right_buttons"> 
@@ -699,6 +700,8 @@ expenses_card custom_ngx_cw01">
             <div class="loader-text">Calculating...</div>
           </div>
         </div>
+   
+
         </div>
     
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
@@ -716,17 +719,17 @@ expenses_card custom_ngx_cw01">
                 <div class=" sa_chart_summary_flip">
                   <div class="chart sa_chart_flip sa_flip">
                     <div style="height: 280px;">
-                      <canvas #myCanvas2 class="trendProductionPercentage" *ngIf="expensesChartTrendLabels.length  > 0"
+                      <canvas #myCanvas2 class="trendProductionPercentage" *ngIf="expensesChartTrendLabels && expensesChartTrendLabels.length  > 0"
                         baseChart [datasets]="expensesChartTrend" [labels]="expensesChartTrendLabels"
                         [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
                         (chartHover)="chartHovered($event)" 
-                        (chartClick)="chartClicked($event)"> </canvas>
+                        (chartClick)="chartClicked($event)"> </canvas> 
                         <!-- [colors]="preoceedureChartColors" -->
                       <!-- <div *ngIf="expensesChartTrendLabels.length  <=0 && finNetProfitPercentTrendLoader == false" class="sa_nodata_div">
                         <h4>No Data</h4>
                         <p></p>
                       </div> -->
-                      <div *ngIf="expensesChartTrendLabels.length  <=0 && finNetProfitPercentTrendLoader == false"
+                      <div *ngIf="expensesChartTrendLabels && expensesChartTrendLabels.length  <=0 && finNetProfitPercentTrendLoader == false"
                         class="no-data-placeholder">
                         <div class="sa_nodata_div">
                         </div>
@@ -743,7 +746,7 @@ expenses_card custom_ngx_cw01">
             <div class="loader-text">Calculating...</div>
           </div>
         </div>
-        <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+              <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
@@ -762,7 +765,7 @@ expenses_card custom_ngx_cw01">
               <div class="card-body">
                 <div style="height: 280px">
                   <canvas #myCanvas2 class="trendtotalDiscount"
-                    *ngIf="discountsChartTrend1.length  > 0 && finTotalDiscountsTrendLoader == false" baseChart
+                    *ngIf="discountsChartTrend1 && discountsChartTrend1.length  > 0 && finTotalDiscountsTrendLoader == false" baseChart
                     [datasets]="discountsChartTrend" [labels]="discountsChartTrendLabels" [options]="labelBarOptions"
                     [legend]="false" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
                     [colors]="stackedChartColorsBar" (chartClick)="chartClicked($event)"> </canvas>
@@ -770,7 +773,7 @@ expenses_card custom_ngx_cw01">
                   <h4>No Data</h4>
                   <p></p>
                 </div> -->
-                  <div *ngIf="discountsChartTrend1.length <=0 && finTotalDiscountsTrendLoader == false"
+                  <div *ngIf="discountsChartTrend1 && discountsChartTrend1.length <=0 && finTotalDiscountsTrendLoader == false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
@@ -787,6 +790,8 @@ expenses_card custom_ngx_cw01">
 
          
         </div>
+     
+       
       </div>
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
         <!-- <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio md_mrn"> 
@@ -835,12 +840,12 @@ expenses_card custom_ngx_cw01">
               </mat-card-title>
               <div class="card-body">
                 <div style="height: 280px">
-                  <canvas class="trendtotalProduction" *ngIf="totalProductionCollectionLabel.length  > 0" baseChart
+                  <canvas class="trendtotalProduction" *ngIf="totalProductionCollectionLabel && totalProductionCollectionLabel.length  > 0" baseChart
                     [datasets]="totalProductionCollection" [labels]="totalProductionCollectionLabel"
                     [options]="labelBarOptions" [legend]="true" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" [colors]="barChartColors" (chartClick)="chartClicked($event)">
                   </canvas>
-                  <div *ngIf="totalProductionCollectionLabel.length  <=0 && finCollectionTrendLoader == false"
+                  <div *ngIf="totalProductionCollectionLabel  && totalProductionCollectionLabel.length  <=0 && finCollectionTrendLoader == false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
@@ -877,7 +882,7 @@ expenses_card custom_ngx_cw01">
               <div class="card-body">
                 <div style="height: 280px">
                   <canvas #myCanvas2 class="trendProductionPercentage" baseChart
-                    *ngIf="productionChartTrendLabels.length  > 0 && finProductionByClinicianTrendLoader == false"
+                    *ngIf="productionChartTrendLabels && productionChartTrendLabels.length  > 0 && finProductionByClinicianTrendLoader == false"
                     [datasets]="productionChartTrend" [labels]="productionChartTrendLabels"
                     [options]="labelBarPercentOptionsStacked" [legend]="false" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" 
@@ -886,7 +891,7 @@ expenses_card custom_ngx_cw01">
                   <h4>No Data</h4>
                   <p></p>
                 </div> -->
-                  <div *ngIf="productionChartTrendLabels.length  <=0 && finProductionByClinicianTrendLoader == false"
+                  <div *ngIf="productionChartTrendLabels && productionChartTrendLabels.length  <=0 && finProductionByClinicianTrendLoader == false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>

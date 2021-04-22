@@ -36,13 +36,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     title: 'Open quick search',
     info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
   };
-  subtitle: string;
-   public clinic_id:any ={};
-   public dentistCount:any ={};
+    public procedureAnalysisVisibility:string = 'General';
+    public dentistMode:boolean = false;
+    subtitle: string;
+    public clinic_id:any ={};
+    public dentistCount:any ={};
     public clinicsData:any[] = [];
     public user_type;
     public childid='';
-  public trendText;
+    public trendText;
     private _routerSub = Subscription.EMPTY;
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -102,7 +104,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
              this.childid = this._cookieService.get("dentistid");
              this.dentistid = this._cookieService.get("dentistid");
            }
-    this.getDentists();
+    this.getDentists();   
     this.filterDate(this.chartService.duration$.value);
    }
   }
@@ -448,7 +450,7 @@ this.preoceedureChartColors = [
     hoverBorderColor: '#1CA49F'
   }
 ];
-  this.filterDate(this.chartService.duration$.value);
+  //this.filterDate(this.chartService.duration$.value);
   }
 
   public date =new Date();
@@ -714,6 +716,17 @@ this.preoceedureChartColors = [
     { backgroundColor: '#ffb4b5' },
     { backgroundColor: '#fffcac' }
   ];
+
+  public ItemPredictorSpecialColors = [
+    { backgroundColor: '#6cd8ba' },
+    { backgroundColor: '#b0fffa' },
+    { backgroundColor: '#abb3ff' },
+    { backgroundColor: '#feefb8' },
+    { backgroundColor: '#ffb4b5' },
+    { backgroundColor: '#fffcac' },
+    { backgroundColor: '#6cd8ba' },
+    { backgroundColor: '#feefb8' },
+  ];
   public predictorRatioColors = [
     {
       backgroundColor: '#119682'
@@ -737,11 +750,21 @@ this.preoceedureChartColors = [
   public proceedureDentistChartLabels: string[] = [];
   //data
   public stackedChartData: any[] = [
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Splints ' },
+    {data: [], label: 'Crowns & Onlays'},
+    {data: [], label: 'Splints' },
     {data: [], label: 'Root Canals' },
     {data: [], label: 'Perio Charts' },
     {data: [], label: 'Surgical Extractions' }  ];
+
+  public stackedChartDataItemSpecial: any[] = [
+      {data: [], label: 'Important Surgery'},
+        {data: [], label: 'Ortho Fix' },
+        {data: [], label: 'Ortho Align' },
+        {data: [], label: 'Sleep' },
+        {data: [], label: 'Perio Surgery' }, 
+        {data: [], label: 'Endo Retreat' },  
+        {data: [], label: 'Veneers Ind' } 
+     ];
 
   public stackedChartData1: any[] = [];
   public stackedChartData2: any[] = [];
@@ -904,6 +927,21 @@ public pieChartLabelsres: string[] = [
             pointShadowColor: 'rgba(0, 0, 0, 0.3)',
             backgroundOverlayMode: 'multiply'}
 
+    ];  
+public itemPredictedChartSpecailData: any[] = [
+    {data: [10,1,5], label: 'Items Predictor Specail Analysis ',  shadowOffsetX: 3,
+            shadowOffsetY: 2,
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.3)',
+            pointBevelWidth: 2,
+            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+            pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+            pointShadowOffsetX: 3,
+            pointShadowOffsetY: 3,
+            pointShadowBlur: 10,
+            pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+            backgroundOverlayMode: 'multiply'}
+
     ];
         
   public itemPredictedChartData1: any[] = [];  
@@ -945,12 +983,17 @@ public pieChartLabelsres: string[] = [
   public dentistid ='';
   //lOad individula dentist Chart
  loadDentist(newValue) {  
+
 if(this._cookieService.get("user_type") == '4'){
-    if(this._cookieService.get("dentist_toggle") === 'true')
-      newValue = this.dentistid;
+    if(this._cookieService.get("dentist_toggle") === 'true'){
+          newValue = this.dentistid;
+          $('.predicted_main').hide();
+          $('.predicted1').show();
+    }
     else
-      newValue = this.dentistid;
+      newValue = '';
   }
+
   $('.ratioPredictorSingle .predictor_ratio .sa_tab_btn').removeClass('active');
   $('.pr1').addClass('active');
   $('.predictor_ratio_main').find('.sa_tab_btn').removeClass('active');
@@ -968,16 +1011,20 @@ if(this._cookieService.get("user_type") == '4'){
     this.toggleChecked =false;
     }
     this.changePieReferral('Combined');
-     (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
-    (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
+    this.dentistMode = false;
+     //(<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
+    //(<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
     (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
-    (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';    
-    if(this.childid == '') {
-    this.buildChart();
-    this.buildChartReferral();
-    this.buildChartPredictor();      
-    this.buildChartProceedure();
+    (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';
 
+    //(<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'none';
+    //(<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'block';    
+    if(this.childid == '') {
+      this.buildChart();
+      this.predictorAnalysisSpecial();
+      this.buildChartReferral();
+      this.buildChartPredictor();      
+      this.buildChartProceedure();
       $('.revenueProceedureSingle').hide();
       $('.revenueProceedure').show();
     }else {
@@ -996,20 +1043,22 @@ if(this._cookieService.get("user_type") == '4'){
     $(".trend_arrow").hide();
     if(this.toggleChecked ) {
         this.toggleChangeProcess()
-      }
-      else {
-       
-    this.buildChartDentist();
-    if(!this.toggleChecked) {
-        (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'none'; }
-
-        this.buildChartPredictorDentist();
+      } else {
+        this.buildChartDentist();
+        this.procedureAnalysisSpecialDentist();
+        this.dentistMode = true;
+        if(!this.toggleChecked) {
+          /*(<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'block';
+          (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'none'*/; 
+        }
+        /*(<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'block';
+        (<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'none';   */
         (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
-        (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';
+        (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';        
+        this.buildChartPredictorDentist();
         this.buildChartProceedureDentist();
-         $('.revenueProceedureSingle').show();
-         $('.revenueProceedure').hide();
+        $('.revenueProceedureSingle').show();
+        $('.revenueProceedure').hide();
         this.buildChartReferralDentist();
         this.changeDentistPredictor('1');
       }
@@ -1033,8 +1082,8 @@ if(this._cookieService.get("user_type") == '4'){
     var user_id;
     var clinic_id;
        this.stackedChartData = [
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Splints ' },
+    {data: [], label: 'Crowns & Onlays'},
+    {data: [], label: 'Splints' },
     {data: [], label: 'Root Canals' },
     {data: [], label: 'Perio Charts' },
     {data: [], label: 'Surgical Extractions' }  ];
@@ -1110,10 +1159,124 @@ if(this._cookieService.get("user_type") == '4'){
     );
   }
 
+/****** Item Predictor Specail *********/
+  public ItemsPredictorAnalysisSpecialStatus:boolean = false;
+  public predictorAnalysis1 = [];
+  public predictorAnalysis2 = [];
+  public predictorAnalysis3 = [];
+  public predictorAnalysis4 = [];
+  public predictorAnalysis5 = [];
+  public predictorAnalysis6 = [];
+  public predictorAnalysis7 = []; 
+  public predictorAnalysisLablesSpe =[];
+  public predictorAnalysisLablesTemp =[];
+  public predictorAnalysisDataMax = 0;  
+  public predictorAnalysisChartColors;  
+
+  //Items Predictor Analysis special - All dentist Chart
+  private predictorAnalysisSpecial() {
+    this.ItemsPredictorAnalysisSpecialStatus =true;
+    this.stackedChartDataItemSpecial = [
+        {data: [], label: 'Important Surgery'},
+        {data: [], label: 'Ortho Fix' },
+        {data: [], label: 'Ortho Align' },
+        {data: [], label: 'Sleep' },
+        {data: [], label: 'Perio Surgery' }, 
+        {data: [], label: 'Endo Retreat' },  
+        {data: [], label: 'Veneers Ind' }  
+        ];
+  this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisSpecial(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
+        this.ItemsPredictorAnalysisSpecialStatus =false;
+        this.predictorAnalysis1 = [];
+        this.predictorAnalysis2 = [];
+        this.predictorAnalysis3 = [];
+        this.predictorAnalysis4 = [];
+        this.predictorAnalysis5 = [];
+        this.predictorAnalysis6 = [];
+        this.predictorAnalysis7 = [];
+        this.predictorAnalysisLablesSpe =[];
+        this.predictorAnalysisLablesTemp =[];
+        this.predictorAnalysisDataMax = 0;
+       if(data.message == 'success'){   
+        if(data && data.data && data.data.length <= 0) {
+        } else {
+          var i=0
+          var currentUser = 0;
+          data && data.data && data.data.length && data.data.forEach(res => {            
+            if(res.provider_name != null){
+              if(parseInt(res.imp_surg) + parseInt(res.ortho_fix) + parseInt(res.sleep) + parseInt(res.ortho_align) + parseInt(res.perio_surg) > 0){
+
+                this.predictorAnalysis1.push(res.imp_surg);
+                this.predictorAnalysis2.push(res.ortho_fix);
+                this.predictorAnalysis3.push(res.ortho_align);
+                this.predictorAnalysis4.push(res.sleep);
+                this.predictorAnalysis5.push(res.perio_surg);
+                this.predictorAnalysis6.push(res.endo_retreat);
+                this.predictorAnalysis7.push(res.veneers_ind);
+
+                this.predictorAnalysisLablesTemp.push(res.provider_name);
+                if(res.provider_name != 'Anonymous')
+                    currentUser = i;
+                    i++;
+                }
+              }
+          });
+          this.stackedChartDataItemSpecial[0]['data'] = this.predictorAnalysis1;
+          this.stackedChartDataItemSpecial[1]['data'] = this.predictorAnalysis2;
+          this.stackedChartDataItemSpecial[2]['data'] = this.predictorAnalysis3;
+          this.stackedChartDataItemSpecial[3]['data'] = this.predictorAnalysis4;
+          this.stackedChartDataItemSpecial[4]['data'] = this.predictorAnalysis5;
+          this.stackedChartDataItemSpecial[5]['data'] = this.predictorAnalysis6;
+          this.stackedChartDataItemSpecial[6]['data'] = this.predictorAnalysis7;
+
+          this.predictorAnalysisLablesSpe = this.predictorAnalysisLablesTemp;
+          if(this.user_type == '4' && this.childid != '') {
+            this.predictorAnalysisChartColors = [
+              { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
+              { backgroundColor: ['#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7'] },
+              { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
+              { backgroundColor: ['#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD'] },
+              { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
+              { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
+              { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
+            ];
+            this.predictorAnalysisChartColors[0].backgroundColor[currentUser] = '#1CA49F';
+            this.predictorAnalysisChartColors[1].backgroundColor[currentUser] = '#1fd6b1';
+            this.predictorAnalysisChartColors[2].backgroundColor[currentUser] = '#09b391';
+            this.predictorAnalysisChartColors[3].backgroundColor[currentUser] = '#82EDD8';
+            this.predictorAnalysisChartColors[4].backgroundColor[currentUser] = 'rgba(22, 82, 141, 1)';
+            this.predictorAnalysisChartColors[5].backgroundColor[currentUser] = '#1Cb410';
+            this.predictorAnalysisChartColors[6].backgroundColor[currentUser] = '#09c250';
+          } else
+            this.predictorAnalysisChartColors = this.ItemPredictorSpecialColors;
+
+          this.predictorAnalysisDataMax = Math.max(...this.stackedChartDataItemSpecial[0]['data'])+Math.max(...this.stackedChartDataItemSpecial[1]['data'])+Math.max(...this.stackedChartDataItemSpecial[2]['data'])+Math.max(...this.stackedChartDataItemSpecial[3]['data'])+Math.max(...this.stackedChartDataItemSpecial[4]['data'])+Math.max(...this.stackedChartDataItemSpecial[5]['data'])+Math.max(...this.stackedChartDataItemSpecial[6]['data']);
+          //this.productionTotalAverage = this.productionTotal/this.barChartData1.length;
+        }
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+    );
+  }
+
+/****** Item Predictor Specail *********/
+
+
+
+
+
+
+
+
+
   public itemPredictedChartDataMax;
   public buildChartDentistLoader:any;
   //Items Predictor Analysis Single
   private buildChartDentist() {
+    if(!this.clinic_id){
+      return false;
+    }
     this.buildChartDentistLoader = true;
     var user_id;
     var clinic_id;
@@ -1153,6 +1316,55 @@ if(this._cookieService.get("user_type") == '4'){
     }
     );
   }
+
+/********Procedure Special Dentist Hanney**********/
+  
+  public procedureSpecialDataMax;
+  public procedureSpecialDentistLoader:any;
+  public procedureSpecialTemp:any;
+  public procedureSpecialLabels:any;
+
+  private procedureAnalysisSpecialDentist() {
+    if(!this.clinic_id){
+      return false;
+    }
+    this.procedureSpecialDentistLoader = true;
+    this.clinicianproceeduresService.ItemsPredictorAnalysisSpecialistDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
+      this.procedureSpecialDentistLoader = false;
+      this.procedureSpecialDataMax = 0;
+      if(data.message == 'success' && data.data && data.data.length) {
+        this.procedureSpecialTemp = [];
+        this.procedureSpecialLabels=[];
+        var temp=[];
+        temp['Important Surgery'] = data.data[0].imp_surg;
+        temp['Ortho Fix'] = data.data[0].ortho_fix;
+        temp['Ortho Align'] = data.data[0].ortho_align;
+        temp['Sleep'] = data.data[0].sleep;
+        temp['Perio Surgery'] = data.data[0].perio_surg;
+        temp['Endo Retreat'] = data.data[0].endo_retreat;
+        temp['Veneers Ind'] = data.data[0].veneers_ind;
+        var tupleArray=[];
+        for (var key in temp) tupleArray.push([key, temp[key]]);
+        tupleArray.sort(function (a, b) { return b[1] - a[1] });
+        tupleArray.forEach((res,key) => {
+          this.procedureSpecialTemp.push(res[1]);
+          this.procedureSpecialLabels.push(res[0]);
+        });
+        this.itemPredictedChartSpecailData[0]['data'] = this.procedureSpecialTemp;
+        this.itemPredictedChartSpecailData[0]['label'] = data.data[0].provider;
+        this.procedureSpecialDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
+/********Procedure Special**********/
+
+
+
+
+
 
 public predictedChartD:any[] =[];
 public predictedChartL:any[] =[];
@@ -1289,6 +1501,9 @@ public rct_started_ta :any=0;
 
  //Predictor Ratio :All Dentist
   private buildChartPredictorDentist() {
+    if(!this.clinic_id){
+      return false;
+    }
     this.buildChartLoader = true;
     this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
       this.buildChartLoader = false;
@@ -1341,6 +1556,9 @@ public rct_started_ta :any=0;
 public buildChartProceedureLoader:any;
 
   private buildChartProceedure() {
+    if(!this.clinic_id){
+      return false;
+    }
     this.buildChartProceedureLoader =true;          
     this.clinic_id && this.clinicianproceeduresService.ClinicianProceedure( this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
     this.proceedureChartData1 =[];
@@ -1584,20 +1802,20 @@ public doughnutChartColors1;
     this.showCombined = false;
     $('.referral').hide();
     if(!this.toggleChecked){
-    if(chart == 'Internal') {
-      this.showInternal = true;
-    $('.referral1Tool').show();
+      if(chart == 'Internal') {
+        this.showInternal = true;
+      $('.referral1Tool').show();
 
+      }
+      else if(chart == 'External') {
+        this.showExternal = true;
+        $('.referral2Tool').show();
+      }
+      else if(chart == 'Combined') {
+        this.showCombined = true;
+        $('.referral3Tool').show();
+      }
     }
-    else if(chart == 'External') {
-      this.showExternal = true;
-      $('.referral2Tool').show();
-    }
-    else if(chart == 'Combined') {
-      this.showCombined = true;
-      $('.referral3Tool').show();
-    }
-  }
   else {
       if(chart == 'Internal') {
       this.showInternal = true;
@@ -1638,7 +1856,9 @@ public currentText;
         dentistVal = $('.internal_dentist').val();
      else
         dentistVal = $('.external_dentist').val();
-      
+    if(dentistVal == ''){
+      dentistVal = 'all';
+    } 
     if(duration == 'w') {
       this.trendText= 'Last Week';
       this.currentText= 'This Week';
@@ -1663,12 +1883,13 @@ public currentText;
     else if (duration == 'm') {
       this.trendText= 'Last Month';
       this.currentText= 'This Month';
-   this.duration='m';
+      this.duration='m';
 
 
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+
       this.loadDentist(dentistVal);
     }
     else if (duration == 'lm') {
@@ -1912,8 +2133,10 @@ toggleChangeProcess(){
         (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'none';
   //  this.referralTrendSingle();
     this.predictorRatioTrendSingle();
-    (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
+    //(<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
+    //(<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'none';
+   // (<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'block';
    }
 }
   predictorTrendSingle(){
@@ -2163,59 +2386,36 @@ toggleChangeProcess(){
    this.clinic_id && this.clinicianproceeduresService.CpPredictorRatioTrend(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
       this.ratioChartLabels1=[];
        if(data.message == 'success' && data.data){
-         if(data.data.length <=0) {
-                }else {
-                data.data.forEach(res => {
-                  var crowns = res.val.crowns;
-                     var large_fillings = res.val.large_fillings;
-                     if(res.val.crowns>1) {
-                      crowns = Math.round(res.val.crowns/res.val.crowns);
-                      large_fillings = Math.round(res.val.large_fillings/res.val.crowns);
-                     }
-                 this.ratioChartData1[0]['data'].push(crowns);
-                 this.ratioChartData1[1]['data'].push(large_fillings);
+          if(data.data.length <=0) {
+          } else {
+            data.data.forEach(res => {              
+              this.ratioChartData1[0]['data'].push(res.val.crown[0]);
+              this.ratioChartData1[1]['data'].push(res.val.crown[1]);
+              this.ratioChartData2[0]['data'].push(res.val.extraction[0]);
+              this.ratioChartData2[1]['data'].push(res.val.extraction[1]);
+              this.ratioChartData3[0]['data'].push(res.val.completed[0]);
+              this.ratioChartData3[1]['data'].push(res.val.completed[1]);
+              if(this.trendValue == 'c')
+                this.ratioChartLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+              else
+                this.ratioChartLabels1.push(res.duration);
+            });                 
+             if(this.ratioChartData1[0]['data'].every((item) => item == 0 )) this.ratioChartData1[0]['data'] = [];
+             if(this.ratioChartData1[1]['data'].every((item) => item == 0 )) this.ratioChartData1[1]['data'] = [];
+             if(this.ratioChartData2[0]['data'].every((item) => item == 0 )) this.ratioChartData2[0]['data'] = [];
+             if(this.ratioChartData2[1]['data'].every((item) => item == 0 )) this.ratioChartData2[1]['data'] = [];
+             if(this.ratioChartData3[0]['data'].every((item) => item == 0 )) this.ratioChartData3[0]['data'] = [];
+             if(this.ratioChartData3[1]['data'].every((item) => item == 0 )) this.ratioChartData3[1]['data'] = [];
 
-                 var extractions = res.val.extractions;
-                     var root_canals = res.val.root_canals;
-                     if(res.val.root_canals>1) {
-                      root_canals = Math.round(res.val.root_canals/res.val.root_canals);
-                      extractions = Math.round(res.val.extractions/res.val.root_canals);
-                     }
-                 this.ratioChartData2[0]['data'].push(root_canals);
-                 this.ratioChartData2[1]['data'].push(extractions);
-               
-               var rct_completed = res.val.rct_completed;
-                     var rct_started = res.val.rct_started;
-                     if(res.val.rct_started>1) {
-                      rct_started = Math.round(res.val.rct_started/res.val.rct_started);
-                      rct_completed = Math.round(res.val.rct_completed/res.val.rct_started);
-                     }
-                 this.ratioChartData3[0]['data'].push(rct_started);
-                 this.ratioChartData3[1]['data'].push(rct_completed);
-
-
-                   if(this.trendValue == 'c')
-                   this.ratioChartLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-                    else
-                   this.ratioChartLabels1.push(res.duration);
-                 });
-                 if(this.ratioChartData1[0]['data'].every((item) => item == 0 )) this.ratioChartData1[0]['data'] = [];
-                 if(this.ratioChartData1[1]['data'].every((item) => item == 0 )) this.ratioChartData1[1]['data'] = [];
-                 if(this.ratioChartData2[0]['data'].every((item) => item == 0 )) this.ratioChartData2[0]['data'] = [];
-                 if(this.ratioChartData2[1]['data'].every((item) => item == 0 )) this.ratioChartData2[1]['data'] = [];
-                 if(this.ratioChartData3[0]['data'].every((item) => item == 0 )) this.ratioChartData3[0]['data'] = [];
-                 if(this.ratioChartData3[1]['data'].every((item) => item == 0 )) this.ratioChartData3[1]['data'] = [];
-
-
-                if(this.ratio ==1)
-               this.ratioChartData = this.ratioChartData1;
-               else if(this.ratio ==2)
-               this.ratioChartData = this.ratioChartData2;
-               else if(this.ratio ==3)             
-               this.ratioChartData = this.ratioChartData3;
-               this.ratioChartLabels = this.ratioChartLabels1;
-               this.ratioChartDataMax = Math.max(...this.ratioChartData[0]['data']);
-             }
+            if(this.ratio ==1)
+              this.ratioChartData = this.ratioChartData1;
+            else if(this.ratio ==2)
+              this.ratioChartData = this.ratioChartData2;
+            else if(this.ratio ==3)             
+             this.ratioChartData = this.ratioChartData3;
+             this.ratioChartLabels = this.ratioChartLabels1;
+             this.ratioChartDataMax = Math.max(...this.ratioChartData[0]['data']);
+          }
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -2224,5 +2424,12 @@ toggleChangeProcess(){
     );
   }
 
-  }
+    //Function to update the tabs for Procedure Analysis Tabs
+    //Added by Hanney Shrma on 22-04-2021
+    changeProcedureAnalysis(typeVisible)
+    {
+      this.procedureAnalysisVisibility = typeVisible;
+      return true;
+    } 
+}
 

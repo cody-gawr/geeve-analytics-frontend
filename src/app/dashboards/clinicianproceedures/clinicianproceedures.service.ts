@@ -35,6 +35,15 @@ export class ClinicianProceeduresService {
                     })
         );
     }
+    // Items Predictor Analysis 
+    ItemsPredictorAnalysisSpecial(clinic_id='1', startDate = '', endDate = '', user_type='',clinician='', token = this._cookieService.get("token")  ): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 
     // Items Predictor Analysis  
     ItemsPredictorAnalysisTrendDentist(dentist_id, clinic_id='1', mode ='', token = this._cookieService.get("token")  ): Observable<any> {
@@ -50,6 +59,15 @@ export class ClinicianProceeduresService {
     ItemsPredictorAnalysisDentist(dentist_id, clinic_id='1', startDate = '', endDate = '', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    // Items Predictor Analysis  
+    ItemsPredictorAnalysisSpecialistDentist(dentist_id, clinic_id='1', startDate = '', endDate = '', token = this._cookieService.get("token")  ): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

@@ -1,11 +1,12 @@
 <div fxLayout="row wrap" class="header_filters" >   
+    
     <div fxLayout="row" fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
-        <div fxFlexAlign="center" *ngIf="user_type_dentist==='4' && showCompare">
+        <!-- <div fxFlexAlign="center" *ngIf="user_type_dentist==='4' && showCompare">
             <button 
                 class="sa_tab_btn compare-button"
                 [ngClass]="{'active': isToggleDentistChart}"
                 (click)="toggler()"> Compare </button>
-        </div>
+        </div> -->
         <div class="header_first_select">
         <div class="vertical_center_header_content">
             <div class="sa_mat_select_topbar">
@@ -20,6 +21,14 @@
             </div>
         </div>
     </div>
+    </div>
+    <div fxLayout="row" fxFlex="30" fxFlex.md="30" fxFlex.sm="30" fxFlex.xs="50" *ngIf="user_type_dentist==='4' && showCompare">
+        <div fxFlexAlign="center" *ngIf="user_type_dentist==='4' && showCompare">
+            <button 
+                class="sa_tab_btn compare-button"
+                [ngClass]="{'active': isToggleDentistChart}"
+                (click)="toggler()"> Compare </button>
+        </div>
     </div>
     <div fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100" *ngIf="user_type_dentist != '4' && showDropDown">
         <div class="dentist_dropdown">

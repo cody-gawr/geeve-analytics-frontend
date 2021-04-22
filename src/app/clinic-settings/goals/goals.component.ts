@@ -132,7 +132,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             postfix: '%'
           },
           {
-            label: 'treatment prebook rate',
+            label: 'reappointment rate',
             name: 'rebookrate',
             postfix: '%'
           },
@@ -204,7 +204,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             postfix: '%'
           },
           {
-            label: 'Treatment prebook rate (%) value',
+            label: 'Reappointment Rate (%) value',
             name: 'treatmentprebook',
             postfix: '%'
           },

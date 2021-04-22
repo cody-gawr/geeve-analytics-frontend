@@ -61,7 +61,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private _routerSub = Subscription.EMPTY;
   newPatientPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
-  newPatientTotalAverage$ = new BehaviorSubject<number>(0);
+  newPatientTotal$ = new BehaviorSubject<number>(0);
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -127,7 +127,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   //initialize component
   ngAfterViewInit() {
-    this.newPatientPluginObservable$ = this.newPatientTotalAverage$.pipe(
+    this.newPatientPluginObservable$ = this.newPatientTotal$.pipe(
       takeUntil(this.destroyed$),
       map((count) => {
         return this.chartService.beforeDrawChart(count)
@@ -1420,11 +1420,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPreChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.percent > 0) {
-            if (res.provider != null) {
-              this.treatmentPreChartData1.push(Math.round(res.percent));
-              this.treatmentPreChartLabels1.push(res.provider);
-              if (res.provider != 'Anonymous')
+          if (res.reappoint_rate > 0) {
+            if (res.provider_name != null) {
+              this.treatmentPreChartData1.push(Math.round(res.reappoint_rate));
+              this.treatmentPreChartLabels1.push(res.provider_name);
+              if (res.provider_name != 'Anonymous')
                 this.tpKey = i;
               i++;
             }
@@ -1505,8 +1505,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (data.message == 'success') {
         this.treatmentPrebookDentistLoader = false;
         if (data.data.length > 0) {
-          this.treatmentPreValue = Math.round(data.data[0].percent);
-          this.treatmentPreLabel = data.data[0].provider;
+          this.treatmentPreValue = Math.round(data.data[0].reappoint_rate);
+          this.treatmentPreLabel = data.data[0].provider_name;
           this.treatmentPreGoal = data.goals;
         }
       }
@@ -2115,9 +2115,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.newPatientChartData = this.newPatientChartData1;
         this.newPatientChartLabels = this.newPatientChartLabels1;
 
-        this.newPatientTotalAverage = data.total;
-        this.newPatientTotalAverage$.next(data.total);
-        // this.doughnutChartOptions.elements.center.text = this.newPatientTotalAverage;
+        this.newPatientTotal = data.total;
+        this.newPatientTotal$.next(data.total);
+        //this.doughnutChartOptions.elements.center.text = this.newPatientTotal;
         this.newPatientTotalPrev = data.total_ta;
         this.newPatientGoals = data.goals;
         if (this.user_type == '4' && this.childid != '') {
@@ -2128,7 +2128,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else
           this.newpColors = this.doughnutChartColors;
-        if (this.newPatientTotalAverage >= this.newPatientTotalPrev)
+        if (this.newPatientTotal >= this.newPatientTotalPrev)
           this.newPatientTotalTooltip = 'up';
         this.newPatientsDataMax = Math.max(...this.newPatientChartData);
       }
@@ -2152,15 +2152,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if (data.data != null && data.data[0]) {
           this.newPatientValuePatients = data.data[0].new_patients;
           this.newPatientLabelPatients = data.data[0].provider_name;
-          this.newPatientTotalAverage = Math.round(data.total);
-          this.newPatientTotalAverage = data.total_average;
+          this.newPatientTotal = Math.round(data.total);
+          // this.newPatientTotalAverage = data.total_average;
           this.newPatientTotalPrev = Math.round(data.total_ta);
         } else {
           this.newPatientValuePatients = 0;
           this.newPatientLabelPatients = "";
           this.newPatientTotalPrev = 0;
-          this.newPatientTotalAverage = 0;
-          this.newPatientTotalAverage = data.total_average;
+          // this.newPatientTotalAverage = 0;
+          // this.newPatientTotalAverage = data.total_average;
         }
         //this.doughnutChartOptions.elements.center.text = this.newPatientValuePatients;
         this.maxnewPatientGoal = data.goals;
@@ -2240,7 +2240,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         this.hourlyRateChartData[0]['data'] = this.hourlyRateChartData1;
         this.hourlyRateChartLabels = this.hourlyRateChartLabels1;
-        this.hourlyRateChartAverage = Math.round(data.total_average);
+        this.hourlyRateChartAverage = Math.round(data.total);
         this.hourlyRateChartAveragePrev = Math.round(data.total_ta);
         this.hourlyRateChartGoal = data.goals;
         if (this.user_type == '4' && this.childid != '') {
@@ -2340,7 +2340,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         this.hourlyGoal = data.goals;
         this.hourlyRateChartAveragePrev = data.total_ta;
-        this.hourlyRateChartAverage = data.total_average;
+        this.hourlyRateChartAverage = data.total;
         if (this.hourlyValue >= this.hourlyRateChartAveragePrev)
           this.hourlyRateChartTooltip = 'up';
         if (this.hourlyValue > this.hourlyGoal)
@@ -2830,10 +2830,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.clinic_id && this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.patientComplaintsTrendLabels1 = [];
       this.patientComplaintsTrendLabels = [];
-
+       this.patientComplaintsTrendLoader = false;
       this.patientComplaintsTrend1 = [];
       if (data.message == 'success') {
-        this.patientComplaintsTrendLoader = false;
+       
         if (data.data) {
           data.data.forEach(res => {
             if(res.num_complaints)
@@ -2990,11 +2990,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPrebookChartTrendLabels1 = [];
         this.treatmentPrebookChartTrend1 = [];
         data.data.forEach(res => {
-          this.treatmentPrebookChartTrend1.push(Math.round(res.percent));
+          this.treatmentPrebookChartTrend1.push(Math.round(res.reappoint_rate));
           if (this.trendValue == 'c')
-            this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.treat_date, 'MMM y'));
+            this.treatmentPrebookChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
           else
-            this.treatmentPrebookChartTrendLabels1.push(res.treat_date);
+            this.treatmentPrebookChartTrendLabels1.push(res.year);
 
         });
         this.treatmentPrebookChartTrend[0]['data'] = this.treatmentPrebookChartTrend1;

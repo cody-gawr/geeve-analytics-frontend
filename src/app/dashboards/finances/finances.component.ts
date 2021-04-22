@@ -459,10 +459,19 @@ single = [
               var bodyLines = tooltip.body.map(getBody);
               var innerHtml = '<table><thead>';             
               innerHtml += '</thead><tbody>';
-              titleLines.forEach(function (title) {
-                innerHtml += '<tr><th style="text-align: left;">' + title + '</th></tr>';
+
+              var total = 0;
+              bodyLines.forEach(function (body, i) {
+                if(!body[0].includes("$0")){
+                  var temp = body[0].split('$');
+                  var amount = temp[1].replace(',','');
+                  total += parseInt(amount);
+                }                
               });
-                 bodyLines.forEach(function (body, i) {
+              titleLines.forEach(function (title) {
+                innerHtml += '<tr><th style="text-align: left;">' + title + ': $'+total+'</th></tr>';
+              });          
+              bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
                   innerHtml += '<tr><td style="padding: 0px">'+body[0]+'</td></tr>';
                   }                
@@ -2162,6 +2171,7 @@ private finTotalDiscountsTrend() {
 
   private finTotalProductionTrend() {
     this.finTotalProductionTrendLoader = true;
+    this.finNetProfitTrendLoader = true;
   this.totalProductionChartTrendLabels1=[];
   this.totalProductionChartTrend1=[];
     var user_id;
@@ -2170,9 +2180,11 @@ private finTotalDiscountsTrend() {
       this.netProfitChartTrendLabels=[];
       this.netProfitChartTrendLabels1=[];
       this.totalProductionChartTrendLabels1=[];
+      this.netProfitPercentChartTrend1 = [];
+      
        if(data.message == 'success'){
           this.finTotalProductionTrendLoader = false;    
-      
+          this.finNetProfitTrendLoader = false;      
                 data.data.forEach(res => {  
                      this.totalProductionChartTrend1.push(Math.round(res.production));
                      this.netProfitPercentChartTrend1.push(Math.round(res.production));
@@ -2275,6 +2287,8 @@ private finTotalDiscountsTrend() {
     var user_id;
     var clinic_id;
     this.financesService.finProductionPerVisitTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+        this.productionVisitChartTrendLabels=[];
+        this.productionVisitChartTrendLabels1=[];
        if(data.message == 'success'){
           this.finProductionPerVisitTrendLoader = false;        
                 data.data.forEach(res => {  
@@ -2333,9 +2347,9 @@ private finTotalDiscountsTrend() {
                    this.netProfitChartTrendLabels1.push(this.datePipe.transform(res.duration, 'y'));
                   
                  });
-                 this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
+                 //this.netProfitChartTrend[0]['data'] = this.netProfitChartTrend1;
 
-                 this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
+                 //this.netProfitChartTrendLabels =this.netProfitChartTrendLabels1; 
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

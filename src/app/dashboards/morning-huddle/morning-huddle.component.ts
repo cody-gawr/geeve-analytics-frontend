@@ -48,7 +48,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public production:any = '';
     public recallRate:any = '';
     public treatmentRate:any = '';
-    public previousDays:any;
+    public previousDays:any = '';
 
 
     public schedulePatieltd:any = 0;
@@ -129,15 +129,18 @@ initiate_clinic() {
    if(val != undefined && val !='all') {
       this.clinic_id = val;
       
-     $('#title').html('Morning Huddle');
-    this.previousDays = this.datepipe.transform(new Date(), 'dd-MM-yyyy');
+    $('#title').html('Morning Huddle');
+    if(this.previousDays  == '')
+    {
+      this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
+    }
     /***** Tab 1 ***/
     this.getDentistPerformance();
     this.getRecallRate();
     this.getTreatmentRate();
     this.getDentistList();
     /***** Tab 1 ***/    
-    this.getSchedulePatients(null);
+    //this.getSchedulePatients(null);
     this.getScheduleNewPatients(null);
     this.getScheduleHours(null);
     this.getUnscheduleHours(null);
@@ -149,14 +152,14 @@ initiate_clinic() {
     /***** Tab 3 ***/
 
     this.getReAppointment();
-    this.getUnscheduledPatients();
+    //this.getUnscheduledPatients();
     this.getUnscheduledValues();
-    this.getTodayPatients();
+    //this.getTodayPatients();
     this.getTodayUnscheduledHours();
     this.getChairUtilisationRate();
     this.getTodayUnscheduledBal();
     this.getNoShow();
-    this.getTodayPostopCalls();
+    //this.getTodayPostopCalls();
     /***** Tab 3 ***/
     
     /***** Tab 4 ***/
@@ -191,7 +194,7 @@ initiate_clinic() {
     if(this.currentDentist == 0){
         this.currentDentist = null;
     }
-    this.getSchedulePatients(this.currentDentist);
+    //this.getSchedulePatients(this.currentDentist);
     this.getScheduleNewPatients(this.currentDentist);
     this.getScheduleHours(this.currentDentist);
     this.getUnscheduleHours(this.currentDentist);
@@ -200,13 +203,14 @@ initiate_clinic() {
 
     /*******Tab 3 *******/
     this.getReAppointment();
-    this.getUnscheduledPatients();
+    //this.getUnscheduledPatients();
     this.getUnscheduledValues();
-    this.getTodayPatients();
+    //this.getTodayPatients();
+    this.getTodayUnscheduledHours();
     this.getChairUtilisationRate();
     this.getTodayUnscheduledBal();
     this.getNoShow();
-    this.getTodayPostopCalls();
+    //this.getTodayPostopCalls();
     /*******Tab 3 *******/
     /*******Tab 4 *******/
      this.getReminders();
@@ -234,7 +238,7 @@ initiate_clinic() {
     }
     */
     this.currentDentist = event;
-    this.getSchedulePatients(this.currentDentist);
+    //this.getSchedulePatients(this.currentDentist);
     this.getScheduleNewPatients(this.currentDentist);
     this.getScheduleHours(this.currentDentist);
     this.getUnscheduleHours(this.currentDentist);
@@ -304,13 +308,13 @@ initiate_clinic() {
     }); 
   } 
 
-  getUnscheduledPatients(){
+  /*getUnscheduledPatients(){
     this.morningHuddleService.getUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.unscheduledPatients = production.data;
       }
     }); 
-  }
+  }*/
 
   getUnscheduledValues(){
     this.morningHuddleService.getUnscheduledValues( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
@@ -320,28 +324,27 @@ initiate_clinic() {
     }); 
   }
 
-   getTodayPatients(){
+   /*getTodayPatients(){
     this.morningHuddleService.getTodayPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.todayPatients = production.data.patient;
         this.todayPatientsDate = production.data.date;
       }
     }); 
-  }
+  }*/
 
    getTodayUnscheduledHours(){
     this.morningHuddleService.getTodayUnscheduledHours( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
-        this.todayUnscheduledHours = production.data;
-
-    
+        this.todayUnscheduledHours = production.data.hour;
+        this.todayPatientsDate = production.data.date;    
       }
     }); 
   }
    getChairUtilisationRate(){
     this.morningHuddleService.getChairUtilisationRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
-        this.todayChairUtilisationRate = production.data;
+      if(production.message == 'success') {
+        this.todayChairUtilisationRate =  Math.round(production.data);
 
     
       }
@@ -364,30 +367,31 @@ initiate_clinic() {
     }); 
   }
   
-   getTodayPostopCalls(){
+/*   getTodayPostopCalls(){
     this.morningHuddleService.getTodayPostopCalls( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.todayPostopCalls = production.data;
       }
     }); 
-  }
+  }*/
 
 
   /***** Tab 3 ***/  
   
 /***** Tab 2 ***/
-   getSchedulePatients(dentist){
+/*   getSchedulePatients(dentist){
     this.morningHuddleService.getPatients( this.clinic_id,dentist,this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.schedulePatieltd = production.data.patient;
-        this.schedulePatielDate = production.data.date;
+        
       }
     }); 
-  }
+  }*/
    getScheduleNewPatients(dentist){
     this.morningHuddleService.getNewPatients( this.clinic_id, dentist,this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
-        this.scheduleNewPatieltd = production.data;
+        this.scheduleNewPatieltd = production.data.patient;
+        this.schedulePatielDate = production.data.date;
       }
     }); 
   }
@@ -508,7 +512,6 @@ initiate_clinic() {
     // console.log(`Selected date: ${selectedDate}`)
     return selectedDate;
   }
-
 }
 
 
