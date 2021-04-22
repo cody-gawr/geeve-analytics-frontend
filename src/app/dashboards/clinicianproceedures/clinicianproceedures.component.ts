@@ -985,8 +985,11 @@ public itemPredictedChartSpecailData: any[] = [
  loadDentist(newValue) {  
 
 if(this._cookieService.get("user_type") == '4'){
-    if(this._cookieService.get("dentist_toggle") === 'true')
-      newValue = this.dentistid;
+    if(this._cookieService.get("dentist_toggle") === 'true'){
+          newValue = this.dentistid;
+          $('.predicted_main').hide();
+          $('.predicted1').show();
+    }
     else
       newValue = '';
   }
@@ -1799,20 +1802,20 @@ public doughnutChartColors1;
     this.showCombined = false;
     $('.referral').hide();
     if(!this.toggleChecked){
-    if(chart == 'Internal') {
-      this.showInternal = true;
-    $('.referral1Tool').show();
+      if(chart == 'Internal') {
+        this.showInternal = true;
+      $('.referral1Tool').show();
 
+      }
+      else if(chart == 'External') {
+        this.showExternal = true;
+        $('.referral2Tool').show();
+      }
+      else if(chart == 'Combined') {
+        this.showCombined = true;
+        $('.referral3Tool').show();
+      }
     }
-    else if(chart == 'External') {
-      this.showExternal = true;
-      $('.referral2Tool').show();
-    }
-    else if(chart == 'Combined') {
-      this.showCombined = true;
-      $('.referral3Tool').show();
-    }
-  }
   else {
       if(chart == 'Internal') {
       this.showInternal = true;
