@@ -985,10 +985,11 @@ public itemPredictedChartSpecailData: any[] = [
  loadDentist(newValue) {  
 
 if(this._cookieService.get("user_type") == '4'){
+    $('.predicted_main').hide();
+    $('.predicted1').show();
     if(this._cookieService.get("dentist_toggle") === 'true'){
           newValue = this.dentistid;
-          $('.predicted_main').hide();
-          $('.predicted1').show();
+          
     }
     else
       newValue = '';
