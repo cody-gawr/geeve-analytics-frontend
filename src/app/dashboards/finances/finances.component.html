@@ -348,8 +348,7 @@ expenses_card custom_ngx_cw01">
                       [labels]="totalDiscountChartLabels" [chartType]="totalDiscountChartType"
                       (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
                       [legend]="false"
-                      [options]="pieChartOptions2" [plugins]="totalDiscountPluginObservable$ | async" [colors]="[{backgroundColor: [
-                      '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac','#D7F8EF','#FEEFB8']}]"> </canvas>
+                      [options]="pieChartOptions2" [plugins]="totalDiscountPluginObservable$ | async" [colors]="pieChartColors"> </canvas>
                   </div>
                 </div>
                 <div *ngIf="totalDiscountChartData && totalDiscountChartData.length <= 0 && finTotalDiscountsLoader == false"
@@ -404,8 +403,7 @@ expenses_card custom_ngx_cw01">
                     <canvas class="totalOverdue" #myCanvas baseChart [data]="totalOverdueAccountData"
                       [labels]="totalOverdueAccountLabels" [chartType]="productionChartType"
                       (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
-                      [options]="pieChartOptions2" [plugins]="currentOverduePluginObservable$ | async" [colors]="[{backgroundColor: [
-                      '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac','#D7F8EF','#FEEFB8']}]"> </canvas>
+                      [options]="pieChartOptions2" [plugins]="currentOverduePluginObservable$ | async" [colors]="pieChartColors"> </canvas>
                   </div>
                   <!-- <div *ngIf="totalOverdueAccountDataMax <= 0 && finOverdueAccountsLoader == false" class="sa_nodata_div">
                   <h4>No Data</h4>
@@ -536,7 +534,7 @@ expenses_card custom_ngx_cw01">
           <mat-card class="sa_no_tabs_area">
             <mat-card-content class="sa_matcard_content">
               <!--  <span  class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : ${{productionChartTrendTotal | number:'1.0-0'}}"  *ngIf="trendText"><img class="trend_ico" src="../assets/images/trend_{{productionChartTrendIcon}}.png"></span> -->
-              <mat-card-title class="text-center">Production % by Clinician
+              <mat-card-title class="text-center">Production % Per Clinician
                 <div class="info-icon-container">
                   <img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
@@ -555,8 +553,7 @@ expenses_card custom_ngx_cw01">
                     <canvas class="productionPercentage" #myCanvas baseChart [data]="productionChartData"
                       [labels]="productionChartLabels" [chartType]="productionChartType"
                       (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
-                      [options]="pieChartOptions" [colors]="[{backgroundColor: [
-                      '#6cd8ba','#b0fffa','#abb3ff','#ffb4b5','#fffcac','#d7f8ef']}]"></canvas>
+                      [options]="pieChartOptions" [colors]="pieChartColors"></canvas>
                   </div>
                 </div>
                 <!-- <div *ngIf="productionChartLabels.length <= 0 && finProductionByClinicianLoader == false" class="sa_nodata_div">
@@ -867,7 +864,7 @@ expenses_card custom_ngx_cw01">
          
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">% of Production By Clinician<div class="info-icon-container">
+              <mat-card-title class="text-center">Production % Per Clinician<div class="info-icon-container">
                   <img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
                 <!-- <div class="sa_box_title_right_buttons"> 

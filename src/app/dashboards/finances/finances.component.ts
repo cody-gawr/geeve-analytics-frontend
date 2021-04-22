@@ -48,33 +48,23 @@ export class FinancesComponent implements AfterViewInit {
   stackedChartColorsBar;
   stackedChartColorsBar1;
   public xeroConnect: boolean = false;
-  ProdByClinicianColors = [
-    { backgroundColor: '#6edbba' },
-    { backgroundColor: '#fffcac' },  
-    { backgroundColor: '#ffb4c5' },  
-    { backgroundColor: '#feefb8' },  
-    { backgroundColor: '#d7f8ef' },  
-    { backgroundColor: '#b0fffb' },  
-    { backgroundColor: '#b0ffga' },  
-    { backgroundColor: '#abb3ff' },
-    { backgroundColor: '#b0fffa' },
-    { backgroundColor: '#ffb4b5' },
-    { backgroundColor: '#d7f8ef' },
-    { backgroundColor: '#fffdac' },
-    { backgroundColor: '#feg0b8' },
-    { backgroundColor: '#4cdfae' }  ,
-    { backgroundColor: '#6edcba' },
-    { backgroundColor: '#ffdcac' },  
-    { backgroundColor: '#ffa4c5' },  
-    { backgroundColor: '#fecfb8' },  
-    { backgroundColor: '#d7d8ef' },  
-    { backgroundColor: '#b0dffb' },  
-    { backgroundColor: '#b0faga' },     
-    { backgroundColor: '#c0fbga' },     
-    { backgroundColor: '#b0facb' },     
-    { backgroundColor: '#c0ecdb' },     
-    { backgroundColor: '#c0ecef' },     
+
+  public pieChartColors = [
+    {
+      backgroundColor: [
+        // '#6edbbb',
+        // '#b0fffa',
+        // '#abb3ff',
+        // '#ffb4b5',
+        // '#fffcac',
+        // '#D7F8EF',
+        // '#FEEFB8'
+        '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac', '#FFE4E4', '#FFD578', '#54D2FF', '#E58DD7', '#A9AABC', '#F2ECFF', '#5689C9', '#F9F871'
+        
+      ]
+    }
   ]
+
   preoceedureChartColors;
   subtitle: string;
    public clinic_id:any ={};
@@ -819,7 +809,7 @@ public labelBarPercentOptions: any = {
   };
   
 
-      public pieChartOptions2: any = {
+  public pieChartOptions2: any = {
     responsive: true,
     maintainAspectRatio: false,
         legend: {

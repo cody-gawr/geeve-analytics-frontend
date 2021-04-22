@@ -54,6 +54,10 @@ export class MarketingComponent implements AfterViewInit {
           this.chartService.colors.odd,
           this.chartService.colors.even,
           this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
           this.chartService.colors.even
   ];
   predictedChartColors;
@@ -144,8 +148,9 @@ export class MarketingComponent implements AfterViewInit {
     this.revenuePluginObservable$ =  this.revenueByReferralCount$.pipe(
       takeUntil(this.destroyed$),
       map((revenueCount) => {      
-        this.pieChartOptions.elements.center.text = revenueCount;
-        return [];
+        return this.chartService.beforeDrawChart(revenueCount, true)
+        // this.pieChartOptions.elements.center.text = revenueCount;
+        // return [];
       })
     );
     // end of plugin observable logic
@@ -388,13 +393,15 @@ this.preoceedureChartColors = [
   public pieChartColors = [
     {
       backgroundColor: [
-        '#6edbbb',
-        '#b0fffa',
-        '#abb3ff',
-        '#ffb4b5',
-        '#fffcac',
-        '#D7F8EF',
-        '#FEEFB8'
+        // '#6edbbb',
+        // '#b0fffa',
+        // '#abb3ff',
+        // '#ffb4b5',
+        // '#fffcac',
+        // '#D7F8EF',
+        // '#FEEFB8'
+        '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac', '#FFE4E4', '#FFD578', '#54D2FF', '#E58DD7', '#A9AABC', '#F2ECFF', '#5689C9', '#F9F871'
+
       ]
     }
   ]

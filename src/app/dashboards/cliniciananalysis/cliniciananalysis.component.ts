@@ -175,13 +175,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.doughnutChartColors = [ 
       {
         backgroundColor: [
-          '#6cd8ba',
-          '#b0fffa',
-          '#abb3ff',
-          '#feefb8',
-          '#ffb4b5',
-          '#fffcac',
-          '#d7f8ef'
+          '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac', '#FFE4E4', '#FFD578', '#54D2FF', '#E58DD7', '#A9AABC', '#F2ECFF', '#5689C9', '#F9F871'
         ]
       }];
 

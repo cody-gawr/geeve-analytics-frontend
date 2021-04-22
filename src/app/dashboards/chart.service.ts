@@ -40,12 +40,12 @@ export class ChartService {
           ctx.font = ((count.toString().length>4) ? 24 : 37) + 'px Gilroy-Bold';
           ctx.fillStyle = '#454649';
           // Draw text in center
-          
+          let perThousands = count.toFixed(0).split(/(?=(?:...)*$)/).join(','); //decimal numbers fixed to zero number of digits after decimal point
+
           if(isCurrency) {
-            let currencyFormate = count.toFixed(0).split(/(?=(?:...)*$)/).join(','); //decimal numbers fixed to zero number of digits after decimal point
-            ctx.fillText(('$ ' + currencyFormate), centerX, centerY);
+            ctx.fillText(('$ ' + perThousands), centerX, centerY);
           } else {
-            ctx.fillText(count, centerX, centerY); 
+            ctx.fillText(perThousands, centerX, centerY); 
           }                   
         }
       }]
