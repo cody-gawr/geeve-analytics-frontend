@@ -60,11 +60,11 @@
               </div>
           </mat-card-title>
           <div class="card-body">
-            <div fxLayout="row wrap" class="sa_tabs_main_sec">
-              <div fxFlex.gt-sm="49.75%" fxFlex.gt-xs="49.75%" fxFlex="100" class="text-center btn-group">
+            <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center center">
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
                 <small class="sa_tab_btn" [ngClass] = "procedureAnalysisVisibility == 'General'? 'active' : ''" (click)="changeProcedureAnalysis('General')">General</small>
               </div>
-              <div fxFlex.gt-sm="49.75%" fxFlex.gt-xs="49.75%" fxFlex="100" class="text-center btn-group">
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
                 <small class="sa_tab_btn" [ngClass] = "procedureAnalysisVisibility == 'Specialist'? 'active' : ''" (click)="changeProcedureAnalysis('Specialist')">Specialist</small>
               </div>
             </div>
