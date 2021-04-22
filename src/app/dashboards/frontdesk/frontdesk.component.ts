@@ -707,7 +707,7 @@ public maxtreatmentPrebookGoal:any=0;
 
        var user_id;
        var clinic_id;
-     this.clinic_id && this.frontdeskService.fdTreatmentPrebookRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+     this.clinic_id && this.frontdeskService.fdReappointRate(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
         this.fdtreatmentPrebookRateLoader = false;
           this.treatmentPrebookPrevTotal = 0;
@@ -1328,7 +1328,7 @@ toggleChangeProcess(){
   this.treatmentPrebookChartTrend1=[];
     var user_id;
     var clinic_id;
-   this.clinic_id && this.frontdeskService.frontdeskTreatmentPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+   this.clinic_id && this.frontdeskService.fdReappointRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        if(data.message == 'success'){
         this.fdTreatmentPrebookRateTrendLoader = false;
           this.treatmentPrebookChartTrendLabels1=[];

@@ -1409,7 +1409,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPreChartLabels = [];
     this.barChartOptionsTPB.annotation = [];
 
-   this.clinic_id && this.cliniciananalysisService.treatmentPrePrebook(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+   this.clinic_id && this.cliniciananalysisService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.treatmentPreChartData1 = [];
       this.treatmentPreChartLabels1 = [];
 
@@ -1501,7 +1501,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPrebookDentistLoader = true;
     this.treatmentPreValue = '0';
     this.treatmentPreLabel = '';
-   this.clinic_id && this.cliniciananalysisService.treatmentPrePrebookSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+   this.clinic_id && this.cliniciananalysisService.caReappointRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       if (data.message == 'success') {
         this.treatmentPrebookDentistLoader = false;
         if (data.data.length > 0) {
@@ -2984,7 +2984,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     var user_id;
     var clinic_id;
-    this.cliniciananalysisService.treatmentPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    this.cliniciananalysisService.caReappointRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       if (data.message == 'success') {
         this.fdTreatmentPrebookRateTrendLoader = false;
         this.treatmentPrebookChartTrendLabels1 = [];

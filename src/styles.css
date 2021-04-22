@@ -1420,7 +1420,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 .sa_hccard { background: transparent!important; }
 
-.ur_users { position: relative; width: 24%; float: left; margin-right: 8px; }
+.ur_users { position: relative; width: 10%; float: left; margin-right: 15px; }
 
 .ur_rank { color: #000; text-align: left;  font-size: 15px; font-weight: 600; height: 52px; display: flex; align-items: center; }
 
@@ -3889,6 +3889,7 @@ ul.download-sync-list {
     color: #ffffff !important;
 }
 .ur_clinic {
+    display: block;
     font-weight: 100;
     font-size: 12px;
     margin: 0px;

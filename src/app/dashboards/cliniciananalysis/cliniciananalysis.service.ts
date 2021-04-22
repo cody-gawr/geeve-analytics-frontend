@@ -151,18 +151,18 @@ export class ClinicianAnalysisService {
     } 
 
         // Dentist Production Service
-    treatmentPrePrebook( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='', token = this._cookieService.get("token") ): Observable<any> {
+    caReappointRate( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianAnalysis/caRebookRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/caReappointRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     }) 
         );
     } 
 
-    treatmentPrebookRateTrend(dentist_id,clinic_id, mode, token = this._cookieService.get("token") ): Observable<any> {
+    caReappointRateTrend(dentist_id,clinic_id, mode, token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/ClinicianAnalysis/caRebookRateTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/caReappointRateTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -170,9 +170,9 @@ export class ClinicianAnalysisService {
     }
 
         // Dentist Production Service
-    treatmentPrePrebookSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token") ): Observable<any> {
+        caReappointRateSingle(dentist_id, clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianAnalysis/caRebookRate?clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/caReappointRateTrend?clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

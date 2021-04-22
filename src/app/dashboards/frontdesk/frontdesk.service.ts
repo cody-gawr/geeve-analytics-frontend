@@ -113,9 +113,9 @@ export class FrontDeskService {
     }
      
         // Items Predictor Analysis  
-    fdTreatmentPrebookRate(clinic_id='1', startDate = '', endDate = '',duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    fdReappointRate(clinic_id='1', startDate = '', endDate = '',duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesk/fdRebookRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/fdReappointRate?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -140,17 +140,17 @@ export class FrontDeskService {
         );
     }  
                                    //Referral to Other Clinicians Internal / External
-    fdTreatmentPrebookRateTrend(dentist_id,clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    // fdTreatmentPrebookRateTrend(dentist_id,clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    //     var header = this.getHeaders(); 
+    //     return this.http.get(this.apiUrl +"/FrontDesk/fdReappointRateTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
+    //     .pipe(map((response: Response) => {
+    //                     return response;
+    //                 })
+    //     ); 
+    // }    
+      fdReappointRateTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesk/fdRebookRateTrend?clinic_id="+clinic_id+"&mode="+mode+"&provider_id="+dentist_id, { headers: header })
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
-        ); 
-    }    
-      frontdeskTreatmentPrebookRateTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
-        var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/FrontDesk/fdRebookRateTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/FrontDesk/fdReappointRateTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

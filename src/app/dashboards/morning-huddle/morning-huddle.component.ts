@@ -151,7 +151,7 @@ initiate_clinic() {
 
     /***** Tab 3 ***/
 
-    this.getReAppointment();
+    // this.getReAppointment();
     //this.getUnscheduledPatients();
     this.getUnscheduledValues();
     //this.getTodayPatients();
@@ -202,7 +202,7 @@ initiate_clinic() {
     /*******Tab 2 *******/
 
     /*******Tab 3 *******/
-    this.getReAppointment();
+    // this.getReAppointment();
     //this.getUnscheduledPatients();
     this.getUnscheduledValues();
     //this.getTodayPatients();
@@ -299,14 +299,14 @@ initiate_clinic() {
   /***** Tab 4 ***/
   
   /***** Tab 3 ***/
-   getReAppointment(){
-    this.morningHuddleService.getReAppointment( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
-      if(production.status == true) {
-        this.reAppointment = production.data.reappointment;     
-        this.reAppointmentdate = production.data.date;     
-      }
-    }); 
-  } 
+  //  getReAppointment(){
+  //   this.morningHuddleService.getReAppointment( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+  //     if(production.status == true) {
+  //       this.reAppointment = production.data.reappointment;     
+  //       this.reAppointmentdate = production.data.date;     
+  //     }
+  //   }); 
+  // } 
 
   /*getUnscheduledPatients(){
     this.morningHuddleService.getUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
@@ -458,7 +458,7 @@ initiate_clinic() {
   }
 
   getTreatmentRate(){
-    this.morningHuddleService.rebookTreatmentRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((treatmentRate:any) => {
+    this.morningHuddleService.reappointRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((treatmentRate:any) => {
       if(treatmentRate.status == true){
          this.treatmentRate = treatmentRate.data;
       }
