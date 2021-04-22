@@ -36,13 +36,15 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     title: 'Open quick search',
     info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
   };
-  subtitle: string;
-   public clinic_id:any ={};
-   public dentistCount:any ={};
+    public procedureAnalysisVisibility:string = 'General';
+    public dentistMode:boolean = false;
+    subtitle: string;
+    public clinic_id:any ={};
+    public dentistCount:any ={};
     public clinicsData:any[] = [];
     public user_type;
     public childid='';
-  public trendText;
+    public trendText;
     private _routerSub = Subscription.EMPTY;
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -925,6 +927,21 @@ public pieChartLabelsres: string[] = [
             pointShadowColor: 'rgba(0, 0, 0, 0.3)',
             backgroundOverlayMode: 'multiply'}
 
+    ];  
+public itemPredictedChartSpecailData: any[] = [
+    {data: [10,1,5], label: 'Items Predictor Specail Analysis ',  shadowOffsetX: 3,
+            shadowOffsetY: 2,
+            shadowBlur: 3,
+            shadowColor: 'rgba(0, 0, 0, 0.3)',
+            pointBevelWidth: 2,
+            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+            pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+            pointShadowOffsetX: 3,
+            pointShadowOffsetY: 3,
+            pointShadowBlur: 10,
+            pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+            backgroundOverlayMode: 'multiply'}
+
     ];
         
   public itemPredictedChartData1: any[] = [];  
@@ -991,10 +1008,14 @@ if(this._cookieService.get("user_type") == '4'){
     this.toggleChecked =false;
     }
     this.changePieReferral('Combined');
-     (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
-    (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
+    this.dentistMode = false;
+     //(<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
+    //(<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
     (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
-    (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';    
+    (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';
+
+    //(<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'none';
+    //(<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'block';    
     if(this.childid == '') {
       this.buildChart();
       this.predictorAnalysisSpecial();
@@ -1019,20 +1040,22 @@ if(this._cookieService.get("user_type") == '4'){
     $(".trend_arrow").hide();
     if(this.toggleChecked ) {
         this.toggleChangeProcess()
-      }
-      else {
-       
-    this.buildChartDentist();
-    if(!this.toggleChecked) {
-        (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'none'; }
-
-        this.buildChartPredictorDentist();
+      } else {
+        this.buildChartDentist();
+        this.procedureAnalysisSpecialDentist();
+        this.dentistMode = true;
+        if(!this.toggleChecked) {
+          /*(<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'block';
+          (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'none'*/; 
+        }
+        /*(<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'block';
+        (<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'none';   */
         (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
-        (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';
+        (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';        
+        this.buildChartPredictorDentist();
         this.buildChartProceedureDentist();
-         $('.revenueProceedureSingle').show();
-         $('.revenueProceedure').hide();
+        $('.revenueProceedureSingle').show();
+        $('.revenueProceedure').hide();
         this.buildChartReferralDentist();
         this.changeDentistPredictor('1');
       }
@@ -1287,6 +1310,55 @@ if(this._cookieService.get("user_type") == '4'){
     }
     );
   }
+
+/********Procedure Special Dentist Hanney**********/
+  
+  public procedureSpecialDataMax;
+  public procedureSpecialDentistLoader:any;
+  public procedureSpecialTemp:any;
+  public procedureSpecialLabels:any;
+
+  private procedureAnalysisSpecialDentist() {
+    if(!this.clinic_id){
+      return false;
+    }
+    this.procedureSpecialDentistLoader = true;
+    this.clinicianproceeduresService.ItemsPredictorAnalysisSpecialistDentist(this.selectedDentist, this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
+      this.procedureSpecialDentistLoader = false;
+      this.procedureSpecialDataMax = 0;
+      if(data.message == 'success' && data.data && data.data.length) {
+        this.procedureSpecialTemp = [];
+        this.procedureSpecialLabels=[];
+        var temp=[];
+        temp['Important Surgery'] = data.data[0].imp_surg;
+        temp['Ortho Fix'] = data.data[0].ortho_fix;
+        temp['Ortho Align'] = data.data[0].ortho_align;
+        temp['Sleep'] = data.data[0].sleep;
+        temp['Perio Surgery'] = data.data[0].perio_surg;
+        temp['Endo Retreat'] = data.data[0].endo_retreat;
+        temp['Veneers Ind'] = data.data[0].veneers_ind;
+        var tupleArray=[];
+        for (var key in temp) tupleArray.push([key, temp[key]]);
+        tupleArray.sort(function (a, b) { return b[1] - a[1] });
+        tupleArray.forEach((res,key) => {
+          this.procedureSpecialTemp.push(res[1]);
+          this.procedureSpecialLabels.push(res[0]);
+        });
+        this.itemPredictedChartSpecailData[0]['data'] = this.procedureSpecialTemp;
+        this.itemPredictedChartSpecailData[0]['label'] = data.data[0].provider;
+        this.procedureSpecialDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
+/********Procedure Special**********/
+
+
+
+
+
 
 public predictedChartD:any[] =[];
 public predictedChartL:any[] =[];
@@ -2057,6 +2129,8 @@ toggleChangeProcess(){
     this.predictorRatioTrendSingle();
     (<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
+    (<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'none';
+    (<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'block';
    }
 }
   predictorTrendSingle(){
@@ -2367,5 +2441,12 @@ toggleChangeProcess(){
     );
   }
 
-  }
+    //Function to update the tabs for Procedure Analysis Tabs
+    //Added by Hanney Shrma on 22-04-2021
+    changeProcedureAnalysis(typeVisible)
+    {
+      this.procedureAnalysisVisibility = typeVisible;
+      return true;
+    } 
+}
 

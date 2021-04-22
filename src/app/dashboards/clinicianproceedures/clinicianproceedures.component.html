@@ -47,13 +47,12 @@
     </div>
 
     <!-- Column-->
-    <div fxFlex="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+    <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
       class="sa_flexbg items_predictor md_mrn">
       <mat-card class="itemsPredictor sa_no_tabs_area">
         <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center">Item Predictor - General
-            <div class="sa_box_title_right_buttons">
-            </div>
+          <mat-card-title class="text-center">Procedure Analysis
+            <div class="sa_box_title_right_buttons"></div>
            <div class="info-icon-container">
                 <img [tooltip]="tooltipData"
                   src="../assets/images/info-icon.png" 
@@ -61,231 +60,87 @@
               </div>
           </mat-card-title>
           <div class="card-body">
-            <div fxLayout="row wrap" class="sa_tabs_main_sec sa_tabs_clinician_referrals hide-item"
-              *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn Combined active"
-                  (click)="changePieReferral('Combined')">All</small>
+            <div fxLayout="row wrap" class="sa_tabs_main_sec">
+              <div fxFlex.gt-sm="49.75%" fxFlex.gt-xs="49.75%" fxFlex="100" class="text-center btn-group">
+                <small class="sa_tab_btn" [ngClass] = "procedureAnalysisVisibility == 'General'? 'active' : ''" (click)="changeProcedureAnalysis('General')">General</small>
               </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn Internal" (click)="changePieReferral('Internal')">Internal</small>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn External" (click)="changePieReferral('External')">External</small>
+              <div fxFlex.gt-sm="49.75%" fxFlex.gt-xs="49.75%" fxFlex="100" class="text-center btn-group">
+                <small class="sa_tab_btn" [ngClass] = "procedureAnalysisVisibility == 'Specialist'? 'active' : ''" (click)="changeProcedureAnalysis('Specialist')">Specialist</small>
               </div>
             </div>
-
-            <div class="Item_Predictor_clinicianproceedures">
+            <!--  Procedure Analysis All dentist -->
+            
+            <!--  Procedure Analysis All dentist General-->
+            <div class="procedureAnalysisGeneral" *ngIf = "procedureAnalysisVisibility == 'General'">
               
-              <div style="height: 408px" *ngIf="stackedChartDataMax > 0">
+            <!--  Procedure Analysis All dentist General-->
+            <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false">              
+              <div style="height: 408px" *ngIf="stackedChartDataMax > 0 && buildChartLoader == false">
                 <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
                   [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                   [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-            </div>
-            <div *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false">
-              <div class="sa_nodata_div">
+              <div *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false">
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio or Extractions in this period</p>
               </div>
-              <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio or Extractions in this period</p>
             </div>
-          </div>
+            <!--  Procedure Analysis All dentist General-->
 
-          <div class="card-footer hide-item" *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false">
-            <div *ngIf="toggleChecked == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails"
-              fxLayoutAlign="center center">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{pieChartInternalTotal | number:'1.0-0'}}</h3>
-                <span class="value-text">Internal</span>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{pieChartExternalTotal | number:'1.0-0'}}</h3>
-                <span class="value-text">External</span>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{pieChartCombinedTotal | number:'1.0-0'}}</h3>
-                <span class="value-text">Total</span>
-              </div>
+            <!--  Procedure Analysis dentist General-->
+            <div fxLayout="row wrap" class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == true">            
+                <div style="height: 408px; width: 100%;" *ngIf="itemPredictedChartDataMax > 0 && buildChartDentistLoader == false">
+                  <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels"
+                  [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType"
+                  (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)"></canvas>
+                </div>
+              <div *ngIf="itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false">
+                <div class="sa_nodata_div"></div>
+                <p class="chart-placeholder-text">You have no Crowns & Onlays, Splints, RCTs, Perio or Extractions in this period</p>
             </div>
           </div>
+        </div>
+          <!--  Procedure Analysis dentist General-->
+
+          <!--  Procedure Analysis All dentist Specialist-->
+            <div class="procedureAnalysisSpecialist" *ngIf="procedureAnalysisVisibility == 'Specialist'">
+                <!--  Procedure Analysis All dentist Specialist-->              
+                <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false">
+                  <div style="height: 408px" *ngIf="predictorAnalysisDataMax > 0">
+                    <canvas #myCanvas baseChart [datasets]="stackedChartDataItemSpecial" [labels]="predictorAnalysisLables" [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors" (chartClick)="chartClicked($event)"></canvas>
+                  </div>                 
+                  <div *ngIf="predictorAnalysisDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false">
+                    <div class="sa_nodata_div"> </div>
+                    <p class="chart-placeholder-text">You have records for this period</p>
+                  </div>
+                </div>
+                <!--  Procedure Analysis All dentist Specialist-->
+                <!--  Procedure Analysis dentist Specialist-->
+                  <div class="chart"  *ngIf="dentistMode == true">
+                    <div style="height: 408px" *ngIf="procedureSpecialDataMax > 0 && procedureSpecialDentistLoader == false">
+                      <canvas baseChart [datasets]="itemPredictedChartSpecailData" [labels]="procedureSpecialLabels" [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)"></canvas>
+                    </div>                  
+                  <div *ngIf="procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false">
+                    <div class="sa_nodata_div"> </div>
+                    <p class="chart-placeholder-text">You have records for this period</p>
+                  </div>
+                </div>
+                <!--  Procedure Analysis dentist Specialist-->
+
+
+            </div>
+          </div>
+          <!--  Procedure Analysis All dentist General-->
+          <!--  Procedure Analysis All dentist -->
+
+          <div *ngIf="buildChartLoader || buildChartDentistLoader || ItemsPredictorAnalysisSpecialStatus || procedureSpecialDentistLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+        </div>
         </mat-card-content>
       </mat-card>
-      <mat-card class="itemsPredictorSingle sa_no_tabs_area" [style.display]="'none'">
-        <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center">Procedure Analysis
 
-            <div class="sa_box_title_right_buttons">
-            </div>
-           <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
-              </div>
-          </mat-card-title>
-
-          <div class="card-body">
-            <div fxLayout="row wrap" class="sa_tabs_main_sec sa_tabs_clinician_referrals hide-item"
-              *ngIf="itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn Combined active"
-                  (click)="changePieReferral('Combined')">All</small>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn Internal" (click)="changePieReferral('Internal')">Internal</small>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn External" (click)="changePieReferral('External')">External</small>
-              </div>
-            </div>
-            <div class="chart" *ngIf="itemPredictedChartDataMax > 0">
-              <div style="height: 408px">
-                <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels"
-                  [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType"
-                  (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-            </div>
-            <div *ngIf="itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no Crowns & Onlays, Splints, RCTs, Perio or Extractions in this period</p>
-            </div>
-          </div>
-    
-    </mat-card-content>
-    </mat-card>
-    <div *ngIf="buildChartLoader == true" class="loader_container loader_container_middle"><img class="loader_ico"
-        src="../assets/images/720.gif">
-      <div class="loader-text">Calculating...</div>
-    </div>
-    <div *ngIf="buildChartDentistLoader == true" class="loader_container loader_container_middle"><img
-        class="loader_ico" src="../assets/images/720.gif">
-      <div class="loader-text">Calculating...</div>
-    </div>
   </div>
-
-<!--  Item predictor Specialist -->
-  
-    <div fxFlex="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-      class="sa_flexbg items_predictor md_mrn">
-      <mat-card class="itemsPredictor sa_no_tabs_area">
-        <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center">Item Predictor - Specialist
-            <div class="sa_box_title_right_buttons">
-            </div>
-           <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
-              </div>
-          </mat-card-title>
-          <div class="card-body">
-            <div fxLayout="row wrap" class="sa_tabs_main_sec sa_tabs_clinician_referrals hide-item"
-              *ngIf="stackedChartDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn Combined active"
-                  (click)="changePieReferral('Combined')">All</small>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn Internal" (click)="changePieReferral('Internal')">Internal</small>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn External" (click)="changePieReferral('External')">External</small>
-              </div>
-            </div>
-
-            <div class="Item_Predictor_clinicianproceedures">
-              
-              <div style="height: 408px" *ngIf="predictorAnalysisDataMax > 0">
-                <canvas #myCanvas baseChart [datasets]="stackedChartDataItemSpecial" [labels]="predictorAnalysisLables"
-                  [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
-                  [legend]="true" [colors]="predictorAnalysisChartColors" (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-            </div>
-            <div *ngIf="predictorAnalysisDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have records for this period</p>
-            </div>
-          </div>
-
-          <div class="card-footer hide-item" *ngIf="predictorAnalysisDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false">
-            <div *ngIf="toggleChecked == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails"
-              fxLayoutAlign="center center">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{pieChartInternalTotal | number:'1.0-0'}}</h3>
-                <span class="value-text">Internal</span>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{pieChartExternalTotal | number:'1.0-0'}}</h3>
-                <span class="value-text">External</span>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                <h3 class="m-0 value-num">{{pieChartCombinedTotal | number:'1.0-0'}}</h3>
-                <span class="value-text">Total</span>
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="itemsPredictorSingle sa_no_tabs_area" [style.display]="'none'">
-        <mat-card-content class="sa_matcard_content">
-
-          <mat-card-title class="text-center">Procedure Analysis
-
-            <div class="sa_box_title_right_buttons">
-            </div>
-           <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
-              </div>
-          </mat-card-title>
-
-          <div class="card-body">
-            <div fxLayout="row wrap" class="sa_tabs_main_sec sa_tabs_clinician_referrals hide-item"
-              *ngIf="itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false">
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn Combined active"
-                  (click)="changePieReferral('Combined')">All</small>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn Internal" (click)="changePieReferral('Internal')">Internal</small>
-              </div>
-              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center btn-group">
-                <small class="sa_tab_btn referall_btn External" (click)="changePieReferral('External')">External</small>
-              </div>
-            </div>
-            <div class="chart" *ngIf="itemPredictedChartDataMax > 0">
-              <div style="height: 408px">
-                <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels"
-                  [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType"
-                  (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)">
-                </canvas>
-              </div>
-            </div>
-            <div *ngIf="itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false">
-              <div class="sa_nodata_div">
-              </div>
-              <p class="chart-placeholder-text">You have no Crowns & Onlays, Splints, RCTs, Perio or Extractions in this period</p>
-            </div>
-          </div>
-    
-    </mat-card-content>
-    </mat-card>
-    <div *ngIf="buildChartLoader == true" class="loader_container loader_container_middle"><img class="loader_ico"
-        src="../assets/images/720.gif">
-      <div class="loader-text">Calculating...</div>
-    </div>
-    <div *ngIf="buildChartDentistLoader == true" class="loader_container loader_container_middle"><img
-        class="loader_ico" src="../assets/images/720.gif">
-      <div class="loader-text">Calculating...</div>
-    </div>
-  </div>
-
-<!--  Item predictor Specialist -->
-
 
 
   <div fxFlex="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
@@ -297,9 +152,11 @@
             <span *ngIf="trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow"
               matTooltip="{{trendText}} : {{pieChartInternalPrevTotal}}"><img class="trend_ico"
                 src="../assets/images/trend_{{pieChartInternalPrevTooltip}}.png"></span>
+            
             <span *ngIf="trendText" class="referral2Tool referral sa_inc_dec_arrows trend_arrow"
               matTooltip="{{trendText}} : {{pieChartExternalPrevTotal}}" [style.display]="'none'"><img class="trend_ico"
                 src="../assets/images/trend_{{pieChartExternalPrevTooltip}}.png"></span>
+            
             <span *ngIf="trendText" class="referral3Tool referral sa_inc_dec_arrows trend_arrow"
               matTooltip="{{trendText}} : {{pieChartCombinedPrevTotal}}" [style.display]="'none'"><img class="trend_ico"
                 src="../assets/images/trend_{{pieChartCombinedPrevTooltip}}.png"></span>
@@ -410,6 +267,10 @@
           <div *ngIf="toggleChecked == false" fxLayout="row wrap" class="m-t-40 sa_chart_details_sec pieChartDetails"
             fxLayoutAlign="center center">
             <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+              <h3 class="m-0 value-num">{{pieChartCombinedTotal | number:'1.0-0'}}</h3>
+              <span class="value-text">Total</span>
+            </div>
+            <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
               <h3 class="m-0 value-num">{{pieChartInternalTotal | number:'1.0-0'}}</h3>
               <span class="value-text">Internal</span>
             </div>
@@ -417,10 +278,7 @@
               <h3 class="m-0 value-num">{{pieChartExternalTotal | number:'1.0-0'}}</h3>
               <span class="value-text">External</span>
             </div>
-            <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-              <h3 class="m-0 value-num">{{pieChartCombinedTotal | number:'1.0-0'}}</h3>
-              <span class="value-text">Total</span>
-            </div>
+          
           </div>
         </div>
       </mat-card-content>
@@ -533,8 +391,7 @@
           </div>
         </div>
 
-        <div *ngIf="buildChartPredictorLoader"
-          class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+        <div *ngIf="buildChartPredictorLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
         </div>
 
