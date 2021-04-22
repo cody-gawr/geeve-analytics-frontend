@@ -2385,40 +2385,18 @@ toggleChangeProcess(){
        if(data.message == 'success' && data.data){
           if(data.data.length <=0) {
           } else {
-            data.data.forEach(res => {
-              var crowns = res.val.crowns;
-              var large_fillings = res.val.large_fillings;
-              if(res.val.crowns > 1) {
-                crowns = Math.round(res.val.crowns/res.val.crowns);
-                large_fillings = Math.round(res.val.large_fillings/res.val.crowns);
-              }
-              this.ratioChartData1[0]['data'].push(crowns);
-              this.ratioChartData1[1]['data'].push(large_fillings);
-
-              var extractions = res.val.extractions;
-              var root_canals = res.val.root_canals;
-              if(res.val.root_canals>1) {
-                root_canals = Math.round(res.val.root_canals/res.val.root_canals);
-                extractions = Math.round(res.val.extractions/res.val.root_canals);
-              }
-              this.ratioChartData2[0]['data'].push(root_canals);
-              this.ratioChartData2[1]['data'].push(extractions);
-
-              var rct_completed = res.val.rct_completed;
-              var rct_started = res.val.rct_started;
-              if(res.val.rct_started>1) {
-                rct_started = Math.round(res.val.rct_started/res.val.rct_started);
-                rct_completed = Math.round(res.val.rct_completed/res.val.rct_started);
-              }
-              this.ratioChartData3[0]['data'].push(rct_started);
-              this.ratioChartData3[1]['data'].push(rct_completed);
-
+            data.data.forEach(res => {              
+              this.ratioChartData1[0]['data'].push(res.val.crown[0]);
+              this.ratioChartData1[1]['data'].push(res.val.crown[1]);
+              this.ratioChartData2[0]['data'].push(res.val.extraction[0]);
+              this.ratioChartData2[1]['data'].push(res.val.extraction[1]);
+              this.ratioChartData3[0]['data'].push(res.val.completed[0]);
+              this.ratioChartData3[1]['data'].push(res.val.completed[1]);
               if(this.trendValue == 'c')
                 this.ratioChartLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
               else
                 this.ratioChartLabels1.push(res.duration);
-            });
-                 
+            });                 
              if(this.ratioChartData1[0]['data'].every((item) => item == 0 )) this.ratioChartData1[0]['data'] = [];
              if(this.ratioChartData1[1]['data'].every((item) => item == 0 )) this.ratioChartData1[1]['data'] = [];
              if(this.ratioChartData2[0]['data'].every((item) => item == 0 )) this.ratioChartData2[0]['data'] = [];
