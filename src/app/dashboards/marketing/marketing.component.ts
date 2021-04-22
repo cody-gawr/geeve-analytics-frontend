@@ -64,6 +64,8 @@ export class MarketingComponent implements AfterViewInit {
   public clinicsData:any[] = [];
   public trendText;
   public xeroConnect: boolean = false;
+  public myobConnect: boolean = false;
+  public connectedwith:any;
   public filteredCountriesMultiple: any[];
   public selectedAccounts:any[] =[];
   public newPatientsReferral$ = new BehaviorSubject<number>(0);
@@ -79,15 +81,42 @@ export class MarketingComponent implements AfterViewInit {
   
   private warningMessage: string; 
   private myTemplate: any = "";
-  initiate_clinic() {
+  async initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     if(val != undefined && val !='all') {
       this.clinic_id = val;
-      this.checkXeroStatus();
+      await this.checkclinicconnectedwith();
+      console.log(this.connectedwith);
+      if(this.connectedwith == 'myob'){
+        this.checkMyobStatus();
+      }else if(this.connectedwith == 'xero'){
+        this.checkXeroStatus();
+      }
       this.filterDate(this.chartService.duration$.value);
     }
   }
+   checkclinicconnectedwith(){ 
+   var self = this;
+  return new Promise(function(resolve,reject){
+    self.clinicSettingsService.checkclinicconnectedwith(self.clinic_id).subscribe( (res) => {
+      if(res.message == 'success'){
+        if(res.data != '') {
+          self.connectedwith = res.data;
+          resolve(true);         
+        } else {
+          self.connectedwith = ''; 
+        }
+       } else {
+        self.connectedwith = '';
+      }
+    }, error => {
+      self.warningMessage = "Please Provide Valid Inputs!";
+      resolve(false);
+    });  
+  });  
 
+
+  }
   formatDate(date) {
     if(date) {
       var dateArray = date.split("-")
@@ -438,8 +467,12 @@ this.preoceedureChartColors = [
   loadDentist(newValue) {
   $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
 
-    if(newValue == 'all') {
-      this.getAccounts();
+    if(newValue == 'all') { 
+      if(this.connectedwith == 'myob'){
+        this.getMyobAccounts();
+      }else if(this.connectedwith == 'xero'){
+        this.getAccounts();
+      }
       this.mkNewPatientsByReferral();
 
       this.mkRevenueByReferral();
@@ -447,7 +480,6 @@ this.preoceedureChartColors = [
 
       this.fdnewPatientsAcq();
       this.fdvisitsRatio();
-      
 
       //this.fdWorkTimeAnalysis();
     }
@@ -639,7 +671,7 @@ public fdvisitsRatioLoader:any;
 
   public Accounts=[];
   
-    private getAccounts() {
+    private getAccounts() { 
       this.marketingService.getAccounts(this.clinic_id).subscribe((data) => {
         this.Accounts=[];
         this.selectedAccounts=[];
@@ -657,6 +689,25 @@ public fdvisitsRatioLoader:any;
         }
         );
         }
+
+   private getMyobAccounts() { 
+          this.marketingService.getMyobAccounts(this.clinic_id).subscribe((data) => {
+            this.Accounts=[];
+            this.selectedAccounts=[];
+               if(data.message == 'success'){
+                for (let key in data.data.categories) {
+                  this.Accounts.push(data.data.categories[key]);
+                }
+                 for (let key in data.data.selectedCategories) {
+                  this.selectedAccounts.push(data.data.selectedCategories[key]);
+                }
+        
+                }
+            }, error => {
+              this.warningMessage = "Please Provide Valid Inputs!";
+            }
+            );
+            }   
   
 public newPatientsTotal =0;
 public newPatientsPrevTotal =0;
@@ -710,7 +761,7 @@ public newAcqValuePrev =0;
        var clinic_id;
        this.fdnewPatientsAcqLoader = true; 
        
-       this.marketingService.categoryExpenses(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+       this.marketingService.categoryExpenses(this.clinic_id,this.startDate,this.endDate,this.duration,this.connectedwith).subscribe((data) => {
           if(data.message == 'success'){
        this.fdnewPatientsAcqLoader = false;
        // checking if any new account name found in report then we are saving that one in existing accounts
@@ -1049,7 +1100,7 @@ public fdvisitsRatioTrendLoader:any;
   public newPatientsChartTrendLabels =[];
   public newPatientsChartTrendLabels1 =[];
       public newPatientsChartTemp=[];
-  private mkNoNewPatientsTrend() {
+  private mkNoNewPatientsTrend() { 
   this.newPatientsChartTrendLabels1=[];
   this.newPatientsChartTrend1=[];
     var user_id;
@@ -1176,7 +1227,7 @@ public dataY:any=0;
      if(this.duration){
        var user_id;
        var clinic_id;
-       this.marketingService.categoryExpensesTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+       this.marketingService.categoryExpensesTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
           if(data.message == 'success'){
             
             this.expenseDataTrend1=[];
@@ -1241,12 +1292,22 @@ public dataY:any=0;
   }
 
 save_account() {   
-var selectedAccounts=JSON.stringify(Object.assign({}, this.selectedAccounts));                           
+var selectedAccounts=JSON.stringify(Object.assign({}, this.selectedAccounts)); 
+if(this.connectedwith == 'myob'){
+  this.marketingService.saveSelectedAccountsMyob(this.clinic_id,escape(selectedAccounts)).subscribe((data) => {
+    if(data.message == 'success'){
+      this.load_chart_acq();
+    }
+  }); 
+}else if(this.connectedwith == 'xero'){
    this.marketingService.saveSelectedCategories(this.clinic_id,escape(selectedAccounts)).subscribe((data) => {
         if(data.message == 'success'){
           this.load_chart_acq();
         }
     });
+} 
+                    
+  
 }
 
   public newAcqValue:any=0;
@@ -1326,8 +1387,8 @@ this.newAcqValue = 0;
     this.selectedAccounts.splice(index, 1);
   }
 
-  public checkXeroStatus(){
-    this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
+ checkXeroStatus(){ 
+     this.clinicSettingsService.checkXeroStatus(this.clinic_id).subscribe((res) => {
       if(res.message == 'success'){
         if(res.data.xero_connect == 1) {
           this.xeroConnect = true;
@@ -1341,4 +1402,22 @@ this.newAcqValue = 0;
       this.warningMessage = "Please Provide Valid Inputs!";
     });  
  }
+  checkMyobStatus(){
+   this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe((res) => {
+    if(res.message == 'success'){
+      if(res.data.myob_connect == 1) {
+        this.myobConnect = true;
+      } else {
+        this.myobConnect = false; 
+      }
+     } else {
+      this.myobConnect = false;
+    }
+  }, error => {
+    this.warningMessage = "Please Provide Valid Inputs!";
+  });  
+}
+
+
+
 }

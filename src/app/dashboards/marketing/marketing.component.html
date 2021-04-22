@@ -220,17 +220,17 @@ No. New Patients
 <mat-card-content class="sa_matcard_content"> 
 <mat-card-title class="text-center">
 <div>
-<span *ngIf="showTrend == false  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_reverse_{{newPatientsTooltip}}.png"></span>
+<span *ngIf="showTrend == true  && trendText" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_reverse_{{newPatientsTooltip}}.png"></span>
 Cost of New Patient Acquisition
 </div>
-<div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Set Accounts</button></div>
+<div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false"><button class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Set Accounts ({{connectedwith | uppercase}})</button></div>
 <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png" *ngIf="showTrend == true">
 </mat-card-title>
 <div class="card-body">
 <div class="chart py-2">
 <div>  
 
-<div  *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  xeroConnect" style="height: 200px">
+<div  *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect)" style="height: 200px">
 <ngx-gauge class="singleRatio" [type]="gaugeType"
 [value]="newAcqValue" 
 [thick]="gaugeThick"  
@@ -242,25 +242,25 @@ Cost of New Patient Acquisition
 </ngx-gauge>
     
 </div>
-<div *ngIf="fdnewPatientsAcqLoader == true && xeroConnect" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div>
+<div *ngIf="fdnewPatientsAcqLoader == true && (xeroConnect || myobConnect)" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div>
 </div>
 <!--  <div *ngIf="showTrend == false && fdnewPatientsAcqLoader && xeroConnect">
 <div class="sa_nodata_div">
 </div>
 <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
 </div> -->
-<div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && xeroConnect" style="height: 300px">
+<div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && (xeroConnect || myobConnect)" style="height: 300px">
 <canvas #myCanvas baseChart [datasets]="expenseDataTrend" [labels]="expenseDataTrendLabels" [options]="barChartOptions" 
 [chartType]="stackedChartType"  [colors]="lineChartColors"  (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
 <!-- [colors]="stackedChartColors" -->
 </canvas>
 </div>
-<div *ngIf="showTrend == true && expenseDataTrend1.length<=0 && xeroConnect">
+<div *ngIf="showTrend == true && expenseDataTrend1.length<=0 && (xeroConnect || myobConnect)">
 <div class="sa_nodata_div">
 </div>
 <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
 </div>
-<div *ngIf="!xeroConnect">
+<div *ngIf="(!xeroConnect && !myobConnect)">
 <div class="sa_nodata_div">
 </div>
 <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
@@ -368,7 +368,7 @@ Total Visits
 </div>
 
 <ngx-smart-modal #myModal identifier="myModal">
-<h4 class="mt-0">Select Accounts</h4>
+<h4 class="mt-0">Select Accounts ({{connectedwith | uppercase}})</h4>
 <div fxLayout="row wrap" class="row_sc" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
 <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="50" fxFlex.xs="50" class="SelectCategories sa_flexbg referral_clinicians">
 <h5 class="mt-0">Selected Accounts</h5>
