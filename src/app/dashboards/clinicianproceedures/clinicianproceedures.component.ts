@@ -1191,8 +1191,7 @@ if(this._cookieService.get("user_type") == '4'){
         this.predictorAnalysis5 = [];
         this.predictorAnalysis6 = [];
         this.predictorAnalysis7 = [];
-
-        this.predictorAnalysisLables =[];
+        this.predictorAnalysisLablesSpe =[];
         this.predictorAnalysisLablesTemp =[];
         this.predictorAnalysisDataMax = 0;
        if(data.message == 'success'){   
@@ -1200,9 +1199,10 @@ if(this._cookieService.get("user_type") == '4'){
         } else {
           var i=0
           var currentUser = 0;
-          data && data.data && data.data.length && data.data.forEach(res => {
+          data && data.data && data.data.length && data.data.forEach(res => {            
             if(res.provider_name != null){
-              if(parseInt(res.imp_surg) + parseInt(res.ortho_fix) + parseInt(res.sleep) + parseInt(res.perio) + parseInt(res.perio_surg) > 0){
+              if(parseInt(res.imp_surg) + parseInt(res.ortho_fix) + parseInt(res.sleep) + parseInt(res.ortho_align) + parseInt(res.perio_surg) > 0){
+
                 this.predictorAnalysis1.push(res.imp_surg);
                 this.predictorAnalysis2.push(res.ortho_fix);
                 this.predictorAnalysis3.push(res.ortho_align);
@@ -1218,12 +1218,15 @@ if(this._cookieService.get("user_type") == '4'){
                 }
               }
           });
-          this.stackedChartDataItemSpecial[0]['data'] = this.stackedChartData1;
-          this.stackedChartDataItemSpecial[1]['data'] = this.stackedChartData2;
-          this.stackedChartDataItemSpecial[2]['data'] = this.stackedChartData3;
-          this.stackedChartDataItemSpecial[3]['data'] = this.stackedChartData4;
-          this.stackedChartDataItemSpecial[4]['data'] = this.stackedChartData5;
-          this.predictorAnalysisLables = this.stackedChartLabels1;
+          this.stackedChartDataItemSpecial[0]['data'] = this.predictorAnalysis1;
+          this.stackedChartDataItemSpecial[1]['data'] = this.predictorAnalysis2;
+          this.stackedChartDataItemSpecial[2]['data'] = this.predictorAnalysis3;
+          this.stackedChartDataItemSpecial[3]['data'] = this.predictorAnalysis4;
+          this.stackedChartDataItemSpecial[4]['data'] = this.predictorAnalysis5;
+          this.stackedChartDataItemSpecial[5]['data'] = this.predictorAnalysis6;
+          this.stackedChartDataItemSpecial[6]['data'] = this.predictorAnalysis7;
+
+          this.predictorAnalysisLablesSpe = this.predictorAnalysisLablesTemp;
           if(this.user_type == '4' && this.childid != '') {
             this.predictorAnalysisChartColors = [
               { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
@@ -1239,12 +1242,12 @@ if(this._cookieService.get("user_type") == '4'){
             this.predictorAnalysisChartColors[2].backgroundColor[currentUser] = '#09b391';
             this.predictorAnalysisChartColors[3].backgroundColor[currentUser] = '#82EDD8';
             this.predictorAnalysisChartColors[4].backgroundColor[currentUser] = 'rgba(22, 82, 141, 1)';
-            this.predictorAnalysisChartColors[5].backgroundColor[currentUser] = '#1CA49F';
-            this.predictorAnalysisChartColors[6].backgroundColor[currentUser] = '#09b391';
+            this.predictorAnalysisChartColors[5].backgroundColor[currentUser] = '#1Cb410';
+            this.predictorAnalysisChartColors[6].backgroundColor[currentUser] = '#09c250';
           } else
             this.predictorAnalysisChartColors = this.ItemPredictorSpecialColors;
 
-          this.predictorAnalysisDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data']);
+          this.predictorAnalysisDataMax = Math.max(...this.stackedChartDataItemSpecial[0]['data'])+Math.max(...this.stackedChartDataItemSpecial[1]['data'])+Math.max(...this.stackedChartDataItemSpecial[2]['data'])+Math.max(...this.stackedChartDataItemSpecial[3]['data'])+Math.max(...this.stackedChartDataItemSpecial[4]['data'])+Math.max(...this.stackedChartDataItemSpecial[5]['data'])+Math.max(...this.stackedChartDataItemSpecial[6]['data']);
           //this.productionTotalAverage = this.productionTotal/this.barChartData1.length;
         }
       }
