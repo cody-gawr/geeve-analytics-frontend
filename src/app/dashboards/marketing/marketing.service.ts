@@ -101,25 +101,59 @@ public token_id;
                     })
         );
     }             
-
-   // categoryExpenses
-    categoryExpenses(clinic_id='1', startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+     //Get Xero Accounts
+     getMyobAccounts(clinic_id='1',user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Marketing/mkNewPatientAcq?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Myob/getaccounts?clinic_id="+clinic_id, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+            );
+        }
+         //Get Xero Categories
+       saveSelectedAccountsMyob(clinic_id='1',categories, token = this._cookieService.get("token") ): Observable<any> {
+            var header = this.getHeaders(); 
+            return this.http.get(this.apiUrl +"/Myob/saveSelectedAccounts?clinic_id="+clinic_id+"&categories="+categories, { headers: header })
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );
+        }   
+   // categoryExpenses
+    categoryExpenses(clinic_id='1', startDate = '', endDate = '', duration='',connectedwith='', token = this._cookieService.get("token")  ): Observable<any> {
+        var header = this.getHeaders(); 
+        if(connectedwith == 'xero'){
+            return this.http.get(this.apiUrl +"/Marketing/mkNewPatientAcq?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
+        }else if(connectedwith == 'myob'){
+            return this.http.get(this.apiUrl +"/Marketing/mkMyobNewPatientAcq?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+        }
+        
     }
 
-                 // finExpensesByCategoryTrend
-    categoryExpensesTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    // finExpensesByCategoryTrend
+    categoryExpensesTrend(clinic_id='1', mode ='',connectedwith='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
+        if(connectedwith == 'xero'){
         return this.http.get(this.apiUrl +"/Marketing/mkNewPatientAcqTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
+        }else if(connectedwith == 'myob'){
+            return this.http.get(this.apiUrl +"/Marketing/mkMyobNewPatientAcqTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+            .pipe(map((response: Response) => {
+                            return response;
+                        })
+            );    
+        }
     }
 
 }
