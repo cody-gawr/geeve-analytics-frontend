@@ -29,12 +29,11 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router) {
       this.user_type_dentist = this._cookieService.get("user_type");
       this._routerSub = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
-            console.log('route changed');
             this.route = router.url; 
-            if(this.route == '/dashboards/clinicianproceedures'){
-              this.showCompare = false;
-            } else {
+            if(this.route == '/dashboards/cliniciananalysis'){
               this.showCompare = true;
+            } else {
+              this.showCompare = false;
             }
 
             if(this.route == '/dashboards/healthscreen'){

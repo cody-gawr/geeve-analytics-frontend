@@ -26,14 +26,15 @@
 
 </div>
 <div class="sa-form-group" *ngIf="show_dentist == true">
-<div  *ngFor="let clinicProviders of selectedClinicProviders; let i=index">
+<div class="selectedClinicProviders"  *ngFor="let clinicProviders of selectedClinicProviders; let i=index" style="margin-bottom:10px;" [ngClass] = "checkColumn(i)" >
+
   <span>{{clinicProviders.clinicName}}</span>
   <span>  
     <select (change)="selectedDentist($event.target.value,i,clinicProviders.id)" class="sa_select sa_select_set_roles mat-form-control" name="dentist_id" required="true" *ngIf="clinicProviders.dentists.length>0">
       <option value ="0">Select Dentist</option>
       <option *ngFor="let dentist of clinicProviders.dentists" value ="{{dentist.providerId}}">{{dentist.name}}</option>
    </select>
-   <span *ngIf="clinicProviders.dentists.length<=0"> No Dentist Found</span>
+   <span *ngIf="clinicProviders.dentists.length <= 0"> - No Dentist</span>
   </span>
 </div>
 

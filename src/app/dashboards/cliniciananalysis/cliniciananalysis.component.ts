@@ -55,6 +55,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public showTrendChart = false;
   public goalchecked = 'off';
   public averagechecked = false;
+  public averageToggle = false;  
   public childid: string = '';
   public user_type: string = '';
   public flag = false;
@@ -67,6 +68,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   private dentistProductionLabelsByIndex = [];
   private treatmentPlanProposedProvidersByInx = [];
+  private showCompare:boolean = false;
 
   constructor(
     private cliniciananalysisService: ClinicianAnalysisService,
@@ -89,10 +91,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.user_type = this._cookieService.get("user_type");
         if (this._cookieService.get("childid"))
           this.childid = this._cookieService.get("dentistid");
-      });
-     
-
-  }
+      });     
+      this.user_type = this._cookieService.get("user_type");  
+    }
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
@@ -3279,6 +3280,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   getNameInitials(name: string) {
     const initials = name.replace(/[^a-zA-Z- ]/g, "").match(/\b\w/g);
     return initials.join('');
+  }
+
+  toggleCompareFilter(val){
+     if(val == 'on'){
+      this.averageToggle = true;
+     }  else {
+      this.averageToggle = false;
+     }
+    $('.compare-button').click();
   }
 }
 

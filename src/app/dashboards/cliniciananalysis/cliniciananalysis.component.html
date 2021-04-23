@@ -38,15 +38,15 @@
       </div>
 
       <div class="dh-target" fxHide.lt-lg>
-        <div class="onofftoogle2" *ngIf="dentistVal == 'all' && childid == ''">
+        <div class="onofftoogle2" *ngIf="(dentistVal == 'all' && childid == '') || averageToggle ">
 
           <span class="trend_mode_title">Average:</span>
           <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"
             class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style">
-            <mat-button-toggle checked value="off" class="toggle_off target_filter" (click)="goalToggle('off')">
+            <mat-button-toggle [checked] = "goalchecked == 'off'? true : false" value="off" class="toggle_off target_filter" (click)="goalToggle('off')">
               <span>Off</span>
             </mat-button-toggle>
-            <mat-button-toggle value="average" class="toggle_average target_filter" (click)="goalToggle('average')">
+            <mat-button-toggle [checked] = "goalchecked != 'off'? true : false" value="average" class="toggle_average target_filter" (click)="goalToggle('average')">
               <span>On</span>
             </mat-button-toggle>
             <!-- <mat-button-toggle value = "goal" class = "toggle_goal target_filter" (click)="goalToggle('goal')">
@@ -54,6 +54,8 @@
                </mat-button-toggle> -->
           </mat-button-toggle-group>
         </div>
+         
+
 
         <div class="onofftoogle" *ngIf="showTrend == true">
           <span class="trend_mode_title">Trend:</span>
@@ -71,6 +73,21 @@
             </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
+
+                <div class="onofftoogle" *ngIf="user_type == '4'">
+          <span class="trend_mode_title">Compare:</span>
+          <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"
+            class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style">
+            <mat-button-toggle checked value="off" class="target_off target_filter" (click)="toggleCompareFilter('off')">
+              <span>Off</span>
+            </mat-button-toggle>
+            <mat-button-toggle value="current" class="target_current target_filter" (click)="toggleCompareFilter('on')">
+              <span>On</span>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+     
+
       </div>
     </div>
   </div>

@@ -2318,7 +2318,7 @@ body .mat-gray {
 
 .working-days .mat-slide-toggle {
     float: left;
-    width: 25%;
+    width: 23%;
     padding-right: 15px;
     font-weight: 400;
 }
@@ -4910,3 +4910,14 @@ ul.download-sync-list {
 }
 
 
+.fta_uta_setting .clinic-setting-form {
+    
+}
+.fta_uta_setting .clinic-setting-form span{
+    padding: 11px 6px;
+    display: inline-block;
+}
+.fta_uta_setting .clinic-setting-form input{
+    float: left;
+    width: 25px;
+}

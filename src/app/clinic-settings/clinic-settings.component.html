@@ -29,7 +29,7 @@
         <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
           <h4 class="clinic-settings-form-title" >Clinic Settings</h4>
           <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-            <div class="clinic-setting-form" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100">
+            <div class="clinic-setting-form" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" style="width: 100%;">
               <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"> 
                 <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
                   <div class="sa-form-group">
@@ -91,14 +91,16 @@
           </div>
           <div class="post-op-codes">
             <h4 class="clinic-settings-form-title">FTA/UTA</h4>          
-            <div class="sa-form-group clinic-setting-form">
-              <span>Status</span>
-              <input  type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="status">
+            <div  fxLayout="row wrap fta_uta_setting" style="width: 500px;text-align: center;"> 
+            <div class="sa-form-group clinic-setting-form"  style="text-align: left;width: 200px;">
+              <span style=" padding: 11px 6px;display: inline-block;" >Status</span>
+              <input  style=" float: left;width: 25px;"  type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="status">
             </div>
-             <div class="sa-form-group clinic-setting-form">
-              <span>Item</span>
-              <input  type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="item">
+             <div class="sa-form-group clinic-setting-form"   style="text-align: left;width: 200px;">
+              <span style=" padding: 11px 6px;display: inline-block;">Item</span>
+              <input style=" float: left;width: 25px;" type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="item">
             </div>
+          </div>
           </div>
           <div class="sa-form-group-btn">
             <button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
