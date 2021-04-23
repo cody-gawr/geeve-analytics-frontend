@@ -43,22 +43,23 @@ export class MarketingComponent implements AfterViewInit {
   };
   closeResult: string;
   lineChartColors = [
+    this.chartService.colors.even,
     this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even
   ];
   predictedChartColors;
   preoceedureChartColors;
@@ -1038,7 +1039,8 @@ public currentText;
       this.chartService.colors.odd,
       this.chartService.colors.even,
       this.chartService.colors.odd,
-      this.chartService.colors.even
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
   ],
             shadowOffsetY: 2,
             shadowBlur: 3,
@@ -1084,9 +1086,14 @@ public fdvisitsRatioTrendLoader:any;
     });
   }
 
- public newPatientsChartTrend: any[]  = [
-    {data: [], label: '',  shadowOffsetX: 3,
-    backgroundColor: [
+ public newPatientsChartTrend: any[]  = 
+ [
+  {
+    data: [],
+    label: '',
+    shadowOffsetX: 3,
+    backgroundColor: 
+    [
       this.chartService.colors.odd,
       this.chartService.colors.even,
       this.chartService.colors.odd,
@@ -1098,26 +1105,30 @@ public fdvisitsRatioTrendLoader:any;
       this.chartService.colors.odd,
       this.chartService.colors.even,
       this.chartService.colors.odd,
-      this.chartService.colors.even
-  ],
-            shadowOffsetY: 2,
-            shadowBlur: 3,
-            shadowColor: 'rgba(0, 0, 0, 0.3)',
-            pointBevelWidth: 2,
-            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-            pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-            pointShadowOffsetX: 3,
-            pointShadowOffsetY: 3,
-            pointShadowBlur: 10,
-            pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-            backgroundOverlayMode: 'multiply'}];
-    public newPatientsChartTrend1=[];
+      this.chartService.colors.even,
+      this.chartService.colors.odd
+    ],
+    shadowOffsetY: 2,
+    shadowBlur: 3,
+    shadowColor: 'rgba(0, 0, 0, 0.3)',
+    pointBevelWidth: 2,
+    pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+    pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+    pointShadowOffsetX: 3,
+    pointShadowOffsetY: 3,
+    pointShadowBlur: 10,
+    pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundOverlayMode: 'multiply'
+  }
+];
+  
+  public newPatientsChartTrend1=[];
   public newPatientsChartTrendLabels =[];
   public newPatientsChartTrendLabels1 =[];
-      public newPatientsChartTemp=[];
+  public newPatientsChartTemp=[];
   private mkNoNewPatientsTrend() { 
-  this.newPatientsChartTrendLabels1=[];
-  this.newPatientsChartTrend1=[];
+    this.newPatientsChartTrendLabels1=[];
+    this.newPatientsChartTrend1=[];
     var user_id;
     var clinic_id;
     this.marketingService.mkNoNewPatientsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
