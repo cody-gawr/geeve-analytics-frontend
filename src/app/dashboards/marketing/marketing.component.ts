@@ -109,13 +109,15 @@ export class MarketingComponent implements AfterViewInit {
           resolve(true);         
         } else {
           self.connectedwith = ''; 
+           resolve(true);  
         }
        } else {
         self.connectedwith = '';
+         resolve(true);  
       }
     }, error => {
       self.warningMessage = "Please Provide Valid Inputs!";
-      resolve(false);
+      resolve(true);
     });  
   });  
 
@@ -481,18 +483,16 @@ this.preoceedureChartColors = [
   $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
 
     if(newValue == 'all') { 
+      this.mkNewPatientsByReferral();
+      this.mkRevenueByReferral();
+      this.fdnewPatientsRatio();
+      this.fdvisitsRatio();      
+      this.fdnewPatientsAcq();
       if(this.connectedwith == 'myob'){
         this.getMyobAccounts();
       }else if(this.connectedwith == 'xero'){
         this.getAccounts();
-      }
-      this.mkNewPatientsByReferral();
-
-      this.mkRevenueByReferral();
-      this.fdnewPatientsRatio();
-
-      this.fdnewPatientsAcq();
-      this.fdvisitsRatio();
+      }     
 
       //this.fdWorkTimeAnalysis();
     }
