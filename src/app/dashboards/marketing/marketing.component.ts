@@ -771,7 +771,7 @@ public fdnewPatientsAcqLoader:any;
 public newAcqValuePrev =0;
 //Predictor Ratio :
   private fdnewPatientsAcq() {
-     if(this.duration){
+     if(this.duration && this.connectedwith !=''){
        var user_id;
        var clinic_id;
        this.fdnewPatientsAcqLoader = true; 
@@ -1239,7 +1239,7 @@ public expenseDataTrendLabels=[];
 public dataY:any=0;
 //Predictor Ratio :
   private fdnewPatientsAcqTrend() {
-     if(this.duration){
+    if(this.duration && this.connectedwith !=''){
        var user_id;
        var clinic_id;
        this.marketingService.categoryExpensesTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
