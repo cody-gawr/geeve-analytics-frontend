@@ -194,39 +194,39 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
         endIndex: 21,
         controls: [
           {
-            label: 'Items Predictor Analysis value',
+            label: 'Procedure Analysis',
             name: 'utilisationrate',
             prefix: '$'
           },
           {
-            label: 'Recall prebook rate (%) value',
+            label: 'Recall prebook rate',
             name: 'recallprebook',
             postfix: '%'
           },
           {
-            label: 'Reappointment Rate (%) value',
+            label: 'Reappointment Rate',
             name: 'treatmentprebook',
             postfix: '%'
           },
           {
-            label: 'FTA ratio (%) value',
+            label: 'FTA ratio',
             name: 'fta',
             postfix: '%'
           },
           {
-            label: 'UTA ratio (%) value',
+            label: 'UTA ratio',
             name: 'uta',
             postfix: '%'
           },
           {
-            label: 'Number of Ticks value',
+            label: 'Number of Ticks',
             name: 'noticks'
           },
-          {
-            label: 'Recall Attendance Rate value',
-            name: 'attendancerate',
-            postfix: '%'
-          }
+          // {
+          //   label: 'Recall Attendance Rate value',
+          //   name: 'attendancerate',
+          //   postfix: '%'
+          // }
         ]
       },
       marketing: {
@@ -237,11 +237,11 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
         endIndex: 26,
         controls: [
           {
-            label: 'No. New Patients By Referral value',
+            label: 'No. New Patients By Referral',
             name: 'ƒreferralpatient'
           },
           {
-            label: 'Revenue by Referral value',
+            label: 'Revenue by Referral',
             name: 'revenuereferral',
             prefix: '$'
           },
@@ -254,7 +254,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             name: 'newpatients2'
           },
           {
-            label: 'Cost of New Patient Acquisition value',
+            label: 'Cost of New Patient Acquisition',
             name: 'patientcost',
             prefix: '$'
           }
@@ -268,7 +268,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
         endIndex: 36,
         controls: [
           {
-            label: 'Net Profit value',
+            label: 'Net Profit',
             name: 'netprofit',
             prefix: '$'
           },
@@ -288,7 +288,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             prefix: '$'
           },
           {
-            label: '% of Production By Clinician',
+            label: 'Production % Per Clinician',
             name: 'productionclinician',
             postfix: '%'
           },
@@ -303,16 +303,16 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             prefix: '$'
           },
           {
-            label: 'Production Per Visit value',
+            label: 'Production Per Visit',
             name: 'visitproduction'
           },
           {
-            label: 'Total Discounts value',
+            label: 'Total Discounts',
             name: 'discount',
             postfix: '%'
           },
           {
-            label: 'Overdue Accounts value',
+            label: 'Overdue Accounts',
             name: 'overdueaccount',
             prefix: '$'
           }
