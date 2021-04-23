@@ -110,7 +110,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
         label: this.tabsConstants.clinic_analysis,
         form: this.clinicAnalysisForm,
         startIndex: 1,
-        endIndex: 8,
+        endIndex: 6,
         controls: [
           {
             label: 'dentist production',
@@ -122,10 +122,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             name: 'treatmentplan',
             postfix: '%'
           },
-          {
-            label: 'treatment plan average cost',
-            name: 'planaverage'
-          },
+          // {
+          //   label: 'treatment plan average cost',
+          //   name: 'planaverage'
+          // },
           {
             label: 'recall prebook rate',
             name: 'recallrate',
@@ -136,10 +136,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             name: 'rebookrate',
             postfix: '%'
           },
-          {
-            label: 'no. patients complaints',
-            name: 'patientcomplaints'
-          },
+          // {
+          //   label: 'no. patients complaints',
+          //   name: 'patientcomplaints'
+          // },
           {
             label: 'hourly rate',
             name: 'hourlyrate',
@@ -151,52 +151,52 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
           }
         ]
       },
-      clinic_procedure_and_referrals: {
-        patchValues: [],
-        label: this.tabsConstants.clinic_procedure_and_referrals,
-        form: this.clinicProcedureForm,
-        startIndex: 9,
-        endIndex: 14,
-        controls: [
-          {
-            label: 'item predictor analysis value',
-            name: 'itempredictor'
-          },
-          {
-            label: 'predictor Ratio 1: (Crown to Large Filling Ratio)',
-            name: 'ratio1'
-          },
-          {
-            label: 'Predictor Ratio 2: (Extraction to RCT Ratio)',
-            name: 'ratio2'
-          },
-          {
-            label: 'Predictor Ratio 3: (RCT Conversion Ratio)',
-            name: 'ratio3'
-          },
-          {
-            label: 'Total Revenue of Clinician Per Procedure value',
-            name: 'totalrevenue',
-            prefix: '$'
-          },
-          {
-            label: 'Referral to Other Clinicians Internal / External value',
-            name: 'referralclinician',
-            prefix: '$'
-          },
-        ]
-      },
+      // clinic_procedure_and_referrals: {
+      //   patchValues: [],
+      //   label: this.tabsConstants.clinic_procedure_and_referrals,
+      //   form: this.clinicProcedureForm,
+      //   startIndex: 7,
+      //   endIndex: 14,
+      //   controls: [
+      //     {
+      //       label: 'item predictor analysis value',
+      //       name: 'itempredictor'
+      //     },
+      //     {
+      //       label: 'predictor Ratio 1: (Crown to Large Filling Ratio)',
+      //       name: 'ratio1'
+      //     },
+      //     {
+      //       label: 'Predictor Ratio 2: (Extraction to RCT Ratio)',
+      //       name: 'ratio2'
+      //     },
+      //     {
+      //       label: 'Predictor Ratio 3: (RCT Conversion Ratio)',
+      //       name: 'ratio3'
+      //     },
+      //     {
+      //       label: 'Total Revenue of Clinician Per Procedure value',
+      //       name: 'totalrevenue',
+      //       prefix: '$'
+      //     },
+      //     {
+      //       label: 'Referral to Other Clinicians Internal / External value',
+      //       name: 'referralclinician',
+      //       prefix: '$'
+      //     },
+      //   ]
+      // },
       front_desk: {
         patchValues: [],
         label: this.tabsConstants.front_desk,
         form: this.frontDeskForm,
-        startIndex: 15,
-        endIndex: 21,
+        startIndex: 7,
+        endIndex: 11,
         controls: [
           {
-            label: 'Procedure Analysis',
-            name: 'utilisationrate',
-            prefix: '$'
+            label: 'Utilisation Rate',
+            name: 'attendancerate',
+            postfix: '%'
           },
           {
             label: 'Recall prebook rate',
@@ -218,10 +218,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             name: 'uta',
             postfix: '%'
           },
-          {
-            label: 'Number of Ticks',
-            name: 'noticks'
-          },
+          // {
+          //   label: 'Number of Ticks',
+          //   name: 'noticks'
+          // },
           // {
           //   label: 'Recall Attendance Rate value',
           //   name: 'attendancerate',
@@ -233,18 +233,18 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
         patchValues: [],
         label: this.tabsConstants.marketing,
         form: this.marketingForm,
-        startIndex: 22,
-        endIndex: 26,
+        startIndex: 12,
+        endIndex: 14,
         controls: [
-          {
-            label: 'No. New Patients By Referral',
-            name: 'ƒreferralpatient'
-          },
-          {
-            label: 'Revenue by Referral',
-            name: 'revenuereferral',
-            prefix: '$'
-          },
+          // {
+          //   label: 'No. New Patients By Referral',
+          //   name: 'ƒreferralpatient'
+          // },
+          // {
+          //   label: 'Revenue by Referral',
+          //   name: 'revenuereferral',
+          //   prefix: '$'
+          // },
           {
             label: 'Total Visits',
             name: 'visits'
@@ -259,65 +259,65 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             prefix: '$'
           }
         ]
-      },
-      finances: {
-        patchValues: [],
-        label: this.tabsConstants.finances,
-        form: this.financesForm,
-        startIndex: 27,
-        endIndex: 36,
-        controls: [
-          {
-            label: 'Net Profit',
-            name: 'netprofit',
-            prefix: '$'
-          },
-          {
-            label: 'Net Profit % (Xero)',
-            name: 'netprofitxero',
-            postfix: '%'
-          },
-          {
-            label: 'Net Profit % (PMS)',
-            name: 'netprofitpms',
-            postfix: '%'
-          },
-          {
-            label: 'Expenses value',
-            name: 'expenses',
-            prefix: '$'
-          },
-          {
-            label: 'Production % Per Clinician',
-            name: 'productionclinician',
-            postfix: '%'
-          },
-          {
-            label: 'Total Production',
-            name: 'totalproduction',
-            prefix: '$'
-          },
-          {
-            label: 'Collection',
-            name: 'collection',
-            prefix: '$'
-          },
-          {
-            label: 'Production Per Visit',
-            name: 'visitproduction'
-          },
-          {
-            label: 'Total Discounts',
-            name: 'discount',
-            postfix: '%'
-          },
-          {
-            label: 'Overdue Accounts',
-            name: 'overdueaccount',
-            prefix: '$'
-          }
-        ]
-      },
+      }
+      // finances: {
+      //   patchValues: [],
+      //   label: this.tabsConstants.finances,
+      //   form: this.financesForm,
+      //   startIndex: 15,
+      //   endIndex: 36,
+      //   controls: [
+      //     {
+      //       label: 'Net Profit',
+      //       name: 'netprofit',
+      //       prefix: '$'
+      //     },
+      //     {
+      //       label: 'Net Profit % (Xero)',
+      //       name: 'netprofitxero',
+      //       postfix: '%'
+      //     },
+      //     {
+      //       label: 'Net Profit % (PMS)',
+      //       name: 'netprofitpms',
+      //       postfix: '%'
+      //     },
+      //     {
+      //       label: 'Expenses value',
+      //       name: 'expenses',
+      //       prefix: '$'
+      //     },
+      //     {
+      //       label: 'Production % Per Clinician',
+      //       name: 'productionclinician',
+      //       postfix: '%'
+      //     },
+      //     {
+      //       label: 'Total Production',
+      //       name: 'totalproduction',
+      //       prefix: '$'
+      //     },
+      //     {
+      //       label: 'Collection',
+      //       name: 'collection',
+      //       prefix: '$'
+      //     },
+      //     {
+      //       label: 'Production Per Visit',
+      //       name: 'visitproduction'
+      //     },
+      //     {
+      //       label: 'Total Discounts',
+      //       name: 'discount',
+      //       postfix: '%'
+      //     },
+      //     {
+      //       label: 'Overdue Accounts',
+      //       name: 'overdueaccount',
+      //       prefix: '$'
+      //     }
+      //   ]
+      // },
     }
 
     Object.keys(this.tabs).map(value => {

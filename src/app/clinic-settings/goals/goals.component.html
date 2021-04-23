@@ -1,6 +1,6 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
-    <mat-panel-title> Goals (Monthly) </mat-panel-title>
+    <mat-panel-title> Goals </mat-panel-title>
   </mat-expansion-panel-header>
   <mat-card-content>
     <div class="Goals-dropdowns mb-2" fxLayout="row wrap" fxLayoutGap="20px">
@@ -18,7 +18,7 @@
             [ngModel]="selectedGoalCategory$.value"
             (ngModelChange)="handleGoalCategorySelection($event)"
           >
-            <mat-option value="">Clinic Goals</mat-option>
+            <mat-option value="">Monthly Clinic Goals</mat-option>
             <mat-option
               *ngFor="let dentist of dentists"
               [value]="dentist.providerId"
