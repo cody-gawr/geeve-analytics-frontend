@@ -2729,9 +2729,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         
       if(data.data.plan_fee_completed){
         data.data.plan_fee_completed.forEach(res => {
-          if (res.total_fee_all > 0) {
-            if (res.total_fee_all)
-              this.treatmentPlanTrend2.push(Math.round(res.total_fee_all));
+          if (res.average_fees > 0) {
+            if (res.average_fees)
+              this.treatmentPlanTrend2.push(Math.round(res.average_fees));
             else
               this.treatmentPlanTrend2.push(0);
           }
