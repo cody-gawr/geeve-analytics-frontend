@@ -757,11 +757,11 @@ this.preoceedureChartColors = [
     {data: [], label: 'Surgical Extractions' }  ];
 
   public stackedChartDataItemSpecial: any[] = [
-      {data: [], label: 'Implant Surg.'},
-        {data: [], label: 'Ortho Fix' },
-        {data: [], label: 'Ortho Align' },
-        {data: [], label: 'Sleep' },
-        {data: [], label: 'Perio Surg.' }, 
+      {data: [], label: 'Implant Surg'},
+        {data: [], label: 'Braces' },
+        {data: [], label: 'Aligners' },
+        {data: [], label: 'MAS' },
+        {data: [], label: 'Perio Surg' }, 
         {data: [], label: 'Endo Re-treat' },  
         {data: [], label: 'Veneers (indirect)' } 
      ];
@@ -1178,13 +1178,13 @@ if(this._cookieService.get("user_type") == '4'){
   private predictorAnalysisSpecial() {
     this.ItemsPredictorAnalysisSpecialStatus =true;
     this.stackedChartDataItemSpecial = [
-        {data: [], label: 'Implant Surg.'},
-        {data: [], label: 'Ortho Fix' },
-        {data: [], label: 'Ortho Align' },
-        {data: [], label: 'Sleep' },
-        {data: [], label: 'Perio Surg.' }, 
-        {data: [], label: 'Endo Re-treat' },  
-        {data: [], label: 'Veneers (indirect)' }  
+      {data: [], label: 'Implant Surg'},
+      {data: [], label: 'Braces' },
+      {data: [], label: 'Aligners' },
+      {data: [], label: 'MAS' },
+      {data: [], label: 'Perio Surg' }, 
+      {data: [], label: 'Endo Re-treat' },  
+      {data: [], label: 'Veneers (indirect)' } 
         ];
   this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisSpecial(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
         this.ItemsPredictorAnalysisSpecialStatus =false;
@@ -1337,13 +1337,13 @@ if(this._cookieService.get("user_type") == '4'){
         this.procedureSpecialTemp = [];
         this.procedureSpecialLabels=[];
         var temp=[];
-        temp['Important Surgery'] = data.data[0].imp_surg;
-        temp['Ortho Fix'] = data.data[0].ortho_fix;
-        temp['Ortho Align'] = data.data[0].ortho_align;
-        temp['Sleep'] = data.data[0].sleep;
-        temp['Perio Surgery'] = data.data[0].perio_surg;
-        temp['Endo Retreat'] = data.data[0].endo_retreat;
-        temp['Veneers Ind'] = data.data[0].veneers_ind;
+        temp['Implant Surg'] = data.data[0].imp_surg;
+        temp['Braces'] = data.data[0].ortho_fix;
+        temp['Aligners'] = data.data[0].ortho_align;
+        temp['MAS'] = data.data[0].sleep;
+        temp['Perio Surg'] = data.data[0].perio_surg;
+        temp['Endo Re-treat'] = data.data[0].endo_retreat;
+        temp['Veneers (indirect)'] = data.data[0].veneers_ind;
         var tupleArray=[];
         for (var key in temp) tupleArray.push([key, temp[key]]);
         tupleArray.sort(function (a, b) { return b[1] - a[1] });
