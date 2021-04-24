@@ -17,7 +17,7 @@
       <option value ="5">Staff</option>
    </select> 
 </div>
- <div class="sa-form-group select-client">
+ <div class="sa-form-group">
     <label>Select Clinics</label>
   
       <mat-select [formControl]="selectedClinics" multiple (openedChange)="clinicSelect($event)">
@@ -28,7 +28,7 @@
 <div class="sa-form-group" *ngIf="show_dentist == true">
 <div class="selectedClinicProviders"  *ngFor="let clinicProviders of selectedClinicProviders; let i=index" style="margin-bottom:10px;" [ngClass] = "checkColumn(i)" >
 
-  <span>{{clinicProviders.clinicName}}</span>
+  <label>{{clinicProviders.clinicName}}</label>
   <span>  
     <select (change)="selectedDentist($event.target.value,i,clinicProviders.id)" class="sa_select sa_select_set_roles mat-form-control" name="dentist_id" required="true" *ngIf="clinicProviders.dentists.length>0">
       <option value ="0">Select Dentist</option>

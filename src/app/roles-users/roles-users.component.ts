@@ -97,7 +97,7 @@ public selectedClinicProviders=[];
   }
 
   checkColumn(i){
-    if( i > 2){
+    if( i > 50){
       $('.selectedClinicProviders').css({'width':'49%','float':'left','padding':'1%'});
     } else {
       $('.selectedClinicProviders').css({'width':'100%','float':'none','padding':'0px'});

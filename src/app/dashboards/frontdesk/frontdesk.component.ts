@@ -537,7 +537,7 @@ public fdWorkTimeAnalysisLoader:boolean;
 
 public ftaTotal;
 public ftaPrevTotal;
-public ftaTooltip='down';
+public ftaTooltip='up';
 public ftaGoal;
 public maxftaGoal:any=0;
 
@@ -570,7 +570,7 @@ public fdFtaRatioLoader:any;
           if(this.maxftaGoal ==0)
             this.maxftaGoal ='';
           if(this.ftaTotal>=this.ftaPrevTotal)
-            this.ftaTooltip = 'up';
+            this.ftaTooltip = 'down';
         }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -582,7 +582,7 @@ public fdFtaRatioLoader:any;
 
 public utaTotal;
 public utaPrevTotal;
-public utaTooltip='down';
+public utaTooltip='up';
 public utaGoal;
 public fdUtaRatioLoader:boolean;
 public maxutaGoal:any=0;
@@ -613,7 +613,7 @@ public maxutaGoal:any=0;
           if(this.maxutaGoal ==0)
             this.maxutaGoal ='';
           if(this.utaTotal>=this.utaPrevTotal)
-            this.utaTooltip = 'up';
+            this.utaTooltip = 'down';
         }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
