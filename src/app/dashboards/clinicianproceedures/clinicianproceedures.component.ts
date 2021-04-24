@@ -757,13 +757,13 @@ this.preoceedureChartColors = [
     {data: [], label: 'Surgical Extractions' }  ];
 
   public stackedChartDataItemSpecial: any[] = [
-      {data: [], label: 'Important Surgery'},
+      {data: [], label: 'Implant Surg.'},
         {data: [], label: 'Ortho Fix' },
         {data: [], label: 'Ortho Align' },
         {data: [], label: 'Sleep' },
-        {data: [], label: 'Perio Surgery' }, 
-        {data: [], label: 'Endo Retreat' },  
-        {data: [], label: 'Veneers Ind' } 
+        {data: [], label: 'Perio Surg.' }, 
+        {data: [], label: 'Endo Re-treat' },  
+        {data: [], label: 'Veneers (indirect)' } 
      ];
 
   public stackedChartData1: any[] = [];
@@ -1178,13 +1178,13 @@ if(this._cookieService.get("user_type") == '4'){
   private predictorAnalysisSpecial() {
     this.ItemsPredictorAnalysisSpecialStatus =true;
     this.stackedChartDataItemSpecial = [
-        {data: [], label: 'Important Surgery'},
+        {data: [], label: 'Implant Surg.'},
         {data: [], label: 'Ortho Fix' },
         {data: [], label: 'Ortho Align' },
         {data: [], label: 'Sleep' },
-        {data: [], label: 'Perio Surgery' }, 
-        {data: [], label: 'Endo Retreat' },  
-        {data: [], label: 'Veneers Ind' }  
+        {data: [], label: 'Perio Surg.' }, 
+        {data: [], label: 'Endo Re-treat' },  
+        {data: [], label: 'Veneers (indirect)' }  
         ];
   this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisSpecial(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
         this.ItemsPredictorAnalysisSpecialStatus =false;
