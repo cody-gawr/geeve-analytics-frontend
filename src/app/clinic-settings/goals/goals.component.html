@@ -12,13 +12,16 @@
         fxFlex.sm="30"
         fxFlex.xs="100"
       >
-        <mat-form-field floatLabel="never">
+        <mat-form-field >
+          <mat-label class="goals-form-field-label">
+            Monthly Goals
+          </mat-label>
           <mat-select
             class="external_dentist"
             [ngModel]="selectedGoalCategory$.value"
             (ngModelChange)="handleGoalCategorySelection($event)"
           >
-            <mat-option value="">Monthly Clinic Goals</mat-option>
+            <mat-option value="">Clinic Total</mat-option>
             <mat-option
               *ngFor="let dentist of dentists"
               [value]="dentist.providerId"
@@ -37,7 +40,9 @@
         fxFlex.sm="30"
         fxFlex.xs="100"
       >
-        <mat-form-field floatLabel="never">
+        <mat-form-field>
+          <mat-label class="goals-form-field-label">
+          Dashboard </mat-label>
           <mat-select
             *ngIf="tabsOptions.length"
             class="external_dentist"
