@@ -24,6 +24,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   marketingForm: FormGroup;
   financesForm: FormGroup;
   dentists: any = [];
+  goalsData: any = [];
   clinicAnalysisGoals: any = [];
   tabs: any = [];
   tabsConstants = {
@@ -35,7 +36,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   }
   tabsOptions: string[] = [];
   selectedGoalCategory$ = new BehaviorSubject<any>('');
-  selectedTab: string = this.tabsConstants.clinic_analysis;
+  selectedTab: any = 1;
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
   };
@@ -64,14 +65,14 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       hourlyrate: [null, Validators.compose([Validators.required])]
     });
 
-    this.clinicProcedureForm = this.fb.group({
+/*    this.clinicProcedureForm = this.fb.group({
       itempredictor: [null, Validators.compose([Validators.required])],
       ratio1: [null, Validators.compose([Validators.required])],
       ratio2: [null, Validators.compose([Validators.required])],
       ratio3: [null, Validators.compose([Validators.required])],
       totalrevenue: [null, Validators.compose([Validators.required])],
       referralclinician: [null, Validators.compose([Validators.required])]
-    });
+    });*/
 
     this.frontDeskForm = this.fb.group({
       utilisationrate: [null, Validators.compose([Validators.required])],
@@ -91,7 +92,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       patientcost: [null, Validators.compose([Validators.required])]
     });
 
-    this.financesForm = this.fb.group({
+/*    this.financesForm = this.fb.group({
       netprofit: [null, Validators.compose([Validators.required])],
       netprofitxero: [null, Validators.compose([Validators.required])],
       netprofitpms: [null, Validators.compose([Validators.required])],
@@ -102,7 +103,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       visitproduction: [null, Validators.compose([Validators.required])],
       discount: [null, Validators.compose([Validators.required])],
       overdueaccount: [null, Validators.compose([Validators.required])]
-    });
+    });*/
 
     this.tabs = {
       clinic_analysis: {
@@ -334,14 +335,14 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       this.selectedGoalCategory$
     ])
       .pipe(
-        takeUntil(this.destroyed$)
+        takeUntil(this.destroyed$) 
       ).subscribe(inputs => {
         const [id, selectedGoalCategory] = inputs;
         if (id) {
           if (selectedGoalCategory === '') {
-            this.clinicGoalsService.getClinicGoals(id).subscribe((res) => {
+            this.clinicGoalsService.getGoalAllData(id).subscribe((res) => {
               if (res.message == 'success') {
-                this.getGoalsForTabs(res.data);
+                this.getGoalsForTabsClinic(res.data);
               } else if (res.status == '401') {
                 this.handleUnAuthorization();
               }
@@ -384,6 +385,37 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     this.selectedGoalCategory$.next(event);
   }
 
+
+getGoalsForTabsClinic(allGoals) {
+  this.tabs = [];
+  this.goalsData = [];
+  if(allGoals[0]){
+    this.selectedTab = allGoals[0]['id'];
+  }
+  allGoals.forEach((res)=> {
+    var temp = [];
+    temp['name'] = res.dashboard;
+    temp['id'] = res.id;
+    temp['charts'] = [];
+    res.master_charts.forEach((charts,key) => {
+      var tempChart = [];     
+      tempChart['chart'] = charts.chart;
+      tempChart['control'] = charts.chart;
+      tempChart['id'] = charts.id;
+      tempChart['sign'] = charts.sign;
+      tempChart['value'] = 0;
+      if(charts.clinic_goal) {
+        tempChart['value'] = charts.clinic_goal.value;
+      }
+      this.goalsData[charts.id] = tempChart['value'];
+      temp['charts'].push(tempChart);
+    });
+    this.tabs.push(temp);    
+  });
+}
+
+
+
   getGoalsForTabs(allGoals) {
     let start = 0;
     let end = 0;
@@ -419,8 +451,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   }
 
   onSubmit() {
-    const allFormsData = this.getFormsData();
-    let myJsonString = JSON.stringify(allFormsData);
+   // const allFormsData = this.getFormsData();
+    let myJsonString = JSON.stringify(this.goalsData);
     $('.ajax-loader').show();
     if (this.selectedGoalCategory$.value === '') {
       this.updateClinicGoals(myJsonString);
@@ -465,5 +497,15 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     this._cookieService.put("userid", '');
     this.router.navigateByUrl('/login');
   }
-
+  updateName(name){
+    var name = name.split('-');
+    if(name[1]){
+      return name[1];
+    }
+    return name;
+  }
+  onBlur(id,val){
+    this.goalsData[id] =  parseInt(val);
+     console.log(this.goalsData,'*****');
+  }
 }
