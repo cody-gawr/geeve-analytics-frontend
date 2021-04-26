@@ -24,7 +24,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   marketingForm: FormGroup;
   financesForm: FormGroup;
   dentists: any = [];
-  goalsData: any = [];
+  goalsData: any = {};
   clinicAnalysisGoals: any = [];
   tabs: any = [];
   tabsConstants = {
@@ -54,7 +54,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   }
 
   ngOnInit() {
-    this.clinicAnalysisForm = this.fb.group({
+/*    this.clinicAnalysisForm = this.fb.group({
       dentistprod: [null, Validators.compose([Validators.required])],
       treatmentplan: [null, Validators.compose([Validators.required])],
       planaverage: [null, Validators.compose([Validators.required])],
@@ -63,7 +63,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       patientcomplaints: [null, Validators.compose([Validators.required])],
       newpatients: [null, Validators.compose([Validators.required])],
       hourlyrate: [null, Validators.compose([Validators.required])]
-    });
+    });*/
 
 /*    this.clinicProcedureForm = this.fb.group({
       itempredictor: [null, Validators.compose([Validators.required])],
@@ -73,7 +73,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       totalrevenue: [null, Validators.compose([Validators.required])],
       referralclinician: [null, Validators.compose([Validators.required])]
     });*/
-
+/*
     this.frontDeskForm = this.fb.group({
       utilisationrate: [null, Validators.compose([Validators.required])],
       recallprebook: [null, Validators.compose([Validators.required])],
@@ -82,15 +82,15 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       uta: [null, Validators.compose([Validators.required])],
       noticks: [null, Validators.compose([Validators.required])],
       attendancerate: [null, Validators.compose([Validators.required])]
-    });
+    });*/
 
-    this.marketingForm = this.fb.group({
+/*    this.marketingForm = this.fb.group({
       ƒreferralpatient: [null, Validators.compose([Validators.required])],
       revenuereferral: [null, Validators.compose([Validators.required])],
       visits: [null, Validators.compose([Validators.required])],
       newpatients2: [null, Validators.compose([Validators.required])],
       patientcost: [null, Validators.compose([Validators.required])]
-    });
+    });*/
 
 /*    this.financesForm = this.fb.group({
       netprofit: [null, Validators.compose([Validators.required])],
@@ -105,8 +105,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       overdueaccount: [null, Validators.compose([Validators.required])]
     });*/
 
-    this.tabs = {
-      clinic_analysis: {
+  /*  this.tabs = {*/
+    /*  clinic_analysis: {
         patchValues: {},
         label: this.tabsConstants.clinic_analysis,
         form: this.clinicAnalysisForm,
@@ -151,8 +151,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             name: 'newpatients'
           }
         ]
-      },
-      clinic_procedure_and_referrals: {
+      },*/
+/*      clinic_procedure_and_referrals: {
         patchValues: [],
         label: this.tabsConstants.clinic_procedure_and_referrals,
         form: this.clinicProcedureForm,
@@ -186,8 +186,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             prefix: '$'
           },
         ]
-      },
-      front_desk: {
+      },*/
+/*      front_desk: {
         patchValues: [],
         label: this.tabsConstants.front_desk,
         form: this.frontDeskForm,
@@ -229,8 +229,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             postfix: '%'
           }
         ]
-      },
-      marketing: {
+      },*/
+/*      marketing: {
         patchValues: [],
         label: this.tabsConstants.marketing,
         form: this.marketingForm,
@@ -260,7 +260,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             prefix: '$'
           }
         ]
-      }
+      }*/
       // finances: {
       //   patchValues: [],
       //   label: this.tabsConstants.finances,
@@ -319,12 +319,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       //     }
       //   ]
       // },
-    }
-
-    Object.keys(this.tabs).map(value => {
-      this.tabsOptions.push(this.tabsConstants[value]);
-    });
-
+   /* }*/
     if (this.clinic_id$.value) this.getDentists(this.clinic_id$.value);
 
   }
@@ -339,29 +334,23 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       ).subscribe(inputs => {
         const [id, selectedGoalCategory] = inputs;
         if (id) {
-          if (selectedGoalCategory === '') {
-            this.clinicGoalsService.getGoalAllData(id).subscribe((res) => {
-              if (res.message == 'success') {
-                this.getGoalsForTabsClinic(res.data);
-              } else if (res.status == '401') {
-                this.handleUnAuthorization();
-              }
-            }, error => {
-              console.log('error', error)
-            });
-          } else {
-            this.dentistGoalsService.getDentistGoals(id, selectedGoalCategory).subscribe((res) => {
-              if (res.message == 'success') {
-                this.getGoalsForTabs(res.data);
-              } else if (res.status == '401') {
-                this.handleUnAuthorization();
-              }
-            }, error => {
-              console.log('error', error)
-            });
-          }
+          this.getData(id,selectedGoalCategory);
         }
       });
+  }
+
+
+  getData(id,selectedGoalCategory) 
+  {
+    this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory).subscribe((res) => {
+            if (res.message == 'success') {
+              this.getGoalsForTabsClinic(res.data);
+            } else if (res.status == '401') {
+              this.handleUnAuthorization();
+            }
+          }, error => {
+            console.log('error', error)
+          });
   }
 
   getDentists(clinicID) {
@@ -381,16 +370,16 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     this.selectedTab = event;
   }
 
-  handleGoalCategorySelection(event) {
+  handleGoalCategorySelection(event) {   
     this.selectedGoalCategory$.next(event);
   }
 
 
 getGoalsForTabsClinic(allGoals) {
   this.tabs = [];
-  this.goalsData = [];
+  this.goalsData = {};
   if(allGoals[0]){
-    this.selectedTab = allGoals[0]['id'];
+    this.selectedTab = allGoals[0]['id'];    
   }
   allGoals.forEach((res)=> {
     var temp = [];
@@ -407,7 +396,10 @@ getGoalsForTabsClinic(allGoals) {
       if(charts.clinic_goal) {
         tempChart['value'] = charts.clinic_goal.value;
       }
-      this.goalsData[charts.id] = tempChart['value'];
+      if(charts.dentist_goal) {
+        tempChart['value'] = charts.dentist_goal.value;
+      }
+      this.goalsData[parseInt(charts.id)] = tempChart['value'];
       temp['charts'].push(tempChart);
     });
     this.tabs.push(temp);    
@@ -505,7 +497,6 @@ getGoalsForTabsClinic(allGoals) {
     return name;
   }
   onBlur(id,val){
-    this.goalsData[id] =  parseInt(val);
-     console.log(this.goalsData,'*****');
+    this.goalsData[parseInt(id)] =  parseInt(val);   
   }
 }

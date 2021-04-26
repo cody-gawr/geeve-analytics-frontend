@@ -43,7 +43,7 @@
         <mat-form-field>
           <mat-label class="goals-form-field-label">
           Dashboard </mat-label>
-          <mat-select class="external_dentist" [(ngModel)]="selectedTab" (ngModelChange)=" onTabChanged($event)" >
+          <mat-select class="external_dentist" [(ngModel)]="selectedTab" (ngModelChange)="onTabChanged($event)" >
             <mat-option *ngFor="let tab of tabs" [value]="tab.id">{{ updateName(tab.name) }} </mat-option>
           </mat-select>
         </mat-form-field>
