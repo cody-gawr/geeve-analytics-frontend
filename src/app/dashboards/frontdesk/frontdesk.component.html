@@ -179,7 +179,7 @@
             <p class="chart-placeholder-text">You have no recall prebookings in the selected period</p>
           </div>
 
-        <div *ngIf="showTrend && recallPrebookChartTrend1.length > 0 && !fdRecallPrebookRateTrendLoader" style="height: 300px;width: 100%">
+        <div *ngIf="showTrend && recallPrebookChartTrend1.length > 0 && !fdRecallPrebookRateTrendLoader" style="height: 330px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="recallPrebookChartTrend" [labels]="recallPrebookChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
           <!-- [colors]="predictedChartColors"  -->
@@ -266,7 +266,7 @@
             <p class="chart-placeholder-text">You have no treatment prebookings in the selected period</p>
           </div>
 
-<div *ngIf="showTrend && treatmentPrebookChartTrend1.length > 0 && !fdTreatmentPrebookRateTrendLoader" style="height: 300px;width: 100%">
+<div *ngIf="showTrend && treatmentPrebookChartTrend1.length > 0 && !fdTreatmentPrebookRateTrendLoader" style="height: 330px;width: 100%">
       <canvas #myCanvas baseChart [datasets]="treatmentPrebookChartTrend" [labels]="treatmentPrebookChartTrendLabels" [options]="stackedChartOptions" 
           [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
           <!-- [colors]="predictedChartColors" -->

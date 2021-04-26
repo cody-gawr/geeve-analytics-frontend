@@ -232,7 +232,7 @@ Cost of New Patient Acquisition
 
 <div  *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect)" style="height: 200px">
 <ngx-gauge class="singleRatio" [type]="gaugeType"
-[value]="newAcqValue" 
+[value]="newAcqValue"  
 [thick]="gaugeThick"  
 [foregroundColor]="foregroundColor"
 [backgroundColor]="backgroundColor"
@@ -282,7 +282,7 @@ Cost of New Patient Acquisition
  </div>
  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
  *ngIf="duration!='custom'">
- <h3 class="m-0 value-num">$0</h3>
+ <h3 class="m-0 value-num">${{ newAcqValueGoal }}</h3>
  <span class="value-text">Goal</span>
 </div>
 </div>   

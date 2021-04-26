@@ -770,6 +770,7 @@ public expenseData=[];
 public categories=[];
 public fdnewPatientsAcqLoader:any;
 public newAcqValuePrev =0;
+public newAcqValueGoal:any =0;
 //Predictor Ratio :
   private fdnewPatientsAcq() {
      if(this.duration && this.connectedwith !=''){
@@ -779,7 +780,10 @@ public newAcqValuePrev =0;
        
        this.marketingService.categoryExpenses(this.clinic_id,this.startDate,this.endDate,this.duration,this.connectedwith).subscribe((data) => {
           if(data.message == 'success'){
-       this.fdnewPatientsAcqLoader = false;
+            this.fdnewPatientsAcqLoader = false;
+            if(data.goals){
+              this.newAcqValueGoal = data.goals;
+            }
        // checking if any new account name found in report then we are saving that one in existing accounts
             this.categories=[];
             this.expenseData=[];
@@ -1343,7 +1347,7 @@ load_chart_acq() {
       if(this.expenseData[res])
       totalY = totalY+parseInt(this.expenseData[res]);
     });
-this.newAcqValue = 0;
+    this.newAcqValue = 0;
     if(totalY != undefined && this.newPatientsTotal>0)
     this.newAcqValue = (totalY/this.newPatientsTotal).toFixed(0);
     $('.close_modal').click();
