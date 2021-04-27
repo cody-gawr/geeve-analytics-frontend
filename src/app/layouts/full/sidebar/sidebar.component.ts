@@ -1,19 +1,10 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  NgZone,
-  OnDestroy,
-  ViewChild,
-  HostListener,
-  Directive,
-  AfterViewInit
-} from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnDestroy, ViewChild, HostListener, Directive, AfterViewInit } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { MenuItems } from '../../../shared/menu-items/menu-items';
+//import { MenuItems } from '../../../shared/menu-items/menu-items';
 import { CookieService } from "ngx-cookie";
 import { HeaderService } from '../header/header.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -30,8 +21,16 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   public display_name;
   public user_image;
   public login_status;
-  clickEvent() {
+  public nav_open = "";
+  public activeRoute = "";
+
+  clickEvent(val) {
     this.status = !this.status;
+    if(this.nav_open == val){
+      this.nav_open = '';
+    } else {
+      this.nav_open = val;
+    }
   }
 
   subclickEvent() {
@@ -40,11 +39,21 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
-    public menuItems: MenuItems,
+   // public menuItems: MenuItems,
     private headerService: HeaderService
     ,private _cookieService: CookieService,
     private route: ActivatedRoute, private router: Router
   ) {
+      this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
+          this.activeRoute = router.url;           
+          if(this.activeRoute == '/dashboards/cliniciananalysis' || this.activeRoute == '/dashboards/clinicianproceedures' || this.activeRoute == '/dashboards/frontdesk' || this.activeRoute == '/dashboards/marketing' || this.activeRoute == '/dashboards/finances'){
+            this.nav_open = 'dashboards';
+          } else if(this.activeRoute == '/clinic' || this.activeRoute == '/roles-users' || this.activeRoute == '/profile-settings'){
+            this.nav_open = 'setting';
+          } else {
+            this.nav_open = '';
+          }
+        });
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);

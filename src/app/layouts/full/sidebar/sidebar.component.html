@@ -9,9 +9,122 @@
     <div class="sa_sidebar_usersec">
         <div class="suer_image_sidebar"><span><img src="{{user_image}}"></span></div>
         <div class="suer_text_sidebar">{{display_name | uppercase}}</div>
-
     </div>
-    <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected" group="{{menuitem.state}}">
+
+
+    <mat-list-item appAccordionLink routerLinkActive ="selected" group="string">
+         <a appAccordionToggle [routerLink]="['/dashboards/healthscreen']">
+            <i class="fa-clinic-medical fas"></i>
+            <span>Clinic Health</span>
+            <span fxFlex></span>
+        </a>
+    </mat-list-item>
+    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" >
+        <a class="" appAccordionToggle [routerLink]="['/morning-huddle']">
+            <i class="fa-coffee fas"></i>
+            <span>Morning Huddle</span>
+            <span fxFlex></span>
+        </a>
+    </mat-list-item>
+    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+        <a class="" appAccordionToggle  href="javascript: void(0);" (click)="clickEvent('dashboards')" [ngClass]="status ? 'selected' : ''" >
+            <i class="fa-chart-area fas"></i>
+            <span>Dashboards</span>
+            <span fxFlex></span>            
+            <i *ngIf="nav_open != 'dashboards'" class="fas fa-caret-up"></i>
+            <i *ngIf="nav_open == 'dashboards'" class="fas fa-caret-down"></i>
+        </a>
+    <ng-template [ngIf]="nav_open == 'dashboards'">
+        <mat-nav-list appAccordion>
+            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+                <a class="relative" appAccordionToggle [routerLink]="['/dashboards/cliniciananalysis']">
+                    <i></i>
+                    <span>Clinician Analysis</span>
+                    <span fxFlex></span>
+                </a>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+                <a class="relative" appAccordionToggle [routerLink]="['/dashboards/clinicianproceedures']">
+                    <i></i>
+                    <span>Clinician Procedures & Referrals</span>
+                    <span fxFlex></span>
+                </a>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive= "selected"  group="string">
+                <a class="" appAccordionToggle [routerLink]="['/dashboards/frontdesk']">
+                    <i></i>
+                    <span>Front Desk</span>
+                    <span fxFlex></span>
+                </a>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+                <a class="" appAccordionToggle [routerLink]="['/dashboards/marketing']">
+                    <i></i>
+                    <span>Marketing</span>
+                    <span fxFlex></span>
+                </a>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+                <a class="" appAccordionToggle [routerLink]="['/dashboards/finances']">
+                    <i></i>
+                    <span>Finances</span>
+                    <span fxFlex></span>
+                </a>
+            </mat-list-item>
+        </mat-nav-list> 
+    </ng-template>  
+    </mat-list-item> 
+     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string">
+         <a class="" appAccordionToggle [routerLink]="['/lost-opportunity']">
+            <i class="fa-briefcase fas"></i>
+            <span>Lost Opportunity</span>
+            <span fxFlex></span>
+        </a>
+    </mat-list-item>
+
+    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+        <a class="" appAccordionToggle  href="javascript: void(0);" (click)="clickEvent('setting')" [ngClass]="status ? 'selected' : ''" >
+            <i class="fa-cog fas"></i>
+            <span>Settings</span>
+            <span fxFlex></span>            
+            <i *ngIf="nav_open != 'setting'" class="fas fa-caret-up"></i>
+            <i *ngIf="nav_open == 'setting'" class="fas fa-caret-down"></i>
+        </a>
+    <ng-template [ngIf]="nav_open == 'setting'">
+        <mat-nav-list appAccordion>
+            <mat-list-item appAccordionLink routerLinkActive= "selected" >
+                <a class="relative" appAccordionToggle [routerLink]="['/clinic']">
+                    <i></i>
+                    <span>Clinics</span>
+                    <span fxFlex></span>
+                </a>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive= "selected" >
+                <a class="relative" appAccordionToggle [routerLink]="['/roles-users']">
+                    <i></i>
+                    <span>Users</span>
+                    <span fxFlex></span>
+                </a>
+            </mat-list-item>
+            <mat-list-item appAccordionLink routerLinkActive= "selected" >
+                <a class="" appAccordionToggle [routerLink]="['/profile-settings']">
+                    <i></i>
+                    <span>Profile Setting</span>
+                    <span fxFlex></span>
+                </a>
+            </mat-list-item>           
+        </mat-nav-list> 
+    </ng-template>   
+</mat-list-item>   
+<div class="sa_logout_icon" (click) = "logout()">
+    <button mat-icon-button >
+        <img class="logout-icon" src="assets/images/logout.png" alt="logout-icon" />Logout
+    </button>
+</div>
+</mat-nav-list>
+
+
+    <!-- <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected" group="{{menuitem.state}}">
         <a class="" appAccordionToggle [routerLink]="['/', menuitem.state]" *ngIf="menuitem.type === 'link' &&  menuitem.role.indexOf(user_type) !== -1 && login_status != 5" >
             <i class="{{ menuitem.icon }}"></i>
             <span>{{ menuitem.name }}</span>
@@ -147,10 +260,5 @@
         <div class="saperator text-muted" *ngIf="menuitem.type === 'saperator' && menuitem.role.indexOf(user_type) !== -1 && login_status != 5">
             <span>{{ menuitem.name }}</span>
         </div>
-    </mat-list-item>
-    <div class="sa_logout_icon" (click) = "logout()">
-        <button mat-icon-button >
-            <img class="logout-icon" src="assets/images/logout.png" alt="logout-icon" />Logout
-        </button>
-    </div>
-</mat-nav-list>
+    </mat-list-item> -->
+   
