@@ -101,7 +101,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
      if(val != undefined && val !='all') {
     this.clinic_id = val;
  if( this._cookieService.get("dentistid")) {
-             this.childid = this._cookieService.get("dentistid");
+             this.childid = this._cookieService.get("childid");
              this.dentistid = this._cookieService.get("dentistid");
            }
     this.getDentists();   
@@ -140,7 +140,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
      // this.initiate_clinic();
         
            if( this._cookieService.get("dentistid")) {
-             this.childid = this._cookieService.get("dentistid");
+             this.childid = this._cookieService.get("childid");
              this.dentistid = this._cookieService.get("dentistid");
            }
           if($('body').find('span#currentDentist').length > 0){
@@ -157,10 +157,10 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         $('.header_filters').removeClass('hide_header');
         $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
         $('.external_clinic').show();
-        $('.external_dentist').show();
+        //$('.external_dentist').show();
         if(this.childid != ''){
-          $('.dentist_dropdown').hide();
-          $('.header_filters').addClass('flex_direct_mar'); 
+          //$('.dentist_dropdown').hide();
+          //$('.header_filters').addClass('flex_direct_mar'); 
         }
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
@@ -757,13 +757,13 @@ this.preoceedureChartColors = [
     {data: [], label: 'Surgical Extractions' }  ];
 
   public stackedChartDataItemSpecial: any[] = [
-      {data: [], label: 'Important Surgery'},
-        {data: [], label: 'Ortho Fix' },
-        {data: [], label: 'Ortho Align' },
-        {data: [], label: 'Sleep' },
-        {data: [], label: 'Perio Surgery' }, 
-        {data: [], label: 'Endo Retreat' },  
-        {data: [], label: 'Veneers Ind' } 
+      {data: [], label: 'Implant Surg'},
+        {data: [], label: 'Braces' },
+        {data: [], label: 'Aligners' },
+        {data: [], label: 'MAS' },
+        {data: [], label: 'Perio Surg' }, 
+        {data: [], label: 'Endo Re-treat' },  
+        {data: [], label: 'Veneers (indirect)' } 
      ];
 
   public stackedChartData1: any[] = [];
@@ -1028,7 +1028,7 @@ if(this._cookieService.get("user_type") == '4'){
       this.buildChartProceedure();
       $('.revenueProceedureSingle').hide();
       $('.revenueProceedure').show();
-    }else {
+    } else {
         this.selectedDentist =  this.dentistid;
         this.buildChartReferralDentist();
         this.buildChartProceedureDentist();
@@ -1178,13 +1178,13 @@ if(this._cookieService.get("user_type") == '4'){
   private predictorAnalysisSpecial() {
     this.ItemsPredictorAnalysisSpecialStatus =true;
     this.stackedChartDataItemSpecial = [
-        {data: [], label: 'Important Surgery'},
-        {data: [], label: 'Ortho Fix' },
-        {data: [], label: 'Ortho Align' },
-        {data: [], label: 'Sleep' },
-        {data: [], label: 'Perio Surgery' }, 
-        {data: [], label: 'Endo Retreat' },  
-        {data: [], label: 'Veneers Ind' }  
+      {data: [], label: 'Implant Surg'},
+      {data: [], label: 'Braces' },
+      {data: [], label: 'Aligners' },
+      {data: [], label: 'MAS' },
+      {data: [], label: 'Perio Surg' }, 
+      {data: [], label: 'Endo Re-treat' },  
+      {data: [], label: 'Veneers (indirect)' } 
         ];
   this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisSpecial(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
         this.ItemsPredictorAnalysisSpecialStatus =false;
@@ -1337,13 +1337,13 @@ if(this._cookieService.get("user_type") == '4'){
         this.procedureSpecialTemp = [];
         this.procedureSpecialLabels=[];
         var temp=[];
-        temp['Important Surgery'] = data.data[0].imp_surg;
-        temp['Ortho Fix'] = data.data[0].ortho_fix;
-        temp['Ortho Align'] = data.data[0].ortho_align;
-        temp['Sleep'] = data.data[0].sleep;
-        temp['Perio Surgery'] = data.data[0].perio_surg;
-        temp['Endo Retreat'] = data.data[0].endo_retreat;
-        temp['Veneers Ind'] = data.data[0].veneers_ind;
+        temp['Implant Surg'] = data.data[0].imp_surg;
+        temp['Braces'] = data.data[0].ortho_fix;
+        temp['Aligners'] = data.data[0].ortho_align;
+        temp['MAS'] = data.data[0].sleep;
+        temp['Perio Surg'] = data.data[0].perio_surg;
+        temp['Endo Re-treat'] = data.data[0].endo_retreat;
+        temp['Veneers (indirect)'] = data.data[0].veneers_ind;
         var tupleArray=[];
         for (var key in temp) tupleArray.push([key, temp[key]]);
         tupleArray.sort(function (a, b) { return b[1] - a[1] });

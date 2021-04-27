@@ -12,19 +12,21 @@
         fxFlex.sm="30"
         fxFlex.xs="100"
       >
-        <mat-form-field floatLabel="never">
-          <mat-select
-            class="external_dentist"
-            [ngModel]="selectedGoalCategory$.value"
-            (ngModelChange)="handleGoalCategorySelection($event)"
-          >
-            <mat-option value="">Monthly Clinic Goals</mat-option>
+        <mat-form-field >
+          <mat-label class="goals-form-field-label">
+            Monthly Goals
+          </mat-label>
+          <mat-select class="external_dentist" [ngModel]="selectedGoalCategory$.value" (ngModelChange)="handleGoalCategorySelection($event)"  *ngIf="selectedTab == 1">
+            <mat-option value="">Clinic Total</mat-option>
             <mat-option
               *ngFor="let dentist of dentists"
               [value]="dentist.providerId"
             >
               {{ dentist.name }}
             </mat-option>
+          </mat-select>
+          <mat-select class="external_dentist" [ngModel]="selectedGoalCategory$.value" (ngModelChange)="handleGoalCategorySelection($event)"  *ngIf="selectedTab != 1">
+            <mat-option value="">Clinic Total</mat-option>            
           </mat-select>
         </mat-form-field>
       </div>
@@ -37,19 +39,11 @@
         fxFlex.sm="30"
         fxFlex.xs="100"
       >
-        <mat-form-field floatLabel="never">
-          <mat-select
-            *ngIf="tabsOptions.length"
-            class="external_dentist"
-            [(ngModel)]="selectedTab"
-            (ngModelChange)="onTabChanged($event)"
-          >
-            <mat-option
-              *ngFor="let tab of tabsOptions"
-              [value]="tab"
-            >
-              {{ tab }}
-            </mat-option>
+        <mat-form-field>
+          <mat-label class="goals-form-field-label">
+          Dashboard </mat-label>
+          <mat-select class="external_dentist" [(ngModel)]="selectedTab" (ngModelChange)="onTabChanged($event)" >
+            <mat-option *ngFor="let tab of tabs" [value]="tab.id">{{ updateName(tab.name) }} </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -62,21 +56,17 @@
         fxFlex="100"
         class="sa_mattabs_design sa_matforms_design"
       >
-        <div *ngFor="let tab of tabs | keyvalue">
-          <div class="example-small-box">
-            <form
-              [formGroup]="tab.value.form"
-              class="basic-form"
-              *ngIf="selectedTab === tabsConstants[tab.key]"
-            >
+        <div *ngFor="let tab of tabs">
+          <div class="example-small-box">           
+            <form  class="basic-form" *ngIf="selectedTab == tab.id"> <!-- [formGroup]="tab.name" -->
               <div class="matInput-form-group">
-                <mat-form-field class="sa-form-group" *ngFor="let control of tabs[tab.key].controls">
+                <mat-form-field class="sa-form-group" *ngFor="let control of tab.charts">
                   <mat-label class="goals-form-field-label">
-                    {{ control.label }}
+                    {{ control.chart }}
                   </mat-label>
-                  <span matPrefix [ngStyle]="{'opacity': control.prefix ? '1' : '0'}">$ &nbsp;</span>
-                  <input class="goals-form-input-field" matInput [formControl]="tab.value.form.controls[control.name]" />
-                  <span matSuffix *ngIf="control.postfix">&nbsp; {{ control.postfix }}</span>
+                 <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span>
+                  <input class="goals-form-input-field" matInput value="{{ control.value }}" name="control.control" (blur)="onBlur(control.id, $event.target.value)"/> <!-- [formControl]="control.control" -->
+                  <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span>
                 </mat-form-field>                
               </div>
             </form>

@@ -762,7 +762,7 @@
   <mat-card-title>Unscheduled Patients</mat-card-title>
   <mat-card-content> 
 <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
-  <table mat-table [dataSource]="followupsUnscheduledPatients" class="mat-elevation-z8">
+  <table mat-table [dataSource]="followupsUnscheduledPatients" class="mat-elevation-z8 customWidth">
 
     <!-- Patient Name Column -->
     <ng-container matColumnDef="name">
@@ -823,7 +823,7 @@
   <mat-card-title>Post op Calls</mat-card-title>
   <mat-card-content> 
 <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
-  <table mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8">
+  <table mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8 customWidth">
 
 
     <!-- Name Column -->

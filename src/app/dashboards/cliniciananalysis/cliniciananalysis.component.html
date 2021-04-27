@@ -112,14 +112,6 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <!-- <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
-                </div>
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
-                </div>
-              </div> -->
               <div style="height: 350px" *ngIf="barChartData[0].data.length && !buildChartLoader">
                 <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
                   [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP" [colors]="DPcolors">
@@ -177,14 +169,6 @@
               </div>
             </mat-card-title>
             <div class="card-body">
-              <!-- <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
-                </div>
-                <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
-                </div>
-              </div> -->
               <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 350px"
                 *ngIf="showTrendChart == false && gaugeValue > 0 && !buildChartDentistLoader">
                 <ngx-gauge [type]="gaugeType" [value]="gaugeValue" [label]="gaugeLabel" [thick]="gaugeThick"
@@ -588,10 +572,10 @@
             <div class="card-body">
               <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec" fxLayoutAlign="center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
                 </div>
               </div>
               <div style="height: 350px">
@@ -633,11 +617,11 @@
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                <!-- <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num" *ngIf="planTotalGoal && goalCount">${{ (planTotalGoal * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
-                </div>
+                </div> -->
               </div>
             </div>
             <div *ngIf="buildChartTreatmentLoader || buildChartTreatmentDentistLoader"
@@ -665,11 +649,11 @@
             <div class="card-body">
               <div fxLayout="row wrap" fxLayoutAlign="center" class="treatment_cost sa_tabs_main_sec">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCostSingle('1')">Proposed
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCostSingle('1')">Avg. Proposed
                     Fees</small>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCostSingle('2')">Avg. Completed Fees</small>
                 </div>
               </div>
               <!-- <div fxLayout="row wrap" fxLayoutAlign="center center" class="prebook_rate sa_tabs_main_sec btn-right">
@@ -729,11 +713,11 @@
                   <span class="value-text" *ngIf="currentText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Previous</span>                
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                <!-- <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num" *ngIf="planTotalGoal && goalCount">${{ (planTotalGoal * goalCount )| number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
-                </div>
+                </div> -->
               </div>
             </div>
             <div *ngIf="buildChartTreatmentLoader || buildChartTreatmentDentistLoader"
@@ -766,10 +750,10 @@
             <div class="card-body" >
               <div fxLayout="row wrap" class="hide treatment_cost sa_tabs_main_sec">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active">Proposed Fees</small>
+                  <small class="sa_tab_btn tcmain1 active">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2">Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2">Avg. Completed Fees</small>
                 </div>
               </div>
               <div class="chart"
@@ -834,10 +818,10 @@
             <div class="card-body">
               <div fxLayout="row wrap" class="hide treatment_cost sa_tabs_main_sec">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
                 </div>
               </div>
               <div class="chart"
@@ -1163,10 +1147,10 @@
             <div class="card-body">
               <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
                 </div>
               </div>
               <div class="chart">
@@ -1200,11 +1184,11 @@
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                <!-- <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num" *ngIf="doughnutGoals && goalCount">{{ (doughnutGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
-                </div>
+                </div> -->
               </div>
             </div>
             <div *ngIf="buildChartNopatientsLoader"
@@ -1232,10 +1216,10 @@
             <div class="card-body">
               <div fxLayout="row wrap" class="treatment_cost sa_tabs_main_sec hide-item">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Proposed Fees</small>
+                  <small class="sa_tab_btn tcmain1 active" (click)="changeTreatmentCost('1')">Avg. Proposed Fees</small>
                 </div>
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Completed Fees</small>
+                  <small class="sa_tab_btn tcmain2" (click)="changeTreatmentCost('2')">Avg. Completed Fees</small>
                 </div>
               </div>
               <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 300px"
@@ -1273,11 +1257,11 @@
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                <!-- <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num" *ngIf="doughnutGoals && goalCount">{{ (doughnutGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
-                </div>
+                </div> -->
               </div>
             </div>
             <div *ngIf="buildChartNopatientsLoader" class="loader_container loader_container_middle"><img

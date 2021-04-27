@@ -148,8 +148,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $('.header_filters').removeClass('flex_direct_mar');
     $('.header_filters').removeClass('hide_header');
     if (this.childid != '') {
-      $('.dentist_dropdown').hide();
-      $('.header_filters').addClass('flex_direct_mar');
+      //$('.dentist_dropdown').hide();
+      //$('.header_filters').addClass('flex_direct_mar');
     }
     if ($('body').find('span#currentDentist').length > 0) {
       var did = $('body').find('span#currentDentist').attr('did');
@@ -2212,10 +2212,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.hourly_rate) {
-
+          if (res.hourly_rate > 0) {
             this.hourlyRateChartData1.push(Math.round(res.hourly_rate));
-
             if (res.provider_name != null && res.provider_name != 'Anonymous') {
               if (res.provider_name.includes(',')) {
                 let namet: any = res.provider_name.split(',');
@@ -2729,9 +2727,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         
       if(data.data.plan_fee_completed){
         data.data.plan_fee_completed.forEach(res => {
-          if (res.total_fee_all > 0) {
-            if (res.total_fee_all)
-              this.treatmentPlanTrend2.push(Math.round(res.total_fee_all));
+          if (res.average_fees > 0) {
+            if (res.average_fees)
+              this.treatmentPlanTrend2.push(Math.round(res.average_fees));
             else
               this.treatmentPlanTrend2.push(0);
           }
@@ -3058,8 +3056,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartTrendLabels1 = [];
         this.hourlyRateChartTrend1 = [];
         data.data.forEach(res => {
-          if (res.hourly_rate) {
-            if(res.hourly_rate)
+          if (res.hourly_rate > 0) {
               this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
             if (this.trendValue == 'c')
               this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));

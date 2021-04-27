@@ -36,10 +36,10 @@ export class AppHeaderrightComponent implements AfterViewInit  {
               this.showCompare = false;
             }
 
-            if(this.route == '/dashboards/healthscreen'){
-              this.showDropDown = false;
-            } else {
+            if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures'  ){
               this.showDropDown = true;
+            } else {
+              this.showDropDown = false;
             }
             this.getClinics();
            // this.getDentists();

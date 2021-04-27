@@ -24,6 +24,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   marketingForm: FormGroup;
   financesForm: FormGroup;
   dentists: any = [];
+  goalsData: any = {};
   clinicAnalysisGoals: any = [];
   tabs: any = [];
   tabsConstants = {
@@ -35,7 +36,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   }
   tabsOptions: string[] = [];
   selectedGoalCategory$ = new BehaviorSubject<any>('');
-  selectedTab: string = this.tabsConstants.clinic_analysis;
+  selectedTab: any = 1;
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
   };
@@ -53,7 +54,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   }
 
   ngOnInit() {
-    this.clinicAnalysisForm = this.fb.group({
+/*    this.clinicAnalysisForm = this.fb.group({
       dentistprod: [null, Validators.compose([Validators.required])],
       treatmentplan: [null, Validators.compose([Validators.required])],
       planaverage: [null, Validators.compose([Validators.required])],
@@ -62,17 +63,17 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       patientcomplaints: [null, Validators.compose([Validators.required])],
       newpatients: [null, Validators.compose([Validators.required])],
       hourlyrate: [null, Validators.compose([Validators.required])]
-    });
+    });*/
 
-    this.clinicProcedureForm = this.fb.group({
+/*    this.clinicProcedureForm = this.fb.group({
       itempredictor: [null, Validators.compose([Validators.required])],
       ratio1: [null, Validators.compose([Validators.required])],
       ratio2: [null, Validators.compose([Validators.required])],
       ratio3: [null, Validators.compose([Validators.required])],
       totalrevenue: [null, Validators.compose([Validators.required])],
       referralclinician: [null, Validators.compose([Validators.required])]
-    });
-
+    });*/
+/*
     this.frontDeskForm = this.fb.group({
       utilisationrate: [null, Validators.compose([Validators.required])],
       recallprebook: [null, Validators.compose([Validators.required])],
@@ -81,17 +82,17 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       uta: [null, Validators.compose([Validators.required])],
       noticks: [null, Validators.compose([Validators.required])],
       attendancerate: [null, Validators.compose([Validators.required])]
-    });
+    });*/
 
-    this.marketingForm = this.fb.group({
+/*    this.marketingForm = this.fb.group({
       ƒreferralpatient: [null, Validators.compose([Validators.required])],
       revenuereferral: [null, Validators.compose([Validators.required])],
       visits: [null, Validators.compose([Validators.required])],
       newpatients2: [null, Validators.compose([Validators.required])],
       patientcost: [null, Validators.compose([Validators.required])]
-    });
+    });*/
 
-    this.financesForm = this.fb.group({
+/*    this.financesForm = this.fb.group({
       netprofit: [null, Validators.compose([Validators.required])],
       netprofitxero: [null, Validators.compose([Validators.required])],
       netprofitpms: [null, Validators.compose([Validators.required])],
@@ -102,15 +103,15 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       visitproduction: [null, Validators.compose([Validators.required])],
       discount: [null, Validators.compose([Validators.required])],
       overdueaccount: [null, Validators.compose([Validators.required])]
-    });
+    });*/
 
-    this.tabs = {
-      clinic_analysis: {
+  /*  this.tabs = {*/
+    /*  clinic_analysis: {
         patchValues: {},
         label: this.tabsConstants.clinic_analysis,
         form: this.clinicAnalysisForm,
         startIndex: 1,
-        endIndex: 6,
+        endIndex: 8,
         controls: [
           {
             label: 'dentist production',
@@ -122,10 +123,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             name: 'treatmentplan',
             postfix: '%'
           },
-          // {
-          //   label: 'treatment plan average cost',
-          //   name: 'planaverage'
-          // },
+          {
+            label: 'treatment plan average cost',
+            name: 'planaverage'
+          },
           {
             label: 'recall prebook rate',
             name: 'recallrate',
@@ -136,10 +137,10 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             name: 'rebookrate',
             postfix: '%'
           },
-          // {
-          //   label: 'no. patients complaints',
-          //   name: 'patientcomplaints'
-          // },
+          {
+            label: 'no. patients complaints',
+            name: 'patientcomplaints'
+          },
           {
             label: 'hourly rate',
             name: 'hourlyrate',
@@ -150,48 +151,48 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             name: 'newpatients'
           }
         ]
-      },
-      // clinic_procedure_and_referrals: {
-      //   patchValues: [],
-      //   label: this.tabsConstants.clinic_procedure_and_referrals,
-      //   form: this.clinicProcedureForm,
-      //   startIndex: 7,
-      //   endIndex: 14,
-      //   controls: [
-      //     {
-      //       label: 'item predictor analysis value',
-      //       name: 'itempredictor'
-      //     },
-      //     {
-      //       label: 'predictor Ratio 1: (Crown to Large Filling Ratio)',
-      //       name: 'ratio1'
-      //     },
-      //     {
-      //       label: 'Predictor Ratio 2: (Extraction to RCT Ratio)',
-      //       name: 'ratio2'
-      //     },
-      //     {
-      //       label: 'Predictor Ratio 3: (RCT Conversion Ratio)',
-      //       name: 'ratio3'
-      //     },
-      //     {
-      //       label: 'Total Revenue of Clinician Per Procedure value',
-      //       name: 'totalrevenue',
-      //       prefix: '$'
-      //     },
-      //     {
-      //       label: 'Referral to Other Clinicians Internal / External value',
-      //       name: 'referralclinician',
-      //       prefix: '$'
-      //     },
-      //   ]
-      // },
-      front_desk: {
+      },*/
+/*      clinic_procedure_and_referrals: {
+        patchValues: [],
+        label: this.tabsConstants.clinic_procedure_and_referrals,
+        form: this.clinicProcedureForm,
+        startIndex: 9,
+        endIndex: 14,
+        controls: [
+          {
+            label: 'item predictor analysis value',
+            name: 'itempredictor'
+          },
+          {
+            label: 'predictor Ratio 1: (Crown to Large Filling Ratio)',
+            name: 'ratio1'
+          },
+          {
+            label: 'Predictor Ratio 2: (Extraction to RCT Ratio)',
+            name: 'ratio2'
+          },
+          {
+            label: 'Predictor Ratio 3: (RCT Conversion Ratio)',
+            name: 'ratio3'
+          },
+          {
+            label: 'Total Revenue of Clinician Per Procedure value',
+            name: 'totalrevenue',
+            prefix: '$'
+          },
+          {
+            label: 'Referral to Other Clinicians Internal / External value',
+            name: 'referralclinician',
+            prefix: '$'
+          },
+        ]
+      },*/
+/*      front_desk: {
         patchValues: [],
         label: this.tabsConstants.front_desk,
         form: this.frontDeskForm,
-        startIndex: 7,
-        endIndex: 11,
+        startIndex: 15,
+        endIndex: 21,
         controls: [
           {
             label: 'Utilisation Rate',
@@ -218,33 +219,33 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             name: 'uta',
             postfix: '%'
           },
-          // {
-          //   label: 'Number of Ticks',
-          //   name: 'noticks'
-          // },
-          // {
-          //   label: 'Recall Attendance Rate value',
-          //   name: 'attendancerate',
-          //   postfix: '%'
-          // }
+          {
+            label: 'Number of Ticks',
+            name: 'noticks'
+          },
+          {
+            label: 'Recall Attendance Rate value',
+            name: 'attendancerate',
+            postfix: '%'
+          }
         ]
-      },
-      marketing: {
+      },*/
+/*      marketing: {
         patchValues: [],
         label: this.tabsConstants.marketing,
         form: this.marketingForm,
-        startIndex: 12,
-        endIndex: 14,
+        startIndex: 22,
+        endIndex: 26,
         controls: [
-          // {
-          //   label: 'No. New Patients By Referral',
-          //   name: 'ƒreferralpatient'
-          // },
-          // {
-          //   label: 'Revenue by Referral',
-          //   name: 'revenuereferral',
-          //   prefix: '$'
-          // },
+          {
+            label: 'No. New Patients By Referral',
+            name: 'ƒreferralpatient'
+          },
+          {
+            label: 'Revenue by Referral',
+            name: 'revenuereferral',
+            prefix: '$'
+          },
           {
             label: 'Total Visits',
             name: 'visits'
@@ -259,7 +260,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
             prefix: '$'
           }
         ]
-      }
+      }*/
       // finances: {
       //   patchValues: [],
       //   label: this.tabsConstants.finances,
@@ -318,12 +319,7 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       //     }
       //   ]
       // },
-    }
-
-    Object.keys(this.tabs).map(value => {
-      this.tabsOptions.push(this.tabsConstants[value]);
-    });
-
+   /* }*/
     if (this.clinic_id$.value) this.getDentists(this.clinic_id$.value);
 
   }
@@ -334,33 +330,27 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
       this.selectedGoalCategory$
     ])
       .pipe(
-        takeUntil(this.destroyed$)
+        takeUntil(this.destroyed$) 
       ).subscribe(inputs => {
         const [id, selectedGoalCategory] = inputs;
         if (id) {
-          if (selectedGoalCategory === '') {
-            this.clinicGoalsService.getClinicGoals(id).subscribe((res) => {
-              if (res.message == 'success') {
-                this.getGoalsForTabs(res.data);
-              } else if (res.status == '401') {
-                this.handleUnAuthorization();
-              }
-            }, error => {
-              console.log('error', error)
-            });
-          } else {
-            this.dentistGoalsService.getDentistGoals(id, selectedGoalCategory).subscribe((res) => {
-              if (res.message == 'success') {
-                this.getGoalsForTabs(res.data);
-              } else if (res.status == '401') {
-                this.handleUnAuthorization();
-              }
-            }, error => {
-              console.log('error', error)
-            });
-          }
+          this.getData(id,selectedGoalCategory);
         }
       });
+  }
+
+
+  getData(id,selectedGoalCategory) 
+  {
+    this.clinicGoalsService.getGoalAllData(id,selectedGoalCategory).subscribe((res) => {
+            if (res.message == 'success') {
+              this.getGoalsForTabsClinic(res.data);
+            } else if (res.status == '401') {
+              this.handleUnAuthorization();
+            }
+          }, error => {
+            console.log('error', error)
+          });
   }
 
   getDentists(clinicID) {
@@ -380,9 +370,43 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     this.selectedTab = event;
   }
 
-  handleGoalCategorySelection(event) {
+  handleGoalCategorySelection(event) {   
     this.selectedGoalCategory$.next(event);
   }
+
+
+getGoalsForTabsClinic(allGoals) {
+  this.tabs = [];
+  this.goalsData = {};
+  if(allGoals[0]){
+    this.selectedTab = allGoals[0]['id'];    
+  }
+  allGoals.forEach((res)=> {
+    var temp = [];
+    temp['name'] = res.dashboard;
+    temp['id'] = res.id;
+    temp['charts'] = [];
+    res.master_charts.forEach((charts,key) => {
+      var tempChart = [];     
+      tempChart['chart'] = charts.chart;
+      tempChart['control'] = charts.chart;
+      tempChart['id'] = charts.id;
+      tempChart['sign'] = charts.sign;
+      tempChart['value'] = 0;
+      if(charts.clinic_goal) {
+        tempChart['value'] = charts.clinic_goal.value;
+      }
+      if(charts.dentist_goal) {
+        tempChart['value'] = charts.dentist_goal.value;
+      }
+      this.goalsData[parseInt(charts.id)] = tempChart['value'];
+      temp['charts'].push(tempChart);
+    });
+    this.tabs.push(temp);    
+  });
+}
+
+
 
   getGoalsForTabs(allGoals) {
     let start = 0;
@@ -419,8 +443,8 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
   }
 
   onSubmit() {
-    const allFormsData = this.getFormsData();
-    let myJsonString = JSON.stringify(allFormsData);
+   // const allFormsData = this.getFormsData();
+    let myJsonString = JSON.stringify(this.goalsData);
     $('.ajax-loader').show();
     if (this.selectedGoalCategory$.value === '') {
       this.updateClinicGoals(myJsonString);
@@ -465,5 +489,14 @@ export class GoalsComponent extends BaseComponent implements OnInit, AfterViewIn
     this._cookieService.put("userid", '');
     this.router.navigateByUrl('/login');
   }
-
+  updateName(name){
+    var name = name.split('-');
+    if(name[1]){
+      return name[1];
+    }
+    return name;
+  }
+  onBlur(id,val){
+    this.goalsData[parseInt(id)] =  parseInt(val);   
+  }
 }

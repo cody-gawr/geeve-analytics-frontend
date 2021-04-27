@@ -97,7 +97,7 @@ public selectedClinicProviders=[];
   }
 
   checkColumn(i){
-    if( i > 2){
+    if( i > 50){
       $('.selectedClinicProviders').css({'width':'49%','float':'left','padding':'1%'});
     } else {
       $('.selectedClinicProviders').css({'width':'100%','float':'none','padding':'0px'});
@@ -337,7 +337,7 @@ initiate_clinic() {
            if(result.selectedRole['morninghuddle_'+res1.id])
             checkedRoles.push('morninghuddle');
            if(result.selectedRole['lostoppurtunity_'+res1.id])
-            checkedRoles.push('lostoppurtunity');
+            checkedRoles.push('lostopportunity');
            if(result.selectedRole['clinics_'+res1.id])
             checkedRoles.push('clinics');
            if(result.selectedRole['users_'+res1.id])

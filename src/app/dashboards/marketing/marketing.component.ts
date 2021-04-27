@@ -43,22 +43,23 @@ export class MarketingComponent implements AfterViewInit {
   };
   closeResult: string;
   lineChartColors = [
+    this.chartService.colors.even,
     this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even,
+    this.chartService.colors.odd,
+    this.chartService.colors.even
   ];
   predictedChartColors;
   preoceedureChartColors;
@@ -658,6 +659,7 @@ public visitsPrevTotal;
 public visitsTooltip='down';
 public visitsGoal;
 public fdvisitsRatioLoader:any;
+public visitsGoal:any = 0;
 //Predictor Ratio :
   private fdvisitsRatio() {
      if(this.duration){
@@ -676,6 +678,8 @@ public fdvisitsRatioLoader:any;
           this.visitsGoal = data.goals;
           if(this.visitsTotal >= this.visitsPrevTotal)
             this.visitsTooltip = 'up';
+
+          this.visitsGoal = data.goals;
         }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -769,6 +773,7 @@ public expenseData=[];
 public categories=[];
 public fdnewPatientsAcqLoader:any;
 public newAcqValuePrev =0;
+public newAcqValueGoal:any =0;
 //Predictor Ratio :
   private fdnewPatientsAcq() {
      if(this.duration && this.connectedwith !=''){
@@ -778,7 +783,10 @@ public newAcqValuePrev =0;
        
        this.marketingService.categoryExpenses(this.clinic_id,this.startDate,this.endDate,this.duration,this.connectedwith).subscribe((data) => {
           if(data.message == 'success'){
-       this.fdnewPatientsAcqLoader = false;
+            this.fdnewPatientsAcqLoader = false;
+            if(data.goals){
+              this.newAcqValueGoal = data.goals;
+            }
        // checking if any new account name found in report then we are saving that one in existing accounts
             this.categories=[];
             this.expenseData=[];
@@ -1038,7 +1046,8 @@ public currentText;
       this.chartService.colors.odd,
       this.chartService.colors.even,
       this.chartService.colors.odd,
-      this.chartService.colors.even
+      this.chartService.colors.even,
+      this.chartService.colors.odd,
   ],
             shadowOffsetY: 2,
             shadowBlur: 3,
@@ -1084,9 +1093,14 @@ public fdvisitsRatioTrendLoader:any;
     });
   }
 
- public newPatientsChartTrend: any[]  = [
-    {data: [], label: '',  shadowOffsetX: 3,
-    backgroundColor: [
+ public newPatientsChartTrend: any[]  = 
+ [
+  {
+    data: [],
+    label: '',
+    shadowOffsetX: 3,
+    backgroundColor: 
+    [
       this.chartService.colors.odd,
       this.chartService.colors.even,
       this.chartService.colors.odd,
@@ -1098,26 +1112,30 @@ public fdvisitsRatioTrendLoader:any;
       this.chartService.colors.odd,
       this.chartService.colors.even,
       this.chartService.colors.odd,
-      this.chartService.colors.even
-  ],
-            shadowOffsetY: 2,
-            shadowBlur: 3,
-            shadowColor: 'rgba(0, 0, 0, 0.3)',
-            pointBevelWidth: 2,
-            pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
-            pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
-            pointShadowOffsetX: 3,
-            pointShadowOffsetY: 3,
-            pointShadowBlur: 10,
-            pointShadowColor: 'rgba(0, 0, 0, 0.3)',
-            backgroundOverlayMode: 'multiply'}];
-    public newPatientsChartTrend1=[];
+      this.chartService.colors.even,
+      this.chartService.colors.odd
+    ],
+    shadowOffsetY: 2,
+    shadowBlur: 3,
+    shadowColor: 'rgba(0, 0, 0, 0.3)',
+    pointBevelWidth: 2,
+    pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+    pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+    pointShadowOffsetX: 3,
+    pointShadowOffsetY: 3,
+    pointShadowBlur: 10,
+    pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundOverlayMode: 'multiply'
+  }
+];
+  
+  public newPatientsChartTrend1=[];
   public newPatientsChartTrendLabels =[];
   public newPatientsChartTrendLabels1 =[];
-      public newPatientsChartTemp=[];
+  public newPatientsChartTemp=[];
   private mkNoNewPatientsTrend() { 
-  this.newPatientsChartTrendLabels1=[];
-  this.newPatientsChartTrend1=[];
+    this.newPatientsChartTrendLabels1=[];
+    this.newPatientsChartTrend1=[];
     var user_id;
     var clinic_id;
     this.marketingService.mkNoNewPatientsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
@@ -1332,7 +1350,7 @@ load_chart_acq() {
       if(this.expenseData[res])
       totalY = totalY+parseInt(this.expenseData[res]);
     });
-this.newAcqValue = 0;
+    this.newAcqValue = 0;
     if(totalY != undefined && this.newPatientsTotal>0)
     this.newAcqValue = (totalY/this.newPatientsTotal).toFixed(0);
     $('.close_modal').click();
