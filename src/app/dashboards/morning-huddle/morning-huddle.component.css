@@ -79,3 +79,17 @@ span.green_title {
 .setPreviousDay {
     margin-bottom: 20px;
 }
+
+
+table.customWidth .mat-column-name {
+    width: 30% !important;
+}
+table.customWidth .mat-column-phone {
+    width: 20% !important;
+}
+table.customWidth .mat-column-code {
+    width: 30% !important;
+}
+table.customWidth .mat-column-status {
+    width: 15% !important;
+}

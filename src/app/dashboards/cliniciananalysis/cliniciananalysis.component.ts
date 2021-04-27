@@ -2212,10 +2212,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.hourly_rate) {
-
+          if (res.hourly_rate > 0) {
             this.hourlyRateChartData1.push(Math.round(res.hourly_rate));
-
             if (res.provider_name != null && res.provider_name != 'Anonymous') {
               if (res.provider_name.includes(',')) {
                 let namet: any = res.provider_name.split(',');
@@ -3058,8 +3056,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartTrendLabels1 = [];
         this.hourlyRateChartTrend1 = [];
         data.data.forEach(res => {
-          if (res.hourly_rate) {
-            if(res.hourly_rate)
+          if (res.hourly_rate > 0) {
               this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
             if (this.trendValue == 'c')
               this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
