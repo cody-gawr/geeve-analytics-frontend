@@ -269,7 +269,7 @@ Cost of New Patient Acquisition
 </div>  
 </div>
 <div class="card-footer">
-<div *ngIf="showTrend == false && newAcqValue>0" fxLayout="row wrap" class="pieChartDetails sa_chart_details_sec">
+<div *ngIf="showTrend == false" fxLayout="row wrap" class="pieChartDetails sa_chart_details_sec">
     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
     <h3 class="m-0 value-num">$ {{newAcqValue | number:'0.0-0'}}</h3>
       <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
@@ -280,8 +280,7 @@ Cost of New Patient Acquisition
      <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
      <span class="value-text" *ngIf="trendText == ''">Previous</span>
  </div>
- <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
- *ngIf="duration!='custom'">
+ <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
  <h3 class="m-0 value-num">${{ newAcqValueGoal }}</h3>
  <span class="value-text">Goal</span>
 </div>
@@ -351,15 +350,19 @@ Total Visits
 </div>
 <div class="card-footer">
 <div *ngIf="showTrend == false" fxLayout="row wrap" fxLayoutAlign="center center" class="m-t-40 sa_chart_details_sec pieChartDetails">
- <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+ <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
      <h3 class="m-0 value-num">{{visitsTotal | number:'1.0-0'}}</h3>
      <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
      <span class="value-text" *ngIf="currentText == ''">Current</span>
  </div>
- <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+ <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
     <h3 class="m-0 value-num">{{visitsPrevTotal | number:'1.0-0'}}</h3>
     <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
     <span class="value-text" *ngIf="trendText == ''">Previous</span>
+ </div>
+  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+     <h3 class="m-0 value-num">{{visitsGoal | number:'1.0-0'}}</h3>
+     <span class="value-text">Goal</span>
  </div>
  
 </div> 

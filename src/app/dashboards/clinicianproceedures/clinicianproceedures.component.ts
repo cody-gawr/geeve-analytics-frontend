@@ -101,7 +101,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
      if(val != undefined && val !='all') {
     this.clinic_id = val;
  if( this._cookieService.get("dentistid")) {
-             this.childid = this._cookieService.get("dentistid");
+             this.childid = this._cookieService.get("childid");
              this.dentistid = this._cookieService.get("dentistid");
            }
     this.getDentists();   
@@ -140,7 +140,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
      // this.initiate_clinic();
         
            if( this._cookieService.get("dentistid")) {
-             this.childid = this._cookieService.get("dentistid");
+             this.childid = this._cookieService.get("childid");
              this.dentistid = this._cookieService.get("dentistid");
            }
           if($('body').find('span#currentDentist').length > 0){
@@ -157,10 +157,10 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
         $('.header_filters').removeClass('hide_header');
         $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
         $('.external_clinic').show();
-        $('.external_dentist').show();
+        //$('.external_dentist').show();
         if(this.childid != ''){
-          $('.dentist_dropdown').hide();
-          $('.header_filters').addClass('flex_direct_mar'); 
+          //$('.dentist_dropdown').hide();
+          //$('.header_filters').addClass('flex_direct_mar'); 
         }
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
@@ -1028,7 +1028,7 @@ if(this._cookieService.get("user_type") == '4'){
       this.buildChartProceedure();
       $('.revenueProceedureSingle').hide();
       $('.revenueProceedure').show();
-    }else {
+    } else {
         this.selectedDentist =  this.dentistid;
         this.buildChartReferralDentist();
         this.buildChartProceedureDentist();

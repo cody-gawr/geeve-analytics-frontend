@@ -659,6 +659,7 @@ public visitsPrevTotal;
 public visitsTooltip='down';
 public visitsGoal;
 public fdvisitsRatioLoader:any;
+public visitsGoal:any = 0;
 //Predictor Ratio :
   private fdvisitsRatio() {
      if(this.duration){
@@ -677,6 +678,8 @@ public fdvisitsRatioLoader:any;
           this.visitsGoal = data.goals;
           if(this.visitsTotal >= this.visitsPrevTotal)
             this.visitsTooltip = 'up';
+
+          this.visitsGoal = data.goals;
         }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

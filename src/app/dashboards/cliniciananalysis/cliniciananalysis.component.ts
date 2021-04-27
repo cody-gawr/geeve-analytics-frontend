@@ -148,8 +148,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $('.header_filters').removeClass('flex_direct_mar');
     $('.header_filters').removeClass('hide_header');
     if (this.childid != '') {
-      $('.dentist_dropdown').hide();
-      $('.header_filters').addClass('flex_direct_mar');
+      //$('.dentist_dropdown').hide();
+      //$('.header_filters').addClass('flex_direct_mar');
     }
     if ($('body').find('span#currentDentist').length > 0) {
       var did = $('body').find('span#currentDentist').attr('did');
