@@ -676,13 +676,12 @@ public maxrecallPrebookGoal:any=0;
           this.recallPrebookTotal = Math.round(data.total);
 
           this.recallPrebookPrevTotal = Math.round(data.total_ta);
+
           if(this.recallPrebookTotal>=this.recallPrebookPrevTotal)
             this.recallPrebookTooltip = 'up';
-           if(this.recallPrebookTotal> this.recallPrebookGoal)
-            this.maxrecallPrebookGoal = this.recallPrebookTotal;
-          else
-            this.maxrecallPrebookGoal = this.recallPrebookGoal;
-          if(this.maxrecallPrebookGoal ==0)
+
+          this.maxrecallPrebookGoal = this.recallPrebookGoal;          
+          if(this.maxrecallPrebookGoal == 0)
             this.maxrecallPrebookGoal ='';
         }
     }, error => {
