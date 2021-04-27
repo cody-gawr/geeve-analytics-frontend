@@ -82,7 +82,7 @@
         </a>
     </mat-list-item>
 
-    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2">
+    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
         <a class="" appAccordionToggle  href="javascript: void(0);" (click)="clickEvent('setting')" [ngClass]="status ? 'selected' : ''" >
             <i class="fa-cog fas"></i>
             <span>Settings</span>
