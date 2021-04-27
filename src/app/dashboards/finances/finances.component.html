@@ -104,7 +104,7 @@
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
             <div class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
-              <ng-container *ngIf="xeroConnect;else NoXeroConnectProfitValuePlaceholder">
+              <ng-container *ngIf="(xeroConnect || myobConnect);else NoXeroConnectProfitValuePlaceholder">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit.png" alt />
                   <i class="fas fa-chart-bar"></i>
@@ -121,7 +121,7 @@
                 </div>
               </ng-container>
               <ng-template #NoXeroConnectProfitValuePlaceholder>
-                <div *ngIf="!xeroConnect" class="w-100">
+                <div *ngIf="!xeroConnect && !myobConnect" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
                     <p>Please connect to Xero/MYOB to display this chart</p>
                   </div>
@@ -139,7 +139,7 @@
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
             <div class="sa_main_grid_dashboard profit-green d-flex no-block align-items-center">
-              <ng-container *ngIf="xeroConnect;else NoXeroConnectProfitPlaceholder">
+              <ng-container *ngIf="(xeroConnect || myobConnect);else NoXeroConnectProfitPlaceholder">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit-PMS.png" alt />
                   <i class="fas fa-chart-bar"></i>
@@ -202,7 +202,7 @@ expenses_card custom_ngx_cw01">
                       <div fxLayout="row wrap">
                         <div class="ngx-charts-fix" fxLayout="row" fxLayoutAlign="space-around center" fxFlex.lg="70"
                           fxFlex.xl="70" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70">
-                          <ng-container *ngIf="xeroConnect;else NoExpensePlaceholder">
+                          <ng-container *ngIf="(xeroConnect || myobConnect);else NoExpensePlaceholder">
                             <ngx-charts-pie-chart fxFlexAlign="center" *ngIf="pieChartLabels && pieChartLabels.length > 0"
                               class="chart-container sa_chart_custom" [view]="[500, 320]" [scheme]="colorScheme"
                               [trimLabels]="true" [maxLabelLength]="15" [results]="single" [legend]="false"

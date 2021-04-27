@@ -48,7 +48,8 @@ export class FinancesComponent implements AfterViewInit {
   stackedChartColorsBar;
   stackedChartColorsBar1;
   public xeroConnect: boolean = false;
-
+  public myobConnect: boolean = false;
+  public connectedwith:any;
   public pieChartColors = [
     {
       backgroundColor: [
@@ -130,15 +131,45 @@ single = [
     }
 
   private warningMessage: string;
-   initiate_clinic() {
+  async initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     if(val != undefined && val !='all') {
       this.clinic_id = val;
-      this.checkXeroStatus();
-      this.getDentists();
+      await this.checkclinicconnectedwith();
+      console.log(this.connectedwith);
+      if(this.connectedwith == 'myob'){
+        this.checkMyobStatus();
+      }else if(this.connectedwith == 'xero'){
+        this.checkXeroStatus();
+      }
       this.filterDate(this.chartService.duration$.value);
-   }
+    }
   }
+
+  checkclinicconnectedwith(){ 
+    var self = this;
+   return new Promise(function(resolve,reject){
+     self.clinicSettingsService.checkclinicconnectedwith(self.clinic_id).subscribe( (res) => {
+       if(res.message == 'success'){
+         if(res.data != '') {
+           self.connectedwith = res.data;
+           resolve(true);         
+         } else {
+           self.connectedwith = ''; 
+            resolve(true);  
+         }
+        } else {
+         self.connectedwith = '';
+          resolve(true);  
+       }
+     }, error => {
+       self.warningMessage = "Please Provide Valid Inputs!";
+       resolve(true);
+     });  
+   });  
+ 
+ 
+   }
 
   formatDate(date) {
     if(date) {
@@ -1219,9 +1250,14 @@ public labelBarPercentOptions: any = {
 
     //this.netProfit();
    // this.netProfitPercent();
-    this.netProfitPms();
-    this.netProfitPercentage();
-    this.categoryExpenses();
+    
+    
+    if(this.connectedwith !=''){
+      this.netProfitPms();
+      this.netProfitPercentage();
+      this.categoryExpenses();
+    }
+    
     this.finProductionByClinician();
     this.finTotalDiscounts();
     this.finOverdueAccounts();
@@ -1324,7 +1360,7 @@ public netProfitPmsTrendTotal;
     //netProfit
   private netProfitPms() {
     this.netProfitTrendTotal=0;
-    this.financesService.NetProfitPms(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
+    this.financesService.NetProfitPms(this.clinic_id,this.startDate,this.endDate, this.duration,this.connectedwith).subscribe((data) => {
        if(data.message == 'success'){       
         this.netProfitVal = Math.round(data.data);  
        }
@@ -1338,7 +1374,7 @@ public netProfitPmsTrendTotal;
     var user_id;
     var clinic_id;
     this.netProfitPmsVal=0;
-    this.financesService.netProfitPercentage(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
+    this.financesService.netProfitPercentage(this.clinic_id,this.startDate,this.endDate, this.duration,this.connectedwith).subscribe((data) => {
       if(data.message == 'success') {       
         this.netProfitPmsVal = Math.round(data.data);  
       }
@@ -1369,7 +1405,7 @@ public categoryExpensesLoader:any;
         var clinic_id;
            this.expensescChartTrendIcon = "down";
            this.expensescChartTrendTotal=0;
-  this.financesService.categoryExpenses(this.clinic_id,this.startDate,this.endDate, this.duration).subscribe((data) => {
+  this.financesService.categoryExpenses(this.clinic_id,this.startDate,this.endDate, this.duration,this.connectedwith).subscribe((data) => {
        if(data.message == 'success'){
         this.categoryExpensesLoader = false;        
         this.pieChartLabels = [];
@@ -1979,9 +2015,14 @@ toggleChangeProcess(){
     $('.filter').removeClass('active');
     $('.trendMode').css('display','block');
     $('.nonTrendMode').hide();
-    this.finNetProfitPMSTrend();
-    this.finNetProfitPMSPercentTrend();
-    this.finExpensesByCategoryTrend();
+    
+
+    if(this.connectedwith != ''){
+      this.finNetProfitPMSTrend();
+      this.finNetProfitPMSPercentTrend();
+      this.finExpensesByCategoryTrend();
+    }
+    
     
     this.finProductionByClinicianTrend();
     this.finTotalDiscountsTrend();
@@ -2433,6 +2474,22 @@ private finTotalDiscountsTrend() {
     });  
  }
 
+ checkMyobStatus(){
+  this.clinicSettingsService.checkMyobStatus(this.clinic_id).subscribe((res) => {
+   if(res.message == 'success'){
+     if(res.data.myob_connect == 1) {
+       this.myobConnect = true;
+     } else {
+       this.myobConnect = false; 
+     }
+    } else {
+     this.myobConnect = false;
+   }
+ }, error => {
+   this.warningMessage = "Please Provide Valid Inputs!";
+ });  
+}
+
 
   public trendxero = false;
   private finNetProfitPMSTrend() {
@@ -2440,7 +2497,7 @@ private finTotalDiscountsTrend() {
     this.netProfitPercentChartTrendLabels1=[];
     this.netProfitPercentChartTrendLabels=[];    
     this.trendxero=true;
-    this.financesService.finNetProfitPMSTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+    this.financesService.finNetProfitPMSTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
        this.trendxero=false;
        if(data.message == 'success'){       
           if(data.data)
@@ -2472,7 +2529,7 @@ private finTotalDiscountsTrend() {
     this.netProfitPmsChartTrend1= [];
     this.netProfitChartTrendLabels1=[]; 
     this.trendxero = true;
-    this.financesService.finNetProfitPMSPercentTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+    this.financesService.finNetProfitPMSPercentTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
       this.trendxero=false;
       if(data.message == 'success'){   
         this.netProfitPmsChartTrend1= [];
@@ -2506,7 +2563,7 @@ private finTotalDiscountsTrend() {
     private finExpensesByCategoryTrend() {
       this.expensesChartTrendLabels=[];
       this.expensesChartTrend =[];
-      this.financesService.finExpensesByCategoryTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      this.financesService.finExpensesByCategoryTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
         if(data.message == 'success'){
            data.data.expenses.forEach((result,key) => {  
             if(result.meta_key != 'Total Operating Expenses') {
