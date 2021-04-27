@@ -12,21 +12,21 @@
     </div>
 
 
-    <mat-list-item appAccordionLink routerLinkActive ="selected" group="string">
+    <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="(user_type == 2) || (permisions.indexOf('healthscreen') >= 0)">
          <a appAccordionToggle [routerLink]="['/dashboards/healthscreen']">
             <i class="fa-clinic-medical fas"></i>
             <span>Clinic Health</span>
             <span fxFlex></span>
         </a>
     </mat-list-item>
-    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" >
+    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="(user_type == 2) || (permisions.indexOf('morninghuddle') >= 0)">
         <a class="" appAccordionToggle [routerLink]="['/morning-huddle']">
             <i class="fa-coffee fas"></i>
             <span>Morning Huddle</span>
             <span fxFlex></span>
         </a>
     </mat-list-item>
-    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard') >= 0">
         <a class="" appAccordionToggle  href="javascript: void(0);" (click)="clickEvent('dashboards')" [ngClass]="status ? 'selected' : ''" >
             <i class="fa-chart-area fas"></i>
             <span>Dashboards</span>
@@ -36,35 +36,35 @@
         </a>
     <ng-template [ngIf]="nav_open == 'dashboards'">
         <mat-nav-list appAccordion>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard1') >= 0">
                 <a class="relative" appAccordionToggle [routerLink]="['/dashboards/cliniciananalysis']">
                     <i></i>
                     <span>Clinician Analysis</span>
                     <span fxFlex></span>
                 </a>
             </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard2') >= 0">
                 <a class="relative" appAccordionToggle [routerLink]="['/dashboards/clinicianproceedures']">
                     <i></i>
                     <span>Clinician Procedures & Referrals</span>
                     <span fxFlex></span>
                 </a>
             </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected"  group="string">
+            <mat-list-item appAccordionLink routerLinkActive= "selected"  group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard3') >= 0">
                 <a class="" appAccordionToggle [routerLink]="['/dashboards/frontdesk']">
                     <i></i>
                     <span>Front Desk</span>
                     <span fxFlex></span>
                 </a>
             </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard4') >= 0">
                 <a class="" appAccordionToggle [routerLink]="['/dashboards/marketing']">
                     <i></i>
                     <span>Marketing</span>
                     <span fxFlex></span>
                 </a>
             </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard5') >= 0">
                 <a class="" appAccordionToggle [routerLink]="['/dashboards/finances']">
                     <i></i>
                     <span>Finances</span>
@@ -74,7 +74,7 @@
         </mat-nav-list> 
     </ng-template>  
     </mat-list-item> 
-     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string">
+     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="(user_type == 2 || permisions.indexOf('lostopportunity') >= 0 )">
          <a class="" appAccordionToggle [routerLink]="['/lost-opportunity']">
             <i class="fa-briefcase fas"></i>
             <span>Lost Opportunity</span>
@@ -82,7 +82,7 @@
         </a>
     </mat-list-item>
 
-    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
+    <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2">
         <a class="" appAccordionToggle  href="javascript: void(0);" (click)="clickEvent('setting')" [ngClass]="status ? 'selected' : ''" >
             <i class="fa-cog fas"></i>
             <span>Settings</span>
@@ -92,21 +92,21 @@
         </a>
     <ng-template [ngIf]="nav_open == 'setting'">
         <mat-nav-list appAccordion>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" >
+            <mat-list-item appAccordionLink routerLinkActive= "selected" *ngIf="user_type == 2 || permisions.indexOf('profilesettings') >= 0">
                 <a class="relative" appAccordionToggle [routerLink]="['/clinic']">
                     <i></i>
                     <span>Clinics</span>
                     <span fxFlex></span>
                 </a>
             </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" >
+            <mat-list-item appAccordionLink routerLinkActive= "selected" *ngIf="user_type == 2 || permisions.indexOf('profilesettings') >= 0">
                 <a class="relative" appAccordionToggle [routerLink]="['/roles-users']">
                     <i></i>
                     <span>Users</span>
                     <span fxFlex></span>
                 </a>
             </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" >
+            <mat-list-item appAccordionLink routerLinkActive= "selected">
                 <a class="" appAccordionToggle [routerLink]="['/profile-settings']">
                     <i></i>
                     <span>Profile Setting</span>

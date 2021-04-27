@@ -337,7 +337,7 @@ initiate_clinic() {
            if(result.selectedRole['morninghuddle_'+res1.id])
             checkedRoles.push('morninghuddle');
            if(result.selectedRole['lostoppurtunity_'+res1.id])
-            checkedRoles.push('lostoppurtunity');
+            checkedRoles.push('lostopportunity');
            if(result.selectedRole['clinics_'+res1.id])
             checkedRoles.push('clinics');
            if(result.selectedRole['users_'+res1.id])

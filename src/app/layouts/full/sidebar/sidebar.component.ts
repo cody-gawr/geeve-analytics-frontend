@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, NgZone, OnDestroy, ViewChild, HostListene
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
 //import { MenuItems } from '../../../shared/menu-items/menu-items';
+import { RolesUsersService } from '../../../roles-users/roles-users.service';
 import { CookieService } from "ngx-cookie";
 import { HeaderService } from '../header/header.service';
 import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
@@ -23,6 +24,8 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   public login_status;
   public nav_open = "";
   public activeRoute = "";
+  public showMenu:boolean = false;
+  public permisions:any = '';
 
   clickEvent(val) {
     this.status = !this.status;
@@ -36,14 +39,9 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   subclickEvent() {
     this.status = true;
   }
-  constructor(
-    changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher,
-   // public menuItems: MenuItems,
-    private headerService: HeaderService
-    ,private _cookieService: CookieService,
-    private route: ActivatedRoute, private router: Router
+  constructor( changeDetectorRef: ChangeDetectorRef,media: MediaMatcher,/* public menuItems: MenuItems,*/ private rolesUsersService: RolesUsersService,private headerService: HeaderService,private _cookieService: CookieService,private route: ActivatedRoute,private router: Router
   ) {
+      this.getRoles();
       this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
           this.activeRoute = router.url;           
           if(this.activeRoute == '/dashboards/cliniciananalysis' || this.activeRoute == '/dashboards/clinicianproceedures' || this.activeRoute == '/dashboards/frontdesk' || this.activeRoute == '/dashboards/marketing' || this.activeRoute == '/dashboards/finances'){
@@ -97,4 +95,20 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
         this.router.navigate(['/login']);
     });
   }
+
+
+  getRoles() {      
+   this.rolesUsersService.getRoles().subscribe((res) => {
+       if(res.message == 'success'){ 
+          res.data.forEach((dt) => {
+            if(this.user_type == dt['role_id']){
+              this.permisions = dt['permisions'];                
+            }                
+          }); 
+          console.log(this.permisions,'this.permisions');
+       }
+    }, error => {
+    });
+  }
+
 }
