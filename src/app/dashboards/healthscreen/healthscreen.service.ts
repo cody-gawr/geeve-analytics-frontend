@@ -28,7 +28,7 @@ export class HealthScreenService {
 
    hourlyRateChart( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='', token = this._cookieService.get("token"),limit=5 ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/health/chHourlyLeaders?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician+"&limit=5", { headers: header })
+        return this.http.get(this.apiUrl +"/health/chHourlyLeaders?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&clinician="+clinician+"&limit=5", { headers: header })
         .pipe(map((response: Response) => {
             return response;
                     })
