@@ -1560,12 +1560,12 @@ public buildChartProceedureLoader:any;
     }
     this.buildChartProceedureLoader =true;          
     this.clinic_id && this.clinicianproceeduresService.ClinicianProceedure( this.clinic_id,this.startDate,this.endDate).subscribe((data) => {
-    this.proceedureChartData1 =[];
-      this.proceedureChartLabels1 = [];
       if(data.message == 'success'){
         this.buildChartProceedureLoader =false;
-
-        data.data.forEach(res => {          
+        this.proceedureChartLabels1 = [];
+        this.proceedureChartData1 =[];
+        this.proceedureChartLabels =[];
+        data.data.forEach(res => {
           if(res.total > 0 ) {
             this.proceedureChartData1.push(Math.round(res.total));
             if(res.item_name != null){

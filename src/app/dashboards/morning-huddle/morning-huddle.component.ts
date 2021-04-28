@@ -50,7 +50,9 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public treatmentRate:any = '';
     public previousDays:any = '';
 
-
+    public unscheduledPatientsDays:any = 1;
+    public postOpCallsDays:any = 1;
+    public followupsPostopCallsDate:any = '';
     public schedulePatieltd:any = 0;
     public schedulePatielDate:any = '';
     public scheduleNewPatieltd:any = 0;
@@ -269,7 +271,7 @@ initiate_clinic() {
 
 
   getFollowupsUnscheduledPatients(){
-    this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.unscheduledPatientsDays  ).subscribe((production:any) => {
       if(production.status == true) {
         production.data.map((item) => {
           const phoneNumber  = item.phone_number ? item.phone_number : ( item.phone_work ? item.phone_work : item.mobile);
@@ -289,9 +291,10 @@ initiate_clinic() {
   } 
 
   getFollowupPostOpCalls(){
-    this.morningHuddleService.followupPostOpCalls( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.followupPostOpCalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
       if(production.status == true) {
         this.followupPostOpCalls = production.data;     
+        this.followupsPostopCallsDate = production.date;     
       }
     }); 
   } 
@@ -511,6 +514,15 @@ initiate_clinic() {
     // console.log(`Todays date: ${todaysDate}`)
     // console.log(`Selected date: ${selectedDate}`)
     return selectedDate;
+  }
+
+  refreshUnscheduledPatients(val){
+    this.unscheduledPatientsDays = val;
+    this.getFollowupsUnscheduledPatients();
+  }
+  refreshPostOpCalls(val){
+    this.postOpCallsDays = val;
+    this.getFollowupPostOpCalls();
   }
 }
 

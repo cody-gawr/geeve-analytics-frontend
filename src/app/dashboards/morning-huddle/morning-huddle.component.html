@@ -678,10 +678,7 @@
 
 
   <!-- Followups Tab start -->
-  <mat-tab label="Front Desk Followups">
-      <div class="morning-huddle-date">
-        <strong>Previous Day: {{ followupsUnscheduledPatientsDate }}</strong>        
-      </div>    
+  <mat-tab label="Front Desk Followups">       
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
@@ -759,9 +756,23 @@
         </div>
       </div>
 <mat-card class="table-card">
-  <mat-card-title>Unscheduled Patients</mat-card-title>
+     <div class="morning-huddle-date">
+        <strong>{{ followupsUnscheduledPatientsDate }}</strong>        
+      </div>
+  <mat-card-title>Unscheduled Patients
+      <div class="morning-huddle-date UnscheduledPatients">
+        <mat-form-field floatLabel="never" class="setPreviousDay">
+          <mat-select placeholder="Previous 1 Day" (selectionChange)="refreshUnscheduledPatients($event.value)" >
+            <mat-option [value]="1">Previous 1 Day</mat-option>
+            <mat-option [value]="7">Previous 7 Days</mat-option>
+            <mat-option [value]="14">Previous 14 Days</mat-option>            
+          </mat-select>
+        </mat-form-field>                  
+      </div>
+  </mat-card-title>
+
   <mat-card-content> 
-<div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
+<div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">  
   <table mat-table [dataSource]="followupsUnscheduledPatients" class="mat-elevation-z8 customWidth">
 
     <!-- Patient Name Column -->
@@ -783,7 +794,7 @@
 
     <!-- Unscheduled Treatment Column -->
     <ng-container matColumnDef="code">
-      <th mat-header-cell *matHeaderCellDef> Unscheduled Treatment </th>
+      <th mat-header-cell *matHeaderCellDef [ngClass]="'w-75'"> Unscheduled Treatment </th>
       <td mat-cell *matCellDef="let element"> {{ element.code }}</td>
     </ng-container>
     <ng-container matColumnDef="status">
@@ -820,9 +831,22 @@
 
 
 <mat-card class="table-card post_call_responsive_border">
-  <mat-card-title>Post op Calls</mat-card-title>
+    <div class="morning-huddle-date">
+        <strong>{{ followupsPostopCallsDate }}</strong>        
+      </div>  
+  <mat-card-title>Post op Calls
+    <div class="morning-huddle-date UnscheduledPatients">
+        <mat-form-field floatLabel="never" class="setPreviousDay">
+          <mat-select placeholder="Previous 1 Day" (selectionChange)="refreshPostOpCalls($event.value)" >
+            <mat-option [value]="1">Previous 1 Day</mat-option>
+            <mat-option [value]="2">Previous 2 Days</mat-option>
+          </mat-select>
+        </mat-form-field>                  
+      </div>
+  </mat-card-title>
   <mat-card-content> 
 <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
+ 
   <table mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8 customWidth">
 
 
