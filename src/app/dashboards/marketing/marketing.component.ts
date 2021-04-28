@@ -657,6 +657,7 @@ this.preoceedureChartColors = [
 public visitsTotal;
 public visitsPrevTotal;
 public visitsTooltip='down';
+
 public fdvisitsRatioLoader:any;
 public visitsGoal:any = 0;
 //Predictor Ratio :
