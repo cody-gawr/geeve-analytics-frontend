@@ -29,7 +29,7 @@ export class ClinicianProceeduresService {
     // Items Predictor Analysis 
     ItemsPredictorAnalysis(clinic_id='1', startDate = '', endDate = '', user_type='',clinician='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -38,7 +38,7 @@ export class ClinicianProceeduresService {
     // Items Predictor Analysis 
     ItemsPredictorAnalysisSpecial(clinic_id='1', startDate = '', endDate = '', user_type='',clinician='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorSpecialistAnalysis?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -77,7 +77,7 @@ export class ClinicianProceeduresService {
     //Predictor Ratio 1:
     PredictorRatio( clinic_id='1', startDate = '', endDate = '',duration='', user_type='',clinician='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&user_type="+user_type+"&clinician="+clinician, { headers: header })
+        return this.http.get(this.apiUrl +"/ClinicianProcedures/cpPredictorRatio?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&clinician="+clinician, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
