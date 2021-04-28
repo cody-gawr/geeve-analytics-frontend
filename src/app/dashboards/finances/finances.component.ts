@@ -1567,7 +1567,7 @@ public totalProductionCollectionLabel1 =[];
           this.totalProductionVal = 0; 
 
 
-        if(data.data[0].provider_name)    
+        if(data.data[0])    
           this.totalProductionLabel = data.data[0].provider_name;    
         else
          this.totalProductionLabel ='';    
