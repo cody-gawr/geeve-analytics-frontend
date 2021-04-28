@@ -1020,49 +1020,47 @@ if(this._cookieService.get("user_type") == '4'){
 
     //(<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'none';
     //(<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'block';    
-    if(this.childid == '') {
-      this.buildChart();
-      this.predictorAnalysisSpecial();
-      this.buildChartReferral();
-      this.buildChartPredictor();      
+    this.buildChart();
+    this.predictorAnalysisSpecial();
+    this.buildChartPredictor(); 
+    if(this.childid == '') {      
+      this.buildChartReferral();      
       this.buildChartProceedure();
       $('.revenueProceedureSingle').hide();
       $('.revenueProceedure').show();
     } else {
-        this.selectedDentist =  this.dentistid;
-        this.buildChartReferralDentist();
-        this.buildChartProceedureDentist();
-        
-         $('.revenueProceedureSingle').show();
-         $('.revenueProceedure').hide();
+      this.selectedDentist =  this.dentistid;
+      this.buildChartReferralDentist();
+      this.buildChartProceedureDentist();        
+      $('.revenueProceedureSingle').show();
+      $('.revenueProceedure').hide();
     }
 
-  }
-  else {
-        this.selectedDentist = newValue;
+  } else {
+    this.selectedDentist = newValue;
     $(".onofftoogle").show();
     $(".trend_arrow").hide();
     if(this.toggleChecked ) {
-        this.toggleChangeProcess()
-      } else {
-        this.buildChartDentist();
-        this.procedureAnalysisSpecialDentist();
-        this.dentistMode = true;
-        if(!this.toggleChecked) {
-          /*(<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'block';
-          (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'none'*/; 
-        }
-        /*(<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'none';   */
-        (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
-        (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';        
-        this.buildChartPredictorDentist();
-        this.buildChartProceedureDentist();
-        $('.revenueProceedureSingle').show();
-        $('.revenueProceedure').hide();
-        this.buildChartReferralDentist();
-        this.changeDentistPredictor('1');
+      this.toggleChangeProcess()
+    } else {
+      this.buildChartDentist();
+      this.procedureAnalysisSpecialDentist();
+      this.dentistMode = true;
+      if(!this.toggleChecked) {
+        /*(<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'block';
+        (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'none'*/; 
       }
+      /*(<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'block';
+      (<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'none';   */
+      (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'none';
+      (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'block';        
+      this.buildChartPredictorDentist();
+      this.buildChartProceedureDentist();
+      $('.revenueProceedureSingle').show();
+      $('.revenueProceedure').hide();
+      this.buildChartReferralDentist();
+      this.changeDentistPredictor('1');
+    }
 /*    this.buildChartTreatmentDentist();
     (<HTMLElement>document.querySelector('.treatmentPlanSingle')).style.display = 'block';
     (<HTMLElement>document.querySelector('.treatmentPlan')).style.display = 'none';
@@ -1901,7 +1899,6 @@ public currentText;
       const date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
-      console.log(this.startDate + " " + this.endDate);
       this.loadDentist(dentistVal);
     }
     else if (duration == 'q') {
