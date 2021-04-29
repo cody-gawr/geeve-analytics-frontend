@@ -149,13 +149,14 @@ initiate_clinic() {
     /***** Tab 1 ***/    
     /***** Tab 2 ***/
     //this.getSchedulePatients(null);
-    this.getScheduleNewPatients(null);
-    this.getScheduleHours(null);
-    this.getUnscheduleHours(null);
     this.getAppointmentCards(null);
-    /***** Tab 2 ***/
+    
 
     if(this.user_type != '4'){
+      this.getScheduleNewPatients(null);
+      this.getScheduleHours(null);
+      this.getUnscheduleHours(null);
+    /***** Tab 2 ***/
       /***** Tab 3 ***/
       this.getUnscheduledValues();
       this.getTodayUnscheduledHours();

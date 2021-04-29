@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { RolesUsersService } from '../roles-users/roles-users.service';
 
-const passwordValidation = new FormControl('', [Validators.required, Validators.minLength(10),Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]);
+const passwordValidation = new FormControl('', [Validators.required, Validators.minLength(10)]);
 const confirmPasswordValidation = new FormControl('', CustomValidators.equalTo(passwordValidation));
 
 @Component({
