@@ -328,7 +328,7 @@
   <!-- Patient Schedule Tab start -->  
   <mat-tab label="Dentist Schedule">
      <div class="morning-huddle-date">
-      <div *ngIf="clinicDentists.length > 0">
+      <div *ngIf="clinicDentists.length > 0 && user_type != '4'">
         <mat-form-field >
           <!-- <mat-label>Select Dentist</mat-label> -->
           <mat-select  (selectionChange)="refreshScheduleTab($event.value)" id="setPreviousDay2" [(ngModel)]="currentDentistSchedule" >
@@ -535,7 +535,7 @@
   <!-- Patient Schedule Tab end -->
 
   <!-- Reminders Tab start -->  
-  <mat-tab label="Front Desk Reminders">
+  <mat-tab label="Front Desk Reminders" *ngIf="user_type != '4'">
 
      <div class="morning-huddle-date">
         <strong>Current Day: {{ remindersRecallsOverdueDate }}</strong>        
@@ -678,7 +678,7 @@
 
 
   <!-- Followups Tab start -->
-  <mat-tab label="Front Desk Followups">       
+  <mat-tab label="Front Desk Followups" *ngIf="user_type != '4'">       
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
           <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg mh-matcard mh-matcard-darkblue">
