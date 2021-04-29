@@ -318,6 +318,7 @@ initiate_clinic() {
     this.selected_id = val;
     });
     rolesRef.afterClosed().subscribe(result => {
+      console.log(result,'***********');
      if(result != undefined) {
       this.roles.forEach(res1 => {
           var checkedRoles1='';
@@ -336,7 +337,7 @@ initiate_clinic() {
             checkedRoles.push('healthscreen');
            if(result.selectedRole['morninghuddle_'+res1.id])
             checkedRoles.push('morninghuddle');
-           if(result.selectedRole['lostoppurtunity_'+res1.id])
+           if(result.selectedRole['lostopportunity_'+res1.id])
             checkedRoles.push('lostopportunity');
            if(result.selectedRole['clinics_'+res1.id])
             checkedRoles.push('clinics');

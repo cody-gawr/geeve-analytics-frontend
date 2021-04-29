@@ -83,12 +83,10 @@ export class RolesUsersService {
 
     // Update Clinic
     saveRoles(role_id, checkedRoles, token = this._cookieService.get("token")): Observable<any> {
-    const formData = new FormData();
-console.log(role_id);
-    formData.append('role_id', role_id);
-    formData.append('permisions', checkedRoles);
-   
-     var header = this.getHeaders(); 
+        const formData = new FormData();
+        formData.append('role_id', role_id);
+        formData.append('permisions', checkedRoles);
+        var header = this.getHeaders(); 
         return this.http.post(this.apiUrl +"/Roles/rolesUpdate", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
