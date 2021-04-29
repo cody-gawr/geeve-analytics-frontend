@@ -50,8 +50,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public treatmentRate:any = '';
     public previousDays:any = '';
 
-    public unscheduledPatientsDays:any = 1;
-    public postOpCallsDays:any = 1;
+    public unscheduledPatientsDays:any = 7;
+    public postOpCallsDays:any = 2;
     public followupsPostopCallsDate:any = '';
     public schedulePatieltd:any = 0;
     public schedulePatielDate:any = '';
@@ -80,6 +80,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public treatmentOutstanding:any = [];
     public outstandingBalances:any = [];
     public followupsUnscheduledPatients:any = [];
+    public followupsUnscheduledRecalls:any = [];
     public followupsUnscheduledPatientsDate:any = '';
     public followupPostOpCalls:any = [];
     public clinicDentists:any = [];
@@ -284,7 +285,9 @@ initiate_clinic() {
             }
           }
         })
-        this.followupsUnscheduledPatients = production.data;     
+        // this.followupsUnscheduledPatients = production.data;
+        this.followupsUnscheduledPatients = production.data.filter(p => p.code!="Recall Unscheduled");
+        this.followupsUnscheduledRecalls = production.data.filter(p => p.code==="Recall Unscheduled");        
         this.followupsUnscheduledPatientsDate = production.date;     
       }
     }); 
