@@ -1,7 +1,7 @@
 <div class="sa_login_blur" style="background:url('../../assets/images/background/login-register_60.jpg')!important; background-size:cover!important; filter:blur(20px)!important; position:absolute; width:100%; height: 100vh; display: flex;background-size: cover; align-items: center;"></div>
 <img class="login_abso_logo" src="../assets/images/logo-white.png">   
 <div class="login-register" style="background-image:url(assets/images/background/login-register.jpg);">
-    <div class="login-register-box">
+    <div class="login-register-box reset" style = "width:400px;">
     <mat-card>
       <mat-card-content>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -12,21 +12,20 @@
           <div fxLayout="column" fxLayoutAlign="space-around">
             <div class="pb-1">
               <mat-form-field>
-                <input matInput placeholder="Password" type="password" [formControl]="form.controls['password']">
+                <input matInput placeholder="Password" type="password" [formControl]="form.controls['password']" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}$" (click) ="setDefaultError()">
               </mat-form-field>
-                <small *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched" class="text-danger support-text">You must include password.</small>
-                <small *ngIf="form.controls['password'].hasError('minlength') && form.controls['password'].touched" class="text-danger support-text">Password should contain minimum 10 characters.</small>
-                <small *ngIf="form.controls['password'].hasError('pattern') && form.controls['password'].touched" class="text-danger support-text">Password must contain one lowercase letter, one uppercase letter and one special character.</small>
+                <small *ngIf="erros.required" class="text-danger support-text">You must include password.</small>
+                <small *ngIf="erros.minLength" class="text-danger support-text">Password should contain minimum 10 characters.</small>
+                <small *ngIf="erros.pattern" class="text-danger support-text">Password must contain one lowercase letter, one uppercase letter and one special character.</small>
                 <mat-form-field>
                 <input matInput placeholder="Confirm Password" type="password" [formControl]="form.controls['cpassword']">
               </mat-form-field>
-                <small *ngIf="form.controls['cpassword'].hasError('required') && form.controls['cpassword'].touched" class="text-danger support-text">You must include confirm password.</small>
-                <small *ngIf="form.controls['cpassword'].errors?.equalTo && form.controls['cpassword'].touched"   class="text-danger support-text">Password and confirmation password do not match.</small>              
-
+                <small *ngIf="erros.cpassword" class="text-danger support-text">You must include confirm password.</small>
+                <small *ngIf="erros.confirm"  class="text-danger support-text">Password and confirmation password do not match.</small>
                 <small *ngIf="successLogin ==true && successLoginText != ''"  class="text-success support-text">Password changed successfully . <a mat-raised-button color="primary" [routerLink]="['/login']" class="m-t-10 mat-dc" align="center" *ngIf="isPasswordSet">Login</a></small> 
 
             </div>
-            <button mat-raised-button color="dc" type="submit" class="btn-block btn-lg text-center m-t-20" [disabled]="!form.valid">Submit</button>
+            <button mat-raised-button color="dc" type="submit" class="btn-block btn-lg text-center m-t-20">Submit</button> <!-- [disabled]="!form.valid" -->
           </div>
         </form>
       </mat-card-content>

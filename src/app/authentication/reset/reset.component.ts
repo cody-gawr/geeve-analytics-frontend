@@ -12,7 +12,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 
 
-const passwordValidation = new FormControl('', [Validators.required, Validators.minLength(10),Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]);
+const passwordValidation = new FormControl('', [Validators.required, Validators.minLength(10)]);
 const confirmPasswordValidation = new FormControl('', CustomValidators.equalTo(passwordValidation));
 @Component({
   selector: 'app-reset',
@@ -25,8 +25,9 @@ export class ResetComponent implements OnInit {
   public errorLoginText = '';
   public successLogin = false;
   public successLoginText = '';
-    public isPasswordSet = false;
-   public id:any ={};
+  public isPasswordSet = false;
+  public id:any ={};
+  public erros:any = {minLength: false, pattern: false, confirm: false};
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService, private route: ActivatedRoute,private toastr: ToastrService) {}
   ngOnInit() {
     this.form = this.fb.group({ 
@@ -58,7 +59,34 @@ this.loginService.checkValidString(this.string).subscribe((res) => {
 });
 }
 onSubmit() {
-      if(this.id) {
+    this.erros = {required: false, minLength: false, pattern: false, confirm: false,cpassword:false};
+    if(this.form.controls['password'].hasError('pattern')){
+      this.erros.pattern = true;     
+      return false;      
+    }
+    if(this.form.controls['password'].hasError('minlength')){
+      this.erros.minLength = true;
+      return false;
+    }
+    if(this.form.controls['password'].hasError('required')){
+      this.erros.required = true;
+      return false;
+    }
+    if(this.form.controls['password'].hasError('required')){
+      this.erros.required = true;
+      return false;
+    }
+    if(this.form.controls['cpassword'].hasError('required')){
+      this.erros.cpassword = true;
+      return false;
+    }
+    if(this.form.value.password != this.form.value.cpassword) {
+      this.erros.confirm = true;
+      return false;
+    }
+
+    
+    if(this.id) {
     if(this.form.value.password == this.form.value.cpassword) {
       var timeStamp = Math.floor(Date.now() / 1000);
       var data = encodeURIComponent(window.btoa(this.id+"+"+timeStamp));
@@ -86,5 +114,8 @@ onSubmit() {
      this.router.navigate(['/login']);
   }
   //  this.router.navigate(['/login']);
+  }
+  setDefaultError(){
+    this.erros = {required: false, minLength: false, pattern: false, confirm: false,cpassword:false};
   }
 }
