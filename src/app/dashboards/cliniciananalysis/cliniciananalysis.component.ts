@@ -3280,12 +3280,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleCompareFilter(val){
+      if( (this.averageToggle == true && val == 'on') || (this.averageToggle == false && val != 'on') ){
+        return false;
+      }
+      $('.compare-button').click();
      if(val == 'on'){
       this.averageToggle = true;
+      this.showTrend = false;
      }  else {
       this.averageToggle = false;
+      this.showTrend = true;
      }
-    $('.compare-button').click();
+    
+    
   }
 }
 

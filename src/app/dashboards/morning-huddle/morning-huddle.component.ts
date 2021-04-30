@@ -45,12 +45,15 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
 	 public id:any = '';
   	public clinic_id:any = '';
   	public user_type:any = '';
+    public dentistid:any = null;
     public production:any = '';
     public recallRate:any = '';
     public treatmentRate:any = '';
     public previousDays:any = '';
 
-
+    public unscheduledPatientsDays:any = 7;
+    public postOpCallsDays:any = 2;
+    public followupsPostopCallsDate:any = '';
     public schedulePatieltd:any = 0;
     public schedulePatielDate:any = '';
     public scheduleNewPatieltd:any = 0;
@@ -78,6 +81,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public treatmentOutstanding:any = [];
     public outstandingBalances:any = [];
     public followupsUnscheduledPatients:any = [];
+    public followupsUnscheduledRecalls:any = [];
     public followupsUnscheduledPatientsDate:any = '';
     public followupPostOpCalls:any = [];
     public clinicDentists:any = [];
@@ -106,6 +110,11 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
  ngOnInit(){
     $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
+    if(this._cookieService.get("dentistid") && this._cookieService.get("dentistid") != '' && this.user_type == '4'){
+        this.dentistid = this._cookieService.get("dentistid");
+    }
+
+    this.user_type = this._cookieService.get("user_type");
     
      //this.initiate_clinic();
  }
@@ -120,55 +129,52 @@ ngOnDestroy() {
 }
 
 initiate_clinic() {
-    $('.external_clinic').show();
-    $('.dentist_dropdown').hide();
-    $('.header_filters').addClass('flex_direct_mar');
-    $('.header_filters').removeClass('hide_header');
-
-    var val = $('#currentClinic').attr('cid');
-   if(val != undefined && val !='all') {
-      this.clinic_id = val;
-      
+  $('.external_clinic').show();
+  $('.dentist_dropdown').hide();
+  $('.header_filters').addClass('flex_direct_mar');
+  $('.header_filters').removeClass('hide_header');
+  var val = $('#currentClinic').attr('cid');
+  if(val != undefined && val !='all') {
+    this.clinic_id = val;
     $('#title').html('Morning Huddle');
     if(this.previousDays  == '')
     {
       this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
-    /***** Tab 1 ***/
-    this.getDentistPerformance();
-    this.getRecallRate();
-    this.getTreatmentRate();
-    this.getDentistList();
-    /***** Tab 1 ***/    
-    //this.getSchedulePatients(null);
-    this.getScheduleNewPatients(null);
-    this.getScheduleHours(null);
-    this.getUnscheduleHours(null);
-    this.getAppointmentCards(null);
-    /***** Tab 2 ***/
-    
-    /***** Tab 2 ***/
 
-    /***** Tab 3 ***/
-
-    // this.getReAppointment();
-    //this.getUnscheduledPatients();
-    this.getUnscheduledValues();
-    //this.getTodayPatients();
-    this.getTodayUnscheduledHours();
-    this.getChairUtilisationRate();
-    this.getTodayUnscheduledBal();
-    this.getNoShow();
-    //this.getTodayPostopCalls();
-    /***** Tab 3 ***/
-    
-    /***** Tab 4 ***/
-    this.getReminders();
-    /***** Tab 4 ***/
-    /***** Tab 5 ***/
-    this.getFollowupsUnscheduledPatients();
-    this.getFollowupPostOpCalls();
-    /***** Tab 5 ***/
+    if(this.user_type != '3' && this.user_type != '5'){
+      /***** Tab 1 ***/
+      this.getDentistPerformance();
+      this.getRecallRate();
+      this.getTreatmentRate();
+      this.getDentistList();
+      /***** Tab 1 ***/    
+      /***** Tab 2 ***/
+      //this.getSchedulePatients(null);
+      this.getAppointmentCards(null);
+    }
+    if(this.user_type != '4'){
+      this.getScheduleNewPatients(null);
+      this.getScheduleHours(null);
+      this.getUnscheduleHours(null);
+    /***** Tab 2 ***/
+      /***** Tab 3 ***/
+      this.getUnscheduledValues();
+      this.getTodayUnscheduledHours();
+      this.getChairUtilisationRate();
+      this.getTodayUnscheduledBal();
+      this.getNoShow();
+      //this.getUnscheduledPatients();
+      //this.getTodayPatients();
+      //this.getTodayPostopCalls();
+      // this.getReAppointment();
+      /***** Tab 3 ***/ 
+      /***** Tab 4 ***/
+      this.getReminders();
+      this.getFollowupsUnscheduledPatients();
+      this.getFollowupPostOpCalls();
+      /***** Tab 4 ***/     
+      }
     }
   }
 
@@ -269,7 +275,7 @@ initiate_clinic() {
 
 
   getFollowupsUnscheduledPatients(){
-    this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.unscheduledPatientsDays  ).subscribe((production:any) => {
       if(production.status == true) {
         production.data.map((item) => {
           const phoneNumber  = item.phone_number ? item.phone_number : ( item.phone_work ? item.phone_work : item.mobile);
@@ -282,16 +288,19 @@ initiate_clinic() {
             }
           }
         })
-        this.followupsUnscheduledPatients = production.data;     
+        // this.followupsUnscheduledPatients = production.data;
+        this.followupsUnscheduledPatients = production.data.filter(p => p.code!="Recall Unscheduled");
+        this.followupsUnscheduledRecalls = production.data.filter(p => p.code==="Recall Unscheduled");        
         this.followupsUnscheduledPatientsDate = production.date;     
       }
     }); 
   } 
 
   getFollowupPostOpCalls(){
-    this.morningHuddleService.followupPostOpCalls( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+    this.morningHuddleService.followupPostOpCalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
       if(production.status == true) {
         this.followupPostOpCalls = production.data;     
+        this.followupsPostopCallsDate = production.date;     
       }
     }); 
   } 
@@ -419,6 +428,9 @@ initiate_clinic() {
         this.clinicDentists = [];
         this.appointmentCards.data = production.data; 
         this.appointmentCardsTemp = production.data; 
+        if(this.user_type == '4'){
+          this.refreshScheduleTab(this.dentistid);
+        }
         production.data.forEach(val => {
           // check for duplicate values        
           var isExsist = this.clinicDentists.filter(function (person) { return person.provider_id == val.provider_id });
@@ -511,6 +523,15 @@ initiate_clinic() {
     // console.log(`Todays date: ${todaysDate}`)
     // console.log(`Selected date: ${selectedDate}`)
     return selectedDate;
+  }
+
+  refreshUnscheduledPatients(val){
+    this.unscheduledPatientsDays = val;
+    this.getFollowupsUnscheduledPatients();
+  }
+  refreshPostOpCalls(val){
+    this.postOpCallsDays = val;
+    this.getFollowupPostOpCalls();
   }
 }
 
