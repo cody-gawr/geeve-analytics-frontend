@@ -39,6 +39,9 @@ export class SetupComponent implements AfterViewInit {
   public xero_link;
   public xeroConnect = false;
   public xeroOrganization='';
+  public myob_link;
+  public myobConnect = false;
+  public myobOrganization='';
   public selectedIndex:any;
   facebook ='http://facebook.com/';
   twitter ='http://twitter.com/';
@@ -243,6 +246,7 @@ usersArray = new Array(this.userRows);
             if(this.clinic_id){
               //this.getClinicSettings();
               this.checkXeroStatus(false);
+              this.checkMyobStatus(false);
             }            
           }          
           if(this._cookieService.get("stepper"))
@@ -333,6 +337,24 @@ if(selectedIndex >= 2) {
     );  
   }
 
+  //get myob authorization link
+  getMyobLink(){ 
+    this.setupService.getMyobLink(this.clinic_id).subscribe((res) => {
+       if(res.message == 'success'){
+        this.myob_link = res.data;
+       } else if(res.status == '401'){
+            this._cookieService.put("username",'');
+              this._cookieService.put("email", '');
+              this._cookieService.put("token", '');
+              this._cookieService.put("userid", '');
+               this.router.navigateByUrl('/login');
+           }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }    
+    );  
+  }
+
   public openXero(){ 
       var success;      
       var win = window.open(this.xero_link, "MsgWindow", "width=1000,height=800");
@@ -344,6 +366,19 @@ if(selectedIndex >= 2) {
         }
       }, 1000);
   }
+  //create myob connection model
+ public openMyob(){ 
+  var success;
+
+  var win = window.open(this.myob_link, "MsgWindow", "width=1000,height=800");
+  var self = this;
+ var timer = setInterval(function() { 
+    if(win.closed) {
+      self.checkMyobStatus(true);
+      clearTimeout(timer);
+    }
+  }, 1000);
+}
   public checkXeroStatus(close){
     this.setupService.checkXeroStatus(this.clinic_id).subscribe((res) => {
        if(res.message == 'success'){
@@ -370,6 +405,33 @@ if(selectedIndex >= 2) {
       this.warningMessage = "Please Provide Valid Inputs!";
     });  
  }
+
+  //check status of myob connection
+  public checkMyobStatus(close){
+    this.setupService.checkMyobStatus(this.clinic_id).subscribe((res) => {
+       if(res.message == 'success'){
+        if(res.data.myob_connect == 1) {
+          this.myobConnect = true;
+          this.myobOrganization = res.data.Name;
+          if(close){
+            this.saveStripe();
+          }
+        }
+        else {
+          this.myobConnect = false;
+           this.myobOrganization = '';          
+          this.disconnectMyob();
+        }
+       }
+       else {
+        this.myobConnect = false;
+           this.myobOrganization = ''; 
+          this.disconnectMyob();
+      }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });  
+  }
  public disconnectXero() {
   
     this.setupService.clearSession(this.clinic_id).subscribe((res) => {
@@ -385,7 +447,21 @@ if(selectedIndex >= 2) {
       this.warningMessage = "Please Provide Valid Inputs!";
     });   
  }
-
+ //disconnect myob connection
+ public disconnectMyob() { 
+  this.setupService.clearSessionMyob(this.clinic_id).subscribe((res) => {
+     if(res.message == 'success'){
+        this.myobConnect = false;
+        this.myobOrganization = '';   
+        this.getMyobLink();
+     }
+     else {
+      this.myobConnect = true;
+    }
+  }, error => {
+    this.warningMessage = "Please Provide Valid Inputs!";
+  });   
+}
 
 
   saveclinic(stepper) {

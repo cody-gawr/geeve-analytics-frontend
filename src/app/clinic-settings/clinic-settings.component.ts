@@ -175,8 +175,8 @@ export class ClinicSettingsComponent implements OnInit {
     }    
     );  
   }
-//get xero authorization link
-    getMyobLink(){ //alert('wkk');
+//get myob authorization link
+    getMyobLink(){ 
     this.clinicSettingsService.getMyobLink(this.id).subscribe((res) => {
        if(res.message == 'success'){
         this.myob_link = res.data;
