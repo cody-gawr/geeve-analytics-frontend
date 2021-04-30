@@ -2145,6 +2145,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (data && data.message == 'success') {
         this.buildChartNewpatientsDentistLoader = false;
         if (data.data != null && data.data[0]) {
+          this.newPatientGoals = data.goals;
           this.newPatientValuePatients = data.data[0].new_patients;
           this.newPatientLabelPatients = data.data[0].provider_name;
           this.newPatientTotal = Math.round(data.total);
@@ -2503,8 +2504,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.currentText = 'This Year';
 
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
-        console.log();
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');       
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
         this.goalCount = difMonths + 1;

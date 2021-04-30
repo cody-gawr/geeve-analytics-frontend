@@ -68,6 +68,7 @@ export class MarketingComponent implements AfterViewInit {
   public dentistCount:any ={};
   public clinicsData:any[] = [];
   public trendText;
+  public goalCount = 1;
   public xeroConnect: boolean = false;
   public myobConnect: boolean = false;
   public connectedwith:any;
@@ -822,6 +823,7 @@ public currentText;
     this.showTrend= false;
      $('.customRange').css('display','none');
     if(duration == 'w') {
+      this.goalCount = 1;
       this.trendText= 'Last Week';
       this.currentText= 'This Week';
       const now = new Date();
@@ -842,6 +844,7 @@ public currentText;
         this.loadDentist('all');
     }
     else if (duration == 'm') {
+      this.goalCount = 1;
       this.trendText= 'Last Month';
       this.currentText= 'This Month';
 
@@ -854,6 +857,7 @@ public currentText;
         
     }
     else if (duration == 'lm') {
+      this.goalCount = 1;
       this.trendText = 'Previous Month';
       this.currentText = 'Last Month';
 
@@ -864,6 +868,7 @@ public currentText;
       this.loadDentist('all');  
     }
     else if (duration == 'q') {
+      this.goalCount = 3;
       this.trendText= 'Last Quarter';
       this.currentText= 'This Quarter';
 
@@ -894,6 +899,7 @@ public currentText;
     
     }
     else if (duration == 'lq') {
+      this.goalCount = 3;
       this.trendText= 'Previous Quarter';
       this.currentText= 'Last Quarter';
 
@@ -927,6 +933,9 @@ public currentText;
      var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
+      this.goalCount = difMonths + 1;
+    
       this.duration='cytd';
       this.loadDentist('all');
     }
@@ -940,8 +949,10 @@ public currentText;
         this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
         } else {
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
-    }
+       }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
+      this.goalCount = Math.abs(difMonths + 1);
       this.duration='fytd';
       this.loadDentist('all');
     }

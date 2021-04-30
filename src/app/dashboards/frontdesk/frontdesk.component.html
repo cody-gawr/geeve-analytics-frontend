@@ -210,7 +210,7 @@
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num" *ngIf="maxrecallPrebookGoal">{{maxrecallPrebookGoal}}%</h3>
+                        <h3 class="m-0 value-num" *ngIf="maxrecallPrebookGoal">{{ (maxrecallPrebookGoal > 100)? 100 : maxrecallPrebookGoal }}%</h3>
                         <small>Goal</small>
                     </div>
                 </div>   
@@ -297,7 +297,7 @@
                         <small *ngIf="trendText == ''">Previous</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-                        <h3 class="m-0 value-num" *ngIf="treatmentPrebookGoal">{{treatmentPrebookGoal}}%</h3>
+                        <h3 class="m-0 value-num" *ngIf="treatmentPrebookGoal">{{(treatmentPrebookGoal > 100) ? 100 : treatmentPrebookGoal}}%</h3>
                         <small>Goal</small>
                     </div>
                 </div> 

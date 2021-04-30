@@ -17,6 +17,7 @@ import { RolesUsersService } from '../roles-users/roles-users.service';
 export class LoginComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
+  public errorForm = {'email' : false, 'password' : false};
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService, private rolesUsersService: RolesUsersService) {
 
   if(this._cookieService.get("userid")){
@@ -32,6 +33,14 @@ export class LoginComponent implements OnInit {
     });
   }
 onSubmit() {
+  this.errorForm = {'email' : false, 'password' : false};
+  if(this.form.controls['uname'].hasError('required')){
+      this.errorForm.email = true;
+  }
+  if(this.form.controls['password'].hasError('required')){
+      this.errorForm.password = true;
+  }
+
   this.errorLogin  =false;
   this.loginService.login(this.form.value.uname.trim(), this.form.value.password).subscribe((res) => 
   {

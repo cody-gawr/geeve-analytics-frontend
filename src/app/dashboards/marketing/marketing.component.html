@@ -205,7 +205,7 @@ No. New Patients
      <span class="value-text" *ngIf="trendText == ''">Previous</span>
  </div>
  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-     <h3 class="m-0 value-num">{{newPatientsGoal | number:'1.0-0'}}</h3>
+     <h3 class="m-0 value-num">{{newPatientsGoal * goalCount | number:'1.0-0'}}</h3>
      <span class="value-text">Goal</span>
  </div>
 </div>   
@@ -281,7 +281,7 @@ Cost of New Patient Acquisition
      <span class="value-text" *ngIf="trendText == ''">Previous</span>
  </div>
  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
- <h3 class="m-0 value-num">${{ newAcqValueGoal }}</h3>
+ <h3 class="m-0 value-num">${{ newAcqValueGoal * goalCount }}</h3>
  <span class="value-text">Goal</span>
 </div>
 </div>   
@@ -361,7 +361,7 @@ Total Visits
     <span class="value-text" *ngIf="trendText == ''">Previous</span>
  </div>
   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
-     <h3 class="m-0 value-num">{{visitsGoal | number:'1.0-0'}}</h3>
+     <h3 class="m-0 value-num">{{visitsGoal * goalCount | number:'1.0-0'}}</h3>
      <span class="value-text">Goal</span>
  </div>
  
