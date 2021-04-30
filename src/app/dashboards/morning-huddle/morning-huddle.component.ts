@@ -141,17 +141,18 @@ initiate_clinic() {
     {
       this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
-    /***** Tab 1 ***/
-    this.getDentistPerformance();
-    this.getRecallRate();
-    this.getTreatmentRate();
-    this.getDentistList();
-    /***** Tab 1 ***/    
-    /***** Tab 2 ***/
-    //this.getSchedulePatients(null);
-    this.getAppointmentCards(null);
-    
 
+    if(this.user_type != '3' && this.user_type != '5'){
+      /***** Tab 1 ***/
+      this.getDentistPerformance();
+      this.getRecallRate();
+      this.getTreatmentRate();
+      this.getDentistList();
+      /***** Tab 1 ***/    
+      /***** Tab 2 ***/
+      //this.getSchedulePatients(null);
+      this.getAppointmentCards(null);
+    }
     if(this.user_type != '4'){
       this.getScheduleNewPatients(null);
       this.getScheduleHours(null);
