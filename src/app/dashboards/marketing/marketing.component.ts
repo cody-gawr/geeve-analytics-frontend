@@ -778,7 +778,13 @@ public fdnewPatientsAcqLoader:any;
 public newAcqValuePrev =0;
 public newAcqValueGoal:any =0;
 //Predictor Ratio :
-  private fdnewPatientsAcq() {
+  private fdnewPatientsAcq() { 
+      this.expenseData =[];
+      this.categories=[];
+      this.newAcqValueGoal='';
+      this.newAcqValuePrev=0;
+      this.expenseDataTrend1=[];
+      this.newAcqValue=0;
      if(this.duration && this.connectedwith !=''){
        var user_id;
        var clinic_id;
@@ -809,9 +815,13 @@ public newAcqValueGoal:any =0;
               
            }
     }, error => {
+      this.fdnewPatientsAcqLoader = false;
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
+    }else{
+      this.xeroConnect = false;
+      this.myobConnect = false;
     }
   }
 
@@ -1270,6 +1280,12 @@ public expenseDataTrendLabels=[];
 public dataY:any=0;
 //Predictor Ratio :
   private fdnewPatientsAcqTrend() {
+    this.expenseData =[];
+    this.categories=[];
+    this.newAcqValueGoal='';
+    this.newAcqValuePrev=0;
+    this.expenseDataTrend1=[];
+    this.expenseDataTrendLabels1=[];
     if(this.duration && this.connectedwith !=''){
        var user_id;
        var clinic_id;
@@ -1334,6 +1350,9 @@ public dataY:any=0;
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
+    }else{
+      this.xeroConnect=false;
+      this.myobConnect=false;
     }
   }
 
