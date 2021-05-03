@@ -20,7 +20,8 @@ export interface Dentist {
 
 @Component({
   templateUrl: './clinicianproceedures.component.html',
-  styleUrls: ['./clinicianproceedures.component.scss']
+  styleUrls: ['./clinicianproceedures.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
   /**
   *Clinician Proceedure Graph Dashboard

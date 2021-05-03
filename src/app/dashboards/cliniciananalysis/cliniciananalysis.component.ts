@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy,ViewEncapsulation } from '@angular/core';
 import { ClinicianAnalysisService } from './cliniciananalysis.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { FrontDeskService } from '../frontdesk/frontdesk.service';
@@ -26,7 +26,8 @@ export interface Dentist {
 }
 @Component({
   templateUrl: './cliniciananalysis.component.html',
-  styleUrls: ['./cliniciananalysis.component.scss']
+  styleUrls: ['./cliniciananalysis.component.scss'],
+   encapsulation: ViewEncapsulation.None
 })
 /**
   *Clinician analysis graph Dashboard
