@@ -1303,12 +1303,12 @@ if(this._cookieService.get("user_type") == '4'){
     tupleArray.sort(function (a, b) { return b[1] - a[1] });
       
       tupleArray.forEach((res,key) => {
-
+        console.log(res,'***********');
         this.itemPredictedChartData1.push(res[1]);
         this.itemPredictedChartLabels.push(res[0]);
       });
           this.itemPredictedChartData[0]['data'] = this.itemPredictedChartData1;
-          this.itemPredictedChartData[0]['label'] = data.data[0].provider;
+          this.itemPredictedChartData[0]['label'] = data.data[0].provider_name;
           //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
 
           this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
