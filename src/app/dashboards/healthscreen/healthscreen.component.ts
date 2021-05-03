@@ -23,8 +23,10 @@ export interface Dentist {
 }
 declare var Chart: any; 
 @Component({
+  selector: 'healthscreen',
   templateUrl: './healthscreen.component.html',
-  styleUrls: ['./healthscreen.component.scss']
+  styleUrls: ['./healthscreen.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HealthScreenComponent implements AfterViewInit, OnDestroy {
    @ViewChild("myCanvas") canvas: ElementRef;
@@ -88,8 +90,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
      //$('.external_dentist').hide();
     $('#title').html('Clinic Health');
     $('.external_clinic').show();
-    $('.dentist_dropdown').hide();
-    $('.dentist_dropdown').parent().hide(); // added
+    //$('.dentist_dropdown').hide();
+    //$('.dentist_dropdown').parent().hide(); // added
     $('.sa_heading_bar').addClass("filter_single"); // added
     $('.header_filters').removeClass('hide_header');
     $('.header_filters').addClass('flex_direct_mar');
@@ -117,7 +119,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
 
   ngOnDestroy() {
-    $('.dentist_dropdown').parent().show(); // added
+    //$('.dentist_dropdown').parent().show(); // added
     $('.sa_heading_bar').removeClass("filter_single"); // added
   }
 

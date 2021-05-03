@@ -152,3 +152,6 @@ table{
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+
+
+.header_filters.flex_direct_mar { flex-direction: row-reverse !important }

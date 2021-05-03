@@ -265,7 +265,7 @@ initiate_clinic() {
 
         $('#title').html('Users');
         $('.external_clinic').hide();
-        $('.dentist_dropdown').hide();
+        //$('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
   }
 

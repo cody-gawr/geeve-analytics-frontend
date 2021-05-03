@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit,ViewEncapsulation } from '@angular/core';
 import { LostOpportunityService } from './lost-opportunity.service';
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
@@ -8,7 +8,8 @@ import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 @Component({
   selector: 'app-lost-opportunity',
   templateUrl: './lost-opportunity.component.html',
-  styleUrls: ['./lost-opportunity.component.css']
+  styleUrls: ['./lost-opportunity.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LostOpportunityComponent implements OnInit, OnDestroy {	
 	public clinic_id:any = '';
@@ -42,19 +43,19 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
   		  $('#currentDentist').attr('did','all');
 
   		 //this.initiate_clinic();
-			$('.dentist_dropdown').parent().hide(); // added
+			//$('.dentist_dropdown').parent().hide(); // added
 			$('.sa_heading_bar').addClass("filter_single"); // added
   	}
 
 
 	ngOnDestroy() {
-		$('.dentist_dropdown').parent().show(); // added
+		//$('.dentist_dropdown').parent().show(); // added
 		$('.sa_heading_bar').removeClass("filter_single"); // added
 	}
 
   	initiate_clinic() {
 	    $('.external_clinic').show();
-	    $('.dentist_dropdown').hide();
+	    //$('.dentist_dropdown').hide();
 	    $('.header_filters').addClass('flex_direct_mar');
 	    $('.header_filters').removeClass('hide_header');
 	    var val = $('#currentClinic').attr('cid');

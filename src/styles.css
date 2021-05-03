@@ -270,7 +270,7 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .sa_heading_bar:before {content: ""; position: absolute;left: 0;top: 50%;height: 32px;background-color: #e9f5f3;width: 2px;-moz-transform: translateY(-50%);-webkit-transform: translateY(-50%);transform: translateY(-50%);}
 
-.sa_heading_bar h4 { margin: 0; padding: 8px 4px 6px 0px; }
+.sa_heading_bar h4 { margin: 0; padding: 8px 4px 6px 0px; float: left;width: 80%;}
 
 .sepr_icon { color: rgba(255,255,255,0.4); padding: 0 9px 0 6px }
 

@@ -143,8 +143,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     //   $('.external_dentist').val('all');
     $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
     $('.external_clinic').show();
-    $('.dentist_dropdown').show();
-    $('.dentist_dropdown').removeClass('hide');
+    //$('.dentist_dropdown').show();
+    //$('.dentist_dropdown').removeClass('hide');
     $('.header_filters').removeClass('flex_direct_mar');
     $('.header_filters').removeClass('hide_header');
     if (this.childid != '') {
@@ -191,6 +191,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   //Load Clinic Data
   initiate_clinic() {
+    $('.internal_dentist').val('all');
+    $('.external_dentist').val('all');
     var val = $('#currentClinic').attr('cid');
     if( this._cookieService.get("dentistid")){
          this.childid = this._cookieService.get("dentistid");

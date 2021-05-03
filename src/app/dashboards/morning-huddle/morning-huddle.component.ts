@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit,ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit,ViewChild,ViewEncapsulation } from '@angular/core';
 import { MorningHuddleService } from './morning-huddle.service';
 import { CookieService } from "ngx-cookie";
 import { MatTableDataSource } from '@angular/material/table';
@@ -31,7 +31,8 @@ export interface PeriodicElement {
 @Component({
   selector: 'app-morning-huddle',
   templateUrl: './morning-huddle.component.html',
-  styleUrls: ['./morning-huddle.component.css']
+  styleUrls: ['./morning-huddle.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class MorningHuddleComponent implements OnInit,OnDestroy {
   selectedTab = 0;
@@ -120,17 +121,17 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
  }
 ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;
-    $('.dentist_dropdown').parent().hide(); // added
+    //$('.dentist_dropdown').parent().hide(); // added
     $('.sa_heading_bar').addClass("filter_single"); // added
   }
 ngOnDestroy() {
-  $('.dentist_dropdown').parent().show(); // added
+  //$('.dentist_dropdown').parent().show(); // added
   $('.sa_heading_bar').removeClass("filter_single"); // added
 }
 
 initiate_clinic() {
   $('.external_clinic').show();
-  $('.dentist_dropdown').hide();
+  //$('.dentist_dropdown').hide();
   $('.header_filters').addClass('flex_direct_mar');
   $('.header_filters').removeClass('hide_header');
   var val = $('#currentClinic').attr('cid');

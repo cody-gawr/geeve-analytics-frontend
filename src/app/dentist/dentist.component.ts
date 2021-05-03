@@ -61,7 +61,7 @@ export class DentistComponent implements AfterViewInit {
       this.initiate_clinic();
 
           $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
+        //$('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
         $('#title').html('Dentist');
      });
@@ -101,7 +101,7 @@ export class DentistComponent implements AfterViewInit {
         this.toastr.success('Dentist Added');
           this.getDentists();
               $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
+        //$('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
        }
     }, error => {

@@ -62,7 +62,7 @@ export class ClinicSettingsComponent implements OnInit {
       this.getClinicSettings();
           $('#title').html('Clinic Settings');
          $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
+        //$('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
         this.checkXeroStatus();
         this.checkMyobStatus();

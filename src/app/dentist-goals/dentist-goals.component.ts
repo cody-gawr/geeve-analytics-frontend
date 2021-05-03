@@ -112,7 +112,7 @@ export class DentistGoalsComponent implements OnInit {
           }
           else {
             $('.external_clinic').show();
-        $('.dentist_dropdown').show();
+        //$('.dentist_dropdown').show();
           }
         $('#title').html('Dentist Goals');
          if($('body').find('span#currentDentist').length > 0){
