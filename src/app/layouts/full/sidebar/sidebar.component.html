@@ -31,8 +31,8 @@
             <i class="fa-chart-area fas"></i>
             <span>Dashboards</span>
             <span fxFlex></span>            
-            <i *ngIf="nav_open != 'dashboards'" class="fas fa-caret-down"></i>
-            <i *ngIf="nav_open == 'dashboards'" class="fas fa-caret-up"></i>
+            <i *ngIf="nav_open != 'dashboards'" class="fas fa-caret-right"></i>
+            <i *ngIf="nav_open == 'dashboards'" class="fas fa-caret-down"></i>
         </a>
     <ng-template [ngIf]="nav_open == 'dashboards'">
         <mat-nav-list appAccordion>
@@ -87,8 +87,8 @@
             <i class="fa-cog fas"></i>
             <span>Settings</span>
             <span fxFlex></span>            
-            <i *ngIf="nav_open != 'setting'" class="fas fa-caret-down"></i>
-            <i *ngIf="nav_open == 'setting'" class="fas fa-caret-up"></i>
+            <i *ngIf="nav_open != 'setting'" class="fas fa-caret-right"></i>
+            <i *ngIf="nav_open == 'setting'" class="fas fa-caret-down"></i>
         </a>
     <ng-template [ngIf]="nav_open == 'setting'">
         <mat-nav-list appAccordion>

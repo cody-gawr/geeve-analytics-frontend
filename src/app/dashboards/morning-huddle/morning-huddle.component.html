@@ -786,7 +786,7 @@
       <mat-card-title>Post op Calls
         <div class="morning-huddle-date UnscheduledPatients">
             <mat-form-field floatLabel="never" class="setPreviousDay">
-              <mat-select placeholder="2 Days Ago" (selectionChange)="refreshPostOpCalls($event.value)" >
+              <mat-select placeholder="2 Days Ago" (selectionChange)="refreshPostOpCalls($event.value)" [(ngModel)]="postOpCallsDays" >
                 <mat-option [value]="1">Yesterday</mat-option>
                 <mat-option [value]="2">2 Days Ago</mat-option>
               </mat-select>
@@ -832,7 +832,7 @@
         </ng-container>
         <ng-container matColumnDef="isDataAvailable1">
           <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns5.length">
-           You have no post op followup calls today
+           You have no post op calls today
           </mat-footer-cell>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns5"></tr>
@@ -859,7 +859,7 @@
   <mat-card-title>Unscheduled Patients
       <div class="morning-huddle-date UnscheduledPatients">
         <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select placeholder="7 Days Ago" (selectionChange)="refreshUnscheduledPatients($event.value)" >
+          <mat-select placeholder="7 Days Ago" (selectionChange)="refreshUnscheduledPatients($event.value)" [(ngModel)]="unscheduledPatientsDays" >
             <mat-option [value]="1">Yesterday</mat-option>
             <mat-option [value]="7">7 Days Ago</mat-option>
             <mat-option [value]="14">14 Days Ago</mat-option>            

@@ -144,7 +144,7 @@
 
 .sa_tabs_main_sec { border-radius: 4px; margin-bottom: 15px; }
 
-.sa_tabs_main_sec .btn-group { padding: 0 2px;}
+.sa_tabs_main_sec .btn-group { padding: 0 10px;}
 
 /* .sa_dentist_graphs_area { padding: 0px 15px;} */
 
@@ -4097,7 +4097,7 @@ ul.download-sync-list {
 
 .prodction_main_box_label div {    
      color: #fff;
-     font-size: 10px;
+     font-size: 11px;
      border-radius: 5px;
      line-height: 2;
     padding: 2px 6px 0px;
