@@ -1,19 +1,5 @@
 <div fxLayout="row wrap" class="header_filters" >   
-    <div fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100" >
-        <div class="dentist_dropdown" *ngIf="user_type_dentist != '4' && showDropDown">
-        <div class="vertical_center_header_content">
-            <div class="sa_mat_select_topbar">
-                <mat-form-field floatLabel="never">
-                    <mat-select class="external_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
-                        <mat-option value="all" *ngIf="showAll">All Dentists</mat-option>
-                        <mat-option *ngFor="let dentist of dentists"  [value]="dentist.providerId">                               {{dentist.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
-    </div>
-    </div>
+
     <div fxLayout="row" fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
         <!-- <div fxFlexAlign="center" *ngIf="user_type_dentist==='4' && showCompare">
             <button 
@@ -30,6 +16,21 @@
                     <mat-option *ngFor="let clinicData of clinicsData" [value]="clinicData.id" >
                                     {{clinicData.clinicName}}
                     </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100" >
+        <div class="dentist_dropdown" *ngIf="user_type_dentist != '4' && showDropDown">
+        <div class="vertical_center_header_content">
+            <div class="sa_mat_select_topbar">
+                <mat-form-field floatLabel="never">
+                    <mat-select class="external_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
+                        <mat-option value="all" *ngIf="showAll">All Dentists</mat-option>
+                        <mat-option *ngFor="let dentist of dentists"  [value]="dentist.providerId">                               {{dentist.name}}
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>

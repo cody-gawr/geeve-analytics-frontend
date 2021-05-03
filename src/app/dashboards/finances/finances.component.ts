@@ -32,7 +32,8 @@ export interface Dentist {
 
 @Component({
   templateUrl: './finances.component.html',
-  styleUrls: ['./finances.component.scss']
+  styleUrls: ['./finances.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class FinancesComponent implements AfterViewInit {
@@ -210,11 +211,11 @@ single = [
     $('#currentDentist').attr('did','all');
     this.route.params.subscribe(params => {
       $('.external_clinic').show();
-      $('.dentist_dropdown').hide();
+      //$('.dentist_dropdown').hide();
       $('.header_filters').removeClass('hide_header');
       $('.header_filters').addClass('flex_direct_mar');
       $('.external_clinic').show();
-      $('.external_dentist').show();
+      //$('.external_dentist').show();
       $('#title').html('<span>Finances</span>  <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
       $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {

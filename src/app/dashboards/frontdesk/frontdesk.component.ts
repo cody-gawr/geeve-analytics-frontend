@@ -25,7 +25,9 @@ export interface Dentist {
 }
 
 @Component({
-  templateUrl: './frontdesk.component.html'
+  templateUrl: './frontdesk.component.html',
+  styleUrls: ['./frontdesk.component.scss'],
+   encapsulation: ViewEncapsulation.None
 })
 export class FrontDeskComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas: ElementRef;
@@ -80,12 +82,12 @@ export class FrontDeskComponent implements AfterViewInit {
 
         
         $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
+        //$('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
         $('.header_filters').removeClass('hide_header');
         $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>'); 
         $('.external_clinic').show();
-        $('.external_dentist').show();
+        //$('.external_dentist').show();
         $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
            $('.customRange').show();

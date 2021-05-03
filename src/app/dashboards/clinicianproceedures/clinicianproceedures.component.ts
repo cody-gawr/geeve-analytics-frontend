@@ -152,7 +152,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
           }        
         //this.filterDate('cytd');
         this.getClinics();
-        $('.dentist_dropdown').show();
+        //$('.dentist_dropdown').show();
         $('.header_filters').removeClass('flex_direct_mar');
         $('.header_filters').removeClass('hide_header');
         $('#title').html('<span>Clinician Procedures & Referrals</span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        

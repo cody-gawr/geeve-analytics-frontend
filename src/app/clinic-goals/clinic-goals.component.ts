@@ -86,7 +86,7 @@ export class ClinicGoalsComponent implements OnInit {
     $('.header_filters').removeClass('hide_header'); 
     $('.header_filters').removeClass('flex_direct_mar'); 
       $('.external_clinic').show();
-        $('.dentist_dropdown').hide();
+        //$('.dentist_dropdown').hide();
         $('.header_filters').addClass('flex_direct_mar');
       this.route.params.subscribe(params =>  {
       if(this._cookieService.get("userid") != '1'){

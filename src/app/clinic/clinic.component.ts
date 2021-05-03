@@ -110,7 +110,7 @@ export class ClinicComponent implements AfterViewInit {
     $('#title').html('Clinics');
     //$('.header_filters').hide();
     $('.external_clinic').show();
-    $('.dentist_dropdown').hide();
+    //$('.dentist_dropdown').hide();
     $('.header_filters').addClass('hide_header');
   }
   editing = {};

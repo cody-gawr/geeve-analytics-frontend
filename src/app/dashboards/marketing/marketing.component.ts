@@ -32,7 +32,9 @@ export interface Dentist {
 }
 
 @Component({
-  templateUrl: './marketing.component.html'
+  templateUrl: './marketing.component.html',
+  styleUrls: ['./marketing.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MarketingComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas2: ElementRef;
@@ -160,7 +162,7 @@ export class MarketingComponent implements AfterViewInit {
     // end of plugin observable logic
 
       $('#currentDentist').attr('did','all');
-      $('.dentist_dropdown').hide();
+      //$('.dentist_dropdown').hide();
  this.route.params.subscribe(params => {
     this.clinic_id = this.route.snapshot.paramMap.get("id");
        //  this.filterDate('cytd');
@@ -170,7 +172,7 @@ export class MarketingComponent implements AfterViewInit {
         
        $('#title').html('Marketing');
         $('.external_clinic').show();
-        $('.dentist_dropdown').addClass('hide');
+        //$('.dentist_dropdown').addClass('hide');
         $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
   $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
