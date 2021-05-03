@@ -133,7 +133,7 @@
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num">${{productionTotalPrev| number:'1.0-0'}}</h3>
 
-                  <!--  <small *ngIf="trendText != ''">{{trendText}} Average</small> -->
+                  <!--  <small *ngIf="trendText != ''">{{trendText}} Avg</small> -->
 
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
@@ -201,7 +201,7 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">${{productionTotalPrev| number:'1.0-0'}}</h3>
-                  <!-- <small *ngIf="trendText != ''">{{ trendText }} Average</small> -->
+                  <!-- <small *ngIf="trendText != ''">{{ trendText }} Avg</small> -->
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>               
                 </div>
@@ -278,13 +278,13 @@
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">${{hourlyRateChartAverage| number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
                   <span class="value-text" *ngIf="currentText == ''">Current Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num">${{hourlyRateChartAveragePrev| number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Avg</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
@@ -608,13 +608,13 @@
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">${{planTotalAverage | number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
                   <span class="value-text" *ngIf="currentText == ''">Current Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num">${{planTotalPrev | number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Avg</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <!-- <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
@@ -779,13 +779,13 @@
                   </h3>
                   <h3 *ngIf="treatmentChartAverage <= 0" class="m-0 value-num">
                     {{treatmentChartAverage| number:'1.0-0'}}%</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
                   <span class="value-text" *ngIf="currentText == ''">Current Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num">{{treatmentChartAveragePrev| number:'1.0-0'}}%</h3>
-                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Avg</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
@@ -953,12 +953,12 @@
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 *ngIf="recallChartAverage > 0" class="m-0 value-num">{{recallChartAverage| number:'1.0-0'}}%</h3>
                   <h3 *ngIf="recallChartAverage <= 0" class="m-0 value-num">{{recallChartAverage| number:'0.0-0'}}%</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Average</span>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
                   <span class="value-text" *ngIf="currentText == ''">Current Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num">{{recallChartAveragePrev| number:'1.0-0'}}%</h3>
-                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Average</span>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Avg</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"

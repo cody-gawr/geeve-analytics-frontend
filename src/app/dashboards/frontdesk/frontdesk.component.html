@@ -114,13 +114,13 @@
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                    <!--    <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                         <h3 class="m-0 value-num">{{( workTimeTotal > 100 ? 100 : workTimeTotal ) | number }}%</h3>
-                        <small *ngIf="currentText != ''">{{currentText}} Average</small>
+                        <small *ngIf="currentText != ''">{{currentText}} Avg</small>
                         <small *ngIf="currentText == ''">Average</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
             <!--           <mat-progress-bar mode="determinate" value="80" color="accent"></mat-progress-bar> -->
                         <h3 class="m-0 value-num">{{ ( prevWorkTimeTotal > 100 ? 100 : prevWorkTimeTotal) | number }}%</h3>
-                        <small *ngIf="trendText != ''">{{trendText}} Average</small>
+                        <small *ngIf="trendText != ''">{{trendText}} Avg</small>
                         <small *ngIf="trendText == ''">Previous Average</small>
                     </div>
                     <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">

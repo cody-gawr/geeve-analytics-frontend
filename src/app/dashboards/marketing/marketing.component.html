@@ -221,9 +221,9 @@ No. New Patients
 <mat-card-title class="text-center">
 <div>
 <span *ngIf="showTrend == false  && trendText &&  (xeroConnect || myobConnect)" class="referral1Tool referral sa_inc_dec_arrows trend_arrow" matTooltip= "{{trendText}} : ${{newAcqValuePrev}}"><img class="trend_ico" src="../assets/images/trend_reverse_{{newPatientsTooltip}}.png"></span>
-Cost of New Patient Acquisition
+New Patient Cost
 </div>
-<div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false && connectedwith"><button class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Set Accounts ({{connectedwith | titlecase }})</button></div>
+<div class="CategoriesBtn CategoriesBtnMarketing" *ngIf="showTrend == false && connectedwith"><button class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Accounts</button></div>
 <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png" *ngIf="showTrend == true">
 </mat-card-title>
 <div class="card-body">
