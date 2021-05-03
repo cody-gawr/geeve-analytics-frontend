@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy,ViewEncapsulation } from '@angular/core';
 import { ClinicianAnalysisService } from './cliniciananalysis.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { FrontDeskService } from '../frontdesk/frontdesk.service';
@@ -26,7 +26,8 @@ export interface Dentist {
 }
 @Component({
   templateUrl: './cliniciananalysis.component.html',
-  styleUrls: ['./cliniciananalysis.component.scss']
+  styleUrls: ['./cliniciananalysis.component.scss'],
+   encapsulation: ViewEncapsulation.None
 })
 /**
   *Clinician analysis graph Dashboard
@@ -191,6 +192,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   //Load Clinic Data
   initiate_clinic() {
+    $('.internal_dentist').val('all');
+    $('.external_dentist').val('all');
     var val = $('#currentClinic').attr('cid');
     if( this._cookieService.get("dentistid")){
          this.childid = this._cookieService.get("dentistid");

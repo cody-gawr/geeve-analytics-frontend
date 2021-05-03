@@ -1,4 +1,4 @@
-import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Inject , ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { RolesUsersService } from './roles-users.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -16,7 +16,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
-  styleUrls: ['./roles-users.component.scss']
+  styleUrls: ['./roles-users.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class DialogOverviewExampleDialogComponent {

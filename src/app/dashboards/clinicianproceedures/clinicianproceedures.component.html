@@ -73,7 +73,7 @@
             <!--  Procedure Analysis All dentist General-->
             <div class="procedureAnalysisGeneral" *ngIf = "procedureAnalysisVisibility == 'General'">
               
-            <!--  Procedure Analysis All dentist General-->
+            <!--  Procedure Analysis All dentist General--> 
             <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false">              
               <div style="height: 408px" *ngIf="stackedChartDataMax > 0 && buildChartLoader == false">
                 <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
@@ -316,7 +316,7 @@
             <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
               <small class="sa_tab_btn prmain1 active" (click)="changeDentistPredictorMain('1')">Crown to Large
                 Filling</small>
-            </div>
+            </div> 
             <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
               <small class="sa_tab_btn prmain2" (click)="changeDentistPredictorMain('2')">RCT to Extraction</small>
             </div>

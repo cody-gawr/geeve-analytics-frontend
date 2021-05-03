@@ -20,7 +20,8 @@ export interface Dentist {
 
 @Component({
   templateUrl: './clinicianproceedures.component.html',
-  styleUrls: ['./clinicianproceedures.component.scss']
+  styleUrls: ['./clinicianproceedures.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
   /**
   *Clinician Proceedure Graph Dashboard
@@ -97,6 +98,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
 
   //Load Clinic Data
   initiate_clinic() {
+    $('.internal_dentist').val('all');
+    $('.external_dentist').val('all');
     var val = $('#currentClinic').attr('cid');
      if(val != undefined && val !='all') {
     this.clinic_id = val;
@@ -1300,12 +1303,11 @@ if(this._cookieService.get("user_type") == '4'){
     tupleArray.sort(function (a, b) { return b[1] - a[1] });
       
       tupleArray.forEach((res,key) => {
-
         this.itemPredictedChartData1.push(res[1]);
         this.itemPredictedChartLabels.push(res[0]);
       });
           this.itemPredictedChartData[0]['data'] = this.itemPredictedChartData1;
-          this.itemPredictedChartData[0]['label'] = data.data[0].provider;
+          this.itemPredictedChartData[0]['label'] = data.data[0].provider_name;
           //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
 
           this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
