@@ -68,7 +68,7 @@ span.green_title {
 }
 
 .mat-form-field-infix {
-    border-bottom: 1px solid #000;
+    border-bottom: 0;
     width: 100%;
 }
 

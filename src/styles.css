@@ -2391,7 +2391,9 @@ body .mat-gray {
 
 
 #mat-tab-content-0-0 .morning-huddle-date .mat-form-field , #mat-tab-content-0-2 .morning-huddle-date .mat-form-field  {max-width: 360px;}
-
+#mat-tab-content-0-0 .morning-huddle-date .mat-form-field .mat-form-field-infix {
+    padding-bottom: 0 !important;
+}
 #mat-tab-content-0-1 .appointment .material-icons , #mat-tab-content-0-1 .appointment .fas {color:rgba(14, 52, 89, 0.8);padding-right: 5px;}
 
 .mh-table .new-patient .mat-column-start {padding-top: 55px !important;position: relative;}
@@ -3999,7 +4001,7 @@ ul.download-sync-list {
 }
 
 .production_description h4{
-    font-size: 19px;
+    font-size: 18px;
     font-weight: bold;
     color: #4c838b;
     margin: 0px 0px 15px;
@@ -4095,9 +4097,10 @@ ul.download-sync-list {
 
 .prodction_main_box_label div {    
      color: #fff;
-     font-size: 12px;
+     font-size: 10px;
      border-radius: 5px;
-     padding: 4px 10px 0px;
+     line-height: 2;
+    padding: 2px 6px 0px;
 }
 
 .prodction_main_box_label .plus {
@@ -4519,6 +4522,9 @@ ul.download-sync-list {
         margin: 0 29px;
     }
 }
+@media(min-width:1200px) and (max-width:1440px){
+    .sa_profit_bar.sa_dentist_graphs_area .sa_huddle { min-height: 126px!important; }
+}
 
 @media(min-width:1200px) and (max-width:1500px){
     
@@ -4530,7 +4536,9 @@ ul.download-sync-list {
     }
 
     .production_images {
-        margin-right: 18px;
+        margin-right: 14px;
+        margin-left: 6px;
+        padding-top: 10px;
     }
 
     .price-section .ttl_value_left{
@@ -4560,6 +4568,36 @@ ul.download-sync-list {
         margin-left: 9px;
     }
 
+    .production_description h4 {
+        margin-bottom: 10px;
+    }
+
+    .production_description_huddle h4 {
+        font-size: 16px;
+    }
+    .production_description_huddle span {
+        font-size: 18px !important;
+    }
+    .prodction_main_box_huddle .icon {
+        max-width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        flex: 0 0 50px;
+    }
+    .prodction_main_box_huddle .icon i,  .prodction_main_box_huddle .icon span{
+        line-height: 50px;
+        font-size: 24px;
+    }
+
+    .production_collection {
+        padding: 30px 0px 0 16px;
+    }
+    .production_collection .production {
+        padding: 0px 10px 30px 0px !important;
+    }
+    .production_collection .collection {
+        padding: 0px 10px 30px 0px !important;
+    }
 }
 
 @media(max-width:1200px){
