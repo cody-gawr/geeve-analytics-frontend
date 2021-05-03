@@ -138,7 +138,7 @@
                           <span class="change_value" *ngIf="treatmentRate.total == 'N/A'">{{ treatmentRate.total}}</span>
                           <div class="ttl_value_left profit" *ngIf="!treatmentRate.goal">Goal: 0%</div>
                           <div 
-                            [ngClass]="(treatmentRate.rate >= treatmentRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
+                            [ngClass]="(treatmentRate.total >= treatmentRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
                             *ngIf="treatmentRate.goal">
                             Goal: {{  treatmentRate.goal }}%                     
                           </div>
@@ -212,8 +212,8 @@
       <th mat-header-cell *matHeaderCellDef> Reappointment Rate </th>
       <td mat-cell *matCellDef="let element">
       <span *ngIf="element.treatment.total != 'N/A'" [ngClass] = "(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}%</span>
-      <span *ngIf="element.treatment.total == 'N/A'">{{element.treatment.total}}</span>
-      <span class="goal custom_goal">Goal: {{ element.treatment.goal}}%</span>
+      <span *ngIf="element.treatment.total == 'N/A'" [ngClass] = "(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}</span>
+      <span class="goal custom_goal" >Goal: {{ element.treatment.goal}}%</span>
       </td>
     </ng-container>
 

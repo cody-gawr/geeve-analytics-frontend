@@ -51,15 +51,15 @@
                   <div class="production_images clinic-health-top-icon">
                     <img src="../assets/images/profit.png" alt="product-chart" />
                   </div>
-                  <div class="production_description production_description-grow">
+                  <div class="production_description production_description-grow" style="width: 100%;">
                     <h4>Production Per Visit</h4>
                     <span class="change_value">
                       {{ productionVal >= 0 ? ' ' : '- ' }}
                       ${{ productionVal | number:'1.0-0'}}
                     </span>
                   </div>  
-                    <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
-                    <div [ngClass]="(production_dif <= 0) ? 'plus': 'minus'">
+                    <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif" style="width: 100%;">
+                    <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
                       Last Month: ${{ productionPrev | number: '2.' }}
                     </div>              
                 </div>
