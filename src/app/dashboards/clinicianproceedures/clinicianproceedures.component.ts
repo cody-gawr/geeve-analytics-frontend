@@ -97,6 +97,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
 
   //Load Clinic Data
   initiate_clinic() {
+    $('.internal_dentist').val('all');
+    $('.external_dentist').val('all');
     var val = $('#currentClinic').attr('cid');
      if(val != undefined && val !='all') {
     this.clinic_id = val;
