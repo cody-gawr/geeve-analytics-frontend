@@ -1,4 +1,4 @@
-.lds-roller div::after {
+/*.lds-roller div::after {
     background: black;
 }
 .spinner {
@@ -10,4 +10,9 @@
 }
 ::ng-deep .cdk-overlay-pane {
     transform: none !important;
+}
+*/
+.user_add .mat-select-arrow {
+    border-left: 0px solid transparent;
+    border-right: 0px solid transparent;
 }

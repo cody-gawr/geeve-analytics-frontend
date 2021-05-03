@@ -1303,7 +1303,6 @@ if(this._cookieService.get("user_type") == '4'){
     tupleArray.sort(function (a, b) { return b[1] - a[1] });
       
       tupleArray.forEach((res,key) => {
-        console.log(res,'***********');
         this.itemPredictedChartData1.push(res[1]);
         this.itemPredictedChartLabels.push(res[0]);
       });

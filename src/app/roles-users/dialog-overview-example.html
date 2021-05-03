@@ -20,7 +20,7 @@
  <div class="sa-form-group">
     <label>Select Clinics</label>
   
-      <mat-select [formControl]="selectedClinics" multiple (openedChange)="clinicSelect($event)">
+      <mat-select [formControl]="selectedClinics" multiple (openedChange)="clinicSelect($event)" class="user_add">
        <mat-option *ngFor="let clinics of data.clinics" [value]="clinics.id">{{clinics.clinicName}}</mat-option>
      </mat-select>
 
