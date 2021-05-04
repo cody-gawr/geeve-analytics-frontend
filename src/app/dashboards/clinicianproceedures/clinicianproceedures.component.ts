@@ -2124,20 +2124,21 @@ toggleFilter(val) {
   mode='Internal';
 
 toggleChangeProcess(){
-    if(this.toggleChecked){
+  if(this.toggleChecked){
     $('.filter').removeClass('active');
     this.predictorTrendSingle();
+    this.predictorSpecialTrendSingle();
     this.mode='Combined';
     this.changePieReferral('Combined');
-      (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'block';
-        (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'none';
-  //  this.referralTrendSingle();
+    (<HTMLElement>document.querySelector('.ratioPredictorSingle')).style.display = 'block';
+    (<HTMLElement>document.querySelector('.ratioPredictor')).style.display = 'none';
+    //  this.referralTrendSingle();
     this.predictorRatioTrendSingle();
     //(<HTMLElement>document.querySelector('.itemsPredictorSingle')).style.display = 'none';
     (<HTMLElement>document.querySelector('.itemsPredictor')).style.display = 'block';
     //(<HTMLElement>document.querySelector('.itemsPredictorSpecialSingle')).style.display = 'none';
-   // (<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'block';
-   }
+    // (<HTMLElement>document.querySelector('.itemsPredictorSpecial')).style.display = 'block';
+  }
 }
   predictorTrendSingle(){
       var user_id;
@@ -2148,6 +2149,7 @@ toggleChangeProcess(){
       this.stackedChartData4 =[];
       this.stackedChartData5 =[] ;
       this.stackedChartLabels1 = [];
+      this.buildChartDentistLoader = true;
     this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
        this.stackedChartData1 =[];
       this.stackedChartData2 =[];
@@ -2155,6 +2157,7 @@ toggleChangeProcess(){
       this.stackedChartData4 =[];
       this.stackedChartData5 =[] ;
       this.stackedChartLabels1 = [];
+      this.buildChartDentistLoader = false;
        if(data.message == 'success' && data.data){
          if(data.data.length <=0) {
                 }else {
@@ -2177,6 +2180,77 @@ toggleChangeProcess(){
                this.stackedChartData[4]['data'] = this.stackedChartData5;
                this.stackedChartLabels = this.stackedChartLabels1;
                this.stackedChartDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data']);
+             }
+       }
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+ 
+    }
+    );
+  }
+
+  public stackedChartDataSpec1:any =[];
+  public stackedChartDataSpec2:any =[];
+  public stackedChartDataSpec3:any =[];
+  public stackedChartDataSpec4:any =[];
+  public stackedChartDataSpec5:any =[] ;
+  public stackedChartLabelsSpec1:any = [];
+  public stackedChartSpecLabels:any = [];
+  public stackedChartSpecialDataMax:any = 0;
+  public buildChartDentistSpecLoader:boolean = false;
+  public stackedChartSpeData:any = [
+    {data: [], label: 'Crowns & Onlays'},
+    {data: [], label: 'Splints' },
+    {data: [], label: 'Root Canals' },
+    {data: [], label: 'Perio Charts' },
+    {data: [], label: 'Surgical Extractions' }  ];
+  predictorSpecialTrendSingle(){
+      this.stackedChartDataSpec1 =[];
+      this.stackedChartDataSpec2 =[];
+      this.stackedChartDataSpec3 =[];
+      this.stackedChartDataSpec4 =[];
+      this.stackedChartDataSpec5 =[] ;
+      this.stackedChartLabelsSpec1 = [];
+      this.stackedChartSpecLabels = [];
+      this.buildChartDentistSpecLoader = true;
+      this.stackedChartSpecialDataMax = 0;
+      this.stackedChartSpeData = [
+    {data: [], label: 'Crowns & Onlays'},
+    {data: [], label: 'Splints' },
+    {data: [], label: 'Root Canals' },
+    {data: [], label: 'Perio Charts' },
+    {data: [], label: 'Surgical Extractions' }  ];
+    this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
+      this.stackedChartDataSpec1 =[];
+      this.stackedChartDataSpec2 =[];
+      this.stackedChartDataSpec3 =[];
+      this.stackedChartDataSpec4 =[];
+      this.stackedChartDataSpec5 =[] ;
+      this.stackedChartLabelsSpec1 = [];
+      this.stackedChartSpecLabels = [];
+      this.buildChartDentistSpecLoader = false;
+       if(data.message == 'success' && data.data){
+         if(data.data.length <=0) {
+                }else {
+                data.data.forEach(res => {
+                   this.stackedChartDataSpec1.push(res.crowns);
+                   this.stackedChartDataSpec2.push(res.splints);
+                   this.stackedChartDataSpec3.push(res.rct);
+                   this.stackedChartDataSpec4.push(res.perio);
+                   this.stackedChartDataSpec5.push(res.extract);
+                   if(this.trendValue == 'c')
+                   this.stackedChartLabelsSpec1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                    else
+                   this.stackedChartLabelsSpec1.push(res.year);
+
+                 });
+               this.stackedChartSpeData[0]['data'] = this.stackedChartDataSpec1;
+               this.stackedChartSpeData[1]['data'] = this.stackedChartDataSpec2;
+               this.stackedChartSpeData[2]['data'] = this.stackedChartDataSpec3;
+               this.stackedChartSpeData[3]['data'] = this.stackedChartDataSpec4;
+               this.stackedChartSpeData[4]['data'] = this.stackedChartDataSpec5;
+               this.stackedChartSpecLabels = this.stackedChartLabelsSpec1;
+               this.stackedChartSpecialDataMax = Math.max(...this.stackedChartSpeData[0]['data'])+Math.max(...this.stackedChartSpeData[1]['data'])+Math.max(...this.stackedChartSpeData[2]['data'])+Math.max(...this.stackedChartSpeData[3]['data'])+Math.max(...this.stackedChartSpeData[4]['data']);
              }
        }
     }, error => {

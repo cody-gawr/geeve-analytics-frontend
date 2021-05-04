@@ -90,15 +90,24 @@
 
             <!--  Procedure Analysis dentist General-->
             <div fxLayout="row wrap" class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == true">            
-                <div style="height: 408px; width: 100%;" *ngIf="itemPredictedChartDataMax > 0 && buildChartDentistLoader == false">
+                <div style="height: 408px; width: 100%;" *ngIf="itemPredictedChartDataMax > 0 && buildChartDentistLoader == false && showTrend == false">
                   <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels"
                   [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType"
                   (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)"></canvas>
-                </div>
-              <div *ngIf="itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false">
+                </div>           
+<!-- Trend Mode -->
+             <div *ngIf="showTrend == true && stackedChartDataMax > 0" style="height: 408px; width: 100%">
+              <canvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
+                [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
+                (chartHover)="chartHovered($event)" [colors]="stackedChartColors"
+                (chartClick)="chartClicked($event)"></canvas>
+            </div>
+<!-- Trend Mode -->
+            <div *ngIf="itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false && stackedChartDataMax <= 0">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">You have no Crowns & Onlays, Splints, RCTs, Perio or Extractions in this period</p>
             </div>
+
           </div>
         </div>
           <!--  Procedure Analysis dentist General-->
@@ -118,9 +127,18 @@
                 <!--  Procedure Analysis All dentist Specialist-->
                 <!--  Procedure Analysis dentist Specialist-->
                   <div class="chart"  *ngIf="dentistMode == true">
-                    <div style="height: 408px" *ngIf="procedureSpecialDataMax > 0 && procedureSpecialDentistLoader == false">
+                    <div style="height: 408px" *ngIf="procedureSpecialDataMax > 0 && procedureSpecialDentistLoader == false && showTrend == false">
                       <canvas baseChart [datasets]="itemPredictedChartSpecailData" [labels]="procedureSpecialLabels" [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)"></canvas>
-                    </div>                  
+                    </div> 
+                    <!-- Trend Mode -->
+                     <div *ngIf="showTrend == true && stackedChartSpecialDataMax > 0" style="height: 408px; width: 100%">
+                        <canvas baseChart [datasets]="stackedChartSpeData" [labels]="stackedChartSpecLabels"
+                          [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
+                          (chartHover)="chartHovered($event)" [colors]="stackedChartColors"
+                          (chartClick)="chartClicked($event)"></canvas>
+                      </div>
+                    <!-- Trend Mode -->
+
                   <div *ngIf="procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false">
                     <div class="sa_nodata_div"> </div>
                     <p class="chart-placeholder-text">You have no specialist items in this period</p>
