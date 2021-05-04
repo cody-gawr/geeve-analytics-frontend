@@ -156,7 +156,7 @@ export class MarketingComponent implements AfterViewInit {
       map((revenueCount) => {      
         //return this.chartService.beforeDrawChart(revenueCount, true)
          this.pieChartOptions.elements.center.text = "$"+revenueCount;
-        // return [];
+         return [];
       })
     );
     // end of plugin observable logic

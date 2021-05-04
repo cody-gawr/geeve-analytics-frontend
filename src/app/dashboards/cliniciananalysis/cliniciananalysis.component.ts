@@ -1574,7 +1574,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentChartData[0]['data'] = this.treatmentChartData1;
         this.treatmentChartLabels = this.treatmentChartLabels1;
         this.treatmentChartAverage = Math.round(data.total);
-        this.treatmentChartAveragePrev = Math.round(data.total_ta);
+        this.treatmentChartAveragePrev = (data.total_ta)? Math.round(data.total_ta) : 0;
         this.treatmentChartGoal = data.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
@@ -1659,7 +1659,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.treatmentPlanLabel = data.data[0].provider_name;
         }
         this.treatmentPlanGoal = Math.round(data.goals);
-        this.treatmentChartAveragePrev = Math.round(data.total_ta);
+        this.treatmentChartAveragePrev =  (data.total_ta ) ? Math.round(data.total_ta) : 0;
         this.treatmentChartAverage = Math.round(data.total);
         if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
           this.treatmentChartTooltip = 'up';
