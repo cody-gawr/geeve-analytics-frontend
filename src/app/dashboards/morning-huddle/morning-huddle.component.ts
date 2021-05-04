@@ -65,7 +65,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public appointmentCardsTemp:any = [];
     public appointmentCards = new MatTableDataSource();
     public dentistList = new MatTableDataSource([]);
-
+    dentistListTemp:any = [];
     
     public reAppointment:any = 0;
     public reAppointmentdate:any = '';
@@ -495,6 +495,7 @@ initiate_clinic() {
       if(list.status == true){
 
         this.dentistList.data = list.data;
+        this.dentistListTemp = list.data;
         this.dentistListLoading = true;
       }
     }); 
