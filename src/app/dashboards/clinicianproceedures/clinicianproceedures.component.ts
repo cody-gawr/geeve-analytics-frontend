@@ -2148,8 +2148,16 @@ toggleChangeProcess(){
       this.stackedChartData3 =[];
       this.stackedChartData4 =[];
       this.stackedChartData5 =[] ;
+      this.stackedChartLabels =[] ;      
       this.stackedChartLabels1 = [];
       this.buildChartDentistLoader = true;
+      this.stackedChartData = [
+      {data: [], label: 'Crowns & Onlays'},
+      {data: [], label: 'Splints' },
+      {data: [], label: 'Root Canals' },
+      {data: [], label: 'Perio Charts' },
+      {data: [], label: 'Surgical Extractions' }  
+    ];
     this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
        this.stackedChartData1 =[];
       this.stackedChartData2 =[];
