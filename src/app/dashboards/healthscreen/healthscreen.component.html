@@ -40,8 +40,10 @@
             <!-- <div class="graph_image" ></div> -->
           </div>
           <!-- Column-->
+       
           <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100"
-            fxFlex.xs="100" class="sa_flexbg custom-box" [ngClass]="{'arrow-up': profit_dif>=0, 'arrow-down':profit_dif<=0, 'hccard-container': true}">
+            fxFlex.xs="100" class="sa_flexbg custom-box"
+            [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0, 'hccard-container': true}">
 
             <mat-card class="treatmentPlan sa_hccard">
               <mat-card-content class="sa_matcard_content">
@@ -55,16 +57,17 @@
                       {{ productionVal >= 0 ? ' ' : '- ' }}
                       ${{ productionVal | number:'1.0-0'}}
                     </span>
-                  </div>  
-                    <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
+                  </div>
+                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
                       Last Month: ${{ productionPrev | number: '2.' }}
-                    </div>              
-                </div>
+                    </div> 
+                  </div>
                 </div>
               </mat-card-content>
             </mat-card>
           </div>
+
           <!-- Column-->
           <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100"
             fxFlex.xs="100" class="sa_flexbg last" [ngClass]="{'arrow-up': visits_dif>=0, 'arrow-down':visits_dif<=0, 'hccard-container': true}">
