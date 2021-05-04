@@ -25,7 +25,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   user_type_dentist; 
   showCompare:boolean = false;
   showDropDown:boolean = false;
-
+  classUrl:string = '';
   constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router) {
       this.user_type_dentist = this._cookieService.get("user_type");
       this._routerSub = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
@@ -40,6 +40,20 @@ export class AppHeaderrightComponent implements AfterViewInit  {
               this.showDropDown = true;
             } else {
               this.showDropDown = false;
+            }
+
+            if(this.route.includes('/')){
+              var urlParams = this.route.split("/");
+              if(typeof(urlParams[3]) != 'undefined'){
+                this.classUrl = urlParams[3];
+              } else if(typeof(urlParams[2]) != 'undefined'){
+                this.classUrl = urlParams[2];
+              } else  if(typeof(urlParams[1]) != 'undefined'){
+                this.classUrl = urlParams[1];
+              } else if(typeof(urlParams[0]) != 'undefined'){
+                this.classUrl = urlParams[0];
+              }
+              console.log(this.classUrl,'**********');
             }
             this.getClinics();
            // this.getDentists();
