@@ -39,10 +39,9 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   selectedTab = 0;
   morningHuddleTabs = [
     'Dentist Performance',
-    'Patient Schedule',
-    'Front Desk',
-    'Reminders',
-    'Followups'
+    'Dentist Schedule',
+    'Front Desk Reminders',
+    'Front Desk Followups',
   ];
 	 public id:any = '';
   	public clinic_id:any = '';
