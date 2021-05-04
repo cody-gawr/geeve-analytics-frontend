@@ -93,13 +93,13 @@
                 <div style="height: 408px; width: 100%;" *ngIf="itemPredictedChartDataMax > 0 && buildChartDentistLoader == false && showTrend == false">
                   <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels"
                   [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType"
-                  (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)"></canvas>
+                  (chartHover)="chartHovered($event)" [colors]="IPcolors" (chartClick)="chartClicked($event)"></canvas>
                 </div>           
 <!-- Trend Mode -->
              <div *ngIf="showTrend == true && stackedChartDataMax > 0" style="height: 408px; width: 100%">
               <canvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
                 [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
-                (chartHover)="chartHovered($event)" [colors]="stackedChartColors"
+                (chartHover)="chartHovered($event)" [colors]="IPcolors"
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
 <!-- Trend Mode -->
@@ -128,13 +128,13 @@
                 <!--  Procedure Analysis dentist Specialist-->
                   <div class="chart"  *ngIf="dentistMode == true">
                     <div style="height: 408px" *ngIf="procedureSpecialDataMax > 0 && procedureSpecialDentistLoader == false && showTrend == false">
-                      <canvas baseChart [datasets]="itemPredictedChartSpecailData" [labels]="procedureSpecialLabels" [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColors" (chartClick)="chartClicked($event)"></canvas>
+                      <canvas baseChart [datasets]="itemPredictedChartSpecailData" [labels]="procedureSpecialLabels" [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="predictorAnalysisChartColors" (chartClick)="chartClicked($event)"></canvas>
                     </div> 
                     <!-- Trend Mode -->
                      <div *ngIf="showTrend == true && stackedChartSpecialDataMax > 0" style="height: 408px; width: 100%">
                         <canvas baseChart [datasets]="stackedChartDataItemSpecialTrend" [labels]="stackedChartLabelsSpecTrend"
                           [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
-                          (chartHover)="chartHovered($event)" [colors]="stackedChartColors"
+                          (chartHover)="chartHovered($event)" [colors]="predictorAnalysisChartColors"
                           (chartClick)="chartClicked($event)"></canvas>
                       </div>
                     <!-- Trend Mode -->
