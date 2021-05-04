@@ -2165,6 +2165,7 @@ toggleChangeProcess(){
       this.stackedChartData4 =[];
       this.stackedChartData5 =[] ;
       this.stackedChartLabels1 = [];
+      this.stackedChartDataMax = 0;
       this.buildChartDentistLoader = false;
        if(data.message == 'success' && data.data){
          if(data.data.length <=0) {

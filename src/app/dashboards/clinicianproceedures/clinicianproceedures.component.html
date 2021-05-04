@@ -81,7 +81,7 @@
                   [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-              <div *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false">
+              <div *ngIf="stackedChartDataMax <= 0 && buildChartLoader == false" style="width: 100%">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">You have no Crowns, Splints, RCTs, Perio or Extractions in this period</p>
               </div>
@@ -103,7 +103,7 @@
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
 <!-- Trend Mode -->
-            <div *ngIf="(itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false) || (stackedChartDataMax <= 0 && stackedChartData.length < 0 ) ">
+            <div *ngIf="(itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false) || stackedChartDataMax <= 0" style="width: 100%">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">You have no Crowns & Onlays, Splints, RCTs, Perio or Extractions in this period</p>
             </div>
@@ -119,7 +119,7 @@
                   <div style="height: 408px" *ngIf="predictorAnalysisDataMax > 0">
                     <canvas #myCanvas baseChart [datasets]="stackedChartDataItemSpecial" [labels]="predictorAnalysisLablesSpe" [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors" (chartClick)="chartClicked($event)"></canvas>
                   </div>                 
-                  <div *ngIf="predictorAnalysisDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false">
+                  <div *ngIf="predictorAnalysisDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false" style="width: 100%">
                     <div class="sa_nodata_div"> </div>
                     <p class="chart-placeholder-text">You have no specialist items in this period</p>
                   </div>
@@ -139,7 +139,7 @@
                       </div>
                     <!-- Trend Mode -->
 
-                  <div *ngIf="(procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false) || (stackedChartSpecialDataMax <= 0 && buildChartDentistSpecLoader == false)">
+                  <div *ngIf="(procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false) || (stackedChartSpecialDataMax <= 0 && buildChartDentistSpecLoader == false)" style="width: 100%">
                     <div class="sa_nodata_div"> </div>
                     <p class="chart-placeholder-text">You have no specialist items in this period</p>
                   </div>
