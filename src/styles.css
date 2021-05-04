@@ -4908,6 +4908,16 @@ ul.download-sync-list {
     } */
 }
 
+@media(max-width:592px) {
+    .clinic-health-top-icon {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+    .prodction_main_box {
+        padding: 18px 14px;
+    }
+}
+
 @media(max-width:375px){
     .ur_users{
         width: 18px;
@@ -4926,7 +4936,7 @@ ul.download-sync-list {
     }
 
     .prodction_main_box {
-        padding: 15px;
+        padding: 14px 10px;
     }
 
     .production_images img {

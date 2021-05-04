@@ -155,3 +155,15 @@ table{
 
 
 .header_filters.morning-huddle { flex-direction: row-reverse !important }
+.huddle-card {
+    padding: 16px;
+    margin-left: 0;
+    margin-right: 0;
+}
+.huddle-card-row {
+    margin-bottom: 8px;
+}
+.huddle-card-row .appointment {
+    margin-top: 0;
+}
+.header_filters.flex_direct_mar { flex-direction: row-reverse !important }

@@ -180,7 +180,7 @@
   <img class="tableLoader" src="../../assets/images/loader.gif">
 </div>
 <div class="respopnsive-table-set">
-  <table mat-table [dataSource]="dentistList" class="mat-elevation-z8">
+  <table fxHide fxShow.gt-sm mat-table [dataSource]="dentistList" class="mat-elevation-z8">
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef> No. </th>
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
@@ -240,16 +240,61 @@
     </mat-footer-row>-->
 
   </table>
+
+  <!-- responsive tabel - Dentist Performance -->
+  <div fxHide.gt-sm>
+    <div *ngIf="dentistListTemp.length;else noData">
+      <mat-card class="huddle-card" *ngFor="let element of dentistListTemp">
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">No. : </div>
+          <div fxFlex="70"> {{ element.id }}</div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Name : </div>
+          <div fxFlex="70"> {{ element.name }} </div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Production Total : </div>
+          <div fxFlex="70">  
+            <span [ngClass] = "(element.production.total >= element.production.goal)? 'mht-value-up' : 'mht-value-down'">
+              ${{ element.production.total | number:'1.0-0' }} 
+            </span> 
+          </div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Recall Rebook Rate : </div>
+          <div fxFlex="70">  
+            <span *ngIf="element.recall.rate == 'N/A'" [ngClass] = "(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}}  </span>
+            <span *ngIf="element.recall.rate != 'N/A'" [ngClass] = "(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}} % </span>
+            <span class="goal custom_goal">Goal: {{( element.recall.goal > 100)? 100 :  element.recall.goal }}%</span> 
+          </div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Reappointment Rate : </div>
+          <div fxFlex="70">  
+            <span *ngIf="element.treatment.total != 'N/A'" [ngClass] = "(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}%</span>
+            <span *ngIf="element.treatment.total == 'N/A'" [ngClass] = "(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}</span>
+            <span class="goal custom_goal" >Goal: {{ (element.treatment.goal)? 100 : element.treatment.goal }}%</span>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <ng-template #noData>
+      <mat-card class="huddle-card">
+        <h6>No data found</h6>
+      </mat-card>
+    </ng-template>
+  </div>
 </div>
 
 
-  <ul class="main_pagination" *ngIf="dentistList.data && dentistList.data.length>10">
+  <ul fxHide fxShow.gt-sm class="main_pagination" *ngIf="dentistList.data && dentistList.data.length>10">
     <li><a href="javascript:void(0)" class="first-page active">1</a></li>
     <li><a href="javascript:void(0)" class="second-page">2</a></li>
     <li><a href="javascript:void(0)" class="third-page">3</a></li>
   </ul>
 
-<div class="data-loading-main">
+<div fxHide fxShow.gt-sm class="data-loading-main">
    <div class="no-data" [ngClass]="(dentistList.data.length == 0 && dentistListLoading)? 'show' : 'hide'">
       No Data found
    </div>
@@ -451,7 +496,7 @@
         </div>
       </div>
       <div class="DentistListSecRow mh-table patient_data-table_responsive">
-<table mat-table  matSort [dataSource]="appointmentCards" class="mat-elevation-z8">
+<table fxHide fxShow.gt-sm mat-table  matSort [dataSource]="appointmentCards" class="mat-elevation-z8">
   <!-- Name Column -->
   <ng-container matColumnDef="start">
     <th mat-header-cell *matHeaderCellDef>Time </th>
@@ -540,6 +585,59 @@
 
   <mat-footer-row *matFooterRowDef="['isDataAvailable']" [ngClass]="(appointmentCards.data.length == 0)? 'show' : 'hide'"></mat-footer-row>
 </table>
+
+  <!-- responsive table  - dentist schedule -->
+  <div fxHide.gt-sm>
+    <div *ngIf="appointmentCardsTemp.length;else noData">
+      <mat-card class="huddle-card" *ngFor="let element of appointmentCardsTemp">
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Time : </div>
+          <div fxFlex="70"> {{ element.app_date +" " + element.start | date :'h:mm a' }} - {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }}</div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Dentist : </div>
+          <div fxFlex="70"> {{ element.provider_name }} </div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Patient : </div>
+          <div fxFlex="70"> {{ element.patient_name }} </div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Notification : </div>
+          <div fxFlex="70">  
+            <div class="appointment" *ngIf="element.recall_overdue == 'Yes'"> 
+              <span class="warning" ><span> <img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> No Recall for > 6 Months</span>
+            </div>
+            <div class="appointment" *ngIf="element.noRecall == 'No'"> 
+              <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span>  No previous recalls</span>
+            </div>
+            <div class="appointment" *ngIf="element.is_birthday == 'Yes'"> 
+              <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span>Birthday</span>
+            </div>
+            <div class="appointment" *ngIf="element.is_new_patient == 'Yes'"> 
+              <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> New Patient</span>
+            </div>
+             
+            <div class="appointment" *ngIf="element.outstanding_item_value > 0"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Outstanding Treatment ${{ element.outstanding_item_value | number:'1.0-0' }}</span></div>
+            
+             <div class="appointment" *ngIf="element.overdue_022 == 'Yes'">
+                <span class="warning" title="022 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Xray Overdue</span> 
+            </div>
+            <div class="appointment" *ngIf="element.overdue_037 == 'Yes'">
+                <span class="warning" title="037 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> OPG Overdue</span>
+            </div>
+            <div class="appointment" *ngIf="element.no_shows == 'Yes'"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> History of No Shows</span></div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <ng-template #noData>
+      <mat-card class="huddle-card">
+        <h6>You have no appointments scheduled today</h6>
+      </mat-card>
+    </ng-template>
+  </div>
+
 </div>
   </mat-tab>
   <!-- Patient Schedule Tab end -->
@@ -634,7 +732,7 @@
 
 
         <div class="DentistListSecRow mh-table patient_data-table_responsive">
-<table mat-table  matSort [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8">
+<table fxHide fxShow.gt-sm mat-table  matSort [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8">
   <!-- Name Column -->
   <ng-container matColumnDef="start">
     <th mat-header-cell *matHeaderCellDef>Time </th>
@@ -687,6 +785,53 @@
 
   <mat-footer-row *matFooterRowDef="['isDataAvailable']" [ngClass]="(appointmentCards.data.length == 0)? 'show' : 'hide'"></mat-footer-row>
 </table>
+<!-- responsive table - FrontDesk reminder -->
+  <div fxHide.gt-sm>
+    <div *ngIf="remindersRecallsOverdue.length;else noData">
+      <mat-card class="huddle-card" *ngFor="let element of remindersRecallsOverdue">
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Time : </div>
+          <div fxFlex="70"> {{ element.app_date +" " + element.start | date :'h:mm a' }} - {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }}</div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Dentist : </div>
+          <div fxFlex="70"> {{ element.provider_name }} </div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Patient : </div>
+          <div fxFlex="70"> {{ element.patient_name }} </div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Notification : </div>
+          <div fxFlex="70">  
+            <div class="appointment" *ngIf="element.recall_overdue == 'Yes'"> 
+              <span class="warning" ><span> <img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> No Recall for > 6 Months</span>
+            </div>
+            <div class="appointment" *ngIf="element.noRecall == 'No'"> 
+              <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> No previous recalls</span>
+            </div>
+      
+            <div class="appointment" *ngIf="element.due_balance > 0"> <span class="warning" ><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Due Balance ${{ element.due_balance | number:'1.0-0' }}</span></div>
+            <div class="appointment" *ngIf="element.code != ''">
+                <span class="warning" title="022 "><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /> {{ element.code }}</span>
+            </div>
+             <div class="appointment" *ngIf="element.is_birthday == 'Yes'"> 
+              <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span>Birthday</span>
+            </div>
+            <div class="appointment" *ngIf="element.is_new_patient == 'Yes'"> 
+              <span class="warning" ><span class=""><img src="../assets/images/warning-huddle.png" alt="warning-huddle" /></span> New Patient</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <ng-template #noData>
+      <mat-card class="huddle-card">
+        <h6>You have no Reminders today</h6>
+      </mat-card>
+    </ng-template>
+  </div>
+
 </div>  
 
 
@@ -796,7 +941,7 @@
       <mat-card-content> 
     <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
      
-      <table mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8 customWidth">
+      <table fxHide fxShow.gt-sm mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8 customWidth">
     
     
         <!-- Name Column -->
@@ -840,6 +985,45 @@
         <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
           [ngClass]="(followupPostOpCalls.length <= 0)? 'show' : 'hide'"></mat-footer-row>
       </table>
+      <!-- responsive table - frontdesk followup (Post op calls)  -->
+      <div fxHide.gt-sm>
+        <div *ngIf="followupPostOpCalls.length;else noPostOpCalls">
+          <mat-card class="huddle-card" *ngFor="let element of followupPostOpCalls">
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Patient Name : </div>
+              <div fxFlex="70"> {{element.patient_name }} </div>
+            </div>
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Phone Number : </div>
+              <div fxFlex="70"> 
+                <div class="phone_align_center">
+                  <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
+                  <span class="phone_no" *ngIf="element.mobile">{{element.mobile}}</span>
+                  <span class="phone_no" *ngIf="!element.mobile && element.phone_work">{{element.phone_work}}</span>
+                  <span class="phone_no" *ngIf="!element.mobile && !element.phone_work">{{element.phone_home}}</span>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Treatment Name : </div>
+              <div fxFlex="70"> {{ element.post_op_codes }} </div>
+            </div>
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Status : </div>
+              <div fxFlex="70">  
+                <mat-slide-toggle checked="{{ element.status }}" name="status"
+                (change)="toggleUpdate($event,element.patient_id,element.cid,element.uid,'Post op Calls')"></mat-slide-toggle>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <ng-template #noPostOpCalls>
+          <mat-card class="huddle-card">
+            <h6> You have no post op calls today</h6>
+          </mat-card>
+        </ng-template>
+      </div>
+
     </div>
       <!--<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
               <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="respopnsive_leptop_post_call">
@@ -870,7 +1054,7 @@
 
   <mat-card-content> 
 <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto; margin-bottom: 30px">  
-  <table mat-table [dataSource]="followupsUnscheduledPatients" class="mat-elevation-z8 customWidth">
+  <table fxHide fxShow.gt-sm mat-table [dataSource]="followupsUnscheduledPatients" class="mat-elevation-z8 customWidth">
 
     <!-- Patient Name Column -->
     <ng-container matColumnDef="name">
@@ -913,6 +1097,42 @@
     <mat-footer-row *matFooterRowDef="['isDataAvailable2']"
       [ngClass]="(followupsUnscheduledPatients.length <= 0)? 'show' : 'hide'"></mat-footer-row>
   </table>
+  <!-- responsive table - frontdesk followup (Unscheduled patient)  -->
+  <div fxHide.gt-sm>
+    <div *ngIf="followupsUnscheduledPatients.length;else noUnscheduledPatient">
+      <mat-card class="huddle-card" *ngFor="let element of followupsUnscheduledPatients">
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Patient Name : </div>
+          <div fxFlex="70"> {{element.patient_name }} </div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Phone Number : </div>
+          <div fxFlex="70"> 
+            <div class="phone_align_center">
+              <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
+              <span class="phone_no">{{element.phoneNumber}}</span>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Unscheduled Treatment : </div>
+          <div fxFlex="70"> {{ element.code }} </div>
+        </div>
+        <div fxLayout="row" class="huddle-card-row">
+          <div fxFlex="30">Status : </div>
+          <div fxFlex="70">  
+            <mat-slide-toggle checked="{{element.status}}" name="status"
+            (change)="toggleUpdate($event,element.pid,element.cid,element.uid,'Unscheduled Patients')"></mat-slide-toggle>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <ng-template #noUnscheduledPatient>
+      <mat-card class="huddle-card">
+        <h6> No Unscheduled Treatment found for selected date. </h6>
+      </mat-card>
+    </ng-template>
+  </div>
 </div>
 
 <!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
@@ -932,7 +1152,7 @@
  
  <mat-card-content> 
  <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">  
- <table mat-table [dataSource]="followupsUnscheduledRecalls" class="mat-elevation-z8 customWidth">
+ <table fxHide fxShow.gt-sm mat-table [dataSource]="followupsUnscheduledRecalls" class="mat-elevation-z8 customWidth">
  
   <!-- Patient Name Column -->
   <ng-container matColumnDef="name">
@@ -975,6 +1195,42 @@
   <mat-footer-row *matFooterRowDef="['isDataAvailable2']"
     [ngClass]="(followupsUnscheduledRecalls.length <= 0)? 'show' : 'hide'"></mat-footer-row>
  </table>
+ <!-- responsive table - frontdesk followup (Unscheduled Recall)  -->
+ <div fxHide.gt-sm>
+  <div *ngIf="followupsUnscheduledPatients.length;else noUnscheduledRecall">
+    <mat-card class="huddle-card" *ngFor="let element of followupsUnscheduledPatients">
+      <div fxLayout="row" class="huddle-card-row">
+        <div fxFlex="30">Patient Name : </div>
+        <div fxFlex="70"> {{element.patient_name }} </div>
+      </div>
+      <div fxLayout="row" class="huddle-card-row">
+        <div fxFlex="30">Phone Number : </div>
+        <div fxFlex="70"> 
+          <div class="phone_align_center">
+            <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
+            <span class="phone_no">{{element.phoneNumber}}</span>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="row" class="huddle-card-row">
+        <div fxFlex="30"> Unscheduled Recalls : </div>
+        <div fxFlex="70"> {{ element.code }} </div>
+      </div>
+      <div fxLayout="row" class="huddle-card-row">
+        <div fxFlex="30">Status : </div>
+        <div fxFlex="70">  
+          <mat-slide-toggle checked="{{element.status}}" name="status"
+          (change)="toggleUpdate($event,element.pid,element.cid,element.uid,'Unscheduled Patients')"></mat-slide-toggle>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  <ng-template #noUnscheduledRecall>
+    <mat-card class="huddle-card">
+      <h6> No Unscheduled Recalls found for selected date. </h6>
+    </mat-card>
+  </ng-template>
+</div>
  </div>
  <!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
         <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="responsive_patient_data" >
