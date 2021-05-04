@@ -103,7 +103,7 @@
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
 <!-- Trend Mode -->
-            <div *ngIf="itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false && stackedChartDataMax <= 0">
+            <div *ngIf="(itemPredictedChartDataMax <= 0 && buildChartDentistLoader == false) || (stackedChartDataMax <= 0 && stackedChartData.length < 0 ) ">
                 <div class="sa_nodata_div"></div>
                 <p class="chart-placeholder-text">You have no Crowns & Onlays, Splints, RCTs, Perio or Extractions in this period</p>
             </div>
@@ -331,14 +331,14 @@
         </mat-card-title>
         <div class="card-body">
           <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec">
-            <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+            <div fxFlex.gt-sm="35.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
               <small class="sa_tab_btn prmain1 active" (click)="changeDentistPredictorMain('1')">Crown to Large
                 Filling</small>
             </div> 
-            <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+            <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
               <small class="sa_tab_btn prmain2" (click)="changeDentistPredictorMain('2')">RCT to Extraction</small>
             </div>
-            <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+            <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
               <small class="sa_tab_btn prmain3" (click)="changeDentistPredictorMain('3')">RCT Conversion</small>
             </div>
           </div>

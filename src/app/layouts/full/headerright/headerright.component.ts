@@ -52,8 +52,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
                 this.classUrl = urlParams[1];
               } else if(typeof(urlParams[0]) != 'undefined'){
                 this.classUrl = urlParams[0];
-              }
-              console.log(this.classUrl,'**********');
+              }             
             }
             this.getClinics();
            // this.getDentists();
