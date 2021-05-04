@@ -132,14 +132,14 @@
                     </div> 
                     <!-- Trend Mode -->
                      <div *ngIf="showTrend == true && stackedChartSpecialDataMax > 0" style="height: 408px; width: 100%">
-                        <canvas baseChart [datasets]="stackedChartSpeData" [labels]="stackedChartSpecLabels"
+                        <canvas baseChart [datasets]="stackedChartDataItemSpecialTrend" [labels]="stackedChartLabelsSpecTrend"
                           [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
                           (chartHover)="chartHovered($event)" [colors]="stackedChartColors"
                           (chartClick)="chartClicked($event)"></canvas>
                       </div>
                     <!-- Trend Mode -->
 
-                  <div *ngIf="procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false">
+                  <div *ngIf="(procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false) || (stackedChartSpecialDataMax <= 0 && buildChartDentistSpecLoader == false)">
                     <div class="sa_nodata_div"> </div>
                     <p class="chart-placeholder-text">You have no specialist items in this period</p>
                   </div>

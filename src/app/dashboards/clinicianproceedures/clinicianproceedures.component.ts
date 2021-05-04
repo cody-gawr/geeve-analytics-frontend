@@ -2189,68 +2189,77 @@ toggleChangeProcess(){
     );
   }
 
-  public stackedChartDataSpec1:any =[];
-  public stackedChartDataSpec2:any =[];
-  public stackedChartDataSpec3:any =[];
-  public stackedChartDataSpec4:any =[];
-  public stackedChartDataSpec5:any =[] ;
-  public stackedChartLabelsSpec1:any = [];
-  public stackedChartSpecLabels:any = [];
+  public stackedChartDataSpecTrend1:any = [];
+  public stackedChartDataSpecTrend2:any = [];
+  public stackedChartDataSpecTrend3:any = [];
+  public stackedChartDataSpecTrend4:any = [];
+  public stackedChartDataSpecTrend5:any = [];
+  public stackedChartDataSpecTrend6:any = [];
+  public stackedChartDataSpecTrend7:any = [];
+  public stackedChartLabelsSpecTrendTemp:any = [];
+  public stackedChartLabelsSpecTrend:any = [];
+  public stackedChartDataItemSpecialTrend = [
+      {data: [], label: 'Implant Surg'},
+      {data: [], label: 'Braces' },
+      {data: [], label: 'Aligners' },
+      {data: [], label: 'MAS' },
+      {data: [], label: 'Perio Surg' }, 
+      {data: [], label: 'Endo Re-treat' },  
+      {data: [], label: 'Veneers (indirect)' } 
+        ];
   public stackedChartSpecialDataMax:any = 0;
-  public buildChartDentistSpecLoader:boolean = false;
-  public stackedChartSpeData:any = [
-    {data: [], label: 'Crowns & Onlays'},
-    {data: [], label: 'Splints' },
-    {data: [], label: 'Root Canals' },
-    {data: [], label: 'Perio Charts' },
-    {data: [], label: 'Surgical Extractions' }  ];
+  public buildChartDentistSpecLoader:boolean = false;    
   predictorSpecialTrendSingle(){
-      this.stackedChartDataSpec1 =[];
-      this.stackedChartDataSpec2 =[];
-      this.stackedChartDataSpec3 =[];
-      this.stackedChartDataSpec4 =[];
-      this.stackedChartDataSpec5 =[] ;
-      this.stackedChartLabelsSpec1 = [];
-      this.stackedChartSpecLabels = [];
-      this.buildChartDentistSpecLoader = true;
-      this.stackedChartSpecialDataMax = 0;
-      this.stackedChartSpeData = [
-    {data: [], label: 'Crowns & Onlays'},
-    {data: [], label: 'Splints' },
-    {data: [], label: 'Root Canals' },
-    {data: [], label: 'Perio Charts' },
-    {data: [], label: 'Surgical Extractions' }  ];
-    this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
-      this.stackedChartDataSpec1 =[];
-      this.stackedChartDataSpec2 =[];
-      this.stackedChartDataSpec3 =[];
-      this.stackedChartDataSpec4 =[];
-      this.stackedChartDataSpec5 =[] ;
-      this.stackedChartLabelsSpec1 = [];
-      this.stackedChartSpecLabels = [];
+      this.buildChartDentistSpecLoader = true;      
+
+    this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisSpecialTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
+      this.stackedChartDataSpecTrend1 = [];
+      this.stackedChartDataSpecTrend2 = [];
+      this.stackedChartDataSpecTrend3 = [];
+      this.stackedChartDataSpecTrend4 = [];
+      this.stackedChartDataSpecTrend5 = [];
+      this.stackedChartDataSpecTrend6 = [];
+      this.stackedChartDataSpecTrend7 = [];
+      this.stackedChartLabelsSpecTrend = [];
+      this.stackedChartLabelsSpecTrendTemp = [];
       this.buildChartDentistSpecLoader = false;
+      this.stackedChartSpecialDataMax = 0;
+        this.stackedChartDataItemSpecialTrend = [
+        {data: [], label: 'Implant Surg'},
+        {data: [], label: 'Braces' },
+        {data: [], label: 'Aligners' },
+        {data: [], label: 'MAS' },
+        {data: [], label: 'Perio Surg' }, 
+        {data: [], label: 'Endo Re-treat' },  
+        {data: [], label: 'Veneers (indirect)' } 
+      ];
        if(data.message == 'success' && data.data){
          if(data.data.length <=0) {
                 }else {
                 data.data.forEach(res => {
-                   this.stackedChartDataSpec1.push(res.crowns);
-                   this.stackedChartDataSpec2.push(res.splints);
-                   this.stackedChartDataSpec3.push(res.rct);
-                   this.stackedChartDataSpec4.push(res.perio);
-                   this.stackedChartDataSpec5.push(res.extract);
+                  this.stackedChartDataSpecTrend1.push(res.imp_surg);
+                  this.stackedChartDataSpecTrend2.push(res.ortho_fix);
+                  this.stackedChartDataSpecTrend3.push(res.ortho_align);
+                  this.stackedChartDataSpecTrend4.push(res.sleep);
+                  this.stackedChartDataSpecTrend5.push(res.perio_surg);
+                  this.stackedChartDataSpecTrend6.push(res.endo_retreat);
+                  this.stackedChartDataSpecTrend7.push(res.veneers_ind);
                    if(this.trendValue == 'c')
-                   this.stackedChartLabelsSpec1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                   this.stackedChartLabelsSpecTrendTemp.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
-                   this.stackedChartLabelsSpec1.push(res.year);
+                   this.stackedChartLabelsSpecTrendTemp.push(res.year);
 
                  });
-               this.stackedChartSpeData[0]['data'] = this.stackedChartDataSpec1;
-               this.stackedChartSpeData[1]['data'] = this.stackedChartDataSpec2;
-               this.stackedChartSpeData[2]['data'] = this.stackedChartDataSpec3;
-               this.stackedChartSpeData[3]['data'] = this.stackedChartDataSpec4;
-               this.stackedChartSpeData[4]['data'] = this.stackedChartDataSpec5;
-               this.stackedChartSpecLabels = this.stackedChartLabelsSpec1;
-               this.stackedChartSpecialDataMax = Math.max(...this.stackedChartSpeData[0]['data'])+Math.max(...this.stackedChartSpeData[1]['data'])+Math.max(...this.stackedChartSpeData[2]['data'])+Math.max(...this.stackedChartSpeData[3]['data'])+Math.max(...this.stackedChartSpeData[4]['data']);
+               this.stackedChartDataItemSpecialTrend[0]['data'] = this.stackedChartDataSpecTrend1;
+               this.stackedChartDataItemSpecialTrend[1]['data'] = this.stackedChartDataSpecTrend2;
+               this.stackedChartDataItemSpecialTrend[2]['data'] = this.stackedChartDataSpecTrend3;
+               this.stackedChartDataItemSpecialTrend[3]['data'] = this.stackedChartDataSpecTrend4;
+               this.stackedChartDataItemSpecialTrend[4]['data'] = this.stackedChartDataSpecTrend5;
+               this.stackedChartDataItemSpecialTrend[5]['data'] = this.stackedChartDataSpecTrend6;
+               this.stackedChartDataItemSpecialTrend[6]['data'] = this.stackedChartDataSpecTrend7;
+
+               this.stackedChartLabelsSpecTrend = this.stackedChartLabelsSpecTrendTemp;
+               this.stackedChartSpecialDataMax = Math.max(...this.stackedChartDataItemSpecialTrend[0]['data'])+Math.max(...this.stackedChartDataItemSpecialTrend[1]['data'])+Math.max(...this.stackedChartDataItemSpecialTrend[2]['data'])+Math.max(...this.stackedChartDataItemSpecialTrend[3]['data'])+Math.max(...this.stackedChartDataItemSpecialTrend[4]['data']);
              }
        }
     }, error => {
