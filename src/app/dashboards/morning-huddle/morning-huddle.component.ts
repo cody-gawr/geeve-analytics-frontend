@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { HeaderService } from '../../layouts/full/header/header.service';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -108,6 +109,10 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private datepipe: DatePipe, private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService) { 
   }
+
+  @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
+
+
  ngOnInit(){
     $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
@@ -127,6 +132,12 @@ ngAfterViewInit(): void {
 ngOnDestroy() {
   //$('.dentist_dropdown').parent().show(); // added
   $('.sa_heading_bar').removeClass("filter_single"); // added
+}
+
+ngDoCheck() {
+  setTimeout(() => {
+    this.matTabGroup.realignInkBar();
+  }, 100);
 }
 
 initiate_clinic() {

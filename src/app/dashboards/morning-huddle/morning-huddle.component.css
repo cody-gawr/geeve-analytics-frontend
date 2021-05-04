@@ -48,7 +48,7 @@ span.gotMark {
     color: green;
 }
 span.green_title {
-    padding: 4px 10px;
+    padding: 10px 10px;
     text-align: center;
     margin: 0;
 }
@@ -68,7 +68,7 @@ span.green_title {
 }
 
 .mat-form-field-infix {
-    border-bottom: 1px solid #000;
+    border-bottom: 0;
     width: 100%;
 }
 
