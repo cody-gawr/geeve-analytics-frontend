@@ -154,8 +154,8 @@ export class MarketingComponent implements AfterViewInit {
     this.revenuePluginObservable$ =  this.revenueByReferralCount$.pipe(
       takeUntil(this.destroyed$),
       map((revenueCount) => {      
-        return this.chartService.beforeDrawChart(revenueCount, true)
-        // this.pieChartOptions.elements.center.text = revenueCount;
+        //return this.chartService.beforeDrawChart(revenueCount, true)
+         this.pieChartOptions.elements.center.text = "$"+revenueCount;
         // return [];
       })
     );
