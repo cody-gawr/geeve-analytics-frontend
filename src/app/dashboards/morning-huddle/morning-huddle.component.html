@@ -922,12 +922,17 @@
 
 <mat-card class="table-card post_call_responsive_border">
         <div class="morning-huddle-date">
-            <strong>{{ followupsPostopCallsDate }}</strong>        
+            <strong>{{ followupsPostopCallsDate }} </strong>        
+              <mat-label class="daysAgo" *ngIf="postOpCallsDays != 1"> ({{ postOpCallsDays }} Days Ago)</mat-label>
+              <mat-label class="daysAgo" *ngIf="postOpCallsDays == 1"> - Previous Day</mat-label>
+            
           </div>  
       <mat-card-title>Post op Calls
         <div class="morning-huddle-date UnscheduledPatients">
             <mat-form-field floatLabel="never" class="setPreviousDay">
-              <mat-select placeholder="2 Days Ago" (selectionChange)="refreshPostOpCalls($event.value)" [(ngModel)]="postOpCallsDays" >
+              <mat-label *ngIf="postOpCallsDays != 1">{{ postOpCallsDays }} Days Ago</mat-label>
+              <mat-label *ngIf="postOpCallsDays == 1">Previous Day</mat-label>
+              <mat-select (selectionChange)="refreshPostOpCalls($event.value)" [(ngModel)]="postOpCallsDays" >
                 <mat-option [value]="1">Previous Day</mat-option>
                 <mat-option [value]="2">2 Days Ago</mat-option>
               </mat-select>
@@ -1034,12 +1039,16 @@
 
 <mat-card class="table-card">
      <div class="morning-huddle-date">
-        <strong>{{ followupsUnscheduledPatientsDate }}</strong>        
+        <strong>{{ followupsUnscheduledPatientsDate }}</strong>   
+        <mat-label class="daysAgo" *ngIf="unscheduledPatientsDays != 1"> ({{ unscheduledPatientsDays }} Days Ago)</mat-label>
+        <mat-label class="daysAgo" *ngIf="unscheduledPatientsDays == 1"> (Previous Day)</mat-label>     
       </div>
   <mat-card-title>Unscheduled Patients
       <div class="morning-huddle-date UnscheduledPatients">
         <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select placeholder="7 Days Ago" (selectionChange)="refreshUnscheduledPatients($event.value)" [(ngModel)]="unscheduledPatientsDays" >
+          <mat-label *ngIf="unscheduledPatientsDays != 1">{{ unscheduledPatientsDays }} Days Ago</mat-label>
+          <mat-label *ngIf="unscheduledPatientsDays == 1">Previous Day</mat-label>
+          <mat-select (selectionChange)="refreshUnscheduledPatients($event.value)" [(ngModel)]="unscheduledPatientsDays" >
             <mat-option [value]="1">Previous Day</mat-option>
             <mat-option [value]="7">7 Days Ago</mat-option>
             <mat-option [value]="14">14 Days Ago</mat-option>            
