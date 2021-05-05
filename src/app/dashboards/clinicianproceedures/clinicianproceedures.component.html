@@ -143,12 +143,12 @@
                       </div>
                     <!-- Trend Mode -->
 
-                  <div *ngIf="(procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false)" style="width: 100%">
+                  <div *ngIf="procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false && showTrend == false" style="width: 100%">
                     <div class="sa_nodata_div"> </div>
                     <p class="chart-placeholder-text">You have no specialist items in this period</p>
                   </div>
 
-                  <div *ngIf="stackedChartSpecialDataMax <= 0 && buildChartDentistSpecLoader == false" style="width: 100%">
+                  <div *ngIf="stackedChartSpecialDataMax <= 0 && buildChartDentistSpecLoader == false && showTrend == true" style="width: 100%">
                     <div class="sa_nodata_div"> </div>
                     <p class="chart-placeholder-text">You have no specialist items in this period</p>
                   </div>
