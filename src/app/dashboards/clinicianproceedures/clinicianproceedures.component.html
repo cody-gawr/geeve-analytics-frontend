@@ -75,7 +75,7 @@
               
             <!--  Procedure Analysis All dentist General--> 
             <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false">              
-              <div style="height: 408px" *ngIf="stackedChartDataMax > 0 && buildChartLoader == false">
+              <div style="height: 433px" *ngIf="stackedChartDataMax > 0 && buildChartLoader == false">
                 <canvas #myCanvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
                   [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)"
                   [legend]="true" [colors]="IPcolors" (chartClick)="chartClicked($event)">
@@ -90,13 +90,13 @@
 
             <!--  Procedure Analysis dentist General-->
             <div fxLayout="row wrap" class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == true">            
-                <div style="height: 408px; width: 100%;" *ngIf="itemPredictedChartDataMax > 0 && buildChartDentistLoader == false && showTrend == false">
+                <div style="height: 474px; width: 100%;" *ngIf="itemPredictedChartDataMax > 0 && buildChartDentistLoader == false && showTrend == false">
                   <canvas baseChart [datasets]="itemPredictedChartData" [labels]="itemPredictedChartLabels"
                   [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType"
                   (chartHover)="chartHovered($event)" [colors]="IPcolors" (chartClick)="chartClicked($event)"></canvas>
                 </div>           
 <!-- Trend Mode -->
-             <div *ngIf="showTrend == true && stackedChartDataMax > 0" style="height: 408px; width: 100%">
+             <div *ngIf="showTrend == true && stackedChartDataMax > 0" style="height: 370px; width: 100%">
               <canvas baseChart [datasets]="stackedChartData" [labels]="stackedChartLabels"
                 [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
                 (chartHover)="chartHovered($event)" [colors]="IPcolors"
@@ -120,7 +120,7 @@
             <div class="procedureAnalysisSpecialist" *ngIf="procedureAnalysisVisibility == 'Specialist'">
                 <!--  Procedure Analysis All dentist Specialist-->              
                 <div class="Item_Predictor_clinicianproceedures" *ngIf="dentistMode == false">
-                  <div style="height: 408px" *ngIf="predictorAnalysisDataMax > 0">
+                  <div style="height: 433px" *ngIf="predictorAnalysisDataMax > 0">
                     <canvas #myCanvas baseChart [datasets]="stackedChartDataItemSpecial" [labels]="predictorAnalysisLablesSpe" [options]="stackedChartOptions" [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="true" [colors]="predictorAnalysisChartColors" (chartClick)="chartClicked($event)"></canvas>
                   </div>                 
                   <div *ngIf="predictorAnalysisDataMax <= 0 && ItemsPredictorAnalysisSpecialStatus == false" style="width: 100%">
@@ -131,11 +131,11 @@
                 <!--  Procedure Analysis All dentist Specialist-->
                 <!--  Procedure Analysis dentist Specialist-->
                   <div class="chart"  *ngIf="dentistMode == true">
-                    <div style="height: 408px" *ngIf="procedureSpecialDataMax > 0 && procedureSpecialDentistLoader == false && showTrend == false">
+                    <div style="height: 474px" *ngIf="procedureSpecialDataMax > 0 && procedureSpecialDentistLoader == false && showTrend == false">
                       <canvas baseChart [datasets]="itemPredictedChartSpecailData" [labels]="procedureSpecialLabels" [options]="stackedChartOptions" [legend]="false" [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="predictorAnalysisChartColors" (chartClick)="chartClicked($event)"></canvas>
                     </div> 
                     <!-- Trend Mode -->
-                     <div *ngIf="showTrend == true && stackedChartSpecialDataMax > 0" style="height: 408px; width: 100%">
+                     <div *ngIf="showTrend == true && stackedChartSpecialDataMax > 0" style="height: 370px; width: 100%">
                         <canvas baseChart [datasets]="stackedChartDataItemSpecialTrend" [labels]="stackedChartLabelsSpecTrend"
                           [options]="stackedChartOptions" [legend]="false" [chartType]="stackedChartType"
                           (chartHover)="chartHovered($event)" [colors]="predictorAnalysisChartColors"
@@ -143,7 +143,12 @@
                       </div>
                     <!-- Trend Mode -->
 
-                  <div *ngIf="(procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false) || (stackedChartSpecialDataMax <= 0 && buildChartDentistSpecLoader == false)" style="width: 100%">
+                  <div *ngIf="(procedureSpecialDataMax <= 0 && procedureSpecialDentistLoader == false)" style="width: 100%">
+                    <div class="sa_nodata_div"> </div>
+                    <p class="chart-placeholder-text">You have no specialist items in this period</p>
+                  </div>
+
+                  <div *ngIf="stackedChartSpecialDataMax <= 0 && buildChartDentistSpecLoader == false" style="width: 100%">
                     <div class="sa_nodata_div"> </div>
                     <p class="chart-placeholder-text">You have no specialist items in this period</p>
                   </div>
@@ -165,7 +170,7 @@
   </div>
 
 
-  <div *ngIf="toggleChecked == false" fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+  <div *ngIf="toggleChecked == false" fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
   class="sa_flexbg last revenue_proceedure">
   <mat-card class="revenueProceedure sa_no_tabs_area">
     <mat-card-content class="sa_matcard_content">
@@ -319,7 +324,7 @@
 </div>
 
   <!-- Column-->
-  <div fxFlex="calc(50% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio">
+  <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg predictor_ratio">
     <mat-card class="ratioPredictor">
       <mat-card-content class="sa_matcard_content">
         <mat-card-title class="text-center">
