@@ -84,11 +84,27 @@
               </div>
           </div>
           <div class="post-op-codes">
-            <h4 class="clinic-settings-form-title">Post Op Calls</h4>          
+            <h4 class="clinic-settings-form-title">Post Op Calls Codes</h4>          
             <div class="sa-form-group clinic-setting-form">
               <input placeholder="" [formControl]="form.controls['post_op_calls']" [(ngModel)]="post_op_calls">
             </div>
+          </div>           
+
+           <div class="post-op-codes">
+            <h4 class="clinic-settings-form-title">MH- Post Op Calls Previous Days</h4>          
+            <div class="sa-form-group clinic-setting-form">
+              <input type="number" min="0" placeholder="" [formControl]="form.controls['post_op_calls_days']" [(ngModel)]="postOpCallsMh">
+            </div>
           </div>
+          
+          <div class="post-op-codes">
+            <h4 class="clinic-settings-form-title">MH - Unscheduled Patients Previous Days</h4>          
+            <div class="sa-form-group clinic-setting-form">
+              <input type="number" min="0" placeholder="" [formControl]="form.controls['unscheduled_patients_days']" [(ngModel)]="unscheduledPatientsMh">
+            </div>
+          </div>
+
+
           <div class="post-op-codes">
             <h4 class="clinic-settings-form-title">FTA/UTA</h4>          
             <div  fxLayout="row wrap fta_uta_setting" style="width: 500px;text-align: center;"> 
