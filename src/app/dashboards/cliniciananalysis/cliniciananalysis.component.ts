@@ -188,6 +188,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     let namedChartAnnotation = ChartAnnotation;
     namedChartAnnotation["id"] = "annotation";
     Chart.pluginService.register( namedChartAnnotation);
+
+    if(this._cookieService.get("dentist_toggle") === 'true'){
+      this.averageToggle = true;
+      this.showTrend = false;
+    }
   }
 
   //Load Clinic Data
@@ -805,9 +810,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   if(this._cookieService.get("user_type") == '4'){
     if(this._cookieService.get("dentist_toggle") === 'false')
       newValue = this.selectedDentist;
-    else
-      newValue = '';
+    else{
+          newValue = '';
+          
+        }
+
   }
+
 
   if(newValue =='')
     newValue='all';
