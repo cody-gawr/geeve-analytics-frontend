@@ -673,9 +673,9 @@ public visitsGoal:any = 0;
        var clinic_id;
   this.marketingService.fdvisitsRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     this.visitsTotal = 0;
-          this.visitsPrevTotal = 0;
-       if(data.message == 'success'){
+        this.visitsPrevTotal = 0;
         this.fdvisitsRatioLoader = false;
+       if(data.message == 'success'){
           this.visitsTotal = data.total;
           this.visitsPrevTotal = data.total_ta;
           this.visitsGoal = data.goals;
@@ -1093,13 +1093,16 @@ public fdvisitsRatioTrendLoader:any;
   this.visitsChartTrendLabels1=[];
   this.visitsChartTrendLabels=[];
   this.fdvisitsRatioTrendLoader = true;
-
-  this.visitsChartTrend1=[];
+  this.visitsChartTrend1=[];  
     var user_id;
     var clinic_id;
     this.marketingService.mkTotalVisitsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      this.visitsChartTrend1=[];  
+      this.visitsChartTrendLabels = [];
+      this.visitsChartTrendLabels1 = [];     
+      this.visitsChartTrend[0]['data'] = [];
+      this.fdvisitsRatioTrendLoader = false;
        if(data.message == 'success'){
-                this.fdvisitsRatioTrendLoader = false;
                 data.data.forEach(res => {  
                      this.visitsChartTrend1.push(res.num_visits);
                    if(this.trendValue == 'c')
@@ -1159,27 +1162,30 @@ public fdvisitsRatioTrendLoader:any;
   private mkNoNewPatientsTrend() { 
     this.newPatientsChartTrendLabels1=[];
     this.newPatientsChartTrend1=[];
-    var user_id;
-    var clinic_id;
+    this.fdnewPatientsRatioLoader =  true;
+     this.fdnewPatientsAcqLoader= true; 
     this.marketingService.mkNoNewPatientsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data.message == 'success'){
+      this.fdnewPatientsRatioLoader =  false;
+      this.fdnewPatientsAcqLoader= false; 
+      this.newPatientsChartTrend1=[];
+      this.newPatientsChartTrendLabels1=[];
+      this.newPatientsChartTrendLabels=[];
+      this.newPatientsChartTrend[0]['data'] = [];
+      if(data.message == 'success'){
         this.newPatientsChartTemp = data.data;
-                data.data.forEach(res => {  
-                     this.newPatientsChartTrend1.push(res.new_patients);
-                   if(this.trendValue == 'c')
-                   this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                    else
-                   this.newPatientsChartTrendLabels1.push(res.year);
-                  
-                 });
-                 this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
-
-                 this.newPatientsChartTrendLabels =this.newPatientsChartTrendLabels1;
-                    this.fdnewPatientsAcqTrend();
-       }
+        data.data.forEach(res => {  
+          this.newPatientsChartTrend1.push(res.new_patients);
+          if(this.trendValue == 'c')
+            this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+          else
+            this.newPatientsChartTrendLabels1.push(res.year);
+        });
+        this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
+        this.newPatientsChartTrendLabels =this.newPatientsChartTrendLabels1;
+        this.fdnewPatientsAcqTrend();
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
- 
     });
   }
 
@@ -1286,10 +1292,14 @@ public dataY:any=0;
     this.newAcqValuePrev=0;
     this.expenseDataTrend1=[];
     this.expenseDataTrendLabels1=[];
+    this.expenseDataTrendLabels=[];
+    this.expenseDataTrend=[];    
+    this.fdnewPatientsAcqLoader= true;    
     if(this.duration && this.connectedwith !=''){
        var user_id;
        var clinic_id;
        this.marketingService.categoryExpensesTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
+        this.fdnewPatientsAcqLoader= false;    
           if(data.message == 'success'){
             
             this.expenseDataTrend1=[];
