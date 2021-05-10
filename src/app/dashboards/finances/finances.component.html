@@ -680,7 +680,7 @@ expenses_card custom_ngx_cw01">
                   <canvas #myCanvas2 class="trendproductionVisit" *ngIf="productionVisitChartTrendLabels.length  > 0"
                     baseChart [datasets]="productionVisitChartTrend" [labels]="productionVisitChartTrendLabels"
                     [options]="labelBarOptions" [legend]="false" [chartType]="lineChartType"
-                    (chartHover)="chartHovered($event)" [colors]="preoceedureChartColors"
+                    (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"></canvas>
                   <div *ngIf="productionVisitChartTrendLabels.length  <=0 && finProductionPerVisitTrendLoader == false"
                     class="no-data-placeholder">

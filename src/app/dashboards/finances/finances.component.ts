@@ -492,6 +492,7 @@ single = [
               });
               titleLines.forEach(function (title) {
                 innerHtml += '<tr><th style="text-align: left;">' + title + ': $'+total+'</th></tr>';
+                innerHtml += '<tr><th style="text-align: left;">&nbsp;</th></tr>';
               });          
               bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
@@ -505,9 +506,9 @@ single = [
         // disable displaying the color box;
             var position = this._chart.canvas.getBoundingClientRect();
             // Display, position, and set styles for font
-            tooltipEl.style.position = 'absolute';
+            tooltipEl.style.position = 'fixed';
             tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
-            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 30) + 'px';
+            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
             tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
             tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
             tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
@@ -2069,7 +2070,8 @@ private finProductionByClinicianTrend() {
                         this.productionChartTrend[key]['data'] = [];
                       }
                       // console.log(`key`, this.doughnutChartColors[key])
-                     this.productionChartTrend[key]['data'].push(Math.round(parseInt(result.prod_per_clinician)));
+                      var num = parseFloat(result.prod_per_clinician).toFixed(1);
+                      this.productionChartTrend[key]['data'].push(num);
                      this.productionChartTrend[key]['label'] = result.provider_name;
                      this.productionChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
                      this.productionChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];

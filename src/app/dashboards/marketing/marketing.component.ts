@@ -1292,8 +1292,6 @@ public dataY:any=0;
     this.newAcqValuePrev=0;
     this.expenseDataTrend1=[];
     this.expenseDataTrendLabels1=[];
-    this.expenseDataTrendLabels=[];
-    this.expenseDataTrend=[];    
     this.fdnewPatientsAcqLoader= true;    
     if(this.duration && this.connectedwith !=''){
        var user_id;

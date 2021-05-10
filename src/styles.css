@@ -3877,6 +3877,9 @@ ul.download-sync-list {
     opacity: 0;
     pointer-events: none;
 }
+.predictor_ratio_main.hide-item{
+    display: none !important;
+}
 .no-data-placeholder{
     height: 100%;
     display: flex;
