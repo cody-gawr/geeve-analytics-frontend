@@ -793,9 +793,9 @@ public labelBarPercentOptions: any = {
         // disable displaying the color box;
             var position = this._chart.canvas.getBoundingClientRect();
             // Display, position, and set styles for font
-            tooltipEl.style.position = 'absolute';
-            tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
-            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 30) + 'px';
+            tooltipEl.style.position = 'fixed';
+            tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 50) + 'px';
+            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
             tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
             tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
             tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
@@ -2070,8 +2070,7 @@ private finProductionByClinicianTrend() {
                         this.productionChartTrend[key]['data'] = [];
                       }
                       // console.log(`key`, this.doughnutChartColors[key])
-                      var num = parseFloat(result.prod_per_clinician).toFixed(1);
-                      this.productionChartTrend[key]['data'].push(num);
+                      this.productionChartTrend[key]['data'].push(parseInt(result.prod_per_clinician));
                      this.productionChartTrend[key]['label'] = result.provider_name;
                      this.productionChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
                      this.productionChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
