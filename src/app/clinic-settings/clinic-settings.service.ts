@@ -46,8 +46,8 @@ export class ClinicSettingsService {
         formData.append('phoneNo', phoneNo);
         formData.append('clinicEmail', clinicEmail);
         formData.append('fta_uta', ftaUta);
-        formData.append('post_op_calls_days', postOpCallsMh);
-        formData.append('unscheduled_patients_days', unscheduledPatientsMh);
+        formData.append('post_op_days', postOpCallsMh);
+        formData.append('unsched_days', unscheduledPatientsMh);
     var header = this.getHeaders();
     return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, { headers: header})
         .pipe(map((response: Response) => {
