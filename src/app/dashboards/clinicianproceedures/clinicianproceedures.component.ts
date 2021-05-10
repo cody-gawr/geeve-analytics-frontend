@@ -1123,7 +1123,7 @@ if(this._cookieService.get("user_type") == '4'){
           var i=0
        data && data.data && data.data.length && data.data.forEach(res => {
           if(res.provider_name != null){
-            if(parseInt(res.crowns) + parseInt(res.splints) + parseInt(res.rct) + parseInt(res.perio) + parseInt(res.extract) > 0+ parseInt(res.ss_crowns) > 0+ parseInt(res.comp_veneers) > 0+ parseInt(res.imp_crowns) > 0){
+            if( (parseInt(res.crowns) + parseInt(res.splints) + parseInt(res.rct) + parseInt(res.perio) + parseInt(res.extract)  + parseInt(res.ss_crowns)  + parseInt(res.comp_veneers)  + parseInt(res.imp_crowns) ) > 0){
           
              this.stackedChartData1.push(res.crowns);
              this.stackedChartData2.push(res.splints);
