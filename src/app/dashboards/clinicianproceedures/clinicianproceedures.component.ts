@@ -757,7 +757,11 @@ this.preoceedureChartColors = [
     {data: [], label: 'Splints' },
     {data: [], label: 'Root Canals' },
     {data: [], label: 'Perio Charts' },
-    {data: [], label: 'Surgical Extractions' }  ];
+    {data: [], label: 'Surgical Extractions' },      
+    {data: [], label: 'Stainless Steel Crowns'},  
+    {data: [], label: 'Composite Veneers'},  
+    {data: [], label: 'Implant Crowns'}  
+  ];
 
   public stackedChartDataItemSpecial: any[] = [
       {data: [], label: 'Implant Surg'},
@@ -774,6 +778,9 @@ this.preoceedureChartColors = [
   public stackedChartData3: any[] = [];
   public stackedChartData4: any[] = [];
   public stackedChartData5: any[] = [];
+  public stackedChartData6: any[] = [];
+  public stackedChartData7: any[] = [];
+  public stackedChartData8: any[] = [];
   public duration='';
   public predictedChartData: any[] = [
     {data: [], label: '',  shadowOffsetX: 3,
@@ -1088,7 +1095,11 @@ if(this._cookieService.get("user_type") == '4'){
     {data: [], label: 'Splints' },
     {data: [], label: 'Root Canals' },
     {data: [], label: 'Perio Charts' },
-    {data: [], label: 'Surgical Extractions' }  ];
+    {data: [], label: 'Surgical Extractions' },
+    {data: [], label: 'Stainless Steel Crowns'},  
+    {data: [], label: 'Composite Veneers'},  
+    {data: [], label: 'Implant Crowns'}  
+    ];
 
 
   this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysis(this.clinic_id,this.startDate,this.endDate,this.user_type,this.childid).subscribe((data) => {   
@@ -1098,6 +1109,9 @@ if(this._cookieService.get("user_type") == '4'){
         this.stackedChartData3 = [];
         this.stackedChartData4 = [];
         this.stackedChartData5 = [];
+        this.stackedChartData6 = [];
+        this.stackedChartData7 = [];
+        this.stackedChartData8 = [];
         this.stackedChartLabels1 =[];
         this.stackedChartLabels =[];
         this.stackedChartDataMax = 0;
@@ -1109,13 +1123,16 @@ if(this._cookieService.get("user_type") == '4'){
           var i=0
        data && data.data && data.data.length && data.data.forEach(res => {
           if(res.provider_name != null){
-            if(parseInt(res.crowns) + parseInt(res.splints) + parseInt(res.rct) + parseInt(res.perio) + parseInt(res.extract) > 0){
+            if(parseInt(res.crowns) + parseInt(res.splints) + parseInt(res.rct) + parseInt(res.perio) + parseInt(res.extract) > 0+ parseInt(res.ss_crowns) > 0+ parseInt(res.comp_veneers) > 0+ parseInt(res.imp_crowns) > 0){
           
              this.stackedChartData1.push(res.crowns);
              this.stackedChartData2.push(res.splints);
              this.stackedChartData3.push(res.rct);
              this.stackedChartData4.push(res.perio);
-             this.stackedChartData5.push(res.extract);
+             this.stackedChartData5.push(res.extract);             
+             this.stackedChartData6.push(res.ss_crowns);
+             this.stackedChartData7.push(res.comp_veneers);
+             this.stackedChartData8.push(res.imp_crowns);
              this.stackedChartLabels1.push(res.provider_name);
              if(res.provider_name != 'Anonymous')
               this.ipKey =i;
@@ -1129,6 +1146,9 @@ if(this._cookieService.get("user_type") == '4'){
        this.stackedChartData[2]['data'] = this.stackedChartData3;
        this.stackedChartData[3]['data'] = this.stackedChartData4;
        this.stackedChartData[4]['data'] = this.stackedChartData5;
+       this.stackedChartData[5]['data'] = this.stackedChartData6;
+       this.stackedChartData[6]['data'] = this.stackedChartData7;
+       this.stackedChartData[7]['data'] = this.stackedChartData8;
        this.stackedChartLabels = this.stackedChartLabels1;
       
          if(this.user_type == '4' && this.childid != '') {
@@ -1137,6 +1157,9 @@ if(this._cookieService.get("user_type") == '4'){
             { backgroundColor: ['#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7','#A3A6A7'] },
             { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
             { backgroundColor: ['#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD','#B9BCBD'] },
+            { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
+            { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
+            { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
             { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] }
           ];
         this.barChartColors[0].backgroundColor[this.ipKey] = '#1CA49F';
@@ -1144,6 +1167,9 @@ if(this._cookieService.get("user_type") == '4'){
         this.barChartColors[2].backgroundColor[this.ipKey] = '#09b391';
         this.barChartColors[3].backgroundColor[this.ipKey] = '#82EDD8';
         this.barChartColors[4].backgroundColor[this.ipKey] = 'rgba(22, 82, 141, 1)';
+        this.barChartColors[6].backgroundColor[this.ipKey] = '#1fd6b1';
+        this.barChartColors[5].backgroundColor[this.ipKey] = '#1CA49F';
+        this.barChartColors[7].backgroundColor[this.ipKey] = '#09b391';
         
 
         this.IPcolors= this.barChartColors;
@@ -1151,7 +1177,7 @@ if(this._cookieService.get("user_type") == '4'){
       else
         this.IPcolors= this.ItemPredictorColors;
       
-       this.stackedChartDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data']);
+       this.stackedChartDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data'])+Math.max(...this.stackedChartData[5]['data'])+Math.max(...this.stackedChartData[6]['data'])+Math.max(...this.stackedChartData[7]['data']);
        //this.productionTotalAverage = this.productionTotal/this.barChartData1.length;
      }
        }
@@ -2148,6 +2174,9 @@ toggleChangeProcess(){
       this.stackedChartData3 =[];
       this.stackedChartData4 =[];
       this.stackedChartData5 =[] ;
+      this.stackedChartData6 =[] ;
+      this.stackedChartData7 =[] ;
+      this.stackedChartData8 =[] ;
       this.stackedChartLabels =[] ;      
       this.stackedChartLabels1 = [];
       this.buildChartDentistLoader = true;
@@ -2156,7 +2185,10 @@ toggleChangeProcess(){
       {data: [], label: 'Splints' },
       {data: [], label: 'Root Canals' },
       {data: [], label: 'Perio Charts' },
-      {data: [], label: 'Surgical Extractions' }  
+      {data: [], label: 'Surgical Extractions' },  
+      {data: [], label: 'Stainless Steel Crowns'},  
+      {data: [], label: 'Composite Veneers'},  
+      {data: [], label: 'Implant Crowns'}
     ];
     this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
        this.stackedChartData1 =[];
@@ -2164,6 +2196,9 @@ toggleChangeProcess(){
       this.stackedChartData3 =[];
       this.stackedChartData4 =[];
       this.stackedChartData5 =[] ;
+      this.stackedChartData6 =[] ;
+      this.stackedChartData7 =[] ;
+      this.stackedChartData8 =[] ;
       this.stackedChartLabels1 = [];
       this.stackedChartDataMax = 0;
       this.buildChartDentistLoader = false;
@@ -2176,6 +2211,9 @@ toggleChangeProcess(){
                    this.stackedChartData3.push(res.rct);
                    this.stackedChartData4.push(res.perio);
                    this.stackedChartData5.push(res.extract);
+                   this.stackedChartData6.push(res.ss_crowns);
+                   this.stackedChartData7.push(res.comp_veneers);
+                   this.stackedChartData8.push(res.imp_crowns);
                    if(this.trendValue == 'c')
                    this.stackedChartLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
@@ -2187,8 +2225,11 @@ toggleChangeProcess(){
                this.stackedChartData[2]['data'] = this.stackedChartData3;
                this.stackedChartData[3]['data'] = this.stackedChartData4;
                this.stackedChartData[4]['data'] = this.stackedChartData5;
+               this.stackedChartData[5]['data'] = this.stackedChartData6;
+               this.stackedChartData[6]['data'] = this.stackedChartData7;
+               this.stackedChartData[7]['data'] = this.stackedChartData8;
                this.stackedChartLabels = this.stackedChartLabels1;
-               this.stackedChartDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data']);
+               this.stackedChartDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data'])+Math.max(...this.stackedChartData[5]['data'])+Math.max(...this.stackedChartData[6]['data'])+Math.max(...this.stackedChartData[7]['data']);
              }
        }
     }, error => {
