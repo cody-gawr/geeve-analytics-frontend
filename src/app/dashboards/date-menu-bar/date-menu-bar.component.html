@@ -21,9 +21,17 @@
       [ngClass]="{'active': currentSelectedPeriod==='cytd'}">
         Calendar Year
       </span>
+      <span (click)="filterDate('lcytd')" class="filter_lcytd filter sa_filter_span"
+      [ngClass]="{'active': currentSelectedPeriod==='lcytd'}">
+        Last Calendar Year
+      </span>
       <span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span"
       [ngClass]="{'active': currentSelectedPeriod==='fytd'}">
         Financial Year
+      </span>
+      <span (click)="filterDate('lfytd')" class="filter_lfytd filter sa_filter_span"
+      [ngClass]="{'active': currentSelectedPeriod==='lfytd'}">
+        Last Financial Year
       </span>
     </div>
   </div>

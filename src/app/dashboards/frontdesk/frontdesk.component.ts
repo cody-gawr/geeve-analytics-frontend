@@ -838,13 +838,21 @@ public currentText;
     else if (duration == 'cytd') {
       this.trendText = 'Last Year';
       this.currentText = 'This Year';
-
       this.duration = 'cytd';
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
+    else if (duration == 'lcytd') {
+        this.trendText = 'Previous Year';
+        this.currentText = 'Last Year';
+        this.duration = 'lcytd';
+        var date = new Date();
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() -1, 0, 1), 'dd-MM-yyyy');       
+        this.endDate = this.datePipe.transform(new Date(this.startDate), '31-12-yyyy');
+        this.loadDentist('all');
+      }
     else if (duration == 'fytd') {
       this.duration = 'fytd';
       this.trendText = 'Last Financial Year';
@@ -859,6 +867,15 @@ public currentText;
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
+     else if (duration == 'lfytd') {
+        this.trendText = 'Previous Financial Year';
+        this.currentText = 'Last Financial Year';
+        this.duration = 'lfytd'
+        var date = new Date();
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');       
+        this.loadDentist('all');
+      }
      else if (duration == 'custom') {
       this.trendText= '';
       this.currentText= '';

@@ -57,6 +57,10 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
 
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
      this.route = router.url; 
+     if(this.chartService.duration$.value == 'custom'){
+      this.filterDate('m');
+     }
+     
     });
     
   }
