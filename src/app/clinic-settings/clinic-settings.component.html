@@ -90,22 +90,24 @@
             </div>
           </div>           
 
-           <div class="post-op-codes">
-            <h4 class="clinic-settings-form-title">MH- Post Op Calls Previous Days</h4>          
+           <div class="post-op-codes" style="width: 250px; float: left;">
+            <h4 class="clinic-settings-form-title">Post Op Calls</h4>          
             <div class="sa-form-group clinic-setting-form">
-              <input type="number" min="0" placeholder="" [formControl]="form.controls['post_op_calls_days']" [(ngModel)]="postOpCallsMh">
+              <input type="number" min="0" placeholder="" [formControl]="form.controls['post_op_calls_days']" [(ngModel)]="postOpCallsMh" style="width: 70px;">
+              <span style="padding:0 10px;">Days Ago</span>
             </div>
           </div>
           
-          <div class="post-op-codes">
-            <h4 class="clinic-settings-form-title">MH - Unscheduled Patients Previous Days</h4>          
+          <div class="post-op-codes" style="width: 250px; float: left; margin-right: 19.8%">
+            <h4 class="clinic-settings-form-title">Unscheduled Patients Call</h4>          
             <div class="sa-form-group clinic-setting-form">
-              <input type="number" min="0" placeholder="" [formControl]="form.controls['unscheduled_patients_days']" [(ngModel)]="unscheduledPatientsMh">
+              <input type="number" min="0" placeholder="" [formControl]="form.controls['unscheduled_patients_days']" [(ngModel)]="unscheduledPatientsMh" style="width: 70px;">
+              <span style="padding: 0 10px;">Days Ago</span>
             </div>
           </div>
 
 
-          <div class="post-op-codes">
+          <div class="post-op-codes" style="float: left;width: 100%;">
             <h4 class="clinic-settings-form-title">FTA/UTA</h4>          
             <div  fxLayout="row wrap fta_uta_setting" style="width: 500px;text-align: center;"> 
             <div class="sa-form-group clinic-setting-form"  style="text-align: left;width: 240px;">
