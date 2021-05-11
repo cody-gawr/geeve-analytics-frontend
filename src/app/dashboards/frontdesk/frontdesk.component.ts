@@ -78,7 +78,8 @@ export class FrontDeskComponent implements AfterViewInit {
         this.getClinics();
      // this.initiate_clinic();
         
-      $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>'); 
+      $('#title').html('<span>Front Desk</span>'); 
+          $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
 
         
         $('.external_clinic').show();
@@ -410,7 +411,8 @@ public dentists;
     return validDate
   }
  loadDentist(newValue) {
-   $('#title').html('<span>Front Desk</span> <span class="page-title-date">'+ this.formatDate(this.startDate) +' - '+ this.formatDate(this.endDate) +'</span>'); 
+   $('#title').html('<span>Front Desk</span>'); 
+       $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
 
     if(newValue == 'all') {
       this.fdWorkTimeAnalysis();

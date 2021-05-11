@@ -170,12 +170,13 @@ export class MarketingComponent implements AfterViewInit {
 
   //    this.initiate_clinic();
         
-       $('#title').html('Marketing');
+       //$('#title').html('Marketing');
         $('.external_clinic').show();
         //$('.dentist_dropdown').addClass('hide');
         $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
-  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
+  $('#title').html('<span>Marketing</span>');        
+      $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
         
         // $('.external_clinic').show();
         // $('.external_dentist').show();
@@ -484,7 +485,8 @@ this.preoceedureChartColors = [
     return validDate
   }
   loadDentist(newValue) {
-  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
+  $('#title').html('<span>Marketing</span>');        
+      $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
 
     if(newValue == 'all') { 
       this.mkNewPatientsByReferral();

@@ -259,7 +259,7 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 .sa_heading_bar {
     width: 100%;
     color: #424242;
-    padding: 12px 30px;
+    padding: 12px 30px 12px 0px;
     min-height: 66px;
     background-color: #fff;
     position: sticky;
@@ -433,7 +433,7 @@ html .page-wrapper { height: 100vh!important }
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#18a689', endColorstr='#006f73',GradientType=0 ); /* IE6-9 */
     line-height: 35px !important;text-transform: capitalize !important; color: #fff !important; padding: 0px 25px!important; box-shadow: none!important; border-radius:50px !important; }
 
-.sa_header_icons { position: relative; margin-right: 10px; min-width: 96px; float: left; margin-bottom: 2px; }
+.sa_header_icons { position: relative; float: left; margin-bottom: 2px; }
 
 .mat-drawer-container { background: #DDEBE9!important; }
 
@@ -4971,4 +4971,13 @@ ul.download-sync-list {
 .fta_uta_setting .clinic-setting-form input{
     float: left;
     width: 25px;
+}
+.custom_date{
+    position: fixed !important;
+    top: 6px !important;
+    left: 48% !important;
+    width: 215px !important;
+}
+.custom_date input{
+    width: 215px !important;
 }

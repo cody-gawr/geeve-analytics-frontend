@@ -216,7 +216,8 @@ single = [
       $('.header_filters').addClass('flex_direct_mar');
       $('.external_clinic').show();
       //$('.external_dentist').show();
-      $('#title').html('<span>Finances</span>  <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
+      $('#title').html('<span>Finances</span>');
+          $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
       $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
           $('.customRange').show();
@@ -1245,7 +1246,8 @@ public labelBarPercentOptions: any = {
 
   loadDentist(newValue) {
 
-    $('#title').html('<span>Finances</span> <span class="page-title-date">' + this.formatDate(this.startDate)  + ' - ' + this.formatDate(this.endDate) +'</span>');
+    $('#title').html('<span>Finances</span>');
+        $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
   if(newValue == 'all') {
     $(".trend_toggle").hide();
     this.finTotalProduction();

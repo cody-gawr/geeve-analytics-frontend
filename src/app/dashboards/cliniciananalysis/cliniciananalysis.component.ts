@@ -142,7 +142,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.childid = this._cookieService.get("dentistid");
 
     //   $('.external_dentist').val('all');
-    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
+    $('#title').html('<span> Clinician Analysis </span>');
+    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
+
     $('.external_clinic').show();
     //$('.dentist_dropdown').show();
     //$('.dentist_dropdown').removeClass('hide');
@@ -820,7 +822,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   if(newValue =='')
     newValue='all';
-   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
+   $('#title').html('<span> Clinician Analysis </span>');
+    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
   this.changePrebookRate('recall');
    if( this._cookieService.get("dentistid"))
          this.childid = this._cookieService.get("dentistid");
