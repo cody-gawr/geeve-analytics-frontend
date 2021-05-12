@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { BaseComponent } from '../../clinic-settings/base/base.component';
 import { ChartService } from '../chart.service';
+import { Router, NavigationEnd } from '@angular/router';
 interface IDateOption {
   name: string,
   value: string
@@ -17,6 +18,8 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
   @Output() filter: EventEmitter<string> = new EventEmitter();
   @Output() changeDate: EventEmitter<any> = new EventEmitter();
   currentSelectedPeriod: string = 'm';
+
+  route:string = '';
   
   DateOptions: Array<IDateOption> = [
     {
@@ -40,16 +43,33 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
       value: 'cytd'
     },
     {
+      name: 'Calender Year',
+      value: 'lcytd'
+    },
+    {
       name: 'Financial Year',
       value: 'fytd'
+    },
+    {
+      name: 'Financial Year',
+      value: 'lfytd'
     }
   ];
 
-  constructor(private chartService: ChartService) {
+  constructor(private chartService: ChartService, private router: Router) {
     super();
     chartService.duration$.pipe(
       takeUntil(this.destroyed$)
     ).subscribe(value => this.currentSelectedPeriod = value);
+
+
+    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
+     this.route = router.url; 
+     if(this.chartService.duration$.value == 'custom'){
+      this.filterDate('m');
+     }
+     
+    });
     
   }
 
@@ -65,28 +85,31 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
     this.filter.emit(duration);
   }
 
-  choosedDate(event) {
-    // console.log(`event`, event); 
-    var val = event.chosenLabel;
-    val = val.toString().split(" - ");
-    var date2: any = new Date(val[1]);
-    var date1: any = new Date(val[0]);
-    var diffTime: any = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
-    if (diffTime <= 365) {
+  choosedDate(event) { 
+    if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures' || this.route == '/dashboards/frontdesk'){
       this.chartService.selectDateFromCalender(event);
       this.filterDate('custom');
       this.changeDate.emit(event)
       $(".customRange").css("display", "none");
-    } else {
-      Swal.fire({
-        text: "Please select date range within 365 Days",
-        icon: "warning",
-        showCancelButton: false,
-        confirmButtonText: "Ok",
-      }).then((result) => {});
-    }
-
-  
+    }  else {        
+      var val = event.chosenLabel;
+      val = val.toString().split(" - ");
+      var date2: any = new Date(val[1]);
+      var date1: any = new Date(val[0]);
+      var diffTime: any = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+      if (diffTime <= 365) {
+        this.chartService.selectDateFromCalender(event);
+        this.filterDate('custom');
+        this.changeDate.emit(event)
+        $(".customRange").css("display", "none");
+      } else {
+        Swal.fire({
+          text: "Please select date range within 365 Days",
+          icon: "warning",
+          showCancelButton: false,
+          confirmButtonText: "Ok",
+        }).then((result) => {});
+      }
+    }  
   }
-
 }

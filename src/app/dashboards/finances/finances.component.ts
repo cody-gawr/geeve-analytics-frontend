@@ -216,7 +216,8 @@ single = [
       $('.header_filters').addClass('flex_direct_mar');
       $('.external_clinic').show();
       //$('.external_dentist').show();
-      $('#title').html('<span>Finances</span>  <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
+      $('#title').html('<span>Finances</span>');
+          $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
       $(document).on('click', function(e) {
         if ($(document.activeElement).attr('id') == 'sa_datepicker') {
           $('.customRange').show();
@@ -492,6 +493,7 @@ single = [
               });
               titleLines.forEach(function (title) {
                 innerHtml += '<tr><th style="text-align: left;">' + title + ': $'+total+'</th></tr>';
+                innerHtml += '<tr><th style="text-align: left;">&nbsp;</th></tr>';
               });          
               bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
@@ -505,9 +507,9 @@ single = [
         // disable displaying the color box;
             var position = this._chart.canvas.getBoundingClientRect();
             // Display, position, and set styles for font
-            tooltipEl.style.position = 'absolute';
+            tooltipEl.style.position = 'fixed';
             tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
-            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 30) + 'px';
+            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
             tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
             tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
             tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
@@ -792,9 +794,9 @@ public labelBarPercentOptions: any = {
         // disable displaying the color box;
             var position = this._chart.canvas.getBoundingClientRect();
             // Display, position, and set styles for font
-            tooltipEl.style.position = 'absolute';
-            tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 20) + 'px';
-            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 30) + 'px';
+            tooltipEl.style.position = 'fixed';
+            tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 50) + 'px';
+            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
             tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
             tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
             tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
@@ -1244,7 +1246,8 @@ public labelBarPercentOptions: any = {
 
   loadDentist(newValue) {
 
-    $('#title').html('<span>Finances</span> <span class="page-title-date">' + this.formatDate(this.startDate)  + ' - ' + this.formatDate(this.endDate) +'</span>');
+    $('#title').html('<span>Finances</span>');
+        $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
   if(newValue == 'all') {
     $(".trend_toggle").hide();
     this.finTotalProduction();
@@ -1823,7 +1826,15 @@ filterDate(duration) {
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
-    }
+    } else if (duration == 'lcytd') {
+        this.trendText = 'Previous Year';
+        this.currentText = 'Last Year';
+
+        var date = new Date();
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() -1, 0, 1), 'dd-MM-yyyy');       
+        this.endDate = this.datePipe.transform(new Date(this.startDate), '31-12-yyyy');
+        this.loadDentist('all');
+      }
      else if (duration == 'fytd') {
       this.duration='fytd';
       this.trendText= 'Last Financial Year';
@@ -1837,7 +1848,14 @@ filterDate(duration) {
     }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
-    }
+    } else if (duration == 'lfytd') {
+        this.trendText = 'Previous Financial Year';
+        this.currentText = 'Last Financial Year';
+        var date = new Date();
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');       
+        this.loadDentist('all');
+      }
      else if (duration == 'custom') {
       this.trendText= '';
       this.currentText= '';
@@ -2075,7 +2093,7 @@ private finProductionByClinicianTrend() {
                         this.productionChartTrend[key]['data'] = [];
                       }
                       // console.log(`key`, this.doughnutChartColors[key])
-                     this.productionChartTrend[key]['data'].push(Math.round(parseInt(result.prod_per_clinician)));
+                      this.productionChartTrend[key]['data'].push(parseInt(result.prod_per_clinician));
                      this.productionChartTrend[key]['label'] = result.provider_name;
                      this.productionChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
                      this.productionChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];

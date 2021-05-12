@@ -170,12 +170,13 @@ export class MarketingComponent implements AfterViewInit {
 
   //    this.initiate_clinic();
         
-       $('#title').html('Marketing');
+       //$('#title').html('Marketing');
         $('.external_clinic').show();
         //$('.dentist_dropdown').addClass('hide');
         $('.header_filters').removeClass('hide_header');
         $('.header_filters').addClass('flex_direct_mar');
-  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
+  $('#title').html('<span>Marketing</span>');        
+      $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
         
         // $('.external_clinic').show();
         // $('.external_dentist').show();
@@ -484,7 +485,8 @@ this.preoceedureChartColors = [
     return validDate
   }
   loadDentist(newValue) {
-  $('#title').html('<span>Marketing</span> <span class="page-title-date">'+ this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) +'</span>');        
+  $('#title').html('<span>Marketing</span>');        
+      $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
 
     if(newValue == 'all') { 
       this.mkNewPatientsByReferral();
@@ -673,9 +675,9 @@ public visitsGoal:any = 0;
        var clinic_id;
   this.marketingService.fdvisitsRatio(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     this.visitsTotal = 0;
-          this.visitsPrevTotal = 0;
-       if(data.message == 'success'){
+        this.visitsPrevTotal = 0;
         this.fdvisitsRatioLoader = false;
+       if(data.message == 'success'){
           this.visitsTotal = data.total;
           this.visitsPrevTotal = data.total_ta;
           this.visitsGoal = data.goals;
@@ -940,17 +942,23 @@ public currentText;
     else if (duration == 'cytd') {
       this.trendText= 'Last Year';
       this.currentText= 'This Year';
-
-
-     var date = new Date();
+      var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
-      this.goalCount = difMonths + 1;
-    
+      this.goalCount = difMonths + 1;    
       this.duration='cytd';
       this.loadDentist('all');
-    }
+    } else if (duration == 'lcytd') {
+        this.trendText = 'Previous Year';
+        this.currentText = 'Last Year';
+        this.duration = 'lcytd';
+        var date = new Date();
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() -2, 0, 1), 'dd-MM-yyyy');       
+        this.endDate = this.datePipe.transform(new Date(this.startDate), '31-12-yyyy');
+        this.goalCount = 12;
+        this.loadDentist('all');
+      }
      else if (duration == 'fytd') {
       this.trendText= 'Last Financial Year';
       this.currentText= 'This Financial Year';
@@ -967,7 +975,16 @@ public currentText;
       this.goalCount = Math.abs(difMonths + 1);
       this.duration='fytd';
       this.loadDentist('all');
-    }
+    }    else if (duration == 'lfytd') {
+        this.trendText = 'Previous Financial Year';
+        this.currentText = 'Last Financial Year';
+        this.duration = 'lfytd'
+        this.goalCount = 12;
+        var date = new Date();
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');       
+        this.loadDentist('all');
+      }
      else if (duration == 'custom') {
       this.trendText= '';
       this.duration='custom';
@@ -1093,13 +1110,16 @@ public fdvisitsRatioTrendLoader:any;
   this.visitsChartTrendLabels1=[];
   this.visitsChartTrendLabels=[];
   this.fdvisitsRatioTrendLoader = true;
-
-  this.visitsChartTrend1=[];
+  this.visitsChartTrend1=[];  
     var user_id;
     var clinic_id;
     this.marketingService.mkTotalVisitsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      this.visitsChartTrend1=[];  
+      this.visitsChartTrendLabels = [];
+      this.visitsChartTrendLabels1 = [];     
+      this.visitsChartTrend[0]['data'] = [];
+      this.fdvisitsRatioTrendLoader = false;
        if(data.message == 'success'){
-                this.fdvisitsRatioTrendLoader = false;
                 data.data.forEach(res => {  
                      this.visitsChartTrend1.push(res.num_visits);
                    if(this.trendValue == 'c')
@@ -1159,27 +1179,30 @@ public fdvisitsRatioTrendLoader:any;
   private mkNoNewPatientsTrend() { 
     this.newPatientsChartTrendLabels1=[];
     this.newPatientsChartTrend1=[];
-    var user_id;
-    var clinic_id;
+    this.fdnewPatientsRatioLoader =  true;
+     this.fdnewPatientsAcqLoader= true; 
     this.marketingService.mkNoNewPatientsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data.message == 'success'){
+      this.fdnewPatientsRatioLoader =  false;
+      this.fdnewPatientsAcqLoader= false; 
+      this.newPatientsChartTrend1=[];
+      this.newPatientsChartTrendLabels1=[];
+      this.newPatientsChartTrendLabels=[];
+      this.newPatientsChartTrend[0]['data'] = [];
+      if(data.message == 'success'){
         this.newPatientsChartTemp = data.data;
-                data.data.forEach(res => {  
-                     this.newPatientsChartTrend1.push(res.new_patients);
-                   if(this.trendValue == 'c')
-                   this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-                    else
-                   this.newPatientsChartTrendLabels1.push(res.year);
-                  
-                 });
-                 this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
-
-                 this.newPatientsChartTrendLabels =this.newPatientsChartTrendLabels1;
-                    this.fdnewPatientsAcqTrend();
-       }
+        data.data.forEach(res => {  
+          this.newPatientsChartTrend1.push(res.new_patients);
+          if(this.trendValue == 'c')
+            this.newPatientsChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+          else
+            this.newPatientsChartTrendLabels1.push(res.year);
+        });
+        this.newPatientsChartTrend[0]['data'] = this.newPatientsChartTrend1;
+        this.newPatientsChartTrendLabels =this.newPatientsChartTrendLabels1;
+        this.fdnewPatientsAcqTrend();
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
- 
     });
   }
 
@@ -1286,10 +1309,12 @@ public dataY:any=0;
     this.newAcqValuePrev=0;
     this.expenseDataTrend1=[];
     this.expenseDataTrendLabels1=[];
+    this.fdnewPatientsAcqLoader= true;    
     if(this.duration && this.connectedwith !=''){
        var user_id;
        var clinic_id;
        this.marketingService.categoryExpensesTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
+        this.fdnewPatientsAcqLoader= false;    
           if(data.message == 'success'){
             
             this.expenseDataTrend1=[];

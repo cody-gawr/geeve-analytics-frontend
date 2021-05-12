@@ -182,7 +182,7 @@ No. New Patients
 <canvas #myCanvas baseChart [datasets]="newPatientsChartTrend" [labels]="newPatientsChartTrendLabels" [options]="stackedChartOptions" 
 [chartType]="stackedChartType"  [colors]="lineChartColors" (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
 <!-- [colors]="stackedChartColors" -->
-</canvas>
+</canvas> 
 </div>
 
 <div *ngIf="showTrend == true && newPatientsChartTrend1.length <=0">
@@ -288,6 +288,7 @@ New Patient Cost
 </div>   
 </mat-card-content>
 </mat-card>
+
 </div>                                                                                                                                                                                
 <div fxFlex="calc(32% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" class="sa_flexbg referral_clinicians last">
 <mat-card>
@@ -369,7 +370,7 @@ Total Visits
 </div>      
 </mat-card-content>
 </mat-card>
-<div *ngIf="fdvisitsRatioLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
+<div *ngIf="fdvisitsRatioLoader == true || fdvisitsRatioTrendLoader == true" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div></div>
 </div>
 </div>
 </div>

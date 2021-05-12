@@ -97,7 +97,7 @@ public errorLogin = false;
 public currentPassword;
 public newPassword;
 public repeatPassword;
- onSubmitPassword() {
+onSubmitPassword() {
   this.errorLogin = false;
   this.errortext ="";
   this.successLogin = false;

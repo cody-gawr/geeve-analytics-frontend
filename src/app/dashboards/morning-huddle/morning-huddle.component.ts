@@ -52,8 +52,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public treatmentRate:any = '';
     public previousDays:any = '';
 
-    public unscheduledPatientsDays:any = 7;
-    public postOpCallsDays:any = 2;
+    public unscheduledPatientsDays:any = '';
+    public postOpCallsDays:any = '';
     public followupsPostopCallsDate:any = '';
     public schedulePatieltd:any = 0;
     public schedulePatielDate:any = '';
@@ -288,6 +288,7 @@ initiate_clinic() {
   getFollowupsUnscheduledPatients(){
     this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.unscheduledPatientsDays  ).subscribe((production:any) => {
       if(production.status == true) {
+        this.unscheduledPatientsDays = production.days.unsched_days;
         production.data.map((item) => {
           const phoneNumber  = item.phone_number ? item.phone_number : ( item.phone_work ? item.phone_work : item.mobile);
           if(phoneNumber) {
@@ -299,9 +300,9 @@ initiate_clinic() {
             }
           }
         })
-        // this.followupsUnscheduledPatients = production.data;
-        this.followupsUnscheduledPatients = production.data.filter(p => p.code!="Recall Unscheduled");
-        this.followupsUnscheduledRecalls = production.data.filter(p => p.code==="Recall Unscheduled");        
+         this.followupsUnscheduledPatients = production.data;
+        //this.followupsUnscheduledPatients = production.data.filter(p => p.code!="Recall Unscheduled");
+        //this.followupsUnscheduledRecalls = production.data.filter(p => p.code==="Recall Unscheduled");        
         this.followupsUnscheduledPatientsDate = production.date;     
       }
     }); 
@@ -312,6 +313,7 @@ initiate_clinic() {
       if(production.status == true) {
         this.followupPostOpCalls = production.data;     
         this.followupsPostopCallsDate = production.date;     
+        this.postOpCallsDays = production.days.post_op_days;     
       }
     }); 
   } 
@@ -537,14 +539,14 @@ initiate_clinic() {
     return selectedDate;
   }
 
-  refreshUnscheduledPatients(val){
+  /*refreshUnscheduledPatients(val){
     this.unscheduledPatientsDays = val;
     this.getFollowupsUnscheduledPatients();
-  }
-  refreshPostOpCalls(val){
+  }*/
+/*  refreshPostOpCalls(val){
     this.postOpCallsDays = val;
     this.getFollowupPostOpCalls();
-  }
+  }*/
 }
 
 

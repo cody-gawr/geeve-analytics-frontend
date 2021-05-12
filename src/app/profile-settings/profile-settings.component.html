@@ -71,7 +71,7 @@
                                  <img src="/assets/images/change-password-icon.png">
                               </div>
                            </div>
-                      <div fxFlex>     
+                      <div fxFlex> 
                      <div class="sa-form-group">
                         <label>Current Password</label>
                         <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}$" type="password" placeholder="" [formControl]="form.controls['currentPassword']" [(ngModel)]= "currentPassword">
@@ -80,22 +80,26 @@
                      <div class="sa-form-group">
                         <label>New Password</label>
                         <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}$"  type="password" placeholder="" [formControl]="form.controls['newPassword']" [(ngModel)]="newPassword">
-                       <small *ngIf="form.controls['newPassword'].hasError('required') && form.controls['newPassword'].touched" class="text-danger support-text">You must include password.</small>
-                        <small *ngIf="form.controls['newPassword'].hasError('minlength') && form.controls['newPassword'].touched" class="text-danger support-text">Password should contain minimum 10 characters.</small>
-                        <small *ngIf="form.controls['newPassword'].hasError('pattern') && form.controls['newPassword'].touched" class="text-danger support-text">Password must contain one lowercase letter, one uppercase letter and one special character.</small>
+                       
+                       <small *ngIf="changePasswordError.required" class="text-danger support-text">You must include password.</small>
+                        <small *ngIf="changePasswordError.minlength" class="text-danger support-text">Password should contain minimum 10 characters.</small>
+                        <small *ngIf="changePasswordError.pattern" class="text-danger support-text">Password must contain one lowercase letter, one uppercase letter and one special character.</small>
+
                      </div>
                      <div class="sa-form-group">
                         <label>Repeat Password</label>
                         <input  type="password" placeholder="" [formControl]="form.controls['repeatPassword']" [(ngModel)]="repeatPassword">
-                        <small *ngIf="form.controls['repeatPassword'].hasError('required') && form.controls['repeatPassword'].touched" class="text-danger support-text">You must include confirm password.</small>
+                        
+                        <small *ngIf="changePasswordError.crequired" class="text-danger support-text">You must include confirm password.</small>
                         <small *ngIf="form.controls['repeatPassword'].errors?.equalTo && form.controls['repeatPassword'].touched"   class="text-danger support-text">Password and confirmation password do not match.</small>
                         <small *ngIf="confirm_password_error" class="text-danger support-text">{{confirm_password_text}}</small>
+                        
                      </div>
                   <div fxLayout="row wrap" fxLayoutGap="15px">
                      <div fxFlex.gt-md="100" fxFlex="100" >
                       <!--   <small  class="text-success support-text">{{successtext}}</small> -->
                         <mat-card-actions class="sa-pull-right">
-                           <button mat-raised-button color="dc" type="submit" [disabled]="!form.valid">Submit</button>
+                           <button mat-raised-button color="dc" type="submit">Submit</button>
                         </mat-card-actions>
                      </div>
                   </div>

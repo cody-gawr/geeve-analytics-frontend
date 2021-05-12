@@ -18,12 +18,10 @@
    </select> 
 </div>
  <div class="sa-form-group">
-    <label>Select Clinics</label>
-  
+    <label>Select Clinics</label>  
       <mat-select [formControl]="selectedClinics" multiple (openedChange)="clinicSelect($event)" class="user_add">
        <mat-option *ngFor="let clinics of data.clinics" [value]="clinics.id">{{clinics.clinicName}}</mat-option>
      </mat-select>
-
 </div>
 <div class="sa-form-group" *ngIf="show_dentist == true">
 <div class="selectedClinicProviders"  *ngFor="let clinicProviders of selectedClinicProviders; let i=index" style="margin-bottom:10px;" [ngClass] = "checkColumn(i)" >
@@ -37,11 +35,11 @@
    <span *ngIf="clinicProviders.dentists.length <= 0"> - No Dentist</span>
   </span>
 </div>
-
-</div>
+</div> 
 </div>
 <div mat-dialog-actions class="justify-between">
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-  <button mat-button (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc float-right">Ok</button>
+  <button *ngIf="data.user_type == 4" (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc float-right" [disabled] ="objectsize(dentistList) != objectsize(selected_dentist)" >Ok</button>
+  <button *ngIf="data.user_type != 4" (click)="save(data)"  tabindex="2" class="mat-raised-button mat-dc float-right">Ok</button>
 </div>
 </div>

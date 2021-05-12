@@ -142,7 +142,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.childid = this._cookieService.get("dentistid");
 
     //   $('.external_dentist').val('all');
-    $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
+    $('#title').html('<span> Clinician Analysis </span>');
+    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
+
     $('.external_clinic').show();
     //$('.dentist_dropdown').show();
     //$('.dentist_dropdown').removeClass('hide');
@@ -188,6 +190,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     let namedChartAnnotation = ChartAnnotation;
     namedChartAnnotation["id"] = "annotation";
     Chart.pluginService.register( namedChartAnnotation);
+
+    if(this._cookieService.get("dentist_toggle") === 'true'){
+      this.averageToggle = true;
+      this.showTrend = false;
+    }
   }
 
   //Load Clinic Data
@@ -805,13 +812,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   if(this._cookieService.get("user_type") == '4'){
     if(this._cookieService.get("dentist_toggle") === 'false')
       newValue = this.selectedDentist;
-    else
-      newValue = '';
+    else{
+          newValue = '';
+          
+        }
+
   }
+
 
   if(newValue =='')
     newValue='all';
-   $('#title').html('<span> Clinician Analysis </span> <span class="page-title-date">' + this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) + '</span>');
+   $('#title').html('<span> Clinician Analysis </span>');
+    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
   this.changePrebookRate('recall');
    if( this._cookieService.get("dentistid"))
          this.childid = this._cookieService.get("dentistid");
@@ -2513,20 +2525,37 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.goalCount = difMonths + 1;
         this.loadDentist(dentistVal);
       }
+      else if (duration == 'lcytd') {
+        this.trendText = 'Previous Year';
+        this.currentText = 'Last Year';
+
+        var date = new Date();
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() -1, 0, 1), 'dd-MM-yyyy');       
+        this.endDate = this.datePipe.transform(new Date(this.startDate), '31-12-yyyy');
+        this.goalCount = 12;
+        this.loadDentist(dentistVal);
+      }
       else if (duration == 'fytd') {
         this.trendText = 'Last Financial Year';
         this.currentText = 'This Financial Year';
-
         var date = new Date();
         if ((date.getMonth() + 1) <= 6) {
           this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
         } else {
           this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
         }
-
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
         this.goalCount = Math.abs(difMonths + 1);
+        this.loadDentist(dentistVal);
+      }
+      else if (duration == 'lfytd') {
+        this.trendText = 'Previous Financial Year';
+        this.currentText = 'Last Financial Year';
+        var date = new Date();
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');
+        this.goalCount = 12;
         this.loadDentist(dentistVal);
       }
       else if (duration == 'custom') {

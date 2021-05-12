@@ -21,9 +21,17 @@
       [ngClass]="{'active': currentSelectedPeriod==='cytd'}">
         Calendar Year
       </span>
+      <span (click)="filterDate('lcytd')" class="filter_lcytd filter sa_filter_span"
+      [ngClass]="{'active': currentSelectedPeriod==='lcytd'}">
+        Last Calendar Year
+      </span>
       <span (click)="filterDate('fytd')" class="filter_fytd filter sa_filter_span"
       [ngClass]="{'active': currentSelectedPeriod==='fytd'}">
         Financial Year
+      </span>
+      <span (click)="filterDate('lfytd')" class="filter_lfytd filter sa_filter_span"
+      [ngClass]="{'active': currentSelectedPeriod==='lfytd'}">
+        Last Financial Year
       </span>
     </div>
   </div>
@@ -44,8 +52,8 @@
     <input
       class="filter_custom filter sa_datepicker"
       id="sa_datepicker"
-      value="Select Date Range"
-      placeholder="Select Date Range"
+      value=""
+      placeholder=""
       readonly
     />
     <ngx-daterangepicker-material
@@ -54,6 +62,7 @@
       (choosedDate)="choosedDate($event)"
       [style.display]="'none'"
       [locale]="{ applyLabel: 'ok', displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
+      [showDropdowns]="true"
     >
     </ngx-daterangepicker-material>
   </div>

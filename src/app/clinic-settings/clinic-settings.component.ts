@@ -16,19 +16,22 @@ import { ToastrService } from 'ngx-toastr';
   *AUTHOR - Teq Mavens
   */
 export class ClinicSettingsComponent implements OnInit {
-   public fileToUpload;
-   public form: FormGroup;
-   public errorLogin = false;
-   public clinic_id:any ={};
-          private warningMessage: string;
-          public id:any ={};
-          public clinicName:any =0;
-          public contactName =0;
-          public phoneNo =0;
-          public clinicEmail = '';
-          public ftaUta:any = "";
-         public ftaUtaStatus:boolean = true;
-         public ftaUtaItem:boolean = false;
+      public fileToUpload;
+      public form: FormGroup;
+      public errorLogin = false;
+      public clinic_id:any ={};
+      private warningMessage: string; 
+      public id:any ={};
+      public clinicName:any =0;
+      public contactName =0;
+      public phoneNo =0;
+      public clinicEmail = '';
+      public ftaUta:any = "";
+      public postOpCallsMh:any = 1;
+      public unscheduledPatientsMh:any = 1;
+
+      public ftaUtaStatus:boolean = true;
+      public ftaUtaItem:boolean = false;
     
   
           public facebook:string = '';
@@ -73,11 +76,13 @@ export class ClinicSettingsComponent implements OnInit {
       clinicName: [null, Validators.compose([Validators.required])],
       contactName: [null],
       phoneNo: [null],
-      clinicEmail: [null],
+      clinicEmail: [null, [Validators.email]],
       address: [null],
       // practice_size: [null, Validators.compose([Validators.required])],
       post_op_calls: [null],      
       fta_uta: [null, Validators.compose([Validators.required])],              
+      post_op_calls_days: [null, Validators.compose([Validators.required])],              
+      unscheduled_patients_days: [null, Validators.compose([Validators.required])],              
       // facebook: [null],
       // twitter: [null],
       // linkedin: [null],
@@ -111,7 +116,9 @@ export class ClinicSettingsComponent implements OnInit {
         this.post_op_calls = res.data[0].post_op_calls;        
         this.phoneNo = res.data[0].phoneNo;        
         this.clinicEmail = res.data[0].clinicEmail; 
-        this.ftaUta = res.data[0].fta_uta;   
+        this.ftaUta = res.data[0].fta_uta;
+        this.postOpCallsMh = res.data[0].post_op_days;
+        this.unscheduledPatientsMh = res.data[0].unsched_days;
         if(this.ftaUta == '')
           this.ftaUta = "status";
        
@@ -142,8 +149,10 @@ export class ClinicSettingsComponent implements OnInit {
   this.phoneNo = this.form.value.phoneNo;
   this.clinicEmail = this.form.value.clinicEmail;
   this.ftaUta = this.form.value.fta_uta;
+  this.postOpCallsMh = this.form.value.post_op_calls_days;
+  this.unscheduledPatientsMh = this.form.value.unscheduled_patients_days;
   
-  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta ).subscribe((res) => {
+  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh, this.unscheduledPatientsMh ).subscribe((res) => {
       $('.ajax-loader').hide();
       if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );

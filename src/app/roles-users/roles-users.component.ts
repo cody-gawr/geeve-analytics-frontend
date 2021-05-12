@@ -35,6 +35,7 @@ show_dentist = false;
 
     @Output() public onDentist: EventEmitter<any> = new EventEmitter();
    public selected_dentist ={};
+   public dentistList = {};
    public user_type;
    public dentist_id;
     loadDentist(val) {
@@ -53,6 +54,15 @@ show_dentist = false;
          this.dialogRef.close(data);
     }
   }
+
+  objectsize(obj) {
+  var size = 0,
+    key;
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) size++;
+  }
+  return size;
+}
   public selectedClinics=new FormControl();
    clinicSelect(event) {
     if(event == false)
@@ -78,9 +88,11 @@ unselectDentist() {
 
 selectedDentist(event,i,clinic_id) {
    if(event != 0){
+      this.dentistList[clinic_id] = parseInt(event);
       this.selected_dentist['clinic'+clinic_id]= parseInt(event);    
     } else {
       delete this.selected_dentist['clinic'+clinic_id];    
+      delete this.dentistList[clinic_id];
     }
 }
 
@@ -547,5 +559,7 @@ initiate_clinic() {
     this.editing[rowIndex + '-' + cell] = true;
 
   }
+
+ 
 
 }
