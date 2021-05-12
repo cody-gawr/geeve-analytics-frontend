@@ -300,9 +300,9 @@ initiate_clinic() {
             }
           }
         })
-        // this.followupsUnscheduledPatients = production.data;
-        this.followupsUnscheduledPatients = production.data.filter(p => p.code!="Recall Unscheduled");
-        this.followupsUnscheduledRecalls = production.data.filter(p => p.code==="Recall Unscheduled");        
+         this.followupsUnscheduledPatients = production.data;
+        //this.followupsUnscheduledPatients = production.data.filter(p => p.code!="Recall Unscheduled");
+        //this.followupsUnscheduledRecalls = production.data.filter(p => p.code==="Recall Unscheduled");        
         this.followupsUnscheduledPatientsDate = production.date;     
       }
     }); 

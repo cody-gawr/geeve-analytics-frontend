@@ -1150,7 +1150,7 @@
         </div> -->
   </mat-card-content>
 
-  <mat-card-title>Unscheduled Recalls
+  <!--<mat-card-title>Unscheduled Recalls
     <div class="morning-huddle-date UnscheduledPatients">                
     </div>
  </mat-card-title>
@@ -1158,14 +1158,12 @@
  <mat-card-content> 
  <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">  
  <table fxHide fxShow.gt-sm mat-table [dataSource]="followupsUnscheduledRecalls" class="mat-elevation-z8 customWidth">
- 
-  <!-- Patient Name Column -->
+
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Patient Name </th>
     <td mat-cell *matCellDef="let element"> {{element.patient_name}}</td>
   </ng-container>
  
-  <!-- Phone Number Column -->
   <ng-container matColumnDef="phone">
     <th mat-header-cell *matHeaderCellDef> Phone Number </th>
     <td mat-cell *matCellDef="let element">
@@ -1176,14 +1174,13 @@
     </td>
   </ng-container>
  
-  <!-- Unscheduled Treatment Column -->
   <ng-container matColumnDef="code">
     <th mat-header-cell *matHeaderCellDef [ngClass]="'w-75'"> Unscheduled Recalls </th>
     <td mat-cell *matCellDef="let element"> {{ element.code }}</td>
   </ng-container>
   <ng-container matColumnDef="status">
     <th mat-header-cell *matHeaderCellDef>Status</th>
-    <!-- "{{ element.status }}" -->
+    "{{ element.status }}"
     <td mat-cell *matCellDef="let element">
       <mat-slide-toggle checked="{{element.status}}" name="status"
         (change)="toggleUpdate($event,element.pid,element.cid,element.uid,'Unscheduled Patients')"></mat-slide-toggle>
@@ -1200,7 +1197,6 @@
   <mat-footer-row *matFooterRowDef="['isDataAvailable2']"
     [ngClass]="(followupsUnscheduledRecalls.length <= 0)? 'show' : 'hide'"></mat-footer-row>
  </table>
- <!-- responsive table - frontdesk followup (Unscheduled Recall)  -->
  <div fxHide.gt-sm>
   <div *ngIf="followupsUnscheduledPatients.length;else noUnscheduledRecall">
     <mat-card class="huddle-card" *ngFor="let element of followupsUnscheduledPatients">
@@ -1237,15 +1233,15 @@
   </ng-template>
 </div>
  </div>
- <!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
+<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
         <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="responsive_patient_data" >
            
  </div>
         <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
           <img src="./assets/images/unsheild-patient.png" alt="unsheild-patient">
         </div>
-      </div> -->
- </mat-card-content>
+      </div> 
+ </mat-card-content>-->
 
 
 </mat-card>

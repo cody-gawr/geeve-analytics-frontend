@@ -21,7 +21,38 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService, private rolesUsersService: RolesUsersService) {
 
   if(this._cookieService.get("userid")){
-   this.router.navigate(['/dashboards/healthscreen']);
+     var permision = '';
+     var user_type = this._cookieService.get("user_type");
+        this.rolesUsersService.getRoles().subscribe((res) => {
+          if(res.message == 'success'){ 
+            res.data.forEach((dt) => {
+              if(user_type == dt['role_id']){
+                permision = dt['permisions'];                
+              }                
+            });
+            if(permision != ''){                            
+              if(permision.indexOf('healthscreen') >= 0){
+                  this.router.navigate(['/dashboards/healthscreen']);
+              } else if(permision.indexOf('dashboard1') >= 0){
+                this.router.navigate(['/dashboards/cliniciananalysis']);
+              } else if(permision.indexOf('dashboard2') >= 0){
+                  this.router.navigate(['/dashboards/clinicianproceedures']);
+              } else if(permision.indexOf('dashboard3') >= 0 ){
+                  this.router.navigate(['/dashboards/frontdesk']);
+              } else if(permision.indexOf('dashboard4') >= 0 ){
+                 this.router.navigate(['/dashboards/marketing']);
+              } else if(permision.indexOf('morninghuddle') >= 0){
+                  this.router.navigate(['/morning-huddle']);
+              } else if(permision.indexOf('lostopportunity') >= 0 ){
+                  this.router.navigate(['/lost-opportunity']);
+              } else {
+                 this.router.navigate(['/profile-settings']);
+              }
+            } else{
+              this.router.navigate(['/profile-settings']);
+            }
+          }      
+        });
   }
 
   }
