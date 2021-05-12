@@ -1406,28 +1406,34 @@ public categoryExpensesLoader:any;
         var clinic_id;
            this.expensescChartTrendIcon = "down";
            this.expensescChartTrendTotal=0;
+           this.pieChartLabels = [];
   this.financesService.categoryExpenses(this.clinic_id,this.startDate,this.endDate, this.duration,this.connectedwith).subscribe((data) => {
        if(data.message == 'success'){
         this.categoryExpensesLoader = false;        
-        this.pieChartLabels = [];
+       
         this.pieChartLabelsres=[];
         this.single =[];
          this.pieChartDatares = [];
          this.pieChartDataPercentres =[];
+         var i = 0;
           data.data.forEach((res,key) => {
+           if(Math.round(res.expenses_percent) >=1){ 
           var temp= {name:'',value:1};
           temp.name =res.meta_key;
           temp.value =res.expenses;  
 
           this.single.push(temp);
-          this.single[key].value =Math.round(res.expenses_percent);  
+          this.single[i].value =Math.round(res.expenses_percent);  
 
            this.pieChartDatares.push(Math.round(res.expenses));
 
            this.pieChartDataPercentres.push(Math.round(res.expenses_percent));
            this.pieChartLabelsres.push(res.meta_key);
            this.pieChartTotal = this.pieChartTotal + parseInt(res.expenses);
- });
+           i++;
+           }
+           
+         });
         this.expensescChartTrendTotal = data.data_ta;
         if(Math.round(this.pieChartTotal)>=Math.round(this.expensescChartTrendTotal))
             this.expensescChartTrendIcon = "up";  
