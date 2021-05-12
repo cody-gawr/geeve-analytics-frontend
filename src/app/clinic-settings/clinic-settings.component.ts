@@ -20,7 +20,7 @@ export class ClinicSettingsComponent implements OnInit {
       public form: FormGroup;
       public errorLogin = false;
       public clinic_id:any ={};
-      private warningMessage: string;
+      private warningMessage: string; 
       public id:any ={};
       public clinicName:any =0;
       public contactName =0;
@@ -76,7 +76,7 @@ export class ClinicSettingsComponent implements OnInit {
       clinicName: [null, Validators.compose([Validators.required])],
       contactName: [null],
       phoneNo: [null],
-      clinicEmail: [null],
+      clinicEmail: [null, [Validators.email]],
       address: [null],
       // practice_size: [null, Validators.compose([Validators.required])],
       post_op_calls: [null],      
@@ -117,8 +117,8 @@ export class ClinicSettingsComponent implements OnInit {
         this.phoneNo = res.data[0].phoneNo;        
         this.clinicEmail = res.data[0].clinicEmail; 
         this.ftaUta = res.data[0].fta_uta;
-        this.postOpCallsMh = res.data[0].post_op_calls_days;
-        this.unscheduledPatientsMh = res.data[0].unscheduled_patients_days;
+        this.postOpCallsMh = res.data[0].post_op_days;
+        this.unscheduledPatientsMh = res.data[0].unsched_days;
         if(this.ftaUta == '')
           this.ftaUta = "status";
        

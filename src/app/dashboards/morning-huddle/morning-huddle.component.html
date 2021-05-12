@@ -923,8 +923,8 @@
 <mat-card class="table-card post_call_responsive_border">
         <div class="morning-huddle-date">
             <strong>{{ followupsPostopCallsDate }} </strong>        
-              <mat-label class="daysAgo" *ngIf="postOpCallsDays != 1"> ({{ postOpCallsDays }} Days Ago)</mat-label>
-              <mat-label class="daysAgo" *ngIf="postOpCallsDays == 1"> (Previous Day)</mat-label>
+              <mat-label class="daysAgo" *ngIf="postOpCallsDays != 1 && postOpCallsDays != ''"> ({{ postOpCallsDays }} Days Ago)</mat-label>
+              <mat-label class="daysAgo" *ngIf="postOpCallsDays == 1 && postOpCallsDays != ''"> (Previous Day)</mat-label>
             
           </div>  
       <mat-card-title>Post op Calls
@@ -1040,8 +1040,8 @@
 <mat-card class="table-card">
      <div class="morning-huddle-date">
         <strong>{{ followupsUnscheduledPatientsDate }}</strong>   
-        <mat-label class="daysAgo" *ngIf="unscheduledPatientsDays != 1"> ({{ unscheduledPatientsDays }} Days Ago)</mat-label>
-        <mat-label class="daysAgo" *ngIf="unscheduledPatientsDays == 1"> (Previous Day)</mat-label>     
+        <mat-label class="daysAgo" *ngIf="unscheduledPatientsDays != 1 && unscheduledPatientsDays != ''"> ({{ unscheduledPatientsDays }} Days Ago)</mat-label>
+        <mat-label class="daysAgo" *ngIf="unscheduledPatientsDays == 1 && unscheduledPatientsDays != ''"> (Previous Day)</mat-label>     
       </div>
   <mat-card-title>Unscheduled Patients
  <!--      <div class="morning-huddle-date UnscheduledPatients">

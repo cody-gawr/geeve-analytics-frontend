@@ -24,7 +24,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </button>
         </div> 
-      </div> -->
+      </div> --> 
 
         <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
           <h4 class="clinic-settings-form-title" >Clinic Settings</h4>
@@ -35,6 +35,7 @@
                   <div class="sa-form-group">
                     <label>Clinic Name</label>
                     <input placeholder="" [formControl]="form.controls['clinicName']" [(ngModel)]= "clinicName">
+                    <small *ngIf="form.controls['clinicName'].hasError('required') && form.controls['clinicName'].touched" class="text-danger support-text">Clinic Name is Required.</small>
                   </div>
                 </div>
                 <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
@@ -95,6 +96,7 @@
             <div class="sa-form-group clinic-setting-form">
               <input type="number" min="0" placeholder="" [formControl]="form.controls['post_op_calls_days']" [(ngModel)]="postOpCallsMh" style="width: 70px;">
               <span style="padding:0 10px;">Days Ago</span>
+              <small *ngIf="form.controls['post_op_calls_days'].hasError('required') && form.controls['post_op_calls_days'].touched" class="text-danger support-text" style="float: left;width: 100%;">Field is Required.</small>
             </div>
           </div>
           
@@ -103,6 +105,7 @@
             <div class="sa-form-group clinic-setting-form">
               <input type="number" min="0" placeholder="" [formControl]="form.controls['unscheduled_patients_days']" [(ngModel)]="unscheduledPatientsMh" style="width: 70px;">
               <span style="padding: 0 10px;">Days Ago</span>
+             <small *ngIf="form.controls['unscheduled_patients_days'].hasError('required') && form.controls['unscheduled_patients_days'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
             </div>
           </div>
 
@@ -112,11 +115,12 @@
             <div  fxLayout="row wrap fta_uta_setting" style="width: 500px;text-align: center;"> 
             <div class="sa-form-group clinic-setting-form"  style="text-align: left;width: 240px;">
               <span style=" padding: 11px 6px;display: inline-block;" >Appointment Status</span>
-              <input  style=" float: left;width: 25px;"  type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="status">
+              <input  style=" float: left;width: 25px;"  type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="status">             
             </div>
              <div class="sa-form-group clinic-setting-form"   style="text-align: left;width: 240px;">
               <span style=" padding: 11px 6px;display: inline-block;">Item Codes</span>
               <input style=" float: left;width: 25px;" type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="item">
+
             </div>
           </div>
           </div>
