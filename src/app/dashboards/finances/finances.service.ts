@@ -78,7 +78,7 @@ export class FinancesService {
         );
         }
     }
-            // categoryExpenses
+       // categoryExpenses
     categoryExpenses(clinic_id='1', startDate = '', endDate = '', duration='',connectedwith ='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
@@ -95,7 +95,7 @@ export class FinancesService {
         );
         }
     }
-             // finProductionByClinician
+        // finProductionByClinician
     finProductionByClinician(clinic_id='1', startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnProductionByClinician?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
@@ -105,7 +105,7 @@ export class FinancesService {
         );
     }
 
-                 // finTotalDiscounts
+        // finTotalDiscounts
     finTotalDiscounts(clinic_id='1', startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnDiscounts?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
@@ -114,7 +114,7 @@ export class FinancesService {
                     })
         );
     }
-                 // finTotalProduction
+        // finTotalProduction
     finTotalProduction(clinic_id='1', startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnTotalProduction?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
@@ -124,7 +124,7 @@ export class FinancesService {
         );
     }
 
-                 // finCollection
+        // finCollection
     finCollection(clinic_id='1', startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnTotalCollection?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
@@ -134,7 +134,7 @@ export class FinancesService {
         );
     }
 
-                     // finProductionPerVisit
+        // finProductionPerVisit
     finProductionPerVisit(clinic_id='1', startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnProductionPerVisit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
@@ -145,7 +145,7 @@ export class FinancesService {
     }
 
 
-                    // finOverdueAccounts
+        // finOverdueAccounts
     finOverdueAccounts(clinic_id='1', startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnOverdues?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
@@ -155,7 +155,7 @@ export class FinancesService {
         );
     }
 
-             // finProductionByClinician
+        // finProductionByClinician
      finProductionByClinicianTrend(clinic_id='1', mode ='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnProductionByClinicianTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
@@ -165,7 +165,7 @@ export class FinancesService {
         );
     }
 
-                  // finTotalDiscounts
+        // finTotalDiscounts
     finTotalDiscountsTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnDiscountsTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
@@ -174,7 +174,7 @@ export class FinancesService {
                     })
         );
     }  
-                  // finTotalDiscounts
+        // finTotalDiscounts
     finOverdueAccountsTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/overduesTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
@@ -184,7 +184,7 @@ export class FinancesService {
         );
     }  
 
-                      // finTotalProductionTrend
+        // finTotalProductionTrend
     finTotalProductionTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/fnTotalProductionTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
@@ -213,7 +213,7 @@ export class FinancesService {
         );
     }
     
-                              // finNetProfitTrend
+        // finNetProfitTrend
     finNetProfitTrend(clinic_id='1', mode ='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Finance/finNetProfitTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
@@ -233,7 +233,7 @@ export class FinancesService {
         );
     }
 
-         // finNetProfitPMSTrend
+        // finNetProfitPMSTrend
     finNetProfitPMSTrend(clinic_id='1', mode ='',connectedwith='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
@@ -270,7 +270,7 @@ export class FinancesService {
         }
         
     }
-             // finExpensesByCategoryTrend
+        // finExpensesByCategoryTrend
     finExpensesByCategoryTrend(clinic_id='1', mode ='',connectedwith='', token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){

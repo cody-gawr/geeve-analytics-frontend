@@ -1387,12 +1387,14 @@ if(this.connectedwith == 'myob'){
   this.marketingService.saveSelectedAccountsMyob(this.clinic_id,escape(selectedAccounts)).subscribe((data) => {
     if(data.message == 'success'){
       this.load_chart_acq();
+      this.fdnewPatientsAcq();
     }
   }); 
 }else if(this.connectedwith == 'xero'){
    this.marketingService.saveSelectedCategories(this.clinic_id,escape(selectedAccounts)).subscribe((data) => {
         if(data.message == 'success'){
           this.load_chart_acq();
+          this.fdnewPatientsAcq();
         }
     });
 } 
