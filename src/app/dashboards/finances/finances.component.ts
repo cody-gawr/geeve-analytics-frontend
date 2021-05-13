@@ -483,14 +483,20 @@ single = [
               var innerHtml = '<table><thead>';             
               innerHtml += '</thead><tbody>';
 
-              var total = 0;
+              let total:any = 0;
               bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
                   var temp = body[0].split('$');
                   var amount = temp[1].replace(',','');
                   total += parseInt(amount);
+
                 }                
               });
+              if(total != 0){
+                var num_parts = total.toString().split(".");
+                num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                total = num_parts.join(".");
+              }
               titleLines.forEach(function (title) {
                 innerHtml += '<tr><th style="text-align: left;">' + title + ': $'+total+'</th></tr>';
                 innerHtml += '<tr><th style="text-align: left;">&nbsp;</th></tr>';
@@ -2610,6 +2616,13 @@ private finTotalDiscountsTrend() {
     $('.profit_btn').removeClass('active');
     $(".netProfit"+val).addClass('active');
     this.netProfitDisplayVal = val;
+  }
+
+ thousands_separators(num)
+  {
+    var num_parts = num.toString().split(".");
+    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num_parts.join(".");
   }
 
 }
