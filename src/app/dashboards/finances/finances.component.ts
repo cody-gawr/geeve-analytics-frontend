@@ -486,10 +486,15 @@ single = [
               let total:any = 0;
               bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
-                  var temp = body[0].split('$');
-                  var amount = temp[1].replace(',','');
-                  total += parseInt(amount);
-
+                  if(body[0].includes("-")){
+                    var temp = body[0].split('$');
+                    var amount = temp[1].replace(/,/g, '');
+                    total -= parseInt(amount);
+                  } else {
+                    var temp = body[0].split('$');
+                    var amount = temp[1].replace(/,/g, '');
+                    total += parseInt(amount);
+                  }                
                 }                
               });
               if(total != 0){
