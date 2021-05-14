@@ -1999,7 +1999,7 @@ public currentText;
 
         var date = new Date();
         this.startDate = this.datePipe.transform(new Date(date.getFullYear() -1, 0, 1), 'dd-MM-yyyy');       
-        this.endDate = this.datePipe.transform(new Date(this.startDate), '31-12-yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear() -1, 11, 31), 'dd-MM-yyyy');
       this.duration='lcytd';
         this.loadDentist(dentistVal);
       }
