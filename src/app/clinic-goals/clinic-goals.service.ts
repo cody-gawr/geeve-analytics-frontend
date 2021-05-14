@@ -41,7 +41,7 @@ export class ClinicGoalsService {
     // Get ClinicGoals updated
     getGoalAllData(clinic_id='',dentist_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Goals/getGoalAllData?clinic_id="+clinic_id+"&dentist_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Goals/goalGetData?clinic_id="+clinic_id+"&dentist_id="+dentist_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

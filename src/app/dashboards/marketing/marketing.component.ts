@@ -93,7 +93,7 @@ export class MarketingComponent implements AfterViewInit {
     var val = $('#currentClinic').attr('cid');
     if(val != undefined && val !='all') {
       this.clinic_id = val;
-      await this.checkclinicconnectedwith();
+      await this.clinicGetAccountingPlatform();
       console.log(this.connectedwith);
       if(this.connectedwith == 'myob'){
         this.checkMyobStatus();
@@ -103,10 +103,10 @@ export class MarketingComponent implements AfterViewInit {
       this.filterDate(this.chartService.duration$.value);
     }
   }
-   checkclinicconnectedwith(){ 
+   clinicGetAccountingPlatform(){ 
    var self = this;
   return new Promise(function(resolve,reject){
-    self.clinicSettingsService.checkclinicconnectedwith(self.clinic_id).subscribe( (res) => {
+    self.clinicSettingsService.clinicGetAccountingPlatform(self.clinic_id).subscribe( (res) => {
       if(res.message == 'success'){
         if(res.data != '') {
           self.connectedwith = res.data;
