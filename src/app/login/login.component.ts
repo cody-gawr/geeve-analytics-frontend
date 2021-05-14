@@ -41,6 +41,8 @@ export class LoginComponent implements OnInit {
                   this.router.navigate(['/dashboards/frontdesk']);
               } else if(permision.indexOf('dashboard4') >= 0 ){
                  this.router.navigate(['/dashboards/marketing']);
+              } else if(permision.indexOf('dashboard5') >= 0 ){
+                  this.router.navigate(['/dashboards/finances']);
               } else if(permision.indexOf('morninghuddle') >= 0){
                   this.router.navigate(['/morning-huddle']);
               } else if(permision.indexOf('lostopportunity') >= 0 ){
@@ -137,6 +139,8 @@ onSubmit() {
                   this.router.navigate(['/dashboards/frontdesk']);
               } else if(permision.indexOf('dashboard4') >= 0 ){
                  this.router.navigate(['/dashboards/marketing']);
+              } else if(permision.indexOf('dashboard5') >= 0 ){
+                  this.router.navigate(['/dashboards/finances']);
               } else if(permision.indexOf('morninghuddle') >= 0){
                   this.router.navigate(['/morning-huddle']);
               } else if(permision.indexOf('lostopportunity') >= 0 ){
