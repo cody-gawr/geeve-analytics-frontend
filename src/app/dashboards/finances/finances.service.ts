@@ -243,7 +243,7 @@ export class FinancesService {
                     })
         );
         }else if(connectedwith == 'myob'){
-            return this.http.get(this.apiUrl +"/Finance/fnNetProfitTrendMyob?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnNetProfitMyobTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -262,7 +262,7 @@ export class FinancesService {
                     })
         );
         }else if(connectedwith == 'myob'){
-            return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageTrendMyob?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageMyobTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
