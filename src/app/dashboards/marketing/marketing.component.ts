@@ -1384,7 +1384,7 @@ public dataY:any=0;
 save_account() {   
 var selectedAccounts=JSON.stringify(Object.assign({}, this.selectedAccounts)); 
 if(this.connectedwith == 'myob'){
-  this.marketingService.saveSelectedAccountsMyob(this.clinic_id,escape(selectedAccounts)).subscribe((data) => {
+  this.marketingService.mkSaveAcctMyob(this.clinic_id,escape(selectedAccounts)).subscribe((data) => {
     if(data.message == 'success'){
       this.load_chart_acq();
       this.fdnewPatientsAcq();

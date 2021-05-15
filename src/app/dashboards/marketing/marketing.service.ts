@@ -86,7 +86,7 @@ public token_id;
      //Get Xero Accounts
    getAccounts(clinic_id='1',user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
     var header = this.getHeaders(); 
-    return this.http.get(this.apiUrl +"/Marketing/mkGetAccounts?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
+    return this.http.get(this.apiUrl +"/Marketing/mkGetXeroAcct?user_id="+user_id+"&clinic_id="+clinic_id, { headers: header })
     .pipe(map((response: Response) => {
                     return response;
                 })
@@ -95,7 +95,7 @@ public token_id;
      //Get Xero Categories
    saveSelectedCategories(clinic_id='1',categories, token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Marketing/mkSaveSelectedCategories?clinic_id="+clinic_id+"&categories="+categories, { headers: header })
+        return this.http.get(this.apiUrl +"/Marketing/mkSaveAcctXero?clinic_id="+clinic_id+"&categories="+categories, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -104,16 +104,16 @@ public token_id;
      //Get Xero Accounts
      getMyobAccounts(clinic_id='1',user_id = this._cookieService.get("userid") ,token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Myob/myobGetAccounts?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Myob/mkGetMyobAcct?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
             );
         }
          //Get Xero Categories
-       saveSelectedAccountsMyob(clinic_id='1',categories, token = this._cookieService.get("token") ): Observable<any> {
+       mkSaveAcctMyob(clinic_id='1',categories, token = this._cookieService.get("token") ): Observable<any> {
             var header = this.getHeaders(); 
-            return this.http.get(this.apiUrl +"/Myob/saveSelectedAccounts?clinic_id="+clinic_id+"&categories="+categories, { headers: header })
+            return this.http.get(this.apiUrl +"/Myob/mkSaveAcctMyob?clinic_id="+clinic_id+"&categories="+categories, { headers: header })
             .pipe(map((response: Response) => {
                             return response;
                         })
