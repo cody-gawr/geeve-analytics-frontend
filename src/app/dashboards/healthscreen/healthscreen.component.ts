@@ -147,7 +147,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
     this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.chProduction();
-    this.chTotalVists();
+    this.chTotalVisits();
     this.chPrebookedVisits();
     this.chUtilisationRate();
     this.chUnscheduledProd();
@@ -221,10 +221,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     }); 
   }
 
-  public chTotalVists(){ // Total Vists top Card
+  public chTotalVisits(){ // Total Vists top Card
     this.visits_c = 0;
     this.visits_dif = 0;
-    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTotalVists').subscribe((data) => {
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTotalVisits').subscribe((data) => {
       if(data.message == 'success'){
         this.visits_c = data.total;
         this.visits_p = data.total_ta;
