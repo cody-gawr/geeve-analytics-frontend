@@ -280,7 +280,7 @@ export class FinancesService {
                     })
         );
         }else if(connectedwith == 'myob'){
-            return this.http.get(this.apiUrl +"/Finance/fnExpensesTrendMyob?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnExpensesMyobTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
