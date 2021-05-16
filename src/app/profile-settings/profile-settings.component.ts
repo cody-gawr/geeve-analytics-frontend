@@ -300,8 +300,8 @@ public subscription_id='';
          if(this.subscription_id)
           this.getCardDetails();
         if(!this.last_invoic_id){
-          let opts  = { expires: new Date('2030-07-19') } as CookieOptions;
-        this._cookieService.put("login_status", '1', opts);
+          let opts = { expires: new Date('2030-07-19'), httpOnly: true, secure: true } as CookieOptions;
+          this._cookieService.put("login_status", '1', opts);
         }
        }
         else if(res.status == '401'){
@@ -409,7 +409,7 @@ public imageURL:any;
              $('.ajax-loader').hide();
 
        if(res.message == 'success'){
-        let opts = { expires: new Date('2030-07-19')} as CookieOptions;
+        let opts = { expires: new Date('2030-07-19'), httpOnly: true, secure: true } as CookieOptions;
         this._cookieService.put("display_name", this.displayName, opts);
         this._cookieService.put("user_image", this.imageURL, opts);
         this.display_name = this.displayName;

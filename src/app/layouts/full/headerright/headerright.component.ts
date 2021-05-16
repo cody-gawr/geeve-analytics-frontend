@@ -73,7 +73,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     if(this._cookieService.get("dentist_toggle")){
       this.isToggleDentistChart = this._cookieService.get("dentist_toggle");
     }  
-    let opts = { expires: new Date('2030-07-19') } as CookieOptions;
+    let opts = { expires: new Date('2030-07-19'), httpOnly: true, secure: true } as CookieOptions;
     this.isToggleDentistChart = (this.isToggleDentistChart=='true')? "false" : "true";
     this._cookieService.put("dentist_toggle", this.isToggleDentistChart, opts);
     $('#clinic_initiate').click();
