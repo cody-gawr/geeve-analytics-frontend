@@ -87,10 +87,8 @@ onSubmit() {
 
     
     if(this.id) {
-    if(this.form.value.password == this.form.value.cpassword) {
-      var timeStamp = Math.floor(Date.now() / 1000);
-      var data = encodeURIComponent(window.btoa(this.id+"+"+timeStamp));
-      this.loginService.resetPassword(this.form.value.password,data).subscribe((res) => {
+    if(this.form.value.password == this.form.value.cpassword) { 
+      this.loginService.resetPassword(this.form.value.password,this.id).subscribe((res) => {
           this.errorLogin = false;
           this.errorLoginText = '';
           this.successLogin = false;
