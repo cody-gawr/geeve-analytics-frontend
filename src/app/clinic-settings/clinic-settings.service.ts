@@ -26,7 +26,7 @@ export class ClinicSettingsService {
     }
 
    // Get ClinicSettings
-    getClinicSettings( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    getClinicSettings( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/clinics/clinicGet?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
@@ -56,7 +56,7 @@ export class ClinicSettingsService {
         );
     }
     // Get ClinicSettings
-    getXeroLink( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    getXeroLink( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Xeros2/getAuthorizeUrl?getxero=1&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
@@ -65,7 +65,7 @@ export class ClinicSettingsService {
         );
     }
 
-    checkXeroStatus( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    checkXeroStatus( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Xeros2/xeroGetStatus?getxero=1&clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
@@ -74,7 +74,7 @@ export class ClinicSettingsService {
         );
     }
 
-    getMyobLink( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    getMyobLink( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Myob/getAuthorizeUrl?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
@@ -82,7 +82,7 @@ export class ClinicSettingsService {
                     })
         );
     }
-    checkMyobStatus( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    checkMyobStatus( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Myob/myobGetStatus?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
@@ -91,7 +91,7 @@ export class ClinicSettingsService {
         );
     }
 
-    clinicGetAccountingPlatform( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    clinicGetAccountingPlatform( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Clinics/clinicGetAccountingPlatform?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
@@ -101,7 +101,7 @@ export class ClinicSettingsService {
     }
    
 
-    clearSession( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    clearSession( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Xeros2/disconnectXero?clinic_id="+clinic_id, { headers: header})
         .pipe(map((response: Response) => {
@@ -109,7 +109,7 @@ export class ClinicSettingsService {
                     })
         );
     }
-    clearSessionMyob( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    clearSessionMyob( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Myob/disconnectMyob?clinic_id="+clinic_id, { headers: header})
         .pipe(map((response: Response) => {

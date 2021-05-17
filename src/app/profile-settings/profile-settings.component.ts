@@ -491,6 +491,7 @@ public fileToUpload;
 
       if(res.message == 'success'){
         this.imageURL= res.data;
+        $(".suer_image_sidebar img").attr('src' , this.imageURL);
       }
     });
     }

@@ -202,7 +202,7 @@ export class MorningHuddleService {
 
     getFollowupsUnscheduledPatients( clinic_id, previousDays,  days, clinician ="", token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/mhUnschedPatTable?clinic_id="+clinic_id+"&days="+days, { headers: header })
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhUnschedPatTable?clinic_id="+clinic_id+"&date="+previousDays, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -210,7 +210,7 @@ export class MorningHuddleService {
     }
     followupPostOpCalls( clinic_id, previousDays,  days, clinician ="", token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/mhPostOpTable?clinic_id="+clinic_id+"&days="+days, { headers: header })
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhPostOpTable?clinic_id="+clinic_id+"&date="+previousDays, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -218,7 +218,7 @@ export class MorningHuddleService {
     }
 
 
-    getDentists(clinic_id='1',  token = this._cookieService.get("token")): Observable<any> {
+    getDentists(clinic_id,  token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Dentists/dentGet?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {

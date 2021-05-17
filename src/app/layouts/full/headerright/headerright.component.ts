@@ -164,7 +164,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
       this.clinic_id = this.selectedClinic;
       this.getDentists(); 
       $('.internal_clinic').val(newValue);
-      if(this.user_type_dentist != '2')
+      if(this.user_type_dentist != '2' && newValue != 'all')
         this.getChildID(newValue);
       else
       $('#clinic_initiate').click();      

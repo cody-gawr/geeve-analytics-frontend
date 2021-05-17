@@ -45,7 +45,7 @@ export class HealthScreenService {
     }
 
                        // finProductionPerVisit
-    finProductionPerVisit(clinic_id='1', startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    finProductionPerVisit(clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Health/chProductionPerVisit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
         .pipe(map((response: Response) => {

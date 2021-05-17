@@ -325,7 +325,7 @@ Total Visits
 [size] = "size">
 </ngx-gauge>
 </div>
-<div *ngIf="showTrend == false && visitsTotal<=0">
+<div *ngIf="showTrend == false && visitsTotal <= 0 && fdvisitsRatioLoader == false">
 <div class="sa_nodata_div">
 </div>
 <p class="chart-placeholder-text">You have no visits in the selected period</p>
@@ -343,7 +343,7 @@ Total Visits
 </div>
 
 </div>
-<div *ngIf="showTrend == true && visitsChartTrend1.length <=0" class="no-data-placeholder"> 
+<div *ngIf="showTrend == true && fdvisitsRatioTrendLoader == false && visitsChartTrend1.length <=0" class="no-data-placeholder"> 
 <div class="sa_nodata_div">
 </div>
 <p class="chart-placeholder-text">You have no visits in the selected period</p>

@@ -2356,8 +2356,8 @@ private finTotalDiscountsTrend() {
     this.financesService.finProductionPerVisitTrend(this.clinic_id,this.trendValue).subscribe((data) => {
         this.productionVisitChartTrendLabels=[];
         this.productionVisitChartTrendLabels1=[];
-       if(data.message == 'success'){
-          this.finProductionPerVisitTrendLoader = false;        
+        this.finProductionPerVisitTrendLoader = false;        
+        if(data && data.message == 'success'){
                 data.data.forEach(res => {  
                   this.productionVisitChartTrend1.push(Math.round(res.production));
                   if(this.trendValue == 'c')

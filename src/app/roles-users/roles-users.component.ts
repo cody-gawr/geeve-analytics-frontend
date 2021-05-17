@@ -238,7 +238,7 @@ export class RolesOverviewExampleDialogComponent {
     this.rolesRef.close();
   }
    @Output() public onAdd: EventEmitter<any> = new EventEmitter();
-   public selected_id;
+   public selected_id = '3';
     loadPermisions(val) {
       this.selected_id =val;
       this.onAdd.emit(val);
@@ -255,7 +255,7 @@ const data: any = require('assets/company.json');
 export class RolesUsersComponent implements AfterViewInit {
   display_name: string;
   email: string;
-  user_type='';
+  user_type ='3';
   fileInput: any ;
   public clinic_id;
   dentist_id = '';
@@ -303,7 +303,7 @@ initiate_clinic() {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-       width: '400px',
+      width: '400px',
       data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,clinics:this.clinics,dentist_id:this.dentist_id }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -321,6 +321,7 @@ initiate_clinic() {
     });
    }
     });
+    
   }
   openRoleDialog(): void {
     const rolesRef = this.dialog.open(RolesOverviewExampleDialogComponent, {
@@ -331,7 +332,7 @@ initiate_clinic() {
     this.selected_id = val;
     });
     rolesRef.afterClosed().subscribe(result => {
-      console.log(result,'***********');
+ 
      if(result != undefined) {
       this.roles.forEach(res1 => {
           var checkedRoles1='';

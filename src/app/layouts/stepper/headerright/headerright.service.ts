@@ -35,7 +35,7 @@ export class StepperHeaderrightService {
                         })
             );
     } 
-        getClinics(clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+        getClinics(clinic_id, token = this._cookieService.get("token")): Observable<any> {
             var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/clinics/clinicGet", { headers: header })
         .pipe(map((response: Response) => {

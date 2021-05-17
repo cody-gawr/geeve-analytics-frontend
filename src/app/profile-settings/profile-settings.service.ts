@@ -28,7 +28,7 @@ export class ProfileSettingsService {
 
 
    // Get profileSettings
-    getprofileSettings( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    getprofileSettings( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Users/getPractices?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {
@@ -81,7 +81,7 @@ export class ProfileSettingsService {
         );
     }
 
-    clearSession( clinic_id='1', token = this._cookieService.get("token")): Observable<any> {
+    clearSession( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?clinic_id="+clinic_id, { headers: header })
         .pipe(map((response: Response) => {

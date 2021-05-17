@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
                 permision = dt['permisions'];                
               }                
             });
-            if(permision != ''){                            
+            if(permision != '' && user_type != '2'){                            
               if(permision.indexOf('healthscreen') >= 0){
                   this.router.navigate(['/dashboards/healthscreen']);
               } else if(permision.indexOf('dashboard1') >= 0){
@@ -50,7 +50,9 @@ export class LoginComponent implements OnInit {
               } else {
                  this.router.navigate(['/profile-settings']);
               }
-            } else{
+            } else  if(user_type == '2'){
+              this.router.navigate(['/dashboards/healthscreen']);
+            } else {
               this.router.navigate(['/profile-settings']);
             }
           }      

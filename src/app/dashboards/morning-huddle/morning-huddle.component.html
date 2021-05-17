@@ -779,7 +779,7 @@
   <tr  mat-header-row *matHeaderRowDef="displayedColumns6"></tr>
   <tr id="" mat-row *matRowDef="let row; columns: displayedColumns6;"></tr>
 
-  <mat-footer-row *matFooterRowDef="['isDataAvailable']" [ngClass]="(appointmentCards.data.length == 0)? 'show' : 'hide'"></mat-footer-row>
+  <mat-footer-row *matFooterRowDef="['isDataAvailable']" [ngClass]="(remindersRecallsOverdue.length == 0)? 'show' : 'hide'"></mat-footer-row>
 </table>
 <!-- responsive table - FrontDesk reminder -->
   <div fxHide.gt-sm>
