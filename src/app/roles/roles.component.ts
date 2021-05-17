@@ -77,7 +77,7 @@ public display_name;
 
    this.rolesService.updateprofileSettings(this.displayName, this.email, this.imageURL).subscribe((res) => {
        if(res.message == 'success'){
-        let opts = { expires: new Date('2030-07-19'), httpOnly: true, secure: true } as CookieOptions;
+        let opts = { expires: new Date('2030-07-19') } as CookieOptions;
         this._cookieService.put("display_name", this.displayName, opts);
         this._cookieService.put("user_image", this.imageURL, opts);
         this.display_name = this.displayName;
