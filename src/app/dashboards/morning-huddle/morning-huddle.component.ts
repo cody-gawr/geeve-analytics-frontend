@@ -519,8 +519,13 @@ initiate_clinic() {
   }
   
   toggleUpdate(event,pid,cid,uid,type) {    
-    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,uid,type, this.previousDays).subscribe((update:any) => {
-      console.log(update,'***'); 
+    if(type == 'Post op Calls'){
+      var date = this.datepipe.transform(this.followupsPostopCallsDate, 'yyyy-MM-dd');
+    } else  if(type == 'Unscheduled Patients'){
+      var date = this.datepipe.transform(this.followupsUnscheduledPatientsDate, 'yyyy-MM-dd');      
+    }
+    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,uid,type, date).subscribe((update:any) => {
+      console.log(update,'***');  
     });
   }
 
