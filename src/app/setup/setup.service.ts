@@ -64,7 +64,9 @@ export class SetupService {
     }
     clearSession( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Xeros2/disconnectXero/?clinic_id="+clinic_id, { headers: header })
+        const formData = new FormData();
+        formData.append('clinic_id', clinic_id);
+        return this.http.post(this.apiUrl +"/Xeros2/disconnectXero/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -72,7 +74,9 @@ export class SetupService {
     }
     clearSessionMyob( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Myob/disconnectMyob/?clinic_id="+clinic_id, { headers: header})
+        const formData = new FormData();
+        formData.append('clinic_id', clinic_id);
+        return this.http.post(this.apiUrl +"/Myob/disconnectMyob/", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
