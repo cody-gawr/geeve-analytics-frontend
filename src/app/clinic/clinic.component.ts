@@ -143,6 +143,8 @@ export class ClinicComponent implements AfterViewInit {
         if(res.message == 'success'){
           this.toastr.success('Clinic Added!' );
           this.getClinics();
+        } else {
+          this.toastr.error(res.data);
         }
       }, error => {
         this.warningMessage = "Please Provide Valid Inputs!";
@@ -170,7 +172,7 @@ export class ClinicComponent implements AfterViewInit {
         if(res.data.length>0) {
           this.temp = [...res.data];
           this.clinicscount= res.data[0]['user'].clinics_count;
-          this.createdClinicsCount = res.data.length;
+          this.createdClinicsCount = res.total;
           this.table = data;
         }
       } else if(res.status == '401'){
