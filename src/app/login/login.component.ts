@@ -23,13 +23,9 @@ export class LoginComponent implements OnInit {
   if(this._cookieService.get("userid")){
      var permision = '';
      var user_type = this._cookieService.get("user_type");
-        this.rolesUsersService.getRoles().subscribe((res) => {
+        this.rolesUsersService.getRolesIndividual().subscribe((res) => {
           if(res.message == 'success'){ 
-            res.data.forEach((dt) => {
-              if(user_type == dt['role_id']){
-                permision = dt['permisions'];                
-              }                
-            });
+            permision = res.data;
             if(permision != '' && user_type != '2'){                            
               if(permision.indexOf('healthscreen') >= 0){
                   this.router.navigate(['/dashboards/healthscreen']);
