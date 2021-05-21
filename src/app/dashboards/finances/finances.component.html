@@ -241,7 +241,8 @@ expenses_card custom_ngx_cw01">
               </div>
 
           <div *ngIf="(xeroConnect || myobConnect) && categoryExpensesLoader == true" class="loader_container loader_container_middle">
-            <div class="loader-text "><h3>Calculating...</h3></div>
+            <img class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
           </div>
           <div *ngIf="!xeroConnect && !myobConnect" class="loader_container loader_container_middle">
             <div class="loader-text">
