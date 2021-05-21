@@ -109,7 +109,11 @@
                   <img src="../assets/images/net-profit.png" alt />
                   <i class="fas fa-chart-bar"></i>
                 </div>
-                <div class="stats">
+                <div *ngIf="netprofitstats == false" class="stats">
+                  <h3 class="m-0">Net Profit</h3>
+                  <h1 class="m-0"><div class="loader-text">Calculating...</div></h1>
+                </div>
+                <div *ngIf="netprofitstats == true" class="stats">
                   <h3 class="m-0">Net Profit</h3>
                   <h1 class="m-0">${{netProfitVal | number:'1.0-0'}}</h1>
                 </div>
@@ -144,7 +148,11 @@
                   <img src="../assets/images/net-profit-PMS.png" alt />
                   <i class="fas fa-chart-bar"></i>
                 </div>
-                <div class="stats">
+                <div *ngIf="netprofitpercentstats == false"  class="stats">
+                  <h3 class="m-0">Net Profit % </h3>
+                  <h1 class="m-0"><div class="loader-text">Calculating...</div></h1>
+                </div>
+                <div *ngIf="netprofitpercentstats == true" class="stats">
                   <h3 class="m-0">Net Profit % </h3>
                   <h1 class="m-0"> {{netProfitPmsVal | number:'1.0-0'}}%</h1>
                 </div>
@@ -178,27 +186,12 @@ expenses_card custom_ngx_cw01">
               <mat-card-title class="text-center"> Expenses<div class="info-icon-container">
                   <img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
-                <!-- <div class="sa_box_title_right_buttons">
-                  <button mat-icon-button (click) = "flipcard('expenses_card')" ><i class="fas fa-list-ul list_ico"></i><i class="fas fa-chart-line chart_ico"></i></button> -->
-                <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
-                        <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button> 
-                        <mat-menu #menu="matMenu">
-                            <button mat-menu-item>Save Image</button>
-                            <button mat-menu-item>Download PDF</button>
-                        </mat-menu> -->
-                <!-- </div> -->
               </mat-card-title>
               <div class="card-body">
                 <div class="sa_chart_summary_flip_main">
                   <div class=" sa_chart_summary_flip">
                     <div class="chart sa_chart_flip sa_flip">
 
-                      <!--      <canvas *ngIf="showInternal == true" baseChart
-                                    [data]="pieChartData" [labels]="pieChartLabels"
-                                    [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-                                    (chartClick)="chartClicked($event)"
-                                    [options]="pieChartOptions" [colors]="[{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}]">                  
-                            </canvas> -->
                       <div fxLayout="row wrap">
                         <div class="ngx-charts-fix" fxLayout="row" fxLayoutAlign="space-around center" fxFlex.lg="65"
                           fxFlex.xl="65" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70">
@@ -246,12 +239,17 @@ expenses_card custom_ngx_cw01">
                   </div>
                 </div>
               </div>
+
+          <div *ngIf="(xeroConnect || myobConnect) && categoryExpensesLoader == true" class="loader_container loader_container_middle">
+            <div class="loader-text "><h3>Calculating...</h3></div>
+          </div>
+          <div *ngIf="!xeroConnect && !myobConnect" class="loader_container loader_container_middle">
+            <div class="loader-text">
+              <h3>Please connect to Xero/MYOB to display this chart</h3>
+            </div>
+          </div>
             </mat-card-content>
           </mat-card>
-          <div *ngIf="categoryExpensesLoader == true" class="loader_container loader_container_middle"><img
-              class="loader_ico" src="../assets/images/720.gif">
-            <div class="loader-text">Calculating...</div>
-          </div>
         </div>
 
         <div fxFlex="calc(36% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
@@ -653,9 +651,21 @@ expenses_card custom_ngx_cw01">
             class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
+          <div *ngIf="(!xeroConnect && !myobConnect) && netProfitDisplayVal == 2"
+            class="loader_container loader_container_middle">
+            <div class="loader-text">
+              <h3>Please connect to Xero/MYOB to display this chart</h3>
+            </div>
+          </div>
           <div *ngIf="finNetProfitPMSTrendLoader == true && netProfitDisplayVal == 3"
             class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
+          </div>
+          <div *ngIf="(!xeroConnect && !myobConnect) && netProfitDisplayVal == 3"
+            class="loader_container loader_container_middle">
+            <div class="loader-text">
+              <h3>Please connect to Xero/MYOB to display this chart</h3>
+            </div>
           </div>
         </div>
 
@@ -712,7 +722,7 @@ expenses_card custom_ngx_cw01">
                 </div>
               </mat-card-title>
 
-              <div class="card-body sa_chart_summary_flip_main">
+              <div *ngIf="expensestrendstats == true" class="card-body sa_chart_summary_flip_main">
                 <div class=" sa_chart_summary_flip">
                   <div class="chart sa_chart_flip sa_flip">
                     <div style="height: 280px;">
@@ -738,10 +748,15 @@ expenses_card custom_ngx_cw01">
               </div>
             </mat-card-content>
           </mat-card>
-          <div *ngIf="finNetProfitPercentTrendLoader == true" class="loader_container loader_container_middle"><img
+          <div *ngIf="(xeroConnect || myobConnect) && expensestrendstats == false" class="loader_container loader_container_middle"><img
               class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
+          <div *ngIf="!xeroConnect && !myobConnect" class="loader_container loader_container_middle">
+            <div class="loader-text">
+              <h3>Please connect to Xero/MYOB to display this chart</h3>
+            </div>
+        </div>
         </div>
               <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio md_mrn">

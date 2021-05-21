@@ -50,6 +50,9 @@ export class FinancesComponent implements AfterViewInit {
   stackedChartColorsBar1;
   public xeroConnect: boolean = false;
   public myobConnect: boolean = false;
+  public netprofitstats: boolean = false;
+  public netprofitpercentstats: boolean = false;
+  public expensestrendstats: boolean = false;
   public connectedwith:any;
   public pieChartColors = [
     {
@@ -1255,7 +1258,7 @@ public labelBarPercentOptions: any = {
 
   
 
-  loadDentist(newValue) {
+  loadDentist(newValue) { 
 
     $('#title').html('<span>Finances</span>');
         $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
@@ -1268,6 +1271,8 @@ public labelBarPercentOptions: any = {
     
     
     if(this.connectedwith !=''){
+     this.netprofitstats= false;
+     this.netprofitpercentstats= false;
       this.netProfitPms();
       this.netProfitPercentage();
       this.categoryExpenses();
@@ -1376,7 +1381,8 @@ public netProfitPmsTrendTotal;
   private netProfitPms() {
     this.netProfitTrendTotal=0;
     this.financesService.NetProfitPms(this.clinic_id,this.startDate,this.endDate, this.duration,this.connectedwith).subscribe((data) => {
-       if(data.message == 'success'){       
+       if(data.message == 'success'){      
+        this.netprofitstats= true; 
         this.netProfitVal = Math.round(data.data);  
        }
     }, error => {
@@ -1390,7 +1396,8 @@ public netProfitPmsTrendTotal;
     var clinic_id;
     this.netProfitPmsVal=0;
     this.financesService.netProfitPercentage(this.clinic_id,this.startDate,this.endDate, this.duration,this.connectedwith).subscribe((data) => {
-      if(data.message == 'success') {       
+      if(data.message == 'success') {      
+        this.netprofitpercentstats= true;  
         this.netProfitPmsVal = Math.round(data.data);  
       }
     }, error => {
@@ -1431,6 +1438,9 @@ public categoryExpensesLoader:any;
          this.pieChartDataPercentres =[];
          var i = 0;
           data.data.forEach((res,key) => {
+            if(res.expenses_percent > 0 && res.expenses_percent < 1){
+              res.expenses_percent =1;
+            }
            if(Math.round(res.expenses_percent) >=1){ 
           var temp= {name:'',value:1};
           temp.name =res.meta_key;
@@ -2054,6 +2064,7 @@ toggleChangeProcess(){
     
 
     if(this.connectedwith != ''){
+      this.expensestrendstats=false;
       this.finNetProfitPMSTrend();
       this.finNetProfitPMSPercentTrend();
       this.finExpensesByCategoryTrend();
@@ -2601,6 +2612,7 @@ private finTotalDiscountsTrend() {
       this.expensesChartTrend =[];
       this.financesService.finExpensesByCategoryTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
         if(data.message == 'success'){
+          this.expensestrendstats=true;
            data.data.expenses.forEach((result,key) => {  
             if(result.meta_key != 'Total Operating Expenses') {
               let tempO:any = [];

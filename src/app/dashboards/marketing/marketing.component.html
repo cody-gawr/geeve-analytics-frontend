@@ -244,18 +244,13 @@ New Patient Cost
 </div>
 <div *ngIf="fdnewPatientsAcqLoader == true && (xeroConnect || myobConnect)" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"><div class="loader-text">Calculating...</div>
 </div>
-<!--  <div *ngIf="showTrend == false && fdnewPatientsAcqLoader && xeroConnect">
-<div class="sa_nodata_div">
-</div>
-<p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
-</div> -->
 <div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && (xeroConnect || myobConnect)" style="height: 300px">
 <canvas #myCanvas baseChart [datasets]="expenseDataTrend" [labels]="expenseDataTrendLabels" [options]="barChartOptions" 
 [chartType]="stackedChartType"  [colors]="lineChartColors"  (chartHover)="chartHovered($event)" [legend]="false" (chartClick)="chartClicked($event)">
 <!-- [colors]="stackedChartColors" -->
 </canvas>
 </div>
-<div *ngIf="showTrend == true && expenseDataTrend1.length<=0 && (xeroConnect || myobConnect)">
+<div *ngIf="fdnewPatientsAcqLoader ==false && showTrend == true && expenseDataTrend1.length<=0 && (xeroConnect || myobConnect)">
 <div class="sa_nodata_div">
 </div>
 <p class="chart-placeholder-text">Unable to determine your cost of new patients for this period</p>
