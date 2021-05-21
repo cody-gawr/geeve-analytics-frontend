@@ -24,7 +24,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   public login_status;
   public nav_open = "";
   public activeRoute = "";
-  public showMenu:boolean = false;
+  public showMenu:boolean = false; 
   public permisions:any = '';
 
   clickEvent(val) {
@@ -98,15 +98,10 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
 
 
   getRoles() {      
-   this.rolesUsersService.getRoles().subscribe((res) => {
-       if(res.message == 'success'){ 
-          res.data.forEach((dt) => {
-            if(this.user_type == dt['role_id']){
-              this.permisions = dt['permisions'];                
-            }                
-          }); 
-          console.log(this.permisions,'this.permisions');
-       }
+    this.rolesUsersService.getRolesIndividual().subscribe((res) => {
+      if(res.message == 'success'){ 
+        this.permisions =res.data;                        
+      }
     }, error => {
     });
   }

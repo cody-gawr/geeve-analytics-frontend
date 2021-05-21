@@ -261,12 +261,14 @@ export class RolesUsersComponent implements AfterViewInit {
   dentist_id = '';
 password:string;
 dentists:any=[];
+public showRoleButton:boolean = false;
 initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     this.clinic_id = val;
     this.getClinics();    
     this.getUsers();
     this.getRoles();
+    this.getRolesIndividual();
     this.getDentists();
   }
   ngAfterViewInit() {
@@ -359,6 +361,8 @@ initiate_clinic() {
             checkedRoles.push('users');
            if(result.selectedRole['profilesettings_'+res1.id])
             checkedRoles.push('profilesettings');
+          if(result.selectedRole['managepermissions_'+res1.id])
+            checkedRoles.push('managepermissions');
             var checkedRoles1 = checkedRoles.join();
               this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
                  if(res.message == 'success'){
@@ -470,11 +474,22 @@ initiate_clinic() {
   public selectedRole: any[] = [];
 
   public selected_id:any;
+  public showRolesButton:boolean =  false;
   private getRoles() {      
+    this.showRolesButton = false;
   this.rolesUsersService.getRoles().subscribe((res) => {
+
+    
        if(res.message == 'success'){ 
         this.roles=[];
          res.data.forEach(result => {
+          if(this.user_type == result.role_id ){
+            if(result.permisions.indexOf('healthscreen') >= 0){
+
+            }
+          }
+
+
           this.selectedRole['dashboard1_'+result.role_id] = false;
           this.selectedRole['dashboard2_'+result.role_id] = false;
           this.selectedRole['dashboard3_'+result.role_id] = false;
@@ -503,7 +518,7 @@ initiate_clinic() {
       title: 'Are you sure?',
       text: 'You want to  delete user?',
       icon: 'warning',
-      showCancelButton: true,
+      showCancelButton: true, 
       confirmButtonText: 'Yes',
       cancelButtonText: 'No'
     }).then((result) => {
@@ -561,6 +576,19 @@ initiate_clinic() {
 
   }
 
+  getRolesIndividual() {      
+    this.showRoleButton = false;
+    this.rolesUsersService.getRolesIndividual().subscribe((res) => {
+      if(res.message == 'success'){ 
+        if(res.data == 'all'){
+          this.showRoleButton = true;
+        }else if(res.data.includes('managepermissions')){
+          this.showRoleButton = true;
+        }                                  
+      }
+    }, error => {
+    });
+  }
  
 
 }

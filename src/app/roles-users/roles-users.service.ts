@@ -39,10 +39,20 @@ export class RolesUsersService {
         );
     }
 
-       // Get Dentist
+    // Get Dentist
     getRoles(token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Roles/rolesGet", { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+    // Get Roles For individual
+    getRolesIndividual(): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Roles/rolesIndividual", { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
