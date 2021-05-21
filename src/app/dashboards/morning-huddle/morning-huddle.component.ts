@@ -114,12 +114,11 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
 
  ngOnInit(){
     $('#currentDentist').attr('did','all');
-    this.user_type = this._cookieService.get("user_type");
     if(this._cookieService.get("dentistid") && this._cookieService.get("dentistid") != '' && this.user_type == '4'){
         this.dentistid = this._cookieService.get("dentistid");
     }
-
     this.user_type = this._cookieService.get("user_type");
+    
     
      //this.initiate_clinic();
  }
@@ -127,6 +126,7 @@ ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;
     //$('.dentist_dropdown').parent().hide(); // added
     $('.sa_heading_bar').addClass("filter_single"); // added
+   
   }
 ngOnDestroy() {
   //$('.dentist_dropdown').parent().show(); // added
@@ -140,6 +140,7 @@ ngDoCheck() {
 }
 
 initiate_clinic() {
+  this.user_type = this._cookieService.get("user_type");
   $('.external_clinic').show();
   //$('.dentist_dropdown').hide();
   $('.header_filters').addClass('flex_direct_mar');
