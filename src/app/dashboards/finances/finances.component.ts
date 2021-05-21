@@ -48,11 +48,11 @@ export class FinancesComponent implements AfterViewInit {
   stackedChartColors;
   stackedChartColorsBar;
   stackedChartColorsBar1;
-  public xeroConnect: boolean = false;
-  public myobConnect: boolean = false;
-  public netprofitstats: boolean = false;
-  public netprofitpercentstats: boolean = false;
-  public expensestrendstats: boolean = false;
+  public xeroConnect: boolean = true;
+  public myobConnect: boolean = true;
+  public netprofitstats: boolean = true;
+  public netprofitpercentstats: boolean = true;
+  public expensestrendstats: boolean = true;
   public connectedwith:any;
   public pieChartColors = [
     {
@@ -142,9 +142,14 @@ single = [
       await this.clinicGetAccountingPlatform();
       console.log(this.connectedwith);
       if(this.connectedwith == 'myob'){
+        this.xeroConnect = false;
         this.checkMyobStatus();
       }else if(this.connectedwith == 'xero'){
+        this.myobConnect = false;
         this.checkXeroStatus();
+      }else{
+        this.xeroConnect = false;
+        this.myobConnect = false;
       }
       this.filterDate(this.chartService.duration$.value);
     }

@@ -71,8 +71,8 @@ export class MarketingComponent implements AfterViewInit {
   public clinicsData:any[] = [];
   public trendText;
   public goalCount = 1;
-  public xeroConnect: boolean = false;
-  public myobConnect: boolean = false;
+  public xeroConnect: boolean = true;
+  public myobConnect: boolean = true;
   public connectedwith:any;
   public filteredCountriesMultiple: any[];
   public selectedAccounts:any[] =[];
@@ -96,9 +96,14 @@ export class MarketingComponent implements AfterViewInit {
       await this.clinicGetAccountingPlatform();
       console.log(this.connectedwith);
       if(this.connectedwith == 'myob'){
+        this.xeroConnect = false;
         this.checkMyobStatus();
       }else if(this.connectedwith == 'xero'){
+        this.myobConnect = false;
         this.checkXeroStatus();
+      }else{
+        this.xeroConnect = false;
+        this.myobConnect = false;
       }
       this.filterDate(this.chartService.duration$.value);
     }
