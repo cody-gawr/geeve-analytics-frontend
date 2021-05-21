@@ -41,8 +41,8 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   }
   constructor( changeDetectorRef: ChangeDetectorRef,media: MediaMatcher,/* public menuItems: MenuItems,*/ private rolesUsersService: RolesUsersService,private headerService: HeaderService,private _cookieService: CookieService,private route: ActivatedRoute,private router: Router
   ) {
-      this.getRoles();
       this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
+          this.getRoles();
           this.activeRoute = router.url;           
           if(this.activeRoute == '/dashboards/cliniciananalysis' || this.activeRoute == '/dashboards/clinicianproceedures' || this.activeRoute == '/dashboards/frontdesk' || this.activeRoute == '/dashboards/marketing' || this.activeRoute == '/dashboards/finances'){
             this.nav_open = 'dashboards';
@@ -97,10 +97,11 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   }
 
 
-  getRoles() {      
-    this.rolesUsersService.getRolesIndividual().subscribe((res) => {
+ async getRoles() {      
+   await this.rolesUsersService.getRolesIndividual().subscribe((res) => {
       if(res.message == 'success'){ 
         this.permisions =res.data;                        
+        this._cookieService.put("user_type",res.type);
       }
     }, error => {
     });
