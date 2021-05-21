@@ -41,7 +41,6 @@
     "moment": "^2.22.2",
     "ng2-charts": "^2.4.2",
     "ng2-validation": "^4.2.0",
-    "ngx-bootstrap": "^5.5.0",
     "ngx-cookie": "^4.1.2",
     "ngx-daterangepicker-material": "^4.0.1",
     "ngx-gauge": "^3.0.0",
