@@ -196,9 +196,9 @@
     <ng-container matColumnDef="production">
       <th mat-header-cell *matHeaderCellDef> Production Total </th>
       <td mat-cell *matCellDef="let element"> 
-        <span [ngClass] = "(element.production.total >= element.production.goal)? 'mht-value-up' : 'mht-value-down'">
           ${{ element.production.total | number:'1.0-0' }} 
-        </span>
+        <!-- <span [ngClass] = "(element.production.total >= element.production.goal)? 'mht-value-up' : 'mht-value-down'">
+        </span> -->
      <!--  <span class="goal custom_goal">Goal: ${{ element.production.goal | number:'1.0-0' }}</span> </td> -->
     </ng-container>
     <!-- Symbol Column -->
@@ -215,7 +215,7 @@
       <td mat-cell *matCellDef="let element">
       <span *ngIf="element.treatment.total != 'N/A'" [ngClass] = "(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}%</span>
       <span *ngIf="element.treatment.total == 'N/A'" [ngClass] = "(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}</span>
-      <span class="goal custom_goal" >Goal: {{ (element.treatment.goal)? 100 : element.treatment.goal }}%</span>
+      <span class="goal custom_goal" >Goal: {{ (element.treatment.goal  > 100 )? 100 : element.treatment.goal }}%</span>
       </td>
     </ng-container>
 
