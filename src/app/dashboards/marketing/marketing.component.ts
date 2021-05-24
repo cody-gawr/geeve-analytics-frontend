@@ -799,6 +799,7 @@ public newAcqValueGoal:any =0;
        
        this.marketingService.categoryExpenses(this.clinic_id,this.startDate,this.endDate,this.duration,this.connectedwith).subscribe((data) => {
           if(data.message == 'success'){
+            console.log(data.data);
             this.fdnewPatientsAcqLoader = false;
             if(data.goals){
               this.newAcqValueGoal = data.goals;
@@ -812,7 +813,7 @@ public newAcqValueGoal:any =0;
            })
            this.Accounts = this.Accounts.filter(x => !this.selectedAccounts.includes(x));
              
-           data.data.forEach((res,key) => {
+            data.data.forEach((res,key) => {
               this.expenseData[res.meta_key] = res.expenses;
              });
              if(this.newPatientsPrevTotal>0)

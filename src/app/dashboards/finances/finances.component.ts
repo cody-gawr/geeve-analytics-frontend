@@ -497,14 +497,15 @@ single = [
                   if(body[0].includes("-")){
                     var temp = body[0].split('$');
                     var amount = temp[1].replace(/,/g, '');
-                    total -= parseInt(amount);
+                    total -= parseFloat(amount);
                   } else {
                     var temp = body[0].split('$');
                     var amount = temp[1].replace(/,/g, '');
-                    total += parseInt(amount);
+                    total += parseFloat(amount);
                   }                
                 }                
               });
+              total = total.toFixed(2);
               if(total != 0){
                 var num_parts = total.toString().split(".");
                 num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -539,7 +540,10 @@ single = [
   callbacks: {
      label: function(tooltipItems, data) { 
         let currency = tooltipItems.yLabel.toString();
-        currency = currency.split('-').join('').split(/(?=(?:...)*$)/).join(',');
+        currency = currency.split(".");
+        currency[0] = currency[0].split('-').join('').split(/(?=(?:...)*$)/).join(',');
+        currency = currency.join(".");
+
         return data.datasets[tooltipItems.datasetIndex].label + `: ${tooltipItems.yLabel < 0 ? '- $' : '$'}${currency}`;;
      },
      
@@ -2621,7 +2625,7 @@ private finTotalDiscountsTrend() {
            data.data.expenses.forEach((result,key) => {  
             if(result.meta_key != 'Total Operating Expenses') {
               let tempO:any = [];
-              result.expenses.forEach((res) => {  tempO.push(Math.round(res)); });                      
+              result.expenses.forEach((res) => {  tempO.push(res.toFixed(2)); });                      
               let temp = {data: [],label: '', backgroundColor:'', hoverBackgroundColor: '' };
               temp.data = tempO;
               temp.backgroundColor = this.doughnutChartColors[key];
