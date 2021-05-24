@@ -404,8 +404,12 @@ public imageURL:any;
   this.email = $("#email").val();
   this.imageURL = $("#imageURL").val();
              $('.ajax-loader').show();
-
-   this.profileSettingsService.updateprofileSettings(this.displayName, this.email, this.imageURL).subscribe((res) => {
+   var image ='';          
+   if(this.imageURL){
+    var imageObj = this.imageURL.split('/profile_');
+    image = 'profile_'+imageObj[1];
+   }          
+   this.profileSettingsService.updateprofileSettings(this.displayName, this.email, image).subscribe((res) => {
              $('.ajax-loader').hide();
 
        if(res.message == 'success'){
