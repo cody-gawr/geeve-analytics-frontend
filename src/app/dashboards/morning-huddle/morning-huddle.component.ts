@@ -521,7 +521,12 @@ initiate_clinic() {
   
   toggleUpdate(event,pid,cid,uid,type) {    
     if(type == 'Post op Calls'){
-      var date = this.datepipe.transform(this.followupsPostopCallsDate, 'yyyy-MM-dd');
+      if(this.followupsPostopCallsDate.includes(' - ')){
+        var date1 = this.followupsPostopCallsDate.split(' - ');
+        var date = this.datepipe.transform(date1[0], 'yyyy-MM-dd');
+      } else{
+        var date = this.datepipe.transform(this.followupsPostopCallsDate, 'yyyy-MM-dd');
+      }
     } else  if(type == 'Unscheduled Patients'){
       var date = this.datepipe.transform(this.followupsUnscheduledPatientsDate, 'yyyy-MM-dd');      
     }
