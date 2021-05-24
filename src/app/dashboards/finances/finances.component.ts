@@ -2113,18 +2113,27 @@ private finProductionByClinicianTrend() {
           this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(res => {                   
                    res.val.forEach((result,key) => {
+                    
                       if(typeof(this.productionChartTrend[key]) == 'undefined'){
                         this.productionChartTrend[key] = { data: [],label: '' };
                       }
                       if(typeof(this.productionChartTrend[key]['data']) == 'undefined'){
                         this.productionChartTrend[key]['data'] = [];
                       }
-                      // console.log(`key`, this.doughnutChartColors[key])
-                      this.productionChartTrend[key]['data'].push(parseInt(result.prod_per_clinician));
-                     this.productionChartTrend[key]['label'] = result.provider_name;
-                     this.productionChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
-                     this.productionChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
-                    });
+                      // console.log(`key`, this.doughnutChartColors[key]) var total = result.prod_per_clinician;
+                      var total = result.prod_per_clinician;
+                      if(result.prod_per_clinician > 0 && result.prod_per_clinician.toString().includes('.'))
+                      {
+                        var num_parts = result.prod_per_clinician.split(".");
+                        num_parts[1] = num_parts[1].charAt(0);
+                        total = num_parts.join(".");
+                      } 
+                      this.productionChartTrend[key]['data'].push(parseFloat(total));
+                      this.productionChartTrend[key]['label'] = result.provider_name;
+                      this.productionChartTrend[key]['backgroundColor'] = this.doughnutChartColors[key];
+                      this.productionChartTrend[key]['hoverBackgroundColor'] = this.doughnutChartColors[key];
+                    
+                  });
                   if(this.trendValue == 'c')
                     this.productionChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                   else
