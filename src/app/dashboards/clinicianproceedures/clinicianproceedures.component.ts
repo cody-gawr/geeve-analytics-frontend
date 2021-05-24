@@ -998,12 +998,12 @@ public itemPredictedChartSpecailData: any[] = [
 if(this._cookieService.get("user_type") == '4'){
     $('.predicted_main').hide();
     $('.predicted1').show();
-    if(this._cookieService.get("dentist_toggle") === 'true'){
-          newValue = this.dentistid;
+    // if(this._cookieService.get("dentist_toggle") === 'true'){
+    //       newValue = this.dentistid;
           
-    }
-    else
-      newValue = '';
+    // }
+    // else
+    newValue = this.dentistid;
   }
 
   $('.ratioPredictorSingle .predictor_ratio .sa_tab_btn').removeClass('active');
