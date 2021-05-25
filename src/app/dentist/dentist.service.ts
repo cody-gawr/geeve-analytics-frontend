@@ -53,12 +53,15 @@ export class DentistService {
     }
 
     // Update Dentist
-    updateDentists(dentist_id, value,clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    updateDentists(dentist_id, value,clinic_id, isActive = null, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('provider_id', dentist_id);
     formData.append('name', value);
     formData.append('clinic_id',clinic_id);
+    if(isActive != null){
+        formData.append('is_active',isActive);
+    }
     var header = this.getHeaders();     
     return this.http.post(this.apiUrl +"/Dentists/dentUpdate", formData, { headers: header })
         .pipe(map((response: Response) => {
