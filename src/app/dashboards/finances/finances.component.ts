@@ -23,6 +23,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import { element } from 'protractor';
 // import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 
 export interface Dentist { 
@@ -493,6 +494,7 @@ single = [
               let total:any = 0;
               bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
+                  
                   if(body[0].includes("-")){
                     var temp = body[0].split('$');
                     var amount = temp[1].replace(/,/g, '');
@@ -501,10 +503,10 @@ single = [
                     var temp = body[0].split('$');
                     var amount = temp[1].replace(/,/g, '');
                     total += parseFloat(amount);
-                  }                
+                  }           
                 }                
               });
-              total = total.toFixed(2);
+              total = Math.round(total);
               if(total != 0){
                 var num_parts = total.toString().split(".");
                 num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -516,6 +518,18 @@ single = [
               });          
               bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
+                   var body_custom = body[0];
+                   body_custom = body_custom.split(":");
+                   if(body_custom[1].includes("-")){
+                    var temp_ = body_custom[1].split('$');
+                    temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                    body_custom[1] = temp_.join("$");
+                   } else {
+                    var temp_ = body_custom[1].split('$');
+                    temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                    body_custom[1] = temp_.join("$");
+                  }   
+                  body[0] = body_custom.join(":");
                   innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
                   }                
               });
