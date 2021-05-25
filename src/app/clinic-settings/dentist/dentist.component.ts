@@ -122,7 +122,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       }, (error) => {
         console.log('error', error);
         this.dentistList.data[index][column] = oldValue;
-        this.toastr.success('Opps, Error occurs in updating dentist!');
+        this.toastr.error('Opps, Error occurs in updating dentist!');
       });  
        
   }
