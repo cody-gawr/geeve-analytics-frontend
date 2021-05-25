@@ -1,15 +1,13 @@
-import { Component,OnInit, AfterViewInit  } from '@angular/core';
+import { Component,OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ProfileSettingsService } from './profile-settings.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptions } from "ngx-cookie";
-import { Router, NavigationEnd, Event  } from '@angular/router';
-import { StripeInstance, StripeFactoryService } from "ngx-stripe";
-import { StripeService, StripeCardComponent } from 'ngx-stripe';
+import { Router  } from '@angular/router';
+import { StripeService } from 'ngx-stripe';
 import { CustomValidators } from 'ng2-validation';
 import {
-  StripeCardElementOptions,
   StripeElementsOptions
 } from '@stripe/stripe-js';
 import Swal from 'sweetalert2';

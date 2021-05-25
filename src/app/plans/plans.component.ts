@@ -1,10 +1,10 @@
-import { Component, Inject , ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Inject, AfterViewInit } from '@angular/core';
 import { PlansService } from './plans.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from "ngx-cookie";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 declare var require: any;
 const data: any = require('assets/company.json');

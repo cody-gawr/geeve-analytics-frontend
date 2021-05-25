@@ -1,20 +1,12 @@
-import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, Pipe, PipeTransform, ViewChild, ElementRef, OnDestroy  } from '@angular/core';
+import { Component, AfterViewInit, ViewEncapsulation, ViewChild, ElementRef, OnDestroy  } from '@angular/core';
 import { HealthScreenService } from './healthscreen.service';
 import { DentistService } from '../../dentist/dentist.service';
 
 import { DatePipe } from '@angular/common';
-import {
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators
-} from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 export interface Dentist {

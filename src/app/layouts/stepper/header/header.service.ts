@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { CookieService } from "ngx-cookie";
-import { Router, NavigationEnd, Event  } from '@angular/router';
+import { Router  } from '@angular/router';
 import { environment } from "../../../../environments/environment";
 @Injectable()
 export class StepperHeaderService  {

@@ -1,29 +1,20 @@
 import * as $ from 'jquery';
-import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , ViewChild,ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewEncapsulation , ViewChild,ElementRef } from '@angular/core';
 import { FinancesService } from './finances.service';
 import { DentistService } from '../../dentist/dentist.service';
-import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
-import {
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators
-} from '@angular/forms';
 import { ActivatedRoute, Router} from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "ngx-cookie";
 // import { colorSets } from '@swimlane/ngx-charts/lib/utils/color-sets';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
-import { element } from 'protractor';
 // import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 
 export interface Dentist { 

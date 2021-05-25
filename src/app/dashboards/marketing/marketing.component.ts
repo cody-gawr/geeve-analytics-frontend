@@ -1,23 +1,13 @@
 import * as $ from 'jquery';
-import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , ViewChild,ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewEncapsulation , ViewChild,ElementRef } from '@angular/core';
 import { MarketingService } from './marketing.service';
 import { FinancesService } from '../finances/finances.service';
 import { DentistService } from '../../dentist/dentist.service';
-import * as moment from 'moment';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import {
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators
-} from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "ngx-cookie";
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxSmartModalService } from 'ngx-smart-modal';
-import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';/**/
 import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit,ViewEncapsulation } from '@angular/core';
 import { LostOpportunityService } from './lost-opportunity.service';
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
+import { Router } from "@angular/router";
 import { HeaderService } from './../layouts/full/header/header.service';
 import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 @Component({

@@ -1,18 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RolesUsersService } from '../../roles-users/roles-users.service';
-
-import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit, Pipe, PipeTransform, ViewChild, ElementRef  } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import {
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators
-} from '@angular/forms';
-import { ActivatedRoute, Router , NavigationEnd } from "@angular/router";
-import { CookieService } from "ngx-cookie";
-import { BaseChartDirective } from 'ng2-charts';
-import { NgxSmartModalService } from 'ngx-smart-modal';
+import { Router , NavigationEnd } from "@angular/router";
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';  

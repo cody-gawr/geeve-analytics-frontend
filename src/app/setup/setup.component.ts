@@ -1,4 +1,4 @@
-import { Component, Inject ,EventEmitter,Output, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { SetupService } from './setup.service';
 import { CookieService } from "ngx-cookie";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -12,7 +12,6 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
-  FormControl,
   FormArray
 } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';

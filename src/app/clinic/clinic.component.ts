@@ -4,14 +4,13 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from "ngx-cookie";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { HeaderService } from './../layouts/full/header/header.service';
 import {
   FormBuilder,
   FormGroup,
-  Validators,
-  FormControl
+  Validators
 } from '@angular/forms';
 import Swal from 'sweetalert2';
 @Component({

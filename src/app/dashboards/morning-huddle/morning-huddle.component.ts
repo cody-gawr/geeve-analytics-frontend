@@ -4,10 +4,10 @@ import { CookieService } from "ngx-cookie";
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { Router } from "@angular/router";
+import { DatePipe } from '@angular/common';
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { MatTabGroup } from '@angular/material/tabs';
 export interface PeriodicElement {
   name: string;
   production: string;

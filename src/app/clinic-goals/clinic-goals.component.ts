@@ -1,4 +1,4 @@
-import { Component,OnInit, AfterViewInit  } from '@angular/core';
+import { Component,OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ClinicGoalsService } from './clinic-goals.service';
