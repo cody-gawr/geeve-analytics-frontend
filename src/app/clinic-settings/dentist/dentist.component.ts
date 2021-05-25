@@ -24,7 +24,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['providerId', 'name'];
+  displayedColumns: string[] = ['providerId', 'name','is_active'];
   editing = {};
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -97,13 +97,22 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   }
 
   updateValue(event, column, index) {
-    let oldValue = this.dentistList.data[index][column];
+    let oldValue = this.dentistList.data[index][column];    
     this.editing[index + '-' + column] = false;
     const providerId = this.dentistList.data[index].providerId;
-    const updatedValue = event.target.value;
-    this.dentistList.data[index][column] = updatedValue;
-    if (oldValue !== updatedValue) {
-      this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value).pipe(
+    const updatedValue = this.dentistList.data[index]['name'];
+    if(column == 'name'){
+      const updatedValue = event.target.value;
+      this.dentistList.data[index][column] = updatedValue;
+    }
+    var isActive = null;
+    if(column == 'is_active'){
+      isActive = 0;
+      if(event.target.checked){
+        isActive = 1;
+      }
+    }
+     this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive).pipe(
         takeUntil(this.destroyed$)
       ).subscribe((res) => {
         if (res.message == 'success') {
@@ -115,7 +124,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         this.dentistList.data[index][column] = oldValue;
         this.toastr.success('Opps, Error occurs in updating dentist!');
       });  
-    }    
+       
   }
 
 }
