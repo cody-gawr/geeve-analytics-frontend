@@ -135,8 +135,13 @@ export class AppHeaderrightComponent implements AfterViewInit  {
       this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
           this.showAll = true;
            if(res.message == 'success'){
-              this.dentists= res.data;
-              this.dentistCount= res.data.length;
+              res.data.forEach((data) => {
+                if(data.is_active == 1){
+                  this.dentists.push(data);
+                }
+              });/*
+              this.dentists= res.data;*/
+              this.dentistCount= this.dentists;
               if(this.route != '/dentist-goals'){
                 this.selectedDentist = 'all';
               } else {
