@@ -511,7 +511,7 @@ this.preoceedureChartColors = [
             custom: function(tooltip) {
         if (!tooltip) return;
         // disable displaying the color box;
-        tooltip.displayColors = false;
+        tooltip.displayColors = true;
       },
   callbacks: {
      label: function(tooltipItems, data) { 

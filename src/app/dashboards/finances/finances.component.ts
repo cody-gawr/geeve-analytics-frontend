@@ -23,6 +23,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import { element } from 'protractor';
 // import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 
 export interface Dentist { 
@@ -263,11 +264,9 @@ single = [
 
     // this.doughnutChartColors = [{backgroundColor: ['#17a2a6','#82edd8','#2C7294','#3c7cb7','#175088','#1fd6b1','#09b391','#168F7F']}];
     this.doughnutChartColors =  [
-      '#6cd8ba','#b0fffa','#abb3ff','#feefb8','#ffb4b5','#fffcac','#d7f8ef',  '#ffb4b5', '#abb3ff','#abb3ff',
-      '#fffdac', '#6cd8ba','#b0fffa','#abb3ff','#6cd8ba', '#fef0b8' , 
-   '#fbefb8','#d7f8ff', '#fffcbc','#abb3ff','#ffc4b5', '#abb3fg','#fef0b8', 
-   '#b0fffc','#d7f8ef', '#6cd8bc', '#ffb4b5',
-    '#feefb8','#ffb4b5'];
+      '#6cd8ba','#abb3ff','#ffb4b5','#9933ff','#3366cc','#666699','#cc5200',
+      '#004d80','#ff9933','#cc99ff','#006666','#0000b3','#0099cc','#d7f8ef','#fffdac', '#cc0066','#669999','#996633',
+      '#666633','#d7f8ff'];
     let stackedGradient = this.canvas.nativeElement.getContext('2d').createLinearGradient(0, 0, 0, 400);
     stackedGradient.addColorStop(0, '#168F7F');
     stackedGradient.addColorStop(1, '#168F7F');
@@ -488,12 +487,14 @@ single = [
             if (tooltip.body) {
               var titleLines = tooltip.title || [];
               var bodyLines = tooltip.body.map(getBody);
+              var labelColorscustom = tooltip.labelColors;
               var innerHtml = '<table><thead>';             
               innerHtml += '</thead><tbody>';
 
               let total:any = 0;
               bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
+                  
                   if(body[0].includes("-")){
                     var temp = body[0].split('$');
                     var amount = temp[1].replace(/,/g, '');
@@ -502,22 +503,34 @@ single = [
                     var temp = body[0].split('$');
                     var amount = temp[1].replace(/,/g, '');
                     total += parseFloat(amount);
-                  }                
+                  }           
                 }                
               });
-              total = total.toFixed(2);
+              total = Math.round(total);
               if(total != 0){
                 var num_parts = total.toString().split(".");
                 num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 total = num_parts.join(".");
               }
               titleLines.forEach(function (title) {
-                innerHtml += '<tr><th style="text-align: left;">' + title + ': $'+total+'</th></tr>';
-                innerHtml += '<tr><th style="text-align: left;">&nbsp;</th></tr>';
+                innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + ': $'+total+'</th></tr>';
+        
               });          
               bodyLines.forEach(function (body, i) {
                 if(!body[0].includes("$0")){
-                  innerHtml += '<tr><td style="padding: 0px">'+body[0]+'</td></tr>';
+                   var body_custom = body[0];
+                   body_custom = body_custom.split(":");
+                   if(body_custom[1].includes("-")){
+                    var temp_ = body_custom[1].split('$');
+                    temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                    body_custom[1] = temp_.join("$");
+                   } else {
+                    var temp_ = body_custom[1].split('$');
+                    temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                    body_custom[1] = temp_.join("$");
+                  }   
+                  body[0] = body_custom.join(":");
+                  innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
                   }                
               });
               innerHtml += '</tbody></table>';
@@ -800,14 +813,15 @@ public labelBarPercentOptions: any = {
             if (tooltip.body) {
               var titleLines = tooltip.title || [];
               var bodyLines = tooltip.body.map(getBody);
+              var labelColorscustom = tooltip.labelColors;
               var innerHtml = '<table><thead>';             
               innerHtml += '</thead><tbody>';
               titleLines.forEach(function (title) {
-                innerHtml += '<tr><th style="text-align: left;">' + title + '</th></tr>';
+                innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + '</th></tr>';
               });
-                 bodyLines.forEach(function (body, i) {
+                 bodyLines.forEach(function (body, i) { 
                 if(!body[0].includes("0%")){
-                  innerHtml += '<tr><td style="padding: 0px">'+body[0]+'</td></tr>';
+                   innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
                   }                
               });
               innerHtml += '</tbody></table>';
