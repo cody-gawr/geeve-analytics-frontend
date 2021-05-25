@@ -928,16 +928,7 @@
             
           </div>  
       <mat-card-title>Post op Calls
-      <!--   <div class="morning-huddle-date UnscheduledPatients">
-            <mat-form-field floatLabel="never" class="setPreviousDay">
-              <mat-label *ngIf="postOpCallsDays != 1">{{ postOpCallsDays }} Days Ago</mat-label>
-              <mat-label *ngIf="postOpCallsDays == 1">Previous Day</mat-label>
-              <mat-select (selectionChange)="refreshPostOpCalls($event.value)" [(ngModel)]="postOpCallsDays" >
-                <mat-option [value]="1">Previous Day</mat-option>
-                <mat-option [value]="2">2 Days Ago</mat-option>
-              </mat-select>
-            </mat-form-field>                  
-          </div> -->
+   
       </mat-card-title>
       <mat-card-content> 
     <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
@@ -948,7 +939,7 @@
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef> Patient Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.patient_name }} </td>
+          <td mat-cell *matCellDef="let element"> {{element.patients.firstname }} {{element.patients.surname }} </td>
         </ng-container>
     
         <!-- Weight Column -->
@@ -957,9 +948,9 @@
           <td mat-cell *matCellDef="let element">
             <div class="phone_align_center">
               <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
-              <span class="phone_no" *ngIf="element.mobile">{{element.mobile}}</span>
-              <span class="phone_no" *ngIf="!element.mobile && element.phone_work">{{element.phone_work}}</span>
-              <span class="phone_no" *ngIf="!element.mobile && !element.phone_work">{{element.phone_home}}</span>
+              <span class="phone_no" *ngIf="element.patients.mobile">{{element.patients.mobile}}</span>
+              <span class="phone_no" *ngIf="!element.patients.mobile && element.patients.phone_work">{{element.patients.phone_work}}</span>
+              <span class="phone_no" *ngIf="!element.patients.mobile && !element.patients.phone_work">{{element.patients.phone_home}}</span>
             </div>
           </td>
         </ng-container>
@@ -972,13 +963,13 @@
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef>Status</th>
           <td mat-cell *matCellDef="let element">
-            <mat-slide-toggle checked="{{ element.status }}" name="status"
-              (change)="toggleUpdate($event,element.patient_id,element.cid,element.uid,'Post op Calls')"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
+              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')"></mat-slide-toggle>
           </td>
         </ng-container>
         <ng-container matColumnDef="isDataAvailable1">
           <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns5.length">
-           You have no post op calls today
+           You have no post op calls today 
           </mat-footer-cell>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns5"></tr>
@@ -992,16 +983,16 @@
           <mat-card class="huddle-card" *ngFor="let element of followupPostOpCalls">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="30">Patient: </div>
-              <div fxFlex="70"> {{element.patient_name }} </div>
+              <div fxFlex="70"> {{element.patients.firstname }} {{element.patients.surname }}  </div>
             </div>
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="30">Phone: </div>
               <div fxFlex="70"> 
                 <!-- <div class="phone_align_center"> -->
                   <!-- <img src="../assets/images/follow-up-call.png" alt="follow-up-call" /> -->
-                  <span class="phone_no" *ngIf="element.mobile">{{element.mobile}}</span>
-                  <span class="phone_no" *ngIf="!element.mobile && element.phone_work">{{element.phone_work}}</span>
-                  <span class="phone_no" *ngIf="!element.mobile && !element.phone_work">{{element.phone_home}}</span>
+                   <span class="phone_no" *ngIf="element.patients.mobile">{{element.patients.mobile}}</span>
+                    <span class="phone_no" *ngIf="!element.patients.mobile && element.patients.phone_work">{{element.patients.phone_work}}</span>
+                    <span class="phone_no" *ngIf="!element.patients.mobile && !element.patients.phone_work">{{element.patients.phone_home}}</span>
                 <!-- </div> -->
               </div>
             </div>
@@ -1012,8 +1003,8 @@
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="30">Status </div>
               <div fxFlex="70">  
-                <mat-slide-toggle checked="{{ element.status }}" name="status"
-                (change)="toggleUpdate($event,element.patient_id,element.cid,element.uid,'Post op Calls')"></mat-slide-toggle>
+              <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
+              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')"></mat-slide-toggle>
               </div>
             </div>
           </mat-card>
@@ -1026,226 +1017,267 @@
       </div>
 
     </div>
-      <!--<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
-              <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="respopnsive_leptop_post_call">
-                  
-       </div>
-               <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
-                <img src="./assets/images/post-op-call-2.png" alt="post-op-call-2">
-              </div>
-            </div>-->
+ 
       </mat-card-content>
 </mat-card>
 
-<mat-card class="table-card">
-     <div class="morning-huddle-date">
-        <strong>{{ followupsUnscheduledPatientsDate }}</strong>   
-        <mat-label class="daysAgo" *ngIf="unscheduledPatientsDays != 1 && unscheduledPatientsDays != ''"> ({{ unscheduledPatientsDays }} Days Ago)</mat-label>
-        <mat-label class="daysAgo" *ngIf="unscheduledPatientsDays == 1 && unscheduledPatientsDays != ''"> (Previous Day)</mat-label>     
-      </div>
-  <mat-card-title>Unscheduled Patients
- <!--      <div class="morning-huddle-date UnscheduledPatients">
-        <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-label *ngIf="unscheduledPatientsDays != 1">{{ unscheduledPatientsDays }} Days Ago</mat-label>
-          <mat-label *ngIf="unscheduledPatientsDays == 1">Previous Day</mat-label>
-          <mat-select (selectionChange)="refreshUnscheduledPatients($event.value)" [(ngModel)]="unscheduledPatientsDays" >
-            <mat-option [value]="1">Previous Day</mat-option>
-            <mat-option [value]="7">7 Days Ago</mat-option>
-            <mat-option [value]="14">14 Days Ago</mat-option>            
-          </mat-select>
-        </mat-form-field>                  
-      </div> -->
-  </mat-card-title>
 
-  <mat-card-content> 
-<div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto; margin-bottom: 30px">  
-  <table fxHide fxShow.gt-sm mat-table [dataSource]="followupsUnscheduledPatients" class="mat-elevation-z8 customWidth">
 
-    <!-- Patient Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Patient Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.patient_name}}</td>
-    </ng-container>
 
-    <!-- Phone Number Column -->
-    <ng-container matColumnDef="phone">
-      <th mat-header-cell *matHeaderCellDef> Phone Number </th>
-      <td mat-cell *matCellDef="let element">
-        <div class="phone_align_center">
-          <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
-          <span class="phone_no">{{element.phoneNumber}}</span>
-        </div>
-      </td>
-    </ng-container>
 
-    <!-- Unscheduled Treatment Column -->
-    <ng-container matColumnDef="code">
-      <th mat-header-cell *matHeaderCellDef [ngClass]="'w-75'"> Unscheduled Treatment </th>
-      <td mat-cell *matCellDef="let element"> {{ element.code }}</td>
-    </ng-container>
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
-      <!-- "{{ element.status }}" -->
-      <td mat-cell *matCellDef="let element">
-        <mat-slide-toggle checked="{{element.status}}" name="status"
-          (change)="toggleUpdate($event,element.pid,element.cid,element.uid,'Unscheduled Patients')"></mat-slide-toggle>
-      </td>
-    </ng-container>
 
-    <ng-container matColumnDef="isDataAvailable2">
-      <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns4.length">
-        No Unsched. Patients from selected date
-      </mat-footer-cell>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns4;"></tr>
-    <mat-footer-row *matFooterRowDef="['isDataAvailable2']"
-      [ngClass]="(followupsUnscheduledPatients.length <= 0)? 'show' : 'hide'"></mat-footer-row>
-  </table>
-  <!-- responsive table - frontdesk followup (Unscheduled patient)  -->
-  <div fxHide.gt-sm>
-    <div *ngIf="followupsUnscheduledPatients.length;else noUnscheduledPatient">
-      <mat-card class="huddle-card" *ngFor="let element of followupsUnscheduledPatients">
-        <div fxLayout="row" class="huddle-card-row">
-          <div fxFlex="30">Patient: </div>
-          <div fxFlex="70"> {{element.patient_name }} </div>
-        </div>
-        <div fxLayout="row" class="huddle-card-row">
-          <div fxFlex="30">Phone: </div>
-          <div fxFlex="70"> 
+<mat-card class="table-card post_call_responsive_border">
+        <div class="morning-huddle-date">
+            <strong>{{ followupsOverDueRecallDate }} </strong>        
+              <mat-label class="daysAgo" *ngIf="OverDueRecallDays != 1 && OverDueRecallDays != ''"> ({{ postOpCallsDays }} Week Ago)</mat-label>
+              <mat-label class="daysAgo" *ngIf="OverDueRecallDays == 1 && OverDueRecallDays != ''"> (Previous Week)</mat-label>
+            
+          </div>  
+      <mat-card-title>Overdue Recalls   
+      </mat-card-title>
+      <mat-card-content> 
+    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
+     
+      <table fxHide fxShow.gt-sm mat-table [dataSource]="followupOverDueRecall" class="mat-elevation-z8 customWidth">
+    
+    
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.patients.firstname }} {{element.patients.surname }} </td>
+        </ng-container>
+    
+        <!-- Weight Column -->
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+          <td mat-cell *matCellDef="let element">
             <div class="phone_align_center">
               <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
-              <span class="phone_no">{{element.phoneNumber}}</span>
+              <span class="phone_no" *ngIf="element.patients.mobile">{{element.patients.mobile}}</span>
+              <span class="phone_no" *ngIf="!element.patients.mobile && element.patients.phone_work">{{element.patients.phone_work}}</span>
+              <span class="phone_no" *ngIf="!element.patients.mobile && !element.patients.phone_work">{{element.patients.phone_home}}</span>
             </div>
-          </div>
+          </td>
+        </ng-container>
+    
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef>Last Recall Date </th>
+          <td mat-cell *matCellDef="let element">{{ element.original_appt_date | date:'MMM d, y':'timezone' }}</td>
+        </ng-container>
+        
+        <ng-container matColumnDef="note">
+          <th mat-header-cell *matHeaderCellDef>Note</th>
+          <td mat-cell *matCellDef="let element">
+           <mat-form-field floatLabel="never" class="setPreviousDay">
+                  <mat-select placeholder="Select Note"  id="setNote"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                    <mat-option value="Ineligible">Ineligible</mat-option>
+                    <mat-option value="Already booked">Already booked</mat-option>
+                    <mat-option value="Didn’t want to book">Didn’t want to book</mat-option>
+                    <mat-option value="Cant be reached">Cant be reached</mat-option>
+                    <mat-option value="Booked">Booked</mat-option>
+                  </mat-select>
+                </mat-form-field>
+          </td>
+        </ng-container>
+           <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
+              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Recall Overdue')"></mat-slide-toggle>
+          </td>
+        </ng-container> 
+        <ng-container matColumnDef="isDataAvailable1">
+          <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns7.length">
+           You have no post op calls today 
+          </mat-footer-cell>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns7"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns7;"></tr>
+        <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
+          [ngClass]="(followupOverDueRecall.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+      </table>
+      <!-- responsive table - frontdesk followup (Post op calls)  -->
+      <div fxHide.gt-sm>
+        <div *ngIf="followupOverDueRecall.length;else noPostOpCalls">
+          <mat-card class="huddle-card" *ngFor="let element of followupOverDueRecall">
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Patient: </div>
+              <div fxFlex="70"> {{element.patients.firstname }} {{element.patients.surname }}  </div>
+            </div>
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Phone: </div>
+              <div fxFlex="70"> 
+                <!-- <div class="phone_align_center"> -->
+                  <!-- <img src="../assets/images/follow-up-call.png" alt="follow-up-call" /> -->
+                   <span class="phone_no" *ngIf="element.patients.mobile">{{element.patients.mobile}}</span>
+                    <span class="phone_no" *ngIf="!element.patients.mobile && element.patients.phone_work">{{element.patients.phone_work}}</span>
+                    <span class="phone_no" *ngIf="!element.patients.mobile && !element.patients.phone_work">{{element.patients.phone_home}}</span>
+                <!-- </div> -->
+              </div>
+            </div>
+          
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Status </div>
+              <div fxFlex="70">  
+              <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
+              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Recall Overdue')"></mat-slide-toggle>
+              </div>
+            </div>
+                  <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Notes </div>
+              <div fxFlex="70">  
+               <mat-form-field floatLabel="never" class="setPreviousDay">
+                  <mat-select placeholder="Select Note"  id="setNote"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                    <mat-option value="Ineligible">Ineligible</mat-option>
+                    <mat-option value="Already booked">Already booked</mat-option>
+                    <mat-option value="Didn’t want to book">Didn’t want to book</mat-option>
+                    <mat-option value="Cant be reached">Cant be reached</mat-option>
+                    <mat-option value="Booked">Booked</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-card>
         </div>
-        <div fxLayout="row" class="huddle-card-row">
-          <div fxFlex="30">Treatment: </div>
-          <div fxFlex="70"> {{ element.code }} </div>
-        </div>
-        <div fxLayout="row" class="huddle-card-row">
-          <div fxFlex="30">Status </div>
-          <div fxFlex="70">  
-            <mat-slide-toggle checked="{{element.status}}" name="status"
-            (change)="toggleUpdate($event,element.pid,element.cid,element.uid,'Unscheduled Patients')"></mat-slide-toggle>
-          </div>
-        </div>
-      </mat-card>
+        <ng-template #noPostOpCalls>
+          <mat-card class="huddle-card">
+            <h6> You have no post op calls today</h6>
+          </mat-card>
+        </ng-template>
+      </div>
+
     </div>
-    <ng-template #noUnscheduledPatient>
-      <mat-card class="huddle-card">
-        <h6> No Unscheduled Treatment found for selected date. </h6>
-      </mat-card>
-    </ng-template>
-  </div>
-</div>
 
-<!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
-          <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="responsive_patient_data" >
-             
-   </div>
-          <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
-            <img src="./assets/images/unsheild-patient.png" alt="unsheild-patient">
-          </div>
-        </div> -->
-  </mat-card-content>
-
-  <!--<mat-card-title>Unscheduled Recalls
-    <div class="morning-huddle-date UnscheduledPatients">                
-    </div>
- </mat-card-title>
- 
- <mat-card-content> 
- <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">  
- <table fxHide fxShow.gt-sm mat-table [dataSource]="followupsUnscheduledRecalls" class="mat-elevation-z8 customWidth">
-
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Patient Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.patient_name}}</td>
-  </ng-container>
- 
-  <ng-container matColumnDef="phone">
-    <th mat-header-cell *matHeaderCellDef> Phone Number </th>
-    <td mat-cell *matCellDef="let element">
-      <div class="phone_align_center">
-        <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
-        <span class="phone_no">{{element.phoneNumber}}</span>
-      </div>
-    </td>
-  </ng-container>
- 
-  <ng-container matColumnDef="code">
-    <th mat-header-cell *matHeaderCellDef [ngClass]="'w-75'"> Unscheduled Recalls </th>
-    <td mat-cell *matCellDef="let element"> {{ element.code }}</td>
-  </ng-container>
-  <ng-container matColumnDef="status">
-    <th mat-header-cell *matHeaderCellDef>Status</th>
-    "{{ element.status }}"
-    <td mat-cell *matCellDef="let element">
-      <mat-slide-toggle checked="{{element.status}}" name="status"
-        (change)="toggleUpdate($event,element.pid,element.cid,element.uid,'Unscheduled Patients')"></mat-slide-toggle>
-    </td>
-  </ng-container>
- 
-  <ng-container matColumnDef="isDataAvailable2">
-    <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns4.length">
-      No Unscheduled Recalls found for selected date
-    </mat-footer-cell>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns4;"></tr>
-  <mat-footer-row *matFooterRowDef="['isDataAvailable2']"
-    [ngClass]="(followupsUnscheduledRecalls.length <= 0)? 'show' : 'hide'"></mat-footer-row>
- </table>
- <div fxHide.gt-sm>
-  <div *ngIf="followupsUnscheduledPatients.length;else noUnscheduledRecall">
-    <mat-card class="huddle-card" *ngFor="let element of followupsUnscheduledPatients">
-      <div fxLayout="row" class="huddle-card-row">
-        <div fxFlex="30">Patient: </div>
-        <div fxFlex="70"> {{element.patient_name }} </div>
-      </div>
-      <div fxLayout="row" class="huddle-card-row">
-        <div fxFlex="30">Phone: </div>
-        <div fxFlex="70"> 
-          <div class="phone_align_center">
-            <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
-            <span class="phone_no">{{element.phoneNumber}}</span>
-          </div>
-        </div>
-      </div>
-      <div fxLayout="row" class="huddle-card-row">
-        <div fxFlex="30"> Unsched. Recalls: </div>
-        <div fxFlex="70"> {{ element.code }} </div>
-      </div>
-      <div fxLayout="row" class="huddle-card-row">
-        <div fxFlex="30">Status </div>
-        <div fxFlex="70">  
-          <mat-slide-toggle checked="{{element.status}}" name="status"
-          (change)="toggleUpdate($event,element.pid,element.cid,element.uid,'Unscheduled Patients')"></mat-slide-toggle>
-        </div>
-      </div>
-    </mat-card>
-  </div>
-  <ng-template #noUnscheduledRecall>
-    <mat-card class="huddle-card">
-      <h6> No Unscheduled Recalls found for selected date. </h6>
-    </mat-card>
-  </ng-template>
-</div>
- </div>
-<div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px"  fxLayoutGap.xs="0px">
-        <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(60% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="responsive_patient_data" >
-           
- </div>
-        <div fxFlex="calc(30% - 10px)" fxFlex.md="calc(40% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="last text-center">
-          <img src="./assets/images/unsheild-patient.png" alt="unsheild-patient">
-        </div>
-      </div> 
- </mat-card-content>-->
-
-
+      </mat-card-content>
 </mat-card>
 
+
+<mat-card class="table-card post_call_responsive_border">
+        <div class="morning-huddle-date">
+            <strong>{{ followupsTickFollowupsDate }} </strong>        
+              <mat-label class="daysAgo" *ngIf="TickFollowupsDays != 1 && TickFollowupsDays != ''"> ({{ postOpCallsDays }} Days Ago)</mat-label>
+              <mat-label class="daysAgo" *ngIf="TickFollowupsDays == 1 && TickFollowupsDays != ''"> (Previous Day)</mat-label>
+            
+          </div>  
+      <mat-card-title>Tick Followups   
+      </mat-card-title>
+      <mat-card-content> 
+    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
+     
+      <table fxHide fxShow.gt-sm mat-table [dataSource]="followupTickFollowups" class="mat-elevation-z8 customWidth">
+    
+    
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.patients.firstname }} {{element.patients.surname }} </td>
+        </ng-container>
+    
+        <!-- Weight Column -->
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="phone_align_center">
+              <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
+              <span class="phone_no" *ngIf="element.patients.mobile">{{element.patients.mobile}}</span>
+              <span class="phone_no" *ngIf="!element.patients.mobile && element.patients.phone_work">{{element.patients.phone_work}}</span>
+              <span class="phone_no" *ngIf="!element.patients.mobile && !element.patients.phone_work">{{element.patients.phone_home}}</span>
+            </div>
+          </td>
+        </ng-container>
+    
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef>Last Recall Date </th>
+          <td mat-cell *matCellDef="let element">{{ element.original_appt_date | date:'MMM d, y':'timezone' }}</td>
+        </ng-container>
+    
+          <ng-container matColumnDef="note">
+          <th mat-header-cell *matHeaderCellDef>Note</th>
+          <td mat-cell *matCellDef="let element">
+           <mat-form-field floatLabel="never" class="setPreviousDay">
+                  <mat-select placeholder="Select Note"  id="setNote"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                    <mat-option value="Ineligible">Ineligible</mat-option>
+                    <mat-option value="Already booked">Already booked</mat-option>
+                    <mat-option value="Didn’t want to book">Didn’t want to book</mat-option>
+                    <mat-option value="Cant be reached">Cant be reached</mat-option>
+                    <mat-option value="Booked">Booked</mat-option>
+                  </mat-select>
+                </mat-form-field>
+          </td>
+        </ng-container>
+            <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
+             (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Tick Follower')"></mat-slide-toggle>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="isDataAvailable1">
+          <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns8.length">
+           You have no post op calls today 
+          </mat-footer-cell>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns8"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns8;"></tr>
+        <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
+          [ngClass]="(followupTickFollowups.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+      </table>
+      <!-- responsive table - frontdesk followup (Post op calls)  -->
+      <div fxHide.gt-sm>
+        <div *ngIf="followupTickFollowups.length;else noPostOpCalls">
+          <mat-card class="huddle-card" *ngFor="let element of followupTickFollowups">
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Patient: </div>
+              <div fxFlex="70"> {{element.patients.firstname }} {{element.patients.surname }}  </div>
+            </div>
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Phone: </div>
+              <div fxFlex="70"> 
+                <!-- <div class="phone_align_center"> -->
+                  <!-- <img src="../assets/images/follow-up-call.png" alt="follow-up-call" /> -->
+                   <span class="phone_no" *ngIf="element.patients.mobile">{{element.patients.mobile}}</span>
+                    <span class="phone_no" *ngIf="!element.patients.mobile && element.patients.phone_work">{{element.patients.phone_work}}</span>
+                    <span class="phone_no" *ngIf="!element.patients.mobile && !element.patients.phone_work">{{element.patients.phone_home}}</span>
+                <!-- </div> -->
+              </div>
+            </div>
+          
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Status </div>
+              <div fxFlex="70">  
+              <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
+              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Tick Follower')"></mat-slide-toggle>
+              </div>
+            </div> 
+            <div fxLayout="row" class="huddle-card-row">
+              <div fxFlex="30">Notes </div>
+              <div fxFlex="70">  
+                <mat-form-field floatLabel="never" class="setPreviousDay">
+                  <mat-select placeholder="Select Note"  id="setNote"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                    <mat-option value="Ineligible">Ineligible</mat-option>
+                    <mat-option value="Already booked">Already booked</mat-option>
+                    <mat-option value="Didn’t want to book">Didn’t want to book</mat-option>
+                    <mat-option value="Cant be reached">Cant be reached</mat-option>
+                    <mat-option value="Booked">Booked</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <ng-template #noPostOpCalls>
+          <mat-card class="huddle-card">
+            <h6> You have no post op calls today</h6>
+          </mat-card>
+        </ng-template>
+      </div>
+
+    </div>
+
+      </mat-card-content>
+</mat-card>
   </mat-tab>
   <!-- Followups Tab end -->
 
