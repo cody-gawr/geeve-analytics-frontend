@@ -1,10 +1,10 @@
-import { Component,OnInit, AfterViewInit  } from '@angular/core';
+import { Component,OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ClinicSettingsService } from './clinic-settings.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService } from "ngx-cookie";
-import { Router, NavigationEnd, Event  } from '@angular/router';
+import { Router  } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-formlayout',

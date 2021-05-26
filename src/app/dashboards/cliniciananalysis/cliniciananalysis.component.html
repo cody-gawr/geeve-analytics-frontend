@@ -1283,24 +1283,3 @@
   </div>
 </div> <canvas #myCanvas baseChart [style.display]="'none'" [datasets]="chartData1" [labels]="chartLabels1"
   [chartType]="barChartType"></canvas>
-<ngx-smart-modal #myModal identifier="myModal">
-  <h3 class="datamapping-heading">Data Mapping</h3>
-  <div class="modal-popup-mapping sa_flexbg referral_clinicians">
-    <div *ngFor="let acntngDentist of accountingDentist">
-      <span fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="50">{{acntngDentist.name}}<span class="name_arrow"><i
-            class="fas fa-caret-right"></i></span></span>
-      <select fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="50" class="sa_select internal_dentist"
-        name="dentistMap_{{acntngDentist.provider_id}}" id="dentistMap_{{acntngDentist.provider_id}}">
-        <option value="">Select Dentist</option>
-        <option *ngFor="let statDentist of statusDentist" value="{{statDentist.book_desc}}"
-          [attr.selected]="statDentist.provider_id == acntngDentist.provider_id ? 'selected' : null">
-          {{statDentist.book_desc}}</option>
-      </select>
-    </div>
-
-  </div>
-  <div class="modal-footer-mapping"><button class="mat-raised-button mat-gray" mat-raised-button
-      (click)="save_mapping()">Save Mapping</button></div>
-
-  <button (click)="myModal.close()" class="close_modal" style="display:none">Close</button>
-</ngx-smart-modal>

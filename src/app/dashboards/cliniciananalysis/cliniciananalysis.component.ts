@@ -9,12 +9,10 @@ import { CookieService } from "ngx-cookie";
 import { Chart } from 'chart.js';
 import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import { BaseChartDirective, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
-import { NgxSmartModalService } from 'ngx-smart-modal';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
-import Swal from 'sweetalert2';
 import { ChartService } from '../chart.service';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
@@ -79,7 +77,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     private headerService: HeaderService,
     private _cookieService: CookieService,
     private router: Router,
-    public ngxSmartModalService: NgxSmartModalService,
     private frontdeskService: FrontDeskService,
     private toastr: ToastrService,
     private decimalPipe: DecimalPipe,

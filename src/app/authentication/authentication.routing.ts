@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 
+import { ErrorComponent } from './error/error.component';
 import { ForgotComponent } from './forgot/forgot.component';
 import { ResetComponent } from './reset/reset.component';
-import { ErrorComponent } from './error/error.component';
+
 export const AuthenticationRoutes: Routes = [
   {
     path: '',

@@ -1,5 +1,5 @@
 import * as $ from 'jquery';
-import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , ViewChild,ElementRef, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewEncapsulation , ViewChild,ElementRef, OnDestroy } from '@angular/core';
 import { ClinicianProceeduresService } from './clinicianproceedures.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
@@ -12,7 +12,6 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
-import Swal from 'sweetalert2';
 export interface Dentist {
   providerId: string;
   name: string;

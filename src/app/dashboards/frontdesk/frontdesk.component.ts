@@ -1,24 +1,14 @@
 import * as $ from 'jquery';
-import { Component, AfterViewInit, SecurityContext, ViewEncapsulation, OnInit , ViewChild,ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewEncapsulation , ViewChild,ElementRef } from '@angular/core';
 import { FrontDeskService } from './frontdesk.service';
 import { DentistService } from '../../dentist/dentist.service';
-import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
-import {
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators
-} from '@angular/forms';
 import { ActivatedRoute, Router } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 import { CookieService } from "ngx-cookie";
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ToastrService } from 'ngx-toastr';
 import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
-import Swal from 'sweetalert2';
 export interface Dentist {
   providerId: string;
   name: string;

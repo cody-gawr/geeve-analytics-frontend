@@ -5,22 +5,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {
   ChangeDetectorRef,
   Component,
-  NgZone,
   OnDestroy,
-  ViewChild,
-  HostListener,
-  Directive,
   AfterViewInit, Inject
 } from '@angular/core';
 import { MenuItems } from '../../shared/menu-items/menu-items';
-import { AppHeaderComponent } from './header/header.component';
-import { AppSidebarComponent } from './sidebar/sidebar.component';
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { HeaderService } from './header/header.service';
 import { CookieService } from "ngx-cookie";
-
-import { AppHeaderrightComponent } from '../../layouts/full/headerright/headerright.component';
 
 import { environment } from "../../../environments/environment";
 

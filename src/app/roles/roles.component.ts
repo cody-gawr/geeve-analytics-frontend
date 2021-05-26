@@ -1,6 +1,6 @@
-import { Component,OnInit, AfterViewInit  } from '@angular/core';
+import { Component,OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { FormControl, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { RolesService } from './roles.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptions } from "ngx-cookie";
