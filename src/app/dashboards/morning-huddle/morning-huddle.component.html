@@ -2,7 +2,7 @@
 <div class="sa_dashboard_inner_content morning-huddle">
 <mat-tab-group [selectedIndex]="selectedTab">
   <!-- Dentist Performance Tab -->  
-  <mat-tab label="Dentist Performance" *ngIf="user_type != '3' && user_type != '5'">    
+  <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">    
       <div class="morning-huddle-date">
         <mat-form-field floatLabel="never" class="setPreviousDay">
           <mat-select placeholder="Morning Huddle - {{  subtractDays(0) | date:'MMM d, y':'timezone'}}" (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
@@ -369,7 +369,7 @@
 
 
   <!-- Patient Schedule Tab start -->  
-  <mat-tab label="Dentist Schedule" *ngIf="user_type != '3' && user_type != '5'">
+  <mat-tab label="Dentist Schedule" *ngIf="user_type != '5'">
      <div class="morning-huddle-date">
       <div *ngIf="clinicDentists.length > 0 && user_type != '4'">
         <mat-form-field >
