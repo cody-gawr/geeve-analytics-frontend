@@ -555,12 +555,13 @@ initiate_clinic() {
   toggleUpdate(event,pid,date,cid,type) {    
     this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,type, date).subscribe((update:any) => {
       console.log(update,'***');  
-    });  
-    
-    
-    /*this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,uid,type, date).subscribe((update:any) => {
+    });      
+  }
+
+  updateStatus(event,pid,date,cid,type) {    
+    this.morningHuddleService.updateStatus(event,pid,cid,type, date).subscribe((update:any) => {
       console.log(update,'***');  
-    });*/
+    }); 
   }
 
   endTime(app_date, start, duration){

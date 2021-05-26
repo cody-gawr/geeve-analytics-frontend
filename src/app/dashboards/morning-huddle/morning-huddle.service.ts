@@ -246,9 +246,18 @@ export class MorningHuddleService {
         );
     }
 
-    updateFollowUpStatus(event,pid,cid,type,previousDays,token = this._cookieService.get("token")): Observable<any> {
+    updateFollowUpStatus(event,pid,cid,type,previousDays): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/MorningHuddle/mhUpdateFollowupStatus?event="+event+"&patient_id="+pid+"&clinic_id="+cid+"&date="+previousDays+"&type="+type, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    } 
+
+    updateStatus(event,pid,cid,type,previousDays): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhUpdateStatus?status="+event+"&patient_id="+pid+"&clinic_id="+cid+"&date="+previousDays+"&type="+type, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

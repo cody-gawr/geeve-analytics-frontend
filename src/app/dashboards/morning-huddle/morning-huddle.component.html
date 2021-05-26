@@ -964,7 +964,7 @@
           <th mat-header-cell *matHeaderCellDef>Status</th>
           <td mat-cell *matCellDef="let element">
             <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
-              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')"></mat-slide-toggle>
+              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'post-op-calls')"></mat-slide-toggle>
           </td>
         </ng-container>
         <ng-container matColumnDef="isDataAvailable1">
@@ -1004,7 +1004,7 @@
               <div fxFlex="30">Status </div>
               <div fxFlex="70">  
               <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
-              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')"></mat-slide-toggle>
+              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'post-op-calls')"></mat-slide-toggle>
               </div>
             </div>
           </mat-card>
@@ -1029,7 +1029,7 @@
 <mat-card class="table-card post_call_responsive_border">
         <div class="morning-huddle-date">
             <strong>{{ followupsOverDueRecallDate }} </strong>        
-              <mat-label class="daysAgo" *ngIf="OverDueRecallDays != 1 && OverDueRecallDays != ''"> ({{ postOpCallsDays }} Week Ago)</mat-label>
+              <mat-label class="daysAgo" *ngIf="OverDueRecallDays != 1 && OverDueRecallDays != ''"> ({{ OverDueRecallDays }} Week Ago)</mat-label>
               <mat-label class="daysAgo" *ngIf="OverDueRecallDays == 1 && OverDueRecallDays != ''"> (Previous Week)</mat-label>
             
           </div>  
@@ -1070,12 +1070,12 @@
           <th mat-header-cell *matHeaderCellDef>Note</th>
           <td mat-cell *matCellDef="let element">
            <mat-form-field floatLabel="never" class="setPreviousDay">
-                  <mat-select placeholder="Select Note"  id="setNote"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
-                    <mat-option value="Ineligible">Ineligible</mat-option>
-                    <mat-option value="Already booked">Already booked</mat-option>
-                    <mat-option value="Didn’t want to book">Didn’t want to book</mat-option>
-                    <mat-option value="Cant be reached">Cant be reached</mat-option>
-                    <mat-option value="Booked">Booked</mat-option>
+                  <mat-select placeholder="Select Note" [(value)]="element.status"  id="setNote" (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'recall-overdue')"> 
+                    <mat-option  value="Ineligible">Ineligible</mat-option>
+                    <mat-option  value="Already booked">Already booked</mat-option>
+                    <mat-option  value="Did not want to book">Didn’t want to book</mat-option>
+                    <mat-option  value="Cant be reached">Cant be reached</mat-option>
+                    <mat-option  value="Booked">Booked</mat-option>
                   </mat-select>
                 </mat-form-field>
           </td>
@@ -1084,12 +1084,12 @@
           <th mat-header-cell *matHeaderCellDef>Status</th>
           <td mat-cell *matCellDef="let element">
             <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
-              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Recall Overdue')"></mat-slide-toggle>
+              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'recall-overdue')"></mat-slide-toggle>
           </td>
         </ng-container> 
         <ng-container matColumnDef="isDataAvailable1">
           <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns7.length">
-           You have no post op calls today 
+           You have no Overdue Recalls  today 
           </mat-footer-cell>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns7"></tr>
@@ -1121,19 +1121,19 @@
               <div fxFlex="30">Status </div>
               <div fxFlex="70">  
               <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
-              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Recall Overdue')"></mat-slide-toggle>
+              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'recall-overdue')"></mat-slide-toggle>
               </div>
             </div>
                   <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="30">Notes </div>
               <div fxFlex="70">  
                <mat-form-field floatLabel="never" class="setPreviousDay">
-                  <mat-select placeholder="Select Note"  id="setNote"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
-                    <mat-option value="Ineligible">Ineligible</mat-option>
-                    <mat-option value="Already booked">Already booked</mat-option>
-                    <mat-option value="Didn’t want to book">Didn’t want to book</mat-option>
-                    <mat-option value="Cant be reached">Cant be reached</mat-option>
-                    <mat-option value="Booked">Booked</mat-option>
+                  <mat-select placeholder="Select Note" [(value)]="element.status"   id="setNote1" (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'recall-overdue')"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                    <mat-option  value="Ineligible">Ineligible</mat-option>
+                    <mat-option  value="Already booked">Already booked</mat-option>
+                    <mat-option  value="Did not want to book">Didn’t want to book</mat-option>
+                    <mat-option  value="Cant be reached">Cant be reached</mat-option>
+                    <mat-option  value="Booked">Booked</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -1156,7 +1156,7 @@
 <mat-card class="table-card post_call_responsive_border">
         <div class="morning-huddle-date">
             <strong>{{ followupsTickFollowupsDate }} </strong>        
-              <mat-label class="daysAgo" *ngIf="TickFollowupsDays != 1 && TickFollowupsDays != ''"> ({{ postOpCallsDays }} Days Ago)</mat-label>
+              <mat-label class="daysAgo" *ngIf="TickFollowupsDays != 1 && TickFollowupsDays != ''"> ({{ TickFollowupsDays }} Days Ago)</mat-label>
               <mat-label class="daysAgo" *ngIf="TickFollowupsDays == 1 && TickFollowupsDays != ''"> (Previous Day)</mat-label>
             
           </div>  
@@ -1197,10 +1197,10 @@
           <th mat-header-cell *matHeaderCellDef>Note</th>
           <td mat-cell *matCellDef="let element">
            <mat-form-field floatLabel="never" class="setPreviousDay">
-                  <mat-select placeholder="Select Note"  id="setNote"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                  <mat-select placeholder="Select Note"  [(value)]="element.status"  id="setNote2" (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'tick-follower')"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                     <mat-option value="Ineligible">Ineligible</mat-option>
                     <mat-option value="Already booked">Already booked</mat-option>
-                    <mat-option value="Didn’t want to book">Didn’t want to book</mat-option>
+                    <mat-option value="Did not want to book">Didn’t want to book</mat-option>
                     <mat-option value="Cant be reached">Cant be reached</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
                   </mat-select>
@@ -1211,7 +1211,7 @@
           <th mat-header-cell *matHeaderCellDef>Status</th>
           <td mat-cell *matCellDef="let element">
             <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
-             (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Tick Follower')"></mat-slide-toggle>
+             (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'tick-follower')"></mat-slide-toggle>
           </td>
         </ng-container>
         <ng-container matColumnDef="isDataAvailable1">
@@ -1248,17 +1248,17 @@
               <div fxFlex="30">Status </div>
               <div fxFlex="70">  
               <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
-              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Tick Follower')"></mat-slide-toggle>
+              (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'tick-follower')"></mat-slide-toggle>
               </div>
             </div> 
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="30">Notes </div>
               <div fxFlex="70">  
                 <mat-form-field floatLabel="never" class="setPreviousDay">
-                  <mat-select placeholder="Select Note"  id="setNote"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                  <mat-select placeholder="Select Note" [(value)]="element.status"   id="setNote3" (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'tick-follower')"> <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                     <mat-option value="Ineligible">Ineligible</mat-option>
                     <mat-option value="Already booked">Already booked</mat-option>
-                    <mat-option value="Didn’t want to book">Didn’t want to book</mat-option>
+                    <mat-option value="Did not want to book">Didn’t want to book</mat-option>
                     <mat-option value="Cant be reached">Cant be reached</mat-option>
                     <mat-option value="Booked">Booked</mat-option>
                   </mat-select>
