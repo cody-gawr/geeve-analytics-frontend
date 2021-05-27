@@ -514,7 +514,9 @@ this.preoceedureChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
+       if(tooltipItems.yLabel > 0){
           return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
+       }
      },
      
   }
