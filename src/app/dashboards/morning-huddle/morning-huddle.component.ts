@@ -8,6 +8,8 @@ import { Router } from "@angular/router";
 import { DatePipe } from '@angular/common';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { MatTabGroup } from '@angular/material/tabs';
+import { TooltipLayoutComponent } from '../../shared/tooltip/tooltip-layout.component';
+import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -96,7 +98,10 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public currentDentistSchedule:any = 0;
     
     public dentistListLoading:boolean = false;
-
+    tooltipData: ITooltipData = {
+      title: 'Open quick search',
+      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+    }; 
 
     
 
@@ -106,7 +111,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns2: string[] = ['start', 'name', 'code'];
   displayedColumns3: string[] = ['start', 'name', 'outstanding'];
   displayedColumns4: string[] = ['name', 'phone', 'code','status'];
-  displayedColumns5: string[] = ['name', 'phone', 'code','note','status'];
+  displayedColumns5: string[] = ['name', 'phone','code','date','status'];
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   displayedColumns7: string[] = ['name', 'phone', 'code','note','status'];
   displayedColumns8: string[] = ['name', 'phone', 'code','note','status',];
@@ -579,6 +584,18 @@ initiate_clinic() {
     return selectedDate;
   }
 
+
+  formatPhoneNumber(phone){
+    if(phone.startsWith('04')){
+      phone = phone.replace(/ /g, '');
+      var onePart = phone.substr(0, 4);
+      var twoPart = phone.substr(4, 3);
+      var threePart = phone.substr(7, 3);
+      return onePart + ' '+ twoPart+ ' '+threePart;
+    } else {
+      return phone;
+    }
+  }
   /*refreshUnscheduledPatients(val){
     this.unscheduledPatientsDays = val;
     this.getFollowupsUnscheduledPatients();
