@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
-  Validators,
-  FormControl
+  Validators
 } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { LoginService } from '../../login/login.service';

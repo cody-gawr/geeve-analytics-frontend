@@ -4,10 +4,10 @@ import { CookieService } from "ngx-cookie";
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { Router } from "@angular/router";
+import { DatePipe } from '@angular/common';
 import { HeaderService } from '../../layouts/full/header/header.service';
-import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { MatTabGroup } from '@angular/material/tabs';
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -85,6 +85,12 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public followupsUnscheduledRecalls:any = [];
     public followupsUnscheduledPatientsDate:any = '';
     public followupPostOpCalls:any = [];
+    public followupOverDueRecall:any = [];
+    public followupsOverDueRecallDate:any = '';
+    public followupsTickFollowupsDate:any = '';
+    public TickFollowupsDays:any = '';
+    public OverDueRecallDays:any = '';
+    public followupTickFollowups:any = [];
     public clinicDentists:any = [];
     public currentDentist:any = 0;
     public currentDentistSchedule:any = 0;
@@ -100,8 +106,10 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns2: string[] = ['start', 'name', 'code'];
   displayedColumns3: string[] = ['start', 'name', 'outstanding'];
   displayedColumns4: string[] = ['name', 'phone', 'code','status'];
-  displayedColumns5: string[] = ['name', 'phone', 'code','status'];
+  displayedColumns5: string[] = ['name', 'phone', 'code','note','status'];
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
+  displayedColumns7: string[] = ['name', 'phone', 'code','note','status'];
+  displayedColumns8: string[] = ['name', 'phone', 'code','note','status',];
 
   timezone: string = '+1000';
   
@@ -183,8 +191,10 @@ initiate_clinic() {
       /***** Tab 3 ***/ 
       /***** Tab 4 ***/
       this.getReminders();
-      this.getFollowupsUnscheduledPatients();
+      //this.getFollowupsUnscheduledPatients();
       this.getFollowupPostOpCalls();
+      this.getOverdueRecalls();
+      this.getTickFollowups();
       /***** Tab 4 ***/     
       }
     }
@@ -235,8 +245,10 @@ initiate_clinic() {
     /*******Tab 4 *******/
     
     /*******Tab 5 *******/
-    this.getFollowupsUnscheduledPatients();
+    //this.getFollowupsUnscheduledPatients();
     this.getFollowupPostOpCalls();
+    this.getOverdueRecalls();
+    this.getTickFollowups();
     /*******Tab 5 *******/
   }
 
@@ -286,7 +298,7 @@ initiate_clinic() {
 
 
 
-  getFollowupsUnscheduledPatients(){
+/*  getFollowupsUnscheduledPatients(){
     this.morningHuddleService.getFollowupsUnscheduledPatients( this.clinic_id, this.previousDays,  this.unscheduledPatientsDays  ).subscribe((production:any) => {
       if(production.status == true) {
         this.unscheduledPatientsDays = production.days.unsched_days;
@@ -307,14 +319,34 @@ initiate_clinic() {
         this.followupsUnscheduledPatientsDate = production.date;     
       }
     }); 
-  } 
+  } */
 
   getFollowupPostOpCalls(){
     this.morningHuddleService.followupPostOpCalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
-      if(production.status == true) {
+      if(production.message == 'success') {
         this.followupPostOpCalls = production.data;     
         this.followupsPostopCallsDate = production.date;     
-        this.postOpCallsDays = production.days.post_op_days;     
+        this.postOpCallsDays = production.previous;     
+      }
+    }); 
+  } 
+
+  getOverdueRecalls(){
+    this.morningHuddleService.followupOverdueRecalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+      if(production.message == 'success') {
+        this.followupOverDueRecall = production.data;     
+        this.followupsOverDueRecallDate = production.date;     
+       this.OverDueRecallDays = production.previous;     
+      }
+    }); 
+  } 
+
+  getTickFollowups(){
+    this.morningHuddleService.followupTickFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+      if(production.message == 'success') {
+        this.followupTickFollowups = production.data;     
+        this.followupsTickFollowupsDate = production.date;     
+        this.TickFollowupsDays = production.previous;     
       }
     }); 
   } 
@@ -519,20 +551,17 @@ initiate_clinic() {
     return matches.join('')
   }
   
-  toggleUpdate(event,pid,cid,uid,type) {    
-    if(type == 'Post op Calls'){
-      if(this.followupsPostopCallsDate.includes(' - ')){
-        var date1 = this.followupsPostopCallsDate.split(' - ');
-        var date = this.datepipe.transform(date1[0], 'yyyy-MM-dd');
-      } else{
-        var date = this.datepipe.transform(this.followupsPostopCallsDate, 'yyyy-MM-dd');
-      }
-    } else  if(type == 'Unscheduled Patients'){
-      var date = this.datepipe.transform(this.followupsUnscheduledPatientsDate, 'yyyy-MM-dd');      
-    }
-    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,uid,type, date).subscribe((update:any) => {
+  //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
+  toggleUpdate(event,pid,date,cid,type) {    
+    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,type, date).subscribe((update:any) => {
       console.log(update,'***');  
-    });
+    });      
+  }
+
+  updateStatus(event,pid,date,cid,type) {    
+    this.morningHuddleService.updateStatus(event,pid,cid,type, date).subscribe((update:any) => {
+      console.log(update,'***');  
+    }); 
   }
 
   endTime(app_date, start, duration){

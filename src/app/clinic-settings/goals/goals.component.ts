@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
@@ -392,12 +392,13 @@ getGoalsForTabsClinic(allGoals) {
       tempChart['id'] = charts.id;
       tempChart['sign'] = charts.sign;
       tempChart['value'] = 0;
-      if(charts.clinic_goal) {
-        tempChart['value'] = charts.clinic_goal.value;
-      }
-      if(charts.dentist_goal) {
+      if(typeof(charts.dentist_goal) != 'undefined' && charts.dentist_goal) {
         tempChart['value'] = charts.dentist_goal.value;
       }
+      if(typeof(charts.clinic_goal) != 'undefined' && charts.clinic_goal) {
+        tempChart['value'] = charts.clinic_goal.value;
+      }
+     
       this.goalsData[parseInt(charts.id)] = tempChart['value'];
       temp['charts'].push(tempChart);
     });
@@ -498,8 +499,8 @@ getGoalsForTabsClinic(allGoals) {
   onBlur(id,val,event){
     if($(event.target).hasClass('sign%') && val > 100){
       $(event.target).val(100);
-    }
-    val = 100;
+      val = 100;
+    }    
     this.goalsData[parseInt(id)] =  parseInt(val);   
   }
 }

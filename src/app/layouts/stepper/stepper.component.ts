@@ -5,22 +5,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {
   ChangeDetectorRef,
   Component,
-  NgZone,
   OnDestroy,
-  ViewChild,
-  HostListener,
-  Directive,
   AfterViewInit, Inject
 } from '@angular/core';
 import { MenuItems } from '../../shared/menu-items/menu-items';
-import { StepperHeaderComponent } from './header/header.component';
-import { StepperSidebarComponent } from './sidebar/sidebar.component';
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { StepperHeaderService } from './header/header.service';
 import { CookieService } from "ngx-cookie";
-
-import { StepperHeaderrightComponent } from '../../layouts/stepper/headerright/headerright.component';
 
 import { environment } from "../../../environments/environment";
 

@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
-import { Router, NavigationEnd, Event  } from '@angular/router';
+import { Router  } from '@angular/router';
 
 @Injectable()
 export class ClinicGoalsService {

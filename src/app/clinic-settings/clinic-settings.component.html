@@ -99,15 +99,33 @@
               <small *ngIf="form.controls['post_op_calls_days'].hasError('required') && form.controls['post_op_calls_days'].touched" class="text-danger support-text" style="float: left;width: 100%;">Field is Required.</small>
             </div>
           </div>
+            <div class="post-op-codes" style="width: 250px; float: left;">
+            <h4 class="clinic-settings-form-title">Recall Followups</h4>          
+            <div class="sa-form-group clinic-setting-form">
+              <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_weeks']" [(ngModel)]="recallWeeks" style="width: 70px;">
+              <span style="padding: 0 10px;">Weeks Ago</span>
+             <small *ngIf="form.controls['recall_weeks'].hasError('required') && form.controls['recall_weeks'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
+            </div>
+          </div>
+
+
+            <div class="post-op-codes" style="width: 250px; float: left; margin-right: 19.8%">
+            <h4 class="clinic-settings-form-title">Tick Followups</h4>          
+            <div class="sa-form-group clinic-setting-form">
+              <input type="number" min="0" placeholder="" [formControl]="form.controls['tick_days']" [(ngModel)]="tickDays" style="width: 70px;">
+              <span style="padding: 0 10px;">Days Ago</span>
+             <small *ngIf="form.controls['tick_days'].hasError('required') && form.controls['tick_days'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
+            </div>
+          </div>
           
-          <div class="post-op-codes" style="width: 250px; float: left; margin-right: 19.8%">
+     <!--      <div class="post-op-codes" style="width: 250px; float: left; margin-right: 19.8%">
             <h4 class="clinic-settings-form-title">Unscheduled Patients Call</h4>          
             <div class="sa-form-group clinic-setting-form">
               <input type="number" min="0" placeholder="" [formControl]="form.controls['unscheduled_patients_days']" [(ngModel)]="unscheduledPatientsMh" style="width: 70px;">
               <span style="padding: 0 10px;">Days Ago</span>
              <small *ngIf="form.controls['unscheduled_patients_days'].hasError('required') && form.controls['unscheduled_patients_days'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
             </div>
-          </div>
+          </div> -->
 
 
           <div class="post-op-codes" style="float: left;width: 100%;">

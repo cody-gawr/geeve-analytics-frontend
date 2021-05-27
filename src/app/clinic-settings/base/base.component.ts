@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 
 @Component({

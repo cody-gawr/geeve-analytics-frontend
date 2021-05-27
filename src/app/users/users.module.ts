@@ -7,7 +7,7 @@ import { UsersService } from './users.service';
 import { UsersComponent  } from './users.component';
 import { UsersRoutes } from './users.routing';
 import { DemoMaterialModule } from '../demo-material-module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [

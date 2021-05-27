@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from "@angular/router";
-import { EventEmitter , Output, Input} from '@angular/core';
+import { EventEmitter , Output} from '@angular/core';
 import { DentistService } from '../dentist/dentist.service';
 import { ClinicService } from '../clinic/clinic.service';
 import { ToastrService } from 'ngx-toastr';

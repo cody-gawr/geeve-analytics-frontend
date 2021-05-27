@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { CookieService } from "ngx-cookie";
 import { environment } from "../../environments/environment";
-import { Router, NavigationEnd, Event  } from '@angular/router';
+import { Router  } from '@angular/router';
 @Injectable()
 export class ClinicSettingsService {
 
@@ -35,7 +35,7 @@ export class ClinicSettingsService {
         );
     }
        // Get ClinicSettings
-    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta,postOpCallsMh,unscheduledPatientsMh, token = this._cookieService.get("token")): Observable<any> {
+    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta,postOpCallsMh,recallWeeks,tickDays, token = this._cookieService.get("token")): Observable<any> {
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
         formData.append('clinicName', name);
@@ -47,7 +47,8 @@ export class ClinicSettingsService {
         formData.append('clinicEmail', clinicEmail);
         formData.append('fta_uta', ftaUta);
         formData.append('post_op_days', postOpCallsMh);
-        formData.append('unsched_days', unscheduledPatientsMh);
+        formData.append('recall_weeks', recallWeeks);
+        formData.append('tick_days', tickDays);
     var header = this.getHeaders();
     return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, { headers: header})
         .pipe(map((response: Response) => {

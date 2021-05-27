@@ -4,8 +4,7 @@ import { CookieService, CookieOptions } from "ngx-cookie";
 import {
   FormBuilder,
   FormGroup,
-  Validators,
-  FormControl
+  Validators
 } from '@angular/forms';
 import { SupportService } from './support.service';
 

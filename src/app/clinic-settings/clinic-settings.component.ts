@@ -1,10 +1,10 @@
-import { Component,OnInit, AfterViewInit  } from '@angular/core';
+import { Component,OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ClinicSettingsService } from './clinic-settings.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService } from "ngx-cookie";
-import { Router, NavigationEnd, Event  } from '@angular/router';
+import { Router  } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-formlayout',
@@ -28,7 +28,9 @@ export class ClinicSettingsComponent implements OnInit {
       public clinicEmail = '';
       public ftaUta:any = "";
       public postOpCallsMh:any = 1;
-      public unscheduledPatientsMh:any = 1;
+      public unscheduledPatientsMh:any = 0;
+      public recallWeeks:any = 0;
+      public tickDays:any = 0;
 
       public ftaUtaStatus:boolean = true;
       public ftaUtaItem:boolean = false;
@@ -82,7 +84,9 @@ export class ClinicSettingsComponent implements OnInit {
       post_op_calls: [null],      
       fta_uta: [null, Validators.compose([Validators.required])],              
       post_op_calls_days: [null, Validators.compose([Validators.required])],              
-      unscheduled_patients_days: [null, Validators.compose([Validators.required])],              
+      recall_weeks: [null, Validators.compose([Validators.required])],              
+      tick_days: [null, Validators.compose([Validators.required])],              
+     // unscheduled_patients_days: [null, Validators.compose([Validators.required])],              
       // facebook: [null],
       // twitter: [null],
       // linkedin: [null],
@@ -118,7 +122,8 @@ export class ClinicSettingsComponent implements OnInit {
         this.clinicEmail = res.data[0].clinicEmail; 
         this.ftaUta = res.data[0].fta_uta;
         this.postOpCallsMh = res.data[0].post_op_days;
-        this.unscheduledPatientsMh = res.data[0].unsched_days;
+        this.recallWeeks = res.data[0].recall_weeks;
+        this.tickDays = res.data[0].tick_days;
         if(this.ftaUta == '')
           this.ftaUta = "status";
        
@@ -150,9 +155,11 @@ export class ClinicSettingsComponent implements OnInit {
   this.clinicEmail = this.form.value.clinicEmail;
   this.ftaUta = this.form.value.fta_uta;
   this.postOpCallsMh = this.form.value.post_op_calls_days;
-  this.unscheduledPatientsMh = this.form.value.unscheduled_patients_days;
+  this.recallWeeks = this.form.value.recall_weeks;
+  this.tickDays = this.form.value.tick_days;
+ // this.unscheduledPatientsMh = this.form.value.unscheduled_patients_days;
   
-  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh, this.unscheduledPatientsMh ).subscribe((res) => {
+  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays ).subscribe((res) => {
       $('.ajax-loader').hide();
       if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );

@@ -1,11 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
-  NgZone,
   OnDestroy,
-  ViewChild,
-  HostListener,
-  Directive,
   AfterViewInit
 } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
