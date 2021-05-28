@@ -386,7 +386,7 @@ initiate_clinic() {
         if(this.showComplete == true){
           this.endOfDaysTasksInComp = this.endOfDaysTasks;
         } else {
-          this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.history.is_complete == 0);      
+          this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.history.is_complete != 1);      
         }
       }
     }); 
@@ -653,7 +653,7 @@ initiate_clinic() {
     if(event.checked ==  true){  
       this.endOfDaysTasksInComp = this.endOfDaysTasks;
     } else {
-      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.history.is_complete == 0);      
+      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.history.is_complete != 1);      
     }
   }
 
