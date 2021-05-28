@@ -925,14 +925,23 @@
       </div>
 
 <mat-card class="table-card post_call_responsive_border">
-      <mat-card-title>Post op Calls
-         <div class="info-icon-container"><img [tooltip]="tooltipDataPostOps" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div>
+      <mat-card-title>
+        <div class="title-follow-up">
+          Post op Calls
+          <div class="info-icon-container"><img [tooltip]="tooltipDataPostOps" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div>          
+        </div>
+        
+         <div class="showComplete">
+          Show Complete
+          <mat-slide-toggle name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)"></mat-slide-toggle>
+        </div>
+         
       </mat-card-title>
       <mat-card-content> 
     <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
+          <div class="card-loading" *ngIf="poLoadingLoading"><img class="tableLoader" src="../../assets/images/loader.gif"></div>  
      
-      <table fxHide fxShow.gt-sm mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8 customWidth PostOp">
-    
+      <table fxHide fxShow.gt-sm mat-table [dataSource]="followupPostOpCallsInComp" class="mat-elevation-z8 customWidth PostOp">
     
         <!-- Name Column -->
         <ng-container matColumnDef="name">
@@ -978,12 +987,12 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns5"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns5;"></tr>
         <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
-          [ngClass]="(followupPostOpCalls.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+          [ngClass]="(followupPostOpCallsInComp.length <= 0)? 'show' : 'hide'"></mat-footer-row>
       </table>
       <!-- responsive table - frontdesk followup (Post op calls)  -->
       <div fxHide.gt-sm>
-        <div *ngIf="followupPostOpCalls.length;else noPostOpCalls">
-          <mat-card class="huddle-card" *ngFor="let element of followupPostOpCalls">
+        <div *ngIf="followupPostOpCallsInComp.length;else noPostOpCalls">
+          <mat-card class="huddle-card" *ngFor="let element of followupPostOpCallsInComp">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="30">Patient: </div>
               <div fxFlex="70"> {{element.patients.firstname }} {{element.patients.surname }}  </div>
@@ -1036,18 +1045,20 @@
               <mat-label class="daysAgo" *ngIf="OverDueRecallDays == 1 && OverDueRecallDays != ''"> (Previous Week)</mat-label>
             
           </div>  --> 
-      <mat-card-title>Overdue Recalls   
-           <div class="info-icon-container">
-                  <img [tooltip]="tooltipDataRecalls"
-                    src="../assets/images/info-icon.png" 
-                    alt="info-icon" class="info-icon"/>                
-                </div>
+      <mat-card-title>
+        <div class="title-follow-up">
+          Overdue Recalls   
+           <div class="info-icon-container"><img [tooltip]="tooltipDataRecalls" src="../assets/images/info-icon.png"  alt="info-icon" class="info-icon" /></div>
+        </div>
+        <div class="showComplete">
+          Show Complete
+          <mat-slide-toggle name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)"></mat-slide-toggle>
+        </div>
       </mat-card-title>
       <mat-card-content> 
     <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
-     
-      <table fxHide fxShow.gt-sm mat-table [dataSource]="followupOverDueRecall" class="mat-elevation-z8 customWidth thick">
-    
+      <div class="card-loading" *ngIf="recallLoadingLoading"><img class="tableLoader" src="../../assets/images/loader.gif"></div>       
+      <table fxHide fxShow.gt-sm mat-table [dataSource]="followupOverDueRecallInCMP" class="mat-elevation-z8 customWidth thick">
     
         <!-- Name Column -->
         <ng-container matColumnDef="name">
@@ -1103,12 +1114,12 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns7"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns7;"></tr>
         <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
-          [ngClass]="(followupOverDueRecall.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+          [ngClass]="(followupOverDueRecallInCMP.length <= 0)? 'show' : 'hide'"></mat-footer-row>
       </table>
       <!-- responsive table - frontdesk followup (Post op calls)  -->
       <div fxHide.gt-sm>
-        <div *ngIf="followupOverDueRecall.length;else noPostOpCalls">
-          <mat-card class="huddle-card" *ngFor="let element of followupOverDueRecall">
+        <div *ngIf="followupOverDueRecallInCMP.length;else noPostOpCalls">
+          <mat-card class="huddle-card" *ngFor="let element of followupOverDueRecallInCMP">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="30">Patient: </div>
               <div fxFlex="70"> {{element.patients.firstname }} {{element.patients.surname }}  </div>
@@ -1169,17 +1180,22 @@
               <mat-label class="daysAgo" *ngIf="TickFollowupsDays == 1 && TickFollowupsDays != ''"> (Previous Day)</mat-label>
             
           </div>  --> 
-      <mat-card-title>Tick Followups   
-           <div class="info-icon-container">
-                  <img [tooltip]="tooltipDataTicks"
-                    src="../assets/images/info-icon.png" 
-                    alt="info-icon" class="info-icon"/>                
-                </div>
+      <mat-card-title>
+         <div class="title-follow-up">
+          Tick Followups 
+          <div class="info-icon-container"><img [tooltip]="tooltipDataTicks" src="../assets/images/info-icon.png"  alt="info-icon" class="info-icon"/></div>
+        </div>
+        
+        <div class="showComplete">
+          Show Complete
+          <mat-slide-toggle name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)"></mat-slide-toggle>
+        </div>
+          
       </mat-card-title>
       <mat-card-content> 
     <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
-     
-      <table fxHide fxShow.gt-sm mat-table [dataSource]="followupTickFollowups" class="mat-elevation-z8 customWidth thick">
+      <div class="card-loading" *ngIf="endTaksLoadingLoading"><img class="tableLoader" src="../../assets/images/loader.gif"></div>  
+      <table fxHide fxShow.gt-sm mat-table [dataSource]="followupTickFollowupsInCMP" class="mat-elevation-z8 customWidth thick">
     
     
         <!-- Name Column -->
@@ -1236,12 +1252,12 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns8"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns8;"></tr>
         <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
-          [ngClass]="(followupTickFollowups.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+          [ngClass]="(followupTickFollowupsInCMP.length <= 0)? 'show' : 'hide'"></mat-footer-row>
       </table>
       <!-- responsive table - frontdesk followup (Post op calls)  -->
       <div fxHide.gt-sm>
-        <div *ngIf="followupTickFollowups.length;else noPostOpCalls">
-          <mat-card class="huddle-card" *ngFor="let element of followupTickFollowups">
+        <div *ngIf="followupTickFollowupsInCMP.length;else noPostOpCalls">
+          <mat-card class="huddle-card" *ngFor="let element of followupTickFollowupsInCMP">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="30">Patient: </div>
               <div fxFlex="70"> {{element.patients.firstname }} {{element.patients.surname }}  </div>

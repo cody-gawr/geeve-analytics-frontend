@@ -216,3 +216,7 @@ table{
 .showComplete mat-slide-toggle {
     margin: -8px 0 0px 11px;
 }
+.showComplete {
+    float: right;
+    margin: -17px 27px 0 0;
+}
