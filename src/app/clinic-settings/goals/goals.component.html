@@ -49,6 +49,33 @@
       </div>
     </div>
 
-
+    <!--Dashboard Forms-->
+    <div fxLayout="row wrap goals-form-container" style="width:100%;">
+      <div
+        fxFlex.gt-sm="100%"
+        fxFlex="100"
+        class="sa_mattabs_design sa_matforms_design"
+      >
+        <div *ngFor="let tab of tabs">
+          <div class="example-small-box">           
+            <form  class="basic-form" *ngIf="selectedTab == tab.id"> <!-- [formGroup]="tab.name" -->
+              <div class="matInput-form-group">
+                <mat-form-field class="sa-form-group" *ngFor="let control of tab.charts">
+                  <mat-label class="goals-form-field-label">
+                    {{ control.chart }}
+                  </mat-label>
+                 <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span>
+                  <input class="goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (blur)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/> <!-- [formControl]="control.control" -->
+                  <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span>
+                </mat-form-field>                
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="sa-form-group-btn">
+          <button class="btn save-button" (click)="onSubmit()">Save</button>
+        </div>
+      </div>
+    </div>
   </mat-card-content>
 </mat-expansion-panel>
