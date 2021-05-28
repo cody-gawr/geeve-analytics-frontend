@@ -600,7 +600,7 @@ expenses_card custom_ngx_cw01">
                 <div style="height: 280px">
                   <canvas *ngIf="netProfitDisplayVal == 1 && netProfitChartTrendLabels.length  > 0 && finNetProfitTrendLoader == false"
                     class="profit1 net_profit" baseChart [datasets]="netProfitPercentChartTrend"
-                    [labels]="netProfitChartTrendLabels" [options]="labelBarOptions" [legend]="false"
+                    [labels]="netProfitChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <!-- <img src='../assets/images/nodata02.png' *ngIf="" class="blankChart"> -->
@@ -614,7 +614,7 @@ expenses_card custom_ngx_cw01">
 
                   <canvas *ngIf="netProfitDisplayVal == 2 && netProfitPmsChartTrendLabels.length  >0"
                     class="profit1 net_profit" baseChart [datasets]="netProfitChartTrend"
-                    [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptions" [legend]="false"
+                    [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <!-- <img src='../assets/images/nodata02.png' *ngIf="netProfitDisplayVal == 2  && netProfitPercentChartTrendLabels.length <=0 && finNetProfitPercentTrendLoader == false"  class="blankChart"> -->
@@ -628,7 +628,7 @@ expenses_card custom_ngx_cw01">
 
                   <canvas *ngIf="netProfitDisplayVal == 3 && netProfitPmsChartTrendLabels.length  > 0" #myCanvas2
                     class="profit3 net_profit" baseChart [datasets]="netProfitPmsChartTrend"
-                    [labels]="netProfitPmsChartTrendLabels" [options]="labelBarPercentOptions" [legend]="false"
+                    [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <!-- <img src='../assets/images/nodata02.png' *ngIf="netProfitDisplayVal == 3  && netProfitPmsChartTrendLabels.length  <=0 && finNetProfitPMSTrendLoader == true" class="blankChart">  -->
@@ -690,7 +690,7 @@ expenses_card custom_ngx_cw01">
                 <div style="height: 320px;">
                   <canvas #myCanvas2 class="trendproductionVisit" *ngIf="productionVisitChartTrendLabels.length  > 0"
                     baseChart [datasets]="productionVisitChartTrend" [labels]="productionVisitChartTrendLabels"
-                    [options]="labelBarOptions" [legend]="false" [chartType]="lineChartType"
+                    [options]="labelBarOptionsSingleValue" [legend]="false" [chartType]="lineChartType"
                     (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"></canvas>
                   <div *ngIf="productionVisitChartTrendLabels.length  <=0 && finProductionPerVisitTrendLoader == false"
@@ -779,7 +779,7 @@ expenses_card custom_ngx_cw01">
                 <div style="height: 280px">
                   <canvas #myCanvas2 class="trendtotalDiscount"
                     *ngIf="discountsChartTrend1 && discountsChartTrend1.length  > 0 && finTotalDiscountsTrendLoader == false" baseChart
-                    [datasets]="discountsChartTrend" [labels]="discountsChartTrendLabels" [options]="labelBarOptions"
+                    [datasets]="discountsChartTrend" [labels]="discountsChartTrendLabels" [options]="labelBarOptionsSingleValue"
                     [legend]="false" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
                     [colors]="stackedChartColorsBar" (chartClick)="chartClicked($event)"> </canvas>
                   <!-- <div *ngIf="discountsChartTrendLabels.length  <=0 && finTotalDiscountsTrendLoader == false" class="sa_nodata_div">
