@@ -8,15 +8,17 @@ import { SharedMatModule } from '../shared-mat.module';
 import { DemoMaterialModule } from '../demo-material-module';
 import { BaseComponent } from './base/base.component';
 import { DentistComponent } from './dentist/dentist.component';
-import { TasksComponent } from './tasks/tasks.component';
+import { TasksComponent,DialogOverviewExampleDialogComponent } from './tasks/tasks.component';
 import { GoalsComponent } from './goals/goals.component';
 import { AutofocusDirective } from './auto-focus.directive';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     RouterModule.forChild(ClinicSettingsRoutes),
     SharedMatModule,
-    DemoMaterialModule
+    DemoMaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     ClinicSettingsService,
@@ -28,12 +30,16 @@ import { AutofocusDirective } from './auto-focus.directive';
     DentistComponent,
     TasksComponent,
     GoalsComponent,
-    AutofocusDirective
+    AutofocusDirective,
+    DialogOverviewExampleDialogComponent,
+    TasksComponent
   ],
+  entryComponents: [DialogOverviewExampleDialogComponent],  
   exports: [
     BaseComponent,
     DentistComponent,
-    GoalsComponent
+    GoalsComponent,
+    TasksComponent
   ]
 })
 export class ClinicSettingsModule {}

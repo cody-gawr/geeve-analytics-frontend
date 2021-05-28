@@ -14,10 +14,10 @@ import { CookieService } from "ngx-cookie";
 import { HeaderService } from '../layouts/full/header/header.service';
 import Swal from 'sweetalert2';
 @Component({
-  selector: 'app-dialog-overview-example-dialog',
+  selector: 'app-task-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
   styleUrls: ['./roles-users.component.scss'],
-  encapsulation: ViewEncapsulation.None
+ 
 })
 
 export class DialogOverviewExampleDialogComponent {

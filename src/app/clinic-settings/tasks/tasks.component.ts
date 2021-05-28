@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Inject,Component, Input, ViewChild,ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -8,6 +8,52 @@ import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TaskService } from './tasks.service';
 import { BaseComponent } from '../base/base.component';
+import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+
+@Component({
+  selector: 'app-dialog-overview-example-dialog',
+  templateUrl: './dialog-overview-example.html',
+
+  encapsulation: ViewEncapsulation.None
+})
+
+
+export class DialogOverviewExampleDialogComponent { 
+  constructor(public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private taskService: TaskService, private router: Router) {}
+  
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  save(data){
+    if(data.task_name == ''){
+      return false;
+    }
+    this.taskService.addTask(data.id,data.task_name,data.clinic_id).subscribe((res) => {
+      if (res.message == 'success') {
+        this.dialogRef.close();
+      } else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error)
+    });
+  }
+  validate(){
+
+  }
+
+  handleUnAuthorization() {
+    this._cookieService.put("username", '');
+    this._cookieService.put("email", '');
+    this._cookieService.put("token", '');
+    this._cookieService.put("userid", '');
+    this.router.navigateByUrl('/login');
+  }
+
+}
+
+
 
 @Component({
   selector: 'app-tasks-settings',
@@ -24,7 +70,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   tasksList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['name','active','action'];
+  displayedColumns: string[] = ['task_name','active','action'];
   editing = {};
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -32,7 +78,8 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     private _cookieService: CookieService,
     private taskService: TaskService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
   ) {
     super();
   }
@@ -88,50 +135,22 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     });
   }
 
-  enableEditing(index, column) {
-   /* // this.tasksList.data[index].isEditable = true; 
-    this.editing[index + '-' + column] = true;
-    Object.keys(this.editing).map(key => {
-      this.editing[key] = (key === `${index}-${column}`) ? true : false;
-    });*/
-  }
-
-  updateValue(event, column, index) {
-/*    let oldValue = this.tasksList.data[index][column];    
-    this.editing[index + '-' + column] = false;
-    const providerId = this.tasksList.data[index].providerId;
-    const updatedValue = this.tasksList.data[index]['name'];
-    if(column == 'name'){
-      const updatedValue = event.target.value;
-      this.tasksList.data[index][column] = updatedValue;
-    }
-    var isActive = null;
-    if(column == 'is_active'){
-      isActive = 0;
-      if(event.target.checked){
-        isActive = 1;
-      }
-    }
-     this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive).pipe(
-        takeUntil(this.destroyed$)
-      ).subscribe((res) => {
-        if (res.message == 'success') {
-          this.toastr.success('Dentist Updated');
-          this.getDentists(this.clinic_id$.value);
-        }
-      }, (error) => {
-        console.log('error', error);
-        this.tasksList.data[index][column] = oldValue;
-        this.toastr.error('Opps, Error occurs in updating dentist!');
-      });  */
-       
-  }
-
   updateStatus(event,id,is_default){
     var active = (event.checked == true)? 1 : 0;
     this.taskService.updateTaskStatus(active,id,this.clinic_id$.value,is_default).subscribe((update:any) => {
       
     });   
+  }
+
+  openDialog(id= '',name= '',): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+      width: '500px',
+      data: {id: id, task_name: name,clinic_id: this.clinic_id$.value}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getTasks(this.clinic_id$.value);
+    });
+    
   }
 
 }
