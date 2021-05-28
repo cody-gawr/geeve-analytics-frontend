@@ -89,20 +89,10 @@
     </ul>
 
     <div class="data-loading-main">
-      <div
-        class="no-data"
-        [ngClass]="
-          dentistList.data.length == 0 && dentistListLoading ? 'show' : 'hide'
-        "
-      >
+      <div class="no-data" [ngClass]="dentistList.data.length == 0 && dentistListLoading ? 'show' : 'hide'">
         No Data found
       </div>
-      <div
-        class="loader"
-        [ngClass]="
-          dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'
-        "
-      >
+      <div class="loader" [ngClass]="dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'">
         <img class="tableLoader" src="../../../assets/images/loader.gif" />
       </div>
     </div>
