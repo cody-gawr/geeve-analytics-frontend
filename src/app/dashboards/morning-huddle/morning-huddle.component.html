@@ -5,7 +5,7 @@
   <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">    
       <div class="morning-huddle-date">
         <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select placeholder="Morning Huddle - {{  subtractDays(0) | date:'MMM d, y':'timezone'}}" (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
+          <mat-select placeholder="Morning Huddle - {{  subtractDays(0) | date:'EEE MMM d, y':'timezone'}}" (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
             <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(0) | date:'MMM d, y':'timezone'}}</mat-option>
             <mat-option [value]="subtractDays(1) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(1) | date:'MMM d, y':'timezone'}}</mat-option>
             <mat-option [value]="subtractDays(2) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(2) | date:'MMM d, y':'timezone'}}</mat-option>
@@ -16,7 +16,7 @@
           </mat-select>
         </mat-form-field>
         
-          <strong>Previous Day: {{ production.date | date:'MMM d, y':'timezone'  }}</strong>
+          <strong>Previous Day: {{ production.date | date:'EEE MMM d':'timezone'  }}</strong>
         
       </div>
     <!-- Top Cards -->
@@ -35,7 +35,7 @@
                       <img src="../assets/images/product-chart.png" alt="product-chart" /> 
                     </div>
                     <div class="production_description production_description_huddle">
-                      <h4>Production</h4>
+                      <h4>Clinic Production</h4>
                       <div class="price-section patients-num" *ngIf="production">
                         <span class="change_value">${{ production.total | number:'1.0-0'}}</span>
                        <!--  <div
@@ -78,7 +78,7 @@
                       
                     </div>
                     <div class="production_description production_description_huddle">
-                      <h4>Recall Rebook Rate</h4>
+                      <h4>Clinic Recall Prebook Rate</h4>
                       <div class="recall-retail-rate" *ngIf="recallRate">
                         <span class="change_value" *ngIf="recallRate.rate != 'N/A'">{{ recallRate.rate }}%</span>
                         <span class="change_value" *ngIf="recallRate.rate == 'N/A'">{{ recallRate.rate }}</span>
@@ -133,7 +133,7 @@
                       <img src="../assets/images/huddle_appointment.png" alt="reappointment-rate" /> 
                     </div>
                     <div class="production_description production_description_huddle">
-                      <h4>Reappointment Rate</h4>
+                      <h4>Clinic Reappointment Rate</h4>
                       <div class="price-section" *ngIf="treatmentRate">
                           
                           <span class="change_value" *ngIf="treatmentRate.total != 'N/A'">{{ treatmentRate.total}}%</span>
@@ -188,7 +188,7 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <th mat-header-cell *matHeaderCellDef> Clinician </th>
       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
@@ -203,7 +203,7 @@
     </ng-container>
     <!-- Symbol Column -->
     <ng-container matColumnDef="recall">
-      <th mat-header-cell *matHeaderCellDef> Recall Rebook Rate </th>
+      <th mat-header-cell *matHeaderCellDef> Recall Prebook Rate </th>
       <td mat-cell *matCellDef="let element"> 
         <span *ngIf="element.recall.rate == 'N/A'" [ngClass] = "(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}}  </span>
         <span *ngIf="element.recall.rate != 'N/A'" [ngClass] = "(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}} % </span>
@@ -277,7 +277,8 @@
     </div>
     <ng-template #noData>
       <mat-card class="huddle-card">
-        <h6>No data found</h6>
+        <h6>    No data found for {{ production.date | date:'EEE MMM d':'timezone'  }}
+        </h6>
       </mat-card>
     </ng-template>
   </div>
@@ -292,7 +293,7 @@
 
 <div fxHide fxShow.gt-sm class="data-loading-main">
    <div class="no-data" [ngClass]="(dentistList.data.length == 0 && dentistListLoading)? 'show' : 'hide'">
-      No Data found
+    No data found for {{ production.date | date:'EEE MMM d':'timezone'  }}
    </div>
    <div class="loader" [ngClass]="(dentistList.data.length == 0 && !dentistListLoading)? 'show' : 'hide'">
      <img class="tableLoader" src="../../../assets/images/loader.gif">
@@ -380,7 +381,7 @@
           </mat-select>                   
         </mat-form-field>        
       </div>
-        <strong> Current Day: {{ schedulePatielDate  }}</strong>
+        <strong> Current Day: {{ schedulePatielDate | date:'EEE MMM d':'timezone'  }}</strong>
       </div>
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
@@ -642,7 +643,7 @@
   <mat-tab label="Front Desk Reminders" *ngIf="user_type != '4'">
 
      <div class="morning-huddle-date">
-        <strong>Current Day: {{ remindersRecallsOverdueDate }}</strong>        
+        <strong>Current Day: {{ remindersRecallsOverdueDate | date:'EEE MMM d':'timezone' }}</strong>        
       </div>
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
@@ -836,7 +837,10 @@
 
 
   <!-- Followups Tab start -->
-  <mat-tab label="Front Desk Followups" *ngIf="user_type != '4'">       
+  <mat-tab label="Front Desk Followups" *ngIf="user_type != '4'">
+    <div class="morning-huddle-date">
+      <strong>Current Day: {{ remindersRecallsOverdueDate | date:'EEE MMM d':'timezone' }} </strong>        
+    </div>  
       <div class="sa_dentist_graphs_area sa_profit_bar patient-schedule">
         <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
          <!--  <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="sa_huddle sa_flexbg mh-matcard mh-matcard-darkblue">
@@ -921,17 +925,11 @@
       </div>
 
 <mat-card class="table-card post_call_responsive_border">
-      <!--   <div class="morning-huddle-date">
-            <strong>{{ followupsPostopCallsDate }} </strong>        
-              <mat-label class="daysAgo" *ngIf="postOpCallsDays != 1 && postOpCallsDays != ''"> ({{ postOpCallsDays }} Days Ago)</mat-label>
-              <mat-label class="daysAgo" *ngIf="postOpCallsDays == 1 && postOpCallsDays != ''"> (Previous Day)</mat-label>
-            
-          </div>   -->
       <mat-card-title>Post op Calls
-         <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div>
+         <div class="info-icon-container"><img [tooltip]="tooltipDataPostOps" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div>
       </mat-card-title>
       <mat-card-content> 
-    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
+    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
      
       <table fxHide fxShow.gt-sm mat-table [dataSource]="followupPostOpCalls" class="mat-elevation-z8 customWidth PostOp">
     
@@ -1040,13 +1038,13 @@
           </div>  --> 
       <mat-card-title>Overdue Recalls   
            <div class="info-icon-container">
-                  <img [tooltip]="tooltipData"
+                  <img [tooltip]="tooltipDataRecalls"
                     src="../assets/images/info-icon.png" 
                     alt="info-icon" class="info-icon"/>                
                 </div>
       </mat-card-title>
       <mat-card-content> 
-    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
+    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
      
       <table fxHide fxShow.gt-sm mat-table [dataSource]="followupOverDueRecall" class="mat-elevation-z8 customWidth thick">
     
@@ -1173,13 +1171,13 @@
           </div>  --> 
       <mat-card-title>Tick Followups   
            <div class="info-icon-container">
-                  <img [tooltip]="tooltipData"
+                  <img [tooltip]="tooltipDataTicks"
                     src="../assets/images/info-icon.png" 
                     alt="info-icon" class="info-icon"/>                
                 </div>
       </mat-card-title>
       <mat-card-content> 
-    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">
+    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
      
       <table fxHide fxShow.gt-sm mat-table [dataSource]="followupTickFollowups" class="mat-elevation-z8 customWidth thick">
     

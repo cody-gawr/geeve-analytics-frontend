@@ -2741,7 +2741,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if (data.data) {
           if(data.data.plan_fee_all){
              data.data.plan_fee_all.forEach(res => {
-            if (res.average_fees > 0) {
+            if (res.average_fees >= 0) {
               if (res.average_fees)
                 this.treatmentPlanTrend1.push(Math.round(res.average_fees));
               else
@@ -2756,7 +2756,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         
       if(data.data.plan_fee_completed){
         data.data.plan_fee_completed.forEach(res => {
-          if (res.average_fees > 0) {
+          if (res.average_fees >= 0) {
             if (res.average_fees)
               this.treatmentPlanTrend2.push(Math.round(res.average_fees));
             else
@@ -3085,7 +3085,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.hourlyRateChartTrendLabels1 = [];
         this.hourlyRateChartTrend1 = [];
         data.data.forEach(res => {
-          if (res.hourly_rate > 0) {
+          if (res.hourly_rate >= 0) {
               this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
             if (this.trendValue == 'c')
               this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
