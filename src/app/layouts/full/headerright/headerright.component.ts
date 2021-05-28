@@ -132,6 +132,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   public selectedDentist;
     // Get Dentist
     getDentists() {
+      this.dentists = [];
       this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
           this.showAll = true;
            if(res.message == 'success'){

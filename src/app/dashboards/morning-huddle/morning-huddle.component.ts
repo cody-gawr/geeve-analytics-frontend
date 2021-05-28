@@ -90,7 +90,11 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public OverDueRecallDays:any = '';
     public followupTickFollowups:any = [];
     public endOfDaysTasks:any = [];
+    public endOfDaysTasksInComp:any = [];
+    public endOfDaysTasksComp:any = [];
     public endOfDaysTasksDate:any = [];
+    public endTaksLoading:boolean = true;
+    public showComplete:boolean = false;
     public clinicDentists:any = [];
     public currentDentist:any = 0;
     public currentDentistSchedule:any = 0;
@@ -212,7 +216,7 @@ initiate_clinic() {
       /***** Tab 4 ***/     
       }
 
-      if(this.user_type == '5'){
+      if(this.user_type != '4'){
         this.getEndOfDays();
       }
     }
@@ -268,7 +272,7 @@ initiate_clinic() {
     this.getOverdueRecalls();
     this.getTickFollowups();
     /*******Tab 5 *******/
-    if(this.user_type == '5'){
+    if(this.user_type != '4'){
       this.getEndOfDays();
     }
   }
@@ -373,10 +377,17 @@ initiate_clinic() {
   } 
 
   getEndOfDays(){
+    this.endTaksLoading = true;
     this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((production:any) => {
+      this.endTaksLoading = false;
       if(production.message == 'success') {
-        this.endOfDaysTasks = production.data;     
-        this.endOfDaysTasksDate = production.date;     
+        this.endOfDaysTasks = production.data;  
+        this.endOfDaysTasksDate = production.date;
+        if(this.showComplete == true){
+          this.endOfDaysTasksInComp = this.endOfDaysTasks;
+        } else {
+          this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.history.is_complete == 0);      
+        }
       }
     }); 
   } 
@@ -631,10 +642,23 @@ initiate_clinic() {
   }*/
 
   updateTask(event,tid,thid,cid){    
+    this.endTaksLoading = true;
     this.morningHuddleService.updateEndStatus(event.checked,tid,thid,cid,this.previousDays).subscribe((update:any) => {
-      console.log(update,'***');  
+      this.getEndOfDays();
     }); 
   }
+
+  updateToComplete(event){
+    this.showComplete = event.checked;
+    if(event.checked ==  true){  
+      this.endOfDaysTasksInComp = this.endOfDaysTasks;
+    } else {
+      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.history.is_complete == 0);      
+    }
+  }
+
 }
+
+
 
 

@@ -1296,21 +1296,25 @@
   </mat-tab>
   <!-- Followups Tab end -->
 
-
-
+  
   <!-- End of Day Task -->
-  <mat-tab label="End of Day Task" *ngIf="user_type == '5'" >
+  <mat-tab label="End of Day Task" *ngIf="user_type != '4'" >
 
       <div class="morning-huddle-date">
-        <strong>{{ endOfDaysTasksDate }} </strong>        
+        <strong>{{ endOfDaysTasksDate }} </strong>                
       </div>
     <mat-card class="table-card post_call_responsive_border">
       <mat-card-title>End of Day Task        
-         <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div>
+      <!--    <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
+         <div class="showComplete">
+          Show Complete
+          <mat-slide-toggle name="status" [checked]="showComplete" (change)="updateToComplete($event)"></mat-slide-toggle>
+        </div>
       </mat-card-title>
       <mat-card-content> 
-    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">     
-      <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasks" class="mat-elevation-z8">
+    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">  
+    <div class="card-loading" *ngIf="endTaksLoading"><img class="tableLoader" src="../../assets/images/loader.gif"></div>   
+      <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8">
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef> Task Name </th>
@@ -1333,12 +1337,12 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns9"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns9;"></tr>
         <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
-          [ngClass]="(endOfDaysTasks.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+          [ngClass]="(endOfDaysTasksInComp.length <= 0)? 'show' : 'hide'"></mat-footer-row>
       </table>
       <!-- responsive table - frontdesk followup (Post op calls)  -->
       <div fxHide.gt-sm>
-        <div *ngIf="endOfDaysTasks.length;else noPostOpCalls">
-          <mat-card class="huddle-card" *ngFor="let element of endOfDaysTasks">
+        <div *ngIf="endOfDaysTasksInComp.length;else noPostOpCalls">
+          <mat-card class="huddle-card" *ngFor="let element of endOfDaysTasksInComp">
             <div fxLayout="row" class="huddle-card-row">
               <div fxFlex="30">Task Name: </div>
               <div fxFlex="70"> {{ element.task_name }}</div>

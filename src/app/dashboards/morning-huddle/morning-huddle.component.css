@@ -120,7 +120,7 @@ table{
   -webkit-hyphens: auto;
   hyphens: auto;
 }
-.customWidth.PostOp .mat-column-name {
+/*.customWidth.PostOp .mat-column-name {
   flex: 0 0 24% !important;
   width: 24% !important;
 }
@@ -131,7 +131,7 @@ table{
 .customWidth.PostOp .mat-column-code {
   flex: 0 0 24% !important;
   width: 23% !important;
-}
+}*/
 
 .mat-column-code {
   word-wrap: break-word !important;
@@ -207,4 +207,12 @@ table{
 }
 .mh-table th.mat-header-cell {
     font-weight: bold;
+}
+.showComplete {
+    float: right;
+    margin-right: 24px;
+}
+
+.showComplete mat-slide-toggle {
+    margin: -8px 0 0px 11px;
 }
