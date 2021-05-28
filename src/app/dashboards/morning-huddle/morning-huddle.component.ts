@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit,ViewChild,ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit,ViewChild,ViewEncapsulation } from '@angular/core';
 import { MorningHuddleService } from './morning-huddle.service';
 import { CookieService } from "ngx-cookie";
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,7 +8,6 @@ import { Router } from "@angular/router";
 import { DatePipe } from '@angular/common';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { MatTabGroup } from '@angular/material/tabs';
-import { TooltipLayoutComponent } from '../../shared/tooltip/tooltip-layout.component';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 export interface PeriodicElement {
   name: string;
@@ -27,9 +26,6 @@ export interface PeriodicElement {
   card: string;  
   status: string;  
 }
-
-
-
 
 @Component({
   selector: 'app-morning-huddle',
@@ -93,17 +89,28 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public TickFollowupsDays:any = '';
     public OverDueRecallDays:any = '';
     public followupTickFollowups:any = [];
+    public endOfDaysTasks:any = [];
+    public endOfDaysTasksDate:any = [];
     public clinicDentists:any = [];
     public currentDentist:any = 0;
     public currentDentistSchedule:any = 0;
     
     public dentistListLoading:boolean = false;
-    tooltipData: ITooltipData = {
-      title: 'Open quick search',
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+    
+    tooltipDataPostOps: ITooltipData = {
+      title: 'Post Op Calls',
+      info: 'Post Op Calls are populated based on the number of "days before" you configure in the Settings menu. We also show any calls not completed in the two days prior to this.'
     }; 
 
-    
+    tooltipDataRecalls: ITooltipData = {
+      title: 'Overdue Recalls',
+      info: 'Overdue recalls are populated based on the number of "weeks before" you configure in the Settings menu. This allows you to follow up on patients who has not attended a followup recall appointment 6-7 months later.'
+    }; 
+
+    tooltipDataTicks: ITooltipData = {
+      title: 'Tick Followups',
+      info: 'Tick followups are populated based on the number of "days before" you configure in the Settings menu. Any patient who had a treatment recorded with the "TICK" code on this day will be shown here.'
+    }; 
 
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
@@ -115,6 +122,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   displayedColumns7: string[] = ['name', 'phone', 'code','note','status'];
   displayedColumns8: string[] = ['name', 'phone', 'code','note','status',];
+  displayedColumns9: string[] = ['name', 'status',];
 
   timezone: string = '+1000';
   
@@ -124,6 +132,11 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
 
+  @HostListener('window:resize', ['$event'])
+    onResize(event) {
+      console.log(`Window Resized!`);
+      this.matTabGroup.realignInkBar(); // align material tab green shaded color to first tab (on screen resize)
+  }
 
  ngOnInit(){
     $('#currentDentist').attr('did','all');
@@ -132,24 +145,20 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     }
     this.user_type = this._cookieService.get("user_type");
     
+    // align material tab green shaded color to first tab (on initial load - needs delay to ensure mat tab is available)
+    setTimeout(() => {
+      this.matTabGroup.realignInkBar();
+    }, 500);    
     
-     //this.initiate_clinic();
  }
 ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;
     //$('.dentist_dropdown').parent().hide(); // added
-    $('.sa_heading_bar').addClass("filter_single"); // added
-   
+    $('.sa_heading_bar').addClass("filter_single"); // added   
   }
 ngOnDestroy() {
   //$('.dentist_dropdown').parent().show(); // added
   $('.sa_heading_bar').removeClass("filter_single"); // added
-}
-
-ngDoCheck() {
-  setTimeout(() => {
-    this.matTabGroup.realignInkBar();
-  }, 100);
 }
 
 initiate_clinic() {
@@ -167,7 +176,7 @@ initiate_clinic() {
       this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
 
-    if(this.user_type != '3' && this.user_type != '5'){
+    if(this.user_type != '5'){
       /***** Tab 1 ***/
       this.getDentistPerformance();
       this.getRecallRate();
@@ -201,6 +210,10 @@ initiate_clinic() {
       this.getOverdueRecalls();
       this.getTickFollowups();
       /***** Tab 4 ***/     
+      }
+
+      if(this.user_type == '5'){
+        this.getEndOfDays();
       }
     }
   }
@@ -255,6 +268,9 @@ initiate_clinic() {
     this.getOverdueRecalls();
     this.getTickFollowups();
     /*******Tab 5 *******/
+    if(this.user_type == '5'){
+      this.getEndOfDays();
+    }
   }
 
   refreshScheduleTab(event){
@@ -352,6 +368,15 @@ initiate_clinic() {
         this.followupTickFollowups = production.data;     
         this.followupsTickFollowupsDate = production.date;     
         this.TickFollowupsDays = production.previous;     
+      }
+    }); 
+  } 
+
+  getEndOfDays(){
+    this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((production:any) => {
+      if(production.message == 'success') {
+        this.endOfDaysTasks = production.data;     
+        this.endOfDaysTasksDate = production.date;     
       }
     }); 
   } 
@@ -604,6 +629,12 @@ initiate_clinic() {
     this.postOpCallsDays = val;
     this.getFollowupPostOpCalls();
   }*/
+
+  updateTask(event,tid,thid,cid){    
+    this.morningHuddleService.updateEndStatus(event.checked,tid,thid,cid,this.previousDays).subscribe((update:any) => {
+      console.log(update,'***');  
+    }); 
+  }
 }
 
 

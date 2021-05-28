@@ -205,3 +205,6 @@ table{
 .info-icon-container{ 
   float: right;
 }
+.mh-table th.mat-header-cell {
+    font-weight: bold;
+}
