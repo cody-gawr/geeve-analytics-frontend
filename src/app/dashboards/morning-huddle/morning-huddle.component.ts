@@ -93,6 +93,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public TickFollowupsDays:any = '';
     public OverDueRecallDays:any = '';
     public followupTickFollowups:any = [];
+    public endOfDaysTasks:any = [];
+    public endOfDaysTasksDate:any = [];
     public clinicDentists:any = [];
     public currentDentist:any = 0;
     public currentDentistSchedule:any = 0;
@@ -115,6 +117,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   displayedColumns7: string[] = ['name', 'phone', 'code','note','status'];
   displayedColumns8: string[] = ['name', 'phone', 'code','note','status',];
+  displayedColumns9: string[] = ['name', 'status',];
 
   timezone: string = '+1000';
   
@@ -167,7 +170,7 @@ initiate_clinic() {
       this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
 
-    if(this.user_type != '3' && this.user_type != '5'){
+    if(this.user_type != '5'){
       /***** Tab 1 ***/
       this.getDentistPerformance();
       this.getRecallRate();
@@ -201,6 +204,10 @@ initiate_clinic() {
       this.getOverdueRecalls();
       this.getTickFollowups();
       /***** Tab 4 ***/     
+      }
+
+      if(this.user_type == '5'){
+        this.getEndOfDays();
       }
     }
   }
@@ -255,6 +262,9 @@ initiate_clinic() {
     this.getOverdueRecalls();
     this.getTickFollowups();
     /*******Tab 5 *******/
+    if(this.user_type == '5'){
+      this.getEndOfDays();
+    }
   }
 
   refreshScheduleTab(event){
@@ -352,6 +362,15 @@ initiate_clinic() {
         this.followupTickFollowups = production.data;     
         this.followupsTickFollowupsDate = production.date;     
         this.TickFollowupsDays = production.previous;     
+      }
+    }); 
+  } 
+
+  getEndOfDays(){
+    this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((production:any) => {
+      if(production.message == 'success') {
+        this.endOfDaysTasks = production.data;     
+        this.endOfDaysTasksDate = production.date;     
       }
     }); 
   } 
@@ -604,6 +623,12 @@ initiate_clinic() {
     this.postOpCallsDays = val;
     this.getFollowupPostOpCalls();
   }*/
+
+  updateTask(event,tid,thid,cid){    
+    this.morningHuddleService.updateEndStatus(event.checked,tid,thid,cid,this.previousDays).subscribe((update:any) => {
+      console.log(update,'***');  
+    }); 
+  }
 }
 
 

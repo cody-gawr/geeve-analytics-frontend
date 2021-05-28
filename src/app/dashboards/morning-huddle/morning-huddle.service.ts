@@ -255,9 +255,26 @@ export class MorningHuddleService {
         );
     } 
 
+    getEndOfDays(cid,previousDays): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhEndDayTasks?clinic_id="+cid+"&date="+previousDays, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    } 
+
     updateStatus(event,pid,cid,type,previousDays): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/MorningHuddle/mhUpdateStatus?status="+event+"&patient_id="+pid+"&clinic_id="+cid+"&date="+previousDays+"&type="+type, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    updateEndStatus(event,tid,thid,cid,date): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhUpdateEndDayTasks?status="+event+"&task_id="+tid+"&history_id="+thid+"&clinic_id="+cid+"&date="+date, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
