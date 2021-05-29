@@ -203,7 +203,9 @@ table{
 }
 
 .info-icon-container{ 
-  float: right;
+  /* float: right; */
+  display: inline;
+  margin-left: 8px;
 }
 .mh-table th.mat-header-cell {
     font-weight: bold;

@@ -1453,7 +1453,8 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
     position: relative;
 }
 .info-icon {
-    width: 15px;
+    width: 14px;
+    height: 14px;
 }
 .custom-tooltip {
     position: absolute;
