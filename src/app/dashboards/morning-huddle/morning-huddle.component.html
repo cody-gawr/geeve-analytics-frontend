@@ -1313,14 +1313,14 @@
   <!-- Followups Tab end -->
 
   
-  <!-- End of Day Task -->
-  <mat-tab label="End of Day Task" *ngIf="user_type != '4'" >
+  <!-- End of Day Tasks -->
+  <mat-tab label="End of Day Tasks" *ngIf="user_type != '4'" >
 
       <div class="morning-huddle-date">
-        <strong>{{ endOfDaysTasksDate }} </strong>                
+        <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone'  }} </strong>                
       </div>
     <mat-card class="table-card post_call_responsive_border">
-      <mat-card-title>End of Day Task        
+      <mat-card-title>End of Day Tasks        
       <!--    <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
          <div class="showComplete">
           Show Complete
@@ -1347,7 +1347,7 @@
         
         <ng-container matColumnDef="isDataAvailable1"> 
           <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns9.length">
-           You have no end of days task
+           All end of days tasks have been completed
           </mat-footer-cell>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns9"></tr>
@@ -1375,7 +1375,7 @@
         </div>
         <ng-template #noPostOpCalls>
           <mat-card class="huddle-card">
-            <h6> You have no end of days task</h6>
+            <h6> You have no end of days tasks today</h6>
           </mat-card>
         </ng-template>
       </div>
@@ -1383,7 +1383,7 @@
       </mat-card-content>
 </mat-card>
 </mat-tab>
-<!-- End of Day Task end -->
+<!-- End of Day Tasks end -->
 
 
 

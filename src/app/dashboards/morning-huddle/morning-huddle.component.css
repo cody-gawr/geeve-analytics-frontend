@@ -211,6 +211,7 @@ table{
 .showComplete {
     float: right;
     margin-right: 24px;
+    font-size: 13px;
 }
 
 .showComplete mat-slide-toggle {

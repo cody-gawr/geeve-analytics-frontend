@@ -147,7 +147,6 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
 
   @HostListener('window:resize', ['$event'])
     onResize(event) {
-      console.log(`Window Resized!`);
       this.matTabGroup.realignInkBar(); // align material tab green shaded color to first tab (on screen resize)
   }
 
