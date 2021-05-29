@@ -210,11 +210,6 @@ table{
 .mh-table th.mat-header-cell {
     font-weight: bold;
 }
-.showComplete {
-    float: right;
-    margin-right: 24px;
-    font-size: 13px;
-}
 
 .showComplete mat-slide-toggle {
     margin: -8px 0 0px 11px;
@@ -222,10 +217,17 @@ table{
 .showComplete {
     float: right;
     margin: -17px 27px 0 0;
+    margin-right: 24px;
+    font-size: 13px;
+    display: inline;
 }
 
 .fa-check {
     color: #18A689;
     font-size: 18px;
     margin-right: 10px;
+}
+
+.mat-card-title {
+    padding-bottom: 30px !important;
 }

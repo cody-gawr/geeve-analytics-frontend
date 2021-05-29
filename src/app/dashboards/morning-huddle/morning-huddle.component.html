@@ -932,8 +932,7 @@
         </div>
         
          <div class="showComplete">
-          Show Complete
-          <mat-slide-toggle name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)"></mat-slide-toggle>
+          <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show Complete</mat-checkbox>
         </div>
          
       </mat-card-title>
@@ -1051,8 +1050,7 @@
            <div class="info-icon-container"><img [tooltip]="tooltipDataRecalls" src="../assets/images/info-icon.png"  alt="info-icon" class="info-icon" /></div>
         </div>
         <div class="showComplete">
-          Show Complete
-          <mat-slide-toggle name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)"></mat-slide-toggle>
+          <mat-checkbox name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)">Show Complete</mat-checkbox>
         </div>
       </mat-card-title>
       <mat-card-content> 
@@ -1187,8 +1185,7 @@
         </div>
         
         <div class="showComplete">
-          Show Complete
-          <mat-slide-toggle name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)"></mat-slide-toggle>
+          <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">Show Complete</mat-checkbox>
         </div>
           
       </mat-card-title>
@@ -1320,15 +1317,17 @@
         <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone'  }} </strong>                
       </div>
     <mat-card class="table-card post_call_responsive_border">
-      <mat-card-title>End of Day Tasks        
+      <mat-card-title>
+      <div class="title-follow-up">
+        End of Day Tasks
+      </div>        
       <!--    <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
          <div class="showComplete">
-          Show Complete
-          <mat-slide-toggle name="status" [checked]="showComplete" (change)="updateToComplete($event)"></mat-slide-toggle>
+          <mat-checkbox name="status" [checked]="showComplete" (change)="updateToComplete($event)">Show Complete</mat-checkbox>
         </div>
       </mat-card-title>
       <mat-card-content> 
-    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 500px; overflow: auto;">  
+    <div class="DentistListSecRow mh-table patient_data-table_responsive" style="max-height: 700px; overflow: auto;">  
     <div class="card-loading" *ngIf="endTaksLoading"><img class="tableLoader" src="../../assets/images/loader.gif"></div>   
       <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8">
         <!-- Name Column -->
