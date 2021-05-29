@@ -221,3 +221,9 @@ table{
     float: right;
     margin: -17px 27px 0 0;
 }
+
+.fa-check {
+    color: #18A689;
+    font-size: 18px;
+    margin-right: 10px;
+}
