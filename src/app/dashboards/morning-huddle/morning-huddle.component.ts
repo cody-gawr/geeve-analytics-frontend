@@ -95,7 +95,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public endOfDaysTasks:any = [];
     public endOfDaysTasksInComp:any = [];
     public endOfDaysTasksComp:any = [];
-    public endOfDaysTasksDate:any = [];
+    public endOfDaysTasksDate:any = '';
     public endTaksLoading:boolean = true;
     public showComplete:boolean = false;
     public clinicDentists:any = [];
