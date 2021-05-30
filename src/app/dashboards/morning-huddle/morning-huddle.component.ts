@@ -112,17 +112,21 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
 
     tooltipDataPostOps: ITooltipData = {
       title: 'Post Op Calls',
-      info: 'Post Op Calls are populated based on the number of "days before" you configure in the Settings menu. We also show any calls not completed in the two days prior to this.'
+      info: 'Post Op Calls are populated based on the number of "days before" you configure in the Settings menu. We also show any calls not completed in the two days prior to this.',
+      direction: 'right'
+   
     }; 
 
     tooltipDataRecalls: ITooltipData = {
       title: 'Overdue Recalls',
-      info: 'Overdue recalls are populated based on the number of "weeks before" you configure in the Settings menu. This allows you to follow up on patients who has not attended a followup recall appointment 6-7 months later.'
+      info: 'Overdue recalls are populated based on the number of "weeks before" you configure in the Settings menu. This allows you to follow up on patients who have not attended a followup recall appointment 6-7 months later.',
+      direction: 'right'
     }; 
 
     tooltipDataTicks: ITooltipData = {
       title: 'Tick Followups',
-      info: 'Tick followups are populated based on the number of "days before" you configure in the Settings menu. Any patient who had a treatment recorded with the "TICK" code on this day will be shown here.'
+      info: 'Tick followups are populated based on the number of "days before" you configure in the Settings menu. Any patient who had a treatment recorded with the "TICK" code on this day will be shown here.',
+      direction: 'right'
     }; 
 
 

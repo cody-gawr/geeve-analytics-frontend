@@ -3,7 +3,8 @@ import { ComponentFactoryResolver, ComponentRef, Directive, ElementRef, HostList
 import { TooltipComponent } from './tooltip.component';
 export interface ITooltipData {
   title: string,
-  info?: string
+  info?: string,
+  direction?: string
 };
 
 @Directive({
