@@ -83,7 +83,7 @@
                     <span class="change_value">{{visits_c}}</span>
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="visits_dif">
-                    <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">{{ visits_dif >= 0 ? '+ ' : '' }}
+                    <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">
                       Last Month: {{ visits_p | number: '2.' }}
                     </div>
                   </div>
