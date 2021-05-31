@@ -97,8 +97,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
 
   //Load Clinic Data
   initiate_clinic() {
-    $('.internal_dentist').val('all');
-    $('.external_dentist').val('all');
+    // $('.internal_dentist').val('all');
+    // $('.external_dentist').val('all');
     var val = $('#currentClinic').attr('cid');
      if(val != undefined && val !='all') {
     this.clinic_id = val;
@@ -2159,7 +2159,8 @@ toggleFilter(val) {
   }
 //Load dentist Charts
   initiate_dentist() {
-    var val = $('.internal_dentist').val();
+    var val = $('#currentDentist').attr('did');
+    //var val = $('.internal_dentist').val();
     this.loadDentist(val);
   }
 

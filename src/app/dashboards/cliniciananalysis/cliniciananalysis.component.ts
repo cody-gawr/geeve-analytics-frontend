@@ -196,12 +196,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   //Load Clinic Data
   initiate_clinic() {
-    $('.internal_dentist').val('all');
-    $('.external_dentist').val('all');
+    //$('.internal_dentist').val('all');
+    //$('.external_dentist').val('all');
     var val = $('#currentClinic').attr('cid');
     if( this._cookieService.get("dentistid")){
          this.childid = this._cookieService.get("dentistid");
-         this.selectedDentist = this._cookieService.get("dentistid");
+         //this.selectedDentist = this._cookieService.get("dentistid");
      }
     if (val != undefined && val != 'all') {
 
@@ -2571,7 +2571,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
   //Load Individual dentits Chartc
   initiate_dentist() {
-    var val = $('.internal_dentist').val();
+    var val = $('#currentDentist').attr('did');
+   // var val = $('.internal_dentist').val();
     this.loadDentist(val);
   }
   choosedDate(val) {
