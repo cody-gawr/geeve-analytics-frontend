@@ -207,7 +207,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
       }
       else{
       $('#clinic_initiate').click();
-      if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures' ){
+      if((this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures') && this._cookieService.get("clinic_dentist") ){
         let dentistclinic = this._cookieService.get("clinic_dentist").split('_');
         if(dentistclinic[0] !== newValue){
           this.selectedDentist = 'all';
@@ -255,7 +255,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     $('#currentDentist').attr('did',newValue);
   }
     this.selectedDentist = newValue;
-    if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures' ){
+    if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures'){
       this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist);
     }
     $('.internal_dentist').val(newValue);
