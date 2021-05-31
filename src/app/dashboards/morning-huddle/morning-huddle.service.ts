@@ -248,7 +248,13 @@ export class MorningHuddleService {
 
     updateFollowUpStatus(event,pid,cid,type,previousDays): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/mhUpdateFollowupStatus?event="+event+"&patient_id="+pid+"&clinic_id="+cid+"&date="+previousDays+"&type="+type, { headers: header })
+        const formData = new FormData();
+        formData.append('event', event);
+        formData.append('patient_id', pid);
+        formData.append('clinic_id', cid);
+        formData.append('date', previousDays);
+        formData.append('type', type);
+        return this.http.post(this.apiUrl +"/MorningHuddle/mhUpdateFollowupStatus",formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })
