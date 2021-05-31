@@ -180,7 +180,10 @@ export class AppHeaderrightComponent implements AfterViewInit  {
                 this.showAll = false;
                 this.selectedDentist = res.data[0].providerId;
               }
-              this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist);
+
+               if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures'|| this.route == '/dashboards/frontdesk' || this.route == '/dashboards/marketing' || this.route == '/dashboards/finances'){
+                 this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist);
+               }
            } else if(res.status == '401'){
              this._cookieService.removeAll();
               this.router.navigateByUrl('/login');
@@ -256,7 +259,9 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     $('#currentDentist').attr('did',newValue);
   }
     this.selectedDentist = newValue;
-     this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist);
+    if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures'|| this.route == '/dashboards/frontdesk' || this.route == '/dashboards/marketing' || this.route == '/dashboards/finances'){
+      this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist);
+    }
     $('.internal_dentist').val(newValue);
     $('#dentist_initiate').click();
   }
