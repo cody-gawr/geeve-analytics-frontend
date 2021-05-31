@@ -8,7 +8,8 @@ export class TooltipContainerDirective {
   selector: 'app-tooltip',
   template: `
   <div class="tooltip-container">
-    <div class="custom-tooltip">
+    <div [ngClass]="{'custom-tooltip': true,
+                     'custom-tooltip-right': tooltipData.direction === 'right'}">
       <div class="tooltip-title-container">
         <div class="tooltip-title">{{ tooltipData.title }}</div>
         <img 
@@ -17,7 +18,7 @@ export class TooltipContainerDirective {
         alt="analytics-icon" />
       </div>
       <div class="tooltip-info-text">
-        {{ tooltipData.info || '' }}
+        {{ tooltipData.info || '' }} 
       </div>
     </div>   
 </div>`

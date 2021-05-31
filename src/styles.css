@@ -1453,7 +1453,8 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
     position: relative;
 }
 .info-icon {
-    width: 15px;
+    width: 14px;
+    height: 14px;
 }
 .custom-tooltip {
     position: absolute;
@@ -1470,6 +1471,13 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
     animation: tooltipIn 0.5s ease-in-out;    
     z-index: 999;
 }
+
+.custom-tooltip-right {
+    position: absolute;
+    bottom: -140px;
+    right: -275px;
+}
+
 @keyframes tooltipIn {
     from {
         visibility: hidden;
@@ -1523,6 +1531,10 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
     border-bottom: 8px solid #1daa96;
     right: 8px;
     top: 0px;
+}
+
+.custom-tooltip-right::after{
+    content: none;
 }
 
 .ur_users_main { overflow: hidden; }

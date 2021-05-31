@@ -83,33 +83,50 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public followupsUnscheduledRecalls:any = [];
     public followupsUnscheduledPatientsDate:any = '';
     public followupPostOpCalls:any = [];
+    public followupPostOpCallsInComp:any = [];
     public followupOverDueRecall:any = [];
+    public followupOverDueRecallInCMP:any = [];
     public followupsOverDueRecallDate:any = '';
     public followupsTickFollowupsDate:any = '';
     public TickFollowupsDays:any = '';
     public OverDueRecallDays:any = '';
     public followupTickFollowups:any = [];
+    public followupTickFollowupsInCMP:any = [];
     public endOfDaysTasks:any = [];
-    public endOfDaysTasksDate:any = [];
+    public endOfDaysTasksInComp:any = [];
+    public endOfDaysTasksComp:any = [];
+    public endOfDaysTasksDate:any = '';
+    public endTaksLoading:boolean = true;
+    public showComplete:boolean = false;
     public clinicDentists:any = [];
     public currentDentist:any = 0;
     public currentDentistSchedule:any = 0;
     
     public dentistListLoading:boolean = false;
-    
+    public postopCallsPostOp:boolean = false;
+    public showCompleteOverdue:boolean = false;
+    public showCompleteTick:boolean = false;
+    public endTaksLoadingLoading:boolean = true;
+    public poLoadingLoading:boolean = true;
+    public recallLoadingLoading:boolean = true;
+
     tooltipDataPostOps: ITooltipData = {
       title: 'Post Op Calls',
-      info: 'Post Op Calls are populated based on the number of "days before" you configure in the Settings menu. We also show any calls not completed in the two days prior to this.'
+      info: 'Post Op Calls are populated based on the number of "days before" you configure in the Settings menu. We also show any calls not completed in the two days prior to this.',
+      direction: 'right'
+   
     }; 
 
     tooltipDataRecalls: ITooltipData = {
       title: 'Overdue Recalls',
-      info: 'Overdue recalls are populated based on the number of "weeks before" you configure in the Settings menu. This allows you to follow up on patients who has not attended a followup recall appointment 6-7 months later.'
+      info: 'Overdue recalls are populated based on the number of "weeks before" you configure in the Settings menu. This allows you to follow up on patients who have not attended a followup recall appointment 6-7 months later.',
+      direction: 'right'
     }; 
 
     tooltipDataTicks: ITooltipData = {
       title: 'Tick Followups',
-      info: 'Tick followups are populated based on the number of "days before" you configure in the Settings menu. Any patient who had a treatment recorded with the "TICK" code on this day will be shown here.'
+      info: 'Tick followups are populated based on the number of "days before" you configure in the Settings menu. Any patient who had a treatment recorded with the "TICK" code on this day will be shown here.',
+      direction: 'right'
     }; 
 
 
@@ -134,16 +151,15 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
 
   @HostListener('window:resize', ['$event'])
     onResize(event) {
-      console.log(`Window Resized!`);
       this.matTabGroup.realignInkBar(); // align material tab green shaded color to first tab (on screen resize)
   }
 
  ngOnInit(){
     $('#currentDentist').attr('did','all');
+    this.user_type = this._cookieService.get("user_type");
     if(this._cookieService.get("dentistid") && this._cookieService.get("dentistid") != '' && this.user_type == '4'){
         this.dentistid = this._cookieService.get("dentistid");
     }
-    this.user_type = this._cookieService.get("user_type");
     
     // align material tab green shaded color to first tab (on initial load - needs delay to ensure mat tab is available)
     setTimeout(() => {
@@ -212,7 +228,7 @@ initiate_clinic() {
       /***** Tab 4 ***/     
       }
 
-      if(this.user_type == '5'){
+      if(this.user_type != '4'){
         this.getEndOfDays();
       }
     }
@@ -268,7 +284,7 @@ initiate_clinic() {
     this.getOverdueRecalls();
     this.getTickFollowups();
     /*******Tab 5 *******/
-    if(this.user_type == '5'){
+    if(this.user_type != '4'){
       this.getEndOfDays();
     }
   }
@@ -344,8 +360,14 @@ initiate_clinic() {
 
   getFollowupPostOpCalls(){
     this.morningHuddleService.followupPostOpCalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+        this.poLoadingLoading = false;
       if(production.message == 'success') {
-        this.followupPostOpCalls = production.data;     
+        this.followupPostOpCalls = production.data;   
+        if(this.postopCallsPostOp == true){  
+            this.followupPostOpCallsInComp = this.followupPostOpCalls;
+          } else {            
+            this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
+          }       
         this.followupsPostopCallsDate = production.date;     
         this.postOpCallsDays = production.previous;     
       }
@@ -354,8 +376,15 @@ initiate_clinic() {
 
   getOverdueRecalls(){
     this.morningHuddleService.followupOverdueRecalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+        this.recallLoadingLoading = false;
       if(production.message == 'success') {
         this.followupOverDueRecall = production.data;     
+        if(this.showCompleteOverdue == true){  
+            this.followupOverDueRecallInCMP = this.followupOverDueRecall;
+          } else {            
+            this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);      
+          }
+
         this.followupsOverDueRecallDate = production.date;     
        this.OverDueRecallDays = production.previous;     
       }
@@ -364,8 +393,14 @@ initiate_clinic() {
 
   getTickFollowups(){
     this.morningHuddleService.followupTickFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+        this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
         this.followupTickFollowups = production.data;     
+        if(this.showCompleteTick ==  true){  
+          this.followupTickFollowupsInCMP = this.followupTickFollowups;
+        } else {
+          this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
+        }
         this.followupsTickFollowupsDate = production.date;     
         this.TickFollowupsDays = production.previous;     
       }
@@ -373,10 +408,17 @@ initiate_clinic() {
   } 
 
   getEndOfDays(){
+    this.endTaksLoading = true;
     this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((production:any) => {
+      this.endTaksLoading = false;
       if(production.message == 'success') {
-        this.endOfDaysTasks = production.data;     
-        this.endOfDaysTasksDate = production.date;     
+        this.endOfDaysTasks = production.data;  
+        this.endOfDaysTasksDate = production.date;
+        if(this.showComplete == true) {
+          this.endOfDaysTasksInComp = this.endOfDaysTasks;
+        } else {
+          this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
+        }
       }
     }); 
   } 
@@ -583,8 +625,21 @@ initiate_clinic() {
   
   //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
   toggleUpdate(event,pid,date,cid,type) {    
+      if(type == 'post-op-calls'){
+          this.poLoadingLoading = true;
+      } else if(type == 'recall-overdue'){
+        this.recallLoadingLoading = true;
+      } else if(type == 'tick-follower'){
+        this.endTaksLoadingLoading = true;
+      }
     this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,type, date).subscribe((update:any) => {
-      console.log(update,'***');  
+      if(type == 'post-op-calls'){
+        this.getFollowupPostOpCalls();
+      } else if(type == 'recall-overdue'){
+        this.getOverdueRecalls();
+      } else if(type == 'tick-follower'){
+        this.getTickFollowups();
+      }
     });      
   }
 
@@ -631,10 +686,48 @@ initiate_clinic() {
   }*/
 
   updateTask(event,tid,thid,cid){    
+    this.endTaksLoading = true;
     this.morningHuddleService.updateEndStatus(event.checked,tid,thid,cid,this.previousDays).subscribe((update:any) => {
-      console.log(update,'***');  
+      this.getEndOfDays();
     }); 
   }
+
+  updateToComplete(event){
+    this.showComplete = event.checked;
+    if(event.checked ==  true){  
+      this.endOfDaysTasksInComp = this.endOfDaysTasks;
+    } else {
+      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
+    }
+  }
+
+  updateToCompleteOP(event){
+    this.postopCallsPostOp = event.checked;
+    if(event.checked ==  true){  
+      this.followupPostOpCallsInComp = this.followupPostOpCalls;
+    } else {      
+      this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
+    }
+  }
+  updateToCompleteOR(event){
+    this.showCompleteOverdue = event.checked;
+    if(event.checked ==  true){  
+      this.followupOverDueRecallInCMP = this.followupOverDueRecall;
+    } else {
+      this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);      
+    }
+  }
+  updateToCompleteTF(event){
+    this.showCompleteTick = event.checked;
+    if(event.checked ==  true){  
+      this.followupTickFollowupsInCMP = this.followupTickFollowups;
+    } else {
+          this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
+    }
+  }
+
 }
+
+
 
 

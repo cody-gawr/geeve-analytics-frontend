@@ -51,5 +51,19 @@ export class TaskService {
                     })
         );
     }
+
+    addTask(id,task_name,clinic_id): Observable<any>
+    {
+        var header = this.getHeaders();
+        const formData = new FormData();
+        formData.append('id', id);
+        formData.append('task_name', task_name);
+        formData.append('clinic_id', clinic_id);          
+        return this.http.post(this.apiUrl +"/clinics/clinicAddEndDayTasks", formData, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
        
 }
