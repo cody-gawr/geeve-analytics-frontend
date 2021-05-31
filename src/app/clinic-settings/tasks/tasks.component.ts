@@ -25,10 +25,11 @@ export class DialogOverviewExampleDialogComponent {
     this.dialogRef.close();
   }
 
-  save(data){
-    if(data.task_name == ''){
+  save(data){  
+    if( (data.id && data.old == data.task_name) ||  data.task_name == ''){
       return false;
     }
+
     this.taskService.addTask(data.id,data.task_name,data.clinic_id).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
@@ -145,7 +146,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
   openDialog(id= '',name= '',): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '500px',
-      data: {id: id, task_name: name,clinic_id: this.clinic_id$.value}
+      data: {id: id, task_name: name,clinic_id: this.clinic_id$.value, old: name}
     });
     dialogRef.afterClosed().subscribe(result => {
       this.getTasks(this.clinic_id$.value);

@@ -414,10 +414,10 @@ initiate_clinic() {
       if(production.message == 'success') {
         this.endOfDaysTasks = production.data;  
         this.endOfDaysTasksDate = production.date;
-        if(this.showComplete == true){
+        if(this.showComplete == true) {
           this.endOfDaysTasksInComp = this.endOfDaysTasks;
         } else {
-          this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.history.is_complete != 1);      
+          this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
         }
       }
     }); 
@@ -697,7 +697,7 @@ initiate_clinic() {
     if(event.checked ==  true){  
       this.endOfDaysTasksInComp = this.endOfDaysTasks;
     } else {
-      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.history.is_complete != 1);      
+      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
     }
   }
 
