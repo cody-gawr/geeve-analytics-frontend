@@ -156,10 +156,10 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
 
  ngOnInit(){
     $('#currentDentist').attr('did','all');
+    this.user_type = this._cookieService.get("user_type");
     if(this._cookieService.get("dentistid") && this._cookieService.get("dentistid") != '' && this.user_type == '4'){
         this.dentistid = this._cookieService.get("dentistid");
     }
-    this.user_type = this._cookieService.get("user_type");
     
     // align material tab green shaded color to first tab (on initial load - needs delay to ensure mat tab is available)
     setTimeout(() => {
