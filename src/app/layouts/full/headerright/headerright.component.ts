@@ -89,6 +89,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
    private warningMessage: string;
    public finalUrl:string;
    public selectedClinic;
+   public selectedDentist;
     public placeHolder='';
    public showAll:boolean = true;
 
@@ -109,9 +110,28 @@ export class AppHeaderrightComponent implements AfterViewInit  {
               this.placeHolder =res.data[0].clinicName;
             }
           } else   {
-            this.clinic_id = res.data[0].id;
-            this.selectedClinic = res.data[0].id;
-            this.placeHolder =res.data[0].clinicName;
+            if((this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures' ) && this._cookieService.get("clinic_dentist")){
+              let dentistclinic = this._cookieService.get("clinic_dentist").split('_');
+              this.clinic_id = dentistclinic[0];
+              this.selectedClinic = dentistclinic[0];
+              if(dentistclinic[1] == 'all'){
+                this.selectedDentist = dentistclinic[1];
+              }else{
+                this.selectedDentist = parseInt(dentistclinic[1]);
+              }
+              
+              res.data.forEach((datatemp) => {
+                if(datatemp.id == this.clinic_id){
+                  this.placeHolder =datatemp.clinicName;
+                }
+              });
+              
+            }else{
+              this.clinic_id = res.data[0].id;
+              this.selectedClinic = res.data[0].id;
+              this.placeHolder =res.data[0].clinicName;
+              
+            }
           }
           this.title = $('#page_title').val();
           this.loadClinic(this.selectedClinic);
@@ -129,9 +149,10 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     });
   }
 
-  public selectedDentist;
+ 
     // Get Dentist
     getDentists() {
+      this.dentists = [];
       this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
           this.showAll = true;
            if(res.message == 'success'){
@@ -143,7 +164,18 @@ export class AppHeaderrightComponent implements AfterViewInit  {
               this.dentists= res.data;*/
               this.dentistCount= this.dentists;
               if(this.route != '/dentist-goals'){
-                this.selectedDentist = 'all';
+
+                if((this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures') && this._cookieService.get("clinic_dentist")){
+                  let dentistclinic = this._cookieService.get("clinic_dentist").split('_');
+                  if(dentistclinic[1] == 'all'){
+                    this.selectedDentist =dentistclinic[1];
+                  }else{
+                    this.selectedDentist = parseInt(dentistclinic[1]);
+                  }
+                this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist);
+                }else{ 
+                  this.selectedDentist = 'all';
+                }
               } else {
                 this.showAll = false;
                 this.selectedDentist = res.data[0].providerId;
@@ -158,7 +190,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
         );
   }
 
-  loadClinic(newValue) {
+  loadClinic(newValue) { 
     if(newValue != 'undefined') {
       if($('body').find('span#currentClinic').length <= 0){
         $('body').append('<span id="currentClinic" style="display:none" cid="'+newValue+'"></span>');
@@ -167,18 +199,35 @@ export class AppHeaderrightComponent implements AfterViewInit  {
       }
       this.selectedClinic = newValue;
       this.clinic_id = this.selectedClinic;
+     
       this.getDentists(); 
       $('.internal_clinic').val(newValue);
-      if(this.user_type_dentist != '2' && newValue != 'all')
-        this.getChildID(newValue);
-      else
-      $('#clinic_initiate').click();      
+      if(this.user_type_dentist != '2' && newValue != 'all'){
+        this.getChildID(newValue); 
+      }
+      else{
+      $('#clinic_initiate').click();
+      if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures' ){
+        let dentistclinic = this._cookieService.get("clinic_dentist").split('_');
+        if(dentistclinic[0] !== newValue){
+          this.selectedDentist = 'all';
+        }else{
+          if(dentistclinic[1] == 'all'){
+            this.selectedDentist =dentistclinic[1];
+          }else{
+            this.selectedDentist = parseInt(dentistclinic[1]);
+          }
+        }
+         this.loadDentist(this.selectedDentist);
+        }
+      }    
     }
  }
   
   getChildID(clinic_id) {
     this.clinic_id && this.dentistService.getChildID(clinic_id).subscribe((res) => {
-      this._cookieService.put("dentistid", res.data);
+
+     this._cookieService.put("dentistid", res.data);
       this.providerIdDentist = res.data;
       $('#clinic_initiate').click();
     }, error => {
@@ -186,7 +235,19 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     });
   }
   
-  loadDentist(newValue){
+  loadDentist(newValue){ 
+    if((this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures') && this._cookieService.get("clinic_dentist")){
+      let dentistclinic = this._cookieService.get("clinic_dentist").split('_');
+                  if(dentistclinic[1] == 'all'){
+                    this.selectedDentist =dentistclinic[1];
+                  }else{
+                    this.selectedDentist = parseInt(dentistclinic[1]);
+                  }
+                  if(newValue == null && newValue !== this.selectedDentist){
+                    newValue = this.selectedDentist;
+                  }
+      }
+      
     if($('body').find('span#currentDentist').length <= 0){
     $('body').append('<span id="currentDentist" style="display:none" did="'+newValue+'"></span>');
   }
@@ -194,6 +255,9 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     $('#currentDentist').attr('did',newValue);
   }
     this.selectedDentist = newValue;
+    if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures' ){
+      this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist);
+    }
     $('.internal_dentist').val(newValue);
     $('#dentist_initiate').click();
   }
