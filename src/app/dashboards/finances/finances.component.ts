@@ -2699,7 +2699,7 @@ private finTotalDiscountsTrend() {
            data.data.expenses.forEach((result,key) => {  
             if(result.meta_key != 'Total Operating Expenses') {
               let tempO:any = [];
-              result.expenses.forEach((res) => {  tempO.push(res.toFixed(2)); });                      
+              result.expenses.forEach((res) => {  tempO.push(res); });                      
               let temp = {data: [],label: '', backgroundColor:'', hoverBackgroundColor: '' };
               temp.data = tempO;
               temp.backgroundColor = this.doughnutChartColors[key];
