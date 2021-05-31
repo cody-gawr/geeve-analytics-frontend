@@ -1,41 +1,25 @@
-
-<mat-card class="lost-header-background-remove" style="box-shadow: none !important;" >
+<mat-card class="lost-header-background-remove" style="box-shadow: none !important;">
 	<mat-card-content>
 		<div class="header-section">
 			<div class="header-caption">
 				<h2>Total Production : ${{ production | number:'1.0-0' }}
 					<span class="uptrend" *ngIf="productionImp">
-						<img src="../assets/images/uptrend-production.png" alt="uptrend-production"/>
+						<img src="../assets/images/uptrend-production.png" alt="uptrend-production" />
 						+${{ productionImp | number:'1.0-0' }}
 					</span>
 				</h2>
 				<p>Your current Total Production for the last 365 days is shown above. Adjust
 					the slider below to see how small improvements in key areas can boost your
-					overall production.</p>  
+					overall production.</p>
 			</div>
-			
+
 			<div class="right-vector-img">
 				<img src="../assets/images/vector_smart.png" alt="vector_smart.png" />
 			</div>
 		</div>
-		<input type="button" id="clinic_initiate" (click) = "initiate_clinic()"  [style.display]="'none'">
+		<input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'">
 		<input type="text" id="page_title" value="Lost Opportunity" [style.display]="'none'">
-		<!-- <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px">
-			<div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100">
-				<div class="lo-content">
-					<ul>
-						<li><span class="left-lo-content">Total Discounts:</span> <span class="right-lo-content" id="TotalDiscounts">${{ discounts }} <small id="TotalDiscountsImprovement">${{ discountsImp }} improvement</small></span></li>
-						<li> <span class="left-lo-content">Collection vs Production:</span> <span class="right-lo-content" id="CollectionProduction">$ {{ collectionProduction }} <small id="CollectionProductionImprovement">${{ collectionProductionImp }} improvement </small></span></li>
-						<li><span class="left-lo-content">Case Acceptance:</span> <span class="right-lo-content" id="CaseAcceptance">${{ caseAcceptance }}<small id="CaseAcceptanceImprovement">${{ caseAcceptanceImp }}  improvement</small></span></li>
-					</ul>
-					<p>Total Lost Opportunity: <span  id="TotalLostOpportunity">${{ lostOpportunity }}</span></p>
-					<p>Total Production: <span id="TotalProduction">${{ production }}<small id="TotalProductionImproment">+${{ productionImp }}</small></span></p>
-				</div> 
-			</div> 
-			<div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="100" fxFlex.xs="100" class="text-center">
-				<img src="./assets/images/lost-opportunity.png" alt="">
-			</div>
-		</div> -->
+
 		<div class="card-loading" *ngIf="isLoading">
 			<img class="tableLoader" src="../../assets/images/loader.gif">
 		</div>
@@ -45,96 +29,87 @@
 <mat-card class="oppertunity-background" style="box-shadow: none !important;">
 	<mat-card-content>
 		<div class="lost-header">
-			<h2>Total Lost Opportunity : <span  id="TotalLostOpportunity">${{ lostOpportunity | number:'1.0-0' }}</span></h2>
+			<h2>Total Lost Opportunity : <span id="TotalLostOpportunity">${{ lostOpportunity | number:'1.0-0' }}</span>
+			</h2>
 		</div>
 
 		<div class="oppertunity-row">
 			<div class="oppertunity-col">
 				<div class="prodction_main_box oppertunity-col-background">
-					 <div class="info-icon-container lost-opportunity-info-icon">
-						<img [tooltip]="tooltipData"
-						src="../assets/images/info-icon.png" 
-						alt="info-icon" class="info-icon"/>                
+					<div class="info-icon-container lost-opportunity-info-icon">
+						<img [tooltip]="this.constants.tipLODiscounts" src="../assets/images/info-icon.png"
+							alt="info-icon" class="info-icon" />
 					</div>
-						<div class="production_images opertunity-img">
-						  <img src="../assets/images/total-discount-1.png" alt="total-discount" /> 
-						</div>
-						<div class="production_description oppertunity-description">
-						  <h4>Total Discounts</h4>
-						  <div class="price-section oppertunity-discount">
+					<div class="production_images opertunity-img">
+						<img src="../assets/images/total-discount-1.png" alt="total-discount" />
+					</div>
+					<div class="production_description oppertunity-description">
+						<h4>Total Discounts</h4>
+						<div class="price-section oppertunity-discount">
 							<h2 class="right-lo-content" id="TotalDiscounts">${{ discounts | number:'1.0-0' }}</h2>
-							<span
-								*ngIf="discountsImp" 
-								class="dowan-trend" 
-								id="TotalDiscountsImprovement" 
+							<span *ngIf="discountsImp" class="dowan-trend" id="TotalDiscountsImprovement"
 								style="float: none !important; font-size: 14px !important; color:#fff !important;">
 								+${{ discountsImp | number:'1.0-0' }}</span>
-								<!-- <img src="../assets/images/uptrend-production.png" alt="uptrend-production"/><div class="ttl_value_left">- {{ recallRate.goal}}%</div>	 -->
-						  </div>
 						</div>
+					</div>
 				</div>
 			</div>
 			<div class="oppertunity-col second-col-margin">
 				<div class="prodction_main_box oppertunity-col-background">
-					 <div class="info-icon-container lost-opportunity-info-icon">
-						<img [tooltip]="tooltipData"
-						src="../assets/images/info-icon.png" 
-						alt="info-icon" class="info-icon"/>                
+					<div class="info-icon-container lost-opportunity-info-icon">
+						<img [tooltip]="this.constants.tipLOProdVsCollection" src="../assets/images/info-icon.png"
+							alt="info-icon" class="info-icon" />
 					</div>
-						<div class="production_images opertunity-img">
-						  <img src="../assets/images/oppertunity-payment.png" alt="oppertunity-payment" /> 
-						</div>
-						<div class="production_description oppertunity-description">
-						  <h4>Collection vs Production</h4>
-						  <div class="price-section oppertunity-discount">
-							<h2 class="right-lo-content" id="CollectionProduction">${{ collectionProduction | number:'1.0-0' }}</h2>
-							<span 
-								*ngIf="collectionProductionImp"
-								class="dowan-trend" 
-								id="CollectionProductionImprovement" 
+					<div class="production_images opertunity-img">
+						<img src="../assets/images/oppertunity-payment.png" alt="oppertunity-payment" />
+					</div>
+					<div class="production_description oppertunity-description">
+						<h4>Collection vs Production</h4>
+						<div class="price-section oppertunity-discount">
+							<h2 class="right-lo-content" id="CollectionProduction">
+								${{ collectionProduction | number:'1.0-0' }}</h2>
+							<span *ngIf="collectionProductionImp" class="dowan-trend"
+								id="CollectionProductionImprovement"
 								style="float: none !important; font-size: 14px !important; color:#fff !important;">
 								+${{ collectionProductionImp | number:'1.0-0' }}</span>
-						  </div>
 						</div>
+					</div>
 				</div>
 			</div>
 			<div class="oppertunity-col">
 				<div class="prodction_main_box oppertunity-col-background">
-					 <div class="info-icon-container lost-opportunity-info-icon">
-						<img [tooltip]="tooltipData"
-						src="../assets/images/info-icon.png" 
-						alt="info-icon" class="info-icon"/>                
+					<div class="info-icon-container lost-opportunity-info-icon">
+						<img [tooltip]="this.constants.tipLOCaseAcceptance" src="../assets/images/info-icon.png"
+							alt="info-icon" class="info-icon" />
 					</div>
-						<div class="production_images opertunity-img">
-						  <img src="../assets/images/opertunity-case.png" alt="opertunity-case" /> 
-						</div>
-						<div class="production_description oppertunity-description">
-						  <h4>Case Acceptance</h4>
-						  <div class="price-section oppertunity-discount">
+					<div class="production_images opertunity-img">
+						<img src="../assets/images/opertunity-case.png" alt="opertunity-case" />
+					</div>
+					<div class="production_description oppertunity-description">
+						<h4>Case Acceptance</h4>
+						<div class="price-section oppertunity-discount">
 							<h2 class="right-lo-content" id="CaseAcceptance">${{ caseAcceptance | number:'1.0-0' }}</h2>
-							<span 
-								*ngIf="caseAcceptanceImp"
-								class="dowan-trend" 
-								id="CaseAcceptanceImprovement" 
+							<span *ngIf="caseAcceptanceImp" class="dowan-trend" id="CaseAcceptanceImprovement"
 								style="float: none !important; font-size: 14px !important; color:#fff !important;">
 								+${{ caseAcceptanceImp | number:'1.0-0' }}</span>
-						  </div>
 						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</mat-card-content>
 </mat-card>
 
-<mat-card class="improvement-range" style="box-shadow: none !important;" >
+<mat-card class="improvement-range" style="box-shadow: none !important;">
 	<h4>{{ improvement }}% improvement</h4>
 	<mat-card-content class="range-background">
 		<div class="lo-slider">
-			
-				<mat-slider  #mySlider min="0" max="100" step="10" value="{{ improvement }}" (slideend)="sliderOnChange(mySlider.value)"
-  (pointerup)="sliderOnChange(mySlider.value)"  (input)="sliderOnChange(mySlider.value)"></mat-slider>
 
-        </div>
+			<mat-slider #mySlider min="0" max="100" step="10" value="{{ improvement }}"
+				(slideend)="sliderOnChange(mySlider.value)" (pointerup)="sliderOnChange(mySlider.value)"
+				(input)="sliderOnChange(mySlider.value)"></mat-slider>
+
+		</div>
 	</mat-card-content>
 
 	<div class="custom-lo-slider">
@@ -154,4 +129,4 @@
 			</ul>
 		</div>
 	</div>
- </mat-card>
+</mat-card>

@@ -9,6 +9,7 @@ import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import { AppConstants } from '../../app.constants';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -24,10 +25,6 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
    @ViewChild("myCanvas") canvas: ElementRef;
   mockupColors = ['#6edbbb', '#ffd32d', '#abb3ff', '#b0fffa', '#ffb4b5'];
   lineChartColors;
-  tooltipData: ITooltipData = {
-    title: 'Open quick search',
-    info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-};
   subtitle: string;
   public id:any ={};
   public clinic_id:any ={};
@@ -72,8 +69,18 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public dentists;
   public filter_val ='c';
   xeroConnect:boolean = false;
-  constructor(private healthscreenService: HealthScreenService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router,private toastr:ToastrService,
-    private clinicSettingsService: ClinicSettingsService){   
+  constructor(
+    private healthscreenService: HealthScreenService, 
+    private dentistService: DentistService, 
+    private datePipe: DatePipe, 
+    private route: ActivatedRoute,  
+    private headerService: HeaderService,
+    private _cookieService: CookieService, 
+    private router: Router,
+    private toastr:ToastrService,
+    private clinicSettingsService: ClinicSettingsService,
+    private constants: AppConstants
+    ){   
   }
   private warningMessage: string;
   ngAfterViewInit() {  

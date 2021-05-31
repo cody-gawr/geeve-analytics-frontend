@@ -1,25 +1,3 @@
- <!-- ============================================================== -->
-<!-- Grid-->
-<!-- ============================================================== -->
-<!-- <div fxLayout="row wrap" fxLayoutGap="15px" >
-    <div class="sa_heading_bar">
-        <div fxFlex.gt-sm="85" fxFlex.gt-xs="100" fxFlex="100" class="">
-            <h4><span class="page_title">Clinician Procedures &#38; Referrals</span></h4>
-        </div>
-        <app-headerright class="app-headerright"></app-headerright>
-
-        <div fxFlex.gt-sm="18" fxFlex.gt-xs="100" fxFlex="100" class="">
-            <div class="vertical_center_header_content">
-                <div class="sa_select_outer">
-                    <select class="sa_select"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
-                        <option value ="all">All Dentist( {{dentistCount}} )</option>
-                        <option *ngFor="let dentist of dentists" [value]="dentist.providerId"> {{dentist.name}}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
 <select class="sa_select internal_dentist" [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)"
   [style.display]="'none'">
   <option value="all">All Dentist</option>
@@ -34,7 +12,8 @@
       class="dashboard-top-header">
 
       <div fxFlex>
-        <app-date-menu-bar #dateBar (filter)="filterDate($event)" (changeDate)="choosedDate($event)"></app-date-menu-bar>
+        <app-date-menu-bar #dateBar (filter)="filterDate($event)" (changeDate)="choosedDate($event)">
+        </app-date-menu-bar>
       </div>
 
       <div class="dh-target" fxHide.lt-lg>
@@ -43,18 +22,17 @@
           <span class="trend_mode_title">Average:</span>
           <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"
             class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style">
-            <mat-button-toggle [checked] = "goalchecked == 'off'? true : false" value="off" class="toggle_off target_filter" (click)="goalToggle('off')">
+            <mat-button-toggle [checked]="goalchecked == 'off'? true : false" value="off"
+              class="toggle_off target_filter" (click)="goalToggle('off')">
               <span>Off</span>
             </mat-button-toggle>
-            <mat-button-toggle [checked] = "goalchecked != 'off'? true : false" value="average" class="toggle_average target_filter" (click)="goalToggle('average')">
+            <mat-button-toggle [checked]="goalchecked != 'off'? true : false" value="average"
+              class="toggle_average target_filter" (click)="goalToggle('average')">
               <span>On</span>
             </mat-button-toggle>
-            <!-- <mat-button-toggle value = "goal" class = "toggle_goal target_filter" (click)="goalToggle('goal')">
-                  <span>Goal</span>
-               </mat-button-toggle> -->
           </mat-button-toggle-group>
         </div>
-         
+
 
 
         <div class="onofftoogle" *ngIf="showTrend == true">
@@ -78,15 +56,15 @@
           <span class="trend_mode_title">Compare:</span>
           <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"
             class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style">
-            <mat-button-toggle [checked] = "!averageToggle" value="off" class="" (click)="toggleCompareFilter('off')">
+            <mat-button-toggle [checked]="!averageToggle" value="off" class="" (click)="toggleCompareFilter('off')">
               <span>Off</span>
             </mat-button-toggle>
-            <mat-button-toggle value="current"  [checked] = "averageToggle" class="" (click)="toggleCompareFilter('on')">
+            <mat-button-toggle value="current" [checked]="averageToggle" class="" (click)="toggleCompareFilter('on')">
               <span>On</span>
             </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
-     
+
 
       </div>
     </div>
@@ -106,16 +84,16 @@
                 Dentist Production
               </div>
               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+                <img [tooltip]="this.constants.tipProduction" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
               <div style="height: 350px" *ngIf="barChartData[0].data.length && !buildChartLoader">
                 <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
-                  [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP" [colors]="DPcolors">
-                </canvas> <!-- dynamic colors of bar --> 
+                  [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                  [colors]="DPcolors">
+                </canvas> <!-- dynamic colors of bar -->
               </div>
               <div *ngIf="!barChartData[0].data.length && !buildChartLoader" class="no-data-placeholder">
                 <div class="sa_nodata_div">
@@ -130,23 +108,25 @@
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num">${{productionTotalPrev| number:'1.0-0'}}</h3>
 
                   <!--  <small *ngIf="trendText != ''">{{trendText}} Avg</small> -->
 
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
-               </div>
+                </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
+                    ${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
             </div>
-            <div *ngIf="buildChartLoader"
-              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+            <div *ngIf="buildChartLoader" class="loader_container loader_container_middle"><img class="loader_ico"
+                src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
           </mat-card-content>
@@ -162,10 +142,9 @@
                     src="../assets/images/trend_{{productionTooltip}}.png"></span>
                 Dentist Production
               </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipProduction" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -199,15 +178,17 @@
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">${{productionTotalPrev| number:'1.0-0'}}</h3>
                   <!-- <small *ngIf="trendText != ''">{{ trendText }} Avg</small> -->
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                  <span class="value-text" *ngIf="trendText == ''">Previous</span>               
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
+                    ${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -250,10 +231,9 @@
                   </mat-menu>
               </div> -->
               <!--   <div class="settingsBtn"><button class="mat-raised-button mat-button-sm mat-green-button sa_smtable_btn" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Settings</button></div> -->
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipHourlyRate" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body h-100">
@@ -266,7 +246,8 @@
                     [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsHR"
                     [colors]="HRcolors" (chartClick)="chartClicked($event)">
                   </canvas>
-                  <div class="no-data-placeholder" *ngIf="hourlyRateChartData1.length <= 0 && hourlyRateChartLoader===false">
+                  <div class="no-data-placeholder"
+                    *ngIf="hourlyRateChartData1.length <= 0 && hourlyRateChartLoader===false">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
@@ -289,7 +270,8 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">${{ hourlyRateChartGoal * goalCount | number:'1.0-0' }}</h3>
+                  <h3 class="m-0 value-num" *ngIf="hourlyRateChartGoal">
+                    ${{ hourlyRateChartGoal * goalCount | number:'1.0-0' }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -307,16 +289,15 @@
                     src="../assets/images/trend_{{hourlyRateChartTooltip}}.png"></span>
                 Hourly Rate
               </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipHourlyRate" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div *ngIf="showTrendChart == false && hourlyValue > 0 && hourlyRateDentistLoader == false" class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 350px">
-                <ngx-gauge 
-                  [type]="gaugeType" [value]="hourlyValue" [label]="hourlyLabel" [thick]="gaugeThick"
+              <div *ngIf="showTrendChart == false && hourlyValue > 0 && hourlyRateDentistLoader == false" class="chart"
+                fxLayout="row" fxLayoutAlign="start center" style="height: 350px">
+                <ngx-gauge [type]="gaugeType" [value]="hourlyValue" [label]="hourlyLabel" [thick]="gaugeThick"
                   [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxhourlyGoal"
                   [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
                 </ngx-gauge>
@@ -345,7 +326,8 @@
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">${{hourlyRateChartAveragePrev| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
@@ -371,7 +353,7 @@
             class="loader_ico" src="../assets/images/720.gif">
           <div class="loader-text">Calculating...</div>
         </div>
-        
+
 
       </div>
       <!-- Column-->
@@ -386,10 +368,9 @@
                     class="trend_ico" src="../assets/images/trend_{{newPatientTotalTooltip}}.png"></span>
                 No. New Patients
               </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipNumPatients" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div *ngIf="buildChartNewpatientsLoader == true" class="loader_container loader_container_middle"><img
@@ -409,9 +390,10 @@
                 class="prebook_rate sa_tabs_main_sec btn-right hide-item"
                 *ngIf="newPatientChartData.length<=0 && buildChartNewpatientsLoader===false">
               </div>
-              <div fxLayout="row " fxLayoutAlign="center end"  class="chart vertical-center-box" *ngIf="newPatientsDataMax > 0">
+              <div fxLayout="row " fxLayoutAlign="center end" class="chart vertical-center-box"
+                *ngIf="newPatientsDataMax > 0">
                 <div *ngIf="showTrendChart == false" style="height: 326px; position: relative; width: 100%;">
-                  <canvas  #myCanvas baseChart id="newPatients" class="chart" [data]="newPatientChartData"
+                  <canvas #myCanvas baseChart id="newPatients" class="chart" [data]="newPatientChartData"
                     [labels]="newPatientChartLabels" [legend]="legendSettings" [options]="doughnutChartOptions"
                     [chartType]="doughnutChartType" [plugins]="newPatientPluginObservable$ | async"
                     (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
@@ -433,14 +415,16 @@
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num">{{newPatientTotalPrev| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="newPatientGoals && goalCount">{{ (newPatientGoals * goalCount) | number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="newPatientGoals && goalCount">
+                    {{ (newPatientGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -460,43 +444,13 @@
                 </span>
                 No. New Patients
               </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipNumPatients" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
 
             </mat-card-title>
-            <!-- <div class="card-body">
-              <div fxLayout="row wrap" class="row_Patients relative" fxLayoutAlign="center end" style="height: 305px">
-             
-                <div fxFlex.lg="49" fxFlex.md="49" fxFlex.sm="49" fxFlex.xs="49" fxFlex="49"
-                  *ngIf="showTrendChart == false && newPatientPercent > 0">
-                  <div class="chart">
 
-                    <ngx-gauge [type]="gaugeType" [value]="newPatientPercent" [label]="newPatientValuePatients"
-                      [thick]="gaugeThick" [cap]="cap" [foregroundColor]="foregroundColor"
-                      [backgroundColor]="backgroundColor" [append]="gaugeAppendText" [size]="size"
-                      [duration]="gaugeDuration">
-                    </ngx-gauge>
-
-                  </div>
-                </div>
-                <div *ngIf="showTrendChart == true && newPatientsChartTrend1.length > 0" style="height: 300px">
-                  <canvas #myCanvas id="newPatientsTrend" baseChart [datasets]="newPatientsChartTrend" width="300"
-                    [labels]="newPatientsChartTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
-                    (chartHover)="chartHovered($event)" [options]="barChartOptionstrend" [colors]="lineChartColors"
-                    (chartClick)="chartClicked($event)">
-                  </canvas>
-                </div>
-                <div class="no-data-placeholder"
-                  *ngIf="((showTrendChart == true && newPatientsChartTrend1.length <= 0) || (showTrendChart == false && newPatientPercent <= 0)) && buildChartNewpatientsDentistLoader===false">
-                  <div class="sa_nodata_div">
-                  </div>
-                  <p class="chart-placeholder-text">You have no new patients in the selected period</p>
-                </div>
-              </div>
-            </div> -->
             <div class="card-body">
               <div fxLayout="row wrap" class="row_Patients" fxLayoutAlign="center center" style="height: 350px"
                 *ngIf="showTrendChart == false && newPatientValuePatients > 0">
@@ -506,8 +460,8 @@
 
                     <ngx-gauge *ngIf="showTrendChart == false" [type]="gaugeType" [value]="newPatientValuePatients"
                       [label]="newPatientLabelPatients" [thick]="gaugeThick" [cap]="cap"
-                      [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" 
-                      [size]="size" [duration]="gaugeDuration">
+                      [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [size]="size"
+                      [duration]="gaugeDuration">
                     </ngx-gauge>
 
                   </div>
@@ -521,11 +475,11 @@
                 </canvas>
               </div>
               <div class="no-data-placeholder"
-              *ngIf="((showTrendChart == true && newPatientsChartTrend1.length <= 0) || (showTrendChart == false && newPatientValuePatients <= 0)) && buildChartNewpatientsDentistLoader == false">
-              <div class="sa_nodata_div">
+                *ngIf="((showTrendChart == true && newPatientsChartTrend1.length <= 0) || (showTrendChart == false && newPatientValuePatients <= 0)) && buildChartNewpatientsDentistLoader == false">
+                <div class="sa_nodata_div">
+                </div>
+                <p class="chart-placeholder-text">You have no new patients in the selected period</p>
               </div>
-              <p class="chart-placeholder-text">You have no new patients in the selected period</p>
-            </div>
             </div>
             <div class="card-footer">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
@@ -535,14 +489,16 @@
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">{{newPatientTotalPrev| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="newPatientGoals && goalCount">{{ ( newPatientGoals * goalCount) | number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num" *ngIf="newPatientGoals && goalCount">
+                    {{ ( newPatientGoals * goalCount) | number:'1.0-0'}}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -554,7 +510,7 @@
       <!-- Column-->
       <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg">
-   <mat-card class="treatmentPlan">
+        <mat-card class="treatmentPlan">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
               <div>
@@ -564,9 +520,8 @@
                 Treatment Plan Average Cost
               </div>
               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+                <img [tooltip]="this.constants.tipTxPlanFeeProposed" src="../assets/images/info-icon.png"
+                  alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -640,10 +595,9 @@
                     src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
                 Treatment Plan Average Cost
               </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipTxPlanFeeProposed" src="../assets/images/info-icon.png"
+                  alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -706,12 +660,13 @@
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">${{gaugeValueTreatment | number:'1.0-0' }}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                  <span class="value-text" *ngIf="currentText == ''">Current</span>                
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">${{planTotalPrev | number:'1.0-0' }}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{trendText}}</span>
-                  <span class="value-text" *ngIf="currentText == ''">Previous</span>                
+                  <span class="value-text" *ngIf="currentText == ''">Previous</span>
                 </div>
                 <!-- <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
@@ -730,7 +685,7 @@
       </div>
       <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg last">
-      
+
         <mat-card class="treatmentPlanRate sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
@@ -740,14 +695,13 @@
                     class="trend_ico" src="../assets/images/trend_{{treatmentChartTooltip}}.png"></span>
                 Treatment Plan Completion Rate (%)
               </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipTxPlanFeeCompletion" src="../assets/images/info-icon.png"
+                  alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
 
-            <div class="card-body" >
+            <div class="card-body">
               <div fxLayout="row wrap" class="hide treatment_cost sa_tabs_main_sec">
                 <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
                   <small class="sa_tab_btn tcmain1 active">Avg. Proposed Fees</small>
@@ -756,14 +710,13 @@
                   <small class="sa_tab_btn tcmain2">Avg. Completed Fees</small>
                 </div>
               </div>
-              <div class="chart"
-                fxLayout="row" fxLayoutAlign="center end" style="height: 350px">
+              <div class="chart" fxLayout="row" fxLayoutAlign="center end" style="height: 350px">
                 <canvas #myCanvas baseChart *ngIf="treatmentChartData1.length > 0 && !treatmentPlanRateLoader"
                   [datasets]="treatmentChartData" [labels]="treatmentChartLabels" [legend]="barChartLegend"
                   [chartType]="barChartType" (chartHover)="chartHovered($event)" [options]="barChartOptionsTP"
                   [colors]="TPRcolors" (chartClick)="chartClicked($event)">
                 </canvas>
-                <div class="no-data-placeholder"               
+                <div class="no-data-placeholder"
                   *ngIf="treatmentChartData1.length <= 0 && treatmentPlanRateLoader===false && !treatmentPlanRateLoader">
                   <div class="sa_nodata_div">
                   </div>
@@ -790,7 +743,8 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="treatmentChartGoal">{{ (treatmentChartGoal > 100)? 100 : treatmentChartGoal  }}%</h3>
+                  <h3 class="m-0 value-num" *ngIf="treatmentChartGoal">
+                    {{ (treatmentChartGoal > 100)? 100 : treatmentChartGoal  }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -808,10 +762,9 @@
                     src="../assets/images/trend_{{treatmentChartTooltip}}.png"></span>
                 Treatment Plan Completion Rate (%)
               </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipTxPlanFeeCompletion" src="../assets/images/info-icon.png"
+                  alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
 
@@ -856,15 +809,18 @@
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">{{treatmentPlanValue| number:'1.0-0'}}%</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
-                  <span class="value-text" *ngIf="currentText == ''">Current</span>                
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">{{treatmentChartAveragePrev| number:'1.0-0'}}%</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                  <span class="value-text" *ngIf="trendText == ''">Previous</span>                </div>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="treatmentPlanGoal">{{ (treatmentPlanGoal > 100)? 100 : treatmentPlanGoal }}</h3>
+                  <h3 class="m-0 value-num" *ngIf="treatmentPlanGoal">
+                    {{ (treatmentPlanGoal > 100)? 100 : treatmentPlanGoal }}</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -896,7 +852,7 @@
                 <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
                   mat-icon-button matTooltip="{{trendText}} : {{recallChartAveragePrev| number:'1.0-0'}}%"><img
                     class="trend_ico" src="../assets/images/trend_{{recallChartTooltip}}.png"></span>
-                    Prebooking Rate
+                Prebooking Rate
               </div>
               <!--   <div class="sa_box_title_right_buttons">
                   <button mat-icon-button ><i class="fas fa-expand"></i></button>
@@ -906,10 +862,9 @@
                       <button mat-menu-item>Item 2</button>
                   </mat-menu>
               </div> -->
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipRecallRate" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -919,7 +874,8 @@
                     Rate</small>
                 </div>
                 <div fxFlex.gt-sm="40.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment')">Reappointment Rate</small>
+                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment')">Reappointment
+                    Rate</small>
                 </div>
               </div>
               <div style="height: 300px">
@@ -956,14 +912,16 @@
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
                   <span class="value-text" *ngIf="currentText == ''">Current Average</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num">{{recallChartAveragePrev| number:'1.0-0'}}%</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}} Avg</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous Average</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num" *ngIf="recallChartGoal">{{ (recallChartGoal > 100)? 100 : recallChartGoal }}%</h3>
+                  <h3 class="m-0 value-num" *ngIf="recallChartGoal">
+                    {{ (recallChartGoal > 100)? 100 : recallChartGoal }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -986,7 +944,8 @@
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration != 'custom'">
-                  <h3 class="m-0 value-num" *ngIf="treatmentPreChartGoal && goalCount">{{ (treatmentPreChartGoal * goalCount) | number:'1.0-0'}}%</h3>
+                  <h3 class="m-0 value-num" *ngIf="treatmentPreChartGoal && goalCount">
+                    {{ (treatmentPreChartGoal * goalCount) | number:'1.0-0'}}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -1002,12 +961,11 @@
                   class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
                   matTooltip="{{trendText}} : {{recallChartAveragePrev| number:'1.0-0'}}%"><img class="trend_ico"
                     src="../assets/images/trend_{{recallChartTooltip}}.png"></span>
-                Prebooking Rate              
+                Prebooking Rate
               </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipRecallRate" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1017,20 +975,19 @@
                     Rate</small>
                 </div>
                 <div fxFlex.gt-sm="40.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment')">Reappointment Rate</small>
+                  <small class="sa_tab_btn pr_treatment" (click)="changePrebookRate('treatment')">Reappointment
+                    Rate</small>
                 </div>
               </div>
-              <div class="chart"
-                *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0"
-                fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
+              <div class="chart" *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0" fxLayout="row"
+                fxLayoutAlign="start center" style="height: 300px">
                 <ngx-gauge *ngIf="showTrendChart == false && prebook=='recall' && recallValue > 0" [type]="gaugeType"
                   [value]="recallValue" [label]="recallLabel" [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                   [backgroundColor]="backgroundColor" [max]="maxrecallGoal" [cap]="cap" [duration]="gaugeDuration"
                   [append]="gaugeAppendText" [size]="size">
                 </ngx-gauge>
               </div>
-              <div class="chart"
-              *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
+              <div class="chart" *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
                 fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
                 <ngx-gauge *ngIf="showTrendChart == false && prebook=='treatment' && treatmentPreValue > 0"
                   [type]="gaugeType" [value]="treatmentPreValue" [label]="treatmentPreLabel" [thick]="gaugeThick"
@@ -1077,14 +1034,16 @@
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">{{recallChartAveragePrev| number:'1.0-0'}}%</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration != 'custom'">
-                  <h3 class="m-0 value-num" *ngIf="recallGoal && goalCount">{{ (recallGoal > 100)? 100 : recallGoal   }}%</h3>
+                  <h3 class="m-0 value-num" *ngIf="recallGoal && goalCount">
+                    {{ (recallGoal > 100)? 100 : recallGoal   }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -1095,14 +1054,16 @@
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">{{treatmentPreChartAveragePrev| number:'1.0-0'}}%</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration != 'custom'">
-                  <h3 class="m-0 value-num" *ngIf="treatmentPreGoal && goalCount">{{ (treatmentPreGoal > 100)? 100 : treatmentPreGoal  }}%</h3>
+                  <h3 class="m-0 value-num" *ngIf="treatmentPreGoal && goalCount">
+                    {{ (treatmentPreGoal > 100)? 100 : treatmentPreGoal  }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -1129,7 +1090,7 @@
       </div>
       <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg last">
-       <mat-card class="noPatients sa_no_tabs_area">
+        <mat-card class="noPatients sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
               <div>
@@ -1138,10 +1099,9 @@
                     class="trend_ico" src="../assets/images/trend_reverse_{{doughnutTotalTooltip}}.png"></span>
                 No. Patient Complaints
               </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipNumComplaints" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1191,8 +1151,8 @@
                 </div> -->
               </div>
             </div>
-            <div *ngIf="buildChartNopatientsLoader"
-              class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
+            <div *ngIf="buildChartNopatientsLoader" class="loader_container loader_container_middle"><img
+                class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
           </mat-card-content>
@@ -1207,10 +1167,9 @@
                     src="../assets/images/trend_reverse_{{doughnutTotalTooltip}}.png"></span>
                 No. Patient Complaints
               </div>
-               <div class="info-icon-container">
-                <img [tooltip]="tooltipData"
-                  src="../assets/images/info-icon.png" 
-                  alt="info-icon" class="info-icon"/>                
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipNumComplaints" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1252,7 +1211,8 @@
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration != 'custom'">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num">{{doughnutTotalPrev| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>

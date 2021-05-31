@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import { AppConstants } from '../../app.constants';
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -110,26 +111,6 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public poLoadingLoading:boolean = true;
     public recallLoadingLoading:boolean = true;
 
-    tooltipDataPostOps: ITooltipData = {
-      title: 'Post Op Calls',
-      info: 'Post Op Calls are populated based on the number of "days before" you configure in the Settings menu. We also show any calls not completed in the two days prior to this.',
-      direction: 'right'
-   
-    }; 
-
-    tooltipDataRecalls: ITooltipData = {
-      title: 'Overdue Recalls',
-      info: 'Overdue recalls are populated based on the number of "weeks before" you configure in the Settings menu. This allows you to follow up on patients who have not attended a followup recall appointment 6-7 months later.',
-      direction: 'right'
-    }; 
-
-    tooltipDataTicks: ITooltipData = {
-      title: 'Tick Followups',
-      info: 'Tick followups are populated based on the number of "days before" you configure in the Settings menu. Any patient who had a treatment recorded with the "TICK" code on this day will be shown here.',
-      direction: 'right'
-    }; 
-
-
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
   displayedColumns2: string[] = ['start', 'name', 'code'];
@@ -144,7 +125,15 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   timezone: string = '+1000';
   
  @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private datepipe: DatePipe, private morningHuddleService: MorningHuddleService, private _cookieService: CookieService, private headerService: HeaderService,private router: Router,private toastr: ToastrService) { 
+  constructor(
+    private datepipe: DatePipe, 
+    private morningHuddleService: MorningHuddleService, 
+    private _cookieService: CookieService, 
+    private headerService: HeaderService,
+    private router: Router,
+    private toastr: ToastrService,
+    private constants: AppConstants
+    ) { 
   }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
