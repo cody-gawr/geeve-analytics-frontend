@@ -9,6 +9,7 @@ import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
 import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import { AppConstants } from '../../app.constants';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -21,10 +22,7 @@ export interface Dentist {
 })
 export class FrontDeskComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas: ElementRef;
-    tooltipData: ITooltipData = {
-      title: 'Open quick search',
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-  };
+
   lineChartColors;
   doughnutChartColors;
   predictedChartColors;
@@ -36,7 +34,18 @@ export class FrontDeskComponent implements AfterViewInit {
   public trendText;
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
-  constructor(private toastr: ToastrService,private frontdeskService: FrontDeskService, private dentistService: DentistService, private datePipe: DatePipe, private route: ActivatedRoute,  private headerService: HeaderService,private _cookieService: CookieService, private router: Router, private chartService: ChartService){
+  constructor(
+    private toastr: ToastrService,
+    private frontdeskService: FrontDeskService, 
+    private dentistService: DentistService, 
+    private datePipe: DatePipe, 
+    private route: ActivatedRoute,  
+    private headerService: HeaderService,
+    private _cookieService: CookieService, 
+    private router: Router, 
+    private chartService: ChartService,
+    private constants: AppConstants
+    ){
   }
   private warningMessage: string; 
  private myTemplate: any = "";

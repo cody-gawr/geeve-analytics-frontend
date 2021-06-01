@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
-import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import { AppConstants } from '../../app.constants';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -32,10 +32,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   doughnutChartColors;
   predictedChartColors;
   preoceedureChartColors;
-  tooltipData: ITooltipData = {
-    title: 'Open quick search',
-    info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-  };
+
     public procedureAnalysisVisibility:string = 'General';
     public dentistMode:boolean = false;
     subtitle: string;
@@ -67,7 +64,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     private _cookieService: CookieService, 
     private router: Router,
     private numPipe: DecimalPipe,
-    private chartService: ChartService
+    private chartService: ChartService,
+    private constants: AppConstants
   ){
          this._routerSub = this.router.events
          .filter(event => event instanceof NavigationEnd)

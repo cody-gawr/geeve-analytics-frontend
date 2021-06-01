@@ -15,6 +15,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import { AppConstants } from '../../app.constants';
 
 export interface Dentist {
   providerId: string;
@@ -29,10 +30,7 @@ export interface Dentist {
 export class MarketingComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas2: ElementRef;
     @ViewChild("revenueRefChart") revenueRefChart: BaseChartDirective;
-    tooltipData: ITooltipData = {
-      title: 'Open quick search',
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-  };
+
   closeResult: string;
   lineChartColors = [
     this.chartService.colors.even,
@@ -75,7 +73,22 @@ export class MarketingComponent implements AfterViewInit {
   destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   public doughnutChartPlugins: PluginServiceGlobalRegistrationAndOptions[] = [];
 
-  constructor( private toastr: ToastrService, private marketingService: MarketingService,  private financesService: FinancesService, private dentistService: DentistService,  private datePipe: DatePipe,  private route: ActivatedRoute,   private headerService: HeaderService,private _cookieService: CookieService,  private router: Router, public ngxSmartModalService: NgxSmartModalService,private clinicSettingsService: ClinicSettingsService, public decimalPipe: DecimalPipe, private chartService: ChartService) { }
+  constructor( private toastr: ToastrService, 
+    private marketingService: MarketingService,  
+    private financesService: FinancesService, 
+    private dentistService: DentistService,  
+    private datePipe: DatePipe,  
+    private route: ActivatedRoute,   
+    private headerService: HeaderService,
+    private _cookieService: CookieService,  
+    private router: Router, 
+    public ngxSmartModalService: NgxSmartModalService,
+    private clinicSettingsService: ClinicSettingsService, 
+    public decimalPipe: DecimalPipe, 
+    private chartService: ChartService,
+    private constants: AppConstants
+    
+    ) { }
   
   private warningMessage: string; 
   private myTemplate: any = "";
