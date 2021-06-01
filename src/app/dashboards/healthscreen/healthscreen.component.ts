@@ -79,7 +79,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private toastr:ToastrService,
     private clinicSettingsService: ClinicSettingsService,
-    private constants: AppConstants
+    public constants: AppConstants
     ){   
   }
   private warningMessage: string;

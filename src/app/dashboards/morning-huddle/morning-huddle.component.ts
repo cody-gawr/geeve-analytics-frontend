@@ -132,7 +132,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     private headerService: HeaderService,
     private router: Router,
     private toastr: ToastrService,
-    private constants: AppConstants
+    public constants: AppConstants
     ) { 
   }
 

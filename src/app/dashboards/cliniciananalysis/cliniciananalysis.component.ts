@@ -79,7 +79,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     private toastr: ToastrService,
     private decimalPipe: DecimalPipe,
     private chartService: ChartService,
-    private constants: AppConstants
+    public constants: AppConstants
   )  {
     this._routerSub = this.router.events
       .filter(event => event instanceof NavigationEnd)

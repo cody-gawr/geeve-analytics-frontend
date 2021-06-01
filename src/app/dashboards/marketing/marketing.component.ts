@@ -86,7 +86,7 @@ export class MarketingComponent implements AfterViewInit {
     private clinicSettingsService: ClinicSettingsService, 
     public decimalPipe: DecimalPipe, 
     private chartService: ChartService,
-    private constants: AppConstants
+    public constants: AppConstants
     
     ) { }
   
