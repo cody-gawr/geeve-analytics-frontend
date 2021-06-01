@@ -1510,10 +1510,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
    this.clinic_id && this.cliniciananalysisService.caReappointRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       if (data.message == 'success') {
         this.treatmentPrebookDentistLoader = false;
+        this.treatmentPreGoal = data.goals;
         if (data.data.length > 0) {
           this.treatmentPreValue = Math.round(data.data[0].reappoint_rate);
           this.treatmentPreLabel = data.data[0].provider_name;
-          this.treatmentPreGoal = data.goals;
+          
         }
       }
     }, error => {
@@ -2155,8 +2156,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.clinic_id && this.cliniciananalysisService.NewPatientsDentist(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       if (data && data.message == 'success') {
         this.buildChartNewpatientsDentistLoader = false;
+        this.newPatientGoals = data.goals;
         if (data.data != null && data.data[0]) {
-          this.newPatientGoals = data.goals;
           this.newPatientValuePatients = data.data[0].new_patients;
           this.newPatientLabelPatients = data.data[0].provider_name;
           this.newPatientTotal = Math.round(data.total);
