@@ -6,7 +6,6 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router} from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from "ngx-cookie";
-// import { colorSets } from '@swimlane/ngx-charts/lib/utils/color-sets';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
@@ -15,7 +14,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
-// import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
+import { AppConstants } from '../../app.constants';
 
 export interface Dentist { 
   providerId: string;
@@ -31,10 +30,7 @@ export interface Dentist {
 export class FinancesComponent implements AfterViewInit {
     @ViewChild("myCanvas") canvas: ElementRef;
     @ViewChild("myCanvas2") canvas2: ElementRef;
-    tooltipData: ITooltipData = {
-      title: 'Open quick search',
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-  };
+
   lineChartColors;
   doughnutChartColors ;
   stackedChartColors;
@@ -123,7 +119,9 @@ single = [
     private _cookieService: CookieService, 
     private router: Router,
     private clinicSettingsService: ClinicSettingsService,
-    private chartService: ChartService){
+    private chartService: ChartService,
+    public constants: AppConstants
+    ){
     }
 
   private warningMessage: string;

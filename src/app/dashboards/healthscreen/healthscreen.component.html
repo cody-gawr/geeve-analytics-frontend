@@ -12,8 +12,8 @@
         <div><span class="green_title"><i class="far fa-calendar-alt"></i> Month to Date</span></div>
         <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.lg="30px" fxLayoutGap.md="16px" fxLayoutGap.sm="0"
           fxLayoutGap.xs="0">
-          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100"
-            fxFlex.xs="100" class="sa_flexbg custom-box"
+          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+            class="sa_flexbg custom-box"
             [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0, 'hccard-container': true}">
 
             <mat-card class="dentistProduction card-box sa_hccard">
@@ -40,9 +40,9 @@
             <!-- <div class="graph_image" ></div> -->
           </div>
           <!-- Column-->
-       
-          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100"
-            fxFlex.xs="100" class="sa_flexbg custom-box"
+
+          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+            class="sa_flexbg custom-box"
             [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0, 'hccard-container': true}">
 
             <mat-card class="treatmentPlan sa_hccard">
@@ -61,7 +61,7 @@
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
                       Last Month: ${{ productionPrev | number: '2.' }}
-                    </div> 
+                    </div>
                   </div>
                 </div>
               </mat-card-content>
@@ -69,8 +69,9 @@
           </div>
 
           <!-- Column-->
-          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100"
-            fxFlex.xs="100" class="sa_flexbg last" [ngClass]="{'arrow-up': visits_dif>=0, 'arrow-down':visits_dif<=0, 'hccard-container': true}">
+          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+            class="sa_flexbg last"
+            [ngClass]="{'arrow-up': visits_dif>=0, 'arrow-down':visits_dif<=0, 'hccard-container': true}">
 
             <mat-card class="noPatients sa_hccard">
               <mat-card-content class="sa_matcard_content">
@@ -106,23 +107,12 @@
             class="sa_flexbg">
             <mat-card class="dentistProduction">
               <mat-card-content class="sa_matcard_content">
-                <mat-card-title class="text-center mb-0">Hourly Rate Leaders 
-                 <div class="info-icon-container">
-                  <img [tooltip]="tooltipData"
-                    src="../assets/images/info-icon.png" 
-                    alt="info-icon" class="info-icon"/>                
-                </div>
+                <mat-card-title class="text-center mb-0">Hourly Rate Leaders
+                  <div class="info-icon-container">
+                    <img [tooltip]="this.constants.tipHourlyLeaders" src="../assets/images/info-icon.png" alt="info-icon"
+                      class="info-icon" />
+                  </div>
                 </mat-card-title>
-                <!--$ {{production_p+production_c}}-->
-                <!-- <div *ngIf="maxHourlyRate > 0">
-          <div class="list_rep r{{i+1}}" *ngFor="let hourlyRateChartD of hourlyRateChartData; let i = index" >
-              <div class="rank_image"> <img class="" src="assets/images/healthscreen/{{i+1}}.png"></div>
-              <div class="user_circle">{{hourlyRateChartInitials[i]}}</div>
-              <div class="user_name">{{hourlyRateChartLabels[i]}}</div>
-              <div class="user_value">${{hourlyRateChartD}}</div>
-          </div>
-        </div>
-         <div *ngIf="maxHourlyRate == 0">No Top Leaders Yet!</div> -->
                 <div class="card-body">
                   <div class="user_rate_listing" *ngIf="hourlyRateChartData.length > 0">
                     <ul>
@@ -135,9 +125,6 @@
                             <div class="ur_users_main">
 
                               <div class="ur_user_name">
-                                <!-- <div class="ur_pic">
-                            <img class="" src="../assets/images/image1.jpg">
-                          </div> -->
                                 <span class="user-icon" [ngStyle]="{ 'background-color': mockupColors[i] }">
                                   {{ getShortNameLeader(hourlyRateChartD.provider_name )}}
                                 </span>
@@ -171,11 +158,10 @@
             <mat-card class="treatmentPlan">
               <mat-card-content class="sa_matcard_content">
                 <mat-card-title class="text-center">Referral Leaders
-                <div class="info-icon-container">
-                  <img [tooltip]="tooltipData"
-                    src="../assets/images/info-icon.png" 
-                    alt="info-icon" class="info-icon"/>                
-                </div> 
+                  <div class="info-icon-container">
+                    <img [tooltip]="this.constants.tipReferralLeaders" src="../assets/images/info-icon.png" alt="info-icon"
+                      class="info-icon" />
+                  </div>
                 </mat-card-title>
                 <div class="card-body">
                   <div class="user_rate_listing" *ngIf="newPatientsTimeData.length > 0">
@@ -191,7 +177,8 @@
                                 <span class="user-icon" [ngStyle]="{ 'background-color': mockupColors[i] }">
                                   {{ getShortName(newPatientsTimeD.referral_name )}}
                                 </span>
-                                <span class="client-name"> {{ (newPatientsTimeD.referral_name.length>35)? (newPatientsTimeD.referral_name | slice:0:35)+' ...':(newPatientsTimeD.referral_name) }}</span>
+                                <span class="client-name">
+                                  {{ (newPatientsTimeD.referral_name.length>35)? (newPatientsTimeD.referral_name | slice:0:35)+' ...':(newPatientsTimeD.referral_name) }}</span>
                                 <p class="ur_clinic" *ngIf="clinic_id =='all'">({{  newPatientsTimeD.clinic_name }})</p>
                               </div>
                               <div class="ur_users_number">
@@ -209,29 +196,6 @@
                     </div>
                     <p class="chart-placeholder-text">You have no referrals this month</p>
                   </div>
-
-                  <!-- <div>
-        <div class="top_referal" fxLayout="row wrap" fxLayoutGap="10px" fxLayoutGap.lg="10px" fxLayoutGap.md="10px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-          <ng-container *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
-            <div fxFlex="calc(32% - 5px)" fxFlex.lg="calc(32% - 5px)" fxFlex.md="calc(32% - 5px)" fxFlex.sm="100" fxFlex.xs="100" class="" *ngIf="i<3">
-                <div class="top_ref_grid" >
-                    <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
-                    <span class="top_ref_value">{{newPatientsTimeD}}</span>
-                    <span class="ur_clinic" *ngIf="clinic_id =='all'">{{newPatientsTimeClinic[i]}}</span>
-                </div>
-            </div>
-             <div fxFlex="calc(32% - 5px)" fxFlex.lg="calc(32% - 5px)" fxFlex.md="calc(32% - 5px)" fxFlex.sm="100" fxFlex.xs="100" class="" *ngIf="i>=3">
-                <div class="top_ref_grid" >
-                    <span class="top_ref_title"><i class="fas fa-poll"></i> {{newPatientsTimeLabels[i]}}</span>
-                    <span class="top_ref_value">{{newPatientsTimeD}}</span>
-                    <span class="ur_clinic" *ngIf="clinic_id =='all'">{{newPatientsTimeClinic[i]}}</span>
-                </div>
-            </div>
-          </ng-container>
-            <div *ngIf="maxNewPatients == 0">No Top Referrals Yet!</div>
-        </div>
-          </div> -->
-
                 </div>
               </mat-card-content>
             </mat-card>
@@ -252,19 +216,17 @@
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">Pre-booked Visits
                 <div class="info-icon-container">
-                  <img [tooltip]="tooltipData"
-                    src="../assets/images/info-icon.png" 
-                    alt="info-icon" class="info-icon"/>                
+                  <img [tooltip]="this.constants.tipPrebookedVisits" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="card-body no-data-placeholder">
                 <rg-gauge-chart class="green_guagechart" *ngIf="visits_f > 0" [canvasWidth]="canvasWidth"
                   [needleValue]="visits_f" [options]="options" [centralLabel]="visits_f + ''"></rg-gauge-chart>
-                  <div *ngIf="visits_f <= 0">
-                    <div class="sa_nodata_div">
-                    </div>
-                    <p class="chart-placeholder-text">You have no pre-booked visits in the next 7 days</p>
+                <div *ngIf="visits_f <= 0">
+                  <div class="sa_nodata_div">
                   </div>
+                  <p class="chart-placeholder-text">You have no pre-booked visits in the next 7 days</p>
+                </div>
               </div>
             </mat-card-content>
           </mat-card>
@@ -276,9 +238,7 @@
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">Chair Utilisation Rate
                 <div class="info-icon-container">
-                  <img [tooltip]="tooltipData"
-                    src="../assets/images/info-icon.png" 
-                    alt="info-icon" class="info-icon"/>                
+                  <img [tooltip]="this.constants.tipChairUtilRate" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="card-body no-data-placeholder">
@@ -301,18 +261,20 @@
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center">Unscheduled Production
                 <div class="info-icon-container">
-                  <img [tooltip]="tooltipData"
-                    src="../assets/images/info-icon.png" 
-                    alt="info-icon" class="info-icon"/>                
+                  <img [tooltip]="this.constants.tipUnschedProd" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="chart card-body no-data-placeholder">
-                <rg-gauge-chart [ngClass]="{'small-fonts': (unscheduled_production_f.toString().length>5), 'blue_guagechart': true}" *ngIf="unscheduled_production_f > 0" [canvasWidth]="canvasWidth" [needleValue]="unscheduled_production_f" [options]="optionsunscheduled" [centralLabel]="'$' + (unscheduled_production_f| currencySuffix:2)"></rg-gauge-chart>
-                  <div *ngIf="unscheduled_production_f <= 0">
-                    <div class="sa_nodata_div">
-                      <p class="chart-placeholder-text">You have no unscheduled production in the next 7 days</p>
-                    </div>
+                <rg-gauge-chart
+                  [ngClass]="{'small-fonts': (unscheduled_production_f.toString().length>5), 'blue_guagechart': true}"
+                  *ngIf="unscheduled_production_f > 0" [canvasWidth]="canvasWidth"
+                  [needleValue]="unscheduled_production_f" [options]="optionsunscheduled"
+                  [centralLabel]="'$' + (unscheduled_production_f| currencySuffix:2)"></rg-gauge-chart>
+                <div *ngIf="unscheduled_production_f <= 0">
+                  <div class="sa_nodata_div">
+                    <p class="chart-placeholder-text">You have no unscheduled production in the next 7 days</p>
                   </div>
+                </div>
               </div>
             </mat-card-content>
           </mat-card>

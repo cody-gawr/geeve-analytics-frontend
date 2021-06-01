@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from "@angular/router";
 import { HeaderService } from './../layouts/full/header/header.service';
 import { ITooltipData } from '../shared/tooltip/tooltip.directive';
+import { AppConstants } from '../app.constants';
 @Component({
   selector: 'app-lost-opportunity',
   templateUrl: './lost-opportunity.component.html',
@@ -18,10 +19,6 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 	public discounts:number = 0;
 	public discountsReal:number = 0;
 	public discountsImp:number = 0;
-	tooltipData: ITooltipData = {
-		title: 'Open quick search',
-		info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-	};
 	public collectionProduction:number = 0;
 	public collectionProductionReal:number = 0;
 	public collectionProductionImp:number = 0;
@@ -35,9 +32,14 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 	public production:number = 0;
 	public productionReal:number = 0;
 	public productionImp:number = 0;
-	constructor(public lostOpportunityService: LostOpportunityService, private _cookieService: CookieService,private router: Router,
-    private toastr: ToastrService,
-    private headerService: HeaderService) { }
+	constructor(
+		public lostOpportunityService: LostOpportunityService, 
+		private _cookieService: CookieService,
+		private router: Router,
+		private toastr: ToastrService,
+		private headerService: HeaderService,
+		public constants: AppConstants
+		) { }
 
   	ngOnInit() {
   		  $('#currentDentist').attr('did','all');
