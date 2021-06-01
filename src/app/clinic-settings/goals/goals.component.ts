@@ -500,7 +500,10 @@ getGoalsForTabsClinic(allGoals) {
     if($(event.target).hasClass('sign%') && val > 100){
       $(event.target).val(100);
       val = 100;
-    }    
-    this.goalsData[parseInt(id)] =  parseInt(val);   
+    }  
+   this.goalsData[parseInt(id)] =  parseInt(val);
+   $(event.target).val(parseInt(val));  
+       
+    
   }
 }
