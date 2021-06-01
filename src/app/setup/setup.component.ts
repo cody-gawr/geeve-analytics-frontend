@@ -523,39 +523,40 @@ if(selectedIndex >= 2) {
 abc(data) {
   console.log(data);
 }
-checkUserEmail(display_name, email, user_type) { 
- this.rolesUsersService.checkUserEmail(email).subscribe((res) => {
-           if(res.message == 'success'){
-            let length = 10;
-            var randomPassword  = '';
-            var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
-            var charactersLength = characters.length;
-            for ( var i = 0; i < length; i++ ) {
-              randomPassword += characters.charAt(Math.floor(Math.random() * charactersLength));
-            }
-           if(res.data <=0)
-           this.add_user(display_name, email, user_type, randomPassword,this.clinic_id,this.inviteFormGroup.value.dentist_id);
-            else
-             this.toastr.error('Email Already Exists!');
-           }
-        }, error => {
-      this.warningMessage = "Please Provide Valid Inputs!";
-    });
-}
- add_user(display_name, email, user_type, password,clinic_id,dentist_id) {
-  if(dentist_id =='' || dentist_id == undefined)
-    dentist_id ='';
-      $('.ajax-loader').show();      
-
-  this.rolesUsersService.addRoleUser(display_name, email, user_type, password,clinic_id,dentist_id).subscribe((res) => {
-      $('.ajax-loader').hide();      
-             //this.toastr.success('User Added');
 
 
+  checkUserEmail(display_name, email, user_type) { 
+    this.rolesUsersService.checkUserEmail(email).subscribe((res) => {
+      if(res.message == 'success'){
+        let length = 10;
+        var randomPassword  = '';
+        var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+          randomPassword += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        if(res.data <=0)
+          this.add_user(display_name, email, user_type, randomPassword,this.clinic_id,this.inviteFormGroup.value.dentist_id);
+        else
+          this.toastr.error('Email Already Exists!');
+      }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
+
+
+  add_user(display_name, email, user_type, password,clinic_id,dentist_id) {
+    if(dentist_id =='' || dentist_id == undefined)
+      dentist_id ='';
+    $('.ajax-loader').show();   
+    this.rolesUsersService.addRoleUser(display_name, email, user_type,clinic_id, password,dentist_id).subscribe((res) => {
+      $('.ajax-loader').hide();
+    }, error => {
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
   updateStepperStatus() {
       this.setupService.updateStepperStatus().subscribe((res) => {
        $('.ajax-loader').hide();
@@ -629,17 +630,21 @@ checkUserEmail(display_name, email, user_type) {
     this.stepVal = 2;
     this.updateStepperStatus(); 
   }
+
   saveInvites() {
     this.stepVal = 3;
     var i=0;
     this.inviteFormGroup.value.itemRows.forEach(res => {
-       this.checkUserEmail(res.display_name, res.email, res.user_type)
-         i++;
-     });
-     if(i == this.inviteFormGroup.value.itemRows.length){
-        this.updateStepperStatus(); 
-     }
+      if(res.display_name != '' &&  res.email != ''){
+        this.checkUserEmail(res.display_name, res.email, res.user_type);
+      }
+      i++;
+    });
+    if(i == this.inviteFormGroup.value.itemRows.length){
+      this.updateStepperStatus(); 
     }
+  }
+
   /*saveInvites(){
     this.stepVal = 3;
     this.updateStepperStatus(); 

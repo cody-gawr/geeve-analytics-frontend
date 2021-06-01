@@ -2542,8 +2542,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
         }
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-        var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
-        this.goalCount = Math.abs(difMonths + 1);
+         if ((date.getMonth() + 1) <= 6) {
+          this.goalCount =this.monthDiff(new Date(date.getFullYear() -1, 6, 1), new Date());
+        } else {
+          this.goalCount =this.monthDiff(new Date(date.getFullYear(), 6, 1), new Date());
+        } 
+        //var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
+        //this.goalCount = Math.abs(difMonths + 1);
         this.loadDentist(dentistVal);
       }
       else if (duration == 'lfytd') {
@@ -3320,9 +3325,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
      }  else {
       this.averageToggle = false;
       this.showTrend = true;
-     }
-    
-    
+     }   
+   }
+
+   monthDiff(d1, d2) {
+    var months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth();
+    months += d2.getMonth();
+    return months <= 0 ? 0 : months;
   }
 }
 
