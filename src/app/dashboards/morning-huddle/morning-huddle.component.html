@@ -1339,6 +1339,11 @@
                     </div>
                   </div>
                   <div fxLayout="row" class="huddle-card-row">
+                    <div fxFlex="30">Notes </div>
+                    <div fxFlex="70">
+                     <i [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date)"></i>
+                    </div>
+                  </div> <div fxLayout="row" class="huddle-card-row">
                     <div fxFlex="30">Complete </div>
                     <div fxFlex="70">
                       <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
