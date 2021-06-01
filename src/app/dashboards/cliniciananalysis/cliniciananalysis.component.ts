@@ -201,7 +201,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var val = $('#currentClinic').attr('cid');
     if( this._cookieService.get("dentistid")){
          this.childid = this._cookieService.get("dentistid");
-         //this.selectedDentist = this._cookieService.get("dentistid");
+         this.selectedDentist = this._cookieService.get("dentistid");
      }
     if (val != undefined && val != 'all') {
 
