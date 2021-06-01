@@ -971,17 +971,21 @@ public currentText;
      else if (duration == 'fytd') {
       this.trendText= 'Last Financial Year';
       this.currentText= 'This Financial Year';
-
-
-     var date = new Date();
+      var date = new Date();
       if ((date.getMonth() + 1) <= 6) {
         this.startDate = this.datePipe.transform(new Date(date.getFullYear()-1, 6, 1), 'dd-MM-yyyy');
-        } else {
-      this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
-       }
+      } else {
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
+      }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-      var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
-      this.goalCount = Math.abs(difMonths + 1);
+
+      if ((date.getMonth() + 1) <= 6) {
+        this.goalCount =this.monthDiff(new Date(date.getFullYear() -1, 6, 1), new Date());
+      } else {
+        this.goalCount =this.monthDiff(new Date(date.getFullYear(), 6, 1), new Date());
+      }     
+      //var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
+      //this.goalCount = Math.abs(difMonths + 1);
       this.duration='fytd';
       this.loadDentist('all');
     }    else if (duration == 'lfytd') {
@@ -1519,6 +1523,13 @@ load_chart_acq() {
   });  
 }
 
+monthDiff(d1, d2) {
+    var months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth();
+    months += d2.getMonth();
+    return months <= 0 ? 0 : months;
+}
 
 
 }
