@@ -44,7 +44,7 @@ export class FrontDeskComponent implements AfterViewInit {
     private _cookieService: CookieService, 
     private router: Router, 
     private chartService: ChartService,
-    private constants: AppConstants
+    public constants: AppConstants
     ){
   }
   private warningMessage: string; 

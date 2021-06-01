@@ -38,7 +38,7 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 		private router: Router,
 		private toastr: ToastrService,
 		private headerService: HeaderService,
-		private constants: AppConstants
+		public constants: AppConstants
 		) { }
 
   	ngOnInit() {

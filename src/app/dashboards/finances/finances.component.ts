@@ -120,7 +120,7 @@ single = [
     private router: Router,
     private clinicSettingsService: ClinicSettingsService,
     private chartService: ChartService,
-    private constants: AppConstants
+    public constants: AppConstants
     ){
     }
 

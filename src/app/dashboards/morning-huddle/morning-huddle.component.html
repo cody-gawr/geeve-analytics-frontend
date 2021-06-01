@@ -1278,7 +1278,7 @@
               </ng-container>
                 <ng-container matColumnDef="book">
                   <th mat-header-cell *matHeaderCellDef>Note</th>
-                  <td mat-cell *matCellDef="let element"><i class="fas fa-book-open" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date)"></i></td>
+                  <td mat-cell *matCellDef="let element"><i [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date)"></i></td>
               </ng-container>
               <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef>Complete</th>
