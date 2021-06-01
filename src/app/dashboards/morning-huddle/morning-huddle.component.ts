@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit,ViewChild,ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit,ViewChild,ViewEncapsulation,Inject } from '@angular/core';
 import { MorningHuddleService } from './morning-huddle.service';
 import { CookieService } from "ngx-cookie";
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,6 +28,53 @@ export interface PeriodicElement {
   status: string;  
 }
 
+import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+
+@Component({
+  selector: 'notes-add-dialog',
+  templateUrl: './add-notes.html',
+  encapsulation: ViewEncapsulation.None
+})
+
+
+export class DialogOverviewExampleDialogComponent { 
+  constructor(public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router,private morningHuddleService: MorningHuddleService,) {}
+  
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  save(data){  
+    if( data.notes == '' || data.old == data.notes){
+      return false;
+    }
+
+    this.morningHuddleService.notes(data.notes,data.patientId, data.date,data.clinic_id).subscribe((res) => {
+      if (res.message == 'success') {
+        this.dialogRef.close();
+      } else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error)
+    });
+  }
+  handleUnAuthorization() {
+    this._cookieService.put("username", '');
+    this._cookieService.put("email", '');
+    this._cookieService.put("token", '');
+    this._cookieService.put("userid", '');
+    this.router.navigateByUrl('/login');
+  }
+
+}
+
+
+
+
+
+
+
 @Component({
   selector: 'app-morning-huddle',
   templateUrl: './morning-huddle.component.html',
@@ -42,7 +89,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     'Front Desk Reminders',
     'Front Desk Followups',
   ];
-	 public id:any = '';
+	   public id:any = '';
   	public clinic_id:any = '';
   	public user_type:any = '';
     public dentistid:any = null;
@@ -119,7 +166,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns5: string[] = ['name', 'phone','code','date','status'];
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   displayedColumns7: string[] = ['name', 'phone', 'code','note','status'];
-  displayedColumns8: string[] = ['name', 'phone', 'code','note','status',];
+  displayedColumns8: string[] = ['name', 'phone', 'code','note','book','status',];
   displayedColumns9: string[] = ['name', 'status',];
 
   timezone: string = '+1000';
@@ -132,9 +179,10 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     private headerService: HeaderService,
     private router: Router,
     private toastr: ToastrService,
-    public constants: AppConstants
+    public constants: AppConstants,
+    public dialog: MatDialog
     ) { 
-  }
+ }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
 
@@ -713,6 +761,18 @@ initiate_clinic() {
     } else {
           this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
     }
+  }
+
+
+  openNotes(notes,patient_id,original_appt_date): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+      width: '500px',
+      data: {notes:notes, patientId:patient_id, date:original_appt_date,clinic_id: this.clinic_id, old:notes}
+    });
+    dialogRef.afterClosed().subscribe(result => {    
+        this.getTickFollowups();
+    });
+    
   }
 
 }
