@@ -298,5 +298,21 @@ export class MorningHuddleService {
                     })
         );
     }
+
+    // Updae tick notes add/update
+    notes(notes,pid, date,cid): Observable<any> {
+        var header = this.getHeaders(); 
+         const formData = new FormData();
+        formData.append('notes', notes);
+        formData.append('patient_id', pid);
+        formData.append('clinic_id', cid);
+        formData.append('date', date);
+        formData.append('type', 'tick-follower');
+        return this.http.post(this.apiUrl +"/MorningHuddle/mhUpdateStatus",formData, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
     
 }
