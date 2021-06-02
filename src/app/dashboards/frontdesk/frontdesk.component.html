@@ -26,11 +26,11 @@
                   <span>Off</span>
                 </mat-button-toggle>
                 <mat-button-toggle value="current" class="target_current target_filter"
-                  (click)="toggleFilter('current')">
+                [disabled]="Apirequest <= 0?false:true" (click)="Apirequest <= 0?toggleFilter('current'):false">
                   <span>Monthly</span>
                 </mat-button-toggle>
                 <mat-button-toggle value="historic" class="target_historic target_filter"
-                  (click)="toggleFilter('historic')">
+                [disabled]="Apirequest <= 0?false:true" (click)="Apirequest <= 0?toggleFilter('historic'):false">
                   <span>Annual</span>
                 </mat-button-toggle>
               </mat-button-toggle-group>

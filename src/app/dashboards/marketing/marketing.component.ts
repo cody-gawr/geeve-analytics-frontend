@@ -64,6 +64,7 @@ export class MarketingComponent implements AfterViewInit {
   public connectedwith:any;
   public filteredCountriesMultiple: any[];
   public selectedAccounts:any[] =[];
+  public Apirequest =0;
   public newPatientsReferral$ = new BehaviorSubject<number>(0);
   public revenueByReferralCount$ = new BehaviorSubject<number>(0);
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
@@ -1032,6 +1033,7 @@ public currentText;
         $('.target_filter').removeClass('mat-button-toggle-checked');
         $('.target_'+val).addClass('mat-button-toggle-checked');
         $('.filter').removeClass('active');
+        this.Apirequest = 0;
         var date = new Date();
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         if(val == 'current') {
@@ -1073,6 +1075,7 @@ public currentText;
     mode='Internal';
     showTrend= false;
     toggleChangeProcess(){
+    this.Apirequest = 3;
     this.showTrend = true;
     this.mkNewPatientsByReferral();
     this.mkRevenueByReferral();
@@ -1132,6 +1135,7 @@ public fdvisitsRatioTrendLoader:any;
       this.visitsChartTrendLabels1 = [];     
       this.visitsChartTrend[0]['data'] = [];
       this.fdvisitsRatioTrendLoader = false;
+      this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
                 data.data.forEach(res => {  
                      this.visitsChartTrend1.push(res.num_visits);
@@ -1201,6 +1205,7 @@ public fdvisitsRatioTrendLoader:any;
       this.newPatientsChartTrendLabels1=[];
       this.newPatientsChartTrendLabels=[];
       this.newPatientsChartTrend[0]['data'] = [];
+      this.Apirequest = this.Apirequest -1;
       if(data.message == 'success'){
         this.newPatientsChartTemp = data.data;
         data.data.forEach(res => {  
@@ -1327,7 +1332,8 @@ public dataY:any=0;
        var user_id;
        var clinic_id;
        this.marketingService.categoryExpensesTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
-        this.fdnewPatientsAcqLoader= false;    
+        this.fdnewPatientsAcqLoader= false; 
+        this.Apirequest = this.Apirequest -1;   
           if(data.message == 'success'){
             
             this.expenseDataTrend1=[];

@@ -49,6 +49,7 @@ export class FrontDeskComponent implements AfterViewInit {
   }
   private warningMessage: string; 
  private myTemplate: any = "";
+ public Apirequest =0;
 
     initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
@@ -910,6 +911,7 @@ toggleFilter(val) {
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_'+val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
+    this.Apirequest = 0;
     if(val == 'current') {
      this.toggleChecked = true;
      this.trendValue = 'c';
@@ -977,6 +979,7 @@ toggleFilter(val) {
   mode='Internal';
   showTrend: boolean = false;
 toggleChangeProcess(){
+  this.Apirequest = 6;
       this.showTrend = true;
       this.fdwtaRatioTrend();
       this.fdFtaRatioTrend();
@@ -1014,6 +1017,7 @@ toggleChangeProcess(){
    this.clinic_id && this.frontdeskService.fdFtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.ftaChartTrendLabels1=[];
   this.ftaChartTrend1=[];
+  this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
         this.fdFtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
@@ -1087,6 +1091,7 @@ toggleChangeProcess(){
     this.clinic_id && this.frontdeskService.fdWorkTimeAnalysisTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        this.wtaChartTrendLabels1=[];
   this.wtaChartTrend1=[];
+  this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
         this.fdwtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
@@ -1137,6 +1142,7 @@ toggleChangeProcess(){
    this.clinic_id && this.frontdeskService.fdUtaRatioTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.utaChartTrendLabels1=[];
   this.utaChartTrend1=[];
+  this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
         this.fdUtaRatioTrendLoader = false;
                 data.data.forEach(res => {  
@@ -1208,6 +1214,7 @@ toggleChangeProcess(){
    this.clinic_id && this.frontdeskService.fdNumberOfTicksTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.tickChartTrendLabels1=[];
   this.tickChartTrend1=[];
+  this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
         this.fdNumberOfTicksTrendLoader = false;
                 data.data.forEach(res => {  
@@ -1277,7 +1284,8 @@ toggleChangeProcess(){
     var user_id;
     var clinic_id;
    this.clinic_id && this.frontdeskService.frontdeskdRecallPrebookRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-      if(data.message == 'success'){
+    this.Apirequest = this.Apirequest -1;  
+    if(data.message == 'success'){
           this.fdRecallPrebookRateTrendLoader = false;
           this.recallPrebookChartTrendLabels1=[];
           this.recallPrebookChartTrend1=[];
@@ -1348,7 +1356,8 @@ toggleChangeProcess(){
     var user_id;
     var clinic_id;
    this.clinic_id && this.frontdeskService.fdReappointRateTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data.message == 'success'){
+    this.Apirequest = this.Apirequest -1;   
+    if(data.message == 'success'){
         this.fdTreatmentPrebookRateTrendLoader = false;
           this.treatmentPrebookChartTrendLabels1=[];
           this.treatmentPrebookChartTrend1=[];
