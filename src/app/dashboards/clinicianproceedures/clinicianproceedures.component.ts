@@ -2460,6 +2460,7 @@ toggleChangeProcess(){
        if(data.message == 'success'){
          if(data.data.combined.length >0) {
                 data.data.combined.forEach(res => {
+                  if(typeof(res.val) != 'undefined'){
                    this.stackedChartTrendData1.push(res.val[0]);
                    this.stackedChartTrendData2.push(res.val[1]);
                    this.stackedChartTrendData3.push(res.val[2]);
@@ -2468,6 +2469,7 @@ toggleChangeProcess(){
                    this.stackedChartTrendData6.push(res.val[5]);
                    this.stackedChartTrendData7.push(res.val[6]);
                    this.stackedChartTrendData8.push(res.val[7]);
+                   }
                    if(this.trendValue == 'c')
                    this.stackedChartTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
                     else
@@ -2547,13 +2549,18 @@ toggleChangeProcess(){
        if(data.message == 'success' && data.data){
           if(data.data.length <=0) {
           } else {
-            data.data.forEach(res => {              
-              this.ratioChartData1[0]['data'].push(res.val.crown[0]);
-              this.ratioChartData1[1]['data'].push(res.val.crown[1]);
+            data.data.forEach(res => { 
+              if(typeof(res.val) != 'undefined'){
+                this.ratioChartData1[0]['data'].push(res.val.crown[0]);
+                this.ratioChartData1[1]['data'].push(res.val.crown[1]);
+              
               this.ratioChartData2[0]['data'].push(res.val.extraction[0]);
               this.ratioChartData2[1]['data'].push(res.val.extraction[1]);
+            
               this.ratioChartData3[0]['data'].push(res.val.completed[0]);
               this.ratioChartData3[1]['data'].push(res.val.completed[1]);
+            }
+              
               if(this.trendValue == 'c')
                 this.ratioChartLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
               else
