@@ -1349,7 +1349,7 @@ public labelBarPercentOptions: any = {
     
     this.finProductionByClinician();
     this.finTotalDiscounts();
-    this.finOverdueAccounts();
+    // this.finOverdueAccounts();
 
    // this.finCollection();
     this.finProductionPerVisit();

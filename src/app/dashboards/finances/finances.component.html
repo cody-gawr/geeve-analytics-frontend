@@ -221,8 +221,7 @@ expenses_card custom_ngx_cw01">
             </mat-card-content>
           </mat-card>
         </div>
-
-        <div fxFlex="calc(36% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        <!-- <div fxFlex="calc(36% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="total_val sa_flexbg predictor_ratio md_mrn last custom_ngx_cw07">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
@@ -271,14 +270,95 @@ expenses_card custom_ngx_cw01">
               class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
+        </div> -->
+        <div fxFlex="calc(36% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg predictor_ratio md_mrn  custom_ngx_cw02">
+        <mat-card class="sa_no_tabs_area">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">Production % Per Clinician
+              <div class="info-icon-container">
+                <img [tooltip]="this.constants.tipProdPercentPerClinician" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+              </div>
+            </mat-card-title>
+            <div class="card-body clinician-center-chart">
+              <div class="chart w-100" *ngIf="productionChartData.length > 0 && showInternal == true">
+                <div style="height: 280px; width: 100%;">
+                  <canvas class="productionPercentage" #myCanvas baseChart [data]="productionChartData"
+                    [labels]="productionChartLabels" [chartType]="productionChartType"
+                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
+                    [options]="pieChartOptions" [colors]="pieChartColors"></canvas>
+                </div>
+              </div>
+              <div *ngIf="productionChartData.length <= 0 && finProductionByClinicianLoader == false"
+                class="no-data-placeholder">
+                <div class="sa_nodata_div">
+                </div>
+                <p class="chart-placeholder-text">You have no production in the selected period</p>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div *ngIf="finProductionByClinicianLoader == true" class="loader_container loader_container_middle"><img
+            class="loader_ico" src="../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
         </div>
-
+      </div>
 
 
       </div>
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-          class="sa_flexbg predictor_ratio md_mrn custom_ngx_cw03">
+          class="total_val sa_flexbg predictor_ratio md_mrn custom_ngx_cw03">
+          <mat-card class="">
+            <mat-card-content class="sa_matcard_content">
+
+              <mat-card-title class="text-center">
+                <div>
+                  <span class="predicted3Tool sa_inc_dec_arrows trend_arrow" mat-icon-button
+                    matTooltip="{{trendText}} : ${{productionTrendVal | number:'1.0-0'}}" *ngIf="trendText"><img
+                      class="trend_ico" src="../assets/images/trend_{{productionTrendIcon}}.png"></span>
+                  Production Per Visit
+                </div>
+                <div class="info-icon-container">
+                  <img [tooltip]="this.constants.tipProdPerVisit" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </div>
+              </mat-card-title>
+              <div class="card-body clinician-center-chart">
+                <div style="height: 200px; width: 100%;"
+                  *ngIf="productionVal > 0 && finProductionPerVisitLoader == false">
+                  <ngx-gauge class="productionVisit" [type]="gaugeType" [value]="productionVal" [thick]="gaugeThick"
+                    [prepend]="gaugePrependText" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
+                    [cap]="cap" [size]="size"> </ngx-gauge>
+                </div>
+                <div *ngIf="productionVal <= 0 && finProductionPerVisitLoader == false" class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no production in the selected period</p>
+                </div>
+              </div>
+              <div class="card-footer">
+                <div fxLayout="row wrap" class="m-t-40 predicted1 sa_chart_details_sec" *ngIf="productionVal > 0">
+                  <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                    <h3 class="m-0 value-num">${{productionVal | number:'1.0-0'}}</h3>
+                    <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                    <span class="value-text" *ngIf="currentText == ''">Current</span>
+                  </div>
+                  <div fxFlex.gt-sm="50%" fxFlex.gt-xs="50%" fxFlex="100" class="text-center">
+                    <h3 class="m-0 value-num">${{productionTrendVal | number:'1.0-0'}}</h3>
+                    <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                    <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <div *ngIf="finProductionPerVisitLoader == true" class="loader_container loader_container_middle"><img
+              class="loader_ico" src="../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
+          </div>
+        </div>
+        <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+          class="sa_flexbg predictor_ratio md_mrn last custom_ngx_cw07">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
               <mat-card-title class="text-center total-dicount-title">
@@ -334,7 +414,7 @@ expenses_card custom_ngx_cw01">
             <div class="loader-text">Calculating...</div>
           </div>
         </div>
-        <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        <!-- <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio md_mrn  custom_ngx_cw04">
           <mat-card class="sa_no_tabs_area">
             <mat-card-content class="sa_matcard_content">
@@ -375,10 +455,11 @@ expenses_card custom_ngx_cw01">
               class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
-        </div>
+        </div> -->
+    
       </div>
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
-        <div fxFlex="calc(64% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        <div fxFlex="calc(100% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio total_val md_mrn custom_ngx_cw05">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
@@ -458,7 +539,7 @@ expenses_card custom_ngx_cw01">
             <div class="loader-text">Calculating...</div>
           </div>
         </div>
-        <div fxFlex="calc(36% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        <!-- <div fxFlex="calc(36% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio md_mrn  custom_ngx_cw02">
           <mat-card class="sa_no_tabs_area">
             <mat-card-content class="sa_matcard_content">
@@ -489,7 +570,7 @@ expenses_card custom_ngx_cw01">
               class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="trendMode" [style.display]="'none'">
