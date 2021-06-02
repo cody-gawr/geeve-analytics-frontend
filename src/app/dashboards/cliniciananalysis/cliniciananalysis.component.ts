@@ -66,7 +66,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   private dentistProductionLabelsByIndex = [];
   private treatmentPlanProposedProvidersByInx = [];
   private showCompare:boolean = false;
-
+  public Apirequest =0;
   constructor(
     private cliniciananalysisService: ClinicianAnalysisService,
     private dentistService: DentistService,
@@ -2447,7 +2447,6 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         const date = new Date();
         this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
-        console.log(this.startDate + " " + this.endDate);
 
         this.loadDentist(dentistVal);
 
@@ -2596,6 +2595,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_' + val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
+    this.Apirequest = 0;
     if (val == 'current') {
       this.toggleChecked = true;
       this.showTrendChart = true;
@@ -2665,6 +2665,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistProductionTrendLabels = [];
       this.dentistProductionTrendLabels = [];
       let dynamicColors = [];
+      this.Apirequest = this.Apirequest -1;
       if (data && data.message == 'success') {
         this.dentistProductionTrendLoader = false;
         data.data.data.forEach(res => {
@@ -2741,7 +2742,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
       this.treatmentPlanTrend1 = [];
       this.treatmentPlanTrend2 = [];
-
+      this.Apirequest = this.Apirequest -1;
       if (data.message == 'success') {
         this.treatmentPlanTrendLoader = false;
         if (data.data) {
@@ -2860,6 +2861,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.patientComplaintsTrendLabels = [];
        this.patientComplaintsTrendLoader = false;
       this.patientComplaintsTrend1 = [];
+      this.Apirequest = this.Apirequest -1;
       if (data.message == 'success') {
        
         if (data.data) {
@@ -2939,6 +2941,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.cliniciananalysisService.cpRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+      this.Apirequest = this.Apirequest -1;
       if (data.message == 'success') {
         this.fdRecallPrebookRateTrendLoader = false;
         this.recallPrebookChartTrendLabels1 = [];
@@ -3013,6 +3016,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.cliniciananalysisService.caReappointRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+      this.Apirequest = this.Apirequest -1;
       if (data.message == 'success') {
         this.fdTreatmentPrebookRateTrendLoader = false;
         this.treatmentPrebookChartTrendLabels1 = [];
@@ -3086,6 +3090,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var clinic_id;
     this.clinic_id && this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.hourlyRateChartTrendLabels = [];
+      this.Apirequest = this.Apirequest -1;
       if (data.message == 'success') {
         this.fdhourlyRateRateTrendLoader = false;
         this.hourlyRateChartTrendLabels1 = [];
@@ -3163,6 +3168,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.clinic_id && this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+      this.Apirequest = this.Apirequest -1;
       if (data != null && data.message == 'success') {
         this.fdnewPatientsRateTrendLoader = false;
         this.newPatientsChartTrendLabels1 = [];
@@ -3244,6 +3250,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var clinic_id;
     this.clinic_id && this.cliniciananalysisService.catreatmentPlanRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.fdtreatmentPlanRateTrendLoader = false;
+      this.Apirequest = this.Apirequest -1;
       if (data.message == 'success') {
       
         this.treatmentPlanChartTrendLabels1 = [];
@@ -3280,6 +3287,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   toggleChangeProcess() {
     if (this.toggleChecked) {
+      this.Apirequest = 8;
       $('.filter').removeClass('active');
       this.dentistProductionTrend();
       this.treatmentPlanTrend();

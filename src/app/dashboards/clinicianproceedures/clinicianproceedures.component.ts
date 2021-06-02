@@ -42,6 +42,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     public user_type;
     public childid='';
     public trendText;
+    public Apirequest =0;
     private _routerSub = Subscription.EMPTY;
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -2107,6 +2108,7 @@ toggleFilter(val) {
     $('.target_filter').removeClass('mat-button-toggle-checked');
     $('.target_'+val).addClass('mat-button-toggle-checked');
     $('.filter').removeClass('active');
+    this.Apirequest = 0;
     if(val == 'current') {
      this.toggleChecked = true;
      this.trendValue = 'c';
@@ -2170,7 +2172,9 @@ toggleFilter(val) {
 
 toggleChangeProcess(){
   if(this.toggleChecked){
+    this.Apirequest = 3;
     $('.filter').removeClass('active');
+
     this.predictorTrendSingle();
     this.predictorSpecialTrendSingle();
     this.mode='Combined';
@@ -2221,6 +2225,7 @@ toggleChangeProcess(){
       this.stackedChartLabels1 = [];
       this.stackedChartDataMax = 0;
       this.buildChartDentistLoader = false;
+      this.Apirequest = this.Apirequest -1;
        if(data.message == 'success' && data.data){
          if(data.data.length <=0) {
                 }else {
@@ -2302,6 +2307,7 @@ toggleChangeProcess(){
         {data: [], label: 'Endo Re-treat' },  
         {data: [], label: 'Veneers (indirect)' } 
       ];
+      this.Apirequest = this.Apirequest -1;
        if(data.message == 'success' && data.data){
          if(data.data.length <=0) {
                 }else {
@@ -2537,6 +2543,7 @@ toggleChangeProcess(){
       this.ratioChartLabels1=[];
    this.clinic_id && this.clinicianproceeduresService.CpPredictorRatioTrend(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
       this.ratioChartLabels1=[];
+      this.Apirequest = this.Apirequest -1;
        if(data.message == 'success' && data.data){
           if(data.data.length <=0) {
           } else {
