@@ -703,15 +703,20 @@ initiate_clinic() {
 
 
   formatPhoneNumber(phone){
-    if(phone.startsWith('04')){
-      phone = phone.replace(/ /g, '');
-      var onePart = phone.substr(0, 4);
-      var twoPart = phone.substr(4, 3);
-      var threePart = phone.substr(7, 3);
-      return onePart + ' '+ twoPart+ ' '+threePart;
+    if(phone){
+      if(phone.startsWith('04')){
+        phone = phone.replace(/ /g, '');
+        var onePart = phone.substr(0, 4);
+        var twoPart = phone.substr(4, 3);
+        var threePart = phone.substr(7, 3);
+        return onePart + ' '+ twoPart+ ' '+threePart;
+      } else {
+        return phone;
+      }
     } else {
-      return phone;
-    }
+        return 'N/A';
+      } 
+
   }
   /*refreshUnscheduledPatients(val){
     this.unscheduledPatientsDays = val;
