@@ -73,6 +73,7 @@ export class FinancesComponent implements AfterViewInit {
    public duration='m';
    public predictedChartColors;
    public trendText;
+   public Apirequest =0;
    colorScheme = {
     domain: ['#6edbba', '#abb3ff', '#b0fffa', '#ffb4b5', '#d7f8ef', '#fffdac', '#fef0b8', '#4ccfae']
    };
@@ -2129,7 +2130,7 @@ public totalProductionCollection: any[] = [
     {data: [], label: 'Total Production'},{data: [], label: 'Collection'}];
 public totalProductionCollectionLabel =[];
 public netProfitDisplayVal;
-public Apirequest =0;
+
 toggleChangeProcess(){ 
   console.log(this.Apirequest+'newset');
   this.Apirequest =5;
