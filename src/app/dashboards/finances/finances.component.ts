@@ -42,6 +42,7 @@ export class FinancesComponent implements AfterViewInit {
   public netprofitpercentstats: boolean = true;
   public expensestrendstats: boolean = true;
   public connectedwith:any;
+  
   public pieChartColors = [
     {
       backgroundColor: [
@@ -130,7 +131,6 @@ single = [
     if(val != undefined && val !='all') {
       this.clinic_id = val;
       await this.clinicGetAccountingPlatform();
-      console.log(this.connectedwith);
       if(this.connectedwith == 'myob'){
         this.xeroConnect = false;
         this.checkMyobStatus();
@@ -2040,6 +2040,9 @@ toggleFilter(val) {
   $('.target_filter').removeClass('mat-button-toggle-checked');
   $('.target_' + val).addClass('mat-button-toggle-checked');
   $('.filter').removeClass('active');
+
+  console.log('switch');
+  this.Apirequest = 0;
   var date = new Date();
   this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
   if (val == 'current') {
@@ -2117,15 +2120,19 @@ else
 
     }
   }
-  onChange(mrChange) {
+  onChange(mrChange) { 
    this.trendValue = mrChange.value;
+     
      this.toggleChangeProcess();
   } 
 public totalProductionCollection: any[] = [
     {data: [], label: 'Total Production'},{data: [], label: 'Collection'}];
 public totalProductionCollectionLabel =[];
 public netProfitDisplayVal;
-toggleChangeProcess(){
+public Apirequest =0;
+toggleChangeProcess(){ 
+  console.log(this.Apirequest+'newset');
+  this.Apirequest =5;
     if(this.toggleChecked){
     $('.filter').removeClass('active');
     $('.trendMode').css('display','block');
@@ -2133,6 +2140,7 @@ toggleChangeProcess(){
     
 
     if(this.connectedwith != ''){
+      this.Apirequest = 8;
       this.expensestrendstats=false;
       this.finNetProfitPMSTrend();
       this.finNetProfitPMSPercentTrend();
@@ -2142,19 +2150,9 @@ toggleChangeProcess(){
     
     this.finProductionByClinicianTrend();
     this.finTotalDiscountsTrend();
-  //  this.finOverdueAccountsTrend();
     this.finTotalProductionTrend();
-    //this.finCollectionTrend();
     this.finProductionPerVisitTrend();
-  //  this.finNetProfitTrend();
-   // this.finNetProfitPercentTrend();
     this.netProfitDisplayVal ='1';
-/*    this.totalProductionCollection[0]['data'] = this.totalProductionChartTrend1;
-    this.totalProductionCollection[1]['data'] = this.collectionChartTrend1;
-    this.totalProductionCollectionLabel = this.totalProductionChartTrendLabels1;*/
-    // alert('sdf');
-    //  $(".profit2").hide();
-    //   $(".profit1").css('display','flex');
    }
 }
 
@@ -2173,7 +2171,10 @@ private finProductionByClinicianTrend() {
     var user_id;
     var clinic_id;
     this.financesService.finProductionByClinicianTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data.message == 'success'){
+      console.log(this.Apirequest+'after');
+      this.Apirequest =  this.Apirequest-1;
+      console.log(this.Apirequest+'before');
+      if(data.message == 'success'){
           this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(res => {                   
                    res.val.forEach((result,key) => {
@@ -2238,7 +2239,10 @@ private finTotalDiscountsTrend() {
     var user_id;
     var clinic_id;
     this.financesService.finTotalDiscountsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data.message == 'success'){
+      console.log(this.Apirequest+'after');
+      this.Apirequest =  this.Apirequest-1;
+      console.log(this.Apirequest+'before');
+      if(data.message == 'success'){
          this.finTotalDiscountsTrendLoader = false;        
                 data.data.forEach(res => {  
                      this.discountsChartTrend1.push(Math.round(res.discounts));
@@ -2286,7 +2290,10 @@ private finTotalDiscountsTrend() {
     var user_id;
     var clinic_id;
     this.financesService.finOverdueAccountsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data.message == 'success'){
+      console.log(this.Apirequest+'after');
+      this.Apirequest =  this.Apirequest-1;
+      console.log(this.Apirequest+'before');
+      if(data.message == 'success'){
             this.finOverdueAccountsTrendLoader = false;
                 data.data.forEach(res => {  
                      this.overdueChartTrend1.push(Math.round(res.val.total));
@@ -2337,7 +2344,9 @@ private finTotalDiscountsTrend() {
       this.netProfitChartTrendLabels1=[];
       this.totalProductionChartTrendLabels1=[];
       this.netProfitPercentChartTrend1 = [];
-      
+      console.log(this.Apirequest+'after');
+       this.Apirequest =  this.Apirequest-1;
+       console.log(this.Apirequest+'before');
        if(data.message == 'success'){
           this.finTotalProductionTrendLoader = false;    
           this.finNetProfitTrendLoader = false;      
@@ -2391,7 +2400,10 @@ private finTotalDiscountsTrend() {
     var user_id;
     var clinic_id;
     this.financesService.finCollectionTrend(this.clinic_id,this.trendValue).subscribe((data) => {
-       if(data.message == 'success'){
+      console.log(this.Apirequest+'after');
+      this.Apirequest =  this.Apirequest-1;
+      console.log(this.Apirequest+'before');
+      if(data.message == 'success'){
           this.finCollectionTrendLoader = false;        
                 data.data.forEach(res => {  
                      this.collectionChartTrend1.push(Math.round(res.collection));
@@ -2445,7 +2457,10 @@ private finTotalDiscountsTrend() {
     this.financesService.finProductionPerVisitTrend(this.clinic_id,this.trendValue).subscribe((data) => {
         this.productionVisitChartTrendLabels=[];
         this.productionVisitChartTrendLabels1=[];
-        this.finProductionPerVisitTrendLoader = false;        
+        this.finProductionPerVisitTrendLoader = false;
+        console.log(this.Apirequest+'after');
+       this.Apirequest =  this.Apirequest-1;
+       console.log(this.Apirequest+'before');        
         if(data && data.message == 'success'){
                 data.data.forEach(res => {  
                   this.productionVisitChartTrend1.push(Math.round(res.production));
@@ -2493,6 +2508,9 @@ private finTotalDiscountsTrend() {
     var user_id;
     var clinic_id;
     this.financesService.finNetProfitTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      console.log(this.Apirequest+'after');
+       this.Apirequest =  this.Apirequest-1;
+       console.log(this.Apirequest+'before');
        if(data.message == 'success'){
     this.finNetProfitTrendLoader = false;
                 data.data.forEach(res => {  
@@ -2540,6 +2558,9 @@ private finTotalDiscountsTrend() {
     var user_id;
     var clinic_id;
     this.financesService.finNetProfitPercentTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      console.log(this.Apirequest+'after');
+       this.Apirequest =  this.Apirequest-1;
+       console.log(this.Apirequest+'before');
        if(data.message == 'success'){
   this.finNetProfitPercentTrendLoader = false;
 
@@ -2624,7 +2645,10 @@ private finTotalDiscountsTrend() {
     this.trendxero=true;
     this.financesService.finNetProfitPMSTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
        this.trendxero=false;
-       if(data.message == 'success'){       
+       console.log(this.Apirequest+'after');
+       this.Apirequest =  this.Apirequest-1;
+       console.log(this.Apirequest+'before');
+       if(data.message == 'success'){
           if(data.data)
                 data.data.forEach(res => {  
                    if (res.net_profit != null)
@@ -2656,6 +2680,9 @@ private finTotalDiscountsTrend() {
     this.trendxero = true;
     this.financesService.finNetProfitPMSPercentTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
       this.trendxero=false;
+      console.log(this.Apirequest+'after');
+       this.Apirequest =  this.Apirequest-1;
+       console.log(this.Apirequest+'before');
       if(data.message == 'success'){   
         this.netProfitPmsChartTrend1= [];
         this.netProfitChartTrendLabels1=[];     
@@ -2689,6 +2716,9 @@ private finTotalDiscountsTrend() {
       this.expensesChartTrendLabels=[];
       this.expensesChartTrend =[];
       this.financesService.finExpensesByCategoryTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
+        console.log(this.Apirequest+'after');
+       this.Apirequest =  this.Apirequest-1;
+       console.log(this.Apirequest+'before');
         if(data.message == 'success'){
           this.expensestrendstats=true;
            data.data.expenses.forEach((result,key) => {  
