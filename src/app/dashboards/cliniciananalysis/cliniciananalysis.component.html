@@ -945,7 +945,7 @@
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration != 'custom'">
                   <h3 class="m-0 value-num" *ngIf="treatmentPreChartGoal && goalCount">
-                    {{ (treatmentPreChartGoal * goalCount) | number:'1.0-0'}}%</h3>
+                    {{ treatmentPreChartGoal | number:'1.0-0'}}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>

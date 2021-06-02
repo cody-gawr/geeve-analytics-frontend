@@ -98,7 +98,6 @@ export class MarketingComponent implements AfterViewInit {
     if(val != undefined && val !='all') {
       this.clinic_id = val;
       await this.clinicGetAccountingPlatform();
-      console.log(this.connectedwith);
       if(this.connectedwith == 'myob'){
         this.xeroConnect = false;
         this.checkMyobStatus();
@@ -1075,8 +1074,11 @@ public currentText;
     mode='Internal';
     showTrend= false;
     toggleChangeProcess(){
-    this.Apirequest = 3;
+    this.Apirequest = 2;
     this.showTrend = true;
+    if(this.connectedwith != ''){
+      this.Apirequest = 3;
+    }
     this.mkNewPatientsByReferral();
     this.mkRevenueByReferral();
 
@@ -1130,12 +1132,12 @@ public fdvisitsRatioTrendLoader:any;
     var user_id;
     var clinic_id;
     this.marketingService.mkTotalVisitsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      this.Apirequest = this.Apirequest -1;
       this.visitsChartTrend1=[];  
       this.visitsChartTrendLabels = [];
       this.visitsChartTrendLabels1 = [];     
       this.visitsChartTrend[0]['data'] = [];
       this.fdvisitsRatioTrendLoader = false;
-      this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
                 data.data.forEach(res => {  
                      this.visitsChartTrend1.push(res.num_visits);

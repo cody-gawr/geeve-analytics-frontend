@@ -407,7 +407,6 @@ public dentists;
     let millisecond = dateStr.substring(20)
 
     let validDate = date;
-    console.log(validDate)
     return validDate
   }
  loadDentist(newValue) {
