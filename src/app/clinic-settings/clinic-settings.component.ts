@@ -44,6 +44,7 @@ export class ClinicSettingsComponent implements OnInit {
           
           // public chartData: any[] = [];
           public address:any = {};
+          public timezone:any = '';
           public post_op_calls:any = '';
           public practice_size:any ={};
           options: FormGroup;
@@ -80,6 +81,7 @@ export class ClinicSettingsComponent implements OnInit {
       phoneNo: [null],
       clinicEmail: [null, [Validators.email]],
       address: [null],
+      timezone: [null],
       // practice_size: [null, Validators.compose([Validators.required])],
       post_op_calls: [null],      
       fta_uta: [null, Validators.compose([Validators.required])],              
@@ -124,6 +126,7 @@ export class ClinicSettingsComponent implements OnInit {
         this.postOpCallsMh = res.data[0].post_op_days;
         this.recallWeeks = res.data[0].recall_weeks;
         this.tickDays = res.data[0].tick_days;
+        this.timezone = res.data[0].timezone;
         if(this.ftaUta == '')
           this.ftaUta = "status";
        
@@ -157,9 +160,10 @@ export class ClinicSettingsComponent implements OnInit {
   this.postOpCallsMh = this.form.value.post_op_calls_days;
   this.recallWeeks = this.form.value.recall_weeks;
   this.tickDays = this.form.value.tick_days;
+  this.timezone = this.form.value.timezone;
  // this.unscheduledPatientsMh = this.form.value.unscheduled_patients_days;
   
-  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays ).subscribe((res) => {
+  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays, this.timezone ).subscribe((res) => {
       $('.ajax-loader').hide();
       if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );
