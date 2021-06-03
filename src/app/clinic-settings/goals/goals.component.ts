@@ -395,7 +395,7 @@ getGoalsForTabsClinic(allGoals) {
       if(typeof(charts.dentist_goal) != 'undefined' && charts.dentist_goal) {
         tempChart['value'] = charts.dentist_goal.value;
       }
-      if(typeof(charts.clinic_goal) != 'undefined' && charts.clinic_goal) {
+      else if(typeof(charts.clinic_goal) != 'undefined' && charts.clinic_goal) {
         tempChart['value'] = charts.clinic_goal.value;
       }
      
