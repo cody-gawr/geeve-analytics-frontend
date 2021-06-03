@@ -6,6 +6,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { HeaderService } from '../header/header.service';
 import { DentistService } from '../../../dentist/dentist.service';
 import { Subscription } from 'rxjs/Subscription';
+import { UserIdleService } from 'angular-user-idle';
+
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';  
 export interface Dentist {
@@ -26,7 +28,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   showCompare:boolean = false;
   showDropDown:boolean = false;
   classUrl:string = '';
-  constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router) {
+  constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router, private userIdle: UserIdleService) {
       this.user_type_dentist = this._cookieService.get("user_type");
       this._routerSub = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
             this.route = router.url; 
@@ -65,8 +67,19 @@ export class AppHeaderrightComponent implements AfterViewInit  {
      this._routerSub.unsubscribe();
    }
  ngAfterViewInit() {
-  //  this.clinic_id = '1';
-     //this.getClinics();
+    //  this.clinic_id = '1';
+    //this.getClinics();
+    //Start watching for user inactivity.
+    this.userIdle.startWatching();    
+    // Start watching when user idle is starting.
+    this.userIdle.onTimerStart().subscribe(count => {});    
+    // Start watch when time is up.
+    this.userIdle.onTimeout().subscribe(() => {
+      this.userIdle.stopTimer();
+      this._cookieService.removeAll();
+      this.router.navigateByUrl('/login');
+    });
+
   }
 
   toggler(){

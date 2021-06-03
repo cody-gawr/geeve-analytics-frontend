@@ -21,6 +21,7 @@ import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
 import { CookieModule } from "ngx-cookie";
 import { AuthGuard } from './auth/authguard.service';
+import { UserIdleModule } from 'angular-user-idle';
 import { HeaderService } from './layouts/full/header/header.service';
 import { StepperHeaderService } from './layouts/stepper/header/header.service';
 import { StepperHeaderrightService } from './layouts/stepper/headerright/headerright.service';
@@ -62,8 +63,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DashboardDurationTabsComponent
   ],
   imports: [
-  MatMenuModule,
-  DemoMaterialModule,
+    UserIdleModule.forRoot({idle: 14400, timeout: 10, ping: 10}),
+    MatMenuModule,
+    DemoMaterialModule,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
