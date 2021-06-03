@@ -222,8 +222,10 @@ export class AppHeaderrightComponent implements AfterViewInit  {
             this.selectedDentist = parseInt(dentistclinic[1]);
           }
         }
-         this.loadDentist(this.selectedDentist);
+        }else{
+          this.selectedDentist ='all';
         }
+        this.loadDentist(this.selectedDentist);
       }    
     }
  }
