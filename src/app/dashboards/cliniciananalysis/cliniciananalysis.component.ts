@@ -815,9 +815,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   }
 
-
-  if(newValue =='')
-    newValue='all';
+  if(newValue ==''){
+    return false;
+  }
+   
    $('#title').html('<span> Clinician Analysis </span>');
     $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
   this.changePrebookRate('recall');
