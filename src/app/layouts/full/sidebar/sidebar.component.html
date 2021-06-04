@@ -82,6 +82,14 @@
         </a>
     </mat-list-item>
 
+    <mat-list-item appAccordionLink routerLinkActive ="selected" group="string">
+         <a class="" appAccordionToggle [routerLink]="['/followups']">
+            <i class="fas fa-male"></i>
+            <span>Follow Ups</span>
+            <span fxFlex></span>
+        </a>
+    </mat-list-item>
+
     <mat-list-item appAccordionLink routerLinkActive= "selected" group="string">
         <a class="" appAccordionToggle  href="javascript: void(0);" (click)="clickEvent('setting')" [ngClass]="status ? 'selected' : ''" >
             <i class="fa-cog fas"></i>
