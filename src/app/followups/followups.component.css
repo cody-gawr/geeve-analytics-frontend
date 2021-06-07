@@ -185,6 +185,7 @@ table{
 .thick .mat-column-book {
   flex: 0 0 5% !important;
   width: 5% !important;
+  text-align: right;
 }
 
 
@@ -244,3 +245,10 @@ float: right;
 .notes{ cursor: pointer; font-size: 17px;}
 .notes.green { color: #047c04; }
 .notes.red { color: #7c0404; }
+table.filters {
+    width: 550px;
+    margin: auto;
+}
+table.filters td {
+    padding: 0px 20px 20px;
+}

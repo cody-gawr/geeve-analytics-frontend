@@ -1,6 +1,13 @@
 <input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'">
-<div class="sa_dashboard_inner_content morning-huddle">
-     <div class="morning-huddle-date">
+<div class="sa_dashboard_inner_content morning-huddle">   
+  <mat-tab-group [selectedIndex]="selectedTab">
+    <!-- Dentist Performance Tab -->
+    <mat-tab label="Post op Calls">
+
+        <div class="morning-huddle-date">
+          <table class="filters">
+            <tr>
+              <td>
         <mat-form-field floatLabel="never" class="setPreviousDay">
           <mat-select [(ngModel)] = "selectedMonth" [(value)] = "selectedMonth"  (selectionChange)="refreshPerformanceTab($event.value)" id="setMonth">
             <mat-option value="0">January</mat-option>
@@ -17,7 +24,8 @@
             <mat-option value="11">December</mat-option>                         
           </mat-select>
         </mat-form-field>
-
+      </td>
+      <td>
         <mat-form-field floatLabel="never" class="setPreviousDay">
           <mat-select  [(ngModel)] = "selectedYear" [(value)] = "selectedYear" (selectionChange)="refreshPerformanceTab($event.value)" id="setYear">
             <mat-option [value]="subtractYears(0) | date:'y':'timezone'">{{ subtractYears(0) | date:'y':'timezone' }}</mat-option>
@@ -28,10 +36,13 @@
                             
           </mat-select>
         </mat-form-field>
+      </td>
+    </tr>
+  </table>
       </div>
-  <mat-tab-group [selectedIndex]="selectedTab">
-    <!-- Dentist Performance Tab -->
-    <mat-tab label="Post op Calls">
+
+
+
         <div class="showComplete" *ngIf="followupPostOpCallsInComp.length > 0">
             <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
               Complete</mat-checkbox>

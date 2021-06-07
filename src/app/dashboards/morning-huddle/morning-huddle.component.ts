@@ -109,13 +109,14 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public noShow:any = 0;
     public appointmentCardsTemp:any = [];
     public appointmentCards = new MatTableDataSource();
-    public dentistList = new MatTableDataSource([]);
+    public appointmentCardsLoading:boolean = true;
+    public dentistList:any = new MatTableDataSource([]);
     dentistListTemp:any = [];
     
     public reAppointment:any = 0;
     public reAppointmentdate:any = '';
     public unscheduledPatients:any = 0;
-    public unscheduledValue:any = 0;
+    //public unscheduledValue:any = 0;
     public todayPatients:any = 0;
     public todayPatientsDate:any = '';
     public todayUnscheduledHours:any = 0;
@@ -246,11 +247,11 @@ initiate_clinic() {
       this.getUnscheduleHours(null);
     /***** Tab 2 ***/
       /***** Tab 3 ***/
-      this.getUnscheduledValues();
+      //this.getUnscheduledValues();
       this.getTodayUnscheduledHours();
-      this.getChairUtilisationRate();
+      //this.getChairUtilisationRate();
       this.getTodayUnscheduledBal();
-      this.getNoShow();
+      //this.getNoShow();
       //this.getUnscheduledPatients();
       //this.getTodayPatients();
       //this.getTodayPostopCalls();
@@ -303,12 +304,12 @@ initiate_clinic() {
     /*******Tab 3 *******/
     // this.getReAppointment();
     //this.getUnscheduledPatients();
-    this.getUnscheduledValues();
+    //this.getUnscheduledValues();
     //this.getTodayPatients();
     this.getTodayUnscheduledHours();
     this.getChairUtilisationRate();
     this.getTodayUnscheduledBal();
-    this.getNoShow();
+    //this.getNoShow();
     //this.getTodayPostopCalls();
     /*******Tab 3 *******/
     /*******Tab 4 *******/
@@ -480,13 +481,13 @@ initiate_clinic() {
     }); 
   }*/
 
-  getUnscheduledValues(){
+  /*getUnscheduledValues(){
     this.morningHuddleService.getUnscheduledValues( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.unscheduledValue = production.data;
       }
     }); 
-  }
+  }*/
 
    /*getTodayPatients(){
     this.morningHuddleService.getTodayPatients( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
@@ -523,13 +524,13 @@ initiate_clinic() {
   }  
 
 
-  getNoShow(){
+  /*getNoShow(){
     this.morningHuddleService.getNoShow( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       if(production.status == true) {
         this.noShow = production.data;       
       }
     }); 
-  }
+  }*/
   
 /*   getTodayPostopCalls(){
     this.morningHuddleService.getTodayPostopCalls( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
@@ -552,7 +553,10 @@ initiate_clinic() {
     }); 
   }*/
    getScheduleNewPatients(dentist){
+    this.scheduleNewPatieltd = 0;
+    this.appointmentCardsLoading = true;
     this.morningHuddleService.getNewPatients( this.clinic_id, dentist,this.previousDays,  this.user_type  ).subscribe((production:any) => {
+      this.appointmentCardsLoading = false;
       if(production.status == true) {
         this.scheduleNewPatieltd = production.data.patient;
         this.schedulePatielDate = production.data.date;
@@ -578,6 +582,7 @@ initiate_clinic() {
   
 
    getAppointmentCards(dentist){
+    this.appointmentCards = new MatTableDataSource();
     this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((production:any) => {
       if(production.status == true) {
         this.clinicDentists = [];
@@ -634,12 +639,13 @@ initiate_clinic() {
 
 
  getDentistList(){
+  this.dentistListLoading = false;
+  this.dentistList = new MatTableDataSource([]);
     this.morningHuddleService.dentistList( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((list:any) => {
+      this.dentistListLoading = true;
       if(list.status == true){
-
         this.dentistList.data = list.data;
         this.dentistListTemp = list.data;
-        this.dentistListLoading = true;
       }
     }); 
   }
