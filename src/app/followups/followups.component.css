@@ -1,0 +1,254 @@
+.header_filters{ flex-direction: row-reverse !important }
+.DentistListSecRow mat-card.noPatients.sa_hccard.mat-card {
+    background-color: #fff !important;
+    padding: 10px !important;
+    float: left;
+    width: 95%;
+    margin: 8px 8px;
+}
+
+.DentistListSecRow .left {
+    float: left;
+    width: 45%;
+    display: block;
+}
+.DentistListSecRow .right {
+    float: left;
+    width: 53%;
+}
+.left span.title {
+      width: 65px;
+    display: block;
+    padding-top: 21px;
+    border: 1px solid #18A6B6;
+    margin: 4px 0 5px 0;
+    border-radius: 52%;
+    text-align: center;
+    height: 65px;
+    background: #18A689;
+    color: #fff;
+}
+.left span.title {
+    width: 65px;
+    display: block;
+    padding-top: 21px;
+    border: 1px solid;
+    margin: 4px 0 5px 0;
+    border-radius: 52%;
+    text-align: center;
+    height: 65px;
+}
+.right h5 {
+    margin: 10px 0 4px 0;
+    font-size: 15px;
+    font-weight: 500;
+}
+span.gotMark {
+    width: 100%;
+    display: block;
+    color: green;
+}
+span.green_title {
+    padding: 10px 10px;
+    text-align: center;
+    margin: 0;
+}
+.sa_first_section .mat-tab-body-wrapper {
+    padding: 10px 0;
+}
+.right > div {
+    border-bottom: 1px dotted #cecece;
+}
+.right > div:last-child {
+    border-bottom: 0px dotted #cecece;
+}
+
+.cardsCon.ng-star-inserted {
+    width: 25%;
+    float: left;
+}
+
+.mat-form-field-infix {
+    border-bottom: 0;
+    width: 100%;
+}
+
+.active {
+    background-color: #eee;
+}
+
+.setPreviousDay {
+    margin-bottom: 20px;
+}
+.morning-huddle-date.UnscheduledPatients {
+    float: right;
+    display: block;
+    margin: -20px;
+}
+
+table{
+ width: 100%;
+}
+
+.mat-column-name {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 25% !important;
+  width: 25% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-phone {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 20% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+/*.customWidth.PostOp .mat-column-name {
+  flex: 0 0 24% !important;
+  width: 24% !important;
+}
+.customWidth.PostOp .mat-column-phone {
+  flex: 0 0 24% !important;
+  width: 23% !important;
+}
+.customWidth.PostOp .mat-column-code {
+  flex: 0 0 24% !important;
+  width: 23% !important;
+}*/
+
+.mat-column-code {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 25% !important;
+  width: 25% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-note {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 15% !important;
+  width: 15% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-column-status {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 15% !important;
+  width: 15% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  text-align: right !important;
+}
+
+.thick .mat-column-status {
+  flex: 0 0 10% !important;
+  width: 10% !important;
+}
+.thick .mat-column-book {
+  flex: 0 0 5% !important;
+  width: 5% !important;
+  text-align: right;
+}
+
+
+.header_filters.morning-huddle { flex-direction: row-reverse !important }
+.huddle-card {
+    padding: 16px;
+    margin-left: 0;
+    margin-right: 0;
+}
+.huddle-card-row {
+    margin-bottom: 8px;
+}
+.huddle-card-row .appointment {
+    margin-top: 0;
+}
+.header_filters.flex_direct_mar { flex-direction: row-reverse !important }
+
+.daysAgo {
+    font-size: 12px;
+    color: rgb(161, 161, 161);
+    padding-bottom: 16px;
+}
+
+.mat-column-note .setPreviousDay {
+    margin-bottom: 0px;
+}
+
+.info-icon-container { 
+  /* float: right; */
+  display: inline;
+  margin-left: 8px;
+}
+.mh-table th.mat-header-cell {
+    font-weight: bold;
+}
+
+.showComplete mat-slide-toggle {
+    margin: -8px 0 0px 11px;
+}
+.showComplete {
+float: right;
+    margin: 0 27px 6px 0px;
+    margin-right: 24px;
+    font-size: 13px;
+    display: inline;
+}
+
+.fa-check {
+    color: #18A689;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.mat-card-title {
+    padding-bottom: 30px !important;
+}
+.notes{ cursor: pointer; font-size: 17px;}
+.notes.green { color: #047c04; }
+.notes.red { color: #7c0404; }
+table.filters {
+    width: 550px;
+    margin: auto;
+}
+table.filters td {
+    padding: 0px 20px 20px;
+}

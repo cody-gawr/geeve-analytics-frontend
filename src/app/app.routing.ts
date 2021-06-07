@@ -4,6 +4,7 @@ import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-huddle.component';
+import { FollowupsComponent } from './followups/followups.component';
 import { StepperComponent } from './layouts/stepper/stepper.component';
 import { AuthGuard } from './auth/authguard.service';
 
@@ -68,6 +69,11 @@ export const AppRoutes: Routes = [
       {
         path: 'lost-opportunity',
         component: LostOpportunityComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'followups',
+        component: FollowupsComponent,
         canActivate: [AuthGuard]
       },
       {

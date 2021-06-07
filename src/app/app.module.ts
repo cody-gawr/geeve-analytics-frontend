@@ -21,6 +21,7 @@ import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
 import { CookieModule } from "ngx-cookie";
 import { AuthGuard } from './auth/authguard.service';
+import { UserIdleModule } from 'angular-user-idle';
 import { HeaderService } from './layouts/full/header/header.service';
 import { StepperHeaderService } from './layouts/stepper/header/header.service';
 import { StepperHeaderrightService } from './layouts/stepper/headerright/headerright.service';
@@ -29,6 +30,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 import { MorningHuddleComponent,DialogOverviewExampleDialogComponent } from './dashboards/morning-huddle/morning-huddle.component';
+import { FollowupsComponent,FollowupsDialogComponent } from './followups/followups.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
@@ -55,6 +57,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppHeaderrightComponent,
     LostOpportunityComponent,
     MorningHuddleComponent,
+    FollowupsComponent,
+    FollowupsDialogComponent,
     DialogOverviewExampleDialogComponent,
     StepperComponent,
     StepperSidebarComponent,
@@ -62,8 +66,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     DashboardDurationTabsComponent
   ],
   imports: [
-  MatMenuModule,
-  DemoMaterialModule,
+    UserIdleModule.forRoot({idle: 14400, timeout: 10, ping: 10}),
+    MatMenuModule,
+    DemoMaterialModule,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
