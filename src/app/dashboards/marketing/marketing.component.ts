@@ -458,7 +458,8 @@ scales: {
             innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + '</th></tr>';
           });
              bodyLines.forEach(function (body, i) { 
-            if(!body[0].includes("0")){
+               var singledata = body[0].split(":");
+            if(singledata[1] > 0){
                innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
               }                
           });
