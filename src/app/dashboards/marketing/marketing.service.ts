@@ -36,6 +36,17 @@ public token_id;
         );
     }
 
+            // Items Predictor Analysis  trend mode
+    
+      mkNewPatientsByReferralTrend(clinic_id, mode ='', token = this._cookieService.get("token") ): Observable<any> {
+      var header = this.getHeaders(); 
+       return this.http.get(this.apiUrl +"/Marketing/mkNumPatientsByReferralTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+          .pipe(map((response: Response) => {
+                        return response;
+                 })
+             );
+    }
+
     // Items Predictor Analysis  
     fdvisitsRatio(clinic_id, startDate = '', endDate = '',duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
@@ -50,6 +61,17 @@ public token_id;
     mkRevenueByReferral(clinic_id, startDate = '', endDate = '',duration='', token = this._cookieService.get("token")  ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Marketing/mkRevByReferral?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
+            // Items Predictor Analysis  trend mode
+    
+      mkRevenueByReferralTrend(clinic_id, mode ='', token = this._cookieService.get("token") ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Marketing/mkRevByReferralTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

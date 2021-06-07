@@ -761,7 +761,8 @@ this.preoceedureChartColors = [
     {data: [], label: 'Surgical Extractions' },      
     {data: [], label: 'Stainless Steel Crowns'},  
     {data: [], label: 'Composite Veneers'},  
-    {data: [], label: 'Implant Crowns'}  
+    {data: [], label: 'Implant Crowns'},  
+    {data: [], label: 'Whitening'}
   ];
 
   public stackedChartDataItemSpecial: any[] = [
@@ -782,6 +783,7 @@ this.preoceedureChartColors = [
   public stackedChartData6: any[] = [];
   public stackedChartData7: any[] = [];
   public stackedChartData8: any[] = [];
+  public stackedChartData9: any[] = [];
   public duration='';
   public predictedChartData: any[] = [
     {data: [], label: '',  shadowOffsetX: 3,
@@ -1100,7 +1102,8 @@ if(this._cookieService.get("user_type") == '4'){
     {data: [], label: 'Surgical Extractions' },
     {data: [], label: 'Stainless Steel Crowns'},  
     {data: [], label: 'Composite Veneers'},  
-    {data: [], label: 'Implant Crowns'}  
+    {data: [], label: 'Implant Crowns'},  
+    {data: [], label: 'Whitening'}
     ];
 
 
@@ -1114,6 +1117,7 @@ if(this._cookieService.get("user_type") == '4'){
         this.stackedChartData6 = [];
         this.stackedChartData7 = [];
         this.stackedChartData8 = [];
+        this.stackedChartData9 = [];
         this.stackedChartLabels1 =[];
         this.stackedChartLabels =[];
         this.stackedChartDataMax = 0;
@@ -1135,6 +1139,7 @@ if(this._cookieService.get("user_type") == '4'){
              this.stackedChartData6.push(res.ss_crowns);
              this.stackedChartData7.push(res.comp_veneers);
              this.stackedChartData8.push(res.imp_crowns);
+             this.stackedChartData9.push(Math.round(res.whitening));
              this.stackedChartLabels1.push(res.provider_name);
              if(res.provider_name != 'Anonymous')
               this.ipKey =i;
@@ -1151,6 +1156,7 @@ if(this._cookieService.get("user_type") == '4'){
        this.stackedChartData[5]['data'] = this.stackedChartData6;
        this.stackedChartData[6]['data'] = this.stackedChartData7;
        this.stackedChartData[7]['data'] = this.stackedChartData8;
+       this.stackedChartData[8]['data'] = this.stackedChartData9;
        this.stackedChartLabels = this.stackedChartLabels1;
       
          if(this.user_type == '4' && this.childid != '') {
@@ -1162,8 +1168,9 @@ if(this._cookieService.get("user_type") == '4'){
             { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
             { backgroundColor: ['#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7','#B3B6B7'] },
             { backgroundColor: ['#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7','#D5D7D7'] },
+            { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] },
             { backgroundColor: ['#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE','#DCDDDE'] }
-          ];
+         ];
         this.barChartColors[0].backgroundColor[this.ipKey] = '#1CA49F';
         this.barChartColors[1].backgroundColor[this.ipKey] = '#1fd6b1';
         this.barChartColors[2].backgroundColor[this.ipKey] = '#09b391';
@@ -1172,6 +1179,7 @@ if(this._cookieService.get("user_type") == '4'){
         this.barChartColors[6].backgroundColor[this.ipKey] = '#1fd6b1';
         this.barChartColors[5].backgroundColor[this.ipKey] = '#1CA49F';
         this.barChartColors[7].backgroundColor[this.ipKey] = '#09b391';
+        this.barChartColors[8].backgroundColor[this.ipKey] = '#D5D7D7';
         
 
         this.IPcolors= this.barChartColors;
@@ -2211,17 +2219,19 @@ toggleChangeProcess(){
       {data: [], label: 'Surgical Extractions' },  
       {data: [], label: 'Stainless Steel Crowns'},  
       {data: [], label: 'Composite Veneers'},  
-      {data: [], label: 'Implant Crowns'}
+      {data: [], label: 'Implant Crowns'},
+      {data: [], label: 'Whitening'}
     ];
     this.clinic_id && this.clinicianproceeduresService.ItemsPredictorAnalysisTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
        this.stackedChartData1 =[];
       this.stackedChartData2 =[];
       this.stackedChartData3 =[];
       this.stackedChartData4 =[];
-      this.stackedChartData5 =[] ;
-      this.stackedChartData6 =[] ;
-      this.stackedChartData7 =[] ;
-      this.stackedChartData8 =[] ;
+      this.stackedChartData5 =[];
+      this.stackedChartData6 =[];
+      this.stackedChartData7 =[];
+      this.stackedChartData8 =[];
+      this.stackedChartData9 =[];
       this.stackedChartLabels1 = [];
       this.stackedChartDataMax = 0;
       this.buildChartDentistLoader = false;
@@ -2238,6 +2248,7 @@ toggleChangeProcess(){
                    this.stackedChartData6.push(res.ss_crowns);
                    this.stackedChartData7.push(res.comp_veneers);
                    this.stackedChartData8.push(res.imp_crowns);
+                   this.stackedChartData9.push(Math.round(res.whitening));
                    if(this.trendValue == 'c')
                    this.stackedChartLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
@@ -2252,6 +2263,7 @@ toggleChangeProcess(){
                this.stackedChartData[5]['data'] = this.stackedChartData6;
                this.stackedChartData[6]['data'] = this.stackedChartData7;
                this.stackedChartData[7]['data'] = this.stackedChartData8;
+               this.stackedChartData[8]['data'] = this.stackedChartData9;
                this.stackedChartLabels = this.stackedChartLabels1;
                this.stackedChartDataMax = Math.max(...this.stackedChartData[0]['data'])+Math.max(...this.stackedChartData[1]['data'])+Math.max(...this.stackedChartData[2]['data'])+Math.max(...this.stackedChartData[3]['data'])+Math.max(...this.stackedChartData[4]['data'])+Math.max(...this.stackedChartData[5]['data'])+Math.max(...this.stackedChartData[6]['data'])+Math.max(...this.stackedChartData[7]['data']);
              }
