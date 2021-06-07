@@ -28,11 +28,11 @@
       <td>
         <mat-form-field floatLabel="never" class="setPreviousDay">
           <mat-select  [(ngModel)] = "selectedYear" [(value)] = "selectedYear" (selectionChange)="refreshPerformanceTab($event.value)" id="setYear">
-            <mat-option [value]="subtractYears(0) | date:'y':'timezone'">{{ subtractYears(0) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(1) | date:'y':'timezone'">{{ subtractYears(1) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(2) | date:'y':'timezone'">{{ subtractYears(2) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(3) | date:'y':'timezone'">{{ subtractYears(3)  | date:'y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractYears(4) | date:'y':'timezone'">{{ subtractYears(4)  | date:'y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractYears(0) | date:'y':'timezone'" *ngIf="showPreviousYears(0)">{{ subtractYears(0) | date:'y':'timezone' }}</mat-option>
+            <mat-option [value]="subtractYears(1) | date:'y':'timezone'"  *ngIf="showPreviousYears(1)">{{ subtractYears(1) | date:'y':'timezone' }}</mat-option>
+            <mat-option [value]="subtractYears(2) | date:'y':'timezone'" *ngIf="showPreviousYears(2)">{{ subtractYears(2) | date:'y':'timezone' }}</mat-option>
+            <mat-option [value]="subtractYears(3) | date:'y':'timezone'" *ngIf="showPreviousYears(3)">{{ subtractYears(3)  | date:'y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractYears(4) | date:'y':'timezone'" *ngIf="showPreviousYears(4)">{{ subtractYears(4)  | date:'y':'timezone'}}</mat-option>
                             
           </mat-select>
         </mat-form-field>
@@ -93,7 +93,7 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns1.length">
-                  You have no post op calls today
+                  You have no post op calls {{ months[selectedMonth] }} {{ selectedYear }}
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
@@ -105,6 +105,43 @@
     <!-- Dentist Performance Tab -->
     <!-- Patient Schedule Tab start -->
     <mat-tab label="Overdue Recalls">
+           <div class="morning-huddle-date">
+          <table class="filters">
+            <tr>
+              <td>
+        <mat-form-field floatLabel="never" class="setPreviousDay">
+          <mat-select [(ngModel)] = "selectedMonth" [(value)] = "selectedMonth"  (selectionChange)="refreshPerformanceTab($event.value)" id="setMonth">
+            <mat-option value="0">January</mat-option>
+            <mat-option value="1">February</mat-option>
+            <mat-option value="2">March</mat-option>
+            <mat-option value="3">April</mat-option>
+            <mat-option value="4">May</mat-option>
+            <mat-option value="5">June</mat-option>
+            <mat-option value="6">July</mat-option>
+            <mat-option value="7">August</mat-option>
+            <mat-option value="8">September</mat-option>
+            <mat-option value="9">October</mat-option>
+            <mat-option value="10">November</mat-option>
+            <mat-option value="11">December</mat-option>                         
+          </mat-select>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field floatLabel="never" class="setPreviousDay">
+          <mat-select  [(ngModel)] = "selectedYear" [(value)] = "selectedYear" (selectionChange)="refreshPerformanceTab($event.value)" id="setYear">
+            <mat-option [value]="subtractYears(0) | date:'y':'timezone'" *ngIf="showPreviousYears(0)">{{ subtractYears(0) | date:'y':'timezone' }}</mat-option>
+            <mat-option [value]="subtractYears(1) | date:'y':'timezone'" *ngIf="showPreviousYears(1)">{{ subtractYears(1) | date:'y':'timezone' }}</mat-option>
+            <mat-option [value]="subtractYears(2) | date:'y':'timezone'" *ngIf="showPreviousYears(2)">{{ subtractYears(2) | date:'y':'timezone' }}</mat-option>
+            <mat-option [value]="subtractYears(3) | date:'y':'timezone'" *ngIf="showPreviousYears(3)">{{ subtractYears(3)  | date:'y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractYears(4) | date:'y':'timezone'" *ngIf="showPreviousYears(4)">{{ subtractYears(4)  | date:'y':'timezone'}}</mat-option>
+                            
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+      </div>
+
         <div class="showComplete" *ngIf="followupOverDueRecallInCMP.length > 0">
             <mat-checkbox name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)">Show
               Complete</mat-checkbox>
@@ -167,7 +204,7 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns2.length">
-                  You have no overdue recalls today
+                  You have no overdue recalls {{ months[selectedMonth] }} {{ selectedYear }}
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
@@ -180,6 +217,42 @@
 
     <!-- Reminders Tab start -->
     <mat-tab label="Tick Followups" >
+           <div class="morning-huddle-date">
+          <table class="filters">
+            <tr>
+              <td>
+        <mat-form-field floatLabel="never" class="setPreviousDay">
+          <mat-select [(ngModel)] = "selectedMonth" [(value)] = "selectedMonth"  (selectionChange)="refreshPerformanceTab($event.value)" id="setMonth">
+            <mat-option value="0">January</mat-option>
+            <mat-option value="1">February</mat-option>
+            <mat-option value="2">March</mat-option>
+            <mat-option value="3">April</mat-option>
+            <mat-option value="4">May</mat-option>
+            <mat-option value="5">June</mat-option>
+            <mat-option value="6">July</mat-option>
+            <mat-option value="7">August</mat-option>
+            <mat-option value="8">September</mat-option>
+            <mat-option value="9">October</mat-option>
+            <mat-option value="10">November</mat-option>
+            <mat-option value="11">December</mat-option>                         
+          </mat-select>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field floatLabel="never" class="setPreviousDay">
+          <mat-select  [(ngModel)] = "selectedYear" [(value)] = "selectedYear" (selectionChange)="refreshPerformanceTab($event.value)" id="setYear">
+            <mat-option [value]="subtractYears(0) | date:'y':'timezone'" *ngIf="showPreviousYears(0)">{{ subtractYears(0) | date:'y':'timezone' }}</mat-option>
+            <mat-option [value]="subtractYears(1) | date:'y':'timezone'" *ngIf="showPreviousYears(1)">{{ subtractYears(1) | date:'y':'timezone' }}</mat-option>
+            <mat-option [value]="subtractYears(2) | date:'y':'timezone'" *ngIf="showPreviousYears(2)">{{ subtractYears(2) | date:'y':'timezone' }}</mat-option>
+            <mat-option [value]="subtractYears(3) | date:'y':'timezone'" *ngIf="showPreviousYears(3)">{{ subtractYears(3)  | date:'y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractYears(4) | date:'y':'timezone'" *ngIf="showPreviousYears(4)">{{ subtractYears(4)  | date:'y':'timezone'}}</mat-option>
+                            
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+      </div>
          <div class="showComplete" *ngIf="followupTickFollowupsInCMP.length > 0">
             <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">Show Complete
             </mat-checkbox>
@@ -250,7 +323,7 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
-                  You have no tick followups today
+                  You have no tick followups {{ months[selectedMonth] }} {{ selectedYear }}
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
