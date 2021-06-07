@@ -139,7 +139,7 @@ export class FollowupsComponent implements OnInit,OnDestroy {
   displayedColumns2: string[] = ['name', 'phone', 'code','note','status'];
   displayedColumns3: string[] = ['name', 'phone', 'code','note','book','status']; 
   timezone: string = '+1000';
-  
+  months:any = ['January','February','March','April','May','June','July','August','September','October','November','December'];
  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private datepipe: DatePipe, 
@@ -363,6 +363,16 @@ initiate_clinic() {
     let selectedDate = new Date();
     selectedDate.setFullYear(todaysDate.getFullYear()-yearsToSubtract)
     return selectedDate;
+  }
+
+  showPreviousYears(yearsToSubtract) {
+    let todaysDate = new Date();
+    var dd:any = todaysDate.getFullYear() - yearsToSubtract;
+    if(parseInt(dd) >= 2021){
+      return true;
+    } else {
+      return false;
+    }   
   }
 
 }
