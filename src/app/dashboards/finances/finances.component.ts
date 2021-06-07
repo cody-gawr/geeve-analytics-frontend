@@ -1140,7 +1140,7 @@ public labelBarPercentOptions: any = {
   public stackedChartData5: any[] = [];
 
   public predictedChartData: any[] = [
-    {data: [], label: 'Crown to Large Filling',  shadowOffsetX: 3,
+    {data: [], label: 'Indirect to Large Direct Fillings',  shadowOffsetX: 3,
             shadowOffsetY: 3,
             shadowBlur: 5,
             shadowColor: 'rgba(0, 0, 0, 0.5)',

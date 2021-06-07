@@ -78,13 +78,6 @@
                                     [plugins]="pluginObservable$ | async"
                                     [options]="noNewPatientsByReferralChartOptions" [colors]="pieChartColors">
                                 </canvas>
-
-                                <canvas  #myCanvas2 class="trendProductionPercentage" baseChart
-                    *ngIf="showTrend == true && newPatientsTimeLabelsTrend && newPatientsTimeLabelsTrend.length  > 0 && mkNewPatientsByReferralLoader == false"
-                    [datasets]="mkNewPatientsReferralChartTrend" [labels]="newPatientsTimeLabelsTrend"
-                    [options]="labelBarmkPatientByReferralOptionsStacked" [legend]="false" [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> </canvas>
-
                                 <div class="no-data-placeholder"
                                     *ngIf="showTrend == false && newPatientsTimeLabels.length <= 0 && newPatientsTimeLabelsl2.length <= 0 && mkNewPatientsByReferralLoader == false">
                                     <div class="sa_nodata_div">
@@ -92,6 +85,22 @@
                                     <p class="chart-placeholder-text">You have no new patients from referral sources in
                                         the selected period</p>
                                 </div>
+
+                                <canvas  #myCanvas2 class="trendProductionPercentage" baseChart
+                                    *ngIf="showTrend == true && newPatientsTimeLabelsTrend && newPatientsTimeLabelsTrend.length  > 0 && mkNewPatientsByReferralLoader == false"
+                                    [datasets]="mkNewPatientsReferralChartTrend" [labels]="newPatientsTimeLabelsTrend"
+                                    [options]="labelBarmkPatientByReferralOptionsStacked" [legend]="false" [chartType]="stackedChartType"
+                                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                                </canvas>
+                                <div class="no-data-placeholder"
+                                    *ngIf="showTrend == true && newPatientsTimeLabelsTrend.length <= 0 && mkNewPatientsByReferralLoader == false">
+                                    <div class="sa_nodata_div">
+                                    </div>
+                                    <p class="chart-placeholder-text">You have no new patients from referral sources in
+                                        the selected period</p>
+                                </div>
+
+                                
                             </div>
                         </div>
                     </mat-card-content>
@@ -137,13 +146,22 @@
                                     [plugins]="revenuePluginObservable$ | async" [options]="pieChartOptions"
                                     [colors]="pieChartColors">
                                 </canvas>
-                                <canvas  #myCanvas2 class="trendProductionPercentage" baseChart
-                    *ngIf="showTrend == true && revenueReferralLabelsTrend && revenueReferralLabelsTrend.length  > 0 && mkRevenueByReferralLoader == false"
-                    [datasets]="mkRevenueByReferralChartTrend" [labels]="revenueReferralLabelsTrend"
-                    [options]="labelBarmkRevenueByReferralOptionsStacked" [legend]="false" [chartType]="stackedChartType"
-                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> </canvas>
                                 <div class="no-data-placeholder"
                                     *ngIf="showTrend == false && revenueReferralLabels.length <= 0 && revenueReferralLabelsl2.length <= 0 && mkRevenueByReferralLoader == false">
+                                    <div class="sa_nodata_div">
+                                    </div>
+                                    <p class="chart-placeholder-text">You have no revenue from referral sources in the
+                                        selected period</p>
+                                </div>
+
+                                <canvas  #myCanvas2 class="trendProductionPercentage" baseChart
+                                    *ngIf="showTrend == true && revenueReferralLabelsTrend && revenueReferralLabelsTrend.length  > 0 && mkRevenueByReferralLoader == false"
+                                    [datasets]="mkRevenueByReferralChartTrend" [labels]="revenueReferralLabelsTrend"
+                                    [options]="labelBarmkRevenueByReferralOptionsStacked" [legend]="false" [chartType]="stackedChartType"
+                                    (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"> 
+                                </canvas>
+                                <div class="no-data-placeholder"
+                                    *ngIf="showTrend == true && revenueReferralLabelsTrend.length <= 0 && mkRevenueByReferralLoader == false">
                                     <div class="sa_nodata_div">
                                     </div>
                                     <p class="chart-placeholder-text">You have no revenue from referral sources in the
