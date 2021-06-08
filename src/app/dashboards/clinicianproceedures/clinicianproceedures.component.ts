@@ -634,7 +634,7 @@ this.preoceedureChartColors = [
         },
       }     
           };
-  public lineChartType = 'line';
+  public lineChartType = 'bar';
 
   public proceedureChartOptions: any = {
     hover: {mode: null},
@@ -1417,7 +1417,7 @@ public PRcolors;
     {data: [], label: ''},
     {data: [], label: '' } ];
 
-  public predictedstackedChartData1 = [{data: [], label: 'Crowns'},{data: [], label: 'Large Fillings' } ];
+  public predictedstackedChartData1 = [{data: [], label: 'Indirect Restorations'},{data: [], label: 'Large Direct Restorations' } ];
   public predictedstackedChartData2 = [{data: [], label: 'RCT'},{data: [], label: 'Extractions' } ];
   public predictedstackedChartData3 = [{data: [], label: "RCT's Started" },{data: [], label: "RCT's Completed" } ];
   public predictedstackedChartLabels=[];
@@ -1439,7 +1439,7 @@ public PRcolors;
     this.buildChartLoader = true;
     this.clinicianproceeduresService.PredictorRatio(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
       this.buildChartLoader = false;
-      this.predictedstackedChartData1 = [{data: [], label: 'Crowns'},{data: [], label: 'Large Fillings' } ];
+      this.predictedstackedChartData1 = [{data: [], label: 'Indirect Restorations'},{data: [], label: 'Large Direct Restorations' } ];
       this.predictedstackedChartData2 = [{data: [], label: 'RCT'},{data: [], label: 'Extractions' } ];
       this.predictedstackedChartData3 = [{data: [], label: "RCT's Started" },{data: [], label: "RCT's Completed" } ];
       this.predictedstackedChartLabels1 = [];
@@ -1544,7 +1544,7 @@ public rct_started_ta :any=0;
     this.buildChartLoader = true;
     this.clinicianproceeduresService.PredictorRatioDentist(this.selectedDentist,this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
       this.buildChartLoader = false;
-      this.predictedstackedChartData1 = [{data: [], label: 'Crowns'},{data: [], label: 'Large Fillings' } ];
+      this.predictedstackedChartData1 = [{data: [], label: 'Indirect Restorations'},{data: [], label: 'Large Direct Restorations' } ];
       this.predictedstackedChartData2 = [{data: [], label: 'RCT'},{data: [], label: 'Extractions' } ];
       this.predictedstackedChartData3 = [{data: [], label: "RCT's Started" },{data: [], label: "RCT's Completed" } ];
       this.predictedstackedChartLabels1 = [];
@@ -2509,14 +2509,14 @@ toggleChangeProcess(){
     );
   }
     public ratioChartData1=[
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Large Fillings' } ];
+    {data: [], label: 'Indirect Restorations'},
+    {data: [], label: 'Large Direct Restorations' } ];
     public ratioChartData2=[
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Large Fillings' } ];
+    {data: [], label: 'Indirect Restorations'},
+    {data: [], label: 'Large Direct Restorations' } ];
     public ratioChartData3=[
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Large Fillings' } ];
+    {data: [], label: 'Indirect Restorations'},
+    {data: [], label: 'Large Direct Restorations' } ];
     public ratioChartLabels;
     public ratioChartLabels1 =[];
     public ratio =1;
@@ -2544,8 +2544,8 @@ toggleChangeProcess(){
       var user_id;
       var clinic_id;
       this.ratioChartData1 = [
-    {data: [], label: 'Crowns'},
-    {data: [], label: 'Large Fillings' } ];
+    {data: [], label: 'Indirect Restorations'},
+    {data: [], label: 'Large Direct Restorations' } ];
       this.ratioChartData2 = [
     {data: [], label: 'RCT'},
     {data: [], label: 'Extractions' } ];
