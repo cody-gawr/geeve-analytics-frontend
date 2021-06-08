@@ -1139,7 +1139,7 @@ if(this._cookieService.get("user_type") == '4'){
              this.stackedChartData6.push(res.ss_crowns);
              this.stackedChartData7.push(res.comp_veneers);
              this.stackedChartData8.push(res.imp_crowns);
-             this.stackedChartData9.push(Math.round(res.whitening));
+             this.stackedChartData9.push(res.whitening);
              this.stackedChartLabels1.push(res.provider_name);
              if(res.provider_name != 'Anonymous')
               this.ipKey =i;
@@ -1334,6 +1334,10 @@ if(this._cookieService.get("user_type") == '4'){
           temp['Perio'] = data.data[0].perio;
          
           temp['Surgical Extractions'] = data.data[0].extract;
+          temp['Stainless Steel Crowns'] = data.data[0].ss_crowns;
+          temp['Composite Veneers'] = data.data[0].comp_veneers;
+          temp['Implant Crowns'] = data.data[0].imp_crowns;
+          temp['Whitening'] = data.data[0].whitening;
           var tupleArray=[];
    for (var key in temp) tupleArray.push([key, temp[key]]);
     tupleArray.sort(function (a, b) { return b[1] - a[1] });
@@ -2248,7 +2252,7 @@ toggleChangeProcess(){
                    this.stackedChartData6.push(res.ss_crowns);
                    this.stackedChartData7.push(res.comp_veneers);
                    this.stackedChartData8.push(res.imp_crowns);
-                   this.stackedChartData9.push(Math.round(res.whitening));
+                   this.stackedChartData9.push(res.whitening);
                    if(this.trendValue == 'c')
                    this.stackedChartLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
