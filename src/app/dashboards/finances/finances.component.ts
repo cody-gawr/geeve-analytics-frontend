@@ -511,12 +511,17 @@ single = [
                    if(body_custom[1].includes("-")){
                     var temp_ = body_custom[1].split('$');
                     temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                    temp_[1] = temp_[1].toString();
+                    temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(','); 
                     body_custom[1] = temp_.join("$");
                    } else {
                     var temp_ = body_custom[1].split('$');
                     temp_[1] = Math.round(temp_[1].replace(/,/g, ''));
+                    temp_[1] = temp_[1].toString();
+                    temp_[1] = temp_[1].split(/(?=(?:...)*$)/).join(','); 
                     body_custom[1] = temp_.join("$");
                   }   
+                  
                   body[0] = body_custom.join(":");
                   innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
                   }                

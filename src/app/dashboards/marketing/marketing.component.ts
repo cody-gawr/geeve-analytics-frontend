@@ -348,7 +348,11 @@ this.preoceedureChartColors = [
             });
             bodyLines.forEach(function (body, i) { 
               var singledata = body[0].split(":");
+              singledata[1] = singledata[1].trim();
            if(singledata[1] > 0){
+
+            singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(','); 
+            body[0] = singledata.join(": $");
               innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
              }                
          });
@@ -371,6 +375,7 @@ this.preoceedureChartColors = [
     },
 callbacks: {
    label: function(tooltipItems, data) { 
+      
          return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
    },
    
@@ -460,7 +465,11 @@ scales: {
           });
              bodyLines.forEach(function (body, i) { 
                var singledata = body[0].split(":");
+               singledata[1] = singledata[1].trim();
             if(singledata[1] > 0){
+              
+              singledata[1] = singledata[1].split(/(?=(?:...)*$)/).join(','); 
+              body[0] = singledata.join(": ");
                innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
               }                
           });
