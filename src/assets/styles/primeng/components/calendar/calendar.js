@@ -85,7 +85,7 @@ var Calendar = /** @class */ (function () {
         },
         set: function (_utc) {
             this._utc = _utc;
-            console.log("Setting utc has no effect as built-in UTC support is dropped.");
+           // console.log("Setting utc has no effect as built-in UTC support is dropped.");
         },
         enumerable: true,
         configurable: true

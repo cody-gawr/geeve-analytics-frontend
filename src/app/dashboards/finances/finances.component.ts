@@ -1740,7 +1740,6 @@ isDecimal(value) {
 
         if(Math.round(this.collectionVal)>=Math.round(this.collectionTrendVal))
             this.collectionTrendIcon = "up";
-         //console.log(this.totalProductionCollection1);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

@@ -521,7 +521,7 @@ if(selectedIndex >= 2) {
   }
 
 abc(data) {
-  console.log(data);
+  //console.log(data);
 }
 
 

@@ -359,7 +359,6 @@ public toggle(event){
       $('.ajax-loader').hide();
         if(res.message == 'success'){
           this.logo = res.data;
-          console.log(this.logo);
           this.toastr.success('Logo Uploaded.');
 
         }

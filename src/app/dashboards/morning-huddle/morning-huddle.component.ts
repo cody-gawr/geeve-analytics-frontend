@@ -278,7 +278,6 @@ initiate_clinic() {
   }
 
   onTabChanged(event){
-   // console.log(event.tab.textLabel,'((((((((((((((');
   }
 
   refreshPerformanceTab(event){
@@ -688,7 +687,6 @@ initiate_clinic() {
 
   updateStatus(event,pid,date,cid,type) {    
     this.morningHuddleService.updateStatus(event,pid,cid,type, date).subscribe((update:any) => {
-      console.log(update,'***');  
     }); 
   }
 
@@ -702,8 +700,6 @@ initiate_clinic() {
     let todaysDate = new Date();
     let selectedDate = new Date();
     selectedDate.setDate(todaysDate.getDate()-daysToSubtract)
-    // console.log(`Todays date: ${todaysDate}`)
-    // console.log(`Selected date: ${selectedDate}`)
     return selectedDate;
   }
 

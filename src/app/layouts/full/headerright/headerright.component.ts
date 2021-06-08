@@ -107,7 +107,6 @@ export class AppHeaderrightComponent implements AfterViewInit  {
    public showAll:boolean = true;
 
    private getClinics() { 
-    console.log('clinic called header right');
     this.headerService.getClinics().subscribe((res) => {
       if(res.message == 'success'){
         this.clinicsData = res.data;

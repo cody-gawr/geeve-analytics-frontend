@@ -623,7 +623,6 @@ callbacks: {
         return filtered;
     }
   public chartHovered(e: any): void {
-   // console.log(e);
   }
   public  gaugeType = "arch";
   public  gaugeValue = '';
@@ -1133,7 +1132,6 @@ public newAcqValueGoal:any =0;
        
        this.marketingService.categoryExpenses(this.clinic_id,this.startDate,this.endDate,this.duration,this.connectedwith).subscribe((data) => {
           if(data.message == 'success'){
-            console.log(data.data);
             this.fdnewPatientsAcqLoader = false;
             if(data.goals){
               this.newAcqValueGoal = data.goals;
@@ -1673,7 +1671,6 @@ public dataY:any=0;
             
             this.expenseDataTrend1=[];
             this.expenseDataTrendLabels1=[];
-            //console.log( this.newPatientsChartTemp);
            this.newPatientsChartTemp.forEach((res,key) => {
              data.data.forEach((res1,key1) => {
                 if(this.trendValue == 'c' && res1.duration == res.year_month ) {
@@ -1682,7 +1679,6 @@ public dataY:any=0;
                   let percent:any =0;
                   if(res1.val != undefined) {
                     res1.val.forEach((res2,key2) => {
-                      //console.log(res2.expenses); 
                       if(res2.meta_key != 'Total Operating Expenses')
                       this.dataY = parseInt(this.dataY) + parseInt(res2.expenses);
                      });

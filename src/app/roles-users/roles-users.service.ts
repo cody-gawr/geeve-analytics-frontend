@@ -108,7 +108,6 @@ export class RolesUsersService {
     addRoleUser(display_name, email, user_type,selectedClinic,password,selected_dentist, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
     var dentist= JSON.stringify(selected_dentist);
-    console.log(selected_dentist,dentist);
     formData.append('display_name', display_name);
     formData.append('email', email);
     formData.append('userType', user_type);
@@ -127,7 +126,6 @@ export class RolesUsersService {
     updateRoleUser(id,display_name, email, user_type,selectedClinic,selected_dentist, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
     var dentist= JSON.stringify(selected_dentist);
-    console.log(dentist);
     formData.append('id', id);    
     formData.append('display_name', display_name);
     formData.append('email', email);

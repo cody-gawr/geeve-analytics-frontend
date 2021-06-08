@@ -34,7 +34,6 @@ export class DialogOverviewExampleDialogComponent {
    save(data) {
     $('.form-control').click();
      const {value, valid} = this.form;
-     console.log(data);
     if(data.allowedClinics != undefined && data.amount != undefined  && data.description != undefined && data.plan != undefined && data.allowedClinics != '' && data.amount != ''  && data.description != '' && data.plan != ''  ){
         this.dialogRef.close(data);
       }

@@ -139,7 +139,6 @@ else if(window.screenTop==0)
   }
         logout() {
       this.headerService.logout(this._cookieService.get("userid")).subscribe((res) => {
-       console.log(res);
        if(res.message == 'success'){
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');

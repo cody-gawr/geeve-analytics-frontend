@@ -355,7 +355,6 @@ getCardDetails() {
                     },
                   })
                    .subscribe((result) => {
-                    console.log(result);
                         this.cardNumber.clear();
                       this.cardCvc.clear();
                       this.cardExpiry.clear();
