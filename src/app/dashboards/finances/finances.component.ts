@@ -40,6 +40,7 @@ export class FinancesComponent implements AfterViewInit {
   public myobConnect: boolean = true;
   public netprofitstats: boolean = true;
   public netprofitpercentstats: boolean = true;
+  public productionstats: boolean = true;
   public expensestrendstats: boolean = true;
   public connectedwith:any;
   
@@ -1349,6 +1350,7 @@ public labelBarPercentOptions: any = {
     if(this.connectedwith !=''){
      this.netprofitstats= false;
      this.netprofitpercentstats= false;
+     this.productionstats= false;
       this.netProfitPms();
       this.netProfitPercentage();
       this.categoryExpenses();
@@ -1662,7 +1664,7 @@ public totalProductionCollectionLabel1 =[];
   this.financesService.finTotalProduction(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
      this.finCollection();
        if(data.message == 'success'){
-
+        this.productionstats = true;
         this.finTotalProductionLoader = false;
         this.totalProductionCollection1[0]['data'] =[];
         
