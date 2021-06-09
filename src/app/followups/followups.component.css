@@ -1,4 +1,4 @@
-.header_filters{ flex-direction: row-reverse !important }
+.followups.header_filters{ flex-direction: row-reverse !important }
 .DentistListSecRow mat-card.noPatients.sa_hccard.mat-card {
     background-color: #fff !important;
     padding: 10px !important;
