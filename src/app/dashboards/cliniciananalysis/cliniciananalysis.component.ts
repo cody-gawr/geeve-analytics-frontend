@@ -742,7 +742,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 20
+        padding: 13
       },
       onClick: function (e) {
         e.stopPropagation();
@@ -751,7 +751,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     elements: {
       center: {
         text: '',
-        // sidePadding: 60
+        sidePadding:40,
+        minFontSize: 15
       }
     }
   };
