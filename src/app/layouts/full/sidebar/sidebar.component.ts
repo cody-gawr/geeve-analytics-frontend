@@ -100,7 +100,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
  async getRoles() {      
    await this.rolesUsersService.getRolesIndividual().subscribe((res) => {
       if(res.message == 'success'){ 
-        this.permisions =res.data;                        
+        this.permisions =res.data;
         this._cookieService.put("user_type",res.type);
       }
     }, error => {
