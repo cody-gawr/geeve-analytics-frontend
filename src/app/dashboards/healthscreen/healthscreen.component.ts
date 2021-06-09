@@ -69,6 +69,18 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public dentists;
   public filter_val ='c';
   xeroConnect:boolean = false;
+
+
+  public prodpervisitstats: boolean = true;
+  public totalvisitstats: boolean = true;
+  public productionstats: boolean = true;
+  public prebookedvisitchart: boolean = true;
+  public chairutilrate: boolean = true;
+  public unscheduledproduction: boolean = true;
+  public hoursrateleaders: boolean = true;
+  public refreralleaders: boolean = true;
+
+
   constructor(
     private healthscreenService: HealthScreenService, 
     private dentistService: DentistService, 
@@ -145,6 +157,16 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     var date = new Date();
     this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
     this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    
+    this.prodpervisitstats=false;
+    this.totalvisitstats=false;
+    this.productionstats=false;
+    this.prebookedvisitchart=false;
+    this.chairutilrate=false;
+    this.unscheduledproduction=false;
+    this.hoursrateleaders=false;
+    this.refreralleaders=false;
+
     this.chProduction();
     this.chTotalVisits();
     this.chPrebookedVisits();
@@ -210,6 +232,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.production_dif = 0;
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chProduction').subscribe((data) => {
       if(data.message == 'success'){
+        this.productionstats = true;
         this.production_c = data.total;
         this.production_p = Math.round(data.total_ta);
         this.production_dif = Math.round(data.total - data.total_ta);
@@ -225,6 +248,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.visits_dif = 0;
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTotalVisits').subscribe((data) => {
       if(data.message == 'success'){
+        this.totalvisitstats = true;
         this.visits_c = data.total;
         this.visits_p = data.total_ta;
         this.visits_dif = Math.round(data.total - data.total_ta);
@@ -242,6 +266,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.visits_f = 0;
     this.healthscreenService.commonCall(this.clinic_id,startDate, endDate,'chPrebookedVisits').subscribe((data) => {
       if(data.message == 'success'){
+        this.prebookedvisitchart=true;
         this.visits_f = data.data;
       }        
     }, error => {
@@ -257,6 +282,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.utilisation_rate_f = 0;
     this.healthscreenService.commonCall(this.clinic_id,startDate,endDate,'chUtilisationRate').subscribe((data) => {
       if(data.message == 'success'){
+        this.chairutilrate=true;
         this.utilisation_rate_f = Math.round(data.data);
       }        
     }, error => {
@@ -272,6 +298,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.unscheduled_production_f = 0;
     this.healthscreenService.commonCall(this.clinic_id,startDate,endDate,'chUnscheduledProd').subscribe((data) => {
       if(data.message == 'success'){
+        this.unscheduledproduction=true;
         this.unscheduled_production_f = data.data;
       }        
     }, error => {
@@ -305,7 +332,8 @@ public hourlyRateColors = [];
     this.healthscreenService.hourlyRateChart(this.clinic_id,this.startDate,this.endDate,this.duration,this.user_type,this.childid).subscribe((data) => {
       this.hourlyRateChartData =[];
        if(data.message == 'success'){
-        this.hourlyRateChartData = data.data;        
+        this.hourlyRateChartData = data.data; 
+        this.hoursrateleaders = true;       
 
        }
     }, error => {
@@ -339,7 +367,8 @@ public newPatientsTimeClinic=[];
     var clinic_id;
     this.healthscreenService.mkNewPatientsByReferral(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
-         this.newPatientsTimeData = data.data;           
+         this.newPatientsTimeData = data.data;
+         this.refreralleaders = true;           
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -375,6 +404,7 @@ public newPatientsTimeClinic=[];
     var clinic_id;
     this.healthscreenService.finProductionPerVisit(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
        if(data.message == 'success'){
+        this.prodpervisitstats = true;
         this.finProductionPerVisitLoader = false;
         this.productionVal = Math.round(data.total);
         this.productionPrev = Math.round(data.total_ta);  

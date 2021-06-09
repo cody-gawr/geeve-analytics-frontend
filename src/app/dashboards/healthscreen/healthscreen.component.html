@@ -22,14 +22,19 @@
                   <div class="production_images clinic-health-top-icon">
                     <img src="../assets/images/product-chart.png" alt="product-chart" />
                   </div>
-                  <div class="production_description production_description-grow">
+                  <div *ngIf="productionstats == false" class="production_description production_description-grow">
+                    <h4>Production</h4>
+                    <span class="change_value">
+                      Calculating...</span>
+                  </div>
+                  <div *ngIf="productionstats == true" class="production_description production_description-grow">
                     <h4>Production</h4>
                     <span class="change_value">
                       {{production_c >= 0 ? ' ' : '- ' }}
                       ${{ (production_c < 0 ? production_c.toString().split('-').join('') : production_c) | number:'1.0-0'}}
                     </span>
                   </div>
-                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
+                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && productionstats == true">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
                       Last Month: ${{ production_p | number: '2.' }}
                     </div>
@@ -51,14 +56,20 @@
                   <div class="production_images clinic-health-top-icon">
                     <img src="../assets/images/profit.png" alt="product-chart" />
                   </div>
-                  <div class="production_description production_description-grow">
+                  <div *ngIf="prodpervisitstats == false" class="production_description production_description-grow">
+                    <h4>Prod. Per Visit</h4>
+                    <span class="change_value">
+                      Calculating...
+                    </span>
+                  </div>
+                  <div *ngIf="prodpervisitstats == true"  class="production_description production_description-grow">
                     <h4>Prod. Per Visit</h4>
                     <span class="change_value">
                       {{ productionVal >= 0 ? ' ' : '- ' }}
                       ${{ productionVal | number:'1.0-0'}}
                     </span>
                   </div>
-                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif">
+                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && prodpervisitstats == true">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
                       Last Month: ${{ productionPrev | number: '2.' }}
                     </div>
@@ -79,11 +90,15 @@
                   <div class="production_images clinic-health-top-icon">
                     <img src="../assets/images/total-visit.png" alt="total-visit" />
                   </div>
-                  <div class="production_description production_description-grow">
+                  <div *ngIf="totalvisitstats == false"  class="production_description production_description-grow">
+                    <h4>Total Visits</h4>
+                    <span class="change_value">Calculating...</span>
+                  </div>
+                  <div *ngIf="totalvisitstats == true"  class="production_description production_description-grow">
                     <h4>Total Visits</h4>
                     <span class="change_value">{{visits_c}}</span>
                   </div>
-                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="visits_dif">
+                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="visits_dif && totalvisitstats == true">
                     <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">
                       Last Month: {{ visits_p | number: '2.' }}
                     </div>
@@ -114,7 +129,7 @@
                   </div>
                 </mat-card-title>
                 <div class="card-body">
-                  <div class="user_rate_listing" *ngIf="hourlyRateChartData.length > 0">
+                  <div class="user_rate_listing" *ngIf="hourlyRateChartData.length > 0 && hoursrateleaders == true">
                     <ul>
                       <div>
                         <li *ngFor="let hourlyRateChartD of hourlyRateChartData; let i = index">
@@ -141,8 +156,13 @@
 
                     </ul>
                   </div>
+                  <div *ngIf="hoursrateleaders == false" class="no-data-placeholder">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">Calculating...</p>
+                  </div>
 
-                  <div *ngIf="hourlyRateChartData.length <= 0" class="no-data-placeholder">
+                  <div *ngIf="hoursrateleaders == true && hourlyRateChartData.length <= 0" class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">No hourly rates have been calculated yet this month</p>
@@ -164,7 +184,7 @@
                   </div>
                 </mat-card-title>
                 <div class="card-body">
-                  <div class="user_rate_listing" *ngIf="newPatientsTimeData.length > 0">
+                  <div class="user_rate_listing" *ngIf="newPatientsTimeData.length > 0 && refreralleaders == true">
                     <ul>
                       <div>
                         <li *ngFor="let newPatientsTimeD of newPatientsTimeData; let i = index">
@@ -191,7 +211,12 @@
 
                     </ul>
                   </div>
-                  <div *ngIf="newPatientsTimeData.length <= 0" class="no-data-placeholder">
+                  <div *ngIf="refreralleaders == false" class="no-data-placeholder">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">Calculating...</p>
+                  </div>
+                  <div *ngIf="refreralleaders == true && newPatientsTimeData.length <= 0" class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no referrals this month</p>
@@ -220,9 +245,14 @@
                 </div>
               </mat-card-title>
               <div class="card-body no-data-placeholder">
-                <rg-gauge-chart class="green_guagechart" *ngIf="visits_f > 0" [canvasWidth]="canvasWidth"
+                <rg-gauge-chart class="green_guagechart" *ngIf="visits_f > 0 && prebookedvisitchart==true" [canvasWidth]="canvasWidth"
                   [needleValue]="visits_f" [options]="options" [centralLabel]="visits_f + ''"></rg-gauge-chart>
-                <div *ngIf="visits_f <= 0">
+                  <div *ngIf="prebookedvisitchart==false">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">Calculating...</p>
+                  </div>
+                  <div *ngIf="prebookedvisitchart==true && visits_f <= 0">
                   <div class="sa_nodata_div">
                   </div>
                   <p class="chart-placeholder-text">You have no pre-booked visits in the next 7 days</p>
@@ -242,10 +272,15 @@
                 </div>
               </mat-card-title>
               <div class="card-body no-data-placeholder">
-                <rg-gauge-chart class="yellow_guagechart" *ngIf="utilisation_rate_f > 0" [canvasWidth]="canvasWidth"
+                <rg-gauge-chart class="yellow_guagechart" *ngIf="utilisation_rate_f > 0 && chairutilrate==true" [canvasWidth]="canvasWidth"
                   [needleValue]="100" [options]="options1" [centralLabel]="utilisation_rate_f + '%'">
                 </rg-gauge-chart>
-                <div *ngIf="utilisation_rate_f <= 0">
+                <div *ngIf="chairutilrate==false">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">Calculating...</p>
+                </div>
+                <div *ngIf="chairutilrate==true && utilisation_rate_f <= 0">
                   <div class="sa_nodata_div">
                   </div>
                   <p class="chart-placeholder-text">You have no appointments booked in the next 7 days</p>
@@ -267,10 +302,15 @@
               <div class="chart card-body no-data-placeholder">
                 <rg-gauge-chart
                   [ngClass]="{'small-fonts': (unscheduled_production_f.toString().length>5), 'blue_guagechart': true}"
-                  *ngIf="unscheduled_production_f > 0" [canvasWidth]="canvasWidth"
+                  *ngIf="unscheduled_production_f > 0 && unscheduledproduction == true" [canvasWidth]="canvasWidth"
                   [needleValue]="unscheduled_production_f" [options]="optionsunscheduled"
                   [centralLabel]="'$' + (unscheduled_production_f| currencySuffix:2)"></rg-gauge-chart>
-                <div *ngIf="unscheduled_production_f <= 0">
+                  <div *ngIf="unscheduledproduction == false">
+                    <div class="sa_nodata_div">
+                      <p class="chart-placeholder-text">You have no unscheduled production in the next 7 days</p>
+                    </div>
+                  </div>
+                  <div *ngIf="unscheduledproduction == true && unscheduled_production_f <= 0">
                   <div class="sa_nodata_div">
                     <p class="chart-placeholder-text">You have no unscheduled production in the next 7 days</p>
                   </div>
