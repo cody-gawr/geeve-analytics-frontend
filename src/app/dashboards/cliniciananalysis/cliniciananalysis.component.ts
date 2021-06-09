@@ -2669,26 +2669,31 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = this.Apirequest -1;
       if (data && data.message == 'success') {
         this.dentistProductionTrendLoader = false;
-        data.data.data.forEach(res => {
-          if(res.production)
-            this.dentistProductionTrend1.push(Math.round(res.production));
-          if (this.trendValue == 'c')
-            this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-          else
-            this.dentistProductionTrendLabels1.push(res.year);
-        });
-        if(this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
-        this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
-        
-        this.dentistProductionTrendLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.dentistProdTrend[0].backgroundColor = dynamicColors;
-
-        this.dentistProductionTrendLabels = this.dentistProductionTrendLabels1;
-        if (this.dentistProductionTrendLabels.length <= 0) {
-          this.gaugeValue = '0';
+        if(data.data.total > 0){
+          data.data.data.forEach(res => {
+            if(res.production)
+              this.dentistProductionTrend1.push(Math.round(res.production));
+            if (this.trendValue == 'c')
+              this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+            else
+              this.dentistProductionTrendLabels1.push(res.year);
+          });
+          if(this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
+          this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
+          
+          this.dentistProductionTrendLabels1.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.dentistProdTrend[0].backgroundColor = dynamicColors;
+  
+          this.dentistProductionTrendLabels = this.dentistProductionTrendLabels1;
+          if (this.dentistProductionTrendLabels.length <= 0) {
+            this.gaugeValue = '0';
+          }
+        }else{
+          this.dentistProductionTrendLabels = [];
         }
+        
       }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -3268,6 +3273,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             }
           });
         }
+        var sumpercantagevalue = this.treatmentPlanChartTrend1.reduce((acc, cur) => acc + cur, 0);
+        if(sumpercantagevalue > 0){
+        
         this.treatmentPlanChartTrend[0]['data'] = this.treatmentPlanChartTrend1;
 
         this.treatmentPlanChartTrendLabels = this.treatmentPlanChartTrendLabels1;
@@ -3277,6 +3285,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars        
         this.treatmentPlanChartTrend[0].backgroundColor = dynamicColors;
+       }else{
+        this.treatmentPlanChartTrendLabels = [];
+       }
 
       }
     }, error => {
