@@ -26,6 +26,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   public activeRoute = "";
   public showMenu:boolean = false; 
   public permisions:any = '';
+  public permisions_var:any = '';
 
   clickEvent(val) {
     this.status = !this.status;
@@ -102,6 +103,35 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
       if(res.message == 'success'){ 
         this.permisions =res.data;
         this._cookieService.put("user_type",res.type);
+
+        //Remove apis calls when user have not permission of any page form FE
+        if(res.type != '2'){
+        if(this.activeRoute == '/dashboards/healthscreen'){
+            this.permisions_var = 'healthscreen';
+        } else if(this.activeRoute == '/dashboards/cliniciananalysis'){
+          this.permisions_var = 'dashboard1';
+        } else if(this.activeRoute == '/dashboards/clinicianproceedures'){
+            this.permisions_var = 'dashboard2';
+        } else if(this.activeRoute == '/dashboards/frontdesk'){
+            this.permisions_var = 'dashboard3';
+        } else if(this.activeRoute == '/dashboards/marketing'){
+           this.permisions_var = 'dashboard4';
+        } else if(this.activeRoute == '/dashboards/finances'){
+            this.permisions_var = 'dashboard5';
+        } else if(this.activeRoute == '/morning-huddle'){
+            this.permisions_var = 'morninghuddle';
+        } else if(this.activeRoute == '/lost-opportunity'){
+            this.permisions_var = 'lostopportunity';
+        } 
+
+        if(this.permisions.indexOf(this.permisions_var) >= 0){
+
+        }else{
+          this.router.navigate(['/profile-settings']);
+        }
+      }
+      // End
+
       }
     }, error => {
     });

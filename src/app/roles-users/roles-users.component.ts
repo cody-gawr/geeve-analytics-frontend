@@ -309,7 +309,6 @@ initiate_clinic() {
       data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,clinics:this.clinics,dentist_id:this.dentist_id }
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
        if(result != undefined) {
      this.rolesUsersService.checkUserEmail(result.email).subscribe((res) => {
            if(res.message == 'success'){
