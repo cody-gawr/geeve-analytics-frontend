@@ -1347,7 +1347,7 @@ public labelBarPercentOptions: any = {
    // this.netProfitPercent();
     
     
-    if(this.connectedwith !=''){
+    if(this.connectedwith !='' && this.connectedwith !=undefined){ 
      this.netprofitstats= false;
      this.netprofitpercentstats= false;
      this.productionstats= false;
@@ -2144,7 +2144,7 @@ toggleChangeProcess(){
     $('.nonTrendMode').hide();
     
 
-    if(this.connectedwith != ''){
+    if(this.connectedwith != '' && this.connectedwith !=undefined){
       this.Apirequest = 8;
       this.expensestrendstats=false;
       this.finNetProfitPMSTrend();
