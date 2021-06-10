@@ -58,9 +58,10 @@
                       </div>
                     </div>
 
-
-
-
+                    <div class="card-loading cards" *ngIf="dentistperformanceLoader">
+                      <img class="tableLoader" src="../../assets/images/720.gif">                     
+                      <div class="loader-text">Calculating...</div>
+                    </div>
                   </mat-card-title>
                 </mat-card-content>
               </mat-card>
@@ -115,7 +116,10 @@
                    <img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="recallRate.goal > recallRate.rate"> -->
 
 
-
+                      <div class="card-loading cards" *ngIf="dentistrecallRateLoader">
+                      <img class="tableLoader" src="../../assets/images/720.gif">
+                      <div class="loader-text">Calculating...</div>
+                    </div>
                   </mat-card-title>
 
                 </mat-card-content>
@@ -170,6 +174,11 @@
                       </div>
                     </div>
 
+                       <div class="card-loading cards" *ngIf="dentistTreatmentRateLoader">
+                      <img class="tableLoader" src="../../assets/images/720.gif">
+                      <div class="loader-text">Calculating...</div>
+                    </div>
+
                   </mat-card-title>
                 </mat-card-content>
               </mat-card>
@@ -196,8 +205,9 @@
       <!-- Dentist List -->
 
       <div class="DentistListSecRow mh-table">
-        <div class="card-loading d-none">
-          <img class="tableLoader" src="../../assets/images/loader.gif">
+        <div class="card-loading card d-none">
+          <img class="tableLoader" src="../../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
         </div>
         <div class="respopnsive-table-set">
           <table fxHide fxShow.gt-sm mat-table [dataSource]="dentistList" class="mat-elevation-z8">
@@ -254,7 +264,8 @@
   </ng-container>
     <ng-container matColumnDef="loading" class="card-loading">
     <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" [attr.align]="center" >
-      <img class="tableLoader" src="../../../assets/images/loader.gif">
+      <img class="tableLoader" src="../../../assets/images/720.gif">
+      <div class="loader-text">Calculating...</div>
     </mat-footer-cell>
   </ng-container>-->
 
@@ -331,7 +342,8 @@
             No data found for {{ production.date | date:'EEE MMM d':'timezone'  }}
           </div>
           <div class="loader" [ngClass]="(dentistList.data.length == 0 && !dentistListLoading)? 'show' : 'hide'">
-            <img class="tableLoader" src="../../../assets/images/loader.gif">
+            <img class="tableLoader" src="../../../assets/images/720.gif">
+            <div class="loader-text">Calculating...</div>
           </div>
         </div>
 
@@ -449,7 +461,10 @@
                     </div>
                   </div>
                 </div>
-
+                <div class="card-loading cards" *ngIf="appointmentCardsLoaders">
+                  <img class="tableLoader" src="../../assets/images/720.gif">
+                  <div class="loader-text">Calculating...</div>
+                </div>
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
@@ -474,6 +489,10 @@
                     </div>
                   </div>
                 </div>
+                <div class="card-loading cards" *ngIf="scheduleNewPatientsLoader">
+                      <img class="tableLoader" src="../../assets/images/720.gif">
+                      <div class="loader-text">Calculating...</div>
+                    </div>
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
@@ -501,6 +520,10 @@
                     </div>
                   </div>
                 </div>
+                <div class="card-loading cards" *ngIf="schedulehoursLoader">
+                      <img class="tableLoader" src="../../assets/images/720.gif">
+                      <div class="loader-text">Calculating...</div>
+                    </div>
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
@@ -528,18 +551,21 @@
                     </div>
                   </div>
                 </div>
+                <div class="card-loading cards" *ngIf="unschedulehoursLoader">
+                      <img class="tableLoader" src="../../assets/images/720.gif">
+                      <div class="loader-text">Calculating...</div>
+                    </div>
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
-          </div>
-          <div fxHide fxShow.gt-sm class="data-loading-main" style="    position: absolute; left: 42%; top: 160px;">        
-          <div class="loader" [ngClass]="(appointmentCardsLoading)? 'show' : 'hide'">
-            <img class="tableLoader" src="../../../assets/images/loader.gif">
-          </div>
-        </div>
+          </div>       
         </div>
       </div>
       <div class="DentistListSecRow mh-table patient_data-table_responsive">
+        <div class="card-loading" *ngIf="appointmentCardsLoaders">
+          <img class="tableLoader" src="../../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
         <table fxHide fxShow.gt-sm mat-table matSort [dataSource]="appointmentCards" class="mat-elevation-z8">
           <!-- Name Column -->
           <ng-container matColumnDef="start">
@@ -738,6 +764,10 @@
                     </div>
                   </div>
                 </div>
+                  <div class="card-loading cards" *ngIf="remindersRecallsOverdueLoader">
+                      <img class="tableLoader" src="../../assets/images/720.gif">
+                      <div class="loader-text">Calculating...</div>
+                    </div>
               </mat-card-content>
             </mat-card>
           </div>
@@ -761,6 +791,10 @@
                     </div>
                   </div>
                 </div>
+                    <div class="card-loading cards" *ngIf="scheduleNewPatientsLoader">
+                      <img class="tableLoader" src="../../assets/images/720.gif">
+                      <div class="loader-text">Calculating...</div>
+                    </div>
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
@@ -780,6 +814,10 @@
                     </div>
                   </div>
                 </div>
+                 <div class="card-loading cards" *ngIf="todayUnscheduledBalLoader">
+                      <img class="tableLoader" src="../../assets/images/720.gif">
+                      <div class="loader-text">Calculating...</div>
+                    </div>
               </mat-card-content>
             </mat-card>
           </div>
@@ -798,6 +836,10 @@
                     </div>
                   </div>
                 </div>
+                   <div class="card-loading cards" *ngIf="todayUnscheduledHoursLoader">
+                      <img class="tableLoader" src="../../assets/images/720.gif">
+                      <div class="loader-text">Calculating...</div>
+                    </div>
               </mat-card-content>
             </mat-card>
           </div>
@@ -830,6 +872,10 @@
 
 
       <div class="DentistListSecRow mh-table patient_data-table_responsive">
+         <div class="card-loading" *ngIf="remindersRecallsOverdueLoader">
+          <img class="tableLoader" src="../../assets/images/720.gif">
+          <div class="loader-text">Calculating...</div>
+        </div>
         <table fxHide fxShow.gt-sm mat-table matSort [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8">
           <!-- Name Column -->
           <ng-container matColumnDef="start">
@@ -982,7 +1028,10 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
             <div class="card-loading" *ngIf="poLoadingLoading"><img class="tableLoader"
-                src="../../assets/images/loader.gif"></div>
+                src="../../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div>
+
 
             <table fxHide fxShow.gt-sm mat-table [dataSource]="followupPostOpCallsInComp"
               class="mat-elevation-z8 customWidth PostOp">
@@ -1108,7 +1157,9 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
             <div class="card-loading" *ngIf="recallLoadingLoading"><img class="tableLoader"
-                src="../../assets/images/loader.gif"></div>
+                src="../../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div>
             <table fxHide fxShow.gt-sm mat-table [dataSource]="followupOverDueRecallInCMP"
               class="mat-elevation-z8 customWidth overRecall">
 
@@ -1256,7 +1307,9 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
             <div class="card-loading" *ngIf="endTaksLoadingLoading"><img class="tableLoader"
-                src="../../assets/images/loader.gif"></div>
+                src="../../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div>
             <table fxHide fxShow.gt-sm mat-table [dataSource]="followupTickFollowupsInCMP"
               class="mat-elevation-z8 customWidth thick">
 
@@ -1425,7 +1478,9 @@
           <div class="DentistListSecRow mh-table patient_data-table_responsive"
             style="max-height: 700px; overflow: auto;">
             <div class="card-loading" *ngIf="endTaksLoading"><img class="tableLoader"
-                src="../../assets/images/loader.gif"></div>
+                src="../../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div>
             <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
