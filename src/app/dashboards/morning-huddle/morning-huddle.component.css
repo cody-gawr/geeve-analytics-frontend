@@ -244,4 +244,4 @@ table{
 .notes.green { color: #047c04; }
 .notes.red { color: #7c0404; }
 .card-loading.cards { opacity: 1; }
-.card-loading.cards img.tableLoader {width: 45px;height: 38px;}
+.card-loading img.tableLoader {width: 30px;height: 30px; position: absolute; top: 18%;}
