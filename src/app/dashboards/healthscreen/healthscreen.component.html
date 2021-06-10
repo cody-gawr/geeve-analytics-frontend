@@ -24,8 +24,7 @@
                   </div>
                   <div *ngIf="productionstats == false" class="production_description production_description-grow">
                     <h4>Production</h4>
-                    <span class="change_value">
-                      Calculating...</span>
+                    <b class="loader-text">Calculating...</b>
                   </div>
                   <div *ngIf="productionstats == true" class="production_description production_description-grow">
                     <h4>Production</h4>
@@ -58,9 +57,7 @@
                   </div>
                   <div *ngIf="prodpervisitstats == false" class="production_description production_description-grow">
                     <h4>Prod. Per Visit</h4>
-                    <span class="change_value">
-                      Calculating...
-                    </span>
+                    <b class="loader-text">Calculating...</b>
                   </div>
                   <div *ngIf="prodpervisitstats == true"  class="production_description production_description-grow">
                     <h4>Prod. Per Visit</h4>
@@ -92,7 +89,7 @@
                   </div>
                   <div *ngIf="totalvisitstats == false"  class="production_description production_description-grow">
                     <h4>Total Visits</h4>
-                    <span class="change_value">Calculating...</span>
+                    <b class="loader-text">Calculating...</b>
                   </div>
                   <div *ngIf="totalvisitstats == true"  class="production_description production_description-grow">
                     <h4>Total Visits</h4>
@@ -156,10 +153,10 @@
 
                     </ul>
                   </div>
-                  <div *ngIf="hoursrateleaders == false" class="no-data-placeholder">
-                    <div class="sa_nodata_div">
-                    </div>
-                    <p class="chart-placeholder-text">Calculating...</p>
+                  <div *ngIf="hoursrateleaders == false" class="loader_container loader_container_middle">
+                    <img
+                        class="loader_ico" src="../assets/images/720.gif">
+                    <div class="loader-text">Calculating...</div>
                   </div>
 
                   <div *ngIf="hoursrateleaders == true && hourlyRateChartData.length <= 0" class="no-data-placeholder">
@@ -211,10 +208,10 @@
 
                     </ul>
                   </div>
-                  <div *ngIf="refreralleaders == false" class="no-data-placeholder">
-                    <div class="sa_nodata_div">
-                    </div>
-                    <p class="chart-placeholder-text">Calculating...</p>
+                  <div *ngIf="refreralleaders == false" class="loader_container loader_container_middle">
+                    <img
+                    class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
                   </div>
                   <div *ngIf="refreralleaders == true && newPatientsTimeData.length <= 0" class="no-data-placeholder">
                     <div class="sa_nodata_div">
@@ -247,10 +244,10 @@
               <div class="card-body no-data-placeholder">
                 <rg-gauge-chart class="green_guagechart" *ngIf="visits_f > 0 && prebookedvisitchart==true" [canvasWidth]="canvasWidth"
                   [needleValue]="visits_f" [options]="options" [centralLabel]="visits_f + ''"></rg-gauge-chart>
-                  <div *ngIf="prebookedvisitchart==false">
-                    <div class="sa_nodata_div">
-                    </div>
-                    <p class="chart-placeholder-text">Calculating...</p>
+                  <div *ngIf="prebookedvisitchart==false" class="loader_container loader_container_middle" >
+                    <img
+                        class="loader_ico" src="../assets/images/720.gif">
+                    <div class="loader-text">Calculating...</div>
                   </div>
                   <div *ngIf="prebookedvisitchart==true && visits_f <= 0">
                   <div class="sa_nodata_div">
@@ -275,10 +272,10 @@
                 <rg-gauge-chart class="yellow_guagechart" *ngIf="utilisation_rate_f > 0 && chairutilrate==true" [canvasWidth]="canvasWidth"
                   [needleValue]="100" [options]="options1" [centralLabel]="utilisation_rate_f + '%'">
                 </rg-gauge-chart>
-                <div *ngIf="chairutilrate==false">
-                  <div class="sa_nodata_div">
-                  </div>
-                  <p class="chart-placeholder-text">Calculating...</p>
+                <div *ngIf="chairutilrate==false" class="loader_container loader_container_middle">
+                  <img
+                  class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
                 </div>
                 <div *ngIf="chairutilrate==true && utilisation_rate_f <= 0">
                   <div class="sa_nodata_div">
@@ -305,10 +302,10 @@
                   *ngIf="unscheduled_production_f > 0 && unscheduledproduction == true" [canvasWidth]="canvasWidth"
                   [needleValue]="unscheduled_production_f" [options]="optionsunscheduled"
                   [centralLabel]="'$' + (unscheduled_production_f| currencySuffix:2)"></rg-gauge-chart>
-                  <div *ngIf="unscheduledproduction == false">
-                    <div class="sa_nodata_div">
-                      <p class="chart-placeholder-text">You have no unscheduled production in the next 7 days</p>
-                    </div>
+                  <div *ngIf="unscheduledproduction == false" class="loader_container loader_container_middle">
+                    <img
+                        class="loader_ico" src="../assets/images/720.gif">
+                    <div class="loader-text">Calculating...</div>
                   </div>
                   <div *ngIf="unscheduledproduction == true && unscheduled_production_f <= 0">
                   <div class="sa_nodata_div">
