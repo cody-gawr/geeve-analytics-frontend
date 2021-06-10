@@ -243,3 +243,5 @@ table{
 .notes{ cursor: pointer; font-size: 17px;}
 .notes.green { color: #047c04; }
 .notes.red { color: #7c0404; }
+.card-loading.cards { opacity: 1; }
+.card-loading.cards img.tableLoader {width: 45px;height: 38px;}
