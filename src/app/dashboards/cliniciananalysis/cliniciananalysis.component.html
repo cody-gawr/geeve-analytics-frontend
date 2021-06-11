@@ -81,7 +81,9 @@
               <div>
                 <span *ngIf="trendText && proCollShow == 1" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{productionTooltip}}.png"></span>
                 <span *ngIf="trendText && proCollShow == 2" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{collectionTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{collectionTooltip}}.png"></span>
-                Dentist Production
+                Dentist 
+                <span *ngIf="proCollShow == 1">Production</span>
+                <span *ngIf="proCollShow == 2">Collection</span>
               </div>
               <div class="info-icon-container" *ngIf="proCollShow == 1">
                 <img [tooltip]="this.constants.tipProduction" src="../assets/images/info-icon.png" alt="info-icon"
@@ -214,7 +216,9 @@
                 <span *ngIf="trendText && showTrendChart == false && proCollShow ==1" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{productionTooltip}}.png"></span>
                 <span *ngIf="trendText && showTrendChart == false && proCollShow ==2" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{collectionDentistTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{collectionTooltip}}.png"></span>
 
-                Dentist Production
+                Dentist 
+                <span *ngIf="proCollShow == 1">Production</span>
+                <span *ngIf="proCollShow == 2">Collection</span>
               </div>
               <div class="info-icon-container" *ngIf="proCollShow == 1">
                 <img [tooltip]="this.constants.tipProduction" src="../assets/images/info-icon.png" alt="info-icon"
