@@ -481,7 +481,8 @@ public fdWorkTimeAnalysisLoader:boolean;
     if(this.DateDiffernce > '365'){
       this.utilityratemessage = true;
       this.fdWorkTimeAnalysisLoader = false;
-    }
+    }else{
+      this.utilityratemessage = false;
   this.clinic_id && this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     if(data.message == 'success'){
       this.fdWorkTimeAnalysisLoader = false;
@@ -540,6 +541,7 @@ public fdWorkTimeAnalysisLoader:boolean;
  
     }
     );
+  }
   }
 
 public ftaTotal;
@@ -764,6 +766,7 @@ public currentText;
         end.setDate(last);
        this.endDate =this.datePipe.transform(new Date(end).toUTCString(), 'dd-MM-yyyy');
        this.duration='w';
+       this.DateDiffernce='';
         this.loadDentist('all');
     }
     else if (duration == 'm') {
@@ -774,7 +777,7 @@ public currentText;
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         this.duration='m';
-        
+        this.DateDiffernce='';
             this.loadDentist('all');
     }
     else if (duration == 'lm') {
@@ -785,6 +788,7 @@ public currentText;
       const date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth() - 1, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 0), 'dd-MM-yyyy');
+      this.DateDiffernce='';
       this.loadDentist('all');
     }
     else if (duration == 'q') {
@@ -812,6 +816,7 @@ public currentText;
         // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');  
       }
       this.duration='q';
+      this.DateDiffernce='';
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
       this.loadDentist('all');
     }
@@ -837,6 +842,7 @@ public currentText;
         this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');  }
         this.duration='lq';
+        this.DateDiffernce='';
             this.loadDentist('all');
    
     }
@@ -847,6 +853,7 @@ public currentText;
       var date = new Date();
       this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.DateDiffernce='';
       this.loadDentist('all');
     }
     else if (duration == 'lcytd') {
@@ -856,6 +863,7 @@ public currentText;
         var date = new Date();
          this.startDate = this.datePipe.transform(new Date(date.getFullYear() -1, 0, 1), 'dd-MM-yyyy');       
         this.endDate = this.datePipe.transform(new Date(date.getFullYear() -1, 11, 31), 'dd-MM-yyyy');
+        this.DateDiffernce='';
         this.loadDentist('all');
       }
     else if (duration == 'fytd') {
@@ -870,6 +878,7 @@ public currentText;
         this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
       }
       this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
+      this.DateDiffernce='';
       this.loadDentist('all');
     }
      else if (duration == 'lfytd') {
@@ -879,6 +888,7 @@ public currentText;
         var date = new Date();
         this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');       
+        this.DateDiffernce='';
         this.loadDentist('all');
       }
      else if (duration == 'custom') {
@@ -907,6 +917,8 @@ choosedDate(val) {
      var diffTime:any = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
      if(diffTime > 365){
       this.DateDiffernce = diffTime;
+     }else{
+      this.DateDiffernce = '';
      }
       this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
@@ -1102,6 +1114,7 @@ toggleChangeProcess(){
       this.Apirequest = this.Apirequest -1;
       this.fdwtaRatioTrendLoader =false;
     }else{
+      this.utilityratemessage = false;
     this.clinic_id && this.frontdeskService.fdWorkTimeAnalysisTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        this.wtaChartTrendLabels1=[];
     this.wtaChartTrend1=[];
