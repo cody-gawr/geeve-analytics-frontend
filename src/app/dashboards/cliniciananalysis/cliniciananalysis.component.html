@@ -84,26 +84,64 @@
                     class="trend_ico" src="../assets/images/trend_{{productionTooltip}}.png"></span>
                 Dentist Production
               </div>
-              <div class="info-icon-container">
+              <div class="info-icon-container" *ngIf="proCollShow == 1">
                 <img [tooltip]="this.constants.tipProduction" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
+              </div>
+              <div class="info-icon-container" *ngIf="proCollShow == 2">
+                <img [tooltip]="this.constants.tipCollection" src="../assets/images/info-icon.png" alt="info-icon"
                   class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
-              <div style="height: 350px" *ngIf="barChartData[0].data.length && !buildChartLoader">
-                <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
-                  [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
-                  [colors]="DPcolors">
-                </canvas> <!-- dynamic colors of bar -->
-              </div>
-              <div *ngIf="!barChartData[0].data.length && !buildChartLoader" class="no-data-placeholder">
-                <div class="sa_nodata_div">
+              <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''" (click)="changeProduction('1')">Production</small>
                 </div>
-                <p class="chart-placeholder-text">You have no production in the selected period</p>
+                <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
+                  <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''" (click)="changeProduction('2')">Collection</small>
+                </div>
               </div>
+
+              <!-- Production Chart Start -->
+              <div *ngIf="proCollShow == 1">
+                <div style="height: 306px" *ngIf="barChartData[0].data.length && !buildChartLoader">
+                  <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div *ngIf="!barChartData[0].data.length && !buildChartLoader" class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no production in the selected period</p>
+                </div>
+              </div>
+              <!-- Production Chart Start -->
+              <!-- Collection Chart Start -->
+              <div *ngIf="proCollShow == 2">
+                <div style="height: 306px" *ngIf="collectionData[0].data.length && !collectionLoader">
+                  <canvas id="dentistCollection" baseChart [datasets]="collectionData" [labels]="barChartLabels"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [colors]="DPcolors">
+                  </canvas> <!-- dynamic colors of bar -->
+                </div>
+                <div *ngIf="!collectionData[0].data.length && !collectionLoader" class="no-data-placeholder">
+                  <div class="sa_nodata_div">
+                  </div>
+                  <p class="chart-placeholder-text">You have no Collection in the selected period</p>
+                </div>
+              </div>
+
+
+              <!-- Collection Chart Start -->
+
+
+             
             </div>
             <div class="card-footer">
-              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+              <!-- Production Chart Start -->
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center" *ngIf="proCollShow == 1">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 text-center value-num">${{productionTotal| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
@@ -125,11 +163,48 @@
                   <span class="value-text">Goal</span>
                 </div>
               </div>
+              <!-- Production Chart Start -->
+              <!-- Collection Chart Start -->
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center" *ngIf="proCollShow == 2">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 text-center value-num">${{collectionTotal| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{collectionTotalPrev| number:'1.0-0'}}</h3>
+
+                  <!--  <small *ngIf="trendText != ''">{{trendText}} Avg</small> -->
+
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
+                    ${{ (collectionTotalGoal * goalCount) | number:'1.0-0'}}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+
+              <!-- Collection Chart Start -->            
             </div>
-            <div *ngIf="buildChartLoader" class="loader_container loader_container_middle"><img class="loader_ico"
-                src="../assets/images/720.gif">
+
+            <!-- Production Chart Start -->
+            <div *ngIf="buildChartLoader && proCollShow == 1" class="loader_container loader_container_middle" >
+              <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
+            <!-- Production Chart Start -->
+
+            <!-- Collection Chart Start -->
+            <div *ngIf="collectionLoader && proCollShow == 2" class="loader_container loader_container_middle">
+              <img class="loader_ico" src="../assets/images/720.gif">
+              <div class="loader-text">Calculating...</div>
+            </div>
+            <!-- Collection Chart Start -->
+
           </mat-card-content>
         </mat-card>
 

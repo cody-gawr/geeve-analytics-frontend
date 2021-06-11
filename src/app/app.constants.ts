@@ -15,6 +15,11 @@ export class AppConstants {
     public tipProduction: ITooltipData = {
         title: 'Dentist Production', 
         info: 'Total amount invoiced by clinician'
+      };  
+
+    public tipCollection: ITooltipData = {
+        title: 'Dentist Collection', 
+        info: 'Total amount collected by clinician'
       };    
   
     public tipHourlyRate: ITooltipData = {

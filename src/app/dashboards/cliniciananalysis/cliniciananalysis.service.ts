@@ -34,6 +34,15 @@ export class ClinicianAnalysisService {
         );
     }
     // Dentist Production Service
+    DentistCollection( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='', token = this._cookieService.get("token") ): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/caCollection?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&clinician="+clinician, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    // Dentist Production Service
     changeLoginStatus(token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders();
         return this.http.get(this.apiUrl +"/users/changeLoginStatus?token_id="+this.token_id, { headers: header })
