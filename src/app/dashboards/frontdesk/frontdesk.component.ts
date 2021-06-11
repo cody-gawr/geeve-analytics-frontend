@@ -378,7 +378,8 @@ legend: {
   public stackedChartData5: any[] = [];
 public selectedDentist;
 public dentists;
-  public duration='';
+public duration='';
+public utilityratemessage: boolean = false;
   // events
   public chartClicked(e: any): void {
     //console.log(e);
@@ -398,6 +399,7 @@ public dentists;
   public gaugeAppendText ='%';
   public startDate ='';
   public endDate = '';
+  public DateDiffernce = '';
   public selectedValToggle ='off';
     myDateParser(dateStr : string) : string {
     // 2018-01-01T12:12:12.123456; - converting valid date format like this
@@ -476,7 +478,10 @@ public fdWorkTimeAnalysisLoader:boolean;
     var clinic_id;
     this.fdWorkTimeAnalysisLoader = true;
     this.workTimeLabels= [];
-
+    if(this.DateDiffernce > '365'){
+      this.utilityratemessage = true;
+      this.fdWorkTimeAnalysisLoader = false;
+    }
   this.clinic_id && this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
     if(data.message == 'success'){
       this.fdWorkTimeAnalysisLoader = false;
@@ -896,6 +901,13 @@ public currentText;
 choosedDate(val) {
     val = (val.chosenLabel);
     var val= val.toString().split(' - ');
+    // calculating date differnce
+     var date2:any= new Date(val[1]);
+     var date1:any= new Date(val[0]);
+     var diffTime:any = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+     if(diffTime > 365){
+      this.DateDiffernce = diffTime;
+     }
       this.startDate = this.datePipe.transform(val[0], 'dd-MM-yyyy');
       this.endDate = this.datePipe.transform(val[1], 'dd-MM-yyyy');
       this.duration = 'custom';
@@ -903,7 +915,6 @@ choosedDate(val) {
       
       // $('.filter_custom').val(this.startDate+ " - "+this.endDate);
      $('.customRange').css('display','none');
-
 }
 toggleFilter(val) {
     $('.target_filter').removeClass('mat-button-toggle-checked');
@@ -1086,10 +1097,15 @@ toggleChangeProcess(){
   this.wtaChartTrend1=[];
     var user_id;
     var clinic_id;
+    if(this.trendValue == 'h' ){ // utilisation rate showing messageif more than 12 months
+      this.utilityratemessage = true;
+      this.Apirequest = this.Apirequest -1;
+      this.fdwtaRatioTrendLoader =false;
+    }else{
     this.clinic_id && this.frontdeskService.fdWorkTimeAnalysisTrend(this.clinic_id,this.trendValue).subscribe((data) => {
        this.wtaChartTrendLabels1=[];
-  this.wtaChartTrend1=[];
-  this.Apirequest = this.Apirequest -1;
+    this.wtaChartTrend1=[];
+    this.Apirequest = this.Apirequest -1;
        if(data.message == 'success'){
         this.fdwtaRatioTrendLoader =false;
                 data.data.forEach(res => {  
@@ -1108,6 +1124,7 @@ toggleChangeProcess(){
       this.warningMessage = "Please Provide Valid Inputs!";
  
     });
+  }
   }
 
 
