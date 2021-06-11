@@ -872,6 +872,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.showTrendChart = false;
         //this.toggleFilter('off');
         this.buildChartDentist();
+        this.collectionDentist();
         (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.dentistProduction')).style.display = 'none';
         this.buildChartTreatmentDentist();
@@ -1344,6 +1345,64 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
           if (this.maxProductionGoal == 0)
             this.maxProductionGoal = '';
+         } 
+      } else if (data.status == '401') {
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
+// Dentist collection data
+  public collectionDentistLoader:boolean = true;
+  public gaugeCollectionLabel:any = '';
+  public gaugeCollectionValue:any = 0;
+  public collectionDentistTotal:any = 0;
+  public collectionDentistTotalPrev:any = 0;
+  public dentistCollectionGoal:any = 0;
+  public maxCollectionGoal:any = 0;
+
+
+  private collectionDentist() {
+    this.collectionDentistLoader = true;
+    this.gaugeCollectionLabel = '';
+    this.collectionTooltip = 'down';
+  this.clinic_id && this.cliniciananalysisService.DentistCollectionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => 
+    {
+      this.collectionDentistTotal = 0;
+      this.collectionDentistTotalPrev = 0;
+      this.productionTotalAverage=0;
+      this.maxCollectionGoal=0;
+      this.gaugeCollectionValue = 0;
+      this.collectionDentistLoader =false;
+       if(data.message == 'success' ){
+          if(data.data != null ) {
+            data.data.forEach((res)=>{
+              if(res.collection)
+                this.gaugeCollectionValue = Math.round(res.collection);
+
+              this.gaugeCollectionLabel = res.provider_name;
+          });       
+          this.collectionDentistTotal = Math.round(data.total);
+          this.collectionDentistTotalPrev = Math.round(data.total_ta);
+          this.productionTotalAverage= Math.round(data.total_average);
+          this.dentistCollectionGoal = data.goals;
+          if (this.productionTotal > this.productionTotalPrev){
+            this.collectionTooltip = 'up';
+          }
+          if(this.gaugeCollectionValue > this.dentistCollectionGoal)
+            this.maxCollectionGoal = this.gaugeValue;
+          else
+            this.maxCollectionGoal = this.dentistCollectionGoal;
+
+          if (this.maxCollectionGoal == 0)
+            this.maxCollectionGoal = '';
          } 
       } else if (data.status == '401') {
         this._cookieService.put("username", '');

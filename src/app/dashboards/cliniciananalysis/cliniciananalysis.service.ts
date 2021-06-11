@@ -60,6 +60,15 @@ export class ClinicianAnalysisService {
                     })
         );
     }
+    // Dentist Production Single Service
+    DentistCollectionSingle(dentist_id, clinic_id = '1', startDate = '', endDate = '', duration='',token = this._cookieService.get("token")): Observable<any> {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/ClinicianAnalysis/caCollection?clinic_id="+clinic_id+"&provider_id="+dentist_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 
         // Dentist Production Single Service
     caDentistProtectionTrend(dentist_id, clinic_id, mode ='', token = this._cookieService.get("token")): Observable<any> {
