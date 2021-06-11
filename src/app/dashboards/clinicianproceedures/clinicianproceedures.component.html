@@ -56,7 +56,11 @@
           <mat-card-title class="text-center">Procedure Analysis
             <div class="sa_box_title_right_buttons"></div>
             <div class="info-icon-container">
-              <img [tooltip]="this.constants.tipProcAnalysisGen" src="../assets/images/info-icon.png" alt="info-icon"
+              <img *ngIf="procedureAnalysisVisibility == 'General'" [tooltip]="this.constants.tipProcAnalysisGen" src="../assets/images/info-icon.png" alt="info-icon"
+                class="info-icon" />
+            </div>
+            <div *ngIf="procedureAnalysisVisibility == 'Specialist'" class="info-icon-container">
+              <img [tooltip]="this.constants.tipProcAnalysisSpec" src="../assets/images/info-icon.png" alt="info-icon"
                 class="info-icon" />
             </div>
           </mat-card-title>
@@ -345,8 +349,16 @@
             <div class="sa_box_title_right_buttons">
 
             </div>
-            <div class="info-icon-container">
+            <div *ngIf="predictorRatioTab == '1'" class="info-icon-container">
               <img [tooltip]="this.constants.tipPredictorCrown" src="../assets/images/info-icon.png" alt="info-icon"
+                class="info-icon" />
+            </div>
+            <div *ngIf="predictorRatioTab == '2'" class="info-icon-container">
+              <img [tooltip]="this.constants.tipPredictorExtract" src="../assets/images/info-icon.png" alt="info-icon"
+                class="info-icon" />
+            </div>
+            <div *ngIf="predictorRatioTab == '3'" class="info-icon-container">
+              <img [tooltip]="this.constants.tipPredictorRCT" src="../assets/images/info-icon.png" alt="info-icon"
                 class="info-icon" />
             </div>
           </mat-card-title>
@@ -463,8 +475,16 @@
                       <button mat-menu-item>Download PDF</button>
                   </mat-menu> -->
             </div>
-            <div class="info-icon-container">
+            <div *ngIf="predictorRatioTab == '1'" class="info-icon-container">
               <img [tooltip]="this.constants.tipPredictorCrown" src="../assets/images/info-icon.png" alt="info-icon"
+                class="info-icon" />
+            </div>
+            <div *ngIf="predictorRatioTab == '2'" class="info-icon-container">
+              <img [tooltip]="this.constants.tipPredictorExtract" src="../assets/images/info-icon.png" alt="info-icon"
+                class="info-icon" />
+            </div>
+            <div *ngIf="predictorRatioTab == '3'" class="info-icon-container">
+              <img [tooltip]="this.constants.tipPredictorRCT" src="../assets/images/info-icon.png" alt="info-icon"
                 class="info-icon" />
             </div>
           </mat-card-title>
@@ -580,6 +600,7 @@
               <img [tooltip]="this.constants.tipReferrals" src="../assets/images/info-icon.png" alt="info-icon"
                 class="info-icon" />
             </div>
+            
           </mat-card-title>
           <div class="card-body">
             <div fxLayout="row wrap" class="sa_tabs_main_sec sa_tabs_clinician_referrals">
