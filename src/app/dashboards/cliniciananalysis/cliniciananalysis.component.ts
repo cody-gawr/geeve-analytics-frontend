@@ -2846,6 +2846,36 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
     }];
+
+    public dentistColTrend: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even
+      ],
+      shadowOffsetY: 2,
+      shadowBlur: 3,
+      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelWidth: 2,
+      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointShadowOffsetX: 3,
+      pointShadowOffsetY: 3,
+      pointShadowBlur: 10,
+      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      backgroundOverlayMode: 'multiply'
+    }];
   public dentistProductionTrend1 = [];
   public dentistProductionTrendLabels = [];
   public dentistProductionTrendLabels1 = [];
@@ -2891,6 +2921,48 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.dentistProductionTrendLabels = [];
         }
         
+      }
+    }, error => {
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+
+    });
+  }
+// Collection Trend mode 
+  public dentistCollectionTrend1:any = [];
+  public dentistCollectionTrendLabels:any = [];
+  public dentistCollectionTrendLoader:boolean = true;
+  public dentistColleTrendLabels1:any = [];
+
+  private dentistCollectionTrend() {
+    this.dentistCollectionTrendLoader = true;    
+    this.clinic_id && this.cliniciananalysisService.caDentistCollectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+      this.dentistColleTrendLabels1 = [];      
+      this.dentistCollectionTrend1 = [];
+      this.dentistCollectionTrendLabels = [];
+      this.dentistCollectionTrendLoader = false;
+      let dynamicColors = [];   
+      if (data && data.message == 'success') {
+        if(data.data){
+          data.data.forEach(res => {
+            if(res.collection)
+              this.dentistCollectionTrend1.push(Math.round(res.collection));
+            if (this.trendValue == 'c')
+              this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+            else
+              this.dentistColleTrendLabels1.push(res.year);
+          });
+          if(this.dentistCollectionTrend1.every((value) => value == 0)) this.dentistCollectionTrend1 = [];
+          this.dentistColTrend[0]['data'] = this.dentistCollectionTrend1;
+          
+          this.dentistColleTrendLabels1.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.dentistColTrend[0].backgroundColor = dynamicColors;
+          this.dentistCollectionTrendLabels = this.dentistColleTrendLabels1;          
+        }else{
+          this.dentistCollectionTrendLabels = [];
+        }        
       }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -3499,6 +3571,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = 8;
       $('.filter').removeClass('active');
       this.dentistProductionTrend();
+      this.dentistCollectionTrend();      
       this.treatmentPlanTrend();
       this.patientComplaintsTrend();
       this.fdRecallPrebookRateTrend();

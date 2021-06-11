@@ -256,9 +256,16 @@
 
 
               <!-- Production Chart start trend -->
-              <div *ngIf="showTrendChart == true && dentistProductionTrendLabels.length > 0 && !dentistProductionTrendLoader" style="height: 306px">
+              <div *ngIf="proCollShow == 1 && showTrendChart == true && dentistProductionTrendLabels.length > 0 && !dentistProductionTrendLoader" style="height: 306px">
                 <canvas #myCanvas id="dentistProductionTrend" baseChart [datasets]="dentistProdTrend"
                   [labels]="dentistProductionTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
+                  (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
+                  (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <div *ngIf="proCollShow == 2 &&  showTrendChart == true && dentistCollectionTrendLabels.length > 0 && !dentistCollectionTrendLoader" style="height: 306px">
+                <canvas #myCanvas id="dentistColTrend" baseChart [datasets]="dentistColTrend"
+                  [labels]="dentistCollectionTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
                   (chartClick)="chartClicked($event)">
                 </canvas>
