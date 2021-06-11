@@ -26,7 +26,7 @@ export class DialogOverviewExampleComponent {
   }
 
   save(data){  
-    if( (data.id && data.old == data.item_name) ||  data.item_name == ''){
+    if( (data.id && data.old == data.item_name && data.quantityold == data.quantity)   ||  data.item_name == ''){
       return false;
     }
 
@@ -146,7 +146,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
   openDialog(id= '',name= '',quantity = ''): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleComponent, {
       width: '500px',
-      data: {id: id, item_name: name,clinic_id: this.clinic_id$.value, old: name, quantity: quantity}
+      data: {id: id, item_name: name,clinic_id: this.clinic_id$.value, old: name, quantity: quantity, quantityold: quantity}
     });
     dialogRef.afterClosed().subscribe(result => {
       this.getItems(this.clinic_id$.value);
