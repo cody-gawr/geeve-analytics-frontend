@@ -740,8 +740,12 @@
                     src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
                 Treatment Plan Average Cost
               </div>
-              <div class="info-icon-container">
+              <div  *ngIf="tcmain == 1" class="info-icon-container">
                 <img [tooltip]="this.constants.tipTxPlanFeeProposed" src="../assets/images/info-icon.png"
+                  alt="info-icon" class="info-icon" />
+              </div>
+              <div  *ngIf="tcmain == 2" class="info-icon-container">
+                <img [tooltip]="this.constants.tipPTxPlanFeeCompleted" src="../assets/images/info-icon.png"
                   alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
@@ -1112,8 +1116,12 @@
                     src="../assets/images/trend_{{recallChartTooltip}}.png"></span>
                 Prebooking Rate
               </div>
-              <div class="info-icon-container">
+              <div *ngIf="prebook=='recall'"class="info-icon-container">
                 <img [tooltip]="this.constants.tipRecallRate" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
+              </div>
+              <div *ngIf="prebook=='treatment'" class="info-icon-container">
+                <img [tooltip]="this.constants.tipReappointRate" src="../assets/images/info-icon.png" alt="info-icon"
                   class="info-icon" />
               </div>
             </mat-card-title>
