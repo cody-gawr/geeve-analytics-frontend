@@ -14,202 +14,207 @@ export class AppConstants {
     // CLINICIAN ANALYSIS
     public tipProduction: ITooltipData = {
         title: 'Dentist Production', 
-        info: ' '
+        info: 'Total amount invoiced by clinician'
+      };  
+
+    public tipCollection: ITooltipData = {
+        title: 'Dentist Collection', 
+        info: 'Total amount collected by clinician'
       };    
   
     public tipHourlyRate: ITooltipData = {
         title: 'Hourly Rate', 
-        info: ' '
+        info: 'Hourly rate of clinician (excluding ftas)'
     };
     
     public tipNumPatients: ITooltipData = {
         title: 'No. New Patients', 
-        info: ' '
+        info: 'Total number of new patients seen'
     };
 
     public tipTxPlanFeeProposed: ITooltipData = {
         title: 'Treatment Plan Avg Proposed Fees', 
-        info: ' '
+        info: 'Average total value of Treatment Plans created in the date range- designated by who created the treatment plan'
     };
 
     public tipPTxPlanFeeCompleted: ITooltipData = {
         title: 'Treatment Plan Avg Completed Fees', 
-        info: ' '
+        info: 'Average completed value of Treatment Plans created in the date range - designated by who created the treatment plan'
     };
 
     public tipTxPlanFeeCompletion: ITooltipData = {
         title: 'Treatment Plan Completion Rate', 
-        info: ' '
+        info: ' Average Treatment Plan Completion of each plan created in the date range'
     }; 
 
     public tipRecallRate: ITooltipData = {
         title: 'Recall Prebook Rate', 
-        info: ' '
+        info: 'Percentage of patients who have had an exam/recall appointment who prebook a 6 monthly recall appointment'
     }; 
 
     public tipReappointRate: ITooltipData = {
         title: 'Reappointment Rate', 
-        info: ' '
+        info: 'Percentage of patients who have had treatment that reappointed for treatment of any type'
     }; 
 
     public tipNumComplaints: ITooltipData = {
         title: 'No. Patient Complaints', 
-        info: ' '
+        info: 'Number of patient complaints (recorded by complaint code "COMP")'
     }; 
 
     // CLINICIAN PROCEDURES
 
     public tipProcAnalysisGen: ITooltipData = {
         title: 'Procedure Analysis - General', 
-        info: ' '
+        info: 'This highlights certain procedures that our algorithm predicts are performed by high grossing and proactive dentists'
       };    
   
     public tipProcAnalysisSpec: ITooltipData = {
         title: 'Procedure Analysis - Specialist', 
-        info: ' '
+        info: 'This highlights procedures performed by super gps and specialists'
     };
     
     public tipRevPerProc: ITooltipData = {
         title: 'Revenue Per Procedure', 
-        info: ' '
+        info: 'Breakdown of the top 10 revenue generating procedures'
     };
 
     public tipPredictorCrown: ITooltipData = {
-        title: 'Conversion Predictor - Crown : Large Fill', 
-        info: ' '
+        title: 'Conversion Predictor - Indirect Restorations : Large Direct Restorations', 
+        info: 'Ratio of how many indirect restorations were performed compared to large direct restorations'
     };
 
     public tipPredictorExtract: ITooltipData = {
         title: 'Conversion Predictor - RCT : Extraction', 
-        info: ' '
+        info: 'Ratio of how may root canals were completed vs extractions (not including decidious or wisdom teeth)'
     };
 
     public tipPredictorRCT: ITooltipData = {
         title: 'Conversion Predictor - RCT Conversion', 
-        info: ' '
+        info: 'Ratio of how many extipations were performed compared to completed obturations'
     };
 
     public tipReferrals: ITooltipData = {
         title: 'Clinician Referrals', 
-        info: ' '
+        info: 'Breakdown of where referrals are going, both internally and externally (requires manual referral code input)'
     };
 
     // FRONT DESK
 
     public tipUtilRate: ITooltipData = {
         title: 'Utilisation Rate', 
-        info: ' '
+        info: 'Percentage of available hours that have been used (excluding breaks and holidays)'
     };
     
     public tipFDRecallRate: ITooltipData = {
         title: 'Recall Prebook Rate', 
-        info: ' '
+        info: 'Percentage of patients who have had an exam/recall appointment who prebook a 6 monthly recall appointment'
     };
 
     public tipFDReappointRate: ITooltipData = {
         title: 'Reappointment Rate', 
-        info: ' '
+        info: 'Percentage of patients who have had treatment that reappointed for treatment of any type'
     };
 
     public tipNumTicks: ITooltipData = {
         title: 'Number of Ticks', 
-        info: ' '
+        info: 'Number of followup calls scheduled (designated by code TICK)'
     };
 
     public tipFTARatio: ITooltipData = {
         title: 'FTA Ratio', 
-        info: ' '
+        info: 'Number of FTAS (failure to attends) vs total number of appointments'
     };
 
     public tipUTARatio: ITooltipData = {
         title: 'UTA Ratio', 
-        info: ' '
+        info: 'Number of UTAS (unable to attend) vs total number of appointments'
     };  
     
     // MARKETING
 
     public tipNewPatReferrals: ITooltipData = {
         title: 'New Patients by Referral', 
-        info: ' '
+        info: 'Breakdown of new patients per referral source'
     };
     
     public tipNewPatientRevenue: ITooltipData = {
         title: 'New Patient Revenue by Referral', 
-        info: ' '
+        info: 'Breakdown of new patient revenue by referral source'
     };
 
     public tipNumNewPatients: ITooltipData = {
         title: 'No. New Patients', 
-        info: ' '
+        info: 'Number of new patients who attended for their first appointment'
     };
 
     public tipNewPatCost: ITooltipData = {
         title: 'New Patient Cost', 
-        info: ' '
+        info: 'Cost of new patient based on accounting expenditure and total new patients recorded'
     };
 
     public tipTotalVisits: ITooltipData = {
         title: 'Total Visits', 
-        info: ' '
+        info: 'Total appointments in date range'
     };
 
    // FINANCES
 
    public tipFinProduction: ITooltipData = {
     title: 'Production', 
-    info: ' '
+    info: 'Total invoiced production for date range'
     };
 
     public tipNetProfit: ITooltipData = {
         title: 'Net Profit', 
-        info: ' '
+        info: 'Net profit (from Accounting Software)'
     };
 
     public tipNetProfitPercent: ITooltipData = {
         title: 'Net Profit %', 
-        info: ' '
+        info: 'Net profit percentage calculated with Collections from PMS and Profit from accounting software'
     };
 
     public tipExpenses: ITooltipData = {
         title: 'Expenses', 
-        info: ' '
+        info: 'Breakdown and bencharked expenses (from Accounting Software)'
     };
 
     public tipProdPerVisit: ITooltipData = {
         title: 'Production Per Visit', 
-        info: ' '
+        info: 'Average production per visit'
     };
 
     public tipDiscounts: ITooltipData = {
         title: 'Discounts', 
-        info: ' '
+        info: 'Total discounts provided during date range'
     };
 
     public tipProdVsCollection: ITooltipData = {
         title: 'Production vs Collection', 
-        info: ' '
+        info: 'Total amount invoiced (production) vs received (collections)'
     };
 
     public tipProdPercentPerClinician: ITooltipData = {
         title: 'Production % Per Clinician', 
-        info: ' '
+        info: 'Breakdown of production by clinician'
     };
 
     // LOST OPPORTUNITY
 
     public tipLODiscounts: ITooltipData = {
         title: 'Discounts', 
-        info: ' '
+        info: 'Total discounts provided in the last 365 days'
     };
 
     public tipLOProdVsCollection: ITooltipData = {
-        title: 'Production vs Collection', 
-        info: ' '
+        title: 'Collection vs Production', 
+        info: 'The amount of production in the last 365 days that has not been collected'
     };
 
     public tipLOCaseAcceptance: ITooltipData = {
         title: 'Case Acceptance', 
-        info: ' '
+        info: 'The total outstanding value of items on treatment plans created in the last 365 days'
     };
 
     // MORNING HUDDLE
@@ -236,27 +241,27 @@ export class AppConstants {
 
     public tipHourlyLeaders: ITooltipData = {
         title: 'Hourly Rate Leaders', 
-        info: ' '
+        info: 'Top hourly rate performers this month (minimum 5 hours of appointments)'
     };
 
     public tipReferralLeaders: ITooltipData = {
         title: 'Referral Leaders', 
-        info: ' '
+        info: 'Top Referral sources for this month'
     };
 
     public tipPrebookedVisits: ITooltipData = {
         title: 'Pre-booked Visits', 
-        info: ' '
+        info: 'Number of pre-booked appointments in the next 7 days (excludes today)'
     };
 
     public tipChairUtilRate: ITooltipData = {
         title: 'Chair Utilisation Rate', 
-        info: ' '
+        info: 'Percentage of available hours in the next 7 days that have been used (excluding breaks and holidays)'
     };
 
     public tipUnschedProd: ITooltipData = {
         title: 'Unscheduled Production', 
-        info: ' '
+        info: 'The total outstanding value of items on treatment plans for patients attending in the next 7 days (excludes today)'
     };
 
 }

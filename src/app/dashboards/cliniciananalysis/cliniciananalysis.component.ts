@@ -55,6 +55,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public averageToggle = false;  
   public childid: string = '';
   public user_type: string = '';
+
+  public proCollShow: number = 1;
+
+
   public flag = false;
   private _routerSub = Subscription.EMPTY;
   newPatientPluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
@@ -831,6 +835,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.toggleChecked= false;
       this.showTrendChart=false;
       this.buildChart();
+      this.collectionChart()
       this.buildChartTreatment();
       this.buildChartNopatients();
       this.buildChartNewpatients();
@@ -867,6 +872,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.showTrendChart = false;
         //this.toggleFilter('off');
         this.buildChartDentist();
+        this.collectionDentist();
         (<HTMLElement>document.querySelector('.dentistProductionSingle')).style.display = 'block';
         (<HTMLElement>document.querySelector('.dentistProduction')).style.display = 'none';
         this.buildChartTreatmentDentist();
@@ -1169,6 +1175,138 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     );
   }
 
+
+
+
+
+  public collectionLoader:boolean = true;
+  public collectionData1:any = [];
+  public collectionLabels1:any = [];
+  public collectionTotal:any = 0;
+  public collectionLabels:any = [];
+  public collectionData: any[] = [    {
+      ...this.chartService.baseChartData,
+      data: [],
+    }
+  ];
+  public collectionTotalAverage:any = 0;
+  public collectionTotalPrev:any = 0;
+  public collectionTotalGoal:any = 0; 
+  public collectionTooltip:string =''; 
+
+ private collectionChart() {
+    this.collectionLoader = true;
+    this.collectionData1 = [];
+    this.collectionLabels1 = [];
+    this.collectionTotal = 0;
+    this.collectionLabels = [];
+    this.barChartOptionsDP.annotation = [];
+   this.clinic_id && this.cliniciananalysisService.DentistCollection(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+      this.collectionData1 = [];
+      this.collectionLabels1 = [];
+      this.collectionLabels = [];
+      this.collectionTotal = 0;
+      if (data.message == 'success') {
+        this.collectionLoader = false;
+        this.collectionTooltip = 'down';
+        var i = 0;
+        data.data.forEach(res => {
+          if (res.collection > 0) {
+            this.collectionData1.push(Math.round(res.collection));
+            var name = res.provider_name;
+            if (res.provider_name != null && res.provider_name != 'Anonymous') {
+              this.collectionLabels1.push(res.provider_name);
+              this.dentistKey = i;
+            } else {
+              this.collectionLabels1.push(res.provider_name);
+            }            
+            i++;
+          }
+        });
+      
+         this.collectionData[0]['data'] = this.collectionData1;
+         const colors = [
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd
+        ]; // this is static array for colors of bars
+       
+        let dynamicColors = [];
+        this.collectionLabels1.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars
+
+        
+        this.collectionData[0].backgroundColor = dynamicColors;
+         this.collectionLabels = this.collectionLabels1;
+         this.collectionTotal =  Math.round(data.total);    
+         this.collectionTotalAverage = Math.round(data.total_average);
+         this.collectionTotalPrev = Math.round(data.total_ta);
+         this.collectionTotalGoal = data.goals; 
+        
+  if(this.collectionTotal >= this.collectionTotalPrev)
+          this.collectionTooltip = 'up';
+        this.barChartOptionsDP.annotation = [];
+        if (this.goalchecked == 'average') {
+          this.barChartOptionsDP.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.collectionTotalAverage,
+              borderColor: '#0e3459',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            },
+            ]
+          }
+        }
+        else if (this.goalchecked == 'goal') {
+
+          this.barChartOptionsDP.annotation = {
+            drawTime: 'afterDatasetsDraw',
+            annotations: [{
+              drawTime: 'afterDraw',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: this.productionGoal * this.goalCount,
+              borderColor: 'red',
+              borderWidth: 2,
+              borderDash: [2, 2],
+              borderDashOffset: 0,
+            }]
+          }
+
+        }
+        else if (data.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("token", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
+      }
+    }, error => {
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    }
+
+
+    );
+  }
+
+
+
+
+
   public buildChartDentistLoader: boolean;
   public maxProductionGoal: any = 0;
   //Individual Dentist Production Chart
@@ -1207,6 +1345,64 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
           if (this.maxProductionGoal == 0)
             this.maxProductionGoal = '';
+         } 
+      } else if (data.status == '401') {
+        this._cookieService.put("username", '');
+        this._cookieService.put("email", '');
+        this._cookieService.put("token", '');
+        this._cookieService.put("userid", '');
+        this.router.navigateByUrl('/login');
+      }
+    }, error => {
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+    });
+  }
+
+// Dentist collection data
+  public collectionDentistLoader:boolean = true;
+  public gaugeCollectionLabel:any = '';
+  public gaugeCollectionValue:any = 0;
+  public collectionDentistTotal:any = 0;
+  public collectionDentistTotalPrev:any = 0;
+  public dentistCollectionGoal:any = 0;
+  public maxCollectionGoal:any = 0;
+
+
+  private collectionDentist() {
+    this.collectionDentistLoader = true;
+    this.gaugeCollectionLabel = '';
+    this.collectionTooltip = 'down';
+  this.clinic_id && this.cliniciananalysisService.DentistCollectionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => 
+    {
+      this.collectionDentistTotal = 0;
+      this.collectionDentistTotalPrev = 0;
+      this.productionTotalAverage=0;
+      this.maxCollectionGoal=0;
+      this.gaugeCollectionValue = 0;
+      this.collectionDentistLoader =false;
+       if(data.message == 'success' ){
+          if(data.data != null ) {
+            data.data.forEach((res)=>{
+              if(res.collection)
+                this.gaugeCollectionValue = Math.round(res.collection);
+
+              this.gaugeCollectionLabel = res.provider_name;
+          });       
+          this.collectionDentistTotal = Math.round(data.total);
+          this.collectionDentistTotalPrev = Math.round(data.total_ta);
+          this.productionTotalAverage= Math.round(data.total_average);
+          this.dentistCollectionGoal = data.goals;
+          if (this.productionTotal > this.productionTotalPrev){
+            this.collectionTooltip = 'up';
+          }
+          if(this.gaugeCollectionValue > this.dentistCollectionGoal)
+            this.maxCollectionGoal = this.gaugeValue;
+          else
+            this.maxCollectionGoal = this.dentistCollectionGoal;
+
+          if (this.maxCollectionGoal == 0)
+            this.maxCollectionGoal = '';
          } 
       } else if (data.status == '401') {
         this._cookieService.put("username", '');
@@ -2650,6 +2846,36 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       pointShadowColor: 'rgba(0, 0, 0, 0.3)',
       backgroundOverlayMode: 'multiply'
     }];
+
+    public dentistColTrend: any[] = [
+    {
+      data: [], label: '', shadowOffsetX: 3,
+      backgroundColor: [
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even,
+          this.chartService.colors.odd,
+          this.chartService.colors.even
+      ],
+      shadowOffsetY: 2,
+      shadowBlur: 3,
+      shadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointBevelWidth: 2,
+      pointBevelHighlightColor: 'rgba(255, 255, 255, 0.75)',
+      pointBevelShadowColor: 'rgba(0, 0, 0, 0.3)',
+      pointShadowOffsetX: 3,
+      pointShadowOffsetY: 3,
+      pointShadowBlur: 10,
+      pointShadowColor: 'rgba(0, 0, 0, 0.3)',
+      backgroundOverlayMode: 'multiply'
+    }];
   public dentistProductionTrend1 = [];
   public dentistProductionTrendLabels = [];
   public dentistProductionTrendLabels1 = [];
@@ -2695,6 +2921,48 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.dentistProductionTrendLabels = [];
         }
         
+      }
+    }, error => {
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+      this.warningMessage = "Please Provide Valid Inputs!";
+
+    });
+  }
+// Collection Trend mode 
+  public dentistCollectionTrend1:any = [];
+  public dentistCollectionTrendLabels:any = [];
+  public dentistCollectionTrendLoader:boolean = true;
+  public dentistColleTrendLabels1:any = [];
+
+  private dentistCollectionTrend() {
+    this.dentistCollectionTrendLoader = true;    
+    this.clinic_id && this.cliniciananalysisService.caDentistCollectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+      this.dentistColleTrendLabels1 = [];      
+      this.dentistCollectionTrend1 = [];
+      this.dentistCollectionTrendLabels = [];
+      this.dentistCollectionTrendLoader = false;
+      let dynamicColors = [];   
+      if (data && data.message == 'success') {
+        if(data.data){
+          data.data.forEach(res => {
+            if(res.collection)
+              this.dentistCollectionTrend1.push(Math.round(res.collection));
+            if (this.trendValue == 'c')
+              this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+            else
+              this.dentistColleTrendLabels1.push(res.year);
+          });
+          if(this.dentistCollectionTrend1.every((value) => value == 0)) this.dentistCollectionTrend1 = [];
+          this.dentistColTrend[0]['data'] = this.dentistCollectionTrend1;
+          
+          this.dentistColleTrendLabels1.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.dentistColTrend[0].backgroundColor = dynamicColors;
+          this.dentistCollectionTrendLabels = this.dentistColleTrendLabels1;          
+        }else{
+          this.dentistCollectionTrendLabels = [];
+        }        
       }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -3303,6 +3571,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.Apirequest = 8;
       $('.filter').removeClass('active');
       this.dentistProductionTrend();
+      this.dentistCollectionTrend();      
       this.treatmentPlanTrend();
       this.patientComplaintsTrend();
       this.fdRecallPrebookRateTrend();
@@ -3317,6 +3586,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   goalToggle(val) {
     this.goalchecked = val;
     this.buildChart();
+    this.collectionChart();
     this.buildChartTreatment();
     this.recallPrebook();
     this.treatmentPrePrebook();
@@ -3355,6 +3625,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     months -= d1.getMonth();
     months += d2.getMonth();
     return months <= 0 ? 0 : months;
+  }
+
+  changeProduction(val){
+    this.proCollShow = parseInt(val);
   }
 }
 
