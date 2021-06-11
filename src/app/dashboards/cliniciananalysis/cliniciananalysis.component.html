@@ -242,6 +242,10 @@
                   [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
                 </ngx-gauge>
               </div>
+              <div *ngIf="buildChartDentistLoader" class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
+              </div>
               </div>
               <!-- Production Chart end dentist -->
               <!-- Collection Chart Start dentist -->
@@ -250,6 +254,10 @@
                 <ngx-gauge [type]="gaugeType" [value]="gaugeCollectionValue" [label]="gaugeCollectionLabel" [thick]="gaugeThick" [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor" [max]="maxCollectionGoal"
                   [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
                 </ngx-gauge>
+              </div>
+               <div *ngIf="collectionDentistLoader" class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
               </div>
               </div>
               <!-- Collection Chart end dentist -->
@@ -262,6 +270,11 @@
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
                   (chartClick)="chartClicked($event)">
                 </canvas>
+
+              </div>
+              <div *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == true" class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
               </div>
               <div *ngIf="proCollShow == 2 &&  showTrendChart == true && dentistCollectionTrendLabels.length > 0 && !dentistCollectionTrendLoader" style="height: 306px">
                 <canvas #myCanvas id="dentistColTrend" baseChart [datasets]="dentistColTrend"
@@ -269,6 +282,10 @@
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
                   (chartClick)="chartClicked($event)">
                 </canvas>
+              </div>
+               <div *ngIf="dentistCollectionTrendLoader && proCollShow == 2 && showTrendChart == true" class="loader_container loader_container_middle">
+                <img class="loader_ico" src="../assets/images/720.gif">
+                <div class="loader-text">Calculating...</div>
               </div>
               <!-- Production Chart start trend -->
             </div>
@@ -327,21 +344,8 @@
                 </div> -->
               </div>
             </div>
-            <!-- Collection Chart end trend -->
-
-
-            <div *ngIf="buildChartLoader" class="loader_container loader_container_middle"><img class="loader_ico"
-                src="../assets/images/720.gif">
-              <div class="loader-text">Calculating...</div>
-            </div>
-            <div *ngIf="buildChartDentistLoader" class="loader_container loader_container_middle"><img
-                class="loader_ico" src="../assets/images/720.gif">
-              <div class="loader-text">Calculating...</div>
-            </div>
-            <div *ngIf="dentistProductionTrendLoader" class="loader_container loader_container_middle"><img
-                class="loader_ico" src="../assets/images/720.gif">
-              <div class="loader-text">Calculating...</div>
-            </div>
+            <!-- Collection Chart end trend -->          
+       
           </mat-card-content>
         </mat-card>
 
