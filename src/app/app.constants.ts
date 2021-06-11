@@ -71,7 +71,7 @@ export class AppConstants {
   
     public tipProcAnalysisSpec: ITooltipData = {
         title: 'Procedure Analysis - Specialist', 
-        info: 'This highlights procedures performed by supergps and specialists'
+        info: 'This highlights procedures performed by super gps and specialists'
     };
     
     public tipRevPerProc: ITooltipData = {
