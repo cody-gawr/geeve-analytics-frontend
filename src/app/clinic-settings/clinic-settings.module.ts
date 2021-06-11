@@ -4,11 +4,13 @@ import { ClinicSettingsRoutes } from './clinic-settings.routing';
 import { ClinicSettingsComponent } from './clinic-settings.component';
 import { ClinicSettingsService } from './clinic-settings.service';
 import { TaskService } from './tasks/tasks.service';
+import { EquipmentsService } from './equipments/equipments.service';
 import { SharedMatModule } from '../shared-mat.module';
 import { DemoMaterialModule } from '../demo-material-module';
 import { BaseComponent } from './base/base.component';
 import { DentistComponent } from './dentist/dentist.component';
 import { TasksComponent,DialogOverviewExampleDialogComponent } from './tasks/tasks.component';
+import { EquipmentComponent,DialogOverviewExampleComponent } from './equipments/equipments.component';
 import { GoalsComponent } from './goals/goals.component';
 import { AutofocusDirective } from './auto-focus.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,7 +24,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   providers: [
     ClinicSettingsService,
-    TaskService
+    TaskService,
+    EquipmentsService
   ],
   declarations: [
     ClinicSettingsComponent,
@@ -32,9 +35,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     GoalsComponent,
     AutofocusDirective,
     DialogOverviewExampleDialogComponent,
-    TasksComponent
+    DialogOverviewExampleComponent,
+    EquipmentComponent
   ],
-  entryComponents: [DialogOverviewExampleDialogComponent],  
+  entryComponents: [DialogOverviewExampleDialogComponent, DialogOverviewExampleComponent],  
   exports: [
     BaseComponent,
     DentistComponent,
