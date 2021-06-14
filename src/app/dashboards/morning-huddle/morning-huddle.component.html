@@ -1199,11 +1199,13 @@
                   <mat-form-field floatLabel="never" class="setPreviousDay">
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote"
                       (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'recall-overdue')">
-                      <mat-option value="Ineligible">Ineligible</mat-option>
+                      <mat-option value="Booked">Booked</mat-option>
                       <mat-option value="Already booked">Already booked</mat-option>
                       <mat-option value="Did not want to book">Didn’t want to book</mat-option>
-                      <mat-option value="Cant be reached">Can't be reached</mat-option>
-                      <mat-option value="Booked">Booked</mat-option>
+                      <mat-option value="Ineligible">Ineligible</mat-option>
+                      <mat-option value="Cant be reached Call 1">Can't be reached - Call 1</mat-option>
+                      <mat-option value="Cant be reached Call 2">Can't be reached - Call 2</mat-option>
+                      <mat-option value="Cant be reached Call 3">Can't be reached - Left Voicemail</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </td>
@@ -1257,11 +1259,13 @@
                         <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote1"
                           (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'recall-overdue')">
                           <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
-                          <mat-option value="Ineligible">Ineligible</mat-option>
+                          <mat-option value="Booked">Booked</mat-option>
                           <mat-option value="Already booked">Already booked</mat-option>
                           <mat-option value="Did not want to book">Didn’t want to book</mat-option>
-                         <mat-option value="Cant be reached">Can't be reached</mat-option>
-                          <mat-option value="Booked">Booked</mat-option>
+                          <mat-option value="Ineligible">Ineligible</mat-option>
+                          <mat-option value="Cant be reached Call 1">Can't be reached - Call 1</mat-option>
+                          <mat-option value="Cant be reached Call 2">Can't be reached - Call 2</mat-option>
+                          <mat-option value="Cant be reached Call 3">Can't be reached - Left Voicemail</mat-option>
                         </mat-select>
                       </mat-form-field> 
                     </div>
@@ -1351,13 +1355,13 @@
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
                       (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'tick-follower')">
                       <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
-                      <mat-option value="Ineligible">Ineligible</mat-option>
+                      <mat-option value="Booked">Booked</mat-option>
                       <mat-option value="Already booked">Already booked</mat-option>
                       <mat-option value="Did not want to book">Didn’t want to book</mat-option>
-                         <mat-option value="Cant be reached Call 1">Can't be reached - Call 1</mat-option>
+                      <mat-option value="Ineligible">Ineligible</mat-option>
+                      <mat-option value="Cant be reached Call 1">Can't be reached - Call 1</mat-option>
                       <mat-option value="Cant be reached Call 2">Can't be reached - Call 2</mat-option>
                       <mat-option value="Cant be reached Call 3">Can't be reached - Left Voicemail</mat-option>
-                      <mat-option value="Booked">Booked</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </td>
@@ -1415,13 +1419,13 @@
                         <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote3"
                           (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'tick-follower')">
                           <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
-                          <mat-option value="Ineligible">Ineligible</mat-option>
+                          <mat-option value="Booked">Booked</mat-option>
                           <mat-option value="Already booked">Already booked</mat-option>
                           <mat-option value="Did not want to book">Didn’t want to book</mat-option>
+                          <mat-option value="Ineligible">Ineligible</mat-option>
                           <mat-option value="Cant be reached Call 1">Can't be reached - Call 1</mat-option>
                           <mat-option value="Cant be reached Call 2">Can't be reached - Call 2</mat-option>
                           <mat-option value="Cant be reached Call 3">Can't be reached - Left Voicemail</mat-option>
-                          <mat-option value="Booked">Booked</mat-option>
                         </mat-select>
                       </mat-form-field>
                     </div>

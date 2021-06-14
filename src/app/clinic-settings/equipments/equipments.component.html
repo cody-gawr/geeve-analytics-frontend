@@ -1,0 +1,87 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Equipment List
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div>
+    <mat-form-field appearance="fill" class="denstist-search-form-field"  style="width: 70%;">
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        type="search"
+        placeholder="Search here..."
+        class="search-input"
+        (keyup)="doFilter($event.target.value)"
+      />     
+    </mat-form-field>
+     <button style="float: right;" class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()">Add Item</button>
+
+
+  </div>
+  <div class="DentistListSecRow mh-table patient_data-table_responsive">
+    <div class="card-loading d-none">
+      <img class="tableLoader" src="../../assets/images/loader.gif" />
+    </div>
+    <div class="respopnsive-table-set">
+      <table mat-table [dataSource]="itemList" class="mat-elevation-z8">
+          <ng-container matColumnDef="task_name">
+          <th mat-header-cell *matHeaderCellDef>Item Name</th>
+          <td mat-cell *matCellDef="let element; let i=index">
+            {{ element.equip_item }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef>Quantity</th>
+          <td mat-cell *matCellDef="let element; let i=index">
+            {{ element.quantity }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="active">
+          <th mat-header-cell *matHeaderCellDef>Enabled</th>
+          <td mat-cell *matCellDef="let element; let i=index">            
+             <span class="action">
+              <mat-slide-toggle [checked]="element.is_active == 0? false : true" name="status" (change)="updateStatus($event,element.id,element.is_default)"></mat-slide-toggle>        
+              </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Edit</th>
+          <td mat-cell *matCellDef="let element; let i=index">                        
+              <span class="action">
+                <a title="Edit" class="action_btn golden ng-star-inserted" (click)="openDialog( element.id, element.equip_item, element.quantity)"><i class="ti-pencil m-r-10"></i></a>
+              </span>
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        hidePageSize
+        [pageSize]="dentistPageSize"
+        [style.display]="'none'"
+      ></mat-paginator>
+    </div>
+
+    <ul
+      class="main_pagination settings-table-pagination"
+      *ngIf="dentistTablePages.length"
+    >
+      <li *ngFor="let page of dentistTablePages">
+        <button
+          [ngClass]="{ active: page === currentPage, page: true }"
+          (click)="handlePageChange(page)"
+        >
+          {{ page }}
+        </button>
+      </li>
+    </ul>
+
+    <div class="data-loading-main">
+      <div class="no-data" [ngClass]="itemList.data.length == 0  ? 'show' : 'hide'">No Data found</div>
+      <div class="loader" [ngClass]="itemList.data.length == 0   ? 'show' : 'hide'"><img class="tableLoader" src="../../../assets/images/loader.gif" /></div>
+    </div>
+  </div>
+</mat-expansion-panel>

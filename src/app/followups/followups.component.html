@@ -93,7 +93,7 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns1.length">
-                  You have no post op calls {{ months[selectedMonth] }} {{ selectedYear }}
+                  You have no post op calls for {{ months[selectedMonth] }} {{ selectedYear }}
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
@@ -185,13 +185,13 @@
                   <mat-form-field floatLabel="never" class="setPreviousDay">
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote"
                       (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'recall-overdue')">
-                      <mat-option value="Ineligible">Ineligible</mat-option>
+                      <mat-option value="Booked">Booked</mat-option>
                       <mat-option value="Already booked">Already booked</mat-option>
                       <mat-option value="Did not want to book">Didn’t want to book</mat-option>
+                      <mat-option value="Ineligible">Ineligible</mat-option>
                       <mat-option value="Cant be reached Call 1">Can't be reached - Call 1</mat-option>
                       <mat-option value="Cant be reached Call 2">Can't be reached - Call 2</mat-option>
                       <mat-option value="Cant be reached Call 3">Can't be reached - Left Voicemail</mat-option>
-                      <mat-option value="Booked">Booked</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </td>
@@ -206,7 +206,7 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns2.length">
-                  You have no overdue recalls {{ months[selectedMonth] }} {{ selectedYear }}
+                  You have no overdue recalls for {{ months[selectedMonth] }} {{ selectedYear }}
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
@@ -300,13 +300,13 @@
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
                       (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'tick-follower')">
                       <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
-                      <mat-option value="Ineligible">Ineligible</mat-option>
+                      <mat-option value="Booked">Booked</mat-option>
                       <mat-option value="Already booked">Already booked</mat-option>
                       <mat-option value="Did not want to book">Didn’t want to book</mat-option>
+                      <mat-option value="Ineligible">Ineligible</mat-option>
                       <mat-option value="Cant be reached Call 1">Can't be reached - Call 1</mat-option>
                       <mat-option value="Cant be reached Call 2">Can't be reached - Call 2</mat-option>
                       <mat-option value="Cant be reached Call 3">Can't be reached - Left Voicemail</mat-option>
-                      <mat-option value="Booked">Booked</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </td>
@@ -325,7 +325,7 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
-                  You have no tick followups {{ months[selectedMonth] }} {{ selectedYear }}
+                  You have no tick followups for {{ months[selectedMonth] }} {{ selectedYear }}
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
