@@ -977,14 +977,15 @@ private mkRevenueByReferralTrend() {
         var i=0;
         let totalRevenue = 0;
         this.reffralAllData.data.patients_refname[label].forEach(res => {
-          totalRevenue = totalRevenue + Math.round(res.invoice_amount);
-          this.revenueByReferralCount$.next(totalRevenue);
+          totalRevenue = totalRevenue + parseFloat(res.invoice_amount);
           if(i<10) {
             this.revenueReferralData1.push(res.invoice_amount);
             this.revenueReferralLabels1.push(res.referral_name);
             i++;
           }
         });
+        totalRevenue = Math.round(totalRevenue);
+        this.revenueByReferralCount$.next(totalRevenue);
       }
       this.revenueReferralData = this.revenueReferralData1;
       this.revenueReferralLabelsl2= this.revenueReferralLabels1;
