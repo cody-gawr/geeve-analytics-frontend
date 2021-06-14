@@ -801,13 +801,13 @@ expenses_card custom_ngx_cw01">
               <div class="card-body">
                 <div style="height: 280px">
                   <canvas class="trendtotalProduction"
-                    *ngIf="totalProductionCollectionLabel && totalProductionCollectionLabel.length  > 0" baseChart
+                    *ngIf="totalProductionCollectionLabel && totalProductionCollectionLabel.length  > 0 && (finCollectionTrendLoader == false && finTotalProductionTrendLoader == false )" baseChart
                     [datasets]="totalProductionCollection" [labels]="totalProductionCollectionLabel"
                     [options]="labelBarOptions" [legend]="true" [chartType]="stackedChartType"
                     (chartHover)="chartHovered($event)" [colors]="barChartColors" (chartClick)="chartClicked($event)">
                   </canvas>
                   <div
-                    *ngIf="totalProductionCollectionLabel  && totalProductionCollectionLabel.length  <=0 && finCollectionTrendLoader == false"
+                    *ngIf="totalProductionCollectionLabel  && totalProductionCollectionLabel.length  <=0 && (finCollectionTrendLoader == false && finTotalProductionTrendLoader == false )"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
@@ -817,7 +817,7 @@ expenses_card custom_ngx_cw01">
               </div>
             </mat-card-content>
           </mat-card>
-          <div *ngIf="finCollectionTrendLoader == true" class="loader_container loader_container_middle"><img
+          <div *ngIf="(finCollectionTrendLoader == true || finTotalProductionTrendLoader == true)" class="loader_container loader_container_middle"><img
               class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
