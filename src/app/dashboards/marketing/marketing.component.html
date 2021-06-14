@@ -279,8 +279,14 @@
                                 *ngIf="showTrend == false && connectedwith"><button
                                     class="mat-button-sm mat-green-button"
                                     (click)="ngxSmartModalService.getModal('myModal').open()">Accounts</button></div>
-                            <img alt="info-icon" class="info-icon" src="../assets/images/info-icon.png"
-                                *ngIf="showTrend == true">
+                                    
+                                    
+                                    <div class="sa_box_title_right_buttons">
+                                    </div>
+                                    <div class="info-icon-container">
+                                        <img [tooltip]="this.constants.tipNewPatCost" src="../assets/images/info-icon.png"
+                                            alt="info-icon" class="info-icon" />
+                                    </div>
                         </mat-card-title>
                         <div class="card-body">
                             <div class="chart py-2">
