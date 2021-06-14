@@ -899,6 +899,16 @@ public currentText;
      let selectedDate = this.chartService.customSelectedDate$.value;
      this.startDate = this.datePipe.transform(selectedDate.startDate, 'dd-MM-yyyy');
      this.endDate = this.datePipe.transform(selectedDate.endDate, 'dd-MM-yyyy');
+
+     var date1:any= new Date(selectedDate.startDate);
+     var date2:any= new Date(selectedDate.endDate);
+     var diffTime:any = Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+     if(diffTime > 365){
+      this.DateDiffernce = diffTime;
+     }else{
+      this.DateDiffernce = '';
+     }
+
      this.loadDentist("all");
     }
     $('.filter').removeClass('active');
