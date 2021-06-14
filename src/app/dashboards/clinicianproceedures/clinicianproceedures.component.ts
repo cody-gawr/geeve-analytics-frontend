@@ -513,11 +513,23 @@ this.preoceedureChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
-       if(tooltipItems.yLabel > 0){
-          return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;
+       if(tooltipItems.yLabel > 0 && data.datasets[tooltipItems.datasetIndex].label != ''){
+        if(data.datasets[tooltipItems.datasetIndex].label.indexOf('DentistMode-') >= 0){
+          return tooltipItems.label+": "+tooltipItems.yLabel;
+        } else {
+          return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;          
+        }
+        
        }
      },
-     
+     title : function(tooltip, data){
+      if( data.datasets[0].label.indexOf('DentistMode-') >= 0){
+          var dentist = data.datasets[0].label.split('Mode-');
+          return dentist[1];
+      } else {
+        return tooltip[0].label;
+      }
+     }
   }
 }
 
@@ -1347,7 +1359,7 @@ if(this._cookieService.get("user_type") == '4'){
         this.itemPredictedChartLabels.push(res[0]);
       });
           this.itemPredictedChartData[0]['data'] = this.itemPredictedChartData1;
-          this.itemPredictedChartData[0]['label'] = data.data[0].provider_name;
+          this.itemPredictedChartData[0]['label'] = 'DentistMode-'+data.data[0].provider_name;
           //this.itemPredictedChartLabels= ['Crowns','Splints','Root Canals','Perio','Surgical Extractions'];
 
           this.itemPredictedChartDataMax = Math.max(...this.itemPredictedChartData[0]['data']);         
