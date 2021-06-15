@@ -176,6 +176,58 @@ table{
   hyphens: auto;
   text-align: right !important;
 }
+.mat-column-item {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 50% !important;
+  width: 50% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-column-quantity {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 20% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-column-am {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 15% !important;
+  width: 15% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-column-pm {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 15% !important;
+  width: 15% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
 
 .thick .mat-column-status {
   flex: 0 0 10% !important;
@@ -269,7 +321,35 @@ span.calculatingSp.text {
     font-weight: normal;
     text-align: center;
 }
-.ttl_value_left {
+.ListButtons .btn-lg {
+    line-height: 0px !important;
+    margin: 20px 20px 0;
+}
+.ListButtons button {
+    width: 100px;
+    height: 31px;
+}
+
+
+.morning-huddle-date.topModel mat-icon {
+    font-size: 18px;
     position: absolute;
+    color: #595959;
+    cursor: pointer;
+}
+.selectRight {
     right: 0;
+}
+.selectLeft {
+    left: 0;
+}
+.morning-huddle-date.topModel{
+    position: absolute;
+    z-index: 9999;
+    width: 240px;
+    left: calc(50% - 120px);
+    top: 20px;    
+}
+input.complt {
+    box-shadow: 1px 1px 3px #17a5aa;
 }

@@ -1,32 +1,35 @@
 <input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'">
 <div class="sa_dashboard_inner_content morning-huddle">
+
+   <div class="morning-huddle-date topModel">
+    <mat-icon *ngIf="showDwDateArrow" (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{ previousDays | date:'EEEE, MMMM d, y':'timezone' }}
+ <!--        <mat-form-field floatLabel="never" class="setPreviousDay">
+          <mat-select [(value)]="previousDays"  id="setPreviousDay" disabled>          
+            <mat-option [value]="addDays(7) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(7) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(6) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(5) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(5) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(4) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(4) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(3) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(3) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(2) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(2) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(1) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(1) | date:'MMM d, y':'timezone'}}</mat-option>
+            
+            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(0) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(1) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(1) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(2) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(2) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(3) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(3) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(4) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(4) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(5) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(5) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(6) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(7) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
+          </mat-select> 
+        </mat-form-field>-->
+         <mat-icon *ngIf="showUpDateArrow" (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>        
+      </div>
+
   <mat-tab-group [selectedIndex]="selectedTab">
     <!-- Dentist Performance Tab -->
     <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">
-      <div class="morning-huddle-date">
-        <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select placeholder="Morning Huddle - {{  subtractDays(0) | date:'EEE MMM d, y':'timezone'}}"
-            (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
-            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(0) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(1) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(1) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(2) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(2) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(3) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(3) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(4) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(4) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(5) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(5) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(6) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <strong>Previous Day: {{ production.date | date:'EEE MMM d':'timezone'  }}</strong>
-
-      </div>
+      <div class="morning-huddle-date"><strong>Previous Day: {{ production.date | date:'EEE MMM d':'timezone'  }}</strong></div>
       <!-- Top Cards -->
       <div>
 
@@ -96,10 +99,10 @@
 
                           <span class="calculatingSp text" *ngIf="dentistrecallRateLoader">Calculating...</span>
                           <!-- <div class="ttl_value_left">Goal: {{ recallRate.goal}}%</div> -->
-                          <div class="ttl_value_left profit" *ngIf="!recallRate.goal">0%</div>
+                          <div  class="ttl_value_left profit" *ngIf="!recallRate.goal && !dentistrecallRateLoader">0%</div>
                           <div
                             [ngClass]="(recallRate.rate > recallRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'"
-                            *ngIf="recallRate.goal">
+                            *ngIf="recallRate.goal && !dentistrecallRateLoader">
                             Goal: {{ (recallRate.goal > 100)? 100 : recallRate.goal }}%
                           </div>
                           <img *ngIf="recallRate.rate >= recallRate.goal" src="../assets/images/green-swirl.png"
@@ -157,10 +160,10 @@
                           <span class="change_value"
                             *ngIf="treatmentRate.total == 'N/A' && !dentistTreatmentRateLoader">{{ treatmentRate.total}}</span>
                           <span class="calculatingSp text" *ngIf="dentistTreatmentRateLoader">Calculating...</span>
-                          <div class="ttl_value_left profit" *ngIf="!treatmentRate.goal">Goal: 0%</div>
+                          <div class="ttl_value_left profit" *ngIf="!treatmentRate.goal  && !dentistTreatmentRateLoader">Goal: 0%</div>
                           <div
                             [ngClass]="(treatmentRate.total >= treatmentRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'"
-                            *ngIf="treatmentRate.goal">
+                            *ngIf="treatmentRate.goal  && !dentistTreatmentRateLoader">
                             Goal: {{  (treatmentRate.goal > 100)? 100 : treatmentRate.goal }}%
                           </div>
                           <img *ngIf="treatmentRate.total >= treatmentRate.goal" src="../assets/images/green-swirl.png"
@@ -452,7 +455,7 @@
                         *ngIf="appointmentCards.data.length > 0 && !appointmentCardsLoaders">{{ appointmentCards.data.length }}</span>
                       <span class="change_value" *ngIf="appointmentCards.data.length <= 0 && !appointmentCardsLoaders">0</span>
                         <span class="calculatingSp text" *ngIf="appointmentCardsLoaders">Calculating...</span>
-                        <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
+                        <img *ngIf="!appointmentCardsLoaders" src="../assets/images/green-swirl.png" alt="production-chart-1" />
                       <!--  <span class="change_value">{{ schedulePatieltd }}</span> -->
                     </div>
                   </div>
@@ -482,7 +485,7 @@
                     <div class="patients-num">
                       <span class="change_value" *ngIf="!scheduleNewPatientsLoader">{{ scheduleNewPatieltd }}</span>
                       <span class="calculatingSp text" *ngIf="scheduleNewPatientsLoader">Calculating...</span>
-                      <img src="../assets/images/red-swirl.png" alt="rebook-chart" />
+                      <img src="../assets/images/red-swirl.png" alt="rebook-chart"  *ngIf="!scheduleNewPatientsLoader"/>
                     </div>
                   </div>
                 </div>
@@ -514,7 +517,7 @@
                     <div class="patients-num">
                       <span class="change_value" *ngIf="!schedulehoursLoader">{{ schedulehours }}</span>
                        <span class="calculatingSp text" *ngIf="schedulehoursLoader">Calculating...</span>
-                      <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
+                      <img src="../assets/images/green-swirl.png" alt="production-chart-1"  *ngIf="!schedulehoursLoader"/>
                     </div>
                   </div>
                 </div>
@@ -546,7 +549,7 @@
                     <div class="patients-num">
                       <span class="change_value" *ngIf="!unschedulehoursLoader">${{ unSchedulehours | number:'1.0-0' }}</span>
                         <span class="calculatingSp text" *ngIf="unschedulehoursLoader">Calculating...</span>
-                      <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
+                      <img src="../assets/images/green-swirl.png" alt="production-chart-1" *ngIf="!unschedulehoursLoader"/>
                     </div>
                   </div>
                 </div>
@@ -788,7 +791,7 @@
                     <div class="patients-num">
                       <span class="change_value" *ngIf="!scheduleNewPatientsLoader">{{ scheduleNewPatieltd }}</span>
                         <span class="calculatingSp text" *ngIf="scheduleNewPatientsLoader">Calculating...</span>
-                      <img src="../assets/images/red-swirl.png" alt="rebook-chart" />
+                      <img src="../assets/images/red-swirl.png" alt="rebook-chart" *ngIf="!scheduleNewPatientsLoader" />
                     </div>
                   </div>
                 </div>
@@ -1543,9 +1546,9 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="table-card post_call_responsive_border" *ngIf="false">
+      <mat-card class="table-card post_call_responsive_border" >
         <mat-card-title>
-          <div class="title-follow-up"> Equipment List (Coming Soon) </div>
+          <div class="title-follow-up"> Equipment List </div>
        <!--     <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
       <!--     <div class="showComplete showAMPm">
            <span class="AM">AM</span> <mat-slide-toggle [checked]="showELPm" name="showelpm" (change)="showAMPm($event)"></mat-slide-toggle> <span  class="PM">PM </span>
@@ -1569,44 +1572,41 @@
                 <td mat-cell *matCellDef="let element"> {{element.list.quantity }} </td>
               </ng-container>
               <ng-container matColumnDef="am">
-                <th mat-header-cell *matHeaderCellDef >AM</th> <!-- [ngClass]="!showELPm? 'show' : 'hide'" -->
+                <th mat-header-cell *matHeaderCellDef >AM &nbsp; <i class="fa fa-check" *ngIf="!amButton"></i></th> <!-- [ngClass]="!showELPm? 'show' : 'hide'" -->
                 <td mat-cell *matCellDef="let element"> <!--  [ngClass]="showELPm? 'show' : 'hide'" -->
-                <input type="number" class="small-number" value="{{ element.equip_qty_am}}">
+                <input type="number" class="small-number" [ngClass] ="!amButton? 'complt' : 'notCmplt' " [(ngModel)]="lquipmentListAm[element.id].am" (blur) ="listUpdate('am',element.id)">
                 </td>
               </ng-container>
               <ng-container matColumnDef="pm" >
-                <th mat-header-cell *matHeaderCellDef>PM</th>
+                <th mat-header-cell *matHeaderCellDef>PM &nbsp; <i class="fa fa-check" *ngIf="!pmButton"></i></th>
                 <td mat-cell *matCellDef="let element">
-                  <input type="number"  class="small-number" value="{{ element.equip_qty_pm}}">
+                  <input type="number"  class="small-number" [ngClass] ="!pmButton? 'complt' : 'notCmplt' " [(ngModel)]="lquipmentListAm[element.id].pm" (blur) ="listUpdate('pm',element.id)">
                 </td>
               </ng-container>           
               <ng-container matColumnDef="isDataAvailable9">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns10.length">
-                  <i class="fa fa-check"></i>
-                  All Equipment List have been completed
-                </mat-footer-cell>
-              </ng-container>
-              <ng-container matColumnDef="isDataAvailable10" [attr.colspan]="displayedColumns10.length">
-                <mat-footer-cell *matFooterCellDef>
-                  <table>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td><button mat-raised-button color="dc"  class="btn-block btn-lg text-center m-t-20">Save</button></td>
-                      <td><button mat-raised-button color="dc" class="btn-block btn-lg text-center m-t-20">Save</button> </td>
-                    </tr>
-                  </table>                              
-                  
+                  No Equipment List for the today
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns10"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns10;"></tr>
                 <mat-footer-row *matFooterRowDef="['isDataAvailable9']"
                 [ngClass]="(lquipmentList.length <= 0)? 'show' : 'hide'"></mat-footer-row>
-              
-              <mat-footer-row *matFooterRowDef="['isDataAvailable10']"
-                [ngClass]="(lquipmentList.length > 0)? 'show' : 'hide'"></mat-footer-row>
             </table>
+             <table class="ListButtons" *ngIf="lquipmentList.length > 0">
+                <tr>
+                  <td width="50%">&nbsp;</td>
+                  <td width="20%">&nbsp;</td>
+                  <td width="15%"><button  (click)="saveQuantity('am')" mat-raised-button color="dc"  class="btn-block btn-lg text-center m-t-20">
+                    <span *ngIf="amButton">Save</span>
+                    <span *ngIf="!amButton">Update</span>
+                  </button></td>
+                  <td width="15%" ><button  (click)="saveQuantity('pm')" mat-raised-button color="dc" class="btn-block btn-lg text-center m-t-20">
+                    <span *ngIf="pmButton">Save</span>
+                    <span *ngIf="!pmButton">Update</span>
+                  </button> </td>
+                </tr>
+              </table> 
             <!-- responsive table - frontdesk followup (Post op calls)  -->
          <!--    <div fxHide.gt-sm>
               <div *ngIf="lquipmentList.length;else noPostOpCalls">

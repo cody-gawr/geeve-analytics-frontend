@@ -170,8 +170,11 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public todayUnscheduledHoursLoader:boolean = true;
     public todayUnscheduledBalLoader:boolean = true;
     public lquipmentList:any =  [];
+    public lquipmentListAm:any =  [];
     public showELPm:boolean =  false;
     public equipmentListLoading:boolean =  true;
+    public amButton:boolean =  true;
+    public pmButton:boolean =  true;
     
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
@@ -297,8 +300,8 @@ initiate_clinic() {
   onTabChanged(event){
   }
 
-  refreshPerformanceTab(event){
-    this.previousDays = event;
+  refreshPerformanceTab(){
+    //this.previousDays = event;
     /*******Tab 1 *******/
     this.getDentistPerformance();
     this.getRecallRate();
@@ -489,13 +492,24 @@ initiate_clinic() {
     this.equipmentListLoading = true;
     this.morningHuddleService.getEquipmentList( this.clinic_id, this.previousDays).subscribe((production:any) => {
       this.equipmentListLoading = false;
+      this.lquipmentList = [];
+       this.amButton = true;
+        this.pmButton = true;
       if(production.message == 'success') {
-        this.lquipmentList = production.data;  
-      /*  if(this.showEquipmentListAm == true) {
-          this.lquipmentListAm = this.endOfDaysTasks;
-        } else {
-          this.lquipmentListAm = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
-        }*/
+        this.lquipmentList = production.data;       
+        production.data.forEach((list) => {
+          if(this.amButton == true && list.am_complete == 1 ){
+            this.amButton = false;
+          }
+          if(this.pmButton == true && list.pm_complete == 1){
+            this.pmButton = false;
+          }
+          var temp = {'am' : list.equip_qty_am, 'pm' : list.equip_qty_pm};
+          if(typeof(this.lquipmentListAm[list.id]) == 'undefined'){
+            this.lquipmentListAm[list.id] = [];
+          }
+          this.lquipmentListAm[list.id] = temp;          
+        });
       }
     }); 
   } 
@@ -758,6 +772,12 @@ initiate_clinic() {
     selectedDate.setDate(todaysDate.getDate()-daysToSubtract)
     return selectedDate;
   }
+  addDays(daysToAdd) {
+    let todaysDate = new Date();
+    let selectedDate = new Date();
+    selectedDate.setDate(todaysDate.getDate() + daysToAdd)
+    return selectedDate;
+  }
 
 
   formatPhoneNumber(phone){
@@ -838,15 +858,68 @@ initiate_clinic() {
     });
     
   }
-
-
+/*
   showAMPm(event){
     this.showELPm = false;
     if(event.checked ==  true){  
       this.showELPm = true;
     } 
+  }*/
+
+  saveQuantity(time){
+    var data = [];
+    this.lquipmentListAm.forEach((value, id) => {
+      if(time == 'am'){
+        var temp = {'id': id,'value' : value.am,'type' : time }; 
+      } else {
+        var temp = {'id': id,'value' : value.pm,'type' : time }; 
+      }
+      data.push(temp);
+    });
+
+    if(data){
+      var dataJson = JSON.stringify(data);
+      this.equipmentListLoading = true;
+      this.morningHuddleService.updateEquimentList(dataJson,this.clinic_id,this.previousDays).subscribe((update:any) => {
+        this.getEndOfDays();
+        this.getEquipmentList();
+      });    
+    }
   }
 
+  listUpdate(type,id){  
+    if(type == 'am' && (this.lquipmentListAm[id].am < 0 || this.lquipmentListAm[id].am == null ) ){
+      this.lquipmentListAm[id].am = 0;
+    } else if(type == 'pm' && this.lquipmentListAm[id].pm < 0 || this.lquipmentListAm[id].pm == null){
+      this.lquipmentListAm[id].pm = 0;
+    } 
+  }
+
+  public showUpDateArrow:boolean = true;
+  public showDwDateArrow:boolean = true;
+  setDate(type){
+    let todaysDate = new Date(this.previousDays);
+    let selectedDate = new Date(this.previousDays);
+    if(type == 'add'){
+      selectedDate.setDate(todaysDate.getDate() + 1);
+    } else {
+      selectedDate.setDate(todaysDate.getDate() - 1);
+    }
+    this.previousDays =  this.datepipe.transform(selectedDate, 'yyyy-MM-dd');
+    this.refreshPerformanceTab();
+    var date2:any= new Date();
+    var date1:any= new Date(this.previousDays);
+    var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+    this. showUpDateArrow = true;
+    this. showDwDateArrow = true;
+    if((parseInt(diffTime) <= -7 ) && type == 'add'){
+      this. showUpDateArrow = false;
+    }
+    if(parseInt(diffTime) >= 7 && type == 'subtract'){
+      this. showDwDateArrow = false;
+    }
+    console.log(parseInt(diffTime),this. showUpDateArrow, this. showDwDateArrow);
+  }
 }
 
 
