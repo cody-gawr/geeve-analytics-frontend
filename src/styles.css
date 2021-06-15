@@ -1458,7 +1458,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 }
 .custom-tooltip {
     position: absolute;
-    bottom: -110px;
+    top: 30px;
     right: -6px;
     width: 330px;
     padding: 20px;
