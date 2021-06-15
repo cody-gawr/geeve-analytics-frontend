@@ -1451,6 +1451,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 }
 .info-icon-container {
     position: relative;
+    cursor: pointer;
 }
 .info-icon {
     width: 14px;

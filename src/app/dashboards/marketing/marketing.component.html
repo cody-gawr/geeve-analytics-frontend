@@ -276,17 +276,18 @@
                                 New Patient Cost
                             </div>
                             <div class="CategoriesBtn CategoriesBtnMarketing"
-                                *ngIf="showTrend == false && connectedwith"><button
+                               ><button  *ngIf="showTrend == false && connectedwith"
                                     class="mat-button-sm mat-green-button"
-                                    (click)="ngxSmartModalService.getModal('myModal').open()">Accounts</button></div>
-                                    
-                                    
-                                    <div class="sa_box_title_right_buttons">
-                                    </div>
-                                    <div class="info-icon-container">
+                                    (click)="ngxSmartModalService.getModal('myModal').open()">Accounts</button>
+                                    <div class="info-icon-container float-right-space">
                                         <img [tooltip]="this.constants.tipNewPatCost" src="../assets/images/info-icon.png"
                                             alt="info-icon" class="info-icon" />
                                     </div>
+                                </div>
+                                    
+                                    
+                                   
+                                   
                         </mat-card-title>
                         <div class="card-body">
                             <div class="chart py-2">
