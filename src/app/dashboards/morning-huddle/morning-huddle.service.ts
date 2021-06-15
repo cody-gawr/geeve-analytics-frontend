@@ -323,4 +323,18 @@ export class MorningHuddleService {
         );
     }
     
+    // Updae tick notes add/update
+    updateEquimentList(data,clinic_id,date): Observable<any> {
+        var header = this.getHeaders(); 
+         const formData = new FormData();
+        formData.append('data', data);
+        formData.append('clinic_id', clinic_id);
+        formData.append('date', date);
+        return this.http.post(this.apiUrl +"/MorningHuddle/mhUpdateEqulist",formData, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    
 }

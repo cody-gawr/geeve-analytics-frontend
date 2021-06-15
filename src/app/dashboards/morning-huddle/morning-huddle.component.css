@@ -176,6 +176,59 @@ table{
   hyphens: auto;
   text-align: right !important;
 }
+.mat-column-item {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 50% !important;
+  width: 50% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-column-quantity {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 20% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-column-am {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 15% !important;
+  width: 15% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-column-pm {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 15% !important;
+  width: 15% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  text-align: right !important;
+}
 
 .thick .mat-column-status {
   flex: 0 0 10% !important;
@@ -272,4 +325,50 @@ span.calculatingSp.text {
 .ttl_value_left {
     position: absolute;
     right: 0;
+}
+.ListButtons .btn-lg {
+    line-height: 0px !important;
+    margin: 20px 20px 0;
+}
+.ListButtons button {
+    width: 100px;
+    height: 31px;
+}
+.morning-huddle-date .mat-form-field-infix .mat-select-arrow:before{
+    content: '';
+}
+
+#mat-tab-content-0-0 .morning-huddle-date .mat-form-field, #mat-tab-content-0-2 .morning-huddle-date .mat-form-field{
+    max-width: 280px;
+}
+
+.slectDate:before {
+    font-family: 'Font Awesome 5 Free';
+    color: #18A689;
+    font-weight: 900;
+    font-size: 12px;
+}
+.slectDate.down:before {
+    content: "\f078";
+}
+.slectDate.up:before {
+    content: "\f077";
+}
+#mat-tab-content-0-0 .mat-select-value, #mat-tab-content-0-2 .mat-select-value {
+    font-size: 16px!important;
+}
+.mat-select-disabled .mat-select-value {
+    color: #000;
+}
+span.slectDate {
+    cursor: pointer;
+    padding: 3px 0px;
+}
+span.slectDate.up  {
+    position: absolute;
+    left: -30px;
+}
+span.slectDate.down  {
+    position: absolute;
+    right: 10;
 }

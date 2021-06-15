@@ -295,7 +295,7 @@ export class ClinicComponent implements AfterViewInit {
   }
 
   enableEditing(rowIndex, cell) {
-    this.editing[rowIndex + '-' + cell] = true;
+    //this.editing[rowIndex + '-' + cell] = true;
 
   }
 

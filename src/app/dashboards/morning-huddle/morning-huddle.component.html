@@ -5,25 +5,27 @@
     <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">
       <div class="morning-huddle-date">
         <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select placeholder="Morning Huddle - {{  subtractDays(0) | date:'EEE MMM d, y':'timezone'}}"
-            (selectionChange)="refreshPerformanceTab($event.value)" id="setPreviousDay">
-            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(0) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(1) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(1) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(2) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(2) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(3) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(3) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(4) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(4) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(5) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(5) | date:'MMM d, y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractDays(6) | date:'yyyy-LL-dd':'timezone'">Morning Huddle -
-              {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
+        <span *ngIf="showUpDateArrow" class="slectDate up" (click) ="setDate('add')"></span>
+          <mat-select [(value)]="previousDays"  id="setPreviousDay" disabled>          
+            <mat-option [value]="addDays(7) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(7) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(6) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(5) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(5) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(4) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(4) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(3) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(3) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(2) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(2) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="addDays(1) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(1) | date:'MMM d, y':'timezone'}}</mat-option>
+            
+            <mat-option [value]="subtractDays(0) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(0) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(1) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(1) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(2) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(2) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(3) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(3) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(4) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(4) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(5) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(5) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(6) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
+            <mat-option [value]="subtractDays(7) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
           </mat-select>
+        <span *ngIf="showDwDateArrow" class="slectDate down" (click) ="setDate('subtract')"></span>
         </mat-form-field>
-
         <strong>Previous Day: {{ production.date | date:'EEE MMM d':'timezone'  }}</strong>
 
       </div>
@@ -1545,7 +1547,7 @@
 
       <mat-card class="table-card post_call_responsive_border">
         <mat-card-title>
-          <div class="title-follow-up"> Equipment List (Coming Soons) </div>
+          <div class="title-follow-up"> Equipment List </div>
        <!--     <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
       <!--     <div class="showComplete showAMPm">
            <span class="AM">AM</span> <mat-slide-toggle [checked]="showELPm" name="showelpm" (change)="showAMPm($event)"></mat-slide-toggle> <span  class="PM">PM </span>
@@ -1571,13 +1573,13 @@
               <ng-container matColumnDef="am">
                 <th mat-header-cell *matHeaderCellDef >AM</th> <!-- [ngClass]="!showELPm? 'show' : 'hide'" -->
                 <td mat-cell *matCellDef="let element"> <!--  [ngClass]="showELPm? 'show' : 'hide'" -->
-                <input type="number" class="small-number" value="{{ element.equip_qty_am}}">
+                <input type="number" class="small-number" [(ngModel)]="lquipmentListAm[element.id].am" (blur) ="listUpdate('am',element.id)">
                 </td>
               </ng-container>
               <ng-container matColumnDef="pm" >
                 <th mat-header-cell *matHeaderCellDef>PM</th>
                 <td mat-cell *matCellDef="let element">
-                  <input type="number"  class="small-number" value="{{ element.equip_qty_pm}}">
+                  <input type="number"  class="small-number" [(ngModel)]="lquipmentListAm[element.id].pm" (blur) ="listUpdate('pm',element.id)">
                 </td>
               </ng-container>           
               <ng-container matColumnDef="isDataAvailable9">
@@ -1586,27 +1588,25 @@
                   All Equipment List have been completed
                 </mat-footer-cell>
               </ng-container>
-              <ng-container matColumnDef="isDataAvailable10" [attr.colspan]="displayedColumns10.length">
-                <mat-footer-cell *matFooterCellDef>
-                  <table>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td><button mat-raised-button color="dc"  class="btn-block btn-lg text-center m-t-20">Save</button></td>
-                      <td><button mat-raised-button color="dc" class="btn-block btn-lg text-center m-t-20">Save</button> </td>
-                    </tr>
-                  </table>                              
-                  
-                </mat-footer-cell>
-              </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns10"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns10;"></tr>
                 <mat-footer-row *matFooterRowDef="['isDataAvailable9']"
                 [ngClass]="(lquipmentList.length <= 0)? 'show' : 'hide'"></mat-footer-row>
-              
-              <mat-footer-row *matFooterRowDef="['isDataAvailable10']"
-                [ngClass]="(lquipmentList.length > 0)? 'show' : 'hide'"></mat-footer-row>
             </table>
+             <table class="ListButtons" *ngIf="lquipmentList.length > 0">
+                <tr>
+                  <td width="50%">&nbsp;</td>
+                  <td width="20%">&nbsp;</td>
+                  <td width="15%"><button  (click)="saveQuantity('am')" mat-raised-button color="dc"  class="btn-block btn-lg text-center m-t-20">
+                    <span *ngIf="amButton">Save</span>
+                    <span *ngIf="!amButton">Edit</span>
+                  </button></td>
+                  <td width="15%" align="right"><button  (click)="saveQuantity('pm')" mat-raised-button color="dc" class="btn-block btn-lg text-center m-t-20">
+                    <span *ngIf="pmButton">Save</span>
+                    <span *ngIf="!pmButton">Edit</span>
+                  </button> </td>
+                </tr>
+              </table> 
             <!-- responsive table - frontdesk followup (Post op calls)  -->
          <!--    <div fxHide.gt-sm>
               <div *ngIf="lquipmentList.length;else noPostOpCalls">
