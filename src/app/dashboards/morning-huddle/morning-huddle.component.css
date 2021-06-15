@@ -334,41 +334,24 @@ span.calculatingSp.text {
     width: 100px;
     height: 31px;
 }
-.morning-huddle-date .mat-form-field-infix .mat-select-arrow:before{
-    content: '';
-}
 
-#mat-tab-content-0-0 .morning-huddle-date .mat-form-field, #mat-tab-content-0-2 .morning-huddle-date .mat-form-field{
-    max-width: 280px;
-}
 
-.slectDate:before {
-    font-family: 'Font Awesome 5 Free';
-    color: #18A689;
-    font-weight: 900;
-    font-size: 12px;
-}
-.slectDate.down:before {
-    content: "\f078";
-}
-.slectDate.up:before {
-    content: "\f077";
-}
-#mat-tab-content-0-0 .mat-select-value, #mat-tab-content-0-2 .mat-select-value {
-    font-size: 16px!important;
-}
-.mat-select-disabled .mat-select-value {
-    color: #000;
-}
-span.slectDate {
+.morning-huddle-date.topModel mat-icon {
+    font-size: 18px;
+    position: absolute;
+    color: #595959;
     cursor: pointer;
-    padding: 3px 0px;
 }
-span.slectDate.up  {
-    position: absolute;
-    left: -30px;
+.selectRight {
+    right: 0;
 }
-span.slectDate.down  {
+.selectLeft {
+    left: 0;
+}
+.morning-huddle-date.topModel{
     position: absolute;
-    right: 10;
+    z-index: 9999;
+    width: 240px;
+    left: calc(50% - 120px);
+    top: 20px;    
 }

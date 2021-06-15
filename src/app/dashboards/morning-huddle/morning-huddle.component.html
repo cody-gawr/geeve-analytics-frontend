@@ -1,11 +1,9 @@
 <input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'">
 <div class="sa_dashboard_inner_content morning-huddle">
-  <mat-tab-group [selectedIndex]="selectedTab">
-    <!-- Dentist Performance Tab -->
-    <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">
-      <div class="morning-huddle-date">
-        <mat-form-field floatLabel="never" class="setPreviousDay">
-        <span *ngIf="showUpDateArrow" class="slectDate up" (click) ="setDate('add')"></span>
+
+   <div class="morning-huddle-date topModel">
+    <mat-icon *ngIf="showDwDateArrow" (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{ previousDays | date:'EEEE, MMMM d, y':'timezone' }}
+ <!--        <mat-form-field floatLabel="never" class="setPreviousDay">
           <mat-select [(value)]="previousDays"  id="setPreviousDay" disabled>          
             <mat-option [value]="addDays(7) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(7) | date:'MMM d, y':'timezone'}}</mat-option>
             <mat-option [value]="addDays(6) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ addDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
@@ -23,12 +21,15 @@
             <mat-option [value]="subtractDays(5) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(5) | date:'MMM d, y':'timezone'}}</mat-option>
             <mat-option [value]="subtractDays(6) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
             <mat-option [value]="subtractDays(7) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
-          </mat-select>
-        <span *ngIf="showDwDateArrow" class="slectDate down" (click) ="setDate('subtract')"></span>
-        </mat-form-field>
-        <strong>Previous Day: {{ production.date | date:'EEE MMM d':'timezone'  }}</strong>
-
+          </mat-select> 
+        </mat-form-field>-->
+         <mat-icon *ngIf="showUpDateArrow" (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>        
       </div>
+
+  <mat-tab-group [selectedIndex]="selectedTab">
+    <!-- Dentist Performance Tab -->
+    <mat-tab label="Dentist Performance" *ngIf="user_type != '5'">
+      <div class="morning-huddle-date"><strong>Previous Day: {{ production.date | date:'EEE MMM d':'timezone'  }}</strong></div>
       <!-- Top Cards -->
       <div>
 
@@ -1584,8 +1585,7 @@
               </ng-container>           
               <ng-container matColumnDef="isDataAvailable9">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns10.length">
-                  <i class="fa fa-check"></i>
-                  All Equipment List have been completed
+                  No Equipment List for the today
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns10"></tr>
