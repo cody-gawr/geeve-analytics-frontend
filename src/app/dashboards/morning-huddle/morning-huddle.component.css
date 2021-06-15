@@ -227,7 +227,6 @@ table{
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-  text-align: right !important;
 }
 
 .thick .mat-column-status {
@@ -322,10 +321,6 @@ span.calculatingSp.text {
     font-weight: normal;
     text-align: center;
 }
-.ttl_value_left {
-    position: absolute;
-    right: 0;
-}
 .ListButtons .btn-lg {
     line-height: 0px !important;
     margin: 20px 20px 0;
@@ -354,4 +349,7 @@ span.calculatingSp.text {
     width: 240px;
     left: calc(50% - 120px);
     top: 20px;    
+}
+input.complt {
+    box-shadow: 1px 1px 3px #17a5aa;
 }
