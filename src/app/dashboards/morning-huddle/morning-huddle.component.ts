@@ -169,6 +169,9 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public remindersRecallsOverdueLoader:boolean = true;
     public todayUnscheduledHoursLoader:boolean = true;
     public todayUnscheduledBalLoader:boolean = true;
+    public lquipmentList:any =  [];
+    public showELPm:boolean =  false;
+    public equipmentListLoading:boolean =  true;
     
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
@@ -180,7 +183,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   displayedColumns7: string[] = ['name', 'phone', 'code','note','status'];
   displayedColumns8: string[] = ['name', 'phone', 'code','note','book','status',];
-  displayedColumns9: string[] = ['name', 'status',];
+  displayedColumns9: string[] = ['name', 'status'];
+  displayedColumns10: string[] = ['item', 'quantity','am','pm'];
 
   timezone: string = '+1000';
   
@@ -280,6 +284,7 @@ initiate_clinic() {
 
       if(this.user_type != '4'){
         this.getEndOfDays();
+        this.getEquipmentList();
       }
     }
   }
@@ -335,6 +340,7 @@ initiate_clinic() {
     /*******Tab 5 *******/
     if(this.user_type != '4'){
       this.getEndOfDays();
+      this.getEquipmentList();
     }
   }
 
@@ -475,6 +481,21 @@ initiate_clinic() {
         } else {
           this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
         }
+      }
+    }); 
+  } 
+
+  getEquipmentList() {
+    this.equipmentListLoading = true;
+    this.morningHuddleService.getEquipmentList( this.clinic_id, this.previousDays).subscribe((production:any) => {
+      this.equipmentListLoading = false;
+      if(production.message == 'success') {
+        this.lquipmentList = production.data;  
+      /*  if(this.showEquipmentListAm == true) {
+          this.lquipmentListAm = this.endOfDaysTasks;
+        } else {
+          this.lquipmentListAm = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
+        }*/
       }
     }); 
   } 
@@ -768,6 +789,7 @@ initiate_clinic() {
     this.endTaksLoading = true;
     this.morningHuddleService.updateEndStatus(event.checked,tid,thid,cid,this.previousDays).subscribe((update:any) => {
       this.getEndOfDays();
+      this.getEquipmentList();
     }); 
   }
 
@@ -815,6 +837,14 @@ initiate_clinic() {
         this.getTickFollowups();
     });
     
+  }
+
+
+  showAMPm(event){
+    this.showELPm = false;
+    if(event.checked ==  true){  
+      this.showELPm = true;
+    } 
   }
 
 }

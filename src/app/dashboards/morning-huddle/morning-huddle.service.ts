@@ -270,6 +270,14 @@ export class MorningHuddleService {
         );
     } 
 
+    getEquipmentList(cid,previousDays): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhEquipmentList?clinic_id="+cid+"&date="+previousDays, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
     updateStatus(event,pid,cid,type,previousDays): Observable<any> {
         var header = this.getHeaders(); 
         const formData = new FormData();

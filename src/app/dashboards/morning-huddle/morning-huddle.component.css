@@ -245,3 +245,31 @@ table{
 .notes.red { color: #7c0404; }
 .card-loading.cards { opacity: 1; }
 .card-loading img.tableLoader {width: 30px;height: 30px; position: absolute; top: 18%;}
+.showComplete.showAMPm span {
+    padding: 5px;
+    margin: -2px 0 0 0;
+    display: inline-block;
+    line-height: 3px;
+    float: left;
+}
+
+.showComplete.showAMPm span.PM {
+    float: right;
+}
+input.small-number {
+    border: 0px solid;
+    width: 100px;
+    height: 25px;
+    box-shadow: 1px 1px 3px;
+    padding: 5px;
+}
+
+span.calculatingSp.text {
+    font-size: 15px !important;
+    font-weight: normal;
+    text-align: center;
+}
+.ttl_value_left {
+    position: absolute;
+    right: 0;
+}

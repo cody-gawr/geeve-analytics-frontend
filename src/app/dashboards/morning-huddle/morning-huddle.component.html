@@ -47,20 +47,18 @@
                       <div class="production_description production_description_huddle">
                         <h4>Clinic Production</h4>
                         <div class="price-section patients-num" *ngIf="production">
-                          <span class="change_value">${{ production.total | number:'1.0-0'}}</span>
+                          <span class="change_value">
+                            <span class="calculatingSp" *ngIf="!dentistperformanceLoader">${{ production.total | number:'1.0-0'}}</span>
+                            <span class="calculatingSp text" *ngIf="dentistperformanceLoader">Calculating...</span>
+                          </span>
                           <!--  <div
                          [ngClass]="(production.total > production.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'" 
                           >Goal: ${{  (production.goal || 0) | number:'1.0-0'}}
                         </div>  -->
-                          <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
+                         <!--  <img src="../assets/images/green-swirl.png" alt="production-chart-1" /> -->
 
                         </div>
                       </div>
-                    </div>
-
-                    <div class="card-loading cards" *ngIf="dentistperformanceLoader">
-                      <img class="tableLoader" src="../../assets/images/720.gif">                     
-                      <div class="loader-text">Calculating...</div>
                     </div>
                   </mat-card-title>
                 </mat-card-content>
@@ -93,8 +91,10 @@
                       <div class="production_description production_description_huddle">
                         <h4>Clinic Recall Prebook Rate</h4>
                         <div class="recall-retail-rate" *ngIf="recallRate">
-                          <span class="change_value" *ngIf="recallRate.rate != 'N/A'">{{ recallRate.rate }}%</span>
-                          <span class="change_value" *ngIf="recallRate.rate == 'N/A'">{{ recallRate.rate }}</span>
+                          <span class="change_value" *ngIf="!dentistrecallRateLoader && recallRate.rate != 'N/A'">{{ recallRate.rate }}%</span>
+                          <span class="change_value" *ngIf="!dentistrecallRateLoader && recallRate.rate == 'N/A'">{{ recallRate.rate }}</span>
+
+                          <span class="calculatingSp text" *ngIf="dentistrecallRateLoader">Calculating...</span>
                           <!-- <div class="ttl_value_left">Goal: {{ recallRate.goal}}%</div> -->
                           <div class="ttl_value_left profit" *ngIf="!recallRate.goal">0%</div>
                           <div
@@ -116,10 +116,6 @@
                    <img class="trend_ico" src="../assets/images/trend_down.png" *ngIf="recallRate.goal > recallRate.rate"> -->
 
 
-                      <div class="card-loading cards" *ngIf="dentistrecallRateLoader">
-                      <img class="tableLoader" src="../../assets/images/720.gif">
-                      <div class="loader-text">Calculating...</div>
-                    </div>
                   </mat-card-title>
 
                 </mat-card-content>
@@ -157,9 +153,10 @@
                         <div class="price-section" *ngIf="treatmentRate">
 
                           <span class="change_value"
-                            *ngIf="treatmentRate.total != 'N/A'">{{ treatmentRate.total}}%</span>
+                            *ngIf="treatmentRate.total != 'N/A' && !dentistTreatmentRateLoader">{{ treatmentRate.total}}%</span>
                           <span class="change_value"
-                            *ngIf="treatmentRate.total == 'N/A'">{{ treatmentRate.total}}</span>
+                            *ngIf="treatmentRate.total == 'N/A' && !dentistTreatmentRateLoader">{{ treatmentRate.total}}</span>
+                          <span class="calculatingSp text" *ngIf="dentistTreatmentRateLoader">Calculating...</span>
                           <div class="ttl_value_left profit" *ngIf="!treatmentRate.goal">Goal: 0%</div>
                           <div
                             [ngClass]="(treatmentRate.total >= treatmentRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'"
@@ -174,10 +171,7 @@
                       </div>
                     </div>
 
-                       <div class="card-loading cards" *ngIf="dentistTreatmentRateLoader">
-                      <img class="tableLoader" src="../../assets/images/720.gif">
-                      <div class="loader-text">Calculating...</div>
-                    </div>
+                       
 
                   </mat-card-title>
                 </mat-card-content>
@@ -206,8 +200,8 @@
 
       <div class="DentistListSecRow mh-table">
         <div class="card-loading card d-none">
-          <img class="tableLoader" src="../../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
+          <img class="tableLoader" src="../../assets/images/logo-icon.gif">
+          <!-- <div class="loader-text">Calculating...</div> -->
         </div>
         <div class="respopnsive-table-set">
           <table fxHide fxShow.gt-sm mat-table [dataSource]="dentistList" class="mat-elevation-z8">
@@ -264,7 +258,7 @@
   </ng-container>
     <ng-container matColumnDef="loading" class="card-loading">
     <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length" [attr.align]="center" >
-      <img class="tableLoader" src="../../../assets/images/720.gif">
+      <img class="tableLoader" src="../../../assets/images/logo-icon.gif">
       <div class="loader-text">Calculating...</div>
     </mat-footer-cell>
   </ng-container>-->
@@ -342,8 +336,8 @@
             No data found for {{ production.date | date:'EEE MMM d':'timezone'  }}
           </div>
           <div class="loader" [ngClass]="(dentistList.data.length == 0 && !dentistListLoading)? 'show' : 'hide'">
-            <img class="tableLoader" src="../../../assets/images/720.gif">
-            <div class="loader-text">Calculating...</div>
+            <img class="tableLoader" src="../../../assets/images/logo-icon.gif">
+            <!-- <div class="loader-text">Calculating...</div> -->
           </div>
         </div>
 
@@ -455,16 +449,18 @@
                     <h4>Appointments</h4>
                     <div class="patients-num">
                       <span class="change_value"
-                        *ngIf="appointmentCards.data.length > 0">{{ appointmentCards.data.length }}</span>
-                      <span class="change_value" *ngIf="appointmentCards.data.length <= 0">0</span>
+                        *ngIf="appointmentCards.data.length > 0 && !appointmentCardsLoaders">{{ appointmentCards.data.length }}</span>
+                      <span class="change_value" *ngIf="appointmentCards.data.length <= 0 && !appointmentCardsLoaders">0</span>
+                        <span class="calculatingSp text" *ngIf="appointmentCardsLoaders">Calculating...</span>
+                        <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
                       <!--  <span class="change_value">{{ schedulePatieltd }}</span> -->
                     </div>
                   </div>
                 </div>
-                <div class="card-loading cards" *ngIf="appointmentCardsLoaders">
-                  <img class="tableLoader" src="../../assets/images/720.gif">
+              <!--   <div class="card-loading cards" *ngIf="appointmentCardsLoaders">
+                  <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                   <div class="loader-text">Calculating...</div>
-                </div>
+                </div> -->
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
@@ -484,15 +480,16 @@
                   <div class="production_description production_description_huddle">
                     <h4>New Patients</h4>
                     <div class="patients-num">
-                      <span class="change_value">{{ scheduleNewPatieltd }}</span>
+                      <span class="change_value" *ngIf="!scheduleNewPatientsLoader">{{ scheduleNewPatieltd }}</span>
+                      <span class="calculatingSp text" *ngIf="scheduleNewPatientsLoader">Calculating...</span>
                       <img src="../assets/images/red-swirl.png" alt="rebook-chart" />
                     </div>
                   </div>
                 </div>
-                <div class="card-loading cards" *ngIf="scheduleNewPatientsLoader">
-                      <img class="tableLoader" src="../../assets/images/720.gif">
+         <!--        <div class="card-loading cards" *ngIf="scheduleNewPatientsLoader">
+                      <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                       <div class="loader-text">Calculating...</div>
-                    </div>
+                    </div> -->
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
@@ -515,15 +512,16 @@
                   <div class="production_description production_description_huddle">
                     <h4>Sched. Hours</h4>
                     <div class="patients-num">
-                      <span class="change_value">{{ schedulehours }}</span>
+                      <span class="change_value" *ngIf="!schedulehoursLoader">{{ schedulehours }}</span>
+                       <span class="calculatingSp text" *ngIf="schedulehoursLoader">Calculating...</span>
                       <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
                     </div>
                   </div>
                 </div>
-                <div class="card-loading cards" *ngIf="schedulehoursLoader">
-                      <img class="tableLoader" src="../../assets/images/720.gif">
+             <!--    <div class="card-loading cards" *ngIf="schedulehoursLoader">
+                      <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                       <div class="loader-text">Calculating...</div>
-                    </div>
+                    </div> -->
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
@@ -546,15 +544,16 @@
                   <div class="production_description production_description_huddle">
                     <h4>Unsched. Tx</h4>
                     <div class="patients-num">
-                      <span class="change_value">${{ unSchedulehours | number:'1.0-0' }}</span>
+                      <span class="change_value" *ngIf="!unschedulehoursLoader">${{ unSchedulehours | number:'1.0-0' }}</span>
+                        <span class="calculatingSp text" *ngIf="unschedulehoursLoader">Calculating...</span>
                       <img src="../assets/images/green-swirl.png" alt="production-chart-1" />
                     </div>
                   </div>
                 </div>
-                <div class="card-loading cards" *ngIf="unschedulehoursLoader">
-                      <img class="tableLoader" src="../../assets/images/720.gif">
+            <!--     <div class="card-loading cards" *ngIf="unschedulehoursLoader">
+                      <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                       <div class="loader-text">Calculating...</div>
-                    </div>
+                    </div> -->
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
@@ -563,8 +562,8 @@
       </div>
       <div class="DentistListSecRow mh-table patient_data-table_responsive">
         <div class="card-loading" *ngIf="appointmentCardsLoaders">
-          <img class="tableLoader" src="../../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
+          <img class="tableLoader" src="../../assets/images/logo-icon.gif">
+       <!--    <div class="loader-text">Calculating...</div> -->
         </div>
         <table fxHide fxShow.gt-sm mat-table matSort [dataSource]="appointmentCards" class="mat-elevation-z8">
           <!-- Name Column -->
@@ -758,16 +757,17 @@
                     <h4>Appointments</h4>
                     <div class="patients-num">
                       <span class="change_value"
-                        *ngIf="remindersRecallsOverdue">{{ remindersRecallsOverdue.length }}</span>
-                      <span class="change_value" *ngIf="!remindersRecallsOverdue">0</span>
+                        *ngIf="remindersRecallsOverdue && !remindersRecallsOverdueLoader">{{ remindersRecallsOverdue.length }}</span>
+                      <span class="change_value" *ngIf="!remindersRecallsOverdue && !remindersRecallsOverdueLoader">0</span>
+                      <span class="calculatingSp text" *ngIf="remindersRecallsOverdueLoader">Calculating...</span>
                       <!-- <span class="change_value">{{ todayPatients }}</span> -->
                     </div>
                   </div>
                 </div>
-                  <div class="card-loading cards" *ngIf="remindersRecallsOverdueLoader">
-                      <img class="tableLoader" src="../../assets/images/720.gif">
+                 <!--  <div class="card-loading cards" *ngIf="remindersRecallsOverdueLoader">
+                      <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                       <div class="loader-text">Calculating...</div>
-                    </div>
+                    </div> -->
               </mat-card-content>
             </mat-card>
           </div>
@@ -786,15 +786,16 @@
                   <div class="production_description production_description_huddle">
                     <h4>New Patients</h4>
                     <div class="patients-num">
-                      <span class="change_value">{{ scheduleNewPatieltd }}</span>
+                      <span class="change_value" *ngIf="!scheduleNewPatientsLoader">{{ scheduleNewPatieltd }}</span>
+                        <span class="calculatingSp text" *ngIf="scheduleNewPatientsLoader">Calculating...</span>
                       <img src="../assets/images/red-swirl.png" alt="rebook-chart" />
                     </div>
                   </div>
                 </div>
-                    <div class="card-loading cards" *ngIf="scheduleNewPatientsLoader">
-                      <img class="tableLoader" src="../../assets/images/720.gif">
+                <!--     <div class="card-loading cards" *ngIf="scheduleNewPatientsLoader">
+                      <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                       <div class="loader-text">Calculating...</div>
-                    </div>
+                    </div> -->
               </mat-card-content>
             </mat-card>
             <!-- <div class="graph_image" ></div> -->
@@ -810,14 +811,15 @@
                   <div class="production_description production_description_huddle">
                     <h4>Due Balance</h4>
                     <div class="patients-num">
-                      <span class="change_value">${{ todayUnscheduledBal | number:'1.0-0' }}</span>
+                      <span class="change_value" *ngIf="!todayUnscheduledBalLoader">${{ todayUnscheduledBal | number:'1.0-0' }}</span>
+                       <span class="calculatingSp text" *ngIf="todayUnscheduledBalLoader">Calculating...</span>
                     </div>
                   </div>
                 </div>
-                 <div class="card-loading cards" *ngIf="todayUnscheduledBalLoader">
-                      <img class="tableLoader" src="../../assets/images/720.gif">
+           <!--       <div class="card-loading cards" *ngIf="todayUnscheduledBalLoader">
+                      <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                       <div class="loader-text">Calculating...</div>
-                    </div>
+                    </div> -->
               </mat-card-content>
             </mat-card>
           </div>
@@ -832,14 +834,15 @@
                   <div class="production_description production_description_huddle">
                     <h4>Unsched. Hours</h4>
                     <div class="patients-num">
-                      <span class="change_value">{{ todayUnscheduledHours }}</span>
+                      <span class="change_value" *ngIf="!todayUnscheduledHoursLoader">{{ todayUnscheduledHours }}</span>
+                        <span class="calculatingSp text" *ngIf="todayUnscheduledHoursLoader">Calculating...</span>
                     </div>
                   </div>
                 </div>
-                   <div class="card-loading cards" *ngIf="todayUnscheduledHoursLoader">
-                      <img class="tableLoader" src="../../assets/images/720.gif">
+                   <!-- <div class="card-loading cards" *ngIf="todayUnscheduledHoursLoader">
+                      <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                       <div class="loader-text">Calculating...</div>
-                    </div>
+                    </div> -->
               </mat-card-content>
             </mat-card>
           </div>
@@ -873,8 +876,8 @@
 
       <div class="DentistListSecRow mh-table patient_data-table_responsive">
          <div class="card-loading" *ngIf="remindersRecallsOverdueLoader">
-          <img class="tableLoader" src="../../assets/images/720.gif">
-          <div class="loader-text">Calculating...</div>
+          <img class="tableLoader" src="../../assets/images/logo-icon.gif">
+          <!-- <div class="loader-text">Calculating...</div> -->
         </div>
         <table fxHide fxShow.gt-sm mat-table matSort [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8">
           <!-- Name Column -->
@@ -1028,8 +1031,8 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
             <div class="card-loading" *ngIf="poLoadingLoading"><img class="tableLoader"
-                src="../../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
+                src="../../assets/images/logo-icon.gif">
+                <!-- <div class="loader-text">Calculating...</div> -->
               </div>
 
 
@@ -1157,8 +1160,8 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
             <div class="card-loading" *ngIf="recallLoadingLoading"><img class="tableLoader"
-                src="../../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
+                src="../../assets/images/logo-icon.gif">
+                <!-- <div class="loader-text">Calculating...</div> -->
               </div>
             <table fxHide fxShow.gt-sm mat-table [dataSource]="followupOverDueRecallInCMP"
               class="mat-elevation-z8 customWidth overRecall">
@@ -1311,8 +1314,8 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
             <div class="card-loading" *ngIf="endTaksLoadingLoading"><img class="tableLoader"
-                src="../../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
+                src="../../assets/images/logo-icon.gif">
+                <!-- <div class="loader-text">Calculating...</div> -->
               </div>
             <table fxHide fxShow.gt-sm mat-table [dataSource]="followupTickFollowupsInCMP"
               class="mat-elevation-z8 customWidth thick">
@@ -1482,8 +1485,8 @@
           <div class="DentistListSecRow mh-table patient_data-table_responsive"
             style="max-height: 700px; overflow: auto;">
             <div class="card-loading" *ngIf="endTaksLoading"><img class="tableLoader"
-                src="../../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
+                src="../../assets/images/logo-icon.gif">
+                <!-- <div class="loader-text">Calculating...</div> -->
               </div>
             <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8">
               <!-- Name Column -->
@@ -1539,6 +1542,102 @@
           </div>
         </mat-card-content>
       </mat-card>
+
+      <mat-card class="table-card post_call_responsive_border" *ngIf="false">
+        <mat-card-title>
+          <div class="title-follow-up"> Equipment List (Coming Soon) </div>
+       <!--     <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
+      <!--     <div class="showComplete showAMPm">
+           <span class="AM">AM</span> <mat-slide-toggle [checked]="showELPm" name="showelpm" (change)="showAMPm($event)"></mat-slide-toggle> <span  class="PM">PM </span>
+          </div> -->
+        </mat-card-title>
+        <mat-card-content>
+          <div class="DentistListSecRow mh-table patient_data-table_responsive"
+            style="max-height: 700px; overflow: auto;">
+            <div class="card-loading" *ngIf="equipmentListLoading"><img class="tableLoader"
+                src="../../assets/images/logo-icon.gif">
+                <!-- <div class="loader-text">Calculating...</div> -->
+              </div>
+            <table fxHide fxShow.gt-sm mat-table [dataSource]="lquipmentList" class="mat-elevation-z8"> -->
+              <!-- Name Column -->
+               <ng-container matColumnDef="item">
+                <th mat-header-cell *matHeaderCellDef> Item </th>
+                <td mat-cell *matCellDef="let element"> {{element.list.equip_item }} </td>
+              </ng-container>
+              <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                <td mat-cell *matCellDef="let element"> {{element.list.quantity }} </td>
+              </ng-container>
+              <ng-container matColumnDef="am">
+                <th mat-header-cell *matHeaderCellDef >AM</th> <!-- [ngClass]="!showELPm? 'show' : 'hide'" -->
+                <td mat-cell *matCellDef="let element"> <!--  [ngClass]="showELPm? 'show' : 'hide'" -->
+                <input type="number" class="small-number" value="{{ element.equip_qty_am}}">
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="pm" >
+                <th mat-header-cell *matHeaderCellDef>PM</th>
+                <td mat-cell *matCellDef="let element">
+                  <input type="number"  class="small-number" value="{{ element.equip_qty_pm}}">
+                </td>
+              </ng-container>           
+              <ng-container matColumnDef="isDataAvailable9">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns10.length">
+                  <i class="fa fa-check"></i>
+                  All Equipment List have been completed
+                </mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="isDataAvailable10" [attr.colspan]="displayedColumns10.length">
+                <mat-footer-cell *matFooterCellDef>
+                  <table>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td><button mat-raised-button color="dc"  class="btn-block btn-lg text-center m-t-20">Save</button></td>
+                      <td><button mat-raised-button color="dc" class="btn-block btn-lg text-center m-t-20">Save</button> </td>
+                    </tr>
+                  </table>                              
+                  
+                </mat-footer-cell>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns10"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns10;"></tr>
+                <mat-footer-row *matFooterRowDef="['isDataAvailable9']"
+                [ngClass]="(lquipmentList.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+              
+              <mat-footer-row *matFooterRowDef="['isDataAvailable10']"
+                [ngClass]="(lquipmentList.length > 0)? 'show' : 'hide'"></mat-footer-row>
+            </table>
+            <!-- responsive table - frontdesk followup (Post op calls)  -->
+         <!--    <div fxHide.gt-sm>
+              <div *ngIf="lquipmentList.length;else noPostOpCalls">
+                <mat-card class="huddle-card" *ngFor="let element of lquipmentList">
+                  <div fxLayout="row" class="huddle-card-row">
+                    <div fxFlex="30">Task Name: </div>
+                    <div fxFlex="70"> {{ element.task.task_name }}</div>
+                  </div>
+
+                  <div fxLayout="row" class="huddle-card-row">
+                    <div fxFlex="30">Complete </div>
+                    <div fxFlex="70">
+                      <mat-slide-toggle [checked]="element.is_complete == 1? true : false" name="status"
+                        (change)="updateTask($event,element.task.id,element.id,element.task.clinic_id)">
+                      </mat-slide-toggle>
+                    </div>
+                  </div>
+                </mat-card>
+              </div>
+              <ng-template #noPostOpCalls>
+                <mat-card class="huddle-card">
+                  <h6> You have no end of days tasks today</h6>
+                </mat-card>
+              </ng-template>
+            </div> -->
+      </div>
+        </mat-card-content>
+      </mat-card> 
+
+
+
     </mat-tab>
     <!-- End of Day Tasks end -->
 
