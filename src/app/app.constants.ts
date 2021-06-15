@@ -177,7 +177,12 @@ export class AppConstants {
 
     public tipExpenses: ITooltipData = {
         title: 'Expenses', 
-        info: 'Breakdown and bencharked expenses (from Accounting Software)'
+        info: 'Breakdown and benchmarked expenses (from Accounting Software). Shown as a percentage of Production from PMS'
+    };
+
+    public tipExpensesTrend: ITooltipData = {
+        title: 'Expenses', 
+        info: 'Breakdown of expenses (from Accounting Software)'
     };
 
     public tipProdPerVisit: ITooltipData = {

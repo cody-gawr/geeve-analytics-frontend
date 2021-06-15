@@ -878,9 +878,9 @@ initiate_clinic() {
     });
 
     if(data){
-      data = JSON.stringify(data);
+      var dataJson = JSON.stringify(data);
       this.equipmentListLoading = true;
-      this.morningHuddleService.updateEquimentList(data,this.clinic_id,this.previousDays).subscribe((update:any) => {
+      this.morningHuddleService.updateEquimentList(dataJson,this.clinic_id,this.previousDays).subscribe((update:any) => {
         this.getEndOfDays();
         this.getEquipmentList();
       });    
