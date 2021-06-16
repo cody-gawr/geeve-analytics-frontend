@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService, CookieOptions } from "ngx-cookie";
+import { environment } from "../../environments/environment";
 import {
   FormBuilder,
   FormGroup,
@@ -17,9 +18,17 @@ import { XeroService } from './xero.service';
 export class XeroComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
+  public saleSite = 'https://test-signup.jeeve.com.au/subscription';
+  private apiUrl = environment.apiUrl;
   constructor(private fb: FormBuilder, private router: Router, private xeroService: XeroService,private _cookieService: CookieService) {}
 
   ngOnInit() {
+    if(this.apiUrl.indexOf('test-') >= 0){
+        this.saleSite = 'https://test-signup.jeeve.com.au/subscription';
+    } else {
+      this.saleSite = 'https://signup.jeeve.com.au/subscription';
+    }
+
     this.form = this.fb.group({
       uname: [null, Validators.compose([Validators.required])],
       password: [null, Validators.compose([Validators.required])]
