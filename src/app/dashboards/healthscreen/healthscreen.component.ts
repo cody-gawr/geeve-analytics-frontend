@@ -140,7 +140,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.clinic_id = val;
     this.loadHealthScreen();
     //this.checkXeroStatus();
-    this.finProductionPerVisit();
+    
      //$('.external_dentist').hide();
   }
   }
@@ -156,8 +156,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public loadHealthScreen() {
     var date = new Date();
     this.startDate = this.datePipe.transform(new Date(date.getFullYear(), date.getMonth(), 1), 'yyyy-MM-dd');
-    this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    
+    this.endDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');    
     this.prodpervisitstats=false;
     this.totalvisitstats=false;
     this.productionstats=false;
@@ -167,14 +166,24 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.hoursrateleaders=false;
     this.refreralleaders=false;
 
-    this.chProduction();
-    this.chTotalVisits();
-    this.chPrebookedVisits();
-    this.chUtilisationRate();
-    this.chUnscheduledProd();
+    if(this.user_type == 4)
+    {
+      this.chGetProductionMCP();
+      this.chGetHourlyRateMCP();
+      this.chGetReappointRateMCP();
 
-    this.hourlyRateChart();
-    this.mkNewPatientsByReferral();
+    } else {
+      this.chProduction();
+      this.chTotalVisits();
+      this.chPrebookedVisits();
+      this.chUtilisationRate();
+      this.chUnscheduledProd();
+      this.hourlyRateChart();
+      this.mkNewPatientsByReferral();
+      this.finProductionPerVisit();  
+    }
+
+    
   }
   public doughnutTotal = 0;
   public doughnutTotalAverage = 0;  
@@ -258,6 +267,56 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
     }); 
   }
+
+
+/* functions for dentist login only */
+  public dentistProduction:any = 0;
+  public dentistProductionLoader:boolean = true;
+  public chGetProductionMCP(){ // Total Vists top Card
+    this.dentistProductionLoader = true;
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chGetProductionMCP').subscribe((data) => {
+      this.dentistProductionLoader = false;
+      if(data.message == 'success' && data.data){
+           this.dentistProduction =   Math.round(data.data[0].production);   
+      }        
+    }, error => {
+      $('.ajax-loader').hide();
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
+  }
+
+  public dentistHourlyRate:any = 0;
+  public dentistHourlyRateLoader:boolean = true;
+  public chGetHourlyRateMCP(){ // Total Vists top Card
+    this.dentistHourlyRateLoader = true;
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chGetHourlyRateMCP').subscribe((data) => {
+      this.dentistHourlyRateLoader = false;
+      if(data.message == 'success' && data.data){
+        this.dentistHourlyRate =   Math.round(data.data[0].invoice);    
+      }        
+    }, error => {
+      $('.ajax-loader').hide();
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
+  }  
+
+  public dentistReappointRate:any = 0;
+  public dentistReappointRateLoader:boolean = true;
+  public chGetReappointRateMCP(){ // Total Vists top Card
+    this.dentistReappointRateLoader = true;
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chGetReappointRateMCP').subscribe((data) => {
+      this.dentistReappointRateLoader = false;
+      if(data.message == 'success' && data.data){
+                this.dentistReappointRate = 0;
+      }        
+    }, error => {
+      $('.ajax-loader').hide();
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
+  }
+
+  /* functions for dentist login only */
+
 
   public chPrebookedVisits(){ //Prebooked Visits graph in bottom
     var date = new Date();

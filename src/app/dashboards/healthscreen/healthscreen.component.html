@@ -5,7 +5,117 @@
 <input type="button" id="dentist_initiate" [style.display]="'none'">
 <input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'">
 <input type="text" id="page_title" value="Clinician Procedures & Referrals" [style.display]="'none'">
-<div class="sa_dashboard_inner_content">
+
+
+<div class="sa_dashboard_inner_content" *ngIf="user_type == 4">
+  <div class="sa_first_section">
+    <div>
+      <div class="sa_dentist_graphs_area sa_profit_bar">
+        <div><span class="green_title"><i class="far fa-calendar-alt"></i> Month to Date</span></div>
+        <div fxLayout="row wrap" fxLayoutGap="30px" fxLayoutGap.lg="30px" fxLayoutGap.md="16px" fxLayoutGap.sm="0"
+          fxLayoutGap.xs="0">
+          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+            class="sa_flexbg custom-box"
+            [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0, 'hccard-container': true}">
+
+            <mat-card class="dentistProduction card-box sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="production_images clinic-health-top-icon">
+                    <img src="../assets/images/product-chart.png" alt="product-chart" />
+                  </div>
+                  <div *ngIf="dentistProductionLoader == true" class="production_description production_description-grow">
+                    <h4>Production</h4>
+                    <b class="loader-text">Calculating...</b>
+                  </div>
+                  <div *ngIf="dentistProductionLoader == false" class="production_description production_description-grow">
+                    <h4>Production</h4>
+                    <span class="change_value">
+                      {{dentistProduction >= 0 ? ' ' : '- ' }}
+                      ${{ (dentistProduction < 0 ? dentistProduction.toString().split('-').join('') : dentistProduction) | number:'1.0-0'}}
+                    </span>
+                  </div>
+                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && productionstats == true">
+                    <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
+                      Last Month: ${{ production_p | number: '2.' }}
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <!-- <div class="graph_image" ></div> -->
+          </div>
+          <!-- Column-->
+
+          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+            class="sa_flexbg custom-box"
+            [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0, 'hccard-container': true}">
+
+            <mat-card class="treatmentPlan sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="production_images clinic-health-top-icon">
+                    <img src="../assets/images/profit.png" alt="product-chart" />
+                  </div>
+                  <div *ngIf="dentistHourlyRateLoader == true" class="production_description production_description-grow">
+                    <h4>Hourly Rate</h4>
+                    <b class="loader-text">Calculating...</b>
+                  </div>
+                  <div *ngIf="dentistHourlyRateLoader == false"  class="production_description production_description-grow">
+                    <h4>Hourly Rate</h4>
+                    <span class="change_value">
+                      {{ dentistHourlyRate >= 0 ? ' ' : '- ' }}
+                      ${{ dentistHourlyRate | number:'1.0-0'}}
+                    </span>
+                  </div>
+                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && prodpervisitstats == true">
+                    <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
+                      Last Month: ${{ productionPrev | number: '2.' }}
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <!-- Column-->
+          <div fxFlex="calc(33% - 20px)" fxFlex.lg="calc(33% - 20px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+            class="sa_flexbg last"
+            [ngClass]="{'arrow-up': visits_dif>=0, 'arrow-down':visits_dif<=0, 'hccard-container': true}">
+
+            <mat-card class="noPatients sa_hccard">
+              <mat-card-content class="sa_matcard_content">
+                <div class="prodction_main_box">
+                  <div class="production_images clinic-health-top-icon">
+                    <img src="../assets/images/total-visit.png" alt="total-visit" />
+                  </div>
+                  <div *ngIf="dentistReappointRateLoader == true"  class="production_description production_description-grow">
+                    <h4>Reappointment Rate</h4>
+                    <b class="loader-text">Calculating...</b>
+                  </div>
+                  <div *ngIf="dentistReappointRateLoader == false"  class="production_description production_description-grow">
+                    <h4>Reappointment Rate</h4>
+                    <span class="change_value">{{dentistReappointRate}}</span>
+                  </div>
+                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="visits_dif && totalvisitstats == true">
+                    <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">
+                      Last Month: {{ visits_p | number: '2.' }}
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <!-- <div class="graph_image" ></div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ <!-- For all user apart dentist -->
+<div class="sa_dashboard_inner_content" *ngIf="user_type != 4">
   <div class="sa_first_section">
     <div>
       <div class="sa_dentist_graphs_area sa_profit_bar">
@@ -320,3 +430,5 @@
     </div>
   </div>
 </div>
+
+<!-- For all user apart dentist -->
