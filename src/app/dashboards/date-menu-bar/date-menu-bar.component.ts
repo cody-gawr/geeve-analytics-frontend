@@ -134,7 +134,7 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
         var last = first + 6;
         var sd = new Date(now.setDate(first));
         this.startDate = this.datePipe.transform(sd.toUTCString(), 'yyyy-MM-dd');
-        var end = now.setDate(sd.getDate() + 6);
+        let end = now.setDate(sd.getDate() + 6);
         this.endDate = this.datePipe.transform(new Date(end).toUTCString(), 'yyyy-MM-dd');
       } else if (duration == 'm') {
         var date = new Date();
