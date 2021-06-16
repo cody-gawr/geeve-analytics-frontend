@@ -2671,8 +2671,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
           // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
         }
-        else if (cmonth >= 10 && cmonth <= 12) {
-          1
+        else if (cmonth >= 10 && cmonth <= 12) {          
           this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
           // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');
         }
