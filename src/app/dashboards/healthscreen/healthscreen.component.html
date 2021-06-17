@@ -35,9 +35,9 @@
                       ${{ (dentistProduction < 0 ? dentistProduction.toString().split('-').join('') : dentistProduction) | number:'1.0-0'}}
                     </span>
                   </div>
-                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && productionstats == true">
-                    <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
-                      Last Month: ${{ production_p | number: '2.' }}
+                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="dentistProductionLoader == false">
+                    <div [ngClass]="(dentistProductionDiff > 0) ? 'plus': 'minus'">
+                      Last Month: ${{ dentistProductionTa | number: '2.' }}
                     </div>
                   </div>
                 </div>
@@ -68,9 +68,9 @@
                       ${{ dentistHourlyRate | number:'1.0-0'}}
                     </span>
                   </div>
-                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && prodpervisitstats == true">
-                    <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
-                      Last Month: ${{ productionPrev | number: '2.' }}
+                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="dentistHourlyRateLoader == false">
+                    <div [ngClass]="(dentistHourlyRateDiff > 0) ? 'plus': 'minus'">
+                      Last Month: ${{ dentistHourlyRateTa | number: '2.' }}
                     </div>
                   </div>
                 </div>
@@ -97,9 +97,9 @@
                     <h4>Reappointment Rate</h4>
                     <span class="change_value">{{dentistReappointRate}}</span>
                   </div>
-                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="visits_dif && totalvisitstats == true">
-                    <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">
-                      Last Month: {{ visits_p | number: '2.' }}
+                  <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="dentistReappointRateLoader == false">
+                    <div [ngClass]="(dentistReappointRateDiff >= 0) ? 'minus': 'minus'">
+                      Last Month: {{ dentistReappointRateTa | number: '2.' }}
                     </div>
                   </div>
                 </div>

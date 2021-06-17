@@ -271,6 +271,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
 /* functions for dentist login only */
   public dentistProduction:any = 0;
+  public dentistProductionTa:any = 0;
+  public dentistProductionDiff:any = 0;
   public dentistProductionLoader:boolean = true;
   public chGetProductionMCP(){ // Total Vists top Card
     this.dentistProductionLoader = true;
@@ -278,6 +280,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       this.dentistProductionLoader = false;
       if(data.message == 'success' && data.data){
            this.dentistProduction =   Math.round(data.data[0].production);   
+           this.dentistProductionTa =   Math.round(data.data_ta[0].production);   
+           this.dentistProductionDiff =   Math.round(this.dentistProduction - this.dentistProductionTa);   
       }        
     }, error => {
       $('.ajax-loader').hide();
@@ -286,6 +290,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   }
 
   public dentistHourlyRate:any = 0;
+  public dentistHourlyRateTa:any = 0;
+  public dentistHourlyRateDiff:any = 0;
   public dentistHourlyRateLoader:boolean = true;
   public chGetHourlyRateMCP(){ // Total Vists top Card
     this.dentistHourlyRateLoader = true;
@@ -293,6 +299,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       this.dentistHourlyRateLoader = false;
       if(data.message == 'success' && data.data){
         this.dentistHourlyRate =   Math.round(data.data[0].invoice);    
+        this.dentistHourlyRateTa =   Math.round(data.data_ta[0].invoice);   
+        this.dentistHourlyRateDiff =   Math.round(this.dentistHourlyRate - this.dentistHourlyRateTa);  
       }        
     }, error => {
       $('.ajax-loader').hide();
@@ -301,13 +309,17 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   }  
 
   public dentistReappointRate:any = 0;
+  public dentistReappointRateTa:any = 0;
+  public dentistReappointRateDiff:any = 0;
   public dentistReappointRateLoader:boolean = true;
   public chGetReappointRateMCP(){ // Total Vists top Card
     this.dentistReappointRateLoader = true;
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chGetReappointRateMCP').subscribe((data) => {
       this.dentistReappointRateLoader = false;
       if(data.message == 'success' && data.data){
-                this.dentistReappointRate = 0;
+        this.dentistReappointRate = 0;
+        this.dentistReappointRateTa =   1;   
+        this.dentistReappointRateDiff =   Math.round(this.dentistReappointRate - this.dentistReappointRateTa); 
       }        
     }, error => {
       $('.ajax-loader').hide();
