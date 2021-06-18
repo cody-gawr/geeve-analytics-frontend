@@ -47,7 +47,7 @@
             <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
               Complete</mat-checkbox>
           </div>
-           <table fxHide fxShow.gt-sm mat-table [dataSource]="followupPostOpCallsInComp"
+           <table mat-table [dataSource]="followupPostOpCallsInComp"
               class="mat-elevation-z8 customWidth PostOp">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
@@ -146,7 +146,7 @@
             <mat-checkbox name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)">Show
               Complete</mat-checkbox>
           </div>
-               <table fxHide fxShow.gt-sm mat-table [dataSource]=""
+               <table mat-table [dataSource]=""
               class="mat-elevation-z8 customWidth thick">
 
               <!-- Name Column -->
@@ -259,7 +259,7 @@
             <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">Show Complete
             </mat-checkbox>
           </div>
-          <table fxHide fxShow.gt-sm mat-table [dataSource]="followupTickFollowupsInCMP"
+          <table   mat-table [dataSource]="followupTickFollowupsInCMP"
               class="mat-elevation-z8 customWidth thick">
 
 

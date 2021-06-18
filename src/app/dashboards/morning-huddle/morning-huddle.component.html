@@ -672,8 +672,8 @@
 
         <!-- responsive table  - dentist schedule -->
         <div fxHide.gt-sm>
-          <div *ngIf="appointmentCardsTemp.length;else noData">
-            <mat-card class="huddle-card" *ngFor="let element of appointmentCardsTemp">
+          <div *ngIf="appointmentCards.data.length;else noData">
+            <mat-card class="huddle-card" *ngFor="let element of appointmentCards.data">
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Time: </div>
                 <div fxFlex="70"> {{ element.app_date +" " + element.start | date :'h:mm a' }} -

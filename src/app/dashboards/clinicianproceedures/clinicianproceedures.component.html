@@ -221,13 +221,13 @@
               </div>
             </div>
             <div class="Item_Predictor_TotalRevenue">
-              <div style="height: 474px" *ngIf="proceedureChartData1.length > 0 && buildChartProceedureLoader == false">
+              <div style="height: 474px" *ngIf="proceedureChartLabels.length > 0 && buildChartProceedureLoader == false">
                 <canvas baseChart class="chart" [datasets]="proceedureChartData" [labels]="proceedureChartLabels"
                   [options]="proceedureChartOptions" [legend]="false" [chartType]="proceedureChartType"
                   (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
               </div>
             </div>
-            <div *ngIf="proceedureChartData1.length <= 0 && buildChartProceedureLoader == false"
+            <div *ngIf="proceedureChartLabels.length <= 0 && buildChartProceedureLoader == false"
               class="no-data-placeholder">
               <div class="sa_nodata_div">
               </div>
@@ -284,7 +284,7 @@
       </mat-card>
       <mat-card class="revenueProceedureSingle" [style.display]="'none'">
         <mat-card-content class="sa_matcard_content">
-          <mat-card-title class="text-center">Revenue Per Procedure
+          <mat-card-title class="text-center">Revenue Per Procedure 
             <div class="sa_box_title_right_buttons">
               <!-- <button mat-icon-button ><i class="fas fa-expand"></i></button>
                 <button mat-icon-button [matMenuTriggerFor]="menu"><i class="fas fa-ellipsis-h"></i></button>
@@ -310,7 +310,7 @@
                 <small class="sa_tab_btn prmain3" (click)="changeDentistPredictorMain('3')">RCT Conversion</small>
               </div>
             </div>
-            <div style="height: 474px" *ngIf="proceedureChartData1.length>0">
+            <div style="height: 474px" *ngIf="proceedureDentistChartLabels.length > 0">
               <canvas baseChart class="chart" [datasets]="proceedureDentistChartData"
                 [labels]="proceedureDentistChartLabels" [options]="proceedureChartOptions" [legend]="false"
                 [chartType]="proceedureChartType" (chartHover)="chartHovered($event)"
@@ -321,7 +321,7 @@
           <h4>You have no total revenue per procedure in this period</h4>
           <p></p>
         </div> -->
-            <div *ngIf="proceedureChartData1.length <= 0 && buildChartProceedureDentistLoader == false"
+            <div *ngIf="proceedureDentistChartLabels.length <= 0 && buildChartProceedureDentistLoader == false"
               class="no-data-placeholder">
               <div class="sa_nodata_div">
               </div>
