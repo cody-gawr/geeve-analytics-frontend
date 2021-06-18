@@ -174,7 +174,7 @@
   <!-- XERO section start -->
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title> Xero </mat-panel-title>
+      <mat-panel-title> Xero <span class="xero-text" *ngIf="xeroConnect == true">Connected</span></mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content>    
       <div class="text-center">
@@ -203,7 +203,7 @@
   <!-- MYOB section start -->
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title> MYOB </mat-panel-title>
+      <mat-panel-title> MYOB <span class="myob-text" *ngIf="myobConnect == true">Connected</span></mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content>
       <div class="text-center">
