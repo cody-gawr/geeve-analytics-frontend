@@ -170,7 +170,7 @@ expenses_card custom_ngx_cw01">
                       <div fxLayout="row wrap">
                         <div class="ngx-charts-fix" fxLayout="row" fxLayoutAlign="space-around center" fxFlex.lg="65"
                           fxFlex.xl="65" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70">
-                          <ng-container *ngIf="(xeroConnect || myobConnect);else NoExpensePlaceholder">
+                          <ng-container *ngIf="(xeroConnect || myobConnect)">
                             <ngx-charts-pie-chart fxFlexAlign="center"
                               *ngIf="pieChartLabels && pieChartLabels.length > 0"
                               class="chart-container sa_chart_custom" [view]="[500, 320]" [scheme]="colorScheme"
@@ -185,15 +185,19 @@ expenses_card custom_ngx_cw01">
                               <p class="chart-placeholder-text">No expenses found for the selected period</p>
                             </div>
                           </ng-container>
-                          <ng-template #NoExpensePlaceholder>
-                            <div class="d-flex align-center h-100" *ngIf="categoryExpensesLoader == false">
-                              <div class="w-100">
-                                <div class="sa_nodata_div no-found-data no-finance-expense-data">
-                                  <p>Please connect to Xero/MYOB to display this chart</p>
-                                </div>
-                              </div>
+
+                          <div *ngIf="(xeroConnect || myobConnect) && categoryExpensesLoader == true"
+                            class="loader_container">
+                            <img class="loader_ico" src="../assets/images/720.gif">
+                            <div class="loader-text">Calculating...</div>
+                          </div>
+                          <div *ngIf="!xeroConnect && !myobConnect" class="w-100">
+                            <div class="sa_nodata_div no-found-data ">
+                              <p>Please connect to Xero/MYOB to display this chart</p>
                             </div>
-                          </ng-template>
+                          </div>
+
+
                         </div>
                         <div class="" fxFlex.lg="35" fxFlex.xl="35" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
                           fxFlex="30" fxFlexAlign="center">
@@ -216,16 +220,7 @@ expenses_card custom_ngx_cw01">
                 </div>
               </div>
 
-              <div *ngIf="(xeroConnect || myobConnect) && categoryExpensesLoader == true"
-                class="loader_container loader_container_middle">
-                <img class="loader_ico" src="../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
-              </div>
-              <div *ngIf="!xeroConnect && !myobConnect" class="loader_container loader_container_middle">
-                <div class="loader-text">
-                  <h3>Please connect to Xero/MYOB to display this chart</h3>
-                </div>
-              </div>
+              
             </mat-card-content>
           </mat-card>
         </div>
@@ -618,31 +613,43 @@ expenses_card custom_ngx_cw01">
                     <p class="chart-placeholder-text">You have no production in the selected period</p>
                   </div>
 
-                  <canvas *ngIf="netProfitDisplayVal == 2 && netProfitPmsChartTrendLabels.length  >0"
+                  <canvas *ngIf="(xeroConnect || myobConnect) &&  netProfitDisplayVal == 2 && netProfitPmsChartTrendLabels.length  >0"
                     class="profit1 net_profit" baseChart [datasets]="netProfitChartTrend"
                     [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
-                    *ngIf="netProfitDisplayVal == 2  && netProfitPercentChartTrendLabels.length <=0 && finNetProfitPercentTrendLoader == false"
+                    *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 2  && netProfitPercentChartTrendLabels.length <=0 && finNetProfitPercentTrendLoader == false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no net profit in the selected period</p>
                   </div>
+                  <div *ngIf="(!xeroConnect && !myobConnect) && netProfitDisplayVal == 2"
+                    class="no-data-placeholder">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
+                  </div>
 
-                  <canvas *ngIf="netProfitDisplayVal == 3 && netProfitPmsChartTrendLabels.length  > 0" #myCanvas2
+                  <canvas *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 3 && netProfitPmsChartTrendLabels.length  > 0" #myCanvas2
                     class="profit3 net_profit" baseChart [datasets]="netProfitPmsChartTrend"
                     [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
-                    *ngIf="netProfitDisplayVal == 3  && netProfitPmsChartTrendLabels.length  <=0 && finNetProfitPMSTrendLoader == false"
+                    *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 3  && netProfitPmsChartTrendLabels.length  <=0 && finNetProfitPMSTrendLoader == false"
                     class="no-data-placeholder">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no net profit in the selected period</p>
                   </div>
+                  <div *ngIf="(!xeroConnect && !myobConnect) && netProfitDisplayVal == 3"
+                    class="no-data-placeholder">
+                    <div class="sa_nodata_div">
+                    </div>
+                    <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
+                    </div>
 
                 </div>
               </div>
@@ -656,22 +663,12 @@ expenses_card custom_ngx_cw01">
             class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
-          <div *ngIf="(!xeroConnect && !myobConnect) && netProfitDisplayVal == 2"
-            class="loader_container loader_container_middle">
-            <div class="loader-text">
-              <h3>Please connect to Xero/MYOB to display this chart</h3>
-            </div>
-          </div>
+          
           <div *ngIf="finNetProfitPMSTrendLoader == true && netProfitDisplayVal == 3"
             class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
-          <div *ngIf="(!xeroConnect && !myobConnect) && netProfitDisplayVal == 3"
-            class="loader_container loader_container_middle">
-            <div class="loader-text">
-              <h3>Please connect to Xero/MYOB to display this chart</h3>
-            </div>
-          </div>
+          
         </div>
 
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
@@ -722,7 +719,7 @@ expenses_card custom_ngx_cw01">
                 </div>
               </mat-card-title>
 
-              <div *ngIf="expensestrendstats == true" class="card-body sa_chart_summary_flip_main">
+              <div *ngIf="(xeroConnect || myobConnect) && expensestrendstats == true" class="card-body sa_chart_summary_flip_main">
                 <div class=" sa_chart_summary_flip">
                   <div class="chart sa_chart_flip sa_flip">
                     <div style="height: 280px;">
@@ -743,17 +740,20 @@ expenses_card custom_ngx_cw01">
                   </div>
                 </div>
               </div>
-            </mat-card-content>
-          </mat-card>
-          <div *ngIf="(xeroConnect || myobConnect) && expensestrendstats == false"
+
+            <div *ngIf="(xeroConnect || myobConnect) && expensestrendstats == false"
             class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
-          <div *ngIf="!xeroConnect && !myobConnect" class="loader_container loader_container_middle">
-            <div class="loader-text">
-              <h3>Please connect to Xero/MYOB to display this chart</h3>
+          <div *ngIf="!xeroConnect && !myobConnect" class="no-data-placeholder">
+            <div class="sa_nodata_div">
             </div>
+            <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>
           </div>
+
+            </mat-card-content>
+          </mat-card>
+          
         </div>
         <div fxFlex="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
           class="sa_flexbg predictor_ratio md_mrn">
