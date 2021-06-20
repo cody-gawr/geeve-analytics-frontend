@@ -1546,7 +1546,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="table-card post_call_responsive_border" >
+      <mat-card class="table-card post_call_responsive_border" *ngIf='false' >
         <mat-card-title>
           <div class="title-follow-up"> Equipment List </div>
        <!--     <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
@@ -1585,7 +1585,7 @@
               </ng-container>           
               <ng-container matColumnDef="isDataAvailable9">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns10.length">
-                  No Equipment List for the today
+                  No Equipment List configured
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns10"></tr>
