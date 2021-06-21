@@ -1315,7 +1315,7 @@
 
         </mat-card-title>
         <mat-card-content>
-          <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
+          <div class="DentistListSecRow mh-table patient_data-table_responsive">
             <div class="card-loading" *ngIf="endTaksLoadingLoading"><img class="tableLoader"
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
@@ -1328,6 +1328,7 @@
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Patient Name </th>
                 <td mat-cell *matCellDef="let element"> {{element.patients.firstname }} {{element.patients.surname }}
+              
                 </td>
               </ng-container>
 
@@ -1350,7 +1351,12 @@
               <!-- Symbol Column -->
               <ng-container matColumnDef="code">
                 <th mat-header-cell *matHeaderCellDef>Treatment Date</th>
-                <td mat-cell *matCellDef="let element">{{ element.original_appt_date | date:'MMM d, y':'timezone' }}
+                <td mat-cell *matCellDef="let element">
+                  {{ element.original_appt_date | date:'MMM d, y':'timezone' }}
+                 
+                  <span *ngIf="element.future_date_show" class="info-icon-container">
+                    <img [tooltip]="tipFutureDate[element.patient_id]" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />                    
+                  </span>
                 </td>
               </ng-container>
 
@@ -1373,8 +1379,11 @@
                 </td>
               </ng-container>
                 <ng-container matColumnDef="book">
-                  <th mat-header-cell *matHeaderCellDef>Note</th>
-                  <td mat-cell *matCellDef="let element"><i [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date)"></i></td>
+                  <th mat-header-cell *matHeaderCellDef>Notes</th>
+                  <td mat-cell *matCellDef="let element"><i [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date)"></i>
+                       <span *ngIf="element.code != ''"  class="info-icon-container">
+                    <img [tooltip]="tipDoneCode[element.patient_id]" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  </span></td>
               </ng-container>
               <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef>Complete</th>

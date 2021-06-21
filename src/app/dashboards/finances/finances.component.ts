@@ -567,10 +567,10 @@ single = [
       duration: 500,
       easing: 'easeOutSine'
     },
+    barPercentage: 0.4,
     scales: {
       xAxes: [{
         stacked: false,
-        barPercentage: 0.4,
         gridLines: {
           color: "transparent",
         }

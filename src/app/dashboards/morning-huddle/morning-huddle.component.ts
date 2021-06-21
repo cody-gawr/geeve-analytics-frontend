@@ -432,7 +432,7 @@ initiate_clinic() {
             this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
           }       
         this.followupsPostopCallsDate = production.date;     
-        this.postOpCallsDays = production.previous;     
+        //this.postOpCallsDays = production.previous;     
       }
     }); 
   } 
@@ -450,11 +450,13 @@ initiate_clinic() {
           }
 
         this.followupsOverDueRecallDate = production.date;     
-       this.OverDueRecallDays = production.previous;     
+       //this.OverDueRecallDays = production.previous;     
       }
     }); 
   } 
 
+   public tipDoneCode = {}; 
+   public tipFutureDate = {}; 
   getTickFollowups(){
      this.endTaksLoadingLoading = true;
     this.morningHuddleService.followupTickFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
@@ -466,8 +468,21 @@ initiate_clinic() {
         } else {
           this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
         }
+
+        this.followupTickFollowupsInCMP.forEach((tool) => {
+            this.tipDoneCode[tool.patient_id] = { 
+              title: 'Treatments not Done', 
+              info: tool.code
+            };
+             var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
+            this.tipFutureDate[tool.patient_id] = { 
+              title: 'Future Appointment', 
+              info: date
+            };
+        });
+
         this.followupsTickFollowupsDate = production.date;     
-        this.TickFollowupsDays = production.previous;     
+        //this.TickFollowupsDays = production.previous;     
       }
     }); 
   } 
@@ -809,7 +824,6 @@ initiate_clinic() {
     this.endTaksLoading = true;
     this.morningHuddleService.updateEndStatus(event.checked,tid,thid,cid,this.previousDays).subscribe((update:any) => {
       this.getEndOfDays();
-      this.getEquipmentList();
     }); 
   }
 
@@ -917,8 +931,7 @@ initiate_clinic() {
     }
     if(parseInt(diffTime) >= 7 && type == 'subtract'){
       this. showDwDateArrow = false;
-    }
-    console.log(parseInt(diffTime),this. showUpDateArrow, this. showDwDateArrow);
+    }    
   }
 }
 

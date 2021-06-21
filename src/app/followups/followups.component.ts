@@ -135,9 +135,9 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public selectedMonth:string = new Date().getMonth().toString();
     public selectedYear:string = new Date().getFullYear().toString();
 
-  displayedColumns1: string[] = ['name', 'phone','code','date','status'];
-  displayedColumns2: string[] = ['name', 'phone', 'code','note','status'];
-  displayedColumns3: string[] = ['name', 'phone', 'code','note','book','status']; 
+  displayedColumns1: string[] = ['name', 'phone','code','date','followup_date','status'];
+  displayedColumns2: string[] = ['name', 'phone', 'code','note','followup_date','status'];
+  displayedColumns3: string[] = ['name', 'phone', 'code','note','followup_date','book','status']; 
   timezone: string = '+1000';
   months:any = ['January','February','March','April','May','June','July','August','September','October','November','December'];
  @ViewChild(MatPaginator) paginator: MatPaginator;

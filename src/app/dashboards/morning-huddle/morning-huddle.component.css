@@ -353,3 +353,8 @@ span.calculatingSp.text {
 input.complt {
     box-shadow: 1px 1px 3px #17a5aa;
 }
+
+table.customWidth.thick{
+    overflow: auto;
+    margin-bottom: 30px;
+}

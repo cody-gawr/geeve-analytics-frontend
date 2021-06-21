@@ -298,8 +298,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chGetHourlyRateMCP').subscribe((data) => {
       this.dentistHourlyRateLoader = false;
       if(data.message == 'success' && data.data){
-        this.dentistHourlyRate =   Math.round(data.data[0].invoice);    
-        this.dentistHourlyRateTa =   Math.round(data.data_ta[0].invoice);   
+        this.dentistHourlyRate =   Math.round(data.data[0].hourly_rate);    
+        this.dentistHourlyRateTa =   Math.round(data.data_ta[0].hourly_rate);   
         this.dentistHourlyRateDiff =   Math.round(this.dentistHourlyRate - this.dentistHourlyRateTa);  
       }        
     }, error => {
@@ -317,8 +317,8 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chGetReappointRateMCP').subscribe((data) => {
       this.dentistReappointRateLoader = false;
       if(data.message == 'success' && data.data){
-        this.dentistReappointRate = 0;
-        this.dentistReappointRateTa =   1;   
+        this.dentistReappointRate = Math.round(data.data[0].reappoint_rate);
+        this.dentistReappointRateTa =   Math.round(data.data_ta[0].reappoint_rate);    
         this.dentistReappointRateDiff =   Math.round(this.dentistReappointRate - this.dentistReappointRateTa); 
       }        
     }, error => {
