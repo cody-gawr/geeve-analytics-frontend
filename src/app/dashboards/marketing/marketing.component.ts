@@ -767,7 +767,7 @@ callbacks: {
       this.totalNewPatientsReferral = Math.round(data.total);
          this.newPatientsReferral$.next(this.totalNewPatientsReferral)
       // this.noNewPatientsByReferralChartOptions.elements.center.text = this.decimalPipe.transform(this.totalNewPatientsReferral);
-    this.mkNewPatientsByReferralLoader = false;
+         
             this.newPatientsTimeData1 =[];
             this.newPatientsTimeLabelsl2 =[];
             this.newPatientsTimeLabels1 =[];
@@ -785,7 +785,10 @@ callbacks: {
         }
          this.newPatientsTimeData = this.newPatientsTimeData1;
          this.newPatientsTimeLabels= this.newPatientsTimeLabels1;
-         
+         var self = this;
+         setTimeout(function(){
+            self.mkNewPatientsByReferralLoader = false;
+         },500);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -836,7 +839,6 @@ callbacks: {
           this.revenueReferralLabels= [];         
        if(data.message == 'success'){
         this.reffralAllData = data;
-          this.mkRevenueByReferralLoader = false;
           this.totalRevenueByReferral = this.decimalPipe.transform(Math.round(this.reffralAllData.total || 0));
           this.revenueByReferralCount$.next(Math.round(this.reffralAllData.total || 0));
           //// this.pieChartOptions.elements.center.text = '$ ' + this.totalRevenueByReferral;
@@ -860,7 +862,11 @@ callbacks: {
             });
           }
           this.revenueReferralData = this.revenueReferralData1;
-          this.revenueReferralLabels= this.revenueReferralLabels1;         
+          this.revenueReferralLabels= this.revenueReferralLabels1;   
+          var self =  this;
+          setTimeout(function(){
+             self.mkRevenueByReferralLoader = false;
+          },400);      
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
