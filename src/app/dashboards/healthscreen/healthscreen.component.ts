@@ -259,7 +259,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         this.productionPrev = Math.round(data.data.num_visit_ta);  
         this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
 
-        this.visits_c = data.data.production_visit;
+        this.visits_c = Math.round(data.data.production_visit);
         this.visits_p = Math.round(data.data.production_visit_ta);
         this.visits_dif = Math.round(this.visits_c - this.visits_p);
 
