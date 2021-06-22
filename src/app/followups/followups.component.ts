@@ -242,6 +242,8 @@ initiate_clinic() {
     }); 
   } 
 
+  public tipDoneCode = {}; 
+  public tipFutureDate = {};
   getTickFollowups(){
     this.followupsService.followupTickFollowups( this.clinic_id,  parseInt(this.selectedMonth)+1, this.selectedYear).subscribe((production:any) => {
         this.endTaksLoadingLoading = false;
@@ -252,6 +254,19 @@ initiate_clinic() {
         } else {
           this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
         }
+
+         this.followupTickFollowupsInCMP.forEach((tool) => {
+            this.tipDoneCode[tool.patient_id] = { 
+              title: 'Treatments not Done', 
+              info: tool.code
+            };
+             var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
+            this.tipFutureDate[tool.patient_id] = { 
+              title: 'Future Appointment', 
+              info: date
+            };
+        });
+         
         this.followupsTickFollowupsDate = production.date;     
         this.TickFollowupsDays = production.previous;     
       }

@@ -1462,7 +1462,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
     top: 30px;
     right: -6px;
     width: 330px;
-    padding: 20px;
+    padding: 8px 20px;
     box-shadow: 2px 15px 21px rgba(3, 83, 72, 0.19);
     border-radius: 6px;
     background-color: #1daa96;

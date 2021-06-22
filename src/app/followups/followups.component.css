@@ -137,8 +137,8 @@ table{
 .mat-column-code {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 20% !important;
-  width: 20% !important;
+  flex: 0 0 15% !important;
+  width: 15% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -197,8 +197,8 @@ text-align: right !important;
   width: 10% !important;
 }
 .thick .mat-column-book {
-  flex: 0 0 5% !important;
-  width: 5% !important;
+  flex: 0 0 10% !important;
+  width: 10% !important;
   text-align: right;
 }
 
@@ -265,4 +265,28 @@ table.filters {
 }
 table.filters td {
     padding: 0px 20px 20px;
+}
+
+table.customWidth.thick{
+    overflow: auto;
+    margin-bottom: 90px;
+}
+.info-icon-container.tick {
+    position: relative;
+    display: inline-block;
+}
+.info-icon-container.tick .custom-tooltip {
+    background: #424242;
+    width: auto;
+    padding: 10px 15px;
+    text-align: left;
+}
+.info-icon-container.tick .custom-tooltip img.white-heart-icon {
+    display: none;
+}
+.info-icon-container.tick .custom-tooltip .tooltip-title {
+    font-size: 15px;
+}
+.custom-tooltip::after{
+      border-bottom: 8px solid #424242;
 }

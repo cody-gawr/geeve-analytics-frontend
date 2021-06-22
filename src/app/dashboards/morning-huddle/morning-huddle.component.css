@@ -92,8 +92,24 @@ table{
 .mat-column-name {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 25% !important;
-  width: 25% !important;
+  flex: 0 0 20% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-followupdate {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 15% !important;
+  width: 15% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -108,8 +124,8 @@ table{
 .mat-column-phone {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 20% !important;
-  width: 20% !important;
+  flex: 0 0 15% !important;
+  width: 15% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -136,8 +152,8 @@ table{
 .mat-column-code {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 25% !important;
-  width: 25% !important;
+  flex: 0 0 20% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
 
@@ -152,8 +168,8 @@ table{
 .mat-column-note {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 15% !important;
-  width: 15% !important;
+  flex: 0 0 10% !important;
+  width: 10% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -165,8 +181,8 @@ table{
 .mat-column-status {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 15% !important;
-  width: 15% !important;
+  flex: 0 0 20% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -228,15 +244,36 @@ table{
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+.mat-column-date {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 12% !important;
+  width: 12% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
 
 .thick .mat-column-status {
   flex: 0 0 10% !important;
   width: 10% !important;
 }
-.thick .mat-column-book {
-  flex: 0 0 5% !important;
-  width: 5% !important;
+.PostOp .mat-column-name {
+  flex: 0 0 18% !important;
+  width: 18% !important;
+}.PostOp .mat-column-code {
+  flex: 0 0 18% !important;
+  width: 18% !important;
 }
+.thick .mat-column-book {
+  flex: 0 0 10% !important;
+  width: 10% !important;
+}
+
 
 
 .header_filters.morning-huddle { flex-direction: row-reverse !important }
@@ -357,4 +394,22 @@ input.complt {
 table.customWidth.thick{
     overflow: auto;
     margin-bottom: 30px;
+}
+.info-icon-container.tick {
+    position: relative;
+    display: inline-block;
+}
+.info-icon-container.tick .custom-tooltip {
+    background: #424242;
+    width: auto;
+    padding: 10px 15px;
+}
+.info-icon-container.tick .custom-tooltip img.white-heart-icon {
+    display: none;
+}
+.info-icon-container.tick .custom-tooltip .tooltip-title {
+    font-size: 15px;
+}
+.custom-tooltip::after{
+      border-bottom: 8px solid #424242;
 }

@@ -173,14 +173,15 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       this.chGetReappointRateMCP();
 
     } else {
-      this.chProduction();
-      this.chTotalVisits();
+     // this.chProduction();
+      //this.chTotalVisits();
+      //this.finProductionPerVisit();  
+      this.chTopCards();  
       this.chPrebookedVisits();
       this.chUtilisationRate();
       this.chUnscheduledProd();
       this.hourlyRateChart();
       this.mkNewPatientsByReferral();
-      this.finProductionPerVisit();  
     }
 
     
@@ -236,7 +237,42 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
  // Functions to get the data for the Production, Total Visits, Pre-booked Visits, Chair Utilisation Rate, Unscheduled Production
  // Start Block
 
-  public chProduction(){ // Production top Card
+  public chTopCards(){ // Production,Prod. Per Visit and Total Visits top Cards
+    this.production_c = 0;
+    this.production_dif = 0;
+    this.visits_c = 0;
+    this.visits_dif = 0;
+    this.productionVal = 0;  
+    this.productionPrev = 0;
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTopCards').subscribe((data) => {
+      if(data.message == 'success'){
+        this.productionstats = true;
+        this.totalvisitstats = true;
+        this.prodpervisitstats = true;
+        this.finProductionPerVisitLoader = false;
+       
+        this.production_c = data.data.production;
+        this.production_p = Math.round(data.data.production_ta);
+        this.production_dif = Math.round(this.production_c - this.production_p);
+        
+        this.productionVal = data.data.num_visit;
+        this.productionPrev = Math.round(data.data.num_visit_ta);  
+        this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
+
+        this.visits_c = data.data.production_visit;
+        this.visits_p = Math.round(data.data.production_visit_ta);
+        this.visits_dif = Math.round(this.visits_c - this.visits_p);
+
+       
+      }        
+    }, error => {
+      $('.ajax-loader').hide();
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
+  }
+
+
+/*  public chProduction(){ // Production top Card
     this.production_c = 0;
     this.production_dif = 0;
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chProduction').subscribe((data) => {
@@ -250,9 +286,9 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       $('.ajax-loader').hide();
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
     }); 
-  }
+  }*/
 
-  public chTotalVisits(){ // Total Vists top Card
+/*  public chTotalVisits(){ // Total Vists top Card
     this.visits_c = 0;
     this.visits_dif = 0;
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTotalVisits').subscribe((data) => {
@@ -266,7 +302,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
       $('.ajax-loader').hide();
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
     }); 
-  }
+  }*/
 
 
 /* functions for dentist login only */
@@ -467,7 +503,7 @@ public newPatientsTimeClinic=[];
     });
   }*/
 
-  private finProductionPerVisit() {
+/*  private finProductionPerVisit() {
     this.finProductionPerVisitLoader = true;
     this.productionVal = 0;  
     this.productionPrev = 0;
@@ -485,6 +521,6 @@ public newPatientsTimeClinic=[];
       this.warningMessage = "Please Provide Valid Inputs!";
  
     });
-  }
+  }*/
 
 }

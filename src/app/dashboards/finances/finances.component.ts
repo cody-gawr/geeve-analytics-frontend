@@ -1659,6 +1659,7 @@ public totalProductionCollectionLabel1 =[];
     this.totalProductionTrendIcon = "down";
     this.totalProductionTrendVal=0;
     this.totalProductionCollectionLabel1=[];
+    this.netProfitProductionVal = 0;
     var user_id;
     var clinic_id;
   this.financesService.finTotalProduction(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
