@@ -332,47 +332,49 @@ initiate_clinic() {
     const sub = rolesRef.componentInstance.onAdd.subscribe((val) => {
     this.selected_id = val;
     });
-    rolesRef.afterClosed().subscribe(result => {
- 
-     if(result != undefined) {
-      this.roles.forEach(res1 => {
-          var checkedRoles1='';
-          var checkedRoles =[];
-          if(result.selectedRole['dashboard1_'+res1.id])
-            checkedRoles.push('dashboard1');
-           if(result.selectedRole['dashboard2_'+res1.id])
-            checkedRoles.push('dashboard2');
-           if(result.selectedRole['dashboard3_'+res1.id])
-            checkedRoles.push('dashboard3');
-           if(result.selectedRole['dashboard4_'+res1.id])
-            checkedRoles.push('dashboard4');
-           if(result.selectedRole['dashboard5_'+res1.id])
-            checkedRoles.push('dashboard5');
-          if(result.selectedRole['healthscreen_'+res1.id])
-            checkedRoles.push('healthscreen');
-           if(result.selectedRole['morninghuddle_'+res1.id])
-            checkedRoles.push('morninghuddle');
-           if(result.selectedRole['lostopportunity_'+res1.id])
-            checkedRoles.push('lostopportunity');
-           if(result.selectedRole['clinics_'+res1.id])
-            checkedRoles.push('clinics');
-           if(result.selectedRole['users_'+res1.id])
-            checkedRoles.push('users');
-           if(result.selectedRole['profilesettings_'+res1.id])
-            checkedRoles.push('profilesettings');
-          if(result.selectedRole['managepermissions_'+res1.id])
-            checkedRoles.push('managepermissions');
-            var checkedRoles1 = checkedRoles.join();
-              this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
-                 if(res.message == 'success'){
-                  this.toastr.success('Permissions Saved!');
-                  this.getRoles();
-                 }
-              }, error => {
-                this.warningMessage = "Please Provide Valid Inputs!";
-              });
-         });
-    }
+    rolesRef.afterClosed().subscribe(result => { 
+       if(result != undefined) {
+        this.roles.forEach(res1 => {
+        var checkedRoles1='';
+        var checkedRoles =[];
+        if(result.selectedRole['dashboard1_'+res1.id])
+          checkedRoles.push('dashboard1');
+        if(result.selectedRole['dashboard2_'+res1.id])
+          checkedRoles.push('dashboard2');
+        if(result.selectedRole['dashboard3_'+res1.id])
+          checkedRoles.push('dashboard3');
+        if(result.selectedRole['dashboard4_'+res1.id])
+          checkedRoles.push('dashboard4');
+        if(result.selectedRole['dashboard5_'+res1.id])
+          checkedRoles.push('dashboard5');
+        if(result.selectedRole['healthscreen_'+res1.id])
+          checkedRoles.push('healthscreen');
+        if(result.selectedRole['morninghuddle_'+res1.id])
+          checkedRoles.push('morninghuddle');
+        if(result.selectedRole['followups_'+res1.id])
+          checkedRoles.push('followups');
+        if(result.selectedRole['lostopportunity_'+res1.id])
+          checkedRoles.push('lostopportunity');
+        if(result.selectedRole['clinics_'+res1.id])
+          checkedRoles.push('clinics');
+        if(result.selectedRole['users_'+res1.id])
+          checkedRoles.push('users');
+        if(result.selectedRole['profilesettings_'+res1.id])
+          checkedRoles.push('profilesettings');
+        if(result.selectedRole['managepermissions_'+res1.id])
+          checkedRoles.push('managepermissions');
+        
+        var checkedRoles1 = checkedRoles.join();
+        this.rolesUsersService.saveRoles(res1.id, checkedRoles1).subscribe((res) => {
+        if(res.message == 'success'){
+          this.toastr.success('Permissions Saved!');
+          this.getRoles();
+        }
+      }, error => {
+       this.warningMessage = "Please Provide Valid Inputs!";
+      });
+      });
+      }
     });
   }
 

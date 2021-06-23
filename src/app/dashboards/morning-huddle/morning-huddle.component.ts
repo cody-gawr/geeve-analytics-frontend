@@ -113,6 +113,12 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public dentistList:any = new MatTableDataSource([]);
     dentistListTemp:any = [];
     
+    public futureDateOP :any = '';
+    public futureDateOR :any = '';
+    public futureDateTH :any = '';
+    public futureDateDT :any = '';
+    public futureDateEL :any = '';
+
     public reAppointment:any = 0;
     public reAppointmentdate:any = '';
     public unscheduledPatients:any = 0;
@@ -182,10 +188,10 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns2: string[] = ['start', 'name', 'code'];
   displayedColumns3: string[] = ['start', 'name', 'outstanding'];
   displayedColumns4: string[] = ['name', 'phone', 'code','status'];
-  displayedColumns5: string[] = ['name', 'phone','code','followupdate','date','status'];
+  displayedColumns5: string[] = ['name', 'phone','code','date','status'];
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
-  displayedColumns7: string[] = ['name', 'phone', 'code','followupdate','note','status'];
-  displayedColumns8: string[] = ['name', 'phone', 'code','followupdate','note','book','status',];
+  displayedColumns7: string[] = ['name', 'phone', 'code','note','status'];
+  displayedColumns8: string[] = ['name', 'phone', 'code','note','book','status',];
   displayedColumns9: string[] = ['name', 'status'];
   displayedColumns10: string[] = ['item', 'quantity','am','pm'];
 
@@ -422,9 +428,15 @@ initiate_clinic() {
 
   getFollowupPostOpCalls(){
     this.poLoadingLoading = true;
+    this.futureDateOP = '';
     this.morningHuddleService.followupPostOpCalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+        var diffTime:any = this.getDataDiffrences();
+        if(diffTime < 0){
+          this.futureDateOP =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+        }
         this.poLoadingLoading = false;
       if(production.message == 'success') {
+
         this.followupPostOpCalls = production.data;   
         if(this.postopCallsPostOp == true){  
             this.followupPostOpCallsInComp = this.followupPostOpCalls;
@@ -439,8 +451,14 @@ initiate_clinic() {
 
   getOverdueRecalls(){
     this.recallLoadingLoading = true;
+    this.futureDateOR = '';
     this.morningHuddleService.followupOverdueRecalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+        var diffTime:any = this.getDataDiffrences();
+        if(diffTime < 0){
+          this.futureDateOR =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+        }
         this.recallLoadingLoading = false;
+
       if(production.message == 'success') {
         this.followupOverDueRecall = production.data;     
         if(this.showCompleteOverdue == true){  
@@ -459,7 +477,12 @@ initiate_clinic() {
    public tipFutureDate = {}; 
   getTickFollowups(){
      this.endTaksLoadingLoading = true;
+     this.futureDateTH = '';
     this.morningHuddleService.followupTickFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+        var diffTime:any = this.getDataDiffrences();
+        if(diffTime < 0){
+          this.futureDateTH =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+        }
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
         this.followupTickFollowups = production.data;     
@@ -471,7 +494,7 @@ initiate_clinic() {
 
         this.followupTickFollowupsInCMP.forEach((tool) => {
             this.tipDoneCode[tool.patient_id] = { 
-              title: 'Treatments not Done', 
+              title: 'Outstanding Treatments', 
               info: tool.code
             };
              var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
@@ -489,7 +512,12 @@ initiate_clinic() {
 
   getEndOfDays(){
     this.endTaksLoading = true;
+    this.futureDateDT = '';
     this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((production:any) => {
+        var diffTime:any = this.getDataDiffrences();
+        if(diffTime < 0){
+          this.futureDateDT =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+        }
       this.endTaksLoading = false;
       if(production.message == 'success') {
         this.endOfDaysTasks = production.data;  
@@ -505,7 +533,12 @@ initiate_clinic() {
 
   getEquipmentList() {
     this.equipmentListLoading = true;
+    this.futureDateEL = '';
     this.morningHuddleService.getEquipmentList( this.clinic_id, this.previousDays).subscribe((production:any) => {
+      var diffTime:any = this.getDataDiffrences();
+      if(diffTime < 0){
+       this.futureDateEL =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+      }
       this.equipmentListLoading = false;
       this.lquipmentList = [];
        this.amButton = true;
@@ -921,9 +954,8 @@ initiate_clinic() {
     }
     this.previousDays =  this.datepipe.transform(selectedDate, 'yyyy-MM-dd');
     this.refreshPerformanceTab();
-    var date2:any= new Date();
-    var date1:any= new Date(this.previousDays);
-    var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+
+    var diffTime:any = this.getDataDiffrences();
     this. showUpDateArrow = true;
     this. showDwDateArrow = true;
     if((parseInt(diffTime) <= -7 ) && type == 'add'){
@@ -932,6 +964,13 @@ initiate_clinic() {
     if(parseInt(diffTime) >= 7 && type == 'subtract'){
       this. showDwDateArrow = false;
     }    
+  }
+
+  getDataDiffrences(){ // Function to get days diffrence from selected date
+    var date2:any= new Date();
+    var date1:any= new Date(this.previousDays);
+    var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+    return diffTime;
   }
 }
 

@@ -96,41 +96,22 @@ table{
   width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
-
   word-break: break-word;
-
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
 }
 
-.mat-column-followupdate {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 15% !important;
-  width: 15% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  word-break: break-word;
-
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
 
 .mat-column-phone {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 15% !important;
-  width: 15% !important;
+  flex: 0 0 20% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
-
   word-break: break-word;
-
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
@@ -165,11 +146,11 @@ table{
   hyphens: auto;
 }
 
-.mat-column-note {
+.mat-column-note,.mat-column-date {
   word-wrap: break-word !important;
   white-space: unset !important;
-  flex: 0 0 10% !important;
-  width: 10% !important;
+  flex: 0 020% !important;
+  width: 20% !important;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -244,30 +225,13 @@ table{
   -webkit-hyphens: auto;
   hyphens: auto;
 }
-.mat-column-date {
-  word-wrap: break-word !important;
-  white-space: unset !important;
-  flex: 0 0 12% !important;
-  width: 12% !important;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
+.mat-row, mat-header-row, mat-footer-row {
+    width: max-content !important;
 }
 
 .thick .mat-column-status {
   flex: 0 0 10% !important;
   width: 10% !important;
-}
-.PostOp .mat-column-name {
-  flex: 0 0 18% !important;
-  width: 18% !important;
-}.PostOp .mat-column-code {
-  flex: 0 0 18% !important;
-  width: 18% !important;
 }
 .thick .mat-column-book {
   flex: 0 0 10% !important;
@@ -398,6 +362,7 @@ table.customWidth.thick{
 .info-icon-container.tick {
     position: relative;
     display: inline-block;
+    margin-right: 5px;
 }
 .info-icon-container.tick .custom-tooltip {
     background: #424242;

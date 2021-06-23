@@ -1477,6 +1477,7 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
     position: absolute;
     bottom: -140px;
     right: -275px;
+    height: max-content;
 }
 
 @keyframes tooltipIn {

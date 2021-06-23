@@ -257,7 +257,7 @@ initiate_clinic() {
 
          this.followupTickFollowupsInCMP.forEach((tool) => {
             this.tipDoneCode[tool.patient_id] = { 
-              title: 'Treatments not Done', 
+              title: 'Outstanding Treatments', 
               info: tool.code
             };
              var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');

@@ -168,9 +168,15 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
 
     if(this.user_type == 4)
     {
-      this.chGetProductionMCP();
-      this.chGetHourlyRateMCP();
-      this.chGetReappointRateMCP();
+      if(this.clinic_id == 'all'){
+        this.chGetProductionMCP();
+        this.chGetHourlyRateMCP();
+        this.chGetReappointRateMCP();
+      } else{
+        this.chGetDetistProdHorate();
+        this.chGetDetistReappRate();
+      }
+      
 
     } else {
      // this.chProduction();
@@ -255,12 +261,12 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         this.production_p = Math.round(data.data.production_ta);
         this.production_dif = Math.round(this.production_c - this.production_p);
         
-        this.productionVal = data.data.num_visit;
-        this.productionPrev = Math.round(data.data.num_visit_ta);  
+        this.productionVal = data.data.production_visit;
+        this.productionPrev = Math.round(data.data.production_visit_ta);  
         this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
 
-        this.visits_c = Math.round(data.data.production_visit);
-        this.visits_p = Math.round(data.data.production_visit_ta);
+        this.visits_c = Math.round(data.data.num_visit);
+        this.visits_p = Math.round(data.data.num_visit_ta);
         this.visits_dif = Math.round(this.visits_c - this.visits_p);
 
        
@@ -337,6 +343,43 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         this.dentistHourlyRate =   Math.round(data.data[0].hourly_rate);    
         this.dentistHourlyRateTa =   Math.round(data.data_ta[0].hourly_rate);   
         this.dentistHourlyRateDiff =   Math.round(this.dentistHourlyRate - this.dentistHourlyRateTa);  
+      }        
+    }, error => {
+      $('.ajax-loader').hide();
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
+  }
+   
+  
+  public chGetDetistProdHorate(){ // Total Vists top Card
+    this.dentistHourlyRateLoader = true;
+    this.dentistProductionLoader = true;
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chGetProduHrRate').subscribe((data) => {
+      this.dentistHourlyRateLoader = false;
+      this.dentistProductionLoader = false;
+      if(data.message == 'success' && data.data){
+        this.dentistProduction =   Math.round(data.data.production);   
+        this.dentistProductionTa =   Math.round(data.data.production_ta);   
+        this.dentistProductionDiff =   Math.round(this.dentistProduction - this.dentistProductionTa); 
+
+        this.dentistHourlyRate =   Math.round(data.data.hourly_rate);    
+        this.dentistHourlyRateTa =   Math.round(data.data.hourly_rate_ta);   
+        this.dentistHourlyRateDiff =   Math.round(this.dentistHourlyRate - this.dentistHourlyRateTa);  
+      }        
+    }, error => {
+      $('.ajax-loader').hide();
+      this.toastr.error('There was an error retrieving your report data, please contact our support team.');
+    }); 
+  }   
+ 
+  public chGetDetistReappRate(){ // Total Vists top Card
+     this.dentistReappointRateLoader = true;
+    this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chGetReappointmentRate').subscribe((data) => {
+       this.dentistReappointRateLoader = false;
+      if(data.message == 'success' && data.data){
+        this.dentistReappointRate = Math.round(data.data.reappoint_rate);
+        this.dentistReappointRateTa =   Math.round(data.data.reappoint_rate_ta);    
+        this.dentistReappointRateDiff =   Math.round(this.dentistReappointRate - this.dentistReappointRateTa); 
       }        
     }, error => {
       $('.ajax-loader').hide();

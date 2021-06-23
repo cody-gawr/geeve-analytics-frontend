@@ -27,7 +27,7 @@
         </a>
     </mat-list-item>
 
-     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string">
+     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="(user_type == 2) || (permisions.indexOf('followups') >= 0)">
          <a class="" appAccordionToggle > <!-- [routerLink]="['/followups']" -->
             <i class="fa fa-phone"></i>
             <span>Follow Ups (Coming Soon)</span>

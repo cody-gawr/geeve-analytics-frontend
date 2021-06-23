@@ -37,7 +37,7 @@
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="dentistProductionLoader == false">
                     <div [ngClass]="(dentistProductionDiff > 0) ? 'plus': 'minus'">
-                      Last Month: ${{ dentistProductionTa | number: '2.' }}
+                      Last Month: ${{ dentistProductionTa | number: '1.' }}
                     </div>
                   </div>
                 </div>
@@ -70,7 +70,7 @@
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="dentistHourlyRateLoader == false">
                     <div [ngClass]="(dentistHourlyRateDiff > 0) ? 'plus': 'minus'">
-                      Last Month: ${{ dentistHourlyRateTa | number: '2.' }}
+                      Last Month: ${{ dentistHourlyRateTa | number: '1.' }}
                     </div>
                   </div>
                 </div>
@@ -99,7 +99,7 @@
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="dentistReappointRateLoader == false">
                     <div [ngClass]="(dentistReappointRateDiff >= 0) ? 'minus': 'minus'">
-                      Last Month: {{ dentistReappointRateTa | number: '2.' }}
+                      Last Month: {{ dentistReappointRateTa | number: '1.' }}
                     </div>
                   </div>
                 </div>
@@ -145,7 +145,7 @@
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && productionstats == true">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
-                      Last Month: ${{ production_p | number: '2.' }}
+                      Last Month: ${{ production_p | number: '1.' }}
                     </div>
                   </div>
                 </div>
@@ -178,7 +178,7 @@
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && prodpervisitstats == true">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
-                      Last Month: ${{ productionPrev | number: '2.' }}
+                      Last Month: ${{ productionPrev | number: '1.' }}
                     </div>
                   </div>
                 </div>
@@ -207,7 +207,7 @@
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="visits_dif && totalvisitstats == true">
                     <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">
-                      Last Month: {{ visits_p | number: '2.' }}
+                      Last Month: {{ visits_p | number: '1.' }}
                     </div>
                   </div>
                 </div>
