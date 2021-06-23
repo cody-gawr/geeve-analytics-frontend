@@ -1,179 +1,170 @@
-<!-- ============================================================== -->
-<!-- Card Grid-->
-<!-- ============================================================== -->
-
-        <!-- <mat-card-title>Profile Settings</mat-card-title> -->
-
-        <!-- ============================================================== -->
-        <!-- column -->
-        <!-- ============================================================== -->
-       <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
-  <div fxLayout="row wrap" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" fxLayoutGap="20px">
-        <!-- Card column -->
-        <mat-card fxFlex.xs="100" fxFlex.sm="100" fxFlex="calc(50% - 10px)">
-          
-      <mat-card-content>
-          <div class="basic_details_form">
-            <mat-card-title class="text-center">Basic Details</mat-card-title>
-                          <!--  <form [formGroup]="form" class="basic-form"> -->
- <form [formGroup]="formSettings"  (ngSubmit)="onSubmitBasic()">
-                                 <div fxLayout="row wrap" fxLayoutGap="10%">
-                                 <div fxFlex.xs="100" fxFlex.md="120px" fxFlex="150px" class="profile-img-icon">
-                              <div class="sa-image_upload_area ps_UpoadImage bd_UpoadImage" >
-                                 <div class="clinic_logo"><img  src="{{imageURL}}"  *ngIf="imageURL"><img  src="/assets/images/gPZwCbdS.jpg" *ngIf="!imageURL"> </div>
-                                 
-                              </div>
-                           </div>
-                           <div fxFlex>
-                                  <!-- column -->
-                                  <div class="sa-form-group">
-                                        <label>Display Name</label>
-                                      <input [formControl]="formSettings.controls['displayName']" formControlName="displayName" placeholder="" id="displayName" [(ngModel)]= "displayName">
-                                       <small *ngIf="formSettings.controls['displayName'].hasError('required') && formSettings.controls['displayName'].touched" class="text-danger support-text">Display Name Is Required.</small>
-                                  </div>
-                                  <div class="sa-form-group">
-                                    <label>Email</label>
-                                    <input formControlName="email" placeholder="" id="email" [formControl]="formSettings.controls['email']" [(ngModel)]= "email" [readonly]="true" class="readonly_form">
-                                    <small *ngIf="formSettings.controls['email'].hasError('pattern') && formSettings.controls['email'].touched" class="text-danger support-text">Please enter valid email.</small>
-                                 </div>
-                                 <div class="bd_UpoadImage">
-                                     <label>Profile image</label>
-                                    <div class="upload-btn">
-                                       <span>Choose file</span>
-                                       <input class="" type="file" placeholder="" name= "file" id="file" (change)="uploadImage($event.target.files)"  accept=".png, .jpg, .jpeg,.gif">
-                                       <input type='hidden'  placeholder="" id="imageURL" [(ngModel)]= "imageURL" [ngModelOptions]="{standalone: true}">
+<mat-accordion class="settings-table-card clinic-expansion-panel" multi="false">
+    <!-- Basic Detail Start -->
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Basic Details</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card-content>
+            <!-- section Start -->
+            <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
+                <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0">
+                    <mat-card fxFlex.xs="100" fxFlex.sm="100" fxFlex="100%">
+                        <mat-card-content>
+                            <div class="basic_details_form">
+                                <form [formGroup]="formSettings" (ngSubmit)="onSubmitBasic()">
+                                    <div fxLayout="row wrap" fxLayoutGap="10%">
+                                        <div fxFlex.xs="20%" fxFlex.md="120px" fxFlex="150px" class="profile-img-icon">
+                                            <div class="sa-image_upload_area ps_UpoadImage bd_UpoadImage">
+                                                <div class="clinic_logo"> <img src="{{imageURL}}" *ngIf="imageURL"> <img src="/assets/images/gPZwCbdS.jpg" *ngIf="!imageURL"> </div>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+                                            <div fxLayout="row wrap" fxLayoutGap="5%">
+                                                <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                    <div class="sa-form-group">
+                                                        <label>Display Name</label>
+                                                        <input [formControl]="formSettings.controls['displayName']" formControlName="displayName" placeholder="" id="displayName" [(ngModel)]="displayName"> <small *ngIf="formSettings.controls['displayName'].hasError('required') && formSettings.controls['displayName'].touched" class="text-danger support-text">Display Name Is Required.</small> </div>
+                                                </div>
+                                                <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10%">
+                                                    <div class="sa-form-group">
+                                                        <label>Email</label>
+                                                        <input formControlName="email" placeholder="" id="email" [formControl]="formSettings.controls['email']" [(ngModel)]="email" [readonly]="true" class="readonly_form"> <small *ngIf="formSettings.controls['email'].hasError('pattern') && formSettings.controls['email'].touched" class="text-danger support-text">Please enter valid email.</small> </div>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="row wrap" fxLayoutGap="5%">
+                                                <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100">
+                                                    <div class="bd_UpoadImage">
+                                                        <label>Profile image</label>
+                                                        <div class="upload-btn"> <span>Choose file</span>
+                                                            <input class="" type="file" placeholder="" name="file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
+                                                            <input type='hidden' placeholder="" id="imageURL" [(ngModel)]="imageURL" [ngModelOptions]="{standalone: true}"> </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                 </div>
-                                </div>
-                                 </div> 
-                                  <mat-card-actions class="text-right">
-                                    <button mat-raised-button color="dc" type="button"  (click)="onSubmitBasic()">SAVE</button>
-                                  </mat-card-actions>
-                                  <!-- column -->
-                            <!--   </form> -->
-                               </form>
-                          </div>
+                                    <mat-card-actions class="text-right">
+                                        <button mat-raised-button color="dc" type="button" (click)="onSubmitBasic()">SAVE</button>
+                                    </mat-card-actions>
+                                </form>
+                            </div>
                         </mat-card-content>
-                      </mat-card>
-       
-                <mat-card fxFlex.xs="100" fxFlex.sm="100" fxFlex="calc(50% - 10px)">
-                  
-      <mat-card-content>
-                  <div class="ChangePassword-section">
-
-                     <mat-card-title class="mat-card-title text-center">Change Password</mat-card-title>
-
-                           <form [formGroup]="form" class="basic-form change-password-form" (ngSubmit)="onSubmitPassword()">
-
+                    </mat-card>
+                </div>
+            </div>
+            <!-- section Start -->
+        </mat-card-content>
+    </mat-expansion-panel>
+    <!-- Basic Detail End -->
+    <!-- Change Password Start -->
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Change Password</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card-content>
+            <mat-card-content>
+                <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
+                    <div fxLayout="row wrap" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" fxLayoutGap="20px">
+                        <div class="ChangePassword-section">
+                            <form [formGroup]="form" class="basic-form change-password-form" (ngSubmit)="onSubmitPassword()">
                                 <div fxLayout="row wrap" fxLayoutGap="10%" fxLayoutGap.xs="0">
-                           <div fxFlex.xs="100" fxFlex.md="120px" fxFlex="150px" class="profile-img-icon">
-                              <div class="change-password-icon">
-                                 <img src="/assets/images/change-password-icon.png">
-                              </div>
-                           </div>
-                      <div fxFlex> 
-                     <div class="sa-form-group">
-                        <label>Current Password</label>
-                        <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}$" type="password" placeholder="" [formControl]="form.controls['currentPassword']" [(ngModel)]= "currentPassword">
-                        <small *ngIf="old_password_error" class="text-danger support-text">Wrong current password .</small>
-                     </div> 
-                     <div class="sa-form-group">
-                        <label>New Password</label>
-                        <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}$"  type="password" placeholder="" [formControl]="form.controls['newPassword']" [(ngModel)]="newPassword">
-                       
-                       <small *ngIf="changePasswordError.required" class="text-danger support-text">You must include password.</small>
-                        <small *ngIf="changePasswordError.minlength" class="text-danger support-text">Password should contain minimum 10 characters.</small>
-                        <small *ngIf="changePasswordError.pattern" class="text-danger support-text">Password must contain one lowercase letter, one uppercase letter and one special character.</small>
-
-                     </div>
-                     <div class="sa-form-group">
-                        <label>Repeat Password</label>
-                        <input  type="password" placeholder="" [formControl]="form.controls['repeatPassword']" [(ngModel)]="repeatPassword">
-                        
-                        <small *ngIf="changePasswordError.crequired" class="text-danger support-text">You must include confirm password.</small>
-                        <small *ngIf="form.controls['repeatPassword'].errors?.equalTo && form.controls['repeatPassword'].touched"   class="text-danger support-text">Password and confirmation password do not match.</small>
-                        <small *ngIf="confirm_password_error" class="text-danger support-text">{{confirm_password_text}}</small>
-                        
-                     </div>
-                  <div fxLayout="row wrap" fxLayoutGap="15px">
-                     <div fxFlex.gt-md="100" fxFlex="100" >
-                      <!--   <small  class="text-success support-text">{{successtext}}</small> -->
-                        <mat-card-actions class="sa-pull-right">
-                           <button mat-raised-button color="dc" type="submit">SAVE</button>
-                        </mat-card-actions>
-                     </div>
-                  </div>
-                <!--   <small *ngIf="errorLogin" class="text-danger support-text">{{errortext}}</small> -->
-                  </div>
-               </div>
-                  <!-- column -->
-                  </form>  
-               </div>
-             </mat-card-content>
-           </mat-card>
-        
-      </div>
-<div fxLayout="row wrap" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" fxLayoutGap="20px" *ngIf="showCard">
-      <mat-card fxFlex.xs="100" fxFlex.sm="100" fxFlex="calc(50% - 10px)" class="payment_full_info">
-       <mat-card-content>
-        <mat-card-title class="mat-card-title text-center">Update Card Details</mat-card-title>
-        <div class="update_card_sec">  
-                 <div  class="last_payment_sec">
-           <div class="detail_last_payment" *ngIf="last_invoic_id">
-            <strong><i class="fas fa-exclamation-triangle"></i> Failed Invoice ID :</strong> {{last_invoic_id}}
-          </div>
-          <div class="detail_last_payment">
-            <strong><i class="far fa-credit-card"></i> Current Card :</strong> xxxx-xxxx-xxxx-{{last4}}</div>
-          </div>
-               </div>
-                 <div class="card_fields">
-                  <div class="sa_mattabs_design sa_matforms_design sa_payment_form AddCard-main">
-                     <div class="iframe_main">
-                        <div class="fieldset">
-                          <div class="AddCard-box">
-                            <img class="card-c" src="/assets/images/card-c.png">
-                           <mat-card-title class="mat-card-title text-right">Add New Card</mat-card-title>
-                           <div id="example3-card-number" class="field empty iframe_design"></div>
-                           <div class="two_iframe_areas">
-                              <div id="example3-card-expiry" class="field empty third-width iframe_design "></div>
-                              <div id="example3-card-cvc" class="field empty third-width iframe_design"></div>
-                           </div>
-                         </div>
-                           <div class="fieldset text-right">  
-                              <button type="button" style="margin-top: 15px" mat-raised-button class="btn btn-primary mat-dc"  (click) = "setupIntent()">SAVE</button>
-                           </div>
+                                    <div fxFlex.xs="20%" fxFlex.md="120px" fxFlex="150px" class="profile-img-icon">
+                                        <div class="change-password-icon"> <img src="/assets/images/change-password-icon.png"> </div>
+                                    </div>
+                                    <div fxFlex="calc(70% - 10px)" fxFlex.md="calc(70% - 10px)" fxFlex.sm="calc(70% - 10px)" fxFlex.xs="100">
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Current Password</label>
+                                                    <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}$" type="password" placeholder="" [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword"> <small *ngIf="old_password_error" class="text-danger support-text">Wrong current password .</small> </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10%">
+                                                <div class="sa-form-group">
+                                                    <label>New Password</label>
+                                                    <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}$" type="password" placeholder="" [formControl]="form.controls['newPassword']" [(ngModel)]="newPassword"> <small *ngIf="changePasswordError.required" class="text-danger support-text">You must include password.</small> <small *ngIf="changePasswordError.minlength" class="text-danger support-text">Password should contain minimum 10 characters.</small> <small *ngIf="changePasswordError.pattern" class="text-danger support-text">Password must contain one lowercase letter, one uppercase letter and one special character.</small> </div>
+                                            </div>
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100">
+                                                <div class="sa-form-group">
+                                                    <label>Repeat Password</label>
+                                                    <input type="password" placeholder="" [formControl]="form.controls['repeatPassword']" [(ngModel)]="repeatPassword"> <small *ngIf="changePasswordError.crequired" class="text-danger support-text">You must include confirm password.</small> <small *ngIf="form.controls['repeatPassword'].errors?.equalTo && form.controls['repeatPassword'].touched" class="text-danger support-text">Password and confirmation password do not match.</small> <small *ngIf="confirm_password_error" class="text-danger support-text">{{confirm_password_text}}</small> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <mat-card-actions class="sa-pull-right">
+                                    <button mat-raised-button color="dc" type="submit">SAVE</button>
+                                </mat-card-actions>
+                            </form>
                         </div>
-                     </div>
-                  </div>
-               </div>
+                    </div>
+                </div>
             </mat-card-content>
-        
-      
-    </mat-card>
-
-<mat-card  fxFlex.xs="100" fxFlex.sm="100" fxFlex="calc(50% - 10px)">
-  
-       
-            <mat-card-content fxLayout.lt-lg="column">
-              <mat-card-title class="mat-card-title text-center">Outstanding Invoices</mat-card-title>
-<div class="cart_button text-center" >
-                  <div class="sa_payment_left_area">
-                     <a (click)="retryPayment()" class="btn-round mat-raised-button mat-dc" *ngIf="last_invoic_id">Retry Payment </a>
-                     <span  class="no-invoices mat-dc" *ngIf="!last_invoic_id">No Pending Invoices </span>
-                  </div>
-               </div>
-
+        </mat-card-content>
+    </mat-expansion-panel>
+    <!-- Change Password End -->
+    <!-- Update Card Details Start -->
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Update Card Details</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card-content>
+            <mat-card-content>
+                <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
+                    <div fxLayout="row wrap" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" fxLayoutGap="20px">
+                        <div fxFlex.xs="calc(50% - 25px)" fxFlex.md="calc(50% - 25px)" fxFlex="calc(50% - 25px)">
+                            <div class="update_card_sec">
+                                <div class="last_payment_sec">
+                                    <div class="detail_last_payment" *ngIf="last_invoic_id"> <strong><i class="fas fa-exclamation-triangle"></i> Failed Invoice ID :</strong> {{last_invoic_id}} </div>
+                                    <div class="detail_last_payment"> <strong><i class="far fa-credit-card"></i> Current Card :</strong> xxxx-xxxx-xxxx-{{last4}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex.xs="calc(50% - 25px)" fxFlex.md="calc(50% - 25px)" fxFlex="calc(50% - 25px)">
+                            <div class="card_fields">
+                                <div class="sa_mattabs_design sa_matforms_design sa_payment_form AddCard-main">
+                                    <div class="iframe_main">
+                                        <div class="fieldset">
+                                            <div class="AddCard-box"> <img class="card-c" src="/assets/images/card-c.png">
+                                                <mat-card-title class="mat-card-title text-right">Add New Card</mat-card-title>
+                                                <div id="example3-card-number" class="field empty iframe_design"></div>
+                                                <div class="two_iframe_areas">
+                                                    <div id="example3-card-expiry" class="field empty third-width iframe_design "></div>
+                                                    <div id="example3-card-cvc" class="field empty third-width iframe_design"></div>
+                                                </div>
+                                            </div>
+                                            <div class="fieldset text-right">
+                                                <button type="button" style="margin-top: 15px" mat-raised-button class="btn btn-primary mat-dc" (click)="setupIntent()">SAVE</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </mat-card-content>
-
-
-         
-        </mat-card>
-
-
-
-
+        </mat-card-content>
+    </mat-expansion-panel>
+    <!-- Update Card Details End -->
+    <!-- Update Card Details Start -->
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>Helping ToolTips</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card-content> Coming Soon </mat-card-content>
+    </mat-expansion-panel>
+    <!-- Update Card Details End -->
+</mat-accordion>
+<!-- <mat-card  fxFlex.xs="100" fxFlex.sm="100" fxFlex="calc(50% - 10px)">
+<mat-card-content fxLayout.lt-lg="column">
+<mat-card-title class="mat-card-title text-center">Outstanding Invoices</mat-card-title>
+<div class="cart_button text-center">
+<div class="sa_payment_left_area">
+<a (click)="retryPayment()" class="btn-round mat-raised-button mat-dc" *ngIf="last_invoic_id">Retry Payment </a>
+<span  class="no-invoices mat-dc" *ngIf="!last_invoic_id">No Pending Invoices </span>
 </div>
-
-    </div>
- 
-      
+</div>
+</mat-card-content>
+</mat-card> -->

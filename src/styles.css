@@ -1001,7 +1001,7 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 
 .mr-15 { margin-right: 15px !important; }
 
-.sa_profile_setting .mat-card-content { min-height: 410px; }
+/*.sa_profile_setting .mat-card-content { min-height: 410px; }*/
 
 .ChangePassword-section > h4, .basic_details_form > h4 { margin-top: 0 !important; }
 
@@ -2185,7 +2185,7 @@ body .AddCard-main .AddCard-box .mat-card-title { font-size: 1rem !important; fl
 
 .detail_last_payment strong { font-weight: 500; margin-right: 15px; }
 
-.sa_profile_setting .mat-card .mat-card-content { padding-left: 10%; padding-right: 10%; }
+/*.sa_profile_setting .mat-card .mat-card-content { padding-left: 10%; padding-right: 10%; }*/
 
 .profile-img-icon img { max-width: 150px; margin: auto; float: none; width: 100%; }
 
@@ -5003,3 +5003,4 @@ ul.download-sync-list {
 
 .ps .ps__rail-x, .ps .ps__rail-y, .ps .ps__rail-x, .ps .ps__rail-y, .ps .ps__rail-x.ps--clicking, .ps .ps__rail-y.ps--clicking{background-color: #eee; opacity: 1;}
 .ps__thumb-y{ width: 12px; }
+.ChangePassword-section {width: 98%;}
