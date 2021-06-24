@@ -967,9 +967,19 @@ initiate_clinic() {
   }
 
   getDataDiffrences(){ // Function to get days diffrence from selected date
-    var date2:any= new Date();
-    var date1:any= new Date(this.previousDays);
+    var currentdate:any = new Date();
+    var day   = currentdate.getDate();
+    var month = currentdate.getMonth(); //months from 1-12
+    var year  = currentdate.getFullYear();
+    var date2:any= new Date(year,month, day);
+
+    var setDate:any= new Date(this.previousDays);
+    var day1   = setDate.getDate();
+    var month1 = setDate.getMonth(); //months from 1-12
+    var year1  = setDate.getFullYear();
+    var date1:any= new Date(year1,month1, day1);
     var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
+    console.log(diffTime);
     return diffTime;
   }
 }
