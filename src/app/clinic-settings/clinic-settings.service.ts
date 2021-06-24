@@ -35,7 +35,7 @@ export class ClinicSettingsService {
         );
     }
        // Get ClinicSettings
-    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta,postOpCallsMh,recallWeeks,tickDays, timezone, token = this._cookieService.get("token")): Observable<any> {
+    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta,postOpCallsMh,recallWeeks,tickDays, timezone,subtractedAccounts): Observable<any> {
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
         formData.append('clinicName', name);
@@ -43,6 +43,7 @@ export class ClinicSettingsService {
         formData.append('contactName', contact_name);
         formData.append('days', workingDays);
         formData.append('post_op_calls', postOpCalls);
+        formData.append('subtracted_accounts', subtractedAccounts);
         formData.append('phoneNo', phoneNo);
         formData.append('clinicEmail', clinicEmail);
         formData.append('fta_uta', ftaUta);

@@ -46,6 +46,7 @@ export class ClinicSettingsComponent implements OnInit {
           public address:any = {};
           public timezone:any = '';
           public post_op_calls:any = '';
+          public subtracted_accounts:any = '';
           public practice_size:any ={};
           options: FormGroup;
           public xero_link;
@@ -84,6 +85,7 @@ export class ClinicSettingsComponent implements OnInit {
       timezone: [null],
       // practice_size: [null, Validators.compose([Validators.required])],
       post_op_calls: [null],      
+      subtracted_accounts: [null],      
       fta_uta: [null, Validators.compose([Validators.required])],              
       post_op_calls_days: [null, Validators.compose([Validators.required])],              
       recall_weeks: [null, Validators.compose([Validators.required])],              
@@ -120,6 +122,7 @@ export class ClinicSettingsComponent implements OnInit {
         this.address = res.data[0].address;
         this.practice_size = res.data[0].practice_size;
         this.post_op_calls = res.data[0].post_op_calls;        
+        this.subtracted_accounts = res.data[0].subtracted_accounts;        
         this.phoneNo = res.data[0].phoneNo;        
         this.clinicEmail = res.data[0].clinicEmail; 
         this.ftaUta = res.data[0].fta_uta;
@@ -154,6 +157,7 @@ export class ClinicSettingsComponent implements OnInit {
   this.contactName = this.form.value.contactName;
   let days = JSON.stringify(this.workingDays);
   this.post_op_calls = this.form.value.post_op_calls;
+  this.subtracted_accounts = this.form.value.subtracted_accounts;
   this.phoneNo = this.form.value.phoneNo;
   this.clinicEmail = this.form.value.clinicEmail;
   this.ftaUta = this.form.value.fta_uta;
@@ -163,7 +167,7 @@ export class ClinicSettingsComponent implements OnInit {
   this.timezone = this.form.value.timezone;
  // this.unscheduledPatientsMh = this.form.value.unscheduled_patients_days;
   
-  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays, this.timezone ).subscribe((res) => {
+  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays, this.timezone,this.subtracted_accounts ).subscribe((res) => {
       $('.ajax-loader').hide();
       if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );

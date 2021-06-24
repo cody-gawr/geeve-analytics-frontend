@@ -65,7 +65,7 @@
                    {{ control.chart }}
                   </mat-label>
                  <span matPrefix [ngStyle]="{'opacity': control.sign == '$' ? '1' : '0'}">$ &nbsp;</span>
-                  <input type="number" class="goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (keyup)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/> <!-- [formControl]="control.control" -->
+                  <input type="number" class="goals-form-input-field sign{{control.sign}}" matInput value="{{ control.value }}" name="control.control" (input)="onBlur(control.id, $event.target.value,$event)" sign="{{ control.sign }}"/> <!-- [formControl]="control.control" -->
                   <span matSuffix *ngIf="control.sign == '%'">&nbsp; %</span>
                 </mat-form-field>                
               </div>

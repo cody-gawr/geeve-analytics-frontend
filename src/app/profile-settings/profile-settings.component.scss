@@ -7,3 +7,13 @@
 .example-full-width {
   width: 90%;
 }
+.selectTipCon{
+  width: 250px !important;
+}
+.selectTipCon .mat-select-value {
+    max-width: 250px;
+    width: 100%;
+}
+.selectTipCon .mat-select-arrow-wrapper {
+    display: none !important;
+}

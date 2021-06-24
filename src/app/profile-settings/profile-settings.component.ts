@@ -1,4 +1,4 @@
-import { Component,OnInit  } from '@angular/core';
+import { Component,OnInit,ViewEncapsulation  } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormControl, Validators } from '@angular/forms';
 import { ProfileSettingsService } from './profile-settings.service';
@@ -20,7 +20,8 @@ const confirmPasswordValidation = new FormControl('', CustomValidators.equalTo(p
 @Component({
   selector: 'app-formlayout',
   templateUrl: './profile-settings.component.html',
-  styleUrls: ['./profile-settings.component.scss']
+  styleUrls: ['./profile-settings.component.scss'],
+   encapsulation: ViewEncapsulation.None
 })
 export class ProfileSettingsComponent implements OnInit {
    elementsOptions: StripeElementsOptions = {

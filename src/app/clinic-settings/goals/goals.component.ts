@@ -496,7 +496,7 @@ getGoalsForTabsClinic(allGoals) {
     }
     return name;
   }
-  onBlur(id,val,event){
+  onBlur(id,val,event){    
     if($(event.target).hasClass('sign%') && val > 100){
       $(event.target).val(100);
       val = 100;

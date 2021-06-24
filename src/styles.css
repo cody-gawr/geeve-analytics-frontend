@@ -622,7 +622,7 @@ html .page-wrapper { height: 100vh!important }
 
 .sa_matcard_content .ngx-gauge-meter { margin-left: -125px!important; }
 
-.sa_chart_details_sec { margin: 10px 0 0px 0 !important; padding: 15px 0px 10px; border-radius: 10px; color: #5e5e5e; background: #f8f9fd; }
+.sa_chart_details_sec {place-content: center !important; margin: 10px 0 0px 0 !important; padding: 15px 0px 10px; border-radius: 10px; color: #5e5e5e; background: #f8f9fd; }
 
 .production h4 {color: #f39293; font-size: 16px;}
 

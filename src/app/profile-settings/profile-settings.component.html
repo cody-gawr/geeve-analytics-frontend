@@ -2,7 +2,7 @@
     <!-- Basic Detail Start -->
     <mat-expansion-panel>
         <mat-expansion-panel-header>
-            <mat-panel-title>Basic Details</mat-panel-title>
+            <mat-panel-title> Basic Details</mat-panel-title>
         </mat-expansion-panel-header>
         <mat-card-content>
             <!-- section Start -->
@@ -153,7 +153,222 @@
         <mat-expansion-panel-header>
             <mat-panel-title>Helping ToolTips</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-card-content> Coming Soon </mat-card-content>
+        <mat-card-content>
+                 <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
+                    <div fxLayout="row wrap" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" fxLayoutGap="20px">
+                        <div class="ChangePassword-section">
+                            <form [formGroup]="form" class="basic-form change-password-form" (ngSubmit)="onSubmitPassword()">
+                                <div fxLayout="row wrap" fxLayoutGap="0" fxLayoutGap.xs="0">                                   
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100">
+                                        <mat-form-field floatLabel="never" class="setPreviousDay">
+                                            <!-- <mat-select [(ngModel)] = "selectedMonth" [(value)] = "selectedMonth"  (selectionChange)="refreshPerformanceTab($event.value)"> -->
+                                            <mat-select class="selectTipCon">
+                                                <mat-option value="clinic-health">Clinic Health</mat-option>
+                                                <mat-option value="clinician-analysis">Clinician Analysis</mat-option>
+                                                <mat-option value="clinician-procedures">Clinician Procedures</mat-option>
+                                                <mat-option value="front-desk">Front-Desk</mat-option>
+                                                <mat-option value="marketing">Marketing</mat-option>
+                                                <mat-option value="finances">Finances</mat-option>
+                                                <mat-option value="lost-opportunity">Lost Opportunity</mat-option>
+                                                <mat-option value="morning-huddle">Morning Huddle</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <!-- Health Screen Section -->
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100">
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>HourlyLeaders</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>ReferralLeaders</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>PrebookedVisits</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>ChairUtilRate</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>UnschedProd</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>                                    
+                                    
+                                    </div>
+                                    <!-- Health Screen Section -->
+
+                                    <!-- CLINICIAN ANALYSIS -->
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100">
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Production</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Collection</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>HourlyRate</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>NumPatients</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>TxPlanFeeProposed</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>TxPlanFeeCompletion</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>RecallRate</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>ReappointRate</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>NumComplaints</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                    <!-- CLINICIAN ANALYSIS Section -->
+
+                                    <!-- CLINICIAN PROCEDURES Section -->
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100">
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>ProcAnalysisGen</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>ProcAnalysisSpec</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>RevPerProc</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>PredictorCrown</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>PredictorExtract</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>PredictorRCT</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Referrals</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>                                      
+                                    </div>
+                                    <!--CLINICIAN PROCEDURES Section -->
+
+                                </div>
+                                <mat-card-actions class="sa-pull-right">
+                                    <button mat-raised-button color="dc" type="submit">SAVE</button>
+                                </mat-card-actions>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </mat-card-content>
     </mat-expansion-panel>
     <!-- Update Card Details End -->
 </mat-accordion>
