@@ -96,14 +96,14 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     });
   }
 
-  updateValue(event, column, index) {
-    let oldValue = this.dentistList.data[index][column];    
-    this.editing[index + '-' + column] = false;
+  updateValue(event, column, index,providerId, updatedValue) {
+   /* let oldValue = this.dentistList.data[index][column];    
     const providerId = this.dentistList.data[index].providerId;
     const updatedValue = this.dentistList.data[index]['name'];
+    */
+   
     if(column == 'name'){
-      const updatedValue = event.target.value;
-      this.dentistList.data[index][column] = updatedValue;
+      updatedValue = event.target.value;           
     }
     var isActive = null;
     if(column == 'is_active'){
@@ -112,16 +112,18 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         isActive = 1;
       }
     }
+    console.log(event, column, index,providerId,updatedValue);
      this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive).pipe(
         takeUntil(this.destroyed$)
       ).subscribe((res) => {
+         this.editing[index + '-' + column] = false;
         if (res.message == 'success') {
           this.toastr.success('Dentist Updated');
           this.getDentists(this.clinic_id$.value);
         }
-      }, (error) => {
+      }, (error) => {/*
         console.log('error', error);
-        this.dentistList.data[index][column] = oldValue;
+        this.dentistList.data[index][column] = oldValue;*/
         this.toastr.error('Opps, Error occurs in updating dentist!');
       });  
        

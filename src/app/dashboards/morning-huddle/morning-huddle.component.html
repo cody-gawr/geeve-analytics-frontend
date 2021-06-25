@@ -919,10 +919,10 @@
               <div class="appointment" *ngIf="element.due_balance > 0"> <span class="warning"><img
                     src="../assets/images/warning-huddle.png" alt="warning-huddle" /> Due Balance
                   ${{ element.due_balance | number:'1.0-0' }}</span></div>
-              <div class="appointment" *ngIf="element.code != ''">
+           <!--    <div class="appointment" *ngIf="element.code != ''">
                 <span class="warning" title="022 "><img src="../assets/images/warning-huddle.png"
                     alt="warning-huddle" /> {{ element.code }}</span>
-              </div>
+              </div> -->
               <div class="appointment" *ngIf="element.is_birthday == 'Yes'">
                 <span class="warning"><span class=""><img src="../assets/images/warning-huddle.png"
                       alt="warning-huddle" /></span>Birthday</span>
@@ -1381,9 +1381,9 @@
                   <span class="info-icon-container tick">
                     <i  [tooltip]="{'title' : !element.notes? 'Add Notes' : 'Edit Notes' }" [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date)"></i>
                   </span>
-               <!--    <span *ngIf="element.code != ''"  class="info-icon-container tick">
+                   <span *ngIf="element.code != ''"  class="info-icon-container tick">
                     <i class="fas fa-stethoscope notes" [tooltip]="tipDoneCode[element.patient_id]" ></i>                    
-                  </span> -->
+                  </span> 
                    <span *ngIf="element.future_date_show" class="info-icon-container tick">
                     <i class="fas fa-calendar-check notes"  [tooltip]="tipFutureDate[element.patient_id]" ></i>
                   </span>
