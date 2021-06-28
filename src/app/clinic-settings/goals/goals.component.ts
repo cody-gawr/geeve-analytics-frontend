@@ -496,13 +496,33 @@ getGoalsForTabsClinic(allGoals) {
     }
     return name;
   }
+
+  onKeyUp(event){       
+    if(event.keyCode == 45 || (event.keyCode >= 48 && event.keyCode <= 57)){
+      if(event.keyCode == 45){
+        if($(event.target).hasClass('sign%')){
+          event.preventDefault();
+          event.stopPropagation();
+          return false;
+        }
+      }
+      return true;
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    }
+  }
   onBlur(id,val,event){    
     if($(event.target).hasClass('sign%') && val > 100){
       $(event.target).val(100);
       val = 100;
-    }  
+    } 
+    if(val == ''){
+      val = 0;
+    } 
    this.goalsData[parseInt(id)] =  parseInt(val);
-   $(event.target).val(parseInt(val));  
+   $(event.target).val(val);  
        
     
   }

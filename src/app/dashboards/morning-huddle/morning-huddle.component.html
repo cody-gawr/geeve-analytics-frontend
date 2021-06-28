@@ -1522,7 +1522,7 @@
 
               <ng-container matColumnDef="isDataAvailable9">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns9.length">
-                  <span *ngIf="futureDateDT == ''"><i class="fa fa-check"></i>All daily tasks have been completed</span>
+                  <span *ngIf="futureDateDT == ''">You have no daily tasks today</span>
                   <span *ngIf="futureDateDT != ''">Daily Tasks will be populated on {{ futureDateDT }}</span>
                 </mat-footer-cell>
               </ng-container>
