@@ -124,7 +124,7 @@
                 <div style="height: 306px" *ngIf="collectionData[0].data.length && !collectionLoader">
                   <canvas id="dentistCollection" baseChart [datasets]="collectionData" [labels]="collectionLabels"
                     [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
-                    [colors]="DPcolors">
+                    [colors]="DPcolors1">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
                 <div *ngIf="!collectionData[0].data.length && !collectionLoader" class="no-data-placeholder">

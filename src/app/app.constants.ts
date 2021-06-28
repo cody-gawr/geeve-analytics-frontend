@@ -39,7 +39,7 @@ export class AppConstants {
 
     public tipPTxPlanFeeCompleted: ITooltipData = {
         title: 'Treatment Plan Avg Completed Fees', 
-        info: 'Average completed value of Treatment Plans created in the date range - designated by who created the treatment plan'
+        info: 'Average Completed Fees for Treatment Plan related items - Designated by who performed the treatment'
     };
 
     public tipTxPlanFeeCompletion: ITooltipData = {

@@ -223,6 +223,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     { providerId: 'all', name: 'All Dentists' },
   ];
   public barChartColors: Array<any>;
+  public barChartColors1: Array<any>;
   public barChartType = 'bar';
   public barChartLegend = false;
   public gradient = 'bar';
@@ -814,11 +815,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     if(this._cookieService.get("dentist_toggle") === 'false')
       newValue = this.selectedDentist;
     else{
-          newValue = 'all';
-          
-        }
-
-  }
+       newValue = 'all';
+     }
+   }
 
   if(newValue ==''){
     return false;
@@ -1054,6 +1053,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public buildChartLoader: boolean = false;
   public dentistKey;
   public DPcolors: any;
+  public DPcolors1: any;
   //Dentist Production Chart for all Dentist
   private buildChart() {
     this.buildChartLoader = true;
@@ -1210,13 +1210,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionLoader = false;
         this.collectionTooltip = 'down';
         var i = 0;
+        var selectedDen:any = 0;
         data.data.forEach(res => {
+
           if (res.collection > 0) {
             this.collectionData1.push(Math.round(res.collection));
             var name = res.provider_name;
             if (res.provider_name != null && res.provider_name != 'Anonymous') {
               this.collectionLabels1.push(res.provider_name);
-              this.dentistKey = i;
+              selectedDen = i;
             } else {
               this.collectionLabels1.push(res.provider_name);
             }            
@@ -1224,6 +1226,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           }
         });
       
+       if (this.user_type == '4' && this.childid != '') {
+          this.barChartColors1 = [
+            {
+              backgroundColor: [],
+              hoverBorderColor: '#000'
+            }
+          ];
+        this.barChartColors1[0].backgroundColor[selectedDen] = '#119682';
+        this.DPcolors1 = this.barChartColors1;
+      } else {
+        this.DPcolors1 = this.lineChartColors;
+      }
+
+
          this.collectionData[0]['data'] = this.collectionData1;
          const colors = [
           this.chartService.colors.odd,
@@ -2569,9 +2585,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       if (res.message == 'success') {
         this.dentists = res.data;
         this.dentistCount = res.data.length;
-
-      }
-      else if (res.status == '401') {
+      } else if (res.status == '401') {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
         this._cookieService.put("token", '');
@@ -2590,18 +2604,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public planTotalAll = 0;
   public planTotalCompleted = 0;
   // Filter By Date
-  filterDate(duration) {
-    
+  filterDate(duration) {    
     this.showTrendChart = false;
     this.toggleChecked = false;
     if (this.clinic_id != undefined && this.clinic_id != 'all') {
       $('.customRange').css('display', 'none');
       this.showTrendChart = false;
       var dentistVal;
+
       if ($('.internal_dentist').val())
         dentistVal = $('.internal_dentist').val();
       else
         dentistVal = $('.external_dentist').val();
+      if( dentistVal == ''){
+          var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
+          dentistVal = dentistVal1[1];
+      }
       this.duration = duration;
       if (duration == 'w') {
         this.goalCount = 1;
