@@ -8,6 +8,7 @@
   <div class="sa-form-group">
     <label>Select User Type</label>
      <select required="true" class="sa_select mat-form-control" name="user_type" [(ngModel)]="userData.user_type" (ngModelChange)="loadDentist($event)">
+      <option value ="6" *ngIf="loginUserType == '2'">Owner</option>
       <option value ="3">Practice Manager</option>
       <option value ="4">Clinician</option>
       <option value ="5">Staff</option>

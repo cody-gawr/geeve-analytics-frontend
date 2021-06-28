@@ -38,6 +38,7 @@ show_dentist = false;
    public dentistList = {};
    public user_type;
    public dentist_id;
+   public loginUserType = this._cookieService.get("user_type");
     loadDentist(val) {
       this.user_type= val;
       if(val == '4')
@@ -137,6 +138,7 @@ show_dentist = false;
   public selClinics=[];
   public userData:any=[];
   public selectedDentistList:any = []; 
+  public loginUserType = this._cookieService.get("user_type");
   loadUserData(){
     this.rolesUsersService.getRoleUserDetails(this.data.id).subscribe((res) => {
       if(res.message == 'success'){
@@ -229,11 +231,13 @@ public selectedClinicProviders=[];
 
 export class RolesOverviewExampleDialogComponent {
    public clinic_id:any ={};
+
   constructor(
     public rolesRef: MatDialogRef<RolesOverviewExampleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private _cookieService: CookieService
   ) {}
-
+   public loginUserType = this._cookieService.get("user_type");
   onNoClick(): void {
     this.rolesRef.close();
   }
