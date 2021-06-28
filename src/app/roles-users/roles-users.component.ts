@@ -306,7 +306,7 @@ initiate_clinic() {
     }, 1500);
   }
   private warningMessage: string;
-
+  public loginUserType = this._cookieService.get("user_type");
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '400px',
