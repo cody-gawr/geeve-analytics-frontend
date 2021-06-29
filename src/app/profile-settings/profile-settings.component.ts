@@ -129,6 +129,7 @@ public cvcStyle = {
   public cardNumber;
   public cardExpiry;
   public cardCvc;
+  public userType;
   old_password_error;
   confirm_password_error;
   public clinic_id:any ={};
@@ -180,6 +181,8 @@ public cvcStyle = {
         email: [null, Validators.compose([Validators.required])],
         displayName: [null, Validators.compose([Validators.required])],
       });
+
+      this.userType = this._cookieService.get("user_type");
     }
 
 

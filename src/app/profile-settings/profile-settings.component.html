@@ -105,7 +105,7 @@
     </mat-expansion-panel>
     <!-- Change Password End -->
     <!-- Update Card Details Start -->
-    <mat-expansion-panel>
+    <mat-expansion-panel *ngIf="userType == '2'">
         <mat-expansion-panel-header>
             <mat-panel-title>Payment Method</mat-panel-title>
         </mat-expansion-panel-header>
