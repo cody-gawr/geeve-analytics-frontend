@@ -229,9 +229,13 @@ initiate_clinic() {
             this.followupPostOpCallsInComp = this.followupPostOpCalls;
           } else {            
             this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
-          }       
+          }
+         if(this.followupPostOpCallsInComp.length <= ((this.pageSize * this.currentOpPage) - this.pageSize) && this.currentOpPage != 1 ){
+          this.currentOpPage = this.currentOpPage -1;
+        }       
         this.setPaginationButtons(this.followupPostOpCallsInComp,'OP');
         this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp,'OP');
+       
         this.followupsPostopCallsDate = production.date;     
         this.postOpCallsDays = production.previous;     
       }
@@ -249,7 +253,9 @@ initiate_clinic() {
           } else {            
             this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);      
           }
-
+      if(this.followupOverDueRecallInCMP.length <= ((this.pageSize * this.currentORPage) - this.pageSize) && this.currentORPage != 1 ){
+          this.currentORPage = this.currentORPage -1;
+        } 
         this.setPaginationButtons(this.followupOverDueRecallInCMP,'OR');
         this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP,'OR');
         this.followupsOverDueRecallDate = production.date;     
@@ -271,7 +277,9 @@ initiate_clinic() {
         } else {
           this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
         }
-
+          if(this.followupTickFollowupsInCMP.length <= ((this.pageSize * this.currentThickPage) - this.pageSize) && this.currentThickPage != 1 ){
+          this.currentThickPage = this.currentThickPage -1;
+        } 
         this.setPaginationButtons(this.followupTickFollowupsInCMP,'TH');
         this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP,'TH');
 
