@@ -123,28 +123,28 @@ public cvcStyle = {
       },
     },
   };
- public token;
-   stripeTest: FormGroup;
-   public form: FormGroup;
+  public token;
+  stripeTest: FormGroup;
+  public form: FormGroup;
   public cardNumber;
   public cardExpiry;
   public cardCvc;
   old_password_error;
   confirm_password_error;
-   public clinic_id:any ={};
-
-          private warningMessage: string;
-          public id:any ={};
-          public clinicName:any =0;
-          public contactName =0;
-          // public chartData: any[] = [];
-          public address:any = {};
-          public practice_size:any ={};
-          options: FormGroup;
-          public xero_link;
-          public xeroConnect = false;
-          public xeroOrganization='';
-          public email;
+  public clinic_id:any ={};
+  public selectedChartTip:string = 'clinic-health';
+  private warningMessage: string;
+  public id:any ={};
+  public clinicName:any =0;
+  public contactName =0;
+  // public chartData: any[] = [];
+  public address:any = {};
+  public practice_size:any ={};
+  options: FormGroup;
+  public xero_link;
+  public xeroConnect = false;
+  public xeroOrganization='';
+  public email;
   constructor(private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute,private stripeService: StripeService, private router: Router,private toastr: ToastrService,private rolesUsersService: RolesUsersService) {
     this.options = fb.group({
       hideRequired: false,
@@ -503,8 +503,6 @@ public fileToUpload;
 
     }
   }
-
-
 
 
 }

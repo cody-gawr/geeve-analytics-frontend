@@ -43,7 +43,7 @@ export class ClinicSettingsService {
         formData.append('contactName', contact_name);
         formData.append('days', workingDays);
         formData.append('post_op_calls', postOpCalls);
-        formData.append('subtracted_accounts', subtractedAccounts);
+        formData.append('net_profit_exclusions', subtractedAccounts);
         formData.append('phoneNo', phoneNo);
         formData.append('clinicEmail', clinicEmail);
         formData.append('fta_uta', ftaUta);

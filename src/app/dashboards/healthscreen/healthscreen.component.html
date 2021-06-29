@@ -95,11 +95,11 @@
                   </div>
                   <div *ngIf="dentistReappointRateLoader == false"  class="production_description production_description-grow">
                     <h4>Reappointment Rate</h4>
-                    <span class="change_value">{{dentistReappointRate}}</span>
+                    <span class="change_value">{{dentistReappointRate}}%</span>
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="dentistReappointRateLoader == false">
                     <div [ngClass]="(dentistReappointRateDiff >= 0) ? 'minus': 'minus'">
-                      Last Month: {{ dentistReappointRateTa | number: '1.' }}
+                      Last Month: {{ dentistReappointRateTa | number: '1.' }}%
                     </div>
                   </div>
                 </div>

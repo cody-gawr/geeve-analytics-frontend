@@ -157,12 +157,11 @@
                  <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design">
                     <div fxLayout="row wrap" fxLayoutGap.sm="0px" fxLayoutGap.xs="0px" fxLayoutGap="20px">
                         <div class="ChangePassword-section">
-                            <form [formGroup]="form" class="basic-form change-password-form" (ngSubmit)="onSubmitPassword()">
+                          <!--   <form [formGroup]="form" class="basic-form change-password-form" (ngSubmit)="onSubmitPassword()"> -->
                                 <div fxLayout="row wrap" fxLayoutGap="0" fxLayoutGap.xs="0">                                   
                                     <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100">
                                         <mat-form-field floatLabel="never" class="setPreviousDay">
-                                            <!-- <mat-select [(ngModel)] = "selectedMonth" [(value)] = "selectedMonth"  (selectionChange)="refreshPerformanceTab($event.value)"> -->
-                                            <mat-select class="selectTipCon">
+                                            <mat-select class="selectTipCon" [(ngModel)] = "selectedChartTip" [(value)] = "selectedChartTip">
                                                 <mat-option value="clinic-health">Clinic Health</mat-option>
                                                 <mat-option value="clinician-analysis">Clinician Analysis</mat-option>
                                                 <mat-option value="clinician-procedures">Clinician Procedures</mat-option>
@@ -176,43 +175,75 @@
                                     </div>
 
                                     <!-- Health Screen Section -->
-                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100">
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100" *ngIf="selectedChartTip == 'clinic-health'">
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
                                                 <div class="sa-form-group">
-                                                    <label>HourlyLeaders</label>
+                                                    <label>Hourly Rate Leaders</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Referral Leaders</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>ReferralLeaders</label>
+                                                    <label>Pre-booked Visits</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>PrebookedVisits</label>
+                                                    <label>Chair Utilisation Rate</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>ChairUtilRate</label>
+                                                    <label>Unscheduled Production</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
                                                 <div class="sa-form-group">
-                                                    <label>UnschedProd</label>
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
@@ -222,75 +253,129 @@
                                     <!-- Health Screen Section -->
 
                                     <!-- CLINICIAN ANALYSIS -->
-                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100">
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100" *ngIf="selectedChartTip == 'clinician-analysis'">
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>Production</label>
+                                                    <label>Dentist Production</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>Collection</label>
+                                                    <label> Dentist Collection</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>HourlyRate</label>
+                                                    <label>Hourly Rate</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>NumPatients</label>
+                                                    <label>No. New Patients</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>TxPlanFeeProposed</label>
+                                                    <label>Treatment Plan Average Cost</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>TxPlanFeeCompletion</label>
+                                                    <label>Treatment Plan Avg. Completion Fees</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>RecallRate</label>
+                                                    <label>Treatment Plan Completion Rate (%)</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>ReappointRate</label>
+                                                    <label>Prebooking Rate</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>NumComplaints</label>
+                                                    <label>No. Patient Complaints</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
@@ -300,59 +385,101 @@
                                     <!-- CLINICIAN ANALYSIS Section -->
 
                                     <!-- CLINICIAN PROCEDURES Section -->
-                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100">
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100" *ngIf="selectedChartTip == 'clinician-procedures'">
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>ProcAnalysisGen</label>
+                                                    <label>Procedure Analysis General</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>ProcAnalysisSpec</label>
+                                                    <label>Procedure Analysis Specialist</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>RevPerProc</label>
+                                                    <label>Revenue Per Procedure</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>PredictorCrown</label>
+                                                    <label>Indirect to Large Direct Fillings</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>PredictorExtract</label>
+                                                    <label>RCT to Extraction</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>PredictorRCT</label>
+                                                    <label>RCT Conversion</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                            <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                 <div class="sa-form-group">
-                                                    <label>Referrals</label>
+                                                    <label>Clinician Referrals</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
                                                     <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
                                                 </div>
                                             </div>
@@ -360,11 +487,389 @@
                                     </div>
                                     <!--CLINICIAN PROCEDURES Section -->
 
+                                    <!-- FRONT DESK Section -->
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100"  *ngIf="selectedChartTip == 'front-desk'">
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Utilisation Rate</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Recall prebook rate (%)</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Reappointment Rate (%)</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Number of Ticks</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>FTA ratio (%)</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>UTA ratio (%)</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>                                                                            
+                                    </div>
+                                    <!--FRONT DESK Section -->
+
+                                    <!--Marketing Section -->
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100" *ngIf="selectedChartTip == 'marketing'">
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>New Patients By Referral</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                              <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>New Patient Revenue by Referral</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>No. New Patients</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>New Patient Cost</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Total Visits</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                                                                                                   
+                                    </div>
+                                    <!--Marketing Section -->
+
+                                    <!--Finances Section -->
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100" *ngIf="selectedChartTip == 'finances'">
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Production</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Net Profit</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Net Profit %</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Expenses</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Production % Per Clinician</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Production Per Visit</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Total Discounts</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Total Production & Collection</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                                                                                                   
+                                    </div>
+                                    <!--Finances Section -->
+
+                                    <!--Morning Huddle Section -->
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100"  *ngIf="selectedChartTip == 'morning-huddle'">
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>FDF- Post op Calls</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>FDF- Overdue Recalls</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>FDF- Tick Followups</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>                                       
+                                                                                                                   
+                                    </div>
+                                    <!--Morning Huddle Section -->
+
+                                    <!--Lost Opportunity Section -->
+                                    <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100" *ngIf="selectedChartTip == 'lost-opportunity'">
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Total Discounts</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Collection vs Production</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row wrap" fxLayoutGap="5%">
+                                            <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                <div class="sa-form-group">
+                                                    <label>Case Acceptance</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                               <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="5px">
+                                                <div class="sa-form-group">
+                                                    <label>&nbsp;</label>
+                                                    <input [formControl]="form.controls['currentPassword']" [(ngModel)]="currentPassword">
+                                                </div>
+                                            </div>
+                                        </div>                                       
+                                                                                                                   
+                                    </div>
+                                    <!--Morning Huddle Section -->
                                 </div>
                                 <mat-card-actions class="sa-pull-right">
                                     <button mat-raised-button color="dc" type="submit">SAVE</button>
                                 </mat-card-actions>
-                            </form>
+                            <!-- </form> -->
                         </div>
                     </div>
                 </div>

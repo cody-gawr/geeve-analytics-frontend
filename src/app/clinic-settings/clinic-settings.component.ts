@@ -122,7 +122,7 @@ export class ClinicSettingsComponent implements OnInit {
         this.address = res.data[0].address;
         this.practice_size = res.data[0].practice_size;
         this.post_op_calls = res.data[0].post_op_calls;        
-        this.subtracted_accounts = res.data[0].subtracted_accounts;        
+        this.subtracted_accounts = res.data[0].net_profit_exclusions;        
         this.phoneNo = res.data[0].phoneNo;        
         this.clinicEmail = res.data[0].clinicEmail; 
         this.ftaUta = res.data[0].fta_uta;
