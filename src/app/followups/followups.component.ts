@@ -19,6 +19,7 @@ import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog
 })
 
 export class FollowupsDialogComponent { 
+
   constructor(public dialogRef: MatDialogRef<FollowupsDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router,private followupsService: FollowupsService) {}
   
   onNoClick(): void {
@@ -134,6 +135,15 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public recallLoadingLoading:boolean = true;
     public selectedMonth:string = new Date().getMonth().toString();
     public selectedYear:string = new Date().getFullYear().toString();
+    public pageSize:number = 20;
+    
+    public orTablePages: number[] = [];
+    public currentORPage:number = 1;
+    public thikTablePages: number[] = [];
+    public currentThickPage:number = 1;
+    public opTablePages: number[] = [];
+    public currentOpPage:number = 1;
+
 
   displayedColumns1: string[] = ['name', 'phone','code','date','followup_date','status'];
   displayedColumns2: string[] = ['name', 'phone', 'code','note','followup_date','status'];
@@ -210,6 +220,7 @@ initiate_clinic() {
 
 
   getFollowupPostOpCalls(){
+     this.poLoadingLoading = true;
     this.followupsService.followupPostOpCalls( this.clinic_id, parseInt(this.selectedMonth)+1, this.selectedYear ).subscribe((production:any) => {
         this.poLoadingLoading = false;
       if(production.message == 'success') {
@@ -219,6 +230,8 @@ initiate_clinic() {
           } else {            
             this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
           }       
+        this.setPaginationButtons(this.followupPostOpCallsInComp,'OP');
+        this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp,'OP');
         this.followupsPostopCallsDate = production.date;     
         this.postOpCallsDays = production.previous;     
       }
@@ -226,16 +239,19 @@ initiate_clinic() {
   } 
 
   getOverdueRecalls(){
+    this.recallLoadingLoading = true;
     this.followupsService.followupOverdueRecalls( this.clinic_id, parseInt(this.selectedMonth)+1, this.selectedYear ).subscribe((production:any) => {
         this.recallLoadingLoading = false;
       if(production.message == 'success') {
-        this.followupOverDueRecall = production.data;     
+        this.followupOverDueRecall = production.data;             
         if(this.showCompleteOverdue == true){  
             this.followupOverDueRecallInCMP = this.followupOverDueRecall;
           } else {            
             this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);      
           }
 
+        this.setPaginationButtons(this.followupOverDueRecallInCMP,'OR');
+        this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP,'OR');
         this.followupsOverDueRecallDate = production.date;     
        this.OverDueRecallDays = production.previous;     
       }
@@ -245,6 +261,7 @@ initiate_clinic() {
   public tipDoneCode = {}; 
   public tipFutureDate = {};
   getTickFollowups(){
+     this.endTaksLoadingLoading = true;
     this.followupsService.followupTickFollowups( this.clinic_id,  parseInt(this.selectedMonth)+1, this.selectedYear).subscribe((production:any) => {
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
@@ -254,6 +271,9 @@ initiate_clinic() {
         } else {
           this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
         }
+
+        this.setPaginationButtons(this.followupTickFollowupsInCMP,'TH');
+        this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP,'TH');
 
          this.followupTickFollowupsInCMP.forEach((tool) => {
             this.tipDoneCode[tool.patient_id] = { 
@@ -343,6 +363,9 @@ initiate_clinic() {
     } else {      
       this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
     }
+    this.currentOpPage = 1;
+    this.setPaginationButtons(this.followupPostOpCallsInComp,'OP');
+    this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp,'OP');
   }
   updateToCompleteOR(event){
     this.showCompleteOverdue = event.checked;
@@ -351,14 +374,20 @@ initiate_clinic() {
     } else {
       this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);      
     }
+    this.currentORPage = 1;
+    this.setPaginationButtons(this.followupOverDueRecallInCMP,'OR');
+    this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP,'OR');
   }
   updateToCompleteTF(event){
     this.showCompleteTick = event.checked;
     if(event.checked ==  true){  
       this.followupTickFollowupsInCMP = this.followupTickFollowups;
     } else {
-          this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
+      this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
     }
+    this.currentThickPage = 1;
+    this.setPaginationButtons(this.followupTickFollowupsInCMP,'TH');
+    this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP,'TH');
   }
 
 
@@ -388,6 +417,85 @@ initiate_clinic() {
     } else {
       return false;
     }   
+  }
+
+  setPaginationButtons(totalData,type) {
+    if(type == 'OR'){
+        this.orTablePages = [];
+        const totalPages = Math.ceil(totalData.length / this.pageSize);
+        for (let i = 0; i < totalPages; i++) {
+          this.orTablePages.push(i + 1);
+        }
+    }
+    if(type == 'TH'){
+      console.log(totalData.length);
+        this.thikTablePages = [];
+        const totalPages = Math.ceil(totalData.length / this.pageSize);
+        for (let i = 0; i < totalPages; i++) {
+          this.thikTablePages.push(i + 1);
+        }
+    }  
+    if(type == 'OP'){
+        this.opTablePages = [];
+        const totalPages = Math.ceil(totalData.length / this.pageSize);
+        for (let i = 0; i < totalPages; i++) {
+          this.opTablePages.push(i + 1);
+        }
+    }    
+  }
+
+  setPaginationData(totalData, type) {
+    if(type == 'OR'){
+        var startIndex:number = (this.currentORPage *  this.pageSize) - this.pageSize;      
+    } 
+    if(type == 'TH'){
+        var startIndex:number = (this.currentThickPage *  this.pageSize)- this.pageSize;      
+    }
+    if(type == 'OP'){
+        var startIndex:number = (this.currentOpPage *  this.pageSize) - this.pageSize;      
+    }    
+    var endIndex:any = startIndex + this.pageSize;
+    console.log(startIndex, endIndex);
+    var temp:any =[];
+    totalData.forEach((data,key) => {
+        if(parseInt(key) >= startIndex && parseInt(key) < endIndex ){
+            temp.push(data);
+        }
+    });
+    return  temp;
+  }
+
+
+
+  handlePageChange(goPage: number, type) {
+    if(type == 'OR'){
+      this.currentORPage = goPage;
+      if(this.showCompleteOverdue == true){  
+        this.followupOverDueRecallInCMP = this.followupOverDueRecall;
+      } else {            
+        this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);      
+      }
+      this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP, type);
+    }
+    if(type == 'TH'){
+      this.currentThickPage = goPage;
+      if(this.showCompleteTick ==  true){  
+          this.followupTickFollowupsInCMP = this.followupTickFollowups;
+        } else {
+          this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
+        }
+        this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP,'TH');
+    }
+    if(type == 'OP'){
+      this.currentOpPage = goPage;
+      if(this.postopCallsPostOp == true){  
+          this.followupPostOpCallsInComp = this.followupPostOpCalls;
+        } else {            
+          this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
+        }             
+      this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp,'OP');
+    }
+    
   }
 
 }

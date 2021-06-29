@@ -1727,9 +1727,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPreGoal = data.goals;
         if (data.data.length > 0) {
           this.treatmentPreValue = Math.round(data.data[0].reappoint_rate);
-          this.treatmentPreLabel = data.data[0].provider_name;
-          
+          this.treatmentPreLabel = data.data[0].provider_name;          
         }
+         this.treatmentPreChartAveragePrev = data.total_ta;          
+         this.treatmentPreGoal = data.goals;          
+
       }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
