@@ -159,5 +159,12 @@ var header = this.getHeaders();
                })
             );
     }
+    // GET CHARTS TIPS
+    getChartsTips(): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/ChartsTips/ctGetTips",  { headers: header }).pipe(map((response: Response) => {
+            return response;
+        }));
+    }
 }
 

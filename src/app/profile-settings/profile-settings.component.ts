@@ -161,6 +161,7 @@ public cvcStyle = {
         this.imageURL = this._cookieService.get("user_image");   
         if( this._cookieService.get("user_type") != '2')     
           this.getRoles();
+          this.getChartsTips()
           this.getPaymentDetails();
           this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
           this.stripeTest = this.fb.group({
@@ -507,5 +508,14 @@ public fileToUpload;
     }
   }
 
+  /******** GET CHARTS TIPS*****/
+  public chartsTips:any[] = [];
+  getChartsTips() {
+      this.profileSettingsService.getChartsTips().subscribe((res) => {
+       console.log(res);
+      },error => {
+      });
+  }
+  /******** GET CHARTS TIPS*****/
 
 }

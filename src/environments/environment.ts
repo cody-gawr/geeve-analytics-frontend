@@ -7,8 +7,8 @@
 export const environment = {
 	production: true,
 
-	//apiUrl : "https://localhost:4005", 
-	apiUrl : "https://test-api.jeeve.com.au/test/analytics",
+	apiUrl : "https://localhost:4005", 
+	//apiUrl : "https://test-api.jeeve.com.au/test/analytics",
 	homeUrl:"http://localhost/jeeveanalytics/client2/",
 	solutionsUrl : "https://api.jeeve.com.au/solutions" 
 	//	apiUrl : "https://api.jeeve.com.au/analytics",
