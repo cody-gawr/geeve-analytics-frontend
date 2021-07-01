@@ -360,7 +360,7 @@ color: #fff!important; font-size: 14px!important; background: rgba(14,52,89,0.9)
 
 .suer_image_sidebar span:before {content: ""; position: absolute; left: -3px; top: -3px; right: 0; bottom: 0; border-top: 4px solid #41a99e; border-radius: 100%; border-left: 4px solid transparent; border-right: 4px solid transparent; -moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); transform: rotate(-45deg);}
 
-.suer_image_sidebar img {border-radius: 100%;}
+.suer_image_sidebar img {border-radius: 100%; height: 100%;}
 
 .suer_text_sidebar { text-align: center; font-size: 14px; margin-top: 8px; display: inline-block; width: 100%; font-weight: 600;}
 

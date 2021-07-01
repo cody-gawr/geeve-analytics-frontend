@@ -1,0 +1,12 @@
+<div class="AddUserPopup"> 
+  <span class="closeStatus" (click)="onNoClick()">X</span>
+<h1 mat-dialog-title>Select Future Date</h1>
+<p>Current Follow-Up Date: {{ data.followup_date | date:'MMM d, y'}}</p>
+<ngx-daterangepicker-material
+  [singleDatePicker]="true"
+  [showDropdowns]="true"
+  [locale]= "{ applyLabel: 'Select', displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
+  (choosedDate)="updateNextfollowUp($event,data)"
+>
+</ngx-daterangepicker-material>     
+</div>

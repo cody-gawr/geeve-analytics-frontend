@@ -1092,7 +1092,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               hoverBorderColor: '#000'
             }
           ];
-        this.barChartColors[0].backgroundColor[this.dentistKey] = '#119682';
+        this.barChartColors[0].backgroundColor[this.dentistKey] = '#1CA49F';
         this.DPcolors= this.barChartColors;
       }
       else
@@ -1233,7 +1233,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               hoverBorderColor: '#000'
             }
           ];
-        this.barChartColors1[0].backgroundColor[selectedDen] = '#119682';
+        this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
         this.DPcolors1 = this.barChartColors1;
       } else {
         this.DPcolors1 = this.lineChartColors;
@@ -2547,7 +2547,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if (data.data.length > 0) {
           this.hourlyValue = Math.round(data.data[0].hourly_rate);
           var name = data.data[0].provider_name;
-          if (name != null) {
+          if (name != null && name != '') {
             name = name.split(')');
             if (name.length > 0 && name[1] != undefined) {
               name = name[1].split(',');
@@ -2619,8 +2619,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       else
         dentistVal = $('.external_dentist').val();
       if( dentistVal == ''){
+        if(this._cookieService.get("clinic_dentist"))
+        {
           var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
           dentistVal = dentistVal1[1];
+        }
+          
       }
       this.duration = duration;
       if (duration == 'w') {

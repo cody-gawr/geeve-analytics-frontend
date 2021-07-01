@@ -85,6 +85,21 @@ export class FollowupsService {
                     })
         );
     }
+    cloneRecord(pid,cid,type,followup_date,newFollowupDate, original_appt_date): Observable<any> {
+        var header = this.getHeaders(); 
+        const formData = new FormData();
+        formData.append('new_followup', newFollowupDate);
+        formData.append('patient_id', pid);
+        formData.append('clinic_id', cid);
+        formData.append('date', original_appt_date);
+        formData.append('followup_date', followup_date);
+        formData.append('type', type);
+        return this.http.post(this.apiUrl +"/Followups/fuCloneStatus",formData, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
     
     // Updae tick notes add/update
     notes(notes,pid, date,cid): Observable<any> {

@@ -30,7 +30,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 import { MorningHuddleComponent,DialogOverviewExampleDialogComponent } from './dashboards/morning-huddle/morning-huddle.component';
-import { FollowupsComponent,FollowupsDialogComponent } from './followups/followups.component';
+import { FollowupsComponent,FollowupsDialogComponent,StatusDialogComponent } from './followups/followups.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 import { MatMenuModule} from '@angular/material/menu';
 import { ClinicSettingsService } from './clinic-settings/clinic-settings.service';
@@ -38,7 +38,7 @@ import { SharedMatModule } from './shared-mat.module';
 import { DemoMaterialModule } from './demo-material-module';
 import { DatePipe } from '@angular/common';
 import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-tabs/dashboard-duration-tabs.component';
-
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 2,
@@ -59,6 +59,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MorningHuddleComponent,
     FollowupsComponent,
     FollowupsDialogComponent,
+    StatusDialogComponent,
     DialogOverviewExampleDialogComponent,
     StepperComponent,
     StepperSidebarComponent,
@@ -76,6 +77,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpClientModule,
     PerfectScrollbarModule,
     SharedModule,
+    NgxDaterangepickerMd.forRoot(),
     SharedMatModule.forRoot(),
     CookieModule.forRoot(),
     RouterModule.forRoot(AppRoutes),

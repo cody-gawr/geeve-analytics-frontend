@@ -4,47 +4,29 @@
  
     <!-- Patient Schedule Tab start -->
     <mat-tab label="Overdue Recalls">
-           <div class="morning-huddle-date">
-          <table class="filters">
-            <tr>
-              <td>
-        <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select [(ngModel)] = "selectedMonth" [(value)] = "selectedMonth"  (selectionChange)="refreshPerformanceTab($event.value)" id="setMonth">
-            <mat-option value="0">January</mat-option>
-            <mat-option value="1">February</mat-option>
-            <mat-option value="2">March</mat-option>
-            <mat-option value="3">April</mat-option>
-            <mat-option value="4">May</mat-option>
-            <mat-option value="5">June</mat-option>
-            <mat-option value="6">July</mat-option>
-            <mat-option value="7">August</mat-option>
-            <mat-option value="8">September</mat-option>
-            <mat-option value="9">October</mat-option>
-            <mat-option value="10">November</mat-option>
-            <mat-option value="11">December</mat-option>                         
-          </mat-select>
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select  [(ngModel)] = "selectedYear" [(value)] = "selectedYear" (selectionChange)="refreshPerformanceTab($event.value)" id="setYear">
-            <mat-option [value]="subtractYears(0) | date:'y':'timezone'" *ngIf="showPreviousYears(0)">{{ subtractYears(0) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(1) | date:'y':'timezone'" *ngIf="showPreviousYears(1)">{{ subtractYears(1) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(2) | date:'y':'timezone'" *ngIf="showPreviousYears(2)">{{ subtractYears(2) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(3) | date:'y':'timezone'" *ngIf="showPreviousYears(3)">{{ subtractYears(3)  | date:'y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractYears(4) | date:'y':'timezone'" *ngIf="showPreviousYears(4)">{{ subtractYears(4)  | date:'y':'timezone'}}</mat-option>
-                            
-          </mat-select>
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
+      <div class="morning-huddle-date">
+        <div class="morning-huddle-date topModel">
+          <mat-icon  (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{selectedMonthYear}}<mat-icon (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>    
+        </div> 
       </div>
 
-        <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
+
+        <mat-card-title>
+          <div class="title-follow-up">
+           Overdue Recalls
+            <div class="info-icon-container"><img [tooltip]="this.constants.tipMHPostOpTable" src="../assets/images/info-icon.png"
+                alt="info-icon" class="info-icon" /></div>
+          </div>
+          
+          <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
             <mat-checkbox name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)">Show
               Complete</mat-checkbox>
           </div>
+
+        </mat-card-title>
+        
+
+
               <div class="card-loading" *ngIf="recallLoadingLoading">
                 <img class="tableLoader" src="../../assets/images/logo-icon.gif">
               </div>
@@ -87,7 +69,7 @@
                 <td mat-cell *matCellDef="let element">
                   <mat-form-field floatLabel="never" class="setPreviousDay">
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote"
-                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'recall-overdue')">
+                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.followup_date,element.original_appt_date, 'recall-overdue')">
                       <mat-option value="">Select Status</mat-option>
                       <mat-option value="Booked">Booked</mat-option>
                       <mat-option value="Already booked">Already booked</mat-option>
@@ -129,46 +111,27 @@
 
     <!-- Reminders Tab start -->
     <mat-tab label="Tick Followups" >
-           <div class="morning-huddle-date">
-          <table class="filters">
-            <tr>
-              <td>
-        <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select [(ngModel)] = "selectedMonth" [(value)] = "selectedMonth"  (selectionChange)="refreshPerformanceTab($event.value)" id="setMonth">
-            <mat-option value="0">January</mat-option>
-            <mat-option value="1">February</mat-option>
-            <mat-option value="2">March</mat-option>
-            <mat-option value="3">April</mat-option>
-            <mat-option value="4">May</mat-option>
-            <mat-option value="5">June</mat-option>
-            <mat-option value="6">July</mat-option>
-            <mat-option value="7">August</mat-option>
-            <mat-option value="8">September</mat-option>
-            <mat-option value="9">October</mat-option>
-            <mat-option value="10">November</mat-option>
-            <mat-option value="11">December</mat-option>                         
-          </mat-select>
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select  [(ngModel)] = "selectedYear" [(value)] = "selectedYear" (selectionChange)="refreshPerformanceTab($event.value)" id="setYear">
-            <mat-option [value]="subtractYears(0) | date:'y':'timezone'" *ngIf="showPreviousYears(0)">{{ subtractYears(0) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(1) | date:'y':'timezone'" *ngIf="showPreviousYears(1)">{{ subtractYears(1) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(2) | date:'y':'timezone'" *ngIf="showPreviousYears(2)">{{ subtractYears(2) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(3) | date:'y':'timezone'" *ngIf="showPreviousYears(3)">{{ subtractYears(3)  | date:'y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractYears(4) | date:'y':'timezone'" *ngIf="showPreviousYears(4)">{{ subtractYears(4)  | date:'y':'timezone'}}</mat-option>
-                            
-          </mat-select>
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
+        
+        <div class="morning-huddle-date">
+        <div class="morning-huddle-date topModel">
+          <mat-icon  (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{selectedMonthYear}}<mat-icon (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>    
+        </div> 
       </div>
-         <div class="showComplete" *ngIf="followupTickFollowups.length > 0">
+
+         <mat-card-title>
+          <div class="title-follow-up">
+            Tick Followups
+            <div class="info-icon-container"><img [tooltip]="this.constants.tipMHTickTable" src="../assets/images/info-icon.png"
+                alt="info-icon" class="info-icon" /></div>
+          </div>
+
+          <div class="showComplete" *ngIf="followupTickFollowups.length > 0">
             <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">Show Complete
             </mat-checkbox>
           </div>
+
+        </mat-card-title>
+      
            <div class="card-loading" *ngIf="endTaksLoadingLoading">
                 <img class="tableLoader" src="../../assets/images/logo-icon.gif">
               </div>
@@ -212,7 +175,7 @@
                 <td mat-cell *matCellDef="let element">
                   <mat-form-field floatLabel="never" class="setPreviousDay">
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
-                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'tick-follower')">
+                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.followup_date,element.original_appt_date, 'tick-follower')">
                       <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                       <mat-option value="">Select Status</mat-option>
                       <mat-option value="Booked">Booked</mat-option>
@@ -265,49 +228,28 @@
        <!-- Dentist Performance Tab -->
     <mat-tab label="Post op Calls">
 
-        <div class="morning-huddle-date">
-          <table class="filters">
-            <tr>
-              <td>
-        <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select [(ngModel)] = "selectedMonth" [(value)] = "selectedMonth"  (selectionChange)="refreshPerformanceTab($event.value)" id="setMonth">
-            <mat-option value="0">January</mat-option>
-            <mat-option value="1">February</mat-option>
-            <mat-option value="2">March</mat-option>
-            <mat-option value="3">April</mat-option>
-            <mat-option value="4">May</mat-option>
-            <mat-option value="5">June</mat-option>
-            <mat-option value="6">July</mat-option>
-            <mat-option value="7">August</mat-option>
-            <mat-option value="8">September</mat-option>
-            <mat-option value="9">October</mat-option>
-            <mat-option value="10">November</mat-option>
-            <mat-option value="11">December</mat-option>                         
-          </mat-select>
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field floatLabel="never" class="setPreviousDay">
-          <mat-select  [(ngModel)] = "selectedYear" [(value)] = "selectedYear" (selectionChange)="refreshPerformanceTab($event.value)" id="setYear">
-            <mat-option [value]="subtractYears(0) | date:'y':'timezone'" *ngIf="showPreviousYears(0)">{{ subtractYears(0) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(1) | date:'y':'timezone'"  *ngIf="showPreviousYears(1)">{{ subtractYears(1) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(2) | date:'y':'timezone'" *ngIf="showPreviousYears(2)">{{ subtractYears(2) | date:'y':'timezone' }}</mat-option>
-            <mat-option [value]="subtractYears(3) | date:'y':'timezone'" *ngIf="showPreviousYears(3)">{{ subtractYears(3)  | date:'y':'timezone'}}</mat-option>
-            <mat-option [value]="subtractYears(4) | date:'y':'timezone'" *ngIf="showPreviousYears(4)">{{ subtractYears(4)  | date:'y':'timezone'}}</mat-option>
-                            
-          </mat-select>
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
-      </div>
+         <div class="morning-huddle-date">
+        <div class="morning-huddle-date topModel">
+          <mat-icon  (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{selectedMonthYear}}<mat-icon (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>    
+        </div> 
+      </div> 
 
 
 
+          <mat-card-title>
+          <div class="title-follow-up">
+            Post op Calls
+            <div class="info-icon-container"><img [tooltip]="this.constants.tipMHPostOpTable" src="../assets/images/info-icon.png"
+                alt="info-icon" class="info-icon" /></div>
+          </div>
+          
         <div class="showComplete" *ngIf="followupPostOpCalls.length > 0">
             <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
               Complete</mat-checkbox>
           </div>
+
+        </mat-card-title>
+        
             <div class="card-loading" *ngIf="poLoadingLoading">
                 <img class="tableLoader" src="../../assets/images/logo-icon.gif">
               </div>

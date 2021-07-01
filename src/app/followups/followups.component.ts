@@ -11,6 +11,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../app.constants';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
 
 @Component({
   selector: 'notes-add-dialog',
@@ -52,8 +53,52 @@ export class FollowupsDialogComponent {
 }
 
 
+@Component({
+  selector: 'status-dialog',
+  templateUrl: './status.html',
+  encapsulation: ViewEncapsulation.None
+})
 
+export class StatusDialogComponent { 
+  @ViewChild(DaterangepickerComponent, { static: false }) datePicker: DaterangepickerComponent;
+  constructor(public dialogRef: MatDialogRef<StatusDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router,private followupsService: FollowupsService) {}
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+  save(data) {  
+    if( data.notes == '' || data.old == data.notes) {
+      return false;
+    }
+    this.followupsService.notes(data.notes,data.patientId, data.date,data.clinic_id).subscribe((res) => {
+      if (res.message == 'success') {
+        this.dialogRef.close();
+      } else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
+      console.log('error', error)
+    });
+  }
+  updateNextfollowUp(event,data){
+    console.log(data);
+     this.followupsService.updateStatus('Wants another follow-up',data.pid,data.cid,data.type,data.original_appt_date).subscribe((update:any) => {
+      this.onNoClick();
+      if(update.status){
+        this.followupsService.cloneRecord(data.pid,data.cid,data.type,data.followup_date,event.chosenLabel,data.original_appt_date).subscribe((update:any) => {
+        }); 
+      }
+        
+     }); 
+  }
+  handleUnAuthorization() {
+    this._cookieService.put("username", '');
+    this._cookieService.put("email", '');
+    this._cookieService.put("token", '');
+    this._cookieService.put("userid", '');
+    this.router.navigateByUrl('/login');
+  }
 
+}
 
 
 
@@ -133,8 +178,15 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public endTaksLoadingLoading:boolean = true;
     public poLoadingLoading:boolean = true;
     public recallLoadingLoading:boolean = true;
+    public selectedMonthYear:any ='';
+    public showDwDateArrow:boolean = true;
+    public showUpDateArrow:boolean = true;
+    
+
     public selectedMonth:string = new Date().getMonth().toString();
     public selectedYear:string = new Date().getFullYear().toString();
+
+
     public pageSize:number = 20;
     
     public orTablePages: number[] = [];
@@ -181,7 +233,7 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     setTimeout(() => {
       this.matTabGroup.realignInkBar();
     }, 500);    
-    
+    this.selectedMonthYear = this.datepipe.transform(new Date(), 'MMMM yyyy');    
  }
 ngAfterViewInit(): void {
     this.dentistList.paginator = this.paginator;
@@ -199,6 +251,10 @@ initiate_clinic() {
   if(val != undefined && val !='all') {
     this.clinic_id = val;
     $('#title').html('Follow Ups');  
+    
+    this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
+    this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
+
     this.getFollowupPostOpCalls();
     this.getOverdueRecalls();
     this.getTickFollowups();  
@@ -212,7 +268,9 @@ initiate_clinic() {
   
   }
 
-  refreshPerformanceTab(event){
+  refreshPerformanceTab(){
+    this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
+    this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
     this.getFollowupPostOpCalls();
     this.getOverdueRecalls();
     this.getTickFollowups();
@@ -220,8 +278,10 @@ initiate_clinic() {
 
 
   getFollowupPostOpCalls(){
-     this.poLoadingLoading = true;
-    this.followupsService.followupPostOpCalls( this.clinic_id, parseInt(this.selectedMonth)+1, this.selectedYear ).subscribe((production:any) => {
+      
+
+    this.poLoadingLoading = true;
+    this.followupsService.followupPostOpCalls( this.clinic_id, this.selectedMonth, this.selectedYear ).subscribe((production:any) => {
         this.poLoadingLoading = false;
       if(production.message == 'success') {
         this.followupPostOpCalls = production.data;   
@@ -244,7 +304,7 @@ initiate_clinic() {
 
   getOverdueRecalls(){
     this.recallLoadingLoading = true;
-    this.followupsService.followupOverdueRecalls( this.clinic_id, parseInt(this.selectedMonth)+1, this.selectedYear ).subscribe((production:any) => {
+    this.followupsService.followupOverdueRecalls( this.clinic_id, this.selectedMonth, this.selectedYear ).subscribe((production:any) => {
         this.recallLoadingLoading = false;
       if(production.message == 'success') {
         this.followupOverDueRecall = production.data;             
@@ -268,7 +328,7 @@ initiate_clinic() {
   public tipFutureDate = {};
   getTickFollowups(){
      this.endTaksLoadingLoading = true;
-    this.followupsService.followupTickFollowups( this.clinic_id,  parseInt(this.selectedMonth)+1, this.selectedYear).subscribe((production:any) => {
+    this.followupsService.followupTickFollowups( this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production:any) => {
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
         this.followupTickFollowups = production.data;     
@@ -326,11 +386,27 @@ initiate_clinic() {
     });      
   }
 
-  updateStatus(event,pid,date,cid,type) {    
-    this.followupsService.updateStatus(event,pid,cid,type, date).subscribe((update:any) => {
-      console.log(update,'***');  
-    }); 
+  updateStatus(event,pid,date,cid,followup_date,original_appt_date,type) {
+    if( event == 'Wants another follow-up' )
+    {    
+      const dialogRef = this.dialog.open(StatusDialogComponent, {
+        width: '450px',
+        data: {followup_date,pid,cid,type,original_appt_date}
+      });
+      dialogRef.afterClosed().subscribe(result => {    
+        if(type == 'tick-follower'){
+          this.getTickFollowups();  
+        } else {
+         this.getOverdueRecalls();
+       }
+      
+      });
+    } else {
+      this.followupsService.updateStatus(event,pid,cid,type, date).subscribe((update:any) => {}); 
+    }    
   }
+
+
 
 
 
@@ -435,8 +511,7 @@ initiate_clinic() {
           this.orTablePages.push(i + 1);
         }
     }
-    if(type == 'TH'){
-      console.log(totalData.length);
+    if(type == 'TH'){      
         this.thikTablePages = [];
         const totalPages = Math.ceil(totalData.length / this.pageSize);
         for (let i = 0; i < totalPages; i++) {
@@ -463,7 +538,6 @@ initiate_clinic() {
         var startIndex:number = (this.currentOpPage *  this.pageSize) - this.pageSize;      
     }    
     var endIndex:any = startIndex + this.pageSize;
-    console.log(startIndex, endIndex);
     var temp:any =[];
     totalData.forEach((data,key) => {
         if(parseInt(key) >= startIndex && parseInt(key) < endIndex ){
@@ -506,6 +580,17 @@ initiate_clinic() {
     
   }
 
+    setDate(type){
+      let todaysDate = new Date('01'+this.selectedMonthYear);
+      let selectedDate = new Date('01'+this.selectedMonthYear);
+      if(type == 'add'){
+        selectedDate.setMonth(todaysDate.getMonth() + 1);
+      } else {
+        selectedDate.setMonth(todaysDate.getMonth() - 1);
+      }
+      this.selectedMonthYear =  this.datepipe.transform(selectedDate, 'MMMM yyyy');
+      this.refreshPerformanceTab();        
+    }
 }
 
 
