@@ -747,7 +747,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 13
+        padding: 5
       },
       onClick: function (e) {
         e.stopPropagation();
