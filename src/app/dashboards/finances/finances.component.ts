@@ -735,6 +735,73 @@ callbacks: {
 }
 }
 };
+
+/************ Net Profit Percentage trend *************/
+  public labelBarOptionsSingleValue1: any = {
+    elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle:'rectRounded',
+        hoverBorderWidth:7
+      },
+    },
+    scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    barThickness: 10,
+    animation: {
+      duration: 500,
+      easing: 'easeOutSine'
+    },
+    scales: {
+      xAxes: [{ 
+        stacked:false,
+        ticks: {
+          autoSkip: false
+        }
+      }],
+      yAxes: [{ 
+        stacked:false,
+        ticks: {
+          callback: function(label, index, labels) {
+            if (Math.floor(label) === label) {
+              let currency = label<0 ? label.toString().split('-').join('') : label.toString();
+              currency = currency.split(/(?=(?:...)*$)/).join(',');
+              return `${label<0 ? '-' : ''}${currency}%`;
+            }
+          },
+        }, 
+      }],
+    },legend: {
+      display: true
+  },
+  tooltips: {
+    mode: 'x-axis',
+    custom: function(tooltip) {
+      if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = false;
+      },
+      callbacks: {
+        label: function(tooltipItems, data) { 
+          let label = tooltipItems.xLabel;
+          let currency = tooltipItems.yLabel;
+          currency = currency.toString().split('-').join('').split(/(?=(?:...)*$)/).join(',');
+        return `${label} : ${tooltipItems.yLabel < 0 ? '-' : ''}${currency}%`;
+      },
+      title: function(tooltipItem, data) {
+      return;
+      }
+    }
+  }
+};
+/************ Net Profit Percentage trend *************/
+
+
+
+
+
   
 public labelBarPercentOptions: any = {
       elements: {

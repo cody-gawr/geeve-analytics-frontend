@@ -133,7 +133,7 @@ public cvcStyle = {
   old_password_error;
   confirm_password_error;
   public clinic_id:any ={};
-  public selectedChartTip:string = 'clinic-health';
+  public selectedChartTip:string = '1';
   private warningMessage: string;
   public id:any ={};
   public clinicName:any =0;
@@ -208,22 +208,24 @@ public cvcStyle = {
       });
     }
 
-
-  public permisions='';
-  public showCard = true;
-getRoles() {      
-   this.rolesUsersService.getRoles().subscribe((res) => {
-       if(res.message == 'success'){ 
-         res.data.forEach(result => {
-          if(result.role_id == this._cookieService.get("user_type"))
-            this.permisions =result.permisions;
-         });
-    if(this.permisions,(this.permisions.split(",")).indexOf("profilesettings")<0)
-      this.showCard= false;
-       }
-    }, error => {
-    });
-  }
+/* CHECK PERMISSIONS */
+    public permisions='';
+    public showCard = true;
+    getRoles() {      
+      this.rolesUsersService.getRoles().subscribe((res) => {
+        if(res.message == 'success')
+        { 
+          res.data.forEach(result => 
+          {
+            if(result.role_id == this._cookieService.get("user_type"))
+              this.permisions =result.permisions;
+          });
+          if(this.permisions,(this.permisions.split(",")).indexOf("profilesettings") <0 )
+            this.showCard= false;
+        }
+      }, error => {});
+    }
+/* CHECK PERMISSIONS */
   // Sufix and prefix
   hide = true;
 public customer_id;
@@ -509,13 +511,58 @@ public fileToUpload;
   }
 
   /******** GET CHARTS TIPS*****/
-  public chartsTips:any[] = [];
+  public chartsTips:any = {};
+  public dashboards:any = {};
+  public chartsTipsLoader:boolean = true;
   getChartsTips() {
-      this.profileSettingsService.getChartsTips().subscribe((res) => {
-       console.log(res);
+      this.chartsTipsLoader = true;
+      this.profileSettingsService.getChartsTips().subscribe((resp) => {
+        this.chartsTipsLoader = false;
+        if(resp.message == 'success'){
+          resp.data.forEach((tip) => {
+            if(typeof(this.dashboards[tip.dashboard_id] =='undefined')){
+            
+              if(tip.dashboard_name.indexOf('-') > 0){
+                this.dashboards[tip.dashboard_id] = tip.dashboard_name.split('-')[1];
+              } else {
+                this.dashboards[tip.dashboard_id] = tip.dashboard_name;
+              }
+            }
+
+            if(typeof(this.chartsTips[tip.dashboard_id]) == 'undefined'){
+              this.chartsTips[tip.dashboard_id] = [];
+            }
+            var temp = {
+              'id':tip.id,
+              'chart_id':tip.chart_id,
+              'title':tip.title,
+              'tip_title':(tip.tip_title)? tip.tip_title : tip.title,
+              'description': (tip.tip_description)? tip.tip_description : tip.description,
+              'dashboard_id': tip.dashboard_id 
+            };
+            this.chartsTips[tip.dashboard_id].push(temp);
+          });
+        }       
       },error => {
       });
   }
   /******** GET CHARTS TIPS*****/
 
+  /******** SAVE CHARTS TIPS*****/
+  saveTips() {
+    this.chartsTipsLoader = true;
+     var tipsData:any = JSON.stringify(this.chartsTips); 
+     this.profileSettingsService.saveChartsTips(tipsData).subscribe((resp) => {
+        this.chartsTipsLoader = false;  
+        if(resp.message == 'success'){
+          Swal.fire(
+                  '',
+                  'Chart Tips are updated successfully',
+                  'success'
+                )
+        }       
+      },error => {});
+  }
+  /******** SAVE CHARTS TIPS*****/
+  
 }

@@ -162,7 +162,16 @@ var header = this.getHeaders();
     // GET CHARTS TIPS
     getChartsTips(): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/ChartsTips/ctGetTips",  { headers: header }).pipe(map((response: Response) => {
+        return this.http.get(this.apiUrl +"/ChartsTips/ctGetTips", { headers: header }).pipe(map((response: Response) => {
+            return response;
+        }));
+    }
+    // save CHARTS TIPS
+    saveChartsTips(data): Observable<any> {
+        var header = this.getHeaders(); 
+        const formData = new FormData();
+        formData.append('chart_tips', data);
+        return this.http.post(this.apiUrl +"/ChartsTips/ctSaveTips",formData,{ headers: header }).pipe(map((response: Response) => {
             return response;
         }));
     }

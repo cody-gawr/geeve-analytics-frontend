@@ -634,7 +634,7 @@ expenses_card custom_ngx_cw01">
 
                   <canvas *ngIf="(xeroConnect || myobConnect) && netProfitDisplayVal == 3 && netProfitPmsChartTrendLabels.length  > 0" #myCanvas2
                     class="profit3 net_profit" baseChart [datasets]="netProfitPmsChartTrend"
-                    [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptionsSingleValue" [legend]="false"
+                    [labels]="netProfitPmsChartTrendLabels" [options]="labelBarOptionsSingleValue1" [legend]="false"
                     [chartType]="lineChartType" (chartHover)="chartHovered($event)" [colors]="stackedChartColorsBar"
                     (chartClick)="chartClicked($event)"> </canvas>
                   <div
