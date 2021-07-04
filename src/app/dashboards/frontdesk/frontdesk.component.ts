@@ -569,8 +569,8 @@ public fdFtaRatioLoader:any;
             data.total =100;
           if(data.total_ta>100)
             data.total_ta =100;
-          this.ftaTotal = Math.round(data.total);
-          this.ftaPrevTotal = Math.round(data.total_ta);
+          this.ftaTotal = Math.round(data.total * 10) / 10;
+          this.ftaPrevTotal = Math.round(data.total_ta * 10) / 10;
           this.ftaGoal = data.goals;
           if(this.ftaTotal> this.ftaGoal)
             this.maxftaGoal = this.ftaTotal;
@@ -612,8 +612,8 @@ public maxutaGoal:any=0;
             data.total =100;
           if(data.total_ta>100)
             data.data_ta =100;
-          this.utaTotal = Math.round(data.total);
-          this.utaPrevTotal = Math.round(data.total_ta);
+          this.utaTotal = Math.round(data.total * 10) / 10;
+          this.utaPrevTotal = Math.round(data.total_ta * 10) / 10;
           this.utaGoal = data.goals;
  if(this.utaTotal> this.utaGoal)
             this.maxutaGoal = this.utaTotal;
@@ -1054,7 +1054,7 @@ toggleChangeProcess(){
                 data.data.forEach(res => {  
                   if(res.val>100)
                     res.val =100;
-                     this.ftaChartTrend1.push(Math.round(res.fta_ratio));
+                     this.ftaChartTrend1.push(Math.round(res.fta_ratio * 10) /10);
                    if(this.trendValue == 'c')
                    this.ftaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
@@ -1186,7 +1186,7 @@ toggleChangeProcess(){
                 data.data.forEach(res => {  
                   if(res.val>100)
                     res.val =100;
-                     this.utaChartTrend1.push(Math.round(res.uta_ratio));
+                     this.utaChartTrend1.push(Math.round(res.uta_ratio * 10) /10 );
                    if(this.trendValue == 'c')
                    this.utaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
                     else
