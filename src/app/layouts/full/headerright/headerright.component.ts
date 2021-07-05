@@ -164,6 +164,9 @@ export class AppHeaderrightComponent implements AfterViewInit  {
  
     // Get Dentist
     getDentists() {
+      if(this.clinic_id == 'all'){
+        return false;
+      }
       this.dentists = [];
       this.clinic_id && this.dentistService.getDentists(this.clinic_id).subscribe((res) => {
           this.showAll = true;
@@ -215,7 +218,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
       }
       this.selectedClinic = newValue;
       this.clinic_id = this.selectedClinic;
-     
+      
       this.getDentists(); 
       $('.internal_clinic').val(newValue);
       if(this.user_type_dentist != '2' && newValue != 'all'){
@@ -236,7 +239,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
         }
         }else{
           this.selectedDentist ='all';
-        }
+        }        
         this.loadDentist(this.selectedDentist);
       }    
     }

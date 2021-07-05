@@ -10,7 +10,7 @@
     <input matInput type="email" tabindex="1" [(ngModel)]="data.email"  class="mat-form-control" required="true"placeholder="">
   </div>
   <div class="sa-form-group">
-    <label>Select User Type</label>
+    <label>Select Role</label>
      <select required="true" class="sa_select mat-form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadDentist($event)">
       <option value ="6" *ngIf="loginUserType == '2'">Owner</option>
       <option value ="3">Practice Manager</option>

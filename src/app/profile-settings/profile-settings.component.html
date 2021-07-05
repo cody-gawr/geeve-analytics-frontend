@@ -105,7 +105,7 @@
     </mat-expansion-panel>
     <!-- Change Password End -->
     <!-- Update Card Details Start -->
-    <mat-expansion-panel *ngIf="userType == '2' || showCard == true">
+    <mat-expansion-panel [ngClass] ="showCard? 'show': 'hide'">
         <mat-expansion-panel-header>
             <mat-panel-title>Payment Method</mat-panel-title>
         </mat-expansion-panel-header>
@@ -149,8 +149,8 @@
     </mat-expansion-panel>
     <!-- Update Card Details End -->
     <!-- Update Card Details Start -->
-    <mat-expansion-panel *ngIf="false">
-    <!-- <mat-expansion-panel *ngIf="userType == '2' || showCard == true"> -->
+    <!-- <mat-expansion-panel *ngIf="false"> -->
+    <mat-expansion-panel [ngClass] ="showCard? 'show': 'hide'">
         <mat-expansion-panel-header>
             <mat-panel-title>Chart Tips (Coming Soon)</mat-panel-title>
         </mat-expansion-panel-header>

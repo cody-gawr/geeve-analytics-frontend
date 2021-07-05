@@ -210,8 +210,8 @@ public cvcStyle = {
 
 /* CHECK PERMISSIONS */
     public permisions='';
-    public showCard = true;
-    getRoles() {      
+    public showCard = false;
+    getRoles() {
       this.rolesUsersService.getRoles().subscribe((res) => {
         if(res.message == 'success')
         { 
@@ -220,8 +220,12 @@ public cvcStyle = {
             if(result.role_id == this._cookieService.get("user_type"))
               this.permisions =result.permisions;
           });
-          if(this.permisions,(this.permisions.split(",")).indexOf("profilesettings") <0 )
-            this.showCard= false;
+          if(this.permisions,(this.permisions.split(",")).indexOf("profilesettings") >= 0 )
+            this.showCard= true;
+
+          if(this.userType == '2'){
+            this.showCard= true;
+          }
         }
       }, error => {});
     }

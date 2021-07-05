@@ -2,7 +2,7 @@
 <h1 mat-dialog-title>Manage Roles</h1>
 <div mat-dialog-content class="SetRolesPopup sa_forms_design">
   <div class="sa-form-group">
-    <label>Select User Type</label>
+    <label>Select Role</label>
   <select class="sa_select sa_select_set_roles form-control" name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="loadPermisions($event)">
       <!--<option value ="" selected="true">Select User Type</option>-->
       <option value ="6"  *ngIf="loginUserType == '2'">Owner</option>

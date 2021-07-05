@@ -342,46 +342,29 @@ initiate_clinic() {
   }
 
   refreshPerformanceTab(){
-    //this.previousDays = event;
-    /*******Tab 1 *******/
-    this.getDentistPerformance();
-    this.getRecallRate();
-    this.getTreatmentRate();
-    this.getDentistList();
-    /*******Tab 1 *******/
-
     /*******Tab 2 *******/
     if(this.currentDentist == 0){
         this.currentDentist = null;
     }
-    //this.getSchedulePatients(this.currentDentist);
-    this.getScheduleNewPatients(this.currentDentist);
-    this.getScheduleHours(this.currentDentist);
-    this.getUnscheduleHours(this.currentDentist);
-    this.getAppointmentCards(this.currentDentist);
-    /*******Tab 2 *******/
-
-    /*******Tab 3 *******/
-    // this.getReAppointment();
-    //this.getUnscheduledPatients();
-    //this.getUnscheduledValues();
-    //this.getTodayPatients();
-    this.getTodayUnscheduledHours();
-    this.getChairUtilisationRate();
-    this.getTodayUnscheduledBal();
-    //this.getNoShow();
-    //this.getTodayPostopCalls();
-    /*******Tab 3 *******/
-    /*******Tab 4 *******/
-     this.getReminders();
-    /*******Tab 4 *******/
-    
-    /*******Tab 5 *******/
-    //this.getFollowupsUnscheduledPatients();
-    this.getFollowupPostOpCalls();
-    this.getOverdueRecalls();
-    this.getTickFollowups();
-    /*******Tab 5 *******/
+    if(this.user_type != '5'){
+      this.getDentistPerformance();
+      this.getRecallRate();
+      this.getTreatmentRate();
+      this.getDentistList();
+      this.getAppointmentCards(null);
+    }
+    if(this.user_type != '4')
+    {
+      this.getScheduleNewPatients(null);
+      this.getScheduleHours(null);
+      this.getUnscheduleHours(null);
+      this.getTodayUnscheduledHours();
+      this.getTodayUnscheduledBal();
+      this.getReminders();
+      this.getFollowupPostOpCalls();
+      this.getOverdueRecalls();
+      this.getTickFollowups();
+    }
     if(this.user_type != '4'){
       this.getEndOfDays();
       this.getEquipmentList();

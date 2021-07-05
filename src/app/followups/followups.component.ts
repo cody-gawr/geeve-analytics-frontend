@@ -507,22 +507,29 @@ initiate_clinic() {
     if(type == 'OR'){
         this.orTablePages = [];
         const totalPages = Math.ceil(totalData.length / this.pageSize);
-        for (let i = 0; i < totalPages; i++) {
-          this.orTablePages.push(i + 1);
+        if(totalPages > 1){
+          for (let i = 0; i < totalPages; i++) {
+            this.orTablePages.push(i + 1);
+          }
         }
+        
     }
     if(type == 'TH'){      
         this.thikTablePages = [];
         const totalPages = Math.ceil(totalData.length / this.pageSize);
-        for (let i = 0; i < totalPages; i++) {
-          this.thikTablePages.push(i + 1);
+        if(totalPages > 1){
+          for (let i = 0; i < totalPages; i++) {
+            this.thikTablePages.push(i + 1);
+          }
         }
     }  
     if(type == 'OP'){
         this.opTablePages = [];
         const totalPages = Math.ceil(totalData.length / this.pageSize);
-        for (let i = 0; i < totalPages; i++) {
-          this.opTablePages.push(i + 1);
+        if(totalPages > 1){
+          for (let i = 0; i < totalPages; i++) {
+            this.opTablePages.push(i + 1);
+          }
         }
     }    
   }
