@@ -501,9 +501,9 @@ getGoalsForTabsClinic(allGoals) {
     if(event.keyCode == 45 || (event.keyCode >= 48 && event.keyCode <= 57)){
       if(event.keyCode == 45){
         if($(event.target).hasClass('sign%')){
-          event.preventDefault();
+         /* event.preventDefault();
           event.stopPropagation();
-          return false;
+          return false;*/
         }
       }
       return true;

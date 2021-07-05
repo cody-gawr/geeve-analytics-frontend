@@ -6,6 +6,7 @@ import { RolesUsersService } from '../../../roles-users/roles-users.service';
 import { CookieService } from "ngx-cookie";
 import { HeaderService } from '../header/header.service';
 import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
+import { environment } from "../../../../environments/environment";
 
 @Component({
   selector: 'app-sidebar',
@@ -13,6 +14,7 @@ import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
   styleUrls: []
 })
 export class AppSidebarComponent implements OnDestroy,AfterViewInit {
+  private apiUrl = environment.apiUrl;
   public config: PerfectScrollbarConfigInterface = {};
   mobileQuery: MediaQueryList;
   public clinicsData:any[] = [];
@@ -79,20 +81,10 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   
   logout() {
       this.headerService.logout().subscribe((res) => {
-        this._cookieService.put("username",'');
-        this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
-        this._cookieService.put("userid", '');
-        this._cookieService.put("childid", '');
-        this._cookieService.put("dentistid", '');
+        this._cookieService.removeAll({ 'path': '/' });
         this.router.navigate(['/login']);       
     }, error => {
-        this._cookieService.put("username",'');
-        this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
-        this._cookieService.put("userid", '');
-        this._cookieService.put("childid", '');
-        this._cookieService.put("dentistid", '');
+        this._cookieService.removeAll({ 'path': '/' });
         this.router.navigate(['/login']);
     });
   }

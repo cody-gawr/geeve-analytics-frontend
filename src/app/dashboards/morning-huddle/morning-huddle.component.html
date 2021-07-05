@@ -102,7 +102,7 @@
                           <div  class="ttl_value_left profit" *ngIf="!recallRate.goal && !dentistrecallRateLoader">0%</div>
                           <div
                             [ngClass]="(recallRate.rate > recallRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'"
-                            *ngIf="recallRate.goal && !dentistrecallRateLoader">
+                            *ngIf="recallRate.goal && !dentistrecallRateLoader && recallRate.goal >= 0">
                             Goal: {{ (recallRate.goal > 100)? 100 : recallRate.goal }}%
                           </div>
                           <img *ngIf="recallRate.rate >= recallRate.goal" src="../assets/images/green-swirl.png"
@@ -163,7 +163,7 @@
                           <div class="ttl_value_left profit" *ngIf="!treatmentRate.goal  && !dentistTreatmentRateLoader">Goal: 0%</div>
                           <div
                             [ngClass]="(treatmentRate.total >= treatmentRate.goal) ? 'profit ttl_value_left' : 'loss ttl_value_left'"
-                            *ngIf="treatmentRate.goal  && !dentistTreatmentRateLoader">
+                            *ngIf="treatmentRate.goal  && !dentistTreatmentRateLoader && treatmentRate.goal >= 0">
                             Goal: {{  (treatmentRate.goal > 100)? 100 : treatmentRate.goal }}%
                           </div>
                           <img *ngIf="treatmentRate.total >= treatmentRate.goal" src="../assets/images/green-swirl.png"
@@ -238,7 +238,7 @@
                 <span *ngIf="element.recall.rate != 'N/A'"
                   [ngClass]="(element.recall.rate >= element.recall.goal)? 'mht-value-up' : 'mht-value-down'">{{element.recall.rate}}
                   % </span>
-                <span class="goal custom_goal">Goal:
+                <span *ngIf="element.recall.goal >= 0" class="goal custom_goal">Goal:
                   {{( element.recall.goal > 100)? 100 :  element.recall.goal }}%</span>
               </td>
             </ng-container>
@@ -249,7 +249,7 @@
                   [ngClass]="(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}%</span>
                 <span *ngIf="element.treatment.total == 'N/A'"
                   [ngClass]="(element.treatment.total >= element.treatment.goal)? 'mht-value-up' : 'mht-value-down'">{{element.treatment.total}}</span>
-                <span class="goal custom_goal">Goal:
+                <span *ngIf="element.treatment.goal >= 0" class="goal custom_goal">Goal:
                   {{ (element.treatment.goal  > 100 )? 100 : element.treatment.goal }}%</span>
               </td>
             </ng-container>
@@ -1204,7 +1204,7 @@
                 <td mat-cell *matCellDef="let element">
                   <mat-form-field floatLabel="never" class="setPreviousDay">
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote"
-                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'recall-overdue')">
+                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.followup_date,element.original_appt_date, 'recall-overdue')">
                       <mat-option value="">Select Status</mat-option>
                       <mat-option value="Booked">Booked</mat-option>
                       <mat-option value="Already booked">Already booked</mat-option>
@@ -1266,7 +1266,7 @@
                     <div fxFlex="70">
                       <mat-form-field floatLabel="never" class="setPreviousDay">
                         <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote1"
-                          (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'recall-overdue')">
+                          (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.followup_date,element.original_appt_date, 'recall-overdue')">
                           <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                           <mat-option value="">Select Status</mat-option>
                           <mat-option value="Booked">Booked</mat-option>
@@ -1366,7 +1366,7 @@
                 <td mat-cell *matCellDef="let element">
                   <mat-form-field floatLabel="never" class="setPreviousDay">
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
-                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'tick-follower')">
+                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.followup_date,element.original_appt_date, 'tick-follower')">
                       <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                       <mat-option value="">Select Status</mat-option>
                       <mat-option value="Booked">Booked</mat-option>
@@ -1443,7 +1443,7 @@
                     <div fxFlex="70">
                       <mat-form-field floatLabel="never" class="setPreviousDay">
                         <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote3"
-                          (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, 'tick-follower')">
+                          (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.followup_date,element.original_appt_date, 'tick-follower')">
                           <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                           <mat-option value="">Select Status</mat-option>
                           <mat-option value="Booked">Booked</mat-option>

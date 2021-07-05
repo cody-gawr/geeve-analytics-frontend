@@ -254,7 +254,8 @@ const data: any = require('assets/company.json');
 @Component({
   selector: 'app-table-filter',
   templateUrl: './roles-users.component.html',
-  styleUrls: ['./roles-users.component.scss']
+  styleUrls: ['./roles-users.component.scss'], 
+   encapsulation: ViewEncapsulation.None
 })
 export class RolesUsersComponent implements AfterViewInit {
   display_name: string;
@@ -265,15 +266,16 @@ export class RolesUsersComponent implements AfterViewInit {
   dentist_id = '';
 password:string;
 dentists:any=[];
+public userTypeLogin:any = '';
 public showRoleButton:boolean = false;
 initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
     this.clinic_id = val;
     this.getClinics();    
     this.getUsers();
-    this.getRoles();
-    this.getRolesIndividual();
+    this.getRoles();    
     this.getDentists();
+    this.userTypeLogin = this._cookieService.get("user_type");
   }
   ngAfterViewInit() {
     $('.header_filters').removeClass('hide_header'); 
@@ -308,6 +310,7 @@ initiate_clinic() {
   private warningMessage: string;
   public loginUserType = this._cookieService.get("user_type");
   openDialog(): void {
+    console.log(this.clinics,'****');
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '400px',
       data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,clinics:this.clinics,dentist_id:this.dentist_id }
@@ -580,20 +583,4 @@ initiate_clinic() {
     this.editing[rowIndex + '-' + cell] = true;
 
   }
-
-  getRolesIndividual() {      
-    this.showRoleButton = false;
-    this.rolesUsersService.getRolesIndividual().subscribe((res) => {
-      if(res.message == 'success'){ 
-        if(res.data == 'all'){
-          this.showRoleButton = true;
-        }else if(res.data.includes('managepermissions')){
-          this.showRoleButton = true;
-        }                                  
-      }
-    }, error => {
-    });
-  }
- 
-
 }

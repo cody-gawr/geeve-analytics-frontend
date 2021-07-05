@@ -10,6 +10,8 @@ import { HeaderService } from '../../layouts/full/header/header.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
+import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
+
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -70,6 +72,39 @@ export class DialogOverviewExampleDialogComponent {
 }
 
 
+
+@Component({
+  selector: 'status-dialog',
+  templateUrl: './status.html',
+  encapsulation: ViewEncapsulation.None
+})
+
+export class StatusDialogMHComponent { 
+  @ViewChild(DaterangepickerComponent, { static: false }) datePicker: DaterangepickerComponent;
+  constructor(public dialogRef: MatDialogRef<StatusDialogMHComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router,private morningHuddle: MorningHuddleService) {}
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  updateNextfollowUp(event,data){   
+     this.morningHuddle.updateStatus('Wants another follow-up',data.pid,data.cid,data.type,data.original_appt_date).subscribe((update:any) => {
+      this.onNoClick();
+      if(update.status){
+        this.morningHuddle.cloneRecord(data.pid,data.cid,data.type,data.followup_date,event.chosenLabel,data.original_appt_date).subscribe((update:any) => {
+        }); 
+      }
+        
+     }); 
+  }
+  handleUnAuthorization() {
+    this._cookieService.put("username", '');
+    this._cookieService.put("email", '');
+    this._cookieService.put("token", '');
+    this._cookieService.put("userid", '');
+    this.router.navigateByUrl('/login');
+  }
+
+}
 
 
 
@@ -803,9 +838,25 @@ initiate_clinic() {
     });      
   }
 
-  updateStatus(event,pid,date,cid,type) {    
-    this.morningHuddleService.updateStatus(event,pid,cid,type, date).subscribe((update:any) => {
-    }); 
+
+    updateStatus(event,pid,date,cid,followup_date,original_appt_date,type) {
+    if( event == 'Wants another follow-up' )
+    {    
+      const dialogRef = this.dialog.open(StatusDialogMHComponent, {
+        width: '450px',
+        data: {followup_date,pid,cid,type,original_appt_date}
+      });
+      dialogRef.afterClosed().subscribe(result => {    
+        if(type == 'tick-follower'){
+          this.getTickFollowups();  
+        } else {
+         this.getOverdueRecalls();
+       }
+      
+      });
+    } else {
+      this.morningHuddleService.updateStatus(event,pid,cid,type, date).subscribe((update:any) => {}); 
+    }    
   }
 
   endTime(app_date, start, duration){

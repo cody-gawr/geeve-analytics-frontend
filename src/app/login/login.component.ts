@@ -74,6 +74,7 @@ onSubmit() {
   this.errorLogin  =false;
   this.loginService.login(this.form.value.uname.trim(), this.form.value.password).subscribe((res) => 
   {
+    this._cookieService.removeAll({ 'path': '/' });
     if(res.message == 'success')
     {        
       var datares = [];
