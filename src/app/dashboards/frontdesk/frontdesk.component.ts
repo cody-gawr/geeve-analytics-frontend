@@ -283,7 +283,7 @@ this.predictedChartColors = [
                   let lbl = tooltipItems.xLabel.split('--');
                   tooltipItems.xLabel = lbl[0];
                 }        
-                return tooltipItems.xLabel+": "+ total;
+                return tooltipItems.xLabel+": "+ total + '%';
               },
               afterLabel: function(tooltipItems, data) {
                 let hour = 0;
