@@ -74,12 +74,12 @@
 
 
                     <canvas *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader" #myCanvas
-                      baseChart [datasets]="workTimeData" [labels]="workTimeLabels" [options]="stackedChartOptions"
+                      baseChart [datasets]="workTimeData" [labels]="workTimeLabels" [options]="stackedChartOptionsUti"
                       [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                     </canvas>
                     <canvas *ngIf="showTrend && wtaChartTrend1.length > 0 && utilityratemessage == false && !fdwtaRatioTrendLoader" #myCanvas baseChart
-                      [datasets]="wtaChartTrend" [labels]="wtaChartTrendLabels" [options]="stackedChartOptions"
+                      [datasets]="wtaChartTrend" [labels]="wtaChartTrendLabels" [options]="stackedChartOptionsUti"
                       [chartType]="stackedChartType" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                       <!-- [colors]="predictedChartColors"  -->

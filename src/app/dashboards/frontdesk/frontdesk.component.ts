@@ -215,6 +215,7 @@ this.predictedChartColors = [
       },
   callbacks: {
      label: function(tooltipItems, data) { 
+
       let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;
         return tooltipItems.xLabel+": "+ total + "%";
      },
@@ -228,6 +229,79 @@ this.predictedChartColors = [
             display: true
          }
   };
+
+
+
+  public stackedChartOptionsUti: any = {
+
+    scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    // barThickness: 10,
+      animation: {
+        duration: 500,
+        easing: 'easeOutSine'
+      },
+      fill:false,
+    scales: {
+      xAxes: [{ 
+        ticks: {
+          autoSkip: false,
+          callback: function (value, index, values) {
+            if(value.indexOf('--') >= 0){
+              let lbl = value.split('--');
+              value = lbl[0];
+            }
+            return value;
+          }
+        }
+      }],
+          yAxes: [{ 
+            // stacked:true,
+            ticks: {
+              min:0,
+              max:100,
+              userCallback: function(label, index, labels) {
+                     // when the floored value is the same as the value we have a whole number
+                     if (Math.floor(label) === label) {
+                         return label+"%";
+                     }
+                 },
+            },
+            }],
+        },
+        tooltips: {
+          mode: 'x-axis',
+          custom: function(tooltip) {
+            if (!tooltip) return;
+              tooltip.displayColors = false;
+            },
+            callbacks: {
+              label: function(tooltipItems, data) { 
+                let total = tooltipItems.yLabel > 100 ? 100 : tooltipItems.yLabel;    
+                if(tooltipItems.xLabel.indexOf('--') >= 0){
+                  let lbl = tooltipItems.xLabel.split('--');
+                  tooltipItems.xLabel = lbl[0];
+                }        
+                return tooltipItems.xLabel+": "+ total;
+              },
+              afterLabel: function(tooltipItems, data) {
+                let hour = 0;
+                if(tooltipItems.label.indexOf('--') >= 0){
+                  let lbl = tooltipItems.label.split('--');                
+                  hour = lbl[1];
+                } 
+               return "Hours: "+hour;
+              },
+              title: function() {
+                return "";
+            }
+          }
+        },
+        legend: {
+            display: true
+         }
+      };
 
 
 public stackedChartOptionsticks: any = {
@@ -493,7 +567,7 @@ public fdWorkTimeAnalysisLoader:boolean;
         data.data.forEach(res => {
           if(res.util_rate > 0) {
              this.workTimeData1.push(Math.round(res.util_rate * 100));
-            this.workTimeLabels1.push(res.app_book_name);
+            this.workTimeLabels1.push(res.app_book_name+' -- '+res.worked_hour); 
           }
         });
      }
@@ -1134,9 +1208,9 @@ toggleChangeProcess(){
                 data.data.forEach(res => {  
                      this.wtaChartTrend1.push(Math.round(res.util_rate * 100));
                    if(this.trendValue == 'c')
-                   this.wtaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                   this.wtaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y')+'--'+res.worked_hour);
                     else
-                   this.wtaChartTrendLabels1.push(res.year);
+                   this.wtaChartTrendLabels1.push(res.year+'--'+res.worked_hour);
                   
                  });
                  this.wtaChartTrend[0]['data'] = this.wtaChartTrend1;

@@ -526,12 +526,13 @@ public fileToUpload;
         if(resp.message == 'success'){
           resp.data.forEach((tip) => {
             if(typeof(this.dashboards[tip.dashboard_id] =='undefined')){
+              this.dashboards[tip.dashboard_id] = tip.dashboard_name;
             
-              if(tip.dashboard_name.indexOf('-') > 0){
+              /*if(tip.dashboard_name.indexOf('-') > 0){
                 this.dashboards[tip.dashboard_id] = tip.dashboard_name.split('-')[1];
               } else {
                 this.dashboards[tip.dashboard_id] = tip.dashboard_name;
-              }
+              }*/
             }
 
             if(typeof(this.chartsTips[tip.dashboard_id]) == 'undefined'){
