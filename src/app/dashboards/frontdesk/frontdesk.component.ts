@@ -291,7 +291,8 @@ this.predictedChartColors = [
                   let lbl = tooltipItems.label.split('--');                
                   hour = lbl[1];
                 } 
-               return "Hours: "+hour;
+              //  return "Hours: "+hour;
+              return "";
               },
               title: function() {
                 return "";
