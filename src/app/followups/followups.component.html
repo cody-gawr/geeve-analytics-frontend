@@ -69,7 +69,7 @@
                 <td mat-cell *matCellDef="let element">
                   <mat-form-field floatLabel="never" class="setPreviousDay">
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote"
-                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.followup_date,element.original_appt_date, 'recall-overdue')">
+                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id, element.patients.firstname, element.patients.surname ,element.original_appt_date,element.followup_date, 'recall-overdue')">
                       <mat-option value="">Select Status</mat-option>
                       <mat-option value="Booked">Booked</mat-option>
                       <mat-option value="Already booked">Already booked</mat-option>
@@ -175,7 +175,7 @@
                 <td mat-cell *matCellDef="let element">
                   <mat-form-field floatLabel="never" class="setPreviousDay">
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
-                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.followup_date,element.original_appt_date, 'tick-follower')">
+                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.patients.firstname, element.patients.surname,element.original_appt_date,element.followup_date, 'tick-follower')">
                       <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                       <mat-option value="">Select Status</mat-option>
                       <mat-option value="Booked">Booked</mat-option>

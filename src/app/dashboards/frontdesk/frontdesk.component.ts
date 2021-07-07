@@ -287,11 +287,13 @@ this.predictedChartColors = [
               },
               afterLabel: function(tooltipItems, data) {
                 let hour = 0;
+                let phour = 0;
                 if(tooltipItems.label.indexOf('--') >= 0){
                   let lbl = tooltipItems.label.split('--');                
                   hour = lbl[1];
+                  phour = lbl[2];
                 } 
-               return "Hours: "+hour;
+               return ["Scheduled Hours: "+phour,"Clinical Hours: "+hour];
               },
               title: function() {
                 return "";
@@ -567,7 +569,7 @@ public fdWorkTimeAnalysisLoader:boolean;
         data.data.forEach(res => {
           if(res.util_rate > 0) {
              this.workTimeData1.push(Math.round(res.util_rate * 100));
-            this.workTimeLabels1.push(res.app_book_name+' -- '+res.worked_hour); 
+            this.workTimeLabels1.push(res.app_book_name+'--'+res.worked_hour+'--'+res.planned_hour); 
           }
         });
      }
@@ -1208,9 +1210,9 @@ toggleChangeProcess(){
                 data.data.forEach(res => {  
                      this.wtaChartTrend1.push(Math.round(res.util_rate * 100));
                    if(this.trendValue == 'c')
-                   this.wtaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y')+'--'+res.worked_hour);
+                   this.wtaChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y')+'--'+res.worked_hour+'--'+res.planned_hour);
                     else
-                   this.wtaChartTrendLabels1.push(res.year+'--'+res.worked_hour);
+                   this.wtaChartTrendLabels1.push(res.year+'--'+res.worked_hour+'--'+res.planned_hour);
                   
                  });
                  this.wtaChartTrend[0]['data'] = this.wtaChartTrend1;

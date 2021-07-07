@@ -80,22 +80,28 @@ export class DialogOverviewExampleDialogComponent {
 })
 
 export class StatusDialogMHComponent { 
+  public nextDate:any = '';
   @ViewChild(DaterangepickerComponent, { static: false }) datePicker: DaterangepickerComponent;
   constructor(public dialogRef: MatDialogRef<StatusDialogMHComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router,private morningHuddle: MorningHuddleService) {}
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  updateNextfollowUp(event,data){   
+  updateNextfollowUp(data){   
      this.morningHuddle.updateStatus('Wants another follow-up',data.pid,data.cid,data.type,data.original_appt_date).subscribe((update:any) => {
       this.onNoClick();
       if(update.status){
-        this.morningHuddle.cloneRecord(data.pid,data.cid,data.type,data.followup_date,event.chosenLabel,data.original_appt_date).subscribe((update:any) => {
-        }); 
+         this.morningHuddle.cloneRecord(data.pid,data.cid,data.type,data.followup_date,this.nextDate,data.original_appt_date).subscribe((update:any) => {
+        });  
       }
         
      }); 
   }
+
+  updateNext(event){
+    this.nextDate = event.chosenLabel;
+  }
+
   handleUnAuthorization() {
     this._cookieService.put("username", '');
     this._cookieService.put("email", '');
@@ -822,12 +828,12 @@ initiate_clinic() {
   }
 
 
-    updateStatus(event,pid,date,cid,followup_date,original_appt_date,type) {
+    updateStatus(event,pid,date,cid,firstname,surname,original_appt_date,followup_date,type) {
     if( event == 'Wants another follow-up' )
     {    
       const dialogRef = this.dialog.open(StatusDialogMHComponent, {
         width: '450px',
-        data: {followup_date,pid,cid,type,original_appt_date}
+        data: {firstname,surname,pid,cid,type,original_appt_date,followup_date}
       });
       dialogRef.afterClosed().subscribe(result => {    
         if(type == 'tick-follower'){

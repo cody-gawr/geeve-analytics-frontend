@@ -1,12 +1,17 @@
 <div class="AddUserPopup"> 
-  <span class="closeStatus" (click)="onNoClick()">X</span>
-<h1 mat-dialog-title>Select Future Date</h1>
-<p>Current Follow-Up Date: {{ data.followup_date | date:'MMM d, y'}}</p>
+<h1 mat-dialog-title>Select Follow-up Date</h1>
+<p>Schedule new follow-up for: <strong>{{ data.firstname }} {{ data.surname }}</strong></p>
 <ngx-daterangepicker-material
   [singleDatePicker]="true"
   [showDropdowns]="true"
-  [locale]= "{ applyLabel: 'Select', displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
-  (choosedDate)="updateNextfollowUp($event,data)"
+  [autoApply] = "true"
+  [locale]= "{displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
+  (choosedDate)="updateNext($event)"
 >
 </ngx-daterangepicker-material>     
+
+<div class="sa-form-group-btn" style="width: 100%;">
+  <button class="save-button" type="submit" (click)="onNoClick()"  style="margin-right: 20px;">Cancel</button>
+    <button class="save-button" type="submit" (click) ="updateNextfollowUp(data)">Save</button>
+</div>
 </div>
