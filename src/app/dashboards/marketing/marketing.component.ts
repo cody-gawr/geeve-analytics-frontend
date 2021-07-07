@@ -16,7 +16,7 @@ import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
-
+import { ChartstipsService } from '../../shared/chartstips.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -68,6 +68,7 @@ export class MarketingComponent implements AfterViewInit {
   public Apirequest =0;
   public newPatientsReferral$ = new BehaviorSubject<number>(0);
   public revenueByReferralCount$ = new BehaviorSubject<number>(0);
+  public charTips:any = [];
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
@@ -88,9 +89,12 @@ export class MarketingComponent implements AfterViewInit {
     private clinicSettingsService: ClinicSettingsService, 
     public decimalPipe: DecimalPipe, 
     private chartService: ChartService,
-    public constants: AppConstants
+    public constants: AppConstants,
+    public chartstipsService: ChartstipsService
     
-    ) { }
+    ) {
+     this.getChartsTips();
+      }
   
   private warningMessage: string; 
   private myTemplate: any = "";
@@ -1874,6 +1878,14 @@ monthDiff(d1, d2) {
     months += d2.getMonth();
     return months <= 0 ? 0 : months;
 }
+
+  getChartsTips() {
+    this.chartstipsService.getCharts(4).subscribe((data) => {
+       if(data.message == 'success'){         
+        this.charTips = data.data;
+       }
+    }, error => {});
+  }
 
 
 }

@@ -9,6 +9,7 @@ import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import { ChartstipsService } from '../../shared/chartstips.service';
 import { AppConstants } from '../../app.constants';
 export interface Dentist {
   providerId: string;
@@ -79,6 +80,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public unscheduledproduction: boolean = true;
   public hoursrateleaders: boolean = true;
   public refreralleaders: boolean = true;
+  public charTips:any = [];
 
 
   constructor(
@@ -91,8 +93,10 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private toastr:ToastrService,
     private clinicSettingsService: ClinicSettingsService,
-    public constants: AppConstants
+    public constants: AppConstants,
+    public chartstipsService: ChartstipsService
     ){   
+    this.getChartsTips();
   }
   private warningMessage: string;
   ngAfterViewInit() {  
@@ -524,6 +528,13 @@ public newPatientsTimeClinic=[];
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
+  } 
+  getChartsTips() {
+    this.chartstipsService.getCharts(6).subscribe((data) => {
+       if(data.message == 'success'){         
+        this.charTips = data.data;
+       }
+    }, error => {});
   }
 
 

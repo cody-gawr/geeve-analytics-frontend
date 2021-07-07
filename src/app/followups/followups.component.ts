@@ -12,7 +12,7 @@ import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../app.constants';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
-
+import { ChartstipsService } from '../shared/chartstips.service';
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -184,7 +184,7 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public selectedMonthYear:any ='';
     public showDwDateArrow:boolean = true;
     public showUpDateArrow:boolean = true;
-    
+     public charTips:any = [];
 
     public selectedMonth:string = new Date().getMonth().toString();
     public selectedYear:string = new Date().getFullYear().toString();
@@ -214,8 +214,10 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     private router: Router,
     private toastr: ToastrService,
     public constants: AppConstants,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public chartstipsService: ChartstipsService
     ) {  
+    this.getChartsTips();
  }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
@@ -601,6 +603,14 @@ initiate_clinic() {
       this.selectedMonthYear =  this.datepipe.transform(selectedDate, 'MMMM yyyy');
       this.refreshPerformanceTab();        
     }
+
+  getChartsTips() {
+    this.chartstipsService.getCharts(7).subscribe((data) => {
+       if(data.message == 'success'){         
+        this.charTips = data.data;
+       }
+    }, error => {});
+  }
 }
 
 

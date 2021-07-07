@@ -11,7 +11,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
 import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
-
+import { ChartstipsService } from '../../shared/chartstips.service';
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -222,7 +222,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public equipmentListLoading:boolean =  true;
     public amButton:boolean =  true;
     public pmButton:boolean =  true;
-    
+    public charTips:any = [];
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
@@ -247,8 +247,10 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     private router: Router,
     private toastr: ToastrService,
     public constants: AppConstants,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public chartstipsService: ChartstipsService
     ) { 
+    this.getChartsTips();
  }
 
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
@@ -1021,6 +1023,14 @@ initiate_clinic() {
     var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
     console.log(diffTime);
     return diffTime;
+  }
+
+  getChartsTips() {
+    this.chartstipsService.getCharts(7).subscribe((data) => {
+       if(data.message == 'success'){         
+        this.charTips = data.data;
+       }
+    }, error => {});
   }
 }
 

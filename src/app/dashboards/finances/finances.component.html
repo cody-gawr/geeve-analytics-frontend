@@ -68,7 +68,7 @@
               </div>
               <div class="info-button">
                 <div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipFinProduction" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  <img [tooltip]="charTips['31']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </div>
 
@@ -96,7 +96,7 @@
                 </div>
                 <div class="info-button">
                   <div class="info-icon-container">
-                    <img [tooltip]="this.constants.tipNetProfit" src="../assets/images/info-icon.png" alt="info-icon"
+                    <img [tooltip]="charTips['26']" src="../assets/images/info-icon.png" alt="info-icon"
                       class="info-icon" />
                   </div>
                 </div>
@@ -134,7 +134,7 @@
                 </div>
                 <div class="info-button">
                   <div class="info-icon-container">
-                    <img [tooltip]="this.constants.tipNetProfitPercent" src="../assets/images/info-icon.png" alt="info-icon"
+                    <img [tooltip]="charTips['27']" src="../assets/images/info-icon.png" alt="info-icon"
                       class="info-icon" />
                   </div>
                 </div>
@@ -156,9 +156,10 @@
 expenses_card custom_ngx_cw01">
           <mat-card class="chart_card">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center"> Expenses<div class="info-icon-container">
+              <mat-card-title class="text-center"> Expenses
+                <div class="info-icon-container">
 
-                  <img [tooltip]="this.constants.tipExpenses" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  <img [tooltip]="charTips['29']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 
                 </div>
               </mat-card-title>
@@ -280,7 +281,7 @@ expenses_card custom_ngx_cw01">
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">Production % Per Clinician
               <div class="info-icon-container">
-                <img [tooltip]="this.constants.tipProdPercentPerClinician" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                <img [tooltip]="charTips['30']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body clinician-center-chart">
@@ -323,7 +324,7 @@ expenses_card custom_ngx_cw01">
                   Production Per Visit
                 </div>
                 <div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipProdPerVisit" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  <img [tooltip]="charTips['32']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="card-body clinician-center-chart">
@@ -373,7 +374,7 @@ expenses_card custom_ngx_cw01">
                   Total Discounts
                 </span>
                 <div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipDiscounts" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  <img [tooltip]="charTips['34']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="card-body chart-spacing">
@@ -466,8 +467,9 @@ expenses_card custom_ngx_cw01">
           class="sa_flexbg predictor_ratio total_val md_mrn custom_ngx_cw05">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Total Production & Collection<div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipProdVsCollection" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+              <mat-card-title class="text-center">Total Production & Collection
+                <div class="info-icon-container">
+                  <img [tooltip]="charTips['33']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="card-body">
@@ -582,8 +584,12 @@ expenses_card custom_ngx_cw01">
           class="sa_flexbg predictor_ratio md_mrn ">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">{{ profitChartTitles[netProfitDisplayVal-1] }}<img alt="info-icon"
-                  class="info-icon" src="../assets/images/info-icon.png">
+              <mat-card-title class="text-center">{{ profitChartTitles[netProfitDisplayVal-1] }}
+                <div class="info-icon-container">
+                  <img *ngIf="netProfitDisplayVal == 1" [tooltip]="charTips['31']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  <img *ngIf="netProfitDisplayVal == 2" [tooltip]="charTips['26']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  <img *ngIf="netProfitDisplayVal == 3" [tooltip]="charTips['27']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+              </div>
               </mat-card-title>
               <div class="card-body">
                 <div class="sa_tabs_main_sec">
@@ -675,8 +681,9 @@ expenses_card custom_ngx_cw01">
           class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Production Per Visit<div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipProdPerVisit" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+              <mat-card-title class="text-center">Production Per Visit
+                <div class="info-icon-container">
+                  <img [tooltip]="charTips['32']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="card-body">
@@ -715,7 +722,7 @@ expenses_card custom_ngx_cw01">
 
                 </div>
                 <div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipExpensesTrend" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                  <img [tooltip]="charTips['28']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
 
@@ -759,8 +766,9 @@ expenses_card custom_ngx_cw01">
           class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Total Discounts <div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipDiscounts" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+              <mat-card-title class="text-center">Total Discounts 
+                <div class="info-icon-container">
+                  <img [tooltip]="charTips['34']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="card-body">
@@ -798,8 +806,9 @@ expenses_card custom_ngx_cw01">
           class="sa_flexbg predictor_ratio md_mrn">
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Total Production & Collection<div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipProdVsCollection" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+              <mat-card-title class="text-center">Total Production & Collection
+                <div class="info-icon-container">
+                  <img [tooltip]="charTips['33']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
 
               </mat-card-title>
@@ -833,8 +842,9 @@ expenses_card custom_ngx_cw01">
 
           <mat-card class="">
             <mat-card-content class="sa_matcard_content">
-              <mat-card-title class="text-center">Production % Per Clinician<div class="info-icon-container">
-                  <img [tooltip]="this.constants.tipProdPercentPerClinician" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+              <mat-card-title class="text-center">Production % Per Clinician
+                <div class="info-icon-container">
+                  <img [tooltip]="charTips['30']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                 </div>
               </mat-card-title>
               <div class="card-body">

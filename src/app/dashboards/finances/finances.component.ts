@@ -15,7 +15,7 @@ import { ChartService } from '../chart.service';
 import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
-
+import { ChartstipsService } from '../../shared/chartstips.service';
 export interface Dentist { 
   providerId: string;
   name: string;
@@ -43,7 +43,7 @@ export class FinancesComponent implements AfterViewInit {
   public productionstats: boolean = true;
   public expensestrendstats: boolean = true;
   public connectedwith:any;
-  
+  public charTips:any = [];
   public pieChartColors = [
     {
       backgroundColor: [
@@ -123,8 +123,10 @@ single = [
     private router: Router,
     private clinicSettingsService: ClinicSettingsService,
     private chartService: ChartService,
-    public constants: AppConstants
+    public constants: AppConstants,
+    public chartstipsService: ChartstipsService
     ){
+      this.getChartsTips();
     }
 
   private warningMessage: string;
@@ -2804,6 +2806,14 @@ private finTotalDiscountsTrend() {
     var num_parts = num.toString().split(".");
     num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return num_parts.join(".");
+  }
+
+  getChartsTips() {
+    this.chartstipsService.getCharts(5).subscribe((data) => {
+       if(data.message == 'success'){         
+        this.charTips = data.data;
+       }
+    }, error => {});
   }
 
 }

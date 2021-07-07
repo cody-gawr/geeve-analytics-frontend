@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import { HeaderService } from './../layouts/full/header/header.service';
 import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../app.constants';
+import { ChartstipsService } from '../shared/chartstips.service';
 @Component({
   selector: 'app-lost-opportunity',
   templateUrl: './lost-opportunity.component.html',
@@ -32,14 +33,18 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 	public production:number = 0;
 	public productionReal:number = 0;
 	public productionImp:number = 0;
+	public charTips:any = [];
 	constructor(
 		public lostOpportunityService: LostOpportunityService, 
 		private _cookieService: CookieService,
 		private router: Router,
 		private toastr: ToastrService,
 		private headerService: HeaderService,
-		public constants: AppConstants
-		) { }
+		public constants: AppConstants,
+		public chartstipsService: ChartstipsService
+		) { 
+		this.getChartsTips();
+	}
 
   	ngOnInit() {
   		  $('#currentDentist').attr('did','all');
@@ -118,5 +123,11 @@ export class LostOpportunityComponent implements OnInit, OnDestroy {
 	countDiscount(amount, discount){
 		return Math.round(( amount * discount ) / 100);  	
 	}
-
+	 getChartsTips() {
+    this.chartstipsService.getCharts(8).subscribe((data) => {
+       if(data.message == 'success'){         
+        this.charTips = data.data;
+       }
+    }, error => {});
+  }
 }

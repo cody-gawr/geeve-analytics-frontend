@@ -12,6 +12,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import { ChartService } from '../chart.service';
 import { AppConstants } from '../../app.constants';
+import { ChartstipsService } from '../../shared/chartstips.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -43,6 +44,7 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     public childid='';
     public trendText;
     public Apirequest =0;
+      public charTips:any = [];
     private _routerSub = Subscription.EMPTY;
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -66,8 +68,10 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private numPipe: DecimalPipe,
     private chartService: ChartService,
-    public constants: AppConstants
+    public constants: AppConstants,
+    public chartstipsService: ChartstipsService
   ){
+    this.getChartsTips();
          this._routerSub = this.router.events
          .filter(event => event instanceof NavigationEnd)
          .subscribe((value) => {
@@ -2625,5 +2629,13 @@ toggleChangeProcess(){
       this.procedureAnalysisVisibility = typeVisible;
       return true;
     } 
+
+    getChartsTips() {
+      this.chartstipsService.getCharts(2).subscribe((data) => {
+       if(data.message == 'success'){         
+        this.charTips = data.data;
+       }
+    }, error => {});
+  }
 }
 

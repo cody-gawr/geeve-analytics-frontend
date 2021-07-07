@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
+import { ChartstipsService } from '../../shared/chartstips.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -32,6 +33,7 @@ export class FrontDeskComponent implements AfterViewInit {
    public dentistCount:any ={};
     public clinicsData:any[] = [];
   public trendText;
+  public charTips:any = [];
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   constructor(
@@ -44,12 +46,15 @@ export class FrontDeskComponent implements AfterViewInit {
     private _cookieService: CookieService, 
     private router: Router, 
     private chartService: ChartService,
-    public constants: AppConstants
+    public constants: AppConstants,
+    public chartstipsService: ChartstipsService
     ){
+     this.getChartsTips();
   }
   private warningMessage: string; 
  private myTemplate: any = "";
  public Apirequest =0;
+
 
     initiate_clinic() {
     var val = $('#currentClinic').attr('cid');
@@ -1493,7 +1498,15 @@ toggleChangeProcess(){
     });
   }
   goalToggle(val) {
-     this.goalchecked = val;
-      this.fdWorkTimeAnalysis();  
-    }
+    this.goalchecked = val;
+    this.fdWorkTimeAnalysis();  
+  }
+
+  getChartsTips() {
+    this.chartstipsService.getCharts(3).subscribe((data) => {
+       if(data.message == 'success'){         
+        this.charTips = data.data;
+       }
+    }, error => {});
+  }
   }

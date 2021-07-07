@@ -18,6 +18,7 @@ import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { TooltipLayoutComponent } from '../../shared/tooltip/tooltip-layout.component';
 import { AppConstants } from '../../app.constants';
+import { ChartstipsService } from '../../shared/chartstips.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -57,7 +58,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public user_type: string = '';
 
   public proCollShow: number = 1;
-
+  public charTips:any = [];
 
   public flag = false;
   private _routerSub = Subscription.EMPTY;
@@ -83,8 +84,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     private toastr: ToastrService,
     private decimalPipe: DecimalPipe,
     private chartService: ChartService,
-    public constants: AppConstants
+    public constants: AppConstants,
+    public chartstipsService: ChartstipsService
   )  {
+    this.getChartsTips();
     this._routerSub = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((value) => {
@@ -3652,6 +3655,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   changeProduction(val){
     this.proCollShow = parseInt(val);
+  }
+
+  getChartsTips() {
+    this.chartstipsService.getCharts(1).subscribe((data) => {
+       if(data.message == 'success'){         
+        this.charTips = data.data;
+       }
+    }, error => {});
   }
 }
 
