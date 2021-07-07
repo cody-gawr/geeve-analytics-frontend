@@ -100,6 +100,15 @@
                 <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.saturday }}" name="saturday" (change)="toggle($event)">Saturday</mat-slide-toggle>
               </div>
           </div>
+
+           <div class="working-days" *ngIf="false">  
+              <h4 class="clinic-settings-form-title">MH Daily Tasks</h4>
+              <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.sunday }}" name="sunday" (change)="toggle($event)">Equipment List</mat-slide-toggle>
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ workingDays.monday }}" name="monday" (change)="toggle($event)">Daily Tasks</mat-slide-toggle>
+              </div>
+          </div>
+
           <div class="post-op-codes">
             <h4 class="clinic-settings-form-title">Post Op Calls Codes</h4>          
             <div class="sa-form-group clinic-setting-form">
