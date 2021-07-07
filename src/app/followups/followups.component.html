@@ -101,7 +101,7 @@
               <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
                 [ngClass]="(followupOverDueRecallInCMP.length <= 0)? 'show' : 'hide'"></mat-footer-row>
             </table>        
-            <ul class="main_pagination settings-table-pagination" *ngIf="orTablePages.length">
+            <ul class="main_pagination settings-table-pagination followup" *ngIf="orTablePages.length">
             <li *ngFor="let page of orTablePages">
               <button [ngClass]="{ active: page === currentORPage, page: true }" (click)="handlePageChange(page,'OR')">{{ page }}</button>
             </li>
@@ -218,7 +218,7 @@
               <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
                 [ngClass]="(followupTickFollowupsInCMP.length <= 0)? 'show' : 'hide'"></mat-footer-row>
             </table>
-            <ul class="main_pagination settings-table-pagination" *ngIf="thikTablePages.length">
+            <ul class="main_pagination settings-table-pagination followup" *ngIf="thikTablePages.length">
             <li *ngFor="let page of thikTablePages">
               <button [ngClass]="{ active: page === currentThickPage, page: true }" (click)="handlePageChange(page,'TH')">{{ page }}</button>
             </li>
@@ -253,8 +253,7 @@
             <div class="card-loading" *ngIf="poLoadingLoading">
                 <img class="tableLoader" src="../../assets/images/logo-icon.gif">
               </div>
-           <table mat-table [dataSource]="followupPostOpCallsInComp"
-              class="mat-elevation-z8 customWidth PostOp">
+           <table mat-table [dataSource]="followupPostOpCallsInComp" class="mat-elevation-z8 customWidth PostOp">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Patient Name </th>
@@ -312,7 +311,7 @@
                 [ngClass]="(followupPostOpCallsInComp.length <= 0)? 'show' : 'hide'"></mat-footer-row>
             </table>
 
-            <ul class="main_pagination settings-table-pagination" *ngIf="opTablePages.length">
+            <ul class="main_pagination settings-table-pagination followup" *ngIf="opTablePages.length">
             <li *ngFor="let page of opTablePages">
               <button [ngClass]="{ active: page === currentOpPage, page: true }" (click)="handlePageChange(page,'OP')">{{ page }}</button>
             </li>

@@ -270,7 +270,7 @@ table.filters td {
 
 table.customWidth.thick{
     overflow: auto;
-    margin-bottom: 5px;
+    margin-bottom: 60px;
 }
 .info-icon-container.tick {
     position: relative;
@@ -333,4 +333,21 @@ table.customWidth.thick{
 }
 .md-drppicker {
     box-shadow: 0px 0px 15px !important;
+}
+
+
+.mat-column-note, .mat-column-date {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 15% !important;
+    width: 15% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+.main_pagination.followup {
+   padding: 0px;
 }
