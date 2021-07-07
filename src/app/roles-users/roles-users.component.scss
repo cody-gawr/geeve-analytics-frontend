@@ -22,3 +22,12 @@
 .AddUserPopup{
     text-align :left;
 }
+.AddUserPopup .mat-select-trigger{
+    width: 106% !important;
+}
+.AddUserPopup .mat-select-arrow{
+    border: 0px solid !important;
+}
+.AddUserPopup .sa_select{
+    cursor: pointer;
+}
