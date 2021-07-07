@@ -70,8 +70,8 @@
           <button *ngIf="rows[rowIndex]['usertype'] != 'Owner'" class="action_btn danger" mat-menu-item (click) = "deleteUser(rowIndex)">
          <i class="ti-trash text-danger m-r-10"></i></button>
 
-         <a *ngIf="rows[rowIndex]['displayName'] == 'Owner' && loginUserType == '2'" (click) = "editDialog(rowIndex)" class="action_btn golden" title= 'Import CSV'><i class="ti-pencil  m-r-10"></i></a>
-          <button *ngIf="rows[rowIndex]['displayName'] == 'Owner' && loginUserType == '2'" class="action_btn danger" mat-menu-item (click) = "deleteUser(rowIndex)">
+         <a *ngIf="rows[rowIndex]['usertype'] == 'Owner' && loginUserType == '2'" (click) = "editDialog(rowIndex)" class="action_btn golden" title= 'Import CSV'><i class="ti-pencil  m-r-10"></i></a>
+          <button *ngIf="rows[rowIndex]['usertype'] == 'Owner' && loginUserType == '2'" class="action_btn danger" mat-menu-item (click) = "deleteUser(rowIndex)">
          <i class="ti-trash text-danger m-r-10"></i></button>
         </ng-template>
       </ngx-datatable-column>
