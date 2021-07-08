@@ -161,11 +161,12 @@ public cvcStyle = {
         this.imageURL = this._cookieService.get("user_image");   
         if( this._cookieService.get("user_type") != '2')     
           this.getRoles();
-        else
-           this.showCard= true;
+        else{
+            this.showCard= true;
+            this.getPaymentDetails();
+        }
          
           this.getChartsTips()
-          this.getPaymentDetails();
           this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
           this.stripeTest = this.fb.group({
             name: ['', [Validators.required]]
@@ -224,8 +225,10 @@ public cvcStyle = {
               this.permisions =result.permisions;
           });
 
-          if(this.permisions,(this.permisions.split(",")).indexOf("profilesettings") >= 0 )
+          if(this.permisions,(this.permisions.split(",")).indexOf("profilesettings") >= 0 ){
             this.showCard= true;
+            this.getPaymentDetails();
+          }
           
         }
       }, error => {});
