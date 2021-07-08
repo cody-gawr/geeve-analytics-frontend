@@ -55,6 +55,9 @@ export class ClinicSettingsComponent implements OnInit {
           public xeroOrganization='';
           public myobConnect = false;
           public myobOrganization='';
+          public equipmentList:boolean = true;
+          public dailyTasks:boolean = true;
+
           public workingDays:any = {sunday: false,monday: true,tuesday: true,wednesday: true,thursday: true,friday: true,saturday: true};       
   constructor( private toastr: ToastrService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
     this.options = fb.group({

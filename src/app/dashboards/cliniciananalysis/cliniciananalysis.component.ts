@@ -466,8 +466,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.data.datasets.forEach(function (dataset, i) {
           var meta = chartInstance.controller.getDatasetMeta(i);
           meta.data.forEach(function (bar, index) {
-          var data = dataset.data[index];
-          ctx.fillText(data, bar._model.x, bar._model.y - 5);
+              var data = "$"+dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              ctx.fillText(data, bar._model.x, bar._model.y - 5);
           });
         });
       }
@@ -3734,19 +3734,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
        }
     }, error => {});
   }
-  
+
 
   public showTopVlaues = false;
   setTopValues(){
     if(this.showTopVlaues == false){
       this.showTopVlaues = true;
       this.barChartOptionsDP1 = this.barChartOptions1;
-      this.buildChart();
     } else {
       this.showTopVlaues = false;
       this.barChartOptionsDP1 = this.barChartOptions;
       this.barChartOptionsDP1.animation.duration = 1;
-      this.buildChart();
     }
   }
 }
