@@ -444,6 +444,75 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     // },
   };
 
+
+  public barChartOptions1: any = {
+    borderRadius: 50,
+    hover: {mode: null},
+    scaleShowVerticalLines: false,
+    cornerRadius: 60,
+    curvature: 1,
+    animation: 
+    {
+      duration: 1,
+      easing: 'linear',
+      onComplete: function () 
+      {
+        var chartInstance = this.chart,
+        ctx = chartInstance.ctx;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = "rgba(0, 0, 0, 1)";
+        ctx.textBaseline = 'bottom';
+        // Loop through each data in the datasets
+        this.data.datasets.forEach(function (dataset, i) {
+          var meta = chartInstance.controller.getDatasetMeta(i);
+          meta.data.forEach(function (bar, index) {
+          var data = dataset.data[index];
+          ctx.fillText(data, bar._model.x, bar._model.y - 5);
+          });
+        });
+      }
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: 
+    {
+      xAxes: [{
+        gridLines: 
+        {
+          display: true
+        },
+        ticks: {
+          autoSkip: false,
+          userCallback: (label: string) => {
+            const names = this.splitName(label);
+            if (names.length > 1) {
+              return `${names[0][0]} ${names[1]}`
+            } else 
+            return `${names[0]}`;
+          }
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          suggestedMin: 0,
+          userCallback: (label, index, labels) => 
+          {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+            return '$' + this.decimalPipe.transform(label);
+            }
+          }
+        },
+        gridLines: {}
+      }]
+    },
+    tooltips: {
+     enabled: false
+    },
+  };
+
+
+
   public barChartOptionsTrend: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
@@ -1052,7 +1121,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public productionTooltip = 'down';
   public productionTotalPrev;
-  public barChartOptionsDP: any = this.barChartOptions;
+  public barChartOptionsDP1: any = this.barChartOptions;
   public buildChartLoader: boolean = false;
   public dentistKey;
   public DPcolors: any;
@@ -1064,7 +1133,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.barChartLabels1 = [];
     this.productionTotal = 0;
     this.barChartLabels = [];
-    this.barChartOptionsDP.annotation = [];
+    this.barChartOptionsDP1.annotation = [];
    this.clinic_id && this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.barChartData1 = [];
       this.barChartLabels1 = [];
@@ -1125,9 +1194,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         
   if(this.productionTotal >= this.productionTotalPrev)
           this.productionTooltip = 'up';
-        this.barChartOptionsDP.annotation = [];
+        this.barChartOptionsDP1.annotation = [];
         if (this.goalchecked == 'average') {
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP1.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -1145,7 +1214,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         }
         else if (this.goalchecked == 'goal') {
 
-          this.barChartOptionsDP.annotation = {
+          this.barChartOptionsDP1.annotation = {
             drawTime: 'afterDatasetsDraw',
             annotations: [{
               drawTime: 'afterDraw',
@@ -1196,6 +1265,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public collectionTotalPrev:any = 0;
   public collectionTotalGoal:any = 0; 
   public collectionTooltip:string =''; 
+  public barChartOptionsDP: any = this.barChartOptions;
 
  private collectionChart() {
     this.collectionLoader = true;
@@ -3663,6 +3733,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.charTips = data.data;
        }
     }, error => {});
+  }
+
+  public showTopVlaues = false;
+  setTopValues(){
+    if(this.showTopVlaues == false){
+      this.showTopVlaues = true;
+      this.barChartOptionsDP1 = this.barChartOptions1;
+      this.buildChart();
+    } else {
+      this.showTopVlaues = false;
+      this.barChartOptionsDP1 = this.barChartOptions;
+      this.barChartOptionsDP1.animation.duration = 1;
+      this.buildChart();
+    }
   }
 }
 

@@ -86,6 +86,8 @@
                 <span *ngIf="proCollShow == 2">Collection</span>
               </div>
               <div class="info-icon-container" *ngIf="proCollShow == 1">
+                <i  style="margin-right: 10px;" *ngIf="!showTopVlaues" class="far fa-chart-bar" (click) = "setTopValues()"></i>
+                <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i>
                 <img [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon"
                   class="info-icon" />
               </div>
@@ -108,7 +110,7 @@
               <div *ngIf="proCollShow == 1">
                 <div style="height: 306px" *ngIf="barChartData[0].data.length && !buildChartLoader">
                   <canvas id="dentistProduction" baseChart [datasets]="barChartData" [labels]="barChartLabels"
-                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP"
+                    [legend]="barChartLegend" [chartType]="barChartType" [options]="barChartOptionsDP1"
                     [colors]="DPcolors">
                   </canvas> <!-- dynamic colors of bar -->
                 </div>
