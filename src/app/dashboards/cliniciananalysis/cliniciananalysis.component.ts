@@ -3734,6 +3734,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
        }
     }, error => {});
   }
+  
 
   public showTopVlaues = false;
   setTopValues(){
