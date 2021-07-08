@@ -31,3 +31,45 @@
 .AddUserPopup .sa_select{
     cursor: pointer;
 }
+
+.roleTip {
+background: #191717;
+    color: #fff;
+    opacity: 1;
+    position: absolute;
+    top: calc(50% - 220px);
+    z-index: 99;
+    width: 100%;
+    box-shadow: 0px 0px 15px #000;
+    left: calc(50% - 200px);
+    width: 400px;
+    padding: 20px 0;
+}
+.roleTipCon {
+    padding: 5px 0 5px 30px;
+    font-family: 'Gilroy-Regular';
+}
+.roleTipCon h1 {
+    font-size: 20px;
+    margin: 0 0 0 -6px;
+    padding: 0;
+}
+.roleTipCon h2 {
+    font-size: 18px;
+    margin: 0px 0 0 -7px;
+    padding: 0;
+    width: 100%;
+    float: left;
+}
+.roleTipCon h5 {
+    font-size: 15px;
+    display: inline-block;
+    padding: 0 2px;
+    text-transform: capitalize;
+    margin: 2px;
+    text-align: justify;
+    width: auto;
+}
+.roleTipCon h5:after {
+    content: ",";
+}

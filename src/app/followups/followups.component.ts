@@ -122,38 +122,12 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public treatmentRate:any = '';
     public previousDays:any = '';
 
-    public unscheduledPatientsDays:any = '';
     public postOpCallsDays:any = '';
     public followupsPostopCallsDate:any = '';
-    public schedulePatieltd:any = 0;
-    public schedulePatielDate:any = '';
-    public scheduleNewPatieltd:any = 0;
-    public schedulehours:any = 0;
-    public unSchedulehours:any = 0;
-    public noShow:any = 0;
-    public appointmentCardsTemp:any = [];
-    public appointmentCards = new MatTableDataSource();
+
     public dentistList = new MatTableDataSource([]);
     dentistListTemp:any = [];
     
-    public reAppointment:any = 0;
-    public reAppointmentdate:any = '';
-    public unscheduledPatients:any = 0;
-    public unscheduledValue:any = 0;
-    public todayPatients:any = 0;
-    public todayPatientsDate:any = '';
-    public todayUnscheduledHours:any = 0;
-    public todayChairUtilisationRate:any = 0;
-    public todayUnscheduledBal:any = 0;
-    public todayPostopCalls:any = 0;
-   
-    public remindersRecallsOverdue:any = [];
-    public remindersRecallsOverdueDate:any = '';
-    public treatmentOutstanding:any = [];
-    public outstandingBalances:any = [];
-    public followupsUnscheduledPatients:any = [];
-    public followupsUnscheduledRecalls:any = [];
-    public followupsUnscheduledPatientsDate:any = '';
     public followupPostOpCalls:any = [];
     public followupPostOpCallsInComp:any = [];
     public followupOverDueRecall:any = [];
@@ -164,6 +138,8 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public OverDueRecallDays:any = '';
     public followupTickFollowups:any = [];
     public followupTickFollowupsInCMP:any = [];
+    public ftaFollowupsInComp:any = [];
+
     public endOfDaysTasks:any = [];
     public endOfDaysTasksInComp:any = [];
     public endOfDaysTasksComp:any = [];
@@ -184,7 +160,7 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public selectedMonthYear:any ='';
     public showDwDateArrow:boolean = true;
     public showUpDateArrow:boolean = true;
-     public charTips:any = [];
+    public charTips:any = [];
 
     public selectedMonth:string = new Date().getMonth().toString();
     public selectedYear:string = new Date().getFullYear().toString();

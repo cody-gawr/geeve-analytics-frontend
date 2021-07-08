@@ -1,4 +1,4 @@
-import { Component, Inject , ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject , ViewChild, AfterViewInit, ViewEncapsulation,   ElementRef, OnDestroy } from '@angular/core';
 import { RolesUsersService } from './roles-users.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -10,7 +10,7 @@ import { ClinicService } from '../clinic/clinic.service';
 import { ToastrService } from 'ngx-toastr';
 import {FormControl} from '@angular/forms';
 import { CookieService } from "ngx-cookie";
-
+import { ITooltipData } from '../shared/tooltip/tooltip.directive';
 import { HeaderService } from '../layouts/full/header/header.service';
 import Swal from 'sweetalert2';
 @Component({
@@ -23,6 +23,8 @@ import Swal from 'sweetalert2';
 export class DialogOverviewExampleDialogComponent {
    public clinic_id:any ={};
 show_dentist = false;
+showtooltip:boolean= false;
+  public rolesAll:any = { healthscreen: "Clinic Health", morninghuddle: "Morning Huddle", followups: "Follow-Ups", dashboard1: "Clinician Analysis",dashboard2: "Clinician Procedures & Referrals", dashboard3: "Front Desk", dashboard4: "Marketing", dashboard5: "Finances", lostopportunity: "Lost Opportunity", profilesettings: "Settings"};
 
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
@@ -310,10 +312,10 @@ initiate_clinic() {
   private warningMessage: string;
   public loginUserType = this._cookieService.get("user_type");
   openDialog(): void {
-    console.log(this.clinics,'****');
+    console.log(this.allPermissonTip,'****');
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '400px',
-      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,clinics:this.clinics,dentist_id:this.dentist_id }
+      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,clinics:this.clinics,dentist_id:this.dentist_id, permisions: this.allPermissonTip }
     });
     dialogRef.afterClosed().subscribe(result => {
        if(result != undefined) {
@@ -480,40 +482,42 @@ initiate_clinic() {
   public roles =[];
   public abc=true;
   public selectedRole: any[] = [];
-
   public selected_id:any;
   public showRolesButton:boolean =  false;
+  public allPermissonTip:any =  [];
+
   private getRoles() {      
     this.showRolesButton = false;
-  this.rolesUsersService.getRoles().subscribe((res) => {
-
-    
+    this.rolesUsersService.getRoles().subscribe((res) => {    
        if(res.message == 'success'){ 
         this.roles=[];
+        var title = "Roles permissions";
+        var tipDiscription = [];
          res.data.forEach(result => {
           if(this.user_type == result.role_id ){
             if(result.permisions.indexOf('healthscreen') >= 0){
-
             }
           }
 
+          var dashboards = result.permisions.split(',');
+          var rr = {'role' : result.role,'permisions' : dashboards};
+          tipDiscription.push(rr);
 
           this.selectedRole['dashboard1_'+result.role_id] = false;
           this.selectedRole['dashboard2_'+result.role_id] = false;
           this.selectedRole['dashboard3_'+result.role_id] = false;
           this.selectedRole['dashboard4_'+result.role_id] = false;
           this.selectedRole['dashboard5_'+result.role_id] = false;
-
             var temp=[];
             temp['id'] = result.role_id;
             temp['role'] = result.role;
             temp['permisions'] = result.permisions;
             this.roles.push(temp);
-            var dashboards = result.permisions.split(',');
             dashboards.forEach(results=>{
                this.selectedRole[results+'_'+result.role_id] = true;
             })
          });
+         this.allPermissonTip = {'title' :title, 'info' :tipDiscription};
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";

@@ -1,5 +1,19 @@
-<div class="AddUserPopup"> 
-<h1 mat-dialog-title>Add User</h1>
+<div class="AddUserPopup">  
+<h1 mat-dialog-title>Add User 
+  <div class="info-icon-container"  style="float: right; z-index: 999;">
+    <img (mouseout)="showtooltip=false" (mouseover)="showtooltip=true" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+  </div>
+</h1>
+
+<div class="roleTip" *ngIf="showtooltip" >
+  <div class="roleTipCon">
+      <h1>{{data.permisions.title}}</h1>
+      <div *ngFor="let rl of data.permisions.info">
+          <h2>{{ rl.role }}</h2>
+          <h5 *ngFor="let prms of rl.permisions">{{ rolesAll[prms] }}</h5>
+      </div>
+  </div>
+</div>
 <div mat-dialog-content class="sa_forms_design">
   <div class="sa-form-group">
     <label>Display Name</label>
