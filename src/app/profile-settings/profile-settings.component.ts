@@ -573,5 +573,21 @@ public fileToUpload;
       },error => {});
   }
   /******** SAVE CHARTS TIPS*****/
-  
+ 
+ /********* Check Length****************/ 
+ checkLenth(event,type){
+   if(event.target.value.length >= 50 && type == 'title'){
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    } else if(event.target.value.length >= 400 && type == 'discription'){{
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    }
+    
+  }
+
+ }
+ /********* Check Length****************/ 
 }
