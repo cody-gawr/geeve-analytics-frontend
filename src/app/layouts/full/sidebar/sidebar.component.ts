@@ -3,7 +3,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
 //import { MenuItems } from '../../../shared/menu-items/menu-items';
 import { RolesUsersService } from '../../../roles-users/roles-users.service';
-import { CookieService } from "ngx-cookie";
+import { CookieService, CookieOptions } from "ngx-cookie";
 import { HeaderService } from '../header/header.service';
 import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
 import { environment } from "../../../../environments/environment";
@@ -94,7 +94,8 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
    await this.rolesUsersService.getRolesIndividual().subscribe((res) => {
       if(res.message == 'success'){ 
         this.permisions =res.data;
-        this._cookieService.put("user_type",res.type);
+        let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+        this._cookieService.put("user_type",res.type, opts);
 
         //Remove apis calls when user have not permission of any page form FE
         if(res.type != '2'){

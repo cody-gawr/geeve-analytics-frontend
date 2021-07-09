@@ -107,7 +107,7 @@ export class SupportComponent implements OnInit {
         datares['display_name'] = res.data.data.display_name;  
         datares['dentistid'] = res.data.data.dentist_id;        
 
-        let opts = { expires: new Date('2030-07-19') } as CookieOptions;
+        let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
         this._cookieService.put("userid", '', opts);
         this._cookieService.put("childid", '', opts);
         this._cookieService.put("dentistid", '', opts);

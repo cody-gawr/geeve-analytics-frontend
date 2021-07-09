@@ -86,7 +86,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     if(this._cookieService.get("dentist_toggle")){
       this.isToggleDentistChart = this._cookieService.get("dentist_toggle");
     }  
-    let opts = { expires: new Date('2030-07-19') } as CookieOptions;
+    let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
     this.isToggleDentistChart = (this.isToggleDentistChart=='true')? "false" : "true";
     this._cookieService.put("dentist_toggle", this.isToggleDentistChart, opts);
     $('#clinic_initiate').click();
@@ -197,7 +197,8 @@ export class AppHeaderrightComponent implements AfterViewInit  {
               }
 
                if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures'|| this.route == '/dashboards/frontdesk' || this.route == '/dashboards/marketing' || this.route == '/dashboards/finances'){
-                 this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist);
+                let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+                 this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist, opts);
                }
            } else if(res.status == '401'){
              this._cookieService.removeAll();
@@ -247,8 +248,8 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   
   getChildID(clinic_id) {
     this.clinic_id && this.dentistService.getChildID(clinic_id).subscribe((res) => {
-
-     this._cookieService.put("dentistid", res.data);
+      let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+     this._cookieService.put("dentistid", res.data, opts);
       this.providerIdDentist = res.data;
       $('#clinic_initiate').click();
     }, error => {
@@ -277,7 +278,8 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   }
     this.selectedDentist = newValue;
     if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures'|| this.route == '/dashboards/frontdesk' || this.route == '/dashboards/marketing' || this.route == '/dashboards/finances'){
-      this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist);
+      let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+      this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist,opts);
     }
     $('.internal_dentist').val(newValue);
     $('#dentist_initiate').click();
