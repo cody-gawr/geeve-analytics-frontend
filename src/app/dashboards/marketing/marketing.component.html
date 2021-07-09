@@ -275,15 +275,12 @@
                                         src="../assets/images/trend_reverse_{{newPatientsTooltip}}.png"></span>
                                 New Patient Cost
                             </div>
-                            <div class="CategoriesBtn CategoriesBtnMarketing"
-                               ><button  *ngIf="showTrend == false && connectedwith"
-                                    class="mat-button-sm mat-green-button"
-                                    (click)="ngxSmartModalService.getModal('myModal').open()">Accounts</button>
-                                    <div class="info-icon-container float-right-space">
-                                        <img [tooltip]="charTips['37']" src="../assets/images/info-icon.png"
-                                            alt="info-icon" class="info-icon" />
-                                    </div>
+                            <div class="CategoriesBtn CategoriesBtnMarketing">
+                                <button  *ngIf="showTrend == false && connectedwith && showAccountsButton" class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Accounts</button>
+                                <div class="info-icon-container float-right-space">
+                                    <img [tooltip]="charTips['37']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                                 </div>
+                            </div>
                                     
                                     
                                    

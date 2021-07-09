@@ -17,6 +17,7 @@ import { ClinicSettingsService } from '../../clinic-settings/clinic-settings.ser
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
+import { RolesUsersService } from '../../roles-users/roles-users.service';
 export interface Dentist {
   providerId: string;
   name: string;
@@ -90,8 +91,8 @@ export class MarketingComponent implements AfterViewInit {
     public decimalPipe: DecimalPipe, 
     private chartService: ChartService,
     public constants: AppConstants,
-    public chartstipsService: ChartstipsService
-    
+    public chartstipsService: ChartstipsService,
+    private rolesUsersService: RolesUsersService
     ) {
      this.getChartsTips();
       }
@@ -99,6 +100,7 @@ export class MarketingComponent implements AfterViewInit {
   private warningMessage: string; 
   private myTemplate: any = "";
   async initiate_clinic() {
+    this.getRolesIndividual();
     var val = $('#currentClinic').attr('cid');
     if(val != undefined && val !='all') {
       this.clinic_id = val;
@@ -1887,5 +1889,23 @@ monthDiff(d1, d2) {
     }, error => {});
   }
 
+
+  public showAccountsButton:boolean = false;
+  getRolesIndividual(){
+      this.showAccountsButton = false;
+      if(this._cookieService.get("user_type") == '2'){
+        this.showAccountsButton = true;
+      } else {
+        this.rolesUsersService.getRolesIndividual().subscribe((res) => {
+          if(res.message == 'success'){    
+            if(res.data.indexOf('profilesettings') >= 0)
+            {       
+               this.showAccountsButton = true;
+            }
+          }      
+        }); 
+      }   
+       
+  }
 
 }
