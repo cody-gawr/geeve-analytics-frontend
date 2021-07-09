@@ -298,7 +298,7 @@ this.predictedChartColors = [
                   hour = lbl[1];
                   phour = lbl[2];
                 } 
-               return ['',"Scheduled Hours: "+phour,'',"Clinical Hours: "+hour];
+               return ['',"Scheduled Hours: "+phour,"Clinical Hours: "+hour];
               },
               title: function() {
                 return "";

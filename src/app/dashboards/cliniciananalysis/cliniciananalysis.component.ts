@@ -466,8 +466,28 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.data.datasets.forEach(function (dataset, i) {
           var meta = chartInstance.controller.getDatasetMeta(i);
           meta.data.forEach(function (bar, index) {
-              var data = "$"+dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              ctx.fillText(data, bar._model.x, bar._model.y - 5);
+              // var data = "$"+dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              let num = dataset.data[index];
+              // let dataK = Math.abs(num) > 999 ? Math.sign(num)*(Math.round(Math.abs(num)/100)/10) + 'k' : Math.sign(num)*Math.abs(num);
+              let dataK = shortenLargeNumber(num, 1);
+              let dataDisplay = `$${dataK}`;
+              ctx.font = Chart.helpers.fontString(10.5, 'normal', Chart.defaults.global.defaultFontFamily);
+              ctx.fillText(dataDisplay, bar._model.x, bar._model.y - 10);
+
+              function shortenLargeNumber(num, digits) {
+                var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
+                    decimal;
+            
+                for(var i=units.length-1; i>=0; i--) {
+                    decimal = Math.pow(1000, i+1);
+            
+                    if(num <= -decimal || num >= decimal) {
+                        return +(num / decimal).toFixed(digits) + units[i];
+                    }
+                }
+            
+                return num;
+            }
           });
         });
       }
@@ -495,6 +515,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       yAxes: [{
         ticks: {
           suggestedMin: 0,
+          max: 10000,
           userCallback: (label, index, labels) => 
           {
             // when the floored value is the same as the value we have a whole number
@@ -1143,6 +1164,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.buildChartLoader = false;
         this.productionTooltip = 'down';
         var i = 0;
+
         data.data.forEach(res => {
           if (res.production > 0) {
             this.barChartData1.push(Math.round(res.production));
@@ -1156,7 +1178,30 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             i++;
           }
         });
-
+        /********** Add Space to top of graph ****/
+        let maxY = Math.max(...this.barChartData1);
+        if(maxY < 1000){
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/100)*100) ;
+          if((maxY +50) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +100;
+          }
+        } else if(maxY < 10000){
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/1000)*1000);
+          if((maxY +500) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +1000;
+          }
+        } else if(maxY < 100000){
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/10000)*10000);
+          if((maxY +5000) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +10000;
+          }
+        } else if(maxY < 1000000){
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/100000)*100000);
+          if((maxY +50000) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +100000;
+          }
+        }
+        /********** Add Space to top of graph ****/
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
             {
@@ -3747,5 +3792,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.barChartOptionsDP1.animation.duration = 1;
     }
   }
+
+
 }
 

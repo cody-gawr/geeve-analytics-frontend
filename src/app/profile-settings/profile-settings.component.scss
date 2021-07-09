@@ -8,10 +8,10 @@
   width: 90%;
 }
 .selectTipCon{
-  width: 250px !important;
+  width: 350px !important;
 }
 .selectTipCon .mat-select-value {
-    max-width: 250px;
+    max-width: 350px;
     width: 100%;
 }
 .selectTipCon .mat-select-arrow-wrapper {
@@ -19,4 +19,9 @@
 }
 .hideTip {
   display: none;
+}
+
+.tips-input {
+  margin-top: 10px;
+  margin-bottom: 20px;
 }

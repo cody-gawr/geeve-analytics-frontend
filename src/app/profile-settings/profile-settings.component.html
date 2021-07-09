@@ -152,7 +152,7 @@
     <!-- <mat-expansion-panel *ngIf="false"> -->
     <mat-expansion-panel [ngClass] ="showCard? 'show': 'hide'" >
         <mat-expansion-panel-header>
-            <mat-panel-title>Chart Tips (Coming Soon)</mat-panel-title>
+            <mat-panel-title>Chart Tips</mat-panel-title>
         </mat-expansion-panel-header>
         <mat-card-content>
             <div class="sa_dentist_graphs_area sa_profile_setting sa_forms_design" *ngIf="chartsTipsLoader">
@@ -175,7 +175,7 @@
                                      <div fxFlex="calc(90% - 10px)" fxFlex.md="calc(90% - 10px)" fxFlex.sm="calc(90% - 10px)" fxFlex.xs="100" *ngFor="let chartsTip of chartsTips | keyvalue" [ngClass] = "selectedChartTip == chartsTip.key? 'showTip' : 'hideTip' ">
                                            <div *ngFor="let charts of chartsTip.value | keyvalue">
                                                 <div fxLayout="row wrap" fxLayoutGap="5%">
-                                                    <div fxFlex="calc(20% - 10px)" fxFlex.md="calc(20% - 10px)" fxFlex.sm="calc(20% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
+                                                    <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
                                                         <div class="sa-form-group">
                                                             <label>{{ charts.value.title}}</label>
                                                             <input (keydown) ="checkLenth( $event,'title')" [(ngModel)]="chartsTips[chartsTip.key][charts.key]['tip_title']">
@@ -185,6 +185,7 @@
                                                         <div class="sa-form-group">
                                                             <label>&nbsp;</label>
                                                             <input (keydown) ="checkLenth( $event,'discription')" [(ngModel)]="chartsTips[chartsTip.key][charts.key]['description']">
+
                                                         </div>
                                                     </div>
                                                 </div>

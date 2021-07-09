@@ -566,7 +566,7 @@ public fileToUpload;
         if(resp.message == 'success'){
           Swal.fire(
                   '',
-                  'Chart Tips are updated successfully',
+                  'Chart Tips have been updated successfully',
                   'success'
                 )
         }       
