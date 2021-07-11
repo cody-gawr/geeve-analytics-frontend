@@ -52,7 +52,7 @@ this.loginService.checkValidString(this.string).subscribe((res) => {
     $('.ajax-loader').hide();
   }
   else{
-    this.toastr.success('Invalid Link.');
+    this.toastr.success('This link has expired');
     $('.ajax-loader').hide();
  this.router.navigate(['/login']);
   }
@@ -108,7 +108,7 @@ onSubmit() {
   }
   else
   {
-     this.toastr.success('Invalid Link.');
+     this.toastr.success('This link has expired');
      this.router.navigate(['/login']);
   }
   //  this.router.navigate(['/login']);
