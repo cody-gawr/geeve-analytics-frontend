@@ -202,6 +202,8 @@
             <div class="sa_box_title_right_buttons">
             </div>
             <div class="info-icon-container">
+              <i  style="margin-right: 10px;" *ngIf="!showTopVlaues" class="far fa-chart-bar" (click) = "setTopValues()"></i>
+                <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i>
               <img [tooltip]="charTips['13']" src="../assets/images/info-icon.png" alt="info-icon"
                 class="info-icon" />
             </div>
@@ -223,7 +225,7 @@
             <div class="Item_Predictor_TotalRevenue">
               <div style="height: 474px" *ngIf="proceedureChartLabels.length > 0 && buildChartProceedureLoader == false">
                 <canvas baseChart class="chart" [datasets]="proceedureChartData" [labels]="proceedureChartLabels"
-                  [options]="proceedureChartOptions" [legend]="false" [chartType]="proceedureChartType"
+                  [options]="proceedureChartOptionsDP" [legend]="false" [chartType]="proceedureChartType"
                   (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
               </div>
             </div>

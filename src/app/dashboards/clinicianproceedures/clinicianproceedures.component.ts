@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
+import { Chart } from 'chart.js';
 import { ChartService } from '../chart.service';
 import { AppConstants } from '../../app.constants';
 import { ChartstipsService } from '../../shared/chartstips.service';
@@ -659,8 +660,8 @@ this.preoceedureChartColors = [
     maintainAspectRatio: false,
     barThickness: 10,
       animation: {
-        duration: 500,
-        easing: 'easeOutSine'
+        duration: 1,
+        easing: 'linear'
       },
         scales: {
           xAxes: [{ 
@@ -713,6 +714,95 @@ this.preoceedureChartColors = [
 },        
   };
 
+/************ for top values on graph *******/
+  public proceedureChartOptions1: any = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+    showTooltips: false,
+    maintainAspectRatio: false,
+    barThickness: 10,
+    animation: {
+      duration: 1,
+      easing: 'linear', 
+      onComplete: function () 
+      {
+        var chartInstance = this.chart,
+        ctx = chartInstance.ctx;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = "rgba(0, 0, 0, 1)";
+        ctx.textBaseline = 'bottom';
+        // Loop through each data in the datasets
+        this.data.datasets.forEach(function (dataset, i) {
+          var meta = chartInstance.controller.getDatasetMeta(i);
+          meta.data.forEach(function (bar, index) {
+              let num = dataset.data[index];
+              let dataK = shortenLargeNumber(num, 1);
+              let dataDisplay = `$${dataK}`;
+              ctx.font = Chart.helpers.fontString(12, 'normal', Chart.defaults.global.defaultFontFamily);
+              ctx.fillText(dataDisplay, bar._model.x + 20, bar._model.y + 5 );
+
+              function shortenLargeNumber(num, digits) {
+                var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
+                    decimal;
+            
+                for(var i=units.length-1; i>=0; i--) {
+                    decimal = Math.pow(1000, i+1);
+            
+                    if(num <= -decimal || num >= decimal) {
+                        return +(num / decimal).toFixed(digits) + units[i];
+                    }
+                }
+            
+                return num;
+            }
+          });
+        });
+      }
+    },
+    scales: {
+      xAxes: [{ 
+        beginAtZero:true,
+        min: 0,
+        max: 10000,
+        ticks: {
+          userCallback: (label, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return '$' + this.numPipe.transform(label);
+            }
+          },
+          callback: function(value) {
+            return value;//truncate
+          },
+          autoSkip: false
+        }
+      }],
+      yAxes: [{  
+        ticks: {
+        
+          callback: function(value) {
+            if(value.length>20)
+              return value.substr(0,20)+"....";//truncate
+            else
+              return value;//truncate
+          }
+        }
+      }]
+    },
+    legend: {
+      position: 'top',
+      onClick: function (e) {
+        e.stopPropagation();
+      }
+    },
+    tooltips: {
+      enabled: false    
+    }
+  };
+
+/************ for top values on graph *******/
+  
+  public proceedureChartOptionsDP: any = this.proceedureChartOptions;
   public selectedDentist: string;
   public predicted1: boolean = true;
   public predicted2: boolean = false;
@@ -720,6 +810,7 @@ this.preoceedureChartColors = [
   public showInternal: boolean = true;
   public showExternal: boolean = false;
   public showCombined: boolean = false;
+  public showTopVlaues: boolean = false;
   public stackedChartColors: Array<any> = [
     { backgroundColor: '#76F2E5' },
     { backgroundColor: '#6BE6EF' },
@@ -1633,6 +1724,22 @@ public buildChartProceedureLoader:any;
             }
            }
         });      
+                /********** Add Space to top of graph ****/
+        let maxY = Math.max(...this.proceedureChartData1);
+        if(maxY < 100){
+          this.proceedureChartOptions1.scales.xAxes[0].ticks.max = (Math.ceil(maxY/10)*10) + 4;          
+        } else if(maxY < 1000){
+          this.proceedureChartOptions1.scales.xAxes[0].ticks.max = (Math.ceil(maxY/100)*100) + 50;          
+        } else if(maxY < 10000){
+          this.proceedureChartOptions1.scales.xAxes[0].ticks.max = (Math.ceil(maxY/1000)*1000) + 500;          
+        } else if(maxY < 100000){
+          this.proceedureChartOptions1.scales.xAxes[0].ticks.max = (Math.ceil(maxY/10000)*10000) + 5000;          
+        } else if(maxY < 500000){
+          this.proceedureChartOptions1.scales.xAxes[0].ticks.max = (Math.ceil(maxY/10000) * 10000) + 5000;          
+        } else if(maxY < 1000000){
+          this.proceedureChartOptions1.scales.xAxes[0].ticks.max = (Math.ceil(maxY/100000)*100000) + 10000;          
+        }
+        /********** Add Space to top of graph ****/
        this.proceedureChartData[0]['data'] = this.proceedureChartData1;
        this.proceedureChartLabels = this.proceedureChartLabels1; 
       }
@@ -2636,6 +2743,16 @@ toggleChangeProcess(){
         this.charTips = data.data;
        }
     }, error => {});
+  }
+
+  setTopValues(){
+    if(this.showTopVlaues == false){
+      this.showTopVlaues = true;
+      this.proceedureChartOptionsDP = this.proceedureChartOptions1;
+    } else {
+      this.showTopVlaues = false;
+      this.proceedureChartOptionsDP = this.proceedureChartOptions;
+    }
   }
 }
 
