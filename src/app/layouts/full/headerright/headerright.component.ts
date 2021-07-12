@@ -246,7 +246,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     }
  }
   
-  getChildID(clinic_id) {
+  async getChildID(clinic_id) {
     this.clinic_id && this.dentistService.getChildID(clinic_id).subscribe((res) => {
       let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
      this._cookieService.put("dentistid", res.data, opts);

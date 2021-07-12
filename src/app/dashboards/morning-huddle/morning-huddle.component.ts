@@ -378,7 +378,7 @@ initiate_clinic() {
       this.getEquipmentList();
     }
   }
-
+  
   refreshScheduleTab(event){
     this.appointmentCardsLoaders = true;
   /*  $('.temP').remove();
@@ -721,12 +721,15 @@ initiate_clinic() {
     this.appointmentCards = new MatTableDataSource();
     this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((production:any) => {
       this.appointmentCardsLoaders = false;
+      this.clinicDentists = [];
+      this.currentDentistSchedule = 0;
+      this.appointmentCardsTemp = []; 
+      this.appointmentCards = new MatTableDataSource();
       if(production.status == true) {
-        this.clinicDentists = [];
-        this.currentDentistSchedule = 0;
         this.appointmentCards.data = production.data; 
         this.appointmentCardsTemp = production.data; 
-        if(this.user_type == '4'){
+        if(this.user_type == '4'){         
+          this.dentistid = this._cookieService.get("dentistid");
           this.refreshScheduleTab(this.dentistid);
         }
         production.data.forEach(val => {
