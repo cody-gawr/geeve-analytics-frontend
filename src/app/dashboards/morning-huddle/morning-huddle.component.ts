@@ -723,6 +723,7 @@ initiate_clinic() {
       this.appointmentCardsLoaders = false;
       if(production.status == true) {
         this.clinicDentists = [];
+        this.currentDentistSchedule = 0;
         this.appointmentCards.data = production.data; 
         this.appointmentCardsTemp = production.data; 
         if(this.user_type == '4'){
