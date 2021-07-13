@@ -738,7 +738,7 @@ this.preoceedureChartColors = [
               let num = dataset.data[index];
               let dataK = shortenLargeNumber(num, 1);
               let dataDisplay = `$${dataK}`;
-              ctx.font = Chart.helpers.fontString(10.5, 'normal');
+              ctx.font = Chart.helpers.fontString(11, 'normal','Gilroy-Bold');
               ctx.fillText(dataDisplay, bar._model.x + 20, bar._model.y + 5 );
 
               function shortenLargeNumber(num, digits) {

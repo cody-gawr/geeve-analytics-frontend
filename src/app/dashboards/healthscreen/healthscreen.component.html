@@ -128,6 +128,11 @@
 
             <mat-card class="dentistProduction card-box sa_hccard">
               <mat-card-content class="sa_matcard_content">
+                    <div *ngIf="clinic_id == 'all' && production_c > 0" class="AllClinicHltp">
+                      <div class="info-icon-container">
+                        <i style="float: right;" [tooltip]="production_c_all" class="fa fa-heartbeat green" aria-hidden="true"></i>
+                      </div>
+                    </div>
                 <div class="prodction_main_box">
                   <div class="production_images clinic-health-top-icon">
                     <img src="../assets/images/product-chart.png" alt="product-chart" />
@@ -141,7 +146,7 @@
                     <span class="change_value">
                       {{production_c >= 0 ? ' ' : '- ' }}
                       ${{ (production_c < 0 ? production_c.toString().split('-').join('') : production_c) | number:'1.0-0'}}
-                    </span>
+                    </span>                                       
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && productionstats == true">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
@@ -159,8 +164,13 @@
             class="sa_flexbg custom-box"
             [ngClass]="{'arrow-up': production_dif>=0, 'arrow-down':production_dif<0, 'hccard-container': true}">
 
-            <mat-card class="treatmentPlan sa_hccard">
+            <mat-card class="treatmentPlan sa_hccard">              
               <mat-card-content class="sa_matcard_content">
+                <div *ngIf="clinic_id == 'all' && productionVal > 0" class="AllClinicHltp">
+                    <div class="info-icon-container">
+                      <i style="float: right;" [tooltip]="productionVal_all" class="fa fa-heartbeat green" aria-hidden="true"></i>
+                    </div>
+                  </div>
                 <div class="prodction_main_box">
                   <div class="production_images clinic-health-top-icon">
                     <img src="../assets/images/profit.png" alt="product-chart" />
@@ -174,7 +184,8 @@
                     <span class="change_value">
                       {{ productionVal >= 0 ? ' ' : '- ' }}
                       ${{ productionVal | number:'1.0-0'}}
-                    </span>
+                    </span>                   
+                    
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && prodpervisitstats == true">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
@@ -191,8 +202,13 @@
             class="sa_flexbg last"
             [ngClass]="{'arrow-up': visits_dif>=0, 'arrow-down':visits_dif<=0, 'hccard-container': true}">
 
-            <mat-card class="noPatients sa_hccard">
+            <mat-card class="noPatients sa_hccard">            
               <mat-card-content class="sa_matcard_content">
+                  <div *ngIf="clinic_id == 'all' && visits_c > 0" class="AllClinicHltp">
+                      <div class="info-icon-container">
+                        <i style="float: right;" [tooltip]="visits_c_all" class="fa fa-heartbeat green" aria-hidden="true"></i>
+                      </div>
+                    </div>
                 <div class="prodction_main_box">
                   <div class="production_images clinic-health-top-icon">
                     <img src="../assets/images/total-visit.png" alt="total-visit" />
@@ -204,6 +220,8 @@
                   <div *ngIf="totalvisitstats == true"  class="production_description production_description-grow">
                     <h4>Total Visits</h4>
                     <span class="change_value">{{visits_c}}</span>
+                   
+                     
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="visits_dif && totalvisitstats == true">
                     <div [ngClass]="(visits_dif >= 0) ? 'minus': 'minus'">

@@ -17,9 +17,7 @@ export class TooltipContainerDirective {
         class="white-heart-icon"
         alt="analytics-icon" />
       </div>
-      <div class="tooltip-info-text">
-        {{ tooltipData.info || '' }} 
-      </div>
+      <div class="tooltip-info-text" [innerHtml] = "tooltipData.info || ''"></div>
     </div>   
 </div>`
 })

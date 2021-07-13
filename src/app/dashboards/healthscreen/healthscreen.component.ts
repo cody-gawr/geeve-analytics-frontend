@@ -247,6 +247,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
  // Functions to get the data for the Production, Total Visits, Pre-booked Visits, Chair Utilisation Rate, Unscheduled Production
  // Start Block
 
+ public production_c_all:any = {};
+ public productionVal_all:any = []; 
+ public visits_c_all:any = [];
+
+
   public chTopCards(){ // Production,Prod. Per Visit and Total Visits top Cards
     this.production_c = 0;
     this.production_dif = 0;
@@ -260,18 +265,56 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
         this.totalvisitstats = true;
         this.prodpervisitstats = true;
         this.finProductionPerVisitLoader = false;
-       
-        this.production_c = data.data.production;
-        this.production_p = Math.round(data.data.production_ta);
-        this.production_dif = Math.round(this.production_c - this.production_p);
-        
-        this.productionVal = (data.data.production_visit)? data.data.production_visit : 0;
-        this.productionPrev = Math.round(data.data.production_visit_ta);  
-        this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
+        // check for all clinic 
+        if(this.clinic_id == 'all')
+        {          
+          this.production_p = Math.round(data.data.production_ta);
+          this.production_c = 0;
+          let tooltip_p = '';
+          data.data.production.forEach((val) => {
+            this.production_c = this.production_c + Math.round(val.production);
+            tooltip_p += '<span class="text">'+val.clinic_name+': $'+Math.round(val.production)+'</span>';
+          });
+          this.production_dif = Math.round(this.production_c - this.production_p);
+          this.production_c_all = {'title' : '', 'info' : tooltip_p};
+          
+          this.productionPrev = Math.round(data.data.production_visit_ta);  
+          this.productionVal = 0;
+          let tooltip_pv = '';
+          data.data.production_visit.forEach((val) => {
+            this.productionVal = this.productionVal + Math.round(val.production_visit);
+            tooltip_pv += '<span class="text">'+val.clinic_name+': $'+Math.round(val.production_visit)+'</span>';
+          });
+          this.productionVal_all = {'title' : '', 'info' : tooltip_pv};
+          this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
 
-        this.visits_c = Math.round(data.data.num_visit);
-        this.visits_p = Math.round(data.data.num_visit_ta);
-        this.visits_dif = Math.round(this.visits_c - this.visits_p);
+          this.visits_p = Math.round(data.data.num_visit_ta);
+          this.visits_c = 0;
+          let tooltip_v = '';
+          data.data.num_visit.forEach((val) => {
+            this.visits_c = this.visits_c + Math.round(val.num_visit);
+            tooltip_v += '<span class="text">'+val.clinic_name+': '+Math.round(val.num_visit)+'</span>';
+          });
+          this.visits_c_all = {'title' : '', 'info' : tooltip_v};
+          this.visits_dif = Math.round(this.visits_c - this.visits_p);
+        } 
+        else 
+        {
+          this.production_c = data.data.production;
+          this.production_p = Math.round(data.data.production_ta);
+          this.production_dif = Math.round(this.production_c - this.production_p);
+          
+          this.productionVal = (data.data.production_visit)? data.data.production_visit : 0;
+          this.productionPrev = Math.round(data.data.production_visit_ta);  
+          this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
+
+          this.visits_c = Math.round(data.data.num_visit);
+          this.visits_p = Math.round(data.data.num_visit_ta);
+          this.visits_dif = Math.round(this.visits_c - this.visits_p);
+        }
+
+       
+        
 
        
       }        

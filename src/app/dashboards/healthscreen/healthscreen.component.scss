@@ -30,3 +30,24 @@
   }
 }
 
+
+.AllClinicHltp .custom-tooltip {
+    background: #000000;
+    opacity: .95 !important;
+    width: auto;
+    right: 0;
+}
+.AllClinicHltp .tooltip-title-container {
+    display: none;
+}
+.AllClinicHltp .tooltip-info-text span {
+    width: 100%;
+    float: left;
+    padding: 0 0 2px 0;
+    font-size: 14px;
+}
+.AllClinicHltp .custom-tooltip::after {
+    border-bottom-color: #000000;
+    top: -1px;
+    right: 3px;
+}

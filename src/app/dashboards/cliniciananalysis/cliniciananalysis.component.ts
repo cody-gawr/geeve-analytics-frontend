@@ -471,7 +471,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               // let dataK = Math.abs(num) > 999 ? Math.sign(num)*(Math.round(Math.abs(num)/100)/10) + 'k' : Math.sign(num)*Math.abs(num);
               let dataK = shortenLargeNumber(num, 1);
               let dataDisplay = `$${dataK}`;
-              ctx.font = Chart.helpers.fontString(10.5, 'normal');
+              ctx.font = Chart.helpers.fontString(11, 'normal','Gilroy-Bold');
               ctx.fillText(dataDisplay, bar._model.x, bar._model.y - 10);
 
               function shortenLargeNumber(num, digits) {
