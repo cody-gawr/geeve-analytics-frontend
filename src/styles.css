@@ -2420,7 +2420,7 @@ body .mat-gray {
     text-align: center;
     margin-top: -10px;
     margin-bottom: 20px;
-    box-shadow: 10px 5px 10px 0 rgba(0,0,0,.05)!important;
+   /* box-shadow: 10px 5px 10px 0 rgba(0,0,0,.05)!important;*/
 }
 
 .data-loading-main .loader img {
@@ -2432,8 +2432,9 @@ body .mat-gray {
 }
 
 .data-loading-main .no-data {
-   padding: 50px;
-   font-size: 16px;
+   padding: 20px;
+    font-size: 15px;
+    text-align: left;
 }
 
 .mat-paginator {

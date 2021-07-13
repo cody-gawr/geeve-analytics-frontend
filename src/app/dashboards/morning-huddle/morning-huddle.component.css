@@ -400,3 +400,9 @@ table.customWidth.thick{
 .md-drppicker {
     box-shadow: 0px 0px 15px !important;
 }
+table.noDataTableClass {
+    box-shadow: none !important;
+}
+table.noDataTableClass mat-footer-row {
+    border: 0px solid !important;
+}

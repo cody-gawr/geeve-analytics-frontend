@@ -568,7 +568,7 @@
           <img class="tableLoader" src="../../assets/images/logo-icon.gif">
        <!--    <div class="loader-text">Calculating...</div> -->
         </div>
-        <table fxHide fxShow.gt-sm mat-table matSort [dataSource]="appointmentCards" class="mat-elevation-z8">
+        <table fxHide fxShow.gt-sm mat-table matSort [dataSource]="appointmentCards" class="mat-elevation-z8" [ngClass]="(appointmentCards.data.length == 0)? 'noDataTableClass' : ''">
           <!-- Name Column -->
           <ng-container matColumnDef="start">
             <th mat-header-cell *matHeaderCellDef>Time </th>
@@ -882,7 +882,7 @@
           <img class="tableLoader" src="../../assets/images/logo-icon.gif">
           <!-- <div class="loader-text">Calculating...</div> -->
         </div>
-        <table fxHide fxShow.gt-sm mat-table matSort [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8">
+        <table fxHide fxShow.gt-sm mat-table matSort [dataSource]="remindersRecallsOverdue" class="mat-elevation-z8" [ngClass]="(remindersRecallsOverdue == 0)? 'noDataTableClass' : ''">
           <!-- Name Column -->
           <ng-container matColumnDef="start">
             <th mat-header-cell *matHeaderCellDef>Time </th>
@@ -1040,7 +1040,7 @@
 
 
             <table fxHide fxShow.gt-sm mat-table [dataSource]="followupPostOpCallsInComp"
-              class="mat-elevation-z8 customWidth PostOp">
+              class="mat-elevation-z8 customWidth PostOp" [ngClass]="(followupPostOpCallsInComp.length == 0)? 'noDataTableClass' : ''">
 
               <!-- Name Column -->
               <ng-container matColumnDef="name">
@@ -1167,7 +1167,7 @@
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
             <table fxHide fxShow.gt-sm mat-table [dataSource]="followupOverDueRecallInCMP"
-              class="mat-elevation-z8 customWidth overRecall">
+              class="mat-elevation-z8 customWidth overRecall" [ngClass]="(followupOverDueRecallInCMP.length == 0)? 'noDataTableClass' : ''">
 
               <!-- Name Column -->
               <ng-container matColumnDef="name">
@@ -1326,7 +1326,7 @@
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
             <table fxHide fxShow.gt-sm mat-table [dataSource]="followupTickFollowupsInCMP"
-              class="mat-elevation-z8 customWidth thick">
+              class="mat-elevation-z8 customWidth thick"  [ngClass]="(followupTickFollowupsInCMP.length == 0)? 'noDataTableClass' : ''">
 
 
               <!-- Name Column -->
@@ -1513,7 +1513,7 @@
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
-            <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8">
+            <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Task Name </th>
@@ -1583,7 +1583,7 @@
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
-            <table fxHide fxShow.gt-sm mat-table [dataSource]="lquipmentList" class="mat-elevation-z8"> -->
+            <table fxHide fxShow.gt-sm mat-table [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.length == 0)? 'noDataTableClass' : ''"> 
               <!-- Name Column -->
                <ng-container matColumnDef="item">
                 <th mat-header-cell *matHeaderCellDef> Item </th>
