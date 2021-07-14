@@ -64,6 +64,8 @@
                 <div class="sa_box_title_right_buttons">
                 </div>
                 <div class="info-icon-container">
+                  <i  style="margin-right: 10px;" *ngIf="!showTopVlaues" class="far fa-chart-bar" (click) = "setTopValues()"></i>
+                <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i>
                   <img [tooltip]="charTips['15']" src="../assets/images/info-icon.png" alt="info-icon"
                     class="info-icon" />
                 </div>
@@ -74,7 +76,7 @@
 
 
                     <canvas *ngIf="!showTrend && workTimeData1.length > 0 && utilityratemessage == false && !fdWorkTimeAnalysisLoader" #myCanvas
-                      baseChart [datasets]="workTimeData" [labels]="workTimeLabels" [options]="stackedChartOptionsUti"
+                      baseChart [datasets]="workTimeData" [labels]="workTimeLabels" [options]="stackedChartOptionsUtiDP"
                       [chartType]="'bar'" (chartHover)="chartHovered($event)" [legend]="false"
                       (chartClick)="chartClicked($event)">
                     </canvas>

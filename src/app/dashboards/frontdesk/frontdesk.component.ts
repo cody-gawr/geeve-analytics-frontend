@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HeaderService } from '../../layouts/full/header/header.service';
 import { CookieService } from "ngx-cookie";
 import { ToastrService } from 'ngx-toastr';
+import { Chart } from 'chart.js';
 import { ChartService } from '../chart.service';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
@@ -29,11 +30,13 @@ export class FrontDeskComponent implements AfterViewInit {
   predictedChartColors;
   preoceedureChartColors;
   subtitle: string;
-   public clinic_id:any ={};
-   public dentistCount:any ={};
-    public clinicsData:any[] = [];
+  public clinic_id:any ={};
+  public dentistCount:any ={};
+  public clinicsData:any[] = [];
   public trendText;
   public charTips:any = [];
+  public showTopVlaues: boolean = false;
+
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   constructor(
@@ -244,8 +247,8 @@ this.predictedChartColors = [
     maintainAspectRatio: false,
     // barThickness: 10,
       animation: {
-        duration: 500,
-        easing: 'easeOutSine'
+        duration: 1,
+        easing: 'linear'
       },
       fill:false,
     scales: {
@@ -309,8 +312,89 @@ this.predictedChartColors = [
             display: true
          }
       };
+public stackedChartOptionsUti1: any = {
 
+    scaleShowVerticalLines: false,
+    responsive: true,
+    maintainAspectRatio: false,
+    // barThickness: 10,
+      animation: {
+       duration: 1,
+      easing: 'linear',
+      onComplete: function () 
+      {
+        var chartInstance = this.chart,
+        ctx = chartInstance.ctx;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = "rgba(0, 0, 0, 1)";
+        ctx.textBaseline = 'bottom';
+        // Loop through each data in the datasets
+        this.data.datasets.forEach(function (dataset, i) {
+          var meta = chartInstance.controller.getDatasetMeta(i);
+          meta.data.forEach(function (bar, index) {
+              // var data = "$"+dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              let num = dataset.data[index];
+              // let dataK = Math.abs(num) > 999 ? Math.sign(num)*(Math.round(Math.abs(num)/100)/10) + 'k' : Math.sign(num)*Math.abs(num);
+              let dataK = shortenLargeNumber(num, 1);
+              let dataDisplay = `${dataK}%`;
+              ctx.font = Chart.helpers.fontString(11, 'normal','Gilroy-Bold');
+              ctx.fillText(dataDisplay, bar._model.x, bar._model.y - 5);
 
+              function shortenLargeNumber(num, digits) {
+                var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
+                    decimal;
+            
+                for(var i=units.length-1; i>=0; i--) {
+                    decimal = Math.pow(1000, i+1);
+            
+                    if(num <= -decimal || num >= decimal) {
+                        return +(num / decimal).toFixed(digits) + units[i];
+                    }
+                }
+            
+                return num;
+            }
+          });
+        });
+      }
+      },
+      fill:false,
+    scales: {
+      xAxes: [{ 
+        ticks: {
+          autoSkip: false,
+          callback: function (value, index, values) {
+            if(value.indexOf('--') >= 0){
+              let lbl = value.split('--');
+              value = lbl[0];
+            }
+            return value;
+          }
+        }
+      }],
+          yAxes: [{ 
+            // stacked:true,
+            ticks: {
+              min:0,
+              max:100,
+              userCallback: function(label, index, labels) {
+                     // when the floored value is the same as the value we have a whole number
+                     if (Math.floor(label) === label) {
+                         return label+"%";
+                     }
+                 },
+            },
+            }],
+        },
+        tooltips: {
+          enabled : false
+        },
+        legend: {
+            display: true
+         }
+      };
+
+public stackedChartOptionsUtiDP = this.stackedChartOptionsUti;
 public stackedChartOptionsticks: any = {
       elements: {
       point: {
@@ -1502,11 +1586,22 @@ toggleChangeProcess(){
     this.fdWorkTimeAnalysis();  
   }
 
-  getChartsTips() {
-    this.chartstipsService.getCharts(3).subscribe((data) => {
-       if(data.message == 'success'){         
-        this.charTips = data.data;
-       }
-    }, error => {});
-  }
+    getChartsTips() {
+      this.chartstipsService.getCharts(3).subscribe((data) => {
+        if(data.message == 'success')
+        {         
+          this.charTips = data.data;
+        }
+      }, error => {});
+    }
+
+    setTopValues(){
+      if(this.showTopVlaues == false){
+        this.showTopVlaues = true;
+        this.stackedChartOptionsUtiDP = this.stackedChartOptionsUti1;
+      } else {
+        this.showTopVlaues = false;
+        this.stackedChartOptionsUtiDP = this.stackedChartOptionsUti;
+      }
+    }
   }
