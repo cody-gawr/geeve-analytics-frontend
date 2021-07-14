@@ -35,10 +35,11 @@ export class ClinicSettingsService {
         );
     }
        // Get ClinicSettings
-    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta,postOpCallsMh,recallWeeks,tickDays, timezone,subtractedAccounts, equipmentList, dailyTasks): Observable<any> {
+    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta,postOpCallsMh,recallWeeks,tickDays, timezone,subtractedAccounts, equipmentList, dailyTasks, compareMode): Observable<any> {
 
         equipmentList = (equipmentList == true)? 1 :0;
         dailyTasks = (dailyTasks == true)? 1 :0;
+        compareMode = (compareMode == true)? 1 :0;
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
         formData.append('clinicName', name);
@@ -56,6 +57,8 @@ export class ClinicSettingsService {
         formData.append('timezone', timezone);
         formData.append('equip_list_enable', equipmentList);
         formData.append('daily_task_enable', dailyTasks);
+        formData.append('compare_mode', compareMode);
+        
     var header = this.getHeaders();
     return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, { headers: header})
         .pipe(map((response: Response) => {

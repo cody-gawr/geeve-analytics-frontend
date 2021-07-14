@@ -53,7 +53,7 @@
           </mat-button-toggle-group>
         </div>
 
-        <div class="onofftoogle" *ngIf="user_type == '4'">
+        <div class="onofftoogle" *ngIf="user_type == '4' && compareModeEnable">
           <span class="trend_mode_title">Compare:</span>
           <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"
             class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style">

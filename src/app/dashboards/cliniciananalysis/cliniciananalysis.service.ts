@@ -334,4 +334,14 @@ export class ClinicianAnalysisService {
                     })
         );
     }  
+
+    /******** get clinic **********/
+    getClinics(clinicId,clinicInfo): Observable<any> 
+    {
+        var header = this.getHeaders(); 
+        const formData = new FormData();
+        formData.append('clinic_id', clinicId);
+        formData.append('clinic_info', clinicInfo);
+        return this.http.post(this.apiUrl +"/clinics/clinicGetInfo",formData, { headers: header }).pipe(map((response: Response) => { return response; }) );
+    }
 }

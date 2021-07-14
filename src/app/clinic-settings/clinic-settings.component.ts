@@ -57,6 +57,7 @@ export class ClinicSettingsComponent implements OnInit {
           public myobOrganization='';
           public equipmentList:boolean = true;
           public dailyTasks:boolean = true;
+          public compareMode:boolean = true;
 
           public workingDays:any = {sunday: false,monday: true,tuesday: true,wednesday: true,thursday: true,friday: true,saturday: true};       
   constructor( private toastr: ToastrService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
@@ -135,6 +136,8 @@ export class ClinicSettingsComponent implements OnInit {
         this.timezone = res.data[0].timezone;
         this.equipmentList = (res.data[0].equip_list_enable == 1)? true : false;
         this.dailyTasks = (res.data[0].daily_task_enable == 1)? true : false;
+        this.compareMode = (res.data[0].compare_mode == 1)? true : false;
+
         if(this.ftaUta == '')
           this.ftaUta = "status";
        
@@ -174,7 +177,7 @@ export class ClinicSettingsComponent implements OnInit {
 
  // this.unscheduledPatientsMh = this.form.value.unscheduled_patients_days;
   
-  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays, this.timezone,this.subtracted_accounts, this.equipmentList, this.dailyTasks ).subscribe((res) => {
+  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays, this.timezone,this.subtracted_accounts, this.equipmentList, this.dailyTasks, this.compareMode ).subscribe((res) => {
       $('.ajax-loader').hide();
       if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );
@@ -361,8 +364,10 @@ public toggleMH(event, type)
 {
   if(type == 'Equipment'){    
     this.equipmentList = event.checked;
-  } else{
+  } else if(type == 'Daily'){
     this.dailyTasks = event.checked;
+  } else if(type == 'CompareMode'){
+    this.compareMode = event.checked;
   }
 }
 //upload logo for clinic

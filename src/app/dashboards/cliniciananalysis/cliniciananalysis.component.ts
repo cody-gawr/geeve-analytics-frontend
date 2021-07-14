@@ -210,12 +210,28 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
          this.selectedDentist = this._cookieService.get("dentistid");
      }
     if (val != undefined && val != 'all') {
-
       this.clinic_id = val;
+      if(this.user_type == '4'){
+        this.getClinic();
+      }
       this.getDentists();
       this.filterDate(this.chartService.duration$.value);
     }
   }
+
+  public compareModeEnable:boolean = false;
+  /********** Get the clinic information ***********/
+    getClinic(){
+      this.cliniciananalysisService.getClinics(this.clinic_id,'CompareMode').subscribe((data: any) => {
+        if(data.data){
+          this.compareModeEnable = (data.data.compare_mode == 1)? true : false;
+        }
+      }, error => {});
+    }
+
+  /**************************************************/
+
+
 
   splitName(name: string) {
     const regex = /\w+\s\w+(?=\s)|\w+/g;
