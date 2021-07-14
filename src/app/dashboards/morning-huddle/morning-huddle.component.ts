@@ -223,6 +223,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public amButton:boolean =  true;
     public pmButton:boolean =  true;
     public charTips:any = [];
+    public dentist_id:any = '';
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
@@ -297,19 +298,21 @@ initiate_clinic() {
     {
       this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
-
+    this.dentist_id = this._cookieService.get("dentistid");
     if(this.user_type != '5'){
       /***** Tab 1 ***/
       this.getDentistPerformance();
       this.getRecallRate();
       this.getTreatmentRate();
-      this.getDentistList();
+      if(this.user_type != '4'){
+        this.getDentistList();
+      }
       /***** Tab 1 ***/    
       /***** Tab 2 ***/
       //this.getSchedulePatients(null);
       this.getAppointmentCards(null);
     }
-    if(this.user_type != '4'){
+    if(this.user_type != '4'){     
       this.getScheduleNewPatients(null);
       this.getScheduleHours(null);
       this.getUnscheduleHours(null);
@@ -358,7 +361,9 @@ initiate_clinic() {
       this.getDentistPerformance();
       this.getRecallRate();
       this.getTreatmentRate();
-      this.getDentistList();
+      if(this.user_type != '4'){
+        this.getDentistList();
+      }
       this.getAppointmentCards(null);
     }
     if(this.user_type != '4')
@@ -775,7 +780,7 @@ initiate_clinic() {
 /***** Tab 1 ***/
   getDentistPerformance(){
     this.dentistperformanceLoader = true;
-  	this.morningHuddleService.dentistProduction( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
+  	this.morningHuddleService.dentistProduction( this.clinic_id, this.previousDays, this.user_type,this.dentist_id  ).subscribe((production:any) => {
       this.dentistperformanceLoader = false;
   		if(production.status == true) {
         this.production = production.data;
@@ -786,7 +791,7 @@ initiate_clinic() {
 
   getRecallRate(){
     this.dentistrecallRateLoader = true;    
-  	this.morningHuddleService.recallRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((recallRate:any) => {
+  	this.morningHuddleService.recallRate( this.clinic_id, this.previousDays,  this.user_type, this.dentist_id  ).subscribe((recallRate:any) => {
       this.dentistrecallRateLoader = false;
   		if(recallRate.status == true){
         this.recallRate = recallRate.data;
@@ -796,7 +801,7 @@ initiate_clinic() {
 
   getTreatmentRate(){
      this.dentistTreatmentRateLoader = true;    
-    this.morningHuddleService.reappointRate( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((treatmentRate:any) => {
+    this.morningHuddleService.reappointRate( this.clinic_id, this.previousDays,  this.user_type, this.dentist_id  ).subscribe((treatmentRate:any) => {
       this.dentistTreatmentRateLoader = false;    
       if(treatmentRate.status == true){
          this.treatmentRate = treatmentRate.data;
