@@ -178,7 +178,7 @@ expenses_card custom_ngx_cw01">
                               [trimLabels]="true" [maxLabelLength]="15" [results]="single" [legend]="false"
                               [explodeSlices]="explodeSlices" [labels]="showLabels" [arcWidth]="arcWidth"
                               [doughnut]="doughnut" [gradient]="gradient" [tooltipDisabled]="tooltipDisabled"
-                              [tooltipText]="pieTooltipText"> </ngx-charts-pie-chart>
+                              [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                             <div *ngIf="pieChartLabels && pieChartLabels.length <= 0 && categoryExpensesLoader == false"
                               class="no-data-placeholder">
                               <div class="sa_nodata_div">

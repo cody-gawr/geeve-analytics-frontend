@@ -1552,20 +1552,27 @@ public netProfitPmsTrendTotal;
     });
   }
 
-
- pieTooltipText({ data }) {
-    const label = data.name;
+ 
+ pieTooltipText({ data, index}) {
+    const labl = data.name.split("--");
+    const label = labl[0];
+    const exp = Math.round(labl[1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const val = data.value;
-
     return `
       <span class="tooltip-label">${label}</span>
-      <span class="tooltip-val"> ${val}%</span>
+      <span class="tooltip-val"> ${val}% ($${exp})</span>
     `;
   }
-    public expensescChartTrendIcon;
+
+  pieLabelText(labels) {
+    const labl = labels.split("--");
+    return labl[0];
+  }
+  
+  public expensescChartTrendIcon;
   public expensescChartTrendTotal;
   public pieChartDataPercentres;
-public categoryExpensesLoader:any;
+  public categoryExpensesLoader:any;
 
       //expenses
   private categoryExpenses() {
@@ -1585,25 +1592,23 @@ public categoryExpensesLoader:any;
          this.pieChartDataPercentres =[];
          var i = 0;
           data.data.forEach((res,key) => {
-            if(res.expenses_percent > 0 && res.expenses_percent < 1){
+            if(res.expenses_percent > 0 && res.expenses_percent < 1)
+            {
               res.expenses_percent =1;
             }
-           if(Math.round(res.expenses_percent) >=1){ 
-          var temp= {name:'',value:1};
-          temp.name =res.meta_key;
-          temp.value =res.expenses;  
-
-          this.single.push(temp);
-          this.single[i].value =Math.round(res.expenses_percent);  
-
-           this.pieChartDatares.push(Math.round(res.expenses));
-
-           this.pieChartDataPercentres.push(Math.round(res.expenses_percent));
-           this.pieChartLabelsres.push(res.meta_key);
-           this.pieChartTotal = this.pieChartTotal + parseInt(res.expenses);
-           i++;
-           }
-           
+            if(Math.round(res.expenses_percent) >=1)
+            { 
+              var temp= {name:'',value:1};
+              temp.name = res.meta_key+'--'+res.expenses;
+              temp.value = Math.round(res.expenses_percent);  
+              this.single.push(temp);
+              //this.single[i].value =Math.round(res.expenses_percent);  
+              this.pieChartDatares.push(Math.round(res.expenses));
+              this.pieChartDataPercentres.push(Math.round(res.expenses_percent));
+              this.pieChartLabelsres.push(res.meta_key);
+              this.pieChartTotal = this.pieChartTotal + parseInt(res.expenses);
+              i++;
+            }           
          });
         this.expensescChartTrendTotal = data.data_ta;
         if(Math.round(this.pieChartTotal)>=Math.round(this.expensescChartTrendTotal))
