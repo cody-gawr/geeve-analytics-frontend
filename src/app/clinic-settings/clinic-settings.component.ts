@@ -133,6 +133,8 @@ export class ClinicSettingsComponent implements OnInit {
         this.recallWeeks = res.data[0].recall_weeks;
         this.tickDays = res.data[0].tick_days;
         this.timezone = res.data[0].timezone;
+        this.equipmentList = (res.data[0].equip_list_enable == 1)? true : false;
+        this.dailyTasks = (res.data[0].daily_task_enable == 1)? true : false;
         if(this.ftaUta == '')
           this.ftaUta = "status";
        
@@ -167,10 +169,12 @@ export class ClinicSettingsComponent implements OnInit {
   this.postOpCallsMh = this.form.value.post_op_calls_days;
   this.recallWeeks = this.form.value.recall_weeks;
   this.tickDays = this.form.value.tick_days;
-  this.timezone = this.form.value.timezone;
+  this.timezone = this.form.value.timezone;  
+
+
  // this.unscheduledPatientsMh = this.form.value.unscheduled_patients_days;
   
-  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays, this.timezone,this.subtracted_accounts ).subscribe((res) => {
+  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays, this.timezone,this.subtracted_accounts, this.equipmentList, this.dailyTasks ).subscribe((res) => {
       $('.ajax-loader').hide();
       if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );
@@ -350,6 +354,15 @@ public toggle(event){
 
     this.workingDays.saturday = event.checked;
 
+  }
+}
+
+public toggleMH(event, type)
+{
+  if(type == 'Equipment'){    
+    this.equipmentList = event.checked;
+  } else{
+    this.dailyTasks = event.checked;
   }
 }
 //upload logo for clinic

@@ -536,6 +536,7 @@ initiate_clinic() {
     }); 
   } 
 
+  public isEnabletasks:boolean = true;
   getEndOfDays(){
     this.endTaksLoading = true;
     this.futureDateDT = '';
@@ -546,17 +547,25 @@ initiate_clinic() {
         }
       this.endTaksLoading = false;
       if(production.message == 'success') {
-        this.endOfDaysTasks = production.data;  
-        this.endOfDaysTasksDate = production.date;
-        if(this.showComplete == true) {
-          this.endOfDaysTasksInComp = this.endOfDaysTasks;
-        } else {
-          this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
+        if( production.data == '204' ){
+          this.isEnabletasks = false;
         }
+        else 
+        {
+          this.isEnabletasks = true;
+          this.endOfDaysTasks = production.data;  
+          this.endOfDaysTasksDate = production.date;
+          if(this.showComplete == true) {
+            this.endOfDaysTasksInComp = this.endOfDaysTasks;
+          } else {
+            this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
+          }  
+        }        
       }
     }); 
   } 
 
+  public isEnableEquipList: boolean = true;
   getEquipmentList() {
     this.equipmentListLoading = true;
     this.futureDateEL = '';
@@ -570,20 +579,29 @@ initiate_clinic() {
        this.amButton = true;
         this.pmButton = true;
       if(production.message == 'success') {
-        this.lquipmentList = production.data;       
-        production.data.forEach((list) => {
-          if(this.amButton == true && list.am_complete == 1 ){
-            this.amButton = false;
-          }
-          if(this.pmButton == true && list.pm_complete == 1){
-            this.pmButton = false;
-          }
-          var temp = {'am' : list.equip_qty_am, 'pm' : list.equip_qty_pm};
-          if(typeof(this.lquipmentListAm[list.id]) == 'undefined'){
-            this.lquipmentListAm[list.id] = [];
-          }
-          this.lquipmentListAm[list.id] = temp;          
-        });
+        if( production.data == 204 )
+        {
+          this.isEnableEquipList = false;
+        }
+        else 
+        {
+          this.lquipmentList = production.data;       
+          production.data.forEach((list) => {
+            if(this.amButton == true && list.am_complete == 1 ){
+              this.amButton = false;
+            }
+            if(this.pmButton == true && list.pm_complete == 1){
+              this.pmButton = false;
+            }
+            var temp = {'am' : list.equip_qty_am, 'pm' : list.equip_qty_pm};
+            if(typeof(this.lquipmentListAm[list.id]) == 'undefined'){
+              this.lquipmentListAm[list.id] = [];
+            }
+            this.lquipmentListAm[list.id] = temp;          
+          });
+        }
+
+
       }
     }); 
   } 
@@ -1027,7 +1045,7 @@ initiate_clinic() {
     var year1  = setDate.getFullYear();
     var date1:any= new Date(year1,month1, day1);
     var diffTime:any =Math.floor((date2 - date1) / (1000 * 60 * 60 * 24));
-    console.log(diffTime);
+    
     return diffTime;
   }
 

@@ -1498,10 +1498,11 @@
       <mat-card class="table-card post_call_responsive_border">
         <mat-card-title>
           <div class="title-follow-up">
-            Daily Tasks
+            <span *ngIf="isEnabletasks">Daily Tasks</span>
+            <span *ngIf="!isEnabletasks">Daily Task feature is currently disabled. Please check your Jeeve settings to enable this feature.</span>
           </div>
           <!--    <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
-          <div class="showComplete">
+          <div class="showComplete" *ngIf="isEnabletasks">
             <mat-checkbox name="status" [checked]="showComplete" (change)="updateToComplete($event)">Show Complete
             </mat-checkbox>
           </div>
@@ -1513,7 +1514,7 @@
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
-            <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''">
+            <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" *ngIf="isEnabletasks">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Task Name </th>
@@ -1570,7 +1571,10 @@
 
       <mat-card class="table-card post_call_responsive_border" *ngIf='false' >
         <mat-card-title>
-          <div class="title-follow-up"> Equipment List </div>
+          <div class="title-follow-up"> 
+          <span *ngIf="isEnableEquipList">Equipment List</span>
+          <span *ngIf="!isEnableEquipList">Equipment List is disabled. Please check your Jeeve settings to enable this</span>
+        </div>
        <!--     <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
       <!--     <div class="showComplete showAMPm">
            <span class="AM">AM</span> <mat-slide-toggle [checked]="showELPm" name="showelpm" (change)="showAMPm($event)"></mat-slide-toggle> <span  class="PM">PM </span>
@@ -1579,11 +1583,11 @@
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive"
             style="max-height: 700px; overflow: auto;">
-            <div class="card-loading" *ngIf="equipmentListLoading"><img class="tableLoader"
-                src="../../assets/images/logo-icon.gif">
+            <div class="card-loading" *ngIf="equipmentListLoading">
+              <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
-              </div>
-            <table fxHide fxShow.gt-sm mat-table [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.length == 0)? 'noDataTableClass' : ''"> 
+            </div>
+            <table fxHide fxShow.gt-sm mat-table [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.length == 0)? 'noDataTableClass' : ''" *ngIf="isEnableEquipList"> 
               <!-- Name Column -->
                <ng-container matColumnDef="item">
                 <th mat-header-cell *matHeaderCellDef> Item </th>
