@@ -778,7 +778,7 @@ initiate_clinic() {
 /***** Tab 2 ***/
 
 /***** Tab 1 ***/
-  getDentistPerformance(){
+   async getDentistPerformance(){
     this.dentistperformanceLoader = true;
   	this.morningHuddleService.dentistProduction( this.clinic_id, this.previousDays, this.user_type,this.dentist_id  ).subscribe((production:any) => {
       this.dentistperformanceLoader = false;
@@ -789,7 +789,7 @@ initiate_clinic() {
   }
 
 
-  getRecallRate(){
+  async getRecallRate(){
     this.dentistrecallRateLoader = true;    
   	this.morningHuddleService.recallRate( this.clinic_id, this.previousDays,  this.user_type, this.dentist_id  ).subscribe((recallRate:any) => {
       this.dentistrecallRateLoader = false;
@@ -799,7 +799,7 @@ initiate_clinic() {
   	});	
   }
 
-  getTreatmentRate(){
+  async getTreatmentRate(){
      this.dentistTreatmentRateLoader = true;    
     this.morningHuddleService.reappointRate( this.clinic_id, this.previousDays,  this.user_type, this.dentist_id  ).subscribe((treatmentRate:any) => {
       this.dentistTreatmentRateLoader = false;    
@@ -810,7 +810,7 @@ initiate_clinic() {
   }
 
 
- getDentistList(){
+async getDentistList(){
   this.dentistListLoading = false;
   this.dentistList = new MatTableDataSource([]);
     this.morningHuddleService.dentistList( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((list:any) => {
