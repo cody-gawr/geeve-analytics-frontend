@@ -1216,7 +1216,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           if((maxY +50000) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
             this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +100000;
           }
-        }
+        } else if(maxY < 5000000){
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/1000000)*1000000);
+          if((maxY +500000) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +1000000;
+          }
+        } else if(maxY > 5000000){
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/1000000)*1000000);
+          if((maxY +500000) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +1000000;
+          }
+        } 
         /********** Add Space to top of graph ****/
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [

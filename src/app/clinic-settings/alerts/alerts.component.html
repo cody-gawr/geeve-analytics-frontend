@@ -1,0 +1,31 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header><mat-panel-title> Alerts Settings </mat-panel-title></mat-expansion-panel-header>
+  <mat-card-content>
+      <h4 class="clinic-settings-form-title" ></h4>
+          <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
+            <div class="clinic-setting-form" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" style="width: 100%;">
+              <form  class="basic-form sa_forms_design">
+              <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"> 
+                <div fxFlex="calc(50% - 10px)" fxFlex.md="calc(50% - 10px)" fxFlex.sm="calc(50% - 10px)" fxFlex.xs="100">
+                  <div class="sa-form-group">
+                    <label>Email</label>
+                    <input placeholder="">
+                  </div>
+                </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="20px" fxLayoutGap.sm="20px" fxLayoutGap.xs="0"> 
+                <div fxFlex="calc(100% - 10px)" fxFlex.md="calc(100% - 10px)" fxFlex.sm="calc(100% - 10px)" fxFlex.xs="100">
+                  <div class="sa-form-group">
+                    <label>Enable</label>
+                    <mat-slide-toggle [checked]="true" name="status"></mat-slide-toggle> 
+                  </div>
+                </div>
+              </div>
+              <div class="sa-form-group-btn">
+                <button class="save-button" type="submit" >Save</button>
+              </div>
+              </form>
+            </div>            
+          </div>
+  </mat-card-content>
+</mat-expansion-panel>

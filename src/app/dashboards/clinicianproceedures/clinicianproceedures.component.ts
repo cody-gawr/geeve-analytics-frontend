@@ -1738,6 +1738,8 @@ public buildChartProceedureLoader:any;
           this.proceedureChartOptions1.scales.xAxes[0].ticks.max = (Math.ceil(maxY/10000) * 10000) + 5000;          
         } else if(maxY < 1000000){
           this.proceedureChartOptions1.scales.xAxes[0].ticks.max = (Math.ceil(maxY/100000)*100000) + 10000;          
+        } else if(maxY > 1000000){
+          this.proceedureChartOptions1.scales.xAxes[0].ticks.max = (Math.ceil(maxY/100000)*100000) + 100000;          
         }
         /********** Add Space to top of graph ****/
        this.proceedureChartData[0]['data'] = this.proceedureChartData1;
