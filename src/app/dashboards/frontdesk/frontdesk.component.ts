@@ -36,6 +36,7 @@ export class FrontDeskComponent implements AfterViewInit {
   public trendText;
   public charTips:any = [];
   public showTopVlaues: boolean = false;
+  public showUtiTable: boolean = false;
 
   chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -636,6 +637,7 @@ public utilityratemessage: boolean = false;
   public goalchecked='off';
     public stackedChartOptionssWT:any =this.stackedChartOptions;
 public fdWorkTimeAnalysisLoader:boolean;
+public fdUtiData:any = [];
 
   //Items Predictor Analysis 
   private fdWorkTimeAnalysis() {
@@ -649,6 +651,7 @@ public fdWorkTimeAnalysisLoader:boolean;
     }else{
       this.utilityratemessage = false;
   this.clinic_id && this.frontdeskService.fdWorkTimeAnalysis(this.clinic_id,this.startDate,this.endDate,this.duration).subscribe((data) => {
+      this.fdUtiData = [];
     if(data.message == 'success'){
       this.fdWorkTimeAnalysisLoader = false;
       this.workTimeData1 =[];
@@ -657,7 +660,14 @@ public fdWorkTimeAnalysisLoader:boolean;
      if(data.data.length >0) {
         data.data.forEach(res => {
           if(res.util_rate > 0) {
-             this.workTimeData1.push(Math.round(res.util_rate * 100));
+            var temp =  {
+            'name':  res.app_book_name, 
+            'scheduled_hours':  res.planned_hour, 
+            'clinican_hours':  res.worked_hour, 
+            'util_rate':  Math.round(res.util_rate * 100), 
+            };
+            this.fdUtiData.push(temp);
+            this.workTimeData1.push(Math.round(res.util_rate * 100));
             this.workTimeLabels1.push(res.app_book_name+'--'+res.worked_hour+'--'+res.planned_hour); 
           }
         });
@@ -1603,5 +1613,8 @@ toggleChangeProcess(){
         this.showTopVlaues = false;
         this.stackedChartOptionsUtiDP = this.stackedChartOptionsUti;
       }
+    }
+    showTable(val){
+      this.showUtiTable = val;
     }
   }

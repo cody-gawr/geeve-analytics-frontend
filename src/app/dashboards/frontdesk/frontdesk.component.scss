@@ -1,1 +1,22 @@
 .header_filters.frontdesk  { flex-direction: row-reverse !important }
+
+.utiTablecon {
+    height: 330px;
+    width: 100%;
+    overflow: hidden; 
+}
+table.utiTable {
+    width: 100%;
+}
+table.utiTable tbody {
+        overflow-y: scroll;
+    height: 300px;
+}
+.utiTable thead tr th {
+    text-align: left;
+    font-size: 13px;
+}
+.utiTable tbody tr td {
+    padding: 5px;
+    font-size: 13px;
+}
