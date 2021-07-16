@@ -541,7 +541,7 @@ initiate_clinic() {
     }); 
   } 
 
-  public isEnabletasks:boolean = true;
+  public isEnabletasks:boolean = false;
   getEndOfDays(){
     this.endTaksLoading = true;
     this.futureDateDT = '';
@@ -570,7 +570,7 @@ initiate_clinic() {
     }); 
   } 
 
-  public isEnableEquipList: boolean = true;
+  public isEnableEquipList: boolean = false;
   getEquipmentList() {
     this.equipmentListLoading = true;
     this.futureDateEL = '';
@@ -584,12 +584,13 @@ initiate_clinic() {
        this.amButton = true;
         this.pmButton = true;
       if(production.message == 'success') {
-        if( production.data == 204 )
+        if( production.data == '204' )
         {
           this.isEnableEquipList = false;
         }
         else 
         {
+            this.isEnableEquipList = true;
           this.lquipmentList = production.data;       
           production.data.forEach((list) => {
             if(this.amButton == true && list.am_complete == 1 ){

@@ -102,7 +102,7 @@
           </div>
 
            <div class="working-days">   
-              <h4 class="clinic-settings-form-title">MH Daily Tasks</h4>
+              <h4 class="clinic-settings-form-title">Morning Huddle Daily Tasks</h4>
               <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
                 <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ equipmentList }}" name="equip_list_enable" (change)="toggleMH($event,'Equipment')">Equipment List</mat-slide-toggle>
                 <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ dailyTasks }}" name="daily_task_enable" (change)="toggleMH($event,'Daily')">Daily Tasks</mat-slide-toggle>
@@ -111,7 +111,10 @@
           <div class="working-days">   
               <h4 class="clinic-settings-form-title">Dentist Compare Mode</h4>
               <div class="clinic-setting-form" fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.md="0px" fxLayoutGap.sm="0px" fxLayoutGap.xs="0">
-                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ compareMode }}" name="compare_mode" (change)="toggleMH($event,'CompareMode')">Mode</mat-slide-toggle>                
+                <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ compareMode }}" name="compare_mode" (change)="toggleMH($event,'CompareMode')">Compare Mode 
+                  <span *ngIf="compareMode"><strong>Enabled</strong></span>
+                  <span *ngIf="!compareMode"><strong>Disabled</strong></span>
+                </mat-slide-toggle>                
               </div>
           </div>
 

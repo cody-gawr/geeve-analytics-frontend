@@ -259,6 +259,7 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.visits_dif = 0;
     this.productionVal = 0;  
     this.productionPrev = 0;
+    this.startDate = '2021-05-01'
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTopCards').subscribe((data) => {
       if(data.message == 'success'){
         this.productionstats = true;
@@ -277,26 +278,27 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
           });
           this.production_dif = Math.round(this.production_c - this.production_p);
           this.production_c_all = {'title' : '', 'info' : tooltip_p};
-          
-          this.productionPrev = Math.round(data.data.production_visit_ta);  
-          this.productionVal = 0;
-          let tooltip_pv = '';
-          data.data.production_visit.forEach((val) => {
-            this.productionVal = this.productionVal + Math.round(val.production_visit);
-            tooltip_pv += '<span class="text">'+val.clinic_name+': $'+Math.round(val.production_visit)+'</span>';
-          });
-          this.productionVal_all = {'title' : '', 'info' : tooltip_pv};
-          this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
 
           this.visits_p = Math.round(data.data.num_visit_ta);
           this.visits_c = 0;
-          let tooltip_v = '';
+          let tooltip_v = ''; 
           data.data.num_visit.forEach((val) => {
-            this.visits_c = this.visits_c + Math.round(val.num_visit);
+          this.visits_c = this.visits_c + Math.round(val.num_visit);
             tooltip_v += '<span class="text">'+val.clinic_name+': '+Math.round(val.num_visit)+'</span>';
           });
           this.visits_c_all = {'title' : '', 'info' : tooltip_v};
           this.visits_dif = Math.round(this.visits_c - this.visits_p);
+
+
+          this.productionPrev = Math.round(data.data.production_visit_ta);  
+          this.productionVal = 0;
+          let tooltip_pv = '';
+          this.productionVal =  Math.round(this.production_c / this.visits_c);
+          data.data.production_visit.forEach((val) => {
+            tooltip_pv += '<span class="text">'+val.clinic_name+': $'+Math.round(val.production_visit)+'</span>';
+          });
+          this.productionVal_all = {'title' : '', 'info' : tooltip_pv};
+          this.finProductionPerVisit_dif = Math.round(this.productionVal - this.productionPrev);
         } 
         else 
         {

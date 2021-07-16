@@ -1491,7 +1491,7 @@
 
 
     <!-- End of Day Tasks -->
-    <mat-tab label="Daily Tasks" *ngIf="user_type != '4'">
+    <mat-tab label="Daily Tasks" *ngIf="user_type != '4' && (isEnabletasks || isEnableEquipList)">
 
       <div class="morning-huddle-date">
         <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone'  }} </strong>
@@ -1570,7 +1570,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="table-card post_call_responsive_border" *ngIf='false' >
+      <mat-card class="table-card post_call_responsive_border" *ngIf='true' >
         <mat-card-title>
           <div class="title-follow-up"> 
           <span *ngIf="isEnableEquipList">Equipment List</span>
