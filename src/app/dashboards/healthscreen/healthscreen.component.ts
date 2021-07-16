@@ -259,7 +259,6 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
     this.visits_dif = 0;
     this.productionVal = 0;  
     this.productionPrev = 0;
-    this.startDate = '2021-05-01'
     this.healthscreenService.commonCall(this.clinic_id,this.startDate,this.endDate,'chTopCards').subscribe((data) => {
       if(data.message == 'success'){
         this.productionstats = true;
