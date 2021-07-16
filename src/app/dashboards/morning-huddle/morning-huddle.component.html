@@ -1496,11 +1496,11 @@
       <div class="morning-huddle-date">
         <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone'  }} </strong>
       </div>
-      <mat-card class="table-card post_call_responsive_border">
+      <mat-card class="table-card post_call_responsive_border"  *ngIf="isEnabletasks">
         <mat-card-title>
           <div class="title-follow-up">
-            <span *ngIf="isEnabletasks">Daily Tasks</span>
-            <span *ngIf="!isEnabletasks">Daily Task feature is currently disabled. Please check your Jeeve settings to enable this feature.</span>
+            <span>Daily Tasks</span>
+            <!-- <span *ngIf="!isEnabletasks">Daily Task feature is currently disabled. Please check your Jeeve settings to enable this feature.</span> -->
           </div>
           <!--    <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
           <div class="showComplete" *ngIf="isEnabletasks">
@@ -1570,11 +1570,11 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="table-card post_call_responsive_border" *ngIf='true' >
+      <mat-card class="table-card post_call_responsive_border" *ngIf="isEnableEquipList">
         <mat-card-title>
           <div class="title-follow-up"> 
-          <span *ngIf="isEnableEquipList">Equipment List</span>
-          <span *ngIf="!isEnableEquipList">Equipment List is disabled. Please check your Jeeve settings to enable this</span>
+          <span>Equipment List</span>
+          <!-- <span *ngIf="!isEnableEquipList">Equipment List is disabled. Please check your Jeeve settings to enable this</span> -->
         </div>
        <!--     <div class="info-icon-container"><img [tooltip]="tooltipData" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"/></div> -->
       <!--     <div class="showComplete showAMPm">
