@@ -354,10 +354,9 @@ public toggle(event){
     this.workingDays.friday = event.checked;
 
   } else if(event.source.name == 'saturday'){
-
     this.workingDays.saturday = event.checked;
-
   }
+  this.onSubmit();
 }
 
 public toggleMH(event, type)
@@ -369,6 +368,7 @@ public toggleMH(event, type)
   } else if(type == 'CompareMode'){
     this.compareMode = event.checked;
   }
+  this.onSubmit();
 }
 //upload logo for clinic
 

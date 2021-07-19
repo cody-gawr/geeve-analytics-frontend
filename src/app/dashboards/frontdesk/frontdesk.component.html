@@ -68,12 +68,12 @@
                   
 
                   <!-- top values Ions -->
-                  <i  style="margin-right: 10px;" *ngIf="!showTopVlaues && !showUtiTable" class="far fa-chart-bar" (click) = "setTopValues()"></i>
-                  <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i>
+                  <i  style="margin-right: 10px;" *ngIf="!showTopVlaues && !showUtiTable && !showTrend" class="far fa-chart-bar" (click) = "setTopValues()"></i>
+                  <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i>
                   <!-- top values Ions -->             
                   <!-- Show Table -->
-                    <i  style="margin-right: 10px;" *ngIf="!showUtiTable" class="fa fa-table" (click) = "showTable(true)"></i>
-                    <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showUtiTable" class="fa fa-table greenIcon" (click) = "showTable(false)"></i>
+                    <i  style="margin-right: 10px;" *ngIf="!showUtiTable && !showTrend" class="fa fa-table" (click) = "showTable(true)"></i>
+                    <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showUtiTable && !showTrend" class="fa fa-table greenIcon" (click) = "showTable(false)"></i>
                   <!-- Show Table -->
                   <img [tooltip]="charTips['15']" src="../assets/images/info-icon.png" alt="info-icon"
                     class="info-icon" />

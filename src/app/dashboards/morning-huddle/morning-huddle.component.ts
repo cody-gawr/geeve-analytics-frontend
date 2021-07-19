@@ -1,5 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit,ViewChild,ViewEncapsulation,Inject } from '@angular/core';
 import { MorningHuddleService } from './morning-huddle.service';
+import { ClinicianAnalysisService } from '../cliniciananalysis/cliniciananalysis.service';
 import { CookieService } from "ngx-cookie";
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -222,6 +223,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public equipmentListLoading:boolean =  true;
     public amButton:boolean =  true;
     public pmButton:boolean =  true;
+    public dailyTabSettLod:boolean =  false;
     public charTips:any = [];
     public dentist_id:any = '';
 
@@ -249,7 +251,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     private toastr: ToastrService,
     public constants: AppConstants,
     public dialog: MatDialog,
-    public chartstipsService: ChartstipsService
+    public chartstipsService: ChartstipsService,
+    public clinicianAnalysisService: ClinicianAnalysisService
     ) { 
     this.getChartsTips();
  }
@@ -298,6 +301,15 @@ initiate_clinic() {
     {
       this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
+    this.dailyTabSettLod = false;
+    this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable' ).subscribe((data:any) => {
+      this.dailyTabSettLod = true;
+      if(data.message == 'success'){
+        this.isEnabletasks = (data.data.daily_task_enable == 1)? true : false;
+        this.isEnableEquipList = (data.data.equip_list_enable == 1)? true : false;
+      }
+    }); 
+
     this.dentist_id = this._cookieService.get("dentistid");
     if(this.user_type != '5'){
       /***** Tab 1 ***/
@@ -553,11 +565,11 @@ initiate_clinic() {
       this.endTaksLoading = false;
       if(production.message == 'success') {
         if( production.data == '204' ){
-          this.isEnabletasks = false;
+          //this.isEnabletasks = false;
         }
         else 
         {
-          this.isEnabletasks = true;
+          //this.isEnabletasks = true;
           this.endOfDaysTasks = production.data;  
           this.endOfDaysTasksDate = production.date;
           if(this.showComplete == true) {
@@ -586,11 +598,11 @@ initiate_clinic() {
       if(production.message == 'success') {
         if( production.data == '204' )
         {
-          this.isEnableEquipList = false;
+          //this.isEnableEquipList = false;
         }
         else 
         {
-            this.isEnableEquipList = true;
+            //this.isEnableEquipList = true;
           this.lquipmentList = production.data;       
           production.data.forEach((list) => {
             if(this.amButton == true && list.am_complete == 1 ){
