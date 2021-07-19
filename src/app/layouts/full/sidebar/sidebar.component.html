@@ -15,7 +15,8 @@
     <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="(user_type == 2) || (permisions.indexOf('healthscreen') >= 0)">
          <a appAccordionToggle [routerLink]="['/dashboards/healthscreen']">
             <i class="fa-clinic-medical fas"></i>
-            <span>Clinic Health</span>
+            <span *ngIf="user_type != 4">Clinic Health</span>
+            <span *ngIf="user_type == 4">Health Screen</span>
             <span fxFlex></span>
         </a>
     </mat-list-item>
