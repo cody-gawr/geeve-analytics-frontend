@@ -55,13 +55,14 @@ export class FollowupsService {
     }
  
 
-    updateFollowUpStatus(event,pid,cid,type,previousDays): Observable<any> {
+    updateFollowUpStatus(event,pid,cid,type,previousDays,fdate): Observable<any> {
         var header = this.getHeaders(); 
         const formData = new FormData();
         formData.append('event', event);
         formData.append('patient_id', pid);
         formData.append('clinic_id', cid);
         formData.append('date', previousDays);
+        formData.append('fdate', fdate);
         formData.append('type', type);
         return this.http.post(this.apiUrl +"/Followups/fuUpdateFollowupStatus",formData, { headers: header })
         .pipe(map((response: Response) => {
@@ -71,13 +72,14 @@ export class FollowupsService {
     } 
 
 
-    updateStatus(event,pid,cid,type,previousDays): Observable<any> {
+    updateStatus(event,pid,cid,type,previousDays,fdate): Observable<any> {
         var header = this.getHeaders(); 
         const formData = new FormData();
         formData.append('status', event);
         formData.append('patient_id', pid);
         formData.append('clinic_id', cid);
         formData.append('date', previousDays);
+        formData.append('fdate', fdate);
         formData.append('type', type);
         return this.http.post(this.apiUrl +"/Followups/fuUpdateStatus",formData, { headers: header })
         .pipe(map((response: Response) => {
@@ -102,13 +104,14 @@ export class FollowupsService {
     }
     
     // Updae tick notes add/update
-    notes(notes,pid, date,cid): Observable<any> {
+    notes(notes,pid, date,cid, fdate): Observable<any> {
         var header = this.getHeaders(); 
          const formData = new FormData();
         formData.append('notes', notes);
         formData.append('patient_id', pid);
         formData.append('clinic_id', cid);
         formData.append('date', date);
+        formData.append('fdate', fdate);
         formData.append('type', 'tick-follower');
         return this.http.post(this.apiUrl +"/Followups/fuUpdateStatus",formData, { headers: header })
         .pipe(map((response: Response) => {

@@ -246,13 +246,14 @@ export class MorningHuddleService {
         );
     }
 
-    updateFollowUpStatus(event,pid,cid,type,previousDays): Observable<any> {
+    updateFollowUpStatus(event,pid,cid,type,previousDays, fdate): Observable<any> {
         var header = this.getHeaders(); 
         const formData = new FormData();
         formData.append('event', event);
         formData.append('patient_id', pid);
         formData.append('clinic_id', cid);
         formData.append('date', previousDays);
+        formData.append('fdate', fdate);
         formData.append('type', type);
         return this.http.post(this.apiUrl +"/MorningHuddle/mhUpdateFollowupStatus",formData, { headers: header })
         .pipe(map((response: Response) => {
@@ -278,13 +279,14 @@ export class MorningHuddleService {
                     })
         );
     }
-    updateStatus(event,pid,cid,type,previousDays): Observable<any> {
+    updateStatus(event,pid,cid,type,previousDays,fdate): Observable<any> {
         var header = this.getHeaders(); 
         const formData = new FormData();
         formData.append('status', event);
         formData.append('patient_id', pid);
         formData.append('clinic_id', cid);
         formData.append('date', previousDays);
+        formData.append('fdate', fdate);
         formData.append('type', type);
         return this.http.post(this.apiUrl +"/MorningHuddle/mhUpdateStatus",formData, { headers: header })
         .pipe(map((response: Response) => {
@@ -308,13 +310,14 @@ export class MorningHuddleService {
     }
 
     // Updae tick notes add/update
-    notes(notes,pid, date,cid): Observable<any> {
+    notes(notes,pid, date,cid, fdate): Observable<any> {
         var header = this.getHeaders(); 
          const formData = new FormData();
         formData.append('notes', notes);
         formData.append('patient_id', pid);
         formData.append('clinic_id', cid);
         formData.append('date', date);
+        formData.append('fdate', fdate);
         formData.append('type', 'tick-follower');
         return this.http.post(this.apiUrl +"/MorningHuddle/mhUpdateStatus",formData, { headers: header })
         .pipe(map((response: Response) => {

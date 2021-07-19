@@ -32,7 +32,7 @@ export class FollowupsDialogComponent {
       return false;
     }
 
-    this.followupsService.notes(data.notes,data.patientId, data.date,data.clinic_id).subscribe((res) => {
+    this.followupsService.notes(data.notes,data.patientId, data.date,data.clinic_id,data.followup_date).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
       } else if (res.status == '401') {
@@ -70,7 +70,7 @@ export class StatusDialogComponent {
     if( data.notes == '' || data.old == data.notes) {
       return false;
     }
-    this.followupsService.notes(data.notes,data.patientId, data.date,data.clinic_id).subscribe((res) => {
+    this.followupsService.notes(data.notes,data.patientId, data.date,data.clinic_id, data.followup_date).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
       } else if (res.status == '401') {
@@ -84,7 +84,7 @@ export class StatusDialogComponent {
     this.nextDate = event.chosenLabel;
   }
   updateNextfollowUp(data){
-     this.followupsService.updateStatus('Wants another follow-up',data.pid,data.cid,data.type,data.original_appt_date).subscribe((update:any) => {
+     this.followupsService.updateStatus('Wants another follow-up',data.pid,data.cid,data.type,data.original_appt_date, data.followup_date).subscribe((update:any) => {
       this.onNoClick();
       if(update.status){
         this.followupsService.cloneRecord(data.pid,data.cid,data.type,data.followup_date,this.nextDate,data.original_appt_date).subscribe((update:any) => {
@@ -348,7 +348,7 @@ initiate_clinic() {
   
   
   //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
-  toggleUpdate(event,pid,date,cid,type) {    
+  toggleUpdate(event,pid,date,fdate,cid,type) {    
       if(type == 'post-op-calls'){
           this.poLoadingLoading = true;
       } else if(type == 'recall-overdue'){
@@ -356,7 +356,7 @@ initiate_clinic() {
       } else if(type == 'tick-follower'){
         this.endTaksLoadingLoading = true;
       }
-    this.followupsService.updateFollowUpStatus(event.checked,pid,cid,type, date).subscribe((update:any) => {
+    this.followupsService.updateFollowUpStatus(event.checked,pid,cid,type, date,fdate).subscribe((update:any) => { 
       if(type == 'post-op-calls'){
         this.getFollowupPostOpCalls();
       } else if(type == 'recall-overdue'){
@@ -383,7 +383,7 @@ initiate_clinic() {
       
       });
     } else {
-      this.followupsService.updateStatus(event,pid,cid,type, date).subscribe((update:any) => {}); 
+      this.followupsService.updateStatus(event,pid,cid,type, date,followup_date).subscribe((update:any) => {}); 
     }    
   }
 
@@ -456,10 +456,10 @@ initiate_clinic() {
   }
 
 
-  openNotes(notes,patient_id,original_appt_date): void {
+  openNotes(notes,patient_id,original_appt_date,followup_date): void {
     const dialogRef = this.dialog.open(FollowupsDialogComponent, {
       width: '500px',
-      data: {notes:notes, patientId:patient_id, date:original_appt_date,clinic_id: this.clinic_id, old:notes}
+      data: {notes:notes, patientId:patient_id, date:original_appt_date,clinic_id: this.clinic_id, old:notes, followup_date:followup_date}
     });
     dialogRef.afterClosed().subscribe(result => {    
         this.getTickFollowups();

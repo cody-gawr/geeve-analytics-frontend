@@ -51,7 +51,7 @@ export class DialogOverviewExampleDialogComponent {
       return false;
     }
 
-    this.morningHuddleService.notes(data.notes,data.patientId, data.date,data.clinic_id).subscribe((res) => {
+    this.morningHuddleService.notes(data.notes,data.patientId, data.date,data.clinic_id, data.followup_date).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
       } else if (res.status == '401') {
@@ -88,7 +88,7 @@ export class StatusDialogMHComponent {
   }
 
   updateNextfollowUp(data){   
-     this.morningHuddle.updateStatus('Wants another follow-up',data.pid,data.cid,data.type,data.original_appt_date).subscribe((update:any) => {
+     this.morningHuddle.updateStatus('Wants another follow-up',data.pid,data.cid,data.type,data.original_appt_date,data.followup_date).subscribe((update:any) => {
       this.onNoClick();
       if(update.status){
          this.morningHuddle.cloneRecord(data.pid,data.cid,data.type,data.followup_date,this.nextDate,data.original_appt_date).subscribe((update:any) => {
@@ -840,7 +840,7 @@ async getDentistList(){
   }
   
   //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
-  toggleUpdate(event,pid,date,cid,type) {    
+  toggleUpdate(event,pid,date,followup_date, cid,type) {    
       if(type == 'post-op-calls'){
           this.poLoadingLoading = true;
       } else if(type == 'recall-overdue'){
@@ -848,7 +848,7 @@ async getDentistList(){
       } else if(type == 'tick-follower'){
         this.endTaksLoadingLoading = true;
       }
-    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,type, date).subscribe((update:any) => {
+    this.morningHuddleService.updateFollowUpStatus(event.checked,pid,cid,type, date,followup_date).subscribe((update:any) => {
       if(type == 'post-op-calls'){
         this.getFollowupPostOpCalls();
       } else if(type == 'recall-overdue'){
@@ -876,7 +876,7 @@ async getDentistList(){
       
       });
     } else {
-      this.morningHuddleService.updateStatus(event,pid,cid,type, date).subscribe((update:any) => {}); 
+      this.morningHuddleService.updateStatus(event,pid,cid,type, date,followup_date).subscribe((update:any) => {}); 
     }    
   }
 
@@ -967,10 +967,10 @@ async getDentistList(){
   }
 
 
-  openNotes(notes,patient_id,original_appt_date): void {
+  openNotes(notes,patient_id,original_appt_date,followup_date): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '500px',
-      data: {notes:notes, patientId:patient_id, date:original_appt_date,clinic_id: this.clinic_id, old:notes}
+      data: {notes:notes, patientId:patient_id, date:original_appt_date,clinic_id: this.clinic_id, old:notes,followup_date: followup_date}
     });
     dialogRef.afterClosed().subscribe(result => {    
         this.getTickFollowups();
