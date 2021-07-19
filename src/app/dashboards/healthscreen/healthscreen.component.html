@@ -181,11 +181,8 @@
                   </div>
                   <div *ngIf="prodpervisitstats == true"  class="production_description production_description-grow">
                     <h4>Prod. Per Visit</h4>
-                    <span class="change_value">
-                      {{ productionVal >= 0 ? ' ' : '- ' }}
-                      ${{ productionVal | number:'1.0-0'}}
-                    </span>                   
-                    
+                    <span class="change_value" *ngIf="productionVal">{{ productionVal >= 0 ? ' ' : '- ' }} ${{ productionVal | number:'1.0-0'}}</span>                   
+                    <span class="change_value" *ngIf="!productionVal">$0</span>                    
                   </div>
                   <div class="prodction_main_box_label" fxFlexAlign="start" *ngIf="production_dif && prodpervisitstats == true">
                     <div [ngClass]="(production_dif > 0) ? 'plus': 'minus'">
