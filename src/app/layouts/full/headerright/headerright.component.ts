@@ -7,7 +7,7 @@ import { HeaderService } from '../header/header.service';
 import { DentistService } from '../../../dentist/dentist.service';
 import { Subscription } from 'rxjs/Subscription';
 import { UserIdleService } from 'angular-user-idle';
-
+import { AppConstants } from '../../../app.constants';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';  
 export interface Dentist {
@@ -28,7 +28,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   showCompare:boolean = false;
   showDropDown:boolean = false;
   classUrl:string = '';
-  constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router, private userIdle: UserIdleService) {
+  constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router, private userIdle: UserIdleService,public constants: AppConstants) {
       this.user_type_dentist = this._cookieService.get("user_type");
       this._routerSub = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
             this.route = router.url; 
@@ -86,7 +86,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
     if(this._cookieService.get("dentist_toggle")){
       this.isToggleDentistChart = this._cookieService.get("dentist_toggle");
     }  
-    let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+    let opts = this.constants.cookieOpt as CookieOptions;
     this.isToggleDentistChart = (this.isToggleDentistChart=='true')? "false" : "true";
     this._cookieService.put("dentist_toggle", this.isToggleDentistChart, opts);
     $('#clinic_initiate').click();
@@ -197,7 +197,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
               }
 
                if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures'|| this.route == '/dashboards/frontdesk' || this.route == '/dashboards/marketing' || this.route == '/dashboards/finances'){
-                let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+                let opts = this.constants.cookieOpt as CookieOptions;
                  this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist, opts);
                }
            } else if(res.status == '401'){
@@ -248,7 +248,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   
   async getChildID(clinic_id) {
     this.clinic_id && this.dentistService.getChildID(clinic_id).subscribe((res) => {
-      let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+      let opts = this.constants.cookieOpt as CookieOptions;
      this._cookieService.put("dentistid", res.data, opts);
       this.providerIdDentist = res.data;
       $('#clinic_initiate').click();
@@ -278,7 +278,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   }
     this.selectedDentist = newValue;
     if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures'|| this.route == '/dashboards/frontdesk' || this.route == '/dashboards/marketing' || this.route == '/dashboards/finances'){
-      let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+      let opts = this.constants.cookieOpt as CookieOptions;
       this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist,opts);
     }
     $('.internal_dentist').val(newValue);

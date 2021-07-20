@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService, CookieOptions } from "ngx-cookie";
+import { AppConstants } from '../app.constants';
 import {
   FormBuilder,
   FormGroup,
@@ -17,8 +18,7 @@ export class LoginComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
   public errorForm = {'email' : false, 'password' : false};
-  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService, private rolesUsersService: RolesUsersService) {
-
+  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService, private rolesUsersService: RolesUsersService,public constants: AppConstants) {
   if(this._cookieService.get("userid")){
      var permision = '';
      var user_type = this._cookieService.get("user_type");
@@ -90,7 +90,7 @@ onSubmit() {
       datares['login_status'] = res.data.data.status;        
       datares['display_name'] = res.data.data.display_name;  
       datares['dentistid'] = res.data.data.dentist_id;        
-      let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+      let opts = this.constants.cookieOpt as CookieOptions;
       var nextStep = (parseInt(res.data.data.stepper_status) + 1).toString();
       this._cookieService.put("stepper", nextStep , opts);
       this._cookieService.put("userid", '', opts);

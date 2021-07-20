@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService, CookieOptions } from "ngx-cookie";
 import { environment } from "../../environments/environment";
+import { AppConstants } from '../app.constants';
 import {
   FormBuilder,
   FormGroup,
@@ -20,7 +21,7 @@ export class XeroComponent implements OnInit {
   public errorLogin = false;
   public saleSite = 'https://test-signup.jeeve.com.au/subscription';
   private apiUrl = environment.apiUrl;
-  constructor(private fb: FormBuilder, private router: Router, private xeroService: XeroService,private _cookieService: CookieService) {}
+  constructor(private fb: FormBuilder, private router: Router, private xeroService: XeroService,private _cookieService: CookieService,public constants: AppConstants) {}
 
   ngOnInit() {
     if(this.apiUrl.indexOf('test-') >= 0){
@@ -95,7 +96,7 @@ export class XeroComponent implements OnInit {
         datares['display_name'] = res.data.data.display_name;  
         datares['dentistid'] = res.data.data.dentist_id;        
 
-        let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+        let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("userid", '', opts);
         this._cookieService.put("childid", '', opts);
         this._cookieService.put("dentistid", '', opts);

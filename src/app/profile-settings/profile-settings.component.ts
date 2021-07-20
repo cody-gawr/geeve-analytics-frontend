@@ -7,6 +7,7 @@ import { CookieService, CookieOptions } from "ngx-cookie";
 import { Router  } from '@angular/router';
 import { StripeService } from 'ngx-stripe';
 import { CustomValidators } from 'ng2-validation';
+import { AppConstants } from '../app.constants';
 import {
   StripeElementsOptions
 } from '@stripe/stripe-js';
@@ -146,7 +147,7 @@ public cvcStyle = {
   public xeroConnect = false;
   public xeroOrganization='';
   public email;
-  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute,private stripeService: StripeService, private router: Router,private toastr: ToastrService,private rolesUsersService: RolesUsersService) {
+  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private profileSettingsService: ProfileSettingsService, private route: ActivatedRoute,private stripeService: StripeService, private router: Router,private toastr: ToastrService,private rolesUsersService: RolesUsersService,public constants: AppConstants) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -313,7 +314,7 @@ public subscription_id='';
          if(this.subscription_id)
           this.getCardDetails();
         if(!this.last_invoic_id){
-          let opts  = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+          let opts  = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("login_status", '1', opts);
         }
        }
@@ -425,7 +426,7 @@ public imageURL:any;
              $('.ajax-loader').hide();
 
        if(res.message == 'success'){
-        let opts = { expires: new Date('2030-07-19'), secure  : true} as CookieOptions;
+        let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("display_name", this.displayName, opts);
         this._cookieService.put("user_image", this.imageURL, opts);
         this.display_name = this.displayName;

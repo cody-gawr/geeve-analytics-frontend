@@ -268,5 +268,15 @@ export class AppConstants {
         title: 'Unscheduled Production', 
         info: 'The total outstanding value of items on treatment plans for patients attending in the next 7 days (excludes today)'
     };
-
+    //Set default cookie options
+    public cookieOpt: any = {
+        expires: this.getDate(),
+        secure  : true
+    };
+    //Function to get current date time and add 14 hours to this
+    public getDate(){
+        var now = new Date();
+        now.setTime(now.getTime() + (24*60*60*1000));
+        return now;
+    }
 }

@@ -7,7 +7,7 @@ import { CookieService, CookieOptions } from "ngx-cookie";
 import { HeaderService } from '../header/header.service';
 import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
 import { environment } from "../../../../environments/environment";
-
+import { AppConstants } from '../../../app.constants';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -42,7 +42,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
   subclickEvent() {
     this.status = true;
   }
-  constructor( changeDetectorRef: ChangeDetectorRef,media: MediaMatcher,/* public menuItems: MenuItems,*/ private rolesUsersService: RolesUsersService,private headerService: HeaderService,private _cookieService: CookieService,private route: ActivatedRoute,private router: Router
+  constructor( changeDetectorRef: ChangeDetectorRef,media: MediaMatcher,/* public menuItems: MenuItems,*/ private rolesUsersService: RolesUsersService,private headerService: HeaderService,private _cookieService: CookieService,private route: ActivatedRoute,private router: Router,public constants: AppConstants
   ) {
       this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
           this.getRoles();
@@ -94,7 +94,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
    await this.rolesUsersService.getRolesIndividual().subscribe((res) => {
       if(res.message == 'success'){ 
         this.permisions =res.data;
-        let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+        let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("user_type",res.type, opts);
 
         //Remove apis calls when user have not permission of any page form FE

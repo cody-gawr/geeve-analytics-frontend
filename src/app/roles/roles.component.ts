@@ -4,7 +4,7 @@ import { Validators } from '@angular/forms';
 import { RolesService } from './roles.service';
 import { ActivatedRoute } from "@angular/router";
 import { CookieService, CookieOptions } from "ngx-cookie";
-
+import { AppConstants } from '../app.constants';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './roles.component.html',
@@ -27,7 +27,7 @@ export class RolesComponent implements OnInit {
           public xeroConnect = false;
           public xeroOrganization='';
           public email;
-  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private rolesService: RolesService, private route: ActivatedRoute) {
+  constructor(private _cookieService: CookieService, private fb: FormBuilder,  private rolesService: RolesService, private route: ActivatedRoute,public constants: AppConstants) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -77,7 +77,7 @@ public display_name;
 
    this.rolesService.updateprofileSettings(this.displayName, this.email, this.imageURL).subscribe((res) => {
        if(res.message == 'success'){
-        let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+        let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("display_name", this.displayName, opts);
         this._cookieService.put("user_image", this.imageURL, opts);
         this.display_name = this.displayName;

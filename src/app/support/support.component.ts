@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService, CookieOptions } from "ngx-cookie";
+import { AppConstants } from '../app.constants';
 import {
   FormBuilder,
   FormGroup,
@@ -17,7 +18,7 @@ import { SupportService } from './support.service';
 export class SupportComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
-  constructor(private fb: FormBuilder, private router: Router, private supportService: SupportService,private _cookieService: CookieService) {}
+  constructor(private fb: FormBuilder, private router: Router, private supportService: SupportService,private _cookieService: CookieService,public constants: AppConstants) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -107,7 +108,7 @@ export class SupportComponent implements OnInit {
         datares['display_name'] = res.data.data.display_name;  
         datares['dentistid'] = res.data.data.dentist_id;        
 
-        let opts = { expires: new Date('2030-07-19'), secure  : true } as CookieOptions;
+        let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("userid", '', opts);
         this._cookieService.put("childid", '', opts);
         this._cookieService.put("dentistid", '', opts);
