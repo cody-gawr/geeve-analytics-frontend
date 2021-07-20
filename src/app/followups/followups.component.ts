@@ -13,6 +13,7 @@ import { AppConstants } from '../app.constants';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
 import { ChartstipsService } from '../shared/chartstips.service';
+
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -21,7 +22,7 @@ import { ChartstipsService } from '../shared/chartstips.service';
 
 export class FollowupsDialogComponent { 
 
-  constructor(public dialogRef: MatDialogRef<FollowupsDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router,private followupsService: FollowupsService) {}
+  constructor(public dialogRef: MatDialogRef<FollowupsDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router,private followupsService: FollowupsService ) {}
   
   onNoClick(): void {
     this.dialogRef.close();
@@ -193,9 +194,9 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public currentOpPage:number = 1;
 
 
-  displayedColumns1: string[] = ['name', 'phone','code','date','followup_date','status'];
-  displayedColumns2: string[] = ['name', 'phone', 'code','note','followup_date','status'];
-  displayedColumns3: string[] = ['name', 'phone', 'code','note','followup_date','book','status']; 
+  displayedColumns1: string[] = ['name', 'phone','code','date','followup_date','history','status'];
+  displayedColumns2: string[] = ['name', 'phone', 'code','note','followup_date','history','status'];
+  displayedColumns3: string[] = ['name', 'phone', 'code','note','followup_date','book','history','status']; 
   timezone: string = '+1000';
   months:any = ['January','February','March','April','May','June','July','August','September','October','November','December'];
  @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -606,6 +607,15 @@ initiate_clinic() {
         this.charTips = data.data;
        }
     }, error => {});
+  }
+
+  formatHistory(history){
+      let html ='';
+      history.forEach( (tip) => {
+        let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM d, yyyy');
+        html += '<p>'+date+' : '+tip.status+' </p>'
+      });
+      return { title: '', info : html };
   }
 }
 

@@ -1,4 +1,4 @@
-<div class="AddUserPopup"> 
+<div class="AddUserPopup" *ngIf=" data.event == 'Wants another follow-up' "> 
 <h1 mat-dialog-title>Schedule new follow-up for: <strong>{{ data.firstname }} {{ data.surname }}</strong></h1>
 <ngx-daterangepicker-material
   [singleDatePicker]="true"
@@ -12,5 +12,28 @@
 <div class="sa-form-group-btn" style="width: 100%;">
   <button class="save-button" type="submit" (click)="onNoClick()"  style="margin-right: 20px;">Cancel</button>
     <button class="save-button" type="submit" (click) ="updateNextfollowUp(data)">Save</button>
+</div>
+</div>
+
+
+<div class="AddUserPopup" *ngIf="data.event == 'Cant be reached'"> 
+<h1 mat-dialog-title>Do you want to create another followup for <strong>{{ data.firstname }} {{ data.surname }}</strong>?</h1>
+<div class="sa-form-group-btn" style="width: 100%; float: none;">
+  <button class="save-button" type="submit" (click) ="updateNextReached(data,'no')"   style="margin-right: 20px;">No</button>
+  <button class="save-button" type="submit" (click)="updateNextReached(data,'next-business')"  style="margin-right: 20px;">Yes Next Business Day</button>
+  <button class="save-button" type="submit" (click)="showCalender()">Yes</button>
+</div>
+<div *ngIf="nextCustomFollowup" style="width: 400px;margin: 25px auto 0;">
+  <ngx-daterangepicker-material
+    [singleDatePicker]="true"
+    [showDropdowns]="true"
+    [autoApply] = "true"
+    [locale]= "{displayFormat: 'YYYY-MM-DD', firstDay: 1 }"
+    (choosedDate)="updateNext($event)"
+  >
+  </ngx-daterangepicker-material>
+  <div class="sa-form-group-btn" style="width: 100%; float: none;">
+    <button class="save-button" type="submit" (click)="updateNextReached(data,'yes')">Save</button>
+  </div>
 </div>
 </div>

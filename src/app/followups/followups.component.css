@@ -351,3 +351,26 @@ table.customWidth.thick{
 .main_pagination.followup {
    padding: 0px;
 }
+
+.historyTip {
+    position: relative;
+}
+
+.fa.fa-history {
+    cursor: pointer;
+}
+
+.historyTip .custom-tooltip {
+    top: 30px;
+    right: 45px;
+    opacity: 1;
+    visibility: visible;
+    background-color:  #424242;
+}
+.historyTip .tooltip-title-container {
+    display: none;
+}
+.historyTip p {
+    margin: 0px;
+    padding-top: 1px;
+}

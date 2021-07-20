@@ -82,6 +82,7 @@ export class DialogOverviewExampleDialogComponent {
 
 export class StatusDialogMHComponent { 
   public nextDate:any = '';
+  public nextCustomFollowup:boolean = false;
   @ViewChild(DaterangepickerComponent, { static: false }) datePicker: DaterangepickerComponent;
   constructor(public dialogRef: MatDialogRef<StatusDialogMHComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router,private morningHuddle: MorningHuddleService) {}
   onNoClick(): void {
@@ -101,6 +102,21 @@ export class StatusDialogMHComponent {
 
   updateNext(event){
     this.nextDate = event.chosenLabel;
+  }
+    showCalender(event){
+    this.nextCustomFollowup = true;
+  }
+
+  updateNextReached(data, event) {
+     this.nextCustomFollowup = false;
+     this.morningHuddle.updateStatus('Cant be reached',data.pid,data.cid,data.type,data.original_appt_date, data.followup_date).subscribe((update:any) => {
+      this.onNoClick();
+      if(update.status && event != 'no')
+      {
+        this.morningHuddle.cloneRecord(data.pid,data.cid,data.type,data.followup_date,this.nextDate,data.original_appt_date,event).subscribe((update:any) => {
+        }); 
+      }        
+    }); 
   }
 
   handleUnAuthorization() {
@@ -873,11 +889,15 @@ async getDentistList(){
 
 
     updateStatus(event,pid,date,cid,firstname,surname,original_appt_date,followup_date,type) {
-    if( event == 'Wants another follow-up' )
-    {    
+      if( event == 'Wants another follow-up' || event == 'Cant be reached' )
+      {
+        let width = '450px';
+        if(event == 'Cant be reached' )
+          width = '650px';     
+
       const dialogRef = this.dialog.open(StatusDialogMHComponent, {
-        width: '450px',
-        data: {firstname,surname,pid,cid,type,original_appt_date,followup_date}
+        width: width,
+        data: {event,firstname,surname,pid,cid,type,original_appt_date,followup_date}
       });
       dialogRef.afterClosed().subscribe(result => {    
         if(type == 'tick-follower'){
