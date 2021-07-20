@@ -61,9 +61,11 @@ export class FollowupsDialogComponent {
 
 export class StatusDialogComponent { 
   public nextDate:any = '';
+  public nextCustomFollowup:boolean = false;
   @ViewChild(DaterangepickerComponent, { static: false }) datePicker: DaterangepickerComponent;
   constructor(public dialogRef: MatDialogRef<StatusDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router,private followupsService: FollowupsService) {}
   onNoClick(): void {
+    this.nextCustomFollowup = false;
     this.dialogRef.close();
   }
   save(data) {  
@@ -83,15 +85,29 @@ export class StatusDialogComponent {
   updateNext(event){
     this.nextDate = event.chosenLabel;
   }
-  updateNextfollowUp(data){
+
+  showCalender(event){
+    this.nextCustomFollowup = true;
+  }
+  updateNextfollowUp(data) {
      this.followupsService.updateStatus('Wants another follow-up',data.pid,data.cid,data.type,data.original_appt_date, data.followup_date).subscribe((update:any) => {
       this.onNoClick();
       if(update.status){
         this.followupsService.cloneRecord(data.pid,data.cid,data.type,data.followup_date,this.nextDate,data.original_appt_date).subscribe((update:any) => {
         }); 
-      }
-        
+      }        
      }); 
+  }
+  updateNextReached(data, event) {
+     this.nextCustomFollowup = false;
+     this.followupsService.updateStatus('Cant be reached',data.pid,data.cid,data.type,data.original_appt_date, data.followup_date).subscribe((update:any) => {
+      this.onNoClick();
+      if(update.status && event != 'no')
+      {
+        this.followupsService.cloneRecord(data.pid,data.cid,data.type,data.followup_date,this.nextDate,data.original_appt_date,event).subscribe((update:any) => {
+        }); 
+      }        
+    }); 
   }
   handleUnAuthorization() {
     this._cookieService.put("username", '');
@@ -160,6 +176,7 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public selectedMonthYear:any ='';
     public showDwDateArrow:boolean = true;
     public showUpDateArrow:boolean = true;
+    
     public charTips:any = [];
 
     public selectedMonth:string = new Date().getMonth().toString();
@@ -368,11 +385,14 @@ initiate_clinic() {
   }
 
   updateStatus(event,pid,date,cid,firstname,surname,original_appt_date,followup_date,type) {
-    if( event == 'Wants another follow-up' )
-    {    
+    if( event == 'Wants another follow-up' || event == 'Cant be reached' )
+    {
+      let width = '450px';
+      if(event == 'Cant be reached' )
+         width = '650px';
       const dialogRef = this.dialog.open(StatusDialogComponent, {
-        width: '450px',
-        data: {firstname,surname,pid,cid,type,original_appt_date,followup_date}
+        width: width,
+        data: {event,firstname,surname,pid,cid,type,original_appt_date,followup_date}
       });
       dialogRef.afterClosed().subscribe(result => {    
         if(type == 'tick-follower'){
