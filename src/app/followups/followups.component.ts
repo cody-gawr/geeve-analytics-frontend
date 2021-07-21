@@ -192,6 +192,7 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public currentThickPage:number = 1;
     public opTablePages: number[] = [];
     public currentOpPage:number = 1;
+    public nextBussinessDay:any;
 
 
   displayedColumns1: string[] = ['name', 'phone','code','date','followup_date','history','status'];
@@ -283,6 +284,7 @@ initiate_clinic() {
     this.followupsService.followupPostOpCalls( this.clinic_id, this.selectedMonth, this.selectedYear ).subscribe((production:any) => {
         this.poLoadingLoading = false;
       if(production.message == 'success') {
+        this.nextBussinessDay = production.next_day;
         this.followupPostOpCalls = production.data;   
         if(this.postopCallsPostOp == true){  
             this.followupPostOpCallsInComp = this.followupPostOpCalls;
@@ -306,6 +308,7 @@ initiate_clinic() {
     this.followupsService.followupOverdueRecalls( this.clinic_id, this.selectedMonth, this.selectedYear ).subscribe((production:any) => {
         this.recallLoadingLoading = false;
       if(production.message == 'success') {
+        this.nextBussinessDay = production.next_day;
         this.followupOverDueRecall = production.data;             
         if(this.showCompleteOverdue == true){  
             this.followupOverDueRecallInCMP = this.followupOverDueRecall;
@@ -330,6 +333,7 @@ initiate_clinic() {
     this.followupsService.followupTickFollowups( this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production:any) => {
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
+        this.nextBussinessDay = production.next_day;
         this.followupTickFollowups = production.data;     
         if(this.showCompleteTick ==  true){  
           this.followupTickFollowupsInCMP = this.followupTickFollowups;
@@ -385,7 +389,7 @@ initiate_clinic() {
     });      
   }
 
-  updateStatus(event,pid,date,cid,firstname,surname,original_appt_date,followup_date,type) {
+  updateStatus(event,pid,date,cid,firstname,surname,original_appt_date,followup_date,type,nextBussinessDay) {
     if( event == 'Wants another follow-up' || event == 'Cant be reached' )
     {
       let width = '450px';
@@ -393,7 +397,7 @@ initiate_clinic() {
          width = '650px';
       const dialogRef = this.dialog.open(StatusDialogComponent, {
         width: width,
-        data: {event,firstname,surname,pid,cid,type,original_appt_date,followup_date}
+        data: {event,firstname,surname,pid,cid,type,original_appt_date,followup_date,nextBussinessDay}
       });
       dialogRef.afterClosed().subscribe(result => {    
         if(type == 'tick-follower'){
@@ -609,16 +613,25 @@ initiate_clinic() {
     }, error => {});
   }
 
-  formatHistory(history){
-      let html ='';
+  formatHistory(history)
+  {
+      let html ='<table>';
       history.forEach( (tip) => {
         let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM d, yyyy');
-        html += '<p>'+date+' : '+tip.status+' </p>'
+        html += '<tr><td>'+date+'</td><td> : </td><td>'+tip.status+'</td></tr>'
       });
-      return { title: '', info : html };
+      html +='</table>';
+      return { title: 'Previous Followups', info : html };
+  }
+
+  historyPos(event)
+  {
+    let x=event.clientX;
+    let y= parseInt(event.clientY);
+    setTimeout( function(){
+      let divLnt = $('.custom-tooltip').height() +40;
+      let divwd = $('.custom-tooltip').width() + 10;
+      $('.custom-tooltip').css({'top': ( y - divLnt), 'left' : (x - divwd ) } );
+    },100);
   }
 }
-
-
-
-

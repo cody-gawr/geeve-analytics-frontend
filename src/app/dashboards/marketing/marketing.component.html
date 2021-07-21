@@ -291,11 +291,11 @@
                                 <div>
 
                                     <div *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect)"
-                                        style="height: 200px">
+                                        style="height: 200px"> 
                                         <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newAcqValue"
                                             [thick]="gaugeThick" [foregroundColor]="foregroundColor"
                                             [backgroundColor]="backgroundColor" [cap]="cap" [prepend]="gaugePrependText"
-                                            [size]="size">
+                                            [size]="size" [max]="newAcqValueMax">
                                         </ngx-gauge>
 
                                     </div>

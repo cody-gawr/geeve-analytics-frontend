@@ -197,8 +197,8 @@ table{
   width: 15% !important;
 }
 .thick .mat-column-book {
-  flex: 0 0 15% !important;
-  width: 15% !important;
+  flex: 0 0 10% !important;
+  width: 10% !important;
 }
 
 
@@ -339,8 +339,20 @@ table.customWidth.thick{
 .mat-column-note, .mat-column-date {
     word-wrap: break-word !important;
     white-space: unset !important;
-    flex: 0 15% !important;
-    width: 15% !important;
+    flex: 0 12% !important;
+    width: 12% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+.mat-column-history  {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 5% !important;
+    width: 5% !important;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
@@ -361,16 +373,50 @@ table.customWidth.thick{
 }
 
 .historyTip .custom-tooltip {
-    top: 30px;
-    right: 45px;
+    position: fixed;
+    top: 25%;
+   
     opacity: 1;
     visibility: visible;
-    background-color:  #424242;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 0px;
+    border: 1px solid #279b8e;
 }
-.historyTip .tooltip-title-container {
+.historyTip .tooltip-title-container img {
     display: none;
 }
-.historyTip p {
+.historyTip .tooltip-title {
+    color: #279b8e;
+}
+
+.historyTip td {
     margin: 0px;
-    padding-top: 1px;
+    color: #000000;
+    font-size: 14px;
+}
+.historyTip .custom-tooltip::after {  
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #1daa96;
+    border-bottom: 8px solid transparent;
+    right: 24px;
+    bottom: -17px;
+    top:  unset;
+}
+.save-button span {
+    font-size: 13px;
+    font-family: monospace;
+}
+.AddUserPopup span.followUpClose {
+    position: absolute;
+    right: -19px;
+    top: -20px;
+    border: 0px solid #279b8e;
+    padding: 0 6px  3px;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 59%;
+    background: red;
+    line-height: 1;
+    cursor: pointer;
 }

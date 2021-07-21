@@ -1766,6 +1766,7 @@ if(this.connectedwith == 'myob'){
 }
 
   public newAcqValue:any=0;
+  public newAcqValueMax:any= 35;
 load_chart_acq() {
   var totalY=0;                                             
     this.selectedAccounts.forEach((res,key) => {
@@ -1775,6 +1776,11 @@ load_chart_acq() {
     this.newAcqValue = 0;
     if(totalY != undefined && this.newPatientsTotal>0)
     this.newAcqValue = (totalY/this.newPatientsTotal).toFixed(0);
+    if(parseFloat(this.newAcqValueGoal) >= parseFloat(this.newAcqValue) ){
+      this.newAcqValueMax =  parseFloat(this.newAcqValueGoal);
+    } else if( parseFloat(this.newAcqValueGoal) < parseFloat(this.newAcqValue) ){
+      this.newAcqValueMax =  parseFloat(this.newAcqValue);
+    }
     $('.close_modal').click();
 }
 

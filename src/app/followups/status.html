@@ -17,11 +17,12 @@
 
 
 <div class="AddUserPopup" *ngIf="data.event == 'Cant be reached'"> 
+  <span class="followUpClose" (click)="onNoClick()" >x</span>
 <h1 mat-dialog-title>Do you want to create another followup for <strong>{{ data.firstname }} {{ data.surname }}</strong>?</h1>
 <div class="sa-form-group-btn" style="width: 100%; float: none;">
-  <button class="save-button" type="submit" (click) ="updateNextReached(data,'no')"   style="margin-right: 20px;">No</button>
-  <button class="save-button" type="submit" (click)="updateNextReached(data,'next-business')"  style="margin-right: 20px;">Yes Next Business Day</button>
-  <button class="save-button" type="submit" (click)="showCalender()">Yes</button>
+  <button class="save-button" type="submit" (click)="updateNextReached(data,'next-business')"  style="margin-right: 20px;">Yes Next Business Day <br/><span>{{ data.nextBussinessDay | date:'E d MMMM': '+1000'}}</span></button>
+  <button class="save-button" type="submit" (click)="showCalender()" style="margin-right: 20px;">Yes <br/><span>Custom Date</span></button>
+  <button style="padding: 12px 35px 27px;" class="save-button" type="submit" (click) ="updateNextReached(data,'no')">No</button>
 </div>
 <div *ngIf="nextCustomFollowup" style="width: 400px;margin: 25px auto 0;">
   <ngx-daterangepicker-material
