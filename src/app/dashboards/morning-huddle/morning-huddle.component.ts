@@ -242,6 +242,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public dailyTabSettLod:boolean =  false;
     public charTips:any = [];
     public dentist_id:any = '';
+    public nextBussinessDay:any;
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
@@ -250,7 +251,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns4: string[] = ['name', 'phone', 'code','status'];
   displayedColumns5: string[] = ['name', 'phone','code','date','status'];
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
-  displayedColumns7: string[] = ['name', 'phone', 'code','note','status'];
+  displayedColumns7: string[] = ['name', 'phone', 'code','note','book','status'];
   displayedColumns8: string[] = ['name', 'phone', 'code','note','book','status',];
   displayedColumns9: string[] = ['name', 'status'];
   displayedColumns10: string[] = ['item', 'quantity','am','pm'];
@@ -495,7 +496,7 @@ initiate_clinic() {
         }
         this.poLoadingLoading = false;
       if(production.message == 'success') {
-
+        this.nextBussinessDay = production.next_day;
         this.followupPostOpCalls = production.data;   
         if(this.postopCallsPostOp == true){  
             this.followupPostOpCallsInComp = this.followupPostOpCalls;
@@ -519,6 +520,7 @@ initiate_clinic() {
         this.recallLoadingLoading = false;
 
       if(production.message == 'success') {
+        this.nextBussinessDay = production.next_day;
         this.followupOverDueRecall = production.data;     
         if(this.showCompleteOverdue == true){  
             this.followupOverDueRecallInCMP = this.followupOverDueRecall;
@@ -544,6 +546,7 @@ initiate_clinic() {
         }
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
+        this.nextBussinessDay = production.next_day;
         this.followupTickFollowups = production.data;     
         if(this.showCompleteTick ==  true){  
           this.followupTickFollowupsInCMP = this.followupTickFollowups;
@@ -888,7 +891,7 @@ async getDentistList(){
   }
 
 
-    updateStatus(event,pid,date,cid,firstname,surname,original_appt_date,followup_date,type) {
+    updateStatus(event,pid,date,cid,firstname,surname,original_appt_date,followup_date,type,nextBussinessDay) {
       if( event == 'Wants another follow-up' || event == 'Cant be reached' )
       {
         let width = '450px';
@@ -897,7 +900,7 @@ async getDentistList(){
 
       const dialogRef = this.dialog.open(StatusDialogMHComponent, {
         width: width,
-        data: {event,firstname,surname,pid,cid,type,original_appt_date,followup_date}
+        data: {event,firstname,surname,pid,cid,type,original_appt_date,followup_date,nextBussinessDay}
       });
       dialogRef.afterClosed().subscribe(result => {    
         if(type == 'tick-follower'){
@@ -1093,6 +1096,28 @@ async getDentistList(){
         this.charTips = data.data;
        }
     }, error => {});
+  }
+
+  formatHistory(history)
+  {
+      let html ='<table>';
+      history.forEach( (tip) => {
+        let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM d, yyyy');
+        html += '<tr><td align="right">'+date+'</td><td> : </td><td>'+tip.status+'</td></tr>'
+      });
+      html +='</table>';
+      return { title: 'Previous Followups', info : html };
+  }
+
+  historyPos(event)
+  {
+    let x=event.clientX;
+    let y= parseInt(event.clientY);
+    setTimeout( function(){
+      let divLnt = $('.custom-tooltip').height() +40;
+      let divwd = $('.custom-tooltip').width() + 10;
+      $('.custom-tooltip').css({'top': ( y - divLnt), 'left' : (x - divwd ) } );
+    },100);
   }
 }
 

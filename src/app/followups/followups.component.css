@@ -366,6 +366,8 @@ table.customWidth.thick{
 
 .historyTip {
     position: relative;
+    display: inline-block;
+    margin-left: ;
 }
 
 .fa.fa-history {
@@ -405,18 +407,14 @@ table.customWidth.thick{
 }
 .save-button span {
     font-size: 13px;
-    font-family: monospace;
+    font-family: 3px;
 }
 .AddUserPopup span.followUpClose {
     position: absolute;
     right: -19px;
     top: -20px;
-    border: 0px solid #279b8e;
     padding: 0 6px  3px;
-    color: #fff;
-    font-size: 18px;
-    border-radius: 59%;
-    background: red;
+    font-size: 24px;
     line-height: 1;
     cursor: pointer;
 }

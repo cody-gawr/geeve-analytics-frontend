@@ -192,12 +192,12 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public currentThickPage:number = 1;
     public opTablePages: number[] = [];
     public currentOpPage:number = 1;
-    public nextBussinessDay:any;
+    public nextBussinessDay:any; 
 
 
-  displayedColumns1: string[] = ['name', 'phone','code','date','followup_date','history','status'];
-  displayedColumns2: string[] = ['name', 'phone', 'code','note','followup_date','history','status'];
-  displayedColumns3: string[] = ['name', 'phone', 'code','note','followup_date','book','history','status']; 
+  displayedColumns1: string[] = ['name', 'phone','code','date','followup_date','status'];
+  displayedColumns2: string[] = ['name', 'phone', 'code','note','followup_date','book','status'];
+  displayedColumns3: string[] = ['name', 'phone', 'code','note','followup_date','book','status']; 
   timezone: string = '+1000';
   months:any = ['January','February','March','April','May','June','July','August','September','October','November','December'];
  @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -618,7 +618,7 @@ initiate_clinic() {
       let html ='<table>';
       history.forEach( (tip) => {
         let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM d, yyyy');
-        html += '<tr><td>'+date+'</td><td> : </td><td>'+tip.status+'</td></tr>'
+        html += '<tr><td align="right">'+date+'</td><td> : </td><td>'+tip.status+'</td></tr>'
       });
       html +='</table>';
       return { title: 'Previous Followups', info : html };
