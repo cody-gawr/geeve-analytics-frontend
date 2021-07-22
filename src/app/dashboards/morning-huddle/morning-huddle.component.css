@@ -470,3 +470,12 @@ table.noDataTableClass mat-footer-row {
     line-height: 1;
     cursor: pointer;
 }
+.alreadyHaveFol {
+    color: #25a689;
+    font-size: 17px;
+    width: 100%;
+    text-align: center;
+    display: block;
+    padding: 18px 0;
+    font-weight: 500;
+}

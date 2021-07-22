@@ -83,6 +83,7 @@ export class DialogOverviewExampleDialogComponent {
 export class StatusDialogMHComponent { 
   public nextDate:any = '';
   public nextCustomFollowup:boolean = false;
+  public nextFollowupHave:boolean = false;
   @ViewChild(DaterangepickerComponent, { static: false }) datePicker: DaterangepickerComponent;
   constructor(public dialogRef: MatDialogRef<StatusDialogMHComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router,private morningHuddle: MorningHuddleService) {}
   onNoClick(): void {
@@ -105,17 +106,20 @@ export class StatusDialogMHComponent {
   }
     showCalender(event){
     this.nextCustomFollowup = true;
+     this.nextFollowupHave = false;
   }
 
   updateNextReached(data, event) {
      this.nextCustomFollowup = false;
      this.morningHuddle.updateStatus('Cant be reached',data.pid,data.cid,data.type,data.original_appt_date, data.followup_date).subscribe((update:any) => {
-      this.onNoClick();
-      if(update.status && event != 'no')
-      {
-        this.morningHuddle.cloneRecord(data.pid,data.cid,data.type,data.followup_date,this.nextDate,data.original_appt_date,event).subscribe((update:any) => {
-        }); 
-      }        
+        this.morningHuddle.cloneRecord(data.pid,data.cid,data.type,data.followup_date,this.nextDate,data.original_appt_date,event).subscribe((clone:any) => {
+            if(clone.message  == 'already'){
+              this.nextDate = clone.$getRecord.followup_date;
+              this.nextFollowupHave = true;
+            } else {
+              this.onNoClick();
+            }
+        });      
     }); 
   }
 
