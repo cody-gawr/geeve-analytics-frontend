@@ -111,7 +111,10 @@ export class StatusDialogMHComponent {
 
   updateNextReached(data, event) {
      this.nextCustomFollowup = false;
+     this.nextFollowupHave = false;
      this.morningHuddle.updateStatus('Cant be reached',data.pid,data.cid,data.type,data.original_appt_date, data.followup_date).subscribe((update:any) => {
+      if(update.status && event != 'no')
+      {
         this.morningHuddle.cloneRecord(data.pid,data.cid,data.type,data.followup_date,this.nextDate,data.original_appt_date,event).subscribe((clone:any) => {
             if(clone.message  == 'already'){
               this.nextDate = clone.$getRecord.followup_date;
@@ -119,7 +122,10 @@ export class StatusDialogMHComponent {
             } else {
               this.onNoClick();
             }
-        });      
+        }); 
+      }       else {
+        this.onNoClick();
+      } 
     }); 
   }
 
@@ -907,11 +913,11 @@ async getDentistList(){
         data: {event,firstname,surname,pid,cid,type,original_appt_date,followup_date,nextBussinessDay}
       });
       dialogRef.afterClosed().subscribe(result => {    
-        if(type == 'tick-follower'){
+        /*if(type == 'tick-follower'){
           this.getTickFollowups();  
         } else {
          this.getOverdueRecalls();
-       }
+       }*/
       
       });
     } else {
@@ -1106,8 +1112,8 @@ async getDentistList(){
   {
       let html ='<table>';
       history.forEach( (tip) => {
-        let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM d, yyyy');
-        html += '<tr><td align="right">'+date+'</td><td> : </td><td>'+tip.status+'</td></tr>'
+        let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
+        html += '<tr><td>'+date+' :'+tip.status+'</td></tr>'
       });
       html +='</table>';
       return { title: 'Previous Followups', info : html };

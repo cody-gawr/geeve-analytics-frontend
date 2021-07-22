@@ -238,6 +238,15 @@ table{
   width: 10% !important;
 }
 
+.overRecall .mat-column-status {
+  flex: 0 0 10% !important;
+  width: 10% !important;
+}
+.overRecall .mat-column-book {
+  flex: 0 0 10% !important;
+  width: 10% !important;
+}
+
 
 
 .header_filters.morning-huddle { flex-direction: row-reverse !important }

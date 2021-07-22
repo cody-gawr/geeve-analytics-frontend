@@ -115,7 +115,9 @@ export class StatusDialogComponent {
               this.onNoClick();
             }
         }); 
-      }        
+      }       else {
+        this.onNoClick();
+      } 
     }); 
   }
   handleUnAuthorization() {
@@ -408,11 +410,11 @@ initiate_clinic() {
         data: {event,firstname,surname,pid,cid,type,original_appt_date,followup_date,nextBussinessDay}
       });
       dialogRef.afterClosed().subscribe(result => {    
-        if(type == 'tick-follower'){
+        /*if(type == 'tick-follower'){
           this.getTickFollowups();  
         } else {
          this.getOverdueRecalls();
-       }
+       }*/
       
       });
     } else {
@@ -625,8 +627,8 @@ initiate_clinic() {
   {
       let html ='<table>';
       history.forEach( (tip) => {
-        let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM d, yyyy');
-        html += '<tr><td align="right">'+date+'</td><td> : </td><td>'+tip.status+'</td></tr>'
+        let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
+        html += '<tr><td>'+date+' </td><td>:</td><td> '+tip.status+'</td></tr>'
       });
       html +='</table>';
       return { title: 'Previous Followups', info : html };
