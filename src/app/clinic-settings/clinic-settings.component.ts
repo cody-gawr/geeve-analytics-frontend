@@ -31,6 +31,7 @@ export class ClinicSettingsComponent implements OnInit {
       public unscheduledPatientsMh:any = 0;
       public recallWeeks:any = 0;
       public tickDays:any = 0;
+      public ftaFollowupDays:any = 0;
 
       public ftaUtaStatus:boolean = true;
       public ftaUtaItem:boolean = false;
@@ -94,6 +95,7 @@ export class ClinicSettingsComponent implements OnInit {
       post_op_calls_days: [null, Validators.compose([Validators.required])],              
       recall_weeks: [null, Validators.compose([Validators.required])],              
       tick_days: [null, Validators.compose([Validators.required])],              
+      fta_followup_days: [null, Validators.compose([Validators.required])],              
      // unscheduled_patients_days: [null, Validators.compose([Validators.required])],              
       // facebook: [null],
       // twitter: [null],
@@ -133,6 +135,7 @@ export class ClinicSettingsComponent implements OnInit {
         this.postOpCallsMh = res.data[0].post_op_days;
         this.recallWeeks = res.data[0].recall_weeks;
         this.tickDays = res.data[0].tick_days;
+        this.ftaFollowupDays = res.data[0].fta_followup_days;
         this.timezone = res.data[0].timezone;
         this.equipmentList = (res.data[0].equip_list_enable == 1)? true : false;
         this.dailyTasks = (res.data[0].daily_task_enable == 1)? true : false;
@@ -172,12 +175,13 @@ export class ClinicSettingsComponent implements OnInit {
   this.postOpCallsMh = this.form.value.post_op_calls_days;
   this.recallWeeks = this.form.value.recall_weeks;
   this.tickDays = this.form.value.tick_days;
+  this.ftaFollowupDays = this.form.value.fta_followup_days;
   this.timezone = this.form.value.timezone;  
 
 
  // this.unscheduledPatientsMh = this.form.value.unscheduled_patients_days;
   
-  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays, this.timezone,this.subtracted_accounts, this.equipmentList, this.dailyTasks, this.compareMode ).subscribe((res) => {
+  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays,this.ftaFollowupDays, this.timezone,this.subtracted_accounts, this.equipmentList, this.dailyTasks, this.compareMode ).subscribe((res) => {
       $('.ajax-loader').hide();
       if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );

@@ -33,7 +33,7 @@ export class FollowupsDialogComponent {
       return false;
     }
 
-    this.followupsService.notes(data.notes,data.patientId, data.date,data.clinic_id,data.followup_date).subscribe((res) => {
+    this.followupsService.notes(data.notes,data.patientId, data.date,data.clinic_id,data.followup_date,data.type).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
       } else if (res.status == '401') {
@@ -268,6 +268,7 @@ initiate_clinic() {
     this.getFollowupPostOpCalls();
     this.getOverdueRecalls();
     this.getTickFollowups();  
+    this.getFtaFollowups();  
     
     }
   }
@@ -284,6 +285,7 @@ initiate_clinic() {
     this.getFollowupPostOpCalls();
     this.getOverdueRecalls();
     this.getTickFollowups();
+    this.getFtaFollowups();    
   }
 
 
@@ -379,7 +381,49 @@ initiate_clinic() {
     }); 
   } 
 
-  
+
+  public followupFtaFollowups:any = [];
+  public followupFtaFollowupsInCMP:any = [];
+  public ftaTaksLoadingLoading:boolean = false;
+  public showCompleteFta:boolean = false;
+  public tipFtaDoneCode:any = {};
+  public tipFtaFutureDate:any={};
+  public ftTablePages:any = [];
+  public currentFTPage:number = 1;
+  getFtaFollowups(evn = ''){
+    if(evn != 'close'){
+     this.ftaTaksLoadingLoading = true;
+    }
+    this.followupsService.followupFtaFollowups( this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production:any) => {
+        this.ftaTaksLoadingLoading = false;
+      if(production.message == 'success') {
+        this.nextBussinessDay = production.next_day;        
+        this.followupFtaFollowups = production.data;     
+        if(this.showCompleteFta ==  true){  
+          this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
+        } else {
+          this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
+        }
+          if(this.followupFtaFollowupsInCMP.length <= ((this.pageSize * this.currentFTPage) - this.pageSize) && this.currentFTPage != 1 ){
+          this.currentFTPage = this.currentFTPage -1;
+        } 
+        this.setPaginationButtons(this.followupFtaFollowupsInCMP,'FT');
+        this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP,'FT');
+
+         this.followupFtaFollowupsInCMP.forEach((tool) => {
+            this.tipFtaDoneCode[tool.patient_id] = { 
+              title: 'Outstanding Treatments', 
+              info: tool.code
+            };
+             var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
+            this.tipFtaFutureDate[tool.patient_id] = { 
+              title: 'Future Appointment', 
+              info: date
+            };
+        });                        
+      }
+    }); 
+  } 
 
 
   
@@ -400,6 +444,8 @@ initiate_clinic() {
         this.getOverdueRecalls();
       } else if(type == 'tick-follower'){
         this.getTickFollowups();
+      } else if(type == 'fta-follower'){
+        this.getFtaFollowups();
       }
     });      
   }
@@ -417,6 +463,8 @@ initiate_clinic() {
       dialogRef.afterClosed().subscribe(result => {
         if(type == 'tick-follower'){
           this.getTickFollowups('close');  
+        } else if(type == 'fta-follower'){
+          this.getFtaFollowups('close');  
         } else {
          this.getOverdueRecalls('close');
        }
@@ -495,16 +543,31 @@ initiate_clinic() {
     this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP,'TH');
   }
 
+  updateToCompleteFT(event){
+    this.showCompleteFta = event.checked;
+    if(event.checked ==  true){  
+      this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
+    } else {
+      this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
+    }
+    this.currentFTPage = 1;
+    this.setPaginationButtons(this.followupFtaFollowupsInCMP,'TH');
+    this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP,'TH');
+  }
 
-  openNotes(notes,patient_id,original_appt_date,followup_date): void {
+
+  openNotes(notes,patient_id,original_appt_date,followup_date,type): void {
     const dialogRef = this.dialog.open(FollowupsDialogComponent, {
       width: '500px',
-      data: {notes:notes, patientId:patient_id, date:original_appt_date,clinic_id: this.clinic_id, old:notes, followup_date:followup_date}
+      data: {notes:notes, patientId:patient_id, date:original_appt_date,clinic_id: this.clinic_id, old:notes, followup_date:followup_date,type:type}
     });
     dialogRef.afterClosed().subscribe(result => {    
-        this.getTickFollowups();
-    });
-    
+      if(type == 'thick-follower'){
+        this.getTickFollowups('close');
+      } else {
+        this.getFtaFollowups('close');        
+      }      
+    });    
   }
 
   subtractYears(yearsToSubtract) {
@@ -552,6 +615,15 @@ initiate_clinic() {
             this.opTablePages.push(i + 1);
           }
         }
+    } 
+    if(type == 'FT'){
+        this.ftTablePages = [];
+        const totalPages = Math.ceil(totalData.length / this.pageSize);
+        if(totalPages > 1){
+          for (let i = 0; i < totalPages; i++) {
+            this.ftTablePages.push(i + 1);
+          }
+        }
     }    
   }
 
@@ -564,6 +636,9 @@ initiate_clinic() {
     }
     if(type == 'OP'){
         var startIndex:number = (this.currentOpPage *  this.pageSize) - this.pageSize;      
+    }
+    if(type == 'FT'){
+        var startIndex:number = (this.currentFTPage *  this.pageSize) - this.pageSize;      
     }    
     var endIndex:any = startIndex + this.pageSize;
     var temp:any =[];
@@ -604,6 +679,15 @@ initiate_clinic() {
           this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
         }             
       this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp,'OP');
+    }
+    if(type == 'FT'){
+      this.currentFTPage = goPage;
+      if(this.showCompleteFta == true){  
+          this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
+        } else {            
+          this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
+        }             
+      this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP,'FT');
     }
     
   }

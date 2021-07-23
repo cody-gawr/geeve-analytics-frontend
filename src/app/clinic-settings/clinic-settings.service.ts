@@ -35,7 +35,7 @@ export class ClinicSettingsService {
         );
     }
        // Get ClinicSettings
-    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta,postOpCallsMh,recallWeeks,tickDays, timezone,subtractedAccounts, equipmentList, dailyTasks, compareMode): Observable<any> {
+    updateClinicSettings(clinic_id, name, address, contact_name, workingDays,postOpCalls,phoneNo,clinicEmail,ftaUta,postOpCallsMh,recallWeeks,tickDays,ftaFollowupDays, timezone,subtractedAccounts, equipmentList, dailyTasks, compareMode): Observable<any> {
 
         equipmentList = (equipmentList == true)? 1 :0;
         dailyTasks = (dailyTasks == true)? 1 :0;
@@ -54,6 +54,7 @@ export class ClinicSettingsService {
         formData.append('post_op_days', postOpCallsMh);
         formData.append('recall_weeks', recallWeeks);
         formData.append('tick_days', tickDays);
+        formData.append('fta_followup_days', ftaFollowupDays);
         formData.append('timezone', timezone);
         formData.append('equip_list_enable', equipmentList);
         formData.append('daily_task_enable', dailyTasks);

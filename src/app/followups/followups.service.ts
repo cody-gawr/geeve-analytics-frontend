@@ -45,6 +45,15 @@ export class FollowupsService {
         );
     }
 
+    followupFtaFollowups(clinic_id, month,  year ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Followups/fuFtaFollowupsTable?clinic_id="+clinic_id+"&month="+month+"&year="+year, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
      followupOverdueRecalls( clinic_id, month,  year ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/Followups/fuOverdueRecallsTable?clinic_id="+clinic_id+"&month="+month+"&year="+year, { headers: header })
@@ -105,7 +114,7 @@ export class FollowupsService {
     }
     
     // Updae tick notes add/update
-    notes(notes,pid, date,cid, fdate): Observable<any> {
+    notes(notes,pid, date,cid, fdate, type): Observable<any> {
         var header = this.getHeaders(); 
          const formData = new FormData();
         formData.append('notes', notes);
@@ -113,7 +122,7 @@ export class FollowupsService {
         formData.append('clinic_id', cid);
         formData.append('date', date);
         formData.append('fdate', fdate);
-        formData.append('type', 'tick-follower');
+        formData.append('type', type);
         return this.http.post(this.apiUrl +"/Followups/fuUpdateStatus",formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
