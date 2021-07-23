@@ -348,6 +348,7 @@ initiate_clinic() {
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;
+        console.log('Next Working Day: ', this.nextBussinessDay);
         this.followupTickFollowups = production.data;     
         if(this.showCompleteTick ==  true){  
           this.followupTickFollowupsInCMP = this.followupTickFollowups;

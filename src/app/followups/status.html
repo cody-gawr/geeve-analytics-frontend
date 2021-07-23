@@ -20,11 +20,11 @@
   <span class="followUpClose" (click)="onNoClick()" >x</span>
 <h1 mat-dialog-title>Do you want to create another followup for <strong>{{ data.firstname }} {{ data.surname }}</strong>?</h1>
 <div class="sa-form-group-btn" style="width: 90%; float: none; position: relative;    text-align: left;">
-  <button class="save-button" type="submit" (click)="updateNextReached(data,'next-business')"  style="margin-right: 20px;">NEXT BUSINESS DAY<br/><span>{{ data.nextBussinessDay | date:'E d MMMM': '+1000'}}</span></button>
+  <button class="save-button" type="submit" (click)="updateNextReached(data,'next-business')"  style="margin-right: 20px;">NEXT BUSINESS DAY<br/><span>{{ data.nextBussinessDay | date:'E d MMMM'}}</span></button>
   <button style="position: absolute;top: 0;margin: 25px 0;padding: 20px 36px 20px;right: 100px;" class="save-button" type="submit" (click)="showCalender()">CHOOSE DATE</button>
   <button style="position: absolute;top: 0;margin: 25px 0;padding: 20px 36px 20px;right: -30px;" class="save-button" type="submit" (click) ="updateNextReached(data,'no')">No</button>
 </div>
-<span *ngIf="nextFollowupHave" class="alreadyHaveFol"><strong>{{ data.firstname }} {{ data.surname }}</strong> already has a followup scheduled on {{ nextDate | date:'E d MMMM': '+1000'}}</span>
+<span *ngIf="nextFollowupHave" class="alreadyHaveFol"><strong>{{ data.firstname }} {{ data.surname }}</strong> already has a followup scheduled on {{ nextDate | date:'E d MMMM'}}</span>
 
 <div *ngIf="nextCustomFollowup" style="width: 400px;margin: 25px auto 0;">
   <ngx-daterangepicker-material
