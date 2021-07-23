@@ -226,6 +226,15 @@ export class MorningHuddleService {
         );
     }
 
+    followupFtaFollowups(clinic_id, previousDays,  days ): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhFtaFollowupsTable?clinic_id="+clinic_id+"&date="+previousDays, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
      followupOverdueRecalls( clinic_id, previousDays,  days, clinician ="", token = this._cookieService.get("token") ): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/MorningHuddle/mhOverdueRecallsTable?clinic_id="+clinic_id+"&date="+previousDays, { headers: header })
@@ -310,7 +319,7 @@ export class MorningHuddleService {
     }
 
     // Updae tick notes add/update
-    notes(notes,pid, date,cid, fdate): Observable<any> {
+    notes(notes,pid, date,cid, fdate, type): Observable<any> {
         var header = this.getHeaders(); 
          const formData = new FormData();
         formData.append('notes', notes);
@@ -318,7 +327,7 @@ export class MorningHuddleService {
         formData.append('clinic_id', cid);
         formData.append('date', date);
         formData.append('fdate', fdate);
-        formData.append('type', 'tick-follower');
+        formData.append('type',  type);
         return this.http.post(this.apiUrl +"/MorningHuddle/mhUpdateStatus",formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;

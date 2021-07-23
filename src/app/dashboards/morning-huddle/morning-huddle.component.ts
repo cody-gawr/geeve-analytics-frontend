@@ -52,7 +52,7 @@ export class DialogOverviewExampleDialogComponent {
       return false;
     }
 
-    this.morningHuddleService.notes(data.notes,data.patientId, data.date,data.clinic_id, data.followup_date).subscribe((res) => {
+    this.morningHuddleService.notes(data.notes,data.patientId, data.date,data.clinic_id, data.followup_date, data.type).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
       } else if (res.status == '401') {
@@ -373,6 +373,7 @@ initiate_clinic() {
       this.getFollowupPostOpCalls();
       this.getOverdueRecalls();
       this.getTickFollowups();
+      this.getFtaFollowups();
       /***** Tab 4 ***/     
       }
 
@@ -416,6 +417,7 @@ initiate_clinic() {
       this.getFollowupPostOpCalls();
       this.getOverdueRecalls();
       this.getTickFollowups();
+      this.getFtaFollowups();
     }
     if(this.user_type != '4'){
       this.getEndOfDays();
@@ -583,6 +585,46 @@ initiate_clinic() {
         this.followupsTickFollowupsDate = production.date;     
         //this.TickFollowupsDays = production.previous;     
       }
+    }); 
+  } 
+
+
+
+
+  public followupFtaFollowups:any = [];
+  public followupFtaFollowupsInCMP:any = [];
+  public ftaTaksLoadingLoading:boolean = false;
+  public showCompleteFta:boolean = false;
+  public tipFtaDoneCode:any = {};
+  public tipFtaFutureDate:any={};
+
+  getFtaFollowups(evn = ''){
+    if(evn != 'close'){
+     this.ftaTaksLoadingLoading = true;
+    }
+    this.morningHuddleService.followupFtaFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays).subscribe((production:any) => {
+        this.ftaTaksLoadingLoading = false;
+      if(production.message == 'success') {
+        this.nextBussinessDay = production.next_day;        
+        this.followupFtaFollowups = production.data;     
+        if(this.showCompleteFta ==  true){  
+          this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
+        } else {
+          this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
+        }   
+        this.followupFtaFollowupsInCMP.forEach((tool) => {
+            this.tipFtaDoneCode[tool.patient_id] = { 
+              title: 'Outstanding Treatments', 
+              info: tool.code
+            };
+             var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
+            this.tipFtaFutureDate[tool.patient_id] = { 
+              title: 'Future Appointment', 
+              info: date
+            };
+        });
+         this.followupsTickFollowupsDate = production.date;    
+       }
     }); 
   } 
 
@@ -900,6 +942,8 @@ async getDentistList(){
         this.getOverdueRecalls();
       } else if(type == 'tick-follower'){
         this.getTickFollowups();
+      } else if(type == 'fta-follower'){
+        this.getFtaFollowups();
       }
     });      
   }
@@ -919,6 +963,8 @@ async getDentistList(){
       dialogRef.afterClosed().subscribe(result => {    
            if(type == 'tick-follower'){
           this.getTickFollowups('close');  
+        } else if(type == 'fta-follower'){
+          this.getFtaFollowups('close');  
         } else {
          this.getOverdueRecalls('close');
        }
@@ -1014,15 +1060,28 @@ async getDentistList(){
           this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
     }
   }
+  updateToCompleteFT(event){
+    this.showCompleteFta = event.checked;
+    if(event.checked ==  true){  
+      this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
+    } else {
+      this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
+    }
+  }
 
 
-  openNotes(notes,patient_id,original_appt_date,followup_date): void {
+  openNotes(notes,patient_id,original_appt_date,followup_date, type): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '500px',
-      data: {notes:notes, patientId:patient_id, date:original_appt_date,clinic_id: this.clinic_id, old:notes,followup_date: followup_date}
+      data: {notes:notes, patientId:patient_id, date:original_appt_date,clinic_id: this.clinic_id, old:notes,followup_date: followup_date,type: type}
     });
     dialogRef.afterClosed().subscribe(result => {    
+      if( type == 'thick-follower'){
         this.getTickFollowups();
+      } else if(type == 'fta-follower') {
+        this.getFtaFollowups();
+      }
+
     });
     
   }

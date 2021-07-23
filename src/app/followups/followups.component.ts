@@ -74,7 +74,7 @@ export class StatusDialogComponent {
     if( data.notes == '' || data.old == data.notes) {
       return false;
     }
-    this.followupsService.notes(data.notes,data.patientId, data.date,data.clinic_id, data.followup_date).subscribe((res) => {
+    this.followupsService.notes(data.notes,data.patientId, data.date,data.clinic_id, data.followup_date, data.type).subscribe((res) => {
       if (res.message == 'success') {
         this.dialogRef.close();
       } else if (res.status == '401') {
@@ -420,7 +420,8 @@ initiate_clinic() {
               title: 'Future Appointment', 
               info: date
             };
-        });                        
+        });         
+               
       }
     }); 
   } 
