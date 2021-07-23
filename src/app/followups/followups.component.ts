@@ -313,8 +313,10 @@ initiate_clinic() {
     }); 
   } 
 
-  getOverdueRecalls(){
-    this.recallLoadingLoading = true;
+  getOverdueRecalls(evn = ''){
+    if(evn != 'close'){
+      this.recallLoadingLoading = true;
+    }
     this.followupsService.followupOverdueRecalls( this.clinic_id, this.selectedMonth, this.selectedYear ).subscribe((production:any) => {
         this.recallLoadingLoading = false;
       if(production.message == 'success') {
@@ -338,8 +340,10 @@ initiate_clinic() {
 
   public tipDoneCode = {}; 
   public tipFutureDate = {};
-  getTickFollowups(){
+  getTickFollowups(evn = ''){
+    if(evn != 'close'){
      this.endTaksLoadingLoading = true;
+    }
     this.followupsService.followupTickFollowups( this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production:any) => {
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
@@ -409,12 +413,12 @@ initiate_clinic() {
         width: width,
         data: {event,firstname,surname,pid,cid,type,original_appt_date,followup_date,nextBussinessDay}
       });
-      dialogRef.afterClosed().subscribe(result => {    
-        /*if(type == 'tick-follower'){
-          this.getTickFollowups();  
+      dialogRef.afterClosed().subscribe(result => {
+        if(type == 'tick-follower'){
+          this.getTickFollowups('close');  
         } else {
-         this.getOverdueRecalls();
-       }*/
+         this.getOverdueRecalls('close');
+       }
       
       });
     } else {
@@ -628,7 +632,7 @@ initiate_clinic() {
       let html ='<table>';
       history.forEach( (tip) => {
         let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
-        html += '<tr><td>'+date+' </td><td>:</td><td> '+tip.status+'</td></tr>'
+        html += '<tr><td width="31%">'+date+' </td><td>:</td><td> '+tip.status+'</td></tr>'
       });
       html +='</table>';
       return { title: 'Previous Followups', info : html };

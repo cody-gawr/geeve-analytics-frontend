@@ -519,8 +519,10 @@ initiate_clinic() {
     }); 
   } 
 
-  getOverdueRecalls(){
-    this.recallLoadingLoading = true;
+  getOverdueRecalls(evn = ''){
+     if(evn != 'close'){
+      this.recallLoadingLoading = true;
+    }
     this.futureDateOR = '';
     this.morningHuddleService.followupOverdueRecalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
         var diffTime:any = this.getDataDiffrences();
@@ -546,8 +548,10 @@ initiate_clinic() {
 
    public tipDoneCode = {}; 
    public tipFutureDate = {}; 
-  getTickFollowups(){
+  getTickFollowups(evn = ''){
+     if(evn != 'close'){
      this.endTaksLoadingLoading = true;
+    }
      this.futureDateTH = '';
     this.morningHuddleService.followupTickFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
         var diffTime:any = this.getDataDiffrences();
@@ -913,11 +917,11 @@ async getDentistList(){
         data: {event,firstname,surname,pid,cid,type,original_appt_date,followup_date,nextBussinessDay}
       });
       dialogRef.afterClosed().subscribe(result => {    
-        /*if(type == 'tick-follower'){
-          this.getTickFollowups();  
+           if(type == 'tick-follower'){
+          this.getTickFollowups('close');  
         } else {
-         this.getOverdueRecalls();
-       }*/
+         this.getOverdueRecalls('close');
+       }
       
       });
     } else {
@@ -1113,7 +1117,7 @@ async getDentistList(){
       let html ='<table>';
       history.forEach( (tip) => {
         let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
-        html += '<tr><td>'+date+' :'+tip.status+'</td></tr>'
+        html += '<tr><td  width="31%">'+date+' : '+tip.status+'</td></tr>'
       });
       html +='</table>';
       return { title: 'Previous Followups', info : html };

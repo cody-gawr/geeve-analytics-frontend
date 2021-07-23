@@ -1493,7 +1493,7 @@
 
 
     <!-- End of Day Tasks -->
-    <mat-tab label="Daily Tasks" *ngIf="user_type != '4'" [disabled] = '(!isEnabletasks && !isEnableEquipList)'>
+    <mat-tab label="Daily Tasks" *ngIf="user_type != '4'">
       <div class="morning-huddle-date">
         <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone'  }} </strong>
       </div>
