@@ -1620,7 +1620,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.recallChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.recall_percent > 0) {
+          if (res.recall_percent >= 0) {
             if (res.provider_name != null) {
               this.recallChartData1.push(Math.round(res.recall_percent));
               this.recallChartLabels1.push(res.provider_name);
@@ -1784,7 +1784,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentPreChartTooltip = 'down';
         var i = 0;
         data.data.forEach(res => {
-          if (res.reappoint_rate > 0) {
+          if (res.reappoint_rate >= 0) {
             if (res.provider_name != null) {
               this.treatmentPreChartData1.push(Math.round(res.reappoint_rate));
               this.treatmentPreChartLabels1.push(res.provider_name);
