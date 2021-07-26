@@ -1591,8 +1591,8 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns8.length">
-                  <span *ngIf="futureDateTH == ''">You have no FTA followups today</span>
-                  <span *ngIf="futureDateTH != ''">FTA Followup calls will be populated on  {{ futureDateTH }}</span>
+                  <span *ngIf="futureDateTF == ''">You have no FTA followups today</span>
+                  <span *ngIf="futureDateTF != ''">FTA Followup calls will be populated on  {{ futureDateTH }}</span>
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns8"></tr>
@@ -1678,7 +1678,7 @@
       <div class="morning-huddle-date">
         <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone'  }} </strong>
       </div>
-      <mat-card class="table-card post_call_responsive_border"  *ngIf="isEnabletasks">
+      <mat-card class="table-card post_call_responsive_border">
         <mat-card-title>
           <div class="title-follow-up">
             <span>Daily Tasks</span>
@@ -1697,7 +1697,7 @@
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
-            <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" *ngIf="isEnabletasks">
+            <table fxHide fxShow.gt-sm mat-table [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" >
               <!-- Name Column -->
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Task Name </th>
@@ -1714,8 +1714,9 @@
 
               <ng-container matColumnDef="isDataAvailable9">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns9.length">
-                  <span *ngIf="futureDateDT == ''">You have no daily tasks today</span>
-                  <span *ngIf="futureDateDT != ''">Daily Tasks will be populated on {{ futureDateDT }}</span>
+                  <span *ngIf="isEnabletasks && futureDateDT == ''">You have no daily tasks today</span>
+                  <span *ngIf="isEnabletasks && futureDateDT != ''">Daily Tasks will be populated on {{ futureDateDT }}</span>
+                  <span *ngIf="!isEnabletasks">Daily Tasks are not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns9"></tr>
@@ -1752,7 +1753,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="table-card post_call_responsive_border" *ngIf="isEnableEquipList">
+      <mat-card class="table-card post_call_responsive_border" >
         <mat-card-title>
           <div class="title-follow-up"> 
           <span>Equipment List</span>
@@ -1770,7 +1771,7 @@
               <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
             </div>
-            <table fxHide fxShow.gt-sm mat-table [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.length == 0)? 'noDataTableClass' : ''" *ngIf="isEnableEquipList"> 
+            <table fxHide fxShow.gt-sm mat-table [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.length == 0)? 'noDataTableClass' : ''" > 
               <!-- Name Column -->
                <ng-container matColumnDef="item">
                 <th mat-header-cell *matHeaderCellDef> Item </th>
@@ -1794,8 +1795,9 @@
               </ng-container>           
               <ng-container matColumnDef="isDataAvailable9">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns10.length">
-                  <span *ngIf="futureDateEL == ''">No Equipment List configured</span>
-                  <span *ngIf="futureDateEL != ''">Equipment List will be populated on  {{futureDateEL}}</span>
+                  <span *ngIf="isEnableEquipList && futureDateEL == ''">No Equipment List configured</span>
+                  <span *ngIf="isEnableEquipList && futureDateEL != ''">Equipment List will be populated on  {{futureDateEL}}</span>
+                  <span *ngIf="!isEnableEquipList">Equipment List is not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns10"></tr>

@@ -497,7 +497,7 @@ this.changePasswordError = {'required': false,'minlength': false,'pattern': fals
      }
   } 
 public fileToUpload;
- uploadImage(files: FileList) {
+/* uploadImage(files: FileList) {
              $('.ajax-loader').show();
     this.fileToUpload = files.item(0);
     if(this.fileToUpload.size <2097152) {
@@ -517,7 +517,7 @@ public fileToUpload;
       this.toastr.error('Image Size should be less than 2 MB');
 
     }
-  }
+  }*/
 
   /******** GET CHARTS TIPS*****/
   public chartsTips:any = {};

@@ -8,6 +8,7 @@ import { DentistService } from '../../../dentist/dentist.service';
 import { Subscription } from 'rxjs/Subscription';
 import { UserIdleService } from 'angular-user-idle';
 import { AppConstants } from '../../../app.constants';
+ import { RolesUsersService } from '../../../roles-users/roles-users.service';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';  
 export interface Dentist {
@@ -28,8 +29,9 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   showCompare:boolean = false;
   showDropDown:boolean = false;
   classUrl:string = '';
-  constructor(private _cookieService: CookieService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router, private userIdle: UserIdleService,public constants: AppConstants) {
-      this.user_type_dentist = this._cookieService.get("user_type");
+  constructor(private _cookieService: CookieService,private rolesUsersService: RolesUsersService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router, private userIdle: UserIdleService,public constants: AppConstants) {
+    this.getRoles();
+      //this.user_type_dentist = this._cookieService.get("user_type");
       this._routerSub = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
             this.route = router.url; 
             if(this.route == '/dashboards/cliniciananalysis'){
@@ -61,6 +63,18 @@ export class AppHeaderrightComponent implements AfterViewInit  {
           // if($('#currentClinic').attr('cid') == 'all' && this.route != '/dashboards/healthscreen')
           // { 
           //}
+    });
+  }
+
+  async getRoles() {      
+   await this.rolesUsersService.getRolesIndividual().subscribe((res) => {
+      if(res.message == 'success')
+      { 
+        this.user_type_dentist = res.type;
+        let opts = this.constants.cookieOpt as CookieOptions;
+        this._cookieService.put("user_type",res.type, opts);      
+      }
+    }, error => {
     });
   }
  ngOnDestroy(){

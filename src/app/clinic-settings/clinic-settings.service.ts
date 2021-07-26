@@ -8,10 +8,11 @@ import { Router  } from '@angular/router';
 @Injectable()
 export class ClinicSettingsService {
 
-   public token: string;
+    public token: string;
     private headers: HttpHeaders;
     private apiUrl = environment.apiUrl;
     public token_id;
+    public clinicData: any;
 
     constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {}
     getHeaders(){
@@ -146,5 +147,25 @@ export class ClinicSettingsService {
                     })
         );
     }
-       
+
+    setClinicData(data){
+        this.clinicData = data;
+        return true;
+    }
+
+    getClinicData(): Observable<any>{
+       return this.clinicData;    
+    }       
+
+    
+    updatePartialSetting(clinic_id, value, column): Observable<any> {
+        const formData = new FormData();
+        formData.append('clinic_id', clinic_id);
+        formData.append(column, value);
+        var header = this.getHeaders();
+        return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, { headers: header}).pipe(map((response: Response) => {
+                return response;
+            })
+        );
+    }
 }

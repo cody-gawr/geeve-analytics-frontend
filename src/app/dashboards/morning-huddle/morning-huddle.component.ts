@@ -184,6 +184,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public futureDateOP :any = '';
     public futureDateOR :any = '';
     public futureDateTH :any = '';
+    public futureDateTF :any = '';
     public futureDateDT :any = '';
     public futureDateEL :any = '';
 
@@ -604,7 +605,12 @@ initiate_clinic() {
     }
     this.morningHuddleService.followupFtaFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays).subscribe((production:any) => {
         this.ftaTaksLoadingLoading = false;
+        this.futureDateTF = '';
       if(production.message == 'success') {
+        var diffTime:any = this.getDataDiffrences();
+        if(diffTime < 0){
+          this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
+        }
         this.nextBussinessDay = production.next_day;        
         this.followupFtaFollowups = production.data;     
         if(this.showCompleteFta ==  true){  

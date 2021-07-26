@@ -856,14 +856,11 @@ public maxrecallPrebookGoal:any=0;
         this.fdRecallPrebookRateLoader = false;
           this.recallPrebookPrevTotal = 0;
           this.recallPrebookGoal= data.goals;
-        this.recallPrebookTotal = 0;
+          this.recallPrebookTotal = 0;
           this.recallPrebookTotal = Math.round(data.total);
-
           this.recallPrebookPrevTotal = Math.round(data.total_ta);
-
           if(this.recallPrebookTotal>=this.recallPrebookPrevTotal)
             this.recallPrebookTooltip = 'up';
-
           this.maxrecallPrebookGoal = this.recallPrebookGoal;          
           if(this.maxrecallPrebookGoal == 0)
             this.maxrecallPrebookGoal ='';

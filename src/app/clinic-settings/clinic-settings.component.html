@@ -118,18 +118,69 @@
               </div>
           </div>
 
+        
+         <!--  <div class="post-op-codes">
+            <h4 class="clinic-settings-form-title">Net Profit Exclusions</h4>          
+            <div class="sa-form-group clinic-setting-form">
+              <input placeholder="" [formControl]="form.controls['subtracted_accounts']" [(ngModel)]="subtracted_accounts">
+            </div>
+          </div>    -->        
+
+    
+
+
+            
+          
+     <!--      <div class="post-op-codes" style="width: 250px; float: left; margin-right: 19.8%">
+            <h4 class="clinic-settings-form-title">Unscheduled Patients Call</h4>          
+            <div class="sa-form-group clinic-setting-form">
+              <input type="number" min="0" placeholder="" [formControl]="form.controls['unscheduled_patients_days']" [(ngModel)]="unscheduledPatientsMh" style="width: 70px;">
+              <span style="padding: 0 10px;">Days Ago</span>
+             <small *ngIf="form.controls['unscheduled_patients_days'].hasError('required') && form.controls['unscheduled_patients_days'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
+            </div>
+          </div> -->
+
+
+          <div class="post-op-codes" style="float: left;width: 100%;">
+            <h4 class="clinic-settings-form-title">FTA/UTA</h4>          
+            <div  fxLayout="row wrap fta_uta_setting" style="width: 500px;text-align: center;"> 
+            <div class="sa-form-group clinic-setting-form"  style="text-align: left;width: 240px;">
+              <span style=" padding: 11px 6px;display: inline-block;" >Appointment Status</span>
+              <input  style=" float: left;width: 25px;"  type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="status">             
+            </div>
+             <div class="sa-form-group clinic-setting-form"   style="text-align: left;width: 240px;">
+              <span style=" padding: 11px 6px;display: inline-block;">Item Codes</span>
+              <input style=" float: left;width: 25px;" type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="item">
+
+            </div>
+          </div>
+          </div>
+          <div class="sa-form-group-btn">
+            <button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
+          </div>
+        </form>
+    </mat-card-content>
+  </mat-expansion-panel>
+
+
+
+
+
+ <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Followups</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+
+        <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
+          <h4 class="clinic-settings-form-title" ></h4>    
+
           <div class="post-op-codes">
             <h4 class="clinic-settings-form-title">Post Op Calls Codes</h4>          
             <div class="sa-form-group clinic-setting-form">
               <input placeholder="" [formControl]="form.controls['post_op_calls']" [(ngModel)]="post_op_calls">
             </div>
-          </div> 
-          <div class="post-op-codes">
-            <h4 class="clinic-settings-form-title">Net Profit Exclusions</h4>          
-            <div class="sa-form-group clinic-setting-form">
-              <input placeholder="" [formControl]="form.controls['subtracted_accounts']" [(ngModel)]="subtracted_accounts">
-            </div>
-          </div>           
+          </div>              
 
            <div class="post-op-codes" style="width: 250px; float: left;">
             <h4 class="clinic-settings-form-title">Post Op Calls</h4>          
@@ -165,38 +216,14 @@
               <span style="padding: 0 10px;">Days</span>
              <small *ngIf="form.controls['fta_followup_days'].hasError('required') && form.controls['fta_followup_days'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
             </div>
-          </div>
-          
-     <!--      <div class="post-op-codes" style="width: 250px; float: left; margin-right: 19.8%">
-            <h4 class="clinic-settings-form-title">Unscheduled Patients Call</h4>          
-            <div class="sa-form-group clinic-setting-form">
-              <input type="number" min="0" placeholder="" [formControl]="form.controls['unscheduled_patients_days']" [(ngModel)]="unscheduledPatientsMh" style="width: 70px;">
-              <span style="padding: 0 10px;">Days Ago</span>
-             <small *ngIf="form.controls['unscheduled_patients_days'].hasError('required') && form.controls['unscheduled_patients_days'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
-            </div>
-          </div> -->
-
-
-          <div class="post-op-codes" style="float: left;width: 100%;">
-            <h4 class="clinic-settings-form-title">FTA/UTA</h4>          
-            <div  fxLayout="row wrap fta_uta_setting" style="width: 500px;text-align: center;"> 
-            <div class="sa-form-group clinic-setting-form"  style="text-align: left;width: 240px;">
-              <span style=" padding: 11px 6px;display: inline-block;" >Appointment Status</span>
-              <input  style=" float: left;width: 25px;"  type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="status">             
-            </div>
-             <div class="sa-form-group clinic-setting-form"   style="text-align: left;width: 240px;">
-              <span style=" padding: 11px 6px;display: inline-block;">Item Codes</span>
-              <input style=" float: left;width: 25px;" type="radio" name="fta_uta" [formControl]="form.controls['fta_uta']" [(ngModel)]="ftaUta" value="item">
-
-            </div>
-          </div>
-          </div>
+          </div>    
           <div class="sa-form-group-btn">
             <button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
           </div>
         </form>
     </mat-card-content>
   </mat-expansion-panel>
+
 
   <app-goals-settings [clinicId]="id"></app-goals-settings>
   <app-dentist-settings [clinicId]="id"></app-dentist-settings>
@@ -210,7 +237,8 @@
     <mat-expansion-panel-header>
       <mat-panel-title> Xero <span class="xero-text" *ngIf="xeroConnect == true">Connected</span></mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-card-content>    
+    <mat-card-content> 
+      <div style="width: 29%;float: left;border-right: 3px dotted #CECEE5;">
       <div class="text-center">
         <div class="image-container">
           <img src="assets/images/xero_settings.png" alt="" />
@@ -230,6 +258,21 @@
           <div class="company-name">{{ xeroOrganization }}</div> <!-- Demo Company (AU) -->
         </div>
       </div>
+    </div>
+    <div style="width: 70%;float: left;padding: 5px 40px;">   
+       <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">      
+        <div class="post-op-codes">
+          <h4 class="clinic-settings-form-title">Net Profit Exclusions</h4>          
+            <div class="sa-form-group clinic-setting-form" style="padding: 0px;">
+              <input placeholder="" [formControl]="form.controls['subtracted_accounts']" [(ngModel)]="subtracted_accounts">
+            </div>
+          </div> 
+          <div class="sa-form-group-btn">
+            <button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
+          </div>
+        </form>
+</div>
+
     </mat-card-content>
   </mat-expansion-panel>
   <!-- XERO end -->

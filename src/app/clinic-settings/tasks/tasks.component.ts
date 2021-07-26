@@ -9,7 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TaskService } from './tasks.service';
 import { BaseComponent } from '../base/base.component';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
-
+import { ClinicSettingsService } from '../clinic-settings.service';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -73,6 +73,8 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
   dentistListLoading: boolean = false;
   displayedColumns: string[] = ['task_name','active','action'];
   editing = {};
+  clinicData:any = [];
+  dailyTaskEnable: boolean = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -80,7 +82,8 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     private taskService: TaskService,
     private router: Router,
     private toastr: ToastrService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private clinicSettingsService: ClinicSettingsService
   ) {
     super();
   }
@@ -125,8 +128,11 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
   getTasks(id) {
     this.taskService.getTasks(id).subscribe((res) => {
       if (res.message == 'success') {
+        
         this.tasksList.data = res.data;
         this.setPaginationButtons(this.tasksList.data.length);
+        this.clinicData = this.clinicSettingsService.getClinicData();
+        this.dailyTaskEnable = (this.clinicData.daily_task_enable == 1)? true : false; 
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();
@@ -152,6 +158,15 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
       this.getTasks(this.clinic_id$.value);
     });
     
+  }
+
+  public toggleMH(event)
+  {
+    var active = (event.checked == true)? 1 : 0;
+    this.dailyTaskEnable = event.checked;
+    this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value,active,'daily_task_enable' ).subscribe((res) => {
+      if(res.message == 'success') {}
+    }, error => {});
   }
 
 }

@@ -9,7 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { EquipmentsService } from './equipments.service';
 import { BaseComponent } from '../base/base.component';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
-
+import { ClinicSettingsService } from '../clinic-settings.service';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -73,6 +73,9 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
   dentistListLoading: boolean = false;
   displayedColumns: string[] = ['task_name','quantity','active','action'];
   editing = {};
+  clinicData:any = [];
+  EquipListEnable: boolean = false;
+  EquipListloader: boolean = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -80,7 +83,8 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     private equipmentsService: EquipmentsService,
     private router: Router,
     private toastr: ToastrService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public clinicSettingsService: ClinicSettingsService,
   ) {
     super();
   }
@@ -123,10 +127,14 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
   }
 
   getItems(id) {
+    this.EquipListloader = true;
     this.equipmentsService.getItems(id).subscribe((res) => {
+        this.EquipListloader = false;
       if (res.message == 'success') {
         this.itemList.data = res.data;
         this.setPaginationButtons(this.itemList.data.length);
+        this.clinicData = this.clinicSettingsService.getClinicData();
+        this.EquipListEnable = (this.clinicData.equip_list_enable == 1)? true : false; 
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();
@@ -152,6 +160,15 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
       this.getItems(this.clinic_id$.value);
     });
     
+  }
+
+  public toggleMH(event)
+  {
+    var active = (event.checked == true)? 1 : 0;
+    this.EquipListEnable = event.checked;
+    this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value,active,'equip_list_enable' ).subscribe((res) => {
+      if(res.message == 'success') {}
+    }, error => {});
   }
 
 }

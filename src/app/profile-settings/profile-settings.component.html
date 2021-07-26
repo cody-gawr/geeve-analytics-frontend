@@ -13,11 +13,11 @@
                             <div class="basic_details_form">
                                 <form [formGroup]="formSettings" (ngSubmit)="onSubmitBasic()">
                                     <div fxLayout="row wrap" fxLayoutGap="10%">
-                                        <div fxFlex.xs="20%" fxFlex.md="120px" fxFlex="150px" class="profile-img-icon">
+                                     <!--    <div fxFlex.xs="20%" fxFlex.md="120px" fxFlex="150px" class="profile-img-icon">
                                             <div class="sa-image_upload_area ps_UpoadImage bd_UpoadImage">
                                                 <div class="clinic_logo"> <img src="{{imageURL}}" *ngIf="imageURL"> <img src="/assets/images/gPZwCbdS.jpg" *ngIf="!imageURL"> </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
                                             <div fxLayout="row wrap" fxLayoutGap="5%">
                                                 <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100" fxLayoutGap="10px">
@@ -31,7 +31,7 @@
                                                         <input formControlName="email" placeholder="" id="email" [formControl]="formSettings.controls['email']" [(ngModel)]="email" [readonly]="true" class="readonly_form"> <small *ngIf="formSettings.controls['email'].hasError('pattern') && formSettings.controls['email'].touched" class="text-danger support-text">Please enter valid email.</small> </div>
                                                 </div>
                                             </div>
-                                            <div fxLayout="row wrap" fxLayoutGap="5%">
+                                    <!--         <div fxLayout="row wrap" fxLayoutGap="5%">
                                                 <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100">
                                                     <div class="bd_UpoadImage">
                                                         <label>Profile image</label>
@@ -40,7 +40,7 @@
                                                             <input type='hidden' placeholder="" id="imageURL" [(ngModel)]="imageURL" [ngModelOptions]="{standalone: true}"> </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                     <mat-card-actions class="text-right">

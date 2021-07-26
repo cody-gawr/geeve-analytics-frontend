@@ -123,6 +123,7 @@ export class ClinicSettingsComponent implements OnInit {
   this.clinicSettingsService.getClinicSettings(this.id).subscribe((res) => {
 
        if(res.message == 'success'){
+        this.clinicSettingsService.setClinicData(res.data[0]);
         this.clinicName = res.data[0].clinicName;
         this.contactName = res.data[0].contactName;
         this.address = res.data[0].address;
