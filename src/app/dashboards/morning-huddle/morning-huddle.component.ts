@@ -977,7 +977,15 @@ async getDentistList(){
       
       });
     } else {
-      this.morningHuddleService.updateStatus(event,pid,cid,type, date,followup_date).subscribe((update:any) => {}); 
+      this.morningHuddleService.updateStatus(event,pid,cid,type, date,followup_date).subscribe((update:any) => {
+        if(type == 'tick-follower'){
+          this.getTickFollowups('close');  
+        } else if(type == 'fta-follower'){
+          this.getFtaFollowups('close');  
+        } else {
+         this.getOverdueRecalls('close');
+       }
+      }); 
     }    
   }
 

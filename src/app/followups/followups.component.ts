@@ -452,7 +452,7 @@ initiate_clinic() {
   }
 
   updateStatus(event,pid,date,cid,firstname,surname,original_appt_date,followup_date,type,nextBussinessDay) {
-    if( event == 'Wants another follow-up' || event == 'Cant be reached' || 'Cant be reached - left' )
+    if( event == 'Wants another follow-up' || event == 'Cant be reached' || event ==  'Cant be reached - left' )
     {
       let width = '450px';
       if(event == 'Cant be reached' || event == 'Cant be reached - left')
@@ -472,7 +472,15 @@ initiate_clinic() {
       
       });
     } else {
-      this.followupsService.updateStatus(event,pid,cid,type, date,followup_date).subscribe((update:any) => {}); 
+      this.followupsService.updateStatus(event,pid,cid,type, date,followup_date).subscribe((update:any) => {
+        if(type == 'tick-follower'){
+          this.getTickFollowups('close');  
+        } else if(type == 'fta-follower'){
+          this.getFtaFollowups('close');  
+        } else {
+         this.getOverdueRecalls('close');
+       }
+      }); 
     }    
   }
 
