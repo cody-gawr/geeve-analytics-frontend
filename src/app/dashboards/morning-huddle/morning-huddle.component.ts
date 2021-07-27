@@ -112,7 +112,7 @@ export class StatusDialogMHComponent {
   updateNextReached(data, event) {
      this.nextCustomFollowup = false;
      this.nextFollowupHave = false;
-     this.morningHuddle.updateStatus('Cant be reached',data.pid,data.cid,data.type,data.original_appt_date, data.followup_date).subscribe((update:any) => {
+     this.morningHuddle.updateStatus(data.event,data.pid,data.cid,data.type,data.original_appt_date, data.followup_date).subscribe((update:any) => {
       if(update.status && event != 'no')
       {
         this.morningHuddle.cloneRecord(data.pid,data.cid,data.type,data.followup_date,this.nextDate,data.original_appt_date,event).subscribe((clone:any) => {
@@ -956,10 +956,10 @@ async getDentistList(){
 
 
     updateStatus(event,pid,date,cid,firstname,surname,original_appt_date,followup_date,type,nextBussinessDay) {
-      if( event == 'Wants another follow-up' || event == 'Cant be reached' )
+      if( event == 'Wants another follow-up' || event == 'Cant be reached' || event == 'Cant be reached - left' )
       {
         let width = '450px';
-        if(event == 'Cant be reached' )
+        if(event == 'Cant be reached' || event == 'Cant be reached - left'  )
           width = '650px';     
 
       const dialogRef = this.dialog.open(StatusDialogMHComponent, {
@@ -1179,10 +1179,15 @@ async getDentistList(){
 
   formatHistory(history)
   {
-      let html ='<table>';
+     let html ='<table>';
+      let statusSpe= {'Did not want to book':'Didn’t want to book','Cant be reached': 'Can\'t be reached', 'Cant be reached - left':'Can\'t be reached - left voicemail'};
       history.forEach( (tip) => {
         let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
-        html += '<tr><td  width="31%">'+date+' : '+tip.status+'</td></tr>'
+        if(typeof( statusSpe[tip.status]) != 'undefined'){
+            html += '<tr><td width="28%">'+date+':</td><td> '+statusSpe[tip.status]+'</td></tr>'
+        } else {
+            html += '<tr><td width="28%">'+date+':</td><td> '+tip.status+'</td></tr>'
+        }
       });
       html +='</table>';
       return { title: 'Previous Followups', info : html };
