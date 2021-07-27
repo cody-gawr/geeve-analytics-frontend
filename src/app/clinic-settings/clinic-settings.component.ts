@@ -6,6 +6,8 @@ import { ActivatedRoute } from "@angular/router";
 import { CookieService } from "ngx-cookie";
 import { Router  } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ITooltipData } from '../shared/tooltip/tooltip.directive';
+import { AppConstants } from '../app.constants';
 @Component({
   selector: 'app-formlayout',
   templateUrl: './clinic-settings.component.html',
@@ -60,8 +62,13 @@ export class ClinicSettingsComponent implements OnInit {
           public dailyTasks:boolean = true;
           public compareMode:boolean = true;
 
+        public postOpEnable:boolean = true;
+        public tickEnable:boolean = true;
+        public recallEnable:boolean = true;
+        public ftaEnable:boolean = true;
+
           public workingDays:any = {sunday: false,monday: true,tuesday: true,wednesday: true,thursday: true,friday: true,saturday: true};       
-  constructor( private toastr: ToastrService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router) {
+  constructor( private toastr: ToastrService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router,public constants: AppConstants) {
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -141,6 +148,11 @@ export class ClinicSettingsComponent implements OnInit {
         this.equipmentList = (res.data[0].equip_list_enable == 1)? true : false;
         this.dailyTasks = (res.data[0].daily_task_enable == 1)? true : false;
         this.compareMode = (res.data[0].compare_mode == 1)? true : false;
+        
+        this.postOpEnable = (res.data[0].post_op_enable == 1)? true : false;
+        this.tickEnable = (res.data[0].tick_enable == 1)? true : false;
+        this.recallEnable = (res.data[0].recall_enable == 1)? true : false;
+        this.ftaEnable = (res.data[0].fta_enable == 1)? true : false;
 
         if(this.ftaUta == '')
           this.ftaUta = "status";
@@ -179,10 +191,7 @@ export class ClinicSettingsComponent implements OnInit {
   this.ftaFollowupDays = this.form.value.fta_followup_days;
   this.timezone = this.form.value.timezone;  
 
-
- // this.unscheduledPatientsMh = this.form.value.unscheduled_patients_days;
-  
-  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays,this.ftaFollowupDays, this.timezone,this.subtracted_accounts, this.equipmentList, this.dailyTasks, this.compareMode ).subscribe((res) => {
+  this.clinicSettingsService.updateClinicSettings(this.id, this.clinicName,this.address,this.contactName, days,this.post_op_calls, this.phoneNo, this.clinicEmail,this.ftaUta, this.postOpCallsMh,  this.recallWeeks, this.tickDays,this.ftaFollowupDays, this.timezone,this.subtracted_accounts, this.equipmentList, this.dailyTasks, this.compareMode,this.postOpEnable,this.tickEnable,this.recallEnable,this.ftaEnable ).subscribe((res) => {
       $('.ajax-loader').hide();
       if(res.message == 'success'){
          this.toastr.success('Clinic Settings Updated' );
@@ -411,6 +420,29 @@ public toggleMH(event, type)
     }
 
    // this.onAdd.emit(this.fileToUpload);
+  }
+  toggleFlw(event, type)
+  {
+    let column = '';
+    if(type == 'postOp') {
+      this.postOpEnable = event.checked;
+      column = 'post_op_enable';
+    } else if(type == 'tick') {
+      this.tickEnable = event.checked;
+      column = 'tick_enable';
+    } else if(type == 'recall') {
+      this.recallEnable = event.checked;
+      column = 'recall_enable';
+    } else if(type == 'fta') {
+      this.ftaEnable = event.checked;
+      column = 'fta_enable';
+    }
+    var active = (event.checked == true)? 1 : 0;    
+    this.clinicSettingsService.updatePartialSetting(this.id,active,column ).subscribe((res) => {
+      if(res.message == 'success') {
+         this.toastr.success('Followups Settings Updated');
+      }
+    }, error => {});
   }
 
 }

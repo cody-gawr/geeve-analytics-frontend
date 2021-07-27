@@ -204,7 +204,7 @@
                 <div class="chart">
 
 
-                  <div *ngIf="!showTrend && recallPrebookTotal >= 0 && !fdRecallPrebookRateLoader"
+                  <div *ngIf="!showTrend && recallPrebookTotal > 0 && !fdRecallPrebookRateLoader"
                     style="height: 190px;width: 100%">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="recallPrebookTotal" [thick]="gaugeThick"
                       [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="cap"
@@ -212,7 +212,7 @@
                     </ngx-gauge>
                   </div>
 
-                  <div *ngIf="!showTrend && recallPrebookTotal < 0 && !fdRecallPrebookRateLoader">
+                  <div *ngIf="!showTrend && recallPrebookTotal <= 0 && !fdRecallPrebookRateLoader">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no recall prebookings in the selected period</p>
@@ -289,7 +289,7 @@
                 <div class="chart">
 
 
-                  <div *ngIf="!showTrend && treatmentPrebookTotal >= 0 && !fdtreatmentPrebookRateLoader"
+                  <div *ngIf="!showTrend && treatmentPrebookTotal > 0 && !fdtreatmentPrebookRateLoader"
                     style="height: 190px;width: 100%">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="treatmentPrebookTotal"
                       [thick]="gaugeThick" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
@@ -297,7 +297,7 @@
                     </ngx-gauge>
                   </div>
 
-                  <div *ngIf="!showTrend && treatmentPrebookTotal < 0 && !fdtreatmentPrebookRateLoader">
+                  <div *ngIf="!showTrend && treatmentPrebookTotal <= 0 && !fdtreatmentPrebookRateLoader">
                     <div class="sa_nodata_div">
                     </div>
                     <p class="chart-placeholder-text">You have no reappointments in the selected period</p>

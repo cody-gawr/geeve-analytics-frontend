@@ -15,13 +15,15 @@ import { EquipmentComponent,DialogOverviewExampleComponent } from './equipments/
 import { GoalsComponent } from './goals/goals.component';
 import { AutofocusDirective } from './auto-focus.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 @NgModule({
   imports: [
     RouterModule.forChild(ClinicSettingsRoutes),
     SharedMatModule,
     DemoMaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   providers: [
     ClinicSettingsService,

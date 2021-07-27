@@ -41,7 +41,7 @@ export class ProfileSettingsService {
             const formData = new FormData();
             formData.append('displayName', displayName);
             formData.append('email', email);
-            formData.append('user_image', imageURL);   
+            //formData.append('user_image', imageURL);   
 
            var header = this.getHeaders(); 
 
@@ -66,7 +66,7 @@ export class ProfileSettingsService {
         );
     }
 
-    logoUpload( formData): Observable<any> {
+/*    logoUpload( formData): Observable<any> {
             if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
             formData.append('id', this._cookieService.get("childid"));
             else
@@ -79,7 +79,7 @@ export class ProfileSettingsService {
                         return response;
                     })
         );
-    }
+    }*/
 
     clearSession( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 

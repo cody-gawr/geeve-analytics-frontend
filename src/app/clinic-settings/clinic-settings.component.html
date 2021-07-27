@@ -175,48 +175,161 @@
         <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">
           <h4 class="clinic-settings-form-title" ></h4>    
 
+          <div class="gray_area">
+              <h4 class="clinic-settings-form-title">Post Op Calls
+                <div class="info-button">
+                <div class="info-icon-container">
+                  <img [tooltip]="{title:'Post Op Calls', info: 'Post Op Calls should be entered as comma separated item codes (eg. 311,314). By default this followup list will be populated 2 days later - this can be adjusted below.',direction: 'right'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </div>
+              </div>
+              </h4>          
+              <div class="gray_area_partision">
+                <div class="post-op-codes" style="width: 250px; float: left;">
+                    <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
+                      <div class="sa-form-group clinic-setting-form">  
+                    <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ postOpEnable }}" name="postOpEnable" (change)="toggleFlw($event, 'postOp')">
+                      <span *ngIf="postOpEnable">Enable</span>
+                      <span *ngIf="!postOpEnable">Disable</span>
+                    </mat-slide-toggle>        
+                    </div>        
+                  </div>
+              </div>
+              <div class="gray_area_partision">
+                <div class="post-op-codes" style="width: 250px; float: left;">
+                  <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
+                  <div class="sa-form-group clinic-setting-form">
+                    <input type="number" min="0" placeholder="" [formControl]="form.controls['post_op_calls_days']" [(ngModel)]="postOpCallsMh" style="width: 70px;">
+                    <span style="padding:0 10px;">Days Later</span>
+                    <small *ngIf="form.controls['post_op_calls_days'].hasError('required') && form.controls['post_op_calls_days'].touched" class="text-danger support-text" style="float: left;width: 100%;">Field is Required.</small>
+                  </div>
+                </div>               
+              </div>
+              <div class="gray_area_partision">
+                <div class="post-op-codes">
+                  <!-- <h4 class="clinic-settings-form-title">Codes</h4>    -->       
+                  <div class="sa-form-group clinic-setting-form">
+                    <input placeholder="Post Op Calls Codes" [formControl]="form.controls['post_op_calls']" [(ngModel)]="post_op_calls">
+                  </div>
+                </div>               
+              </div>
+          </div>
+
+          <div class="gray_area">
+              <h4 class="clinic-settings-form-title">Tick Followups
+              <div class="info-button">
+                <div class="info-icon-container">
+                  <img [tooltip]="{title:'Tick Followups', info: 'Tick Followups are triggered by entering the code TICK in your PMS software. By default the followup list will be populated 7 days later - this can be adjusted below.',direction: 'right'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /> 
+                </div>
+              </div>
+            </h4>          
+              <div class="gray_area_partision">
+                <div class="post-op-codes" style="width: 250px; float: left;">
+                    <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
+                      <div class="sa-form-group clinic-setting-form">  
+                    <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ tickEnable }}" name="tickEnable" (change)="toggleFlw($event, 'tick')">
+                      <span *ngIf="tickEnable">Enable</span>
+                      <span *ngIf="!tickEnable">Disable</span>
+                    </mat-slide-toggle>        
+                    </div>        
+                  </div>
+              </div>
+              <div class="gray_area_partision">
+                    <div class="post-op-codes" style="width: 250px; float: left;">
+                     <!--    <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->        
+                          <div class="sa-form-group clinic-setting-form">
+                              <input type="number" min="0" placeholder="" [formControl]="form.controls['tick_days']" [(ngModel)]="tickDays" style="width: 70px;">
+                              <span style="padding: 0 10px;">Days Later</span>
+                                <small *ngIf="form.controls['tick_days'].hasError('required') && form.controls['tick_days'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
+                            </div>
+                      </div>              
+              </div>           
+          </div>
+
+          <div class="gray_area">
+              <h4 class="clinic-settings-form-title">Recall Followups
+                <div class="info-button">
+                <div class="info-icon-container">
+                  <img [tooltip]="{title:'Recall Followups', info: 'Recall Followups are triggered automatically by detecting patients who are overdue for their 6 monthly check-up. By default the followup list will be populated with patients who had their last check-up and clean 30 weeks ago (approx 7 months.) - this can be adjusted below.',direction: 'right'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </div>
+              </div>
+              </h4>          
+              <div class="gray_area_partision">
+                <div class="post-op-codes" style="width: 250px; float: left;">
+                   <!--  <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
+                      <div class="sa-form-group clinic-setting-form">  
+                    <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ recallEnable }}" name="recallEnable" (change)="toggleFlw($event,'recall')">
+                      <span *ngIf="recallEnable">Enable</span>
+                      <span *ngIf="!recallEnable">Disable</span>
+                    </mat-slide-toggle>        
+                    </div>        
+                  </div>
+              </div>
+              <div class="gray_area_partision">
+                     <div class="post-op-codes" style="width: 250px; float: left;">
+            <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>      -->     
+            <div class="sa-form-group clinic-setting-form">
+              <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_weeks']" [(ngModel)]="recallWeeks" style="width: 70px;">
+              <span style="padding: 0 10px;">Weeks Later</span>
+             <small *ngIf="form.controls['recall_weeks'].hasError('required') && form.controls['recall_weeks'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
+            </div>
+          </div>             
+              </div>           
+          </div>
+
+          <div class="gray_area">
+              <h4 class="clinic-settings-form-title">FTA Followups
+                <div class="info-button">
+                <div class="info-icon-container">
+                  <img [tooltip]="{title:'FTA Followups', info: 'FTA Followups are triggered automatically based on detection of an FTA or UTA in your PMS. By default the followup list will be populated the same day as the FTA/UTA is recorded, for patients who do not have another appointment booked within the next 28 days - this can be adjusted below.',direction: 'right'}"  src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /> 
+                </div>
+              </div>
+              </h4>          
+              <div class="gray_area_partision">
+                <div class="post-op-codes" style="width: 250px; float: left;">
+                  <!--   <h4 class="clinic-settings-form-title">&nbsp;</h4>   -->
+                      <div class="sa-form-group clinic-setting-form">  
+                    <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ ftaEnable}}" name="ftaEnable" (change)="toggleFlw($event,'fta')">
+                        <span *ngIf="ftaEnable">Enable</span>
+                      <span *ngIf="!ftaEnable">Disable</span>
+                    </mat-slide-toggle>        
+                    </div>        
+                  </div>
+              </div>
+              <div class="gray_area_partision">
+                     <div class="post-op-codes" style="width: 250px; float: left; margin-right: 19.8%">
+            <!-- <h4 class="clinic-settings-form-title">&nbsp;</h4>           -->
+            <div class="sa-form-group clinic-setting-form">
+              <input type="number" min="0" placeholder="" [formControl]="form.controls['fta_followup_days']" [(ngModel)]="ftaFollowupDays" style="width: 70px;">
+              <span style="padding: 0 10px;">Days</span>
+             <small *ngIf="form.controls['fta_followup_days'].hasError('required') && form.controls['fta_followup_days'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
+            </div>
+          </div>             
+              </div>           
+          </div>
+
+
+<!-- 
           <div class="post-op-codes">
             <h4 class="clinic-settings-form-title">Post Op Calls Codes</h4>          
             <div class="sa-form-group clinic-setting-form">
               <input placeholder="" [formControl]="form.controls['post_op_calls']" [(ngModel)]="post_op_calls">
             </div>
-          </div>              
+          </div>   -->            
 
-           <div class="post-op-codes" style="width: 250px; float: left;">
+        <!--    <div class="post-op-codes" style="width: 250px; float: left;">
             <h4 class="clinic-settings-form-title">Post Op Calls</h4>          
             <div class="sa-form-group clinic-setting-form">
               <input type="number" min="0" placeholder="" [formControl]="form.controls['post_op_calls_days']" [(ngModel)]="postOpCallsMh" style="width: 70px;">
               <span style="padding:0 10px;">Days Ago</span>
               <small *ngIf="form.controls['post_op_calls_days'].hasError('required') && form.controls['post_op_calls_days'].touched" class="text-danger support-text" style="float: left;width: 100%;">Field is Required.</small>
             </div>
-          </div>
-            <div class="post-op-codes" style="width: 250px; float: left;">
-            <h4 class="clinic-settings-form-title">Recall Followups</h4>          
-            <div class="sa-form-group clinic-setting-form">
-              <input type="number" min="0" placeholder="" [formControl]="form.controls['recall_weeks']" [(ngModel)]="recallWeeks" style="width: 70px;">
-              <span style="padding: 0 10px;">Weeks Ago</span>
-             <small *ngIf="form.controls['recall_weeks'].hasError('required') && form.controls['recall_weeks'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
-            </div>
-          </div>
+          </div> -->
+           
 
 
-            <div class="post-op-codes" style="width: 250px; float: left;">
-            <h4 class="clinic-settings-form-title">Tick Followups</h4>          
-            <div class="sa-form-group clinic-setting-form">
-              <input type="number" min="0" placeholder="" [formControl]="form.controls['tick_days']" [(ngModel)]="tickDays" style="width: 70px;">
-              <span style="padding: 0 10px;">Days Ago</span>
-             <small *ngIf="form.controls['tick_days'].hasError('required') && form.controls['tick_days'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
-            </div>
-          </div>
+        
 
-          <div class="post-op-codes" style="width: 250px; float: left; margin-right: 19.8%">
-            <h4 class="clinic-settings-form-title">FTA Followups</h4>          
-            <div class="sa-form-group clinic-setting-form">
-              <input type="number" min="0" placeholder="" [formControl]="form.controls['fta_followup_days']" [(ngModel)]="ftaFollowupDays" style="width: 70px;">
-              <span style="padding: 0 10px;">Days</span>
-             <small *ngIf="form.controls['fta_followup_days'].hasError('required') && form.controls['fta_followup_days'].touched" class="text-danger support-text" style="float: left;width: 100%;" >Field is Required.</small>
-            </div>
-          </div>    
+          
           <div class="sa-form-group-btn">
             <button class="save-button" type="submit" [disabled]="!form.valid">Save</button>
           </div>
@@ -238,7 +351,7 @@
       <mat-panel-title> Xero <span class="xero-text" *ngIf="xeroConnect == true">Connected</span></mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content> 
-      <div style="width: 29%;float: left;border-right: 3px dotted #CECEE5;">
+      <div style="width: 50%;float: left;border-right: 3px dotted #CECEE5;">
       <div class="text-center">
         <div class="image-container">
           <img src="assets/images/xero_settings.png" alt="" />
@@ -259,7 +372,7 @@
         </div>
       </div>
     </div>
-    <div style="width: 70%;float: left;padding: 5px 40px;">   
+    <div style="width:50%;float: left;padding: 5px 40px;">   
        <form [formGroup]="form" class="basic-form sa_forms_design" (ngSubmit)="onSubmit()">      
         <div class="post-op-codes">
           <h4 class="clinic-settings-form-title">Net Profit Exclusions</h4>          
