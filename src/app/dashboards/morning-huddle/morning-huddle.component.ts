@@ -618,7 +618,7 @@ initiate_clinic() {
         } else {
           this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
         }   
-        this.followupFtaFollowupsInCMP.forEach((tool) => {
+        this.followupFtaFollowups.forEach((tool) => {
             this.tipFtaDoneCode[tool.patient_id] = { 
               title: 'Outstanding Treatments', 
               info: tool.code

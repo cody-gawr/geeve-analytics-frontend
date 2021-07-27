@@ -410,7 +410,7 @@ initiate_clinic() {
         this.setPaginationButtons(this.followupFtaFollowupsInCMP,'FT');
         this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP,'FT');
 
-         this.followupFtaFollowupsInCMP.forEach((tool) => {
+         this.followupFtaFollowups.forEach((tool) => {
             this.tipFtaDoneCode[tool.patient_id] = { 
               title: 'Outstanding Treatments', 
               info: tool.code
@@ -560,8 +560,8 @@ initiate_clinic() {
       this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
     }
     this.currentFTPage = 1;
-    this.setPaginationButtons(this.followupFtaFollowupsInCMP,'TH');
-    this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP,'TH');
+    this.setPaginationButtons(this.followupFtaFollowupsInCMP,'FT');
+    this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP,'FT');
   }
 
 
