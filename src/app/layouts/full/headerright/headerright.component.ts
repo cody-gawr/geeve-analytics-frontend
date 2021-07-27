@@ -31,7 +31,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   classUrl:string = '';
   constructor(private _cookieService: CookieService,private rolesUsersService: RolesUsersService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router, private userIdle: UserIdleService,public constants: AppConstants) {
     this.getRoles();
-      //this.user_type_dentist = this._cookieService.get("user_type");
+      this.user_type_dentist = this._cookieService.get("user_type");
       this._routerSub = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
             this.route = router.url; 
             if(this.route == '/dashboards/cliniciananalysis'){
