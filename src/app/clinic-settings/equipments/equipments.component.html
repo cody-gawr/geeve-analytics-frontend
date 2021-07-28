@@ -17,8 +17,8 @@
     </mat-form-field>
      <button style="float: right;" class="mat-raised-button mat-green" mat-raised-button (click)="openDialog()">Add Item</button>
    <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" checked="{{ EquipListEnable }}" name="equip_list_enable" (change)="toggleMH($event)">
-     <span *ngIf="EquipListEnable">Enable</span>
-     <span *ngIf="!EquipListEnable">Disable</span>
+     <span *ngIf="EquipListEnable">Enabled</span>
+     <span *ngIf="!EquipListEnable">Disabled</span>
    </mat-slide-toggle>
 
   </div>
