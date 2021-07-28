@@ -1118,9 +1118,9 @@ async getDentistList(){
     });
     dialogRef.afterClosed().subscribe(result => {    
       if( type == 'tick-follower'){
-        this.getTickFollowups();
+        this.getTickFollowups('close');
       } else if(type == 'fta-follower') {
-        this.getFtaFollowups();
+        this.getFtaFollowups('close');
       }
 
     });

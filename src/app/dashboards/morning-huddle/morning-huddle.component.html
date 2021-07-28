@@ -1805,7 +1805,7 @@
               </ng-container>           
               <ng-container matColumnDef="isDataAvailable9">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns10.length">
-                  <span *ngIf="isEnableEquipList && futureDateEL == ''">No Equipment List configured</span>
+                  <span *ngIf="isEnableEquipList && futureDateEL == ''">No equipment list has been generated for today</span>
                   <span *ngIf="isEnableEquipList && futureDateEL != ''">Equipment List will be populated on  {{futureDateEL}}</span>
                   <span *ngIf="!isEnableEquipList">Equipment List is not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>

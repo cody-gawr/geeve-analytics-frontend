@@ -132,9 +132,11 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
         this.EquipListloader = false;
       if (res.message == 'success') {
         this.itemList.data = res.data;
-        this.setPaginationButtons(this.itemList.data.length);
-        this.clinicData = this.clinicSettingsService.getClinicData();
-        this.EquipListEnable = (this.clinicData.equip_list_enable == 1)? true : false; 
+        if(this.clinicData.length == 0){
+          this.setPaginationButtons(this.itemList.data.length);
+          this.clinicData = this.clinicSettingsService.getClinicData();
+          this.EquipListEnable = (this.clinicData.equip_list_enable == 1)? true : false; 
+        }        
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();

@@ -130,9 +130,11 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
       if (res.message == 'success') {
         
         this.tasksList.data = res.data;
-        this.setPaginationButtons(this.tasksList.data.length);
-        this.clinicData = this.clinicSettingsService.getClinicData();
-        this.dailyTaskEnable = (this.clinicData.daily_task_enable == 1)? true : false; 
+        if(this.clinicData.length == 0){
+          this.setPaginationButtons(this.tasksList.data.length);
+          this.clinicData = this.clinicSettingsService.getClinicData();
+          this.dailyTaskEnable = (this.clinicData.daily_task_enable == 1)? true : false; 
+        }
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();
