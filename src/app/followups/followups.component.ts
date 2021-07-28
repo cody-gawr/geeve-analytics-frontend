@@ -571,7 +571,7 @@ initiate_clinic() {
       data: {notes:notes, patientId:patient_id, date:original_appt_date,clinic_id: this.clinic_id, old:notes, followup_date:followup_date,type:type}
     });
     dialogRef.afterClosed().subscribe(result => {    
-      if(type == 'thick-follower'){
+      if(type == 'tick-follower'){
         this.getTickFollowups('close');
       } else {
         this.getFtaFollowups('close');        

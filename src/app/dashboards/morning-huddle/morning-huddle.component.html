@@ -1392,7 +1392,7 @@
                   <th mat-header-cell *matHeaderCellDef>Notes</th>
                   <td mat-cell *matCellDef="let element">
                   <span class="info-icon-container tick">
-                    <i  [tooltip]="{'title' : !element.notes? 'Add Notes' : 'Edit Notes' }" [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date,element.followup_date,'thick-follower')"></i>
+                    <i  [tooltip]="{'title' : !element.notes? 'Add Notes' : 'Edit Notes' }" [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date,element.followup_date,'tick-follower')"></i>
                   </span>
                    <span *ngIf="element.code != ''"  class="info-icon-container tick">
                     <i class="fas fa-notes-medical notes" [tooltip]="tipDoneCode[element.patient_id]" ></i>                    
@@ -1471,7 +1471,7 @@
                   <div fxLayout="row" class="huddle-card-row">
                     <div fxFlex="30">Notes </div>
                     <div fxFlex="70">
-                     <i [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date,element.followup_date,'thick-follower')"></i>
+                     <i [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date,element.followup_date,'tick-follower')"></i>
                     </div>
                   </div> <div fxLayout="row" class="huddle-card-row">
                     <div fxFlex="30">Complete </div>
