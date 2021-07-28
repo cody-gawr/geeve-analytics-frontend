@@ -255,6 +255,12 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public dentist_id:any = '';
     public nextBussinessDay:any;
 
+
+    public isEnablePO: boolean = false;
+    public isEnableOR: boolean = false;
+    public isEnableTH: boolean = false;
+    public isEnableFT: boolean = false;
+
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
   displayedColumns2: string[] = ['start', 'name', 'code'];
@@ -330,11 +336,15 @@ initiate_clinic() {
       this.previousDays = this.datepipe.transform(new Date(), 'yyyy-MM-dd');
     }
     this.dailyTabSettLod = false;
-    this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable' ).subscribe((data:any) => {
+    this.clinicianAnalysisService.getClinics( this.clinic_id, 'DailyTaskEnable,EquipListEnable,PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
       this.dailyTabSettLod = true;
       if(data.message == 'success'){
         this.isEnabletasks = (data.data.daily_task_enable == 1)? true : false;
         this.isEnableEquipList = (data.data.equip_list_enable == 1)? true : false;
+        this.isEnablePO = (data.data.post_op_enable == 1)? true : false;
+        this.isEnableOR = (data.data.recall_enable == 1)? true : false;
+        this.isEnableTH = (data.data.tick_enable == 1)? true : false;
+        this.isEnableFT = (data.data.fta_enable == 1)? true : false;
       }
     }); 
 
@@ -510,13 +520,18 @@ initiate_clinic() {
         this.poLoadingLoading = false;
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;
-        this.followupPostOpCalls = production.data;   
-        if(this.postopCallsPostOp == true){  
+        this.followupsPostopCallsDate = production.date;     
+        if(production.data == '204'){
+
+        } else {
+          this.followupPostOpCalls = production.data;   
+          if(this.postopCallsPostOp == true){  
             this.followupPostOpCallsInComp = this.followupPostOpCalls;
           } else {            
             this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
-          }       
-        this.followupsPostopCallsDate = production.date;     
+          }         
+        }
+        
         //this.postOpCallsDays = production.previous;     
       }
     }); 
@@ -536,12 +551,16 @@ initiate_clinic() {
 
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;
-        this.followupOverDueRecall = production.data;     
-        if(this.showCompleteOverdue == true){  
+        if(production.data == '204'){
+        } else {
+          this.followupOverDueRecall = production.data;     
+          if(this.showCompleteOverdue == true){  
             this.followupOverDueRecallInCMP = this.followupOverDueRecall;
           } else {            
             this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);      
           }
+        }
+       
 
         this.followupsOverDueRecallDate = production.date;     
        //this.OverDueRecallDays = production.previous;     
@@ -564,26 +583,29 @@ initiate_clinic() {
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;
-        this.followupTickFollowups = production.data;     
-        if(this.showCompleteTick ==  true){  
-          this.followupTickFollowupsInCMP = this.followupTickFollowups;
+        this.followupsTickFollowupsDate = production.date;
+        if(production.data == '204'){
+
         } else {
-          this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
-        }
+          this.followupTickFollowups = production.data;     
+          if(this.showCompleteTick ==  true){  
+            this.followupTickFollowupsInCMP = this.followupTickFollowups;
+          } else {
+            this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
+          }
 
-        this.followupTickFollowupsInCMP.forEach((tool) => {
-            this.tipDoneCode[tool.patient_id] = { 
-              title: 'Outstanding Treatments', 
-              info: tool.code
-            };
-             var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
-            this.tipFutureDate[tool.patient_id] = { 
-              title: 'Future Appointment', 
-              info: date
-            };
-        });
-
-        this.followupsTickFollowupsDate = production.date;     
+          this.followupTickFollowupsInCMP.forEach((tool) => {
+              this.tipDoneCode[tool.patient_id] = { 
+                title: 'Outstanding Treatments', 
+                info: tool.code
+              };
+               var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
+              this.tipFutureDate[tool.patient_id] = { 
+                title: 'Future Appointment', 
+                info: date
+              };
+          });   
+        }    
         //this.TickFollowupsDays = production.previous;     
       }
     }); 
@@ -612,24 +634,29 @@ initiate_clinic() {
           this.futureDateTF =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
         }
         this.nextBussinessDay = production.next_day;        
-        this.followupFtaFollowups = production.data;     
-        if(this.showCompleteFta ==  true){  
-          this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
+        this.followupsTickFollowupsDate = production.date;  
+        if( production.data == '204'){
+
         } else {
-          this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
-        }   
-        this.followupFtaFollowups.forEach((tool) => {
-            this.tipFtaDoneCode[tool.patient_id] = { 
-              title: 'Outstanding Treatments', 
-              info: tool.code
-            };
-             var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
-            this.tipFtaFutureDate[tool.patient_id] = { 
-              title: 'Future Appointment', 
-              info: date
-            };
-        });
-         this.followupsTickFollowupsDate = production.date;    
+          this.followupFtaFollowups = production.data;     
+          if(this.showCompleteFta ==  true){  
+            this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
+          } else {
+            this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
+          }   
+          this.followupFtaFollowups.forEach((tool) => {
+              this.tipFtaDoneCode[tool.patient_id] = { 
+                title: 'Outstanding Treatments', 
+                info: tool.code
+              };
+               var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
+              this.tipFtaFutureDate[tool.patient_id] = { 
+                title: 'Future Appointment', 
+                info: date
+              };
+          });
+        }     
+           
        }
     }); 
   } 
