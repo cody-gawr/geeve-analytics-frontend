@@ -10,6 +10,7 @@ import { TaskService } from './tasks.service';
 import { BaseComponent } from '../base/base.component';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { ClinicSettingsService } from '../clinic-settings.service';
+import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -83,7 +84,8 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     private router: Router,
     private toastr: ToastrService,
     public dialog: MatDialog,
-    private clinicSettingsService: ClinicSettingsService
+    private clinicSettingsService: ClinicSettingsService,
+    private clinicianAnalysisService: ClinicianAnalysisService
   ) {
     super();
   }
@@ -94,6 +96,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
       takeUntil(this.destroyed$)
     ).subscribe(id => {
       if (id) {
+         this.getClinic(id);
         this.getTasks(id);
       }
     })
@@ -125,16 +128,18 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     this.tasksList.filter = value.trim().toLocaleLowerCase();
   }
 
+    getClinic(id){
+      this.clinicianAnalysisService.getClinics(id,'DailyTaskEnable').subscribe((data: any) => {
+        if(data.data){
+          this.dailyTaskEnable = (data.data.daily_task_enable == 1)? true : false;
+        }
+      }, error => {});
+    }
+
   getTasks(id) {
     this.taskService.getTasks(id).subscribe((res) => {
-      if (res.message == 'success') {
-        
-        this.tasksList.data = res.data;
-        if(this.clinicData.length == 0){
-          this.setPaginationButtons(this.tasksList.data.length);
-          this.clinicData = this.clinicSettingsService.getClinicData();
-          this.dailyTaskEnable = (this.clinicData.daily_task_enable == 1)? true : false; 
-        }
+      if (res.message == 'success') {        
+        this.tasksList.data = res.data;      
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();

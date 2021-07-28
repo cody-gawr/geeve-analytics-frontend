@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { EquipmentsService } from './equipments.service';
 import { BaseComponent } from '../base/base.component';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
 import { ClinicSettingsService } from '../clinic-settings.service';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
@@ -84,6 +85,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     private router: Router,
     private toastr: ToastrService,
     public dialog: MatDialog,
+    public clinicianAnalysisService: ClinicianAnalysisService,
     public clinicSettingsService: ClinicSettingsService,
   ) {
     super();
@@ -95,6 +97,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
       takeUntil(this.destroyed$)
     ).subscribe(id => {
       if (id) {
+        this.getClinic(id);
         this.getItems(id);
       }
     })
@@ -126,17 +129,21 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     this.itemList.filter = value.trim().toLocaleLowerCase();
   }
 
+
+   getClinic(id){
+      this.clinicianAnalysisService.getClinics(id,'EquipListEnable').subscribe((data: any) => {
+        if(data.data){
+          this.EquipListEnable = (data.data.equip_list_enable == 1)? true : false;
+        }
+      }, error => {});
+    }
+
   getItems(id) {
     this.EquipListloader = true;
     this.equipmentsService.getItems(id).subscribe((res) => {
         this.EquipListloader = false;
       if (res.message == 'success') {
-        this.itemList.data = res.data;
-        if(this.clinicData.length == 0){
-          this.setPaginationButtons(this.itemList.data.length);
-          this.clinicData = this.clinicSettingsService.getClinicData();
-          this.EquipListEnable = (this.clinicData.equip_list_enable == 1)? true : false; 
-        }        
+        this.itemList.data = res.data;               
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();
