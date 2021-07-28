@@ -268,7 +268,7 @@ table.filters td {
     padding: 0px 20px 20px;
 }
 
-table.customWidth.thick{
+table.customWidth.thick, table.customWidth.PostOp {
     overflow: auto;
     margin-bottom: 60px;
 }
@@ -435,4 +435,21 @@ table.customWidth.thick{
 .historyTip .custom-tooltip .tooltip-info-text {
     width: 100%;
     font-family: sans-serif;
+}
+table.noDataTableClass mat-footer-row {
+    border: 0 solid!important;
+}
+
+mat-row, mat-header-row, mat-footer-row {
+    display: flex;
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-style: solid;
+    align-items: center;
+    box-sizing: border-box;
+}
+.mat-row, mat-footer-row, mat-header-row {
+    width: -webkit-max-content!important;
+    width: -moz-max-content!important;
+    width: max-content!important;
 }

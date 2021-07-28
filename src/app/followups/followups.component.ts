@@ -1,5 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit,ViewChild,ViewEncapsulation,Inject } from '@angular/core';
 import { FollowupsService } from './followups.service';
+import { ClinicianAnalysisService } from '../dashboards/cliniciananalysis/cliniciananalysis.service';
 import { CookieService } from "ngx-cookie";
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -203,7 +204,10 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public opTablePages: number[] = [];
     public currentOpPage:number = 1;
     public nextBussinessDay:any; 
-
+    public isEnablePO: boolean = false;
+    public isEnableOR: boolean = false;
+    public isEnableTH: boolean = false;
+    public isEnableFT: boolean = false;
 
   displayedColumns1: string[] = ['name', 'phone','code','date','followup_date','status'];
   displayedColumns2: string[] = ['name', 'phone', 'code','note','followup_date','book','status'];
@@ -220,7 +224,8 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     private toastr: ToastrService,
     public constants: AppConstants,
     public dialog: MatDialog,
-    public chartstipsService: ChartstipsService
+    public chartstipsService: ChartstipsService,
+    public clinicianAnalysisService: ClinicianAnalysisService
     ) {  
     this.getChartsTips();
  }
@@ -239,6 +244,7 @@ export class FollowupsComponent implements OnInit,OnDestroy {
         this.dentistid = this._cookieService.get("dentistid");
     }
     
+
     // align material tab green shaded color to first tab (on initial load - needs delay to ensure mat tab is available)
     setTimeout(() => {
       this.matTabGroup.realignInkBar();
@@ -260,6 +266,15 @@ initiate_clinic() {
   var val = $('#currentClinic').attr('cid');
   if(val != undefined && val !='all') {
     this.clinic_id = val;
+
+    this.clinicianAnalysisService.getClinics( this.clinic_id, 'PostOpEnable,RecallEnable,TickEnable,FtaEnable' ).subscribe((data:any) => {
+      if(data.message == 'success'){
+        this.isEnablePO = (data.data.post_op_enable == 1)? true : false;
+        this.isEnableOR = (data.data.recall_enable == 1)? true : false;
+        this.isEnableTH = (data.data.tick_enable == 1)? true : false;
+        this.isEnableFT = (data.data.fta_enable == 1)? true : false;
+      }
+    }); 
     $('#title').html('Follow Ups');  
     
     this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
@@ -290,27 +305,29 @@ initiate_clinic() {
 
 
   getFollowupPostOpCalls(){
-      
-
     this.poLoadingLoading = true;
     this.followupsService.followupPostOpCalls( this.clinic_id, this.selectedMonth, this.selectedYear ).subscribe((production:any) => {
         this.poLoadingLoading = false;
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;
-        this.followupPostOpCalls = production.data;   
-        if(this.postopCallsPostOp == true){  
-            this.followupPostOpCallsInComp = this.followupPostOpCalls;
-          } else {            
-            this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
-          }
-         if(this.followupPostOpCallsInComp.length <= ((this.pageSize * this.currentOpPage) - this.pageSize) && this.currentOpPage != 1 ){
-          this.currentOpPage = this.currentOpPage -1;
-        }       
-        this.setPaginationButtons(this.followupPostOpCallsInComp,'OP');
-        this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp,'OP');
-       
-        this.followupsPostopCallsDate = production.date;     
-        this.postOpCallsDays = production.previous;     
+        if(production.data == '204'){
+
+        } else {
+            this.followupPostOpCalls = production.data;   
+            if(this.postopCallsPostOp == true){  
+                this.followupPostOpCallsInComp = this.followupPostOpCalls;
+              } else {            
+                this.followupPostOpCallsInComp = this.followupPostOpCalls.filter(p => p.is_complete != true);      
+              }
+             if(this.followupPostOpCallsInComp.length <= ((this.pageSize * this.currentOpPage) - this.pageSize) && this.currentOpPage != 1 ){
+              this.currentOpPage = this.currentOpPage -1;
+            }       
+            this.setPaginationButtons(this.followupPostOpCallsInComp,'OP');
+            this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp,'OP');
+           
+            this.followupsPostopCallsDate = production.date;     
+            this.postOpCallsDays = production.previous;
+        }            
       }
     }); 
   } 
@@ -323,19 +340,23 @@ initiate_clinic() {
         this.recallLoadingLoading = false;
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;
-        this.followupOverDueRecall = production.data;             
-        if(this.showCompleteOverdue == true){  
-            this.followupOverDueRecallInCMP = this.followupOverDueRecall;
-          } else {            
-            this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);      
-          }
-      if(this.followupOverDueRecallInCMP.length <= ((this.pageSize * this.currentORPage) - this.pageSize) && this.currentORPage != 1 ){
-          this.currentORPage = this.currentORPage -1;
-        } 
-        this.setPaginationButtons(this.followupOverDueRecallInCMP,'OR');
-        this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP,'OR');
         this.followupsOverDueRecallDate = production.date;     
-       this.OverDueRecallDays = production.previous;     
+         if(production.data == '204'){
+
+        } else {
+          this.followupOverDueRecall = production.data;             
+          if(this.showCompleteOverdue == true){  
+              this.followupOverDueRecallInCMP = this.followupOverDueRecall;
+            } else {            
+              this.followupOverDueRecallInCMP = this.followupOverDueRecall.filter(p => p.is_complete != true);      
+            }
+          if(this.followupOverDueRecallInCMP.length <= ((this.pageSize * this.currentORPage) - this.pageSize) && this.currentORPage != 1 ){
+            this.currentORPage = this.currentORPage -1;
+          } 
+          this.setPaginationButtons(this.followupOverDueRecallInCMP,'OR');
+          this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP,'OR');
+         this.OverDueRecallDays = production.previous;   
+       }  
       }
     }); 
   } 
@@ -351,32 +372,35 @@ initiate_clinic() {
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;
         console.log('Next Working Day: ', this.nextBussinessDay);
-        this.followupTickFollowups = production.data;     
-        if(this.showCompleteTick ==  true){  
-          this.followupTickFollowupsInCMP = this.followupTickFollowups;
-        } else {
-          this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
-        }
-          if(this.followupTickFollowupsInCMP.length <= ((this.pageSize * this.currentThickPage) - this.pageSize) && this.currentThickPage != 1 ){
-          this.currentThickPage = this.currentThickPage -1;
-        } 
-        this.setPaginationButtons(this.followupTickFollowupsInCMP,'TH');
-        this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP,'TH');
+        if(production.data == '204'){
 
-         this.followupTickFollowupsInCMP.forEach((tool) => {
-            this.tipDoneCode[tool.patient_id] = { 
-              title: 'Outstanding Treatments', 
-              info: tool.code
-            };
-             var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
-            this.tipFutureDate[tool.patient_id] = { 
-              title: 'Future Appointment', 
-              info: date
-            };
-        });
-         
-        this.followupsTickFollowupsDate = production.date;     
-        this.TickFollowupsDays = production.previous;     
+        } else {
+          this.followupTickFollowups = production.data;     
+          if(this.showCompleteTick ==  true){  
+            this.followupTickFollowupsInCMP = this.followupTickFollowups;
+          } else {
+            this.followupTickFollowupsInCMP = this.followupTickFollowups.filter(p => p.is_complete != true);      
+          }
+            if(this.followupTickFollowupsInCMP.length <= ((this.pageSize * this.currentThickPage) - this.pageSize) && this.currentThickPage != 1 ){
+            this.currentThickPage = this.currentThickPage -1;
+          } 
+          this.setPaginationButtons(this.followupTickFollowupsInCMP,'TH');
+          this.followupTickFollowupsInCMP = this.setPaginationData(this.followupTickFollowupsInCMP,'TH');
+           this.followupTickFollowupsInCMP.forEach((tool) => {
+              this.tipDoneCode[tool.patient_id] = { 
+                title: 'Outstanding Treatments', 
+                info: tool.code
+              };
+               var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
+              this.tipFutureDate[tool.patient_id] = { 
+                title: 'Future Appointment', 
+                info: date
+              };
+          });
+           
+          this.followupsTickFollowupsDate = production.date;     
+          this.TickFollowupsDays = production.previous;  
+        }   
       }
     }); 
   } 
@@ -397,30 +421,33 @@ initiate_clinic() {
     this.followupsService.followupFtaFollowups( this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production:any) => {
         this.ftaTaksLoadingLoading = false;
       if(production.message == 'success') {
-        this.nextBussinessDay = production.next_day;        
-        this.followupFtaFollowups = production.data;     
-        if(this.showCompleteFta ==  true){  
-          this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
-        } else {
-          this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
-        }
-          if(this.followupFtaFollowupsInCMP.length <= ((this.pageSize * this.currentFTPage) - this.pageSize) && this.currentFTPage != 1 ){
-          this.currentFTPage = this.currentFTPage -1;
-        } 
-        this.setPaginationButtons(this.followupFtaFollowupsInCMP,'FT');
-        this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP,'FT');
+        this.nextBussinessDay = production.next_day;  
+        if(production.data == '204'){
 
-         this.followupFtaFollowups.forEach((tool) => {
-            this.tipFtaDoneCode[tool.patient_id] = { 
-              title: 'Outstanding Treatments', 
-              info: tool.code
-            };
-             var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
-            this.tipFtaFutureDate[tool.patient_id] = { 
-              title: 'Future Appointment', 
-              info: date
-            };
-        });         
+        } else {      
+          this.followupFtaFollowups = production.data;     
+          if(this.showCompleteFta ==  true){  
+            this.followupFtaFollowupsInCMP = this.followupFtaFollowups;
+          } else {
+            this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);      
+          }
+            if(this.followupFtaFollowupsInCMP.length <= ((this.pageSize * this.currentFTPage) - this.pageSize) && this.currentFTPage != 1 ){
+            this.currentFTPage = this.currentFTPage -1;
+          } 
+          this.setPaginationButtons(this.followupFtaFollowupsInCMP,'FT');
+          this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP,'FT');
+           this.followupFtaFollowups.forEach((tool) => {
+              this.tipFtaDoneCode[tool.patient_id] = { 
+                title: 'Outstanding Treatments', 
+                info: tool.code
+              };
+               var date = this.datepipe.transform(tool.future_appt_date, 'MMM d, y');
+              this.tipFtaFutureDate[tool.patient_id] = { 
+                title: 'Future Appointment', 
+                info: date
+              };
+          });    
+        }     
                
       }
     }); 
