@@ -143,7 +143,7 @@
 
              
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <!-- Production Chart Start -->
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center" *ngIf="proCollShow == 1">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -303,7 +303,7 @@
             </div>
 
             <!-- Production Chart start trend -->
-            <div class="card-footer" *ngIf="proCollShow == 1">
+            <div class="card-footer" *ngIf="proCollShow == 1 && !averageToggle">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -328,7 +328,7 @@
             </div>
             <!-- Production Chart end trend -->
             <!-- Collection Chart start trend -->
-            <div class="card-footer" *ngIf="proCollShow == 2">
+            <div class="card-footer" *ngIf="proCollShow == 2 && !averageToggle">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -403,7 +403,7 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">${{hourlyRateChartAverage| number:'1.0-0'}}</h3>
@@ -466,7 +466,7 @@
                 <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -555,7 +555,7 @@
                 <p class="chart-placeholder-text">You have no new patients in this period</p>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -629,7 +629,7 @@
                 <p class="chart-placeholder-text">You have no new patients in the selected period</p>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -710,7 +710,7 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -810,7 +810,7 @@
                 <p class="chart-placeholder-text">You have no completed treatment in the selected period</p>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -881,7 +881,7 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 *ngIf="treatmentChartAverage > 0" class="m-0 value-num">{{treatmentChartAverage| number:'1.0-0'}}%
@@ -959,7 +959,7 @@
                 <p class="chart-placeholder-text">You have no treatment plan items completed in the selected period</p>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -1063,7 +1063,7 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" *ngIf="prebook=='recall'"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -1190,7 +1190,7 @@
                 <p class="chart-placeholder-text">YYou have no reappointments in the selected period</p>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false && prebook=='recall'"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
@@ -1293,7 +1293,7 @@
               </div>
 
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
 
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
@@ -1367,7 +1367,7 @@
                 <p class="chart-placeholder-text">You have no patient complaints in the selected period</p>
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer" *ngIf="!averageToggle">
               <div fxLayout="row wrap" class="sa_chart_details_sec" *ngIf="showTrendChart == false"
                 fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">

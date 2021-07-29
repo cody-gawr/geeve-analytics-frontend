@@ -5005,3 +5005,9 @@ ul.download-sync-list {
 .ps .ps__rail-x, .ps .ps__rail-y, .ps .ps__rail-x, .ps .ps__rail-y, .ps .ps__rail-x.ps--clicking, .ps .ps__rail-y.ps--clicking{background-color: #eee; opacity: 1;}
 .ps__thumb-y{ width: 12px; }
 .ChangePassword-section {width: 98%;}
+.AddUserPopup, .AddUserPopup.setting{
+    text-align: left;
+}
+.AddUserPopup.center{
+    text-align: center;
+}

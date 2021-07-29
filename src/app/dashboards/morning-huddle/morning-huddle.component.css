@@ -389,7 +389,7 @@ table.customWidth.thick{
 }
 .AddUserPopup {
     position: relative;
-    text-align: center;
+    text-align: left;
 }
 
 .AddUserPopup span.closeStatus {
@@ -427,7 +427,7 @@ table.noDataTableClass mat-footer-row {
 .historyTip {
     position: relative;
     display: inline-block;
-    margin-left: ;
+    margin-left: 7px;
 }
 
 .fa.fa-history {

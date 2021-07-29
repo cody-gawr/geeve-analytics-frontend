@@ -314,7 +314,7 @@ table.customWidth.thick, table.customWidth.PostOp {
 
 .AddUserPopup {
     position: relative;
-    text-align: center;
+    text-align: left;
 }
 
 .AddUserPopup span.closeStatus {
@@ -367,7 +367,7 @@ table.customWidth.thick, table.customWidth.PostOp {
 .historyTip {
     position: relative;
     display: inline-block;
-    margin-left: ;
+    margin-left: 7px;
 }
 
 .fa.fa-history {

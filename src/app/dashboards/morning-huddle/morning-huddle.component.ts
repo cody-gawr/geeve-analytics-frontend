@@ -1234,7 +1234,7 @@ async getDentistList(){
     let y= parseInt(event.clientY);
     setTimeout( function(){
       let divLnt = $('.custom-tooltip').height() +40;
-      let divwd = $('.custom-tooltip').width() + 10;
+      let divwd = $('.custom-tooltip').width() - 10;
       $('.custom-tooltip').css({'top': ( y - divLnt), 'left' : (x - divwd ) } );
     },100);
   }
