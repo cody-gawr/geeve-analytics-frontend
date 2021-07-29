@@ -15,6 +15,7 @@ import { ErrorComponent } from './error/error.component';
 import { ForgotComponent } from './forgot/forgot.component';
 import { ResetComponent } from './reset/reset.component';
 import { LoginService } from '../login/login.service';
+import { RecaptchaModule } from "ng-recaptcha";
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +27,8 @@ import { LoginService } from '../login/login.service';
     MatButtonModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RecaptchaModule
   ],
   providers: [
     LoginService

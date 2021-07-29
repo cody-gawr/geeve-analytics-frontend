@@ -24,10 +24,11 @@ align-items: center;"></div>
               <small *ngIf="errorLogin ==true && errorLoginText != ''" class="text-success support-text">{{errorLoginText}}</small>
                <small *ngIf="successLogin ==true && successLoginText != ''" class="text-success support-text">{{successLoginText}}</small>
             </div>
+            <re-captcha (resolved)="resolved($event)" siteKey="6Le2hskbAAAAAN9H6kFYBN8ySHV2xw9TAE-gW5_4" ></re-captcha>
             <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                 <a [routerLink]="['/login']" class="link"> Login</a>
             </div>
-            <button mat-raised-button color="dc" type="submit" class="btn-block btn-lg m-t-20" [disabled]="!form.valid">Submit</button>
+            <button mat-raised-button color="dc" type="submit" class="btn-block btn-lg m-t-20" [disabled]="!form.valid && recaptchasts != ''">Submit</button>
           </div>
         </form>
       </mat-card-content>
