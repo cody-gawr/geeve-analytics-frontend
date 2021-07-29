@@ -28,7 +28,7 @@ align-items: center;"></div>
             <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                 <a [routerLink]="['/login']" class="link"> Login</a>
             </div>
-            <button mat-raised-button color="dc" type="submit" class="btn-block btn-lg m-t-20" [disabled]="!form.valid || recaptchasts != ''">Submit</button>
+            <button mat-raised-button color="dc" type="submit" class="btn-block btn-lg m-t-20" [disabled]="!form.valid || recaptchasts == '' ">Submit</button>
           </div>
         </form>
       </mat-card-content>

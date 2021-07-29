@@ -55,6 +55,5 @@ export class ForgotComponent implements OnInit {
 
   resolved(captchaResponse: string) {
     this.recaptchasts = captchaResponse;
-    console.log(`Resolved captcha with response: ${captchaResponse}`);
   }
 }
