@@ -20,6 +20,7 @@ export class ForgotComponent implements OnInit {
   public successLogin = false;
   public successLoginText = '';
   public recaptchasts:any = '';
+  public capchaError:boolean = false;
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService) {}
 
   ngOnInit() {
@@ -32,9 +33,14 @@ export class ForgotComponent implements OnInit {
   }
 
   onSubmit() {
-    this.recaptchasts = '';
+    if(this.recaptchasts == '')
+    {
+      this.capchaError = true;
+      return false;
+    }            
     $('.ajax-loader').show();
       this.loginService.checkEmail(this.form.value.email).subscribe((res) => {
+          this.recaptchasts = '';
          $('.ajax-loader').hide();
           this.errorLogin = false;
           this.errorLoginText = '';
@@ -55,5 +61,6 @@ export class ForgotComponent implements OnInit {
 
   resolved(captchaResponse: string) {
     this.recaptchasts = captchaResponse;
+    this.capchaError = false;
   }
 }
