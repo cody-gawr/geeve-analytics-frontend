@@ -942,10 +942,14 @@ public labelBarPercentOptions: any = {
               titleLines.forEach(function (title) {
                 innerHtml += '<tr><th colspan="2" style="text-align: left;">' + title + '</th></tr>';
               });
-                 bodyLines.forEach(function (body, i) { 
-                if(!body[0].includes("0%")){
+              bodyLines.forEach(function (body, i) { 
+                if(body[0].includes("100%"))
+                {
                    innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
-                  }                
+                } else if(!body[0].includes("0%"))
+                {
+                   innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
+                }
               });
               innerHtml += '</tbody></table>';
               tooltipEl.innerHTML = innerHtml;
@@ -2252,8 +2256,8 @@ private finProductionByClinicianTrend() {
     var clinic_id;
     this.financesService.finProductionByClinicianTrend(this.clinic_id,this.trendValue).subscribe((data) => {
       this.Apirequest =  this.Apirequest-1;
+      this.finProductionByClinicianTrendLoader = false;
       if(data.message == 'success'){
-          this.finProductionByClinicianTrendLoader = false;
                 data.data.forEach(res => {                   
                    res.val.forEach((result,key) => {
                     
@@ -2283,7 +2287,8 @@ private finProductionByClinicianTrend() {
                    this.productionChartTrendLabels1.push(res.duration);                  
                  });
                  this.productionChartTrendLabels =this.productionChartTrendLabels1; 
-                      }
+              
+        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
  
