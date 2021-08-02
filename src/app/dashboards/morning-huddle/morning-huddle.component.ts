@@ -960,7 +960,13 @@ async getDentistList(){
   }
   
   //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
-  toggleUpdate(event,pid,date,followup_date, cid,type) {    
+  toggleUpdate(event,pid,date,followup_date, cid,type,status='default') {    
+      if( !status || status == '' || status == 'null')
+      {
+        event.source.checked = false;
+        this.toastr.error('Please update status first to mark complete.');
+        return false;
+      }
       if(type == 'post-op-calls'){
           this.poLoadingLoading = true;
       } else if(type == 'recall-overdue'){
@@ -1231,7 +1237,7 @@ async getDentistList(){
   historyPos(event)
   {
     let x=event.clientX;
-    let y= parseInt(event.clientY);
+    let y= parseFloat(event.clientY);
     setTimeout( function(){
       let divLnt = $('.custom-tooltip').height() +40;
       let divwd = $('.custom-tooltip').width() - 10;

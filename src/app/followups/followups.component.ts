@@ -457,7 +457,13 @@ initiate_clinic() {
   
   
   //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
-  toggleUpdate(event,pid,date,fdate,cid,type) {    
+  toggleUpdate(event,pid,date,fdate,cid,type, status= 'default') {    
+      if( !status || status == '' || status == 'null') 
+      {
+        event.source.checked = false;
+        this.toastr.error('Please update status first to mark complete.');
+        return false;
+      }
       if(type == 'post-op-calls'){
           this.poLoadingLoading = true;
       } else if(type == 'recall-overdue'){

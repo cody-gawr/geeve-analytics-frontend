@@ -319,10 +319,19 @@ initiate_clinic() {
     });
     dialogRef.afterClosed().subscribe(result => {
        if(result != undefined) {
+        /* Generate Default Password*/
+        var password           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < 15; i++ ) {
+          password += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        /* Generate Default Password*/
+
      this.rolesUsersService.checkUserEmail(result.email).subscribe((res) => {
            if(res.message == 'success'){
            if(res.data <=0)
-           this.add_user(result.display_name, result.email, result.user_type,result.selectedClinics, 'jeeveanalytics',result.selected_dentist);
+           this.add_user(result.display_name, result.email, result.user_type,result.selectedClinics, password,result.selected_dentist);
             else
            this.toastr.error("Email Already Exists!");
            }

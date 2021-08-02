@@ -25,7 +25,7 @@
   <button style="position: absolute;top: 0;margin: 25px 0;padding: 20px 36px 20px;right: -30px;" class="save-button" type="submit" (click) ="updateNextReached(data,'no')">No</button>
 </div>
 <span *ngIf="nextFollowupHave" class="alreadyHaveFol"><strong>{{ data.firstname }} {{ data.surname }}</strong> already has a followup scheduled on {{ nextDate | date:'E d MMMM': '+1000'}}</span>
-<div *ngIf="nextCustomFollowup" style="width: 400px;margin: 25px auto 0;">
+<div *ngIf="nextCustomFollowup" style="width: 250px;margin: 25px auto 0;">
   <ngx-daterangepicker-material
     [singleDatePicker]="true"
     [showDropdowns]="true"

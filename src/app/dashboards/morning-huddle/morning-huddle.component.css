@@ -374,8 +374,7 @@ table.customWidth.thick{
     margin-right: 5px;
 }
 .info-icon-container.tick .custom-tooltip {
-    background: #424242;
-    width: auto;
+    width: -webkit-max-content;
     padding: 10px 15px;
 }
 .info-icon-container.tick .custom-tooltip img.white-heart-icon {
@@ -461,7 +460,7 @@ table.noDataTableClass mat-footer-row {
     border-right: 8px solid transparent;
     border-top: 8px solid #1daa96;
     border-bottom: 8px solid transparent;
-    right: 24px;
+    right: 32px;
     bottom: -17px;
     top:  unset;
 }
@@ -494,4 +493,5 @@ table.noDataTableClass mat-footer-row {
 .historyTip .custom-tooltip .tooltip-info-text {
     width: 100%;
     font-family: sans-serif;
+    color: #000;
 }
