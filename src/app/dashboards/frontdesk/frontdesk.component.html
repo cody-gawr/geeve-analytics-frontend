@@ -203,7 +203,7 @@
               <div class="card-body">
                 <div class="chart">
 
-
+ 
                   <div *ngIf="!showTrend && recallPrebookTotal > 0 && !fdRecallPrebookRateLoader"
                     style="height: 190px;width: 100%">
                     <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="recallPrebookTotal" [thick]="gaugeThick"
@@ -250,9 +250,9 @@
                     <small *ngIf="trendText == ''">Previous</small>
                   </div>
                   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                    *ngIf="duration != 'custom' && maxrecallPrebookGoal >= 0">
-                    <h3 class="m-0 value-num" *ngIf="maxrecallPrebookGoal">
-                      {{ (maxrecallPrebookGoal > 100)? 100 : maxrecallPrebookGoal }}%</h3>
+                    *ngIf="duration != 'custom' && recallPrebookGoal >= 0">
+                    <h3 class="m-0 value-num" *ngIf="recallPrebookGoal">
+                      {{ (recallPrebookGoal > 100)? 100 : recallPrebookGoal }}%</h3>
                     <small>Goal</small>
                   </div>
                 </div>

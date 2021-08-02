@@ -862,8 +862,8 @@ public maxrecallPrebookGoal:any=0;
           if(this.recallPrebookTotal>=this.recallPrebookPrevTotal)
             this.recallPrebookTooltip = 'up';
           this.maxrecallPrebookGoal = this.recallPrebookGoal;          
-          if(this.maxrecallPrebookGoal == 0)
-            this.maxrecallPrebookGoal ='';
+          if(this.maxrecallPrebookGoal <= 0)
+            this.maxrecallPrebookGoal = this.recallPrebookTotal;
         }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
