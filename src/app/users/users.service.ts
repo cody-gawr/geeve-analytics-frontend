@@ -51,7 +51,7 @@ export class UsersService {
     }
 
     // Update Clinic
-    updateUser(userId, value, column, token = this._cookieService.get("token")): Observable<any> {
+/*    updateUser(userId, value, column, token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
     formData.append('id', userId);
@@ -63,7 +63,7 @@ export class UsersService {
                         return response;
                     })
         );
-    }
+    }*/
 
         // Update Clinic
     addClinic(name, address, contact_name, token = this._cookieService.get("token")): Observable<any> {

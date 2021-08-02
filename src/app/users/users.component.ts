@@ -107,7 +107,7 @@ export class UsersComponent implements AfterViewInit {
     this.table = data;
   }
   updateValue(event, cell, rowIndex) {
-    this.editing[rowIndex + '-' + cell] = false;
+/*    this.editing[rowIndex + '-' + cell] = false;
     if(event.target.value == '')
       alert('Value cannot be empty!');
     else {
@@ -122,12 +122,12 @@ export class UsersComponent implements AfterViewInit {
     }    
     );  
     this.rows = [...this.rows];
-  }
+  }*/
   }
 
   enableEditing(rowIndex, cell) {
 
-    this.editing[rowIndex + '-' + cell] = true;
+    //this.editing[rowIndex + '-' + cell] = true;
 
   }
 
