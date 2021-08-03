@@ -11,6 +11,7 @@ import { BaseComponent } from '../base/base.component';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
 import { ClinicSettingsService } from '../clinic-settings.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -178,6 +179,29 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value,active,'equip_list_enable' ).subscribe((res) => {
       if(res.message == 'success') {}
     }, error => {});
+  }
+
+  deleteList(listId)
+  {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete Item?',
+      icon: 'warning',
+      showCancelButton: true, 
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if(result.value)
+      {
+        this.clinicSettingsService.deleteEqupList(this.clinic_id$.value,listId ).subscribe((res) => {
+        if(res.message == 'success')
+        {
+          this.getItems(this.clinic_id$.value);
+        }
+        }, error => {          
+        });
+      }
+    });
   }
 
 }

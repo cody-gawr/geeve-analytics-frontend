@@ -11,6 +11,7 @@ import { BaseComponent } from '../base/base.component';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { ClinicSettingsService } from '../clinic-settings.service';
 import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -174,6 +175,29 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
     this.clinicSettingsService.updatePartialSetting(this.clinic_id$.value,active,'daily_task_enable' ).subscribe((res) => {
       if(res.message == 'success') {}
     }, error => {});
+  }
+
+  deleteTask(taskId)
+  {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to delete Task?',
+      icon: 'warning',
+      showCancelButton: true, 
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if(result.value)
+      {
+        this.clinicSettingsService.deleteDailyTask(this.clinic_id$.value,taskId ).subscribe((res) => {
+        if(res.message == 'success')
+        {
+          this.getTasks(this.clinic_id$.value);
+        }
+        }, error => {          
+        });
+      }
+    });
   }
 
 }

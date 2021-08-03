@@ -165,4 +165,26 @@ export class ClinicSettingsService {
             })
         );
     }
+
+    deleteDailyTask(clinic_id, task_id): Observable<any> {
+        const formData = new FormData();
+        formData.append('clinic_id', clinic_id);
+        formData.append('id', task_id);
+        var header = this.getHeaders();
+        return this.http.post(this.apiUrl +"/clinics/clinicDeleteEndDayTasks", formData, { headers: header}).pipe(map((response: Response) => {
+                return response;
+            })
+        );
+    }
+
+    deleteEqupList(clinic_id, task_id): Observable<any> {
+        const formData = new FormData();
+        formData.append('clinic_id', clinic_id);
+        formData.append('id', task_id);
+        var header = this.getHeaders();
+        return this.http.post(this.apiUrl +"/clinics/clinicDeleteEquipmentItem", formData, { headers: header}).pipe(map((response: Response) => {
+                return response;
+            })
+        );
+    }
 }
