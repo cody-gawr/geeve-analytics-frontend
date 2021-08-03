@@ -1,0 +1,298 @@
+<input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'">
+<input type="text" id="page_title" value="Followups" [style.display]="'none'">
+
+<div class="sa_dashboard_inner_content sa_dentist_graphs_area">
+  <div class="sa_card topbar-strip">
+    <div class="dashboard-top-header" fxLayout="row wrap" fxLayoutGap="0px" fxLayoutGap.md="0" fxLayoutGap.sm="0" fxLayoutGap.xs="0">
+      <div fxFlex>
+        <app-date-menu-bar #dateBar (filter)="filterDate($event)" (changeDate)="choosedDate($event)"></app-date-menu-bar>
+      </div>
+      <div class="dh-target">
+        <div class="onofftoogle">
+          <span class="trend_mode_title">Trend:</span>
+          <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle" class="trendToggle sa_toogle_group2 toggle_switcher" aria-label="Font Style">
+            <mat-button-toggle checked value="off" class="target_off target_filter" (click)="toggleFilter('off')"><span>Off</span></mat-button-toggle>
+            <mat-button-toggle value="current" class="target_current target_filter" [disabled]="Apirequest <= 0?false:true" (click)="Apirequest <= 0?toggleFilter('current'):false"> <span>Monthly</span> </mat-button-toggle>
+            <mat-button-toggle value="historic" class="target_historic target_filter" [disabled]="Apirequest <= 0?false:true" (click)="Apirequest <= 0?toggleFilter('historic'):false"> <span>Annual</span> </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <div class="sa_health_screen_area">
+    <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0"
+      fxLayoutGap.xs="0">
+      <!---- Chart One---------->
+      <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg ">
+        <mat-card class="hourlyRate sa_no_tabs_area">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : ${{perUserPrev| number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{perUserStatus}}.png"></span>
+                Followups Per User
+              </div>              
+              <div class="info-icon-container">
+               <img [tooltip]="{'title' : 'Followups Per User', 'info': 'Number of follow-ups completed by each user in the selected date range'}" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" /> 
+              </div>
+            </mat-card-title>
+             <div class="card-body h-100">
+              <div class="relative h-100">
+                <div style="height: 350px">
+                  <canvas #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas>
+                  <div class="no-data-placeholder" *ngIf="perUserData.length <= 0">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+           <div class="card-footer">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{ perUserTotal | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{ perUserPrev| number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom' && perUserGoal >= 0">
+                  <h3 class="m-0 value-num">
+                    ${{ perUserGoal | number:'1.0-0' }}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div> 
+          </mat-card-content>
+        </mat-card>      
+      </div>
+      <!---- Chart One---------->
+      <!---- Chart Two---------->
+      <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg ">
+        <mat-card class="hourlyRate sa_no_tabs_area">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : ${{ outcomePrev | number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{outcomeStatus}}.png"></span> 
+                 Followup Outcome
+              </div>              
+              <div class="info-icon-container">
+                <img [tooltip]="{'title' : 'Followup Outcome', 'info': 'Follow-up outcome breakdown - as a percentage of total follow-ups'}" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" /> 
+              </div>
+            </mat-card-title>
+             <div class="card-body h-100">
+              <div class="relative h-100">
+                <div style="height: 350px">
+                  <ngx-charts-pie-chart fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 320]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="single" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                  <div class="no-data-placeholder" *ngIf="perUserData.length <= 0">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+           <div class="card-footer">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{ outcomeTotal | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{ outcomePrev | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previou</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom' && outcomeGoal >= 0">
+                  <h3 class="m-0 value-num" >
+                    ${{ outcomeGoal | number:'1.0-0' }}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div> 
+          </mat-card-content>
+        </mat-card>      
+      </div>
+      <!---- Chart Two---------->
+      </div>
+
+      <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0"
+      fxLayoutGap.xs="0">
+
+            <!---- Chart Three---------->
+      <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg ">
+        <mat-card class="hourlyRate sa_no_tabs_area">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : ${{ outcomePrev | number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{outcomeStatus}}.png"></span> 
+                 Followup Conversion
+              </div>              
+              <div class="info-icon-container">
+                <img [tooltip]="{'title' : 'Followup Conversion', 'info': ' '}" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" /> 
+              </div>
+            </mat-card-title>
+             <div class="card-body h-100">
+              <div class="relative h-100">
+                <div style="height: 350px">
+                  <ngx-gauge class="productionVisit" [type]="'arch'" [value]="conversionTotal" [thick]="20"
+                    [append]="'%'" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
+                    [cap]="'round'" [size]="250"> </ngx-gauge>
+                  <div class="no-data-placeholder" *ngIf="perUserData.length <= 0">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+           <div class="card-footer">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{ outcomeTotal | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{ outcomePrev | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previou</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom' && outcomeGoal >= 0">
+                  <h3 class="m-0 value-num" >
+                    ${{ outcomeGoal | number:'1.0-0' }}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div> 
+          </mat-card-content>
+        </mat-card>      
+      </div>
+      <!---- Chart Three---------->
+    <!---- Chart Four---------->
+      <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg ">
+        <mat-card class="hourlyRate sa_no_tabs_area">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : ${{conversionPerUserPrev| number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{conversionPerUserStatus}}.png"></span>
+                Followup Conversion Per User
+              </div>              
+              <div class="info-icon-container">
+               <img [tooltip]="{'title' : 'Followup Conversion Per User', 'info': 'sda'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /> 
+              </div>
+            </mat-card-title>
+             <div class="card-body h-100">
+              <div class="relative h-100">
+                <div style="height: 350px">
+                  <canvas #myCanvas baseChart [datasets]="conversionPerUserData" [labels]="conversionPerUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas>
+                  <div class="no-data-placeholder" *ngIf="conversionPerUserData.length <= 0">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+           <div class="card-footer">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{ conversionPerUserTotal | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{ conversionPerUserPrev | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom' && conversionPerUserGoal >= 0">
+                  <h3 class="m-0 value-num">${{ conversionPerUserGoal | number:'1.0-0' }}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div> 
+          </mat-card-content>
+        </mat-card>      
+      </div>
+      <!---- Chart Four---------->
+      <!---- Chart Five---------->
+      <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg ">
+        <mat-card class="hourlyRate sa_no_tabs_area">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : ${{completionRatePrev| number:'1.0-0'}}"><img
+                    class="trend_ico" src="../assets/images/trend_{{completionRateStatus}}.png"></span>
+                Followup Completion Rate
+              </div>              
+              <div class="info-icon-container">
+               <img [tooltip]="{'title' : 'Followup Conversion Per User', 'info': 'sda'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /> 
+              </div>
+            </mat-card-title>
+             <div class="card-body h-100">
+              <div class="relative h-100">
+                <div style="height: 350px">
+                  <canvas #myCanvas baseChart [datasets]="completionRateData" [labels]="completionRateLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas>
+                  <div class="no-data-placeholder" *ngIf="completionRateData.length <= 0">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+           <div class="card-footer">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">${{ completionRateTotal | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">${{ completionRatePrev | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom' && conversionPerUserGoal >= 0">
+                  <h3 class="m-0 value-num">${{ completionRateGoal | number:'1.0-0' }}</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div> 
+          </mat-card-content>
+        </mat-card>      
+      </div>
+      <!---- Chart Four---------->
+
+    </div>
+
+
+    
+  </div>
+</div>

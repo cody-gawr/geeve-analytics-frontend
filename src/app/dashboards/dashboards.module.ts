@@ -13,6 +13,8 @@ import { ClinicianProceeduresService } from './clinicianproceedures/clinicianpro
 import { ClinicianProceeduresComponent } from './clinicianproceedures/clinicianproceedures.component';
 import { FinancesService } from './finances/finances.service';
 import { FinancesComponent } from './finances/finances.component';
+import { FollowupsComponent } from './followups/followups.component';
+import { FollowupsService } from './followups/followups.service';
 import { FrontDeskComponent } from './frontdesk/frontdesk.component';
 import { FrontDeskService } from './frontdesk/frontdesk.service';
 import { HealthScreenComponent } from './healthscreen/healthscreen.component';
@@ -52,7 +54,7 @@ import { DemoMaterialModule } from '../demo-material-module';
     SharedModule,
     DemoMaterialModule
   ],
-  providers: [ClinicianAnalysisService, MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, DecimalPipe, HealthScreenService],
-  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, CurrencySuffixPipe, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, DateMenuBarComponent]
+  providers: [ClinicianAnalysisService, MorningHuddleService, ClinicianProceeduresService, FinancesService, DentistService, FrontDeskService, MarketingService, DatePipe, DecimalPipe, HealthScreenService,FollowupsService],
+  declarations: [ClinicianAnalysisComponent, ClinicianProceeduresComponent, CurrencySuffixPipe, FinancesComponent, FrontDeskComponent, MarketingComponent, HealthScreenComponent, DateMenuBarComponent,FollowupsComponent]
 })
 export class DashboardsModule {}
