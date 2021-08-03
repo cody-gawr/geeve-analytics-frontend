@@ -35,11 +35,10 @@ export class RolesService {
         );
     }
        // Get updateprofileSettings
-    updateprofileSettings(displayName, email, imageURL, token = this._cookieService.get("token")): Observable<any> {
+    updateprofileSettings(displayName, email): Observable<any> {
             const formData = new FormData();
             formData.append('displayName', displayName);
             formData.append('email', email);
-            formData.append('user_image', imageURL);            
             formData.append('id', this._cookieService.get("userid"));
              var header = this.getHeaders();
 
@@ -59,17 +58,6 @@ export class RolesService {
             var header = this.getHeaders();
 
         return this.http.post(this.apiUrl +"/Users/userChangePassword", formData,{ headers: header })
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
-        );
-    }
-
-    logoUpload( formData): Observable<any> {
-        formData.append('id', this._cookieService.get("userid"));
-          var header = this.getHeaders();
-
-        return this.http.post(this.apiUrl +"/Users/userLogoUpload", formData, { headers: header })
         .pipe(map((response: Response) => {
                         return response;
                     })

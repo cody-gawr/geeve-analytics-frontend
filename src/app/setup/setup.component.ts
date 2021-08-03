@@ -587,45 +587,6 @@ abc(data) {
     }
 
 
-
-
-
-
-  uploadImage(files: FileList) {  
-    this.fileToUpload = files.item(0);
-      /* First check for file type then check for size .*/
-   if(this.fileToUpload.type=='image/png' || this.fileToUpload.type=='image/jpg' || this.fileToUpload.type=='image/jpeg')
-    {
-     $('.ajax-loader').show();
-      let formData = new FormData();
-      formData.append('file', this.fileToUpload, this.fileToUpload.name);
-      this.setupService.logoUpload(formData).subscribe((res) => {
-      $('.ajax-loader').hide();
-        if(res.message == 'success'){
-          this.imageURL= res.data;
-         // this.toastr.success('Logo Uploaded.');
-
-        }
-        else if(res.status == '401'){
-              this._cookieService.put("username",'');
-              this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
-              this._cookieService.put("userid", '');
-              this.router.navigateByUrl('/login');
-           }
-      });
-    }else{
-        alert("Invalid image. Allowed file types are jpg, jpeg and png only .");
-        return false;
-    }
-    if(this.fileToUpload.size/1024/1024 > 2) //10000 bytes means 10 kb
-    {
-         alert("Header image should not be greater than 4 MB .");
-         return false;
-    }
-
-   // this.onAdd.emit(this.fileToUpload);
-  }
   saveStripe() {
     this.stepVal = 2;
     this.updateStepperStatus(); 

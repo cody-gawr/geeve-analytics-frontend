@@ -70,16 +70,14 @@ export class RolesComponent implements OnInit {
 
 public displayName;
 public display_name;
+
   onSubmitBasic() {
   this.displayName = $("#displayName").val();
   this.email = $("#email").val();
-  this.imageURL = $("#imageURL").val();
-
-   this.rolesService.updateprofileSettings(this.displayName, this.email, this.imageURL).subscribe((res) => {
+   this.rolesService.updateprofileSettings(this.displayName, this.email).subscribe((res) => {
        if(res.message == 'success'){
         let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("display_name", this.displayName, opts);
-        this._cookieService.put("user_image", this.imageURL, opts);
         this.display_name = this.displayName;
         alert('Profile Settings Updated');
        }
@@ -126,20 +124,4 @@ onSubmitPassword() {
   this.errortext ="Password doesn't Match!";
  }
   } 
-  public imageURL:any;
-public fileToUpload;
- uploadImage(files: FileList) {
-    this.fileToUpload = files.item(0);
-    let formData = new FormData();
-    formData.append('file', this.fileToUpload, this.fileToUpload.name);
-    this.rolesService.logoUpload(formData).subscribe((res) => {
-      if(res.message == 'success'){
-        this.imageURL= res.data;
-      }
-    });
-  }
-
-
-
-
 }

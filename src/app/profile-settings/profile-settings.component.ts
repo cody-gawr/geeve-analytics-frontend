@@ -422,7 +422,7 @@ public imageURL:any;
     var imageObj = this.imageURL.split('/profile_');
     image = 'profile_'+imageObj[1];
    }          
-   this.profileSettingsService.updateprofileSettings(this.displayName, this.email, image).subscribe((res) => {
+   this.profileSettingsService.updateprofileSettings(this.displayName, this.email).subscribe((res) => {
              $('.ajax-loader').hide();
 
        if(res.message == 'success'){
@@ -496,28 +496,7 @@ this.changePasswordError = {'required': false,'minlength': false,'pattern': fals
        this.toastr.error("Password and Confirm Password doesn't Match!");
      }
   } 
-public fileToUpload;
-/* uploadImage(files: FileList) {
-             $('.ajax-loader').show();
-    this.fileToUpload = files.item(0);
-    if(this.fileToUpload.size <2097152) {
-    let formData = new FormData();
-    formData.append('file', this.fileToUpload, this.fileToUpload.name);
-    this.profileSettingsService.logoUpload(formData).subscribe((res) => {
-             $('.ajax-loader').hide();
 
-      if(res.message == 'success'){
-        this.imageURL= res.data;
-        $(".suer_image_sidebar img").attr('src' , this.imageURL);
-      }
-    });
-    }
-    else{
-       $('.ajax-loader').hide();
-      this.toastr.error('Image Size should be less than 2 MB');
-
-    }
-  }*/
 
   /******** GET CHARTS TIPS*****/
   public chartsTips:any = {};

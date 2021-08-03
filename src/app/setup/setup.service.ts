@@ -126,23 +126,5 @@ export class SetupService {
                         return response;
                     })
         );
-    }
-
-
-
-      logoUpload( formData): Observable<any> {
-            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
-            formData.append('id', this._cookieService.get("childid"));
-            else
-            formData.append('id', this._cookieService.get("userid"));
-            var header = this.getHeaders(); 
-
-        return this.http.post(this.apiUrl +"/Users/userLogoUpload/", formData, { headers: header })
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
-        );
-    }
-       
+    }       
 }
-

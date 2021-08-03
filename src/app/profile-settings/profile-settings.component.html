@@ -31,16 +31,7 @@
                                                         <input formControlName="email" placeholder="" id="email" [formControl]="formSettings.controls['email']" [(ngModel)]="email" [readonly]="true" class="readonly_form"> <small *ngIf="formSettings.controls['email'].hasError('pattern') && formSettings.controls['email'].touched" class="text-danger support-text">Please enter valid email.</small> </div>
                                                 </div>
                                             </div>
-                                    <!--         <div fxLayout="row wrap" fxLayoutGap="5%">
-                                                <div fxFlex="calc(45% - 10px)" fxFlex.md="calc(45% - 10px)" fxFlex.sm="calc(45% - 10px)" fxFlex.xs="100">
-                                                    <div class="bd_UpoadImage">
-                                                        <label>Profile image</label>
-                                                        <div class="upload-btn"> <span>Choose file</span>
-                                                            <input class="" type="file" placeholder="" name="file" id="file" (change)="uploadImage($event.target.files)" accept=".png, .jpg, .jpeg,.gif">
-                                                            <input type='hidden' placeholder="" id="imageURL" [(ngModel)]="imageURL" [ngModelOptions]="{standalone: true}"> </div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
+                                 
                                         </div>
                                     </div>
                                     <mat-card-actions class="text-right">

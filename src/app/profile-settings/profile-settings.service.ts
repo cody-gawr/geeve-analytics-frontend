@@ -37,7 +37,7 @@ export class ProfileSettingsService {
         );
     }
        // Get updateprofileSettings
-    updateprofileSettings(displayName, email, imageURL, token = this._cookieService.get("token")): Observable<any> {
+    updateprofileSettings(displayName, email): Observable<any> {
             const formData = new FormData();
             formData.append('displayName', displayName);
             formData.append('email', email);
@@ -65,21 +65,6 @@ export class ProfileSettingsService {
                     })
         );
     }
-
-/*    logoUpload( formData): Observable<any> {
-            if(this._cookieService.get("user_type") != '1' && this._cookieService.get("user_type") != '2')                 
-            formData.append('id', this._cookieService.get("childid"));
-            else
-            formData.append('id', this._cookieService.get("userid"));
-
-           var header = this.getHeaders(); 
-
-        return this.http.post(this.apiUrl +"/Users/userLogoUpload", formData, { headers: header })
-        .pipe(map((response: Response) => {
-                        return response;
-                    })
-        );
-    }*/
 
     clearSession( clinic_id, token = this._cookieService.get("token")): Observable<any> {
         var header = this.getHeaders(); 
