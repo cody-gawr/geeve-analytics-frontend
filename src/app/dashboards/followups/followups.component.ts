@@ -92,7 +92,7 @@ export class FollowupsComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(){
-    $('#title').html('<span>Followups</span>');
+    $('#title').html('<span>Follow Ups</span>');
     this.filterDate(this.chartService.duration$.value);
     $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
   }
