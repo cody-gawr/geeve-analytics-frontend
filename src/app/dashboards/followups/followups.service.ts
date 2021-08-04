@@ -27,4 +27,51 @@ export class FollowupsService {
         return headers;
     }
 
+
+    getFollowupsPerUser( clinic_id, startDate, endDate, duration=''): Observable<any> 
+    {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/Followups/fuGetPerUser?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    getFollowupOutcome( clinic_id, startDate, endDate, duration=''): Observable<any> 
+    {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/Followups/fuGetOutcome?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    getConversion( clinic_id, startDate, endDate, duration=''): Observable<any> 
+    {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/Followups/fuGetConversion?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    getConversionPerUser( clinic_id, startDate, endDate, duration=''): Observable<any> 
+    {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/Followups/fuGetConversionPerUser?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    getCompletionRate( clinic_id, startDate, endDate, duration=''): Observable<any> 
+    {
+        var header = this.getHeaders();
+        return this.http.get(this.apiUrl +"/Followups/fuGetFollowupCompletion?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
 }

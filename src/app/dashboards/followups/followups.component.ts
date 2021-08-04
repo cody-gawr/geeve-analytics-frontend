@@ -2,6 +2,8 @@ import * as $ from 'jquery';
 import { Component, AfterViewInit, ViewEncapsulation , ViewChild,ElementRef } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChartService } from '../chart.service';
+import { FollowupsService } from './followups.service';
+import { ChartstipsService } from '../../shared/chartstips.service';
 @Component({
   templateUrl: './followups.component.html',
   styleUrls: ['./followups.component.scss'],
@@ -23,8 +25,9 @@ export class FollowupsComponent implements AfterViewInit {
   public colorScheme = {domain: ['#6edbba', '#abb3ff', '#b0fffa', '#ffb4b5', '#d7f8ef', '#fffdac', '#fef0b8', '#4ccfae']};
   public single = [];
   public arcWidth = 0.75;
-  public  foregroundColor= "#39acac";
-  public  backgroundColor = '#f4f0fa';
+  public foregroundColor= "#39acac";
+  public backgroundColor = '#f4f0fa';
+  public clinic_id:any;
   public barChartOptions: any = {
     borderRadius: 50,
     hover: {mode: null},
@@ -45,10 +48,10 @@ export class FollowupsComponent implements AfterViewInit {
         ticks: {
           autoSkip: false,
           userCallback: (label: string) => {
-            const names = this.splitName(label);
+            /*const names = this.splitName(label);
             if (names.length > 1) {
               return `${names[0][0]} ${names[1]}`
-            } else return `${names[0]}`;
+            } else return `${names[0]}`;*/
           }
         },
       }],
@@ -86,15 +89,18 @@ export class FollowupsComponent implements AfterViewInit {
       private datePipe: DatePipe ,
       private chartService: ChartService,
       private decimalPipe: DecimalPipe,
+      private followupsService: FollowupsService,
+      public chartstipsService: ChartstipsService
     )
   {
-
+   this.getChartsTips();
   }
 
   ngAfterViewInit(){
     $('#title').html('<span>Follow Ups</span>');
-    this.filterDate(this.chartService.duration$.value);
+    //
     $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
+
   }
   splitName(name: string) {
     const regex = /\w+\s\w+(?=\s)|\w+/g;
@@ -102,21 +108,20 @@ export class FollowupsComponent implements AfterViewInit {
   }
 
   async initiate_clinic() {
-    this.getFollowupsPerUser();
-    this.getFollowupOutcome();
-    this.getConversion();
-    this.getConversionPerUser();
-    this.getCompletionRate();
+    var val = $('#currentClinic').attr('cid');
+    if (val != undefined && val != 'all') {
+      this.clinic_id = val;
+      this.filterDate(this.chartService.duration$.value);
+    }
   }
 
   pieTooltipText({ data, index}) {
     const labl = data.name.split("--");
     const label = labl[0];
-    const exp = Math.round(labl[1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     const val = data.value;
     return `
       <span class="tooltip-label">${label}</span>
-      <span class="tooltip-val"> ${val}% ($${exp})</span>
+      <span class="tooltip-val"> ${val}%</span>
     `;
   }
   
@@ -261,6 +266,12 @@ export class FollowupsComponent implements AfterViewInit {
     }
     $('.filter').removeClass('active');
     $('.filter_'+duration).addClass("active");
+
+    this.getFollowupsPerUser();
+    this.getFollowupOutcome();
+    this.getConversion();
+    this.getConversionPerUser();
+    this.getCompletionRate();
   }
 
   monthDiff(d1, d2) {
@@ -307,24 +318,53 @@ export class FollowupsComponent implements AfterViewInit {
   public perUserPrev:any = 20;
   public perUserGoal:any = 10;
   public perUserStatus:any = 'up';
+  public perUserLoader:boolean = false;
   getFollowupsPerUser(){
-    this.perUserData[0]['data'] = [50,30,40,56];
-    this.perUserLabels = ['A','B','C','D'];
+    this.perUserLoader = true;
+    this.followupsService.getFollowupsPerUser(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
+      this.perUserLoader = false;
+      this.perUserData[0]['data'] =  [];
+      this.perUserLabels = [];
+      if(res.message == 'success'){        
+        var allData = [];
+        res.data.forEach((response) => {
+          allData.push(response.num_total);
+          this.perUserLabels.push(response.completed_by);
+        });
+        this.perUserData[0]['data'] = allData;
+        this.perUserTotal = res.total;
+        this.perUserGoal = res.goal;
+        this.perUserPrev = res.total_ta;
+      }
+    }, error => {
+      
+    });
   }
 
   public outcomePrev:any = 10;
   public outcomeGoal:any = 50;
   public outcomeTotal:any = 30;
   public outcomeStatus:any = 'up';
+  public outcomeLoader:boolean = false;
   getFollowupOutcome(){
-    this.single = [
-    {name:'A',value:5},
-    {name:'B',value:19},
-    {name:'C',value:21},
-    {name:'D',value:14},
-    {name:'E',value:15},
-    {name:'F',value:10},
-    ];
+
+     this.followupsService.getFollowupOutcome(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
+      this.outcomeLoader = false;
+      this.single = [];
+      if(res.message == 'success'){  
+        this.outcomeTotal = res.total;
+        this.outcomePrev = res.total_ta;
+        this.outcomeGoal = res.goals;
+        res.data.forEach( (response) => {
+          var temp = { name: response.status,value: response.percantage};  
+          this.single.push(temp);
+        });     
+      }
+    }, error => {
+      
+    });
+
+  
   }
 
   public conversionPrev:any = 10;
@@ -332,7 +372,14 @@ export class FollowupsComponent implements AfterViewInit {
   public conversionTotal:any = 0;
   public conversionStatus:any = 'up';
   getConversion(){
-    this.conversionTotal = 50;
+     this.followupsService.getConversion(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
+      this.outcomeLoader = false;
+      if(res.message == 'success'){  
+           this.conversionTotal = 50;
+      }
+    }, error => {
+      
+    });   
   }
 
 
@@ -343,8 +390,17 @@ export class FollowupsComponent implements AfterViewInit {
   public conversionPerUserGoal:any = 10;
   public conversionPerUserStatus:any = 'up';
   getConversionPerUser(){
-    this.conversionPerUserData[0]['data'] = [60,90,50,26];
-    this.conversionPerUserLabels = ['One','Two','Three','Four'];
+
+    this.followupsService.getConversionPerUser(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
+      this.outcomeLoader = false;
+      if(res.message == 'success'){  
+        this.conversionPerUserData[0]['data'] = [60,90,50,26];
+        this.conversionPerUserLabels = ['One','Two','Three','Four'];
+      }
+    }, error => {
+      
+    });
+    
   }
 
   public completionRateData: any[] = [];
@@ -354,9 +410,35 @@ export class FollowupsComponent implements AfterViewInit {
   public completionRateGoal:any = 10;
   public completionRateStatus:any = 'up';
   getCompletionRate(){
-    this.completionRateData[0]['data'] = [160,190,550,206];
-    this.completionRateLabels = ['X','Y','Z','E'];
+    this.followupsService.getCompletionRate(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
+      this.outcomeLoader = false;
+      this.completionRateData[0]['data'] = [];
+      this.completionRateLabels = [];
+      if(res.message == 'success'){  
+        var allCompletionRate = [];
+        this.completionRateTotal = res.total;
+        this.completionRatePrev = res.total_ta;
+        this.completionRateGoal = res.goals;
+        res.data.forEach( (response) => {
+          if(parseInt(response.completion_rate) > 0){
+            allCompletionRate.push(response.completion_rate);
+            this.completionRateLabels.push(response.type);
+          }
+        });
+        this.completionRateData[0]['data'] = allCompletionRate;
+      }
+    }, error => {
+      
+    });
+    
   }
 
-
+  public charTips:any = [];
+  getChartsTips() {
+    this.chartstipsService.getCharts(9).subscribe((data) => {
+       if(data.message == 'success'){         
+        this.charTips = data.data;
+       }
+    }, error => {});
+  }
 }
