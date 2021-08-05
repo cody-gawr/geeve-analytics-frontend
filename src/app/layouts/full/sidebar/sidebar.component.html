@@ -67,13 +67,16 @@
                     <span fxFlex></span>
                 </a>
             </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging')"> <!-- *ngIf="user_type == 2 || permisions.indexOf('dashboard6') >= 0" -->
+            <!-- *ngIf="user_type == 2 || permisions.indexOf('dashboard6') >= 0" -->
+            <!-- <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="apiUrl.includes('test') || apiUrl.includes('staging')"> 
                 <a class="" appAccordionToggle [routerLink]="['/dashboards/followups']">
                     <i></i>
                     <span>Follow Ups</span>
                     <span fxFlex></span>
                 </a>
-            </mat-list-item>
+
+            </mat-list-item>            
+             -->
             <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="(user_type == 2 || permisions.indexOf('dashboard4') >= 0) && userPlan !='lite'">
                 <a class="" appAccordionToggle [routerLink]="['/dashboards/marketing']">
                     <i></i>
