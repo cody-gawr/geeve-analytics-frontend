@@ -46,7 +46,7 @@
         </a>
     <ng-template [ngIf]="nav_open == 'dashboards'">
         <mat-nav-list appAccordion>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard1') >= 0">
+            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="(user_type == 2 || permisions.indexOf('dashboard1') >= 0) && userPlan != 'lite'">
                 <a class="relative" appAccordionToggle [routerLink]="['/dashboards/cliniciananalysis']">
                     <i></i>
                     <span>Clinician Analysis</span>
@@ -74,7 +74,7 @@
                     <span fxFlex></span>
                 </a>
             </mat-list-item>
-            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="user_type == 2 || permisions.indexOf('dashboard4') >= 0">
+            <mat-list-item appAccordionLink routerLinkActive= "selected" group="string" *ngIf="(user_type == 2 || permisions.indexOf('dashboard4') >= 0) && userPlan !='lite'">
                 <a class="" appAccordionToggle [routerLink]="['/dashboards/marketing']">
                     <i></i>
                     <span>Marketing</span>

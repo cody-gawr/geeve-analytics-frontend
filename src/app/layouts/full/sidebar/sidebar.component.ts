@@ -89,14 +89,15 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
     });
   }
 
-
+public userPlan:any = '';
  async getRoles() {      
    await this.rolesUsersService.getRolesIndividual().subscribe((res) => {
       if(res.message == 'success'){ 
         this.permisions =res.data;
         let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("user_type",res.type, opts);
-
+        this._cookieService.put("user_plan",res.plan, opts);
+        this.userPlan  = res.plan;
         //Remove apis calls when user have not permission of any page form FE
         if(res.type != '2'){
         if(this.activeRoute == '/dashboards/healthscreen'){
