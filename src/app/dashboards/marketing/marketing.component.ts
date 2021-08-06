@@ -1336,8 +1336,18 @@ public currentText;
         this.duration = 'lfytd'
         this.goalCount = 12;
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');       
+         if ((date.getMonth() + 1) <= 6) {
+          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
+        } else {
+          this.startDate = this.datePipe.transform(new Date(date.getFullYear() -1, 6, 1), 'dd-MM-yyyy');
+        }
+        if ((date.getMonth() + 1) <= 6) {          
+         this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');
+        } else {
+          this.endDate = this.datePipe.transform(new Date(date.getFullYear(), 5, 30), 'dd-MM-yyyy');
+        }
+/*        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');   */    
         this.loadDentist('all');
       }
      else if (duration == 'custom') {

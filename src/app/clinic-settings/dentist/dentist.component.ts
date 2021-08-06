@@ -26,6 +26,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   dentistListLoading: boolean = false;
   displayedColumns: string[] = ['providerId', 'name','is_active'];
   editing = {};
+  public userPlan:any = 'lite';
+  public activeDentist:any = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -38,6 +40,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.userPlan =  this._cookieService.get("user_plan"); 
     this.dentistList.paginator = this.paginator;
     this.clinic_id$.pipe(
       takeUntil(this.destroyed$)
@@ -79,6 +82,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       if (res.message == 'success') {
         this.dentistList.data = res.data;
         this.setPaginationButtons(this.dentistList.data.length);
+        let activeDnt:any = res.data.filter(p => p.is_active == 1);  
+        this.activeDentist =  activeDnt.length;
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();
@@ -96,37 +101,43 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     });
   }
 
-  updateValue(event, column, index,providerId, updatedValue) {
-   /* let oldValue = this.dentistList.data[index][column];    
-    const providerId = this.dentistList.data[index].providerId;
-    const updatedValue = this.dentistList.data[index]['name'];
-    */
-   
-    if(column == 'name'){
+
+  updateValue(event, column, index,providerId, updatedValue) 
+  {  
+
+    if(column == 'name')
+    {
       updatedValue = event.target.value;           
     }
     var isActive = null;
-    if(column == 'is_active'){
+    if(column == 'is_active')
+    {
+     if(this.userPlan == 'lite' && this.activeDentist >= 2)
+     {
+       return false;
+     } 
+     if(this.userPlan == 'lite' && !event.target.checked)
+     {
+       return false;
+     } 
       isActive = 0;
-      if(event.target.checked){
+      if(event.target.checked)
+      {
         isActive = 1;
       }
     }
-    console.log(event, column, index,providerId,updatedValue);
-     this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive).pipe(
+    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive)
+      .pipe(
         takeUntil(this.destroyed$)
-      ).subscribe((res) => {
-         this.editing[index + '-' + column] = false;
+      )
+      .subscribe((res) => {
+        this.editing[index + '-' + column] = false;
         if (res.message == 'success') {
           this.toastr.success('Dentist Updated');
           this.getDentists(this.clinic_id$.value);
         }
-      }, (error) => {/*
-        console.log('error', error);
-        this.dentistList.data[index][column] = oldValue;*/
+      }, (error) => {
         this.toastr.error('Opps, Error occurs in updating dentist!');
       });  
-       
-  }
-
+    }
 }
