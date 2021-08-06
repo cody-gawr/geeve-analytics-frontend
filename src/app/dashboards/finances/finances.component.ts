@@ -1528,30 +1528,38 @@ public netProfitTrendTotal;
 
 public netProfitPmsTrendIcon;
 public netProfitPmsTrendTotal;
+public netprofitstatsError:boolean = false;
     //netProfit
   private netProfitPms() {
     this.netProfitTrendTotal=0;
+    this.netprofitstatsError = false;
     this.financesService.NetProfitPms(this.clinic_id,this.startDate,this.endDate, this.duration,this.connectedwith).subscribe((data) => {
        if(data.message == 'success'){      
         this.netprofitstats= true; 
         this.netProfitVal = Math.round(data.data);  
        }
     }, error => {
+      this.netprofitstatsError = true; 
+       this.netprofitstats= true; 
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
 
   // Added by Hanney Sharma on 07-04-2021 for Net Profit %
+  public netprofitPerError:boolean = false;
   private netProfitPercentage() {
     var user_id;
     var clinic_id;
     this.netProfitPmsVal=0;
+    this.netprofitPerError = false;
     this.financesService.netProfitPercentage(this.clinic_id,this.startDate,this.endDate, this.duration,this.connectedwith).subscribe((data) => {
       if(data.message == 'success') {      
         this.netprofitpercentstats= true;  
         this.netProfitPmsVal = Math.round(data.data);  
       }
     }, error => {
+      this.netprofitpercentstats= true;  
+      this.netprofitPerError = true;
       this.warningMessage = "Please Provide Valid Inputs!";
     });
   }
@@ -1577,10 +1585,11 @@ public netProfitPmsTrendTotal;
   public expensescChartTrendTotal;
   public pieChartDataPercentres;
   public categoryExpensesLoader:any;
-
+  public categoryExpensesError:boolean= false;
       //expenses
   private categoryExpenses() {
         this.categoryExpensesLoader = true;
+        this.categoryExpensesError = false;
         var user_id;
         var clinic_id;
            this.expensescChartTrendIcon = "down";
@@ -1622,6 +1631,7 @@ public netProfitPmsTrendTotal;
        
        }
     }, error => {
+      this.categoryExpensesError = true;
       this.warningMessage = "Please Provide Valid Inputs!";
  
     }

@@ -112,14 +112,15 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     var isActive = null;
     if(column == 'is_active')
     {
-     if(this.userPlan == 'lite' && this.activeDentist >= 2)
-     {
-       return false;
-     } 
-     if(this.userPlan == 'lite' && !event.target.checked)
-     {
-       return false;
-     } 
+      if(this.userPlan == 'lite')
+      {
+        if(this.activeDentist >= 2 || !event.target.checked)
+        {
+          this.toastr.error('Opps, Please contact with support team');
+          $(event.target).prop( "checked", !event.target.checked )
+          return false;
+        }        
+      }   
       isActive = 0;
       if(event.target.checked)
       {

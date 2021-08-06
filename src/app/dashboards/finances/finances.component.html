@@ -79,7 +79,7 @@
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
             <div class="sa_main_grid_dashboard profit-purple d-flex no-block align-items-center">
-              <ng-container *ngIf="(xeroConnect || myobConnect);else NoXeroConnectProfitValuePlaceholder">
+              <ng-container *ngIf="( (xeroConnect || myobConnect) && !netprofitstatsError);else NoXeroConnectProfitValuePlaceholder">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit.png" alt />
                   <i class="fas fa-chart-bar"></i>
@@ -88,7 +88,7 @@
                   <h3 class="m-0">Net Profit</h3>
                   <h1 class="m-0">
                     <div class="loader-text">Calculating...</div>
-                  </h1>
+                  </h1> 
                 </div>
                 <div *ngIf="netprofitstats == true" class="stats">
                   <h3 class="m-0">Net Profit</h3>
@@ -102,9 +102,9 @@
                 </div>
               </ng-container>
               <ng-template #NoXeroConnectProfitValuePlaceholder>
-                <div *ngIf="!xeroConnect && !myobConnect" class="w-100">
+                <div *ngIf="(!xeroConnect && !myobConnect) || netprofitstatsError" class="w-100">
                   <div class="sa_nodata_div no-found-data ">
-                    <p>Please connect to Xero/MYOB to display this chart</p>
+                    <p>Please ensure your Xero/MYOB account is connected</p>
                   </div>
                 </div>
               </ng-template>
@@ -117,7 +117,7 @@
           <mat-card-content class="sa_matcard_content">
             <!-- column -->
             <div class="sa_main_grid_dashboard profit-green d-flex no-block align-items-center">
-              <ng-container *ngIf="(xeroConnect || myobConnect);else NoXeroConnectProfitPlaceholder">
+              <ng-container *ngIf="((xeroConnect || myobConnect) && !netprofitPerError);else NoXeroConnectProfitPlaceholder">
                 <div class="stats-icon">
                   <img src="../assets/images/net-profit-PMS.png" alt />
                   <i class="fas fa-chart-bar"></i>
@@ -142,7 +142,7 @@
               <ng-template #NoXeroConnectProfitPlaceholder>
                 <div class="w-100">
                   <div class="sa_nodata_div no-found-data ">
-                    <p>Please connect to Xero/MYOB to display this chart</p>
+                    <p>Please ensure your Xero/MYOB account is connected</p>
                   </div>
                 </div>
               </ng-template>
@@ -171,7 +171,7 @@ expenses_card custom_ngx_cw01">
                       <div fxLayout="row wrap">
                         <div class="ngx-charts-fix" fxLayout="row" fxLayoutAlign="space-around center" fxFlex.lg="65"
                           fxFlex.xl="65" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70">
-                          <ng-container *ngIf="(xeroConnect || myobConnect)">
+                          <ng-container *ngIf="((xeroConnect || myobConnect) && !categoryExpensesError)">
                             <ngx-charts-pie-chart fxFlexAlign="center"
                               *ngIf="pieChartLabels && pieChartLabels.length > 0"
                               class="chart-container sa_chart_custom" [view]="[500, 320]" [scheme]="colorScheme"
@@ -187,14 +187,14 @@ expenses_card custom_ngx_cw01">
                             </div>
                           </ng-container>
 
-                          <div *ngIf="(xeroConnect || myobConnect) && categoryExpensesLoader == true"
+                          <div *ngIf="(xeroConnect || myobConnect) && categoryExpensesLoader == true && !categoryExpensesError"
                             class="loader_container">
                             <img class="loader_ico" src="../assets/images/720.gif">
                             <div class="loader-text">Calculating...</div>
                           </div>
-                          <div *ngIf="!xeroConnect && !myobConnect" class="w-100">
+                          <div *ngIf="(!xeroConnect && !myobConnect) || categoryExpensesError" class="w-100">
                             <div class="sa_nodata_div no-found-data ">
-                              <p>Please connect to Xero/MYOB to display this chart</p>
+                              <p>Please ensure your Xero/MYOB account is connected</p>
                             </div>
                           </div>
 
