@@ -46,7 +46,7 @@ showtooltip:boolean= false;
       if(val == '4')
         this.show_dentist = true;
     }
-    save(data) {
+  save(data) {
     $('.mat-form-control').click();
     if(data.display_name != undefined && data.email != undefined && data.user_type != '' &&  this.selectedClinics.value != ''){      
       data.selectedClinics= this.selectedClinics.value;
@@ -456,6 +456,8 @@ initiate_clinic() {
        if(res.message == 'success'){
         this.toastr.success('User has been added successfully!');
         this.getUsers();
+       } else if(res.message == 'error'){
+          this.toastr.error(res.data.message);
        }
     }, error => {
       this.toastr.error('Please Provide Valid Inputs!');
@@ -469,6 +471,8 @@ initiate_clinic() {
        if(res.message == 'success'){
         this.toastr.success('User has been updated successfully!');
         this.getUsers();
+       } else if(res.message == 'error'){
+          this.toastr.error(res.data.message);
        }
     }, error => {
       this.toastr.error('Please Provide Valid Inputs!');

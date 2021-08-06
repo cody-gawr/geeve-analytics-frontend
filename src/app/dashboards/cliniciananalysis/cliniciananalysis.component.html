@@ -53,7 +53,7 @@
           </mat-button-toggle-group>
         </div>
 
-        <div class="onofftoogle" *ngIf="user_type == '4'" >
+        <div class="onofftoogle" *ngIf="user_type == '4' && userPlan != 'lite'" >
           <span *ngIf="compareModeEnable" class="trend_mode_title">Compare:</span>
           <!-- <span *ngIf="!compareModeEnable" class="trend_mode_title">Compare: Disabled</span> -->
           <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"

@@ -66,6 +66,7 @@ export class ClinicSettingsComponent implements OnInit {
         public tickEnable:boolean = true;
         public recallEnable:boolean = true;
         public ftaEnable:boolean = true;
+        public userPlan:any = 'lite';
 
           public workingDays:any = {sunday: false,monday: true,tuesday: true,wednesday: true,thursday: true,friday: true,saturday: true};       
   constructor( private toastr: ToastrService,private _cookieService: CookieService, private fb: FormBuilder,  private clinicSettingsService: ClinicSettingsService, private route: ActivatedRoute,private router: Router,public constants: AppConstants) {
@@ -110,6 +111,8 @@ export class ClinicSettingsComponent implements OnInit {
       // instagram: [null],    
 
     });
+
+    this.userPlan =  this._cookieService.get("user_plan"); 
   }
 
   // For form validator

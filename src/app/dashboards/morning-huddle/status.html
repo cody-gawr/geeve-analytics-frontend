@@ -16,7 +16,7 @@
 </div>
 
 
-<div class="AddUserPopup" *ngIf="data.event == 'Cant be reached' || data.event == 'Cant be reached - left'"> 
+<div class="AddUserPopup center" *ngIf="data.event.includes('t be reached')"> 
   <span class="followUpClose" (click)="onNoClick()" >x</span>
 <h1 mat-dialog-title>Do you want to create another followup for <strong>{{ data.firstname }} {{ data.surname }}</strong>?</h1>
 <div class="sa-form-group-btn" style="width: 90%; float: none; position: relative;    text-align: left;">

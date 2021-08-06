@@ -485,10 +485,10 @@ initiate_clinic() {
   }
 
   updateStatus(event,pid,date,cid,firstname,surname,original_appt_date,followup_date,type,nextBussinessDay) {
-    if( event == 'Wants another follow-up' || event == 'Cant be reached' || event ==  'Cant be reached - left' )
+    if( event == 'Wants another follow-up' || event == "Can't be reached" || event ==  "Can't be reached - left voicemail" )
     {
       let width = '450px';
-      if(event == 'Cant be reached' || event == 'Cant be reached - left')
+      if(event == "Can't be reached" || event == "Can't be reached - left voicemail")
          width = '650px';
       const dialogRef = this.dialog.open(StatusDialogComponent, {
         width: width,

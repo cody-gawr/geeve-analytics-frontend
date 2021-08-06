@@ -59,6 +59,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public proCollShow: number = 1;
   public charTips:any = [];
+  public userPlan:any = 'lite';
 
   public flag = false;
   private _routerSub = Subscription.EMPTY;
@@ -132,6 +133,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   //initialize component
   ngAfterViewInit() {
+    this.userPlan =  this._cookieService.get("user_plan"); 
     this.newPatientPluginObservable$ = this.newPatientTotal$.pipe(
       takeUntil(this.destroyed$),
       map((count) => {
