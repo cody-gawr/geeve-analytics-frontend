@@ -118,7 +118,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         {
           this.toastr.error('Opps, Please contact with support team');
           $(event.target).prop( "checked", !event.target.checked )
-         // return false;
+          return false;
         }        
       }   
       isActive = 0;
