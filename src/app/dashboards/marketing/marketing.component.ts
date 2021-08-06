@@ -1687,6 +1687,7 @@ public dataY:any=0;
     this.expenseDataTrend1=[];
     this.expenseDataTrendLabels1=[];
     this.fdnewPatientsAcqLoader= true;    
+    this.newAcqValueError= false;    
     if(this.duration && this.connectedwith !=''){
        var user_id;
        var clinic_id;
@@ -1748,6 +1749,7 @@ public dataY:any=0;
               this.expenseDataTrendLabels =this.expenseDataTrendLabels1;
            }
     }, error => {
+      this.newAcqValueError= true;    
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );
