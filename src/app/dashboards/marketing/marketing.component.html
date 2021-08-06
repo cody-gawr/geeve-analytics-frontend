@@ -276,7 +276,7 @@
                                 New Patient Cost
                             </div>
                             <div class="CategoriesBtn CategoriesBtnMarketing">
-                                <button  *ngIf="showTrend == false && connectedwith && showAccountsButton" class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Accounts</button>
+                                <button  *ngIf="showTrend == false && connectedwith && showAccountsButton && !newAcqValueError" class="mat-button-sm mat-green-button" (click)="ngxSmartModalService.getModal('myModal').open()">Accounts</button>
                                 <div class="info-icon-container float-right-space">
                                     <img [tooltip]="charTips['37']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                                 </div>
@@ -290,7 +290,7 @@
                             <div class="chart py-2">
                                 <div>
 
-                                    <div *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect)"
+                                    <div *ngIf="showTrend == false && fdnewPatientsAcqLoader ==  false &&  (xeroConnect || myobConnect) && !newAcqValueError"
                                         style="height: 200px"> 
                                         <ngx-gauge class="singleRatio" [type]="gaugeType" [value]="newAcqValue"
                                             [thick]="gaugeThick" [foregroundColor]="foregroundColor"
@@ -299,12 +299,12 @@
                                         </ngx-gauge>
 
                                     </div>
-                                    <div *ngIf="fdnewPatientsAcqLoader == true && (xeroConnect || myobConnect)"
+                                    <div *ngIf="fdnewPatientsAcqLoader == true && (xeroConnect || myobConnect) && !newAcqValueError"
                                         class="loader_container loader_container_middle"><img class="loader_ico"
                                             src="../assets/images/720.gif">
                                         <div class="loader-text">Calculating...</div>
                                     </div>
-                                    <div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && (xeroConnect || myobConnect)"
+                                    <div *ngIf="showTrend == true && expenseDataTrend1.length > 0 && (xeroConnect || myobConnect) && !newAcqValueError"
                                         style="height: 300px">
                                         <canvas #myCanvas baseChart [datasets]="expenseDataTrend"
                                             [labels]="expenseDataTrendLabels" [options]="barChartOptions"
@@ -314,17 +314,16 @@
                                         </canvas>
                                     </div>
                                     <div
-                                        *ngIf="fdnewPatientsAcqLoader ==false && showTrend == true && expenseDataTrend1.length<=0 && (xeroConnect || myobConnect)">
+                                        *ngIf="fdnewPatientsAcqLoader ==false && showTrend == true && expenseDataTrend1.length<=0 && (xeroConnect || myobConnect)  && !newAcqValueError">
                                         <div class="sa_nodata_div">
                                         </div>
                                         <p class="chart-placeholder-text">Unable to determine your cost of new patients
                                             for this period</p>
                                     </div>
-                                    <div *ngIf="(!xeroConnect && !myobConnect)">
+                                    <div *ngIf="(!xeroConnect && !myobConnect) || newAcqValueError">
                                         <div class="sa_nodata_div">
                                         </div>
-                                        <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this
-                                            chart</p>
+                                        <p class="chart-placeholder-text">Please ensure your Xero/MYOB account is connected</p>
                                     </div>
                                 </div>
                             </div>

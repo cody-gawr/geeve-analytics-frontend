@@ -1130,6 +1130,7 @@ public categories=[];
 public fdnewPatientsAcqLoader:any;
 public newAcqValuePrev =0;
 public newAcqValueGoal:any =0;
+public newAcqValueError:boolean =false;
 //Predictor Ratio :
   private fdnewPatientsAcq() { 
       this.expenseData =[];
@@ -1138,6 +1139,7 @@ public newAcqValueGoal:any =0;
       this.newAcqValuePrev=0;
       this.expenseDataTrend1=[];
       this.newAcqValue=0;
+      this.newAcqValueError = false; 
      if(this.duration && this.connectedwith !=''){
        var user_id;
        var clinic_id;
@@ -1169,6 +1171,7 @@ public newAcqValueGoal:any =0;
            }
     }, error => {
       this.fdnewPatientsAcqLoader = false;
+      this.newAcqValueError = true; 
       this.warningMessage = "Please Provide Valid Inputs!";
     }
     );

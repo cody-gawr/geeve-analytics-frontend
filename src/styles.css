@@ -5011,3 +5011,6 @@ ul.download-sync-list {
 .AddUserPopup.center{
     text-align: center;
 }
+input[type="checkbox"] {
+    cursor: pointer;
+}
