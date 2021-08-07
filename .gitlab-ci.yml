@@ -28,7 +28,7 @@ deploy_test:
   stage: deploy
   before_script:
     - pip install awscli
-    - apt-get install jq
+    - pip install jq
     - which jq
   script:
     - echo "test - Update AWS Keys"
