@@ -49,8 +49,6 @@ deploy_test:
     - cat new-dist-config.json
     - echo $CFDIST_ETAG
     - aws cloudfront update-distribution --id $TEST_CLOUDFRONT --distribution-config file://new-dist-config.json --if-match ${CFDIST_ETAG}
-    #- echo "test - Invalidate Cloudfront"
-    # - aws cloudfront create-invalidation --distribution-id $ --paths "/*"
   only: ['test']
   
   # Make Staging Build
@@ -76,10 +74,17 @@ deploy_staging:
     - export AWS_SECRET_ACCESS_KEY=$STAGING_AWS_SECRET_ACCESS_KEY
     - echo "Staging - Deploy to S3"    
     - aws s3api put-public-access-block --bucket $STAGING_S3  --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
-    - aws s3 sync ./dist s3://$STAGING_S3/ --exclude "assets/protected/*" --exclude "assets/uploads/*" --acl=public-read --delete
+    - aws s3 sync ./dist s3://$STAGING_S3/${CI_JOB_STARTED_AT}_${CI_COMMIT_SHORT_SHA} --acl=public-read --delete
     - aws s3api put-public-access-block --bucket $STAGING_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
-    - echo "Staging - Invalidate Cloudfront"
-    - aws cloudfront create-invalidation --distribution-id $STAGING_CLOUDFRONT --paths "/*"
+    - echo "staging - Update Cloudfront Distribution to point to new deployment"
+    - aws cloudfront get-distribution-config --id $STAGING_CLOUDFRONT > dist.json
+    - JQ_QUERY=".DistributionConfig.Origins.Items[0].OriginPath = \"/${CI_JOB_STARTED_AT}_${CI_COMMIT_SHORT_SHA}\""
+    - /usr/bin/jq "$JQ_QUERY" < dist.json > updated.json
+    - CFDIST_ETAG=$(jq -r '.ETag' < dist.json)
+    - /usr/bin/jq .DistributionConfig < updated.json > new-dist-config.json
+    - cat new-dist-config.json
+    - echo $CFDIST_ETAG
+    - aws cloudfront update-distribution --id $STAGING_CLOUDFRONT --distribution-config file://new-dist-config.json --if-match ${CFDIST_ETAG}
   only: ['staging']
 
 # Make Dev Build
@@ -100,15 +105,22 @@ deploy_dev:
   before_script:
     - pip install awscli 
   script:
-    - echo "Dev - Update AWS Keys"
+    - echo "Design - Update AWS Keys"
     - export AWS_ACCESS_KEY_ID=$STAGING_AWS_ACCESS_KEY_ID
     - export AWS_SECRET_ACCESS_KEY=$STAGING_AWS_SECRET_ACCESS_KEY
-    - echo "Dev - Deploy to S3"    
-    - aws s3api put-public-access-block --bucket $DEV_S3  --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
-    - aws s3 sync ./dist s3://$DEV_S3/ --exclude "assets/protected/*" --exclude "assets/uploads/*" --acl=public-read --delete
-    - aws s3api put-public-access-block --bucket $DEV_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
-    - echo "Dev - Invalidate Cloudfront"
-    - aws cloudfront create-invalidation --distribution-id $DEV_CLOUDFRONT --paths "/*"
+    - echo "Design - Deploy to S3"    
+    - aws s3api put-public-access-block --bucket $STAGING_S3  --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
+    - aws s3 sync ./dist s3://$STAGING_S3/${CI_JOB_STARTED_AT}_${CI_COMMIT_SHORT_SHA} --acl=public-read --delete
+    - aws s3api put-public-access-block --bucket $STAGING_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+    - echo "Design - Update Cloudfront Distribution to point to new deployment"
+    - aws cloudfront get-distribution-config --id $STAGING_CLOUDFRONT > dist.json
+    - JQ_QUERY=".DistributionConfig.Origins.Items[0].OriginPath = \"/${CI_JOB_STARTED_AT}_${CI_COMMIT_SHORT_SHA}\""
+    - /usr/bin/jq "$JQ_QUERY" < dist.json > updated.json
+    - CFDIST_ETAG=$(jq -r '.ETag' < dist.json)
+    - /usr/bin/jq .DistributionConfig < updated.json > new-dist-config.json
+    - cat new-dist-config.json
+    - echo $CFDIST_ETAG
+    - aws cloudfront update-distribution --id $STAGING_CLOUDFRONT --distribution-config file://new-dist-config.json --if-match ${CFDIST_ETAG}
   only: ['design']
 
 # Make Production Build
@@ -134,8 +146,15 @@ deploy_production:
     - export AWS_SECRET_ACCESS_KEY=$PROD_AWS_SECRET_ACCESS_KEY
     - echo "Production - Deploy to S3"    
     - aws s3api put-public-access-block --bucket $PROD_S3  --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
-    - aws s3 sync ./dist s3://$PROD_S3/ --exclude "assets/protected/*" --exclude "assets/uploads/*" --acl=public-read --delete
+    - aws s3 sync ./dist s3://$PROD_S3/${CI_JOB_STARTED_AT}_${CI_COMMIT_SHORT_SHA} --acl=public-read --delete
     - aws s3api put-public-access-block --bucket $PROD_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
-    - echo "Production - Invalidate Cloudfront"
-    - aws cloudfront create-invalidation --distribution-id $PROD_CLOUDFRONT --paths "/*"
+    - echo "Prod - Update Cloudfront Distribution to point to new deployment"
+    - aws cloudfront get-distribution-config --id $PROD_CLOUDFRONT > dist.json
+    - JQ_QUERY=".DistributionConfig.Origins.Items[0].OriginPath = \"/${CI_JOB_STARTED_AT}_${CI_COMMIT_SHORT_SHA}\""
+    - /usr/bin/jq "$JQ_QUERY" < dist.json > updated.json
+    - CFDIST_ETAG=$(jq -r '.ETag' < dist.json)
+    - /usr/bin/jq .DistributionConfig < updated.json > new-dist-config.json
+    - cat new-dist-config.json
+    - echo $CFDIST_ETAG
+    - aws cloudfront update-distribution --id $PROD_CLOUDFRONT --distribution-config file://new-dist-config.json --if-match ${CFDIST_ETAG}
   only: ['production']
