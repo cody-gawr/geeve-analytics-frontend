@@ -28,8 +28,7 @@ deploy_test:
   stage: deploy
   before_script:
     - pip install awscli
-    - apt-get install jq
-    - yum install jq
+    - pip install jq
   script:
     - echo "test - Update AWS Keys"
     - export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID
