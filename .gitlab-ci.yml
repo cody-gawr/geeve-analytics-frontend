@@ -11,7 +11,7 @@ before_script:
   - npm install
   - npm audit fix --production
 
-   # Make test Build///
+   # Make test Build
 build_test: 
   stage: build
   script:
@@ -28,7 +28,9 @@ deploy_test:
   stage: deploy
   before_script:
     - pip install awscli
-    - pip install jq
+    # install jq
+    - wget -O /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+    - chmod u+x /usr/bin/jq
   script:
     - echo "test - Update AWS Keys"
     - export AWS_ACCESS_KEY_ID=$TEST_AWS_ACCESS_KEY_ID
@@ -41,9 +43,9 @@ deploy_test:
     - echo "test - Update Cloudfront Distribution to point to new deployment"
     - aws cloudfront get-distribution-config --id $TEST_CLOUDFRONT > dist.json
     - JQ_QUERY=".DistributionConfig.Origins.Items[0].OriginPath = \"/$CI_JOB_STARTED_AT/$CI_COMMIT_SHORT_SHA\""
-    - /bin/jq "$JQ_QUERY" < dist.json > updated.json
+    - /usr/bin/jq "$JQ_QUERY" < dist.json > updated.json
     - CFDIST_ETAG=$(jq -r '.ETag' < dist.json)
-    - /bin/jq .DistributionConfig < updated.json > new-dist-config.json
+    - /usr/bin/jq .DistributionConfig < updated.json > new-dist-config.json
     - cat new-dist-config.json
     - echo $CFDIST_ETAG
     - aws cloudfront update-distribution --id $TEST_CLOUDFRONT --distribution-config file://new-dist-config.json --if-match ${CFDIST_ETAG}
