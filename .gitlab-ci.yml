@@ -37,12 +37,12 @@ deploy_test:
     - export AWS_SECRET_ACCESS_KEY=$TEST_AWS_SECRET_ACCESS_KEY
     - echo "test - Deploy to S3"    
     - aws s3api put-public-access-block --bucket $TEST_S3  --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
-    - aws s3 sync ./dist s3://$TEST_S3/$CI_JOB_STARTED_AT/$CI_COMMIT_SHORT_SHA --acl=public-read --delete
+    - aws s3 sync ./dist s3://$TEST_S3/${CI_JOB_STARTED_AT}_${CI_COMMIT_SHORT_SHA} --acl=public-read --delete
     - aws s3api put-public-access-block --bucket $TEST_S3  --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
     # https://medium.com/build-succeeded/front-end-deployments-in-aws-with-dev-prod-promotion-support-with-full-ci-cd-pipeline-959f3ce1ceab
     - echo "test - Update Cloudfront Distribution to point to new deployment"
     - aws cloudfront get-distribution-config --id $TEST_CLOUDFRONT > dist.json
-    - JQ_QUERY=".DistributionConfig.Origins.Items[0].OriginPath = \"/$CI_JOB_STARTED_AT/$CI_COMMIT_SHORT_SHA\""
+    - JQ_QUERY=".DistributionConfig.Origins.Items[0].OriginPath = \"/${CI_JOB_STARTED_AT}_${CI_COMMIT_SHORT_SHA}\""
     - /usr/bin/jq "$JQ_QUERY" < dist.json > updated.json
     - CFDIST_ETAG=$(jq -r '.ETag' < dist.json)
     - /usr/bin/jq .DistributionConfig < updated.json > new-dist-config.json
