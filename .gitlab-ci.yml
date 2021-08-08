@@ -146,6 +146,9 @@ deploy_production:
   stage: deploy
   before_script:
     - pip install awscli 
+    # install jq
+    - wget -O /usr/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+    - chmod u+x /usr/bin/jq 
   script:
     - echo "Production - Update AWS Keys"
     - export AWS_ACCESS_KEY_ID=$PROD_AWS_ACCESS_KEY_ID
