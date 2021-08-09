@@ -49,6 +49,9 @@ deploy_test:
     - cat new-dist-config.json
     - echo $CFDIST_ETAG
     - aws cloudfront update-distribution --id $TEST_CLOUDFRONT --distribution-config file://new-dist-config.json --if-match ${CFDIST_ETAG}
+    - echo "test - Invalidate Cloudfront"
+    - aws cloudfront create-invalidation --distribution-id $TEST_CLOUDFRONT --paths "/*"
+
   only: ['test']
   
   # Make Staging Build
@@ -88,6 +91,8 @@ deploy_staging:
     - cat new-dist-config.json
     - echo $CFDIST_ETAG
     - aws cloudfront update-distribution --id $STAGING_CLOUDFRONT --distribution-config file://new-dist-config.json --if-match ${CFDIST_ETAG}
+    - echo "Staging - Invalidate Cloudfront"
+    - aws cloudfront create-invalidation --distribution-id $STAGING_CLOUDFRONT --paths "/*"
   only: ['staging']
 
 # Make Dev Build
@@ -127,6 +132,8 @@ deploy_dev:
     - cat new-dist-config.json
     - echo $CFDIST_ETAG
     - aws cloudfront update-distribution --id $STAGING_CLOUDFRONT --distribution-config file://new-dist-config.json --if-match ${CFDIST_ETAG}
+    - echo "Design - Invalidate Cloudfront"
+    - aws cloudfront create-invalidation --distribution-id $STAGING_CLOUDFRONT --paths "/*"
   only: ['design']
 
 # Make Production Build
@@ -166,4 +173,6 @@ deploy_production:
     - cat new-dist-config.json
     - echo $CFDIST_ETAG
     - aws cloudfront update-distribution --id $PROD_CLOUDFRONT --distribution-config file://new-dist-config.json --if-match ${CFDIST_ETAG}
+    - echo "Production - Invalidate Cloudfront"
+    - aws cloudfront create-invalidation --distribution-id $PROD_CLOUDFRONT --paths "/*"
   only: ['production']
