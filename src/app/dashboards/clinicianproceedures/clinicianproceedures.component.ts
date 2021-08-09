@@ -45,7 +45,8 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
     public childid='';
     public trendText;
     public Apirequest =0;
-      public charTips:any = [];
+    public charTips:any = [];
+    public userPlan:any = '';
     private _routerSub = Subscription.EMPTY;
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
@@ -103,6 +104,11 @@ export class ClinicianProceeduresComponent implements AfterViewInit, OnDestroy {
   initiate_clinic() {
     // $('.internal_dentist').val('all');
     // $('.external_dentist').val('all');
+    this.userPlan =  this._cookieService.get("user_plan"); 
+    if(this.userPlan == 'lite')
+    {
+       this.router.navigateByUrl('/login');
+    }
     var val = $('#currentClinic').attr('cid');
      if(val != undefined && val !='all') {
     this.clinic_id = val;

@@ -8,7 +8,7 @@
 <div class="roleTip" *ngIf="showtooltip" >
   <div class="roleTipCon">
       <h1>{{data.permisions.title}}</h1>
-      <div *ngFor="let rl of data.permisions.info">
+      <div *ngFor="let rl of data.permisions.info" class="perCon">
           <h2>{{ rl.role }}</h2>
           <h5 *ngFor="let prms of rl.permisions">{{ rolesAll[prms] }}</h5>
       </div>

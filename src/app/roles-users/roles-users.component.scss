@@ -84,3 +84,6 @@
 .roleTipCon h5:after {
     content: ",";
 }
+.perCon h5:last-child:after {
+    display: none;
+}

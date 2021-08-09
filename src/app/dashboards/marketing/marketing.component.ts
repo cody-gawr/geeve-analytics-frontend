@@ -70,6 +70,7 @@ export class MarketingComponent implements AfterViewInit {
   public newPatientsReferral$ = new BehaviorSubject<number>(0);
   public revenueByReferralCount$ = new BehaviorSubject<number>(0);
   public charTips:any = [];
+   public userPlan:any = '';
     chartData1 = [{ data: [330, 600, 260, 700], label: 'Account A' }];
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   pluginObservable$: Observable<PluginServiceGlobalRegistrationAndOptions[]>;
@@ -100,6 +101,11 @@ export class MarketingComponent implements AfterViewInit {
   private warningMessage: string; 
   private myTemplate: any = "";
   async initiate_clinic() {
+    this.userPlan =  this._cookieService.get("user_plan"); 
+    if(this.userPlan == 'lite')
+    {
+       this.router.navigateByUrl('/login');
+    }
     this.getRolesIndividual();
     var val = $('#currentClinic').attr('cid');
     if(val != undefined && val !='all') {

@@ -280,13 +280,13 @@ export class ClinicSettingsComponent implements OnInit {
         else {
           this.xeroConnect = false;
            this.xeroOrganization = '';          
-          this.disconnectXero();
+          //this.disconnectXero();
         }
        }
        else {
         this.xeroConnect = false;
            this.xeroOrganization = ''; 
-          this.disconnectXero();
+          //this.disconnectXero();
       }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -304,13 +304,13 @@ export class ClinicSettingsComponent implements OnInit {
       else {
         this.myobConnect = false;
          this.myobOrganization = '';          
-        this.disconnectMyob();
+        //this.disconnectMyob();
       }
      }
      else {
       this.myobConnect = false;
          this.myobOrganization = ''; 
-        this.disconnectMyob();
+        //this.disconnectMyob();
     }
   }, error => {
     this.warningMessage = "Please Provide Valid Inputs!";

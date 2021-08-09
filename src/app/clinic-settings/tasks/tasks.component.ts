@@ -140,7 +140,8 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
   getTasks(id) {
     this.taskService.getTasks(id).subscribe((res) => {
       if (res.message == 'success') {        
-        this.tasksList.data = res.data;      
+        this.tasksList.data = res.data;        
+        this.setPaginationButtons(res.data.length);
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();
