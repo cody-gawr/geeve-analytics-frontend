@@ -726,7 +726,7 @@ expenses_card custom_ngx_cw01">
                 </div>
               </mat-card-title>
 
-              <div *ngIf="(xeroConnect || myobConnect) && expensestrendstats == true" class="card-body sa_chart_summary_flip_main">
+              <div *ngIf="(xeroConnect || myobConnect) && expensestrendstats == true && !expensesChartTrendError" class="card-body sa_chart_summary_flip_main">
                 <div class=" sa_chart_summary_flip">
                   <div class="chart sa_chart_flip sa_flip">
                     <div style="height: 280px;">
@@ -748,11 +748,11 @@ expenses_card custom_ngx_cw01">
                 </div>
               </div>
 
-            <div *ngIf="(xeroConnect || myobConnect) && expensestrendstats == false"
+            <div *ngIf="(xeroConnect || myobConnect) && expensestrendstats == false && !expensesChartTrendError"
             class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif">
             <div class="loader-text">Calculating...</div>
           </div>
-          <div *ngIf="!xeroConnect && !myobConnect" class="no-data-placeholder">
+          <div *ngIf="(!xeroConnect && !myobConnect) || expensesChartTrendError" class="no-data-placeholder">
             <div class="sa_nodata_div">
             </div>
             <p class="chart-placeholder-text">Please connect to Xero/MYOB to display this chart</p>

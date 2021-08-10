@@ -395,7 +395,8 @@ table.customWidth.thick, table.customWidth.PostOp {
 .historyTip td {
     margin: 0px;
     color: #000000;
-    font-size: 14px;
+    font-size: 13px;
+    font-family: monospace;
 }
 .historyTip .custom-tooltip::after {  
     border-left: 8px solid transparent;

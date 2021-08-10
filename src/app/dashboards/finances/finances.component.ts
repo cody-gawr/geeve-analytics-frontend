@@ -2798,10 +2798,12 @@ private finTotalDiscountsTrend() {
     ];
     public expensesChartTrendLabels =[];
     public expensesChartTrendLabels1 =[];
+    public expensesChartTrendError:boolean = false;
 
     private finExpensesByCategoryTrend() {
       this.expensesChartTrendLabels=[];
       this.expensesChartTrend =[];
+      this.expensesChartTrendError = false;
       this.financesService.finExpensesByCategoryTrend(this.clinic_id,this.trendValue,this.connectedwith).subscribe((data) => {
        this.Apirequest =  this.Apirequest-1;
         if(data.message == 'success'){
@@ -2821,6 +2823,7 @@ private finTotalDiscountsTrend() {
           this.expensesChartTrendLabels = data.data.duration;
         }
       }, error => {
+        this.expensesChartTrendError = true;
         this.warningMessage = "Please Provide Valid Inputs!";
 
       });

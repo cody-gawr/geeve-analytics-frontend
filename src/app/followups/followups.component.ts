@@ -761,9 +761,9 @@ initiate_clinic() {
       history.forEach( (tip) => {
         let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
         if(typeof( statusSpe[tip.status]) != 'undefined'){
-            html += '<tr><td width="28%">'+date+':</td><td> '+statusSpe[tip.status]+'</td></tr>'
+            html += '<tr><td width="35%">'+date+':</td><td> '+statusSpe[tip.status]+'</td></tr>'
         } else {
-            html += '<tr><td width="28%">'+date+':</td><td> '+tip.status+'</td></tr>'
+            html += '<tr><td width="35%">'+date+':</td><td> '+tip.status+'</td></tr>'
         }
       });
       html +='</table>';
