@@ -116,7 +116,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       {
         if(this.activeDentist >= 2 || !event.target.checked)
         {
-          this.toastr.error('Opps, Please contact with support team');
+          this.toastr.error('Please contact the Jeeve support team to change your dentist selections');
           $(event.target).prop( "checked", !event.target.checked )
           return false;
         }        
