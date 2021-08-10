@@ -78,7 +78,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   }
 
   getDentists(id) {
-    this.dentistService.getDentists(id).subscribe((res) => {
+    this.dentistService.getDentists(id,1).subscribe((res) => {
       if (res.message == 'success') {
         this.dentistList.data = res.data;
         this.setPaginationButtons(this.dentistList.data.length);
