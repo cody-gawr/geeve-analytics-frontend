@@ -933,6 +933,7 @@ public labelBarPercentOptions: any = {
               function getBody(bodyItem) {
               return bodyItem.lines;
             }
+            var bodyLineCont = 0;
             if (tooltip.body) {
               var titleLines = tooltip.title || [];
               var bodyLines = tooltip.body.map(getBody);
@@ -946,21 +947,23 @@ public labelBarPercentOptions: any = {
                 if(body[0].includes("100%"))
                 {
                    innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
+                   bodyLineCont = bodyLineCont +1;
                 } else if(!body[0].includes("0%"))
                 {
                    innerHtml += '<tr><td class="td-custom-tooltip-color"><span class="custom-tooltip-color" style="background:'+labelColorscustom[i].backgroundColor+'"></span></td><td style="padding: 0px">'+body[0]+'</td></tr>';
+                   bodyLineCont = bodyLineCont +1;
                 }
               });
               innerHtml += '</tbody></table>';
               tooltipEl.innerHTML = innerHtml;
               //tableRoot.innerHTML = innerHtml;
-            }       
+            }   
         // disable displaying the color box;
             var position = this._chart.canvas.getBoundingClientRect();
             // Display, position, and set styles for font
             tooltipEl.style.position = 'fixed';
-            tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 50) + 'px';
-            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - 70) + 'px';
+            tooltipEl.style.left = ((position.left + window.pageXOffset + tooltip.caretX) - 80) + 'px';
+            tooltipEl.style.top = ((position.top + window.pageYOffset + tooltip.caretY) - (70 + ( bodyLineCont * 15) ) ) + 'px';
             tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
             tooltipEl.style.fontSize = tooltip.bodyFontSize + 'px';
             tooltipEl.style.fontStyle = tooltip._bodyFontStyle;
