@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
         this.rolesUsersService.getRolesIndividual().subscribe((res) => {
           if(res.message == 'success'){ 
             permision = res.data;
-            if(permision != '' && user_type != '2'){                            
+            if(permision != '' && user_type != '2'){
               if(permision.indexOf('healthscreen') >= 0){
                   this.router.navigate(['/dashboards/healthscreen']);
               } else if(permision.indexOf('dashboard1') >= 0){
@@ -126,7 +126,9 @@ onSubmit() {
                 permision = dt['permisions'];                
               }                
             });
-            if(permision != ''){                            
+            if(res.plan == 'lite'){
+              this.router.navigate(['/dashboards/healthscreen']);
+            } else if(permision != ''){                            
               if(permision.indexOf('healthscreen') >= 0){
                   this.router.navigate(['/dashboards/healthscreen']);
               } else if(permision.indexOf('dashboard1') >= 0){
