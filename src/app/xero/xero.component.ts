@@ -21,7 +21,16 @@ export class XeroComponent implements OnInit {
   public errorLogin = false;
   public saleSite = 'https://test-signup.jeeve.com.au/subscription';
   private apiUrl = environment.apiUrl;
-  constructor(private fb: FormBuilder, private router: Router, private xeroService: XeroService,private _cookieService: CookieService,public constants: AppConstants) {}
+  public  xeroVar:any = '';
+  constructor(private fb: FormBuilder, private router: Router, private xeroService: XeroService,private _cookieService: CookieService,public constants: AppConstants) {
+      if(this.apiUrl.includes('staging-')){
+        this.xeroVar = 'x30jeevestaging';
+      } else if(this.apiUrl.includes('test-')){
+        this.xeroVar = 'x30jeevetest';
+      } else {
+        this.xeroVar = 'x30jeeveanalytics';
+      }
+  }
 
   ngOnInit() {
     if(this.apiUrl.indexOf('test-') >= 0){
