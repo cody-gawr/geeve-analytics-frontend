@@ -53,12 +53,19 @@ export class DentistService {
     }
 
     // Update Dentist
-    updateDentists(dentist_id, value,clinic_id, isActive = null, token = this._cookieService.get("token")): Observable<any> {
+    updateDentists(dentist_id, value,clinic_id, isActive = null,jeeveId='', token = this._cookieService.get("token")): Observable<any> {
     const formData = new FormData();
 
-    formData.append('provider_id', dentist_id);
-    formData.append('name', value);
     formData.append('clinic_id',clinic_id);
+    formData.append('provider_id', dentist_id);
+    
+    if(jeeveId != ''){
+        jeeveId = (jeeveId == 'null')? '' : jeeveId;
+        formData.append('jeeve_id',jeeveId);
+    }   
+    if(typeof(value) != 'undefined' && value != '') {
+      formData.append('name', value);
+    }
     if(isActive != null){
         formData.append('is_active',isActive);
     }

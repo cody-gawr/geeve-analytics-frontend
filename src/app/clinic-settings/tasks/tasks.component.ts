@@ -12,6 +12,7 @@ import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog
 import { ClinicSettingsService } from '../clinic-settings.service';
 import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
 import Swal from 'sweetalert2';
+import {MatSort} from '@angular/material/sort';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   templateUrl: './dialog-overview-example.html',
@@ -20,7 +21,7 @@ import Swal from 'sweetalert2';
 })
 
 
-export class DialogOverviewExampleDialogComponent { 
+export class DialogOverviewExampleDialogComponent {    
   constructor(public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private taskService: TaskService, private router: Router) {}
   
   onNoClick(): void {
@@ -64,6 +65,8 @@ export class DialogOverviewExampleDialogComponent {
   styleUrls: ['./tasks.component.css']
 })
 export class TasksComponent extends BaseComponent implements AfterViewInit {
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   clinic_id$ = new BehaviorSubject<any>(null);
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
@@ -77,7 +80,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
   editing = {};
   clinicData:any = [];
   dailyTaskEnable: boolean = false;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  
 
   constructor(
     private _cookieService: CookieService,
@@ -92,6 +95,7 @@ export class TasksComponent extends BaseComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+      this.tasksList.sort = this.sort;
     this.tasksList.paginator = this.paginator;
     this.clinic_id$.pipe(
       takeUntil(this.destroyed$)

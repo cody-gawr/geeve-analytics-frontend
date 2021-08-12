@@ -146,7 +146,14 @@
             </mat-list-item>           
         </mat-nav-list> 
     </ng-template>   
-</mat-list-item>   
+</mat-list-item>  
+  <mat-list-item appAccordionLink routerLinkActive ="selected" group="string" *ngIf="(user_type == 2) || (permisions.indexOf('healthscreen') >= 0)">
+         <a appAccordionToggle href="https://jeeve.crunch.help/jeeve-analytics" target="_blank">
+           <i class="fas fa-question"></i>
+            <span>Help</span>
+            <span fxFlex></span>
+        </a>
+    </mat-list-item> 
 <div class="sa_logout_icon" (click) = "logout()">
     <button mat-icon-button >
         <img class="logout-icon" src="assets/images/logout.png" alt="logout-icon" />Logout

@@ -24,7 +24,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['providerId', 'name','is_active'];
+  displayedColumns: string[] = ['providerId', 'name','jeeve_provider_id','is_active'];
+  jeeveProviderIds: any = [];
   editing = {};
   public userPlan:any = 'lite';
   public activeDentist:any = 0;
@@ -80,6 +81,10 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   getDentists(id) {
     this.dentistService.getDentists(id,1).subscribe((res) => {
       if (res.message == 'success') {
+        for(let i = 1; i <= res.data.length; i++){
+          this.jeeveProviderIds.push({'id':i, 'name': 'Jeeve Provider '+i});
+        }
+
         this.dentistList.data = res.data;
         this.setPaginationButtons(this.dentistList.data.length);
         let activeDnt:any = res.data.filter(p => p.is_active == 1);  
@@ -104,11 +109,20 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
 
   updateValue(event, column, index,providerId, updatedValue) 
   {  
-
+    if(event.type == 'keyup' &&  event.keyCode != 13 && column == 'name')
+    {
+      return false;
+    }
     if(column == 'name')
     {
       updatedValue = event.target.value;           
     }
+    var jeeveId = '';
+    if(column == 'jeeve_id')
+    {
+      jeeveId =  event.target.value;           
+    }
+
     var isActive = null;
     if(column == 'is_active')
     {
@@ -127,7 +141,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         isActive = 1;
       }
     }
-    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive)
+    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive,jeeveId)
       .pipe(
         takeUntil(this.destroyed$)
       )

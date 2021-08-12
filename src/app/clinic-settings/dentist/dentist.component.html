@@ -50,10 +50,24 @@
             <input 
               autoFocus 
               (blur)="updateValue($event, 'name', i,element.providerId,element.name)"
+              (keyup)="updateValue($event, 'name', i,element.providerId,element.name)"
               *ngIf="editing[i+ '-name']" 
               type="text" 
               [value]="element.name"
             />
+          </td>
+        </ng-container>
+
+         <ng-container matColumnDef="jeeve_provider_id">
+          <th mat-header-cell *matHeaderCellDef>Jeeve Provider ID</th>
+          <td mat-cell *matCellDef="let element; let i=index">            
+             <div class="jeeveProviderIdDrop sa_forms_design">
+                    <select placeholder="None"  id="setNote"
+                      (change)="updateValue($event, 'jeeve_id', i,element.providerId,element.name)">
+                      <option value="null">None</option>
+                      <option [selected]="element.jeeve_id == jeeveProviderId.id" value="{{jeeveProviderId.id}}" *ngFor="let jeeveProviderId of jeeveProviderIds">{{jeeveProviderId.name}}</option>
+                    </select>
+                  </div>
           </td>
         </ng-container>
 

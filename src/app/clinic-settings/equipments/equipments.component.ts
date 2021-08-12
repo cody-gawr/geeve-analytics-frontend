@@ -11,6 +11,8 @@ import { BaseComponent } from '../base/base.component';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { ClinicianAnalysisService } from '../../dashboards/cliniciananalysis/cliniciananalysis.service';
 import { ClinicSettingsService } from '../clinic-settings.service';
+import {MatSort} from '@angular/material/sort';
+
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dialog-overview-example-dialog',
@@ -64,6 +66,8 @@ export class DialogOverviewExampleComponent {
   styleUrls: ['./equipments.component.css']
 })
 export class EquipmentComponent extends BaseComponent implements AfterViewInit {
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
   clinic_id$ = new BehaviorSubject<any>(null);
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
@@ -73,12 +77,12 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   itemList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['task_name','quantity','active','action'];
+  displayedColumns: string[] = ['equip_item','quantity','active','action'];
   editing = {};
   clinicData:any = [];
   EquipListEnable: boolean = false;
   EquipListloader: boolean = false;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+
 
   constructor(
     private _cookieService: CookieService,
@@ -93,6 +97,7 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.itemList.sort = this.sort;
     this.itemList.paginator = this.paginator;
     this.clinic_id$.pipe(
       takeUntil(this.destroyed$)
