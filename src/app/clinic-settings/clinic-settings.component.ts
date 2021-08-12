@@ -280,12 +280,14 @@ export class ClinicSettingsComponent implements OnInit {
         else {
           this.xeroConnect = false;
            this.xeroOrganization = '';          
+           this.getXeroLink();
           //this.disconnectXero();
         }
        }
        else {
         this.xeroConnect = false;
            this.xeroOrganization = ''; 
+           this.getXeroLink();
           //this.disconnectXero();
       }
     }, error => {
@@ -296,6 +298,7 @@ export class ClinicSettingsComponent implements OnInit {
  public checkMyobStatus(){
   this.clinicSettingsService.checkMyobStatus(this.id).subscribe((res) => {
      if(res.message == 'success'){
+        
       if(res.data.myob_connect == 1) {
         this.myobConnect = true;
         this.myobOrganization = res.data.Name;
@@ -304,10 +307,12 @@ export class ClinicSettingsComponent implements OnInit {
       else {
         this.myobConnect = false;
          this.myobOrganization = '';          
+         this.getMyobLink();
         //this.disconnectMyob();
       }
      }
      else {
+      this.getMyobLink();
       this.myobConnect = false;
          this.myobOrganization = ''; 
         //this.disconnectMyob();
