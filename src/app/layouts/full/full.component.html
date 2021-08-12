@@ -18,7 +18,7 @@
         <!-- ============================================================== -->
         <mat-sidenav #snav id="snav" class="pl-xs" [mode]="mobileQuery.matches ? 'side' : 'over'" fixedTopGap="0"
             [opened]="mobileQuery.matches" [disableClose]="mobileQuery.matches" (open)="sidebarOpened = true" (close)="sidebarOpened = false"
-            [perfectScrollbar]="config">
+            [perfectScrollbar]="config" (click) ="clickEventSideMenu()">
 
             <app-sidebar class="app-sidebar"></app-sidebar>
 

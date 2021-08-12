@@ -35,7 +35,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   danger: boolean;
   showHide: boolean;
   sidebarOpened;
-
+ 
   public config: PerfectScrollbarConfigInterface = {};
   private _mobileQueryListener: () => void;
   public clinicsData:any[] = [];
@@ -136,6 +136,10 @@ else if(window.screenTop==0)
       /* IE/Edge */
       this.document.msExitFullscreen();
     }
+  }
+
+  clickEventSideMenu(){
+    $('mat-sidenav').scrollTop(10);
   }
 
   // Mini sidebar
