@@ -8,13 +8,14 @@ import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DentistService } from '../../dentist/dentist.service';
 import { BaseComponent } from '../base/base.component';
-
+import {MatSort} from '@angular/material/sort';
 @Component({
   selector: 'app-dentist-settings',
   templateUrl: './dentist.component.html',
   styleUrls: ['./dentist.component.css']
 })
 export class DentistComponent extends BaseComponent implements AfterViewInit {
+   @ViewChild(MatSort) sort: MatSort;
   clinic_id$ = new BehaviorSubject<any>(null);
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
@@ -24,7 +25,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['providerId', 'name','jeeve_provider_id','is_active'];
+  displayedColumns: string[] = ['providerId', 'name','jeeve_id','is_active'];
   jeeveProviderIds: any = [];
   editing = {};
   public userPlan:any = 'lite';
@@ -43,6 +44,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.userPlan =  this._cookieService.get("user_plan"); 
     this.dentistList.paginator = this.paginator;
+    this.dentistList.sort = this.sort;
     this.clinic_id$.pipe(
       takeUntil(this.destroyed$)
     ).subscribe(id => {
