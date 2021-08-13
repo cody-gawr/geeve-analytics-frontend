@@ -149,7 +149,9 @@ export class EquipmentComponent extends BaseComponent implements AfterViewInit {
     this.equipmentsService.getItems(id).subscribe((res) => {
         this.EquipListloader = false;
       if (res.message == 'success') {
-        this.itemList.data = res.data;               
+        this.itemList.data = res.data;
+        this.setPaginationButtons(res.data.length);
+               
       }
       else if (res.status == '401') {
         this.handleUnAuthorization();
