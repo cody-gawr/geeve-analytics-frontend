@@ -48,6 +48,7 @@ export class FollowupsComponent implements AfterViewInit {
         ticks: {
           autoSkip: false,
           userCallback: (label: string) => {
+            return label;
             /*const names = this.splitName(label);
             if (names.length > 1) {
               return `${names[0][0]} ${names[1]}`
@@ -61,7 +62,7 @@ export class FollowupsComponent implements AfterViewInit {
           userCallback: (label, index, labels) => {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-              return '$' + this.decimalPipe.transform(label);
+              return this.decimalPipe.transform(label);
             }
 
           },
@@ -75,7 +76,64 @@ export class FollowupsComponent implements AfterViewInit {
       cornerRadius: 0,
       callbacks: {
         label: (tooltipItem) => {
-          return this.splitName(tooltipItem.xLabel).join(' ') + ": $" + this.decimalPipe.transform(tooltipItem.yLabel);
+          return this.splitName(tooltipItem.xLabel).join(' ') + ": " + this.decimalPipe.transform(tooltipItem.yLabel);
+        },
+        title: function () {
+          return;
+        }
+      }
+    }
+  };
+
+  public barChartOptions1: any = {
+    borderRadius: 50,
+    hover: {mode: null},
+    scaleShowVerticalLines: false,
+    cornerRadius: 60,
+    curvature: 1,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutSine'
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: true
+        },
+        ticks: {
+          autoSkip: false,
+          userCallback: (label: string) => {
+            return label;
+            /*const names = this.splitName(label);
+            if (names.length > 1) {
+              return `${names[0][0]} ${names[1]}`
+            } else return `${names[0]}`;*/
+          }
+        },
+      }],
+      yAxes: [{
+        ticks: {
+          suggestedMin: 0,
+          userCallback: (label, index, labels) => {
+            // when the floored value is the same as the value we have a whole number
+            if (Math.floor(label) === label) {
+              return this.decimalPipe.transform(label)+'%';
+            }
+
+          },
+        },
+        gridLines: {}
+      }],
+    },
+    tooltips: {
+      mode: 'x-axis',
+      bodyFontFamily: 'Gilroy-Regular',
+      cornerRadius: 0,
+      callbacks: {
+        label: (tooltipItem) => {
+          return this.splitName(tooltipItem.xLabel).join(' ') + ": " + this.decimalPipe.transform(tooltipItem.yLabel)+'%';
         },
         title: function () {
           return;
@@ -99,7 +157,7 @@ export class FollowupsComponent implements AfterViewInit {
   ngAfterViewInit(){
     $('#title').html('<span>Follow Ups</span>');
     //
-    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
+    /*$('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );*/
 
   }
   splitName(name: string) {
@@ -112,6 +170,7 @@ export class FollowupsComponent implements AfterViewInit {
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
       this.filterDate(this.chartService.duration$.value);
+      $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
     }
   }
 
@@ -450,5 +509,9 @@ export class FollowupsComponent implements AfterViewInit {
         this.charTips = data.data;
        }
     }, error => {});
+  }
+
+  followupOutcomeTab(number){
+
   }
 }

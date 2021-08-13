@@ -1203,6 +1203,9 @@
                  <ng-container matColumnDef="book">
                 <th mat-header-cell *matHeaderCellDef>Notes</th>
                 <td mat-cell *matCellDef="let element">
+                  <span  (mouseover)="historyPos($event)"  class="info-icon-container tick historyTip">
+                    <i  [tooltip]="{'title' : !element.notes? 'Add Notes' : 'Edit Notes' }" [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date,element.followup_date,'recall-overdue')"></i>
+                  </span>
                   <div class="historyTip">
                     <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)" class="fa fa-history" *ngIf="element.history.length > 0"></i>
                   </div>
@@ -1781,11 +1784,11 @@
               <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
             </div>
-            <table fxHide fxShow.gt-sm mat-table [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.length == 0)? 'noDataTableClass' : ''" > 
+            <table mat-table matSort [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.data.length == 0)? 'noDataTableClass' : ''" > 
               <!-- Name Column -->
-               <ng-container matColumnDef="item">
-                <th mat-header-cell *matHeaderCellDef> Item </th>
-                <td mat-cell *matCellDef="let element"> {{element.list.equip_item }} </td>
+               <ng-container matColumnDef="equip_item">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Item </th>
+                <td  mat-cell *matCellDef="let element; let i=index"> {{element.equip_item }} </td>
               </ng-container>
               <ng-container matColumnDef="quantity">
                 <th mat-header-cell *matHeaderCellDef> Quantity </th>
@@ -1813,9 +1816,9 @@
               <tr mat-header-row *matHeaderRowDef="displayedColumns10"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns10;"></tr>
                 <mat-footer-row *matFooterRowDef="['isDataAvailable9']"
-                [ngClass]="(lquipmentList.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+                [ngClass]="(lquipmentList.data.length <= 0)? 'show' : 'hide'"></mat-footer-row>
             </table>
-             <table class="ListButtons" *ngIf="lquipmentList.length > 0">
+             <table class="ListButtons" *ngIf="lquipmentList.data.length > 0">
                 <tr>
                   <td width="50%">&nbsp;</td>
                   <td width="20%">&nbsp;</td>

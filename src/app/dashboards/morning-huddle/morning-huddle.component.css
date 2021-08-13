@@ -497,3 +497,4 @@ table.noDataTableClass mat-footer-row {
     font-family: sans-serif;
     color: #000;
 }
+table.history td.notes {padding-right: 4%;text-align: right;}

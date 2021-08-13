@@ -606,6 +606,8 @@ initiate_clinic() {
     dialogRef.afterClosed().subscribe(result => {    
       if(type == 'tick-follower'){
         this.getTickFollowups('close');
+      } else if(type == 'recall-overdue'){
+        this.getOverdueRecalls('close');
       } else {
         this.getFtaFollowups('close');        
       }      
@@ -756,14 +758,17 @@ initiate_clinic() {
 
   formatHistory(history)
   {
-      let html ='<table>';
+      let html ='<table class="history">';
       let statusSpe= {'Did not want to book':'Didn’t want to book','Cant be reached': 'Can\'t be reached', 'Cant be reached - left':'Can\'t be reached - left voicemail'};
       history.forEach( (tip) => {
         let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
         if(typeof( statusSpe[tip.status]) != 'undefined'){
-            html += '<tr><td width="35%">'+date+':</td><td> '+statusSpe[tip.status]+'</td></tr>'
+            html += '<tr><td width="35%">'+date+':</td><td> '+statusSpe[tip.status]+'</td></tr>';
         } else {
-            html += '<tr><td width="35%">'+date+':</td><td> '+tip.status+'</td></tr>'
+            html += '<tr><td width="35%">'+date+':</td><td> '+tip.status+'</td></tr>';
+        }
+        if(tip.notes && tip.notes !='' && tip.notes !='null'){
+            html += '<tr><td  class="notes" width="35%">Notes:</td><td> '+tip.notes+'</td></tr>';
         }
       });
       html +='</table>';

@@ -67,6 +67,9 @@
               <ng-container matColumnDef="book">
                 <th mat-header-cell *matHeaderCellDef>Notes</th>
                 <td mat-cell *matCellDef="let element">
+                  <span  (mouseover)="historyPos($event)"  class="info-icon-container tick historyTip">
+                    <i  [tooltip]="{'title' : !element.notes? 'Add Notes' : 'Edit Notes' }" [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date,element.followup_date,'recall-overdue')"></i>
+                  </span>
                   <div class="historyTip">
                     <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)" class="fa fa-history" *ngIf="element.history.length > 0"></i>
                   </div>

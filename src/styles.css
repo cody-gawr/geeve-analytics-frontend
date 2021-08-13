@@ -5014,3 +5014,10 @@ ul.download-sync-list {
 input[type="checkbox"] {
     cursor: pointer;
 }
+mat-sidenav:hover .ps__thumb-y {
+     background-color: #e9f1ee !important;
+ }
+
+ .ps__thumb-y {
+     background-color: transparent !important;
+ }

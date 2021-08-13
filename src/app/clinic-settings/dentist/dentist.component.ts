@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild,ViewEncapsulation,Inject } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -9,6 +9,52 @@ import { takeUntil } from 'rxjs/operators';
 import { DentistService } from '../../dentist/dentist.service';
 import { BaseComponent } from '../base/base.component';
 import {MatSort} from '@angular/material/sort';
+import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+/************* Add Jeeve Names ***********/
+  
+@Component({
+  selector: 'add-jeeve-name',
+  templateUrl: './add-jeeve-name.html',
+  encapsulation: ViewEncapsulation.None
+})
+
+export class AddJeeveNameComponent
+{ 
+  public jeeveId:any = 1;
+  public jeeveName:any = '';
+  constructor(public dialogRef: MatDialogRef<AddJeeveNameComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router, private dentistService: DentistService ){}
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+  updatevalue(event, type)
+  {
+    if(type == 'id')
+    {
+      this.jeeveId = event.target.value;
+    } else {
+      this.jeeveName = $.trim(event.target.value);
+    }
+  }
+
+  save(data){
+    if(this.jeeveName != ''){
+     this.dentistService.updateJeeveName(data.clinic_id, this.jeeveId, this.jeeveName).subscribe((res) => {
+        if(res.message == 'success')
+        {
+          this.dialogRef.close();
+        }
+      }, error => {
+        console.log('error', error)
+      });    
+    }
+  }
+}
+
+/************* Add Jeeve Names ***********/
+
+
+
+
 @Component({
   selector: 'app-dentist-settings',
   templateUrl: './dentist.component.html',
@@ -20,6 +66,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
   }
+  public advanceOption:boolean = false;
   dentistPageSize = 10;
   dentistTablePages: number[] = [];
   currentPage: number = 1;
@@ -36,7 +83,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     private _cookieService: CookieService,
     private dentistService: DentistService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+     public dialog: MatDialog,
   ) {
     super();
   }
@@ -53,7 +101,9 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       }
     })
   }
-
+  advanceToggle(event){
+    this.advanceOption = event.checked;
+  }
   handleUnAuthorization() {
     this._cookieService.put("username", '');
     this._cookieService.put("email", '');
@@ -83,7 +133,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   getDentists(id) {
     this.dentistService.getDentists(id,1).subscribe((res) => {
       if (res.message == 'success') {
-        for(let i = 1; i <= res.data.length; i++){
+        this.jeeveProviderIds = [];
+        for(let i = 1; i <= 9; i++){
           this.jeeveProviderIds.push({'id':i, 'name': 'Jeeve Provider '+i});
         }
 
@@ -156,5 +207,16 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       }, (error) => {
         this.toastr.error('Opps, Error occurs in updating dentist!');
       });  
+    }
+
+    openSetJeeveName()
+    {
+      const dialogRef = this.dialog.open(AddJeeveNameComponent, {
+        width: '650px',
+        data: { clinic_id: this.clinic_id$.value }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        this.getDentists(this.clinic_id$.value);
+      }); 
     }
 }

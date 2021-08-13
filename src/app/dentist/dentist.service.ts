@@ -102,4 +102,14 @@ export class DentistService {
                     })
         );
     }
+
+    updateJeeveName(clinic_id, jeeve_id, jeeve_name): Observable<any>
+    {
+        const formData = new FormData();
+        formData.append('clinic_id', clinic_id);
+        formData.append('jeeve_id', jeeve_id);
+        formData.append('jeeve_name', jeeve_name);
+        var header = this.getHeaders();
+        return this.http.post(this.apiUrl +"/Dentists/updateJeeveName", formData, { headers: header }).pipe(map((response: Response) => { return response; }));
+    }
 }

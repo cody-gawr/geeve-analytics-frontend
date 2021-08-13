@@ -13,6 +13,7 @@ import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 import { AppConstants } from '../../app.constants';
 import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
 import { ChartstipsService } from '../../shared/chartstips.service';
+import {MatSort} from '@angular/material/sort';
 export interface PeriodicElement {
   name: string;
   production: string;
@@ -150,6 +151,7 @@ export class StatusDialogMHComponent {
     encapsulation: ViewEncapsulation.None
 })
 export class MorningHuddleComponent implements OnInit,OnDestroy {
+
   selectedTab = 0;
   morningHuddleTabs = [
     'Dentist Performance',
@@ -244,7 +246,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public remindersRecallsOverdueLoader:boolean = true;
     public todayUnscheduledHoursLoader:boolean = true;
     public todayUnscheduledBalLoader:boolean = true;
-    public lquipmentList:any =  [];
+    public lquipmentList =  new MatTableDataSource([]);;
     public lquipmentListAm:any =  [];
     public showELPm:boolean =  false;
     public equipmentListLoading:boolean =  true;
@@ -271,11 +273,12 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns7: string[] = ['name', 'phone', 'code','note','book','status'];
   displayedColumns8: string[] = ['name', 'phone', 'code','note','book','status',];
   displayedColumns9: string[] = ['name', 'status'];
-  displayedColumns10: string[] = ['item', 'quantity','am','pm'];
+  displayedColumns10: string[] = ['equip_item', 'quantity','am','pm'];
 
   timezone: string = '+1000';
   
  @ViewChild(MatPaginator) paginator: MatPaginator;
+   @ViewChild(MatSort) sort: MatSort;
   constructor(
     private datepipe: DatePipe, 
     private morningHuddleService: MorningHuddleService, 
@@ -299,6 +302,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   }
 
  ngOnInit(){
+    this.lquipmentList.sort = this.sort;
     $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
     if(this._cookieService.get("dentistid") && this._cookieService.get("dentistid") != '' && this.user_type == '4'){
@@ -312,6 +316,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     
  }
 ngAfterViewInit(): void {
+   
     this.dentistList.paginator = this.paginator;
     //$('.dentist_dropdown').parent().hide(); // added
     $('.sa_heading_bar').addClass("filter_single"); // added   
@@ -700,7 +705,7 @@ initiate_clinic() {
        this.futureDateEL =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
       }
       this.equipmentListLoading = false;
-      this.lquipmentList = [];
+      this.lquipmentList.data = [];
        this.amButton = true;
         this.pmButton = true;
       if(production.message == 'success') {
@@ -711,8 +716,10 @@ initiate_clinic() {
         else 
         {
             //this.isEnableEquipList = true;
-          this.lquipmentList = production.data;       
+          this.lquipmentList.data = production.data;       
+          var i=0;
           production.data.forEach((list) => {
+            
             if(this.amButton == true && list.am_complete == 1 ){
               this.amButton = false;
             }
@@ -725,6 +732,7 @@ initiate_clinic() {
             }
             this.lquipmentListAm[list.id] = temp;          
           });
+
         }
 
 
@@ -1125,6 +1133,8 @@ async getDentistList(){
     dialogRef.afterClosed().subscribe(result => {    
       if( type == 'tick-follower'){
         this.getTickFollowups('close');
+      } else if(type == 'recall-overdue') {
+        this.getOverdueRecalls('close');
       } else if(type == 'fta-follower') {
         this.getFtaFollowups('close');
       }
@@ -1220,14 +1230,17 @@ async getDentistList(){
 
   formatHistory(history)
   {
-     let html ='<table>';
+     let html ='<table class="history">';
       let statusSpe= {'Did not want to book':'Didn’t want to book','Cant be reached': 'Can\'t be reached', 'Cant be reached - left':'Can\'t be reached - left voicemail'};
       history.forEach( (tip) => {
         let date = this.datepipe.transform(new Date(tip.followup_date), 'MMM dd, yyyy');
         if(typeof( statusSpe[tip.status]) != 'undefined'){
-            html += '<tr><td width="35%">'+date+':</td><td> '+statusSpe[tip.status]+'</td></tr>'
+            html += '<tr><td width="35%">'+date+':</td><td> '+statusSpe[tip.status]+'</td></tr>';
         } else {
-            html += '<tr><td width="35%">'+date+':</td><td> '+tip.status+'</td></tr>'
+            html += '<tr><td width="35%">'+date+':</td><td> '+tip.status+'</td></tr>';
+        }
+        if(tip.notes && tip.notes !='null' && tip.notes !=''){
+            html += '<tr><td  class="notes" width="35%">Notes:</td><td> '+tip.notes+'</td></tr>';
         }
       });
       html +='</table>';

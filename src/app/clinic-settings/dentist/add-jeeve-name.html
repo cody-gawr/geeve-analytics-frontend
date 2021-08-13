@@ -1,0 +1,27 @@
+<div class="setJeeveNames"> 
+<h1 mat-dialog-title class="mat-dialog-title">Set Jeeve Names</h1>
+<div mat-dialog-content class="sa_forms_design">
+  <div class="sa-form-group" style="width: 33%; float: left; margin-right: 2%;">
+    <label>Jeeve Id</label>
+     <select placeholder="None" (change) = "updatevalue($event, 'id')">
+        <option value="1" selected="selected">Jeeve Provider 1</option>
+        <option value="2">Jeeve Provider 2</option>
+        <option value="3">Jeeve Provider 3</option>
+        <option value="4">Jeeve Provider 4</option>
+        <option value="5">Jeeve Provider 5</option>
+        <option value="6">Jeeve Provider 6</option>
+        <option value="7">Jeeve Provider 7</option>
+        <option value="8">Jeeve Provider 8</option>
+        <option value="9">Jeeve Provider 9</option>
+      </select>
+  </div> 
+   <div class="sa-form-group" style="width: 65%;float: left;">
+      <label>Jeeve Names</label>
+      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event, 'name')">  
+  </div>
+</div>
+<div mat-dialog-actions class="justify-between">
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
+  <button [disabled] ="jeeveName ==''" (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
+</div>
+</div>

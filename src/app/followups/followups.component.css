@@ -456,3 +456,5 @@ mat-row, mat-header-row, mat-footer-row {
     width: -moz-max-content!important;
     width: max-content!important;
 }
+
+table.history td.notes {padding-right: 4%;text-align: right;}

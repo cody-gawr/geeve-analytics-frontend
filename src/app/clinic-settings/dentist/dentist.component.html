@@ -4,7 +4,10 @@
       Dentists
     </mat-panel-title>
   </mat-expansion-panel-header>
-  <div>
+
+  <div class="row" style="display: flow-root;">
+    
+  <div style="float: left;width: 330px;">
     <mat-form-field appearance="fill" class="denstist-search-form-field">
       <mat-icon matPrefix>search</mat-icon>
       <input
@@ -16,6 +19,17 @@
       />
     </mat-form-field>
   </div>
+ 
+  <div class="sa-form-group-btn" style="margin: 7px 0px 0 30px;">
+        <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" name="advanced_options" (change)="advanceToggle($event)"> 
+          <span><strong>Advanced Options</strong></span>
+        </mat-slide-toggle>   
+  </div>
+   <div class="sa-form-group-btn" *ngIf="advanceOption">
+     <button class="save-button" type="submit" style="margin: 0;" (click) ="openSetJeeveName()">Set Jeeve Names</button>
+  </div>
+
+  </div>    
   <div class="DentistListSecRow mh-table patient_data-table_responsive">
     <div class="card-loading d-none">
       <img class="tableLoader" src="../../assets/images/loader.gif" />
@@ -59,8 +73,8 @@
         </ng-container>
 
          <ng-container matColumnDef="jeeve_id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Jeeve Provider ID</th>
-          <td mat-cell *matCellDef="let element; let i=index">            
+          <th mat-header-cell *matHeaderCellDef mat-sort-header  [ngClass] =" advanceOption ? '' : 'hide' ">Jeeve Provider ID</th>
+          <td mat-cell *matCellDef="let element; let i=index"  [ngClass] =" advanceOption ? '' : 'hide' ">            
              <div class="jeeveProviderIdDrop sa_forms_design">
                     <select placeholder="None"  id="setNote"
                       (change)="updateValue($event, 'jeeve_id', i,element.providerId,element.name)">
