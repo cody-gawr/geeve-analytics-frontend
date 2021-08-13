@@ -409,25 +409,64 @@ export class FollowupsComponent implements AfterViewInit {
       
     });
   }
-
+  public outcomeType:any = '1';
   public outcomePrev:any = 10;
   public outcomeGoal:any = 50;
   public outcomeTotal:any = 30;
   public outcomeStatus:any = 'up';
   public outcomeLoader:boolean = false;
+
+   public singleTick = [];
+   public singleRecall = [];
+   public singleFta = [];
   getFollowupOutcome(){
 
      this.followupsService.getFollowupOutcome(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
       this.outcomeLoader = false;
-      this.single = [];
+      this.singleTick = [];
+      this.singleRecall = [];
+      this.singleFta = [];
       if(res.message == 'success'){  
         this.outcomeTotal = res.total;
         this.outcomePrev = res.total_ta;
         this.outcomeGoal = res.goals;
-        res.data.forEach( (response) => {
-          var temp = { name: response.status,value: response.percantage};  
-          this.single.push(temp);
-        });     
+        /****** Tick ******/
+        if(typeof(res.data.ticks) != 'undefined')
+        {
+          res.data.ticks.forEach( (response) => {
+            if(response.status){
+              var temp = { name: response.status,value: response.status_percent};  
+              this.singleTick.push(temp);
+            }
+          });          
+        }        
+        /****** Tick ******/
+        /****** recalls ******/
+        if(typeof(res.data.recalls) != 'undefined')
+        {
+          res.data.recalls.forEach( (response) => {
+            if(response.status){
+              var temp = { name: response.status,value: response.status_percent};  
+              this.singleRecall.push(temp);  
+            }
+            
+          });          
+        }        
+        /****** recalls ******/
+        /****** ftas ******/
+        if(typeof(res.data.ftas) != 'undefined')
+        {
+          res.data.ftas.forEach( (response) => {
+            if(response.status){
+              var temp = { name: response.status,value: response.status_percent};  
+              this.singleFta.push(temp);
+            }
+          });          
+        }        
+        /****** ftas ******/
+
+
+             
       }
     }, error => {
       
@@ -440,11 +479,14 @@ export class FollowupsComponent implements AfterViewInit {
   public conversionGoal:any = 50;
   public conversionTotal:any = 0;
   public conversionStatus:any = 'up';
+  public numBooked:any = 0;    
+  public totalNum:any = 0;    
   getConversion(){
      this.followupsService.getConversion(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
       this.outcomeLoader = false;
       if(res.message == 'success'){  
-           this.conversionTotal = 50;
+          this.conversionTotal = res.data;
+         
       }
     }, error => {
       
@@ -512,6 +554,6 @@ export class FollowupsComponent implements AfterViewInit {
   }
 
   followupOutcomeTab(number){
-
+    this.outcomeType = number;
   }
 }

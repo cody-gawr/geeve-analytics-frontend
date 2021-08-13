@@ -97,24 +97,26 @@
             </mat-card-title>
             <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec">
               <div fxFlex.gt-sm="35.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain1 active" (click)="followupOutcomeTab('1')">Ticks</small>
+                <small [ngClass] = "outcomeType == '1'? 'active' : ''"  class="sa_tab_btn prmain1 " (click)="followupOutcomeTab('1')">Ticks</small>
               </div>
               <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain2" (click)="followupOutcomeTab('2')">Recalls</small>
+                <small [ngClass] = "outcomeType == '2'? 'active' : ''"  class="sa_tab_btn prmain2" (click)="followupOutcomeTab('2')">Recalls</small>
               </div>
               <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
-                <small class="sa_tab_btn prmain3" (click)="followupOutcomeTab('3')">FTAs</small>
+                <small [ngClass] = "outcomeType == '3'? 'active' : ''" class="sa_tab_btn prmain3" (click)="followupOutcomeTab('3')">FTAs</small>
               </div>
             </div>
 
              <div class="card-body h-100">
               <div class="relative h-100">
                 <div style="height: 350px; text-align: -webkit-center;">
-                  <ngx-charts-pie-chart fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="single" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                  <div class="no-data-placeholder" *ngIf="single.length <= 0">
+                  <ngx-charts-pie-chart *ngIf="outcomeType == '1'" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='2'" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='3'" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+             <!--      <div class="no-data-placeholder" *ngIf="single.length <= 0">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
