@@ -485,11 +485,9 @@ export class FollowupsComponent implements AfterViewInit {
      this.followupsService.getConversion(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
       this.outcomeLoader = false;
       if(res.message == 'success'){  
-          this.conversionTotal = res.data;
-         
+          this.conversionTotal = res.data;         
       }
-    }, error => {
-      
+    }, error => {      
     });   
   }
 
