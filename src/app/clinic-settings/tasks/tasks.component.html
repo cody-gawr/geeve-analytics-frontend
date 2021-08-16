@@ -72,8 +72,7 @@
       <li *ngFor="let page of dentistTablePages">
         <button
           [ngClass]="{ active: page === currentPage, page: true }"
-          (click)="handlePageChange(page)"
-        >
+          (click)="handlePageChange(page)">
           {{ page }}
         </button>
       </li>

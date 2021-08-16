@@ -113,8 +113,18 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   }
 
   handlePageChange(goPage: number) {
-    if (this.currentPage < goPage) this.paginator.nextPage();
-    else this.paginator.previousPage();
+    if (this.currentPage < goPage)
+    {
+      for(let i = this.currentPage; i < goPage; i++){
+        this.paginator.nextPage();
+      }      
+    }
+    else
+    {
+      for(let i = goPage; i < this.currentPage; i++){
+        this.paginator.previousPage();
+      }      
+    }
     this.currentPage = goPage; //make the page active by class
   }
 
