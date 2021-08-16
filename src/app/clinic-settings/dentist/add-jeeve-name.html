@@ -1,27 +1,88 @@
 <div class="setJeeveNames"> 
 <h1 mat-dialog-title class="mat-dialog-title">Set Jeeve Names</h1>
 <div mat-dialog-content class="sa_forms_design">
-  <div class="sa-form-group" style="width: 33%; float: left; margin-right: 2%;">
-    <label>Jeeve Id</label>
-     <select placeholder="None" (change) = "updatevalue($event, 'id')">
-        <option value="1" selected="selected">Jeeve Provider 1</option>
-        <option value="2">Jeeve Provider 2</option>
-        <option value="3">Jeeve Provider 3</option>
-        <option value="4">Jeeve Provider 4</option>
-        <option value="5">Jeeve Provider 5</option>
-        <option value="6">Jeeve Provider 6</option>
-        <option value="7">Jeeve Provider 7</option>
-        <option value="8">Jeeve Provider 8</option>
-        <option value="9">Jeeve Provider 9</option>
-      </select>
+  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
+    <label style="padding-top:10px;">Jeeve Id 1</label>     
   </div> 
-   <div class="sa-form-group" style="width: 65%;float: left;">
-      <label>Jeeve Names</label>
-      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event, 'name')">  
+   <div class="sa-form-group" style="width: 78%;float: left;">
+      
+      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,1)" value="{{data.jeeveNames['1']}}">  
+  </div>
+</div>
+<div mat-dialog-content class="sa_forms_design">
+  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
+    <label style="padding-top:10px;">Jeeve Id 2</label>     
+  </div> 
+   <div class="sa-form-group" style="width: 78%;float: left;">
+      
+      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,2)" value="{{data.jeeveNames['2']}}">   
+  </div>
+</div>
+<div mat-dialog-content class="sa_forms_design">
+  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
+    <label style="padding-top:10px;">Jeeve Id 3</label>     
+  </div> 
+   <div class="sa-form-group" style="width: 78%;float: left;">
+      
+      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,3)" value="{{data.jeeveNames['3']}}">  
+  </div>
+</div>
+<div mat-dialog-content class="sa_forms_design">
+  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
+    <label style="padding-top:10px;">Jeeve Id 4</label>     
+  </div> 
+   <div class="sa-form-group" style="width: 78%;float: left;">
+      
+      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,4)" value="{{data.jeeveNames['4']}}">  
+  </div>
+</div>
+<div mat-dialog-content class="sa_forms_design">
+  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
+    <label style="padding-top:10px;">Jeeve Id 5</label>     
+  </div> 
+   <div class="sa-form-group" style="width: 78%;float: left;">
+      
+      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,5)" value="{{data.jeeveNames['5']}}">  
+  </div>
+</div>
+<div mat-dialog-content class="sa_forms_design">
+  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
+    <label style="padding-top:10px;">Jeeve Id 6</label>     
+  </div> 
+   <div class="sa-form-group" style="width: 78%;float: left;">
+      
+      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,6)" value="{{data.jeeveNames['6']}}">  
+  </div>
+</div>
+<div mat-dialog-content class="sa_forms_design">
+  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
+    <label style="padding-top:10px;">Jeeve Id 7</label>     
+  </div> 
+   <div class="sa-form-group" style="width: 78%;float: left;">
+      
+      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,7)" value="{{data.jeeveNames['7']}}">  
+  </div>
+</div>
+<div mat-dialog-content class="sa_forms_design">
+  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
+    <label style="padding-top:10px;">Jeeve Id 8</label>     
+  </div> 
+   <div class="sa-form-group" style="width: 78%;float: left;">
+      
+      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,8)" value="{{data.jeeveNames['8']}}">  
+  </div>
+</div>
+<div mat-dialog-content class="sa_forms_design">
+  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
+    <label style="padding-top:10px;">Jeeve Id 9</label>     
+  </div> 
+   <div class="sa-form-group" style="width: 78%;float: left;">
+      
+      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,9)" value="{{data.jeeveNames['9']}}">  
   </div>
 </div>
 <div mat-dialog-actions class="justify-between">
   <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-  <button [disabled] ="jeeveName ==''" (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
+  <button [disabled] ="update" (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
 </div>
 </div>

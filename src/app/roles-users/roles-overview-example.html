@@ -11,16 +11,22 @@
       <option value ="4">Clinician</option>
    </select> 
  </div>
- {{ userPlan }}
   <div class="SetRoles_checkbox">
+    <div class="dashboardsRoles">
+      <h2>Dashboards</h2>
+       <div class="dashboardsRolesCon">
+       <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['dashboard1_'+selected_id]">Clinician Analysis</mat-checkbox>
+      <mat-checkbox *ngIf="userPlan != 'lite'" class="role_permissions" [(ngModel)]="data.selectedRole['dashboard2_'+selected_id]">Clinician Procedures & Referrals</mat-checkbox>
+      <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['dashboard3_'+selected_id]">Front Desk</mat-checkbox>
+      <mat-checkbox *ngIf="userPlan != 'lite'" class="role_permissions" [(ngModel)]="data.selectedRole['dashboard4_'+selected_id]">Marketing</mat-checkbox>
+      <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['dashboard6_'+selected_id]">Follow Ups</mat-checkbox>
+      <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['dashboard5_'+selected_id]">Finances</mat-checkbox>
+    </div>
+    </div>
+
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['healthscreen_'+selected_id]">Clinic Health</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['morninghuddle_'+selected_id]">Morning Huddle</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['followups_'+selected_id]">Follow-Ups</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['dashboard1_'+selected_id]">Clinician Analysis</mat-checkbox>
-    <mat-checkbox *ngIf="userPlan != 'lite'" class="role_permissions" [(ngModel)]="data.selectedRole['dashboard2_'+selected_id]">Clinician Procedures & Referrals</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['dashboard3_'+selected_id]">Front Desk</mat-checkbox>
-    <mat-checkbox *ngIf="userPlan != 'lite'" class="role_permissions" [(ngModel)]="data.selectedRole['dashboard4_'+selected_id]">Marketing</mat-checkbox>
-    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['dashboard5_'+selected_id]">Finances</mat-checkbox>
+    <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['followups_'+selected_id]">Follow Ups</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['lostopportunity_'+selected_id]">Lost Opportunity</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['profilesettings_'+selected_id]">Settings</mat-checkbox>
   <!--   <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['managepermissions_'+selected_id]">Manage Roles</mat-checkbox> -->

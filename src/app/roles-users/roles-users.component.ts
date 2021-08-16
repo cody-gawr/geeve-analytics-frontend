@@ -369,6 +369,8 @@ initiate_clinic() {
           checkedRoles.push('dashboard4');
         if(result.selectedRole['dashboard5_'+res1.id])
           checkedRoles.push('dashboard5');
+        if(result.selectedRole['dashboard6_'+res1.id])
+          checkedRoles.push('dashboard6');
         if(result.selectedRole['healthscreen_'+res1.id])
           checkedRoles.push('healthscreen');
         if(result.selectedRole['morninghuddle_'+res1.id])
@@ -525,6 +527,7 @@ initiate_clinic() {
           this.selectedRole['dashboard3_'+result.role_id] = false;
           this.selectedRole['dashboard4_'+result.role_id] = false;
           this.selectedRole['dashboard5_'+result.role_id] = false;
+          this.selectedRole['dashboard6_'+result.role_id] = false;
             var temp=[];
             temp['id'] = result.role_id;
             temp['role'] = result.role;

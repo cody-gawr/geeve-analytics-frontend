@@ -36,6 +36,14 @@ export class DentistService {
                         return response;
                     })
         );
+    }// Get Dentist
+    getJeeveNames(clinic_id): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/Dentists/getJeeveNames?clinic_id="+clinic_id, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
     }
 
     // Delete Dentist
@@ -103,11 +111,10 @@ export class DentistService {
         );
     }
 
-    updateJeeveName(clinic_id, jeeve_id, jeeve_name): Observable<any>
+    updateJeeveName(clinic_id, jeeve_name): Observable<any>
     {
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
-        formData.append('jeeve_id', jeeve_id);
         formData.append('jeeve_name', jeeve_name);
         var header = this.getHeaders();
         return this.http.post(this.apiUrl +"/Dentists/updateJeeveName", formData, { headers: header }).pipe(map((response: Response) => { return response; }));

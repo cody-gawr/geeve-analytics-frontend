@@ -22,23 +22,20 @@ export class AddJeeveNameComponent
 { 
   public jeeveId:any = 1;
   public jeeveName:any = '';
+  public update:any = false;
+
   constructor(public dialogRef: MatDialogRef<AddJeeveNameComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private router: Router, private dentistService: DentistService ){}
   onNoClick(): void {
     this.dialogRef.close();
   }
-  updatevalue(event, type)
+  updatevalue(event, index)
   {
-    if(type == 'id')
-    {
-      this.jeeveId = event.target.value;
-    } else {
-      this.jeeveName = $.trim(event.target.value);
-    }
+    this.data.jeeveNames[index] = $.trim(event.target.value);    
   }
 
   save(data){
-    if(this.jeeveName != ''){
-     this.dentistService.updateJeeveName(data.clinic_id, this.jeeveId, this.jeeveName).subscribe((res) => {
+    var name = JSON.stringify( data.jeeveNames);
+    this.dentistService.updateJeeveName(data.clinic_id, name).subscribe((res) => {
         if(res.message == 'success')
         {
           this.dialogRef.close();
@@ -46,8 +43,7 @@ export class AddJeeveNameComponent
       }, error => {
         console.log('error', error)
       });    
-    }
-  }
+   }
 }
 
 /************* Add Jeeve Names ***********/
@@ -99,6 +95,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     ).subscribe(id => {
       if (id) {
         this.getDentists(id);
+        this.getJeeveNames(id);
       }
     })
   }
@@ -159,6 +156,18 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       }
     }, error => {
       console.log('error', error)
+    });
+  }
+  public jeeveNames:any = {};
+  getJeeveNames(id) {
+    this.dentistService.getJeeveNames(id).subscribe((res) => {
+      if (res.message == 'success') {
+        this.jeeveNames = res.data;        
+      }
+      else if (res.status == '401') {
+        this.handleUnAuthorization();
+      }
+    }, error => {
     });
   }
 
@@ -224,7 +233,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     {
       const dialogRef = this.dialog.open(AddJeeveNameComponent, {
         width: '650px',
-        data: { clinic_id: this.clinic_id$.value }
+        data: { clinic_id: this.clinic_id$.value,jeeveNames: this.jeeveNames }
       });
       dialogRef.afterClosed().subscribe(result => {
         this.getDentists(this.clinic_id$.value);
