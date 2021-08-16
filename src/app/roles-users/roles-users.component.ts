@@ -233,12 +233,14 @@ public selectedClinicProviders=[];
 
 export class RolesOverviewExampleDialogComponent {
    public clinic_id:any ={};
-
+   public userPlan :any = 'lite';
   constructor(
     public rolesRef: MatDialogRef<RolesOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService
-  ) {}
+  ) {
+    this.userPlan =  this._cookieService.get("user_plan"); 
+  }
    public loginUserType = this._cookieService.get("user_type");
   onNoClick(): void {
     this.rolesRef.close();
@@ -266,8 +268,9 @@ export class RolesUsersComponent implements AfterViewInit {
   fileInput: any ;
   public clinic_id;
   dentist_id = '';
-password:string;
-dentists:any=[];
+  password:string;
+  dentists:any=[];
+  userPlan:any = 'lite';
 public userTypeLogin:any = '';
 public showRoleButton:boolean = false;
 initiate_clinic() {
@@ -278,6 +281,7 @@ initiate_clinic() {
     this.getRoles();    
     this.getDentists();
     this.userTypeLogin = this._cookieService.get("user_type");
+    this.userPlan =  this._cookieService.get("user_plan"); 
   }
   ngAfterViewInit() {
     $('.header_filters').removeClass('hide_header'); 

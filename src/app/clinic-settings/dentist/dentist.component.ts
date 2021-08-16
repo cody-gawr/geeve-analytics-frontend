@@ -75,6 +75,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   displayedColumns: string[] = ['providerId', 'name','jeeve_id','is_active'];
   jeeveProviderIds: any = [];
   editing = {};
+  
   public userPlan:any = 'lite';
   public activeDentist:any = 0;
   @ViewChild(MatPaginator) paginator: MatPaginator;

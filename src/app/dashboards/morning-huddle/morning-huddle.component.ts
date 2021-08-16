@@ -467,7 +467,7 @@ initiate_clinic() {
     this.getScheduleHours(this.currentDentist);
     this.getUnscheduleHours(this.currentDentist);
     //this.getAppointmentCards(this.currentDentist);
-    if(this.currentDentist != 0){
+    if(this.currentDentist != 0) {
       var temp = [];
       this.appointmentCardsTemp.forEach(val => {
         if(val.provider_id == this.currentDentist){
@@ -871,7 +871,7 @@ initiate_clinic() {
   }
 
   
-
+   public clinicTotal:any = 0;
    getAppointmentCards(dentist){
     this.appointmentCardsLoaders = true;
     this.appointmentCards = new MatTableDataSource();
@@ -882,7 +882,7 @@ initiate_clinic() {
       this.appointmentCardsTemp = []; 
       this.appointmentCards = new MatTableDataSource();
       if(production.status == true) {
-        
+        this.clinicTotal = production.total;
         this.appointmentCardsTemp = production.data; 
         if(this.user_type == '4'){         
           this.dentistid = this._cookieService.get("dentistid");

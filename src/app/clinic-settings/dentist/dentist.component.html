@@ -20,7 +20,7 @@
     </mat-form-field>
   </div>
  
-  <div class="sa-form-group-btn" style="margin: 7px 0px 0 30px;">
+  <div class="sa-form-group-btn" style="margin: 7px 0px 0 30px;" *ngIf="userPlan != 'lite'">
         <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" name="advanced_options" (change)="advanceToggle($event)"> 
           <span><strong>Advanced Options</strong></span>
         </mat-slide-toggle>   

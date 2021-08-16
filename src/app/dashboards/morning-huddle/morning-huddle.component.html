@@ -453,8 +453,8 @@
                     <h4>Appointments</h4>
                     <div class="patients-num">
                       <span class="change_value"
-                        *ngIf="appointmentCards.data.length > 0 && !appointmentCardsLoaders">{{ appointmentCards.data.length }}</span>
-                      <span class="change_value" *ngIf="appointmentCards.data.length <= 0 && !appointmentCardsLoaders">0</span>
+                        *ngIf="!appointmentCardsLoaders">{{ clinicTotal }}</span>
+                      <!-- <span class="change_value" *ngIf="appointmentCards.data.length <= 0 && !appointmentCardsLoaders">0</span> -->
                         <span class="calculatingSp text" *ngIf="appointmentCardsLoaders">Calculating...</span>
                         <img *ngIf="!appointmentCardsLoaders" src="../assets/images/green-swirl.png" alt="production-chart-1" />
                       <!--  <span class="change_value">{{ schedulePatieltd }}</span> -->
