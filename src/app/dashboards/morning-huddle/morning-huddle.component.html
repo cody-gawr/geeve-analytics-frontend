@@ -761,8 +761,8 @@
                     <h4>Appointments</h4>
                     <div class="patients-num">
                       <span class="change_value"
-                        *ngIf="remindersRecallsOverdue && !remindersRecallsOverdueLoader">{{ remindersRecallsOverdue.length }}</span>
-                      <span class="change_value" *ngIf="!remindersRecallsOverdue && !remindersRecallsOverdueLoader">0</span>
+                        *ngIf="!remindersRecallsOverdueLoader">{{ remindersTotal }}</span>
+                      <!-- <span class="change_value" *ngIf="!remindersRecallsOverdue && !remindersRecallsOverdueLoader">0</span> -->
                       <span class="calculatingSp text" *ngIf="remindersRecallsOverdueLoader">Calculating...</span>
                       <!-- <span class="change_value">{{ todayPatients }}</span> -->
                     </div>

@@ -482,11 +482,13 @@ initiate_clinic() {
   }
 
   /***** Tab 4 ***/
+  public remindersTotal:any = 0;
    getReminders(){
     this.remindersRecallsOverdueLoader = true;
     this.morningHuddleService.getReminders( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.remindersRecallsOverdueLoader = false;
       if(production.status == true) {
+        this.remindersTotal = production.total;
         this.remindersRecallsOverdue = production.data;     
         this.remindersRecallsOverdueDate = production.date;     
       }
