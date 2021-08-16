@@ -1710,11 +1710,11 @@
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
-            <table fxHide fxShow.gt-sm mat-table matSort [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" >
+            <table  #sort1="matSort"  mat-table matSort [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" >
               <!-- Name Column -->
-              <ng-container matColumnDef="name">
+              <ng-container matColumnDef="task_name">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Task Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.task.task_name }} </td>
+                <td mat-cell *matCellDef="let element"> {{element.task_name }} </td>
               </ng-container>
 
               <ng-container matColumnDef="status">
@@ -1784,7 +1784,7 @@
               <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
             </div>
-            <table mat-table matSort [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.data.length == 0)? 'noDataTableClass' : ''" > 
+            <table #sort2="matSort" mat-table matSort [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.data.length == 0)? 'noDataTableClass' : ''" > 
               <!-- Name Column -->
                <ng-container matColumnDef="equip_item">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Item </th>

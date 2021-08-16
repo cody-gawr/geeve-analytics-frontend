@@ -219,7 +219,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public followupTickFollowups:any = [];
     public followupTickFollowupsInCMP:any = [];
     public endOfDaysTasks:any = [];
-    public endOfDaysTasksInComp:any = [];
+    public endOfDaysTasksInComp  =   new MatTableDataSource([]);
     public endOfDaysTasksComp:any = [];
     public endOfDaysTasksDate:any = '';
     public endTaksLoading:boolean = true;
@@ -246,7 +246,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public remindersRecallsOverdueLoader:boolean = true;
     public todayUnscheduledHoursLoader:boolean = true;
     public todayUnscheduledBalLoader:boolean = true;
-    public lquipmentList =  new MatTableDataSource([]);;
+    public lquipmentList =  new MatTableDataSource([]);
     public lquipmentListAm:any =  [];
     public showELPm:boolean =  false;
     public equipmentListLoading:boolean =  true;
@@ -272,13 +272,14 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns6: string[] = ['start','dentist','name', 'card'];
   displayedColumns7: string[] = ['name', 'phone', 'code','note','book','status'];
   displayedColumns8: string[] = ['name', 'phone', 'code','note','book','status',];
-  displayedColumns9: string[] = ['name', 'status'];
+  displayedColumns9: string[] = ['task_name', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity','am','pm'];
 
   timezone: string = '+1000';
   
- @ViewChild(MatPaginator) paginator: MatPaginator;
-   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('sort1') sort1: MatSort;
+ @ViewChild('sort2') sort2: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private datepipe: DatePipe, 
     private morningHuddleService: MorningHuddleService, 
@@ -302,7 +303,9 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   }
 
  ngOnInit(){
-    this.lquipmentList.sort = this.sort;
+    
+    /*this.dataSource1.sort = this.sort1;
+    this.dataSource2.sort = this.sort2;*/
     $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
     if(this._cookieService.get("dentistid") && this._cookieService.get("dentistid") != '' && this.user_type == '4'){
@@ -316,7 +319,8 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     
  }
 ngAfterViewInit(): void {
-   
+  this.endOfDaysTasksInComp.sort = this.sort1; 
+  this.lquipmentList.sort = this.sort2; 
     this.dentistList.paginator = this.paginator;
     //$('.dentist_dropdown').parent().hide(); // added
     $('.sa_heading_bar').addClass("filter_single"); // added   
@@ -686,9 +690,9 @@ initiate_clinic() {
           this.endOfDaysTasks = production.data;  
           this.endOfDaysTasksDate = production.date;
           if(this.showComplete == true) {
-            this.endOfDaysTasksInComp = this.endOfDaysTasks;
+            this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
           } else {
-            this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
+            this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
         }        
       }
@@ -705,7 +709,7 @@ initiate_clinic() {
        this.futureDateEL =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
       }
       this.equipmentListLoading = false;
-      this.lquipmentList.data = [];
+    //  this.lquipmentList.data = [];
        this.amButton = true;
         this.pmButton = true;
       if(production.message == 'success') {
@@ -1085,9 +1089,9 @@ async getDentistList(){
   updateToComplete(event){
     this.showComplete = event.checked;
     if(event.checked ==  true){  
-      this.endOfDaysTasksInComp = this.endOfDaysTasks;
+      this.endOfDaysTasksInComp.data = this.endOfDaysTasks;
     } else {
-      this.endOfDaysTasksInComp = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
+      this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
     }
   }
 
