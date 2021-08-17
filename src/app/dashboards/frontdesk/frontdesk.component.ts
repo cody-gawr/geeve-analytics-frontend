@@ -897,7 +897,7 @@ public maxtreatmentPrebookGoal:any=0;
           this.treatmentPrebookPrevTotal = Math.round(data.total_ta);
           if(this.treatmentPrebookTotal>=this.treatmentPrebookPrevTotal)
             this.treatmentPrebookTooltip = 'up';
-          if(this.treatmentPrebookTotal> this.treatmentPrebookGoal)
+          if(this.treatmentPrebookTotal > this.treatmentPrebookGoal)
             this.maxtreatmentPrebookGoal = this.treatmentPrebookTotal;
           else
             this.maxtreatmentPrebookGoal = this.treatmentPrebookGoal;

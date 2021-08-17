@@ -22,7 +22,8 @@
               *ngFor="let dentist of dentists"
               [value]="dentist.providerId"
             >
-              {{ dentist.name }}
+              <span *ngIf="dentist.jeeve_name">{{dentist.jeeve_name}}</span>
+              <span *ngIf="!dentist.jeeve_name">{{dentist.name}}</span>
             </mat-option>
           </mat-select>
           <mat-select class="external_dentist" [ngModel]="selectedGoalCategory$.value" (ngModelChange)="handleGoalCategorySelection($event)"  *ngIf="selectedTab != 1">

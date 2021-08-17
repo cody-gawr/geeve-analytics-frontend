@@ -934,9 +934,9 @@
                 </div>
               </div>
               <div class="chart"
-                *ngIf="showTrendChart == false && treatmentPlanValue > 0 && !treatmentPlanRateDentistLoader"
+                *ngIf="showTrendChart == false && treatmentPlanValue >= 0 && !treatmentPlanRateDentistLoader"
                 fxLayout="row" fxLayoutAlign="start center" style="height: 300px">
-                <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue > 0 && !treatmentPlanRateDentistLoader"
+                <ngx-gauge *ngIf="showTrendChart == false && treatmentPlanValue >= 0 && !treatmentPlanRateDentistLoader"
                   [type]="gaugeType" [value]="treatmentPlanValue" [label]="treatmentPlanLabel" [thick]="gaugeThick"
                   [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [max]="maxtreatmentPlanGoal"
                   [cap]="cap" [duration]="gaugeDuration" [append]="gaugeAppendText" [size]="size">
@@ -953,7 +953,7 @@
               </div>
 
               <div class="no-data-placeholder"
-                *ngIf="((showTrendChart == false && treatmentPlanValue <= 0 && !treatmentPlanRateDentistLoader) || (showTrendChart == true && treatmentPlanChartTrendLabels.length <= 0 && !fdtreatmentPlanRateTrendLoader)) ">
+                *ngIf="((showTrendChart == false && treatmentPlanValue < 0 && !treatmentPlanRateDentistLoader) || (showTrendChart == true && treatmentPlanChartTrendLabels.length <= 0 && !fdtreatmentPlanRateTrendLoader)) ">
                 <div class="sa_nodata_div">
                 </div>
                 <p class="chart-placeholder-text">You have no treatment plan items completed in the selected period</p>
