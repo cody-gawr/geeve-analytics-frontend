@@ -27,7 +27,108 @@ export class FollowupsComponent implements AfterViewInit {
   public arcWidth = 0.75;
   public foregroundColor= "#39acac";
   public backgroundColor = '#f4f0fa';
+    private legendLabelOptions = {
+    labels: {
+      usePointStyle: true,
+      padding: 20
+    },
+    onClick: function (e) {
+      e.stopPropagation();
+    }
+  };
+
+  public perUserData: any[] = [
+    {data: [], label: 'Ticks'},
+    {data: [], label: 'Post Op' },
+    {data: [], label: 'Recall' },
+    {data: [], label: 'Ftas' }
+  ];
   public clinic_id:any;
+    public stackedChartOptions: any = {
+      hover: { 
+        mode: null
+    },
+      elements: {
+      point: {
+        radius: 5,
+        hoverRadius: 7,
+        pointStyle:'rectRounded',
+        hoverBorderWidth:7
+      },
+    },
+    scaleShowVerticalLines: false,
+           responsive: true,
+    maintainAspectRatio: false,
+    barThickness: 10,
+      animation: {
+        duration: 500,
+        easing: 'easeOutSine'
+      },
+    scales: {
+          xAxes: [{ 
+            stacked:true,
+            ticks: {
+                autoSkip: false
+            }
+            }],
+          yAxes: [{ 
+          stacked:true, 
+            ticks: {
+              userCallback: function(label, index, labels) {
+                     // when the floored value is the same as the value we have a whole number
+                     if (Math.floor(label) === label) {
+                         return label;
+                     }
+                 },
+            }, 
+            }],
+        },
+        legend: {
+            display: true,
+            position: 'top',
+            ...this.legendLabelOptions,
+         },
+          tooltips: {
+            mode: 'x-axis',
+            custom: function(tooltip) {
+        if (!tooltip) return;
+        // disable displaying the color box;
+        tooltip.displayColors = true;
+      },
+  callbacks: {
+     label: function(tooltipItems, data) { 
+       if(tooltipItems.yLabel > 0 && data.datasets[tooltipItems.datasetIndex].label != ''){
+        if(data.datasets[tooltipItems.datasetIndex].label.indexOf('DentistMode-') >= 0){
+          return tooltipItems.label+": "+tooltipItems.yLabel;
+        } else {
+          return data.datasets[tooltipItems.datasetIndex].label+": "+tooltipItems.yLabel;          
+        }
+        
+       }
+     },
+     title : function(tooltip, data){
+      if( data.datasets[0].label.indexOf('DentistMode-') >= 0){
+          var dentist = data.datasets[0].label.split('Mode-');
+          return dentist[1];
+      } else {
+        return tooltip[0].label;
+      }
+     }
+  }
+}
+
+  };
+
+
+    public IPcolors = [
+    { backgroundColor: '#6cd8ba' },
+    { backgroundColor: '#b0fffa' },
+    { backgroundColor: '#abb3ff' },
+    { backgroundColor: '#feefb8' },
+    { backgroundColor: '#ffb4b5' },
+    { backgroundColor: '#fffcac' }
+  ];
+
   public barChartOptions: any = {
     borderRadius: 50,
     hover: {mode: null},
@@ -381,26 +482,49 @@ export class FollowupsComponent implements AfterViewInit {
   }
 
 
-  public perUserData: any[] = [];
+  
   public perUserLabels:any = [];
   public perUserTotal:any = 10;
   public perUserPrev:any = 20;
   public perUserGoal:any = 10;
   public perUserStatus:any = 'up';
   public perUserLoader:boolean = false;
+  
+  public perUserData1:any = [];
+  public perUserData2:any = [];
+  public perUserData3:any = [];
+  public perUserData4:any = [];
+  
+
   getFollowupsPerUser(){
     this.perUserLoader = true;
     this.followupsService.getFollowupsPerUser(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
+      this.perUserData = [
+        {data: [], label: 'Ticks'},
+        {data: [], label: 'Post Op' },
+        {data: [], label: 'Recall' },
+        {data: [], label: 'Ftas' }
+      ];
+      this.perUserData1 = [];
+      this.perUserData2 = [];
+      this.perUserData3 = [];
+      this.perUserData4 = [];
       this.perUserLoader = false;
-      this.perUserData[0]['data'] =  [];
       this.perUserLabels = [];
       if(res.message == 'success'){        
         var allData = [];
         res.data.forEach((response) => {
-          allData.push(response.num_total);
+          this.perUserData1.push(response.num_ticks);
+          this.perUserData2.push(response.num_postop);
+          this.perUserData3.push(response.num_recall);
+          this.perUserData4.push(response.num_ftas);
           this.perUserLabels.push(response.completed_by);
         });
-        this.perUserData[0]['data'] = allData;
+
+        this.perUserData[0]['data'] = this.perUserData1;
+        this.perUserData[1]['data'] = this.perUserData2;
+        this.perUserData[2]['data'] = this.perUserData3;
+        this.perUserData[3]['data'] = this.perUserData4;
         this.perUserTotal = res.total;
         this.perUserGoal = res.goal;
         this.perUserPrev = res.total_ta;

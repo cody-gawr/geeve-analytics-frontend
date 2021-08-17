@@ -44,7 +44,11 @@
               <div class="relative h-100">
                 <div style="height: 350px; padding-top: 70px;">
                   <div>
-                  <canvas  #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas>
+                  <canvas #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels"
+                    [options]="stackedChartOptions" [chartType]="'bar'" 
+                    [legend]="true" [colors]="IPcolors">
+                  </canvas>
+                 <!--  <canvas  #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas> -->
                 </div>
                   <div class="no-data-placeholder" *ngIf="perUserData.length <= 0">
                     <div class="sa_nodata_div"></div>
