@@ -8,7 +8,7 @@ import { EquipmentsService } from './equipments/equipments.service';
 import { SharedMatModule } from '../shared-mat.module';
 import { DemoMaterialModule } from '../demo-material-module';
 import { BaseComponent } from './base/base.component';
-import { DentistComponent } from './dentist/dentist.component';
+import { DentistComponent,AddJeeveNameComponent } from './dentist/dentist.component';
 import { AlertsComponent } from './alerts/alerts.component';
 import { TasksComponent,DialogOverviewExampleDialogComponent } from './tasks/tasks.component';
 import { EquipmentComponent,DialogOverviewExampleComponent } from './equipments/equipments.component';
@@ -39,10 +39,11 @@ import { SharedModule } from '../shared/shared.module';
     GoalsComponent,
     AutofocusDirective,
     DialogOverviewExampleDialogComponent,
+    AddJeeveNameComponent,
     DialogOverviewExampleComponent,
     EquipmentComponent
   ],
-  entryComponents: [DialogOverviewExampleDialogComponent, DialogOverviewExampleComponent],  
+  entryComponents: [DialogOverviewExampleDialogComponent, DialogOverviewExampleComponent, AddJeeveNameComponent],  
   exports: [
     BaseComponent,
     DentistComponent,
