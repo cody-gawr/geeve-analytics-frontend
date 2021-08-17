@@ -457,4 +457,8 @@ mat-row, mat-header-row, mat-footer-row {
     width: max-content!important;
 }
 
-table.history td.notes {padding-right: 4%;text-align: right;}
+table.history td.notes {padding-right: 2%;text-align: right;}
+
+.historyTip.history .custom-tooltip {
+    width: 400px;
+}
