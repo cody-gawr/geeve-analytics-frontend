@@ -461,4 +461,5 @@ table.history td.notes {padding-right: 2%;text-align: right;}
 
 .historyTip.history .custom-tooltip {
     width: 400px;
+    z-index: 999999;
 }

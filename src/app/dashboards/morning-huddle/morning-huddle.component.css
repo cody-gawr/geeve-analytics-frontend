@@ -499,5 +499,6 @@ table.noDataTableClass mat-footer-row {
 }
 table.history td.notes {padding-right: 2%;text-align: right;}
 .historyTip.history .custom-tooltip {
-    width: 430px;
+    width: 400px;
+    z-index: 999999;
 }
