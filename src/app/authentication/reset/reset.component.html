@@ -12,7 +12,7 @@
           <div fxLayout="column" fxLayoutAlign="space-around">
             <div class="pb-1">
               <mat-form-field>
-                <input matInput placeholder="Password" type="password" [formControl]="form.controls['password']" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}$" (click) ="setDefaultError()">
+                <input matInput placeholder="Password" type="password" [formControl]="form.controls['password']" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?#&].{8,}$" (click) ="setDefaultError()">
               </mat-form-field>
                 <small *ngIf="erros.required" class="text-danger support-text">You must include password.</small>
                 <small *ngIf="erros.minLength" class="text-danger support-text">Password must be a minimum of 10 characters and contain one lowercase character, one uppercase character, a number and a special character.</small>

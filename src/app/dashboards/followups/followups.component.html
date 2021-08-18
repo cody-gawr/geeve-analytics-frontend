@@ -71,7 +71,7 @@
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && perUserGoal >= 0">
+                  *ngIf="duration !='custom' && perUserGoal >= 0">
                   <h3 class="m-0 value-num">
                     {{ perUserGoal | number:'1.0-0' }}</h3>
                   <span class="value-text">Goal</span>
@@ -184,7 +184,7 @@
                 <div style="height: 350px; width:100%;">
                   <ngx-gauge class="productionVisit" [type]="'arch'" [value]="conversionTotal" [thick]="20"
                     [append]="'%'" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
-                    [cap]="'round'" [size]="320"> </ngx-gauge>
+                    [cap]="'round'" [size]="320" [max]="conversionMax"> </ngx-gauge>
                   <div class="no-data-placeholder" *ngIf="perUserData.length <= 0">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
@@ -195,20 +195,20 @@
            <div class="card-footer">
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">{{ outcomeTotal | number:'1.0-0'}}%</h3>
+                  <h3 class="m-0 value-num">{{ conversionTotal | number:'1.0-0'}}%</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{ outcomePrev | number:'1.0-0'}}%</h3>
+                  <h3 class="m-0 value-num">{{ conversionPrev | number:'1.0-0'}}%</h3>
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previou</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && outcomeGoal >= 0">
+                  *ngIf="duration!='custom' && conversionGoal >= 0">
                   <h3 class="m-0 value-num" >
-                    {{ outcomeGoal | number:'1.0-0' }}%</h3>
+                    {{ conversionGoal | number:'1.0-0' }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -291,7 +291,7 @@
                 </div>
                   <div class="no-data-placeholder" *ngIf="completionRateLabels.length <= 0">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                    <p class="chart-placeholder-text">You have no followup completion rate for the selected period</p>
                   </div>
                 </div>
               </div>
@@ -309,7 +309,7 @@
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom' && conversionPerUserGoal >= 0">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom' && completionRateGoal >= 0">
                   <h3 class="m-0 value-num">{{ completionRateGoal | number:'1.0-0' }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>

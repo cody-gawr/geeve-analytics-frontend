@@ -659,7 +659,7 @@ public fdUtiData:any = [];
       this.prevWorkTimeTooltip = 'down';
      if(data.data.length >0) {
         data.data.forEach(res => {
-          if(res.util_rate > 0) {
+          /*if(res.util_rate > 0) {*/
             var temp =  {
             'name':  res.app_book_name, 
             'scheduled_hours':  res.planned_hour, 
@@ -669,7 +669,7 @@ public fdUtiData:any = [];
             this.fdUtiData.push(temp);
             this.workTimeData1.push(Math.round(res.util_rate * 100));
             this.workTimeLabels1.push(res.app_book_name+'--'+res.worked_hour+'--'+res.planned_hour); 
-          }
+          /*}*/
         });
      }
         this.workTimeData[0]['data'] = this.workTimeData1;

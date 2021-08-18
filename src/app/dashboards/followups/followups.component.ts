@@ -497,7 +497,7 @@ export class FollowupsComponent implements AfterViewInit {
   public perUserLabels:any = [];
   public perUserTotal:any = 10;
   public perUserPrev:any = 20;
-  public perUserGoal:any = 10;
+  public perUserGoal:any = 0;
   public perUserStatus:any = 'up';
   public perUserLoader:boolean = false;
   
@@ -537,7 +537,7 @@ export class FollowupsComponent implements AfterViewInit {
         this.perUserData[2]['data'] = this.perUserData3;
         this.perUserData[3]['data'] = this.perUserData4;
         this.perUserTotal = res.total;
-        this.perUserGoal = res.goal;
+        this.perUserGoal = res.goals;
         this.perUserPrev = res.total_ta;
       }
     }, error => {
@@ -545,9 +545,9 @@ export class FollowupsComponent implements AfterViewInit {
     });
   }
   public outcomeType:any = '1';
-  public outcomePrev:any = 10;
-  public outcomeGoal:any = 50;
-  public outcomeTotal:any = 30;
+  public outcomePrev:any = 0;
+  public outcomeGoal:number = 0;
+  public outcomeTotal:any = 0;
   public outcomeStatus:any = 'up';
   public outcomeLoader:boolean = false;
 
@@ -610,17 +610,23 @@ export class FollowupsComponent implements AfterViewInit {
   
   }
 
-  public conversionPrev:any = 10;
-  public conversionGoal:any = 50;
-  public conversionTotal:any = 0;
-  public conversionStatus:any = 'up';
-  public numBooked:any = 0;    
-  public totalNum:any = 0;    
+  public conversionPrev:number = 0;
+  public conversionGoal:number = 0;
+  public conversionTotal:number = 0;
+  public conversionStatus:any = 'up'; 
+  public conversionMax:number = 100; 
   getConversion(){
      this.followupsService.getConversion(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
       this.outcomeLoader = false;
       if(res.message == 'success'){  
           this.conversionTotal = res.data;         
+          this.conversionPrev = res.total_ta;         
+          this.conversionGoal = res.goals;         
+          if(res.goals > res.data ){
+            this.conversionMax = res.goals;
+          } else {
+            this.conversionMax = res.data;
+          }
       }
     }, error => {      
     });   
@@ -629,15 +635,18 @@ export class FollowupsComponent implements AfterViewInit {
 
   public conversionPerUserData: any[] = [];
   public conversionPerUserLabels:any = [];
-  public conversionPerUserTotal:any = 10;
-  public conversionPerUserPrev:any = 20;
-  public conversionPerUserGoal:any = 10;
+  public conversionPerUserTotal:number = 0;
+  public conversionPerUserPrev:number = 0;
+  public conversionPerUserGoal:number = 0;
   public conversionPerUserStatus:any = 'up';
   getConversionPerUser(){
 
     this.followupsService.getConversionPerUser(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
       this.outcomeLoader = false;
       if(res.message == 'success'){  
+        this.conversionPerUserTotal = res.total;
+        this.conversionPerUserPrev = res.total_ta;
+        this.conversionPerUserGoal = res.goals;
         this.conversionPerUserData[0]['data'] = [60,90,50,26];
         this.conversionPerUserLabels = ['One','Two','Three','Four'];
       }
@@ -647,18 +656,18 @@ export class FollowupsComponent implements AfterViewInit {
     
   }
 
-  public completionRateData: any[] = [];
+  public completionRateData: any = [{ data: [] }];
   public completionRateLabels:any = [];
-  public completionRateTotal:any = 10;
-  public completionRatePrev:any = 20;
-  public completionRateGoal:any = 10;
+  public completionRateTotal:number = 0;
+  public completionRatePrev:number = 0;
+  public completionRateGoal: number = 0;
   public completionRateStatus:any = 'up';
   getCompletionRate(){
     this.followupsService.getCompletionRate(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
       this.outcomeLoader = false;
-      this.completionRateData[0]['data'] = [];
+      this.completionRateData = [{ data: [] }];
       this.completionRateLabels = [];
-      if(res.message == 'success'){  
+      if(res.message == 'success') {  
         var allCompletionRate = [];
         this.completionRateTotal = res.total;
         this.completionRatePrev = res.total_ta;
