@@ -187,7 +187,7 @@
                     [cap]="'round'" [size]="320" [max]="conversionMax"> </ngx-gauge>
                   <div class="no-data-placeholder" *ngIf="perUserData.length <= 0">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                    <p class="chart-placeholder-text">You have no conversion for the selected period</p>
                   </div>
                 </div>
               </div>
@@ -239,7 +239,7 @@
                   <canvas #myCanvas baseChart [datasets]="conversionPerUserData" [labels]="conversionPerUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
                   <div class="no-data-placeholder" *ngIf="conversionPerUserData.length <= 0">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
+                    <p class="chart-placeholder-text">You have no conversion per user for the selected period</p>
                   </div>
                 </div>
               </div>
@@ -283,19 +283,18 @@
                <img [tooltip]="charTips[59]" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /> 
               </div>
             </mat-card-title>
-             <div class="card-body h-100">
+                <div class="card-body h-100">
               <div class="relative h-100">
                 <div style="height: 350px">
-                  <div *ngIf="completionRateLabels.length > 0">
                   <canvas #myCanvas baseChart [datasets]="completionRateData" [labels]="completionRateLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
-                </div>
-                  <div class="no-data-placeholder" *ngIf="completionRateLabels.length <= 0">
+                  <div class="no-data-placeholder" *ngIf="completionRateData.length <= 0">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">You have no followup completion rate for the selected period</p>
                   </div>
                 </div>
               </div>
             </div>
+ 
            <div class="card-footer">
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
