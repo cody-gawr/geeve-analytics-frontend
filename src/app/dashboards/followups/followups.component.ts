@@ -257,6 +257,17 @@ export class FollowupsComponent implements AfterViewInit {
 
   ngAfterViewInit(){
     $('#title').html('<span>Follow Ups</span>');
+    $(document).on('click', function (e) {
+      if ($(document.activeElement).attr('id') == 'sa_datepicker') {
+        $('.customRange').show();
+      }
+      else if ($(document.activeElement).attr('id') == 'customRange') {
+        $('.customRange').show();
+      }
+      else {
+        $('.customRange').hide();
+      }
+    });
     //
     /*$('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );*/
 

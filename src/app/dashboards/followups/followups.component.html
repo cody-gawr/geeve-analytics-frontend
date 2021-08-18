@@ -43,14 +43,14 @@
              <div class="card-body h-100">
               <div class="relative h-100">
                 <div style="height: 350px; padding-top: 70px;">
-                  <div>
+                  <div *ngIf="perUserLabels.length > 0">
                   <canvas #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels"
                     [options]="stackedChartOptions" [chartType]="'bar'" 
                     [legend]="true" [colors]="IPcolors">
                   </canvas>
                  <!--  <canvas  #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas> -->
                 </div>
-                  <div class="no-data-placeholder" *ngIf="perUserData.length <= 0">
+                  <div class="no-data-placeholder" *ngIf="perUserLabels.length <= 0">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">You have no followups per user for the selected period</p>
                   </div>
@@ -114,13 +114,21 @@
              <div class="card-body h-100">
               <div class="relative h-100">
                 <div style="height: 350px; text-align: -webkit-center;">
-                  <ngx-charts-pie-chart *ngIf="outcomeType == '1'" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                   <ngx-charts-pie-chart *ngIf="outcomeType =='2'" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                   <ngx-charts-pie-chart *ngIf="outcomeType =='3'" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-             <!--      <div class="no-data-placeholder" *ngIf="single.length <= 0">
+                  <ngx-charts-pie-chart *ngIf="outcomeType == '1' && singleTick.length > 0" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='2' && singleRecall.length > 0" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='3' && singleFta.length > 0" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                 <div class="no-data-placeholder" *ngIf="outcomeType == '1' && singleTick.length <= 0">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
-                  </div> -->
+                    <p class="chart-placeholder-text">You have no Ticks for the selected period</p>
+                  </div>
+                  <div class="no-data-placeholder" *ngIf="outcomeType == '2' && singleRecall.length <= 0">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">You have no Recalls for the selected period</p>
+                  </div>
+                  <div class="no-data-placeholder" *ngIf="outcomeType == '3' && singleFta.length <= 0">
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">You have no FTAs for the selected period</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -278,8 +286,10 @@
              <div class="card-body h-100">
               <div class="relative h-100">
                 <div style="height: 350px">
+                  <div *ngIf="completionRateLabels.length > 0">
                   <canvas #myCanvas baseChart [datasets]="completionRateData" [labels]="completionRateLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
-                  <div class="no-data-placeholder" *ngIf="completionRateData.length <= 0">
+                </div>
+                  <div class="no-data-placeholder" *ngIf="completionRateLabels.length <= 0">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">You have no hourly rates for the selected period</p>
                   </div>
