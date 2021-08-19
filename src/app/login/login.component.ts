@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService, CookieOptions } from "ngx-cookie";
 import { AppConstants } from '../app.constants';
+import { environment } from "../../environments/environment";
 import {
   FormBuilder,
   FormGroup,
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
   public errorForm = {'email' : false, 'password' : false};
+  public apiUrl = environment.apiUrl;
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService, private rolesUsersService: RolesUsersService,public constants: AppConstants) {
   if(this._cookieService.get("userid")){
      var permision = '';

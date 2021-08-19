@@ -5021,3 +5021,26 @@ mat-sidenav:hover .ps__thumb-y {
  .ps__thumb-y {
      background-color: transparent !important;
  }
+
+.text-center.warningTestDemo {
+    background-color: #d61818;
+    color: #fff;
+    font-size: 18px;
+    padding: 10px;
+    font-family: 'Circular-Loom';
+    margin-bottom: 22px;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    left: 0;
+    box-shadow: 0px 1px 5px #000;
+    z-index: 99;
+}
+
+.text-center.warningTestDemo a {
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    font-family: 'Circular-Loom';
+}
+
