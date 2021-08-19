@@ -644,11 +644,16 @@ export class FollowupsComponent implements AfterViewInit {
     this.followupsService.getConversionPerUser(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
       this.outcomeLoader = false;
       if(res.message == 'success'){  
+        this.conversionPerUserData = [{ data: [] }];
         this.conversionPerUserTotal = res.total;
         this.conversionPerUserPrev = res.total_ta;
         this.conversionPerUserGoal = res.goals;
-        this.conversionPerUserData[0]['data'] = [60,90,50,26];
-        this.conversionPerUserLabels = ['One','Two','Three','Four'];
+        var allConversionPerUse = [];
+        res.data.forEach( (response) => {
+           allConversionPerUse.push(response.percentage);
+            this.conversionPerUserLabels.push(response.user_name);
+        });
+        this.conversionPerUserData[0]['data'] = allConversionPerUse;       
       }
     }, error => {
       
