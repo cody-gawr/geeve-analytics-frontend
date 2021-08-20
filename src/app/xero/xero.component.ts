@@ -22,6 +22,7 @@ export class XeroComponent implements OnInit {
   public saleSite = 'https://test-signup.jeeve.com.au/subscription';
   private apiUrl = environment.apiUrl;
   public  xeroVar:any = '';
+  public  currentYear:any = '';
   constructor(private fb: FormBuilder, private router: Router, private xeroService: XeroService,private _cookieService: CookieService,public constants: AppConstants) {
       if(this.apiUrl.includes('staging-')){
         this.xeroVar = 'x30jeevestaging';
@@ -30,6 +31,9 @@ export class XeroComponent implements OnInit {
       } else {
         this.xeroVar = 'x30jeeveanalytics';
       }
+    var currentdate:any = new Date();
+    
+    this.currentYear  = currentdate.getFullYear();
   }
 
   ngOnInit() {
