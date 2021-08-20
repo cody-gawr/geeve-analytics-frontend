@@ -30,6 +30,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 import { MorningHuddleComponent,DialogOverviewExampleDialogComponent,StatusDialogMHComponent } from './dashboards/morning-huddle/morning-huddle.component';
+import { SignupComponent } from './signup/signup.component';
 import { FollowupsComponent,FollowupsDialogComponent,StatusDialogComponent } from './followups/followups.component';
 import { StepperHeaderrightComponent } from './layouts/stepper/headerright/headerright.component';
 import { MatMenuModule} from '@angular/material/menu';
@@ -57,6 +58,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppHeaderrightComponent,
     LostOpportunityComponent,
     MorningHuddleComponent,
+    SignupComponent,
     FollowupsComponent,
     FollowupsDialogComponent,
     StatusDialogComponent,

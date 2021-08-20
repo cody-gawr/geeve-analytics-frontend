@@ -9,6 +9,18 @@
   <link rel="icon" type="image/x-icon" href="assets/images/favicon.png">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../assets/styles/primeicons/primeicons.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="../assets/js/jquery.min.js"></script>
+  <script type="text/javascript" src="https://static.mailerlite.com/js/w/ml_jQuery.inputmask.bundle.min.js?v3.3.1"></script>
+  <script type="text/javascript" src="../assets/js/signupxero.js"></script>
+  <script type="text/javascript">
+    function addxerodata(email,name){
+      console.log('fds');
+      $('body').find('form.ml-block-form input[aria-label="email"]').val(email);
+      $('body').find('form.ml-block-form input[aria-label="name"]').val(name);
+      $('body').find('form.ml-block-form select[aria-label="country"] option:contains(Xero)').attr('selected', 'selected');
+    }
+  </script>
 </head>
 <body class="main-layout">
   <app-root></app-root>
