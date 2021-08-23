@@ -896,7 +896,8 @@ initiate_clinic() {
           // check for duplicate values        
           var isExsist = this.clinicDentists.filter(function (person) { return person.provider_id == val.provider_id });
           if(isExsist.length <= 0){
-            var temp = {'provider_id' : val.provider_id, 'provider_name' : val.provider_name};
+            var nm = (val.jeeve_name != '')? val.jeeve_name : val.provider_name;
+            var temp = {'provider_id' : val.provider_id, 'provider_name' : nm};
             this.clinicDentists.push(temp);  
           }          
         });               
