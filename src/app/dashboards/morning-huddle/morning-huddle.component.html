@@ -1713,7 +1713,7 @@
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
-            <table  #sort1="matSort"  mat-table matSort [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" >
+            <table  #sort1="matSort"  mat-table matSort [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
               <!-- Name Column -->
               <ng-container matColumnDef="task_name">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Task Name </th>
@@ -1738,7 +1738,7 @@
 
               <ng-container matColumnDef="isDataAvailable9">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns9.length">
-                  <span *ngIf="isEnabletasks && futureDateDT == ''">You have no daily tasks today</span>
+                  <span *ngIf="isEnabletasks && futureDateDT == ''">No task list has been generated for today</span>
                   <span *ngIf="isEnabletasks && futureDateDT != ''">Daily Tasks will be populated on {{ futureDateDT }}</span>
                   <span *ngIf="!isEnabletasks">Daily Tasks are not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>
@@ -1746,7 +1746,7 @@
               <tr mat-header-row *matHeaderRowDef="displayedColumns9"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns9;"></tr>
               <mat-footer-row *matFooterRowDef="['isDataAvailable9']"
-                [ngClass]="(endOfDaysTasksInComp.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+                [ngClass]="(endOfDaysTasksInComp.data.length <= 0)? 'show' : 'hide'"></mat-footer-row>
             </table>
             <!-- responsive table - frontdesk followup (Post op calls)  -->
             <div fxHide.gt-sm>
@@ -1795,7 +1795,7 @@
               <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
             </div>
-            <table #sort2="matSort" mat-table matSort [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.data.length == 0)? 'noDataTableClass' : ''" > 
+            <table #sort2="matSort" mat-table matSort [dataSource]="lquipmentList" class="mat-elevation-z8" [ngClass]="(lquipmentList.data.length == 0)? 'noDataTableClass' : ''" matSortDisableClear > 
               <!-- Name Column -->
                <ng-container matColumnDef="equip_item">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Item </th>
