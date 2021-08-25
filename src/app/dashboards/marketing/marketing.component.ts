@@ -901,6 +901,7 @@ private mkRevenueByReferralTrend() {
     var user_id;
     var clinic_id;
     this.marketingService.mkRevenueByReferralTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+      this.Apirequest = this.Apirequest -1;
       if(data.message == 'success'){ 
           this.mkRevenueByReferralLoader = false;
                 data.data.forEach(res => { 
@@ -949,6 +950,7 @@ private mkRevenueByReferralTrend() {
       var user_id;
       var clinic_id;
       this.marketingService.mkNewPatientsByReferralTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+        this.Apirequest = this.Apirequest -1;
         if(data.message == 'success'){ 
             this.mkNewPatientsByReferralLoader = false;
                   data.data.forEach(res => { 
@@ -1435,10 +1437,10 @@ public currentText;
     mode='Internal';
     showTrend= false;
     toggleChangeProcess(){
-    this.Apirequest = 2;
+    this.Apirequest = 4;
     this.showTrend = true;
     if(this.connectedwith != ''){
-      this.Apirequest = 3;
+      this.Apirequest = 5;
     }
     this.mkNewPatientsByReferralTrend();
     //this.mkNewPatientsByReferralTrend();
@@ -1563,7 +1565,7 @@ public fdvisitsRatioTrendLoader:any;
     this.newPatientsChartTrend1=[];
     this.fdnewPatientsRatioLoader =  true;
      this.fdnewPatientsAcqLoader= true; 
-    this.marketingService.mkNoNewPatientsTrend(this.clinic_id,this.trendValue).subscribe((data) => {
+    this.marketingService.mkNoNewPatientsTrend(this.clinic_id,this.trendValue).subscribe((data) => {      
       this.fdnewPatientsRatioLoader =  false;
       this.fdnewPatientsAcqLoader= false; 
       this.newPatientsChartTrend1=[];

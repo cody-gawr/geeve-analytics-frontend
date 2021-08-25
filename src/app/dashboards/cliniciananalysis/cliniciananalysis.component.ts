@@ -3121,6 +3121,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.dentistCollectionTrendLabels = [];
       this.dentistCollectionTrendLoader = false;
       let dynamicColors = [];   
+      this.Apirequest = this.Apirequest -1;
       if (data && data.message == 'success') {
         if(data.data){
           data.data.forEach(res => {
@@ -3747,7 +3748,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   toggleChangeProcess() {
     if (this.toggleChecked) {
-      this.Apirequest = 8;
+      this.Apirequest = 9;
       $('.filter').removeClass('active');
       this.dentistProductionTrend();
       this.dentistCollectionTrend();      

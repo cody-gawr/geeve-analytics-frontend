@@ -2325,7 +2325,7 @@ toggleFilter(val) {
 
 toggleChangeProcess(){
   if(this.toggleChecked){
-    this.Apirequest = 3;
+    this.Apirequest =4;
     $('.filter').removeClass('active');
 
     this.predictorTrendSingle();
@@ -2543,6 +2543,7 @@ toggleChangeProcess(){
       this.stackedChartTrendData7 =[];
       this.stackedChartTrendData8 =[];
    this.clinic_id && this.clinicianproceeduresService.ClinicianReferralTrendDentist(this.selectedDentist, this.clinic_id,this.trendValue).subscribe((data) => {
+    this.Apirequest = this.Apirequest -1;
     // this.showInternal =false;
     //   this.showExternal =false;
     //   this.showCombined =false;

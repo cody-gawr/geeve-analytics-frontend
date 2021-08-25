@@ -2239,7 +2239,7 @@ public totalProductionCollectionLabel =[];
 public netProfitDisplayVal;
 
 toggleChangeProcess(){ 
-  this.Apirequest =5;
+  this.Apirequest = 5;
     if(this.toggleChecked){
     $('.filter').removeClass('active');
     $('.trendMode').css('display','block');
