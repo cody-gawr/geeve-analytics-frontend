@@ -56,10 +56,10 @@ export class FollowupsComponent implements AfterViewInit {
         hoverBorderWidth:7
       },
     },
+    curvature: 1,
     scaleShowVerticalLines: false,
-           responsive: true,
+    responsive: true,
     maintainAspectRatio: false,
-    barThickness: 10,
       animation: {
         duration: 500,
         easing: 'easeOutSine'

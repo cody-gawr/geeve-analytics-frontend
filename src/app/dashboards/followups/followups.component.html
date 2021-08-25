@@ -42,14 +42,14 @@
             </mat-card-title>
              <div class="card-body h-100">
               <div class="relative h-100">
-                <div style="height: 350px; padding-top: 70px;">
-                  <div *ngIf="perUserLabels.length > 0">
-                  <canvas #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels"
+                <div style="height: 350px; width:100%;">
+                  
+                  <canvas *ngIf="perUserLabels.length > 0" #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels"
                     [options]="stackedChartOptions" [chartType]="'bar'" 
                     [legend]="true" [colors]="IPcolors">
                   </canvas>
                  <!--  <canvas  #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas> -->
-                </div>
+                
                   <div class="no-data-placeholder" *ngIf="perUserLabels.length <= 0">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">You have no followups per user for the selected period</p>
@@ -57,11 +57,11 @@
                 </div>
               </div>
             </div>
-           <div class="card-footer">
+           <div class="card-footer" style="">
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">{{ perUserTotal | number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
                   <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
@@ -99,7 +99,7 @@
                   class="info-icon" /> 
               </div>
             </mat-card-title>
-            <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec">
+            <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec" style="margin-bottom: 0;">
               <div fxFlex.gt-sm="35.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "outcomeType == '1'? 'active' : ''"  class="sa_tab_btn prmain1 " (click)="followupOutcomeTab('1')">Ticks</small>
               </div>
@@ -111,12 +111,12 @@
               </div>
             </div>
 
-             <div class="card-body h-100">
+             <div class="card-body h-100" style="padding-top: 0px;">
               <div class="relative h-100">
                 <div style="height: 350px; text-align: -webkit-center;">
-                  <ngx-charts-pie-chart *ngIf="outcomeType == '1' && singleTick.length > 0" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                   <ngx-charts-pie-chart *ngIf="outcomeType =='2' && singleRecall.length > 0" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                   <ngx-charts-pie-chart *ngIf="outcomeType =='3' && singleFta.length > 0" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 350]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                  <ngx-charts-pie-chart *ngIf="outcomeType == '1' && singleTick.length > 0" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 300]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='2' && singleRecall.length > 0" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 300]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='3' && singleFta.length > 0" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 300]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                  <div class="no-data-placeholder" *ngIf="outcomeType == '1' && singleTick.length <= 0">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">You have no Ticks for the selected period</p>
@@ -132,7 +132,7 @@
                 </div>
               </div>
             </div>
-           <div class="card-footer">
+    <!--        <div class="card-footer">
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 value-num">{{ outcomeTotal | number:'1.0-0'}}%</h3>
@@ -152,7 +152,7 @@
                   <span class="value-text">Goal</span>
                 </div>
               </div>
-            </div> 
+            </div>  -->
           </mat-card-content>
         </mat-card>      
       </div>
@@ -181,10 +181,10 @@
             </mat-card-title>
              <div class="card-body h-100">
               <div class="relative h-100">
-                <div style="height: 350px; width:100%;">
+                <div style="height: 350px; width:100%; padding-top: 40px;">
                   <ngx-gauge class="productionVisit" [type]="'arch'" [value]="conversionTotal" [thick]="20"
                     [append]="'%'" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor"
-                    [cap]="'round'" [size]="320" [max]="conversionMax"> </ngx-gauge>
+                    [cap]="'round'" [size]="300" [max]="conversionMax"> </ngx-gauge>
                   <div class="no-data-placeholder" *ngIf="perUserData.length <= 0">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">You have no conversion for the selected period</p>
