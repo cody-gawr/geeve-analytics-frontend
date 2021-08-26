@@ -522,6 +522,9 @@ export class FollowupsComponent implements AfterViewInit {
       this.perUserData4 = [];
       this.perUserLoader = false;
       this.perUserLabels = [];
+      this.perUserTotal = 0;
+      this.perUserGoal = 0;
+      this.perUserPrev = 0;
       if(res.message == 'success'){        
         var allData = [];
         res.data.forEach((response) => {
@@ -531,7 +534,6 @@ export class FollowupsComponent implements AfterViewInit {
           this.perUserData4.push(response.num_ftas);
           this.perUserLabels.push(response.completed_by);
         });
-
         this.perUserData[0]['data'] = this.perUserData1;
         this.perUserData[1]['data'] = this.perUserData2;
         this.perUserData[2]['data'] = this.perUserData3;
@@ -539,9 +541,13 @@ export class FollowupsComponent implements AfterViewInit {
         this.perUserTotal = res.total;
         this.perUserGoal = res.goals;
         this.perUserPrev = res.total_ta;
+        this.perUserStatus = 'up';
+        if(this.perUserPrev > this.perUserTotal){
+          this.perUserStatus = 'down';
+        }
       }
     }, error => {
-      
+        this.perUserLoader = false;
     });
   }
   public outcomeType:any = '1';
@@ -550,17 +556,20 @@ export class FollowupsComponent implements AfterViewInit {
   public outcomeTotal:any = 0;
   public outcomeStatus:any = 'up';
   public outcomeLoader:boolean = false;
-
    public singleTick = [];
    public singleRecall = [];
    public singleFta = [];
-  getFollowupOutcome(){
 
+  getFollowupOutcome(){
+     this.outcomeLoader = true;
      this.followupsService.getFollowupOutcome(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
       this.outcomeLoader = false;
       this.singleTick = [];
       this.singleRecall = [];
       this.singleFta = [];
+      this.outcomeTotal = 0;
+      this.outcomePrev = 0;
+      this.outcomeGoal = 0;
       if(res.message == 'success'){  
         this.outcomeTotal = res.total;
         this.outcomePrev = res.total_ta;
@@ -599,66 +608,207 @@ export class FollowupsComponent implements AfterViewInit {
           });          
         }        
         /****** ftas ******/
-
+        this.outcomeStatus = 'up';
+        if(this.outcomeTotal < this.outcomePrev){
+            this.outcomeStatus = 'down';
+        }
 
              
       }
     }, error => {
-      
+      this.outcomeLoader = false;
     });
 
   
   }
 
-  public conversionPrev:number = 0;
-  public conversionGoal:number = 0;
-  public conversionTotal:number = 0;
-  public conversionStatus:any = 'up'; 
-  public conversionMax:number = 100; 
+  public conversionGoal:number = 0; 
+  public conversionTotalTicks:number = 0;
+  public conversionPrevTicks:number = 0;
+  public conversionMaxTicks:number = 100; 
+  public conversionTotalRecalls:number = 0;
+  public conversionPrevRecalls:number = 0;
+  public conversionMaxRecalls:number = 100; 
+  public conversionTotalFtas:number = 0;
+  public conversionPrevFtas:number = 0;  
+  public conversionMaxFtas:number = 100;   
+  public conversionType:any = '1';
+  
+  public conversionStatusTicks:any = 'up';
+  public conversionStatusRecalls:any = 'up';
+  public conversionStatusFtas:any = 'up';
+  public conversionLoader:boolean = true;
+
   getConversion(){
-     this.followupsService.getConversion(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
-      this.outcomeLoader = false;
-      if(res.message == 'success'){  
-          this.conversionTotal = res.data;         
-          this.conversionPrev = res.total_ta;         
-          this.conversionGoal = res.goals;         
-          if(res.goals > res.data ){
-            this.conversionMax = res.goals;
-          } else {
-            this.conversionMax = res.data;
+    this.conversionLoader = true;
+    this.followupsService.getConversion(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
+      this.conversionLoader = false;
+      this.conversionTotalTicks = 0;  
+      this.conversionTotalRecalls = 0;  
+      this.conversionTotalFtas = 0;
+
+      this.conversionPrevTicks = 0;  
+      this.conversionPrevRecalls = 0;  
+      this.conversionPrevFtas = 0;
+      this.conversionGoal = 0;
+      if(res.message == 'success')
+      { 
+        this.conversionGoal = res.goals;
+        res.data.forEach( (data) =>{
+          if(data.type == 'ticks'){
+            this.conversionTotalTicks = Math.round(data.booked_percent);
           }
+          if(data.type == 'recalls'){
+            this.conversionTotalRecalls = Math.round(data.booked_percent);
+          }
+          if(data.type == 'ftas'){
+            this.conversionTotalFtas = Math.round(data.booked_percent);
+          }
+        });
+        res.data_ta.forEach( (data) =>{
+          if(data.type == 'ticks'){
+            this.conversionPrevTicks = Math.round(data.booked_percent);
+          }
+          if(data.type == 'recalls'){
+            this.conversionPrevRecalls = Math.round(data.booked_percent);
+          }
+          if(data.type == 'ftas'){
+            this.conversionPrevFtas = Math.round(data.booked_percent);
+          }
+        });
+        
+        this.conversionMaxTicks  = this.conversionTotalTicks;
+        if(this.conversionTotalTicks < res.goals)
+        {
+          this.conversionMaxTicks  = res.goals;
+        }
+
+        this.conversionMaxRecalls  = this.conversionTotalRecalls;
+        if(this.conversionTotalRecalls < res.goals)
+        {
+          this.conversionMaxRecalls  = res.goals;
+        }
+        
+        this.conversionMaxFtas  = this.conversionTotalFtas;
+        if(this.conversionTotalFtas < res.goals)
+        {
+          this.conversionMaxFtas  = res.goals;
+        }
+
+
+        this.conversionStatusTicks = 'up';         
+        if(this.conversionTotalTicks < this.conversionPrevTicks){
+          this.conversionStatusTicks = 'down';
+        }
+        this.conversionStatusRecalls = 'up';         
+        if(this.conversionTotalRecalls < this.conversionPrevRecalls){
+          this.conversionStatusRecalls = 'down';
+        }
+        this.conversionStatusFtas = 'up';         
+        if(this.conversionTotalFtas < this.conversionPrevFtas){
+          this.conversionStatusFtas = 'down';
+        }
       }
-    }, error => {      
+    }, error => {
+      this.conversionLoader = false;   
     });   
   }
 
 
-  public conversionPerUserData: any[] = [];
-  public conversionPerUserLabels:any = [];
-  public conversionPerUserTotal:number = 0;
-  public conversionPerUserPrev:number = 0;
-  public conversionPerUserGoal:number = 0;
-  public conversionPerUserStatus:any = 'up';
-  getConversionPerUser(){
+  public conversionPerUserDataFta: any[] = [];
+  public conversionPerUserLabelsFta:any = [];
+  public conversionPerUserTotalFta:number = 0;
+  public conversionPerUserPrevFta:number = 0;
+  public conversionPerUserDataRecalls: any[] = [];
+  public conversionPerUserLabelsRecalls:any = [];
+  public conversionPerUserTotalRecalls:number = 0;
+  public conversionPerUserPrevRecalls:number = 0;
+  public conversionPerUserDataTicks: any[] = [];
+  public conversionPerUserLabelsTicks:any = [];
+  public conversionPerUserTotalTicks:number = 0;
+  public conversionPerUserPrevTicks:number = 0;
+  public conversionPerUserGoal:number = 0;  
+  public conversionPerUserStatusTicks:any = 'up';
+  public conversionPerUserStatusRecalls:any = 'up';
+  public conversionPerUserStatusFta:any = 'up';
+   public conversionPerUserLoader:boolean = true;
+  public conversionPerType:string = '1';
 
+  getConversionPerUser(){
+    this.conversionPerUserLoader = true;
     this.followupsService.getConversionPerUser(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
-      this.outcomeLoader = false;
-      if(res.message == 'success'){  
-        this.conversionPerUserData = [{ data: [] }];
-        this.conversionPerUserTotal = res.total;
-        this.conversionPerUserPrev = res.total_ta;
+      this.conversionPerUserLoader = false;
+      this.conversionPerUserDataFta = [{ data: [] }];
+      this.conversionPerUserDataRecalls = [{ data: [] }];
+      this.conversionPerUserDataTicks = [{ data: [] }];
+      this.conversionPerUserLabelsFta  = [];
+      this.conversionPerUserLabelsRecalls  = [];
+      this.conversionPerUserLabelsTicks  = [];
+      this.conversionPerUserTotalFta = 0;
+      this.conversionPerUserTotalRecalls = 0;
+      this.conversionPerUserTotalTicks = 0;
+      this.conversionPerUserPrevTicks = 0;
+      this.conversionPerUserPrevRecalls = 0;
+      this.conversionPerUserPrevFta = 0;
+
+      if(res.message == 'success') {       
+        
+        this.conversionPerUserTotalFta = res.total_fta;
+        this.conversionPerUserTotalRecalls = res.total_recall;
+        this.conversionPerUserTotalTicks = res.total_tick;
+        this.conversionPerUserPrevTicks = res.total_ta_tick;
+        this.conversionPerUserPrevRecalls = res.total_ta_recall;
+        this.conversionPerUserPrevFta = res.total_ta_fta;
+
+        if( typeof(res.data.ftas) != 'undefined'){
+          var allConversionFtas = [];  
+          res.data.ftas.forEach( (fta) => {
+            allConversionFtas.push(Math.round(fta.booked_percent));
+            this.conversionPerUserLabelsFta.push(fta.completed_by);
+          });
+          this.conversionPerUserDataFta[0]['data'] = allConversionFtas; 
+        }
+        if( typeof(res.data.recalls) != 'undefined'){
+          var allConversionrecalls = [];  
+          res.data.recalls.forEach( (recalls) => {
+            allConversionrecalls.push(Math.round(recalls.booked_percent));
+            this.conversionPerUserLabelsRecalls.push(recalls.completed_by);
+          });
+          this.conversionPerUserDataRecalls[0]['data'] = allConversionrecalls; 
+        }
+        if( typeof(res.data.ticks) != 'undefined'){
+          var allConversionticks = [];  
+          res.data.ticks.forEach( (ticks) => {
+            allConversionticks.push(Math.round(ticks.booked_percent));
+            this.conversionPerUserLabelsTicks.push(ticks.completed_by);
+          });
+           this.conversionPerUserDataTicks[0]['data'] = allConversionticks; 
+        }       
         this.conversionPerUserGoal = res.goals;
-        var allConversionPerUse = [];
+
+
+        this.conversionPerUserStatusTicks = 'up';         
+        if(this.conversionPerUserTotalTicks < this.conversionPerUserPrevTicks){
+          this.conversionPerUserStatusTicks = 'down';
+        }
+        this.conversionPerUserStatusRecalls = 'up';         
+        if(this.conversionPerUserTotalRecalls < this.conversionPerUserPrevRecalls){
+          this.conversionPerUserStatusRecalls = 'down';
+        }
+        this.conversionPerUserStatusFta = 'up';         
+        if(this.conversionPerUserTotalFta < this.conversionPerUserPrevFta){
+          this.conversionPerUserStatusFta = 'down';
+        }
+        /*var allConversionPerUse = [];
         res.data.forEach( (response) => {
            allConversionPerUse.push(response.percentage);
             this.conversionPerUserLabels.push(response.user_name);
         });
-        this.conversionPerUserData[0]['data'] = allConversionPerUse;       
+        this.conversionPerUserData[0]['data'] = allConversionPerUse;       */
       }
     }, error => {
-      
-    });
-    
+      this.conversionPerUserLoader = false;
+    });    
   }
 
   public completionRateData: any = [{ data: [] }];
@@ -667,11 +817,16 @@ export class FollowupsComponent implements AfterViewInit {
   public completionRatePrev:number = 0;
   public completionRateGoal: number = 0;
   public completionRateStatus:any = 'up';
+  public completionRateLoader:boolean = true;
   getCompletionRate(){
+    this.completionRateLoader = true;
     this.followupsService.getCompletionRate(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
-      this.outcomeLoader = false;
+      this.completionRateLoader = false;
       this.completionRateData = [{ data: [] }];
       this.completionRateLabels = [];
+      this.completionRateGoal = 0;
+      this.completionRateTotal = 0;
+      this.completionRatePrev = 0;
       if(res.message == 'success') {  
         var allCompletionRate = [];
         this.completionRateTotal = res.total;
@@ -684,9 +839,14 @@ export class FollowupsComponent implements AfterViewInit {
           }
         });
         this.completionRateData[0]['data'] = allCompletionRate;
+
+        this.completionRateStatus = 'up';
+        if(this.completionRateTotal < this.completionRatePrev){
+          this.completionRateStatus = 'down';
+        }
       }
     }, error => {
-      
+      this.completionRateLoader = false;
     });
     
   }
@@ -702,5 +862,11 @@ export class FollowupsComponent implements AfterViewInit {
 
   followupOutcomeTab(number){
     this.outcomeType = number;
+  }
+  followupConversionTab(number){
+    this.conversionType = number;
+  }
+  followupConversionPerTab(number){
+    this.conversionPerType = number;
   }
 }
