@@ -52,7 +52,7 @@
                 
                   <div class="no-data-placeholder" *ngIf="perUserLabels.length <= 0 && !perUserLoader">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no followups per user for the selected period</p>
+                    <p class="chart-placeholder-text">No followups were completed in this period</p>
                   </div>
                 </div>
               </div>
@@ -100,35 +100,36 @@
                   class="info-icon" /> 
               </div>
             </mat-card-title>
-            <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec" style="margin-bottom: 0;">
-              <div fxFlex.gt-sm="35.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+            
+
+             <div class="card-body h-100" style="padding-top: 0px;">
+              <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec">
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "outcomeType == '1'? 'active' : ''"  class="sa_tab_btn prmain1 " (click)="followupOutcomeTab('1')">Ticks</small>
               </div>
-              <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "outcomeType == '2'? 'active' : ''"  class="sa_tab_btn prmain2" (click)="followupOutcomeTab('2')">Recalls</small>
               </div>
-              <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "outcomeType == '3'? 'active' : ''" class="sa_tab_btn prmain3" (click)="followupOutcomeTab('3')">FTAs</small>
               </div>
             </div>
-
-             <div class="card-body h-100" style="padding-top: 0px;">
               <div class="relative h-100">
                 <div style="height: 350px; text-align: -webkit-center;">
-                  <ngx-charts-pie-chart *ngIf="outcomeType == '1' && singleTick.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 300]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                   <ngx-charts-pie-chart *ngIf="outcomeType =='2' && singleRecall.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 300]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                   <ngx-charts-pie-chart *ngIf="outcomeType =='3' && singleFta.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 300]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                  <ngx-charts-pie-chart *ngIf="outcomeType == '1' && singleTick.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='2' && singleRecall.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='3' && singleFta.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                  <div class="no-data-placeholder" *ngIf="outcomeType == '1' && singleTick.length <= 0 && !outcomeLoader">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no Ticks for the selected period</p>
+                    <p class="chart-placeholder-text">No TICK followups were completed in this period</p>
                   </div>
                   <div class="no-data-placeholder" *ngIf="outcomeType == '2' && singleRecall.length <= 0 && !outcomeLoader">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no Recalls for the selected period</p>
+                    <p class="chart-placeholder-text">No Recall followups were completed in this period</p>
                   </div>
                   <div class="no-data-placeholder" *ngIf="outcomeType == '3' && singleFta.length <= 0 && !outcomeLoader">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no FTAs for the selected period</p>
+                    <p class="chart-placeholder-text">No FTA followups were completed in this period</p>
                   </div>
                 </div>
               </div>
@@ -188,18 +189,19 @@
                   class="info-icon" /> 
               </div>
             </mat-card-title>
-            <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec" style="margin-bottom: 0;">
-              <div fxFlex.gt-sm="35.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+            
+             <div class="card-body h-100">
+              <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec" >
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "conversionType == '1'? 'active' : ''"  class="sa_tab_btn prmain1 " (click)="followupConversionTab('1')">Ticks</small>
               </div>
-              <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "conversionType == '2'? 'active' : ''"  class="sa_tab_btn prmain2" (click)="followupConversionTab('2')">Recalls</small>
               </div>
-              <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "conversionType == '3'? 'active' : ''" class="sa_tab_btn prmain3" (click)="followupConversionTab('3')">FTAs</small>
               </div>
             </div>
-             <div class="card-body h-100">
               <div class="relative h-100">
                 <div style="height: 350px; width:100%; padding-top: 25px;">
                   
@@ -209,15 +211,15 @@
 
                   <div class="no-data-placeholder" *ngIf="conversionType == '1' && conversionTotalTicks <= 0 && !conversionLoader">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no Ticks conversion for the selected period</p>
+                    <p class="chart-placeholder-text">No TICK followups were completed in this period</p>
                   </div>
                   <div class="no-data-placeholder" *ngIf="conversionType == '2' && conversionTotalRecalls <= 0 && !conversionLoader">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no Recalls conversion for the selected period</p>
+                    <p class="chart-placeholder-text">No Recall followups were completed in this period</p>
                   </div>
                   <div class="no-data-placeholder" *ngIf="conversionType == '3' && conversionTotalFtas <= 0 && !conversionLoader">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no Ftas conversion for the selected period</p>
+                    <p class="chart-placeholder-text">No FTA followups were completed in this period</p>
                   </div>
                 </div>
               </div>
@@ -299,19 +301,20 @@
               </div>
             </mat-card-title>
 
-            <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec" style="margin-bottom: 0;">
-              <div fxFlex.gt-sm="35.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+            
+
+             <div class="card-body h-100">
+              <div fxLayout="row wrap" class="predictor_ratio_main sa_tabs_main_sec" >
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "conversionPerType == '1'? 'active' : ''"  class="sa_tab_btn prmain1 " (click)="followupConversionPerTab('1')">Ticks</small>
               </div>
-              <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "conversionPerType == '2'? 'active' : ''"  class="sa_tab_btn prmain2" (click)="followupConversionPerTab('2')">Recalls</small>
               </div>
-              <div fxFlex.gt-sm="31.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
+              <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="btn-group">
                 <small [ngClass] = "conversionPerType == '3'? 'active' : ''" class="sa_tab_btn prmain3" (click)="followupConversionPerTab('3')">FTAs</small>
               </div>
             </div>
-
-             <div class="card-body h-100">
               <div class="relative h-100">
                 <div style="height: 350px">
                     <canvas  *ngIf="conversionPerType == '1' && conversionPerUserLabelsTicks.length > 0 && !conversionPerUserLoader" #myCanvas baseChart [datasets]="conversionPerUserDataTicks" [labels]="conversionPerUserLabelsTicks" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
@@ -320,15 +323,15 @@
                   
                   <div class="no-data-placeholder" *ngIf="conversionPerUserLabelsTicks.length <= 0 && conversionPerType == '1' && !conversionPerUserLoader">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no Ticks conversion for the selected period</p>
+                    <p class="chart-placeholder-text">No TICK followups were completed in this period</p>
                   </div>
                   <div class="no-data-placeholder" *ngIf="conversionPerUserLabelsRecalls.length <= 0 && conversionPerType == '2' && !conversionPerUserLoader">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no Recalls conversion for the selected period</p>
+                    <p class="chart-placeholder-text">No Recall followups were completed in this period</p>
                   </div>
                   <div class="no-data-placeholder" *ngIf="conversionPerUserLabelsFta.length <= 0 && conversionPerType == '3' && !conversionPerUserLoader">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no Fta conversion for the selected period</p>
+                    <p class="chart-placeholder-text">No FTA followups were completed in this period</p>
                   </div>
 
                 </div>
@@ -411,7 +414,7 @@
                   <canvas #myCanvas *ngIf="completionRateData[0]['data'].length > 0 && !completionRateLoader" baseChart [datasets]="completionRateData" [labels]="completionRateLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
                   <div class="no-data-placeholder" *ngIf="completionRateData[0]['data'].length <= 0 && !completionRateLoader" style="padding-top: 50px;">
                     <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">You have no followup completion rate for the selected period</p>
+                    <p class="chart-placeholder-text">No followups were completed in this period</p>
                   </div>
                 </div>
               </div>
