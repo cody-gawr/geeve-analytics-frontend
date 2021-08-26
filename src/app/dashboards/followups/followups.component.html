@@ -115,7 +115,7 @@
               </div>
             </div>
               <div class="relative h-100">
-                <div style="height: 350px; text-align: -webkit-center;">
+                <div style="height: 260px; text-align: -webkit-center;">
                   <ngx-charts-pie-chart *ngIf="outcomeType == '1' && singleTick.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                    <ngx-charts-pie-chart *ngIf="outcomeType =='2' && singleRecall.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                    <ngx-charts-pie-chart *ngIf="outcomeType =='3' && singleFta.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="15" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
@@ -203,21 +203,20 @@
               </div>
             </div>
               <div class="relative h-100">
-                <div style="height: 350px; width:100%; padding-top: 25px;">
-                  
+                <div style="height: 350px; width:100%; padding-top: 70px;">                  
                   <ngx-gauge *ngIf="conversionType == '1' && conversionTotalTicks > 0 && !conversionLoader" class="productionVisit" [type]="'arch'" [value]="conversionTotalTicks" [thick]="20" [append]="'%'" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="'round'" [size]="300" [max]="conversionMaxTicks"> </ngx-gauge>
                   <ngx-gauge *ngIf="conversionType == '2' && conversionTotalRecalls > 0 && !conversionLoader" class="productionVisit" [type]="'arch'" [value]="conversionTotalRecalls" [thick]="20" [append]="'%'" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="'round'" [size]="300" [max]="conversionMaxRecalls"> </ngx-gauge>
                   <ngx-gauge *ngIf="conversionType == '3' && conversionTotalFtas > 0 && !conversionLoader" class="productionVisit" [type]="'arch'" [value]="conversionTotalFtas" [thick]="20" [append]="'%'" [foregroundColor]="foregroundColor" [backgroundColor]="backgroundColor" [cap]="'round'" [size]="300" [max]="conversionMaxFtas"> </ngx-gauge>
-
-                  <div class="no-data-placeholder" *ngIf="conversionType == '1' && conversionTotalTicks <= 0 && !conversionLoader">
+                  
+                  <div class="no-data-placeholder" *ngIf="conversionType == '1' && conversionTotalTicks <= 0 && !conversionLoader" style="margin-top: -33px;">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">No TICK followups were completed in this period</p>
                   </div>
-                  <div class="no-data-placeholder" *ngIf="conversionType == '2' && conversionTotalRecalls <= 0 && !conversionLoader">
+                  <div class="no-data-placeholder" *ngIf="conversionType == '2' && conversionTotalRecalls <= 0 && !conversionLoader" style="margin-top: -33px;">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">No Recall followups were completed in this period</p>
                   </div>
-                  <div class="no-data-placeholder" *ngIf="conversionType == '3' && conversionTotalFtas <= 0 && !conversionLoader">
+                  <div class="no-data-placeholder" *ngIf="conversionType == '3' && conversionTotalFtas <= 0 && !conversionLoader" style="margin-top: -33px;">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">No FTA followups were completed in this period</p>
                   </div>
@@ -412,7 +411,7 @@
               <div class="relative h-100">
                 <div style="height: 350px;margin-top:25px;">
                   <canvas #myCanvas *ngIf="completionRateData[0]['data'].length > 0 && !completionRateLoader" baseChart [datasets]="completionRateData" [labels]="completionRateLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
-                  <div class="no-data-placeholder" *ngIf="completionRateData[0]['data'].length <= 0 && !completionRateLoader" style="padding-top: 50px;">
+                  <div class="no-data-placeholder" *ngIf="completionRateData[0]['data'].length <= 0 && !completionRateLoader" style="padding-top: 40px;">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">No followups were completed in this period</p>
                   </div>
