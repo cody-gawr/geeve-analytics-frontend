@@ -88,12 +88,12 @@ export class FollowupsComponent implements AfterViewInit {
             position: 'top',
             ...this.legendLabelOptions,
          },
-          tooltips: {
+        tooltips: {
             mode: 'x-axis',
             custom: function(tooltip) {
-        if (!tooltip) return;
-        // disable displaying the color box;
-        tooltip.displayColors = true;
+              if (!tooltip) return;
+              // disable displaying the color box;
+              tooltip.displayColors = true;
       },
   callbacks: {
      label: function(tooltipItems, data) { 
@@ -107,11 +107,15 @@ export class FollowupsComponent implements AfterViewInit {
        }
      },
      title : function(tooltip, data){
+      let total = 0;
+      tooltip.forEach( (val) => {
+        total = total + val.yLabel;
+      });
       if( data.datasets[0].label.indexOf('DentistMode-') >= 0){
           var dentist = data.datasets[0].label.split('Mode-');
-          return dentist[1];
+          return dentist[1]+':'+total;
       } else {
-        return tooltip[0].label;
+        return tooltip[0].label+': '+total;
       }
      }
   }
@@ -217,6 +221,7 @@ export class FollowupsComponent implements AfterViewInit {
       yAxes: [{
         ticks: {
           suggestedMin: 0,
+          suggestedMax: 100,
           userCallback: (label, index, labels) => {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
@@ -288,7 +293,7 @@ export class FollowupsComponent implements AfterViewInit {
 
   pieTooltipText({ data, index}) {
     const labl = data.name.split("--");
-    const label = labl[0];
+    const label = labl[0].charAt(0).toUpperCase() + labl[0].slice(1);
     const val = data.value;
     return `
       <span class="tooltip-label">${label}</span>
@@ -298,7 +303,7 @@ export class FollowupsComponent implements AfterViewInit {
   
   pieLabelText(labels) {
     const labl = labels.split("--");
-    return labl[0];
+    return labl[0].charAt(0).toUpperCase() + labl[0].slice(1);
   }  
 
   choosedDate(val) {
@@ -497,7 +502,7 @@ export class FollowupsComponent implements AfterViewInit {
   public perUserLabels:any = [];
   public perUserTotal:any = 10;
   public perUserPrev:any = 20;
-  public perUserGoal:any = 0;
+  //public perUserGoal:any = 0;
   public perUserStatus:any = 'up';
   public perUserLoader:boolean = false;
   
@@ -523,7 +528,6 @@ export class FollowupsComponent implements AfterViewInit {
       this.perUserLoader = false;
       this.perUserLabels = [];
       this.perUserTotal = 0;
-      this.perUserGoal = 0;
       this.perUserPrev = 0;
       if(res.message == 'success'){        
         var allData = [];
@@ -539,7 +543,6 @@ export class FollowupsComponent implements AfterViewInit {
         this.perUserData[2]['data'] = this.perUserData3;
         this.perUserData[3]['data'] = this.perUserData4;
         this.perUserTotal = res.total;
-        this.perUserGoal = res.goals;
         this.perUserPrev = res.total_ta;
         this.perUserStatus = 'up';
         if(this.perUserPrev > this.perUserTotal){
@@ -552,7 +555,6 @@ export class FollowupsComponent implements AfterViewInit {
   }
   public outcomeType:any = '1';
   public outcomePrev:any = 0;
-  public outcomeGoal:number = 0;
   public outcomeTotal:any = 0;
   public outcomeStatus:any = 'up';
   public outcomeLoader:boolean = false;
@@ -569,11 +571,9 @@ export class FollowupsComponent implements AfterViewInit {
       this.singleFta = [];
       this.outcomeTotal = 0;
       this.outcomePrev = 0;
-      this.outcomeGoal = 0;
       if(res.message == 'success'){  
         this.outcomeTotal = res.total;
         this.outcomePrev = res.total_ta;
-        this.outcomeGoal = res.goals;
         /****** Tick ******/
         if(typeof(res.data.ticks) != 'undefined')
         {
@@ -622,92 +622,35 @@ export class FollowupsComponent implements AfterViewInit {
   
   }
 
-  public conversionGoal:number = 0; 
-  public conversionTotalTicks:number = 0;
-  public conversionPrevTicks:number = 0;
-  public conversionMaxTicks:number = 100; 
-  public conversionTotalRecalls:number = 0;
-  public conversionPrevRecalls:number = 0;
-  public conversionMaxRecalls:number = 100; 
-  public conversionTotalFtas:number = 0;
-  public conversionPrevFtas:number = 0;  
-  public conversionMaxFtas:number = 100;   
-  public conversionType:any = '1';
-  
-  public conversionStatusTicks:any = 'up';
-  public conversionStatusRecalls:any = 'up';
-  public conversionStatusFtas:any = 'up';
+  public conversionData: any[] = [];
+  public conversionLabels:any = [];
+  public conversionTotal:number = 0;
+  public conversionGoal:number = 0;
+  public conversionPrev:number = 0;
+  public conversionStatus:any = 'up';
   public conversionLoader:boolean = true;
 
   getConversion(){
     this.conversionLoader = true;
     this.followupsService.getConversion(this.clinic_id, this.startDate, this.endDate,this.duration).subscribe((res) => {
+      this.conversionData = [{ data: [] }];
+      this.conversionLabels = [];
       this.conversionLoader = false;
-      this.conversionTotalTicks = 0;  
-      this.conversionTotalRecalls = 0;  
-      this.conversionTotalFtas = 0;
-
-      this.conversionPrevTicks = 0;  
-      this.conversionPrevRecalls = 0;  
-      this.conversionPrevFtas = 0;
-      this.conversionGoal = 0;
       if(res.message == 'success')
       { 
-        this.conversionGoal = res.goals;
-        res.data.forEach( (data) =>{
-          if(data.type == 'ticks'){
-            this.conversionTotalTicks = Math.round(data.booked_percent);
-          }
-          if(data.type == 'recalls'){
-            this.conversionTotalRecalls = Math.round(data.booked_percent);
-          }
-          if(data.type == 'ftas'){
-            this.conversionTotalFtas = Math.round(data.booked_percent);
-          }
-        });
-        res.data_ta.forEach( (data) =>{
-          if(data.type == 'ticks'){
-            this.conversionPrevTicks = Math.round(data.booked_percent);
-          }
-          if(data.type == 'recalls'){
-            this.conversionPrevRecalls = Math.round(data.booked_percent);
-          }
-          if(data.type == 'ftas'){
-            this.conversionPrevFtas = Math.round(data.booked_percent);
-          }
-        });
-        
-        this.conversionMaxTicks  = this.conversionTotalTicks;
-        if(this.conversionTotalTicks < res.goals)
-        {
-          this.conversionMaxTicks  = res.goals;
-        }
-
-        this.conversionMaxRecalls  = this.conversionTotalRecalls;
-        if(this.conversionTotalRecalls < res.goals)
-        {
-          this.conversionMaxRecalls  = res.goals;
-        }
-        
-        this.conversionMaxFtas  = this.conversionTotalFtas;
-        if(this.conversionTotalFtas < res.goals)
-        {
-          this.conversionMaxFtas  = res.goals;
-        }
-
-
-        this.conversionStatusTicks = 'up';         
-        if(this.conversionTotalTicks < this.conversionPrevTicks){
-          this.conversionStatusTicks = 'down';
-        }
-        this.conversionStatusRecalls = 'up';         
-        if(this.conversionTotalRecalls < this.conversionPrevRecalls){
-          this.conversionStatusRecalls = 'down';
-        }
-        this.conversionStatusFtas = 'up';         
-        if(this.conversionTotalFtas < this.conversionPrevFtas){
-          this.conversionStatusFtas = 'down';
-        }
+          var allConversionFtas = [];  
+          res.data.forEach( (data) => {
+            allConversionFtas.push(Math.round(data.booked_percent));
+            this.conversionLabels.push(data.type);
+          });
+          this.conversionData[0]['data'] = allConversionFtas; 
+          this.conversionTotal = res.total; 
+          this.conversionPrev = res.total_ta; 
+          this.conversionGoal = res.goals; 
+      }
+      this.conversionStatus = 'up';
+      if(this.conversionTotal < this.conversionPrev){
+        this.conversionStatus = 'down';
       }
     }, error => {
       this.conversionLoader = false;   
@@ -727,7 +670,6 @@ export class FollowupsComponent implements AfterViewInit {
   public conversionPerUserLabelsTicks:any = [];
   public conversionPerUserTotalTicks:number = 0;
   public conversionPerUserPrevTicks:number = 0;
-  public conversionPerUserGoal:number = 0;  
   public conversionPerUserStatusTicks:any = 'up';
   public conversionPerUserStatusRecalls:any = 'up';
   public conversionPerUserStatusFta:any = 'up';
@@ -784,7 +726,6 @@ export class FollowupsComponent implements AfterViewInit {
           });
            this.conversionPerUserDataTicks[0]['data'] = allConversionticks; 
         }       
-        this.conversionPerUserGoal = res.goals;
 
 
         this.conversionPerUserStatusTicks = 'up';         
@@ -863,9 +804,9 @@ export class FollowupsComponent implements AfterViewInit {
   followupOutcomeTab(number){
     this.outcomeType = number;
   }
-  followupConversionTab(number){
+  /*followupConversionTab(number){
     this.conversionType = number;
-  }
+  }*/
   followupConversionPerTab(number){
     this.conversionPerType = number;
   }
