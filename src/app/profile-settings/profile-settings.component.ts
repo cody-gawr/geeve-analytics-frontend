@@ -167,8 +167,11 @@ public cvcStyle = {
             this.getPaymentDetails();
         }
          
-          this.getChartsTips()
-          this.stripeService.setKey('pk_test_fgXaq2pYYYwd4H3WbbIl4l8D00A63MKWFc');
+          this.getChartsTips();
+          this.getStripeKey();
+
+
+          
           this.stripeTest = this.fb.group({
             name: ['', [Validators.required]]
           });
@@ -191,8 +194,16 @@ public cvcStyle = {
       this.userType = this._cookieService.get("user_type");
     }
 
+    public stripePublicKey:any = '';
+    getStripeKey(){
+      this.profileSettingsService.getStripeKey().subscribe((res) => {
+        this.stripePublicKey = res.pKey;
+        this.stripeService.setKey(this.stripePublicKey);
+        this.getStripeForm();
+      }, error => {});
+    }
 
-    ngAfterViewInit(){
+    getStripeForm(){
       this.stripeService.elements(this.elementsOptions).subscribe(elements => {
         this.elements = elements;
         // Only mount the element the first time
@@ -211,6 +222,11 @@ public cvcStyle = {
         this.cardCvc.mount('#example3-card-cvc');   
         }
       });
+    }
+
+
+    ngAfterViewInit(){
+   
     }
 
 /* CHECK PERMISSIONS */

@@ -151,6 +151,13 @@ var header = this.getHeaders();
             return response;
         }));
     }
+    // GET CHARTS TIPS
+    getStripeKey(): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/users/getPublishableKey", { headers: header }).pipe(map((response: Response) => {
+            return response;
+        }));
+    }
     // save CHARTS TIPS
     saveChartsTips(data): Observable<any> {
         var header = this.getHeaders(); 
