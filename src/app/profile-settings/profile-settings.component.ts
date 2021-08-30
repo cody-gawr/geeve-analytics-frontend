@@ -400,7 +400,7 @@ getCardDetails() {
                             this.cardExpiry.clear();
                     Swal.fire(
                         '',
-                        'Some issue with your card, Please try again!',
+                        'There was an issue updating your card details - please contact Jeeve support',
                         'error'
                       )
                     }

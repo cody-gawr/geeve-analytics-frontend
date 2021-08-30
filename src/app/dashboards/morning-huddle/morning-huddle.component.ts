@@ -256,6 +256,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public charTips:any = [];
     public dentist_id:any = '';
     public nextBussinessDay:any;
+    public userPlan:any = '';
 
 
     public isEnablePO: boolean = false;
@@ -308,6 +309,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     this.dataSource2.sort = this.sort2;*/
     $('#currentDentist').attr('did','all');
     this.user_type = this._cookieService.get("user_type");
+    this.userPlan = this._cookieService.get("user_plan");
     if(this._cookieService.get("dentistid") && this._cookieService.get("dentistid") != '' && this.user_type == '4'){
         this.dentistid = this._cookieService.get("dentistid");
     }
@@ -889,7 +891,7 @@ initiate_clinic() {
       this.appointmentCardsTemp = []; 
       this.appointmentCards = new MatTableDataSource();
       if(production.status == true) {
-        this.clinicTotal = production.total;
+       this.clinicTotal = production.total;
         this.appointmentCardsTemp = production.data; 
         if(this.user_type == '4'){         
           this.dentistid = this._cookieService.get("dentistid");
