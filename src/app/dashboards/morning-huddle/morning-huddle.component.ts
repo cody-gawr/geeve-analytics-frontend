@@ -402,11 +402,6 @@ initiate_clinic() {
         this.getEquipmentList();
       }
     }
-    var self = this;
-    let autoCall =  setInterval( function()
-    {
-       self.refreshDataAuto();
-    }, 1000 * 60);
   }
 
   
@@ -885,7 +880,7 @@ initiate_clinic() {
     this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((production:any) => {
       this.appointmentCardsLoaders = false;
       this.clinicDentists = [];
-      this.currentDentistSchedule = (this.currentDentist)? this.currentDentist : 0;
+      this.currentDentistSchedule = 0;
       this.appointmentCardsTemp = []; 
       this.appointmentCards = new MatTableDataSource();
       if(production.status == true) {
@@ -895,19 +890,7 @@ initiate_clinic() {
           this.dentistid = this._cookieService.get("dentistid");
           this.refreshScheduleTab(this.dentistid);
         } else {
-          if(this.currentDentist != 0) {
-            var temp = [];
-            this.appointmentCardsTemp.forEach(val => {
-              if(val.provider_id == this.currentDentist){
-                temp.push(val);
-              }
-            });
-            this.appointmentCards.data = temp;   
-          } else {
-            this.appointmentCards.data = production.data;
-          }
-
-
+          this.appointmentCards.data = production.data; 
         }
         production.data.forEach(val => {
           // check for duplicate values        
@@ -1281,22 +1264,6 @@ async getDentistList(){
       $('.custom-tooltip').css({'top': ( y - divLnt), 'left' : (x - divwd ) } );
     },100);
   }
-
-
-
-  refreshDataAuto()
-  {
-
-    if(this.currentDentist == 0){
-        this.currentDentist = null;
-    }
-    this.getScheduleNewPatients(this.currentDentist);
-    this.getScheduleHours(this.currentDentist);
-    this.getUnscheduleHours(this.currentDentist);
-    this.getAppointmentCards(this.currentDentist);
-  } 
-
-
 }
 
 
