@@ -316,7 +316,12 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     setTimeout(() => {
       this.matTabGroup.realignInkBar();
     }, 500);    
-    
+
+    var self = this;
+    let autoCall =  setInterval( function()
+    {
+       self.refreshDataAuto();
+    }, 1000 * 60);    
  }
 ngAfterViewInit(): void {
   this.endOfDaysTasksInComp.sort = this.sort1; 
@@ -880,7 +885,7 @@ initiate_clinic() {
     this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((production:any) => {
       this.appointmentCardsLoaders = false;
       this.clinicDentists = [];
-      this.currentDentistSchedule = 0;
+      this.currentDentistSchedule = (this.currentDentist)? this.currentDentist : 0;
       this.appointmentCardsTemp = []; 
       this.appointmentCards = new MatTableDataSource();
       if(production.status == true) {
@@ -890,7 +895,20 @@ initiate_clinic() {
           this.dentistid = this._cookieService.get("dentistid");
           this.refreshScheduleTab(this.dentistid);
         } else {
-          this.appointmentCards.data = production.data; 
+          if(this.currentDentist != 0 && this.currentDentist) {
+            var temp = [];
+            this.appointmentCardsTemp.forEach(val => {
+              if(val.provider_id == this.currentDentist){
+                temp.push(val);
+              }
+            });
+            this.appointmentCards.data = temp;   
+          } else {
+            this.appointmentCards.data = production.data;
+          }
+
+
+          // this.appointmentCards.data = production.data; 
         }
         production.data.forEach(val => {
           // check for duplicate values        
@@ -1264,6 +1282,19 @@ async getDentistList(){
       $('.custom-tooltip').css({'top': ( y - divLnt), 'left' : (x - divwd ) } );
     },100);
   }
+
+
+  refreshDataAuto()
+  {
+    if(this.currentDentist == 0){
+        this.currentDentist = null;
+    }
+    this.getScheduleNewPatients(this.currentDentist);
+    this.getScheduleHours(this.currentDentist);
+    this.getUnscheduleHours(this.currentDentist);
+    this.getAppointmentCards(this.currentDentist);
+  }
+
 }
 
 
