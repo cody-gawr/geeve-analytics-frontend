@@ -23,7 +23,7 @@
    <div class="sa_health_screen_area">
     <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0"
       fxLayoutGap.xs="0">
-      <!---- Chart One---------->
+       <!---- Chart Four---------->
       <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg ">
         <mat-card class="hourlyRate sa_no_tabs_area">
@@ -31,58 +31,52 @@
             <mat-card-title class="text-center">
               <div>
                 <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
-                  mat-icon-button matTooltip="{{trendText}} : {{perUserPrev| number:'1.0-0'}}%"><img
-                    class="trend_ico" src="../assets/images/trend_{{perUserStatus}}.png"></span>
-                Followups Per User
+                  mat-icon-button matTooltip="{{trendText}} : {{completionRatePrev| number:'1.0-0'}}%"><img
+                    class="trend_ico" src="../assets/images/trend_{{completionRateStatus}}.png"></span>
+                Followup Completion Rate
               </div>              
               <div class="info-icon-container">
-               <img [tooltip]="charTips[55]" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" /> 
+               <img [tooltip]="charTips[59]" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /> 
               </div>
             </mat-card-title>
-             <div class="card-body h-100">
+                <div class="card-body h-100">
               <div class="relative h-100">
-                <div style="height: 350px; width:100%;">
-                  
-                  <canvas *ngIf="perUserLabels.length > 0 && !perUserLoader" #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels"
-                    [options]="stackedChartOptions" [chartType]="'bar'" 
-                    [legend]="true" [colors]="IPcolors">
-                  </canvas>
-                 <!--  <canvas  #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas> -->
-                
-                  <div class="no-data-placeholder" *ngIf="perUserLabels.length <= 0 && !perUserLoader">
+                <div style="height: 350px;">
+                  <canvas #myCanvas *ngIf="completionRateData[0]['data'].length > 0 && !completionRateLoader" baseChart [datasets]="completionRateData" [labels]="completionRateLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
+                  <div class="no-data-placeholder" *ngIf="completionRateData[0]['data'].length <= 0 && !completionRateLoader">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">No followups were completed in this period</p>
                   </div>
                 </div>
               </div>
             </div>
-           <div class="card-footer" style="">
+ 
+           <div class="card-footer">
               <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">{{ perUserTotal | number:'1.0-0'}}</h3>
+                  <h3 class="m-0 value-num">{{ completionRateTotal | number:'1.0-0'}}%</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
-                  <span class="value-text" *ngIf="currentText == ''">Current Avg</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
                 </div>
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{ perUserPrev | number:'1.0-0'}}</h3>
-                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Avg</span>
-                  <span class="value-text" *ngIf="trendText == ''">Previous Avg</span>
+                  <h3 class="m-0 value-num">{{ completionRatePrev | number:'1.0-0'}}%</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
-              <!--   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration !='custom' && perUserGoal >= 0">
-                  <h3 class="m-0 value-num">
-                    {{ perUserGoal | number:'1.0-0' }}</h3>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom' && completionRateGoal >= 0">
+                  <h3 class="m-0 value-num">{{ completionRateGoal | number:'1.0-0' }}%</h3>
                   <span class="value-text">Goal</span>
-                </div> -->
+                </div>
               </div>
             </div> 
-            <div *ngIf="perUserLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"> <div class="loader-text">Calculating...</div> </div>
+
+             <div *ngIf="completionRateLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"> <div class="loader-text">Calculating...</div> </div>
           </mat-card-content>
         </mat-card>      
       </div>
-      <!---- Chart One---------->
+      <!---- Chart Four---------->
+    
       <!---- Chart Two---------->
       <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg ">
@@ -223,59 +217,7 @@
         </mat-card>      
       </div>
       <!---- Chart Three---------->
- <!---- Chart Four---------->
-      <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-        class="sa_flexbg ">
-        <mat-card class="hourlyRate sa_no_tabs_area">
-          <mat-card-content class="sa_matcard_content">
-            <mat-card-title class="text-center">
-              <div>
-                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
-                  mat-icon-button matTooltip="{{trendText}} : {{completionRatePrev| number:'1.0-0'}}%"><img
-                    class="trend_ico" src="../assets/images/trend_{{completionRateStatus}}.png"></span>
-                Followup Completion Rate
-              </div>              
-              <div class="info-icon-container">
-               <img [tooltip]="charTips[59]" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" /> 
-              </div>
-            </mat-card-title>
-                <div class="card-body h-100">
-              <div class="relative h-100">
-                <div style="height: 350px;margin-top:45px;">
-                  <canvas #myCanvas *ngIf="completionRateData[0]['data'].length > 0 && !completionRateLoader" baseChart [datasets]="completionRateData" [labels]="completionRateLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
-                  <div class="no-data-placeholder" *ngIf="completionRateData[0]['data'].length <= 0 && !completionRateLoader">
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">No followups were completed in this period</p>
-                  </div>
-                </div>
-              </div>
-            </div>
- 
-           <div class="card-footer">
-              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">{{ completionRateTotal | number:'1.0-0'}}%</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
-                  <span class="value-text" *ngIf="currentText == ''">Current</span>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom'">
-                  <h3 class="m-0 value-num">{{ completionRatePrev | number:'1.0-0'}}%</h3>
-                  <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
-                  <span class="value-text" *ngIf="trendText == ''">Previous</span>
-                </div>
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center" *ngIf="duration!='custom' && completionRateGoal >= 0">
-                  <h3 class="m-0 value-num">{{ completionRateGoal | number:'1.0-0' }}%</h3>
-                  <span class="value-text">Goal</span>
-                </div>
-              </div>
-            </div> 
 
-             <div *ngIf="completionRateLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"> <div class="loader-text">Calculating...</div> </div>
-          </mat-card-content>
-        </mat-card>      
-      </div>
-      <!---- Chart Four---------->
 
     <!---- Chart Five---------->
       <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
@@ -391,6 +333,66 @@
         </mat-card>      
       </div>
       <!---- Chart five---------->
+        <!---- Chart One---------->
+      <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg ">
+        <mat-card class="hourlyRate sa_no_tabs_area">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}} : {{perUserPrev| number:'1.0-0'}}%"><img
+                    class="trend_ico" src="../assets/images/trend_{{perUserStatus}}.png"></span>
+                Followups Per User
+              </div>              
+              <div class="info-icon-container">
+               <img [tooltip]="charTips[55]" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" /> 
+              </div>
+            </mat-card-title>
+             <div class="card-body h-100">
+              <div class="relative h-100">
+                <div style="height: 350px; width:100%;  margin-top:45px;">
+                  
+                  <canvas *ngIf="perUserLabels.length > 0 && !perUserLoader" #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels"
+                    [options]="stackedChartOptions" [chartType]="'bar'" 
+                    [legend]="true" [colors]="IPcolors">
+                  </canvas>
+                 <!--  <canvas  #myCanvas baseChart [datasets]="perUserData" [labels]="perUserLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions" [colors]="colors"></canvas> -->
+                
+                  <div class="no-data-placeholder" *ngIf="perUserLabels.length <= 0 && !perUserLoader" >
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">No followups were completed in this period</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+           <div class="card-footer" style="">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">{{ perUserTotal | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Total</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current Avg</span>
+                </div>
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom'">
+                  <h3 class="m-0 value-num">{{ perUserPrev | number:'1.0-0'}}</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Total</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previous Avg</span>
+                </div>
+              <!--   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration !='custom' && perUserGoal >= 0">
+                  <h3 class="m-0 value-num">
+                    {{ perUserGoal | number:'1.0-0' }}</h3>
+                  <span class="value-text">Goal</span>
+                </div> -->
+              </div>
+            </div> 
+            <div *ngIf="perUserLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"> <div class="loader-text">Calculating...</div> </div>
+          </mat-card-content>
+        </mat-card>      
+      </div>
+      <!---- Chart One---------->
      
 
     </div>
