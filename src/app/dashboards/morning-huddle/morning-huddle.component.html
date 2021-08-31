@@ -1094,7 +1094,8 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="6">
-                  <span *ngIf="isEnablePO && futureDateOP == ''">You have no post op calls today</span>
+                  <span *ngIf="isEnablePO && futureDateOP == '' && followupPostOpCalls.length <= 0">You have no post op calls today</span>
+                  <span *ngIf="isEnablePO && futureDateOP == '' && followupPostOpCalls.length > 0">All post op calls have been completed</span>
                   <span *ngIf="isEnablePO && futureDateOP != ''">Post Op calls will be populated on  {{ futureDateOP }}</span>
                   <span *ngIf="!isEnablePO">Post Op calls are not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>
@@ -1246,7 +1247,8 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns7.length">
-                  <span *ngIf="isEnableOR && futureDateOR ==''">You have no overdue recalls today</span>
+                  <span *ngIf="isEnableOR && futureDateOR =='' && followupOverDueRecall.length <= 0">You have no overdue recalls today</span>
+                  <span *ngIf="isEnableOR && futureDateOR =='' && followupOverDueRecall.length > 0">All overdue recalls been completed</span>
                   <span *ngIf="isEnableOR && futureDateOR !=''">Overdue Recalls will be populated on {{ futureDateOR }}</span>
                   <span *ngIf="!isEnableOR">Overdue Recalls are not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>
@@ -1425,7 +1427,8 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns8.length">
-                  <span *ngIf="isEnableTH && futureDateTH == ''">You have no tick followups today</span>
+                  <span *ngIf="isEnableTH && futureDateTH == '' && followupTickFollowups.length <= 0">You have no tick followups today</span>
+                  <span *ngIf="isEnableTH && futureDateTH == '' && followupTickFollowups.length > 0">All tick followups have been completed</span>
                   <span *ngIf="isEnableTH && futureDateTH != ''">Tick Followup calls will be populated on  {{ futureDateTH }}</span>
                   <span *ngIf="!isEnableTH">Tick Followup are not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>
@@ -1609,7 +1612,8 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns8.length">
-                  <span *ngIf="isEnableFT && futureDateTF == ''">You have no FTA followups today</span>
+                  <span *ngIf="isEnableFT && futureDateTF == '' && followupFtaFollowups.length <= 0">You have no FTA followups today</span>
+                  <span *ngIf="isEnableFT && futureDateTF == ''  && followupFtaFollowups.length > 0">All FTA followups have been completed</span>
                   <span *ngIf="isEnableFT && futureDateTF != ''">FTA Followup calls will be populated on  {{ futureDateTH }}</span>
                   <span *ngIf="!isEnableFT">FTA Followup are not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>

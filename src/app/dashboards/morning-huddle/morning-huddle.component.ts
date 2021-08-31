@@ -1236,7 +1236,6 @@ async getDentistList(){
     var month = currentdate.getMonth(); //months from 1-12
     var year  = currentdate.getFullYear();
     var date2:any= new Date(year,month, day);
-
     var setDate:any= new Date(this.previousDays);
     var day1   = setDate.getDate();
     var month1 = setDate.getMonth(); //months from 1-12

@@ -103,7 +103,8 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns2.length">
-                  <span *ngIf="isEnableOR">You have no overdue recalls for {{ selectedMonthYear }}</span>
+                  <span *ngIf="isEnableOR && followupOverDueRecall.length <= 0">You have no overdue recalls for {{ selectedMonthYear }}</span>
+                  <span *ngIf="isEnableOR && followupOverDueRecall.length > 0">All overdue recalls have been completed  for {{ selectedMonthYear }}</span>
                   <span *ngIf="!isEnableOR">Overdue Recalls are not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>
               </ng-container>
@@ -224,7 +225,8 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
-                   <span *ngIf="isEnableTH">You have no tick followups for {{ selectedMonthYear }}</span>
+                   <span *ngIf="isEnableTH && followupTickFollowups.length <= 0 ">You have no tick followups for {{ selectedMonthYear }}</span>
+                   <span *ngIf="isEnableTH && followupTickFollowups.length > 0">All tick followups have been completed  for {{ selectedMonthYear }}</span>
                   <span *ngIf="!isEnableTH">Tick Followup are not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>
               </ng-container>
@@ -316,7 +318,8 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns1.length">
-                  <span *ngIf="isEnablePO">You have no post op calls for {{ selectedMonthYear }}</span>
+                  <span *ngIf="isEnablePO && followupPostOpCalls.length <= 0">You have no post op calls for {{ selectedMonthYear }}</span>
+                  <span *ngIf="isEnablePO  && followupPostOpCalls.length > 0">All post op calls have been completed for {{ selectedMonthYear }}</span>
                   <span *ngIf="!isEnablePO">Post Op calls are not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>
               </ng-container>
@@ -440,7 +443,8 @@
               </ng-container>
               <ng-container matColumnDef="isDataAvailable1">
                 <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
-                  <span *ngIf="isEnableFT">You have no FTA followups for {{ selectedMonthYear }}</span>
+                  <span *ngIf="isEnableFT && followupFtaFollowups.length <= 0">You have no FTA followups for {{ selectedMonthYear }}</span>
+                  <span *ngIf="isEnableFT && followupFtaFollowups.length > 0">All FTA followups have been completed for {{ selectedMonthYear }}</span>
                   <span *ngIf="!isEnableFT">FTA Followup are not enabled - this can be configured in your Jeeve Settings menu</span>
                 </mat-footer-cell>
               </ng-container>
