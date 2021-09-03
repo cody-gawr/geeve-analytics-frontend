@@ -10,9 +10,9 @@
         </div> 
       </div>
 
-
+<div class="follow-up">
         <mat-card-title>
-          <div class="title-follow-up">
+          <div class="title-follow-up d-inline-block">
            Overdue Recalls
             <div class="info-icon-container"><img [tooltip]="charTips['44']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
@@ -30,6 +30,7 @@
               <div class="card-loading" *ngIf="recallLoadingLoading">
                 <img class="tableLoader" src="../../assets/images/logo-icon.gif">
               </div>
+            <div class="follow-ups-table table-responsive">
                <table mat-table [dataSource]="followupOverDueRecallInCMP" class="mat-elevation-z8 customWidth thick">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
@@ -112,12 +113,82 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
               <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
                 [ngClass]="(followupOverDueRecallInCMP.length <= 0)? 'show' : 'hide'"></mat-footer-row>
-            </table>        
+            </table>   
+          </div>     
             <ul class="main_pagination settings-table-pagination followup" *ngIf="orTablePages.length">
             <li *ngFor="let page of orTablePages">
               <button [ngClass]="{ active: page === currentORPage, page: true }" (click)="handlePageChange(page,'OR')">{{ page }}</button>
             </li>
           </ul>
+          <!-- follow-ups-card view-->
+            <div class="follow-ups-card">
+              <div fxHide.gt-sm>
+                <div>
+                  <mat-card class="huddle-card" *ngFor="let element of followupTickFollowupsInCMP">
+                    <div fxLayout="row" class="huddle-card-row">
+                      <div fxFlex="30">Patient: </div>
+                      <div fxFlex="70">  John Smith  </div>
+                    </div>
+                    <div fxLayout="row" class="huddle-card-row">
+                      <div fxFlex="30">Phone: </div>
+                      <div fxFlex="70">
+                        <!-- <div class="phone_align_center"> -->
+                        <!-- <img src="../assets/images/follow-up-call.png" alt="follow-up-call" /> -->
+                        <span class="phone_no"
+                          *ngIf="element.patients.mobile">{{ formatPhoneNumber(element.patients.mobile) }}</span>
+                        <span class="phone_no"
+                          *ngIf="!element.patients.mobile && element.patients.phone_work">{{ formatPhoneNumber(element.patients.phone_work) }}</span>
+                        <span class="phone_no"
+                          *ngIf="!element.patients.mobile && !element.patients.phone_work">{{ formatPhoneNumber(element.patients.phone_home) }}</span>
+                        <!-- </div> -->
+                      </div>
+                    </div>
+  
+  
+                    <div fxLayout="row" class="huddle-card-row">
+                      <div fxFlex="30">Status </div>
+                      <div fxFlex="70">
+                        <mat-form-field floatLabel="never" class="setPreviousDay">
+                          <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote3"
+                            (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.patients.firstname, element.patients.surname,element.original_appt_date,element.followup_date, 'tick-follower',nextBussinessDay)">
+                            <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                              <mat-option value="">Select Status</mat-option>
+                        <mat-option value="Booked">Booked</mat-option>
+                        <mat-option value="Already booked">Already booked</mat-option>
+                        <mat-option value="Didn't want to book">Didn't want to book</mat-option>
+                        <mat-option value="Ineligible">Ineligible</mat-option>
+                        <mat-option value="Can't be reached">Can't be reached</mat-option>
+                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                        <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div fxLayout="row" class="huddle-card-row">
+                      <div fxFlex="30">Notes </div>
+                      <div fxFlex="70">
+                       <i [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date,element.followup_date,'tick-follower')"></i>
+                      </div>
+                    </div> <div fxLayout="row" class="huddle-card-row">
+                      <div fxFlex="30">Complete </div>
+                      <div fxFlex="70">
+                        <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
+                          (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.followup_date,element.patients.clinic_id,'tick-follower',element.status)">
+                        </mat-slide-toggle>
+                      </div>
+                    </div>
+                  </mat-card>
+  
+                </div>
+                <ng-template #noPostOpCalls>
+                  <mat-card class="huddle-card">
+                    <h6> You have no tick followups today</h6>
+                  </mat-card>
+                </ng-template>
+              </div>
+            </div>
+              <!-- follow-ups-card view-end--->
+          </div>
     </mat-tab>
     <!-- Patient Schedule Tab end -->
 
@@ -129,9 +200,9 @@
           <mat-icon  (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{selectedMonthYear}}<mat-icon (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>    
         </div> 
       </div>
-
+      <div class="follow-up">
          <mat-card-title>
-          <div class="title-follow-up">
+          <div class="title-follow-up d-inline-block">
             Tick Followups
             <div class="info-icon-container"><img [tooltip]="charTips['45']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
@@ -147,6 +218,7 @@
            <div class="card-loading" *ngIf="endTaksLoadingLoading">
                 <img class="tableLoader" src="../../assets/images/logo-icon.gif">
               </div>
+        <div class="follow-ups-table table-responsive">  
           <table   mat-table [dataSource]="followupTickFollowupsInCMP" class="mat-elevation-z8 customWidth thick">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
@@ -235,11 +307,13 @@
               <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
                 [ngClass]="(followupTickFollowupsInCMP.length <= 0)? 'show' : 'hide'"></mat-footer-row>
             </table>
+          </div>  
             <ul class="main_pagination settings-table-pagination followup" *ngIf="thikTablePages.length">
             <li *ngFor="let page of thikTablePages">
               <button [ngClass]="{ active: page === currentThickPage, page: true }" (click)="handlePageChange(page,'TH')">{{ page }}</button>
             </li>
           </ul>
+        </div> 
     </mat-tab>
     <!-- Reminders Tab end -->
        <!-- Dentist Performance Tab -->
@@ -252,9 +326,9 @@
       </div> 
 
 
-
+      <div class="follow-up"> 
           <mat-card-title>
-          <div class="title-follow-up">
+          <div class="title-follow-up d-inline-block">
             Post op Calls
             <div class="info-icon-container"><img [tooltip]="charTips['43']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
@@ -270,10 +344,11 @@
             <div class="card-loading" *ngIf="poLoadingLoading">
                 <img class="tableLoader" src="../../assets/images/logo-icon.gif">
               </div>
+         <div class="follow-ups-table table-responsive">      
            <table mat-table [dataSource]="followupPostOpCallsInComp" class="mat-elevation-z8 customWidth PostOp">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+                <th mat-header-cell *matHeaderCellDef>  </th>
                 <td mat-cell *matCellDef="let element"> {{element.patients.firstname }} {{element.patients.surname }}
                 </td>
               </ng-container>
@@ -328,12 +403,13 @@
               <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
                 [ngClass]="(followupPostOpCallsInComp.length <= 0)? 'show' : 'hide'"></mat-footer-row>
             </table>
-
+        </div>
             <ul class="main_pagination settings-table-pagination followup" *ngIf="opTablePages.length">
             <li *ngFor="let page of opTablePages">
               <button [ngClass]="{ active: page === currentOpPage, page: true }" (click)="handlePageChange(page,'OP')">{{ page }}</button>
             </li>
           </ul>
+          </div>
     </mat-tab>
     <!-- Dentist Performance Tab -->
 
@@ -345,9 +421,9 @@
           <mat-icon  (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{selectedMonthYear}}<mat-icon (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>    
         </div> 
       </div>
-
+      <div class="follow-up">
          <mat-card-title>
-          <div class="title-follow-up">
+          <div class="title-follow-up d-inline-block">
             FTA Followups
             <div class="info-icon-container"><img [tooltip]="charTips['52']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
@@ -363,6 +439,7 @@
            <div class="card-loading" *ngIf="ftaTaksLoadingLoading">
                 <img class="tableLoader" src="../../assets/images/logo-icon.gif">
               </div>
+       <div class="follow-ups-table table-responsive">      
           <table mat-table [dataSource]="followupFtaFollowupsInCMP" class="mat-elevation-z8 customWidth thick">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
@@ -453,11 +530,13 @@
               <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
                 [ngClass]="(followupFtaFollowupsInCMP.length <= 0)? 'show' : 'hide'"></mat-footer-row>
             </table>
+        </div>    
             <ul class="main_pagination settings-table-pagination followup" *ngIf="ftTablePages.length">
             <li *ngFor="let page of ftTablePages">
               <button [ngClass]="{ active: page === currentFTPage, page: true }" (click)="handlePageChange(page,'FT')">{{ page }}</button>
             </li>
           </ul>
+          </div>
     </mat-tab>
     <!-- Dentist Performance Tab -->
   </mat-tab-group>

@@ -1306,6 +1306,12 @@ font-weight: 500; vertical-align: middle; padding-right: 7px; }
 .morning-huddle .mat-tab-body-content { padding: 0 0px !important; }
 
 .doughnut-chart-center-text{margin-top: -24px;}
+    .sa_heading_bar:before{
+        display: none;
+    }
+    .sa_heading_bar {
+        padding: 12px 0px;
+    }
 }
 
 @media (max-width:600px) {
@@ -1379,21 +1385,51 @@ body .working-days .mat-slide-toggle { width: 100% !important;}
 
 
 }
+
 @media (max-width:386px) {
     .doughnut-chart-center-text {margin-top: -44px;}
 }
  @media (min-width:959px) and (max-width:1280px) {
 
-.mr0-md { margin-right: 0px !important; }
+    .mr0-md { margin-right: 0px !important; }
+}
+
+@media (min-width:1001px) and (max-width:1135px) {
+    .morning-huddle .mat-tab-label { 
+        min-width: unset;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+    .morning-huddle .mat-tab-labels {
+        padding: 8px 5px;
+    }
 }
 @media (max-width:1000px) {
     .matInput-form-group .sa-form-group {
-    width: 50% !important;
+        width: 50% !important;
+    }
+
+    .morning-huddle .mat-tab-label { 
+        min-width: unset;
+        padding: 0 6px;
+        font-size: 12px;
+    }
+
+    .morning-huddle .mat-tab-labels {
+        padding: 8px 5px;
+    }
 }
-
-.morning-huddle .mat-tab-label { min-width: unset; padding: 0 6px; font-size: 12px; }
-
-.morning-huddle .mat-tab-labels { padding: 8px 5px; }
+@media (min-width:767px) and (max-width:859px) {
+    .morning-huddle .mat-tab-label {
+        min-width: unset;
+        padding: 0 4px;
+        font-size: 10px;
+        height: 45px;
+    }
+    .morning-huddle .mat-tab-labels{
+        padding: 12px 0px !important;
+        font-size: 10.5px;
+    }
 }
 
 /* healthscreen css start */
@@ -3782,6 +3818,10 @@ ul.download-sync-list {
     font-size: 24px;
     width: 100%;
 }
+.header_first_select { 
+    margin-right: 0;
+    padding: 0;
+}
 
 }
 
@@ -4995,7 +5035,7 @@ ul.download-sync-list {
 .custom_date{
     position: fixed !important;
     top: 6px !important;
-    left: 48% !important;
+    left: 45% !important;
     width: 215px !important;
 }
 .custom_date input{
@@ -5044,3 +5084,21 @@ mat-sidenav:hover .ps__thumb-y {
     font-family: 'Circular-Loom';
 }
 
+@media (max-width:959px) {
+    .custom_date{
+        position: fixed !important;
+        top: 6px !important;
+        left: unset !important;
+        right: 30px;
+        width: 215px !important;
+    }
+}
+@media (max-width:625px) {
+    .custom_date{
+        position: sticky !important;
+        top: 6px !important;
+        left: unset !important;
+        right: 30px;
+        width: 215px !important;
+    }
+}

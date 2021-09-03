@@ -158,6 +158,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     'Dentist Schedule',
     'Front Desk Reminders',
     'Front Desk Followups',
+    'Daily Tasks'
   ];
 	   public id:any = '';
   	public clinic_id:any = '';

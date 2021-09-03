@@ -90,7 +90,7 @@ table{
  width: 100%;
 }
 
-.morning-huddle.side .mat-column-name {
+/* .morning-huddle.side .mat-column-name {
   word-wrap: break-word !important;
   white-space: unset !important;
   flex: 0 0 20% !important;
@@ -120,7 +120,8 @@ table{
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-}
+} */
+
 /*.customWidth.PostOp .mat-column-name {
   flex: 0 0 24% !important;
   width: 24% !important;
@@ -134,6 +135,8 @@ table{
   width: 23% !important;
 }*/
 
+
+/* 
 .morning-huddle.side .mat-column-code {
   word-wrap: break-word !important;
   white-space: unset !important;
@@ -190,16 +193,16 @@ table{
   -webkit-hyphens: auto;
   hyphens: auto;
   text-align: right !important;
-}
+} */
 
-.morning-huddle.side .thick .mat-column-status {
+/* .morning-huddle.side .thick .mat-column-status {
   flex: 0 0 15% !important;
   width: 15% !important;
 }
 .morning-huddle.side .thick .mat-column-book {
   flex: 0 0 10% !important;
   width: 10% !important;
-}
+} */
 
 
 .header_filters.morning-huddle { flex-direction: row-reverse !important }
@@ -337,7 +340,7 @@ table.customWidth.thick, table.customWidth.PostOp {
 }
 
 
-.morning-huddle.side .mat-column-note, .morning-huddle.side .mat-column-date {
+/* .morning-huddle.side .mat-column-note, .morning-huddle.side .mat-column-date {
     word-wrap: break-word !important;
     white-space: unset !important;
     flex: 0 10% !important;
@@ -360,7 +363,7 @@ table.customWidth.thick, table.customWidth.PostOp {
     -ms-hyphens: auto;
     -webkit-hyphens: auto;
     hyphens: auto;
-}
+} */
 .main_pagination.followup {
    padding: 0px;
 }
@@ -462,4 +465,28 @@ table.history td.notes {padding-right: 2%;text-align: right;}
 .historyTip.history .custom-tooltip {
     width: 400px;
     z-index: 999999;
+}
+.d-inline-block{
+    display: inline-block !important;
+}
+.follow-up{
+    background-color: #ffffff;
+    padding:16px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+.follow-up .mat-card-title{
+    padding: 16px 0;
+}
+.follow-ups-table table{
+    border: 1px solid #e7e9eb;
+    border-radius: 10px !important;
+    margin-bottom: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+}
+
+.follow-ups-table th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
+    white-space: nowrap;
+    padding: 0 15px !important;
 }
