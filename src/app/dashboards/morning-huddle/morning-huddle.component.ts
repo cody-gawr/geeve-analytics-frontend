@@ -277,10 +277,17 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns9: string[] = ['task_name','completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity','am','pm'];
 
+  public postOPCallChips:any = [
+  {'name': 'Test 1','color': 'red','text': 'Test One'},
+  {'name': 'Test 2','color': 'green','text': 'Test Two'},
+  {'name': 'Test 3','color': 'blue','text': 'Test Three'},
+  ];
+
+
   timezone: string = '+1000';
   
   @ViewChild('sort1') sort1: MatSort;
- @ViewChild('sort2') sort2: MatSort;
+  @ViewChild('sort2') sort2: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private datepipe: DatePipe, 
@@ -1297,8 +1304,15 @@ async getDentistList(){
     this.getAppointmentCards(this.currentDentist);
   }
 
+  historyPosChips(event)
+  {
+    $('.custom-tooltip').css({'visibility': 'hidden','opacity': '1' } );
+    let x= event.clientX;
+    let y= parseInt(event.clientY);
+    setTimeout( function(){
+      let divLnt = $('.custom-tooltip').height() + 30;
+      let divwd = $('.custom-tooltip').width() - 150;
+      $('.custom-tooltip').css({'top': '40px', 'left' : '-20px','visibility': 'visible' } );
+    },100);
+  }
 }
-
-
-
-

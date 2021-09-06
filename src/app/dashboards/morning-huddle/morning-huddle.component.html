@@ -1025,18 +1025,29 @@
         </div>
       </div>
 
-      <mat-card class="table-card post_call_responsive_border">
+      <mat-card class="table-card post_call_responsive_border followUps">
         <mat-card-title>
           <div class="title-follow-up">
+            <div class="TitleCon">
             Post op Calls
             <div class="info-icon-container"><img [tooltip]="charTips['43']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
+            <div class="showComplete">
+              <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
+            Complete</mat-checkbox>
+            </div>
+              </div>
+
+            <div class="chipSets">
+              <mat-chip-list class="example-chip" cdkDropList  cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+              <mat-chip (mouseover)="historyPosChips($event)" class="example-box" cdkDrag *ngFor="let chips of postOPCallChips" [color] = "chips.color">
+                <span class="chipText" [tooltip]="{title:chips.name, info: chips.text }" >{{chips.name}}</span> 
+              </mat-chip>
+            </mat-chip-list>
+            </div>    
           </div>
 
-          <div class="showComplete">
-            <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
-              Complete</mat-checkbox>
-          </div>
+         
 
         </mat-card-title>
         <mat-card-content>
