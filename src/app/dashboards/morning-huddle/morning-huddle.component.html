@@ -1721,7 +1721,7 @@
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
-            <table  #sort1="matSort"  mat-table matSort [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
+            <table  #sort1="matSort"  mat-table matSort [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8 daily-task" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
               <!-- Name Column -->
               <ng-container matColumnDef="task_name">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Task Name </th>

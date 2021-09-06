@@ -1,14 +1,15 @@
 <input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'">
-<div class="sa_dashboard_inner_content morning-huddle side">   
+<div class="sa_dashboard_inner_content morning-huddle side">  
+
+    <div class="morning-huddle-date topModel">
+      <mat-icon  (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{selectedMonthYear}}<mat-icon (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>    
+    </div> 
+
   <mat-tab-group [selectedIndex]="selectedTab">
  
     <!-- Patient Schedule Tab start -->
     <mat-tab label="Overdue Recalls">
-      <div class="morning-huddle-date">
-        <div class="morning-huddle-date topModel">
-          <mat-icon  (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{selectedMonthYear}}<mat-icon (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>    
-        </div> 
-      </div>
+     
 
 <div class="follow-up">
         <mat-card-title>
@@ -194,12 +195,7 @@
 
     <!-- Reminders Tab start -->
     <mat-tab label="Tick Followups" >
-        
-        <div class="morning-huddle-date">
-        <div class="morning-huddle-date topModel">
-          <mat-icon  (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{selectedMonthYear}}<mat-icon (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>    
-        </div> 
-      </div>
+
       <div class="follow-up">
          <mat-card-title>
           <div class="title-follow-up d-inline-block">
@@ -319,13 +315,6 @@
        <!-- Dentist Performance Tab -->
     <mat-tab label="Post op Calls">
 
-         <div class="morning-huddle-date">
-        <div class="morning-huddle-date topModel">
-          <mat-icon  (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{selectedMonthYear}}<mat-icon (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>    
-        </div> 
-      </div> 
-
-
       <div class="follow-up"> 
           <mat-card-title>
           <div class="title-follow-up d-inline-block">
@@ -416,11 +405,6 @@
     <!-- Dentist Performance Tab -->
        <mat-tab label="FTA Followups" >
         
-        <div class="morning-huddle-date">
-        <div class="morning-huddle-date topModel">
-          <mat-icon  (click) ="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{selectedMonthYear}}<mat-icon (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>    
-        </div> 
-      </div>
       <div class="follow-up">
          <mat-card-title>
           <div class="title-follow-up d-inline-block">
@@ -478,7 +462,7 @@
               <ng-container matColumnDef="note">
                 <th mat-header-cell *matHeaderCellDef>Status</th>
                 <td mat-cell *matCellDef="let element">
-                  <mat-form-field floatLabel="never" class="setPreviousDay">
+                  <mat-form-field floatLabel="never" class="setPreviousDay mb-0">
                     <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
                       (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.patients.firstname, element.patients.surname,element.original_appt_date,element.followup_date, 'fta-follower',nextBussinessDay)">
                       <!--(selectionChange)="refreshPerformanceTab($event.value)" -->

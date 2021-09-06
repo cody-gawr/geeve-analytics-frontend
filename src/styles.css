@@ -3574,7 +3574,21 @@ body .stepper_content .invite_section .sa-form-group {
     height: 45px;
     font-size: 16px;
 }
-
+.mat-form-field-infix{
+    border-top: none !important;
+}
+.setPreviousDay{
+    margin-bottom: 0 !important;
+}
+.setPreviousDay .mat-form-field-infix {
+    padding-top: 0 !important;
+}
+.setPreviousDay .mat-form-field-wrapper{
+    padding-bottom: 0 !important;
+}
+.setPreviousDay .mat-form-field-underline{
+    bottom: 3px !important;
+}
 }
 
 @media(min-width: 768px) {
@@ -3662,6 +3676,7 @@ body .sa_mobile_header {
     /* .cdk-overlay-pane, .mat-menu-panel {
         width: 100%;
     } */
+    
 }
 
 @media (max-width: 599.98px){
