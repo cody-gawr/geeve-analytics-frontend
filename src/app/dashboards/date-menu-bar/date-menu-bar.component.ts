@@ -48,7 +48,7 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
       value: 'cytd'
     },
     {
-      name: 'Calender Year',
+      name: 'Last Calendar Year',
       value: 'lcytd'
     },
     {
@@ -56,7 +56,7 @@ export class DateMenuBarComponent extends BaseComponent implements AfterViewInit
       value: 'fytd'
     },
     {
-      name: 'Financial Year',
+      name: 'Last Financial Year',
       value: 'lfytd'
     }
   ];

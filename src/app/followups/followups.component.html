@@ -122,73 +122,56 @@
             </li>
           </ul>
           <!-- follow-ups-card view-->
-            <div class="follow-ups-card">
-              <div fxHide.gt-sm>
-                <div>
-                  <mat-card class="huddle-card" *ngFor="let element of followupTickFollowupsInCMP">
-                    <div fxLayout="row" class="huddle-card-row">
-                      <div fxFlex="30">Patient: </div>
-                      <div fxFlex="70">  John Smith  </div>
-                    </div>
-                    <div fxLayout="row" class="huddle-card-row">
-                      <div fxFlex="30">Phone: </div>
-                      <div fxFlex="70">
-                        <!-- <div class="phone_align_center"> -->
-                        <!-- <img src="../assets/images/follow-up-call.png" alt="follow-up-call" /> -->
-                        <span class="phone_no"
-                          *ngIf="element.patients.mobile">{{ formatPhoneNumber(element.patients.mobile) }}</span>
-                        <span class="phone_no"
-                          *ngIf="!element.patients.mobile && element.patients.phone_work">{{ formatPhoneNumber(element.patients.phone_work) }}</span>
-                        <span class="phone_no"
-                          *ngIf="!element.patients.mobile && !element.patients.phone_work">{{ formatPhoneNumber(element.patients.phone_home) }}</span>
-                        <!-- </div> -->
-                      </div>
-                    </div>
-  
-  
-                    <div fxLayout="row" class="huddle-card-row">
-                      <div fxFlex="30">Status </div>
-                      <div fxFlex="70">
-                        <mat-form-field floatLabel="never" class="setPreviousDay">
-                          <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote3"
-                            (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.patients.firstname, element.patients.surname,element.original_appt_date,element.followup_date, 'tick-follower',nextBussinessDay)">
-                            <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
-                              <mat-option value="">Select Status</mat-option>
-                        <mat-option value="Booked">Booked</mat-option>
-                        <mat-option value="Already booked">Already booked</mat-option>
-                        <mat-option value="Didn't want to book">Didn't want to book</mat-option>
-                        <mat-option value="Ineligible">Ineligible</mat-option>
-                        <mat-option value="Can't be reached">Can't be reached</mat-option>
-                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
-                        <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div fxLayout="row" class="huddle-card-row">
-                      <div fxFlex="30">Notes </div>
-                      <div fxFlex="70">
-                       <i [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date,element.followup_date,'tick-follower')"></i>
-                      </div>
-                    </div> <div fxLayout="row" class="huddle-card-row">
-                      <div fxFlex="30">Complete </div>
-                      <div fxFlex="70">
-                        <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
-                          (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.followup_date,element.patients.clinic_id,'tick-follower',element.status)">
-                        </mat-slide-toggle>
-                      </div>
-                    </div>
-                  </mat-card>
-  
-                </div>
-                <ng-template #noPostOpCalls>
-                  <mat-card class="huddle-card">
-                    <h6> You have no tick followups today</h6>
-                  </mat-card>
-                </ng-template>
+          <div class="follow-ups-card">
+            <mat-card class="huddle-card">
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Patient : </div>
+                <div fxFlex="60"> John Smith  </div>
               </div>
-            </div>
-              <!-- follow-ups-card view-end--->
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Phone : </div>
+                <div fxFlex="60"> 0435 373 428  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Last Recall Date : </div>
+                <div fxFlex="60"> Jan 22, 2021  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Status :</div>
+                <div fxFlex="60">
+                  <mat-form-field floatLabel="never" class="setPreviousDay">
+                    <mat-select placeholder="Select Status">
+                      <mat-option value="">Select Status</mat-option>
+                      <mat-option value="Booked">Booked</mat-option>
+                      <mat-option value="Already booked">Already booked</mat-option>
+                      <mat-option value="Didn't want to book">Didn't want to book</mat-option>
+                      <mat-option value="Ineligible">Ineligible</mat-option>
+                      <mat-option value="Can't be reached">Can't be reached</mat-option>
+                      <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                      <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Follow-Up Date : </div>
+                <div fxFlex="60"> Sep 2, 2021  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Notes :</div>
+                <div fxFlex="60">
+                  <i class="fas fa-book notes"></i>
+                </div>
+              </div> 
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Complete :</div>
+                <div fxFlex="60">
+                  <mat-slide-toggle></mat-slide-toggle>
+                </div>
+              </div>
+            </mat-card>
+           </div> 
+             <!-- follow-ups-card view-end--->
           </div>
     </mat-tab>
     <!-- Patient Schedule Tab end -->
@@ -309,6 +292,58 @@
               <button [ngClass]="{ active: page === currentThickPage, page: true }" (click)="handlePageChange(page,'TH')">{{ page }}</button>
             </li>
           </ul>
+          <!-- follow-ups-card view-->
+          <div class="follow-ups-card">
+            <mat-card class="huddle-card">
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Patient : </div>
+                <div fxFlex="60"> John Smith  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Phone : </div>
+                <div fxFlex="60"> 0435 373 428  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Treatment Date : </div>
+                <div fxFlex="60"> Jan 22, 2021  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Status :</div>
+                <div fxFlex="60">
+                  <mat-form-field floatLabel="never" class="setPreviousDay">
+                    <mat-select placeholder="Select Status">
+                      <mat-option value="">Select Status</mat-option>
+                      <mat-option value="Booked">Booked</mat-option>
+                      <mat-option value="Already booked">Already booked</mat-option>
+                      <mat-option value="Didn't want to book">Didn't want to book</mat-option>
+                      <mat-option value="Ineligible">Ineligible</mat-option>
+                      <mat-option value="Can't be reached">Can't be reached</mat-option>
+                      <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                      <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Follow-Up Date : </div>
+                <div fxFlex="60"> Sep 2, 2021  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Notes :</div>
+                <div fxFlex="60">
+                  <span  class="info-icon-container tick historyTip"><i class="fas fa-book notes"></i></span>
+                    <span class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes"></i></span>
+                </div>
+              </div> 
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Complete :</div>
+                <div fxFlex="60">
+                  <mat-slide-toggle></mat-slide-toggle>
+                </div>
+              </div>
+            </mat-card>
+           </div> 
+             <!-- follow-ups-card view-end--->
         </div> 
     </mat-tab>
     <!-- Reminders Tab end -->
@@ -337,7 +372,7 @@
            <table mat-table [dataSource]="followupPostOpCallsInComp" class="mat-elevation-z8 customWidth PostOp">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>  </th>
+                <th mat-header-cell *matHeaderCellDef>Patient Name  </th>
                 <td mat-cell *matCellDef="let element"> {{element.patients.firstname }} {{element.patients.surname }}
                 </td>
               </ng-container>
@@ -398,6 +433,44 @@
               <button [ngClass]="{ active: page === currentOpPage, page: true }" (click)="handlePageChange(page,'OP')">{{ page }}</button>
             </li>
           </ul>
+          <!-- follow-ups-card view-->
+          <div class="follow-ups-card">
+            <mat-card class="huddle-card">
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Patient :</div>
+                <div fxFlex="60"> John Smith  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Phone :</div>
+                <div fxFlex="60"> 0435 373 428  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Treatment Date : </div>
+                <div fxFlex="60"> Jan 22, 2021  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Treatment Done : </div>
+                <div fxFlex="60"> 322 </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Follow-Up Date : </div>
+                <div fxFlex="60"> Sep 2, 2021  </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Notes :</div>
+                <div fxFlex="60">
+                  <i class="fas fa-book notes"></i>
+                </div>
+              </div> 
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="40">Complete :</div>
+                <div fxFlex="60">
+                  <mat-slide-toggle></mat-slide-toggle>
+                </div>
+              </div>
+            </mat-card>
+           </div> 
+             <!-- follow-ups-card view-end--->
           </div>
     </mat-tab>
     <!-- Dentist Performance Tab -->
@@ -520,6 +593,57 @@
               <button [ngClass]="{ active: page === currentFTPage, page: true }" (click)="handlePageChange(page,'FT')">{{ page }}</button>
             </li>
           </ul>
+                    <!-- follow-ups-card view-->
+                    <div class="follow-ups-card">
+                      <mat-card class="huddle-card">
+                        <div fxLayout="row" class="huddle-card-row">
+                          <div fxFlex="40">Patient : </div>
+                          <div fxFlex="60"> John Smith  </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                          <div fxFlex="40">Phone : </div>
+                          <div fxFlex="60"> 0435 373 428  </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                          <div fxFlex="40">Treatment Date : </div>
+                          <div fxFlex="60"> Jan 22, 2021  </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                          <div fxFlex="40">Status :</div>
+                          <div fxFlex="60">
+                            <mat-form-field floatLabel="never" class="setPreviousDay">
+                              <mat-select placeholder="Select Status">
+                                <mat-option value="">Select Status</mat-option>
+                                <mat-option value="Booked">Booked</mat-option>
+                                <mat-option value="Already booked">Already booked</mat-option>
+                                <mat-option value="Didn't want to book">Didn't want to book</mat-option>
+                                <mat-option value="Ineligible">Ineligible</mat-option>
+                                <mat-option value="Can't be reached">Can't be reached</mat-option>
+                                <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                                <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                          <div fxFlex="40">Follow-Up Date : </div>
+                          <div fxFlex="60"> Sep 2, 2021  </div>
+                        </div>
+                        <div fxLayout="row" class="huddle-card-row">
+                          <div fxFlex="40">Notes :</div>
+                          <div fxFlex="60">
+                            <i class="fas fa-book notes"></i>
+                          </div>
+                        </div> 
+                        <div fxLayout="row" class="huddle-card-row">
+                          <div fxFlex="40">Complete :</div>
+                          <div fxFlex="60">
+                            <mat-slide-toggle></mat-slide-toggle>
+                          </div>
+                        </div>
+                      </mat-card>
+                     </div> 
+                       <!-- follow-ups-card view-end--->
           </div>
     </mat-tab>
     <!-- Dentist Performance Tab -->
