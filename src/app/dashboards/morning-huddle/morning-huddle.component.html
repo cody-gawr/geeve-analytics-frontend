@@ -580,9 +580,13 @@
           <!-- Name Column -->
           <ng-container matColumnDef="start">
             <th mat-header-cell *matHeaderCellDef>Time </th>
-            <td id="{{ element.provider_id }}" mat-cell *matCellDef="let element"><span
-                class="newpatient"></span>{{ element.app_date +" " + element.start | date :'h:mm a' }} -
+            <td id="{{ element.provider_id }}" mat-cell *matCellDef="let element">
+              <span class="newpatient"></span> {{ element.app_date +" " + element.start | date :'h:mm a' }} -
               {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }}
+            <div class="timeUTAFTA">
+              <span class="timeUTA" *ngIf="element.is_uta == '1'">UTA</span>
+              <span class="timeFTA" *ngIf="element.is_fta == '1'">FTA </span>
+            </div>
             </td>
           </ng-container>
 
@@ -635,44 +639,20 @@
             </td>
           </ng-container>
 
-          <!-- <ng-container matColumnDef="card">
-    <th mat-header-cell *matHeaderCellDef>Outstanding Treatment</th>
-    <td mat-cell *matCellDef="let element"> 
-      <span class="warning" *ngIf="element.outstanding.warning"></span>
-      {{ element.outstanding.outstandingCode }}<span *ngIf="element.outstanding.outstandingCode">:</span>  
-      <span *ngIf="element.outstanding.outstandingDollar">$</span>{{element.outstanding.outstandingDollar}}</td>
-  </ng-container> -->
+           <ng-container matColumnDef="rebooked">
+            <th mat-header-cell *matHeaderCellDef>Rebooked </th>
+            <td mat-cell *matCellDef="let element"> <i *ngIf="element.is_rebooked != 'No'" class="fa fa-check" style="color: green;" ></i> </td>
+          </ng-container>
 
-          <!-- Symbol Column -->
-          <!--   <ng-container matColumnDef="xrays">
-    <th mat-header-cell *matHeaderCellDef> Last Xrays </th>
-    <td mat-cell *matCellDef="let element">
-      <span *ngIf="element.xray.length <= 0 ">No Records</span>
-      <p *ngFor="let xray of element.xray">
-        <span class="warning" *ngIf="element.xray.warning"></span>
-        <span  *ngIf="xray.code">{{ xray.code }}</span> -
-        <span  *ngIf="xray.date">{{ xray.date | date : "fullDate" }}</span>
-      </p>
-     
-</td>
-  </ng-container>
- <ng-container matColumnDef="noshows">
-    <th mat-header-cell *matHeaderCellDef> History of No Shows </th>
-    <td mat-cell *matCellDef="let element"> 
-      <span class="warning" *ngIf="element.noshows > 3"></span> {{ element.noshows }}
-     </td>
-  </ng-container>
-
- -->
 
           <ng-container matColumnDef="isDataAvailable">
-            <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns6.length">
+            <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns11.length">
               You have no appointments scheduled today
             </mat-footer-cell>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns6"></tr>
-          <tr id="" mat-row *matRowDef="let row; columns: displayedColumns6;"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns11"></tr>
+          <tr id="" mat-row *matRowDef="let row; columns: displayedColumns11;"></tr>
 
           <mat-footer-row *matFooterRowDef="['isDataAvailable']"
             [ngClass]="(appointmentCards.data.length == 0)? 'show' : 'hide'"></mat-footer-row>
@@ -1032,20 +1012,21 @@
             Post op Calls
             <div class="info-icon-container"><img [tooltip]="charTips['43']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
+            </div>
             <div class="showComplete">
               <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show
             Complete</mat-checkbox>
             </div>
-              </div>
-
-            <div class="chipSets">
-              <mat-chip-list class="example-chip" cdkDropList  cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
-              <mat-chip (mouseover)="historyPosChips($event)" class="example-box" cdkDrag *ngFor="let chips of postOPCallChips" [color] = "chips.color">
-                <span class="chipText" [tooltip]="{title:chips.name, info: chips.text }" >{{chips.name}}</span> 
+             
+ </div>
+            <div class="chipSets" *ngIf="postOpCallsScrps.length > 0">
+              <mat-chip-list class="example-chip">
+              <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of postOpCallsScrps"  [color]="chips.colour">
+                <span class="chipText" >{{chips.script_title}}</span> 
               </mat-chip>
             </mat-chip-list>
             </div>    
-          </div>
+         
 
          
 
@@ -1172,7 +1153,8 @@
 
         <mat-card-title>
           <div class="title-follow-up">
-            Overdue Recalls-
+            <div class="TitleCon">
+            Overdue Recalls
             <div class="info-icon-container"><img [tooltip]="charTips['44']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
           </div>
@@ -1180,6 +1162,15 @@
             <mat-checkbox name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)">Show
               Complete</mat-checkbox>
           </div>
+        </div>
+          <div class="chipSets" *ngIf="overdueRecallsScrps.length > 0">
+              <mat-chip-list class="example-chip" cdkDropList  cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+               <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of overdueRecallsScrps"  [color]="chips.colour">
+                <span class="chipText">{{chips.script_title}}</span> 
+              </mat-chip>
+            </mat-chip-list>
+            </div>  
+
         </mat-card-title>
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
@@ -1339,6 +1330,7 @@
 
         <mat-card-title>
           <div class="title-follow-up">
+              <div class="TitleCon">
             Tick Followups
             <div class="info-icon-container"><img [tooltip]="charTips['45']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
@@ -1348,6 +1340,14 @@
             <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">Show Complete
             </mat-checkbox>
           </div>
+        </div>
+          <div class="chipSets" *ngIf="tickFollowupsScrps.length > 0">
+              <mat-chip-list class="example-chip" cdkDropList  cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+                 <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of tickFollowupsScrps"  [color]="chips.colour">
+                <span class="chipText">{{chips.script_title}}</span> 
+              </mat-chip>
+            </mat-chip-list>
+            </div> 
 
         </mat-card-title>
         <mat-card-content>
@@ -1524,6 +1524,7 @@
       <mat-card class="table-card post_call_responsive_border">
         <mat-card-title>
           <div class="title-follow-up">
+             <div class="TitleCon">
             FTA Followups
             <div class="info-icon-container"><img [tooltip]="charTips['52']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
@@ -1533,7 +1534,14 @@
             <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">Show Complete
             </mat-checkbox>
           </div>
-
+        </div>
+             <div class="chipSets"  *ngIf="ftaFollowupsScrps.length > 0">
+              <mat-chip-list class="example-chip" cdkDropList  cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+               <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of ftaFollowupsScrps"  [color]="chips.colour">
+                <span class="chipText" >{{chips.script_title}}</span> 
+              </mat-chip>
+            </mat-chip-list>
+            </div>
         </mat-card-title>
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
@@ -1633,6 +1641,199 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns8;"></tr>
               <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
                 [ngClass]="(followupFtaFollowupsInCMP.length <= 0)? 'show' : 'hide'"></mat-footer-row>
+            </table>
+            <!-- responsive table - frontdesk followup (Post op calls)  -->
+            <div fxHide.gt-sm>
+              <div *ngIf="followupTickFollowupsInCMP.length;else noPostOpCalls">
+                <mat-card class="huddle-card" *ngFor="let element of followupFtaFollowupsInCMP">
+                  <div fxLayout="row" class="huddle-card-row">
+                    <div fxFlex="30">Patient: </div>
+                    <div fxFlex="70"> {{element.patients.firstname }} {{element.patients.surname }} </div>
+                  </div>
+                  <div fxLayout="row" class="huddle-card-row">
+                    <div fxFlex="30">Phone: </div>
+                    <div fxFlex="70">
+                      <!-- <div class="phone_align_center"> -->
+                      <!-- <img src="../assets/images/follow-up-call.png" alt="follow-up-call" /> -->
+                      <span class="phone_no"
+                        *ngIf="element.patients.mobile">{{ formatPhoneNumber(element.patients.mobile) }}</span>
+                      <span class="phone_no"
+                        *ngIf="!element.patients.mobile && element.patients.phone_work">{{ formatPhoneNumber(element.patients.phone_work) }}</span>
+                      <span class="phone_no"
+                        *ngIf="!element.patients.mobile && !element.patients.phone_work">{{ formatPhoneNumber(element.patients.phone_home) }}</span>
+                      <!-- </div> -->
+                    </div>
+                  </div>
+
+
+                  <div fxLayout="row" class="huddle-card-row">
+                    <div fxFlex="30">Status </div>
+                    <div fxFlex="70">
+                      <mat-form-field floatLabel="never" class="setPreviousDay">
+                        <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote3"
+                          (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.patients.firstname, element.patients.surname,element.original_appt_date,element.followup_date, 'fta-follower',nextBussinessDay)">
+                          <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                            <mat-option value="">Select Status</mat-option>
+                      <mat-option value="Booked">Booked</mat-option>
+                      <mat-option value="Already booked">Already booked</mat-option>
+                      <mat-option value="Didn't want to book">Didn't want to book</mat-option>
+                      <mat-option value="Ineligible">Ineligible</mat-option>
+                      <mat-option value="Can't be reached">Can't be reached</mat-option>
+                      <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                      <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxLayout="row" class="huddle-card-row">
+                    <div fxFlex="30">Notes </div>
+                    <div fxFlex="70">
+                     <i [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date,element.followup_date,'fta-follower')"></i>
+                    </div>
+                  </div> <div fxLayout="row" class="huddle-card-row">
+                    <div fxFlex="30">Complete </div>
+                    <div fxFlex="70">
+                      <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
+                        (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.followup_date,element.patients.clinic_id,'fta-follower',element.status)">
+                      </mat-slide-toggle>
+                    </div>
+                  </div>
+                </mat-card>
+
+              </div>
+              <ng-template #noPostOpCalls>
+                <mat-card class="huddle-card">
+                  <h6> You have no FTA followups today</h6>
+                </mat-card>
+              </ng-template>
+            </div>
+
+          </div>
+
+        </mat-card-content>
+      </mat-card> 
+
+       <!-- Internal ReferralsFollow ups -->
+      <mat-card class="table-card post_call_responsive_border">
+        <mat-card-title>
+          <div class="title-follow-up">
+             <div class="TitleCon">
+           Internal Referrals Followups
+            <div class="info-icon-container"><img [tooltip]="charTips['52']" src="../assets/images/info-icon.png"
+                alt="info-icon" class="info-icon" /></div>
+          </div>
+
+          <div class="showComplete">
+            <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">Show Complete
+            </mat-checkbox>
+          </div>
+        </div>
+             <div class="chipSets"  *ngIf="intrFollowupsScrps.length > 0">
+              <mat-chip-list class="example-chip" cdkDropList  cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+               <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of intrFollowupsScrps"  [color]="chips.colour">
+                <span class="chipText" >{{chips.script_title}}</span> 
+              </mat-chip>
+            </mat-chip-list>
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+          <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
+            <div class="card-loading" *ngIf="ftaTaksLoadingLoading"><img class="tableLoader"
+                src="../../assets/images/logo-icon.gif">
+                <!-- <div class="loader-text">Calculating...</div> -->
+              </div>
+            <table fxHide fxShow.gt-sm mat-table [dataSource]="inrtFollowupsInCMP"
+              class="mat-elevation-z8 customWidth thick"  [ngClass]="(inrtFollowupsInCMP.length == 0)? 'noDataTableClass' : ''">
+
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.patients.firstname }} {{element.patients.surname }}
+              
+                </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="phone">
+                <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="phone_align_center">
+                    <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
+                    <span class="phone_no"
+                      *ngIf="element.patients.mobile">{{ formatPhoneNumber(element.patients.mobile) }}</span>
+                    <span class="phone_no"
+                      *ngIf="!element.patients.mobile && element.patients.phone_work">{{ formatPhoneNumber(element.patients.phone_work) }}</span>
+                    <span class="phone_no"
+                      *ngIf="!element.patients.mobile && !element.patients.phone_work">{{ formatPhoneNumber(element.patients.phone_home) }}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef>Treatment Date</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.original_appt_date | date:'MMM d, y':'timezone' }}               
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="note">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-form-field floatLabel="never" class="setPreviousDay">
+                    <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
+                      (selectionChange)="updateStatus($event.value,element.patient_id,element.original_appt_date,element.patients.clinic_id,element.patients.firstname, element.patients.surname,element.original_appt_date,element.followup_date, 'fta-follower',nextBussinessDay)">
+                      <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
+                       <mat-option value="">Select Status</mat-option>
+                      <mat-option value="Booked">Booked</mat-option>
+                      <mat-option value="Already booked">Already booked</mat-option>
+                      <mat-option value="Didn't want to book">Didn't want to book</mat-option>
+                      <mat-option value="Ineligible">Ineligible</mat-option>
+                      <mat-option value="Can't be reached">Can't be reached</mat-option>
+                      <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                      <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+                <ng-container matColumnDef="book">
+                  <th mat-header-cell *matHeaderCellDef>Notes</th>
+                  <td mat-cell *matCellDef="let element">
+                  <span (mouseover)="historyPos($event)" class="info-icon-container historyTip tick">
+                    <i  [tooltip]="{'title' : !element.notes? 'Add Notes' : 'Edit Notes' }" [ngClass] = "!element.notes? 'red' : 'green'" class="fas fa-book notes" (click) ="openNotes(element.notes,element.patient_id,element.original_appt_date,element.followup_date,'fta-follower')"></i>
+                  </span>
+                   <span  (mouseover)="historyPos($event)" *ngIf="element.code != ''"  class="info-icon-container historyTip tick">
+                    <i class="fas fa-notes-medical notes" [tooltip]="tipFtaDoneCode[element.patient_id]" ></i>                    
+                  </span> 
+                   <span  (mouseover)="historyPos($event)" *ngIf="element.future_date_show" class="info-icon-container historyTip tick">
+                    <i class="fas fa-calendar-check notes"  [tooltip]="tipFtaFutureDate[element.patient_id]" ></i>
+                  </span>
+                    <div class="historyTip history">
+                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)" class="fa fa-history" *ngIf="element.history.length > 0"></i>
+                  </div>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Complete</th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-slide-toggle [checked]="element.is_complete == 0? false : true" name="status"
+                    (change)="toggleUpdate($event,element.patient_id,element.original_appt_date,element.followup_date,element.patients.clinic_id,'fta-follower',element.status)">
+                  </mat-slide-toggle>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="isDataAvailable1">
+                <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns8.length">
+                  <span *ngIf="isEnableFT && futureDateTF == '' && followupFtaFollowups.length <= 0">Coming Soon</span>
+                  <span *ngIf="isEnableFT && futureDateTF == ''  && followupFtaFollowups.length > 0">Coming Soon</span>
+                  <span *ngIf="isEnableFT && futureDateTF != ''">Coming Soon</span>
+                  <span *ngIf="!isEnableFT">Coming Soon</span>
+                </mat-footer-cell>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns8"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns8;"></tr>
+              <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
+                [ngClass]="(inrtFollowupsInCMP.length <= 0)? 'show' : 'hide'"></mat-footer-row>
             </table>
             <!-- responsive table - frontdesk followup (Post op calls)  -->
             <div fxHide.gt-sm>

@@ -5,12 +5,14 @@ import { ClinicSettingsComponent } from './clinic-settings.component';
 import { ClinicSettingsService } from './clinic-settings.service';
 import { TaskService } from './tasks/tasks.service';
 import { EquipmentsService } from './equipments/equipments.service';
+import { ScriptsService } from './scripts/scripts.service';
 import { SharedMatModule } from '../shared-mat.module';
 import { DemoMaterialModule } from '../demo-material-module';
 import { BaseComponent } from './base/base.component';
 import { DentistComponent,AddJeeveNameComponent } from './dentist/dentist.component';
 import { AlertsComponent } from './alerts/alerts.component';
 import { TasksComponent,DialogOverviewExampleDialogComponent } from './tasks/tasks.component';
+import { ScriptsComponent,AddScriptsComponent } from './scripts/scripts.component';
 import { EquipmentComponent,DialogOverviewExampleComponent } from './equipments/equipments.component';
 import { GoalsComponent } from './goals/goals.component';
 import { AutofocusDirective } from './auto-focus.directive';
@@ -28,7 +30,8 @@ import { SharedModule } from '../shared/shared.module';
   providers: [
     ClinicSettingsService,
     TaskService,
-    EquipmentsService
+    EquipmentsService,
+    ScriptsService
   ],
   declarations: [
     ClinicSettingsComponent,
@@ -36,20 +39,23 @@ import { SharedModule } from '../shared/shared.module';
     DentistComponent,
     AlertsComponent,
     TasksComponent,
+    ScriptsComponent,
     GoalsComponent,
     AutofocusDirective,
     DialogOverviewExampleDialogComponent,
     AddJeeveNameComponent,
     DialogOverviewExampleComponent,
+    AddScriptsComponent,
     EquipmentComponent
   ],
-  entryComponents: [DialogOverviewExampleDialogComponent, DialogOverviewExampleComponent, AddJeeveNameComponent],  
+  entryComponents: [DialogOverviewExampleDialogComponent, DialogOverviewExampleComponent, AddJeeveNameComponent,AddScriptsComponent],  
   exports: [
     BaseComponent,
     DentistComponent,
     GoalsComponent,
     AlertsComponent,
-    TasksComponent
+    TasksComponent,
+    ScriptsComponent
   ]
 })
 export class ClinicSettingsModule {}

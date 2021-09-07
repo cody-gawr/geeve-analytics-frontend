@@ -1,0 +1,68 @@
+.mat-select.aqua .mat-select-value {
+    background-color: #00FFFF;
+}
+.mat-select.black .mat-select-value {
+    background-color: #000000;
+}
+
+.mat-select.blue .mat-select-value {
+    background-color: #0000ff;
+}
+.mat-select.chartreuse .mat-select-value {
+    background-color: #7fff00;
+}
+.mat-select.chocolate .mat-select-value {
+    background-color: #d2691e;
+}
+.mat-select.cyan .mat-select-value {
+    background-color: #00ffff;
+}
+.mat-select.navy .mat-select-value {
+    background-color: #000080;
+}
+.mat-select.gray .mat-select-value {
+    background-color: #808080;
+}
+.mat-select.green .mat-select-value {
+    background-color: #008000;
+}
+.mat-select.maroon .mat-select-value {
+    background-color: #800000;
+}
+.mat-select.olive .mat-select-value {
+    background-color: #808000;
+}
+.mat-select.orange .mat-select-value {
+    background-color: #ffa500;
+}
+.mat-select.red .mat-select-value {
+    background-color: #ff0000;
+}
+.mat-select.silver .mat-select-value {
+    background-color: #c0c0c0;
+}
+.mat-select.teal .mat-select-value {
+    background-color: #008080;
+}
+.mat-select.violet .mat-select-value {
+    background-color: #ee82ee;
+}
+.mat-select.white .mat-select-value {
+    background-color: #ffffff;
+}
+.mat-select.yellow .mat-select-value {
+    background-color: #ffff00;
+}
+
+
+.mat-select.red .mat-select-value {
+    background-color: red;
+}
+
+
+.scriptsColors .mat-select-value-text span{
+   background: #ffffff;
+    padding: 0 24px 2px 0px;
+    width: 77px;
+    display: block;
+}

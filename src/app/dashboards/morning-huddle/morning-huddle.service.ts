@@ -288,6 +288,16 @@ export class MorningHuddleService {
                     })
         );
     }
+
+    getScripts(cid): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhGetScripts?clinic_id="+cid, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+
     updateStatus(event,pid,cid,type,previousDays,fdate): Observable<any> {
         var header = this.getHeaders(); 
         const formData = new FormData();

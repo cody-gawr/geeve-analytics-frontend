@@ -276,6 +276,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
   displayedColumns8: string[] = ['name', 'phone', 'code','note','book','status',];
   displayedColumns9: string[] = ['task_name','completed_by', 'status'];
   displayedColumns10: string[] = ['equip_item', 'quantity','am','pm'];
+  displayedColumns11: string[] = ['start','dentist','name', 'card','rebooked'];
 
   public postOPCallChips:any = [
   {'name': 'Test 1','color': 'red','text': 'Test One'},
@@ -409,6 +410,7 @@ initiate_clinic() {
       this.getOverdueRecalls();
       this.getTickFollowups();
       this.getFtaFollowups();
+      this.getFollowupScripts();
       /***** Tab 4 ***/     
       }
 
@@ -453,6 +455,7 @@ initiate_clinic() {
       this.getOverdueRecalls();
       this.getTickFollowups();
       this.getFtaFollowups();
+      this.getFollowupScripts();
     }
     if(this.user_type != '4'){
       this.getEndOfDays();
@@ -594,6 +597,38 @@ initiate_clinic() {
     }); 
   } 
 
+  public postOpCallsScrps:any = [];
+  public overdueRecallsScrps:any = [];
+  public tickFollowupsScrps:any = [];
+  public ftaFollowupsScrps:any = [];
+  public intrFollowupsScrps:any = [];
+  /* Get Followups scripts **/
+  getFollowupScripts()
+  {
+     this.morningHuddleService.getScripts( this.clinic_id).subscribe((scripts:any) => {
+        this.postOpCallsScrps = [];
+        this.overdueRecallsScrps = [];
+        this.tickFollowupsScrps = [];
+        this.ftaFollowupsScrps = [];
+        this.intrFollowupsScrps = [];
+        if(scripts.status && scripts.message == 'success'){
+          scripts.data.forEach((script) => {
+            if(script.followup_type == 'Post Op'){
+              this.postOpCallsScrps.push(script);
+            } else if(script.followup_type == 'Overdue Recalls'){
+              this.overdueRecallsScrps.push(script);
+            } else if(script.followup_type == 'Ticks'){
+              this.tickFollowupsScrps.push(script);
+            } else if(script.followup_type == 'Cancellations'){
+              this.ftaFollowupsScrps.push(script);
+            } else if(script.followup_type == 'Internal Referrals'){
+              this.intrFollowupsScrps.push(script);
+            } 
+          });
+        }
+    }); 
+  } 
+
    public tipDoneCode = {}; 
    public tipFutureDate = {}; 
   getTickFollowups(evn = ''){
@@ -638,6 +673,8 @@ initiate_clinic() {
   } 
 
 
+  public inrtFollowupsInCMP:any = [];
+  public inrtFollowups:any = [];
 
 
   public followupFtaFollowups:any = [];
@@ -856,9 +893,11 @@ initiate_clinic() {
       }
     }); 
   }*/
-   getScheduleNewPatients(dentist){
-    this.scheduleNewPatientsLoader = true;
-    this.scheduleNewPatieltd = 0;
+   getScheduleNewPatients(dentist, refsh = ''){
+    if(refsh == ''){
+      this.scheduleNewPatientsLoader = true;
+      this.scheduleNewPatieltd = 0;
+    }
     this.morningHuddleService.getNewPatients( this.clinic_id, dentist,this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.scheduleNewPatientsLoader = false;
       if(production.status == true) {
@@ -868,8 +907,10 @@ initiate_clinic() {
     }); 
   }
 
-   getScheduleHours(dentist){
-    this.schedulehoursLoader = true;
+   getScheduleHours(dentist, refsh = ''){
+    if(refsh == ''){
+      this.schedulehoursLoader = true;
+    }
     this.morningHuddleService.getScheduleHours( this.clinic_id,  dentist, this.previousDays, this.user_type  ).subscribe((production:any) => {
       this.schedulehoursLoader = false;
       if(production.status == true) {
@@ -877,8 +918,10 @@ initiate_clinic() {
       }
     }); 
   }
-   getUnscheduleHours(dentist){
-    this.unschedulehoursLoader = true;
+   getUnscheduleHours(dentist, refsh = ''){
+    if(refsh == ''){
+      this.unschedulehoursLoader = true;
+    }
     this.morningHuddleService.getUnscheduleHours( this.clinic_id, dentist, this.previousDays, this.user_type  ).subscribe((production:any) => {
       this.unschedulehoursLoader = false;
       if(production.status == true) {
@@ -889,15 +932,19 @@ initiate_clinic() {
 
   
    public clinicTotal:any = 0;
-   getAppointmentCards(dentist){
-    this.appointmentCardsLoaders = true;
-    this.appointmentCards = new MatTableDataSource();
+   getAppointmentCards(dentist, refsh = ''){
+    if(refsh == ''){
+      this.appointmentCardsLoaders = true;
+      this.appointmentCards = new MatTableDataSource();
+    }
     this.morningHuddleService.getAppointmentCards( this.clinic_id,dentist,this.previousDays,this.user_type ).subscribe((production:any) => {
       this.appointmentCardsLoaders = false;
       this.clinicDentists = [];
       this.currentDentistSchedule = (this.currentDentist)? this.currentDentist : 0;
       this.appointmentCardsTemp = []; 
-      this.appointmentCards = new MatTableDataSource();
+      if(refsh == ''){
+        this.appointmentCards = new MatTableDataSource();
+      }
       if(production.status == true) {
        this.clinicTotal = production.total;
         this.appointmentCardsTemp = production.data; 
@@ -1298,21 +1345,20 @@ async getDentistList(){
     if(this.currentDentist == 0){
         this.currentDentist = null;
     }
-    this.getScheduleNewPatients(this.currentDentist);
-    this.getScheduleHours(this.currentDentist);
-    this.getUnscheduleHours(this.currentDentist);
-    this.getAppointmentCards(this.currentDentist);
+    this.getScheduleNewPatients(this.currentDentist,'refresh');
+    this.getScheduleHours(this.currentDentist, 'refresh');
+    this.getUnscheduleHours(this.currentDentist, 'refresh');
+    this.getAppointmentCards(this.currentDentist, 'refresh');
   }
 
-  historyPosChips(event)
+  historyPosChips(event, colour)
   {
     $('.custom-tooltip').css({'visibility': 'hidden','opacity': '1' } );
     let x= event.clientX;
     let y= parseInt(event.clientY);
     setTimeout( function(){
-      let divLnt = $('.custom-tooltip').height() + 30;
-      let divwd = $('.custom-tooltip').width() - 150;
-      $('.custom-tooltip').css({'top': '40px', 'left' : '-20px','visibility': 'visible' } );
+      $('.tooltip-container').addClass('mat-'+colour);
+      $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );
     },100);
   }
 }

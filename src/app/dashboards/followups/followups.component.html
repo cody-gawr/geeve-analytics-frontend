@@ -23,8 +23,67 @@
    <div class="sa_health_screen_area">
     <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0"
       fxLayoutGap.xs="0">
+
+
+            <!---- Chart Three---------->
+      <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+        class="sa_flexbg ">
+        <mat-card class="hourlyRate sa_no_tabs_area">
+          <mat-card-content class="sa_matcard_content">
+            <mat-card-title class="text-center">
+              <div>
+                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
+                  mat-icon-button matTooltip="{{trendText}}: {{ conversionPrev | number:'1.0-0'}}%"><img
+                    class="trend_ico" src="../assets/images/trend_{{conversionStatus}}.png"></span> 
+                 Followup Conversion
+              </div>              
+              <div class="info-icon-container">
+                <img [tooltip]="charTips[57]" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" /> 
+              </div>
+            </mat-card-title>
+            
+             <div class="card-body h-100">          
+              <div class="relative h-100">
+                <div style="height: 350px; width:100%;">                  
+                   <canvas  *ngIf="conversionLabels.length > 0 && !conversionLoader" #myCanvas baseChart [datasets]="conversionData" [labels]="conversionLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
+                   <div class="no-data-placeholder" *ngIf="conversionLabels <= 0 && !conversionLoader" >
+                    <div class="sa_nodata_div"></div>
+                    <p class="chart-placeholder-text">No followups were converted in this period</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+           <div class="card-footer">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">              
+                <div  fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">{{ conversionTotal | number:'1.0-0'}}%</h3>
+                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
+                  <span class="value-text" *ngIf="currentText == ''">Current</span>
+                </div>
+                <div   *ngIf="duration!='custom'" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
+                  <h3 class="m-0 value-num">{{ conversionPrev | number:'1.0-0'}}%</h3>
+                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Avg</span>
+                  <span class="value-text" *ngIf="trendText == ''">Previou</span>
+                </div>
+
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                  *ngIf="duration!='custom' && conversionGoal >= 0">
+                  <h3 class="m-0 value-num" >
+                    {{ conversionGoal | number:'1.0-0' }}%</h3>
+                  <span class="value-text">Goal</span>
+                </div>
+              </div>
+            </div> 
+
+            <div *ngIf="conversionLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"> <div class="loader-text">Calculating...</div> </div>
+
+          </mat-card-content>
+        </mat-card>      
+      </div>
+      <!---- Chart Three---------->
        <!---- Chart Four---------->
-      <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+      <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg ">
         <mat-card class="hourlyRate sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
@@ -78,7 +137,7 @@
       <!---- Chart Four---------->
     
       <!---- Chart Two---------->
-      <div fxFlex="calc(49% - 10px)" fxFlex.lg="calc(49% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
+      <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
         class="sa_flexbg ">
         <mat-card class="hourlyRate sa_no_tabs_area">
           <mat-card-content class="sa_matcard_content">
@@ -110,9 +169,9 @@
             </div>
               <div class="relative h-100">
                 <div style="height: 260px; text-align: -webkit-center;">
-                  <ngx-charts-pie-chart *ngIf="outcomeType == '1' && singleTick.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                   <ngx-charts-pie-chart *ngIf="outcomeType =='2' && singleRecall.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
-                   <ngx-charts-pie-chart *ngIf="outcomeType =='3' && singleFta.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[500, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                  <ngx-charts-pie-chart *ngIf="outcomeType == '1' && singleTick.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[350, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleTick" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='2' && singleRecall.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[350, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleRecall" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
+                   <ngx-charts-pie-chart *ngIf="outcomeType =='3' && singleFta.length > 0 && !outcomeLoader" fxFlexAlign="center" class="chart-container sa_chart_custom" [view]="[350, 380]" [scheme]="colorScheme" [trimLabels]="true" [maxLabelLength]="35" [results]="singleFta" [legend]="false" [explodeSlices]="false" [labels]="true" [arcWidth]="arcWidth" [doughnut]="false" [gradient]="false" [tooltipDisabled]="false" [tooltipText]="pieTooltipText" [labelFormatting] = "pieLabelText"> </ngx-charts-pie-chart>
                  <div class="no-data-placeholder" *ngIf="outcomeType == '1' && singleTick.length <= 0 && !outcomeLoader">
                     <div class="sa_nodata_div"></div>
                     <p class="chart-placeholder-text">No TICK followups were completed in this period</p>
@@ -160,63 +219,6 @@
       <div fxLayout="row wrap" fxLayoutGap="20px" fxLayoutGap.lg="20px" fxLayoutGap.md="0" fxLayoutGap.sm="0"
       fxLayoutGap.xs="0">
 
-            <!---- Chart Three---------->
-      <div fxFlex="calc(33% - 10px)" fxFlex.lg="calc(33% - 10px)" fxFlex.md="100" fxFlex.sm="100" fxFlex.xs="100"
-        class="sa_flexbg ">
-        <mat-card class="hourlyRate sa_no_tabs_area">
-          <mat-card-content class="sa_matcard_content">
-            <mat-card-title class="text-center">
-              <div>
-                <span *ngIf="trendText" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow"
-                  mat-icon-button matTooltip="{{trendText}}: {{ conversionPrev | number:'1.0-0'}}%"><img
-                    class="trend_ico" src="../assets/images/trend_{{conversionStatus}}.png"></span> 
-                 Followup Conversion
-              </div>              
-              <div class="info-icon-container">
-                <img [tooltip]="charTips[57]" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" /> 
-              </div>
-            </mat-card-title>
-            
-             <div class="card-body h-100">          
-              <div class="relative h-100">
-                <div style="height: 400px; width:100%;">                  
-                   <canvas  *ngIf="conversionLabels.length > 0 && !conversionLoader" #myCanvas baseChart [datasets]="conversionData" [labels]="conversionLabels" [legend]="false" [chartType]="'bar'" [options]="barChartOptions1" [colors]="colors"></canvas>
-                   <div class="no-data-placeholder" *ngIf="conversionLabels <= 0 && !conversionLoader"  style="padding-top: 45px;">
-                    <div class="sa_nodata_div"></div>
-                    <p class="chart-placeholder-text">No followups were converted in this period</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-           <div class="card-footer">
-              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center">              
-                <div  fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">{{ conversionTotal | number:'1.0-0'}}%</h3>
-                  <span class="value-text" *ngIf="currentText != ''">{{currentText}} Avg</span>
-                  <span class="value-text" *ngIf="currentText == ''">Current</span>
-                </div>
-                <div   *ngIf="duration!='custom'" fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
-                  <h3 class="m-0 value-num">{{ conversionPrev | number:'1.0-0'}}%</h3>
-                  <span class="value-text" *ngIf="trendText != ''">{{trendText}} Avg</span>
-                  <span class="value-text" *ngIf="trendText == ''">Previou</span>
-                </div>
-
-                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
-                  *ngIf="duration!='custom' && conversionGoal >= 0">
-                  <h3 class="m-0 value-num" >
-                    {{ conversionGoal | number:'1.0-0' }}%</h3>
-                  <span class="value-text">Goal</span>
-                </div>
-              </div>
-            </div> 
-
-            <div *ngIf="conversionLoader" class="loader_container loader_container_middle"><img class="loader_ico" src="../assets/images/720.gif"> <div class="loader-text">Calculating...</div> </div>
-
-          </mat-card-content>
-        </mat-card>      
-      </div>
-      <!---- Chart Three---------->
 
 
     <!---- Chart Five---------->
