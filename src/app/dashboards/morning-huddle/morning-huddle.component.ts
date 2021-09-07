@@ -1361,4 +1361,4 @@ async getDentistList(){
       $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );
     },100);
   }
-}
+} 
