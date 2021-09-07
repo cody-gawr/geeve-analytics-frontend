@@ -238,13 +238,13 @@ table{
     font-weight: bold;
 }
 
-.showComplete mat-slide-toggle {
+.showComplete .mat-slide-toggle {
     margin: -8px 0 0px 11px;
 }
 .showComplete {
-float: right;
+    float: right;
     margin: 0 27px 6px 0px;
-    margin-right: 24px;
+    margin-right: 0px;
     font-size: 13px;
     display: inline;
 }
@@ -311,10 +311,54 @@ table.customWidth.thick, table.customWidth.PostOp {
 .morning-huddle-date {
     text-align: center;
     display: grid;
-    position: relative;
+    /* position: relative; */
     width: 200px;
-    margin: 10px auto 20px;
+    margin: 0px auto;
+    display: grid;
+    position: absolute;
+    z-index: 9999;
+    left: calc(50% - 100px);
+    top: 20px;
+
 }
+.date-area-spac{
+    height: 30px;
+    display: none;
+}
+
+.follow-ups-card{
+    display: none;
+}
+@media (max-width: 959px){
+    .follow-ups-card{
+        display: block;
+    }
+    .follow-ups-table{
+        display: none;
+    }
+}
+@media(min-width:768px) and (max-width:840px){
+    .morning-huddle .mat-tab-label-container {
+        padding-top: 50px;
+    }
+}
+
+@media (max-width: 840px){
+    .morning-huddle-date.topModel {
+        top: 92px;
+    }
+}
+@media (max-width: 767px){
+    .morning-huddle-date.topModel {
+        top: 70px;
+    }
+    .date-area-spac{
+        height: 30px;
+        display: block;
+    }
+}
+
+
 
 .AddUserPopup {
     position: relative;

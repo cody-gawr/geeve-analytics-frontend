@@ -1172,7 +1172,7 @@
 
         <mat-card-title>
           <div class="title-follow-up">
-            Overdue Recalls
+            Overdue Recalls-
             <div class="info-icon-container"><img [tooltip]="charTips['44']" src="../assets/images/info-icon.png"
                 alt="info-icon" class="info-icon" /></div>
           </div>
@@ -1351,7 +1351,7 @@
 
         </mat-card-title>
         <mat-card-content>
-          <div class="DentistListSecRow mh-table patient_data-table_responsive">
+          <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
             <div class="card-loading" *ngIf="endTaksLoadingLoading"><img class="tableLoader"
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
@@ -1472,7 +1472,7 @@
                     </div>
                   </div>
 
-
+                  
                   <div fxLayout="row" class="huddle-card-row">
                     <div fxFlex="30">Status </div>
                     <div fxFlex="70">
@@ -1536,7 +1536,7 @@
 
         </mat-card-title>
         <mat-card-content>
-          <div class="DentistListSecRow mh-table patient_data-table_responsive">
+          <div class="DentistListSecRow mh-table patient_data-table_responsive" style="overflow: auto;">
             <div class="card-loading" *ngIf="ftaTaksLoadingLoading"><img class="tableLoader"
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
@@ -1732,7 +1732,7 @@
                 src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
               </div>
-            <table  #sort1="matSort"  mat-table matSort [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
+            <table  #sort1="matSort"  mat-table matSort [dataSource]="endOfDaysTasksInComp" class="mat-elevation-z8 daily-task" [ngClass]="(endOfDaysTasksInComp.length == 0)? 'noDataTableClass' : ''" matSortDisableClear>
               <!-- Name Column -->
               <ng-container matColumnDef="task_name">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef> Task Name </th>

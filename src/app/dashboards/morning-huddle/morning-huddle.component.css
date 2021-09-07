@@ -504,10 +504,17 @@ table.history td.notes {padding-right: 2%;text-align: right;}
     width: 400px;
     z-index: 999999;
 }
+.date-area-spac{
+    height: 30px;
+    display: none;
+}
+.daily-task th.mat-header-cell:first-of-type, .daily-task td.mat-cell:first-of-type, .daily-task td.mat-footer-cell:first-of-type{
+    white-space: normal;
+}
 @media (max-width: 840px){
-    .morning-huddle .mat-tab-label-container{
+    /* .morning-huddle .mat-tab-label-container{
         padding-top: 50px;
-    }
+    } */
     .morning-huddle-date.topModel {
         top: 92px;
     }
@@ -515,7 +522,11 @@ table.history td.notes {padding-right: 2%;text-align: right;}
 @media (max-width: 767px){
     
     .morning-huddle-date.topModel {
-        top: 55px;
+        top: 70px;
+    }
+    .date-area-spac{
+        height: 30px;
+        display: block;
     }
     
 }
