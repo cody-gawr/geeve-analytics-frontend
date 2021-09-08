@@ -1863,17 +1863,20 @@
             </table>
              <table class="ListButtons" *ngIf="lquipmentList.data.length > 0">
                 <tr>
-                  <td width="100%">
-                   <div class="text-end">
+                  <td width="24%"></td>
+                  <td width="15%"></td>
+                  <td width="25%">
                     <button  (click)="saveQuantity('am')" mat-raised-button color="dc"  class="btn-block btn-lg text-center">
                       <span *ngIf="amButton">Save</span>
                       <span *ngIf="!amButton">Update</span>
                     </button>
-                      <button  (click)="saveQuantity('pm')" mat-raised-button color="dc" class="btn-block btn-lg text-center mr-0">
+                  </td>
+                  <td width="25%">
+                    <button  (click)="saveQuantity('pm')" mat-raised-button color="dc" class="btn-block btn-lg text-center mr-0">
                       <span *ngIf="pmButton">Save</span>
                       <span *ngIf="!pmButton">Update</span>
                     </button>
-                   </div>
+                   
                  </td>
                 </tr>
               </table> 
