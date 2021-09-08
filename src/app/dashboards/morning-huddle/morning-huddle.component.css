@@ -794,3 +794,7 @@ span.timeUTA, span.timeFTA {
     text-align: center;
     border-radius: 5px;
 }
+
+.mat-column-rebooked {
+    text-align: center;
+}
