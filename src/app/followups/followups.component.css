@@ -534,3 +534,267 @@ table.history td.notes {padding-right: 2%;text-align: right;}
     white-space: nowrap;
     padding: 0 15px !important;
 }
+
+
+
+.chipSets {
+    padding: 10px 0 0 0;
+    width: 100%;
+    border-top: 1px solid #cecece;
+    margin-top: 10px;
+    position: relative;
+}
+
+.chipSets .mat-chip {
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    padding: 0;
+    border-radius: 0px;
+    align-items: center;
+    cursor: default;
+    min-height: 25px;
+    height: 1px;
+    box-shadow: 0px 2px 4px #615252;
+    z-index: 9;
+}
+.followUps  mat-card-title.mat-card-title {
+    padding-bottom: 15px !important;
+}
+
+.chipSets .custom-tooltip img.white-heart-icon {
+    display: none;
+}
+.chipSets .custom-tooltip {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #716b6b;
+    box-shadow: 0px 2px 6px #716b6b;
+    position: fixed;   
+}
+.chipSets .custom-tooltip::after {
+    content: " ";
+    position: absolute;
+    margin-top: -9px;
+    margin-left: 20px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #716b6b;
+    right: unset;
+    top: 0px;
+}
+
+.chipSets span.chipText {
+    padding: 5px 10px;
+    float: left;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    text-transform: none;
+    font-size: 13px;
+    font-family: 'Gilroy-Regular';
+}
+.chipSets .tooltip-title-container {
+}
+.chipSets .custom-tooltip .tooltip-info-text {
+    font-size: 14px;
+    font-family: 'Gilroy-Regular';
+    line-height: 1.1;
+    margin-top: 0px;
+    width: 100%;
+    text-align: justify;
+    white-space: pre-wrap;
+}
+.chipSets .custom-tooltip::after{
+    display: none;
+}
+
+
+.mat-aqua {
+    background-color: #54D2FF !important;
+    color: #fff !important;
+}
+.mat-black {
+    background-color: #000000 !important;
+    color: #fff !important;
+}
+
+.mat-blue {
+    background-color: #5689C9 !important;
+    color: #fff !important;
+}
+.mat-chartreuse {
+    background-color: #7fff00 !important;
+
+}
+.mat-chocolate {
+    background-color: #d2691e !important;
+    color: #fff !important;
+}
+.mat-cyan {
+    background-color: #b0fffa !important;
+}
+.mat-navy {
+    background-color: #000080 !important;
+    color: #fff !important;
+}
+.mat-gray {
+    background-color: #4f504f !important;
+    color: #fff !important;
+}
+.mat-green {
+    background-color: #6edbbb !important;
+    color: #fff !important;
+}
+.mat-maroon {
+    background-color: #800000 !important;
+    color: #fff !important;
+}
+.mat-olive {
+    background-color: #808000 !important;
+    color: #fff !important;
+}
+.mat-orange {
+    background-color: #FFE4E4 !important;
+}
+.mat-red {
+    background-color: #ffb4b5 !important;
+    color: #fff !important;
+}
+.mat-silver {
+    background-color: #c0c0c0 !important;
+}
+.mat-teal {
+    background-color: #008080 !important;
+    color: #fff !important;
+}
+.mat-violet {
+    background-color: #E58DD7 !important;    
+}
+.mat-white {
+    background-color: #ffffff !important;
+}
+.mat-yellow {
+    background-color: #fffcac !important;
+}
+
+
+.mat-aqua  .custom-tooltip {
+    border-color:  #54D2FF !important;
+}
+.mat-black  .custom-tooltip {
+    border-color:  #000000 !important;
+}
+
+.mat-blue  .custom-tooltip {
+    border-color:  #5689C9 !important;
+}
+.mat-chartreuse  .custom-tooltip {
+    border-color:  #7fff00 !important;
+}
+.mat-chocolate  .custom-tooltip {
+    border-color:  #d2691e !important;
+}
+.mat-cyan  .custom-tooltip {
+    border-color:  #b0fffa !important;
+}
+.mat-navy  .custom-tooltip {
+    border-color:  #000080 !important;
+}
+.mat-gray  .custom-tooltip {
+    border-color:  #4f504f !important;
+}
+.mat-green  .custom-tooltip {
+    border-color:  #6edbbb !important;
+}
+.mat-maroon  .custom-tooltip {
+    border-color:  #800000 !important;
+}
+.mat-olive  .custom-tooltip {
+    border-color:  #808000 !important;
+}
+.mat-orange  .custom-tooltip {
+    border-color:  #FFE4E4 !important;
+}
+.mat-red  .custom-tooltip {
+    border-color:  #ffb4b5 !important;
+}
+.mat-silver  .custom-tooltip {
+    border-color:  #c0c0c0 !important;
+}
+.mat-teal  .custom-tooltip {
+    border-color:  #008080 !important;
+}
+.mat-violet  .custom-tooltip {
+    border-color:  #ee82ee !important;
+}
+.mat-white  .custom-tooltip {
+    border-color:  #000000 !important;
+}
+.mat-yellow  .custom-tooltip {
+    border-color:  #fffcac !important;
+}
+
+.mat-aqua  .custom-tooltip::after {
+    border-bottom: 8px solid #00FFFF !important;    
+}
+.mat-black  .custom-tooltip::after {
+    border-bottom: 8px solid #000000 !important;
+}
+
+.mat-blue  .custom-tooltip::after {
+    border-bottom: 8px solid #0000ff !important;
+}
+.mat-chartreuse  .custom-tooltip::after {
+    border-bottom: 8px solid #7fff00 !important;
+}
+.mat-chocolate  .custom-tooltip::after {
+    border-bottom: 8px solid #d2691e !important;
+}
+.mat-cyan  .custom-tooltip::after {
+    border-bottom: 8px solid #00ffff !important;
+}
+.mat-navy  .custom-tooltip::after {
+    border-bottom: 8px solid #000080 !important;
+}
+.mat-gray  .custom-tooltip::after {
+    border-bottom: 8px solid #808080 !important;
+}
+.mat-green  .custom-tooltip::after {
+    border-bottom: 8px solid #008000 !important;
+}
+.mat-maroon  .custom-tooltip::after {
+    border-bottom: 8px solid #800000 !important;
+}
+.mat-olive  .custom-tooltip::after {
+    border-bottom: 8px solid #808000 !important;
+}
+.mat-orange  .custom-tooltip::after {
+    border-bottom: 8px solid #ffa500 !important;
+}
+.mat-red  .custom-tooltip::after {
+    border-bottom: 8px solid #ff0000 !important;
+}
+.mat-silver  .custom-tooltip::after {
+    border-bottom: 8px solid #c0c0c0 !important;
+}
+.mat-teal  .custom-tooltip::after {
+    border-bottom: 8px solid #008080 !important;
+}
+.mat-violet  .custom-tooltip::after {
+    border-bottom: 8px solid #ee82ee !important;
+}
+.mat-white  .custom-tooltip::after {
+    border-bottom: 8px solid #000000 !important;
+}
+.mat-yellow  .custom-tooltip::after {
+    border-bottom: 8px solid #ffff00 !important;
+}
+
+
+.tooltip-container.mat-gray {
+    text-transform: none;
+}
+
+.chipSets .tooltip-title {
+    padding-bottom: 10px;
+}

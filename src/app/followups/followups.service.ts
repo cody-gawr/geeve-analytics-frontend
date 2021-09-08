@@ -129,5 +129,14 @@ export class FollowupsService {
                     })
         );
     }
+
+    getScripts(cid): Observable<any> {
+        var header = this.getHeaders(); 
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhGetScripts?clinic_id="+cid, { headers: header })
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
     
 }

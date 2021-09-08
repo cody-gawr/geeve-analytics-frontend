@@ -20,6 +20,13 @@
                     <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)">Show Complete</mat-checkbox>
                     </div>
+                     <div class="chipSets" *ngIf="overdueRecallsScrps.length > 0">
+                          <mat-chip-list class="example-chip">
+                          <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of overdueRecallsScrps"  [color]="chips.colour">
+                            <span class="chipText" >{{chips.script_title}}</span> 
+                          </mat-chip>
+                        </mat-chip-list>
+                    </div>  
                 </mat-card-title>
 
                 <div class="card-loading" *ngIf="recallLoadingLoading">
@@ -172,7 +179,7 @@
                     </li>
                 </ul>
                 <!-- follow-ups-card view-->
-                <div class="follow-ups-card" *ngIf="followupOverDueRecallInCMP.length; else noData">
+                <div class="follow-ups-card" *ngIf="followupOverDueRecallInCMP.length">
                     <mat-card class="huddle-card" *ngFor="let element of followupOverDueRecallInCMP">
                         <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Patient :</div>
@@ -302,6 +309,14 @@
                     <div class="showComplete" *ngIf="followupTickFollowups.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">Show Complete </mat-checkbox>
                     </div>
+
+                     <div class="chipSets" *ngIf="tickFollowupsScrps.length > 0">
+                          <mat-chip-list class="example-chip">
+                          <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of tickFollowupsScrps"  [color]="chips.colour">
+                            <span class="chipText" >{{chips.script_title}}</span> 
+                          </mat-chip>
+                        </mat-chip-list>
+                    </div>  
                 </mat-card-title>
 
                 <div class="card-loading" *ngIf="endTaksLoadingLoading">
@@ -471,7 +486,7 @@
                     </li>
                 </ul>
                 <!-- follow-ups-card view-->
-                <div class="follow-ups-card" *ngIf="followupTickFollowupsInCMP.length; else noData">
+                <div class="follow-ups-card" *ngIf="followupTickFollowupsInCMP.length">
                     <mat-card class="huddle-card" *ngFor="let element of followupTickFollowupsInCMP">
                         <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Patient :</div>
@@ -604,6 +619,13 @@
                     <div class="showComplete" *ngIf="followupPostOpCalls.length > 0">
                         <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show Complete</mat-checkbox>
                     </div>
+                       <div class="chipSets" *ngIf="postOpCallsScrps.length > 0">
+                          <mat-chip-list class="example-chip">
+                          <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of postOpCallsScrps"  [color]="chips.colour">
+                            <span class="chipText" >{{chips.script_title}}</span> 
+                          </mat-chip>
+                        </mat-chip-list>
+                    </div>  
                 </mat-card-title>
 
                 <div class="card-loading" *ngIf="poLoadingLoading">
@@ -710,7 +732,7 @@
                     </li>
                 </ul>
                 <!-- follow-ups-card view-->
-                <div class="follow-ups-card" *ngIf="followupPostOpCallsInComp.length; else noData">
+                <div class="follow-ups-card" *ngIf="followupPostOpCallsInComp.length">
                     <mat-card class="huddle-card" *ngFor="let element of followupPostOpCallsInComp">
                         <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Patient :</div>
@@ -787,6 +809,13 @@
 
                     <div class="showComplete" *ngIf="followupFtaFollowups.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">Show Complete </mat-checkbox>
+                    </div>
+                    <div class="chipSets" *ngIf="ftaFollowupsScrps.length > 0">
+                          <mat-chip-list class="example-chip">
+                          <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of ftaFollowupsScrps"  [color]="chips.colour">
+                            <span class="chipText" >{{chips.script_title}}</span> 
+                          </mat-chip>
+                        </mat-chip-list>
                     </div>
                 </mat-card-title>
 
@@ -957,7 +986,7 @@
                     </li>
                 </ul>
                 <!-- follow-ups-card view-->
-                <div class="follow-ups-card" *ngIf="followupFtaFollowupsInCMP.length; else noData">
+                <div class="follow-ups-card" *ngIf="followupFtaFollowupsInCMP.length">
                     <mat-card class="huddle-card" *ngFor="let element of followupFtaFollowupsInCMP">
                         <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Patient :</div>

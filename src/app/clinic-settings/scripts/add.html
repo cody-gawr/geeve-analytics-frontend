@@ -25,10 +25,10 @@
       </select>
   </div> 
   <div class="sa-form-group">
-    <label>Color <span *ngIf="data.colour" style="height: 10px;width: 50px;display: inline-block;border: 1px solid #000;margin-left: 10px;" [style.background-color] = "data.colour"></span></label>
-        <select  [(ngModel)]="data.colour" name="color">
+    <label>Color <span class="clour-span-{{data.colour}} clour-span" *ngIf="data.colour"></span></label>
+        <select  [(ngModel)]="data.colour" name="color" class="colour">
           <option value="">Default Color</option>
-          <option value="aqua">Aqua <span class="aqua"></span></option>
+          <option value="aqua">Aqua</option>
           <option value="black">Black</option>
           <option value="blue">Blue</option>
           <option value="chartreuse">Chartreuse</option>

@@ -280,6 +280,7 @@ initiate_clinic() {
     this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
     this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
 
+    this.getFollowupScripts();
     this.getFollowupPostOpCalls();
     this.getOverdueRecalls();
     this.getTickFollowups();  
@@ -297,11 +298,46 @@ initiate_clinic() {
   refreshPerformanceTab(){
     this.selectedMonth = this.datepipe.transform(this.selectedMonthYear, 'M');
     this.selectedYear = this.datepipe.transform(this.selectedMonthYear, 'yyyy');
+    this.getFollowupScripts();
     this.getFollowupPostOpCalls();
     this.getOverdueRecalls();
     this.getTickFollowups();
     this.getFtaFollowups();    
   }
+
+
+  public postOpCallsScrps:any = [];
+  public overdueRecallsScrps:any = [];
+  public tickFollowupsScrps:any = [];
+  public ftaFollowupsScrps:any = [];
+  public intrFollowupsScrps:any = [];
+  /* Get Followups scripts **/
+  getFollowupScripts()
+  {
+     this.followupsService.getScripts( this.clinic_id).subscribe((scripts:any) => {
+        this.postOpCallsScrps = [];
+        this.overdueRecallsScrps = [];
+        this.tickFollowupsScrps = [];
+        this.ftaFollowupsScrps = [];
+        this.intrFollowupsScrps = [];
+        if(scripts.status && scripts.message == 'success'){
+          scripts.data.forEach((script) => {
+            if(script.followup_type == 'Post Op'){
+              this.postOpCallsScrps.push(script);
+            } else if(script.followup_type == 'Overdue Recalls'){
+              this.overdueRecallsScrps.push(script);
+            } else if(script.followup_type == 'Ticks'){
+              this.tickFollowupsScrps.push(script);
+            } else if(script.followup_type == 'Cancellations'){
+              this.ftaFollowupsScrps.push(script);
+            } else if(script.followup_type == 'Internal Referrals'){
+              this.intrFollowupsScrps.push(script);
+            } 
+          });
+        }
+    }); 
+  } 
+
 
 
   getFollowupPostOpCalls(){
@@ -783,6 +819,17 @@ initiate_clinic() {
       let divLnt = $('.custom-tooltip').height() +40;
       let divwd = $('.custom-tooltip').width() - 5;
       $('.custom-tooltip').css({'top': ( y - divLnt), 'left' : (x - divwd ) } );
+    },100);
+  }
+
+  historyPosChips(event, colour)
+  {
+    $('.custom-tooltip').css({'visibility': 'hidden','opacity': '1' } );
+    let x= event.clientX;
+    let y= parseInt(event.clientY);
+    setTimeout( function(){
+      $('.tooltip-container').addClass('mat-'+colour);
+      $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );
     },100);
   }
 }
