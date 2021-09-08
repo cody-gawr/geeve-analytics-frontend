@@ -47,7 +47,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
       this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
           this.getRoles();
           this.activeRoute = router.url;           
-          if(this.activeRoute == '/dashboards/cliniciananalysis' || this.activeRoute == '/dashboards/clinicianproceedures' || this.activeRoute == '/dashboards/frontdesk' || this.activeRoute == '/dashboards/marketing' || this.activeRoute == '/dashboards/finances'){
+          if(this.activeRoute == '/dashboards/cliniciananalysis' || this.activeRoute == '/dashboards/clinicianproceedures' || this.activeRoute == '/dashboards/frontdesk' || this.activeRoute == '/dashboards/marketing' || this.activeRoute == '/dashboards/finances' || this.activeRoute == '/dashboards/followups'){
             this.nav_open = 'dashboards';
           } else if(this.activeRoute == '/clinic' || this.activeRoute == '/roles-users' || this.activeRoute == '/profile-settings'){
             this.nav_open = 'setting';

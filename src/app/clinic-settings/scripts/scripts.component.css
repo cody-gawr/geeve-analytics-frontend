@@ -69,3 +69,9 @@
     font-size: 18px;
 }
 .clour-span {height: 10px;width: 50px;display: inline-block;border: 1px solid #000;margin-left: 10px;}
+span.charLimit {
+    float: right;
+    margin-right: 5px;
+    color: #b5b0b0;
+    font-size: 11px;
+}

@@ -22,7 +22,20 @@ import {MatSort} from '@angular/material/sort';
 
 export class AddScriptsComponent {    
   constructor(public dialogRef: MatDialogRef<AddScriptsComponent>,@Inject(MAT_DIALOG_DATA) public data: any,private _cookieService: CookieService, private scriptsService: ScriptsService, private router: Router) {}
-  
+  public charLimit:number = 600;
+
+  countCharDown(event){        
+    if(event.target.value.length >= 600){
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    }
+    
+  }
+  countCharUp(event){    
+    this.charLimit = 600 - event.target.value.length;
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }

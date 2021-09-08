@@ -583,10 +583,10 @@
             <td id="{{ element.provider_id }}" mat-cell *matCellDef="let element">
               <span class="newpatient"></span> {{ element.app_date +" " + element.start | date :'h:mm a' }} -
               {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }}
-            <div class="timeUTAFTA">
-              <span class="timeUTA" *ngIf="element.is_uta == '1'">UTA</span>
-              <span class="timeFTA" *ngIf="element.is_fta == '1'">FTA </span>
-            </div>
+            
+              <span class="timeUTA" *ngIf="element.is_uta == '0'">UTA</span>
+              <span class="timeFTA" *ngIf="element.is_fta == '0'">FTA </span>
+            
             </td>
           </ng-container>
 
@@ -1010,7 +1010,7 @@
         </div>
       </div>
 
-      <mat-card class="table-card post_call_responsive_border followUps">
+      <mat-card class="table-card post_call_responsive_border followUps followUpsTab4">
         <mat-card-title>
           <div class="title-follow-up">
             <div class="TitleCon">
@@ -1104,7 +1104,7 @@
             <!-- responsive table - frontdesk followup (Post op calls)  -->
             <div fxHide.gt-sm>
               <div *ngIf="followupPostOpCallsInComp.length;else noPostOpCalls">
-                <mat-card class="huddle-card" *ngFor="let element of followupPostOpCallsInComp">
+                <mat-card class="huddle-card" *ngFor="let element of followupPostOpCallsInComp ">
                   <div fxLayout="row" class="huddle-card-row">
                     <div fxFlex="30">Patient: </div>
                     <div fxFlex="70"> {{element.patients.firstname }} {{element.patients.surname }} </div>
@@ -1154,7 +1154,7 @@
 
 
 
-      <mat-card class="table-card post_call_responsive_border">
+      <mat-card class="table-card post_call_responsive_border followUpsTab4">
 
         <mat-card-title>
           <div class="title-follow-up">
@@ -1331,7 +1331,7 @@
       </mat-card>
 
 
-      <mat-card class="table-card post_call_responsive_border">
+      <mat-card class="table-card post_call_responsive_border followUpsTab4">
 
         <mat-card-title>
           <div class="title-follow-up">
@@ -1526,7 +1526,7 @@
       </mat-card>
 
       <!-- FTA Follow ups -->
-      <mat-card class="table-card post_call_responsive_border">
+      <mat-card class="table-card post_call_responsive_border followUpsTab4">
         <mat-card-title>
           <div class="title-follow-up">
              <div class="TitleCon">

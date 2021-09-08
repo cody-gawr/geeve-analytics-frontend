@@ -395,7 +395,9 @@ table.customWidth.thick, table.customWidth.PostOp {
     -webkit-hyphens: auto;
     hyphens: auto;
 }
-
+.mat-column-followup_date {
+    text-align: center !important;
+}
 /* .morning-huddle.side .mat-column-note, .morning-huddle.side .mat-column-date {
     word-wrap: break-word !important;
     white-space: unset !important;
