@@ -584,8 +584,8 @@
               <span class="newpatient"></span> {{ element.app_date +" " + element.start | date :'h:mm a' }} -
               {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }}
             
-              <span class="timeUTA" *ngIf="element.is_uta == '0'">UTA</span>
-              <span class="timeFTA" *ngIf="element.is_fta == '0'">FTA </span>
+              <span class="timeUTA" *ngIf="element.is_uta == '1'">UTA</span>
+              <span class="timeFTA" *ngIf="element.is_fta == '1'">FTA </span>
             
             </td>
           </ng-container>
@@ -1822,7 +1822,7 @@
         </mat-card-title>
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive"
-            style="max-height: 700px; overflow: auto;">
+            style="max-height: 2500px; overflow: auto;">
             <div class="card-loading" *ngIf="equipmentListLoading">
               <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
