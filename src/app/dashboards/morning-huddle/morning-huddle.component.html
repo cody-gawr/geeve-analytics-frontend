@@ -23,7 +23,7 @@
             <mat-option [value]="subtractDays(7) | date:'yyyy-LL-dd':'timezone'">Morning Huddle - {{ subtractDays(6) | date:'MMM d, y':'timezone'}}</mat-option>
           </mat-select> 
         </mat-form-field>-->
-         <mat-icon *ngIf="showUpDateArrow" (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>        
+         <mat-icon *ngIf="showUpDateArrow" (click) ="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight text-end" aria-hidden="true">arrow_forward_ios</mat-icon>        
       </div>
 
   <mat-tab-group [selectedIndex]="selectedTab">
@@ -712,6 +712,11 @@
                   </div>
                 </div>
               </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="30">Rebooked: </div>
+                <div fxFlex="70">  </div>
+              </div>
+
             </mat-card>
           </div>
           <ng-template #noData>
@@ -2051,16 +2056,18 @@
             </table>
              <table class="ListButtons" *ngIf="lquipmentList.data.length > 0">
                 <tr>
-                  <td width="50%">&nbsp;</td>
-                  <td width="20%">&nbsp;</td>
-                  <td width="15%"><button  (click)="saveQuantity('am')" mat-raised-button color="dc"  class="btn-block btn-lg text-center m-t-20">
-                    <span *ngIf="amButton">Save</span>
-                    <span *ngIf="!amButton">Update</span>
-                  </button></td>
-                  <td width="15%" ><button  (click)="saveQuantity('pm')" mat-raised-button color="dc" class="btn-block btn-lg text-center m-t-20">
-                    <span *ngIf="pmButton">Save</span>
-                    <span *ngIf="!pmButton">Update</span>
-                  </button> </td>
+                  <td width="100%">
+                   <div class="text-end">
+                    <button  (click)="saveQuantity('am')" mat-raised-button color="dc"  class="btn-block btn-lg text-center">
+                      <span *ngIf="amButton">Save</span>
+                      <span *ngIf="!amButton">Update</span>
+                    </button>
+                      <button  (click)="saveQuantity('pm')" mat-raised-button color="dc" class="btn-block btn-lg text-center mr-0">
+                      <span *ngIf="pmButton">Save</span>
+                      <span *ngIf="!pmButton">Update</span>
+                    </button>
+                   </div>
+                 </td>
                 </tr>
               </table> 
             <!-- responsive table - frontdesk followup (Post op calls)  -->

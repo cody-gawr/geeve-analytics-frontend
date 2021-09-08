@@ -335,13 +335,12 @@ span.calculatingSp.text {
 }
 .ListButtons .btn-lg {
     line-height: 0px !important;
-    margin: 20px 20px 0;
+    margin: 20px 10px 0;
 }
 .ListButtons button {
     width: 100px;
     height: 31px;
 }
-
 
 .morning-huddle-date.topModel mat-icon {
     font-size: 18px;
@@ -358,10 +357,11 @@ span.calculatingSp.text {
 .morning-huddle-date.topModel{
     position: absolute;
     z-index: 9999;
-    width: 240px;
+    width: 250px;
     left: calc(50% - 120px);
     top: 20px;    
 }
+
 input.complt {
     box-shadow: 1px 1px 3px #17a5aa;
 }
@@ -369,7 +369,7 @@ input.complt {
 table.customWidth.thick{
     overflow: auto;
     margin-bottom: 30px;
-}
+} 
 .info-icon-container.tick {
     position: relative;
     display: inline-block;
@@ -510,6 +510,9 @@ table.history td.notes {padding-right: 2%;text-align: right;}
 }
 .daily-task th.mat-header-cell:first-of-type, .daily-task td.mat-cell:first-of-type, .daily-task td.mat-footer-cell:first-of-type{
     white-space: normal;
+}
+.daily-task th.mat-header-cell:last-of-type, .daily-task td.mat-cell:last-of-type, .daily-task td.mat-footer-cell:last-of-type{
+    text-align: end;
 }
 @media (max-width: 840px){
     /* .morning-huddle .mat-tab-label-container{
@@ -793,4 +796,10 @@ span.timeUTA, span.timeFTA {
     font-size: 12px;
     text-align: center;
     border-radius: 5px;
+}
+
+@media (max-width:320px) {
+    .ListButtons .btn-lg {
+        margin: 20px 4px 0;
+    }
 }

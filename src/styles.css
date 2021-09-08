@@ -43,6 +43,12 @@
 
 .h-full {height: 100%;}
 
+.text-end{
+    text-align: end;
+}
+.mr-0{
+    margin-right: 0 !important;
+}
 .mat-sidenav { color: #fff!important; font-size: 13px!important; border: none!important;  
     background: rgb(24,166,137); /* Old browsers */
     background: -moz-linear-gradient(top,  rgba(24,166,137,1) 0%, rgba(0,111,115,1) 99%); /* FF3.6-15 */
