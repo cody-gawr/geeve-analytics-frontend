@@ -267,7 +267,7 @@
         <!-- follow-ups-card view-->
         <div
           class="follow-ups-card"
-          *ngIf="followupOverDueRecallInCMP.length;"
+          *ngIf="followupOverDueRecallInCMP.length; else noData"
         >
           <mat-card
             class="huddle-card"
@@ -399,12 +399,12 @@
             </div>
           </mat-card>
         </div>
-        <!-- <ng-template #noData>
+        <ng-template #noData>
           <mat-card class="huddle-card">
             <h6>You have no overdue recalls today</h6>
           </mat-card>
-        </ng-template> -->
-        <!-- follow-ups-card view-end--->
+        </ng-template> 
+        <!-- follow-ups-card view-end-->
       </div>
     </mat-tab>
     <!-- Patient Schedule Tab end -->
@@ -660,7 +660,7 @@
         <!-- follow-ups-card view-->
         <div
           class="follow-ups-card"
-          *ngIf="followupTickFollowupsInCMP.length;"
+          *ngIf="followupTickFollowupsInCMP.length; else noData"
         >
           <mat-card
             class="huddle-card"
@@ -810,12 +810,12 @@
             </div>
           </mat-card>
         </div>
-        <!-- <ng-template #noData>
+        <ng-template #noData>
           <mat-card class="huddle-card">
             <h6>You have no tick followups today</h6>
           </mat-card>
-        </ng-template> -->
-        <!-- follow-ups-card view-end--->
+        </ng-template> 
+        <!-- follow-ups-card view-end-->
       </div>
     </mat-tab>
     <!-- Reminders Tab end -->
@@ -975,7 +975,7 @@
         <!-- follow-ups-card view-->
         <div
           class="follow-ups-card"
-          *ngIf="followupPostOpCallsInComp.length;"
+          *ngIf="followupPostOpCallsInComp.length; else noData"
         >
           <mat-card
             class="huddle-card"
@@ -1037,12 +1037,12 @@
             </div>
           </mat-card>
         </div>
-        <!-- <ng-template #noData>
+        <ng-template #noData>
           <mat-card class="huddle-card">
             <h6>You have no post op calls today</h6>
           </mat-card>
-        </ng-template> -->
-        <!-- follow-ups-card view-end--->
+        </ng-template> 
+        <!-- follow-ups-card view-end -->
       </div>
     </mat-tab>
     <!-- Dentist Performance Tab -->
@@ -1299,7 +1299,7 @@
         <!-- follow-ups-card view-->
         <div
           class="follow-ups-card"
-          *ngIf="followupFtaFollowupsInCMP.length;"
+          *ngIf="followupFtaFollowupsInCMP.length; else noData"
         >
           <mat-card
             class="huddle-card"
@@ -1450,12 +1450,12 @@
             </div>
           </mat-card>
         </div>
-        <!-- <ng-template #noData>
+         <ng-template #noData>
           <mat-card class="huddle-card">
             <h6>You have no FTA followups today</h6>
           </mat-card>
-        </ng-template> -->
-        <!-- follow-ups-card view-end--->
+        </ng-template> 
+        <!-- follow-ups-card view-end-->
       </div>
     </mat-tab>
     <!-- Dentist Performance Tab -->
