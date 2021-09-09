@@ -1001,7 +1001,7 @@
 
 
     <!-- Followups Tab start -->
-    <mat-tab label="Front Desk Followups" *ngIf="user_type != '4'">
+    <mat-tab label="Front Desk Followups" class="morngHuddle" *ngIf="user_type != '4'">
       <div class="morning-huddle-date">
         <strong>Current Day: {{ remindersRecallsOverdueDate | date:'EEE MMM d':'timezone' }} </strong>
       </div>
@@ -1010,7 +1010,7 @@
         </div>
       </div>
 
-      <mat-card class="table-card post_call_responsive_border followUps followUpsTab4">
+      <mat-card class="table-card post_call_responsive_border followUps followUpsTab4 morngHuddle">
         <mat-card-title>
           <div class="title-follow-up">
             <div class="TitleCon">
@@ -1154,7 +1154,7 @@
 
 
 
-      <mat-card class="table-card post_call_responsive_border followUpsTab4">
+      <mat-card class="table-card post_call_responsive_border followUpsTab4 morngHuddle">
 
         <mat-card-title>
           <div class="title-follow-up">
@@ -1331,7 +1331,7 @@
       </mat-card>
 
 
-      <mat-card class="table-card post_call_responsive_border followUpsTab4">
+      <mat-card class="table-card post_call_responsive_border followUpsTab4 morngHuddle">
 
         <mat-card-title>
           <div class="title-follow-up">
@@ -1526,7 +1526,7 @@
       </mat-card>
 
       <!-- FTA Follow ups -->
-      <mat-card class="table-card post_call_responsive_border followUpsTab4">
+      <mat-card class="table-card post_call_responsive_border followUpsTab4 morngHuddle">
         <mat-card-title>
           <div class="title-follow-up">
              <div class="TitleCon">

@@ -285,10 +285,10 @@ table{
     font-weight: bold;
 }
 
-.showComplete mat-slide-toggle {
+.morngHuddle .showComplete mat-slide-toggle {
     margin: -8px 0 0px 11px;
 }
-.showComplete {
+.morngHuddle  .showComplete {
     float: right;
     margin: -17px 27px 0 0;
     margin-right: 24px;
@@ -310,7 +310,7 @@ table{
 .notes.red { color: #7c0404; }
 .card-loading.cards { opacity: 1; }
 .card-loading img.tableLoader {width: 30px;height: 30px; position: absolute; top: 18%;}
-.showComplete.showAMPm span {
+.morngHuddle .showComplete.showAMPm span {
     padding: 5px;
     margin: -2px 0 0 0;
     display: inline-block;
@@ -318,7 +318,7 @@ table{
     float: left;
 }
 
-.showComplete.showAMPm span.PM {
+.morngHuddle .showComplete.showAMPm span.PM {
     float: right;
 }
 input.small-number {
