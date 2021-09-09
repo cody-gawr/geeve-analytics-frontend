@@ -2280,15 +2280,15 @@ body .AddCard-main .AddCard-box .mat-card-title { font-size: 1rem !important; fl
 .mat-elevation-z4 {
     box-shadow: none !important;
 }
-body .mat-gray {
-    font-size: 16px;
-    text-transform: uppercase;
-    color: #18a689;
-    background: #FFF;
+body button.mat-gray {
+    font-size: 16px !important;
+    text-transform: uppercase !important;
+    color: #18a689 !important;
+    background: #FFF !important;
     box-shadow: none !important;
-    border: 1px solid #18a689;
-    font-family: 'Gilroy-Medium';
-    border-radius: 5px;
+    border: 1px solid #18a689 !important;
+    font-family: 'Gilroy-Medium' !important;
+    border-radius: 5px !important;
 }
 .mat-flat-button.mat-.basic_details_form .mat-card-title, .mat-raised-button.mat-green, .mat-fab.mat-green, .mat-mini-fab.mat-green {
     font-size: 16px;
