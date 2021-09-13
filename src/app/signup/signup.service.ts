@@ -18,7 +18,7 @@ export class SignupService {
     private apiUrl = environment.apiUrl;
 
     getUrl(): Observable<any> {
-      return this.http.get(this.apiUrl +"/Xeros/getUrl", { headers: this.headers })
+      return this.http.get(this.apiUrl +"/XeroSignup/getUrl", { headers: this.headers })
             .pipe(map((response: Response) => {
                             return response;
                         })
@@ -27,7 +27,7 @@ export class SignupService {
     getInfo(token): Observable<any> {
       const formData = new FormData();
       formData.append('id', token);
-      return this.http.post(this.apiUrl +"/Xeros/getXeroInfo",formData, { headers: this.headers })
+      return this.http.post(this.apiUrl +"/XeroSignup/getXeroInfo",formData, { headers: this.headers })
             .pipe(map((response: Response) => {
                             return response;
                         })
