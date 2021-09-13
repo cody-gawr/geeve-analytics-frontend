@@ -155,9 +155,14 @@ export class ScriptsComponent extends BaseComponent implements AfterViewInit {
     this.scriptList.filter = value.trim().toLocaleLowerCase();
   }  
 
+  public scriptsLoader:boolean = false;
   getScripts(id) {
+    this.scriptsLoader = true;
+    this.scriptList = new MatTableDataSource([]);
     this.scriptsService.getScripts(id).subscribe((res) => {
+      this.scriptsLoader = true;
       if (res.message == 'success') {
+        this.scriptsLoader = false;
         this.scriptList.data = res.data;        
         this.setPaginationButtons(res.data.length);
       }

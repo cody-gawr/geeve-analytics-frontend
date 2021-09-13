@@ -276,7 +276,7 @@ export class AppConstants {
     //Function to get current date time and add 14 hours to this
     public getDate(){
         var now = new Date();
-        now.setTime(now.getTime() + (18*60*60*1000));
+        now.setTime(now.getTime() + (12*60*60*1000));
         return now;
     }
 }

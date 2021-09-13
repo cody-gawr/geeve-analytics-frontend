@@ -4,6 +4,8 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChartService } from '../chart.service';
 import { FollowupsService } from './followups.service';
 import { ChartstipsService } from '../../shared/chartstips.service';
+import { Router } from "@angular/router";
+import { CookieService } from "ngx-cookie";
 @Component({
   templateUrl: './followups.component.html',
   styleUrls: ['./followups.component.scss'],
@@ -254,7 +256,9 @@ export class FollowupsComponent implements AfterViewInit {
       private chartService: ChartService,
       private decimalPipe: DecimalPipe,
       private followupsService: FollowupsService,
-      public chartstipsService: ChartstipsService
+      public chartstipsService: ChartstipsService,
+      public router: Router,
+      private _cookieService: CookieService,
     )
   {
    this.getChartsTips();
@@ -551,6 +555,7 @@ export class FollowupsComponent implements AfterViewInit {
       }
     }, error => {
         this.perUserLoader = false;
+         this.handleUnAuthorization();
     });
   }
   public outcomeType:any = '1';
@@ -616,7 +621,9 @@ export class FollowupsComponent implements AfterViewInit {
              
       }
     }, error => {
+
       this.outcomeLoader = false;
+      this.handleUnAuthorization();
     });
 
   
@@ -654,6 +661,7 @@ export class FollowupsComponent implements AfterViewInit {
       }
     }, error => {
       this.conversionLoader = false;   
+      this.handleUnAuthorization();
     });   
   }
 
@@ -749,6 +757,7 @@ export class FollowupsComponent implements AfterViewInit {
       }
     }, error => {
       this.conversionPerUserLoader = false;
+      this.handleUnAuthorization();
     });    
   }
 
@@ -788,6 +797,7 @@ export class FollowupsComponent implements AfterViewInit {
       }
     }, error => {
       this.completionRateLoader = false;
+      this.handleUnAuthorization();
     });
     
   }
@@ -798,7 +808,9 @@ export class FollowupsComponent implements AfterViewInit {
        if(data.message == 'success'){         
         this.charTips = data.data;
        }
-    }, error => {});
+    }, error => {
+      
+    });
   }
 
   followupOutcomeTab(number){
@@ -809,5 +821,13 @@ export class FollowupsComponent implements AfterViewInit {
   }*/
   followupConversionPerTab(number){
     this.conversionPerType = number;
+  }
+
+  handleUnAuthorization() {
+    this._cookieService.put("username", '');
+    this._cookieService.put("email", '');
+    this._cookieService.put("token", '');
+    this._cookieService.put("userid", '');
+    this.router.navigateByUrl('/login');
   }
 }

@@ -415,6 +415,7 @@ getCardDetails() {
 updateCustomerCard(){
   this.profileSettingsService.updateCustomerCard(this.customer_id).subscribe((res) => {
               if(res.message == 'success'){
+                this.getCardDetails();
                  $('.ajax-loader').hide();
                   Swal.fire(
                         '',
