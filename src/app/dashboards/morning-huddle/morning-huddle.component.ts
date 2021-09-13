@@ -501,8 +501,10 @@ initiate_clinic() {
 
   /***** Tab 4 ***/
   public remindersTotal:any = 0;
-   getReminders(){
-    this.remindersRecallsOverdueLoader = true;
+   getReminders(refsh = ''){
+    if(refsh == ''){
+      this.remindersRecallsOverdueLoader = true;
+    }
     this.morningHuddleService.getReminders( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.remindersRecallsOverdueLoader = false;
       if(production.status == true) {
@@ -835,8 +837,10 @@ initiate_clinic() {
     }); 
   }*/
 
-   getTodayUnscheduledHours(){
-    this.todayUnscheduledHoursLoader =  true;
+   getTodayUnscheduledHours(refsh = ''){
+    if(refsh == ''){
+      this.todayUnscheduledHoursLoader =  true;
+    }
     this.morningHuddleService.getTodayUnscheduledHours( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.todayUnscheduledHoursLoader =  false;
       if(production.status == true) {
@@ -854,8 +858,10 @@ initiate_clinic() {
       }
     }); 
   }
-   getTodayUnscheduledBal(){
-    this.todayUnscheduledBalLoader = true;
+   getTodayUnscheduledBal(refsh = ''){
+    if(refsh == ''){
+      this.todayUnscheduledBalLoader = true;
+    }
     this.morningHuddleService.getTodayUnscheduledBal( this.clinic_id, this.previousDays,  this.user_type  ).subscribe((production:any) => {
       this.todayUnscheduledBalLoader = false;
       if(production.status == true) {
@@ -1349,6 +1355,11 @@ async getDentistList(){
     this.getScheduleHours(this.currentDentist, 'refresh');
     this.getUnscheduleHours(this.currentDentist, 'refresh');
     this.getAppointmentCards(this.currentDentist, 'refresh');
+    
+    this.getTodayUnscheduledHours('refresh');
+    this.getTodayUnscheduledBal('refresh');
+    this.getReminders('refresh');
+      
   }
 
   historyPosChips(event, colour)

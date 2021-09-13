@@ -882,7 +882,10 @@
             <td id="{{ element.provider_id }}" mat-cell *matCellDef="let element"><span
                 class="newpatient"></span>{{ element.app_date +" " + element.start | date :'h:mm a' }} -
               {{ endTime(element.app_date,element.start,element.duration) | date :'h:mm a' }}
-              <span class="newpatient" *ngIf="element.is_new_patient != 'No'"></span></td>
+              <span class="newpatient" *ngIf="element.is_new_patient != 'No'"></span>
+              <span class="timeUTA" *ngIf="element.is_uta == '1'">UTA</span>
+              <span class="timeFTA" *ngIf="element.is_fta == '1'">FTA </span>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="dentist">
@@ -926,14 +929,18 @@
               </div>
             </td>
           </ng-container>
+          <ng-container matColumnDef="rebooked">
+            <th mat-header-cell *matHeaderCellDef>Rebooked </th>
+            <td mat-cell *matCellDef="let element"> <i *ngIf="element.is_rebooked != 'No'" class="fa fa-check" style="color: green;" ></i> </td>
+          </ng-container>
           <ng-container matColumnDef="isDataAvailable">
-            <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns6.length">
+            <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns11.length">
               You have no Reminders today
             </mat-footer-cell>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns6"></tr>
-          <tr id="" mat-row *matRowDef="let row; columns: displayedColumns6;"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns11"></tr>
+          <tr id="" mat-row *matRowDef="let row; columns: displayedColumns11;"></tr>
 
           <mat-footer-row *matFooterRowDef="['isDataAvailable']"
             [ngClass]="(remindersRecallsOverdue.length == 0)? 'show' : 'hide'"></mat-footer-row>
@@ -1722,12 +1729,12 @@
 
 
     <!-- End of Day Tasks -->
-    <mat-tab label="Daily Tasks" *ngIf="user_type != '4'">
+    <mat-tab label="Daily Tasks" *ngIf="user_type != '4'" >
       <div class="morning-huddle-date">
         <strong>Current Day: {{ endOfDaysTasksDate | date:'EEE MMM d':'timezone'  }} </strong>
       </div>
       <mat-card class="table-card post_call_responsive_border">
-        <mat-card-title>
+        <mat-card-title class="morngHuddle">
           <div class="title-follow-up">
             <span>Daily Tasks</span>
             <!-- <span *ngIf="!isEnabletasks">Daily Task feature is currently disabled. Please check your Jeeve settings to enable this feature.</span> -->
@@ -1822,7 +1829,7 @@
         </mat-card-title>
         <mat-card-content>
           <div class="DentistListSecRow mh-table patient_data-table_responsive"
-            style="max-height: 2500px; overflow: auto;">
+            style="max-height: 2500px; overflow: auto; padding-bottom: 53px;">
             <div class="card-loading" *ngIf="equipmentListLoading">
               <img class="tableLoader" src="../../assets/images/logo-icon.gif">
                 <!-- <div class="loader-text">Calculating...</div> -->
@@ -1839,14 +1846,28 @@
               </ng-container>
               <ng-container matColumnDef="am">
                 <th mat-header-cell *matHeaderCellDef >AM &nbsp; <i class="fa fa-check" *ngIf="!amButton"></i></th> <!-- [ngClass]="!showELPm? 'show' : 'hide'" -->
-                <td mat-cell *matCellDef="let element"> <!--  [ngClass]="showELPm? 'show' : 'hide'" -->
+                <td mat-cell *matCellDef="let element;  let i=index"> <!--  [ngClass]="showELPm? 'show' : 'hide'" -->
                 <input type="number" class="small-number" [ngClass] ="!amButton? 'complt' : 'notCmplt' " [(ngModel)]="lquipmentListAm[element.id].am" (blur) ="listUpdate('am',element.id)">
+                <div *ngIf="(i+1) == lquipmentList.data.length" class="ListButton">
+                    <button  (click)="saveQuantity('am')" mat-raised-button color="dc"  class="btn-block btn-lg text-center">
+                      <span *ngIf="amButton">Save</span>
+                      <span *ngIf="!amButton">Update</span>
+                    </button>
+                </div>
+
+
                 </td>
               </ng-container>
               <ng-container matColumnDef="pm" >
                 <th mat-header-cell *matHeaderCellDef>PM &nbsp; <i class="fa fa-check" *ngIf="!pmButton"></i></th>
-                <td mat-cell *matCellDef="let element">
+                <td mat-cell *matCellDef="let element;  let i=index">
                   <input type="number"  class="small-number" [ngClass] ="!pmButton? 'complt' : 'notCmplt' " [(ngModel)]="lquipmentListAm[element.id].pm" (blur) ="listUpdate('pm',element.id)">
+                  <div *ngIf="(i+1) == lquipmentList.data.length" class="ListButton">
+                    <button  (click)="saveQuantity('pm')" mat-raised-button color="dc" class="btn-block btn-lg text-center mr-0">
+                      <span *ngIf="pmButton">Save</span>
+                      <span *ngIf="!pmButton">Update</span>
+                    </button>
+                </div>
                 </td>
               </ng-container>           
               <ng-container matColumnDef="isDataAvailable9">
@@ -1866,16 +1887,10 @@
                   <td width="24%"></td>
                   <td width="15%"></td>
                   <td width="25%">
-                    <button  (click)="saveQuantity('am')" mat-raised-button color="dc"  class="btn-block btn-lg text-center">
-                      <span *ngIf="amButton">Save</span>
-                      <span *ngIf="!amButton">Update</span>
-                    </button>
+                  
                   </td>
                   <td width="25%">
-                    <button  (click)="saveQuantity('pm')" mat-raised-button color="dc" class="btn-block btn-lg text-center mr-0">
-                      <span *ngIf="pmButton">Save</span>
-                      <span *ngIf="!pmButton">Update</span>
-                    </button>
+               
                    
                  </td>
                 </tr>

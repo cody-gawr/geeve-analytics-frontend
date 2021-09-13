@@ -810,7 +810,7 @@ span.timeUTA, span.timeFTA {
 }
 
 .mat-column-rebooked {
-    text-align: center;
+    text-align: center !important;
 }
 @media (max-width:320px) {
     .ListButtons .btn-lg {
@@ -823,4 +823,9 @@ span.timeUTA, span.timeFTA {
 }
 mat-card.followUpsTab4 {
     padding-bottom: 0;
+}
+.ListButton {
+    width: 104px;
+    margin: 17px 0px 0;
+    position: absolute;
 }
