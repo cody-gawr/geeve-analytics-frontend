@@ -1760,7 +1760,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public treatmentPreChartGoal;
   public treatmentPreChartAveragePrev;
   public treatmentPreChartTooltip = 'down';
-  public barChartOptionsTPB: any = this.barChartOptionstrend;
+  public barChartOptionsTPB: any = this.barChartOptionsPercent;
   public prebook = 'recall';
   public treatmentPrebookLoader: boolean;
   public tpKey: any;
@@ -3775,9 +3775,19 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   }
   changePrebookRate(val) {
+    if(val == 'recall' && this.goalchecked == 'average')
+    {
+      this.recallPrebook();
+    } else if(val == 'treatment' && this.goalchecked == 'average')
+    {
+      this.treatmentPrePrebook();
+    }
     $('.prebook_rate .sa_tab_btn').removeClass('active');
     this.prebook = val;
     $('.prebook_rate .pr_' + val).addClass('active');
+
+
+
   }
 
   getNameInitials(name: string) {
@@ -3808,6 +3818,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   changeProduction(val){
+    if(parseInt(val) == 1 && this.goalchecked == 'average') {
+      this.buildChart();
+    } else if(parseInt(val) == 2 && this.goalchecked == 'average'){
+      this.collectionChart();
+    } 
     this.proCollShow = parseInt(val);
   }
 

@@ -1049,7 +1049,7 @@
                   *ngIf="prebook=='treatment' && recallPrebookLoader == false && treatmentPreChartData1.length > 0"
                   #myCanvas baseChart [datasets]="treatmentPreChartData" [labels]="treatmentPreChartLabels"
                   [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
-                  [options]="barChartOptionsRP" [colors]="TPcolors" (chartClick)="chartClicked($event)">
+                  [options]="barChartOptionsTPB" [colors]="TPcolors" (chartClick)="chartClicked($event)">
                 </canvas>
                 <div *ngIf="recallChartData1.length <= 0 && prebook=='recall'" class="no-data-placeholder">
                   <div class="sa_nodata_div">
