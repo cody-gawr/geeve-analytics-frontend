@@ -714,7 +714,7 @@
               </div>
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Rebooked: </div>
-                <div fxFlex="70">  </div>
+                <div fxFlex="70">  <i *ngIf="element.is_rebooked != 'No'" class="fa fa-check" style="color: green;" ></i>  </div>
               </div>
 
             </mat-card>
@@ -990,6 +990,10 @@
                           alt="warning-huddle" /></span> New Patient</span>
                   </div>
                 </div>
+              </div>
+              <div fxLayout="row" class="huddle-card-row">
+                <div fxFlex="30">Rebooked: </div>
+                <div fxFlex="70">  <i *ngIf="element.is_rebooked != 'No'" class="fa fa-check" style="color: green;" ></i>  </div>
               </div>
             </mat-card>
           </div>
