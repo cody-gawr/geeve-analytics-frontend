@@ -641,7 +641,7 @@
 
            <ng-container matColumnDef="rebooked">
             <th mat-header-cell *matHeaderCellDef>Rebooked </th>
-            <td mat-cell *matCellDef="let element"> <i *ngIf="element.is_rebooked != 'No'" class="fa fa-check" style="color: green;" ></i> </td>
+            <td mat-cell *matCellDef="let element"> <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check" style="color: green;" ></i> </td>
           </ng-container>
 
 
@@ -714,7 +714,7 @@
               </div>
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Rebooked: </div>
-                <div fxFlex="70">  <i *ngIf="element.is_rebooked != 'No'" class="fa fa-check" style="color: green;" ></i>  </div>
+                <div fxFlex="70">  <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check" style="color: green;" ></i>  </div>
               </div>
 
             </mat-card>
@@ -931,7 +931,7 @@
           </ng-container>
           <ng-container matColumnDef="rebooked">
             <th mat-header-cell *matHeaderCellDef>Rebooked </th>
-            <td mat-cell *matCellDef="let element"> <i *ngIf="element.is_rebooked != 'No'" class="fa fa-check" style="color: green;" ></i> </td>
+            <td mat-cell *matCellDef="let element"> <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check" style="color: green;" ></i> </td>
           </ng-container>
           <ng-container matColumnDef="isDataAvailable">
             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns11.length">
@@ -993,7 +993,7 @@
               </div>
               <div fxLayout="row" class="huddle-card-row">
                 <div fxFlex="30">Rebooked: </div>
-                <div fxFlex="70">  <i *ngIf="element.is_rebooked != 'No'" class="fa fa-check" style="color: green;" ></i>  </div>
+                <div fxFlex="70">  <i *ngIf="element.is_rebooked == 'Yes'" class="fa fa-check" style="color: green;" ></i>  </div>
               </div>
             </mat-card>
           </div>
