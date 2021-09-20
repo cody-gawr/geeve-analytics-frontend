@@ -544,6 +544,7 @@ initiate_clinic() {
     this.poLoadingLoading = true;
     this.futureDateOP = '';
     this.morningHuddleService.followupPostOpCalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+       this.followupPostOpCallsInComp = [];
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateOP =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
@@ -574,6 +575,7 @@ initiate_clinic() {
     }
     this.futureDateOR = '';
     this.morningHuddleService.followupOverdueRecalls( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+      this.followupOverDueRecallInCMP  =[];
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateOR =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
@@ -639,6 +641,7 @@ initiate_clinic() {
     }
      this.futureDateTH = '';
     this.morningHuddleService.followupTickFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays ).subscribe((production:any) => {
+       this.followupTickFollowupsInCMP = [];
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateTH =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
@@ -692,6 +695,7 @@ initiate_clinic() {
     }
     this.morningHuddleService.followupFtaFollowups( this.clinic_id, this.previousDays,  this.postOpCallsDays).subscribe((production:any) => {
         this.ftaTaksLoadingLoading = false;
+        this.followupFtaFollowupsInCMP = [];
         this.futureDateTF = '';
       if(production.message == 'success') {
         var diffTime:any = this.getDataDiffrences();

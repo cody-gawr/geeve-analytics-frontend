@@ -343,6 +343,7 @@ initiate_clinic() {
   getFollowupPostOpCalls(){
     this.poLoadingLoading = true;
     this.followupsService.followupPostOpCalls( this.clinic_id, this.selectedMonth, this.selectedYear ).subscribe((production:any) => {
+      this.followupPostOpCallsInComp = [];
         this.poLoadingLoading = false;
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;
@@ -373,6 +374,7 @@ initiate_clinic() {
       this.recallLoadingLoading = true;
     }
     this.followupsService.followupOverdueRecalls( this.clinic_id, this.selectedMonth, this.selectedYear ).subscribe((production:any) => {
+      this.followupOverDueRecallInCMP = [];
         this.recallLoadingLoading = false;
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;
@@ -404,6 +406,7 @@ initiate_clinic() {
      this.endTaksLoadingLoading = true;
     }
     this.followupsService.followupTickFollowups( this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production:any) => {
+      this.followupTickFollowupsInCMP = [];
         this.endTaksLoadingLoading = false;
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;
@@ -455,6 +458,7 @@ initiate_clinic() {
      this.ftaTaksLoadingLoading = true;
     }
     this.followupsService.followupFtaFollowups( this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production:any) => {
+      this.followupFtaFollowupsInCMP = [];
         this.ftaTaksLoadingLoading = false;
       if(production.message == 'success') {
         this.nextBussinessDay = production.next_day;  
