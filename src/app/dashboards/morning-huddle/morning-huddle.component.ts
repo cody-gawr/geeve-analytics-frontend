@@ -735,6 +735,7 @@ initiate_clinic() {
     this.endTaksLoading = true;
     this.futureDateDT = '';
     this.morningHuddleService.getEndOfDays( this.clinic_id, this.previousDays).subscribe((production:any) => {
+    this.endOfDaysTasksInComp  =   new MatTableDataSource([]);
         var diffTime:any = this.getDataDiffrences();
         if(diffTime < 0){
           this.futureDateDT =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');
@@ -764,6 +765,7 @@ initiate_clinic() {
     this.equipmentListLoading = true;
     this.futureDateEL = '';
     this.morningHuddleService.getEquipmentList( this.clinic_id, this.previousDays).subscribe((production:any) => {
+      this.lquipmentList =  new MatTableDataSource([]);
       var diffTime:any = this.getDataDiffrences();
       if(diffTime < 0){
        this.futureDateEL =  this.datepipe.transform( this.previousDays, 'yyyy-MM-dd');

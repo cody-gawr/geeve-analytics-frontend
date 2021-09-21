@@ -210,7 +210,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
                 this.selectedDentist = res.data[0].providerId;
               }
 
-               if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures'|| this.route == '/dashboards/frontdesk' || this.route == '/dashboards/marketing' || this.route == '/dashboards/finances'){
+               if(this.route == '/dashboards/cliniciananalysis' || this.route == '/dashboards/clinicianproceedures'|| this.route == '/dashboards/frontdesk' || this.route == '/dashboards/marketing' || this.route == '/dashboards/finances' || this.route == '/morning-huddle'|| this.route == '/followups' || this.route == '/dashboards/followups'){
                 let opts = this.constants.cookieOpt as CookieOptions;
                  this._cookieService.put("clinic_dentist",this.clinic_id+'_'+this.selectedDentist, opts);
                }
