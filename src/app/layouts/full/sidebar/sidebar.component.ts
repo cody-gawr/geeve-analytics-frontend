@@ -14,7 +14,7 @@ import { AppConstants } from '../../../app.constants';
   styleUrls: []
 })
 export class AppSidebarComponent implements OnDestroy,AfterViewInit {
-  private apiUrl = environment.apiUrl;
+  public apiUrl = environment.apiUrl;
   public config: PerfectScrollbarConfigInterface = {};
   mobileQuery: MediaQueryList;
   public clinicsData:any[] = [];

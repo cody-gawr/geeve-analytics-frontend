@@ -29,6 +29,7 @@ import { DentistService } from './dentist/dentist.service';
 import { ToastrModule } from 'ngx-toastr';
 import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
+import { TasksComponent } from './tasks/tasks.component';
 import { MorningHuddleComponent,DialogOverviewExampleDialogComponent,StatusDialogMHComponent } from './dashboards/morning-huddle/morning-huddle.component';
 import { SignupComponent } from './signup/signup.component';
 import { FollowupsComponent,FollowupsDialogComponent,StatusDialogComponent } from './followups/followups.component';
@@ -57,6 +58,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppSidebarComponent,
     AppHeaderrightComponent,
     LostOpportunityComponent,
+    TasksComponent,
     MorningHuddleComponent,
     SignupComponent,
     FollowupsComponent,

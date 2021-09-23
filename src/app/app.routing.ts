@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { FullComponent } from './layouts/full/full.component';
 import { AppBlankComponent } from './layouts/blank/blank.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
+import { TasksComponent } from './tasks/tasks.component';
 import { MorningHuddleComponent } from './dashboards/morning-huddle/morning-huddle.component';
 import { FollowupsComponent } from './followups/followups.component';
 import { StepperComponent } from './layouts/stepper/stepper.component';
@@ -69,6 +70,11 @@ export const AppRoutes: Routes = [
       {
         path: 'lost-opportunity',
         component: LostOpportunityComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'tasks',
+        component: TasksComponent,
         canActivate: [AuthGuard]
       },
       {
