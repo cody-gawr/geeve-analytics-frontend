@@ -11,6 +11,10 @@ export class SignupService {
  
     constructor(private http: HttpClient,private _cookieService: CookieService,private router: Router) {
         this.headers = new HttpHeaders();
+        this.headers.append("Content-Type", 'application/json');
+        this.headers.append("Access-Control-Allow-Origin", "*");
+        this.headers.append("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type, Accept");
+
     }
 
     private apiUrl = environment.apiUrl;
