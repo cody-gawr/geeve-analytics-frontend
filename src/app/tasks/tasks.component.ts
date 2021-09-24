@@ -1,23 +1,19 @@
-import { Component, OnDestroy, OnInit,ViewEncapsulation } from '@angular/core';
-import { TasksService } from './tasks.service';
-import { CookieService } from "ngx-cookie";
-import { ToastrService } from 'ngx-toastr';
-import { Router } from "@angular/router";
-import { HeaderService } from './../layouts/full/header/header.service';
-import { ITooltipData } from '../shared/tooltip/tooltip.directive';
-import { AppConstants } from '../app.constants';
-import { ChartstipsService } from '../shared/chartstips.service';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { KanbanModule,KanbanComponent, KanbanAllModule,CardSettingsModel, SwimlaneSettingsModel } from '@syncfusion/ej2-angular-kanban';
+import { kanbanData } from './data';
+
 @Component({
-  selector: 'app-tasks',
+    selector: 'app-tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class TasksComponent implements OnInit, OnDestroy {		
-	constructor() { }
-	ngOnInit() {
-		  $('#title').html('Tasks');
-	}
-	ngOnDestroy() {
-	}  
+
+export class TasksComponent {
+  public data: Object[] = kanbanData;
+    public cardSettings: CardSettingsModel = {
+        contentField: 'Summary',
+        headerField: 'Id'
+    };
+    public swimlaneSettings: SwimlaneSettingsModel = { keyField: 'Assignee' };
 }

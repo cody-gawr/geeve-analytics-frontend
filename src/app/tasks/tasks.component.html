@@ -1,6 +1,17 @@
 <mat-card class="lost-header-background-remove" style="box-shadow: none !important;">
 	<mat-card-content>
-Coming Soon
+<div class="control-section">
+    <div class="content-wrapper">
+       <ejs-kanban keyField='Status' [dataSource]='data' [cardSettings]='cardSettings' [swimlaneSettings]='swimlaneSettings'>
+                <e-columns>
+                  <e-column headerText='To do' keyField='Open'></e-column>
+                  <e-column headerText='In Progress' keyField='InProgress'></e-column>
+                  <e-column headerText='Testing' keyField='Testing'></e-column>
+                  <e-column headerText='Done' keyField='Close'></e-column>
+                </e-columns>
+            </ejs-kanban>
+    </div>
+</div>
 
 	</mat-card-content>
 </mat-card>

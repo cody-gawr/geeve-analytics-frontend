@@ -41,6 +41,7 @@ import { DemoMaterialModule } from './demo-material-module';
 import { DatePipe } from '@angular/common';
 import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-tabs/dashboard-duration-tabs.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { KanbanAllModule,KanbanModule, KanbanComponent,KanbanModel  } from '@syncfusion/ej2-angular-kanban';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelSpeed: 2,
@@ -82,6 +83,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpClientModule,
     PerfectScrollbarModule,
     SharedModule,
+    KanbanModule,
     NgxDaterangepickerMd.forRoot(),
     SharedMatModule.forRoot(),
     CookieModule.forRoot(),
@@ -101,6 +103,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     StepperHeaderService,
     ClinicSettingsService,
     StepperHeaderrightService,
+    KanbanAllModule,
+    KanbanComponent,
+    KanbanModule,
     DatePipe,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
