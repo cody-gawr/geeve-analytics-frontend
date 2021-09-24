@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation , OnInit} from '@angular/core';
 import { KanbanModule,KanbanComponent, KanbanAllModule,CardSettingsModel, SwimlaneSettingsModel } from '@syncfusion/ej2-angular-kanban';
 import { kanbanData } from './data';
 
@@ -9,11 +9,18 @@ import { kanbanData } from './data';
   encapsulation: ViewEncapsulation.None
 })
 
-export class TasksComponent {
+export class TasksComponent implements OnInit{
   public data: Object[] = kanbanData;
     public cardSettings: CardSettingsModel = {
         contentField: 'Summary',
         headerField: 'Id'
     };
     public swimlaneSettings: SwimlaneSettingsModel = { keyField: 'Assignee' };
+    ngOnInit() {
+   
+    }
+    constructor()
+    {     
+      $('#title').html('Tasks');
+    }
 }
