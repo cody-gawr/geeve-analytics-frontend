@@ -55,7 +55,7 @@ export class StepperSidebarComponent implements OnDestroy,AfterViewInit {
      this.login_status = this._cookieService.get("login_status");
 
      this.display_name = this._cookieService.get("display_name");
-     this.user_image = this._cookieService.get("user_image");
+     /*this.user_image = this._cookieService.get("user_image");*/
      if(!this._cookieService.get("user_image"))
       this.user_image = 'assets/images/gPZwCbdS.jpg';
 

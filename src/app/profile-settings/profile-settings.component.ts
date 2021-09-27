@@ -159,7 +159,7 @@ public cvcStyle = {
         this.id = this.route.snapshot.paramMap.get("id");
         this.displayName = this._cookieService.get("display_name");
         this.email = this._cookieService.get("email");  
-        this.imageURL = this._cookieService.get("user_image");   
+        /*this.imageURL = this._cookieService.get("user_image");   */
         if( this._cookieService.get("user_type") != '2')     
           this.getRoles();
         else{
@@ -445,11 +445,11 @@ public imageURL:any;
        if(res.message == 'success'){
         let opts = this.constants.cookieOpt as CookieOptions;
         this._cookieService.put("display_name", this.displayName, opts);
-        this._cookieService.put("user_image", this.imageURL, opts);
+        /*this._cookieService.put("user_image", this.imageURL, opts);*/
         this.display_name = this.displayName;
          if(this.imageURL) {
         $(".suer_image_sidebar img").attr('src' , this.imageURL);
-        this._cookieService.put("user_image", this.imageURL, opts);
+        /*this._cookieService.put("user_image", this.imageURL, opts);*/
       }
         $(".suer_text_sidebar").html(this.display_name.toUpperCase());
          this.toastr.success('Profile Settings Updated .');  

@@ -102,7 +102,7 @@ export class SupportComponent implements OnInit {
         datares['userid'] = res.data.data.id;      
         datares['parentid'] = res.data.data.parent_id;   
         datares['user_type'] = res.data.data.user_type;       
-        datares['user_image'] = res.data.data.user_image;        
+  /*      datares['user_image'] = res.data.data.user_image; */       
 
         datares['login_status'] = res.data.data.login_status;        
         datares['display_name'] = res.data.data.display_name;  
@@ -120,7 +120,7 @@ export class SupportComponent implements OnInit {
        
         this._cookieService.put("login_status", datares['login_status'], opts);
         this._cookieService.put("display_name", datares['display_name'], opts);
-        this._cookieService.put("user_image", datares['user_image'], opts);
+       /* this._cookieService.put("user_image", datares['user_image'], opts);*/
 
         if(datares['user_type'] == '1') {
         this.router.navigate(['/users']);

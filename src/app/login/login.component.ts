@@ -87,7 +87,7 @@ onSubmit() {
       datares['clinicid'] = res.data.data.clinic_id;      
       datares['parentid'] = res.data.data.parent_id;   
       datares['user_type'] = res.data.data.user_type;       
-      datares['user_image'] = res.data.data.user_image;        
+      /*datares['user_image'] = res.data.data.user_image;        */
       datares['stepper_status'] = res.data.data.stepper_status;        
       datares['login_status'] = res.data.data.status;        
       datares['display_name'] = res.data.data.display_name;  
@@ -105,7 +105,7 @@ onSubmit() {
       this._cookieService.put("user_type", datares['user_type'], opts);
       this._cookieService.put("login_status", datares['login_status'], opts);
       this._cookieService.put("display_name", datares['display_name'], opts);
-      this._cookieService.put("user_image", datares['user_image'], opts);        
+      /*this._cookieService.put("user_image", datares['user_image'], opts);        */
       if(datares['user_type'] != '2') {
         this._cookieService.put("userid", datares['parentid'], opts);
         this._cookieService.put("childid", datares['userid'], opts);
