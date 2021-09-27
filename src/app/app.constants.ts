@@ -272,7 +272,7 @@ export class AppConstants {
     public cookieOpt: any = {
         expires: this.getDate(),
         secure  : true,
-        sameSite: 'Strict'
+        sameSite: "Strict"
     };
     //Function to get current date time and add 14 hours to this
     public getDate(){

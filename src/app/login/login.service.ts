@@ -32,10 +32,11 @@ export class LoginService {
             );
     }
      // Items Predictor Analysis 
-    checkEmail(email): Observable<any> {
+    checkEmail(email,captcha): Observable<any> {
             const formData = new FormData();
 
             formData.append('email', email);
+            formData.append('captcha', captcha);
             return this.http.post(this.apiUrl +"/users/userForgotPassword", formData)
             .pipe(map((response: Response) => {
                             return response;

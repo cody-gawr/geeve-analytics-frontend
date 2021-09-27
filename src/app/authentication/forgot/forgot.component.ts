@@ -30,7 +30,7 @@ export class ForgotComponent implements OnInit {
         Validators.compose([Validators.required, CustomValidators.email])
       ]
     });
-  }
+  } 
 
   onSubmit() {
     if(this.recaptchasts == '')
@@ -39,7 +39,7 @@ export class ForgotComponent implements OnInit {
       return false;
     }            
     $('.ajax-loader').show();
-      this.loginService.checkEmail(this.form.value.email).subscribe((res) => {
+      this.loginService.checkEmail(this.form.value.email,this.recaptchasts).subscribe((res) => {
           this.recaptchasts = '';
          $('.ajax-loader').hide();
           this.errorLogin = false;
@@ -61,6 +61,7 @@ export class ForgotComponent implements OnInit {
 
   resolved(captchaResponse: string) {
     this.recaptchasts = captchaResponse;
+    console.log(this.recaptchasts);
     this.capchaError = false;
   }
 }
