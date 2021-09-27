@@ -271,7 +271,8 @@ export class AppConstants {
     //Set default cookie options
     public cookieOpt: any = {
         expires: this.getDate(),
-        secure  : true
+        secure  : true,
+        sameSite: 'Strict'
     };
     //Function to get current date time and add 14 hours to this
     public getDate(){

@@ -38,6 +38,7 @@ align-items: center;">
                         </div>
                           <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                          <small *ngIf="errorLogin" class="text-danger support-text">Incorrect Email or Password.</small>
+                         <small *ngIf="errorforAttmp" class="text-danger support-text">Your account is blocked due to too many failed logins, please try again in 15 minutes.</small>
                      </div>
                         <!-- col half-->
                         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">

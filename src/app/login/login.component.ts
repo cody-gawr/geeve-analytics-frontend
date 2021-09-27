@@ -18,6 +18,7 @@ import { RolesUsersService } from '../roles-users/roles-users.service';
 export class LoginComponent implements OnInit {
   public form: FormGroup;
   public errorLogin = false;
+  public errorforAttmp = false;
   public errorForm = {'email' : false, 'password' : false};
   public apiUrl = environment.apiUrl;
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService,private _cookieService: CookieService, private rolesUsersService: RolesUsersService,public constants: AppConstants) {
@@ -74,6 +75,7 @@ onSubmit() {
   }
 
   this.errorLogin  =false;
+  this.errorforAttmp  =false;
   this.loginService.login(this.form.value.uname.trim(), this.form.value.password).subscribe((res) => 
   {
     this._cookieService.removeAll({ 'path': '/' });
@@ -159,8 +161,12 @@ onSubmit() {
     } else if(res.message == 'error'){
       this.errorLogin  =true;
     }
-  }, error => {
-   this.errorLogin  =true;
+  }, (error) => {
+    if(error.status == 429){
+      this.errorforAttmp =true;
+    } else {
+      this.errorLogin  =true;
+    }
   });
   }
 
