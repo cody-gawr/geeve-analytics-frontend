@@ -67,7 +67,7 @@ export class AppSidebarComponent implements OnDestroy,AfterViewInit {
     // This is for the topbar search
      this.user_type = this._cookieService.get("user_type");
      this.display_name = this._cookieService.get("display_name");
-     this.user_image = this._cookieService.get("user_image");
+     /*this.user_image = this._cookieService.get("user_image");*/
      this.login_status = this._cookieService.get("login_status");
      if(!this._cookieService.get("user_image"))
       this.user_image = 'assets/images/gPZwCbdS.jpg';
