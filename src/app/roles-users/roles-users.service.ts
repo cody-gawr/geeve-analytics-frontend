@@ -52,7 +52,7 @@ export class RolesUsersService {
     // Get Roles For individual
     getRolesIndividual(): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Roles/rolesIndividual", { headers: header })
+        return this.http.get(this.apiUrl +"/Roles/rolesIndividual", { headers: header,withCredentials: true })
         .pipe(map((response: Response) => {
                         return response;
                     })
