@@ -37,7 +37,7 @@ export class SetupService {
         );
     }
 
-    getPMSLink( clinic_id): Observable<any> {
+    getPMSLink(): Observable<any> {
         var header = this.getHeaders(); 
         return this.http.get(this.apiUrl +"/users/userGetPMS/token", header)
         .pipe(map((response: Response) => {

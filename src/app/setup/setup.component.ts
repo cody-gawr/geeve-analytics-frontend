@@ -617,10 +617,10 @@ abc(data) {
         this.updateStepperStatus(); 
       }, error => {
           this.toastr.error('Some Error Occur. Please try later.');
-          selfO._cookieService.put("username",'');
-          selfO._cookieService.put("email", '');
-          selfO._cookieService.put("userid", '');
-          selfO.router.navigateByUrl('/login');
+          this._cookieService.put("username",'');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
       }    
     ); 
 
