@@ -20,15 +20,14 @@ export class RolesService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
    // Get profileSettings
-    getprofileSettings( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    getprofileSettings( clinic_id): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/Users/getPractices?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Users/getPractices?clinic_id="+clinic_id, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -42,14 +41,14 @@ export class RolesService {
             formData.append('id', this._cookieService.get("userid"));
              var header = this.getHeaders();
 
-        return this.http.post(this.apiUrl +"/Users/userUpdateProfile", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userUpdateProfile", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
        // Get updatePassword
-    updatePassword(currentPassword, newPassword, token = this._cookieService.get("token")): Observable<any> {
+    updatePassword(currentPassword, newPassword): Observable<any> {
             const formData = new FormData();
             formData.append('oldpassword', currentPassword);
             formData.append('password', newPassword);
@@ -57,16 +56,16 @@ export class RolesService {
             formData.append('id', this._cookieService.get("userid"));
             var header = this.getHeaders();
 
-        return this.http.post(this.apiUrl +"/Users/userChangePassword", formData,{ headers: header })
+        return this.http.post(this.apiUrl +"/Users/userChangePassword", formData,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
 
-    clearSession( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    clearSession( clinic_id): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?clinic_id="+clinic_id, header)
         .pipe(map((response: Response) => {
                         return response;
                     })

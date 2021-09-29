@@ -22,8 +22,7 @@ export class FollowupsService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+       let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
@@ -31,7 +30,7 @@ export class FollowupsService {
     getFollowupsPerUser( clinic_id, startDate, endDate, duration=''): Observable<any> 
     {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/Followups/fuGetPerUser?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Followups/fuGetPerUser?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -40,7 +39,7 @@ export class FollowupsService {
     getFollowupOutcome( clinic_id, startDate, endDate, duration=''): Observable<any> 
     {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/Followups/fuGetOutcome?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Followups/fuGetOutcome?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -49,7 +48,7 @@ export class FollowupsService {
     getConversion( clinic_id, startDate, endDate, duration=''): Observable<any> 
     {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/Followups/fuGetConversion?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Followups/fuGetConversion?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -58,7 +57,7 @@ export class FollowupsService {
     getConversionPerUser( clinic_id, startDate, endDate, duration=''): Observable<any> 
     {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/Followups/fuGetConversionPerUser?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Followups/fuGetConversionPerUser?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -67,7 +66,7 @@ export class FollowupsService {
     getCompletionRate( clinic_id, startDate, endDate, duration=''): Observable<any> 
     {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/Followups/fuGetFollowupCompletion?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Followups/fuGetFollowupCompletion?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })

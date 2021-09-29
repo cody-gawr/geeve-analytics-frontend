@@ -19,7 +19,7 @@
   next: ActivatedRouteSnapshot,
   state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | 
   boolean { 
-        if (this._cookieService.get("token")) {
+        if (this._cookieService.get("userid")) {
           let urlActive = this.activatedRoute.path();
           if(this._cookieService.get("stepper") && parseInt(this._cookieService.get("stepper"))  < 6 && urlActive != '/setup' && urlActive != '/login'){
             this.router.navigateByUrl('/login');

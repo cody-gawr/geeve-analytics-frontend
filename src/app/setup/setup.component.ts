@@ -256,7 +256,6 @@ usersArray = new Array(this.userRows);
        } else if(res.status == '401'){
           this._cookieService.put("username",'');
           this._cookieService.put("email", '');
-          this._cookieService.put("token", '');
           this._cookieService.put("userid", '');
           this.router.navigateByUrl('/login');
         }
@@ -326,7 +325,6 @@ if(selectedIndex >= 2) {
         else if(res.status == '401'){
             this._cookieService.put("username",'');
               this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
               this._cookieService.put("userid", '');
                this.router.navigateByUrl('/login');
            }
@@ -344,7 +342,6 @@ if(selectedIndex >= 2) {
        } else if(res.status == '401'){
             this._cookieService.put("username",'');
               this._cookieService.put("email", '');
-              this._cookieService.put("token", '');
               this._cookieService.put("userid", '');
                this.router.navigateByUrl('/login');
            }
@@ -491,7 +488,6 @@ if(selectedIndex >= 2) {
        }else if(res.status == '401'){
          this._cookieService.put("username",'');
          this._cookieService.put("email", '');
-         this._cookieService.put("token", '');
          this._cookieService.put("userid", '');
          this.router.navigateByUrl('/login');
       }
@@ -576,7 +572,6 @@ abc(data) {
        }else if(res.status == '401'){
          this._cookieService.put("username",'');
          this._cookieService.put("email", '');
-         this._cookieService.put("token", '');
          this._cookieService.put("userid", '');
          this.router.navigateByUrl('/login');
       }
@@ -616,9 +611,20 @@ abc(data) {
   }
 
   downloadPMS(){
-    var winP = window.open(this.apiUrl+'/users/userGetPMS?token='+this._cookieService.get("token")+'&token_id='+ this._cookieService.get("userid")+'&clinic_id='+this.clinic_id, "_blank");      
-    this.stepVal = 4;
-    this.updateStepperStatus(); 
+    this.setupService.getPMSLink().subscribe((res) => {
+        var winP = window.open(this.apiUrl+res.data+this.clinic_id, "_blank");      
+        this.stepVal = 4;
+        this.updateStepperStatus(); 
+      }, error => {
+          this.toastr.error('Some Error Occur. Please try later.');
+          selfO._cookieService.put("username",'');
+          selfO._cookieService.put("email", '');
+          selfO._cookieService.put("userid", '');
+          selfO.router.navigateByUrl('/login');
+      }    
+    ); 
+
+   
   }
   downloadPMSAgain(){
      this.stepVal = 3;
@@ -663,7 +669,6 @@ abc(data) {
           this.toastr.error('Some Error Occur. Please try later.');
           selfO._cookieService.put("username",'');
           selfO._cookieService.put("email", '');
-          selfO._cookieService.put("token", '');
           selfO._cookieService.put("userid", '');
           selfO.router.navigateByUrl('/login');
       }    

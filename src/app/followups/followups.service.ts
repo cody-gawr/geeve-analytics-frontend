@@ -22,14 +22,13 @@ export class FollowupsService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
     followupPostOpCalls( clinic_id, month,  year ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Followups/fuPostOpTable?clinic_id="+clinic_id+"&month="+month+"&year="+year, { headers: header })
+        return this.http.get(this.apiUrl +"/Followups/fuPostOpTable?clinic_id="+clinic_id+"&month="+month+"&year="+year, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -38,7 +37,7 @@ export class FollowupsService {
 
      followupTickFollowups(clinic_id, month,  year ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Followups/fuTickFollowupsTable?clinic_id="+clinic_id+"&month="+month+"&year="+year, { headers: header })
+        return this.http.get(this.apiUrl +"/Followups/fuTickFollowupsTable?clinic_id="+clinic_id+"&month="+month+"&year="+year, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -47,7 +46,7 @@ export class FollowupsService {
 
     followupFtaFollowups(clinic_id, month,  year ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Followups/fuFtaFollowupsTable?clinic_id="+clinic_id+"&month="+month+"&year="+year, { headers: header })
+        return this.http.get(this.apiUrl +"/Followups/fuFtaFollowupsTable?clinic_id="+clinic_id+"&month="+month+"&year="+year, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -56,7 +55,7 @@ export class FollowupsService {
 
      followupOverdueRecalls( clinic_id, month,  year ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Followups/fuOverdueRecallsTable?clinic_id="+clinic_id+"&month="+month+"&year="+year, { headers: header })
+        return this.http.get(this.apiUrl +"/Followups/fuOverdueRecallsTable?clinic_id="+clinic_id+"&month="+month+"&year="+year, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -73,7 +72,7 @@ export class FollowupsService {
         formData.append('date', previousDays);
         formData.append('fdate', fdate);
         formData.append('type', type);
-        return this.http.post(this.apiUrl +"/Followups/fuUpdateFollowupStatus",formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Followups/fuUpdateFollowupStatus",formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -90,7 +89,7 @@ export class FollowupsService {
         formData.append('date', previousDays);
         formData.append('fdate', fdate);
         formData.append('type', type);        
-        return this.http.post(this.apiUrl +"/Followups/fuUpdateStatus",formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Followups/fuUpdateStatus",formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -106,7 +105,7 @@ export class FollowupsService {
         formData.append('followup_date', followup_date);
         formData.append('type', type);
         formData.append('next_reach',nextReach );
-        return this.http.post(this.apiUrl +"/Followups/fuCloneStatus",formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Followups/fuCloneStatus",formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -123,7 +122,7 @@ export class FollowupsService {
         formData.append('date', date);
         formData.append('fdate', fdate);
         formData.append('type', type);
-        return this.http.post(this.apiUrl +"/Followups/fuUpdateStatus",formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Followups/fuUpdateStatus",formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -132,7 +131,7 @@ export class FollowupsService {
 
     getScripts(cid): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/MorningHuddle/mhGetScripts?clinic_id="+cid, { headers: header })
+        return this.http.get(this.apiUrl +"/MorningHuddle/mhGetScripts?clinic_id="+cid, header)
         .pipe(map((response: Response) => {
                         return response;
                     })

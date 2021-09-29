@@ -24,15 +24,14 @@ export class PlansService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
    // Get Dentist
-    getPlans(token = this._cookieService.get("token")): Observable<any> {
+    getPlans(): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Plans/getPlans", { headers: header })
+        return this.http.get(this.apiUrl +"/Plans/getPlans", header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -40,12 +39,12 @@ export class PlansService {
     }
 
        // Delete Clinic
-    deletePlan(user_id, token = this._cookieService.get("token")): Observable<any> {
+    deletePlan(user_id): Observable<any> {
     const formData = new FormData();
     formData.append('id', user_id);
    var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Plans/delete", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Plans/delete", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -53,7 +52,7 @@ export class PlansService {
     }
 
     // Update Clinic
-    updatePlan(user_id, plan, allowedClinics, description, amount, token = this._cookieService.get("token")): Observable<any> {
+    updatePlan(user_id, plan, allowedClinics, description, amount): Observable<any> {
     const formData = new FormData();
 
     formData.append('id', user_id);
@@ -65,7 +64,7 @@ export class PlansService {
     formData.append('clinic_id', '1');
    var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Plans/update/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Plans/update/", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -82,7 +81,7 @@ export class PlansService {
     formData.append('amount',amount);
     formData.append('discount', discount);
     var header = this.getHeaders();   
-        return this.http.post(this.apiUrl +"/Plans/add/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Plans/add/", formData, header)
         .pipe(map((response: Response) => {
                         return response;
         })

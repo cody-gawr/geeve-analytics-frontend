@@ -23,8 +23,7 @@ export class TasksService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 }

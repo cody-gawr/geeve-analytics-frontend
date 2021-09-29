@@ -425,7 +425,6 @@ initiate_clinic() {
       } else if(res.status == '401'){
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
         this._cookieService.put("userid", '');
         this.router.navigateByUrl('/login');
       }

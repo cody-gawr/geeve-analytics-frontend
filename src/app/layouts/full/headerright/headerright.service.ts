@@ -21,8 +21,7 @@ export class HeaderrightService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
@@ -36,9 +35,9 @@ export class HeaderrightService {
             );
     } 
     
-    getClinics(token = this._cookieService.get("token")): Observable<any> {        
+    getClinics(): Observable<any> {        
         var header = this.getHeaders();         
-        return this.http.get(this.apiUrl +"/clinics/clinicGet", { headers: header })
+        return this.http.get(this.apiUrl +"/clinics/clinicGet", header)
         .pipe(map((response: Response) => {
                         return response;
                     })

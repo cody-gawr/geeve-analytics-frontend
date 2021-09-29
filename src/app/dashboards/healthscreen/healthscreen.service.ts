@@ -21,23 +21,22 @@ export class HealthScreenService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
-   hourlyRateChart( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='', token = this._cookieService.get("token"),limit=5 ): Observable<any> {
+   hourlyRateChart( clinic_id, startDate = '', endDate = '', duration='', user_type='',clinician='',limit=5 ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/health/chHourlyLeaders?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&limit=5", { headers: header })
+        return this.http.get(this.apiUrl +"/health/chHourlyLeaders?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&limit=5", header)
         .pipe(map((response: Response) => {
             return response;
                     })
         );
     }
         // Items Predictor Analysis 
-    mkNewPatientsByReferral(clinic_id, startDate = '', endDate = '',duration='', token = this._cookieService.get("token"),limit=5  ): Observable<any> {
+    mkNewPatientsByReferral(clinic_id, startDate = '', endDate = '',duration='',limit=5  ): Observable<any> {
         var header = this.getHeaders();
-        return this.http.get(this.apiUrl +"/health/chReferralLeaders?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&limit="+limit, { headers: header })
+        return this.http.get(this.apiUrl +"/health/chReferralLeaders?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration+"&limit="+limit, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -45,9 +44,9 @@ export class HealthScreenService {
     }
 
                        // finProductionPerVisit
-    finProductionPerVisit(clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    finProductionPerVisit(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Health/chProductionPerVisit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Health/chProductionPerVisit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -57,7 +56,7 @@ export class HealthScreenService {
     // Added by Hanney Sharma on 01-04-2021    
     commonCall(clinic_id,startDate, endDate, functionName): Observable<any> { // Top production card service
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/health/"+functionName+"?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, { headers: header })
+        return this.http.get(this.apiUrl +"/health/"+functionName+"?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate, header)
         .pipe(map((response: Response) => {
                         return response;
             })

@@ -21,16 +21,15 @@ export class ProfileSettingsService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
 
    // Get profileSettings
-    getprofileSettings( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    getprofileSettings( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/getPractices?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Users/getPractices?clinic_id="+clinic_id, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -45,30 +44,30 @@ export class ProfileSettingsService {
 
            var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Users/userUpdateProfile", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userUpdateProfile", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
        // Get updatePassword
-    updatePassword(currentPassword, newPassword, token = this._cookieService.get("token")): Observable<any> {
+    updatePassword(currentPassword, newPassword): Observable<any> {
             const formData = new FormData();
             formData.append('oldpassword', currentPassword);
             formData.append('password', newPassword);
             formData.append('confirm_password', newPassword); 
 
             var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Users/userChangePassword", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userChangePassword", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
 
-    clearSession( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    clearSession( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Xeros/clearSession/?getxero=1?clinic_id="+clinic_id, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -81,7 +80,7 @@ export class ProfileSettingsService {
             formData.append('customer_id', customer_id);
             formData.append('last_invoic_id', last_invoic_id);
 var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/Users/userUpdateCard", formData, { headers: header })
+            return this.http.post(this.apiUrl +"/Users/userUpdateCard", formData, header)
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -93,7 +92,7 @@ var header = this.getHeaders();
             formData.append('customer_id', customer_id);
             formData.append('last_invoic_id', last_invoic_id);
             var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/Users/userRetryPayment", formData, { headers: header })
+            return this.http.post(this.apiUrl +"/Users/userRetryPayment", formData, header)
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -106,7 +105,7 @@ var header = this.getHeaders();
         formData.append('type', "analytics");
         formData.append('user_id', this._cookieService.get("userid"));
         var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/users/getUserPaymentData", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/users/getUserPaymentData", formData, header)
             .pipe(map((response: Response) => {
                 return response;
             })
@@ -117,7 +116,7 @@ var header = this.getHeaders();
       const formData = new FormData();
             formData.append('customer_id', customer_id);
              var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/users/userGetCard", formData, { headers: header })
+            return this.http.post(this.apiUrl +"/users/userGetCard", formData, header)
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -128,7 +127,7 @@ var header = this.getHeaders();
             const formData = new FormData();
             formData.append('customer', customer);
              var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/users/userCreateSetupIntent", formData, { headers: header })
+            return this.http.post(this.apiUrl +"/users/userCreateSetupIntent", formData, header)
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -138,7 +137,7 @@ var header = this.getHeaders();
             const formData = new FormData();
             formData.append('customer', customer);
              var header = this.getHeaders(); 
-            return this.http.post(this.apiUrl +"/users/userUpdateCustomerCard", formData,  { headers: header })
+            return this.http.post(this.apiUrl +"/users/userUpdateCustomerCard", formData,  header)
             .pipe(map((response: Response) => {
                    return response;
                })
@@ -147,14 +146,14 @@ var header = this.getHeaders();
     // GET CHARTS TIPS
     getChartsTips(): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/ChartsTips/ctGetTips", { headers: header }).pipe(map((response: Response) => {
+        return this.http.get(this.apiUrl +"/ChartsTips/ctGetTips", header).pipe(map((response: Response) => {
             return response;
         }));
     }
     // GET CHARTS TIPS
     getStripeKey(): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/users/getPublishableKey", { headers: header }).pipe(map((response: Response) => {
+        return this.http.get(this.apiUrl +"/users/getPublishableKey", header).pipe(map((response: Response) => {
             return response;
         }));
     }
@@ -163,7 +162,7 @@ var header = this.getHeaders();
         var header = this.getHeaders(); 
         const formData = new FormData();
         formData.append('chart_tips', data);
-        return this.http.post(this.apiUrl +"/ChartsTips/ctSaveTips",formData,{ headers: header }).pipe(map((response: Response) => {
+        return this.http.post(this.apiUrl +"/ChartsTips/ctSaveTips",formData,header).pipe(map((response: Response) => {
             return response;
         }));
     }

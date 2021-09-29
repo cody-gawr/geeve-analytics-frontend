@@ -101,7 +101,7 @@ onSubmit() {
       this._cookieService.put("childid", '', opts);
       this._cookieService.put("dentistid", '', opts);
       this._cookieService.put("userid", datares['userid'], opts);
-      this._cookieService.put("token", datares['token'], opts);
+      //this._cookieService.put("token", datares['token'], opts);
       this._cookieService.put("username", datares['username'], opts);
       this._cookieService.put("email", datares['email'], opts);
       this._cookieService.put("user_type", datares['user_type'], opts);

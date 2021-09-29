@@ -24,36 +24,35 @@ export class ClinicGoalsService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+       let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
    // Get ClinicGoals
-    getClinicGoals(clinic_id='', token = this._cookieService.get("token")): Observable<any> {
+    getClinicGoals(clinic_id=''): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Goals/goalGetClinic?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Goals/goalGetClinic?clinic_id="+clinic_id, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
     // Get ClinicGoals updated
-    getGoalAllData(clinic_id='',dentist_id, token = this._cookieService.get("token")): Observable<any> {
+    getGoalAllData(clinic_id='',dentist_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Goals/goalGetData?clinic_id="+clinic_id+"&dentist_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Goals/goalGetData?clinic_id="+clinic_id+"&dentist_id="+dentist_id, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
        // Get ClinicGoals
-    updateClinicGoals(clinicData, clinic_id='', token = this._cookieService.get("token")): Observable<any> {
+    updateClinicGoals(clinicData, clinic_id=''): Observable<any> {
             const formData = new FormData();
         formData.append('goals', clinicData);
         formData.append('clinic_id', clinic_id);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/Goals/goalAddClinic", formData,{ headers: header })
+        return this.http.post(this.apiUrl +"/Goals/goalAddClinic", formData,header)
         .pipe(map((response: Response) => {
                         return response;
                     })

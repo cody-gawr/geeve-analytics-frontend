@@ -20,8 +20,7 @@ export class TaskService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+       let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
 
     }
@@ -30,7 +29,7 @@ export class TaskService {
     getTasks( clinic_id): Observable<any>
     {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/clinics/clinicGetEndDayTasks?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/clinics/clinicGetEndDayTasks?clinic_id="+clinic_id,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -45,7 +44,7 @@ export class TaskService {
         formData.append('clinic_id', cid);
         formData.append('is_active', event);          
         formData.append('is_default', is_default);          
-        return this.http.post(this.apiUrl +"/clinics/clinicUpdateEndDayTasks", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/clinics/clinicUpdateEndDayTasks", formData,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -59,7 +58,7 @@ export class TaskService {
         formData.append('id', id);
         formData.append('task_name', task_name);
         formData.append('clinic_id', clinic_id);          
-        return this.http.post(this.apiUrl +"/clinics/clinicAddEndDayTasks", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/clinics/clinicAddEndDayTasks", formData,header)
         .pipe(map((response: Response) => {
                         return response;
                     })

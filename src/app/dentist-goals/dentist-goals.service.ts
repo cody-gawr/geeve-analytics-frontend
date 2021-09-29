@@ -21,23 +21,22 @@ export class DentistGoalsService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
 
    // Get ClinicGoals
-    getDentistGoals(clinic_id='', dentist_id ='', token = this._cookieService.get("token")): Observable<any> {
+    getDentistGoals(clinic_id='', dentist_id =''): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Goals/goalGetDentist?clinic_id="+clinic_id+"&dentist_id="+dentist_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Goals/goalGetDentist?clinic_id="+clinic_id+"&dentist_id="+dentist_id, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
        // Get ClinicGoals
-    updateDentistGoals(clinicData, clinic_id='', dentist_id = '',  token = this._cookieService.get("token")): Observable<any> {
+    updateDentistGoals(clinicData, clinic_id='', dentist_id = ''): Observable<any> {
 
             const formData = new FormData();
 
@@ -46,7 +45,7 @@ export class DentistGoalsService {
     formData.append('dentist_id', dentist_id);
     var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Goals/goalAddDentist", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Goals/goalAddDentist", formData, header)
         .pipe(map((response: Response) => {
                         return response;
        })

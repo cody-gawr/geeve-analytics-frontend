@@ -21,15 +21,14 @@ export class ClinicSettingsService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+       let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
    // Get ClinicSettings
-    getClinicSettings( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    getClinicSettings( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/clinics/clinicGet?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/clinics/clinicGet?clinic_id="+clinic_id,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -70,51 +69,51 @@ export class ClinicSettingsService {
         formData.append('fta_enable', ftaEnable);
         
     var header = this.getHeaders();
-    return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, { headers: header})
+    return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
     // Get ClinicSettings
-    getXeroLink( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    getXeroLink( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Xeros2/getAuthorizeUrl?getxero=1&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Xeros2/getAuthorizeUrl?getxero=1&clinic_id="+clinic_id,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
 
-    checkXeroStatus( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    checkXeroStatus( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Xeros2/xeroGetStatus?getxero=1&clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Xeros2/xeroGetStatus?getxero=1&clinic_id="+clinic_id,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
 
-    getMyobLink( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    getMyobLink( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Myob/getAuthorizeUrl?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Myob/getAuthorizeUrl?clinic_id="+clinic_id,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
-    checkMyobStatus( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    checkMyobStatus( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Myob/myobGetStatus?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Myob/myobGetStatus?clinic_id="+clinic_id,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
 
-    clinicGetAccountingPlatform( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    clinicGetAccountingPlatform( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Clinics/clinicGetAccountingPlatform?clinic_id="+clinic_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Clinics/clinicGetAccountingPlatform?clinic_id="+clinic_id,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -122,21 +121,21 @@ export class ClinicSettingsService {
     }
    
 
-    clearSession( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    clearSession( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
-        return this.http.post(this.apiUrl +"/Xeros2/disconnectXero/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Xeros2/disconnectXero/", formData,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
-    clearSessionMyob( clinic_id, token = this._cookieService.get("token")): Observable<any> {
+    clearSessionMyob( clinic_id): Observable<any> {
         var header = this.getHeaders(); 
         const formData = new FormData();
         formData.append('clinic_id', clinic_id);
-        return this.http.post(this.apiUrl +"/Myob/disconnectMyob/", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Myob/disconnectMyob/", formData,header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -160,7 +159,7 @@ export class ClinicSettingsService {
         formData.append('clinic_id', clinic_id);
         formData.append(column, value);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, { headers: header}).pipe(map((response: Response) => {
+        return this.http.post(this.apiUrl +"/clinics/clinicUpdate", formData, header).pipe(map((response: Response) => {
                 return response;
             })
         );
@@ -171,7 +170,7 @@ export class ClinicSettingsService {
         formData.append('clinic_id', clinic_id);
         formData.append('id', task_id);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/clinics/clinicDeleteEndDayTasks", formData, { headers: header}).pipe(map((response: Response) => {
+        return this.http.post(this.apiUrl +"/clinics/clinicDeleteEndDayTasks", formData, header).pipe(map((response: Response) => {
                 return response;
             })
         );
@@ -182,7 +181,7 @@ export class ClinicSettingsService {
         formData.append('clinic_id', clinic_id);
         formData.append('id', task_id);
         var header = this.getHeaders();
-        return this.http.post(this.apiUrl +"/clinics/clinicDeleteEquipmentItem", formData, { headers: header}).pipe(map((response: Response) => {
+        return this.http.post(this.apiUrl +"/clinics/clinicDeleteEquipmentItem", formData, header).pipe(map((response: Response) => {
                 return response;
             })
         );

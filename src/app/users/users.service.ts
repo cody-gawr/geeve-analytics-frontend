@@ -22,15 +22,14 @@ export class UsersService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
    // Get Dentist
-    getUsers(token = this._cookieService.get("token")): Observable<any> {
+    getUsers(): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/userGetPracticeOwners", { headers: header })
+        return this.http.get(this.apiUrl +"/Users/userGetPracticeOwners", header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -38,12 +37,12 @@ export class UsersService {
     }
 
        // Delete Clinic
-    deleteUser(userId, token = this._cookieService.get("token")): Observable<any> {
+    deleteUser(userId): Observable<any> {
     const formData = new FormData();
     formData.append('id', userId);
     var header = this.getHeaders(); 
 
-        return this.http.post(this.apiUrl +"/Users/userDelete", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userDelete", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -51,14 +50,14 @@ export class UsersService {
     }
 
     // Update Clinic
-/*    updateUser(userId, value, column, token = this._cookieService.get("token")): Observable<any> {
+/*    updateUser(userId, value, column): Observable<any> {
     const formData = new FormData();
 
     formData.append('id', userId);
     formData.append(column, value);
     var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Users/userEdit", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userEdit", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -66,7 +65,7 @@ export class UsersService {
     }*/
 
         // Update Clinic
-    addClinic(name, address, contact_name, token = this._cookieService.get("token")): Observable<any> {
+    addClinic(name, address, contact_name): Observable<any> {
     const formData = new FormData();
 
     formData.append('clinicName', name);
@@ -74,7 +73,7 @@ export class UsersService {
     formData.append('contactName', contact_name);
     var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/clinics/clinicAdd", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/clinics/clinicAdd", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })

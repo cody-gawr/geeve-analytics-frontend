@@ -24,15 +24,14 @@ export class RolesUsersService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
    // Get Dentist
-    getUsers( token = this._cookieService.get("token")): Observable<any> {
+    getUsers( ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/userGetRoles", { headers: header })
+        return this.http.get(this.apiUrl +"/Users/userGetRoles", header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -40,9 +39,9 @@ export class RolesUsersService {
     }
 
     // Get Dentist
-    getRoles(token = this._cookieService.get("token")): Observable<any> {
+    getRoles(): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Roles/rolesGet", { headers: header })
+        return this.http.get(this.apiUrl +"/Roles/rolesGet", header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -52,7 +51,7 @@ export class RolesUsersService {
     // Get Roles For individual
     getRolesIndividual(): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Roles/rolesIndividual", { headers: header,withCredentials: true })
+        return this.http.get(this.apiUrl +"/Roles/rolesIndividual", header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -60,9 +59,9 @@ export class RolesUsersService {
     }
 
            // Get Dentist
-    getRoleUserDetails(role_id,token = this._cookieService.get("token")): Observable<any> {
+    getRoleUserDetails(role_id): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/userGetRoleDetails?role_id="+role_id, { headers: header })
+        return this.http.get(this.apiUrl +"/Users/userGetRoleDetails?role_id="+role_id, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -70,9 +69,9 @@ export class RolesUsersService {
     }
 
        // checkUserEmail
-    checkUserEmail( email, token = this._cookieService.get("token")): Observable<any> {
+    checkUserEmail( email): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Users/userCheckEmail?email="+email, { headers: header })
+        return this.http.get(this.apiUrl +"/Users/userCheckEmail?email="+email, header)
         .pipe(map((response: Response) => {
                         return response;
          })
@@ -80,11 +79,11 @@ export class RolesUsersService {
     }
 
        // Delete Clinic
-    deleteUser(userId, token = this._cookieService.get("token")): Observable<any> {
+    deleteUser(userId): Observable<any> {
         const formData = new FormData();
         formData.append('id', userId);        
         var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Users/userDelete", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userDelete", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -92,12 +91,12 @@ export class RolesUsersService {
     }
 
     // Update Clinic
-    saveRoles(role_id, checkedRoles, token = this._cookieService.get("token")): Observable<any> {
+    saveRoles(role_id, checkedRoles): Observable<any> {
         const formData = new FormData();
         formData.append('role_id', role_id);
         formData.append('permisions', checkedRoles);
         var header = this.getHeaders(); 
-        return this.http.post(this.apiUrl +"/Roles/rolesUpdate", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Roles/rolesUpdate", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -105,7 +104,7 @@ export class RolesUsersService {
     }
 
         // Update Clinic
-    addRoleUser(display_name, email, user_type,selectedClinic,password,selected_dentist, token = this._cookieService.get("token")): Observable<any> {
+    addRoleUser(display_name, email, user_type,selectedClinic,password,selected_dentist): Observable<any> {
     const formData = new FormData();
     var dentist= JSON.stringify(selected_dentist);
     formData.append('display_name', display_name);
@@ -115,7 +114,7 @@ export class RolesUsersService {
     formData.append('selected_dentist', dentist);
     formData.append('clinic_id', selectedClinic);     
     var header = this.getHeaders();     
-    return this.http.post(this.apiUrl +"/Users/userAdd", formData, { headers: header })
+    return this.http.post(this.apiUrl +"/Users/userAdd", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -123,7 +122,7 @@ export class RolesUsersService {
     }
 
       // Update Clinic
-    updateRoleUser(id,display_name, email, user_type,selectedClinic,selected_dentist, token = this._cookieService.get("token")): Observable<any> {
+    updateRoleUser(id,display_name, email, user_type,selectedClinic,selected_dentist): Observable<any> {
     const formData = new FormData();
     var dentist= JSON.stringify(selected_dentist);
     formData.append('id', id);    
@@ -135,7 +134,7 @@ export class RolesUsersService {
      
      var header = this.getHeaders(); 
     
-        return this.http.post(this.apiUrl +"/Users/userUpdate", formData, { headers: header })
+        return this.http.post(this.apiUrl +"/Users/userUpdate", formData, header)
         .pipe(map((response: Response) => {
                         return response;
                     })

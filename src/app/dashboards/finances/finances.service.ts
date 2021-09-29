@@ -21,40 +21,39 @@ export class FinancesService {
         } else {
             this.token_id= this._cookieService.get("userid");
         }
-        var authString = this._cookieService.get("token")+" "+this.token_id;
-        let headers = new HttpHeaders({'Authorization' : authString});
+        let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
 
     // NetProfit
-    NetProfit(clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    NetProfit(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/finNetProfit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/finNetProfit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
         // NetProfit
-    NetProfitPercent(clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    NetProfitPercent(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/finNetProfitPercent?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/finNetProfitPercent?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
         // NetProfit
-    NetProfitPms(clinic_id, startDate = '', endDate = '', duration='',connectedwith ='', token = this._cookieService.get("token")  ): Observable<any> {
+    NetProfitPms(clinic_id, startDate = '', endDate = '', duration='',connectedwith =''  ): Observable<any> {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
-        return this.http.get(this.apiUrl +"/Finance/fnNetProfit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnNetProfit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
      }else if(connectedwith == 'myob'){
-             return this.http.get(this.apiUrl +"/Finance/fnNetProfitMyob?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+             return this.http.get(this.apiUrl +"/Finance/fnNetProfitMyob?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
               .pipe(map((response: Response) => {
                     return response;
                          })
@@ -62,16 +61,16 @@ export class FinancesService {
             }
     }
      // NetProfitPercentage
-    netProfitPercentage(clinic_id, startDate = '', endDate = '', duration='',connectedwith ='', token = this._cookieService.get("token")  ): Observable<any> {
+    netProfitPercentage(clinic_id, startDate = '', endDate = '', duration='',connectedwith =''  ): Observable<any> {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
-        return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentage?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentage?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
-            return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageMyob?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageMyob?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -79,16 +78,16 @@ export class FinancesService {
         }
     }
        // categoryExpenses
-    categoryExpenses(clinic_id, startDate = '', endDate = '', duration='',connectedwith ='', token = this._cookieService.get("token")  ): Observable<any> {
+    categoryExpenses(clinic_id, startDate = '', endDate = '', duration='',connectedwith =''  ): Observable<any> {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
-            return this.http.get(this.apiUrl +"/Finance/fnExpenses?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnExpenses?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
-            return this.http.get(this.apiUrl +"/Finance/fnExpensesMyob?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnExpensesMyob?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -96,9 +95,9 @@ export class FinancesService {
         }
     }
         // finProductionByClinician
-    finProductionByClinician(clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    finProductionByClinician(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnProductionByClinician?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnProductionByClinician?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -106,18 +105,18 @@ export class FinancesService {
     }
 
         // finTotalDiscounts
-    finTotalDiscounts(clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    finTotalDiscounts(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnDiscounts?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnDiscounts?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }
         // finTotalProduction
-    finTotalProduction(clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    finTotalProduction(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnTotalProduction?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnTotalProduction?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -125,9 +124,9 @@ export class FinancesService {
     }
 
         // finCollection
-    finCollection(clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    finCollection(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnTotalCollection?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnTotalCollection?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -135,9 +134,9 @@ export class FinancesService {
     }
 
         // finProductionPerVisit
-    finProductionPerVisit(clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    finProductionPerVisit(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnProductionPerVisit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnProductionPerVisit?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -146,9 +145,9 @@ export class FinancesService {
 
 
         // finOverdueAccounts
-    finOverdueAccounts(clinic_id, startDate = '', endDate = '', duration='', token = this._cookieService.get("token")  ): Observable<any> {
+    finOverdueAccounts(clinic_id, startDate = '', endDate = '', duration=''  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnOverdues?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnOverdues?clinic_id="+clinic_id+"&start_date="+startDate+"&end_date="+endDate+"&duration="+duration, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -156,9 +155,9 @@ export class FinancesService {
     }
 
         // finProductionByClinician
-     finProductionByClinicianTrend(clinic_id, mode ='', token = this._cookieService.get("token")  ): Observable<any> {
+     finProductionByClinicianTrend(clinic_id, mode =''  ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnProductionByClinicianTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnProductionByClinicianTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -166,18 +165,18 @@ export class FinancesService {
     }
 
         // finTotalDiscounts
-    finTotalDiscountsTrend(clinic_id, mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    finTotalDiscountsTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnDiscountsTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnDiscountsTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }  
         // finTotalDiscounts
-    finOverdueAccountsTrend(clinic_id, mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    finOverdueAccountsTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/overduesTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/overduesTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -185,18 +184,18 @@ export class FinancesService {
     }  
 
         // finTotalProductionTrend
-    finTotalProductionTrend(clinic_id, mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    finTotalProductionTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnTotalProductionTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnTotalProductionTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
     }  
                           
-    finCollectionTrend(clinic_id, mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    finCollectionTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnTotalCollectionTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnTotalCollectionTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -204,9 +203,9 @@ export class FinancesService {
     } 
 
                               
-    finProductionPerVisitTrend(clinic_id, mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    finProductionPerVisitTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnProductionPerVisitTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnProductionPerVisitTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -214,9 +213,9 @@ export class FinancesService {
     }
     
         // finNetProfitTrend
-    finNetProfitTrend(clinic_id, mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    finNetProfitTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/finNetProfitTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/finNetProfitTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -224,9 +223,9 @@ export class FinancesService {
     }
 
      // finNetProfitPercentTrend
-    finNetProfitPercentTrend(clinic_id, mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    finNetProfitPercentTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/finNetProfitPercentTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/finNetProfitPercentTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -234,16 +233,16 @@ export class FinancesService {
     }
 
         // finNetProfitPMSTrend
-    finNetProfitPMSTrend(clinic_id, mode ='',connectedwith='', token = this._cookieService.get("token") ): Observable<any> {
+    finNetProfitPMSTrend(clinic_id, mode ='',connectedwith='' ): Observable<any> {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
-            return this.http.get(this.apiUrl +"/Finance/fnNetProfitTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnNetProfitTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
-            return this.http.get(this.apiUrl +"/Finance/fnNetProfitMyobTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnNetProfitMyobTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -253,16 +252,16 @@ export class FinancesService {
     }
 
     // finNetProfitPMSTrend
-    finNetProfitPMSPercentTrend(clinic_id, mode ='',connectedwith='', token = this._cookieService.get("token") ): Observable<any> {
+    finNetProfitPMSPercentTrend(clinic_id, mode ='',connectedwith='' ): Observable<any> {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
-            return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
-            return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageMyobTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnNetProfitPercentageMyobTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -271,16 +270,16 @@ export class FinancesService {
         
     }
         // finExpensesByCategoryTrend
-    finExpensesByCategoryTrend(clinic_id, mode ='',connectedwith='', token = this._cookieService.get("token") ): Observable<any> {
+    finExpensesByCategoryTrend(clinic_id, mode ='',connectedwith='' ): Observable<any> {
         var header = this.getHeaders(); 
         if(connectedwith == 'xero'){
-        return this.http.get(this.apiUrl +"/Finance/fnExpensesTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnExpensesTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
         );
         }else if(connectedwith == 'myob'){
-            return this.http.get(this.apiUrl +"/Finance/fnExpensesMyobTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+            return this.http.get(this.apiUrl +"/Finance/fnExpensesMyobTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })
@@ -288,9 +287,9 @@ export class FinancesService {
         }
     }
                 // finExpensesByCategoryMktTrend
-    finExpensesByCategoryMktTrend(clinic_id, mode ='', token = this._cookieService.get("token") ): Observable<any> {
+    finExpensesByCategoryMktTrend(clinic_id, mode ='' ): Observable<any> {
         var header = this.getHeaders(); 
-        return this.http.get(this.apiUrl +"/Finance/fnExpensesTrend?clinic_id="+clinic_id+"&mode="+mode, { headers: header })
+        return this.http.get(this.apiUrl +"/Finance/fnExpensesTrend?clinic_id="+clinic_id+"&mode="+mode, header)
         .pipe(map((response: Response) => {
                         return response;
                     })

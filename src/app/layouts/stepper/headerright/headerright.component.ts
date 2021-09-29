@@ -81,7 +81,6 @@ export class StepperHeaderrightComponent implements AfterViewInit  {
        if(res.message == 'success'){
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');
-        this._cookieService.put("token", '');
         this._cookieService.put("userid", '');
 
         this.router.navigate(['/login']);
