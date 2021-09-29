@@ -207,9 +207,9 @@ export class FollowupsComponent implements OnInit,OnDestroy {
     public isEnableTH: boolean = false;
     public isEnableFT: boolean = false;
 
-  displayedColumns1: string[] = ['name', 'phone','code','date','followup_date','status'];
+  displayedColumns1: string[] = ['name', 'phone','code','dentist','date','followup_date','status'];
   displayedColumns2: string[] = ['name', 'phone', 'code','note','followup_date','book','status'];
-  displayedColumns3: string[] = ['name', 'phone', 'code','note','followup_date','book','status']; 
+  displayedColumns3: string[] = ['name', 'phone', 'code','dentist','note','followup_date','book','status']; 
   timezone: string = '+1000';
   months:any = ['January','February','March','April','May','June','July','August','September','October','November','December'];
  @ViewChild(MatPaginator) paginator: MatPaginator;
