@@ -28,6 +28,7 @@
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['morninghuddle_'+selected_id]">Morning Huddle</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['followups_'+selected_id]">Follow Ups</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['lostopportunity_'+selected_id]">Lost Opportunity</mat-checkbox>
+    <mat-checkbox class="role_permissions" *ngIf="data.taskVisible" [(ngModel)]="data.selectedRole['tasks_'+selected_id]">Tasks</mat-checkbox>
     <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['profilesettings_'+selected_id]">Settings</mat-checkbox>
   <!--   <mat-checkbox class="role_permissions" [(ngModel)]="data.selectedRole['managepermissions_'+selected_id]">Manage Roles</mat-checkbox> -->
   </div>
