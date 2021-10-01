@@ -203,11 +203,11 @@ export class HealthScreenComponent implements AfterViewInit, OnDestroy {
   public gaugeDuration ='25000';
   // events
   public chartClicked(e: any): void {
-    console.log(e);
+    
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
+    
   }
   public  gaugeType = "arch";
   public  gaugeValue = '';

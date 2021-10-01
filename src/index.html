@@ -17,6 +17,16 @@
   <script type="text/javascript" src="../assets/js/mailerlite/webforms.min.js"></script>  
   <script type="text/javascript" src="../assets/js/mailerlite/ml_jQuery.inputmask.bundle.min.js"></script>  
   <script type="text/javascript" src="../assets/js/signupxero.js"></script>  
+  <script type="text/javascript">
+     var div = $('<div/>');
+    $(document).on('keyup', 'input,textarea', function(){
+      
+      var str = $(this).val();
+      var regex = /(<([^>]+)>)/ig
+      var result = str.replace(regex, "");
+      $(this).val(result);
+    });
+  </script>
 </head>
 <body class="main-layout">
   <app-root></app-root>

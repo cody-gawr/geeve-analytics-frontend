@@ -323,7 +323,6 @@ initiate_clinic() {
   private warningMessage: string;
   public loginUserType = this._cookieService.get("user_type");
   openDialog(): void {
-    console.log(this.allPermissonTip,'****');
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '400px',
       data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,clinics:this.clinics,dentist_id:this.dentist_id, permisions: this.allPermissonTip }
