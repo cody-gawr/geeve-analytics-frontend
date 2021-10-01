@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>Jeeve Analytics</title>
     <base href="/" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="assets/images/favicon.png" />
     <link
@@ -15,6 +16,16 @@
       type="text/css"
       href="../assets/styles/primeicons/primeicons.css"
     />
+
+    <script type="text/javascript">
+      var div = $("<div/>");
+      $(document).on("keyup", "input,textarea", function () {
+        var str = $(this).val();
+        var regex = /(<([^>]+)>)/gi;
+        var result = str.replace(regex, "");
+        $(this).val(result);
+      });
+    </script>
   </head>
   <body class="main-layout">
     <app-root></app-root>

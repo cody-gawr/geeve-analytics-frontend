@@ -439,18 +439,16 @@ public imageURL:any;
     image = 'profile_'+imageObj[1];
    }          
    this.profileSettingsService.updateprofileSettings(this.displayName, this.email).subscribe((res) => {
-             $('.ajax-loader').hide();
-
+        $('.ajax-loader').hide();
        if(res.message == 'success'){
         let opts = this.constants.cookieOpt as CookieOptions;
+        this.displayName = res.data.display_name;
         this._cookieService.put("display_name", this.displayName, opts);
         /*this._cookieService.put("user_image", this.imageURL, opts);*/
-        this.display_name = this.displayName;
-         if(this.imageURL) {
-        $(".suer_image_sidebar img").attr('src' , this.imageURL);
-        /*this._cookieService.put("user_image", this.imageURL, opts);*/
-      }
-        $(".suer_text_sidebar").html(this.display_name.toUpperCase());
+        if(this.imageURL) {
+          $(".suer_image_sidebar img").attr('src' , this.imageURL);
+          /*this._cookieService.put("user_image", this.imageURL, opts);*/      }
+          $(".suer_text_sidebar").html(this.displayName.toUpperCase());
          this.toastr.success('Profile Settings Updated .');  
        }
     }, error => {

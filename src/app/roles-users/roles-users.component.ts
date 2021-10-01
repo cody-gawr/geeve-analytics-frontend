@@ -30,6 +30,7 @@ showtooltip:boolean= false;
     public dialogRef: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private clinicService: ClinicService,private _cookieService: CookieService, private router: Router
   ) {
+
   }
   onNoClick(): void {
     this.dialogRef.close();
@@ -135,7 +136,8 @@ show_dentist = false;
     public dialogEdit: MatDialogRef<DialogOverviewExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private clinicService: ClinicService,private _cookieService: CookieService, private router: Router,private rolesUsersService: RolesUsersService
   ) {
-    this.loadUserData();    
+    this.loadUserData();
+
   }
   public selClinics=[];
   public userData:any=[];
@@ -273,7 +275,12 @@ export class RolesUsersComponent implements AfterViewInit {
   userPlan:any = 'lite';
 public userTypeLogin:any = '';
 public showRoleButton:boolean = false;
+public taskVisible:boolean = false;
 initiate_clinic() {
+  this.taskVisible = false;
+  if( window.location.href.includes('test-') || window.location.href.includes('localhost')){
+      this.taskVisible = true;
+  }
     var val = $('#currentClinic').attr('cid');
     this.clinic_id = val;
     this.getClinics();    
@@ -316,7 +323,6 @@ initiate_clinic() {
   private warningMessage: string;
   public loginUserType = this._cookieService.get("user_type");
   openDialog(): void {
-    console.log(this.allPermissonTip,'****');
     const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
       width: '400px',
       data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password,dentists:this.dentists,clinics:this.clinics,dentist_id:this.dentist_id, permisions: this.allPermissonTip }
@@ -349,7 +355,7 @@ initiate_clinic() {
   openRoleDialog(): void {
     const rolesRef = this.dialog.open(RolesOverviewExampleDialogComponent, {
      width: '600px',
-      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password, roles:this.roles, selectedRole:this.selectedRole, selected_id:this.selected_id,dentists:this.dentists}
+      data: { display_name: this.display_name, email: this.email, user_type: this.user_type, password: this.password, roles:this.roles, selectedRole:this.selectedRole, selected_id:this.selected_id,dentists:this.dentists,taskVisible:this.taskVisible}
     });
     const sub = rolesRef.componentInstance.onAdd.subscribe((val) => {
     this.selected_id = val;
@@ -379,6 +385,8 @@ initiate_clinic() {
           checkedRoles.push('followups');
         if(result.selectedRole['lostopportunity_'+res1.id])
           checkedRoles.push('lostopportunity');
+        if(result.selectedRole['tasks_'+res1.id])
+          checkedRoles.push('tasks');
         if(result.selectedRole['clinics_'+res1.id])
           checkedRoles.push('clinics');
         if(result.selectedRole['users_'+res1.id])
