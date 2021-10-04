@@ -3,7 +3,7 @@
 	<mat-card-content>
 <div class="control-section">
     <div class="content-wrapper">
-       <ejs-kanban #kanbanObj keyField='Status' [dataSource]='kanbanData' [cardSettings]='cardSettings' [swimlaneSettings]='swimlaneSettings'>
+       <ejs-kanban #kanbanObj keyField='Status' [dataSource]='kanbanData' [cardSettings]='cardSettings' [swimlaneSettings]='swimlaneSettings' (actionComplete)='OnActionComplete()'>
                 <e-columns>
                   <e-column headerText='To do' keyField='Open'></e-column>
                   <e-column headerText='In Progress' keyField='InProgress'></e-column>

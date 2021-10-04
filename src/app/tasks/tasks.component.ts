@@ -42,4 +42,8 @@ export class TasksComponent implements OnInit{
     };
     this.kanbanObj.openDialog('Add', cardDetails);
   }
+
+  OnActionComplete(): void {
+    alert('Event Fire');
+  }
 }
