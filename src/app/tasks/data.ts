@@ -7,6 +7,7 @@ export let kanbanData: Object[] = [
         Priority: 'Low',
         Tags: 'Analyze,Customer',
         Estimate: 3.5,
+        Title:'Demo Title',
         Assignee: 'Nancy Davloio',
         RankId: 1
     },
@@ -18,6 +19,7 @@ export let kanbanData: Object[] = [
         Priority: 'Normal',
         Tags: 'Improvement',
         Estimate: 6,
+        Title:'Demo Title',
         Assignee: 'Andrew Fuller',
         RankId: 1
     },
@@ -29,6 +31,7 @@ export let kanbanData: Object[] = [
         Priority: 'Critical',
         Tags: 'Meeting',
         Estimate: 5.5,
+        Title:'Demo Title',
         Assignee: 'Janet Leverling',
         RankId: 2
     },
@@ -40,6 +43,7 @@ export let kanbanData: Object[] = [
         Priority: 'Release Breaker',
         Tags: 'IE',
         Estimate: 2.5,
+        Title:'Demo Title',
         Assignee: 'Janet Leverling',
         RankId: 2
     },
@@ -51,6 +55,7 @@ export let kanbanData: Object[] = [
         Priority: 'Low',
         Tags: 'Customer',
         Estimate: '3.5',
+        Title:'Demo Title',
         Assignee: 'Steven walker',
         RankId: 1
     },
@@ -62,6 +67,7 @@ export let kanbanData: Object[] = [
         Priority: 'Low',
         Tags: 'Meeting',
         Estimate: 2,
+        Title:'Demo Title',
         Assignee: 'Michael Suyama',
         RankId: 1
     },
@@ -73,6 +79,7 @@ export let kanbanData: Object[] = [
         Priority: 'Low',
         Tags: 'Validation',
         Estimate: 1.5,
+        Title:'Demo Title',
         Assignee: 'Robert King',
         RankId: 1
     },
@@ -84,6 +91,7 @@ export let kanbanData: Object[] = [
         Priority: 'Release Breaker',
         Tags: 'Validation,Fix',
         Estimate: 2.5,
+        Title:'Demo Title',
         Assignee: 'Laura Callahan',
         RankId: 2
     },
@@ -95,6 +103,7 @@ export let kanbanData: Object[] = [
         Priority: 'Release Breaker',
         Tags: 'Fix,Safari',
         Estimate: 1.5,
+        Title:'Demo Title',
         Assignee: 'Nancy Davloio',
         RankId: 2
     },
@@ -106,6 +115,7 @@ export let kanbanData: Object[] = [
         Priority: 'Low',
         Tags: 'Testing,IE',
         Estimate: 5.5,
+        Title:'Demo Title',
         Assignee: 'Margaret hamilt',
         RankId: 3
     },
@@ -117,6 +127,7 @@ export let kanbanData: Object[] = [
         Priority: 'High',
         Tags: 'Validation,Fix',
         Estimate: 1,
+        Title:'Demo Title',
         Assignee: 'Steven walker',
         RankId: 1
     },
@@ -128,6 +139,7 @@ export let kanbanData: Object[] = [
         Priority: 'Release Breaker',
         Tags: 'Testing',
         Estimate: 0.5,
+        Title:'Demo Title',
         Assignee: 'Michael Suyama',
         RankId: 3
     },
@@ -139,6 +151,7 @@ export let kanbanData: Object[] = [
         Priority: 'High',
         Tags: 'Grid,API',
         Estimate: 3.5,
+        Title:'Demo Title',
         Assignee: 'Robert King',
         RankId: 3
     },
@@ -150,6 +163,7 @@ export let kanbanData: Object[] = [
         Priority: 'Critical',
         Tags: 'Responsive',
         Estimate: 6,
+        Title:'Demo Title',
         Assignee: 'Laura Callahan',
         RankId: 3
     },
@@ -161,6 +175,7 @@ export let kanbanData: Object[] = [
         Priority: 'High',
         Tags: 'Database,SQL',
         Estimate: 5.5,
+        Title:'Demo Title',
         Assignee: 'Margaret hamilt',
         RankId: 4
     },
@@ -172,6 +187,7 @@ export let kanbanData: Object[] = [
         Type: 'Bug',
         Tags: 'Database,Sql2008',
         Estimate: 2.5,
+        Title:'Demo Title',
         Assignee: 'Janet Leverling',
         RankId: 4
     },
@@ -183,6 +199,7 @@ export let kanbanData: Object[] = [
         Priority: 'Normal',
         Tags: 'Databinding',
         Estimate: '3.5',
+        Title:'Demo Title',
         Assignee: 'Janet Leverling',
         RankId: 4
     },
@@ -194,6 +211,7 @@ export let kanbanData: Object[] = [
         Priority: 'Release Breaker',
         Tags: 'Grid,Sql',
         Estimate: 2,
+        Title:'Demo Title',
         Assignee: 'Andrew Fuller',
         RankId: 4
     },
@@ -205,6 +223,7 @@ export let kanbanData: Object[] = [
         Priority: 'Low',
         Tags: 'Validation',
         Estimate: 1.5,
+        Title:'Demo Title',
         Assignee: 'Margaret hamilt',
         RankId: 1
     },
@@ -216,6 +235,7 @@ export let kanbanData: Object[] = [
         Priority: 'High',
         Tags: 'Analyze',
         Estimate: 2.5,
+        Title:'Demo Title',
         Assignee: 'Margaret hamilt',
         RankId: 5
     },
@@ -227,6 +247,7 @@ export let kanbanData: Object[] = [
         Priority: 'Release Breaker',
         Tags: 'Databinding',
         Estimate: 1.5,
+        Title:'Demo Title',
         Assignee: 'Steven walker',
         RankId: 6
     },
@@ -238,6 +259,7 @@ export let kanbanData: Object[] = [
         Priority: 'Release Breaker',
         Tags: 'Procedures',
         Estimate: 5.5,
+        Title:'Demo Title',
         Assignee: 'Janet Leverling',
         RankId: 7
     },
@@ -249,6 +271,7 @@ export let kanbanData: Object[] = [
         Priority: 'Critical',
         Tags: 'Editing',
         Estimate: 1,
+        Title:'Demo Title',
         Assignee: 'Nancy Davloio',
         RankId: 1
     },
@@ -260,6 +283,7 @@ export let kanbanData: Object[] = [
         Priority: 'Normal',
         Tags: 'Editing,Test',
         Estimate: 0.5,
+        Title:'Demo Title',
         Assignee: 'Nancy Davloio',
         RankId: 5
     },
@@ -271,6 +295,7 @@ export let kanbanData: Object[] = [
         Priority: 'Low',
         Tags: 'Editing',
         Estimate: 3.5,
+        Title:'Demo Title',
         Assignee: 'Andrew Fuller',
         RankId: 5
     }
