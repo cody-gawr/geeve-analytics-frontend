@@ -11,6 +11,7 @@ import {
   CardClickEventArgs,
   SwimlaneSettingsModel,
 } from "@syncfusion/ej2-angular-kanban";
+import { DataManager, UrlAdaptor } from "@syncfusion/ej2-data";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
 
 import { kanbanData } from "./data";
@@ -21,7 +22,6 @@ import { kanbanData } from "./data";
   styleUrls: ["./tasks.component.css"],
   encapsulation: ViewEncapsulation.None,
 })
-
 export class TasksComponent implements OnInit {
   @ViewChild("kanbanObj") kanbanObj: KanbanComponent;
   public kanbanData: Object[] = extend([], kanbanData, null, true) as Object[];
@@ -29,6 +29,16 @@ export class TasksComponent implements OnInit {
     contentField: "Summary",
     headerField: "Title",
   };
+
+  private dataManager: DataManager = new DataManager({
+    url: "Home/DataSource",
+    updateUrl: "Home/Update",
+    insertUrl: "Home/Insert",
+    removeUrl: "Home/Delete",
+    adaptor: new UrlAdaptor(),
+    crossDomain: true,
+  });
+
   public swimlaneSettings: SwimlaneSettingsModel = { keyField: "Assignee" };
   public statusData: string[] = ["Open", "InProgress", "Testing", "Close"];
   public priorityData: string[] = [
@@ -74,10 +84,7 @@ export class TasksComponent implements OnInit {
 
   OnCreate(): void {
     console.log("Kanban <b>Load</b> event called<hr>");
-    console.log(
-      "Kanban - " + this.kanbanObj       
-        
-    );
+    console.log("Kanban - " + this.kanbanObj);
   }
 
   OnActionBegin(): void {
@@ -86,7 +93,6 @@ export class TasksComponent implements OnInit {
 
   OnActionComplete(): void {
     console.log("Kanban <b>Action Complete</b> event called<hr>");
-    
   }
 
   OnActionFailure(): void {
@@ -94,18 +100,17 @@ export class TasksComponent implements OnInit {
   }
 
   OnDataBinding(event): void {
-    console.log("Kanban <b>Data Binding</b> event called<hr>"+event);
+    console.log("Kanban <b>Data Binding</b> event called<hr>" + event);
     console.log("Kanban <b>Data Binding</b> event called<hr>");
   }
 
   OnDataBound(): void {
-    console.log("Kanban <b>Data Bound</b> event called<hr>");    
-    
+    console.log("Kanban <b>Data Bound</b> event called<hr>");
   }
 
   OnCardRendered(args: CardRenderedEventArgs): void {
-    console.log('args',args);    
-    // console.log('args.data',args.data);    
+    console.log("args", args);
+    // console.log('args.data',args.data);
     // console.log(
     //   "Kanban - " +
     //     (args.data as { [key: string]: Object }).Id +
@@ -126,7 +131,7 @@ export class TasksComponent implements OnInit {
   }
 
   OnCardDoubleClick(args: CardClickEventArgs): void {
-    console.log('args',args)
+    console.log("args", args);
     // console.log('args data',args.data)
     // console.log(
     //   "Kanban - " +
