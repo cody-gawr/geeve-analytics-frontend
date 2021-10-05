@@ -21,15 +21,24 @@ export class TasksComponent implements OnInit{
     public statusData: string[] = ['Open', 'InProgress', 'Testing', 'Close'];
     public priorityData: string[] = ['Low', 'Normal', 'Critical', 'Release Breaker', 'High'];
     public assigneeData: string[] = [
-    'Nancy Davloio', 'Andrew Fuller', 'Janet Leverling',
-    'Steven walker', 'Robert King', 'Margaret hamilt', 'Michael Suyama'
-  ];
+      'Nancy Davloio', 'Andrew Fuller', 'Janet Leverling',
+      'Steven walker', 'Robert King', 'Margaret hamilt', 'Michael Suyama'
+    ];
+  public clinic_id:any = '';
     ngOnInit() {
    
     }
     constructor()
     {     
-      $('#title').html('Tasks');
+    
+    }
+
+    initiate_clinic() {
+      var val = $('#currentClinic').attr('cid');
+      if(val != undefined && val !='all') {
+        this.clinic_id = val;
+      }
+      $('#title').html('Tasks'); 
     }
 
    addClick(): void {
