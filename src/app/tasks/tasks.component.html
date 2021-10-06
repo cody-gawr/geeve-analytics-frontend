@@ -16,11 +16,9 @@
       <div class="content-wrapper">
         <ejs-kanban
           #kanbanObj
-          keyField="Status"
-          [dataSource]="kanbanData"
+          keyField="status"
+          [dataSource]="dataManager"
           [cardSettings]="cardSettings"
-          [swimlaneSettings]="swimlaneSettings"
-          (actionComplete)="OnActionComplete()"
         >
           <e-columns>
             <e-column headerText="To do" keyField="Open"></e-column>
@@ -28,6 +26,30 @@
             <e-column headerText="Testing" keyField="Testing"></e-column>
             <e-column headerText="Done" keyField="Done"></e-column>
           </e-columns>
+          <ng-template #cardSettingsTemplate let-data>
+            <div class="e-card-content">
+              <table class="card-template-wrap">
+                <tbody>
+                  <tr>
+                    <td class="CardHeader">Id:</td>
+                    <td>{{ data.id }}</td>
+                  </tr>
+                  <tr>
+                    <td class="CardHeader">title:</td>
+                    <td>{{ data.title }}</td>
+                  </tr>
+                  <tr>
+                    <td class="CardHeader">due_date:</td>
+                    <td>{{ data.due_date }}</td>
+                  </tr>
+                  <tr>
+                    <td class="CardHeader">Summary:</td>
+                    <td>{{ data.description }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-template>
           <ng-template #dialogSettingsTemplate let-data>
             <table>
               <tbody>
@@ -40,7 +62,7 @@
                         name="Id"
                         type="text"
                         class="e-field"
-                        value="{{ data.Id }}"
+                        value="{{ data.id }}"
                         disabled
                       />
                     </div>
@@ -55,7 +77,7 @@
                         name="Title"
                         id="Summary"
                         class="e-field"
-                        value="{{ data.Title }}"
+                        value="{{ data.title }}"
                       ></textarea>
                     </div>
                   </td>
@@ -69,26 +91,11 @@
                         name="Summary"
                         id="Summary"
                         class="e-field"
-                        value="{{ data.Summary }}"
+                        value="{{ data.description }}"
                       ></textarea>
                     </div>
                   </td>
                 </tr>
-                <!-- <tr>
-                  <td class="e-label">clinic</td>
-                  <td>
-                    <ejs-dropdownlist
-                      id="clinic_id"
-                      #clinic_id
-                      name="clinic_id"
-                      class="e-field"
-                      [dataSource]="statusData"
-                      value="{{ data.clinic_id }}"
-                      placeholder="clinic"
-                    >
-                    </ejs-dropdownlist>
-                  </td>
-                </tr> -->
                 <tr>
                   <td class="e-label">Assignee</td>
                   <td>
@@ -99,7 +106,7 @@
                       class="e-field"
                       [dataSource]="assigneeData"
                       [fields]="assigneefields"
-                      value="{{ data.Assignee }}"
+                      value="{{ data.assignee_user }}"
                       placeholder="Assignee"
                     ></ejs-dropdownlist>
                   </td>
@@ -129,7 +136,7 @@
                       name="Status"
                       class="e-field"
                       [dataSource]="statusData"
-                      value="{{ data.Status }}"
+                      value="{{ data.status }}"
                       placeholder="Status"
                     >
                     </ejs-dropdownlist>
@@ -143,7 +150,7 @@
                       #dueDate
                       name="dueDate"
                       class="e-field"
-                      value="{{ data.dueDate }}"
+                      value="{{ data.due_date }}"
                       placeholder="Due Date"
                     ></ejs-datepicker>
                   </td>
@@ -163,7 +170,6 @@
                     ></ejs-dropdownlist>
                   </td>
                 </tr> -->
-                
               </tbody>
             </table>
           </ng-template>

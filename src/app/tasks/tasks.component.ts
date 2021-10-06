@@ -12,10 +12,8 @@ import {
   SwimlaneSettingsModel,
 } from "@syncfusion/ej2-angular-kanban";
 import { DataManager, UrlAdaptor } from "@syncfusion/ej2-data";
-import { DropDownList } from "@syncfusion/ej2-dropdowns";
+// import { DropDownList } from "@syncfusion/ej2-dropdowns";
 import { TasksService } from "./tasks.service";
-
-// import { kanbanData } from "./data";
 
 @Component({
   selector: "app-tasks",
@@ -25,8 +23,7 @@ import { TasksService } from "./tasks.service";
 })
 export class TasksComponent implements OnInit {
   @ViewChild("kanbanObj") kanbanObj: KanbanComponent;
-  // public kanbanData: Object[] = extend([], [], null, true) as Object[];
-  public kanbanData:any;
+  public kanbanData: Object[] = [];
   public cardSettings: CardSettingsModel = {
     contentField: "description",
     headerField: "title",
@@ -52,11 +49,23 @@ export class TasksComponent implements OnInit {
   public assigneefields: Object = { text: "name", value: "id" };
   public assigneeGroupfields: Object = { text: "name", value: "id" };
   public clinic_id: any = "";
-  
+  public dataManager: DataManager = new DataManager({
+    url: "https://test-api.jeeve.com.au/test/analytics/KanbanTasks/ktGetTasks?clinic_id=86",
+    updateUrl: "updateUrl/gaurav",
+    insertUrl: "insertUrl/gaurav",
+    removeUrl: "removeUrl/gaurav",
+    crudUrl: "crudUrl/gaurav",
+    adaptor: new UrlAdaptor(),
+    crossDomain: true,
+  });
+
   ngOnInit() {
-    
+    //   new DataManager({ url: SERVICE_URI }).executeQuery(new Query().take(6)).then((e: ReturnOption) => {
+    //     this.items = e.result as object[];
+    // }).catch((e) => true);
+    //   https://test-api.jeeve.com.au/test/analytics/KanbanTasks/ktGetTasks?clinic_id=86
   }
-  
+
   constructor(private tasksService: TasksService) {}
 
   initiate_clinic() {
@@ -76,7 +85,10 @@ export class TasksComponent implements OnInit {
         if (data.status) {
           // this.kanbanData = data.data
           this.kanbanData = extend([], data.data, null, true) as Object[];
-          console.log("getTasks", this.kanbanData);
+          // this.kanbanObj.kanbanData = extend([], data.data, null, true) as Object[];
+
+          // this.OnCreate()
+          // this.OnDataBound()
         }
       },
       (error) => {
@@ -89,8 +101,15 @@ export class TasksComponent implements OnInit {
   getUsers() {
     this.tasksService.getUsers().subscribe(
       (res) => {
-        console.log("res data", res);
         if (res.message == "success") {
+          res.data.forEach((user) => {
+            if (user["display_name"]) {
+              this.assigneeData.push({
+                id: user["id"],
+                name: user["display_name"],
+              });
+            }
+          });
         }
       },
       (error) => {}
@@ -98,93 +117,16 @@ export class TasksComponent implements OnInit {
   }
 
   addClick(): void {
-    /*  const cardIds = this.kanbanObj.kanbanData.map((obj: { [key: string]: string }) => parseInt(obj.Id.replace('Task ', ''), 10));
-    const cardCount: number = Math.max.apply(Math, cardIds) + 1;*/
-    const cardCount = 1;
+    /*  const cardIds = this.kanbanObj.kanbanData.map((obj: { [key: string]: string }) => parseInt(obj.Id.replace('Task ', ''), 10));*/
+    const cardCount: number = this.kanbanObj.kanbanData.length + 1;
     const cardDetails = {
-      Id: cardCount,
-      Status: "Open",
-      Priority: "Normal",
-      Assignee: "Andrew Fuller",
-      Estimate: 0,
-      Tags: "",
-      Summary: "",
-      Title: "",
+      id: cardCount,
+      status: "Open",
+      // Priority: "Normal",
+      // Assignee: "Andrew Fuller",
+      description: "",
+      title: "",
     };
     this.kanbanObj.openDialog("Add", cardDetails);
-  }
-
-  onClear(): void {
-    document.getElementById("EventLog").innerHTML = "";
-  }
-
-  OnCreate(): void {
-    console.log("Kanban <b>Load</b> event called<hr>");
-    console.log("Kanban - " + this.kanbanObj);
-  }
-
-  OnActionBegin(): void {
-    console.log("Kanban <b>Action Begin</b> event called<hr>");
-  }
-
-  OnActionComplete(): void {
-    console.log("Kanban <b>Action Complete</b> event called<hr>");
-  }
-
-  OnActionFailure(): void {
-    console.log("Kanban <b>Action Failure</b> event called<hr>");
-  }
-
-  OnDataBinding(event): void {
-    console.log("Kanban <b>Data Binding</b> event called<hr>" + event);
-    console.log("Kanban <b>Data Binding</b> event called<hr>");
-  }
-
-  OnDataBound(): void {
-    console.log("Kanban <b>Data Bound</b> event called<hr>");
-  }
-
-  OnCardRendered(args: CardRenderedEventArgs): void {
-    console.log("args", args);
-    // console.log('args.data',args.data);
-    // console.log(
-    //   "Kanban - " +
-    //     (args.data as { [key: string]: Object }).Id +
-    //     " - <b>Card Rendered</b> event called<hr>"
-    // );
-  }
-
-  OnQueryCellInfo(): void {
-    console.log("Kanban <b>Query Cell Info</b> event called<hr>");
-  }
-
-  OnCardClick(args: CardClickEventArgs): void {
-    console.log(
-      "Kanban - " +
-        (args.data as { [key: string]: Object }).Id +
-        " - <b>Card Click</b> event called<hr>"
-    );
-  }
-
-  OnCardDoubleClick(args: CardClickEventArgs): void {
-    console.log("args", args);
-    // console.log('args data',args.data)
-    // console.log(
-    //   "Kanban - " +
-    //     (args.data as { [key: string]: Object }).Id +
-    //     " - <b>Card Double Click</b> event called<hr>"
-    // );
-  }
-
-  OnDragStart(): void {
-    console.log("Kanban <b>Drag Start</b> event called<hr>");
-  }
-
-  OnDrag(): void {
-    console.log("Kanban <b>Drag</b> event called<hr>");
-  }
-
-  OnDragStop(): void {
-    console.log("Kanban <b>Drag Stop</b> event called<hr>");
   }
 }
