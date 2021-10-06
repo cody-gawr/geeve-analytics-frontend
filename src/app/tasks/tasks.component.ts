@@ -75,15 +75,38 @@ export class TasksComponent implements OnInit {
       (data: any) => {
         if (data.status) {
           // this.kanbanData = data.data
-          this.kanbanData = extend([], data.data, null, true) as Object[];
-          console.log("getTasks", this.kanbanData);
+          let kanbanDataTmp: Object[] = [];
+          data.data.forEach(function (dataset){
+            let temp = {
+              Id: dataset.id,   
+              Status: dataset.status,
+              Summary: dataset.description,
+              Type: 'Story',
+              Priority: 'Low',
+              Tags: 'Analytic',
+              Estimate: 3.5,
+              Title: dataset.title,
+              dueDate:'10/14/2021',
+              Assignee: 'Nancy Davloio',
+              RankId: 1,
+              clinic_id:1,
+              user_id:1,
+              assignee_user:1,
+              assignee_group:1,
+              created_date:'09/14/2021',
+          };
+            kanbanDataTmp.push(temp);
+          });
+          console.log(kanbanDataTmp, '****');
+          this.kanbanData = kanbanDataTmp;
+          //this.kanbanData = extend([], kanbanDataTmp, null, true) as Object[];
+          //console.log(this.kanbanData);
         }
       },
       (error) => {
         alert("Something Went Wrong.");
       }
     );
-    console.log(this.kanbanData);
   }
 
   getUsers() {
