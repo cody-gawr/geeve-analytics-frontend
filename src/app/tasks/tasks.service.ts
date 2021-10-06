@@ -26,4 +26,29 @@ export class TasksService {
         let headers =  {headers: new HttpHeaders(), withCredentials: true};
         return headers;
     }
+
+    // Get Dentist
+  getUsers(): Observable<any> {
+    var header = this.getHeaders();
+    return this.http
+      .get(this.apiUrl + "/Users/userGetPracticeOwners", header)
+      .pipe(
+        map((response: Response) => {
+          return response;
+        })
+      );
+  }
+    // Get Dentist
+  getTasks(clinicID): Observable<any> {
+    const formData = new FormData();
+    formData.append("clinic_id", clinicID);
+    var header = this.getHeaders();
+    return this.http
+      .post(this.apiUrl + "/KanbanTasks/ktGetTasks",formData, header)
+      .pipe(
+        map((response: Response) => {
+          return response;
+        })
+      );
+  }
 }

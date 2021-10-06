@@ -1,9 +1,15 @@
+<input
+  type="button"
+  id="clinic_initiate"
+  (click)="initiate_clinic()"
+  [style.display]="'none'"
+/>
 <mat-card
   class="lost-header-background-remove"
   style="box-shadow: none !important"
 >
   <button ejs-button id="addNew" class="e-dialog-add" (click)="addClick()">
-    Add New Card
+    Add New Task
   </button>
   <mat-card-content>
     <div class="control-section">
@@ -14,25 +20,13 @@
           [dataSource]="kanbanData"
           [cardSettings]="cardSettings"
           [swimlaneSettings]="swimlaneSettings"
-          (created)="OnCreate()"
-          (actionBegin)="OnActionBegin()"
           (actionComplete)="OnActionComplete()"
-          (actionFailure)="OnActionFailure()"
-          (dataBinding)="OnDataBinding($event)"
-          (dataBound)="OnDataBound()"
-          (cardRendered)="OnCardRendered($event)"
-          (queryCellInfo)="OnQueryCellInfo()"
-          (cardClick)="OnCardClick($event)"
-          (cardDoubleClick)="OnCardDoubleClick($event)"
-          (dragStart)="OnDragStart()"
-          (drag)="OnDrag()"
-          (dragStop)="OnDragStop()"
         >
           <e-columns>
             <e-column headerText="To do" keyField="Open"></e-column>
             <e-column headerText="In Progress" keyField="InProgress"></e-column>
             <e-column headerText="Testing" keyField="Testing"></e-column>
-            <e-column headerText="Done" keyField="Close"></e-column>
+            <e-column headerText="Done" keyField="Done"></e-column>
           </e-columns>
           <ng-template #dialogSettingsTemplate let-data>
             <table>
@@ -53,6 +47,80 @@
                   </td>
                 </tr>
                 <tr>
+                  <td class="e-label">Title</td>
+                  <td>
+                    <div class="e-float-input e-control-wrapper">
+                      <textarea
+                        type="text"
+                        name="Title"
+                        id="Summary"
+                        class="e-field"
+                        value="{{ data.Title }}"
+                      ></textarea>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="e-label">Description</td>
+                  <td>
+                    <div class="e-float-input e-control-wrapper">
+                      <textarea
+                        type="text"
+                        name="Summary"
+                        id="Summary"
+                        class="e-field"
+                        value="{{ data.Summary }}"
+                      ></textarea>
+                    </div>
+                  </td>
+                </tr>
+                <!-- <tr>
+                  <td class="e-label">clinic</td>
+                  <td>
+                    <ejs-dropdownlist
+                      id="clinic_id"
+                      #clinic_id
+                      name="clinic_id"
+                      class="e-field"
+                      [dataSource]="statusData"
+                      value="{{ data.clinic_id }}"
+                      placeholder="clinic"
+                    >
+                    </ejs-dropdownlist>
+                  </td>
+                </tr> -->
+                <tr>
+                  <td class="e-label">Assignee</td>
+                  <td>
+                    <ejs-dropdownlist
+                      id="Assignee"
+                      #dropdownAssignee
+                      name="Assignee"
+                      class="e-field"
+                      [dataSource]="assigneeData"
+                      [fields]="assigneefields"
+                      value="{{ data.Assignee }}"
+                      placeholder="Assignee"
+                    ></ejs-dropdownlist>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="e-label">Assignee Group</td>
+                  <td>
+                    <ejs-dropdownlist
+                      id="assignee_group"
+                      #assignee_user
+                      name="assignee_group"
+                      class="e-field"
+                      [dataSource]="assigneeGroupData"
+                      [fields]="assigneeGroupfields"
+                      value="{{ data.assignee_group }}"
+                      placeholder="Assignee Group"
+                    >
+                    </ejs-dropdownlist>
+                  </td>
+                </tr>
+                <tr>
                   <td class="e-label">Status</td>
                   <td>
                     <ejs-dropdownlist
@@ -68,20 +136,20 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="e-label">Assignee</td>
+                  <td class="e-label">Due date</td>
                   <td>
-                    <ejs-dropdownlist
-                      id="Assignee"
-                      #dropdownAssignee
-                      name="Assignee"
+                    <ejs-datepicker
+                      id="dueDate"
+                      #dueDate
+                      name="dueDate"
                       class="e-field"
-                      [dataSource]="assigneeData"
-                      value="{{ data.Assignee }}"
-                      placeholder="Assignee"
-                    ></ejs-dropdownlist>
+                      value="{{ data.dueDate }}"
+                      placeholder="Due Date"
+                    ></ejs-datepicker>
                   </td>
                 </tr>
-                <tr>
+
+                <!-- <tr>
                   <td class="e-label">Priority</td>
                   <td>
                     <ejs-dropdownlist
@@ -94,35 +162,8 @@
                       value="{{ data.Priority }}"
                     ></ejs-dropdownlist>
                   </td>
-                </tr>
-                <tr>
-                  <td class="e-label">Title</td>
-                  <td>
-                    <div class="e-float-input e-control-wrapper">
-                      <textarea
-                        type="text"
-                        name="title"
-                        id="title"
-                        class="e-field"
-                        value="{{ data.Title }}"
-                      ></textarea>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="e-label">Summary</td>
-                  <td>
-                    <div class="e-float-input e-control-wrapper">
-                      <textarea
-                        type="text"
-                        name="Summary"
-                        id="Summary"
-                        class="e-field"
-                        value="{{ data.Summary }}"
-                      ></textarea>
-                    </div>
-                  </td>
-                </tr>
+                </tr> -->
+                
               </tbody>
             </table>
           </ng-template>

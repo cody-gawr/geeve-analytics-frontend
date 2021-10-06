@@ -13,8 +13,9 @@ import {
 } from "@syncfusion/ej2-angular-kanban";
 import { DataManager, UrlAdaptor } from "@syncfusion/ej2-data";
 import { DropDownList } from "@syncfusion/ej2-dropdowns";
+import { TasksService } from "./tasks.service";
 
-import { kanbanData } from "./data";
+// import { kanbanData } from "./data";
 
 @Component({
   selector: "app-tasks",
@@ -24,21 +25,12 @@ import { kanbanData } from "./data";
 })
 export class TasksComponent implements OnInit {
   @ViewChild("kanbanObj") kanbanObj: KanbanComponent;
-  public kanbanData: Object[] = extend([], kanbanData, null, true) as Object[];
+  // public kanbanData: Object[] = extend([], [], null, true) as Object[];
+  public kanbanData:any;
   public cardSettings: CardSettingsModel = {
-    contentField: "Summary",
-    headerField: "Title",
+    contentField: "description",
+    headerField: "title",
   };
-
-  private dataManager: DataManager = new DataManager({
-    url: "Home/DataSource",
-    updateUrl: "Home/Update",
-    insertUrl: "Home/Insert",
-    removeUrl: "Home/Delete",
-    adaptor: new UrlAdaptor(),
-    crossDomain: true,
-  });
-
   public swimlaneSettings: SwimlaneSettingsModel = { keyField: "Assignee" };
   public statusData: string[] = ["Open", "InProgress", "Testing", "Close"];
   public priorityData: string[] = [
@@ -48,23 +40,67 @@ export class TasksComponent implements OnInit {
     "Release Breaker",
     "High",
   ];
-  public assigneeData: string[] = [
-    "Nancy Davloio",
-    "Andrew Fuller",
-    "Janet Leverling",
-    "Steven walker",
-    "Robert King",
-    "Margaret hamilt",
-    "Michael Suyama",
+  public dateValue: Date = new Date();
+  public dateValue2 = "10/7/2021";
+  public assigneeData: { [key: string]: Object }[] = [];
+  public assigneeGroupData: { [key: string]: Object }[] = [
+    { id: 3, name: "Practice Manager" },
+    { id: 4, name: "Clinician" },
+    { id: 5, name: "Staff" },
+    { id: 6, name: "Owner" },
   ];
-  ngOnInit() {}
-  constructor() {
+  public assigneefields: Object = { text: "name", value: "id" };
+  public assigneeGroupfields: Object = { text: "name", value: "id" };
+  public clinic_id: any = "";
+  
+  ngOnInit() {
+    
+  }
+  
+  constructor(private tasksService: TasksService) {}
+
+  initiate_clinic() {
+    var val = $("#currentClinic").attr("cid");
+
+    if (val != undefined && val != "all") {
+      this.clinic_id = val;
+      this.getTasks();
+      this.getUsers();
+    }
     $("#title").html("Tasks");
   }
 
+  getTasks() {
+    this.tasksService.getTasks(this.clinic_id).subscribe(
+      (data: any) => {
+        if (data.status) {
+          // this.kanbanData = data.data
+          this.kanbanData = extend([], data.data, null, true) as Object[];
+          console.log("getTasks", this.kanbanData);
+        }
+      },
+      (error) => {
+        alert("Something Went Wrong.");
+      }
+    );
+    console.log(this.kanbanData);
+  }
+
+  getUsers() {
+    this.tasksService.getUsers().subscribe(
+      (res) => {
+        console.log("res data", res);
+        if (res.message == "success") {
+        }
+      },
+      (error) => {}
+    );
+  }
+
   addClick(): void {
-    const cardIds = this.kanbanObj.kanbanData.length;
-    const cardCount: number = cardIds + 1;
+    /*  const cardIds = this.kanbanObj.kanbanData.map((obj: { [key: string]: string }) => parseInt(obj.Id.replace('Task ', ''), 10));
+    const cardCount: number = Math.max.apply(Math, cardIds) + 1;*/
+    const cardCount = 1;
     const cardDetails = {
       Id: cardCount,
       Status: "Open",
