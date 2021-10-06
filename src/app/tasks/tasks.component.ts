@@ -95,7 +95,6 @@ export class TasksComponent implements OnInit {
         alert("Something Went Wrong.");
       }
     );
-    console.log(this.kanbanData);
   }
 
   getUsers() {
