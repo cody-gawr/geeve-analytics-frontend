@@ -17,8 +17,12 @@
         <ejs-kanban
           #kanbanObj
           keyField="status"
-          [dataSource]="dataManager"
+          [dataSource]="kanbanData"
           [cardSettings]="cardSettings"
+          [dialogSettings]="dialogSettings"
+          (dialogOpen)="dialogOpen($event)"
+          (dialogClose)="dialogClose($event)"
+          (actionComplete)="OnActionComplete($event)"
         >
           <e-columns>
             <e-column headerText="To do" keyField="Open"></e-column>
@@ -58,8 +62,8 @@
                   <td>
                     <div class="e-float-input e-control-wrapper">
                       <input
-                        id="Id"
-                        name="Id"
+                        id="id"
+                        name="id"
                         type="text"
                         class="e-field"
                         value="{{ data.id }}"
@@ -74,8 +78,8 @@
                     <div class="e-float-input e-control-wrapper">
                       <textarea
                         type="text"
-                        name="Title"
-                        id="Summary"
+                        name="title"
+                        id="title"
                         class="e-field"
                         value="{{ data.title }}"
                       ></textarea>
@@ -88,8 +92,8 @@
                     <div class="e-float-input e-control-wrapper">
                       <textarea
                         type="text"
-                        name="Summary"
-                        id="Summary"
+                        name="description"
+                        id="description"
                         class="e-field"
                         value="{{ data.description }}"
                       ></textarea>
@@ -100,23 +104,23 @@
                   <td class="e-label">Assignee</td>
                   <td>
                     <ejs-dropdownlist
-                      id="Assignee"
-                      #dropdownAssignee
-                      name="Assignee"
+                      id="assignee_user"
+                      #assignee_user
+                      name="assignee_user"
                       class="e-field"
                       [dataSource]="assigneeData"
                       [fields]="assigneefields"
-                      value="{{ data.assignee_user }}"
+                      value="data.assignee_user"
                       placeholder="Assignee"
                     ></ejs-dropdownlist>
                   </td>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <td class="e-label">Assignee Group</td>
                   <td>
                     <ejs-dropdownlist
                       id="assignee_group"
-                      #assignee_user
+                      #assignee_group
                       name="assignee_group"
                       class="e-field"
                       [dataSource]="assigneeGroupData"
@@ -126,14 +130,14 @@
                     >
                     </ejs-dropdownlist>
                   </td>
-                </tr>
-                <tr>
+                </tr> -->
+                <!-- <tr>
                   <td class="e-label">Status</td>
                   <td>
                     <ejs-dropdownlist
-                      id="Status"
-                      #dropdownStatus
-                      name="Status"
+                      id="status"
+                      #status
+                      name="status"
                       class="e-field"
                       [dataSource]="statusData"
                       value="{{ data.status }}"
@@ -141,20 +145,20 @@
                     >
                     </ejs-dropdownlist>
                   </td>
-                </tr>
-                <tr>
+                </tr> -->
+                <!-- <tr>
                   <td class="e-label">Due date</td>
                   <td>
                     <ejs-datepicker
-                      id="dueDate"
-                      #dueDate
-                      name="dueDate"
+                      id="due_date"
+                      #due_date
+                      name="due_date"
                       class="e-field"
                       value="{{ data.due_date }}"
                       placeholder="Due Date"
                     ></ejs-datepicker>
                   </td>
-                </tr>
+                </tr> -->
 
                 <!-- <tr>
                   <td class="e-label">Priority</td>

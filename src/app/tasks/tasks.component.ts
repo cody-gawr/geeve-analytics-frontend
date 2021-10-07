@@ -1,19 +1,22 @@
-import { Component, ViewChild, ViewEncapsulation, OnInit } from "@angular/core";
+import {
+  Component,
+  ViewChild,
+  ViewEncapsulation,
+  OnInit,
+  Inject,
+} from "@angular/core";
 import { extend } from "@syncfusion/ej2-base";
 import {
-  KanbanModule,
   KanbanComponent,
-  KanbanAllModule,
   CardSettingsModel,
-  CardRenderedEventArgs,
-  DialogSettingsModel,
   DialogEventArgs,
-  CardClickEventArgs,
   SwimlaneSettingsModel,
+  DialogSettingsModel,
+  ActionEventArgs
 } from "@syncfusion/ej2-angular-kanban";
-import { DataManager, UrlAdaptor } from "@syncfusion/ej2-data";
-// import { DropDownList } from "@syncfusion/ej2-dropdowns";
+import { DropDownList } from "@syncfusion/ej2-dropdowns";
 import { TasksService } from "./tasks.service";
+//import { kanbanData } from "./data";
 
 @Component({
   selector: "app-tasks",
@@ -25,9 +28,10 @@ export class TasksComponent implements OnInit {
   @ViewChild("kanbanObj") kanbanObj: KanbanComponent;
   public kanbanData: Object[] = [];
   public cardSettings: CardSettingsModel = {
-    contentField: "description",
-    headerField: "title",
+    // contentField: "description",
+    headerField: "id",
   };
+
   public swimlaneSettings: SwimlaneSettingsModel = { keyField: "Assignee" };
   public statusData: string[] = ["Open", "InProgress", "Testing", "Close"];
   public priorityData: string[] = [
@@ -46,25 +50,37 @@ export class TasksComponent implements OnInit {
     { id: 5, name: "Staff" },
     { id: 6, name: "Owner" },
   ];
+
+  public dialogSettings: DialogSettingsModel = {
+    //template: '#dialogSettingsTemplate',
+    fields: [
+      { key: "id", type: "TextBox" }
+     
+    ],
+  };
+
   public assigneefields: Object = { text: "name", value: "id" };
   public assigneeGroupfields: Object = { text: "name", value: "id" };
   public clinic_id: any = "";
-  public dataManager: DataManager = new DataManager({
-    url: "https://test-api.jeeve.com.au/test/analytics/KanbanTasks/ktGetTasks?clinic_id=86",
-    updateUrl: "updateUrl/gaurav",
-    insertUrl: "insertUrl/gaurav",
-    removeUrl: "removeUrl/gaurav",
-    crudUrl: "crudUrl/gaurav",
-    adaptor: new UrlAdaptor(),
-    crossDomain: true,
-  });
 
-  ngOnInit() {
-    //   new DataManager({ url: SERVICE_URI }).executeQuery(new Query().take(6)).then((e: ReturnOption) => {
-    //     this.items = e.result as object[];
-    // }).catch((e) => true);
-    //   https://test-api.jeeve.com.au/test/analytics/KanbanTasks/ktGetTasks?clinic_id=86
+  dialogOpen(args: DialogEventArgs): void {
+    console.log("dialogOpen args ", args);
+    console.log("args.data", args.data);
+    // args.cancel = false;
   }
+
+  dialogClose(args: DialogEventArgs): void {
+    console.log("dialogClose args", args);
+    console.log("args.data", args.data);
+    // args.cancel = false;
+  }
+  // dialogSave(args: DialogEventArgs): void {
+  //   console.log("dialogClose args", args);
+  //   console.log("args.data", args.data);
+  //   // args.cancel = true;
+  // }
+
+  ngOnInit() {}
 
   constructor(private tasksService: TasksService) {}
 
@@ -79,16 +95,18 @@ export class TasksComponent implements OnInit {
     $("#title").html("Tasks");
   }
 
+  
+  OnActionComplete(args:ActionEventArgs): void {
+
+    console.log('OnActionComplete args',args);
+    console.log('Kanban <b>Action Complete</b> event called<hr>');
+}
   getTasks() {
     this.tasksService.getTasks(this.clinic_id).subscribe(
       (data: any) => {
         if (data.status) {
           // this.kanbanData = data.data
           this.kanbanData = extend([], data.data, null, true) as Object[];
-          // this.kanbanObj.kanbanData = extend([], data.data, null, true) as Object[];
-
-          // this.OnCreate()
-          // this.OnDataBound()
         }
       },
       (error) => {
@@ -104,7 +122,7 @@ export class TasksComponent implements OnInit {
           res.data.forEach((user) => {
             if (user["display_name"]) {
               this.assigneeData.push({
-                id: user["id"],
+                id: parseInt(user["id"]),
                 name: user["display_name"],
               });
             }
@@ -118,13 +136,10 @@ export class TasksComponent implements OnInit {
   addClick(): void {
     /*  const cardIds = this.kanbanObj.kanbanData.map((obj: { [key: string]: string }) => parseInt(obj.Id.replace('Task ', ''), 10));*/
     const cardCount: number = this.kanbanObj.kanbanData.length + 1;
+    console.log("cardCount", cardCount);
     const cardDetails = {
       id: cardCount,
-      status: "Open",
-      // Priority: "Normal",
-      // Assignee: "Andrew Fuller",
-      description: "",
-      title: "",
+     
     };
     this.kanbanObj.openDialog("Add", cardDetails);
   }
