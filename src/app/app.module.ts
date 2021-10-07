@@ -42,8 +42,7 @@ import { DatePipe } from '@angular/common';
 import { DashboardDurationTabsComponent } from './dashboards/dashboard-duration-tabs/dashboard-duration-tabs.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { KanbanAllModule,KanbanModule, KanbanComponent,KanbanModel  } from '@syncfusion/ej2-angular-kanban';
-import { DropDownListAllModule } from '@syncfusion/ej2-angular-dropdowns';
-import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
+
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -85,8 +84,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FlexLayoutModule,
     HttpClientModule,
     PerfectScrollbarModule,
-    DropDownListAllModule,
-    DatePickerModule,
     SharedModule,
     KanbanModule,
     NgxDaterangepickerMd.forRoot(),
