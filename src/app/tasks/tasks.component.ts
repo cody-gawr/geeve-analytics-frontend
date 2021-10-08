@@ -8,7 +8,6 @@ import { DataManager,UrlAdaptor,Query } from '@syncfusion/ej2-data';
 class CustomAdaptor extends UrlAdaptor { 
   public beforeSend(args: DataManager, xhr: XMLHttpRequest) { 
      xhr.withCredentials = true;      
-     console.log(args);
      super.beforeSend(args, xhr); 
   } 
 } 
