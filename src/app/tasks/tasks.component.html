@@ -1,184 +1,88 @@
-<input
-  type="button"
-  id="clinic_initiate"
-  (click)="initiate_clinic()"
-  [style.display]="'none'"
-/>
-<mat-card
-  class="lost-header-background-remove"
-  style="box-shadow: none !important"
->
-  <button ejs-button id="addNew" class="e-dialog-add" (click)="addClick()">
-    Add New Task
-  </button>
-  <mat-card-content>
-    <div class="control-section">
-      <div class="content-wrapper">
-        <ejs-kanban
-          #kanbanObj
-          keyField="status"
-          [dataSource]="kanbanData"
-          [cardSettings]="cardSettings"
-          [dialogSettings]="dialogSettings"
-          (dialogOpen)="dialogOpen($event)"
-          (dialogClose)="dialogClose($event)"
-          (actionComplete)="OnActionComplete($event)"
-        >
-          <e-columns>
-            <e-column headerText="To do" keyField="Open"></e-column>
-            <e-column headerText="In Progress" keyField="InProgress"></e-column>
-            <e-column headerText="Testing" keyField="Testing"></e-column>
-            <e-column headerText="Done" keyField="Done"></e-column>
-          </e-columns>
-          <ng-template #cardSettingsTemplate let-data>
+<input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'">
+<mat-card class="lost-header-background-remove" style="box-shadow: none !important;">
+      <button ejs-button id='addNew' class="e-dialog-add" (click)="addClick()">Add New Card</button>
+    <mat-card-content>
+<div class="control-section">
+    <div class="content-wrapper">
+       <ejs-kanban #kanbanObj keyField='status' [dataSource]="dataManager" [cardSettings]='cardSettings' [swimlaneSettings]='swimlaneSettings' [dialogSettings]='dialogSettings'>
+                <e-columns>
+                  <e-column headerText='To do' keyField='Open'></e-column>
+                  <e-column headerText='In Progress' keyField='InProgress'></e-column>
+                  <e-column headerText='Testing' keyField='Testing'></e-column>
+                  <e-column headerText='Done' keyField='Done'></e-column>
+                </e-columns>
+
+             <ng-template #cardSettingsTemplate let-data>
             <div class="e-card-content">
               <table class="card-template-wrap">
                 <tbody>
+              
                   <tr>
-                    <td class="CardHeader">Id:</td>
-                    <td>{{ data.id }}</td>
-                  </tr>
-                  <tr>
-                    <td class="CardHeader">title:</td>
+                    <td class="content">title:</td>
                     <td>{{ data.title }}</td>
                   </tr>
                   <tr>
-                    <td class="CardHeader">due_date:</td>
-                    <td>{{ data.due_date }}</td>
+                    <td class="content">Due Date:</td>
+                    <td>{{ data.description }}</td>
                   </tr>
                   <tr>
-                    <td class="CardHeader">Summary:</td>
-                    <td>{{ data.description }}</td>
+                    <td class="content">Created date:</td>
+                    <td>{{ data.created_date }}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </ng-template>
-          <ng-template #dialogSettingsTemplate let-data>
-            <table>
-              <tbody>
-                <tr>
-                  <td class="e-label">ID</td>
-                  <td>
-                    <div class="e-float-input e-control-wrapper">
-                      <input
-                        id="id"
-                        name="id"
-                        type="text"
-                        class="e-field"
-                        value="{{ data.id }}"
-                        disabled
-                      />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="e-label">Title</td>
-                  <td>
-                    <div class="e-float-input e-control-wrapper">
-                      <textarea
-                        type="text"
-                        name="title"
-                        id="title"
-                        class="e-field"
-                        value="{{ data.title }}"
-                      ></textarea>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="e-label">Description</td>
-                  <td>
-                    <div class="e-float-input e-control-wrapper">
-                      <textarea
-                        type="text"
-                        name="description"
-                        id="description"
-                        class="e-field"
-                        value="{{ data.description }}"
-                      ></textarea>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="e-label">Assignee</td>
-                  <td>
-                    <ejs-dropdownlist
-                      id="assignee_user"
-                      #assignee_user
-                      name="assignee_user"
-                      class="e-field"
-                      [dataSource]="assigneeData"
-                      [fields]="assigneefields"
-                      value="data.assignee_user"
-                      placeholder="Assignee"
-                    ></ejs-dropdownlist>
-                  </td>
-                </tr>
-                <!-- <tr>
-                  <td class="e-label">Assignee Group</td>
-                  <td>
-                    <ejs-dropdownlist
-                      id="assignee_group"
-                      #assignee_group
-                      name="assignee_group"
-                      class="e-field"
-                      [dataSource]="assigneeGroupData"
-                      [fields]="assigneeGroupfields"
-                      value="{{ data.assignee_group }}"
-                      placeholder="Assignee Group"
-                    >
-                    </ejs-dropdownlist>
-                  </td>
-                </tr> -->
-                <!-- <tr>
-                  <td class="e-label">Status</td>
-                  <td>
-                    <ejs-dropdownlist
-                      id="status"
-                      #status
-                      name="status"
-                      class="e-field"
-                      [dataSource]="statusData"
-                      value="{{ data.status }}"
-                      placeholder="Status"
-                    >
-                    </ejs-dropdownlist>
-                  </td>
-                </tr> -->
-                <!-- <tr>
-                  <td class="e-label">Due date</td>
-                  <td>
-                    <ejs-datepicker
-                      id="due_date"
-                      #due_date
-                      name="due_date"
-                      class="e-field"
-                      value="{{ data.due_date }}"
-                      placeholder="Due Date"
-                    ></ejs-datepicker>
-                  </td>
-                </tr> -->
 
-                <!-- <tr>
-                  <td class="e-label">Priority</td>
-                  <td>
-                    <ejs-dropdownlist
-                      type="text"
-                      name="Priority"
-                      id="Priority"
-                      class="e-field"
-                      placeholder="Priority"
-                      [dataSource]="priorityData"
-                      value="{{ data.Priority }}"
-                    ></ejs-dropdownlist>
-                  </td>
-                </tr> -->
-              </tbody>
-            </table>
-          </ng-template>
-        </ejs-kanban>
-      </div>
+                    <ng-template #dialogSettingsTemplate let-data>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="e-label">ID</td>
+                                <td>
+                                  <div class="e-float-input e-control-wrapper">
+                                    <input id="Id" name="Id" type="text" class="e-field" value='{{data.id}}' disabled />
+                                  </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="e-label">Title</td>
+                                <td>
+                                  <div class="e-float-input e-control-wrapper">
+                                    <input id="Title" name="title" type="text" class="e-field" value='{{data.title}}'/>
+                                  </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="e-label">Description</td>
+                                <td>
+                                  <div class="e-float-input e-control-wrapper">
+                                    <input id="Description" name="description" type="text" class="e-field" value='{{data.description}}'/>
+                                  </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="e-label">Status</td>
+                                <td>
+                                    <ejs-dropdownlist id='Status' #dropdownStatus name="status"
+                                        class="e-field" [dataSource]='statusData' value='{{data.status}}'
+                                        placeholder='Status'>
+                                    </ejs-dropdownlist>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="e-label">Created Date</td>
+                                <td>
+                                  <input id="createdDate" name="created_date" type="text" class="e-field" value='{{data.created_date}}'/>
+                                </td>
+                            </tr>                           
+                        </tbody>
+                    </table>
+                </ng-template>
+            </ejs-kanban>
     </div>
-  </mat-card-content>
+</div>
+
+    </mat-card-content>
 </mat-card>

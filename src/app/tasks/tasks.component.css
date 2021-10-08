@@ -1,6 +1,6 @@
 .header_filters.tasks { flex-direction: row-reverse !important }
-.e-kanban .e-card-footer-css {
-	    align-self: center;
+ .e-kanban .e-card-footer-css {
+        align-self: center;
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;

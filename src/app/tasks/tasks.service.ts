@@ -31,7 +31,7 @@ export class TasksService {
   getUsers(): Observable<any> {
     var header = this.getHeaders();
     return this.http
-      .get(this.apiUrl + "/Users/userGetPracticeOwners", header)
+      .get(this.apiUrl + "/Users/userGetRoles", header)
       .pipe(
         map((response: Response) => {
           return response;
