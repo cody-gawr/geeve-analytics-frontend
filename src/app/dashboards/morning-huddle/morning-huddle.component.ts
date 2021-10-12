@@ -262,6 +262,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     public isEnableOR: boolean = false;
     public isEnableTH: boolean = false;
     public isEnableFT: boolean = false;
+    public autoCall: any;
 
   displayedColumns: string[] = ['name', 'production', 'recall', 'treatment'];
   displayedColumns1: string[] = ['start', 'name', 'dentist',];
@@ -327,7 +328,7 @@ export class MorningHuddleComponent implements OnInit,OnDestroy {
     }, 500);    
 
     var self = this;
-    let autoCall =  setInterval( function()
+   this.autoCall =  setInterval( function()
     {
        self.refreshDataAuto();
     }, 1000 * 60);    
@@ -342,6 +343,7 @@ ngAfterViewInit(): void {
 ngOnDestroy() {
   //$('.dentist_dropdown').parent().show(); // added
   $('.sa_heading_bar').removeClass("filter_single"); // added
+   clearInterval(this.autoCall);
 }
 
 initiate_clinic() {
