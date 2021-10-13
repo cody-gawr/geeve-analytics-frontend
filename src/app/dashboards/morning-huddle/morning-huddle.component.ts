@@ -1368,14 +1368,19 @@ async getDentistList(){
       
   }
 
-  historyPosChips(event, colour)
+  historyPosChips(event, colour, type= '')
   {
     $('.custom-tooltip').css({'visibility': 'hidden','opacity': '1' } );
     let x= event.clientX;
     let y= parseInt(event.clientY);
     setTimeout( function(){
       $('.tooltip-container').addClass('mat-'+colour);
-      $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );
+      if(type == 'fta'){        
+        let height = $('.custom-tooltip').height();
+        $('.custom-tooltip').css({'top': (y - (height + 40) ) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );        
+      } else {
+        $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );
+      }      
     },100);
   }
 } 

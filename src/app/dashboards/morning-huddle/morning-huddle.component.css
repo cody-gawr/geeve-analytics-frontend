@@ -573,7 +573,7 @@ table.history td.notes {padding-right: 2%;text-align: right;}
     color: #000;
     border: 1px solid #716b6b;
     box-shadow: 0px 2px 6px #716b6b;
-    position: fixed;   
+    position: fixed;      
 }
 .chipSets.mornHuddle .custom-tooltip::after {
     content: " ";
@@ -836,3 +836,7 @@ mat-card.followUpsTab4 {
     margin: 17px 0px 0;
     position: absolute;
 }
+div.mat-chip-list-wrapper .custom-tooltip {
+    width: auto;
+    max-width: 650px;
+} 
