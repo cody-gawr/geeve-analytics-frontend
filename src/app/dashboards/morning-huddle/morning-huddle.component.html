@@ -1574,7 +1574,7 @@
         </div>
              <div class="chipSets mornHuddle"  *ngIf="ftaFollowupsScrps.length > 0">
               <mat-chip-list class="example-chip" cdkDropList  cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
-               <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of ftaFollowupsScrps"  [color]="chips.colour">
+               <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour,'fta')" class="example-box" *ngFor="let chips of ftaFollowupsScrps"  [color]="chips.colour">
                 <span class="chipText" >{{chips.script_title}}</span> 
               </mat-chip>
             </mat-chip-list>
