@@ -111,3 +111,6 @@
     width: 100%;
     float: left;
 }
+.e-dlg-container.e-dlg-center-center {
+  z-index: 10 !important;
+}

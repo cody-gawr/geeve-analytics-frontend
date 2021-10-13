@@ -26,8 +26,9 @@
           keyField="status"
           [dataSource]="dataManager"
           [cardSettings]="cardSettings"
-          [swimlaneSettings]="swimlaneSettings"
           [dialogSettings]="dialogSettings"
+          (actionComplete)="OnActionComplete($event)"
+          (dialogOpen)="dialogOpen($event)"
         >
           <e-columns>
             <e-column headerText="To do" keyField="Open"></e-column>
@@ -41,16 +42,20 @@
               <table class="card-template-wrap">
                 <tbody>
                   <tr>
-                    <td class="content">title:</td>
+                    <td class="content">Title:</td>
                     <td>{{ data.title }}</td>
                   </tr>
                   <tr>
-                    <td class="content">Due Date:</td>
+                    <td class="content">Description:</td>
                     <td>{{ data.description }}</td>
                   </tr>
                   <tr>
+                    <td class="content">Due Date:</td>
+                    <td>{{ data.due_date | date: "shortDate" }}</td>
+                  </tr>
+                  <tr>
                     <td class="content">Created date:</td>
-                    <td>{{ data.created_date }}</td>
+                    <td>{{ data.created_at | date: "shortDate" }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -66,7 +71,7 @@
                     <div class="e-float-input e-control-wrapper">
                       <input
                         id="Id"
-                        name="ID"
+                        name="Id"
                         type="text"
                         class="e-field"
                         value="{{ data.id }}"
@@ -104,20 +109,53 @@
                   </td>
                 </tr>
                 <tr>
+                  <td class="e-label">Choose Group</td>
+                  <td>
+                    <div *ngFor="let option of assigneeGroup">
+                      <label for="{{ option.idval }}">
+                        <input
+                          type="radio"
+                          class="e-field"
+                          id="{{ option.idval }}"
+                          name="assign"
+                          (change)="radioChange($event)"
+                          [checked]="option.id === assignTo"
+                          value="{{ option.id }}"
+                        />
+                        {{ option.name }}
+                      </label>
+                    </div>
+                    <input
+                      id="AssignTo"
+                      class="e-field hide"
+                      type="hidden"
+                      name="assign_to"
+                      [value]="assignTo"
+                    />
+                  </td>
+                </tr>
+                <tr *ngIf="assignTo === 1">
+                  <td class="e-label">All Clinics</td>
+                  <td>
+                    <select
+                      id="Clinics"
+                      class="e-field"
+                      name="clinic_id"
+                      ngModel="{{ data.clinic_id }}"
+                    >
+                      <option [value]="null">All Clinic</option>
+                      <option
+                        *ngFor="let clinicData of clinicsData"
+                        value="{{ clinicData.id }}"
+                      >
+                        {{ clinicData.clinicName }}
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+                <tr *ngIf="assignTo == '3'">
                   <td class="e-label">Assignee</td>
                   <td>
-                    <!-- <ejs-dropdownlist
-                      id="AssigneeData"
-                      #assigneeDataStatus
-                      name="assignee_user"
-                      class="e-field"
-                      [fields]="assigneefields"
-                      [dataSource]="assigneeData"
-                      [text]="data.name"
-                      value="{data.id}"
-                      placeholder="Assignee User"
-                    >
-                    </ejs-dropdownlist> -->
                     <select
                       id="AssigneeData"
                       class="e-field"
@@ -133,35 +171,44 @@
                     </select>
                   </td>
                 </tr>
-                <tr>
+                <tr *ngIf="assignTo === 4">
                   <td class="e-label">Assignee Group</td>
                   <td>
-                    <ejs-dropdownlist
+                    <select
                       id="AssigneeGroupData"
-                      #assigneeGroupDataStatus
-                      name="assignee_group"
                       class="e-field"
-                      [fields]="assigneeGroupfields"
-                      [dataSource]="assigneeGroupData"
-                      value="{{ data.assignee_group }}"
-                      placeholder="Assignee Group"
+                      name="assignee_group"
+                      ngModel="{{ data.assignee_group }}"
                     >
-                    </ejs-dropdownlist>
+                      <option
+                        value="{{ grupData.id }}"
+                        *ngFor="let grupData of assigneeGroupData"
+                      >
+                        {{ grupData.name }}
+                      </option>
+                      <!-- <option value="6">Owner</option>
+                      <option value="3">Practice Manager</option>
+                      <option value="4">Clinician</option>
+                      <option value="5">Staff</option> -->
+                    </select>
                   </td>
                 </tr>
                 <tr>
                   <td class="e-label">Status</td>
                   <td>
-                    <ejs-dropdownlist
+                    <select
                       id="Status"
-                      #dropdownStatus
-                      name="status"
                       class="e-field"
-                      [dataSource]="statusData"
-                      value="{{ data.status }}"
-                      placeholder="Status"
+                      name="status"
+                      ngModel="{{ data.status }}"
                     >
-                    </ejs-dropdownlist>
+                      <option
+                        value="{{ status }}"
+                        *ngFor="let status of statusData"
+                      >
+                        {{ status }}
+                      </option>
+                    </select>
                   </td>
                 </tr>
                 <tr>
@@ -172,8 +219,17 @@
                       name="due_date"
                       type="text"
                       class="e-field"
-                      value="{{ data.due_date }}"
+                      matInput
+                      [matDatepicker]="picker"
                     />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker
+                      startAt="{{ data.due_date }}"
+                      #picker
+                    ></mat-datepicker>
                   </td>
                 </tr>
               </tbody>
