@@ -112,7 +112,7 @@ export class TasksComponent implements OnInit {
   ];
   public assigneeGroup: { [key: string]: Object }[] = [
     { id: 1, name: "Clinic", checked: true, idval: "Main1" },
-    { id: 2, name: "Jeeve Account", checked: false, idval: "Main2" },
+    { id: 2, name: "Account", checked: false, idval: "Main2" },
     { id: 3, name: "User", checked: false, idval: "Main3" },
     { id: 4, name: "Staff", checked: false, idval: "Main4" },
   ];

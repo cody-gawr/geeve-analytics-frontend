@@ -63,7 +63,7 @@
           </ng-template>
 
           <ng-template #dialogSettingsTemplate let-data>
-            <table>
+            <table class="editaddpopup">
               <tbody>
                 <tr class="hide">
                   <td class="e-label">ID</td>
@@ -109,9 +109,9 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="e-label">Choose Group</td>
+                  <td class="e-label">Group</td>
                   <td>
-                    <div *ngFor="let option of assigneeGroup">
+                    <div class="groupSelect" *ngFor="let option of assigneeGroup" [ngClass] ="option.id === assignTo? 'active' : ''">
                       <label for="{{ option.idval }}">
                         <input
                           type="radio"
@@ -211,14 +211,15 @@
                     </select>
                   </td>
                 </tr>
-                <tr>
+                <tr class="Due_Date">
                   <td class="e-label">Due Date</td>
-                  <td>
+                  <td>                   
                     <input
                       id="DueDate"
                       name="due_date"
                       type="text"
                       class="e-field"
+                      [formControl] = "data.due_date  | date:'E d MMMM': '+1000' "
                       matInput
                       [matDatepicker]="picker"
                     />

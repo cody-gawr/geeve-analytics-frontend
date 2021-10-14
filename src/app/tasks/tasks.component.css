@@ -106,6 +106,8 @@
     width: 100% !important;
     display: block !important;
     text-align: right !important;
+    margin-bottom: 10px;
+    margin-right: 10px;
 }
 .content-wrapper.kanban{
     width: 100%;
@@ -113,4 +115,105 @@
 }
 .e-dlg-container.e-dlg-center-center {
   z-index: 10 !important;
+}
+
+.e-lib.e-dialog.e-control.e-kanban-dialog.e-dlg-modal.e-popup.e-popup-open {
+    width: 500px !important;
+    min-height: 440px;
+}
+table.editaddpopup tr td:first-child {
+    width: 120px !important;
+}
+div.groupSelect {
+    display: inline-block;
+    text-align: center;
+    margin-right: 10px;
+    background: #d9ddd9;
+    width: 73px;
+    border: 1px solid #171a18;
+    border-radius: 6px;
+}
+.groupSelect label input {
+    display: none;
+}
+.groupSelect.active {
+    background: #434a44;
+    color: #ffffff;
+}
+table.editaddpopup select {
+    padding: 9px 0;
+    border: 0px solid;
+    border-bottom: 1px solid #767070;
+}
+
+.e-popup.e-popup-open .e-footer-content button{
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #FFF;
+    background-image: linear-gradient(14deg, #17a5aa 0%, #18a689 100%);
+    box-shadow: none !important;
+    border: 0;
+    font-family: 'Gilroy-Medium';
+    border-radius: 5px;
+    height: 35px;
+}
+.e-dialog .e-dlg-header-content {
+    border-bottom: none;
+    padding: 5px 10px 0 0;
+    padding-left: 0;
+    border-left: 5px solid #18a689;
+    margin: 8px 0 0 0;
+}
+div.e-dlg-header {
+    padding-left: 15px;
+}
+tr.Due_Date {
+    position: relative;
+}
+.Due_Date input {
+    border-bottom: 1px solid #5a5656;
+    padding: 10px 0;
+}
+.Due_Date button.mat-icon-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.e-card.e-template.e-droppable.e-lib.e-draggable {
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid #cecece!important;
+}
+
+.e-content-row td.e-content-cells {
+    background: #ebebeb !important;    
+}
+
+.e-kanban .e-kanban-table .e-header-cells {
+    background-color: #ebebeb;
+    border-radius: 0;
+}
+.e-kanban .e-kanban-table .e-header-cells {
+    background-color: #ebebeb;
+    border-radius: 0;
+    box-shadow: 0px -2px 1px inset #f5f5fb;
+}
+div.groupSelect label {
+    width: 100%;
+    display: block;
+    padding: 5px;
+    cursor: pointer;
+}
+.e-dlg-closeicon-btn {
+  display: none;
+}
+button.e-control.e-btn.e-lib.e-flat.e-dialog-delete {
+    float: right;
+}
+button.e-control.e-btn.e-lib.e-flat.e-dialog-cancel {
+    float: left;
+}
+.e-tooltip-wrap.e-popup {
+    background-color: #f5f4f4;
 }
