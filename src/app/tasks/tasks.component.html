@@ -29,29 +29,43 @@
           [dialogSettings]="dialogSettings"
           (actionComplete)="OnActionComplete($event)"
           (dialogOpen)="dialogOpen($event)"
-          [swimlaneSettings]='swimlaneSettings'
-          >
-        <!--  [swimlaneSettings]='swimlaneSettings'  -->
+          [swimlaneSettings]="swimlaneSettings"
+        >
+          <!--  [swimlaneSettings]='swimlaneSettings'  -->
           <e-columns>
             <e-column headerText="To do" keyField="Open"></e-column>
-            <e-column headerText="In Progress" keyField="InProgress"></e-column>        
+            <e-column headerText="In Progress" keyField="InProgress"></e-column>
             <e-column headerText="Done" keyField="Done"></e-column>
           </e-columns>
 
           <ng-template #cardSettingsTemplate let-data>
-            <div class="e-card-content" >
-              <table class="card-template-wrap {{ checkIdOverdue(data) }}" width= "100%">
+            <div class="e-card-content">
+              <table
+                class="card-template-wrap {{ checkIdOverdue(data) }}"
+                width="100%"
+              >
                 <tbody>
                   <tr>
-                    <td colspan="2"><h3>{{ data.title }}</h3></td>
+                    <td colspan="2">
+                      <h3>{{ data.title }}</h3>
+                    </td>
                   </tr>
                   <tr>
-                    <td  colspan="2"><div class="cardDescription">{{ (data.description | slice:0:100) + (data.description.length > 100 ? '...' : '') }}</div></td>
+                    <td colspan="2">
+                      <div class="cardDescription">
+                        {{
+                          (data.description | slice: 0:100) +
+                            (data.description.length > 100 ? "..." : "")
+                        }}
+                      </div>
+                    </td>
                   </tr>
                   <tr>
                     <td width="50%"></td>
-                    <td align="right"><div class="cardTaskID">Task-{{ data.id }}</div></td>
-                  </tr>               
+                    <td align="right">
+                      <div class="cardTaskID">Task-{{ data.id }}</div>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -76,36 +90,13 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="e-label">Title</td>
-                  <td>
-                    <div class="e-float-input e-control-wrapper">
-                      <input
-                        id="Title"
-                        name="title"
-                        type="text"
-                        class="e-field"
-                        value="{{ data.title }}"
-                      />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="e-label">Description</td>
-                  <td>
-                    <div class="e-float-input e-control-wrapper">
-                      <textarea
-                        id="Description"
-                        name="description"
-                        type="text"
-                        class="e-field"                        
-                      >{{ data.description }}</textarea>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
                   <td class="e-label">Group</td>
                   <td>
-                    <div class="groupSelect" *ngFor="let option of assigneeGroup" [ngClass] ="option.id === assignTo? 'active' : ''">
+                    <div
+                      class="groupSelect"
+                      *ngFor="let option of assigneeGroup"
+                      [ngClass]="option.id === assignTo ? 'active' : ''"
+                    >
                       <label for="{{ option.idval }}">
                         <input
                           type="radio"
@@ -147,6 +138,35 @@
                     </select>
                   </td>
                 </tr>
+                <tr>
+                  <td class="e-label">Title</td>
+                  <td>
+                    <div class="e-float-input e-control-wrapper">
+                      <input
+                        id="Title"
+                        name="title"
+                        type="text"
+                        class="e-field"
+                        value="{{ data.title }}"
+                      />
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="e-label">Description</td>
+                  <td>
+                    <div class="e-float-input e-control-wrapper">
+                      <textarea
+                        id="Description"
+                        name="description"
+                        type="text"
+                        class="e-field"
+                        >{{ data.description }}</textarea
+                      >
+                    </div>
+                  </td>
+                </tr>
+
                 <tr *ngIf="assignTo == '3'">
                   <td class="e-label">Assignee</td>
                   <td>
@@ -187,7 +207,7 @@
                     </select>
                   </td>
                 </tr>
-                <tr [ngClass] = "data.id? '' : 'hide'">
+                <tr [ngClass]="data.id ? '' : 'hide'">
                   <td class="e-label">Status</td>
                   <td>
                     <select
@@ -207,13 +227,13 @@
                 </tr>
                 <tr class="Due_Date">
                   <td class="e-label">Due Date</td>
-                  <td>                   
+                  <td>
                     <input
                       id="DueDate"
                       name="due_date"
                       type="text"
                       class="e-field"
-                      [formControl] = "data.due_date  | date:'E d MMMM': '+1000' "
+                      [formControl]="data.due_date | date: 'E d MMMM':'+1000'"
                       matInput
                       [matDatepicker]="picker"
                     />

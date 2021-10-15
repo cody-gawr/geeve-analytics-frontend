@@ -2,8 +2,7 @@ import {
   Component,
   ViewChild,
   ViewEncapsulation,
-  OnInit,
-  ChangeDetectorRef,
+  OnInit
 } from "@angular/core";
 import { extend } from "@syncfusion/ej2-base";
 import {
@@ -53,7 +52,7 @@ export class TasksComponent implements OnInit {
     template: "cardSettingsTemplate",
     contentField: "description",
     headerField: "id",
-    showHeader:true
+    showHeader: true,
   };
   /**** Card Setting ***/
   /**** Card Setting ***/
@@ -93,6 +92,7 @@ export class TasksComponent implements OnInit {
         "https://test-api.jeeve.com.au/test/analytics/KanbanTasks/delete",
       adaptor: new CustomAdaptor(),
       crossDomain: true,
+      offline: true,
     });
   }
   /**** Data Manager Setting ***/
@@ -120,11 +120,11 @@ export class TasksComponent implements OnInit {
   ngOnInit() {} //
   constructor(private tasksService: TasksService) {
     this.getUsers();
-    this.getClinics();    
+    this.getClinics();
   }
 
   radioChange(event) {
-    this.assignTo = Number(event.target.value);    
+    this.assignTo = Number(event.target.value);
   }
 
   initiate_clinic() {
@@ -139,7 +139,7 @@ export class TasksComponent implements OnInit {
 
   dialogOpen(args: DialogEventArgs): void {
     if (args.requestType == "Edit") {
-      $('.e-dlg-header').text('Edit Task');
+      $(".e-dlg-header").text("Edit Task");
       if (args.data.assignee_group != null) {
         this.assignTo = 4;
       } else if (args.data.assignee_user != null) {
@@ -150,7 +150,7 @@ export class TasksComponent implements OnInit {
         this.assignTo = 2;
       }
     } else {
-      $('.e-dlg-header').text('Add Task');
+      $(".e-dlg-header").text("Add Task");
       this.assignTo = 1;
     }
   }
@@ -168,7 +168,6 @@ export class TasksComponent implements OnInit {
             }
           });
         }
-        
       },
       (error) => {}
     );
@@ -196,6 +195,7 @@ export class TasksComponent implements OnInit {
   }
 
   OnActionComplete(args: ActionEventArgs): void {
+    console.log("ActionEventArgs", args);
     if (
       args.requestType === "cardCreated" ||
       args.requestType === "cardChanged" ||
@@ -205,7 +205,7 @@ export class TasksComponent implements OnInit {
       var kanbanInstance = this.kanbanObj;
       setTimeout(function () {
         kanbanInstance.refresh();
-      }, 1000);
+      }, 600);
     }
   }
 
@@ -213,11 +213,11 @@ export class TasksComponent implements OnInit {
   //     console.log('Kanban - ' + (args.data as { [key: string]: Object }).Id + ' - <b>Card Rendered</b> event called<hr>');
   // }
 
-  checkIdOverdue(data){
+  checkIdOverdue(data) {
     var ToDate = new Date();
-    if (new Date(data.due_date) < ToDate && data.status != 'Done') {
-        return 'warning';
-     }
-     return "";
+    if (new Date(data.due_date) < ToDate && data.status != "Done") {
+      return "warning";
+    }
+    return "";
   }
 }
