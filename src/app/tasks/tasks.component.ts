@@ -48,7 +48,7 @@ export class TasksComponent implements OnInit {
   datePicker: DaterangepickerComponent;
   @ViewChild("kanbanObj") kanbanObj: KanbanComponent; //kanban component bind
   /**** Card Setting ***/
-  public swimlaneSettings: SwimlaneSettingsModel = { keyField: "status" };
+  public swimlaneSettings: SwimlaneSettingsModel = { keyField: "group_by" };
   public cardSettings: CardSettingsModel = {
     template: "cardSettingsTemplate",
     contentField: "description",
