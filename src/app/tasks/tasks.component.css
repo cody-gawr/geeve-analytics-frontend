@@ -103,11 +103,10 @@
   transform: rotate(180deg);
 }
 .sa-pull-right.kanban {
-    width: 100% !important;
-    display: block !important;
-    text-align: right !important;
-    margin-bottom: 10px;
-    margin-right: 10px;
+    position: fixed;
+    top: 16px;
+    z-index: 9999;
+    right: 20%;
 }
 .content-wrapper.kanban{
     width: 100%;
