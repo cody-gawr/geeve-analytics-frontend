@@ -29,8 +29,7 @@
           [dialogSettings]="dialogSettings"
           (actionComplete)="OnActionComplete($event)"
           (dialogOpen)="dialogOpen($event)"
-         
-        >
+          >
         <!--  [swimlaneSettings]='swimlaneSettings'  -->
           <e-columns>
             <e-column headerText="To do" keyField="Open"></e-column>
@@ -40,24 +39,18 @@
 
           <ng-template #cardSettingsTemplate let-data>
             <div class="e-card-content" >
-              <table class="card-template-wrap {{ checkIdOverdue(data) }}" >
+              <table class="card-template-wrap {{ checkIdOverdue(data) }}" width= "100%">
                 <tbody>
                   <tr>
-                    <td class="content">Title:</td>
-                    <td>{{ data.title }}</td>
+                    <td colspan="2"><h3>{{ data.title }}</h3></td>
                   </tr>
                   <tr>
-                    <td class="content">Description:</td>
-                    <td>{{ data.description }}</td>
+                    <td  colspan="2"><div class="cardDescription">{{ (data.description | slice:0:100) + (data.description.length > 100 ? '...' : '') }}</div></td>
                   </tr>
                   <tr>
-                    <td class="content">Due Date:</td>
-                    <td>{{ data.due_date | date: "dd LLL yyyy" }}</td>
-                  </tr>
-                  <tr>
-                    <td class="content">Created date:</td>
-                    <td>{{ data.created_date | date: "dd LLL yyyy" }}</td>
-                  </tr>
+                    <td width="50%"></td>
+                    <td align="right"><div class="cardTaskID">Task-{{ data.id }}</div></td>
+                  </tr>               
                 </tbody>
               </table>
             </div>

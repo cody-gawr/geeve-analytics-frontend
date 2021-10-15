@@ -230,3 +230,14 @@ table.card-template-wrap.warning::before {
     border-right: 10px solid red;
     border-bottom: 10px solid transparent;
 }
+
+.e-card-content td h3 {
+    padding: 0;
+    margin: 0;
+    text-transform: capitalize;
+    font-size: 17px;
+    font-weight: bold;
+}
+.cardDescription {
+    min-height: 43px;
+}

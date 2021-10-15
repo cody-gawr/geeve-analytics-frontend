@@ -139,7 +139,7 @@ export class TasksComponent implements OnInit {
 
   dialogOpen(args: DialogEventArgs): void {
     if (args.requestType == "Edit") {
-      $('.e-dlg-header').text('Edit Card');
+      $('.e-dlg-header').text('Edit Task');
       if (args.data.assignee_group != null) {
         this.assignTo = 4;
       } else if (args.data.assignee_user != null) {
@@ -150,6 +150,7 @@ export class TasksComponent implements OnInit {
         this.assignTo = 2;
       }
     } else {
+      $('.e-dlg-header').text('Add Task');
       this.assignTo = 1;
     }
   }
@@ -214,7 +215,7 @@ export class TasksComponent implements OnInit {
 
   checkIdOverdue(data){
     var ToDate = new Date();
-    if (new Date(data.due_date) <= ToDate && data.status != 'Done') {
+    if (new Date(data.due_date) < ToDate && data.status != 'Done') {
         return 'warning';
      }
      return "";
