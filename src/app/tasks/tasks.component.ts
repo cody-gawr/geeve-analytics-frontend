@@ -53,7 +53,7 @@ export class TasksComponent implements OnInit {
     template: "cardSettingsTemplate",
     contentField: "description",
     headerField: "id",
-    // showHeader:false
+    showHeader:true
   };
   /**** Card Setting ***/
   /**** Card Setting ***/
@@ -99,7 +99,7 @@ export class TasksComponent implements OnInit {
 
   public clinic_id: any = "";
   public assignTo: number = 1;
-  public statusData: string[] = ["Open", "InProgress", "Testing", "Done"];
+  public statusData: string[] = ["Open", "InProgress", "Done"];
   public clinicsData: any[] = [];
   // public assigneeData: { [key: string]: Object }[] = [];
   public assigneeData: any = [];
@@ -120,15 +120,11 @@ export class TasksComponent implements OnInit {
   ngOnInit() {} //
   constructor(private tasksService: TasksService) {
     this.getUsers();
-    this.getClinics();
-    console.log("active assign to", this.assignTo);
+    this.getClinics();    
   }
 
   radioChange(event) {
-    this.assignTo = Number(event.target.value);
-    console.log("this.assignTo", typeof this.assignTo);
-    console.log("this.assignTo", this.assignTo);
-    console.log("this.event.target.value", event.target.value);
+    this.assignTo = Number(event.target.value);    
   }
 
   initiate_clinic() {
@@ -142,8 +138,8 @@ export class TasksComponent implements OnInit {
   }
 
   dialogOpen(args: DialogEventArgs): void {
-    console.log(args.data);
     if (args.requestType == "Edit") {
+      $('.e-dlg-header').text('Edit Card');
       if (args.data.assignee_group != null) {
         this.assignTo = 4;
       } else if (args.data.assignee_user != null) {
@@ -171,7 +167,7 @@ export class TasksComponent implements OnInit {
             }
           });
         }
-        console.log("this.assigneeData", this.assigneeData);
+        
       },
       (error) => {}
     );
@@ -215,4 +211,12 @@ export class TasksComponent implements OnInit {
   //   OnCardRendered(args: CardRenderedEventArgs): void {
   //     console.log('Kanban - ' + (args.data as { [key: string]: Object }).Id + ' - <b>Card Rendered</b> event called<hr>');
   // }
+
+  checkIdOverdue(data){
+    var ToDate = new Date();
+    if (new Date(data.due_date) <= ToDate && data.status != 'Done') {
+        return 'warning';
+     }
+     return "";
+  }
 }

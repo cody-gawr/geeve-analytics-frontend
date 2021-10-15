@@ -15,7 +15,7 @@
       class="e-dialog-add mat-raised-button mat-green"
       (click)="addClick()"
     >
-      Add New Card
+      + Create Task
     </button>
   </div>
   <mat-card-content>
@@ -29,17 +29,18 @@
           [dialogSettings]="dialogSettings"
           (actionComplete)="OnActionComplete($event)"
           (dialogOpen)="dialogOpen($event)"
+         
         >
+        <!--  [swimlaneSettings]='swimlaneSettings'  -->
           <e-columns>
             <e-column headerText="To do" keyField="Open"></e-column>
-            <e-column headerText="In Progress" keyField="InProgress"></e-column>
-            <e-column headerText="Testing" keyField="Testing"></e-column>
+            <e-column headerText="In Progress" keyField="InProgress"></e-column>        
             <e-column headerText="Done" keyField="Done"></e-column>
           </e-columns>
 
           <ng-template #cardSettingsTemplate let-data>
-            <div class="e-card-content">
-              <table class="card-template-wrap">
+            <div class="e-card-content" >
+              <table class="card-template-wrap {{ checkIdOverdue(data) }}" >
                 <tbody>
                   <tr>
                     <td class="content">Title:</td>
@@ -51,11 +52,11 @@
                   </tr>
                   <tr>
                     <td class="content">Due Date:</td>
-                    <td>{{ data.due_date | date: "shortDate" }}</td>
+                    <td>{{ data.due_date | date: "dd LLL yyyy" }}</td>
                   </tr>
                   <tr>
                     <td class="content">Created date:</td>
-                    <td>{{ data.created_at | date: "shortDate" }}</td>
+                    <td>{{ data.created_date | date: "dd LLL yyyy" }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -98,13 +99,12 @@
                   <td class="e-label">Description</td>
                   <td>
                     <div class="e-float-input e-control-wrapper">
-                      <input
+                      <textarea
                         id="Description"
                         name="description"
                         type="text"
-                        class="e-field"
-                        value="{{ data.description }}"
-                      />
+                        class="e-field"                        
+                      >{{ data.description }}</textarea>
                     </div>
                   </td>
                 </tr>
@@ -193,7 +193,7 @@
                     </select>
                   </td>
                 </tr>
-                <tr>
+                <tr [ngClass] = "data.id? '' : 'hide'">
                   <td class="e-label">Status</td>
                   <td>
                     <select

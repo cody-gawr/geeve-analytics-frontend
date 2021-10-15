@@ -217,3 +217,16 @@ button.e-control.e-btn.e-lib.e-flat.e-dialog-cancel {
 .e-tooltip-wrap.e-popup {
     background-color: #f5f4f4;
 }
+table.card-template-wrap.warning::before {
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 0;
+    z-index: 999999999;
+    content: '';
+    right: 0;
+    border-top: 10px solid red;
+    border-left: 10px solid transparent;
+    border-right: 10px solid red;
+    border-bottom: 10px solid transparent;
+}
