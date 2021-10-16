@@ -10,7 +10,7 @@
 <div mat-dialog-content class="sa_forms_design">
   <div class="sa-form-group">
     <label>Text <span class="charLimit">{{ charLimit}}</span></label>
-    <textarea maxlength="800" [(ngModel)]="data.text"  class="mat-form-control" required="true" placeholder="" (keypress) = "countCharDown($event)" (keyup) = "countCharUp($event)"></textarea>   
+    <textarea maxlength="1500" [(ngModel)]="data.text"  class="mat-form-control" required="true" placeholder="" (keypress) = "countCharDown($event)" (keyup) = "countCharUp($event)"></textarea>   
   </div> 
 </div>
 <div class="sa-form-group">
