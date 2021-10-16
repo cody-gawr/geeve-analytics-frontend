@@ -176,7 +176,7 @@ export class ClinicComponent implements AfterViewInit {
           this.createdClinicsCount = res.total;
           this.table = data;
         }
-      } else if(res.status == '401'){
+      } else if(res.status == '401' || res.status == '500'){
         this._cookieService.put("username",'');
         this._cookieService.put("email", '');
         this._cookieService.put("userid", '');
