@@ -140,12 +140,7 @@ export const AppRoutes: Routes = [
         path: 'xerosignup',
         loadChildren:
           () => import('./signup/signup.module').then(m => m.SignupModule)
-      },
-      {
-        path: 'support',
-        loadChildren:
-          () => import('./support/support.module').then(m => m.SupportModule)
-      },
+      }
     ]
   },
   {
