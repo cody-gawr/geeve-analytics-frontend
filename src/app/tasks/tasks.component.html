@@ -8,7 +8,7 @@
   class="lost-header-background-remove"
   style="box-shadow: none !important"
 >
-  <div class="sa-pull-right kanban">
+  <div class="sa-pull-right kanban" *ngIf="user_type == 2">
     <button
       ejs-button
       id="addNew"
@@ -99,6 +99,7 @@
                     >
                       <label for="{{ option.idval }}">
                         <input
+                          [disabled]="user_type != 2"
                           type="radio"
                           class="e-field"
                           id="{{ option.idval }}"
@@ -123,6 +124,7 @@
                   <td class="e-label">All Clinics</td>
                   <td>
                     <select
+                      [disabled]="user_type != 2"
                       id="Clinics"
                       class="e-field"
                       name="clinic_id"
@@ -148,6 +150,7 @@
                         type="text"
                         class="e-field"
                         value="{{ data.title }}"
+                        [readonly]="user_type != 2"
                       />
                     </div>
                   </td>
@@ -161,6 +164,7 @@
                         name="description"
                         type="text"
                         class="e-field"
+                        [readonly]="user_type != 2"
                         >{{ data.description }}</textarea
                       >
                     </div>
@@ -171,6 +175,7 @@
                   <td class="e-label">Assignee</td>
                   <td>
                     <select
+                      [disabled]="user_type != 2"
                       id="AssigneeData"
                       class="e-field"
                       name="assignee_user"
@@ -184,11 +189,19 @@
                       </option>
                     </select>
                   </td>
+                  <input
+                    id="Clinicids"
+                    type="hidden"
+                    class="e-field"
+                    name="clinic_id"
+                    [value]="clinic_id"
+                  />
                 </tr>
                 <tr *ngIf="assignTo === 4">
                   <td class="e-label">Assignee Group</td>
                   <td>
                     <select
+                      [disabled]="user_type != 2"
                       id="AssigneeGroupData"
                       class="e-field"
                       name="assignee_group"
@@ -200,34 +213,19 @@
                       >
                         {{ grupData.name }}
                       </option>
-                      <!-- <option value="6">Owner</option>
-                      <option value="3">Practice Manager</option>
-                      <option value="4">Clinician</option>
-                      <option value="5">Staff</option> -->
                     </select>
                   </td>
-                </tr>
-                <tr [ngClass]="data.id ? '' : 'hide'">
-                  <td class="e-label">Status</td>
-                  <td>
-                    <select
-                      id="Status"
-                      class="e-field"
-                      name="status"
-                      ngModel="{{ data.status }}"
-                    >
-                      <option
-                        value="{{ status }}"
-                        *ngFor="let status of statusData"
-                      >
-                        {{ status }}
-                      </option>
-                    </select>
-                  </td>
+                  <input
+                    id="Clinicids"
+                    type="hidden"
+                    class="e-field"
+                    name="clinic_id"
+                    [value]="clinic_id"
+                  />
                 </tr>
                 <tr class="Due_Date">
                   <td class="e-label">Due Date</td>
-                  <td>
+                  <td *ngIf="user_type == 2">
                     <input
                       id="DueDate"
                       name="due_date"
@@ -245,6 +243,47 @@
                       startAt="{{ data.due_date }}"
                       #picker
                     ></mat-datepicker>
+                  </td>
+                  <td *ngIf="user_type != 2">
+                    <input
+                      id="DateDue"
+                      name="due_date"
+                      type="text"
+                      class="e-field"
+                      value="{{ data.due_date | date: shortDate }}"
+                      readonly
+                    />
+                  </td>
+                </tr>
+                <!-- <tr *ngIf="user_type != 2">
+                  <td class="e-label">Due Date</td>
+                  <td>
+                    <input
+                      id="DateDue"
+                      name="due_date"
+                      type="text"
+                      class="e-field"
+                      value="{{ data.due_date | date: shortDate }}"
+                      readonly
+                    />
+                  </td>
+                </tr> -->
+                <tr [ngClass]="data.id ? '' : 'hide'">
+                  <td class="e-label">Status</td>
+                  <td>
+                    <select
+                      id="Status"
+                      class="e-field"
+                      name="status"
+                      ngModel="{{ data.status }}"
+                    >
+                      <option
+                        value="{{ status }}"
+                        *ngFor="let status of statusData"
+                      >
+                        {{ status }}
+                      </option>
+                    </select>
                   </td>
                 </tr>
               </tbody>

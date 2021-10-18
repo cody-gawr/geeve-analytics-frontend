@@ -2,9 +2,11 @@ import {
   Component,
   ViewChild,
   ViewEncapsulation,
-  OnInit
+  OnInit,
+  AfterViewInit,
 } from "@angular/core";
 import { extend } from "@syncfusion/ej2-base";
+import { CookieService, CookieOptions } from "ngx-cookie";
 import {
   KanbanComponent,
   CardSettingsModel,
@@ -42,7 +44,7 @@ class CustomAdaptor extends UrlAdaptor {
 /**** Component Declare ****/
 
 /**** Class Start ****/
-export class TasksComponent implements OnInit {
+export class TasksComponent implements AfterViewInit, OnInit {
   @ViewChild(DaterangepickerComponent, { static: false })
   datePicker: DaterangepickerComponent;
   @ViewChild("kanbanObj") kanbanObj: KanbanComponent; //kanban component bind
@@ -73,6 +75,7 @@ export class TasksComponent implements OnInit {
       },
       { key: "title", validationRules: { required: true } },
       { key: "due_date", validationRules: { required: true } },
+      { key: "clinic_id" },
     ],
   };
 
@@ -92,12 +95,14 @@ export class TasksComponent implements OnInit {
         "https://test-api.jeeve.com.au/test/analytics/KanbanTasks/delete",
       adaptor: new CustomAdaptor(),
       crossDomain: true,
-      offline: true,
+      offline: false,
     });
   }
   /**** Data Manager Setting ***/
 
   public clinic_id: any = "";
+  public user_type: any = null;
+  public display_name: any = null;
   public assignTo: number = 1;
   public statusData: string[] = ["Open", "InProgress", "Done"];
   public clinicsData: any[] = [];
@@ -117,10 +122,21 @@ export class TasksComponent implements OnInit {
     { id: 4, name: "Staff", checked: false, idval: "Main4" },
   ];
   public assigneeGroupfields: Object = { text: "name", value: "id" };
-  ngOnInit() {} //
-  constructor(private tasksService: TasksService) {
+
+  constructor(
+    private tasksService: TasksService,
+    private _cookieService: CookieService
+  ) {
     this.getUsers();
     this.getClinics();
+  }
+  ngOnInit() {} //
+  ngAfterViewInit() {
+    // This is for the topbar search
+    this.user_type = this._cookieService.get("user_type");
+    this.display_name = this._cookieService.get("display_name");
+
+    // This is for the megamenu
   }
 
   radioChange(event) {
@@ -168,6 +184,7 @@ export class TasksComponent implements OnInit {
             }
           });
         }
+        console.log('this.assigneeData',this.assigneeData)
       },
       (error) => {}
     );
