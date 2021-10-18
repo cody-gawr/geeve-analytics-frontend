@@ -812,3 +812,6 @@ table.history td.notes {padding-right: 2%;text-align: right;}
 .chipSets .tooltip-title {
     padding-bottom: 10px;
 }
+div.mat-chip-list-wrapper .custom-tooltip {
+    max-width: 650px;
+} 

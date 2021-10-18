@@ -1375,11 +1375,18 @@ async getDentistList(){
     let y= parseInt(event.clientY);
     setTimeout( function(){
       $('.tooltip-container').addClass('mat-'+colour);
-      if(type == 'fta'){        
+      let textLength = $('.tooltip-info-text').text().length;
+      let width = "";
+      if(parseInt(textLength) >= 100){
+        width = 650;
+      } else if(parseInt(textLength) >= 75){ 
+        width = 550;
+      }  
+      if(type == 'fta'){   
         let height = $('.custom-tooltip').height();
-        $('.custom-tooltip').css({'top': (y - (height + 40) ) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );        
+        $('.custom-tooltip').css({'top': (y - (height + 40) ) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1','width' : width} );        
       } else {
-        $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );
+        $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1','width' : width} );
       }      
     },100);
   }
