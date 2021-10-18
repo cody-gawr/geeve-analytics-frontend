@@ -831,15 +831,13 @@ initiate_clinic() {
     let y= parseInt(event.clientY);
     setTimeout( function(){
       let textLength = $('.tooltip-info-text').text().length;
-      let width = "";
-      if(parseInt(textLength) >= 100){
-        width = 650;
-      } else if(parseInt(textLength) >= 75){ 
-        width = 550;
+      if(textLength >= 100){
+           $('.custom-tooltip').css({'width': 650});
+      } else if(textLength >= 75){ 
+           $('.custom-tooltip').css({'width': 550} );
       }  
-
       $('.tooltip-container').addClass('mat-'+colour);
-      $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1','width' : width} );
+      $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );
     },100);
   }
 }
