@@ -830,6 +830,12 @@ initiate_clinic() {
     let x= event.clientX;
     let y= parseInt(event.clientY);
     setTimeout( function(){
+      let textLength = $('.tooltip-info-text').text().length;
+      if(textLength >= 100){
+           $('.custom-tooltip').css({'width': 650});
+      } else if(textLength >= 75){ 
+           $('.custom-tooltip').css({'width': 550} );
+      }  
       $('.tooltip-container').addClass('mat-'+colour);
       $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );
     },100);

@@ -60,7 +60,7 @@ export class DialogOverviewExampleDialogComponent {
         this.handleUnAuthorization();
       }
     }, error => {
-      console.log('error', error)
+      this.handleUnAuthorization();      
     });
   }
   handleUnAuthorization() {
@@ -511,7 +511,11 @@ initiate_clinic() {
         this.remindersTotal = production.total;
         this.remindersRecallsOverdue = production.data;     
         this.remindersRecallsOverdueDate = production.date;     
-      }
+      } else if (production.status == '401') {
+          this.handleUnAuthorization();
+        }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   } 
 
@@ -565,7 +569,11 @@ initiate_clinic() {
         }
         
         //this.postOpCallsDays = production.previous;     
+      } else if (production.status == '401') {
+        this.handleUnAuthorization();      
       }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   } 
 
@@ -597,7 +605,11 @@ initiate_clinic() {
 
         this.followupsOverDueRecallDate = production.date;     
        //this.OverDueRecallDays = production.previous;     
-      }
+      } else if (production.status == '401') {
+           this.handleUnAuthorization();      
+        }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   } 
 
@@ -629,7 +641,11 @@ initiate_clinic() {
               this.intrFollowupsScrps.push(script);
             } 
           });
+        } else if (scripts.status == '401') {
+           this.handleUnAuthorization();      
         }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   } 
 
@@ -726,7 +742,11 @@ initiate_clinic() {
           });
         }     
            
+       } else if (production.status == '401') {
+         this.handleUnAuthorization();      
        }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   } 
 
@@ -756,7 +776,11 @@ initiate_clinic() {
             this.endOfDaysTasksInComp.data = this.endOfDaysTasks.filter(p => p.is_complete != 1);      
           }  
         }        
+      } else if (production.status == '401') {
+         this.handleUnAuthorization();         
       }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   } 
 
@@ -800,9 +824,11 @@ initiate_clinic() {
           });
 
         }
-
-
+      } else if (production.status == '401') {
+         this.handleUnAuthorization();      
       }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   } 
   
@@ -852,7 +878,11 @@ initiate_clinic() {
       if(production.status == true) {
         this.todayUnscheduledHours = production.data.hour;
         this.todayPatientsDate = production.data.date;    
+      } else if (production.status == '401') {
+         this.handleUnAuthorization();      
       }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   }
    getChairUtilisationRate(){
@@ -861,7 +891,12 @@ initiate_clinic() {
         this.todayChairUtilisationRate =  Math.round(production.data);
 
     
-      }
+      } else if (production.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
     }); 
   }
    getTodayUnscheduledBal(refsh = ''){
@@ -872,7 +907,11 @@ initiate_clinic() {
       this.todayUnscheduledBalLoader = false;
       if(production.status == true) {
         this.todayUnscheduledBal = production.data;       
+      } else if (production.status == '401') {
+        this.handleUnAuthorization();           
       }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   }  
 
@@ -915,7 +954,11 @@ initiate_clinic() {
       if(production.status == true) {
         this.scheduleNewPatieltd = production.data.patient;
         this.schedulePatielDate = production.data.date;
+      } else if (production.status == '401') {
+         this.handleUnAuthorization();      
       }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   }
 
@@ -927,7 +970,12 @@ initiate_clinic() {
       this.schedulehoursLoader = false;
       if(production.status == true) {
         this.schedulehours = production.data;
-      }
+      } else if (production.status == '401') {
+          this._cookieService.put("username", '');
+          this._cookieService.put("email", '');
+          this._cookieService.put("userid", '');
+          this.router.navigateByUrl('/login');
+        }
     }); 
   }
    getUnscheduleHours(dentist, refsh = ''){
@@ -938,7 +986,11 @@ initiate_clinic() {
       this.unschedulehoursLoader = false;
       if(production.status == true) {
         this.unSchedulehours = production.data;
+      } else if (production.status == '401') {
+         this.handleUnAuthorization();      
       }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   }
 
@@ -993,7 +1045,11 @@ initiate_clinic() {
             b = y.provider_name.toUpperCase();
             return a == b ? 0 : a > b ? 1 : -1;
         });
+      } else if (production.status == '401') {
+         this.handleUnAuthorization();      
       }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   }
 
@@ -1005,10 +1061,14 @@ initiate_clinic() {
     this.dentistperformanceLoader = true;
   	this.morningHuddleService.dentistProduction( this.clinic_id, this.previousDays, this.user_type,this.dentist_id  ).subscribe((production:any) => {
       this.dentistperformanceLoader = false;
-  		if(production.status == true) {
+  		if(production.status == true) { 
         this.production = production.data;
-  		}
-  	});	
+  		} else if (production.status == '401') {
+           this.handleUnAuthorization();      
+        }
+  	}, error => {
+      this.handleUnAuthorization();      
+    });	
   }
 
 
@@ -1018,8 +1078,12 @@ initiate_clinic() {
       this.dentistrecallRateLoader = false;
   		if(recallRate.status == true){
         this.recallRate = recallRate.data;
-  		}
-  	});	
+  		} else if (recallRate.status == '401') {
+        this.handleUnAuthorization();          
+      }
+  	}, error => {
+      this.handleUnAuthorization();      
+    });	
   }
 
   async getTreatmentRate(){
@@ -1028,7 +1092,11 @@ initiate_clinic() {
       this.dentistTreatmentRateLoader = false;    
       if(treatmentRate.status == true){
          this.treatmentRate = treatmentRate.data;
+      } else if (treatmentRate.status == '401') {
+         this.handleUnAuthorization();
       }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   }
 
@@ -1041,7 +1109,11 @@ async getDentistList(){
       if(list.status == true){
         this.dentistList.data = list.data;
         this.dentistListTemp = list.data;
+      } else if (list.status == '401') {
+       this.handleUnAuthorization();           
       }
+    }, error => {
+      this.handleUnAuthorization();      
     }); 
   }
 
@@ -1375,12 +1447,25 @@ async getDentistList(){
     let y= parseInt(event.clientY);
     setTimeout( function(){
       $('.tooltip-container').addClass('mat-'+colour);
-      if(type == 'fta'){        
+      let textLength = $('.tooltip-info-text').text().length;
+      if(textLength >= 100){
+        $('.custom-tooltip').css({'width': 650} );
+      } else if(textLength >= 75){ 
+        $('.custom-tooltip').css({'width': 550} );
+      }  
+      if(type == 'fta'){   
         let height = $('.custom-tooltip').height();
         $('.custom-tooltip').css({'top': (y - (height + 40) ) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );        
       } else {
         $('.custom-tooltip').css({'top': (y +20) , 'left' : (x -200),'visibility': 'visible' ,'opacity': '1'} );
       }      
     },100);
+  }
+
+  handleUnAuthorization() {
+    this._cookieService.put("username", '');
+    this._cookieService.put("email", '');
+    this._cookieService.put("userid", '');
+    this.router.navigateByUrl('/login');
   }
 } 

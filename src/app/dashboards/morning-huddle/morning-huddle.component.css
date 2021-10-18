@@ -837,6 +837,5 @@ mat-card.followUpsTab4 {
     position: absolute;
 }
 div.mat-chip-list-wrapper .custom-tooltip {
-    width: auto;
     max-width: 650px;
 } 
