@@ -27,26 +27,39 @@ export class SignupComponent implements OnInit {
     node.async = true;
     node.charset = "utf-8";
     document.getElementsByTagName("head")[0].appendChild(node);
-  } 
+  }
 
   constructor(private signupService: SignupService) {
-    this.loadAPI = new Promise((resolve) => {
-      console.log("resolving promise...");
+    
+    this.loadAPI = new Promise((resolve) => {      
       this.loadStyle("../../assets/styles/mailerlite/import.css");
       this.loadStyle("../../assets/styles/mailerlite/universal.css");
-
-      this.loadScript("../../assets/js/mailerlite/jquery.min.js");
+      // this.loadScript("../../assets/js/mailerlite/jquery.min.js");
       this.loadScript("../../assets/js/universal.js");
-      this.loadScript("../../assets/js/mailerlite/embed.js");
-      this.loadScript("../../assets/js/mailerlite/webforms.min.js");
-      this.loadScript(
-        "../../assets/js/mailerlite/ml_jQuery.inputmask.bundle.min.js"
-      );
-      this.loadScript("../../assets/js/signupxero.js");
     });
+
+    this.loadAPI = new Promise((resolve) => {
+      setTimeout(() => {
+
+        this.loadScript("../../assets/js/mailerlite/embed.js");
+        this.loadScript("../../assets/js/mailerlite/webforms.min.js");
+        this.loadScript(
+          "../../assets/js/mailerlite/ml_jQuery.inputmask.bundle.min.js"
+        );
+        this.loadScript("../../assets/js/signupxero.js");
+      }, 500);
+    });
+
+    // console.log("isloaded", this.loaded);
+
+    // var ml_account = ml('accounts', '2348549', 'w4o2f2u2e9', 'load');
   }
 
   ngOnInit() {
+    this.loadAPI.then((val) => {
+      console.log(val);
+      console.log("ml_account");
+    });
     this.signupService.getUrl().subscribe((res) => {
       if (res.message == "success") {
         this.xeroUrl = res.data;

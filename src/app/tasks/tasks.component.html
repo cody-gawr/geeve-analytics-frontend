@@ -226,12 +226,11 @@
                 <tr class="Due_Date">
                   <td class="e-label">Due Date</td>
                   <td *ngIf="user_type == 2">
-                    <input
+                    <!-- <input
                       id="DueDate"
                       name="due_date"
-                      type="text"
                       class="e-field"
-                      [formControl]="data.due_date | date: 'E d MMMM':'+1000'"
+                      [value]="date1.value"
                       matInput
                       [matDatepicker]="picker"
                     />
@@ -239,10 +238,26 @@
                       matSuffix
                       [for]="picker"
                     ></mat-datepicker-toggle>
-                    <mat-datepicker
-                      startAt="{{ data.due_date }}"
-                      #picker
-                    ></mat-datepicker>
+                    <mat-datepicker  #picker></mat-datepicker> -->
+
+                    <input
+                      id="DueDate"
+                      name="due_date"
+                      value="{{ data.due_date | date: 'M/d/y' }}"
+                      class="
+                      sa_datepicker
+                        e-field
+                        datepicker-calendar-icon
+                        filter_custom filter
+                      "
+                      autocomplete="false"
+                      ngxDaterangepickerMd
+                      [closeOnAutoApply]="true"
+                      [autoApply]="true"
+                      [singleDatePicker]="true"
+                      [linkedCalendars]="true"
+                    />
+                    
                   </td>
                   <td *ngIf="user_type != 2">
                     <input
@@ -250,7 +265,7 @@
                       name="due_date"
                       type="text"
                       class="e-field"
-                      value="{{ data.due_date | date: shortDate }}"
+                      value="{{ data.due_date | date: 'M/d/y' }}"
                       readonly
                     />
                   </td>
