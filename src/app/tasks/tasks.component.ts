@@ -6,6 +6,7 @@ import {
   AfterViewInit,
 } from "@angular/core";
 import { extend } from "@syncfusion/ej2-base";
+import {FormControl} from '@angular/forms';
 import { CookieService, CookieOptions } from "ngx-cookie";
 import {
   KanbanComponent,
@@ -21,10 +22,12 @@ import { TasksService } from "./tasks.service";
 import {
   NgxDaterangepickerMd,
   DaterangepickerComponent,
+  DaterangepickerDirective
 } from "ngx-daterangepicker-material";
-import * as moment from "moment";
+import * as moment from 'moment';
 import { DatePipe } from "@angular/common";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+
 
 /**** Adoptor Updates ****/
 class CustomAdaptor extends UrlAdaptor {
@@ -45,6 +48,7 @@ class CustomAdaptor extends UrlAdaptor {
 
 /**** Class Start ****/
 export class TasksComponent implements AfterViewInit, OnInit {
+  @ViewChild(DaterangepickerDirective, { static: false }) pickerDirective: DaterangepickerDirective;
   @ViewChild(DaterangepickerComponent, { static: false })
   datePicker: DaterangepickerComponent;
   @ViewChild("kanbanObj") kanbanObj: KanbanComponent; //kanban component bind
@@ -99,10 +103,8 @@ export class TasksComponent implements AfterViewInit, OnInit {
     });
   }
   /**** Data Manager Setting ***/
-
   public clinic_id: any = "";
   public user_type: any = null;
-  public display_name: any = null;
   public assignTo: number = 1;
   public statusData: string[] = ["Open", "InProgress", "Done"];
   public clinicsData: any[] = [];
@@ -129,16 +131,18 @@ export class TasksComponent implements AfterViewInit, OnInit {
   ) {
     this.getUsers();
     this.getClinics();
+    // this.date1 =new FormControl(moment("10-20-2020", "MM-DD-YYYY")); 
   }
   ngOnInit() {} //
   ngAfterViewInit() {
     // This is for the topbar search
     this.user_type = this._cookieService.get("user_type");
-    this.display_name = this._cookieService.get("display_name");
-
+    
     // This is for the megamenu
   }
-
+  openDatepicker() {
+    this.pickerDirective.open();
+  }
   radioChange(event) {
     this.assignTo = Number(event.target.value);
   }
@@ -183,8 +187,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
               });
             }
           });
-        }
-        console.log('this.assigneeData',this.assigneeData)
+        }        
       },
       (error) => {}
     );
