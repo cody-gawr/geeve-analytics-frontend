@@ -103,6 +103,8 @@ onSubmit() {
               this.errorLoginText  =res.data;
            }
         }, error => {
+          this.toastr.error('This link has expired');
+          this.router.navigate(['/login']);
     });
       }
   }

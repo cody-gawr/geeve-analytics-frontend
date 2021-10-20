@@ -170,8 +170,9 @@ tr.Due_Date {
     position: relative;
 }
 .Due_Date input {
-    border-bottom: 1px solid #5a5656;
+    border: 0px solid;
     padding: 10px 0;
+    border-bottom: 1px solid #8d8989;
 }
 .Due_Date button.mat-icon-button {
     position: absolute;
