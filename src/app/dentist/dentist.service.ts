@@ -60,7 +60,7 @@ export class DentistService {
     }
 
     // Update Dentist
-    updateDentists(dentist_id, value,clinic_id, isActive = null,jeeveId=''): Observable<any> {
+    updateDentists(dentist_id, value,clinic_id, isActive = null,jeeveId='',updatedColumn=''): Observable<any> {
     const formData = new FormData();
 
     formData.append('clinic_id',clinic_id);
@@ -69,8 +69,11 @@ export class DentistService {
     if(jeeveId != ''){
         jeeveId = (jeeveId == 'null')? '' : jeeveId;
         formData.append('jeeve_id',jeeveId);
-    }   
-    if(typeof(value) != 'undefined' && value != '') {
+    }  
+    if(updatedColumn != ''){
+        formData.append(updatedColumn,value);
+    } 
+    if(typeof(value) != 'undefined' && value != '' && updatedColumn == '') {
       formData.append('name', value);
     }
     if(isActive != null){
