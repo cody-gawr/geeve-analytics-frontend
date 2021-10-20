@@ -1,0 +1,157 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title> Customisations </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <mat-card-content>
+    <form
+      [formGroup]="form"
+      class="basic-form sa_forms_design"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="working-days">
+        <h4 class="clinic-settings-form-title">For Morning Huddle</h4>
+        <div
+          class="clinic-setting-form"
+          fxLayout="row wrap"
+          fxLayoutGap="20px"
+          fxLayoutGap.md="0px"
+          fxLayoutGap.sm="0px"
+          fxLayoutGap.xs="0"
+        >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ huddles.case_1 }}"
+            name="case_1"
+            (change)="toggleHuddle($event)"
+            >Case 1</mat-slide-toggle
+          >
+
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ huddles.case_2 }}"
+            name="case_2"
+            (change)="toggleHuddle($event)"
+            >Case 2
+          </mat-slide-toggle>
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ huddles.case_3 }}"
+            name="case_3"
+            (change)="toggleHuddle($event)"
+            >Case 3</mat-slide-toggle
+          >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ huddles.case_4 }}"
+            name="case_4"
+            (change)="toggleHuddle($event)"
+            >Case 4</mat-slide-toggle
+          >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ huddles.case_5 }}"
+            name="case_5"
+            (change)="toggleHuddle($event)"
+            >Case 5</mat-slide-toggle
+          >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ huddles.case_6 }}"
+            name="case_6"
+            (change)="toggleHuddle($event)"
+            >Case 6</mat-slide-toggle
+          >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ huddles.case_7 }}"
+            name="case_7"
+            (change)="toggleHuddle($event)"
+            >Case 7</mat-slide-toggle
+          >
+        </div>
+      </div>
+      <div class="working-days">
+        <h4 class="clinic-settings-form-title">Dashbords</h4>
+        <div
+          class="clinic-setting-form"
+          fxLayout="row wrap"
+          fxLayoutGap="20px"
+          fxLayoutGap.md="0px"
+          fxLayoutGap.sm="0px"
+          fxLayoutGap.xs="0"
+        >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ dashboard.dash_1 }}"
+            name="dash_1"
+            (change)="toggleDashboard($event)"
+            >Dashbord 1</mat-slide-toggle
+          >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ dashboard.dash_2 }}"
+            name="dash_2"
+            (change)="toggleDashboard($event)"
+            >Dashbord 2</mat-slide-toggle
+          >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ dashboard.dash_3 }}"
+            name="dash_3"
+            (change)="toggleDashboard($event)"
+            >Dashbord 3</mat-slide-toggle
+          >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ dashboard.dash_4 }}"
+            name="dash_4"
+            (change)="toggleDashboard($event)"
+            >Dashbord 4</mat-slide-toggle
+          >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ dashboard.dash_5 }}"
+            name="dash_5"
+            (change)="toggleDashboard($event)"
+            >Dashbord 5</mat-slide-toggle
+          >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ dashboard.dash_6 }}"
+            name="dash_6"
+            (change)="toggleDashboard($event)"
+            >Dashbord 6</mat-slide-toggle
+          >
+          <mat-slide-toggle
+            fxFlex.md="30"
+            fxFlex.xs="100"
+            checked="{{ dashboard.dash_7 }}"
+            name="dash_7"
+            (change)="toggleDashboard($event)"
+            >Dashbord 7</mat-slide-toggle
+          >
+        </div>
+      </div>
+
+      <div class="sa-form-group-btn">
+        <button class="save-button" type="submit" [disabled]="!form.valid">
+          Save
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-expansion-panel>

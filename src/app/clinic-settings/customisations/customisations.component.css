@@ -1,0 +1,77 @@
+.clour-span-aqua,.colour option[value="aqua"], .mat-select.aqua .mat-select-value {
+    background-color: #54D2FF;
+}
+.clour-span-aqua,.colour option[value="black"], .mat-select.black .mat-select-value {
+    background-color: #000000;
+}
+.colour option[value="black"],.colour option[value="maroon"], .colour option[value="blue"], .colour option[value="navy"]{
+    color: #ffffff;
+}
+.clour-span-blue,.colour option[value="blue"], .mat-select.blue .mat-select-value {
+    background-color: #5689C9;
+}
+.clour-span-chartreuse,.colour option[value="chartreuse"], .mat-select.chartreuse .mat-select-value {
+    background-color: #7fff00;
+}
+.clour-span-chocolate,.colour option[value="chocolate"], .mat-select.chocolate .mat-select-value {
+    background-color: #d2691e;
+}
+.clour-span-cyan,.colour option[value="cyan"], .mat-select.cyan .mat-select-value {
+    background-color: #b0fffa;
+}
+.clour-span-navy,.colour option[value="navy"], .mat-select.navy .mat-select-value {
+    background-color: #000080;
+}
+.clour-span-gray,.colour option[value="gray"], .mat-select.gray .mat-select-value {
+    background-color: #4f504f;
+}
+.clour-span-green,.colour option[value="green"], .mat-select.green .mat-select-value {
+    background-color: #6edbbb;
+}
+
+.clour-span-maroon,.colour option[value="maroon"], .mat-select.maroon .mat-select-value {
+    background-color: #800000;
+}
+
+.clour-span-olive,.colour option[value="olive"], .mat-select.olive .mat-select-value {
+    background-color: #808000;
+}
+.clour-span-orange,.colour option[value="orange"], .mat-select.orange .mat-select-value {
+    background-color: #FFE4E4;
+}
+.clour-span-red,.colour option[value="red"], .mat-select.red .mat-select-value {
+    background-color: #ffb4b5;
+}
+.clour-span-silver,.colour option[value="silver"], .mat-select.silver .mat-select-value {
+    background-color: #c0c0c0;
+}
+.clour-span-teal,.colour option[value="teal"], .mat-select.teal .mat-select-value {
+    background-color: #008080;
+}
+.clour-span-violet,.colour option[value="violet"], .mat-select.violet .mat-select-value {
+    background-color: #E58DD7;
+}
+.clour-span-white,.colour option[value="white"], .mat-select.white .mat-select-value {
+    background-color: #ffffff;
+}
+.clour-span-yellow,.colour option[value="yellow"], .mat-select.yellow .mat-select-value {
+    background-color: #fffcac;
+}
+
+.scriptsColors .mat-select-value-text span{
+   background: #ffffff;
+    padding: 0 24px 2px 0px;
+    width: 77px;
+    display: block;
+}
+
+.colour option{
+    font-size: 18px;
+}
+.clour-span {height: 10px;width: 50px;display: inline-block;border: 1px solid #000;margin-left: 10px;}
+span.charLimit {
+    float: right;
+    margin-right: 5px;
+    color: #b5b0b0;
+    font-size: 11px;
+}
