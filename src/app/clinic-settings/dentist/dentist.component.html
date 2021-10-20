@@ -84,9 +84,32 @@
                   </div>
           </td>
         </ng-container>
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header >Position
+            <div class="info-button">
+                <div class="info-icon-container">
+                  <img [tooltip]="{title:'Position', info: 'Configure whether each provider is a Dentist or OHT',direction: 'left'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </div>
+              </div>
+          </th>
+          <td mat-cell *matCellDef="let element; let i=index">            
+             <div class="jeeveProviderIdDrop sa_forms_design">
+                    <select placeholder="None"  id="setNote" name="position" (change)="updateValue($event, 'position', i,element.providerId,element.name)">
+                      <option [selected]="element.position == 1" value="1">Dentist</option>
+                      <option [selected]="element.position == 2" value="2">Hygienist</option>
+                    </select>
+                  </div>
+          </td>
+        </ng-container>
 
         <ng-container matColumnDef="is_active">
-          <th mat-header-cell *matHeaderCellDef>Active</th>
+          <th mat-header-cell *matHeaderCellDef>Show in Dropdown
+          <div class="info-button">
+                <div class="info-icon-container">
+                  <img [tooltip]="{title:'Show in Dropdown', info: 'This setting controls whether the provider is displayed in the dropdown menu on the Clinician dashboards',direction: 'left'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </div>
+              </div>
+          </th>
           <td mat-cell *matCellDef="let element; let i=index">            
             <input [value]="element.is_active" type="checkbox" [checked] = "element.is_active == 1 ? true : false" (change)="updateValue($event, 'is_active', i,element.providerId,element.name)"/>        
           </td> 

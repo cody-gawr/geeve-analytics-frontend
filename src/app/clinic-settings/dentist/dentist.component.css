@@ -6,3 +6,8 @@
 .jeeveProviderIdDrop{
     width: 180px;
 }
+
+.info-button {
+    display: inline-block;
+    padding: 0 6px;
+}

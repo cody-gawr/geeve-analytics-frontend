@@ -10,6 +10,7 @@ import { DentistService } from '../../dentist/dentist.service';
 import { BaseComponent } from '../base/base.component';
 import {MatSort} from '@angular/material/sort';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
+import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
 /************* Add Jeeve Names ***********/
   
 @Component({
@@ -68,7 +69,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['providerId', 'name','jeeve_id','is_active'];
+  displayedColumns: string[] = ['providerId', 'name','jeeve_id','position','is_active'];
   jeeveProviderIds: any = [];
   editing = {};
   
@@ -185,8 +186,16 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
     {
       return false;
     }
+    let updatedColumn = '';
+    if(column == 'position')
+    {
+      updatedColumn = 'position';
+      updatedValue = event.target.value;           
+    }
+
     if(column == 'name')
     {
+       updatedColumn = 'name';
       updatedValue = event.target.value;           
     }
     var jeeveId = '';
@@ -213,7 +222,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
         isActive = 1;
       }
     }
-    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive,jeeveId)
+    this.dentistService.updateDentists(providerId, updatedValue, this.clinic_id$.value, isActive,jeeveId,updatedColumn)
       .pipe(
         takeUntil(this.destroyed$)
       )
