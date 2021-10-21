@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { ITooltipData } from "../shared/tooltip/tooltip.directive";
 import { AppConstants } from "../app.constants";
+import { environment } from "../../environments/environment";
 @Component({
   selector: "app-formlayout",
   templateUrl: "./clinic-settings.component.html",
@@ -18,6 +19,7 @@ import { AppConstants } from "../app.constants";
  *AUTHOR - Teq Mavens
  */
 export class ClinicSettingsComponent implements OnInit {
+   public apiUrl = environment.apiUrl;
   public fileToUpload;
   public form: FormGroup;
   public errorLogin = false;
