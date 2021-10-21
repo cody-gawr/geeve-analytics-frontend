@@ -24,6 +24,7 @@ import {
 import { ClinicSettingsService } from "../clinic-settings.service";
 import { ClinicianAnalysisService } from "../../dashboards/cliniciananalysis/cliniciananalysis.service";
 import Swal from "sweetalert2";
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: "app-customisations-settings",
@@ -35,6 +36,7 @@ export class CustomisationsComponent
   extends BaseComponent
   implements AfterViewInit
 {
+  public apiUrl = environment.apiUrl;
   clinic_id$ = new BehaviorSubject<any>(null);
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);

@@ -659,7 +659,7 @@
     </mat-card-content>
   </mat-expansion-panel>
 
-  <app-customisations-settings [clinicId]="id"></app-customisations-settings>
+  <app-customisations-settings [clinicId]="id" *ngIf="apiUrl.includes('test')" ></app-customisations-settings>
   <app-scripts-settings [clinicId]="id"></app-scripts-settings>
   <app-goals-settings [clinicId]="id"></app-goals-settings>
   <app-dentist-settings [clinicId]="id"></app-dentist-settings>
