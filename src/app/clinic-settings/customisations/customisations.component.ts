@@ -61,6 +61,10 @@ export class CustomisationsComponent
     dash_7: true,
   };
 
+  public recallCodes: string = "R,r"; //default value
+  public xrayMonths: number = 24; //default value
+  public opgMonths: number = 60; //default value
+
   constructor(
     private _cookieService: CookieService,
     private customisationsService: CustomisationsService,
@@ -73,11 +77,35 @@ export class CustomisationsComponent
   }
   ngOnInit() {
     this.form = this.fb.group({
-      phoneNo: [null],
+      recall_codes: [null, Validators.compose([Validators.required])],
+      xray_months: [null, Validators.compose([Validators.required])],
+      opg_months: [null, Validators.compose([Validators.required])],
     });
+    this.getCustomiseSettings();
   }
 
   ngAfterViewInit() {}
+
+  getCustomiseSettings() {
+    this.customisationsService
+      .getCustomiseSettings(this.clinic_id$.value)
+      .subscribe(
+        (res) => {
+          $(".ajax-loader").hide();
+          if (res.message == "success") {
+            if (res.data) {
+              this.recallCodes = res.data.recall_codes;
+              this.xrayMonths = res.data.xray_months;
+              this.opgMonths = res.data.opg_months;
+            }
+          }
+        },
+        (error) => {
+          console.log("error", error);
+          $(".ajax-loader").hide();
+        }
+      );
+  }
 
   public toggleHuddle(event) {
     if (event.source.name == "case_1") {
@@ -131,19 +159,29 @@ export class CustomisationsComponent
 
   onSubmit() {
     $(".ajax-loader").show();
-    console.log("submitted!!");
-    setTimeout(() => {
-      $(".ajax-loader").hide();
-    }, 400);
-    // this.contactName = this.form.value.contactName;
-    // let huddles = JSON.stringify(this.huddles);
-    let huddles = this.huddles;
-    // let dashboard = JSON.stringify(this.dashboard);
-    let dashboard = this.dashboard;
-    let data = { huddles: huddles, dashboard: dashboard };
+
+    let data = {
+      clinic_id: Number(this.clinic_id$.value),
+      xray_months: this.form.value.xray_months,
+      opg_months: this.form.value.opg_months,
+      recall_codes: this.form.value.recall_codes,
+    };
+
     this.customisationsService.updateCustomiseSettings(data).subscribe(
-      (res) => {},
-      (error) => {}
+      (res) => {
+        $(".ajax-loader").hide();
+        if (res.message == "success") {
+          if (res.data) {
+            this.recallCodes = res.data.recall_codes;
+            this.xrayMonths = res.data.xray_months;
+            this.opgMonths = res.data.opg_months;
+          }
+        }
+      },
+      (error) => {
+        console.log("error", error);
+        $(".ajax-loader").hide();
+      }
     );
     // console.log("huddles", huddles);
     // console.log("dashboard", dashboard);

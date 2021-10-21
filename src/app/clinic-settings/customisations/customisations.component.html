@@ -9,76 +9,255 @@
       class="basic-form sa_forms_design"
       (ngSubmit)="onSubmit()"
     >
-      <div class="working-days">
-        <h4 class="clinic-settings-form-title">For Morning Huddle</h4>
+      <h4 class="clinic-settings-form-title">For Morning Huddle</h4>
+      <div
+        fxLayout="row wrap"
+        fxLayoutGap="20px"
+        fxLayoutGap.md="0px"
+        fxLayoutGap.sm="0px"
+        fxLayoutGap.xs="0"
+      >
         <div
           class="clinic-setting-form"
-          fxLayout="row wrap"
-          fxLayoutGap="20px"
-          fxLayoutGap.md="0px"
-          fxLayoutGap.sm="0px"
-          fxLayoutGap.xs="0"
+          fxFlex.md="100"
+          fxFlex.sm="100"
+          fxFlex.xs="100"
+          style="width: 100%"
         >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ huddles.case_1 }}"
-            name="case_1"
-            (change)="toggleHuddle($event)"
-            >Case 1</mat-slide-toggle
+          <div
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="20px"
+            fxLayoutGap.sm="20px"
+            fxLayoutGap.xs="0"
           >
+            <div
+              fxFlex="calc(49% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"
+            >
+              <div class="sa-form-group">
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['xray_months']"
+                  [(ngModel)]="xrayMonths"
+                  style="width: 70px"
+                />
+                <span style="padding: 0 10px">Xray Overdue</span> 
+                  <div class="info-button">
+                  <div class="info-icon-container">
+                    <img
+                      [tooltip]="{
+                        title: 'Title comes here',
+                        info: 'Description',
+                        direction: 'left'
+                      }"
+                      src="../assets/images/info-icon.png"
+                      alt="info-icon"
+                      class="info-icon"
+                    />
+                  </div>
+                </div>
+                <small
+                  *ngIf="
+                    form.controls['xray_months'].hasError('required') &&
+                    form.controls['xray_months'].touched
+                  "
+                  class="text-danger support-text"
+                  style="float: left; width: 100%"
+                  >Field is Required.</small
+                >
+              </div>
+            </div>
+            <div
+              fxFlex="calc(49% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"
+            >
+              <div class="sa-form-group">
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['opg_months']"
+                  [(ngModel)]="opgMonths"
+                  style="width: 70px"
+                />
+                <span style="padding: 0 10px">OPG Overdue
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img
+                        [tooltip]="{
+                          title: 'Title comes here',
+                          info: 'Description',
+                          direction: 'right'
+                        }"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
+                        class="info-icon"
+                      />
+                    </div>
+                  </div>
+                </span>
+                <small
+                  *ngIf="
+                    form.controls['opg_months'].hasError('required') &&
+                    form.controls['opg_months'].touched
+                  "
+                  class="text-danger support-text"
+                  style="float: left; width: 100%"
+                  >Field is Required.</small
+                >
+              </div>
+            </div>
+          </div>
 
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ huddles.case_2 }}"
-            name="case_2"
-            (change)="toggleHuddle($event)"
-            >Case 2
-          </mat-slide-toggle>
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ huddles.case_3 }}"
-            name="case_3"
-            (change)="toggleHuddle($event)"
-            >Case 3</mat-slide-toggle
+          <div
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="20px"
+            fxLayoutGap.sm="20px"
+            fxLayoutGap.xs="0"
           >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ huddles.case_4 }}"
-            name="case_4"
-            (change)="toggleHuddle($event)"
-            >Case 4</mat-slide-toggle
-          >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ huddles.case_5 }}"
-            name="case_5"
-            (change)="toggleHuddle($event)"
-            >Case 5</mat-slide-toggle
-          >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ huddles.case_6 }}"
-            name="case_6"
-            (change)="toggleHuddle($event)"
-            >Case 6</mat-slide-toggle
-          >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ huddles.case_7 }}"
-            name="case_7"
-            (change)="toggleHuddle($event)"
-            >Case 7</mat-slide-toggle
-          >
+            <div
+              fxFlex="calc(24% - 10px)"
+              fxFlex.md="calc(24% - 10px)"
+              fxFlex.sm="calc(24% - 10px)"
+              fxFlex.xs="100"
+            >
+              <div class="sa-form-group">
+                <label>Recall Codes 
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img
+                        [tooltip]="{
+                          title: 'Title comes here',
+                          info: 'Description',
+                          direction: 'left'
+                        }"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
+                        class="info-icon"
+                      />
+                    </div>
+                  </div>
+                </label>
+                <input
+                  placeholder=""
+                  [formControl]="form.controls['recall_codes']"
+                  [(ngModel)]="recallCodes"
+                />
+                <small
+                  *ngIf="
+                    form.controls['recall_codes'].hasError('required') &&
+                    form.controls['recall_codes'].touched
+                  "
+                  class="text-danger support-text"
+                  >Recall Codes is Required.</small
+                >
+              </div>
+            </div>
+            <div
+              fxFlex="calc(49% - 10px)"
+              fxFlex.md="calc(49% - 10px)"
+              fxFlex.sm="calc(49% - 10px)"
+              fxFlex.xs="100"
+            ></div>
+          </div>
         </div>
       </div>
-      <div class="working-days">
+      <!-- <div class="gray_area">
+        <div class="working-days">
+          <h4 class="clinic-settings-form-title">
+            For Morning Huddle
+            <div class="info-button">
+              <div class="info-icon-container">
+                <img
+                  [tooltip]="{
+                    title: 'Title comes here',
+                    info: 'value comes here',
+                    direction: 'right'
+                  }"
+                  src="../assets/images/info-icon.png"
+                  alt="info-icon"
+                  class="info-icon"
+                />
+              </div>
+            </div>
+          </h4>
+          <div
+            class="clinic-setting-form"
+            fxLayout="row wrap"
+            fxLayoutGap="20px"
+            fxLayoutGap.md="0px"
+            fxLayoutGap.sm="0px"
+            fxLayoutGap.xs="0"
+          >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ huddles.case_1 }}"
+              name="case_1"
+              (change)="toggleHuddle($event)"
+              >Case 1</mat-slide-toggle
+            >
+
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ huddles.case_2 }}"
+              name="case_2"
+              (change)="toggleHuddle($event)"
+              >Case 2
+            </mat-slide-toggle>
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ huddles.case_3 }}"
+              name="case_3"
+              (change)="toggleHuddle($event)"
+              >Case 3</mat-slide-toggle
+            >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ huddles.case_4 }}"
+              name="case_4"
+              (change)="toggleHuddle($event)"
+              >Case 4</mat-slide-toggle
+            >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ huddles.case_5 }}"
+              name="case_5"
+              (change)="toggleHuddle($event)"
+              >Case 5</mat-slide-toggle
+            >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ huddles.case_6 }}"
+              name="case_6"
+              (change)="toggleHuddle($event)"
+              >Case 6</mat-slide-toggle
+            >
+            <mat-slide-toggle
+              fxFlex.md="30"
+              fxFlex.xs="100"
+              checked="{{ huddles.case_7 }}"
+              name="case_7"
+              (change)="toggleHuddle($event)"
+              >Case 7</mat-slide-toggle
+            >
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="working-days">
         <h4 class="clinic-settings-form-title">Dashbords</h4>
         <div
           class="clinic-setting-form"
@@ -145,7 +324,7 @@
             >Dashbord 7</mat-slide-toggle
           >
         </div>
-      </div>
+      </div> -->
 
       <div class="sa-form-group-btn">
         <button class="save-button" type="submit" [disabled]="!form.valid">
