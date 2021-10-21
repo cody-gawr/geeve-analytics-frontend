@@ -75,3 +75,6 @@ span.charLimit {
     color: #b5b0b0;
     font-size: 11px;
 }
+.info-button {
+    display: inline-block;
+}
