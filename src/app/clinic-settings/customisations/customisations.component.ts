@@ -56,6 +56,7 @@ export class CustomisationsComponent
     // console.log('test ',this.clinic_id$.value)
     // console.log('test ',this.clinic_id$)
   }
+
   ngOnInit() {
     this.form = this.fb.group({
       recall_codes: [null, Validators.compose([Validators.required])],
@@ -115,6 +116,7 @@ export class CustomisationsComponent
       },
       (error) => {
         console.log("error", error);
+        this.toastr.error(error);
         $(".ajax-loader").hide();
       }
     );
