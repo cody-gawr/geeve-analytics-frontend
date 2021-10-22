@@ -800,7 +800,7 @@ callbacks: {
          var self = this;
          setTimeout(function(){
             self.mkNewPatientsByReferralLoader = false;
-         },500);
+         },1000);
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
@@ -878,7 +878,7 @@ callbacks: {
           var self =  this;
           setTimeout(function(){
              self.mkRevenueByReferralLoader = false;
-          },400);      
+          },1500);      
        }
     }, error => {
       this.warningMessage = "Please Provide Valid Inputs!";
