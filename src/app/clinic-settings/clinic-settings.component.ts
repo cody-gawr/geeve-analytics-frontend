@@ -334,6 +334,7 @@ export class ClinicSettingsComponent implements OnInit {
         }
       },
       (error) => {
+        this.getXeroLink();
         this.warningMessage = "Please Provide Valid Inputs!";
       }
     );
