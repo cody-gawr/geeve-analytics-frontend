@@ -357,7 +357,10 @@
       </form>
     </mat-card-content>
   </mat-expansion-panel>
-  <app-customisations-settings [clinicId]="id" *ngIf="apiUrl.includes('test')" ></app-customisations-settings>
+  <app-customisations-settings
+    [clinicId]="id"
+    *ngIf="apiUrl.includes('test')"
+  ></app-customisations-settings>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title> Followups</mat-panel-title>
@@ -659,7 +662,6 @@
     </mat-card-content>
   </mat-expansion-panel>
 
-  
   <app-scripts-settings [clinicId]="id"></app-scripts-settings>
   <app-goals-settings [clinicId]="id"></app-goals-settings>
   <app-dentist-settings [clinicId]="id"></app-dentist-settings>

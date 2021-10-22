@@ -8,7 +8,7 @@
       [formGroup]="form"
       class="basic-form sa_forms_design"
       (ngSubmit)="onSubmit()"
-    >   
+    >
       <div
         fxLayout="row wrap"
         fxLayoutGap="20px"
@@ -16,6 +16,7 @@
         fxLayoutGap.sm="0px"
         fxLayoutGap.xs="0"
       >
+        <h4 class="clinic-settings-form-title">For Morning Huddle</h4>
         <div
           class="clinic-setting-form"
           fxFlex.md="100"
@@ -45,8 +46,8 @@
                   [(ngModel)]="xrayMonths"
                   style="width: 70px"
                 />
-                <span style="padding: 0 10px">Xray Overdue</span> 
-                  <div class="info-button">
+                <span style="padding: 0 10px">Xray Overdue</span>
+                <div class="info-button">
                   <div class="info-icon-container">
                     <img
                       [tooltip]="{
@@ -86,7 +87,8 @@
                   [(ngModel)]="opgMonths"
                   style="width: 70px"
                 />
-                <span style="padding: 0 10px">OPG Overdue
+                <span style="padding: 0 10px"
+                  >OPG Overdue
                   <div class="info-button">
                     <div class="info-icon-container">
                       <img
@@ -129,7 +131,8 @@
               fxFlex.xs="100"
             >
               <div class="sa-form-group">
-                <label>Recall Codes 
+                <label
+                  >Recall Codes
                   <div class="info-button">
                     <div class="info-icon-container">
                       <img
@@ -169,25 +172,9 @@
           </div>
         </div>
       </div>
-      <!-- <div class="gray_area">
+      <div class="gray_area">
         <div class="working-days">
-          <h4 class="clinic-settings-form-title">
-            For Morning Huddle
-            <div class="info-button">
-              <div class="info-icon-container">
-                <img
-                  [tooltip]="{
-                    title: 'Title comes here',
-                    info: 'value comes here',
-                    direction: 'right'
-                  }"
-                  src="../assets/images/info-icon.png"
-                  alt="info-icon"
-                  class="info-icon"
-                />
-              </div>
-            </div>
-          </h4>
+          <h4 class="clinic-settings-form-title">Dashboards</h4>
           <div
             class="clinic-setting-form"
             fxLayout="row wrap"
@@ -199,63 +186,27 @@
             <mat-slide-toggle
               fxFlex.md="30"
               fxFlex.xs="100"
-              checked="{{ huddles.case_1 }}"
+              checked="true"
               name="case_1"
-              (change)="toggleHuddle($event)"
-              >Case 1</mat-slide-toggle
-            >
-
-            <mat-slide-toggle
-              fxFlex.md="30"
-              fxFlex.xs="100"
-              checked="{{ huddles.case_2 }}"
-              name="case_2"
-              (change)="toggleHuddle($event)"
-              >Case 2
-            </mat-slide-toggle>
-            <mat-slide-toggle
-              fxFlex.md="30"
-              fxFlex.xs="100"
-              checked="{{ huddles.case_3 }}"
-              name="case_3"
-              (change)="toggleHuddle($event)"
-              >Case 3</mat-slide-toggle
+              >Dashboard 1</mat-slide-toggle
             >
             <mat-slide-toggle
               fxFlex.md="30"
               fxFlex.xs="100"
-              checked="{{ huddles.case_4 }}"
-              name="case_4"
-              (change)="toggleHuddle($event)"
-              >Case 4</mat-slide-toggle
+              checked="true"
+              name="case_1"
+              >Dashboard 2</mat-slide-toggle
             >
             <mat-slide-toggle
               fxFlex.md="30"
               fxFlex.xs="100"
-              checked="{{ huddles.case_5 }}"
-              name="case_5"
-              (change)="toggleHuddle($event)"
-              >Case 5</mat-slide-toggle
-            >
-            <mat-slide-toggle
-              fxFlex.md="30"
-              fxFlex.xs="100"
-              checked="{{ huddles.case_6 }}"
-              name="case_6"
-              (change)="toggleHuddle($event)"
-              >Case 6</mat-slide-toggle
-            >
-            <mat-slide-toggle
-              fxFlex.md="30"
-              fxFlex.xs="100"
-              checked="{{ huddles.case_7 }}"
-              name="case_7"
-              (change)="toggleHuddle($event)"
-              >Case 7</mat-slide-toggle
+              checked="true"
+              name="case_1"
+              >Dashboard 3</mat-slide-toggle
             >
           </div>
         </div>
-      </div> -->
+      </div>
       <!-- <div class="working-days">
         <h4 class="clinic-settings-form-title">Dashbords</h4>
         <div
