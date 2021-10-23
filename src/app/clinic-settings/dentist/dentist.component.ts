@@ -11,6 +11,8 @@ import { BaseComponent } from '../base/base.component';
 import {MatSort} from '@angular/material/sort';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import { environment } from "../../../environments/environment";
+
 /************* Add Jeeve Names ***********/
   
 @Component({
@@ -63,6 +65,8 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
   }
+  public apiUrl = environment.apiUrl;
+
   public advanceOption:boolean = false;
   dentistPageSize = 10;
   dentistTablePages: number[] = [];
