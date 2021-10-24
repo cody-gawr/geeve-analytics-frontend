@@ -16,6 +16,8 @@ import { ForgotComponent } from './forgot/forgot.component';
 import { ResetComponent } from './reset/reset.component';
 import { LoginService } from '../login/login.service';
 import { RecaptchaModule } from "ng-recaptcha";
+import { RECAPTCHA_NONCE } from "ng-recaptcha";
+
 @NgModule({
   imports: [
     CommonModule,
@@ -31,7 +33,11 @@ import { RecaptchaModule } from "ng-recaptcha";
     RecaptchaModule
   ],
   providers: [
-    LoginService
+    LoginService,
+    {
+      provide: RECAPTCHA_NONCE,
+      useValue: "IbBkVHsydYPDr9AUKkljYF6z9kOl1361",
+    },
   ],  
   declarations: [
     ErrorComponent,
