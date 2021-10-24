@@ -73,7 +73,7 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   currentPage: number = 1;
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['providerId', 'name','jeeve_id','position','is_active'];
+  displayedColumns: string[] = ['providerId', 'name','jeeve_id', 'is_active'];
   jeeveProviderIds: any = [];
   editing = {};
   
@@ -191,11 +191,11 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       return false;
     }
     let updatedColumn = '';
-    if(column == 'position')
-    {
-      updatedColumn = 'position';
-      updatedValue = event.target.value;           
-    }
+    // if(column == 'position')
+    // {
+    //   updatedColumn = 'position';
+    //   updatedValue = event.target.value;           
+    // }
 
     if(column == 'name')
     {
