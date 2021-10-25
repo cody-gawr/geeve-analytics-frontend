@@ -5134,3 +5134,36 @@ mat-sidenav:hover .ps__thumb-y {
     }
 }
 
+
+/************ New Feature Toast **********/
+.new-feature.ngx-toastr {
+    background-image: none;
+    padding: 10px 13px !important;
+    display: block;
+    background-color: #fff;
+    color: #000!important;
+    border: 1px solid #049d7e;
+    box-shadow: -1px 1px 4px 1px #298f7c !important;
+}
+.new-feature.ngx-toastr ul {
+    margin: 0px !important;
+    padding: 0;
+}
+.new-feature.ngx-toastr li {
+   list-style: none;
+    padding: 2px 0;
+    margin: 0;
+    font-size: 15px;
+}
+
+.new-feature .toast-title {
+    font-size: 17px;
+    margin-bottom: 5px;
+    font-family: Gilroy-Medium;
+    font-weight: 500;
+        color: #049d7e;
+}
+.new-feature button.toast-close-button {
+    color: #000;
+}
+/************ New Feature Toast **********/

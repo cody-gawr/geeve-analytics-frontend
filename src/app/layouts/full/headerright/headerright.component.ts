@@ -1,7 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { CookieService,  CookieOptions  } from "ngx-cookie";
-
+import { ToastrService } from 'ngx-toastr';
 import { Router, NavigationEnd } from '@angular/router';
 import { HeaderService } from '../header/header.service';
 import { DentistService } from '../../../dentist/dentist.service';
@@ -29,7 +29,7 @@ export class AppHeaderrightComponent implements AfterViewInit  {
   showCompare:boolean = false;
   showDropDown:boolean = false;
   classUrl:string = '';
-  constructor(private _cookieService: CookieService,private rolesUsersService: RolesUsersService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router, private userIdle: UserIdleService,public constants: AppConstants) {
+  constructor(private _cookieService: CookieService,private rolesUsersService: RolesUsersService, private headerService: HeaderService, private  dentistService: DentistService,private router: Router, private userIdle: UserIdleService,public constants: AppConstants, private toastr: ToastrService) {
     this.getRoles();
       this.user_type_dentist = this._cookieService.get("user_type");
       this._routerSub = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((value) => {
@@ -64,6 +64,15 @@ export class AppHeaderrightComponent implements AfterViewInit  {
           // { 
           //}
     });
+
+      /************** New Features **************/
+      this.toastr.success('<ul><li>Features One</li><li>Features Two</li><li>Features Three</li><li>Features Four</li></ul>', 'New Features',{
+        closeButton : true,
+        disableTimeOut: true,
+        enableHtml: true,
+        toastClass: 'ngx-toastr new-feature'
+      });
+      /************** New Features **************/
   }
 
   async getRoles() {      
