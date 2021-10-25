@@ -11,6 +11,8 @@ import { BaseComponent } from '../base/base.component';
 import {MatSort} from '@angular/material/sort';
 import { MAT_DIALOG_DATA,MatDialogRef,MatDialog } from '@angular/material/dialog';
 import { ITooltipData } from '../../shared/tooltip/tooltip.directive';
+import { environment } from "../../../environments/environment";
+
 /************* Add Jeeve Names ***********/
   
 @Component({
@@ -63,13 +65,15 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
   @Input() set clinicId(value: any) {
     this.clinic_id$.next(value);
   }
+  public apiUrl = environment.apiUrl;
+
   public advanceOption:boolean = false;
   dentistPageSize = 10;
   dentistTablePages: number[] = [];
   currentPage: number = 1;
   dentistList = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = ['providerId', 'name','jeeve_id','position','is_active'];
+  displayedColumns: string[] = ['providerId', 'name','jeeve_id', 'is_active'];
   jeeveProviderIds: any = [];
   editing = {};
   
@@ -187,11 +191,11 @@ export class DentistComponent extends BaseComponent implements AfterViewInit {
       return false;
     }
     let updatedColumn = '';
-    if(column == 'position')
-    {
-      updatedColumn = 'position';
-      updatedValue = event.target.value;           
-    }
+    // if(column == 'position')
+    // {
+    //   updatedColumn = 'position';
+    //   updatedValue = event.target.value;           
+    // }
 
     if(column == 'name')
     {
