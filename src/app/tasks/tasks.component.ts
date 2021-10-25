@@ -6,7 +6,7 @@ import {
   AfterViewInit,
 } from "@angular/core";
 import { extend } from "@syncfusion/ej2-base";
-import {FormControl} from '@angular/forms';
+import { FormControl } from "@angular/forms";
 import { CookieService, CookieOptions } from "ngx-cookie";
 import {
   KanbanComponent,
@@ -22,12 +22,12 @@ import { TasksService } from "./tasks.service";
 import {
   NgxDaterangepickerMd,
   DaterangepickerComponent,
-  DaterangepickerDirective
+  DaterangepickerDirective,
 } from "ngx-daterangepicker-material";
-import * as moment from 'moment';
+import * as moment from "moment";
 import { DatePipe } from "@angular/common";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-
+import { environment } from "../../environments/environment";
 
 /**** Adoptor Updates ****/
 class CustomAdaptor extends UrlAdaptor {
@@ -48,7 +48,8 @@ class CustomAdaptor extends UrlAdaptor {
 
 /**** Class Start ****/
 export class TasksComponent implements AfterViewInit, OnInit {
-  @ViewChild(DaterangepickerDirective, { static: false }) pickerDirective: DaterangepickerDirective;
+  @ViewChild(DaterangepickerDirective, { static: false })
+  pickerDirective: DaterangepickerDirective;
   @ViewChild(DaterangepickerComponent, { static: false })
   datePicker: DaterangepickerComponent;
   @ViewChild("kanbanObj") kanbanObj: KanbanComponent; //kanban component bind
@@ -89,14 +90,12 @@ export class TasksComponent implements AfterViewInit, OnInit {
   getDatamanger() {
     this.dataManager = new DataManager({
       url:
-        "https://test-api.jeeve.com.au/test/analytics/KanbanTasks/ktGetTasks?clinic_id=" +
+        environment.apiUrl +
+        "/KanbanTasks/ktGetTasks?clinic_id=" +
         this.clinic_id,
-      insertUrl:
-        "https://test-api.jeeve.com.au/test/analytics/KanbanTasks/ktSaveTasks",
-      updateUrl:
-        "https://test-api.jeeve.com.au/test/analytics/KanbanTasks/ktSaveTasks",
-      removeUrl:
-        "https://test-api.jeeve.com.au/test/analytics/KanbanTasks/delete",
+      insertUrl: environment.apiUrl + "/KanbanTasks/ktSaveTasks",
+      updateUrl: environment.apiUrl + "/KanbanTasks/ktSaveTasks",
+      removeUrl: environment.apiUrl + "/KanbanTasks/delete",
       adaptor: new CustomAdaptor(),
       crossDomain: true,
       offline: false,
@@ -131,13 +130,13 @@ export class TasksComponent implements AfterViewInit, OnInit {
   ) {
     this.getUsers();
     this.getClinics();
-    // this.date1 =new FormControl(moment("10-20-2020", "MM-DD-YYYY")); 
+    // this.date1 =new FormControl(moment("10-20-2020", "MM-DD-YYYY"));
   }
   ngOnInit() {} //
   ngAfterViewInit() {
     // This is for the topbar search
     this.user_type = this._cookieService.get("user_type");
-    
+
     // This is for the megamenu
   }
   openDatepicker() {
@@ -187,7 +186,7 @@ export class TasksComponent implements AfterViewInit, OnInit {
               });
             }
           });
-        }        
+        }
       },
       (error) => {}
     );

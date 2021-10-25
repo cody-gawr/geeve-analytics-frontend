@@ -5,6 +5,7 @@ import { ClinicSettingsComponent } from "./clinic-settings.component";
 import { ClinicSettingsService } from "./clinic-settings.service";
 import { TaskService } from "./tasks/tasks.service";
 import { CustomisationsService } from "./customisations/customisations.service";
+import { ChartsService } from "./charts/charts.service";
 import { EquipmentsService } from "./equipments/equipments.service";
 import { ScriptsService } from "./scripts/scripts.service";
 import { SharedMatModule } from "../shared-mat.module";
@@ -29,6 +30,7 @@ import {
 } from "./equipments/equipments.component";
 import { GoalsComponent } from "./goals/goals.component";
 import { CustomisationsComponent } from "./customisations/customisations.component";
+import { ChartsComponent } from "./charts/charts.component";
 import { AutofocusDirective } from "./auto-focus.directive";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../shared/shared.module";
@@ -47,6 +49,7 @@ import { SharedModule } from "../shared/shared.module";
     CustomisationsService,
     EquipmentsService,
     ScriptsService,
+    ChartsService
   ],
   declarations: [
     ClinicSettingsComponent,
@@ -63,6 +66,7 @@ import { SharedModule } from "../shared/shared.module";
     DialogOverviewExampleComponent,
     AddScriptsComponent,
     EquipmentComponent,
+    ChartsComponent
   ],
   entryComponents: [
     DialogOverviewExampleDialogComponent,
@@ -78,6 +82,7 @@ import { SharedModule } from "../shared/shared.module";
     AlertsComponent,
     TasksComponent,
     ScriptsComponent,
+    ChartsComponent
   ],
 })
 export class ClinicSettingsModule {}

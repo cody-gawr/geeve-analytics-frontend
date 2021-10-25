@@ -1,0 +1,151 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Dentists
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div class="row" style="display: flow-root;">
+    
+  <div style="float: left;width: 330px;">
+    <mat-form-field appearance="fill" class="denstist-search-form-field">
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        type="search"
+        placeholder="Search here..."
+        class="search-input"
+        (keyup)="doFilter($event.target.value)"
+      />
+    </mat-form-field>
+  </div>
+ 
+  <div class="sa-form-group-btn" style="margin: 7px 0px 0 30px;" *ngIf="userPlan != 'lite'">
+        <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" name="advanced_options" (change)="advanceToggle($event)"> 
+          <span><strong>Advanced Options</strong></span>
+        </mat-slide-toggle>   
+  </div>
+   <div class="sa-form-group-btn" *ngIf="advanceOption">
+     <button class="save-button" type="submit" style="margin: 0;" (click) ="openSetJeeveName()">Set Jeeve Names</button>
+  </div>
+
+  </div>    
+  <div class="DentistListSecRow mh-table patient_data-table_responsive">
+    <div class="card-loading d-none">
+      <img class="tableLoader" src="../../assets/images/loader.gif" />
+    </div>
+    <div class="respopnsive-table-set">
+      <table mat-table [dataSource]="dentistList" class="mat-elevation-z8" matSort>
+        <!-- ProviderID Column -->
+        <ng-container matColumnDef="providerId">
+          <th mat-header-cell *matHeaderCellDef>ProviderID</th>
+          <td mat-cell *matCellDef="let element; let i=index">
+            {{ element.providerId }}
+            <!-- <input readonly (dblclick)="enableEditing(i, 'providerId')" *ngIf="!editing[i+ '-providerId']"
+              [value]="element.providerId"
+            />
+            <input 
+              autofocus 
+              (blur)="updateValue($event, 'providerId', i)"
+              *ngIf="editing[i+ '-providerId']" 
+              type="text" 
+              [value]="element.providerId"
+            /> -->
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th> 
+          <td mat-cell *matCellDef="let element; let i=index">            
+            <input readonly (dblclick)="enableEditing(i, 'name')" *ngIf="!editing[i+ '-name']"
+              [value]="element.name"
+            />
+            <input 
+              autoFocus 
+              (blur)="updateValue($event, 'name', i,element.providerId,element.name)"
+              (keyup)="updateValue($event, 'name', i,element.providerId,element.name)"
+              *ngIf="editing[i+ '-name']" 
+              type="text" 
+              [value]="element.name"
+            />
+          </td>
+        </ng-container>
+
+         <ng-container matColumnDef="jeeve_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header  [ngClass] =" advanceOption ? '' : 'hide' ">Jeeve Provider ID</th>
+          <td mat-cell *matCellDef="let element; let i=index"  [ngClass] =" advanceOption ? '' : 'hide' ">            
+             <div class="jeeveProviderIdDrop sa_forms_design">
+                    <select placeholder="None"  id="setNote"
+                      (change)="updateValue($event, 'jeeve_id', i,element.providerId,element.name)">
+                      <option value="null">None</option>
+                      <option [selected]="element.jeeve_id == jeeveProviderId.id" value="{{jeeveProviderId.id}}" *ngFor="let jeeveProviderId of jeeveProviderIds">{{jeeveProviderId.name}}</option>
+                    </select>
+                  </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header >Position
+            <div class="info-button">
+                <div class="info-icon-container">
+                  <img [tooltip]="{title:'Position', info: 'Configure whether each provider is a Dentist or OHT',direction: 'left'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </div>
+              </div>
+          </th>
+          <td mat-cell *matCellDef="let element; let i=index">            
+             <div class="jeeveProviderIdDrop sa_forms_design">
+                    <select placeholder="None"  id="setNote" name="position" (change)="updateValue($event, 'position', i,element.providerId,element.name)">
+                      <option [selected]="element.position == 1" value="1">Dentist</option>
+                      <option [selected]="element.position == 2" value="2">Hygienist</option>
+                    </select>
+                  </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="is_active">
+          <th mat-header-cell *matHeaderCellDef>Show in Dropdown
+          <div class="info-button">
+                <div class="info-icon-container">
+                  <img [tooltip]="{title:'Show in Dropdown', info: 'This setting controls whether the provider is displayed in the dropdown menu on the Clinician dashboards',direction: 'left'}" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                </div>
+              </div>
+          </th>
+          <td mat-cell *matCellDef="let element; let i=index">            
+            <input [value]="element.is_active" type="checkbox" [checked] = "element.is_active == 1 ? true : false" (change)="updateValue($event, 'is_active', i,element.providerId,element.name)"/>        
+          </td> 
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        hidePageSize
+        [pageSize]="dentistPageSize"
+        [style.display]="'none'"
+      ></mat-paginator>
+    </div>
+
+    <ul
+      class="main_pagination settings-table-pagination"
+      *ngIf="dentistTablePages.length"
+    >
+      <li *ngFor="let page of dentistTablePages">
+        <button
+          [ngClass]="{ active: page === currentPage, page: true }"
+          (click)="handlePageChange(page)"
+        >
+          {{ page }}
+        </button>
+      </li>
+    </ul>
+
+    <div class="data-loading-main">
+      <div class="no-data" [ngClass]="dentistList.data.length == 0 && dentistListLoading ? 'show' : 'hide'">
+        No Data found
+      </div>
+      <div class="loader" [ngClass]="dentistList.data.length == 0 && !dentistListLoading ? 'show' : 'hide'">
+        <img class="tableLoader" src="../../../assets/images/loader.gif" />
+      </div>
+    </div>
+  </div>
+</mat-expansion-panel>

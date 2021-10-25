@@ -1,0 +1,13 @@
+.DentistListSecRow td input[readonly] {
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.jeeveProviderIdDrop{
+    width: 180px;
+}
+
+.info-button {
+    display: inline-block;
+    padding: 0 6px;
+}
