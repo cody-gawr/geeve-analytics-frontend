@@ -94,6 +94,7 @@ onSubmit() {
       datares['login_status'] = res.data.data.status;        
       datares['display_name'] = res.data.data.display_name;  
       datares['dentistid'] = res.data.data.dentist_id;        
+      datares['features_dismissed'] = res.data.data.features_dismissed;        
       let opts = this.constants.cookieOpt as CookieOptions;
       var nextStep = (parseInt(res.data.data.stepper_status) + 1).toString();
       this._cookieService.put("stepper", nextStep , opts);
@@ -107,6 +108,7 @@ onSubmit() {
       this._cookieService.put("user_type", datares['user_type'], opts);
       this._cookieService.put("login_status", datares['login_status'], opts);
       this._cookieService.put("display_name", datares['display_name'], opts);
+      this._cookieService.put("features_dismissed", datares['features_dismissed'], opts);
       /*this._cookieService.put("user_image", datares['user_image'], opts);        */
       if(datares['user_type'] != '2') {
         this._cookieService.put("userid", datares['parentid'], opts);
