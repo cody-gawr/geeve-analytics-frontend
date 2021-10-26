@@ -1,32 +1,16 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
     <mat-panel-title>
-      Dentists
+      Charts
     </mat-panel-title>
   </mat-expansion-panel-header>
 
   <div class="row" style="display: flow-root;">
     
-  <div style="float: left;width: 330px;">
-    <mat-form-field appearance="fill" class="denstist-search-form-field">
-      <mat-icon matPrefix>search</mat-icon>
-      <input
-        matInput
-        type="search"
-        placeholder="Search here..."
-        class="search-input"
-        (keyup)="doFilter($event.target.value)"
-      />
-    </mat-form-field>
-  </div>
  
-  <div class="sa-form-group-btn" style="margin: 7px 0px 0 30px;" *ngIf="userPlan != 'lite'">
-        <mat-slide-toggle fxFlex.md="30" fxFlex.xs="100" name="advanced_options" (change)="advanceToggle($event)"> 
-          <span><strong>Advanced Options</strong></span>
-        </mat-slide-toggle>   
-  </div>
-   <div class="sa-form-group-btn" *ngIf="advanceOption">
-     <button class="save-button" type="submit" style="margin: 0;" (click) ="openSetJeeveName()">Set Jeeve Names</button>
+ 
+   <div class="sa-form-group-btn">
+     <button class="save-button" type="submit" style="margin: 0;" (click) ="openSetJeeveName()">Dentist List</button>
   </div>
 
   </div>    

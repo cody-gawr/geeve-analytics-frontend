@@ -1,88 +1,41 @@
-<div class="setJeeveNames"> 
-<h1 mat-dialog-title class="mat-dialog-title">Set Jeeve Names</h1>
-<div mat-dialog-content class="sa_forms_design" [ngClass]="data.jeeveNames['1'] != undefined">
-  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
-    <label style="padding-top:10px;">Jeeve Id 1</label>     
-  </div> 
-   <div class="sa-form-group" style="width: 78%;float: left;">
-      
-      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,1)" value="{{data.jeeveNames['1']}}">  
+<div class="setJeeveNames">
+  <h1 mat-dialog-title class="mat-dialog-title">Dentist List</h1>
+  <div mat-dialog-content class="sa_forms_design">
+    <div *ngFor="let dentist of data.dentistDataList">
+      <div
+        class="sa-form-group"
+        style="width: 20%; float: left; margin-right: 2%"
+      >
+        <label style="padding-top: 10px">1</label>
+      </div>
+      <div class="sa-form-group" style="width: 78%; float: left">
+        <mat-slide-toggle
+          fxFlex.md="30"
+          fxFlex.xs="100"
+          name="advanced_options"
+        >
+          <span><strong>Set</strong></span>
+        </mat-slide-toggle>
+      </div>
+    </div>
   </div>
-</div>
-<div mat-dialog-content class="sa_forms_design" *ngIf="data.jeeveNames['2'] != undefined">
-  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
-    <label style="padding-top:10px;">Jeeve Id 2</label>     
-  </div> 
-   <div class="sa-form-group" style="width: 78%;float: left;">
-      
-      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,2)" value="{{data.jeeveNames['2']}}">   
+
+  <div mat-dialog-actions class="justify-between">
+    <button
+      mat-button
+      (click)="onNoClick()"
+      tabindex="-1"
+      class="mat-raised-button mat-gray"
+    >
+      Cancel
+    </button>
+    <button
+      [disabled]="update"
+      (click)="save(data)"
+      tabindex="2"
+      class="mat-raised-button mat-dc float-right"
+    >
+      Save
+    </button>
   </div>
-</div>
-<div mat-dialog-content class="sa_forms_design" *ngIf="data.jeeveNames['3'] != undefined">
-  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
-    <label style="padding-top:10px;">Jeeve Id 3</label>     
-  </div> 
-   <div class="sa-form-group" style="width: 78%;float: left;">
-      
-      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,3)" value="{{data.jeeveNames['3']}}">  
-  </div>
-</div>
-<div mat-dialog-content class="sa_forms_design" *ngIf="data.jeeveNames['4'] != undefined">
-  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
-    <label style="padding-top:10px;">Jeeve Id 4</label>     
-  </div> 
-   <div class="sa-form-group" style="width: 78%;float: left;">
-      
-      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,4)" value="{{data.jeeveNames['4']}}">  
-  </div>
-</div>
-<div mat-dialog-content class="sa_forms_design" *ngIf="data.jeeveNames['5'] != undefined">
-  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
-    <label style="padding-top:10px;">Jeeve Id 5</label>     
-  </div> 
-   <div class="sa-form-group" style="width: 78%;float: left;">
-      
-      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,5)" value="{{data.jeeveNames['5']}}">  
-  </div>
-</div>
-<div mat-dialog-content class="sa_forms_design" *ngIf="data.jeeveNames['6'] != undefined">
-  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
-    <label style="padding-top:10px;">Jeeve Id 6</label>     
-  </div> 
-   <div class="sa-form-group" style="width: 78%;float: left;">
-      
-      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,6)" value="{{data.jeeveNames['6']}}">  
-  </div>
-</div>
-<div mat-dialog-content class="sa_forms_design" *ngIf="data.jeeveNames['7'] != undefined">
-  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
-    <label style="padding-top:10px;">Jeeve Id 7</label>     
-  </div> 
-   <div class="sa-form-group" style="width: 78%;float: left;">
-      
-      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,7)" value="{{data.jeeveNames['7']}}">  
-  </div>
-</div>
-<div mat-dialog-content class="sa_forms_design" *ngIf="data.jeeveNames['8'] != undefined">
-  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
-    <label style="padding-top:10px;">Jeeve Id 8</label>     
-  </div> 
-   <div class="sa-form-group" style="width: 78%;float: left;">
-      
-      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,8)" value="{{data.jeeveNames['8']}}">  
-  </div>
-</div>
-<div mat-dialog-content class="sa_forms_design" *ngIf="data.jeeveNames['9'] != undefined ">
-  <div class="sa-form-group" style="width: 20%; float: left; margin-right: 2%;">
-    <label style="padding-top:10px;">Jeeve Id 9</label>     
-  </div> 
-   <div class="sa-form-group" style="width: 78%;float: left;">
-      
-      <input placeholder="Jeeve Names" name="jeeve_names" (keyup) = "updatevalue($event,9)" value="{{data.jeeveNames['9']}}">  
-  </div>
-</div>
-<div mat-dialog-actions class="justify-between">
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="mat-raised-button mat-gray">Cancel</button>
-  <button [disabled] ="update" (click)="save(data)" tabindex="2" class="mat-raised-button mat-dc float-right">Save</button>
-</div>
 </div>

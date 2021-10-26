@@ -1,50 +1,98 @@
-<div fxLayout="row wrap" class="header_filters dynamicDropdown{{ user_type_dentist }} {{ classUrl }}" >   
-
-    <div fxLayout="row" fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
-        <!-- <div fxFlexAlign="center" *ngIf="user_type_dentist==='4' && showCompare">
+<div *ngIf="trailDays" class="text-center warningTestDemo ng-star-inserted">
+  <span class="m-t-10 m-b-10"
+    >Hey! You have left {{ trailDays }} Days for you Trail period</span
+  >
+</div>
+<div
+  fxLayout="row wrap"
+  class="header_filters dynamicDropdown{{ user_type_dentist }} {{ classUrl }}"
+>
+  <div fxLayout="row" fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
+    <!-- <div fxFlexAlign="center" *ngIf="user_type_dentist==='4' && showCompare">
             <button 
                 class="sa_tab_btn compare-button"
                 [ngClass]="{'active': isToggleDentistChart}"
                 (click)="toggler()"> Compare </button>
         </div> -->
-        <div class="header_first_select" *ngIf="route != '/roles-users' && !route.includes('/clinic-settings') && route != '/clinic' && !route.includes('/profile-settings')">
-        <div class="vertical_center_header_content">
-            <div class="sa_mat_select_topbar">
-                <mat-form-field floatLabel="never">
-                    <mat-select class="external_clinic"  [(ngModel)]="selectedClinic"  (ngModelChange)="loadClinic($event)" [placeholder]="placeHolder">
-                    <mat-option value="all" *ngIf="route == '/dashboards/healthscreen' && clinicsData.length > 1">All Clinics</mat-option>
-                    <mat-option *ngFor="let clinicData of clinicsData" [value]="clinicData.id" >
-                                    {{clinicData.clinicName}}
-                    </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+    <div
+      class="header_first_select"
+      *ngIf="
+        route != '/roles-users' &&
+        !route.includes('/clinic-settings') &&
+        route != '/clinic' &&
+        !route.includes('/profile-settings')
+      "
+    >
+      <div class="vertical_center_header_content">
+        <div class="sa_mat_select_topbar">
+          <mat-form-field floatLabel="never">
+            <mat-select
+              class="external_clinic"
+              [(ngModel)]="selectedClinic"
+              (ngModelChange)="loadClinic($event)"
+              [placeholder]="placeHolder"
+            >
+              <mat-option
+                value="all"
+                *ngIf="
+                  route == '/dashboards/healthscreen' && clinicsData.length > 1
+                "
+                >All Clinics</mat-option
+              >
+              <mat-option
+                *ngFor="let clinicData of clinicsData"
+                [value]="clinicData.id"
+              >
+                {{ clinicData.clinicName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
+      </div>
     </div>
-    </div>
-    <div fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100" >
-        <div class="dentist_dropdown" *ngIf="(user_type_dentist == '2' || user_type_dentist == '3' || user_type_dentist == '5' || user_type_dentist == '6') && showDropDown">
-        <div class="vertical_center_header_content">
-            <div class="sa_mat_select_topbar">
-                <mat-form-field floatLabel="never">
-                    <mat-select class="external_dentist"  [(ngModel)]="selectedDentist" (ngModelChange)="loadDentist($event)">
-                        <mat-option value="all" *ngIf="showAll">All Dentists</mat-option>
-                        <mat-option *ngFor="let dentist of dentists"  [value]="dentist.providerId">            
-                            <span *ngIf="dentist.jeeve_name">{{dentist.jeeve_name}}</span>
-                            <span *ngIf="!dentist.jeeve_name">{{dentist.name}}</span>
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+  </div>
+  <div fxFlex="50" fxFlex.md="50" fxFlex.sm="50" fxFlex.xs="100">
+    <div
+      class="dentist_dropdown"
+      *ngIf="
+        (user_type_dentist == '2' ||
+          user_type_dentist == '3' ||
+          user_type_dentist == '5' ||
+          user_type_dentist == '6') &&
+        showDropDown
+      "
+    >
+      <div class="vertical_center_header_content">
+        <div class="sa_mat_select_topbar">
+          <mat-form-field floatLabel="never">
+            <mat-select
+              class="external_dentist"
+              [(ngModel)]="selectedDentist"
+              (ngModelChange)="loadDentist($event)"
+            >
+              <mat-option value="all" *ngIf="showAll">All Dentists</mat-option>
+              <mat-option
+                *ngFor="let dentist of dentists"
+                [value]="dentist.providerId"
+              >
+                <span *ngIf="dentist.jeeve_name">{{ dentist.jeeve_name }}</span>
+                <span *ngIf="!dentist.jeeve_name">{{ dentist.name }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
+      </div>
     </div>
+  </div>
+  <div style="display: none" class="hide">
+    <div fxFlexAlign="center" *ngIf="user_type_dentist == '4' && showCompare">
+      <button
+        class="sa_tab_btn compare-button"
+        [ngClass]="{ active: isToggleDentistChart }"
+        (click)="toggler()"
+      >
+        Compare
+      </button>
     </div>
-    <div style="display: none;" class="hide">
-        <div fxFlexAlign="center" *ngIf="user_type_dentist == '4' && showCompare">
-            <button 
-                class="sa_tab_btn compare-button"
-                [ngClass]="{'active': isToggleDentistChart}"
-                (click)="toggler()"> Compare </button>
-        </div>
-    </div>
+  </div>
 </div>
