@@ -17,10 +17,30 @@ import { AppConstants } from "../../../app.constants";
 import { RolesUsersService } from "../../../roles-users/roles-users.service";
 import "rxjs/add/operator/do";
 import "rxjs/add/operator/filter";
+
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+
 export interface Dentist {
   providerId: string;
   name: string;
 }
+
+
+
+@Component({
+  selector: 'feature-overview-limit-example',
+  templateUrl: './feature-overview-limit-example.html',
+})
+
+export class FeatureDialogComponent {
+  constructor(public dialogRef: MatDialogRef<FeatureDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any) {}
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
 
 @Component({
   selector: "app-headerright",
@@ -45,9 +65,18 @@ export class AppHeaderrightComponent implements AfterViewInit {
     private router: Router,
     private userIdle: UserIdleService,
     public constants: AppConstants,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+     public dialog: MatDialog
   ) {
     
+
+    if(this._cookieService.get("features_dismissed") && this._cookieService.get("features_dismissed") == '0'){
+       const dialogRef = this.dialog.open(FeatureDialogComponent, {
+        width: '700px', 
+        data: {  }
+        });
+    }
+   
     this.getRoles();
     this.user_type_dentist = this._cookieService.get("user_type");
     this._routerSub = this.router.events
