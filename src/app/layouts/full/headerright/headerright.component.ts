@@ -1,4 +1,10 @@
-import { Component, AfterViewInit } from "@angular/core";
+import {
+  Component,
+  AfterViewInit,
+  Output,
+  EventEmitter,
+  Input,
+} from "@angular/core";
 import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
 import { CookieService, CookieOptions } from "ngx-cookie";
 import { ToastrService } from "ngx-toastr";
@@ -29,6 +35,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   showCompare: boolean = false;
   showDropDown: boolean = false;
   classUrl: string = "";
+  @Output() newItemEvent = new EventEmitter<Number>();  
 
   constructor(
     private _cookieService: CookieService,
@@ -40,6 +47,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     public constants: AppConstants,
     private toastr: ToastrService
   ) {
+    
     this.getRoles();
     this.user_type_dentist = this._cookieService.get("user_type");
     this._routerSub = this.router.events
@@ -113,7 +121,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   ngOnDestroy() {
     this._routerSub.unsubscribe();
   }
-  ngAfterViewInit() {
+  ngAfterViewInit() {    
     //  this.clinic_id = '1';
     //this.getClinics();
     //Start watching for user inactivity.
@@ -153,7 +161,6 @@ export class AppHeaderrightComponent implements AfterViewInit {
   public selectedDentist;
   public placeHolder = "";
   public showAll: boolean = true;
-
   private getClinics() {
     this.headerService.getClinics().subscribe(
       (res) => {
@@ -210,6 +217,11 @@ export class AppHeaderrightComponent implements AfterViewInit {
       }
     );
     console.log("this.clinicsData getClinics", this.clinicsData);
+  }
+
+  addNewItem(value: any) {
+    console.log("Sennding value of trail", value);
+    this.newItemEvent.emit(value);
   }
 
   // Get Dentist
@@ -337,6 +349,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
     } else {
       this.trailDays = 0;
     }
+    this.addNewItem(this.trailDays);
     // this.alert(this.trailDays);
   }
 

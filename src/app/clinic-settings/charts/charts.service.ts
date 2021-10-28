@@ -29,11 +29,11 @@ export class ChartsService {
   }
 
   // Get ClinicSettings
-  getCustomiseSettings(clinic_id): Observable<any> {
+  getCharts(): Observable<any> {
     var header = this.getHeaders();
     return this.http
       .get(
-        this.apiUrl + "/clinics/clinicGetSettings?clinic_id=" + clinic_id,
+        this.apiUrl + "/ChartsTips/getCharts",
         header
       )
       .pipe(

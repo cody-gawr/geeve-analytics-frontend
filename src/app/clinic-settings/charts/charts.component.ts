@@ -13,6 +13,7 @@ import { CookieService } from "ngx-cookie";
 import { ToastrService } from "ngx-toastr";
 import { BehaviorSubject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { ChartsService } from "./charts.service";
 import { DentistService } from "../../dentist/dentist.service";
 import { BaseComponent } from "../base/base.component";
 import { MatSort } from "@angular/material/sort";
@@ -41,9 +42,11 @@ export class AddJeeveNameComponent {
     private router: Router,
     private dentistService: DentistService
   ) {}
+
   onNoClick(): void {
     this.dialogRef.close();
   }
+
   updatevalue(event, index) {
     this.data.jeeveNames[index] = $.trim(event.target.value);
   }
@@ -80,18 +83,17 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
   dentistPageSize = 10;
   dentistTablePages: number[] = [];
   currentPage: number = 1;
-  dentistListData=[];
+  dentistListData = [];
+  dash1Lable = "";
+  dash2Lable = "";
   dentistList = new MatTableDataSource([]);
+  dash1List = new MatTableDataSource([]);
+  dash2List = new MatTableDataSource([]);
   dentistListLoading: boolean = false;
-  displayedColumns: string[] = [
-    "providerId",
-    "name",
-    "jeeve_id",
-    "position",
-    "is_active",
-  ];
+  displayedColumns: string[] = ["id", "chart", "configuration"];
   jeeveProviderIds: any = [];
   editing = {};
+  chartData = {};
 
   public userPlan: any = "lite";
   public activeDentist: any = 0;
@@ -100,6 +102,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
   constructor(
     private _cookieService: CookieService,
     private dentistService: DentistService,
+    private chartsService: ChartsService,
     private router: Router,
     private toastr: ToastrService,
     public dialog: MatDialog
@@ -114,13 +117,11 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
     this.clinic_id$.pipe(takeUntil(this.destroyed$)).subscribe((id) => {
       if (id) {
         this.getDentists(id);
-        this.getJeeveNames(id);
       }
     });
+    this.getCharts();
   }
-  advanceToggle(event) {
-    this.advanceOption = event.checked;
-  }
+
   handleUnAuthorization() {
     this._cookieService.put("username", "");
     this._cookieService.put("email", "");
@@ -128,30 +129,38 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
     this.router.navigateByUrl("/login");
   }
 
-  handlePageChange(goPage: number) {
-    if (this.currentPage < goPage) {
-      for (let i = this.currentPage; i < goPage; i++) {
-        this.paginator.nextPage();
-      }
-    } else {
-      for (let i = goPage; i < this.currentPage; i++) {
-        this.paginator.previousPage();
-      }
-    }
-    this.currentPage = goPage; //make the page active by class
-  }
+  getCharts() {
+    this.chartsService.getCharts().subscribe(
+      (res) => {
+        if (res.message == "success") {
+          this.jeeveProviderIds = [];
+          for (let i = 1; i <= 9; i++) {
+            this.jeeveProviderIds.push({ id: i, name: "Jeeve Provider " + i });
+          }
+          this.chartData = res.data;
+          res.data.forEach((element) => {});
 
-  setPaginationButtons(totalDentist) {
-    this.dentistTablePages = [];
-    const totalPages = Math.ceil(totalDentist / this.dentistPageSize);
-    for (let i = 0; i < totalPages; i++) {
-      this.dentistTablePages.push(i + 1);
-    }
+          for (let index = 0; index < res.data.length; index++) {
+            const element = res.data[index];
+            if (index == 0) {
+              this.dash1Lable = element.dashboard;
+              this.dash1List.data = element.master_charts;
+            }
+            if (index == 1) {
+              this.dash2Lable = element.dashboard;
+              this.dash2List.data = element.master_charts;
+            }
+          }
+          console.log(this.chartData[0]);
+        } else if (res.status == "401") {
+          this.handleUnAuthorization();
+        }
+      },
+      (error) => {
+        console.log("error", error);
+      }
+    );
   }
-
-  doFilter = (value: string) => {
-    this.dentistList.filter = value.trim().toLocaleLowerCase();
-  };
 
   getDentists(id) {
     this.dentistService.getDentists(id, 1).subscribe(
@@ -163,9 +172,6 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
           }
           this.dentistListData = res.data;
           this.dentistList.data = res.data;
-          this.setPaginationButtons(this.dentistList.data.length);
-          let activeDnt: any = res.data.filter((p) => p.is_active == 1);
-          this.activeDentist = activeDnt.length;
         } else if (res.status == "401") {
           this.handleUnAuthorization();
         }
@@ -176,26 +182,6 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
     );
   }
   public jeeveNames: any = {};
-  getJeeveNames(id) {
-    this.dentistService.getJeeveNames(id).subscribe(
-      (res) => {
-        if (res.message == "success") {
-          this.jeeveNames = res.data;
-        } else if (res.status == "401") {
-          this.handleUnAuthorization();
-        }
-      },
-      (error) => {}
-    );
-  }
-
-  enableEditing(index, column) {
-    // this.dentistList.data[index].isEditable = true;
-    this.editing[index + "-" + column] = true;
-    Object.keys(this.editing).map((key) => {
-      this.editing[key] = key === `${index}-${column}` ? true : false;
-    });
-  }
 
   updateValue(event, column, index, providerId, updatedValue) {
     if (event.type == "keyup" && event.keyCode != 13 && column == "name") {
@@ -257,7 +243,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
   }
 
   openSetJeeveName() {
-    console.log('this.dentistList.data',this.dentistListData)
+    console.log("this.dentistList.data", this.dentistListData);
     const dialogRef = this.dialog.open(AddJeeveNameComponent, {
       width: "650px",
       data: {
@@ -265,6 +251,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
         dentistDataList: this.dentistListData,
       },
     });
+    console.log("this.dentistList.dialogRef", dialogRef);
     dialogRef.afterClosed().subscribe((result) => {
       this.getDentists(this.clinic_id$.value);
     });
