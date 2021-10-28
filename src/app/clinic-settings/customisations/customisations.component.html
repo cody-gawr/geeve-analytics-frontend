@@ -131,8 +131,10 @@
               fxFlex.xs="100"
             >
               <div class="sa-form-group">
-                <label
-                  >Recall Codes
+            
+                <div class="recallCodesCon" *ngFor="let rCodes of recallCodes | keyvalue">
+                      <label
+                  >Recall Code {{ rCodes.key }}
                   <div class="info-button">
                     <div class="info-icon-container">
                       <img
@@ -148,19 +150,24 @@
                     </div>
                   </div>
                 </label>
-                <input
+                  <input
                   placeholder=""
-                  [formControl]="form.controls['recall_codes']"
-                  [(ngModel)]="recallCodes"
-                />
+                  name="recallCodes{{ rCodes.key }}"
+                  [value]="rCodes.value"
+                  (blur) = "updateValue($event.target.value,rCodes.key)"
+                  (keyup) = "hideError()"
+                  />
+                  <span class="recallCodesRemove" (click) = "recallCodesRemove(rCodes.key)">X</span>
+                </div>
                 <small
-                  *ngIf="
-                    form.controls['recall_codes'].hasError('required') &&
-                    form.controls['recall_codes'].touched
-                  "
-                  class="text-danger support-text"
+                  *ngIf="recallError"
+                  class="text-danger recall support-text"
                   >Recall Codes is Required.</small
-                >
+                > 
+
+                <div class="addCodeRecal" *ngIf="recallCodesCount < 3">
+                  <a (click) = "recallCodesAdd()"><i class="fa fa-plus" aria-hidden="true"></i> Add More</a>
+                </div>
               </div>
             </div>
             <div

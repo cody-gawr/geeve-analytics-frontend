@@ -49,7 +49,9 @@ export class CustomisationsService {
      formData.append("clinic_id", data.clinic_id);
      formData.append("xray_months", data.xray_months);
      formData.append("opg_months", data.opg_months);
-     formData.append("recall_codes", data.recall_codes);
+     formData.append("recall_code1", data.recall_code1);
+     formData.append("recall_code2", data.recall_code2);
+     formData.append("recall_code3", data.recall_code3);
 
      
     return this.http

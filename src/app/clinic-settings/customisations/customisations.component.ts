@@ -42,9 +42,11 @@ export class CustomisationsComponent
   }
   public form: FormGroup;
 
-  public recallCodes: string = "R,r"; //default value
+  public recallCodes: any = {}; //default value
   public xrayMonths: number = 24; //default value
   public opgMonths: number = 60; //default value
+  public recallCodesCount: any = 3;
+  public recallError: boolean = false;
 
   constructor(
     private _cookieService: CookieService,
@@ -59,8 +61,8 @@ export class CustomisationsComponent
   }
 
   ngOnInit() {
-    this.form = this.fb.group({
-      recall_codes: [null, Validators.compose([Validators.required])],
+    this.form = this.fb.group({ 
+      //recall_codes: [null, Validators.compose([Validators.required])],
       xray_months: [null, Validators.compose([Validators.required])],
       opg_months: [null, Validators.compose([Validators.required])],
     });
@@ -77,7 +79,18 @@ export class CustomisationsComponent
           $(".ajax-loader").hide();
           if (res.message == "success") {
             if (res.data) {
-              this.recallCodes = res.data.recall_codes;
+              //this.recallCodes = res.data.recall_codes;
+              if(res.data.recall_code1){
+                this.recallCodes[1] = res.data.recall_code1;
+              }
+              if(res.data.recall_code2){
+                this.recallCodes[2] = res.data.recall_code2;
+              }
+              if(res.data.recall_code3){
+                this.recallCodes[3] = res.data.recall_code3;
+              } 
+              let objKey = Object.keys(this.recallCodes);
+              this.recallCodesCount = objKey.length;
               this.xrayMonths = res.data.xray_months;
               this.opgMonths = res.data.opg_months;
             }
@@ -90,13 +103,26 @@ export class CustomisationsComponent
       );
   }
 
-  onSubmit() {
+  onSubmit() {    
+    this.recallError = false;
+    if(typeof(this.recallCodes[1]) != 'undefined' && this.recallCodes[1].trim() == ''){
+      this.recallError = true;
+      return false;
+    } else if(typeof(this.recallCodes[2]) != 'undefined' && this.recallCodes[2].trim() == ''){
+      this.recallError = true;
+      return false;
+    } else  if(typeof(this.recallCodes[3]) != 'undefined' && this.recallCodes[3].trim() == ''){
+      this.recallError = true;
+      return false;
+    }
     $(".ajax-loader").show();
     let data = {
       clinic_id: Number(this.clinic_id$.value),
       xray_months: this.form.value.xray_months,
       opg_months: this.form.value.opg_months,
-      recall_codes: this.form.value.recall_codes,
+      recall_code1: (typeof(this.recallCodes[1]) != 'undefined')? this.recallCodes[1] : '',
+      recall_code2: (typeof(this.recallCodes[2]) != 'undefined')? this.recallCodes[2] : '',
+      recall_code3: (typeof(this.recallCodes[3]) != 'undefined')? this.recallCodes[3] : '',
     };
 
     this.customisationsService.updateCustomiseSettings(data).subscribe(
@@ -104,7 +130,6 @@ export class CustomisationsComponent
         $(".ajax-loader").hide();
         if (res.message == "success") {
           if (res.data) {
-            this.recallCodes = data.recall_codes;
             this.xrayMonths = data.xray_months;
             this.opgMonths = data.opg_months;
           }
@@ -131,4 +156,41 @@ export class CustomisationsComponent
     this._cookieService.put("userid", "");
     this.router.navigateByUrl("/login");
   }
+  updateValue(value,key){
+    this.recallCodes[key] = value;
+  }
+  hideError(){
+    if(this.recallError){
+      this.recallError = false;
+    }
+  }
+
+  recallCodesRemove(key){
+    this.recallCodesCount = Object.keys(this.recallCodes).length;
+    if(this.recallCodesCount > 1){
+      delete this.recallCodes[key];
+      this.recallCodesCount = this.recallCodesCount -1;
+    }
+  }
+  recallCodesAdd(){
+    let objKey = Object.keys(this.recallCodes);
+    this.recallCodesCount = objKey.length;
+    if(this.recallCodesCount < 3){
+      this.recallCodesCount = this.recallCodesCount +1;  
+      if(typeof(this.recallCodes[1]) == 'undefined'){
+        this.recallCodes[1] = '';
+        return true;
+      }
+      if(typeof(this.recallCodes[2]) == 'undefined'){
+        this.recallCodes[2] = '';
+        return true;
+      }if(typeof(this.recallCodes[3]) == 'undefined'){
+        this.recallCodes[3] = '';
+        return true;
+      }    
+    }
+    
+  }
+
+
 }
