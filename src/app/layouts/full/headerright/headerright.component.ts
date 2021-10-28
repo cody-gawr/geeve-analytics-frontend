@@ -32,7 +32,7 @@ export interface Dentist {
   selector: "feature-overview-limit-example",
   templateUrl: "./feature-overview-limit-example.html",
 })
-export class FeatureDialogComponent {
+export class FeatureDialogComponent{
   constructor(
     public dialogRef: MatDialogRef<FeatureDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -55,6 +55,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
   showCompare: boolean = false;
   showDropDown: boolean = false;
   classUrl: string = "";
+   @Inject(MAT_DIALOG_DATA) public data: any;
   @Output() newItemEvent = new EventEmitter<Number>();
 
   constructor(
@@ -68,14 +69,24 @@ export class AppHeaderrightComponent implements AfterViewInit {
     private toastr: ToastrService,
     public dialog: MatDialog
   ) {
-    if (
-      this._cookieService.get("features_dismissed") &&
-      this._cookieService.get("features_dismissed") == "0"
-    ) {
-      const dialogRef = this.dialog.open(FeatureDialogComponent, {
-        width: "700px",
-        data: {},
-      });
+    if ( this._cookieService.get("features_dismissed") && this._cookieService.get("features_dismissed") == "0") 
+    {
+      this.headerService.getNewFeature().subscribe((res) => {
+          const dialogRef = this.dialog.open(FeatureDialogComponent, {
+            width: "700px",
+            data:  res.data,
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            this.headerService.getNewFeatureDisable().subscribe((res) => {
+              if(res.message == 'success'){
+                this._cookieService.put("features_dismissed",'1');
+              }
+            });
+          });
+
+        }, (error) => {
+          this.warningMessage = "Please Provide Valid Inputs!";
+        });
     }
 
     this.getRoles();
@@ -245,12 +256,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
           this.router.navigateByUrl("/login");
         }
       }
-    );
-    console.log("this.clinicsData getClinics", this.clinicsData);
+    );    
   }
 
-  addNewItem(value: any) {
-    console.log("Sennding value of trail", value);
+  addNewItem(value: any) {    
     this.newItemEvent.emit(value);
   }
 
@@ -319,12 +328,10 @@ export class AppHeaderrightComponent implements AfterViewInit {
   }
 
   loadClinic(newValue) {
-    if (newValue != "undefined") {
-      console.log("this.clinicsData newValue", newValue);
-      console.log("this.clinicsData loadClinic", this.clinicsData);
+    if (newValue != "undefined") {      
       this.clinicsData.forEach((data) => {
         if (data.id == newValue) {
-          console.log("data", data.trial_end_date);
+          
           this.checkTrailEnd(data);
         }
       });
@@ -370,7 +377,7 @@ export class AppHeaderrightComponent implements AfterViewInit {
 
   checkTrailEnd(data) {
     if (data.trial_end_date) {
-      console.log("in");
+      
       var date1 = new Date();
       var date2 = new Date(data.trial_end_date);
       var Time = date2.getTime() - date1.getTime();

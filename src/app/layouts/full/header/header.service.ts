@@ -42,5 +42,22 @@ export class HeaderService {
         );
     }
 
+        
+    getNewFeature(): Observable<any> {        
+        var header = this.getHeaders();         
+        return this.http.get(this.apiUrl +"/users/getNewFeature", header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
+    getNewFeatureDisable(): Observable<any> {        
+        var header = this.getHeaders();         
+        return this.http.get(this.apiUrl +"/users/getNewFeatureDisable", header)
+        .pipe(map((response: Response) => {
+                        return response;
+                    })
+        );
+    }
 
 }

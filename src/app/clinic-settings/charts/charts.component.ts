@@ -30,13 +30,13 @@ import { ITooltipData } from "../../shared/tooltip/tooltip.directive";
   templateUrl: "./add-jeeve-name.html",
   encapsulation: ViewEncapsulation.None,
 })
-export class AddJeeveNameComponent {
+export class DentisChartComponent {
   public jeeveId: any = 1;
   public dentistDataList: any = "";
   public update: any = false;
 
   constructor(
-    public dialogRef: MatDialogRef<AddJeeveNameComponent>,
+    public dialogRef: MatDialogRef<DentisChartComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private router: Router,
@@ -244,7 +244,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
 
   openSetJeeveName() {
     console.log("this.dentistList.data", this.dentistListData);
-    const dialogRef = this.dialog.open(AddJeeveNameComponent, {
+    const dialogRef = this.dialog.open(DentisChartComponent, {
       width: "650px",
       data: {
         clinic_id: this.clinic_id$.value,

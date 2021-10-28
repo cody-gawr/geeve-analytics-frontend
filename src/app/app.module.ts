@@ -27,7 +27,7 @@ import { StepperHeaderService } from './layouts/stepper/header/header.service';
 import { StepperHeaderrightService } from './layouts/stepper/headerright/headerright.service';
 import { DentistService } from './dentist/dentist.service';
 import { ToastrModule } from 'ngx-toastr';
-import { AppHeaderrightComponent } from './layouts/full/headerright/headerright.component';
+import { AppHeaderrightComponent,FeatureDialogComponent } from './layouts/full/headerright/headerright.component';
 import { LostOpportunityComponent } from './lost-opportunity/lost-opportunity.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { MorningHuddleComponent,DialogOverviewExampleDialogComponent,StatusDialogMHComponent } from './dashboards/morning-huddle/morning-huddle.component';
@@ -59,6 +59,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppBlankComponent,
     AppSidebarComponent,
     AppHeaderrightComponent,
+    FeatureDialogComponent,
     LostOpportunityComponent,
     TasksComponent,
     MorningHuddleComponent,

@@ -31,7 +31,7 @@ import {
 } from "./equipments/equipments.component";
 import { GoalsComponent } from "./goals/goals.component";
 import { CustomisationsComponent } from "./customisations/customisations.component";
-import { ChartsComponent } from "./charts/charts.component";
+import { ChartsComponent,DentisChartComponent } from "./charts/charts.component";
 import { AutofocusDirective } from "./auto-focus.directive";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../shared/shared.module";
@@ -68,13 +68,15 @@ import { SharedModule } from "../shared/shared.module";
     DialogOverviewExampleComponent,
     AddScriptsComponent,
     EquipmentComponent,
-    ChartsComponent
+    ChartsComponent,
+    DentisChartComponent
   ],
   entryComponents: [
     DialogOverviewExampleDialogComponent,
     DialogOverviewExampleComponent,
     AddJeeveNameComponent,
     AddScriptsComponent,
+    DentisChartComponent
   ],
   exports: [
     BaseComponent,
