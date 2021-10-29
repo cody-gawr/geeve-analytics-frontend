@@ -78,3 +78,40 @@ span.charLimit {
 .info-button {
     display: inline-block;
 }
+.recallCodesCon {
+    margin-bottom: 15px;
+    display: block;
+    float: left;
+    width: 60%;
+}
+.recallCodesCon span.recallCodesRemove {
+    position: absolute;
+    margin-left: 21px;
+    margin-top: 9px;
+    cursor: pointer;
+}
+.addCodeRecal {
+    width: 100%;
+    float: left;
+}
+
+.addCodeRecal a {
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #fff;
+    background-image: linear-gradient(14deg, #17a5aa 0%, #18a689 100%);
+    box-shadow: none;
+    border: 0;
+    padding: 7px 8px 7px;
+    margin-top: 10px;
+    font-family: "Gilroy-Medium";
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.text-danger.recall.support-text{
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 15px;
+    margin-top: 0;
+}

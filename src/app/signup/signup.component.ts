@@ -60,25 +60,29 @@ export class SignupComponent implements OnInit {
       console.log(val);
       console.log("ml_account");
     });
-    this.signupService.getUrl().subscribe((res) => {
-      if (res.message == "success") {
-        this.xeroUrl = res.data;
-        this.token = res.id;
-      }
-    });
+   
   }
 
   public openXero() {
-    var win = window.open(this.xeroUrl, "MsgWindow", "width=400,height=400");
-    var self = this;
-    var timer = setInterval(function () {
-      // Set Interval
-      if (win.closed) {
-        // Checking for wind close
-        self.checkInfo(); // Calling API
-        clearTimeout(timer); // Stop interval
+
+     this.signupService.getUrl().subscribe((res) => {
+      if (res.message == "success") {
+        this.xeroUrl = res.data;
+        this.token = res.id;
+        var win = window.open(this.xeroUrl, "MsgWindow", "width=400,height=400");
+        var self = this;
+        var timer = setInterval(function () {
+          // Set Interval
+          if (win.closed) {
+            // Checking for wind close
+            self.checkInfo(); // Calling API
+            clearTimeout(timer); // Stop interval
+          }
+        }, 1000);
       }
-    }, 1000);
+    });
+    
+    
   }
 
   checkInfo() {

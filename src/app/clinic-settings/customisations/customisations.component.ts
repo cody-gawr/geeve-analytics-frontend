@@ -41,10 +41,12 @@ export class CustomisationsComponent
     this.clinic_id$.next(value);
   }
   public form: FormGroup;
-
-  public recallCodes: string = "R,r"; //default value
+  
   public xrayMonths: number = 24; //default value
   public opgMonths: number = 60; //default value
+  public recallCode1: any;
+  public recallCode2: any;
+  public recallCode3: any;
 
   constructor(
     private _cookieService: CookieService,
@@ -59,8 +61,10 @@ export class CustomisationsComponent
   }
 
   ngOnInit() {
-    this.form = this.fb.group({
-      recall_codes: [null, Validators.compose([Validators.required])],
+    this.form = this.fb.group({ 
+      recall_codes1: [null, Validators.compose([Validators.required])],
+      recall_codes2: [null],
+      recall_codes3: [null],
       xray_months: [null, Validators.compose([Validators.required])],
       opg_months: [null, Validators.compose([Validators.required])],
     });
@@ -121,7 +125,9 @@ export class CustomisationsComponent
           $(".ajax-loader").hide();
           if (res.message == "success") {
             if (res.data) {
-              this.recallCodes = res.data.recall_codes;
+              this.recallCode1 = res.data.recall_code1;              
+              this.recallCode2 = res.data.recall_code2;              
+              this.recallCode3 = res.data.recall_code3;              
               this.xrayMonths = res.data.xray_months;
               this.opgMonths = res.data.opg_months;
             }
@@ -134,13 +140,15 @@ export class CustomisationsComponent
       );
   }
 
-  onSubmit() {
+  onSubmit() {    
     $(".ajax-loader").show();
     let data = {
       clinic_id: Number(this.clinic_id$.value),
       xray_months: this.form.value.xray_months,
       opg_months: this.form.value.opg_months,
-      recall_codes: this.form.value.recall_codes,
+      recall_code1: this.form.value.recall_codes1,
+      recall_code2: this.form.value.recall_codes2,
+      recall_code3: this.form.value.recall_codes3
     };
 
     this.customisationsService.updateCustomiseSettings(data).subscribe(
@@ -148,7 +156,6 @@ export class CustomisationsComponent
         $(".ajax-loader").hide();
         if (res.message == "success") {
           if (res.data) {
-            this.recallCodes = data.recall_codes;
             this.xrayMonths = data.xray_months;
             this.opgMonths = data.opg_months;
           }
