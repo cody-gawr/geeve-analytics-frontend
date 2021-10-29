@@ -44,8 +44,7 @@ export class DentisChartComponent {
 
   advanceToggle(event, id, data) {
     // let val = 'main-' + id;
-    console.log('event', event)
-    console.log('data', data)
+    
     var chart_id = Number(data.chartID);
     var clinic_id = Number(data.clinic_id);
     var providerId = Number(id);
@@ -66,7 +65,7 @@ export class DentisChartComponent {
       status = 'include';
     }
     this.saveRecord(chart_id, clinic_id, providerId, status);
-    console.log(this.excludedProviders);
+    
   }
 
   saveRecord(chart_id, clinic_id, providerId, status) {
@@ -86,8 +85,7 @@ export class DentisChartComponent {
   save(data) {
     // var name = JSON.stringify(data.jeeveNames);
     var chartID = data.chartID;
-    console.log('save', this.excludedProviders);
-    console.log('data', data);
+    
     // this.dentistService.addDentistRecord(data.clinic_id, name).subscribe(
     //   (res) => {
     //     if (res.message == "success") {
@@ -188,7 +186,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
               this.dash2List.data = element.master_charts;
             }
           }
-          console.log(this.chartData[0]);
+          
         } else if (res.status == "401") {
           this.handleUnAuthorization();
         }
@@ -284,7 +282,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
     this.chartsService.getDentistsExclusions(this.clinic_id$.value, chartID).subscribe(
       (res) => {
         if (res.message == "success") {
-          console.log('response', res.data)
+          
           dentistsExclusions = res.data.map(function (data) {
             return data.providerId;
           });
