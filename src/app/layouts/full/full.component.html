@@ -9,6 +9,7 @@
 <div
   class="main-container"
   [dir]="dir"
+  [ngClass] = "trailDays? 'trailDays' : ''"
   [ngClass]="{
     minisidebar: minisidebar,
     boxed: boxed,

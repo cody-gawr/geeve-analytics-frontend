@@ -7888,3 +7888,6 @@ span.new-feature-popup-close {
     background: #e7e7e7;
     margin-bottom: 10px;
 }
+.main-container.trailDays .custom_date {
+    top: 26px !important;
+}
