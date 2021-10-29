@@ -1,13 +1,22 @@
 .DentistListSecRow td input[readonly] {
-    border-color: transparent;
+    border-color    : transparent;
     background-color: transparent;
 }
 
-.jeeveProviderIdDrop{
+.jeeveProviderIdDrop {
     width: 180px;
 }
 
 .info-button {
     display: inline-block;
     padding: 0 6px;
+}
+
+.mat-column-chart {
+    flex : 0 0 10% !important;
+    width: 60% !important;
+}
+
+.info-icon {
+    width: 100% !important;
 }

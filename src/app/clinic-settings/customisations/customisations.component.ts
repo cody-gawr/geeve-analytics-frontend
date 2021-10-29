@@ -75,6 +75,50 @@ export class CustomisationsComponent
 
   ngAfterViewInit() {}
 
+  /********Recall codes code */
+  fieldArray = [
+    {
+      name: "Default Name 1",
+    },
+    {
+      name: "Default Name 2",
+    },
+  ];
+  newAttribute: any = {};
+
+  firstField = true;
+  firstFieldName = "First Item name";
+  isEditItems: boolean;
+
+  addFieldValue(index) {
+    if (this.fieldArray.length <= 2) {
+      // if (index == 0) {
+      //   this.newAttribute = { recall_code1: "" };
+      // }
+      // if (index == 1) {
+      //   this.newAttribute = { recall_code2: "" };
+      // }
+      // if (index == 2) {
+      //   this.newAttribute = { recall_code3: "" };
+      // }
+      this.newAttribute = { name: "" };
+
+      console.log("this.newAttribute", this.newAttribute);
+      this.fieldArray.push(this.newAttribute);
+      this.newAttribute = {};
+    } else {
+    }
+  }
+
+  deleteFieldValue(index) {
+    this.fieldArray.splice(index, 1);
+  }
+
+  onEditCloseItems() {
+    this.isEditItems = !this.isEditItems;
+  }
+  /********Recall codes code End */
+
   getCustomiseSettings() {
     this.customisationsService
       .getCustomiseSettings(this.clinic_id$.value)
