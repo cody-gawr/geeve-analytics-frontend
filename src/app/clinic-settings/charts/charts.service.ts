@@ -13,7 +13,7 @@ export class ChartsService {
   constructor(
     private http: HttpClient,
     private _cookieService: CookieService
-  ) {}
+  ) { }
 
   getHeaders() {
     if (
@@ -43,6 +43,41 @@ export class ChartsService {
       );
   }
 
+
+  // Get Dentis exculions
+  getDentistsExclusions(clinic_id, chart_id): Observable<any> {
+    var header = this.getHeaders();
+    return this.http
+      .get(
+        this.apiUrl + "/Dentists/getDentistsExclusions?clinic_id=" + clinic_id + "&chart_id=" + chart_id,
+        header
+      )
+      .pipe(
+        map((response: Response) => {
+          return response;
+        })
+      );
+  }
+
+
+  addDentistRecord(chart_id, clinic_id, providerId, status): Observable<any> {
+    var header = this.getHeaders();
+    const formData = new FormData();
+    formData.append("clinic_id", clinic_id);
+    formData.append("providerId", providerId);
+    formData.append("chart_id", chart_id);
+    formData.append("status", status);
+
+    return this.http
+      .post(this.apiUrl + "/Dentists/saveDentistsExclusions", formData, header)
+      .pipe(
+        map((response: Response) => {
+          return response;
+        })
+      );
+  }
+
+
   updateCustomiseSettings(data): Observable<any> {
     var header = this.getHeaders();
     const formData = new FormData();
@@ -59,4 +94,5 @@ export class ChartsService {
         })
       );
   }
+
 }

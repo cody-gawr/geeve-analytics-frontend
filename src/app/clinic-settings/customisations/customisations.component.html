@@ -148,7 +148,7 @@
                     </div>
                   </div>
                 </label>
-                <input
+                <!-- <input
                   placeholder=""
                   [formControl]="form.controls['recall_codes']"
                   [(ngModel)]="recallCodes"
@@ -160,7 +160,81 @@
                   "
                   class="text-danger support-text"
                   >Recall Codes is Required.</small
-                >
+                > -->
+
+                <div class="Mian">
+                  <div>
+                    <span
+                      >Item Name
+                      <a
+                        (click)="onEditCloseItems()"
+                        class="text-info float-right"
+                      >
+                        <i
+                          class="ti-{{
+                            isEditItems ? 'close' : 'pencil'
+                          }} mdi-18px"
+                        ></i>
+                      </a>
+                    </span>
+                  </div>
+                  <div *ngIf="!isEditItems">
+                    <div *ngFor="let field of fieldArray; let i = index">
+                      <span *ngIf="field?.name">
+                        <i
+                          (click)="deleteFieldValue(i)"
+                          class="ti-close mdi-18px"
+                        ></i>
+                        {{ field.name }}
+                      </span>
+                    </div>
+                  </div>
+                  <div *ngIf="isEditItems">
+                    <div *ngFor="let field of fieldArray; let i = index">
+                      <div>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div
+                              (click)="deleteFieldValue(i)"
+                              class="input-group-text"
+                            >
+                              <i class="ti-close mdi-18px"></i>
+                            </div>
+                          </div>
+
+                          <input
+                            [(ngModel)]="field.name"
+                            class="form-condivol"
+                            type="text"
+                            name="name-{{ i }}"
+                            placeholder="Name..."
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    {{ fieldArray | json }}
+                    <div>
+                      <span align="right">
+                        <button
+                          *ngIf="fieldArray.length <= 2"
+                          class="btn btn-secondary btn-lg1"
+                          type="button"
+                          (click)="addFieldValue()"
+                          style="margin-right: 10px"
+                        >
+                          Add More Item
+                        </button>
+                        <button
+                          (click)="onEditCloseItems()"
+                          class="btn btn-primary btn-lg1"
+                          type="button"
+                        >
+                          Save Items
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div

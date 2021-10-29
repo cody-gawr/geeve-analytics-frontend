@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  ViewChild,
-  ViewEncapsulation,
-  Inject,
-} from "@angular/core";
+import { AfterViewInit, Component, Input, ViewChild, ViewEncapsulation, Inject, } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { Router } from "@angular/router";
@@ -30,30 +23,72 @@ import { ITooltipData } from "../../shared/tooltip/tooltip.directive";
   templateUrl: "./add-jeeve-name.html",
   encapsulation: ViewEncapsulation.None,
 })
+
 export class DentisChartComponent {
   public jeeveId: any = 1;
   public dentistDataList: any = "";
   public update: any = false;
+  public excludedProviders = [];
 
   constructor(
     public dialogRef: MatDialogRef<DentisChartComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _cookieService: CookieService,
     private router: Router,
-    private dentistService: DentistService
-  ) {}
+    private chartsService: ChartsService,
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  updatevalue(event, index) {
-    this.data.jeeveNames[index] = $.trim(event.target.value);
+  advanceToggle(event, id, data) {
+    // let val = 'main-' + id;
+    console.log('event', event)
+    console.log('data', data)
+    var chart_id = Number(data.chartID);
+    var clinic_id = Number(data.clinic_id);
+    var providerId = Number(id);
+    var status = '';
+    if (event.checked) {
+      // this.excludedProviders.push(id)
+      // $('#' + val).show()
+      //hit save api
+      status = 'exclude';
+
+    } else {
+      // var index = this.excludedProviders.indexOf(id);
+      // if (index !== -1) {
+      //   this.excludedProviders.splice(index, 1);
+      // }
+      // $('#' + val).hide()
+      //hit remove api
+      status = 'include';
+    }
+    this.saveRecord(chart_id, clinic_id, providerId, status);
+    console.log(this.excludedProviders);
   }
 
+  saveRecord(chart_id, clinic_id, providerId, status) {
+    this.chartsService.addDentistRecord(chart_id, clinic_id, providerId, status).subscribe(
+      (res) => {
+        if (res.message == "success") {
+
+        }
+      },
+      (error) => {
+        console.log("error", error);
+      }
+    );
+  }
+
+
   save(data) {
-    var name = JSON.stringify(data.jeeveNames);
-    // this.dentistService.updateJeeveName(data.clinic_id, name).subscribe(
+    // var name = JSON.stringify(data.jeeveNames);
+    var chartID = data.chartID;
+    console.log('save', this.excludedProviders);
+    console.log('data', data);
+    // this.dentistService.addDentistRecord(data.clinic_id, name).subscribe(
     //   (res) => {
     //     if (res.message == "success") {
     //       this.dialogRef.close();
@@ -73,6 +108,7 @@ export class DentisChartComponent {
   templateUrl: "./charts.component.html",
   styleUrls: ["./charts.component.css"],
 })
+
 export class ChartsComponent extends BaseComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   clinic_id$ = new BehaviorSubject<any>(null);
@@ -110,6 +146,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
     super();
   }
 
+
   ngAfterViewInit() {
     this.userPlan = this._cookieService.get("user_plan");
     this.dentistList.paginator = this.paginator;
@@ -138,7 +175,7 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
             this.jeeveProviderIds.push({ id: i, name: "Jeeve Provider " + i });
           }
           this.chartData = res.data;
-          res.data.forEach((element) => {});
+          res.data.forEach((element) => { });
 
           for (let index = 0; index < res.data.length; index++) {
             const element = res.data[index];
@@ -242,18 +279,45 @@ export class ChartsComponent extends BaseComponent implements AfterViewInit {
       );
   }
 
-  openSetJeeveName() {
-    console.log("this.dentistList.data", this.dentistListData);
-    const dialogRef = this.dialog.open(DentisChartComponent, {
-      width: "650px",
-      data: {
-        clinic_id: this.clinic_id$.value,
-        dentistDataList: this.dentistListData,
+  openSetJeeveName(chartID) {
+    let dentistsExclusions = [];
+    this.chartsService.getDentistsExclusions(this.clinic_id$.value, chartID).subscribe(
+      (res) => {
+        if (res.message == "success") {
+          console.log('response', res.data)
+          dentistsExclusions = res.data.map(function (data) {
+            return data.providerId;
+          });
+          this.dentistListData.map(function (data) {
+            if (dentistsExclusions.includes(data.id)) {
+              // found element
+              data.checked = true
+            } else {
+              data.checked = false
+            }
+            return data;
+          });
+          const dialogRef = this.dialog.open(DentisChartComponent, {
+            width: "650px",
+            data: {
+              clinic_id: this.clinic_id$.value,
+              chartID: chartID,
+              dentistDataList: this.dentistListData,
+              dentistsExclusions: dentistsExclusions,
+            },
+          });
+          dialogRef.afterClosed().subscribe((result) => {
+            this.getDentists(this.clinic_id$.value);
+          });
+        } else if (res.status == "401") {
+          this.handleUnAuthorization();
+        }
       },
-    });
-    console.log("this.dentistList.dialogRef", dialogRef);
-    dialogRef.afterClosed().subscribe((result) => {
-      this.getDentists(this.clinic_id$.value);
-    });
+      (error) => {
+        console.log("error", error);
+      }
+    );
+
+
   }
 }
