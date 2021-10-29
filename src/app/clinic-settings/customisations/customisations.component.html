@@ -115,26 +115,27 @@
                 >
               </div>
             </div>
-          </div>
+     
+           
 
-          <div
-            fxLayout="row wrap"
-            fxLayoutGap="20px"
-            fxLayoutGap.md="20px"
-            fxLayoutGap.sm="20px"
-            fxLayoutGap.xs="0"
-          >
             <div
-              fxFlex="calc(24% - 10px)"
-              fxFlex.md="calc(24% - 10px)"
-              fxFlex.sm="calc(24% - 10px)"
+              fxFlex="calc(33% - 10px)"
+              fxFlex.md="calc(33% - 10px)"
+              fxFlex.sm="calc(33% - 10px)"
               fxFlex.xs="100"
             >
               <div class="sa-form-group">
-            
-                <div class="recallCodesCon" *ngFor="let rCodes of recallCodes | keyvalue">
-                      <label
-                  >Recall Code {{ rCodes.key }}
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['recall_codes1']"
+                  [(ngModel)]="recallCode1"
+                  style="width: 70px"
+                />
+                <span style="padding: 0 10px"
+                  >Recall Codes 1
+
                   <div class="info-button">
                     <div class="info-icon-container">
                       <img
@@ -149,27 +150,107 @@
                       />
                     </div>
                   </div>
-                </label>
-                  <input
-                  placeholder=""
-                  name="recallCodes{{ rCodes.key }}"
-                  [value]="rCodes.value"
-                  (blur) = "updateValue($event.target.value,rCodes.key)"
-                  (keyup) = "hideError()"
-                  />
-                  <span class="recallCodesRemove" (click) = "recallCodesRemove(rCodes.key)">X</span>
-                </div>
+                </span>
                 <small
-                  *ngIf="recallError"
-                  class="text-danger recall support-text"
-                  >Recall Codes is Required.</small
-                > 
-
-                <div class="addCodeRecal" *ngIf="recallCodesCount < 3">
-                  <a (click) = "recallCodesAdd()"><i class="fa fa-plus" aria-hidden="true"></i> Add More</a>
-                </div>
+                  *ngIf="
+                    form.controls['recall_codes1'].hasError('required') &&
+                    form.controls['recall_codes1'].touched
+                  "
+                  class="text-danger support-text"
+                  style="float: left; width: 100%"
+                  >Field is Required.</small
+                >
               </div>
             </div>
+             <div
+              fxFlex="calc(33% - 10px)"
+              fxFlex.md="calc(33% - 10px)"
+              fxFlex.sm="calc(33% - 10px)"
+              fxFlex.xs="100"
+            >
+              <div class="sa-form-group">
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['recall_codes2']"
+                  [(ngModel)]="recallCode2"
+                  style="width: 70px"
+                />
+                <span style="padding: 0 10px"
+                  >Recall Codes 2
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img
+                        [tooltip]="{
+                          title: 'Title comes here',
+                          info: 'Description',
+                          direction: 'right'
+                        }"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
+                        class="info-icon"
+                      />
+                    </div>
+                  </div>
+                </span>
+                <small
+                  *ngIf="
+                    form.controls['recall_codes2'].hasError('required') &&
+                    form.controls['recall_codes2'].touched
+                  "
+                  class="text-danger support-text"
+                  style="float: left; width: 100%"
+                  >Field is Required.</small
+                >
+              </div>
+            </div>
+             <div
+              fxFlex="calc(33% - 10px)"
+              fxFlex.md="calc(33% - 10px)"
+              fxFlex.sm="calc(33% - 10px)"
+              fxFlex.xs="100"
+            >
+              <div class="sa-form-group">
+                <input
+                  type="number"
+                  min="0"
+                  placeholder=""
+                  [formControl]="form.controls['recall_codes3']"
+                  [(ngModel)]="recallCode3"
+                  style="width: 70px"
+                />
+                <span style="padding: 0 10px"
+                  >Recall Codes 3
+                  <div class="info-button">
+                    <div class="info-icon-container">
+                      <img
+                        [tooltip]="{
+                          title: 'Title comes here',
+                          info: 'Description',
+                          direction: 'right'
+                        }"
+                        src="../assets/images/info-icon.png"
+                        alt="info-icon"
+                        class="info-icon"
+                      />
+                    </div>
+                  </div>
+                </span>
+                <small
+                  *ngIf="
+                    form.controls['recall_codes3'].hasError('required') &&
+                    form.controls['recall_codes3'].touched
+                  "
+                  class="text-danger support-text"
+                  style="float: left; width: 100%"
+                  >Field is Required.</small
+                >
+              </div>
+            </div>
+
+
+
             <div
               fxFlex="calc(49% - 10px)"
               fxFlex.md="calc(49% - 10px)"
