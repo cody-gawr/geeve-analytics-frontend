@@ -47,6 +47,7 @@ export class CustomisationsComponent
   public recallCode1: any;
   public recallCode2: any;
   public recallCode3: any;
+  public newPatients: any =1;
 
   constructor(
     private _cookieService: CookieService,
@@ -67,6 +68,7 @@ export class CustomisationsComponent
       recall_codes3: [null],
       xray_months: [null, Validators.compose([Validators.required])],
       opg_months: [null, Validators.compose([Validators.required])],
+      new_patients: [null],
     });
     this.getCustomiseSettings();
   }
@@ -86,6 +88,7 @@ export class CustomisationsComponent
               this.recallCode3 = res.data.recall_code3;              
               this.xrayMonths = res.data.xray_months;
               this.opgMonths = res.data.opg_months;
+              this.newPatients = res.data.new_patients_main;
             }
           }
         },
@@ -104,7 +107,8 @@ export class CustomisationsComponent
       opg_months: this.form.value.opg_months,
       recall_code1: this.form.value.recall_codes1,
       recall_code2: this.form.value.recall_codes2,
-      recall_code3: this.form.value.recall_codes3
+      recall_code3: this.form.value.recall_codes3,
+      new_patients: this.form.value.new_patients
     };
 
     this.customisationsService.updateCustomiseSettings(data).subscribe(

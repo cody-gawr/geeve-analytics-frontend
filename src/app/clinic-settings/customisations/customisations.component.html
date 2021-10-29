@@ -16,7 +16,7 @@
         fxLayoutGap.sm="0px"
         fxLayoutGap.xs="0"
       >
-        <h4 class="clinic-settings-form-title">For Morning Huddle</h4>
+        <h4 class="clinic-settings-form-title">Morning Huddle</h4>
         <div
           class="clinic-setting-form"
           fxFlex.md="100"
@@ -32,9 +32,9 @@
             fxLayoutGap.xs="0"
           >
             <div
-              fxFlex="calc(49% - 10px)"
-              fxFlex.md="calc(49% - 10px)"
-              fxFlex.sm="calc(49% - 10px)"
+              fxFlex="calc(33% - 10px)"
+              fxFlex.md="calc(33% - 10px)"
+              fxFlex.sm="calc(33% - 10px)"
               fxFlex.xs="100"
             >
               <div class="sa-form-group">
@@ -73,9 +73,9 @@
               </div>
             </div>
             <div
-              fxFlex="calc(49% - 10px)"
-              fxFlex.md="calc(49% - 10px)"
-              fxFlex.sm="calc(49% - 10px)"
+              fxFlex="calc(33% - 10px)"
+              fxFlex.md="calc(33% - 10px)"
+              fxFlex.sm="calc(33% - 10px)"
               fxFlex.xs="100"
             >
               <div class="sa-form-group">
@@ -115,8 +115,7 @@
                 >
               </div>
             </div>
-     
-           
+   
 
             <div
               fxFlex="calc(33% - 10px)"
@@ -248,15 +247,6 @@
                 >
               </div>
             </div>
-
-
-
-            <div
-              fxFlex="calc(49% - 10px)"
-              fxFlex.md="calc(49% - 10px)"
-              fxFlex.sm="calc(49% - 10px)"
-              fxFlex.xs="100"
-            ></div>
           </div>
         </div>
       </div>
@@ -271,6 +261,23 @@
             fxLayoutGap.sm="0px"
             fxLayoutGap.xs="0"
           >
+
+              <div fxFlex="calc(49% - 10px)" fxFlex.md="calc(49% - 10px)" fxFlex.sm="calc(49% - 10px)" fxFlex.xs="100">
+                <div class="sa-form-group">
+                  <label>New Patients</label>
+                  <select [formControl]="form.controls['new_patients']" [(ngModel)]="newPatients">
+                    <option value="1">Main Provider</option>
+                    <option value="2">Treatment Provider</option>
+                  </select>
+                </div>             
+              </div>
+              
+            </div>
+
+
+
+
+            
             <mat-slide-toggle
               fxFlex.md="30"
               fxFlex.xs="100"
@@ -278,91 +285,9 @@
               name="case_1"
               >Dashboard 1</mat-slide-toggle
             >
-            <mat-slide-toggle
-              fxFlex.md="30"
-              fxFlex.xs="100"
-              checked="true"
-              name="case_1"
-              >Dashboard 2</mat-slide-toggle
-            >
-            <mat-slide-toggle
-              fxFlex.md="30"
-              fxFlex.xs="100"
-              checked="true"
-              name="case_1"
-              >Dashboard 3</mat-slide-toggle
-            >
           </div>
         </div>
-      </div>
-      <!-- <div class="working-days">
-        <h4 class="clinic-settings-form-title">Dashbords</h4>
-        <div
-          class="clinic-setting-form"
-          fxLayout="row wrap"
-          fxLayoutGap="20px"
-          fxLayoutGap.md="0px"
-          fxLayoutGap.sm="0px"
-          fxLayoutGap.xs="0"
-        >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ dashboard.dash_1 }}"
-            name="dash_1"
-            (change)="toggleDashboard($event)"
-            >Dashbord 1</mat-slide-toggle
-          >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ dashboard.dash_2 }}"
-            name="dash_2"
-            (change)="toggleDashboard($event)"
-            >Dashbord 2</mat-slide-toggle
-          >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ dashboard.dash_3 }}"
-            name="dash_3"
-            (change)="toggleDashboard($event)"
-            >Dashbord 3</mat-slide-toggle
-          >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ dashboard.dash_4 }}"
-            name="dash_4"
-            (change)="toggleDashboard($event)"
-            >Dashbord 4</mat-slide-toggle
-          >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ dashboard.dash_5 }}"
-            name="dash_5"
-            (change)="toggleDashboard($event)"
-            >Dashbord 5</mat-slide-toggle
-          >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ dashboard.dash_6 }}"
-            name="dash_6"
-            (change)="toggleDashboard($event)"
-            >Dashbord 6</mat-slide-toggle
-          >
-          <mat-slide-toggle
-            fxFlex.md="30"
-            fxFlex.xs="100"
-            checked="{{ dashboard.dash_7 }}"
-            name="dash_7"
-            (change)="toggleDashboard($event)"
-            >Dashbord 7</mat-slide-toggle
-          >
-        </div>
-      </div> -->
+      
 
       <div class="sa-form-group-btn">
         <button class="save-button" type="submit" [disabled]="!form.valid">
