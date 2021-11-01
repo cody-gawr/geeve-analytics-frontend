@@ -13,8 +13,8 @@ import { MenuItems } from "../../shared/menu-items/menu-items";
 
 import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
 import { HeaderService } from "./header/header.service";
-import { CookieService } from "ngx-cookie";
-
+import { CookieService, CookieOptions } from "ngx-cookie";
+import { AppConstants } from '../../app.constants';
 import { environment } from "../../../environments/environment";
 
 /** @title Responsive sidenav */
@@ -45,6 +45,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   public trailDays: Number = 0;
   selectedClinic: any = "1";
   public title;
+  public showTrail: boolean = false;
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
@@ -54,8 +55,17 @@ export class FullComponent implements OnDestroy, AfterViewInit {
     private _cookieService: CookieService,
     private location: Location,
     private route: ActivatedRoute,
+    public constants: AppConstants,
     @Inject(DOCUMENT) private document: any
   ) {
+    console.log("cunst trailInfo", this._cookieService.get("trailInfo"));
+
+    if (!this._cookieService.get("trailInfo")) {
+      this.showTrail = true
+    } else {
+      this.showTrail = false
+    }
+
     this.id = this.route.snapshot.paramMap.get("id");
 
     this.mobileQuery = media.matchMedia("(min-width: 768px)");
@@ -163,6 +173,17 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   addItem(newItem: number) {
     console.log("full layout", newItem);
     this.trailDays = newItem;
+  }
+
+  hideTrail() {
+
+    this.showTrail = false;
+    console.log("trailInfo", this._cookieService.get("trailInfo"));
+    if (!this._cookieService.get("trailInfo")) {
+      let opts = this.constants.cookieOpt as CookieOptions;
+      this._cookieService.put("trailInfo", 'false', opts);
+      this.showTrail = false
+    }
   }
 
   // Mini sidebar
