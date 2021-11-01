@@ -14,7 +14,7 @@ import { AppConstants } from '../app.constants';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { NgxDaterangepickerMd, DaterangepickerComponent } from 'ngx-daterangepicker-material';
 import { ChartstipsService } from '../shared/chartstips.service';
-
+import { environment } from "../../environments/environment";
 @Component({
   selector: 'notes-add-dialog',
   templateUrl: './add-notes.html',
@@ -139,6 +139,7 @@ export class StatusDialogComponent {
 export class FollowupsComponent implements OnInit, OnDestroy {
   selectedTab = 0;
   public id: any = '';
+  public apiUrl = environment.apiUrl;
   public clinic_id: any = '';
   public user_type: any = '';
   public dentistid: any = null;
@@ -417,18 +418,18 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.nextBussinessDay = production.next_day;
         this.internalReferrals = production.data;
         if (this.showCompleteReferrals == true) {
-            this.internalReferralRecallInCMP = this.internalReferrals;
-          } else {
-            this.internalReferralRecallInCMP = this.internalReferrals.filter(p => p.is_complete != true);
-          }
+          this.internalReferralRecallInCMP = this.internalReferrals;
+        } else {
+          this.internalReferralRecallInCMP = this.internalReferrals.filter(p => p.is_complete != true);
+        }
 
-          if (this.internalReferralRecallInCMP.length <= ((this.pageSize * this.currentIRPage) - this.pageSize) && this.currentIRPage != 1) {
-            this.currentIRPage = this.currentIRPage - 1;
-          }
-          this.setPaginationButtons(this.internalReferralRecallInCMP, 'IR');
-          this.internalReferralRecallInCMP = this.setPaginationData(this.internalReferralRecallInCMP, 'IR');
-          
-       
+        if (this.internalReferralRecallInCMP.length <= ((this.pageSize * this.currentIRPage) - this.pageSize) && this.currentIRPage != 1) {
+          this.currentIRPage = this.currentIRPage - 1;
+        }
+        this.setPaginationButtons(this.internalReferralRecallInCMP, 'IR');
+        this.internalReferralRecallInCMP = this.setPaginationData(this.internalReferralRecallInCMP, 'IR');
+
+
       }
     });
   }
@@ -529,11 +530,9 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
 
-
   //toggleUpdate($event,element.patient_id,element.original_appt_date,element.patients.clinic_id,'Post op Calls')
   toggleUpdate(event, pid, date, fdate, cid, type, status = 'default') {
 
-    console.log('this.getinternalReferrals()', type)
     if (!status || status == '' || status == 'null') {
       event.source.checked = false;
       this.toastr.error('Please update status first to mark complete.');
@@ -577,6 +576,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           this.getTickFollowups('close');
         } else if (type == 'fta-follower') {
           this.getFtaFollowups('close');
+        } else if (type == 'internal-referrals') {
+          this.getinternalReferrals('close');
         } else {
           this.getOverdueRecalls('close');
         }
@@ -588,6 +589,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           this.getTickFollowups('close');
         } else if (type == 'fta-follower') {
           this.getFtaFollowups('close');
+        } else if (type == 'internal-referrals') {
+          this.getinternalReferrals('close');
         } else {
           this.getOverdueRecalls('close');
         }
@@ -692,6 +695,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.getTickFollowups('close');
       } else if (type == 'recall-overdue') {
         this.getOverdueRecalls('close');
+      } else if (type == 'internal-referrals') {
+        this.getinternalReferrals('close');
       } else {
         this.getFtaFollowups('close');
       }
@@ -789,7 +794,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     });
     return temp;
   }
-
 
 
   handlePageChange(goPage: number, type) {

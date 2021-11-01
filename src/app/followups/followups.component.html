@@ -1116,7 +1116,7 @@
 
 
         <!-- Internal Referrals Tab -->
-        <mat-tab label="Internal Referrals">
+        <mat-tab label="Internal Referrals" *ngIf="apiUrl.includes('test')">
             <div class="follow-up">
                 <mat-card-title>
                     <div class="title-follow-up d-inline-block">
@@ -1125,12 +1125,13 @@
                             <img [tooltip]="charTips['52']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                         </div> -->
                     </div>
-                       <div class="showComplete" *ngIf="internalReferrals.length > 0">
-                        <mat-checkbox name="status" [checked]="showCompleteReferrals" (change)="updateToCompleteIR($event)">Show Complete </mat-checkbox>
+                    <div class="showComplete" *ngIf="internalReferrals.length > 0">
+                        <mat-checkbox name="status" [checked]="showCompleteReferrals"
+                            (change)="updateToCompleteIR($event)">Show Complete </mat-checkbox>
                     </div>
                 </mat-card-title>
 
-                  <div class="card-loading" *ngIf="IRLoadingLoading">
+                <div class="card-loading" *ngIf="IRLoadingLoading">
                     <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
                 </div>
                 <div class="follow-ups-table internal-referrals table-responsive">
