@@ -35,7 +35,7 @@ export class SignupComponent implements OnInit {
     
     this.route.queryParams
       .subscribe(params => {
-        if(params.login){
+        if(typeof(params.login) != 'undefined'){
           this.isLogin = true;
           this.openXero();
         }
