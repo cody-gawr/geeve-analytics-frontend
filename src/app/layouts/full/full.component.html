@@ -1,24 +1,27 @@
-<div class="text-center warningTestDemo fulllayout trailDays" *ngIf="trailDays > 0">
-  <span class="m-t-10 m-b-10"
-    >Hey! You have left {{ trailDays }} Days for you trail period</span
-  >
+<div class="text-center warningTestDemo fulllayout trailDays" *ngIf="trailDays > 0 && showTrail">
+  <span class="m-t-10 m-b-10" *ngIf="trailDays > 1">
+    You have {{ trailDays }} days remaining in your free trial period
+  </span>
+  <span class="m-t-10 m-b-10" *ngIf="trailDays == 1">
+    You have {{ trailDays }} day remaining in your free trial period
+  </span>
+  <div class="info-icon-container full-section" (click)="hideTrail()">
+    <!-- <img src="../assets/images/info-icon.png" alt="info-icon" class="info-icon"> -->
+    <i class="ti-close m-r-10"></i>
+    <!---->
+  </div>
 </div>
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
-<div
-  class="main-container"
-  [dir]="dir"
-  [ngClass] = "trailDays > 0? 'trailDays' : ''"
-  [ngClass]="{
+<div class="main-container" [dir]="dir" [ngClass]="trailDays > 0? 'trailDays' : ''" [ngClass]="{
     minisidebar: minisidebar,
     boxed: boxed,
     danger: danger,
     blue: blue,
     green: green,
     dark: dark
-  }"
->
+  }">
   <!-- ============================================================== -->
   <!-- Topbar - style you can find in header.scss -->
   <!-- ============================================================== -->
@@ -26,27 +29,14 @@
   <!-- ============================================================== -->
   <!-- End Topbar - style you can find in pages.scss -->
   <!-- ============================================================== -->
-  <mat-sidenav-container
-    class="example-sidenav-container"
-    [style.marginTop.px]="mobileQuery.matches ? 0 : 0"
-    [ngClass]="{ minisidebar: minisidebar }"
-  >
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 0 : 0"
+    [ngClass]="{ minisidebar: minisidebar }">
     <!-- ============================================================== -->
     <!-- Sidebar - style you can find in sidebar.scss -->
     <!-- ============================================================== -->
-    <mat-sidenav
-      #snav
-      id="snav"
-      class="pl-xs"
-      [mode]="mobileQuery.matches ? 'side' : 'over'"
-      fixedTopGap="0"
-      [opened]="mobileQuery.matches"
-      [disableClose]="mobileQuery.matches"
-      (open)="sidebarOpened = true"
-      (close)="sidebarOpened = false"
-      [perfectScrollbar]="config"
-      (click)="clickEventSideMenu()"
-    >
+    <mat-sidenav #snav id="snav" class="pl-xs" [mode]="mobileQuery.matches ? 'side' : 'over'" fixedTopGap="0"
+      [opened]="mobileQuery.matches" [disableClose]="mobileQuery.matches" (open)="sidebarOpened = true"
+      (close)="sidebarOpened = false" [perfectScrollbar]="config" (click)="clickEventSideMenu()">
       <app-sidebar class="app-sidebar"></app-sidebar>
     </mat-sidenav>
     <!-- ============================================================== -->
@@ -55,29 +45,17 @@
     <!-- ============================================================== -->
     <!-- Right Sidebar - style you can find in rightsidebar.component.scss -->
     <!-- ============================================================== -->
-    <mat-sidenav
-      #end
-      position="end"
-      class="chat-panel"
-      mode="over"
-      opened="false"
-    >
+    <mat-sidenav #end position="end" class="chat-panel" mode="over" opened="false">
       <div class="scroll">
         <mat-nav-list>
           <h3 mat-subheader class="text-uppercase font-weight-bold">
             Settings
           </h3>
           <mat-list-item>
-            <mat-slide-toggle
-              color="warn"
-              (change)="dir = dir == 'rtl' ? 'ltr' : 'rtl'"
-              >RTL</mat-slide-toggle
-            >
+            <mat-slide-toggle color="warn" (change)="dir = dir == 'rtl' ? 'ltr' : 'rtl'">RTL</mat-slide-toggle>
           </mat-list-item>
           <mat-list-item>
-            <mat-slide-toggle color="warn" [(ngModel)]="boxed"
-              >Boxed Layout</mat-slide-toggle
-            >
+            <mat-slide-toggle color="warn" [(ngModel)]="boxed">Boxed Layout</mat-slide-toggle>
           </mat-list-item>
           <!--<mat-list-item>
                     <mat-slide-toggle [(ngModel)]="minisidebar">Mini Sidebar</mat-slide-toggle>
@@ -85,39 +63,19 @@
           <mat-divider></mat-divider>
           <h3 mat-subheader class="text-uppercase font-weight-bold">Colors</h3>
           <mat-list-item>
-            <mat-checkbox
-              color="warn"
-              [(ngModel)]="danger"
-              (change)="green = blue = false"
-              class="text-danger"
-              >Red</mat-checkbox
-            >
+            <mat-checkbox color="warn" [(ngModel)]="danger" (change)="green = blue = false" class="text-danger">Red
+            </mat-checkbox>
           </mat-list-item>
           <mat-list-item>
-            <mat-checkbox
-              color="warn"
-              [(ngModel)]="green"
-              (change)="danger = blue = false"
-              class="text-megna"
-              >Teal Green</mat-checkbox
-            >
+            <mat-checkbox color="warn" [(ngModel)]="green" (change)="danger = blue = false" class="text-megna">Teal
+              Green</mat-checkbox>
           </mat-list-item>
           <mat-list-item>
-            <mat-checkbox
-              color="warn"
-              [(ngModel)]="blue"
-              (change)="green = danger = false"
-              class="text-info"
-              >Blue</mat-checkbox
-            >
+            <mat-checkbox color="warn" [(ngModel)]="blue" (change)="green = danger = false" class="text-info">Blue
+            </mat-checkbox>
           </mat-list-item>
           <mat-list-item>
-            <mat-checkbox
-              color="warn"
-              [(ngModel)]="dark"
-              (change)="green = blue = danger = false"
-              >Dark</mat-checkbox
-            >
+            <mat-checkbox color="warn" [(ngModel)]="dark" (change)="green = blue = danger = false">Dark</mat-checkbox>
           </mat-list-item>
         </mat-nav-list>
       </div>
@@ -130,12 +88,8 @@
       <div class="sa_mobile_header">
         <div class="sa_mobile_logo_area">
           <div class="sa_header_icons">
-            <button
-              class="sa_mat_menu_icon sa_backslide_area hamburger_menu"
-              mat-icon-button
-              (click)="snav.toggle()"
-              value="sidebarclosed"
-            >
+            <button class="sa_mat_menu_icon sa_backslide_area hamburger_menu" mat-icon-button (click)="snav.toggle()"
+              value="sidebarclosed">
               <mat-icon class="sa_ico1 sa_mobile_menu_ico">menu</mat-icon>
               <mat-icon class="sa_ico2 sa_mobile_menu_ico">menu</mat-icon>
             </button>
@@ -151,21 +105,10 @@
       </div>
       <div class="sa_heading_bar">
         <div fxLayout="row wrap">
-          <div
-            fxFlex.lg="70"
-            fxFlex.md="60"
-            fxFlex.sm="100"
-            fxFlex.xs="100"
-            fxFlex="70"
-            class="sa_mobile_heading"
-          >
+          <div fxFlex.lg="70" fxFlex.md="60" fxFlex.sm="100" fxFlex.xs="100" fxFlex="70" class="sa_mobile_heading">
             <div class="sa_header_icons">
-              <button
-                class="sa_mat_menu_icon sa_backslide_area hamburger_menu"
-                mat-icon-button
-                (click)="snav.toggle()"
-                value="sidebarclosed"
-              >
+              <button class="sa_mat_menu_icon sa_backslide_area hamburger_menu" mat-icon-button (click)="snav.toggle()"
+                value="sidebarclosed">
                 <mat-icon class="sa_ico1">arrow_back_ios</mat-icon>
                 <mat-icon class="sa_ico2">arrow_forward_ios</mat-icon>
               </button>
@@ -174,21 +117,13 @@
                                     <mat-icon class="sa_ico2" (click) ="closeFullscreen()">fullscreen_exit</mat-icon>
                                 </button> -->
             </div>
-            <h4><div class="page_title" id="title"></div></h4>
+            <h4>
+              <div class="page_title" id="title"></div>
+            </h4>
           </div>
 
-          <div
-            fxFlex.lg="30"
-            fxFlex.md="40"
-            fxFlex.sm="100"
-            fxFlex.xs="100"
-            fxFlex="30"
-            class=""
-          >
-            <app-headerright
-              (newItemEvent)="addItem($event)"
-              class="app-headerright"
-            ></app-headerright>
+          <div fxFlex.lg="30" fxFlex.md="40" fxFlex.sm="100" fxFlex.xs="100" fxFlex="30" class="">
+            <app-headerright (newItemEvent)="addItem($event)" class="app-headerright"></app-headerright>
           </div>
         </div>
       </div>
