@@ -1125,9 +1125,9 @@
                             <img [tooltip]="charTips['52']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                         </div> -->
                     </div>
-                    <!--    <div class="showComplete" *ngIf="followupFtaFollowups.length > 0">
-                        <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">Show Complete </mat-checkbox>
-                    </div> -->
+                       <div class="showComplete" *ngIf="internalReferrals.length > 0">
+                        <mat-checkbox name="status" [checked]="showCompleteReferrals" (change)="updateToCompleteIR($event)">Show Complete </mat-checkbox>
+                    </div>
                 </mat-card-title>
 
                 <!-- <div class="card-loading" *ngIf="ftaTaksLoadingLoading">
@@ -1252,10 +1252,10 @@
                             [ngClass]="internalReferralRecallInCMP.length <= 0 ? 'show' : 'hide'"></mat-footer-row>
                     </table>
                 </div>
-                <ul class="main_pagination settings-table-pagination followup" *ngIf="orTablePages.length">
-                    <li *ngFor="let page of orTablePages">
-                        <button [ngClass]="{ active: page === currentORPage, page: true }"
-                            (click)="handlePageChange(page, 'OR')">
+                <ul class="main_pagination settings-table-pagination followup" *ngIf="irTablePages.length">
+                    <li *ngFor="let page of irTablePages">
+                        <button [ngClass]="{ active: page === currentIRPage, page: true }"
+                            (click)="handlePageChange(page, 'IR')">
                             {{ page }}
                         </button>
                     </li>

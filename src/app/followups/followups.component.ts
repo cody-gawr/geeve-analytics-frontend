@@ -202,6 +202,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public thikTablePages: number[] = [];
   public currentThickPage: number = 1;
   public opTablePages: number[] = [];
+  public irTablePages: any = [];
   public currentOpPage: number = 1;
   public nextBussinessDay: any;
   public isEnablePO: boolean = false;
@@ -401,6 +402,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     });
   }
 
+  public currentIRPage: number = 1;
   getinternalReferrals(evn = '') {
     if (evn != 'close') {
       // this.recallLoadingLoading = true;
@@ -408,7 +410,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.followupsService.internalReferrals(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
       this.internalReferralRecallInCMP = [];
       // this.recallLoadingLoading = false;
-      
+
       if (production.message == 'success') {
         this.nextBussinessDay = production.next_day;
         // this.followupsOverDueRecallDate = production.date;
@@ -422,17 +424,18 @@ export class FollowupsComponent implements OnInit, OnDestroy {
           } else {
             this.internalReferralRecallInCMP = this.internalReferrals.filter(p => p.is_complete != true);
           }
-          if (this.internalReferralRecallInCMP.length <= ((this.pageSize * this.currentORPage) - this.pageSize) && this.currentORPage != 1) {
-            this.currentORPage = this.currentORPage - 1;
+          if (this.internalReferralRecallInCMP.length <= ((this.pageSize * this.currentIRPage) - this.pageSize) && this.currentIRPage != 1) {
+            this.currentIRPage = this.currentIRPage - 1;
           }
-          console.log('this.internalReferralRecallInCMP',this.internalReferralRecallInCMP)
-          this.setPaginationButtons(this.internalReferralRecallInCMP, 'OR');
-          this.internalReferralRecallInCMP = this.setPaginationData(this.internalReferralRecallInCMP, 'OR');
+          console.log('this.internalReferralRecallInCMP', this.internalReferralRecallInCMP)
+          this.setPaginationButtons(this.internalReferralRecallInCMP, 'IR');
+          this.internalReferralRecallInCMP = this.setPaginationData(this.internalReferralRecallInCMP, 'IR');
           // this.OverDueRecallDays = production.previous;
         }
       }
     });
   }
+
   public tipDoneCode = {};
   public tipFutureDate = {};
 
@@ -487,6 +490,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public tipFtaFutureDate: any = {};
   public ftTablePages: any = [];
   public currentFTPage: number = 1;
+
   getFtaFollowups(evn = '') {
     if (evn != 'close') {
       this.ftaTaksLoadingLoading = true;
@@ -526,7 +530,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 
 
 
@@ -591,11 +594,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-
-
-
   formatPhoneNumber(phone) {
     if (phone) {
       if (phone.startsWith('04')) {
@@ -612,9 +610,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     }
 
   }
-
-
-
 
   updateToComplete(event) {
     this.showComplete = event.checked;
@@ -636,6 +631,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.setPaginationButtons(this.followupPostOpCallsInComp, 'OP');
     this.followupPostOpCallsInComp = this.setPaginationData(this.followupPostOpCallsInComp, 'OP');
   }
+
   updateToCompleteOR(event) {
     this.showCompleteOverdue = event.checked;
     if (event.checked == true) {
@@ -647,6 +643,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.setPaginationButtons(this.followupOverDueRecallInCMP, 'OR');
     this.followupOverDueRecallInCMP = this.setPaginationData(this.followupOverDueRecallInCMP, 'OR');
   }
+
   updateToCompleteTF(event) {
     this.showCompleteTick = event.checked;
     if (event.checked == true) {
@@ -669,6 +666,19 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     this.currentFTPage = 1;
     this.setPaginationButtons(this.followupFtaFollowupsInCMP, 'FT');
     this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP, 'FT');
+  }
+
+  updateToCompleteIR(event) {
+    console.log('event', event.checked)
+    this.showCompleteReferrals = event.checked;
+    if (event.checked == true) {
+      this.internalReferralRecallInCMP = this.internalReferrals;
+    } else {
+      this.internalReferralRecallInCMP = this.internalReferrals.filter(p => p.is_complete != true);
+    }
+    this.currentIRPage = 1;
+    this.setPaginationButtons(this.internalReferralRecallInCMP, 'IR');
+    this.internalReferralRecallInCMP = this.setPaginationData(this.internalReferralRecallInCMP, 'IR');
   }
 
 
@@ -740,6 +750,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       if (totalPages > 1) {
         for (let i = 0; i < totalPages; i++) {
           this.ftTablePages.push(i + 1);
+        }
+      }
+    }
+    if (type == 'IR') {
+      this.irTablePages = [];
+      const totalPages = Math.ceil(totalData.length / this.pageSize);
+      if (totalPages > 1) {
+        for (let i = 0; i < totalPages; i++) {
+          this.irTablePages.push(i + 1);
         }
       }
     }
