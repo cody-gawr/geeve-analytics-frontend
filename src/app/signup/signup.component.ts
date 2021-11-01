@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { SignupService } from "./signup.service";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: "app-signup",
@@ -10,6 +11,7 @@ import { SignupService } from "./signup.service";
 export class SignupComponent implements OnInit {
   public xeroUrl: string = "";
   public token: string = "";
+  public isLogin: boolean = false;
   loadAPI: Promise<any>;
 
   public loadStyle(stylePath: string) {
@@ -29,8 +31,19 @@ export class SignupComponent implements OnInit {
     document.getElementsByTagName("head")[0].appendChild(node);
   }
 
-  constructor(private signupService: SignupService) {
+  constructor(private signupService: SignupService,private route: ActivatedRoute) {
     
+    this.route.queryParams
+      .subscribe(params => {
+        if(params.login){
+          this.isLogin = true;
+          this.openXero();
+        }
+        
+      }
+    )
+
+
     this.loadAPI = new Promise((resolve) => {      
       this.loadStyle("../../assets/styles/mailerlite/import.css");
       this.loadStyle("../../assets/styles/mailerlite/universal.css");
