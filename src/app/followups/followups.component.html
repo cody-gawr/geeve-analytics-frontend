@@ -1,8 +1,12 @@
 <input type="button" id="clinic_initiate" (click)="initiate_clinic()" [style.display]="'none'" />
 <div class="sa_dashboard_inner_content morning-huddle side">
     <div class="morning-huddle-date topModel followuppage">
-        <mat-icon (click)="setDate('subtract')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">arrow_back_ios</mat-icon>{{ selectedMonthYear }}
-        <mat-icon (click)="setDate('add')" role="img" class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">arrow_forward_ios</mat-icon>
+        <mat-icon (click)="setDate('subtract')" role="img"
+            class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectLeft" aria-hidden="true">
+            arrow_back_ios</mat-icon>{{ selectedMonthYear }}
+        <mat-icon (click)="setDate('add')" role="img"
+            class="mat-icon notranslate sa_ico1 material-icons mat-icon-no-color selectRight" aria-hidden="true">
+            arrow_forward_ios</mat-icon>
     </div>
 
     <mat-tab-group [selectedIndex]="selectedTab">
@@ -13,27 +17,32 @@
                     <div class="title-follow-up d-inline-block">
                         Overdue Recalls
                         <div class="info-icon-container">
-                            <img [tooltip]="charTips['44']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                            <img [tooltip]="charTips['44']" src="../assets/images/info-icon.png" alt="info-icon"
+                                class="info-icon" />
                         </div>
                     </div>
 
                     <div class="showComplete" *ngIf="followupOverDueRecall.length > 0">
-                        <mat-checkbox name="status" [checked]="showCompleteOverdue" (change)="updateToCompleteOR($event)">Show Complete</mat-checkbox>
+                        <mat-checkbox name="status" [checked]="showCompleteOverdue"
+                            (change)="updateToCompleteOR($event)">Show Complete</mat-checkbox>
                     </div>
-                     <div class="chipSets" *ngIf="overdueRecallsScrps.length > 0">
-                          <mat-chip-list class="example-chip">
-                          <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of overdueRecallsScrps"  [color]="chips.colour">
-                            <span class="chipText" >{{chips.script_title}}</span> 
-                          </mat-chip>
+                    <div class="chipSets" *ngIf="overdueRecallsScrps.length > 0">
+                        <mat-chip-list class="example-chip">
+                            <mat-chip [tooltip]="{title:chips.script_title, info: chips.script_text }"
+                                (mouseover)="historyPosChips($event,chips.colour)" class="example-box"
+                                *ngFor="let chips of overdueRecallsScrps" [color]="chips.colour">
+                                <span class="chipText">{{chips.script_title}}</span>
+                            </mat-chip>
                         </mat-chip-list>
-                    </div>  
+                    </div>
                 </mat-card-title>
 
                 <div class="card-loading" *ngIf="recallLoadingLoading">
                     <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
                 </div>
                 <div class="follow-ups-table table-responsive">
-                    <table mat-table [dataSource]="followupOverDueRecallInCMP" class="mat-elevation-z8 customWidth thick">
+                    <table mat-table [dataSource]="followupOverDueRecallInCMP"
+                        class="mat-elevation-z8 customWidth thick">
                         <!-- Name Column -->
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef>Patient Name</th>
@@ -48,11 +57,14 @@
                             <td mat-cell *matCellDef="let element">
                                 <div class="phone_align_center">
                                     <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
-                                    <span class="phone_no" *ngIf="element.patients.mobile">{{ formatPhoneNumber(element.patients.mobile) }}</span>
-                                    <span class="phone_no" *ngIf="!element.patients.mobile && element.patients.phone_work">
+                                    <span class="phone_no" *ngIf="element.patients.mobile">{{
+                                        formatPhoneNumber(element.patients.mobile) }}</span>
+                                    <span class="phone_no"
+                                        *ngIf="!element.patients.mobile && element.patients.phone_work">
                                         {{ formatPhoneNumber(element.patients.phone_work) }}
                                     </span>
-                                    <span class="phone_no" *ngIf=" !element.patients.mobile && !element.patients.phone_work " >
+                                    <span class="phone_no"
+                                        *ngIf=" !element.patients.mobile && !element.patients.phone_work ">
                                         {{ formatPhoneNumber(element.patients.phone_home) }}
                                     </span>
                                 </div>
@@ -76,13 +88,9 @@
                             <th mat-header-cell *matHeaderCellDef>Notes</th>
                             <td mat-cell *matCellDef="let element">
                                 <span (mouseover)="historyPos($event)" class="info-icon-container tick historyTip">
-                                    <i
-                                        [tooltip]="{
+                                    <i [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
-                    }"
-                                        [ngClass]="!element.notes ? 'red' : 'green'"
-                                        class="fas fa-book notes"
-                                        (click)="
+                    }" [ngClass]="!element.notes ? 'red' : 'green'" class="fas fa-book notes" (click)="
                       openNotes(
                         element.notes,
                         element.patient_id,
@@ -90,11 +98,11 @@
                         element.followup_date,
                         'recall-overdue'
                       )
-                    "
-                                    ></i>
+                    "></i>
                                 </span>
                                 <div class="historyTip history">
-                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)" class="fa fa-history" *ngIf="element.history.length > 0"></i>
+                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)"
+                                        class="fa fa-history" *ngIf="element.history.length > 0"></i>
                                 </div>
                             </td>
                         </ng-container>
@@ -102,10 +110,7 @@
                             <th mat-header-cell *matHeaderCellDef>Status</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-form-field floatLabel="never" class="setPreviousDay">
-                                    <mat-select
-                                        placeholder="Select Status"
-                                        [(value)]="element.status"
-                                        id="setNote"
+                                    <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote"
                                         (selectionChange)="
                       updateStatus(
                         $event.value,
@@ -119,15 +124,15 @@
                         'recall-overdue',
                         nextBussinessDay
                       )
-                    "
-                                    >
+                    ">
                                         <mat-option value="">Select Status</mat-option>
                                         <mat-option value="Booked">Booked</mat-option>
                                         <mat-option value="Already booked">Already booked</mat-option>
                                         <mat-option value="Didn't want to book">Didn't want to book</mat-option>
                                         <mat-option value="Ineligible">Ineligible</mat-option>
                                         <mat-option value="Can't be reached">Can't be reached</mat-option>
-                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left
+                                            voicemail</mat-option>
                                         <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -136,9 +141,7 @@
                         <ng-container matColumnDef="status">
                             <th mat-header-cell *matHeaderCellDef>Complete</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-slide-toggle
-                                    [checked]="element.is_complete == 0 ? false : true"
-                                    name="status"
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
                                     (change)="
                     toggleUpdate(
                       $event,
@@ -149,31 +152,31 @@
                       'recall-overdue',
                       element.status
                     )
-                  "
-                                >
+                  ">
                                 </mat-slide-toggle>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns2.length">
-                                <span *ngIf="isEnableOR && followupOverDueRecall.length <= 0">You have no overdue recalls for {{ selectedMonthYear }}</span>
-                                <span *ngIf="isEnableOR && followupOverDueRecall.length > 0">All overdue recalls have been completed for {{ selectedMonthYear }}</span>
-                                <span *ngIf="!isEnableOR">Overdue Recalls are not enabled - this can be configured in your Jeeve Settings menu</span>
+                                <span *ngIf="isEnableOR && followupOverDueRecall.length <= 0">You have no overdue
+                                    recalls for {{ selectedMonthYear }}</span>
+                                <span *ngIf="isEnableOR && followupOverDueRecall.length > 0">All overdue recalls have
+                                    been completed for {{ selectedMonthYear }}</span>
+                                <span *ngIf="!isEnableOR">Overdue Recalls are not enabled - this can be configured in
+                                    your Jeeve Settings menu</span>
                             </mat-footer-cell>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
-                        <mat-footer-row
-                            *matFooterRowDef="['isDataAvailable1']"
-                            [ngClass]="
+                        <mat-footer-row *matFooterRowDef="['isDataAvailable1']" [ngClass]="
                 followupOverDueRecallInCMP.length <= 0 ? 'show' : 'hide'
-              "
-                        ></mat-footer-row>
+              "></mat-footer-row>
                     </table>
                 </div>
                 <ul class="main_pagination settings-table-pagination followup" *ngIf="orTablePages.length">
                     <li *ngFor="let page of orTablePages">
-                        <button [ngClass]="{ active: page === currentORPage, page: true }" (click)="handlePageChange(page, 'OR')">
+                        <button [ngClass]="{ active: page === currentORPage, page: true }"
+                            (click)="handlePageChange(page, 'OR')">
                             {{ page }}
                         </button>
                     </li>
@@ -203,10 +206,7 @@
                             <div fxFlex="40">Status :</div>
                             <div fxFlex="60">
                                 <mat-form-field floatLabel="never" class="setPreviousDay">
-                                    <mat-select
-                                        placeholder="Select Status"
-                                        [(value)]="element.status"
-                                        id="setNote"
+                                    <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote"
                                         (selectionChange)="
                       updateStatus(
                         $event.value,
@@ -220,15 +220,15 @@
                         'recall-overdue',
                         nextBussinessDay
                       )
-                    "
-                                    >
+                    ">
                                         <mat-option value="">Select Status</mat-option>
                                         <mat-option value="Booked">Booked</mat-option>
                                         <mat-option value="Already booked">Already booked</mat-option>
                                         <mat-option value="Didn't want to book">Didn't want to book</mat-option>
                                         <mat-option value="Ineligible">Ineligible</mat-option>
                                         <mat-option value="Can't be reached">Can't be reached</mat-option>
-                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left
+                                            voicemail</mat-option>
                                         <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -244,13 +244,9 @@
                             <div fxFlex="40">Notes :</div>
                             <div fxFlex="60">
                                 <div (mouseover)="historyPos($event)" class="info-icon-container tick historyTip">
-                                    <i
-                                        [tooltip]="{
+                                    <i [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
-                    }"
-                                        [ngClass]="!element.notes ? 'red' : 'green'"
-                                        class="fas fa-book notes"
-                                        (click)="
+                    }" [ngClass]="!element.notes ? 'red' : 'green'" class="fas fa-book notes" (click)="
                       openNotes(
                         element.notes,
                         element.patient_id,
@@ -258,20 +254,18 @@
                         element.followup_date,
                         'recall-overdue'
                       )
-                    "
-                                    ></i>
+                    "></i>
                                 </div>
                                 <div class="historyTip history">
-                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)" class="fa fa-history" *ngIf="element.history.length > 0"></i>
+                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)"
+                                        class="fa fa-history" *ngIf="element.history.length > 0"></i>
                                 </div>
                             </div>
                         </div>
                         <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Complete :</div>
                             <div fxFlex="60">
-                                <mat-slide-toggle
-                                    [checked]="element.is_complete == 0 ? false : true"
-                                    name="status"
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
                                     (change)="
                     toggleUpdate(
                       $event,
@@ -282,14 +276,13 @@
                       'recall-overdue',
                       element.status
                     )
-                  "
-                                >
+                  ">
                                 </mat-slide-toggle>
                             </div>
                         </div>
                     </mat-card>
                 </div>
-              
+
                 <!-- follow-ups-card view-end--->
             </div>
         </mat-tab>
@@ -303,28 +296,33 @@
                     <div class="title-follow-up d-inline-block">
                         Tick
                         <div class="info-icon-container">
-                            <img [tooltip]="charTips['45']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                            <img [tooltip]="charTips['45']" src="../assets/images/info-icon.png" alt="info-icon"
+                                class="info-icon" />
                         </div>
                     </div>
 
                     <div class="showComplete" *ngIf="followupTickFollowups.length > 0">
-                        <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">Show Complete </mat-checkbox>
+                        <mat-checkbox name="status" [checked]="showCompleteTick" (change)="updateToCompleteTF($event)">
+                            Show Complete </mat-checkbox>
                     </div>
 
-                     <div class="chipSets" *ngIf="tickFollowupsScrps.length > 0">
-                          <mat-chip-list class="example-chip">
-                          <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of tickFollowupsScrps"  [color]="chips.colour">
-                            <span class="chipText" >{{chips.script_title}}</span> 
-                          </mat-chip>
+                    <div class="chipSets" *ngIf="tickFollowupsScrps.length > 0">
+                        <mat-chip-list class="example-chip">
+                            <mat-chip [tooltip]="{title:chips.script_title, info: chips.script_text }"
+                                (mouseover)="historyPosChips($event,chips.colour)" class="example-box"
+                                *ngFor="let chips of tickFollowupsScrps" [color]="chips.colour">
+                                <span class="chipText">{{chips.script_title}}</span>
+                            </mat-chip>
                         </mat-chip-list>
-                    </div>  
+                    </div>
                 </mat-card-title>
 
                 <div class="card-loading" *ngIf="endTaksLoadingLoading">
                     <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
                 </div>
                 <div class="follow-ups-table table-responsive">
-                    <table mat-table [dataSource]="followupTickFollowupsInCMP" class="mat-elevation-z8 customWidth thick">
+                    <table mat-table [dataSource]="followupTickFollowupsInCMP"
+                        class="mat-elevation-z8 customWidth thick">
                         <!-- Name Column -->
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef>Patient Name</th>
@@ -339,21 +337,16 @@
                             <td mat-cell *matCellDef="let element">
                                 <div class="phone_align_center">
                                     <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
-                                    <span class="phone_no" *ngIf="element.patients.mobile">{{ formatPhoneNumber(element.patients.mobile) }}</span>
-                                    <span
-                                        class="phone_no"
-                                        *ngIf="
+                                    <span class="phone_no" *ngIf="element.patients.mobile">{{
+                                        formatPhoneNumber(element.patients.mobile) }}</span>
+                                    <span class="phone_no" *ngIf="
                       !element.patients.mobile && element.patients.phone_work
-                    "
-                                    >
+                    ">
                                         {{ formatPhoneNumber(element.patients.phone_work) }}
                                     </span>
-                                    <span
-                                        class="phone_no"
-                                        *ngIf="
+                                    <span class="phone_no" *ngIf="
                       !element.patients.mobile && !element.patients.phone_work
-                    "
-                                    >
+                    ">
                                         {{ formatPhoneNumber(element.patients.phone_home) }}
                                     </span>
                                 </div>
@@ -386,10 +379,7 @@
                             <th mat-header-cell *matHeaderCellDef>Status</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-form-field floatLabel="never" class="setPreviousDay">
-                                    <mat-select
-                                        placeholder="Select Status"
-                                        [(value)]="element.status"
-                                        id="setNote2"
+                                    <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
                                         (selectionChange)="
                       updateStatus(
                         $event.value,
@@ -403,8 +393,7 @@
                         'tick-follower',
                         nextBussinessDay
                       )
-                    "
-                                    >
+                    ">
                                         <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                                         <mat-option value="">Select Status</mat-option>
                                         <mat-option value="Booked">Booked</mat-option>
@@ -412,7 +401,8 @@
                                         <mat-option value="Didn't want to book">Didn't want to book</mat-option>
                                         <mat-option value="Ineligible">Ineligible</mat-option>
                                         <mat-option value="Can't be reached">Can't be reached</mat-option>
-                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left
+                                            voicemail</mat-option>
                                         <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -422,13 +412,9 @@
                             <th mat-header-cell *matHeaderCellDef>Notes</th>
                             <td mat-cell *matCellDef="let element">
                                 <span (mouseover)="historyPos($event)" class="info-icon-container tick historyTip">
-                                    <i
-                                        [tooltip]="{
+                                    <i [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
-                    }"
-                                        [ngClass]="!element.notes ? 'red' : 'green'"
-                                        class="fas fa-book notes"
-                                        (click)="
+                    }" [ngClass]="!element.notes ? 'red' : 'green'" class="fas fa-book notes" (click)="
                       openNotes(
                         element.notes,
                         element.patient_id,
@@ -436,15 +422,19 @@
                         element.followup_date,
                         'tick-follower'
                       )
-                    "
-                                    ></i>
+                    "></i>
                                 </span>
-                                <span (mouseover)="historyPos($event)" *ngIf="element.code != ''" class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes" [tooltip]="tipDoneCode[element.patient_id]"></i></span>
-                                <span (mouseover)="historyPos($event)" *ngIf="element.future_date_show" class="info-icon-container tick historyTip">
-                                    <i class="fas fa-calendar-check notes" [tooltip]="tipFutureDate[element.patient_id]"></i>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.code != ''"
+                                    class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes"
+                                        [tooltip]="tipDoneCode[element.patient_id]"></i></span>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.future_date_show"
+                                    class="info-icon-container tick historyTip">
+                                    <i class="fas fa-calendar-check notes"
+                                        [tooltip]="tipFutureDate[element.patient_id]"></i>
                                 </span>
                                 <div class="historyTip history">
-                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)" class="fa fa-history" *ngIf="element.history.length > 0"></i>
+                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)"
+                                        class="fa fa-history" *ngIf="element.history.length > 0"></i>
                                 </div>
                             </td>
                         </ng-container>
@@ -452,9 +442,7 @@
                         <ng-container matColumnDef="status">
                             <th mat-header-cell *matHeaderCellDef>Complete</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-slide-toggle
-                                    [checked]="element.is_complete == 0 ? false : true"
-                                    name="status"
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
                                     (change)="
                     toggleUpdate(
                       $event,
@@ -465,31 +453,31 @@
                       'tick-follower',
                       element.status
                     )
-                  "
-                                >
+                  ">
                                 </mat-slide-toggle>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
-                                <span *ngIf="isEnableTH && followupTickFollowups.length <= 0">You have no tick followups for {{ selectedMonthYear }}</span>
-                                <span *ngIf="isEnableTH && followupTickFollowups.length > 0">All tick followups have been completed for {{ selectedMonthYear }}</span>
-                                <span *ngIf="!isEnableTH">Tick Followup are not enabled - this can be configured in your Jeeve Settings menu</span>
+                                <span *ngIf="isEnableTH && followupTickFollowups.length <= 0">You have no tick followups
+                                    for {{ selectedMonthYear }}</span>
+                                <span *ngIf="isEnableTH && followupTickFollowups.length > 0">All tick followups have
+                                    been completed for {{ selectedMonthYear }}</span>
+                                <span *ngIf="!isEnableTH">Tick Followup are not enabled - this can be configured in your
+                                    Jeeve Settings menu</span>
                             </mat-footer-cell>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>
-                        <mat-footer-row
-                            *matFooterRowDef="['isDataAvailable1']"
-                            [ngClass]="
+                        <mat-footer-row *matFooterRowDef="['isDataAvailable1']" [ngClass]="
                 followupTickFollowupsInCMP.length <= 0 ? 'show' : 'hide'
-              "
-                        ></mat-footer-row>
+              "></mat-footer-row>
                     </table>
                 </div>
                 <ul class="main_pagination settings-table-pagination followup" *ngIf="thikTablePages.length">
                     <li *ngFor="let page of thikTablePages">
-                        <button [ngClass]="{ active: page === currentThickPage, page: true }" (click)="handlePageChange(page, 'TH')">
+                        <button [ngClass]="{ active: page === currentThickPage, page: true }"
+                            (click)="handlePageChange(page, 'TH')">
                             {{ page }}
                         </button>
                     </li>
@@ -515,7 +503,7 @@
                                 {{ element.original_appt_date | date: "MMM d, y":"timezone" }}
                             </div>
                         </div>
-                         <div fxLayout="row" class="huddle-card-row">
+                        <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Provider :</div>
                             <div fxFlex="60">
                                 {{ element.dentists.name }}
@@ -525,10 +513,7 @@
                             <div fxFlex="40">Status :</div>
                             <div fxFlex="60">
                                 <mat-form-field floatLabel="never" class="setPreviousDay">
-                                    <mat-select
-                                        placeholder="Select Status"
-                                        [(value)]="element.status"
-                                        id="setNote2"
+                                    <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
                                         (selectionChange)="
                       updateStatus(
                         $event.value,
@@ -542,15 +527,15 @@
                         'tick-follower',
                         nextBussinessDay
                       )
-                    "
-                                    >
+                    ">
                                         <mat-option value="">Select Status</mat-option>
                                         <mat-option value="Booked">Booked</mat-option>
                                         <mat-option value="Already booked">Already booked</mat-option>
                                         <mat-option value="Didn't want to book">Didn't want to book</mat-option>
                                         <mat-option value="Ineligible">Ineligible</mat-option>
                                         <mat-option value="Can't be reached">Can't be reached</mat-option>
-                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left
+                                            voicemail</mat-option>
                                         <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -566,13 +551,9 @@
                             <div fxFlex="40">Notes :</div>
                             <div fxFlex="60">
                                 <span (mouseover)="historyPos($event)" class="info-icon-container tick historyTip">
-                                    <i
-                                        [tooltip]="{
+                                    <i [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
-                    }"
-                                        [ngClass]="!element.notes ? 'red' : 'green'"
-                                        class="fas fa-book notes"
-                                        (click)="
+                    }" [ngClass]="!element.notes ? 'red' : 'green'" class="fas fa-book notes" (click)="
                       openNotes(
                         element.notes,
                         element.patient_id,
@@ -580,24 +561,26 @@
                         element.followup_date,
                         'tick-follower'
                       )
-                    "
-                                    ></i>
+                    "></i>
                                 </span>
-                                <span (mouseover)="historyPos($event)" *ngIf="element.code != ''" class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes" [tooltip]="tipDoneCode[element.patient_id]"></i></span>
-                                <span (mouseover)="historyPos($event)" *ngIf="element.future_date_show" class="info-icon-container tick historyTip">
-                                    <i class="fas fa-calendar-check notes" [tooltip]="tipFutureDate[element.patient_id]"></i>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.code != ''"
+                                    class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes"
+                                        [tooltip]="tipDoneCode[element.patient_id]"></i></span>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.future_date_show"
+                                    class="info-icon-container tick historyTip">
+                                    <i class="fas fa-calendar-check notes"
+                                        [tooltip]="tipFutureDate[element.patient_id]"></i>
                                 </span>
                                 <div class="historyTip history">
-                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)" class="fa fa-history" *ngIf="element.history.length > 0"></i>
+                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)"
+                                        class="fa fa-history" *ngIf="element.history.length > 0"></i>
                                 </div>
                             </div>
                         </div>
                         <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Complete :</div>
                             <div fxFlex="60">
-                                <mat-slide-toggle
-                                    [checked]="element.is_complete == 0 ? false : true"
-                                    name="status"
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
                                     (change)="
                     toggleUpdate(
                       $event,
@@ -608,15 +591,13 @@
                       'tick-follower',
                       element.status
                     )
-                  "
-
-                                >
+                  ">
                                 </mat-slide-toggle>
                             </div>
                         </div>
                     </mat-card>
                 </div>
-                
+
                 <!-- follow-ups-card view-end--->
 
             </div>
@@ -629,27 +610,32 @@
                     <div class="title-follow-up d-inline-block">
                         Post op Calls
                         <div class="info-icon-container">
-                            <img [tooltip]="charTips['43']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                            <img [tooltip]="charTips['43']" src="../assets/images/info-icon.png" alt="info-icon"
+                                class="info-icon" />
                         </div>
                     </div>
 
                     <div class="showComplete" *ngIf="followupPostOpCalls.length > 0">
-                        <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">Show Complete</mat-checkbox>
+                        <mat-checkbox name="status" [checked]="postopCallsPostOp" (change)="updateToCompleteOP($event)">
+                            Show Complete</mat-checkbox>
                     </div>
-                       <div class="chipSets" *ngIf="postOpCallsScrps.length > 0">
-                          <mat-chip-list class="example-chip">
-                          <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of postOpCallsScrps"  [color]="chips.colour">
-                            <span class="chipText" >{{chips.script_title}}</span> 
-                          </mat-chip>
+                    <div class="chipSets" *ngIf="postOpCallsScrps.length > 0">
+                        <mat-chip-list class="example-chip">
+                            <mat-chip [tooltip]="{title:chips.script_title, info: chips.script_text }"
+                                (mouseover)="historyPosChips($event,chips.colour)" class="example-box"
+                                *ngFor="let chips of postOpCallsScrps" [color]="chips.colour">
+                                <span class="chipText">{{chips.script_title}}</span>
+                            </mat-chip>
                         </mat-chip-list>
-                    </div>  
+                    </div>
                 </mat-card-title>
 
                 <div class="card-loading" *ngIf="poLoadingLoading">
                     <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
                 </div>
                 <div class="follow-ups-table table-responsive">
-                    <table mat-table [dataSource]="followupPostOpCallsInComp" class="mat-elevation-z8 customWidth PostOp">
+                    <table mat-table [dataSource]="followupPostOpCallsInComp"
+                        class="mat-elevation-z8 customWidth PostOp">
                         <!-- Name Column -->
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef>Patient Name</th>
@@ -664,21 +650,16 @@
                             <td mat-cell *matCellDef="let element">
                                 <div class="phone_align_center">
                                     <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
-                                    <span class="phone_no" *ngIf="element.patients.mobile">{{ formatPhoneNumber(element.patients.mobile) }}</span>
-                                    <span
-                                        class="phone_no"
-                                        *ngIf="
+                                    <span class="phone_no" *ngIf="element.patients.mobile">{{
+                                        formatPhoneNumber(element.patients.mobile) }}</span>
+                                    <span class="phone_no" *ngIf="
                       !element.patients.mobile && element.patients.phone_work
-                    "
-                                    >
+                    ">
                                         {{ formatPhoneNumber(element.patients.phone_work) }}
                                     </span>
-                                    <span
-                                        class="phone_no"
-                                        *ngIf="
+                                    <span class="phone_no" *ngIf="
                       !element.patients.mobile && !element.patients.phone_work
-                    "
-                                    >
+                    ">
                                         {{ formatPhoneNumber(element.patients.phone_home) }}
                                     </span>
                                 </div>
@@ -693,7 +674,7 @@
                         <ng-container matColumnDef="dentist">
                             <th mat-header-cell *matHeaderCellDef>Provider</th>
                             <td mat-cell *matCellDef="let element">
-                                {{ element.dentists.name  }}
+                                {{ element.dentists.name }}
                             </td>
                         </ng-container>
 
@@ -713,9 +694,7 @@
                         <ng-container matColumnDef="status">
                             <th mat-header-cell *matHeaderCellDef>Complete</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-slide-toggle
-                                    [checked]="element.is_complete == 0 ? false : true"
-                                    name="status"
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
                                     (change)="
                     toggleUpdate(
                       $event,
@@ -725,31 +704,31 @@
                       element.patients.clinic_id,
                       'post-op-calls'
                     )
-                  "
-                                >
+                  ">
                                 </mat-slide-toggle>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns1.length">
-                                <span *ngIf="isEnablePO && followupPostOpCalls.length <= 0">You have no post op calls for {{ selectedMonthYear }}</span>
-                                <span *ngIf="isEnablePO && followupPostOpCalls.length > 0">All post op calls have been completed for {{ selectedMonthYear }}</span>
-                                <span *ngIf="!isEnablePO">Post Op calls are not enabled - this can be configured in your Jeeve Settings menu</span>
+                                <span *ngIf="isEnablePO && followupPostOpCalls.length <= 0">You have no post op calls
+                                    for {{ selectedMonthYear }}</span>
+                                <span *ngIf="isEnablePO && followupPostOpCalls.length > 0">All post op calls have been
+                                    completed for {{ selectedMonthYear }}</span>
+                                <span *ngIf="!isEnablePO">Post Op calls are not enabled - this can be configured in your
+                                    Jeeve Settings menu</span>
                             </mat-footer-cell>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
-                        <mat-footer-row
-                            *matFooterRowDef="['isDataAvailable1']"
-                            [ngClass]="
+                        <mat-footer-row *matFooterRowDef="['isDataAvailable1']" [ngClass]="
                 followupPostOpCallsInComp.length <= 0 ? 'show' : 'hide'
-              "
-                        ></mat-footer-row>
+              "></mat-footer-row>
                     </table>
                 </div>
                 <ul class="main_pagination settings-table-pagination followup" *ngIf="opTablePages.length">
                     <li *ngFor="let page of opTablePages">
-                        <button [ngClass]="{ active: page === currentOpPage, page: true }" (click)="handlePageChange(page, 'OP')">
+                        <button [ngClass]="{ active: page === currentOpPage, page: true }"
+                            (click)="handlePageChange(page, 'OP')">
                             {{ page }}
                         </button>
                     </li>
@@ -800,9 +779,7 @@
                         <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Complete :</div>
                             <div fxFlex="60">
-                                <mat-slide-toggle
-                                    [checked]="element.is_complete == 0 ? false : true"
-                                    name="status"
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
                                     (change)="
                     toggleUpdate(
                       $event,
@@ -812,14 +789,13 @@
                       element.patients.clinic_id,
                       'post-op-calls'
                     )
-                  "
-                                >
+                  ">
                                 </mat-slide-toggle>
                             </div>
                         </div>
                     </mat-card>
                 </div>
-                
+
                 <!-- follow-ups-card view-end--->
             </div>
 
@@ -834,18 +810,22 @@
                     <div class="title-follow-up d-inline-block">
                         FTA / UTA
                         <div class="info-icon-container">
-                            <img [tooltip]="charTips['52']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
+                            <img [tooltip]="charTips['52']" src="../assets/images/info-icon.png" alt="info-icon"
+                                class="info-icon" />
                         </div>
                     </div>
 
                     <div class="showComplete" *ngIf="followupFtaFollowups.length > 0">
-                        <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">Show Complete </mat-checkbox>
+                        <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">
+                            Show Complete </mat-checkbox>
                     </div>
                     <div class="chipSets" *ngIf="ftaFollowupsScrps.length > 0">
-                          <mat-chip-list class="example-chip">
-                          <mat-chip   [tooltip]="{title:chips.script_title, info: chips.script_text }" (mouseover)="historyPosChips($event,chips.colour)" class="example-box" *ngFor="let chips of ftaFollowupsScrps"  [color]="chips.colour">
-                            <span class="chipText" >{{chips.script_title}}</span> 
-                          </mat-chip>
+                        <mat-chip-list class="example-chip">
+                            <mat-chip [tooltip]="{title:chips.script_title, info: chips.script_text }"
+                                (mouseover)="historyPosChips($event,chips.colour)" class="example-box"
+                                *ngFor="let chips of ftaFollowupsScrps" [color]="chips.colour">
+                                <span class="chipText">{{chips.script_title}}</span>
+                            </mat-chip>
                         </mat-chip-list>
                     </div>
                 </mat-card-title>
@@ -854,7 +834,8 @@
                     <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
                 </div>
                 <div class="follow-ups-table table-responsive">
-                    <table mat-table [dataSource]="followupFtaFollowupsInCMP" class="mat-elevation-z8 customWidth thick">
+                    <table mat-table [dataSource]="followupFtaFollowupsInCMP"
+                        class="mat-elevation-z8 customWidth thick">
                         <!-- Name Column -->
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef>Patient Name</th>
@@ -869,21 +850,16 @@
                             <td mat-cell *matCellDef="let element">
                                 <div class="phone_align_center">
                                     <img src="../assets/images/follow-up-call.png" alt="follow-up-call" />
-                                    <span class="phone_no" *ngIf="element.patients.mobile">{{ formatPhoneNumber(element.patients.mobile) }}</span>
-                                    <span
-                                        class="phone_no"
-                                        *ngIf="
+                                    <span class="phone_no" *ngIf="element.patients.mobile">{{
+                                        formatPhoneNumber(element.patients.mobile) }}</span>
+                                    <span class="phone_no" *ngIf="
                       !element.patients.mobile && element.patients.phone_work
-                    "
-                                    >
+                    ">
                                         {{ formatPhoneNumber(element.patients.phone_work) }}
                                     </span>
-                                    <span
-                                        class="phone_no"
-                                        *ngIf="
+                                    <span class="phone_no" *ngIf="
                       !element.patients.mobile && !element.patients.phone_work
-                    "
-                                    >
+                    ">
                                         {{ formatPhoneNumber(element.patients.phone_home) }}
                                     </span>
                                 </div>
@@ -914,10 +890,7 @@
                             <th mat-header-cell *matHeaderCellDef>Status</th>
                             <td mat-cell *matCellDef="let element">
                                 <mat-form-field floatLabel="never" class="setPreviousDay mb-0">
-                                    <mat-select
-                                        placeholder="Select Status"
-                                        [(value)]="element.status"
-                                        id="setNote2"
+                                    <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
                                         (selectionChange)="
                       updateStatus(
                         $event.value,
@@ -931,8 +904,7 @@
                         'fta-follower',
                         nextBussinessDay
                       )
-                    "
-                                    >
+                    ">
                                         <!--(selectionChange)="refreshPerformanceTab($event.value)" -->
                                         <mat-option value="">Select Status</mat-option>
                                         <mat-option value="Booked">Booked</mat-option>
@@ -940,7 +912,8 @@
                                         <mat-option value="Didn't want to book">Didn't want to book</mat-option>
                                         <mat-option value="Ineligible">Ineligible</mat-option>
                                         <mat-option value="Can't be reached">Can't be reached</mat-option>
-                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left
+                                            voicemail</mat-option>
                                         <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -950,13 +923,9 @@
                             <th mat-header-cell *matHeaderCellDef>Notes</th>
                             <td mat-cell *matCellDef="let element">
                                 <span class="info-icon-container tick historyTip" (mouseover)="historyPos($event)">
-                                    <i
-                                        [tooltip]="{
+                                    <i [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
-                    }"
-                                        [ngClass]="!element.notes ? 'red' : 'green'"
-                                        class="fas fa-book notes"
-                                        (click)="
+                    }" [ngClass]="!element.notes ? 'red' : 'green'" class="fas fa-book notes" (click)="
                       openNotes(
                         element.notes,
                         element.patient_id,
@@ -964,15 +933,19 @@
                         element.followup_date,
                         'fta-follower'
                       )
-                    "
-                                    ></i>
+                    "></i>
                                 </span>
-                                <span (mouseover)="historyPos($event)" *ngIf="element.code != ''" class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes" [tooltip]="tipFtaDoneCode[element.patient_id]"></i></span>
-                                <span (mouseover)="historyPos($event)" *ngIf="element.future_date_show" class="info-icon-container tick historyTip">
-                                    <i class="fas fa-calendar-check notes" [tooltip]="tipFtaFutureDate[element.patient_id]"></i>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.code != ''"
+                                    class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes"
+                                        [tooltip]="tipFtaDoneCode[element.patient_id]"></i></span>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.future_date_show"
+                                    class="info-icon-container tick historyTip">
+                                    <i class="fas fa-calendar-check notes"
+                                        [tooltip]="tipFtaFutureDate[element.patient_id]"></i>
                                 </span>
                                 <div class="historyTip history">
-                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)" class="fa fa-history" *ngIf="element.history.length > 0"></i>
+                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)"
+                                        class="fa fa-history" *ngIf="element.history.length > 0"></i>
                                 </div>
                             </td>
                         </ng-container>
@@ -980,9 +953,7 @@
                         <ng-container matColumnDef="status">
                             <th mat-header-cell *matHeaderCellDef>Complete</th>
                             <td mat-cell *matCellDef="let element">
-                                <mat-slide-toggle
-                                    [checked]="element.is_complete == 0 ? false : true"
-                                    name="status"
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
                                     (change)="
                     toggleUpdate(
                       $event,
@@ -993,31 +964,31 @@
                       'fta-follower',
                       element.status
                     )
-                  "
-                                >
+                  ">
                                 </mat-slide-toggle>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="isDataAvailable1">
                             <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns3.length">
-                                <span *ngIf="isEnableFT && followupFtaFollowups.length <= 0">You have no FTA followups for {{ selectedMonthYear }}</span>
-                                <span *ngIf="isEnableFT && followupFtaFollowups.length > 0">All FTA followups have been completed for {{ selectedMonthYear }}</span>
-                                <span *ngIf="!isEnableFT">FTA Followup are not enabled - this can be configured in your Jeeve Settings menu</span>
+                                <span *ngIf="isEnableFT && followupFtaFollowups.length <= 0">You have no FTA followups
+                                    for {{ selectedMonthYear }}</span>
+                                <span *ngIf="isEnableFT && followupFtaFollowups.length > 0">All FTA followups have been
+                                    completed for {{ selectedMonthYear }}</span>
+                                <span *ngIf="!isEnableFT">FTA Followup are not enabled - this can be configured in your
+                                    Jeeve Settings menu</span>
                             </mat-footer-cell>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>
-                        <mat-footer-row
-                            *matFooterRowDef="['isDataAvailable1']"
-                            [ngClass]="
+                        <mat-footer-row *matFooterRowDef="['isDataAvailable1']" [ngClass]="
                 followupFtaFollowupsInCMP.length <= 0 ? 'show' : 'hide'
-              "
-                        ></mat-footer-row>
+              "></mat-footer-row>
                     </table>
                 </div>
                 <ul class="main_pagination settings-table-pagination followup" *ngIf="ftTablePages.length">
                     <li *ngFor="let page of ftTablePages">
-                        <button [ngClass]="{ active: page === currentFTPage, page: true }" (click)="handlePageChange(page, 'FT')">
+                        <button [ngClass]="{ active: page === currentFTPage, page: true }"
+                            (click)="handlePageChange(page, 'FT')">
                             {{ page }}
                         </button>
                     </li>
@@ -1053,10 +1024,7 @@
                             <div fxFlex="40">Status :</div>
                             <div fxFlex="60">
                                 <mat-form-field floatLabel="never" class="setPreviousDay">
-                                    <mat-select
-                                        placeholder="Select Status"
-                                        [(value)]="element.status"
-                                        id="setNote2"
+                                    <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote2"
                                         (selectionChange)="
                       updateStatus(
                         $event.value,
@@ -1070,15 +1038,15 @@
                         'fta-follower',
                         nextBussinessDay
                       )
-                    "
-                                    >
+                    ">
                                         <mat-option value="">Select Status</mat-option>
                                         <mat-option value="Booked">Booked</mat-option>
                                         <mat-option value="Already booked">Already booked</mat-option>
                                         <mat-option value="Didn't want to book">Didn't want to book</mat-option>
                                         <mat-option value="Ineligible">Ineligible</mat-option>
                                         <mat-option value="Can't be reached">Can't be reached</mat-option>
-                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left voicemail</mat-option>
+                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left
+                                            voicemail</mat-option>
                                         <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -1094,13 +1062,9 @@
                             <div fxFlex="40">Notes :</div>
                             <div fxFlex="60">
                                 <span class="info-icon-container tick historyTip" (mouseover)="historyPos($event)">
-                                    <i
-                                        [tooltip]="{
+                                    <i [tooltip]="{
                       title: !element.notes ? 'Add Notes' : 'Edit Notes'
-                    }"
-                                        [ngClass]="!element.notes ? 'red' : 'green'"
-                                        class="fas fa-book notes"
-                                        (click)="
+                    }" [ngClass]="!element.notes ? 'red' : 'green'" class="fas fa-book notes" (click)="
                       openNotes(
                         element.notes,
                         element.patient_id,
@@ -1108,24 +1072,26 @@
                         element.followup_date,
                         'fta-follower'
                       )
-                    "
-                                    ></i>
+                    "></i>
                                 </span>
-                                <span (mouseover)="historyPos($event)" *ngIf="element.code != ''" class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes" [tooltip]="tipFtaDoneCode[element.patient_id]"></i></span>
-                                <span (mouseover)="historyPos($event)" *ngIf="element.future_date_show" class="info-icon-container tick historyTip">
-                                    <i class="fas fa-calendar-check notes" [tooltip]="tipFtaFutureDate[element.patient_id]"></i>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.code != ''"
+                                    class="info-icon-container tick historyTip"><i class="fas fa-notes-medical notes"
+                                        [tooltip]="tipFtaDoneCode[element.patient_id]"></i></span>
+                                <span (mouseover)="historyPos($event)" *ngIf="element.future_date_show"
+                                    class="info-icon-container tick historyTip">
+                                    <i class="fas fa-calendar-check notes"
+                                        [tooltip]="tipFtaFutureDate[element.patient_id]"></i>
                                 </span>
                                 <div class="historyTip history">
-                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)" class="fa fa-history" *ngIf="element.history.length > 0"></i>
+                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)"
+                                        class="fa fa-history" *ngIf="element.history.length > 0"></i>
                                 </div>
                             </div>
                         </div>
                         <div fxLayout="row" class="huddle-card-row">
                             <div fxFlex="40">Complete :</div>
                             <div fxFlex="60">
-                                <mat-slide-toggle
-                                    [checked]="element.is_complete == 0 ? false : true"
-                                    name="status"
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
                                     (change)="
                     toggleUpdate(
                       $event,
@@ -1136,41 +1102,164 @@
                       'fta-follower',
                       element.status
                     )
-                  "
-                                >
+                  ">
                                 </mat-slide-toggle>
                             </div>
                         </div>
                     </mat-card>
                 </div>
-                
+
                 <!-- follow-ups-card view-end--->
             </div>
         </mat-tab>
         <!-- Dentist Performance Tab -->
 
 
-         <!-- Internal Referrals Tab -->
+        <!-- Internal Referrals Tab -->
         <mat-tab label="Internal Referrals">
             <div class="follow-up">
                 <mat-card-title>
                     <div class="title-follow-up d-inline-block">
                         Internal Referrals
-                       <!--  <div class="info-icon-container">
+                        <!--  <div class="info-icon-container">
                             <img [tooltip]="charTips['52']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
                         </div> -->
                     </div>
-                 <!--    <div class="showComplete" *ngIf="followupFtaFollowups.length > 0">
+                    <!--    <div class="showComplete" *ngIf="followupFtaFollowups.length > 0">
                         <mat-checkbox name="status" [checked]="showCompleteFta" (change)="updateToCompleteFT($event)">Show Complete </mat-checkbox>
                     </div> -->
                 </mat-card-title>
 
-                <div class="card-loading" *ngIf="ftaTaksLoadingLoading">
+                <!-- <div class="card-loading" *ngIf="ftaTaksLoadingLoading">
                     <img class="tableLoader" src="../../assets/images/logo-icon.gif" />
+                </div> -->
+                <div class="follow-ups-table internal-referrals table-responsive">
+
+                    <table mat-table [dataSource]="internalReferralRecallInCMP"
+                        class="mat-elevation-z8 customWidth thick">
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Patient Name</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.patients.firstname }} {{ element.patients.surname }}
+                            </td>
+                        </ng-container>
+
+                        <!-- phone Column -->
+                        <ng-container matColumnDef="phone">
+                            <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="phone_align_center">
+                                    <img src="../assets/images/follow-up-call.png" alt="Phone Number" />
+                                    <span class="phone_no" *ngIf="element.patients.mobile">{{
+                                        formatPhoneNumber(element.patients.mobile) }}</span>
+                                    <span class="phone_no"
+                                        *ngIf="!element.patients.mobile && element.patients.phone_work">
+                                        {{ formatPhoneNumber(element.patients.phone_work) }}
+                                    </span>
+                                    <span class="phone_no"
+                                        *ngIf=" !element.patients.mobile && !element.patients.phone_work ">
+                                        {{ formatPhoneNumber(element.patients.phone_home) }}
+                                    </span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- referral Column -->
+                        <ng-container matColumnDef="referral">
+                            <th mat-header-cell *matHeaderCellDef>Referral Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.original_appt_date | date: "MMM d, y":"timezone" }}
+                            </td>
+                        </ng-container>
+
+                        <!-- Treatment Column -->
+                        <ng-container matColumnDef="treatment">
+                            <th mat-header-cell *matHeaderCellDef>Treatment</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.treat_item }}
+                            </td>
+                        </ng-container>
+
+                        <!-- Provider Column -->
+                        <ng-container matColumnDef="provider">
+                            <th mat-header-cell *matHeaderCellDef>Provider</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.dentists.name }}
+                            </td>
+                        </ng-container>
+
+                        <!-- Status Column -->
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef>Status</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-form-field floatLabel="never" class="setPreviousDay">
+                                    <mat-select placeholder="Select Status" [(value)]="element.status" id="setNote"
+                                        (selectionChange)="updateStatus( $event.value, element.patient_id, element.original_appt_date, element.patients.clinic_id, element.patients.firstname, element.patients.surname, element.original_appt_date, element.followup_date, 'internal-referrals', nextBussinessDay )">
+                                        <mat-option value="">Select Status</mat-option>
+                                        <mat-option value="Booked">Booked</mat-option>
+                                        <mat-option value="Already booked">Already booked</mat-option>
+                                        <mat-option value="Didn't want to book">Didn't want to book</mat-option>
+                                        <mat-option value="Ineligible">Ineligible</mat-option>
+                                        <mat-option value="Can't be reached">Can't be reached</mat-option>
+                                        <mat-option value="Can't be reached - left voicemail">Can't be reached - left
+                                            voicemail</mat-option>
+                                        <mat-option value="Wants another follow-up">Wants another follow-up</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                        </ng-container>
+                        <!-- Follow-up Date Column -->
+                        <ng-container matColumnDef="followup_date">
+                            <th mat-header-cell *matHeaderCellDef>Follow-Up Date</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.followup_date | date: "MMM d, y":"timezone" }}
+                            </td>
+                        </ng-container>
+                        <!-- Notes Column -->
+                        <ng-container matColumnDef="notes">
+                            <th mat-header-cell *matHeaderCellDef>Notes</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span (mouseover)="historyPos($event)" class="info-icon-container tick historyTip">
+                                    <i [tooltip]="{ title: !element.notes ? 'Add Notes' : 'Edit Notes' }"
+                                        [ngClass]="!element.notes ? 'red' : 'green'" class="fas fa-book notes"
+                                        (click)=" openNotes( element.notes, element.patient_id, element.original_appt_date, element.followup_date, 'internal-referrals' ) "></i>
+                                </span>
+                                <div class="historyTip history">
+                                    <i (mouseover)="historyPos($event)" [tooltip]="formatHistory(element.history)"
+                                        class="fa fa-history" *ngIf="element.history.length > 0"></i>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <!-- Complete Column -->
+                        <ng-container matColumnDef="complete">
+                            <th mat-header-cell *matHeaderCellDef>Complete</th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-slide-toggle [checked]="element.is_complete == 0 ? false : true" name="status"
+                                    (change)="toggleUpdate( $event, element.patient_id, element.original_appt_date, element.followup_date, element.patients.clinic_id, 'internal-referrals', element.status ) ">
+                                </mat-slide-toggle>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="isDataAvailable1">
+                            <mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns4.length">
+                                <span *ngIf="internalReferrals.length <= 0">You have no internal
+                                    referrals for {{ selectedMonthYear }}</span>
+                            </mat-footer-cell>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns4"></tr>
+                        <mat-footer-row *matFooterRowDef="['isDataAvailable1']"
+                            [ngClass]="internalReferralRecallInCMP.length <= 0 ? 'show' : 'hide'"></mat-footer-row>
+                    </table>
                 </div>
-                <div class="follow-ups-table table-responsive">
-                    <h2 style="text-align:center;">Coming Soon</h2>
-                </div>                  
+                <ul class="main_pagination settings-table-pagination followup" *ngIf="orTablePages.length">
+                    <li *ngFor="let page of orTablePages">
+                        <button [ngClass]="{ active: page === currentORPage, page: true }"
+                            (click)="handlePageChange(page, 'OR')">
+                            {{ page }}
+                        </button>
+                    </li>
+                </ul>
                 <!-- follow-ups-card view-end--->
             </div>
         </mat-tab>
