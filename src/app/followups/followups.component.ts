@@ -196,6 +196,7 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
 
   public pageSize: number = 20;
+  public IRLoadingLoading: boolean = false;
 
   public orTablePages: number[] = [];
   public currentORPage: number = 1;
@@ -405,13 +406,14 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   public currentIRPage: number = 1;
   getinternalReferrals(evn = '') {
     if (evn != 'close') {
-      // this.recallLoadingLoading = true;
+      this.IRLoadingLoading = true;
     }
     this.followupsService.internalReferrals(this.clinic_id, this.selectedMonth, this.selectedYear).subscribe((production: any) => {
       this.internalReferralRecallInCMP = [];
       // this.recallLoadingLoading = false;
 
       if (production.message == 'success') {
+        this.IRLoadingLoading = false;
         this.nextBussinessDay = production.next_day;
         this.internalReferrals = production.data;
         if (this.showCompleteReferrals == true) {
@@ -543,6 +545,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
       this.recallLoadingLoading = true;
     } else if (type == 'tick-follower') {
       this.endTaksLoadingLoading = true;
+    } else if (type == 'internal-referrals') {
+      this.IRLoadingLoading = true;
     }
     this.followupsService.updateFollowUpStatus(event.checked, pid, cid, type, date, fdate).subscribe((update: any) => {
       if (type == 'post-op-calls') {
@@ -553,6 +557,8 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.getTickFollowups();
       } else if (type == 'fta-follower') {
         this.getFtaFollowups();
+      } else if (type == 'internal-referrals') {
+        this.getinternalReferrals();
       }
     });
   }
