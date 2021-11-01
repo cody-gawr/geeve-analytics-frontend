@@ -413,25 +413,20 @@ export class FollowupsComponent implements OnInit, OnDestroy {
 
       if (production.message == 'success') {
         this.nextBussinessDay = production.next_day;
-        // this.followupsOverDueRecallDate = production.date;
-        console.log('production', production)
-        if (production.data == '204') {
-
-        } else {
-          this.internalReferrals = production.data;
-          if (this.showCompleteReferrals == true) {
+        this.internalReferrals = production.data;
+        if (this.showCompleteReferrals == true) {
             this.internalReferralRecallInCMP = this.internalReferrals;
           } else {
             this.internalReferralRecallInCMP = this.internalReferrals.filter(p => p.is_complete != true);
           }
+
           if (this.internalReferralRecallInCMP.length <= ((this.pageSize * this.currentIRPage) - this.pageSize) && this.currentIRPage != 1) {
             this.currentIRPage = this.currentIRPage - 1;
           }
-          console.log('this.internalReferralRecallInCMP', this.internalReferralRecallInCMP)
           this.setPaginationButtons(this.internalReferralRecallInCMP, 'IR');
           this.internalReferralRecallInCMP = this.setPaginationData(this.internalReferralRecallInCMP, 'IR');
-          // this.OverDueRecallDays = production.previous;
-        }
+          
+       
       }
     });
   }
@@ -669,7 +664,6 @@ export class FollowupsComponent implements OnInit, OnDestroy {
   }
 
   updateToCompleteIR(event) {
-    console.log('event', event.checked)
     this.showCompleteReferrals = event.checked;
     if (event.checked == true) {
       this.internalReferralRecallInCMP = this.internalReferrals;
@@ -777,6 +771,9 @@ export class FollowupsComponent implements OnInit, OnDestroy {
     if (type == 'FT') {
       var startIndex: number = (this.currentFTPage * this.pageSize) - this.pageSize;
     }
+    if (type == 'IR') {
+      var startIndex: number = (this.currentIRPage * this.pageSize) - this.pageSize;
+    }
     var endIndex: any = startIndex + this.pageSize;
     var temp: any = [];
     totalData.forEach((data, key) => {
@@ -825,6 +822,15 @@ export class FollowupsComponent implements OnInit, OnDestroy {
         this.followupFtaFollowupsInCMP = this.followupFtaFollowups.filter(p => p.is_complete != true);
       }
       this.followupFtaFollowupsInCMP = this.setPaginationData(this.followupFtaFollowupsInCMP, 'FT');
+    }
+    if (type == 'IR') {
+      this.currentIRPage = goPage;
+      if (this.showCompleteReferrals == true) {
+        this.internalReferralRecallInCMP = this.internalReferrals;
+      } else {
+        this.internalReferralRecallInCMP = this.internalReferrals.filter(p => p.is_complete != true);
+      }
+      this.internalReferralRecallInCMP = this.setPaginationData(this.internalReferralRecallInCMP, 'IR');
     }
 
   }
