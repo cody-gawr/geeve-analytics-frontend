@@ -34,7 +34,6 @@
         </div>
 
 
-
         <div class="onofftoogle" *ngIf="showTrend == true">
           <span class="trend_mode_title">Trend:</span>
           <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"
@@ -42,18 +41,18 @@
             <mat-button-toggle checked value="off" class="target_off target_filter" (click)="toggleFilter('off')">
               <span>Off</span>
             </mat-button-toggle>
-            <mat-button-toggle value="current" class="target_current target_filter" 
-            [disabled]="Apirequest <= 0?false:true" (click)="Apirequest <= 0?toggleFilter('current'):false">
+            <mat-button-toggle value="current" class="target_current target_filter"
+              [disabled]="Apirequest <= 0?false:true" (click)="Apirequest <= 0?toggleFilter('current'):false">
               <span>Monthly</span>
             </mat-button-toggle>
             <mat-button-toggle value="historic" class="target_historic target_filter"
-            [disabled]="Apirequest <= 0?false:true" (click)="Apirequest <= 0?toggleFilter('historic'):false">
+              [disabled]="Apirequest <= 0?false:true" (click)="Apirequest <= 0?toggleFilter('historic'):false">
               <span>Annual</span>
             </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
 
-        <div class="onofftoogle" *ngIf="user_type == '4' && userPlan != 'lite'" >
+        <div class="onofftoogle" *ngIf="user_type == '4' && userPlan != 'lite'">
           <span *ngIf="compareModeEnable" class="trend_mode_title">Compare:</span>
           <!-- <span *ngIf="!compareModeEnable" class="trend_mode_title">Compare: Disabled</span> -->
           <mat-button-toggle-group #group="matButtonToggleGroup" name="fontStyle"
@@ -80,17 +79,20 @@
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
               <div>
-                <span *ngIf="trendText && proCollShow == 1" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{productionTooltip}}.png"></span>
-                <span *ngIf="trendText && proCollShow == 2" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{collectionTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{collectionTooltip}}.png"></span>
-                Dentist 
+                <span *ngIf="trendText && proCollShow == 1"
+                  class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
+                  matTooltip="{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
+                    src="../assets/images/trend_{{productionTooltip}}.png"></span>
+                <span *ngIf="trendText && proCollShow == 2"
+                  class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
+                  matTooltip="{{trendText}} : $ {{collectionTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
+                    src="../assets/images/trend_{{collectionTooltip}}.png"></span>
+                Dentist
                 <span *ngIf="proCollShow == 1">Production</span>
                 <span *ngIf="proCollShow == 2">Collection</span>
               </div>
               <div class="info-icon-container" *ngIf="proCollShow == 1">
-                <i  style="margin-right: 10px;" *ngIf="!showTopVlaues" class="far fa-chart-bar" (click) = "setTopValues()"></i>
-                <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i>
-                <img [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
               <div class="info-icon-container" *ngIf="proCollShow == 2">
                 <img [tooltip]="charTips['49']" src="../assets/images/info-icon.png" alt="info-icon"
@@ -100,10 +102,12 @@
             <div class="card-body">
               <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''" (click)="changeProduction('1')">Production</small>
+                  <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
+                    (click)="changeProduction('1')">Production</small>
                 </div>
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''" (click)="changeProduction('2')">Collection</small>
+                  <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
+                    (click)="changeProduction('2')">Collection</small>
                 </div>
               </div>
 
@@ -118,7 +122,7 @@
                 <div *ngIf="!barChartData[0].data.length && !buildChartLoader" class="no-data-placeholder">
                   <div class="sa_nodata_div">
                   </div>
-                  <p class="chart-placeholder-text">You have no production in the selected period</p>
+                  <p class="chart-placeholder-text">main You have no production in the selected period</p>
                 </div>
               </div>
               <!-- Production Chart Start -->
@@ -141,11 +145,13 @@
               <!-- Collection Chart Start -->
 
 
-             
+
             </div>
+
             <div class="card-footer" *ngIf="!averageToggle">
               <!-- Production Chart Start -->
-              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center" *ngIf="proCollShow == 1">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
+                *ngIf="proCollShow == 1">
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 text-center value-num">${{productionTotal| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
@@ -160,7 +166,7 @@
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
-                <div  fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom' && productionGoal >= 0">
                   <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
                     ${{ (productionGoal * goalCount) | number:'1.0-0'}}</h3>
@@ -169,7 +175,8 @@
               </div>
               <!-- Production Chart Start -->
               <!-- Collection Chart Start -->
-              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center" *ngIf="proCollShow == 2">
+              <div fxLayout="row wrap" class="m-t-40 sa_chart_details_sec" fxLayoutAlign="center center"
+                *ngIf="proCollShow == 2">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center">
                   <h3 class="m-0 text-center value-num">${{collectionTotal| number:'1.0-0'}}</h3>
                   <span class="value-text" *ngIf="currentText != ''">{{currentText}}</span>
@@ -184,7 +191,7 @@
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
-               <!--  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                <!--  <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
                     ${{ (collectionTotalGoal * goalCount) | number:'1.0-0'}}</h3>
@@ -192,11 +199,11 @@
                 </div> -->
               </div>
 
-              <!-- Collection Chart Start -->            
+              <!-- Collection Chart Start -->
             </div>
 
             <!-- Production Chart Start -->
-            <div *ngIf="buildChartLoader && proCollShow == 1" class="loader_container loader_container_middle" >
+            <div *ngIf="buildChartLoader && proCollShow == 1" class="loader_container loader_container_middle">
               <img class="loader_ico" src="../assets/images/720.gif">
               <div class="loader-text">Calculating...</div>
             </div>
@@ -216,66 +223,88 @@
           <mat-card-content class="sa_matcard_content">
             <mat-card-title class="text-center">
               <div>
-                <span *ngIf="trendText && showTrendChart == false && proCollShow ==1" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{productionTooltip}}.png"></span>
-                <span *ngIf="trendText && showTrendChart == false && proCollShow ==2" class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button matTooltip="{{trendText}} : $ {{collectionDentistTotalPrev| number:'1.0-0'}}"><img class="trend_ico" src="../assets/images/trend_{{collectionTooltip}}.png"></span>
+                <span *ngIf="trendText && showTrendChart == false && proCollShow ==1"
+                  class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
+                  matTooltip="{{trendText}} : $ {{productionTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
+                    src="../assets/images/trend_{{productionTooltip}}.png"></span>
+                <span *ngIf="trendText && showTrendChart == false && proCollShow ==2"
+                  class="predicted1Tool predictedToolMain sa_inc_dec_arrows trend_arrow" mat-icon-button
+                  matTooltip="{{trendText}} : $ {{collectionDentistTotalPrev| number:'1.0-0'}}"><img class="trend_ico"
+                    src="../assets/images/trend_{{collectionTooltip}}.png"></span>
 
-                Dentist 
+                Dentist
                 <span *ngIf="proCollShow == 1">Production</span>
                 <span *ngIf="proCollShow == 2">Collection</span>
               </div>
-              
-              <div class="info-icon-container" >
+
+              <div class="info-icon-container">
                 <!-- top values Ions -->
-              <i  style="margin-right: 10px;" class="far fa-chart-bar" ></i>
-              <!-- <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i> -->
-              <!-- top values Ions -->
-                <img *ngIf="proCollShow == 1" [tooltip]="charTips['1']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
-              
-                <img *ngIf="proCollShow == 2" [tooltip]="charTips['49']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <i style="margin-right: 10px;" class="fas fa-calendar-week" *ngIf="showTrendChart == false"
+                  (click)="setWeeklyTrend()"></i>
+                <i style="margin-right: 10px; color: #1aa591;" class="fas fa-calendar-week"
+                  *ngIf="showTrendChart == true" (click)="setWeeklyTrend()"></i>
+                <!-- <i  style="margin-right: 10px; color: #1aa591;" *ngIf="showTopVlaues  && !showUtiTable && !showTrend" class="far fa-chart-bar greenIcon" (click) = "setTopValues()"></i> -->
+                <!-- top values Ions -->
+                <img *ngIf="proCollShow == 1" [tooltip]="charTips['1']" src="../assets/images/info-icon.png"
+                  alt="info-icon" class="info-icon" />
+
+                <img *ngIf="proCollShow == 2" [tooltip]="charTips['49']" src="../assets/images/info-icon.png"
+                  alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
+
             <div class="card-body">
-                <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
+              <div fxLayout="row wrap" class="sa_tabs_main_sec" fxLayoutAlign="center">
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''" (click)="changeProduction('1')">Production</small>
+                  <small class="sa_tab_btn" [ngClass]="proCollShow ==1? 'active' : ''"
+                    (click)="changeProduction('1')">Production</small>
                 </div>
                 <div fxFlex.gt-sm="49.33%" fxFlex.gt-xs="50%" fxFlex="100" class="btn-group">
-                  <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''" (click)="changeProduction('2')">Collection</small>
+                  <small class="sa_tab_btn" [ngClass]="proCollShow ==2? 'active' : ''"
+                    (click)="changeProduction('2')">Collection</small>
                 </div>
               </div>
-               <!-- Production Chart Start dentist -->
-              <div *ngIf="proCollShow == 1">                
-              <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 306px" *ngIf="showTrendChart == false && gaugeValue > 0 && !buildChartDentistLoader">
-                <ngx-gauge [type]="gaugeType" [value]="gaugeValue" [label]="gaugeLabel" [thick]="gaugeThick"
-                  [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor" [max]="maxProductionGoal"
-                  [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
-                </ngx-gauge>
-              </div>
-              <div *ngIf="buildChartDentistLoader" class="loader_container loader_container_middle">
-                <img class="loader_ico" src="../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
-              </div>
+
+              <!-- Production Chart Start dentist -->
+
+              <div *ngIf="proCollShow == 1">
+                <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 306px"
+                  *ngIf="showTrendChart == false && gaugeValue > 0 && !buildChartDentistLoader">
+                  <ngx-gauge [type]="gaugeType" [value]="gaugeValue" [label]="gaugeLabel" [thick]="gaugeThick"
+                    [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor" [max]="maxProductionGoal"
+                    [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
+                  </ngx-gauge>
+                </div>
+                <div *ngIf="buildChartDentistLoader" class="loader_container loader_container_middle">
+                  <img class="loader_ico" src="../assets/images/720.gif">
+                  <div class="loader-text">Calculating...</div>
+                </div>
               </div>
               <!-- Production Chart end dentist -->
+
+
               <!-- Collection Chart Start dentist -->
               <div *ngIf="proCollShow == 2">
-              <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 306px" *ngIf="showTrendChart == false && gaugeValue > 0 && !collectionDentistLoader">
-                <ngx-gauge [type]="gaugeType" [value]="gaugeCollectionValue" [label]="gaugeCollectionLabel" [thick]="gaugeThick" [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor" [max]="maxCollectionGoal"
-                  [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText" [size]="size">
-                </ngx-gauge>
-              </div>
-               <div *ngIf="collectionDentistLoader" class="loader_container loader_container_middle">
-                <img class="loader_ico" src="../assets/images/720.gif">
-                <div class="loader-text">Calculating...</div>
-              </div>
+                <div class="chart" fxLayout="row" fxLayoutAlign="start center" style="height: 306px"
+                  *ngIf="showTrendChart == false && gaugeValue > 0 && !collectionDentistLoader">
+                  <ngx-gauge [type]="gaugeType" [value]="gaugeCollectionValue" [label]="gaugeCollectionLabel"
+                    [thick]="gaugeThick" [backgroundColor]="backgroundColor" [foregroundColor]="foregroundColor"
+                    [max]="maxCollectionGoal" [cap]="cap" [duration]="gaugeDuration" [prepend]="gaugePrependText"
+                    [size]="size">
+                  </ngx-gauge>
+                </div>
+                <div *ngIf="collectionDentistLoader" class="loader_container loader_container_middle">
+                  <img class="loader_ico" src="../assets/images/720.gif">
+                  <div class="loader-text">Calculating...</div>
+                </div>
               </div>
               <!-- Collection Chart end dentist -->
 
 
               <!-- Production Chart start trend -->
-              <div *ngIf="proCollShow == 1 && showTrendChart == true && dentistProductionTrendLabels.length > 0 && !dentistProductionTrendLoader" style="height: 306px">
+              <div
+                *ngIf="proCollShow == 1 && showTrendChart == true && dentistProductionTrendLabels.length > 0 && !dentistProductionTrendLoader"
+                style="height: 306px">
                 <canvas #myCanvas id="dentistProductionTrend" baseChart [datasets]="dentistProdTrend"
                   [labels]="dentistProductionTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
@@ -283,27 +312,32 @@
                 </canvas>
 
               </div>
-              <div *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == true" class="loader_container loader_container_middle">
+              <div *ngIf="dentistProductionTrendLoader && proCollShow == 1 && showTrendChart == true"
+                class="loader_container loader_container_middle">
                 <img class="loader_ico" src="../assets/images/720.gif">
                 <div class="loader-text">Calculating...</div>
               </div>
-              <div *ngIf="proCollShow == 2 &&  showTrendChart == true && dentistCollectionTrendLabels.length > 0 && !dentistCollectionTrendLoader" style="height: 306px">
+              <div
+                *ngIf="proCollShow == 2 &&  showTrendChart == true && dentistCollectionTrendLabels.length > 0 && !dentistCollectionTrendLoader"
+                style="height: 306px">
                 <canvas #myCanvas id="dentistColTrend" baseChart [datasets]="dentistColTrend"
                   [labels]="dentistCollectionTrendLabels" [legend]="barChartLegend" [chartType]="barChartType"
                   (chartHover)="chartHovered($event)" [options]="barChartOptionsTrend" [colors]="lineChartColors"
                   (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-               <div *ngIf="dentistCollectionTrendLoader && proCollShow == 2 && showTrendChart == true" class="loader_container loader_container_middle">
+              <div *ngIf="dentistCollectionTrendLoader && proCollShow == 2 && showTrendChart == true"
+                class="loader_container loader_container_middle">
                 <img class="loader_ico" src="../assets/images/720.gif">
                 <div class="loader-text">Calculating...</div>
               </div>
               <!-- Production Chart start trend -->
             </div>
-            <div class="no-data-placeholder" *ngIf="((showTrendChart == false && gaugeValue <= 0 )|| (showTrendChart == true && dentistProductionTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader">
+            <div class="no-data-placeholder"
+              *ngIf="((showTrendChart == false && gaugeValue <= 0 )|| (showTrendChart == true && dentistProductionTrendLabels.length <= 0)) && !buildChartDentistLoader && !dentistProductionTrendLoader">
               <div class="sa_nodata_div">
               </div>
-              <p class="chart-placeholder-text">You have no production in the selected period</p>
+              <p class="chart-placeholder-text">trend You have no production in the selected period</p>
             </div>
 
             <!-- Production Chart start trend -->
@@ -347,7 +381,7 @@
                   <span class="value-text" *ngIf="trendText != ''">{{trendText}}</span>
                   <span class="value-text" *ngIf="trendText == ''">Previous</span>
                 </div>
-              <!--   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
+                <!--   <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom'">
                   <h3 class="m-0 value-num" *ngIf="productionGoal && goalCount">
                     ${{ (dentistCollectionGoal * goalCount) | number:'1.0-0'}}</h3>
@@ -355,8 +389,8 @@
                 </div> -->
               </div>
             </div>
-            <!-- Collection Chart end trend -->          
-       
+            <!-- Collection Chart end trend -->
+
           </mat-card-content>
         </mat-card>
 
@@ -384,8 +418,7 @@
               </div> -->
               <!--   <div class="settingsBtn"><button class="mat-raised-button mat-button-sm mat-green-button sa_smtable_btn" mat-raised-button (click)="ngxSmartModalService.getModal('myModal').open()">Settings</button></div> -->
               <div class="info-icon-container">
-                <img [tooltip]="charTips['7']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img [tooltip]="charTips['7']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body h-100">
@@ -442,8 +475,7 @@
                 Hourly Rate
               </div>
               <div class="info-icon-container">
-                <img [tooltip]="charTips['7']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img [tooltip]="charTips['7']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -521,8 +553,7 @@
                 No. New Patients
               </div>
               <div class="info-icon-container">
-                <img [tooltip]="charTips['8']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img [tooltip]="charTips['8']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
             <div *ngIf="buildChartNewpatientsLoader == true" class="loader_container loader_container_middle"><img
@@ -597,8 +628,7 @@
                 No. New Patients
               </div>
               <div class="info-icon-container">
-                <img [tooltip]="charTips['8']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img [tooltip]="charTips['8']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
 
             </mat-card-title>
@@ -671,13 +701,12 @@
                     class="trend_ico" src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
                 Treatment Plan Average Cost
               </div>
-              <div  *ngIf="tcmain == 1" class="info-icon-container">
-                <img [tooltip]="charTips['3']" src="../assets/images/info-icon.png"
-                  alt="info-icon" class="info-icon" />
+              <div *ngIf="tcmain == 1" class="info-icon-container">
+                <img [tooltip]="charTips['3']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
-              <div  *ngIf="tcmain == 2" class="info-icon-container">
-                <img [tooltip]="charTips['53']" src="../assets/images/info-icon.png"
-                  alt="info-icon" class="info-icon" />
+              <div *ngIf="tcmain == 2" class="info-icon-container">
+                <img [tooltip]="charTips['53']" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -751,13 +780,12 @@
                     src="../assets/images/trend_{{planTotalTooltip}}.png"></span>
                 Treatment Plan Average Cost
               </div>
-              <div  *ngIf="tcmain == 1" class="info-icon-container">
-                <img [tooltip]="charTips['3']" src="../assets/images/info-icon.png"
-                  alt="info-icon" class="info-icon" />
+              <div *ngIf="tcmain == 1" class="info-icon-container">
+                <img [tooltip]="charTips['3']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
-              <div  *ngIf="tcmain == 2" class="info-icon-container">
-                <img [tooltip]="charTips['53']" src="../assets/images/info-icon.png"
-                  alt="info-icon" class="info-icon" />
+              <div *ngIf="tcmain == 2" class="info-icon-container">
+                <img [tooltip]="charTips['53']" src="../assets/images/info-icon.png" alt="info-icon"
+                  class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -856,8 +884,7 @@
                 Treatment Plan Completion Rate (%)
               </div>
               <div class="info-icon-container">
-                <img [tooltip]="charTips['2']" src="../assets/images/info-icon.png"
-                  alt="info-icon" class="info-icon" />
+                <img [tooltip]="charTips['2']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
 
@@ -904,7 +931,7 @@
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration!='custom' && treatmentChartGoal >= 0">
                   <h3 class="m-0 value-num" *ngIf="treatmentChartGoal">
-                    {{ (treatmentChartGoal > 100)? 100 : treatmentChartGoal  }}%</h3>
+                    {{ (treatmentChartGoal > 100)? 100 : treatmentChartGoal }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -923,8 +950,7 @@
                 Treatment Plan Completion Rate (%)
               </div>
               <div class="info-icon-container">
-                <img [tooltip]="charTips['2']" src="../assets/images/info-icon.png"
-                  alt="info-icon" class="info-icon" />
+                <img [tooltip]="charTips['2']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
 
@@ -1022,13 +1048,11 @@
                       <button mat-menu-item>Item 2</button>
                   </mat-menu>
               </div> -->
-              <div *ngIf="prebook=='recall'"class="info-icon-container">
-                <img [tooltip]="charTips['4']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+              <div *ngIf="prebook=='recall'" class="info-icon-container">
+                <img [tooltip]="charTips['4']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
               <div *ngIf="prebook=='treatment'" class="info-icon-container">
-                <img [tooltip]="charTips['5']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img [tooltip]="charTips['5']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1127,13 +1151,11 @@
                     src="../assets/images/trend_{{recallChartTooltip}}.png"></span>
                 Prebooking Rate
               </div>
-              <div *ngIf="prebook=='recall'"class="info-icon-container">
-                <img [tooltip]="charTips['4']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+              <div *ngIf="prebook=='recall'" class="info-icon-container">
+                <img [tooltip]="charTips['4']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
               <div *ngIf="prebook=='treatment'" class="info-icon-container">
-                <img [tooltip]="charTips['5']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img [tooltip]="charTips['5']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1211,7 +1233,7 @@
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration != 'custom' && recallGoal >= 0">
                   <h3 class="m-0 value-num" *ngIf="recallGoal && goalCount">
-                    {{ (recallGoal > 100)? 100 : recallGoal   }}%</h3>
+                    {{ (recallGoal > 100)? 100 : recallGoal }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -1231,7 +1253,7 @@
                 <div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="33.33%" fxFlex="100" class="text-center"
                   *ngIf="duration != 'custom' && treatmentPreGoal >= 0">
                   <h3 class="m-0 value-num" *ngIf="treatmentPreGoal && goalCount">
-                    {{ (treatmentPreGoal > 100)? 100 : treatmentPreGoal  }}%</h3>
+                    {{ (treatmentPreGoal > 100)? 100 : treatmentPreGoal }}%</h3>
                   <span class="value-text">Goal</span>
                 </div>
               </div>
@@ -1268,8 +1290,7 @@
                 No. Patient Complaints
               </div>
               <div class="info-icon-container">
-                <img [tooltip]="charTips['6']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img [tooltip]="charTips['6']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">
@@ -1336,8 +1357,7 @@
                 No. Patient Complaints
               </div>
               <div class="info-icon-container">
-                <img [tooltip]="charTips['6']" src="../assets/images/info-icon.png" alt="info-icon"
-                  class="info-icon" />
+                <img [tooltip]="charTips['6']" src="../assets/images/info-icon.png" alt="info-icon" class="info-icon" />
               </div>
             </mat-card-title>
             <div class="card-body">

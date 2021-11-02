@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy,ViewEncapsulation } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ClinicianAnalysisService } from './cliniciananalysis.service';
 import { DentistService } from '../../dentist/dentist.service';
 import { FrontDeskService } from '../frontdesk/frontdesk.service';
@@ -26,7 +26,7 @@ export interface Dentist {
 @Component({
   templateUrl: './cliniciananalysis.component.html',
   styleUrls: ['./cliniciananalysis.component.scss'],
-   encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None
 })
 /**
   *Clinician analysis graph Dashboard
@@ -50,16 +50,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public duration = '';
   public trendText;
   public showTrend = false;
+  public showWeekTrend: boolean = false;
   public showTrendChart = false;
   public goalchecked = 'off';
   public averagechecked = false;
-  public averageToggle = false;  
+  public averageToggle = false;
   public childid: string = '';
   public user_type: string = '';
 
   public proCollShow: number = 1;
-  public charTips:any = [];
-  public userPlan:any = 'lite';
+  public charTips: any = [];
+  public userPlan: any = 'lite';
 
   public flag = false;
   private _routerSub = Subscription.EMPTY;
@@ -71,8 +72,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   chartLabels1 = ['January', 'February', 'Mars', 'April'];
   private dentistProductionLabelsByIndex = [];
   private treatmentPlanProposedProvidersByInx = [];
-  private showCompare:boolean = false;
-  public Apirequest =0;
+  private showCompare: boolean = false;
+  public Apirequest = 0;
   constructor(
     private cliniciananalysisService: ClinicianAnalysisService,
     private dentistService: DentistService,
@@ -87,18 +88,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     private chartService: ChartService,
     public constants: AppConstants,
     public chartstipsService: ChartstipsService
-  )  {
+  ) {
     this.getChartsTips();
     this._routerSub = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((value) => {
-       // this.initiate_clinic();
+        // this.initiate_clinic();
         this.user_type = this._cookieService.get("user_type");
         if (this._cookieService.get("childid"))
           this.childid = this._cookieService.get("dentistid");
-      });     
-      this.user_type = this._cookieService.get("user_type");  
-    }
+      });
+    this.user_type = this._cookieService.get("user_type");
+  }
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
@@ -122,7 +123,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   formatDate(date) {
-    if(date){
+    if (date) {
       var dateArray = date.split("-")
       const d = new Date();
       d.setFullYear(+dateArray[2], (+dateArray[1] - 1), +dateArray[0])
@@ -133,7 +134,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   //initialize component
   ngAfterViewInit() {
-    this.userPlan =  this._cookieService.get("user_plan"); 
+    this.userPlan = this._cookieService.get("user_plan");
     this.newPatientPluginObservable$ = this.newPatientTotal$.pipe(
       takeUntil(this.destroyed$),
       map((count) => {
@@ -148,7 +149,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
     //   $('.external_dentist').val('all');
     $('#title').html('<span> Clinician Analysis </span>');
-    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
+    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
 
     $('.external_clinic').show();
     //$('.dentist_dropdown').show();
@@ -181,10 +182,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     })
 
     $('.topbar-strip').addClass('responsive-top');
-    this.doughnutChartColors = [ 
+    this.doughnutChartColors = [
       {
         backgroundColor: [
-          '#6edbbb','#b0fffa','#abb3ff','#ffb4b5','#fffcac', '#FFE4E4', '#FFD578', '#54D2FF', '#E58DD7', '#A9AABC', '#F2ECFF', '#5689C9', '#F9F871'
+          '#6edbbb', '#b0fffa', '#abb3ff', '#ffb4b5', '#fffcac', '#FFE4E4', '#FFD578', '#54D2FF', '#E58DD7', '#A9AABC', '#F2ECFF', '#5689C9', '#F9F871'
         ]
       }];
 
@@ -194,9 +195,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   ngOnInit() {
     let namedChartAnnotation = ChartAnnotation;
     namedChartAnnotation["id"] = "annotation";
-    Chart.pluginService.register( namedChartAnnotation);
+    Chart.pluginService.register(namedChartAnnotation);
 
-    if(this._cookieService.get("dentist_toggle") === 'true'){
+    if (this._cookieService.get("dentist_toggle") === 'true') {
       this.averageToggle = true;
       this.showTrend = false;
     }
@@ -207,29 +208,30 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     //$('.internal_dentist').val('all');
     //$('.external_dentist').val('all');
     var val = $('#currentClinic').attr('cid');
-    if( this._cookieService.get("dentistid")){
-         this.childid = this._cookieService.get("dentistid");
-         this.selectedDentist = this._cookieService.get("dentistid");
-     }
+    if (this._cookieService.get("dentistid")) {
+      this.childid = this._cookieService.get("dentistid");
+      this.selectedDentist = this._cookieService.get("dentistid");
+    }
     if (val != undefined && val != 'all') {
       this.clinic_id = val;
-      if(this.user_type == '4'){
+      if (this.user_type == '4') {
         this.getClinic();
       }
       this.getDentists();
       this.filterDate(this.chartService.duration$.value);
     }
+
   }
 
-  public compareModeEnable:boolean = false;
+  public compareModeEnable: boolean = false;
   /********** Get the clinic information ***********/
-    getClinic(){
-      this.cliniciananalysisService.getClinics(this.clinic_id,'CompareMode').subscribe((data: any) => {
-        if(data.data){
-          this.compareModeEnable = (data.data.compare_mode == 1)? true : false;
-        }
-      }, error => {});
-    }
+  getClinic() {
+    this.cliniciananalysisService.getClinics(this.clinic_id, 'CompareMode').subscribe((data: any) => {
+      if (data.data) {
+        this.compareModeEnable = (data.data.compare_mode == 1) ? true : false;
+      }
+    }, error => { });
+  }
 
   /**************************************************/
 
@@ -368,7 +370,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public size = "300"
 
   public gaugeValueTreatment = 0;
-  public treatmentPlanAverageCostTab = '1'; 
+  public treatmentPlanAverageCostTab = '1';
 
   public gaugeLabelTreatment = "";
 
@@ -385,7 +387,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public treatmentPreGoal = 0;
   public barChartOptions: any = {
     borderRadius: 50,
-    hover: {mode: null},
+    hover: { mode: null },
     scaleShowVerticalLines: false,
     cornerRadius: 60,
     curvature: 1,
@@ -465,18 +467,17 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public barChartOptions1: any = {
     borderRadius: 50,
-    hover: {mode: null},
+    hover: { mode: null },
     scaleShowVerticalLines: false,
     cornerRadius: 60,
     curvature: 1,
-    animation: 
+    animation:
     {
       duration: 1,
       easing: 'linear',
-      onComplete: function () 
-      {
+      onComplete: function () {
         var chartInstance = this.chart,
-        ctx = chartInstance.ctx;
+          ctx = chartInstance.ctx;
         ctx.textAlign = 'center';
         ctx.fillStyle = "rgba(0, 0, 0, 1)";
         ctx.textBaseline = 'bottom';
@@ -484,27 +485,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.data.datasets.forEach(function (dataset, i) {
           var meta = chartInstance.controller.getDatasetMeta(i);
           meta.data.forEach(function (bar, index) {
-              // var data = "$"+dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              let num = dataset.data[index];
-              // let dataK = Math.abs(num) > 999 ? Math.sign(num)*(Math.round(Math.abs(num)/100)/10) + 'k' : Math.sign(num)*Math.abs(num);
-              let dataK = shortenLargeNumber(num, 1);
-              let dataDisplay = `$${dataK}`;
-              ctx.font = Chart.helpers.fontString(11, 'normal','Gilroy-Bold');
-              ctx.fillText(dataDisplay, bar._model.x, bar._model.y - 10);
+            // var data = "$"+dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            let num = dataset.data[index];
+            // let dataK = Math.abs(num) > 999 ? Math.sign(num)*(Math.round(Math.abs(num)/100)/10) + 'k' : Math.sign(num)*Math.abs(num);
+            let dataK = shortenLargeNumber(num, 1);
+            let dataDisplay = `$${dataK}`;
+            ctx.font = Chart.helpers.fontString(11, 'normal', 'Gilroy-Bold');
+            ctx.fillText(dataDisplay, bar._model.x, bar._model.y - 10);
 
-              function shortenLargeNumber(num, digits) {
-                var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
-                    decimal;
-            
-                for(var i=units.length-1; i>=0; i--) {
-                    decimal = Math.pow(1000, i+1);
-            
-                    if(num <= -decimal || num >= decimal) {
-                        return +(num / decimal).toFixed(digits) + units[i];
-                    }
+            function shortenLargeNumber(num, digits) {
+              var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
+                decimal;
+
+              for (var i = units.length - 1; i >= 0; i--) {
+                decimal = Math.pow(1000, i + 1);
+
+                if (num <= -decimal || num >= decimal) {
+                  return +(num / decimal).toFixed(digits) + units[i];
                 }
-            
-                return num;
+              }
+
+              return num;
             }
           });
         });
@@ -512,10 +513,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     },
     responsive: true,
     maintainAspectRatio: false,
-    scales: 
+    scales:
     {
       xAxes: [{
-        gridLines: 
+        gridLines:
         {
           display: true
         },
@@ -525,8 +526,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
             const names = this.splitName(label);
             if (names.length > 1) {
               return `${names[0][0]} ${names[1]}`
-            } else 
-            return `${names[0]}`;
+            } else
+              return `${names[0]}`;
           }
         }
       }],
@@ -534,11 +535,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         ticks: {
           suggestedMin: 0,
           max: 10000,
-          userCallback: (label, index, labels) => 
-          {
+          userCallback: (label, index, labels) => {
             // when the floored value is the same as the value we have a whole number
             if (Math.floor(label) === label) {
-            return '$' + this.decimalPipe.transform(label);
+              return '$' + this.decimalPipe.transform(label);
             }
           }
         },
@@ -546,7 +546,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }]
     },
     tooltips: {
-     enabled: false
+      enabled: false
     },
   };
 
@@ -555,7 +555,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public barChartOptionsTrend: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
-    hover: {mode: null},
+    hover: { mode: null },
     curvature: 1,
     animation: {
       duration: 1500,
@@ -584,7 +584,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         },
       }],
     },
-    tooltips: { 
+    tooltips: {
       mode: 'x-axis',
       custom: function (tooltip) {
         if (!tooltip) return;
@@ -623,7 +623,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public barChartOptionsPercent: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
-    hover: {mode: null},
+    hover: { mode: null },
     curvature: 1,
     animation: {
       duration: 1500,
@@ -704,7 +704,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public barChartOptionsPercentTrend: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
-    hover: {mode: null},
+    hover: { mode: null },
     curvature: 1,
     animation: {
       duration: 1500,
@@ -780,7 +780,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public barChartOptionstrend: any = {
     scaleShowVerticalLines: false,
     cornerRadius: 60,
-    hover: {mode: null},
+    hover: { mode: null },
     curvature: 1,
     animation: {
       duration: 1500,
@@ -847,7 +847,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     scaleShowVerticalLines: false,
     borderWidth: 0,
     responsive: true,
-    hover: {mode: null},
+    hover: { mode: null },
     maintainAspectRatio: false,
     animation: {
       duration: 2000,
@@ -867,7 +867,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     elements: {
       center: {
         text: '',
-        sidePadding:40,
+        sidePadding: 40,
         minFontSize: 15
       }
     }
@@ -875,7 +875,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public doughnutChartOptionsPercent: any = {
     scaleShowVerticalLines: false,
     responsive: true,
-    hover: {mode: null},
+    hover: { mode: null },
     maintainAspectRatio: false,
     animation: {
       duration: 2000,
@@ -920,30 +920,32 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   }
 
   //Load Dentist Data
- loadDentist(newValue) {
+  loadDentist(newValue) {
 
-  if(this._cookieService.get("user_type") == '4'){
-    if(this._cookieService.get("dentist_toggle") === 'false')
-      newValue = this.selectedDentist;
-    else{
-       newValue = 'all';
-     }
-   }
+    if (this._cookieService.get("user_type") == '4') {
+      if (this._cookieService.get("dentist_toggle") === 'false')
+        newValue = this.selectedDentist;
+      else {
+        newValue = 'all';
+      }
+    }
 
-  if(newValue ==''){
-    return false;
-  }
-   
-   $('#title').html('<span> Clinician Analysis </span>');
-    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate) );
-  this.changePrebookRate('recall');
-   if( this._cookieService.get("dentistid"))
-         this.childid = this._cookieService.get("dentistid");
-  if(newValue == 'all') {
-      this.dentistVal='all';
-      this.showTrend= false;
-      this.toggleChecked= false;
-      this.showTrendChart=false;
+    if (newValue == '') {
+      return false;
+    }
+
+
+    $('#title').html('<span> Clinician Analysis </span>');
+    $('#sa_datepicker').val(this.formatDate(this.startDate) + ' - ' + this.formatDate(this.endDate));
+    this.changePrebookRate('recall');
+    if (this._cookieService.get("dentistid"))
+      this.childid = this._cookieService.get("dentistid");
+    if (newValue == 'all') {
+      this.dentistVal = 'all';
+      this.showWeekTrend = false;
+      this.showTrend = false;
+      this.toggleChecked = false;
+      this.showTrendChart = false;
       this.buildChart();
       this.collectionChart()
       this.buildChartTreatment();
@@ -968,18 +970,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       (<HTMLElement>document.querySelector('.hourlyRateSingle')).style.display = 'none';
       (<HTMLElement>document.querySelector('.hourlyRate')).style.display = 'block';
       this.changeTreatmentCost('1');
-    }
-    else {
+    } else {
       this.dentistVal = newValue;
       this.showTrend = true;
+      this.showWeekTrend = true;
       this.selectedDentist = newValue;
       if (this.toggleChecked) {
         this.toggleChangeProcess();
         this.showTrendChart = true;
 
-      }
-      else {
+      } else {
         this.showTrendChart = false;
+        this.dentistProductionTrend('w');
         //this.toggleFilter('off');
         this.buildChartDentist();
         this.collectionDentist();
@@ -1078,7 +1080,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
     });
     var myJsonString = JSON.stringify(this.final_map);
-   this.clinic_id && this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe((res) => {
+    this.clinic_id && this.cliniciananalysisService.saveDentistMapping(myJsonString, this.clinic_id).subscribe((res) => {
       if (res.data.message == 'success') {
         alert('Mapping Saved!');
         $('.nsm-dialog-btn-close').click();
@@ -1109,7 +1111,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     }
     if (this.planTotalAverage >= this.planTotalPrev)
       this.planTotalTooltip = 'up';
-    if (this.goalchecked == 'average') { 
+    if (this.goalchecked == 'average') {
       if (this.barChartOptionsTC.annotation.annotations)
         this.barChartOptionsTC.annotation.annotations[0].value = this.planTotalAverage;
     }
@@ -1127,7 +1129,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPlanAverageCostTab = val;
     if (val == '1') {
       if (this.toggleChecked) {
-        if(this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
+        if (this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
       }
       else {
@@ -1137,8 +1139,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       }
     }
     else {
-      if (this.toggleChecked){
-        if(this.treatmentPlanTrend2.every((value) => value == 0)) this.treatmentPlanTrend2 = [];
+      if (this.toggleChecked) {
+        if (this.treatmentPlanTrend2.every((value) => value == 0)) this.treatmentPlanTrend2 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend2;
       }
       else {
@@ -1171,7 +1173,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.productionTotal = 0;
     this.barChartLabels = [];
     this.barChartOptionsDP1.annotation = [];
-   this.clinic_id && this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistProduction(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.barChartData1 = [];
       this.barChartLabels1 = [];
       this.barChartLabels = [];
@@ -1190,43 +1192,43 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               this.dentistKey = i;
             } else {
               this.barChartLabels1.push(res.provider_name);
-            }            
+            }
             i++;
           }
         });
         /********** Add Space to top of graph ****/
         let maxY = Math.max(...this.barChartData1);
-        if(maxY < 1000){
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/100)*100) ;
-          if((maxY +50) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +100;
+        if (maxY < 1000) {
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 100) * 100);
+          if ((maxY + 50) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 100;
           }
-        } else if(maxY < 10000){
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/1000)*1000);
-          if((maxY +500) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +1000;
+        } else if (maxY < 10000) {
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 1000) * 1000);
+          if ((maxY + 500) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 1000;
           }
-        } else if(maxY < 100000){
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/10000)*10000);
-          if((maxY +5000) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +10000;
+        } else if (maxY < 100000) {
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 10000) * 10000);
+          if ((maxY + 5000) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 10000;
           }
-        } else if(maxY < 1000000){
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/100000)*100000);
-          if((maxY +50000) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +100000;
+        } else if (maxY < 1000000) {
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 100000) * 100000);
+          if ((maxY + 50000) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 100000;
           }
-        } else if(maxY < 5000000){
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/1000000)*1000000);
-          if((maxY +500000) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +1000000;
+        } else if (maxY < 5000000) {
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 1000000) * 1000000);
+          if ((maxY + 500000) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 1000000;
           }
-        } else if(maxY > 5000000){
-          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY/1000000)*1000000);
-          if((maxY +500000) >= this.barChartOptions1.scales.yAxes[0].ticks.max){
-            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max +1000000;
+        } else if (maxY > 5000000) {
+          this.barChartOptions1.scales.yAxes[0].ticks.max = (Math.ceil(maxY / 1000000) * 1000000);
+          if ((maxY + 500000) >= this.barChartOptions1.scales.yAxes[0].ticks.max) {
+            this.barChartOptions1.scales.yAxes[0].ticks.max = this.barChartOptions1.scales.yAxes[0].ticks.max + 1000000;
           }
-        } 
+        }
         /********** Add Space to top of graph ****/
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
@@ -1235,13 +1237,13 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               hoverBorderColor: '#000'
             }
           ];
-        this.barChartColors[0].backgroundColor[this.dentistKey] = '#1CA49F';
-        this.DPcolors= this.barChartColors;
-      }
-      else
-         this.DPcolors = this.lineChartColors;
-         this.barChartData[0]['data'] = this.barChartData1;
-         const colors = [
+          this.barChartColors[0].backgroundColor[this.dentistKey] = '#1CA49F';
+          this.DPcolors = this.barChartColors;
+        }
+        else
+          this.DPcolors = this.lineChartColors;
+        this.barChartData[0]['data'] = this.barChartData1;
+        const colors = [
           this.chartService.colors.odd,
           this.chartService.colors.even,
           this.chartService.colors.odd,
@@ -1250,20 +1252,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.even,
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
-       
+
         let dynamicColors = [];
         this.barChartLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars
-        
+
         this.barChartData[0].backgroundColor = dynamicColors;
-         this.barChartLabels = this.barChartLabels1;
-         this.productionTotal =  Math.round(data.total);    
-         this.productionTotalAverage = Math.round(data.total_average);
-         this.productionTotalPrev = Math.round(data.total_ta);
-         this.productionGoal = data.goals; 
-        
-  if(this.productionTotal >= this.productionTotalPrev)
+        this.barChartLabels = this.barChartLabels1;
+        this.productionTotal = Math.round(data.total);
+        this.productionTotalAverage = Math.round(data.total_average);
+        this.productionTotalPrev = Math.round(data.total_ta);
+        this.productionGoal = data.goals;
+
+        if (this.productionTotal >= this.productionTotalPrev)
           this.productionTooltip = 'up';
         this.barChartOptionsDP1.annotation = [];
         if (this.goalchecked == 'average') {
@@ -1321,30 +1323,30 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
 
 
-  public collectionLoader:boolean = true;
-  public collectionData1:any = [];
-  public collectionLabels1:any = [];
-  public collectionTotal:any = 0;
-  public collectionLabels:any = [];
-  public collectionData: any[] = [    {
-      ...this.chartService.baseChartData,
-      data: [],
-    }
+  public collectionLoader: boolean = true;
+  public collectionData1: any = [];
+  public collectionLabels1: any = [];
+  public collectionTotal: any = 0;
+  public collectionLabels: any = [];
+  public collectionData: any[] = [{
+    ...this.chartService.baseChartData,
+    data: [],
+  }
   ];
-  public collectionTotalAverage:any = 0;
-  public collectionTotalPrev:any = 0;
-  public collectionTotalGoal:any = 0; 
-  public collectionTooltip:string =''; 
+  public collectionTotalAverage: any = 0;
+  public collectionTotalPrev: any = 0;
+  public collectionTotalGoal: any = 0;
+  public collectionTooltip: string = '';
   public barChartOptionsDP: any = this.barChartOptions;
 
- private collectionChart() {
+  private collectionChart() {
     this.collectionLoader = true;
     this.collectionData1 = [];
     this.collectionLabels1 = [];
     this.collectionTotal = 0;
     this.collectionLabels = [];
     this.barChartOptionsDP.annotation = [];
-   this.clinic_id && this.cliniciananalysisService.DentistCollection(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.DentistCollection(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.collectionData1 = [];
       this.collectionLabels1 = [];
       this.collectionLabels = [];
@@ -1353,7 +1355,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.collectionLoader = false;
         this.collectionTooltip = 'down';
         var i = 0;
-        var selectedDen:any = 0;
+        var selectedDen: any = 0;
         data.data.forEach(res => {
 
           if (res.collection > 0) {
@@ -1364,27 +1366,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
               selectedDen = i;
             } else {
               this.collectionLabels1.push(res.provider_name);
-            }            
+            }
             i++;
           }
         });
-      
-       if (this.user_type == '4' && this.childid != '') {
+
+        if (this.user_type == '4' && this.childid != '') {
           this.barChartColors1 = [
             {
               backgroundColor: [],
               hoverBorderColor: '#000'
             }
           ];
-        this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
-        this.DPcolors1 = this.barChartColors1;
-      } else {
-        this.DPcolors1 = this.lineChartColors;
-      }
+          this.barChartColors1[0].backgroundColor[selectedDen] = '#1CA49F';
+          this.DPcolors1 = this.barChartColors1;
+        } else {
+          this.DPcolors1 = this.lineChartColors;
+        }
 
 
-         this.collectionData[0]['data'] = this.collectionData1;
-         const colors = [
+        this.collectionData[0]['data'] = this.collectionData1;
+        const colors = [
           this.chartService.colors.odd,
           this.chartService.colors.even,
           this.chartService.colors.odd,
@@ -1393,21 +1395,21 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.chartService.colors.even,
           this.chartService.colors.odd
         ]; // this is static array for colors of bars
-       
+
         let dynamicColors = [];
         this.collectionLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars
 
-        
+
         this.collectionData[0].backgroundColor = dynamicColors;
-         this.collectionLabels = this.collectionLabels1;
-         this.collectionTotal =  Math.round(data.total);    
-         this.collectionTotalAverage = Math.round(data.total_average);
-         this.collectionTotalPrev = Math.round(data.total_ta);
-         this.collectionTotalGoal = data.goals; 
-        
-  if(this.collectionTotal >= this.collectionTotalPrev)
+        this.collectionLabels = this.collectionLabels1;
+        this.collectionTotal = Math.round(data.total);
+        this.collectionTotalAverage = Math.round(data.total_average);
+        this.collectionTotalPrev = Math.round(data.total_ta);
+        this.collectionTotalGoal = data.goals;
+
+        if (this.collectionTotal >= this.collectionTotalPrev)
           this.collectionTooltip = 'up';
         this.barChartOptionsDP.annotation = [];
         if (this.goalchecked == 'average') {
@@ -1472,38 +1474,37 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.buildChartDentistLoader = true;
     this.gaugeLabel = '';
     this.productionTooltip = 'down';
-  this.clinic_id && this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => 
-    {
-       this.productionTotal = 0;
-       this.productionTotalPrev = 0;
-       this.productionTotalAverage=0;
-       this.maxProductionGoal=0;
-       if(data.message == 'success' ){
-          this.buildChartDentistLoader =false;
-          this.gaugeValue = 0;
-          if(data.data != null ) {
-            data.data.forEach((res)=>{
-              if(res.production)
-                this.gaugeValue = Math.round(res.production);
+    this.clinic_id && this.cliniciananalysisService.DentistProductionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+      this.productionTotal = 0;
+      this.productionTotalPrev = 0;
+      this.productionTotalAverage = 0;
+      this.maxProductionGoal = 0;
+      if (data.message == 'success') {
+        this.buildChartDentistLoader = false;
+        this.gaugeValue = 0;
+        if (data.data != null) {
+          data.data.forEach((res) => {
+            if (res.production)
+              this.gaugeValue = Math.round(res.production);
 
-              this.gaugeLabel = res.provider_name;
-              this.gaugeLabel = res.provider_name;
-          });       
+            this.gaugeLabel = res.provider_name;
+            this.gaugeLabel = res.provider_name;
+          });
           this.productionTotal = Math.round(data.total);
           this.productionTotalPrev = Math.round(data.total_ta);
-          this.productionTotalAverage= Math.round(data.total_average);
+          this.productionTotalAverage = Math.round(data.total_average);
           this.productionGoal = data.goals;
-          if (this.productionTotal > this.productionTotalPrev){
+          if (this.productionTotal > this.productionTotalPrev) {
             this.productionTooltip = 'up';
           }
-          if(this.gaugeValue > this.productionGoal)
+          if (this.gaugeValue > this.productionGoal)
             this.maxProductionGoal = this.gaugeValue;
           else
             this.maxProductionGoal = this.productionGoal;
 
           if (this.maxProductionGoal == 0)
             this.maxProductionGoal = '';
-         } 
+        }
       } else if (data.status == '401') {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
@@ -1516,51 +1517,50 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-// Dentist collection data
-  public collectionDentistLoader:boolean = true;
-  public gaugeCollectionLabel:any = '';
-  public gaugeCollectionValue:any = 0;
-  public collectionDentistTotal:any = 0;
-  public collectionDentistTotalPrev:any = 0;
-  public dentistCollectionGoal:any = 0;
-  public maxCollectionGoal:any = 0;
+  // Dentist collection data
+  public collectionDentistLoader: boolean = true;
+  public gaugeCollectionLabel: any = '';
+  public gaugeCollectionValue: any = 0;
+  public collectionDentistTotal: any = 0;
+  public collectionDentistTotalPrev: any = 0;
+  public dentistCollectionGoal: any = 0;
+  public maxCollectionGoal: any = 0;
 
 
   private collectionDentist() {
     this.collectionDentistLoader = true;
     this.gaugeCollectionLabel = '';
     this.collectionTooltip = 'down';
-  this.clinic_id && this.cliniciananalysisService.DentistCollectionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => 
-    {
+    this.clinic_id && this.cliniciananalysisService.DentistCollectionSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       this.collectionDentistTotal = 0;
       this.collectionDentistTotalPrev = 0;
-      this.productionTotalAverage=0;
-      this.maxCollectionGoal=0;
+      this.productionTotalAverage = 0;
+      this.maxCollectionGoal = 0;
       this.gaugeCollectionValue = 0;
-      this.collectionDentistLoader =false;
-       if(data.message == 'success' ){
-          if(data.data != null ) {
-            data.data.forEach((res)=>{
-              if(res.collection)
-                this.gaugeCollectionValue = Math.round(res.collection);
+      this.collectionDentistLoader = false;
+      if (data.message == 'success') {
+        if (data.data != null) {
+          data.data.forEach((res) => {
+            if (res.collection)
+              this.gaugeCollectionValue = Math.round(res.collection);
 
-              this.gaugeCollectionLabel = res.provider_name;
-          });       
+            this.gaugeCollectionLabel = res.provider_name;
+          });
           this.collectionDentistTotal = Math.round(data.total);
           this.collectionDentistTotalPrev = Math.round(data.total_ta);
-          this.productionTotalAverage= Math.round(data.total_average);
+          this.productionTotalAverage = Math.round(data.total_average);
           this.dentistCollectionGoal = data.goals;
-          if (this.productionTotal > this.productionTotalPrev){
+          if (this.productionTotal > this.productionTotalPrev) {
             this.collectionTooltip = 'up';
           }
-          if(this.gaugeCollectionValue > this.dentistCollectionGoal)
+          if (this.gaugeCollectionValue > this.dentistCollectionGoal)
             this.maxCollectionGoal = this.gaugeValue;
           else
             this.maxCollectionGoal = this.dentistCollectionGoal;
 
           if (this.maxCollectionGoal == 0)
             this.maxCollectionGoal = '';
-         } 
+        }
       } else if (data.status == '401') {
         this._cookieService.put("username", '');
         this._cookieService.put("email", '');
@@ -1643,7 +1643,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.RPcolors = this.lineChartColors;
           let dynamicColors = [];
           this.recallChartLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.recallChartData[0].backgroundColor = dynamicColors;
         }
@@ -1768,7 +1768,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPreChartLabels = [];
     this.barChartOptionsTPB.annotation = [];
 
-   this.clinic_id && this.cliniciananalysisService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caReappointRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.treatmentPreChartData1 = [];
       this.treatmentPreChartLabels1 = [];
 
@@ -1801,13 +1801,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.barChartColors[0].backgroundColor[this.tpKey] = '#1CA49F';
           this.TPcolors = this.barChartColors;
         }
-        else
-        {  
+        else {
           this.TPcolors = this.lineChartColors;
 
           let dynamicColors = [];
           this.treatmentPreChartLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.treatmentPreChartData[0].backgroundColor = dynamicColors;
         }
@@ -1860,16 +1859,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentPrebookDentistLoader = true;
     this.treatmentPreValue = '0';
     this.treatmentPreLabel = '';
-   this.clinic_id && this.cliniciananalysisService.caReappointRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.caReappointRateSingle(this.selectedDentist, this.clinic_id, this.startDate, this.endDate, this.duration).subscribe((data: any) => {
       if (data.message == 'success') {
         this.treatmentPrebookDentistLoader = false;
         this.treatmentPreGoal = data.goals;
         if (data.data.length > 0) {
           this.treatmentPreValue = Math.round(data.data[0].reappoint_rate);
-          this.treatmentPreLabel = data.data[0].provider_name;          
+          this.treatmentPreLabel = data.data[0].provider_name;
         }
-         this.treatmentPreChartAveragePrev = data.total_ta;          
-         this.treatmentPreGoal = data.goals;          
+        this.treatmentPreChartAveragePrev = data.total_ta;
+        this.treatmentPreGoal = data.goals;
 
       }
     }, error => {
@@ -1912,7 +1911,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.treatmentChartLabels = [];
     this.barChartOptionsTP.annotation = []
 
-   this.clinic_id && this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
+    this.clinic_id && this.cliniciananalysisService.TreatmentPlanRate(this.clinic_id, this.startDate, this.endDate, this.duration, this.user_type, this.childid).subscribe((data: any) => {
       this.treatmentChartData1 = [];
       this.treatmentChartLabels1 = [];
 
@@ -1938,7 +1937,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.treatmentChartData[0]['data'] = this.treatmentChartData1;
         this.treatmentChartLabels = this.treatmentChartLabels1;
         this.treatmentChartAverage = Math.round(data.total);
-        this.treatmentChartAveragePrev = (data.total_ta)? Math.round(data.total_ta) : 0;
+        this.treatmentChartAveragePrev = (data.total_ta) ? Math.round(data.total_ta) : 0;
         this.treatmentChartGoal = data.goals;
         if (this.user_type == '4' && this.childid != '') {
           this.barChartColors = [
@@ -1947,13 +1946,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.barChartColors[0].backgroundColor[this.TPRKey] = '#1CA49F';
           this.TPRcolors = this.barChartColors;
         }
-        else
-        {
+        else {
           this.TPRcolors = this.lineChartColors;
 
           let dynamicColors = [];
           this.treatmentChartLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.treatmentChartData[0].backgroundColor = dynamicColors;
         }
@@ -2023,7 +2021,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.treatmentPlanLabel = data.data[0].provider_name;
         }
         this.treatmentPlanGoal = Math.round(data.goals);
-        this.treatmentChartAveragePrev =  (data.total_ta ) ? Math.round(data.total_ta) : 0;
+        this.treatmentChartAveragePrev = (data.total_ta) ? Math.round(data.total_ta) : 0;
         this.treatmentChartAverage = Math.round(data.total);
         if (this.treatmentChartAverage >= this.treatmentChartAveragePrev)
           this.treatmentChartTooltip = 'up';
@@ -2048,7 +2046,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public planChartLabels2 = [];
   public barChartOptionsTC: any = {
     borderRadius: 50,
-    hover: {mode: null},
+    hover: { mode: null },
     scaleShowVerticalLines: false,
     cornerRadius: 60,
     curvature: 1,
@@ -2064,7 +2062,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           autoSkip: false,
           userCallback: (label: string) => {
             const names = this.splitName(label);
-            if (names.length>1) {
+            if (names.length > 1) {
               return `${names[0][0]} ${names[1]}`
             } else return `${names[0]}`;
           }
@@ -2166,7 +2164,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.planCompletedTotalTrend = Math.round(data.total_ta_completed);
         let dynamicColors = [];
         this.planChartLabels1.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars        
         this.planChartDataP[0].backgroundColor = dynamicColors;
 
@@ -2196,16 +2194,16 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.TPACCcolors = this.lineChartColors;
           let dynamicColors1 = [];
           this.planChartLabels1.forEach((label, labelIndex) => {
-            dynamicColors1.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+            dynamicColors1.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.planChartDataP[0].backgroundColor = dynamicColors1;
-         
+
           let dynamicColors2 = [];
           this.planChartLabels2.forEach((label, labelIndex) => {
-            dynamicColors2.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+            dynamicColors2.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.planChartDataC[0].backgroundColor = dynamicColors2;
-          
+
         }
         if (this.planTotalAverage >= this.planTotalPrev)
           this.planTotalTooltip = 'up';
@@ -2268,14 +2266,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.buildChartTreatmentDentistLoader = false;
         this.gaugeValueTreatmentP = 0;
         this.gaugeValueTreatmentC = 0;
-        this.gaugeValueTreatment =0;
-        if(data.data != null) {
-          if(data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_fees != undefined)
-          this.gaugeValueTreatmentC=Math.round(data.data.plan_fee_completed[0].average_fees);
-          if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_fees != undefined)
-          this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_fees);
-           if(data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider_name != undefined)
-          this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider_name;
+        this.gaugeValueTreatment = 0;
+        if (data.data != null) {
+          if (data.data.plan_fee_completed[0] && data.data.plan_fee_completed[0].average_fees != undefined)
+            this.gaugeValueTreatmentC = Math.round(data.data.plan_fee_completed[0].average_fees);
+          if (data.data.plan_fee_all[0] && data.data.plan_fee_all[0].average_fees != undefined)
+            this.gaugeValueTreatmentP = Math.round(data.data.plan_fee_all[0].average_fees);
+          if (data.data.plan_fee_all[0] && data.data.plan_fee_all[0].provider_name != undefined)
+            this.gaugeLabelTreatment = data.data.plan_fee_all[0].provider_name;
           this.planTotalAll = Math.round(data.total_all);
           this.planTotalCompleted = Math.round(data.total_completed);
           this.planTotal = this.planTotalAll;
@@ -2611,12 +2609,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.barChartColors[0].backgroundColor[this.hrKey] = '#1CA49F';
           this.HRcolors = this.barChartColors;
         }
-        else
-        {  
+        else {
           this.HRcolors = this.lineChartColors;
           let dynamicColors = [];
           this.hourlyRateChartLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.hourlyRateChartData[0].backgroundColor = dynamicColors;
         }
@@ -2744,7 +2741,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public planTotalAll = 0;
   public planTotalCompleted = 0;
   // Filter By Date
-  filterDate(duration) {    
+  filterDate(duration) {
     this.showTrendChart = false;
     this.toggleChecked = false;
     if (this.clinic_id != undefined && this.clinic_id != 'all') {
@@ -2756,13 +2753,12 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         dentistVal = $('.internal_dentist').val();
       else
         dentistVal = $('.external_dentist').val();
-      if( dentistVal == ''){
-        if(this._cookieService.get("clinic_dentist"))
-        {
+      if (dentistVal == '') {
+        if (this._cookieService.get("clinic_dentist")) {
           var dentistVal1 = this._cookieService.get("clinic_dentist").split('_');
           dentistVal = dentistVal1[1];
         }
-          
+
       }
       this.duration = duration;
       if (duration == 'w') {
@@ -2833,7 +2829,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 6, 1), 'dd-MM-yyyy');
           // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 0), 'dd-MM-yyyy');
         }
-        else if (cmonth >= 10 && cmonth <= 12) {          
+        else if (cmonth >= 10 && cmonth <= 12) {
           this.startDate = this.datePipe.transform(new Date(now.getFullYear(), 9, 1), 'dd-MM-yyyy');
           // this.endDate = this.datePipe.transform(new Date(now.getFullYear(), 12, 0), 'dd-MM-yyyy');
         }
@@ -2874,7 +2870,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.currentText = 'This Year';
 
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');       
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 0, 1), 'dd-MM-yyyy');
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
         var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 0, 1).getMonth();
         this.goalCount = difMonths + 1;
@@ -2885,8 +2881,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.currentText = 'Last Year';
 
         var date = new Date();
-        this.startDate = this.datePipe.transform(new Date(date.getFullYear() -1, 0, 1), 'dd-MM-yyyy');       
-        this.endDate = this.datePipe.transform(new Date(date.getFullYear() -1, 11, 31), 'dd-MM-yyyy');
+        this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 0, 1), 'dd-MM-yyyy');
+        this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 11, 31), 'dd-MM-yyyy');
         this.goalCount = 12;
         this.loadDentist(dentistVal);
       }
@@ -2900,11 +2896,11 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           this.startDate = this.datePipe.transform(new Date(date.getFullYear(), 6, 1), 'dd-MM-yyyy');
         }
         this.endDate = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
-         if ((date.getMonth() + 1) <= 6) {
-          this.goalCount =this.monthDiff(new Date(date.getFullYear() -1, 6, 1), new Date());
+        if ((date.getMonth() + 1) <= 6) {
+          this.goalCount = this.monthDiff(new Date(date.getFullYear() - 1, 6, 1), new Date());
         } else {
-          this.goalCount =this.monthDiff(new Date(date.getFullYear(), 6, 1), new Date());
-        } 
+          this.goalCount = this.monthDiff(new Date(date.getFullYear(), 6, 1), new Date());
+        }
         //var difMonths = new Date().getMonth() - new Date(date.getFullYear(), 6, 1).getMonth();
         //this.goalCount = Math.abs(difMonths + 1);
         this.loadDentist(dentistVal);
@@ -2916,10 +2912,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         if ((date.getMonth() + 1) <= 6) {
           this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 2, 6, 1), 'dd-MM-yyyy');
         } else {
-          this.startDate = this.datePipe.transform(new Date(date.getFullYear() -1, 6, 1), 'dd-MM-yyyy');
+          this.startDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 6, 1), 'dd-MM-yyyy');
         }
-        if ((date.getMonth() + 1) <= 6) {          
-         this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');
+        if ((date.getMonth() + 1) <= 6) {
+          this.endDate = this.datePipe.transform(new Date(date.getFullYear() - 1, 5, 30), 'dd-MM-yyyy');
         } else {
           this.endDate = this.datePipe.transform(new Date(date.getFullYear(), 5, 30), 'dd-MM-yyyy');
         }
@@ -2945,7 +2941,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   //Load Individual dentits Chartc
   initiate_dentist() {
     var val = $('#currentDentist').attr('did');
-   // var val = $('.internal_dentist').val();
+    // var val = $('.internal_dentist').val();
     this.loadDentist(val);
   }
   choosedDate(val) {
@@ -2957,7 +2953,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     $('.page-title-date').val(this.startDate + " - " + this.endDate);
     $('.customRange').css('display', 'none');
 
-      
+
   }
 
   toggleFilter(val) {
@@ -2977,10 +2973,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       this.showTrendChart = true;
       this.toggleChangeProcess();
     }
-    else if(val == 'off') {
-       this.filterDate('m');
-       this.toggleChecked = false;
-       this.showTrendChart = false;
+    else if (val == 'off') {
+      this.filterDate('m');
+      this.toggleChecked = false;
+      this.showTrendChart = false;
     }
   }
   toggleChecked = false;
@@ -2992,18 +2988,18 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     {
       data: [], label: '', shadowOffsetX: 3,
       backgroundColor: [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3018,22 +3014,22 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
       backgroundOverlayMode: 'multiply'
     }];
 
-    public dentistColTrend: any[] = [
+  public dentistColTrend: any[] = [
     {
       data: [], label: '', shadowOffsetX: 3,
       backgroundColor: [
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even,
-          this.chartService.colors.odd,
-          this.chartService.colors.even
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even,
+        this.chartService.colors.odd,
+        this.chartService.colors.even
       ],
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3052,89 +3048,98 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
   public dentistProductionTrendLabels1 = [];
   public dentistProductionTrendLoader: boolean;
   //Trend mode for dentist Production
-  private dentistProductionTrend() {
+  private dentistProductionTrend(mode = null) {
     this.dentistProductionTrendLoader = true;
-
-
     var user_id;
     var clinic_id;
-    this.clinic_id && this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
+    if (!mode) {
+      mode = this.trendValue
+    }
+
+    this.clinic_id && this.cliniciananalysisService.caDentistProtectionTrend(this.selectedDentist, this.clinic_id, mode).subscribe((data: any) => {
       this.dentistProductionTrendLabels1 = [];
       this.dentistProductionTrend1 = [];
       this.dentistProductionTrendLabels = [];
       this.dentistProductionTrendLabels = [];
       let dynamicColors = [];
-      this.Apirequest = this.Apirequest -1;
+      this.Apirequest = this.Apirequest - 1;
       if (data && data.message == 'success') {
         this.dentistProductionTrendLoader = false;
-        if(data.data.total > 0){
+        if (data.data.total > 0) {
           data.data.data.forEach(res => {
-            if(res.production)
+            if (res.production)
               this.dentistProductionTrend1.push(Math.round(res.production));
-            if (this.trendValue == 'c')
+            if (mode == 'c') {
               this.dentistProductionTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            else
+            } else if (mode == 'w') {
+              this.dentistProductionTrendLabels1.push('WE ' + this.datePipe.transform(res.week_end, 'y-M-dd'));
+            }
+            else {
               this.dentistProductionTrendLabels1.push(res.year);
+            }
           });
-          if(this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
+          if (this.dentistProductionTrend1.every((value) => value == 0)) this.dentistProductionTrend1 = [];
           this.dentistProdTrend[0]['data'] = this.dentistProductionTrend1;
-          
+
           this.dentistProductionTrendLabels1.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.dentistProdTrend[0].backgroundColor = dynamicColors;
-  
+
           this.dentistProductionTrendLabels = this.dentistProductionTrendLabels1;
           if (this.dentistProductionTrendLabels.length <= 0) {
             this.gaugeValue = '0';
           }
-        }else{
+        } else {
           this.dentistProductionTrendLabels = [];
         }
-        
+
       }
+      console.log('this.dentistProductionTrendLabels', this.dentistProductionTrendLabels);
+      console.log('this.trendValue', this.dentistProdTrend);
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
       this.warningMessage = "Please Provide Valid Inputs!";
 
     });
   }
-// Collection Trend mode 
-  public dentistCollectionTrend1:any = [];
-  public dentistCollectionTrendLabels:any = [];
-  public dentistCollectionTrendLoader:boolean = true;
-  public dentistColleTrendLabels1:any = [];
+  // Collection Trend mode 
+  public dentistCollectionTrend1: any = [];
+  public dentistCollectionTrendLabels: any = [];
+  public dentistCollectionTrendLoader: boolean = true;
+  public dentistColleTrendLabels1: any = [];
 
   private dentistCollectionTrend() {
-    this.dentistCollectionTrendLoader = true;    
+    this.dentistCollectionTrendLoader = true;
     this.clinic_id && this.cliniciananalysisService.caDentistCollectionTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
-      this.dentistColleTrendLabels1 = [];      
+      this.dentistColleTrendLabels1 = [];
       this.dentistCollectionTrend1 = [];
       this.dentistCollectionTrendLabels = [];
-      this.dentistCollectionTrendLoader = false;
-      let dynamicColors = [];   
-      this.Apirequest = this.Apirequest -1;
+
+      let dynamicColors = [];
+      this.Apirequest = this.Apirequest - 1;
       if (data && data.message == 'success') {
-        if(data.data){
+        if (data.data) {
           data.data.forEach(res => {
-            if(res.collection)
+            if (res.collection)
               this.dentistCollectionTrend1.push(Math.round(res.collection));
             if (this.trendValue == 'c')
               this.dentistColleTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
             else
               this.dentistColleTrendLabels1.push(res.year);
           });
-          if(this.dentistCollectionTrend1.every((value) => value == 0)) this.dentistCollectionTrend1 = [];
+          if (this.dentistCollectionTrend1.every((value) => value == 0)) this.dentistCollectionTrend1 = [];
           this.dentistColTrend[0]['data'] = this.dentistCollectionTrend1;
-          
+
           this.dentistColleTrendLabels1.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
           }); // This is dynamic array for colors of bars        
           this.dentistColTrend[0].backgroundColor = dynamicColors;
-          this.dentistCollectionTrendLabels = this.dentistColleTrendLabels1;          
-        }else{
+          this.dentistCollectionTrendLabels = this.dentistColleTrendLabels1;
+        } else {
           this.dentistCollectionTrendLabels = [];
-        }        
+        }
+        this.dentistCollectionTrendLoader = false;
       }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -3160,7 +3165,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even
-    ],
+      ],
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3189,69 +3194,69 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
       this.treatmentPlanTrend1 = [];
       this.treatmentPlanTrend2 = [];
-      this.Apirequest = this.Apirequest -1;
+      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
         this.treatmentPlanTrendLoader = false;
         if (data.data) {
-          if(data.data.plan_fee_all){
-             data.data.plan_fee_all.forEach(res => {
-            if (res.average_fees >= 0) {
-              if (res.average_fees)
-                this.treatmentPlanTrend1.push(Math.round(res.average_fees));
-              else
-                this.treatmentPlanTrend1.push(0);
-            }
-            if (this.trendValue == 'c')
+          if (data.data.plan_fee_all) {
+            data.data.plan_fee_all.forEach(res => {
+              if (res.average_fees >= 0) {
+                if (res.average_fees)
+                  this.treatmentPlanTrend1.push(Math.round(res.average_fees));
+                else
+                  this.treatmentPlanTrend1.push(0);
+              }
+              if (this.trendValue == 'c')
                 this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
               else
                 this.treatmentPlanTrendLabels1.push(res.year);
-          });    
+            });
           }
-        
-      if(data.data.plan_fee_completed){
-        data.data.plan_fee_completed.forEach(res => {
-          if (res.average_fees >= 0) {
-            if (res.average_fees)
-              this.treatmentPlanTrend2.push(Math.round(res.average_fees));
-            else
-              this.treatmentPlanTrend2.push(0);
+
+          if (data.data.plan_fee_completed) {
+            data.data.plan_fee_completed.forEach(res => {
+              if (res.average_fees >= 0) {
+                if (res.average_fees)
+                  this.treatmentPlanTrend2.push(Math.round(res.average_fees));
+                else
+                  this.treatmentPlanTrend2.push(0);
+              }
+              /* if (this.trendValue == 'c')
+                   this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
+                 else
+                   this.treatmentPlanTrendLabels1.push(res.year);*/
+            });
           }
-         /* if (this.trendValue == 'c')
-              this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
-            else
-              this.treatmentPlanTrendLabels1.push(res.year);*/
-        });
-    }
 
 
-       /*   data.data.forEach(res => {
-            if (res.val.total_fee_all)
-              this.treatmentPlanTrend1.push(Math.round(res.val.average_cost));
-            else
-              this.treatmentPlanTrend1.push(0);
-            if (res.val.total_completed)
-              this.treatmentPlanTrend2.push(Math.round(res.val.total_completed / res.val.total_plans));
-            else
-              this.treatmentPlanTrend2.push(0);
+          /*   data.data.forEach(res => {
+               if (res.val.total_fee_all)
+                 this.treatmentPlanTrend1.push(Math.round(res.val.average_cost));
+               else
+                 this.treatmentPlanTrend1.push(0);
+               if (res.val.total_completed)
+                 this.treatmentPlanTrend2.push(Math.round(res.val.total_completed / res.val.total_plans));
+               else
+                 this.treatmentPlanTrend2.push(0);
+   
+               if (this.trendValue == 'c')
+                 this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
+               else
+                 this.treatmentPlanTrendLabels1.push(res.duration);
+             });*/
 
-            if (this.trendValue == 'c')
-              this.treatmentPlanTrendLabels1.push(this.datePipe.transform(res.duration, 'MMM y'));
-            else
-              this.treatmentPlanTrendLabels1.push(res.duration);
-          });*/
-          
-          
+
         }
-        if(this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
+        if (this.treatmentPlanTrend1.every((value) => value == 0)) this.treatmentPlanTrend1 = [];
         this.treatPlanTrend[0]['data'] = this.treatmentPlanTrend1;
         this.treatmentPlanTrendLabels = this.treatmentPlanTrendLabels1;
 
         let dynamicColors = [];
-          this.treatmentPlanTrendLabels.forEach((label, labelIndex) => {
-            dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-          }); // This is dynamic array for colors of bars        
-          this.treatPlanTrend[0].backgroundColor = dynamicColors;
-         
+        this.treatmentPlanTrendLabels.forEach((label, labelIndex) => {
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+        }); // This is dynamic array for colors of bars        
+        this.treatPlanTrend[0].backgroundColor = dynamicColors;
+
 
         if (this.treatmentPlanTrendLabels.length <= 0) {
           this.gaugeValueTreatment = 0;
@@ -3280,7 +3285,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even
-    ],
+      ],
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3306,14 +3311,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     this.clinic_id && this.cliniciananalysisService.caNumberPatientComplaintsTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.patientComplaintsTrendLabels1 = [];
       this.patientComplaintsTrendLabels = [];
-       this.patientComplaintsTrendLoader = false;
+      this.patientComplaintsTrendLoader = false;
       this.patientComplaintsTrend1 = [];
-      this.Apirequest = this.Apirequest -1;
+      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
-       
+
         if (data.data) {
           data.data.forEach(res => {
-            if(res.num_complaints)
+            if (res.num_complaints)
               this.patientComplaintsTrend1.push(res.num_complaints);
             if (this.trendValue == 'c')
               this.patientComplaintsTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -3322,15 +3327,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           });
         }
         this.patientComplaintTrend[0]['data'] = this.patientComplaintsTrend1;
-       
+
 
         this.patientComplaintsTrendLabels = this.patientComplaintsTrendLabels1;
         let dynamicColors = [];
         this.patientComplaintsTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars        
         this.patientComplaintTrend[0].backgroundColor = dynamicColors;
-       
+
 
         if (this.patientComplaintsTrendLabels.length <= 0) {
           this.gaugeValuePatients = 0;
@@ -3347,8 +3352,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public recallPrebookChartTrend: any[] = [
     {
-      data: [], 
-      label: '', 
+      data: [],
+      label: '',
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -3362,7 +3367,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even
-    ],
+      ],
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3388,7 +3393,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.cliniciananalysisService.cpRecallPrebookRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
-      this.Apirequest = this.Apirequest -1;
+      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
         this.fdRecallPrebookRateTrendLoader = false;
         this.recallPrebookChartTrendLabels1 = [];
@@ -3406,10 +3411,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.recallPrebookChartTrendLabels = this.recallPrebookChartTrendLabels1;
         let dynamicColors = [];
         this.recallPrebookChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars        
         this.recallPrebookChartTrend[0].backgroundColor = dynamicColors;
-       
+
 
       }
     }, error => {
@@ -3422,8 +3427,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public treatmentPrebookChartTrend: any[] = [
     {
-      data: [], 
-      label: '', 
+      data: [],
+      label: '',
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -3437,7 +3442,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even
-    ],
+      ],
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3463,7 +3468,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.cliniciananalysisService.caReappointRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
-      this.Apirequest = this.Apirequest -1;
+      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
         this.fdTreatmentPrebookRateTrendLoader = false;
         this.treatmentPrebookChartTrendLabels1 = [];
@@ -3482,10 +3487,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         let dynamicColors = [];
         this.treatmentPrebookChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars        
         this.treatmentPrebookChartTrend[0].backgroundColor = dynamicColors;
-        
+
       }
     }, error => {
       this.toastr.error('There was an error retrieving your report data, please contact our support team.');
@@ -3498,7 +3503,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public hourlyRateChartTrend: any[] = [
     {
-      data: [], 
+      data: [],
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -3512,7 +3517,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even
-    ],
+      ],
       label: '', shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3537,14 +3542,14 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var clinic_id;
     this.clinic_id && this.cliniciananalysisService.cahourlyRateRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.hourlyRateChartTrendLabels = [];
-      this.Apirequest = this.Apirequest -1;
+      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
         this.fdhourlyRateRateTrendLoader = false;
         this.hourlyRateChartTrendLabels1 = [];
         this.hourlyRateChartTrend1 = [];
         data.data.forEach(res => {
           if (res.hourly_rate >= 0) {
-              this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
+            this.hourlyRateChartTrend1.push(Math.round(res.hourly_rate));
             if (this.trendValue == 'c')
               this.hourlyRateChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
             else
@@ -3556,10 +3561,10 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
         let dynamicColors = [];
         this.hourlyRateChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars        
         this.hourlyRateChartTrend[0].backgroundColor = dynamicColors;
-       
+
         if (this.hourlyRateChartTrendLabels.length <= 0) {
           this.hourlyValue = 0;
         }
@@ -3574,8 +3579,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public newPatientsChartTrend: any[] = [
     {
-      data: [], 
-      label: '', 
+      data: [],
+      label: '',
       shadowOffsetX: 3,
       backgroundColor: [
         this.chartService.colors.odd,
@@ -3590,7 +3595,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even
-    ],
+      ],
       shadowOffsetY: 2,
       shadowBlur: 3,
       shadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -3615,7 +3620,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var user_id;
     var clinic_id;
     this.clinic_id && this.cliniciananalysisService.canewPatientsRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
-      this.Apirequest = this.Apirequest -1;
+      this.Apirequest = this.Apirequest - 1;
       if (data != null && data.message == 'success') {
         this.fdnewPatientsRateTrendLoader = false;
         this.newPatientsChartTrendLabels1 = [];
@@ -3637,9 +3642,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.newPatientsChartTrendLabels = this.newPatientsChartTrendLabels1;
         let dynamicColors = [];
         this.newPatientsChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
         }); // This is dynamic array for colors of bars        
-        this.newPatientsChartTrend[0].backgroundColor = dynamicColors;      
+        this.newPatientsChartTrend[0].backgroundColor = dynamicColors;
 
         if (this.newPatientsChartTrendLabels.length <= 0) {
           this.newPatientPercent = 0;
@@ -3655,8 +3660,8 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   public treatmentPlanChartTrend: any[] = [
     {
-      data: [], 
-      label: '', 
+      data: [],
+      label: '',
       backgroundColor: [
         this.chartService.colors.odd,
         this.chartService.colors.even,
@@ -3670,7 +3675,7 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
         this.chartService.colors.even,
         this.chartService.colors.odd,
         this.chartService.colors.even
-    ],
+      ],
       shadowOffsetX: 3,
       shadowOffsetY: 2,
       shadowBlur: 3,
@@ -3697,15 +3702,15 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     var clinic_id;
     this.clinic_id && this.cliniciananalysisService.catreatmentPlanRateTrend(this.selectedDentist, this.clinic_id, this.trendValue).subscribe((data: any) => {
       this.fdtreatmentPlanRateTrendLoader = false;
-      this.Apirequest = this.Apirequest -1;
+      this.Apirequest = this.Apirequest - 1;
       if (data.message == 'success') {
-      
+
         this.treatmentPlanChartTrendLabels1 = [];
         this.treatmentPlanChartTrend1 = [];
         if (data.data) {
           data.data.forEach(res => {
             if (res.treatment_per_plan_percentage) {
-              if(res.treatment_per_plan_percentage)
+              if (res.treatment_per_plan_percentage)
                 this.treatmentPlanChartTrend1.push(Math.round(res.treatment_per_plan_percentage));
               if (this.trendValue == 'c')
                 this.treatmentPlanChartTrendLabels1.push(this.datePipe.transform(res.year_month, 'MMM y'));
@@ -3715,20 +3720,20 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
           });
         }
         var sumpercantagevalue = this.treatmentPlanChartTrend1.reduce((acc, cur) => acc + cur, 0);
-        if(sumpercantagevalue > 0){
-        
-        this.treatmentPlanChartTrend[0]['data'] = this.treatmentPlanChartTrend1;
+        if (sumpercantagevalue > 0) {
 
-        this.treatmentPlanChartTrendLabels = this.treatmentPlanChartTrendLabels1;
+          this.treatmentPlanChartTrend[0]['data'] = this.treatmentPlanChartTrend1;
 
-        let dynamicColors = [];
-        this.treatmentPlanChartTrendLabels.forEach((label, labelIndex) => {
-          dynamicColors.push(labelIndex%2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
-        }); // This is dynamic array for colors of bars        
-        this.treatmentPlanChartTrend[0].backgroundColor = dynamicColors;
-       }else{
-        this.treatmentPlanChartTrendLabels = [];
-       }
+          this.treatmentPlanChartTrendLabels = this.treatmentPlanChartTrendLabels1;
+
+          let dynamicColors = [];
+          this.treatmentPlanChartTrendLabels.forEach((label, labelIndex) => {
+            dynamicColors.push(labelIndex % 2 === 0 ? this.chartService.colors.odd : this.chartService.colors.even);
+          }); // This is dynamic array for colors of bars        
+          this.treatmentPlanChartTrend[0].backgroundColor = dynamicColors;
+        } else {
+          this.treatmentPlanChartTrendLabels = [];
+        }
 
       }
     }, error => {
@@ -3738,12 +3743,21 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  setWeeklyTrend() {
+    if (this.showTrendChart) {
+      this.showTrendChart = false
+    } else {
+      this.showTrendChart = true
+      this.dentistProductionTrend('w');
+    }
+  }
+
   toggleChangeProcess() {
     if (this.toggleChecked) {
       this.Apirequest = 9;
       $('.filter').removeClass('active');
       this.dentistProductionTrend();
-      this.dentistCollectionTrend();      
+      this.dentistCollectionTrend();
       this.treatmentPlanTrend();
       this.patientComplaintsTrend();
       this.fdRecallPrebookRateTrend();
@@ -3767,11 +3781,9 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
 
   }
   changePrebookRate(val) {
-    if(val == 'recall' && this.goalchecked == 'average')
-    {
+    if (val == 'recall' && this.goalchecked == 'average') {
       this.recallPrebook();
-    } else if(val == 'treatment' && this.goalchecked == 'average')
-    {
+    } else if (val == 'treatment' && this.goalchecked == 'average') {
       this.treatmentPrePrebook();
     }
     $('.prebook_rate .sa_tab_btn').removeClass('active');
@@ -3787,21 +3799,21 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     return initials.join('');
   }
 
-  toggleCompareFilter(val){
-      if( (this.averageToggle == true && val == 'on') || (this.averageToggle == false && val != 'on') ){
-        return false;
-      }
-      $('.compare-button').click();
-     if(val == 'on'){
+  toggleCompareFilter(val) {
+    if ((this.averageToggle == true && val == 'on') || (this.averageToggle == false && val != 'on')) {
+      return false;
+    }
+    $('.compare-button').click();
+    if (val == 'on') {
       this.averageToggle = true;
       this.showTrend = false;
-     }  else {
+    } else {
       this.averageToggle = false;
       this.showTrend = true;
-     }   
-   }
+    }
+  }
 
-   monthDiff(d1, d2) {
+  monthDiff(d1, d2) {
     var months;
     months = (d2.getFullYear() - d1.getFullYear()) * 12;
     months -= d1.getMonth();
@@ -3809,27 +3821,27 @@ export class ClinicianAnalysisComponent implements AfterViewInit, OnDestroy {
     return months <= 0 ? 0 : months;
   }
 
-  changeProduction(val){
-    if(parseInt(val) == 1 && this.goalchecked == 'average') {
+  changeProduction(val) {
+    if (parseInt(val) == 1 && this.goalchecked == 'average') {
       this.buildChart();
-    } else if(parseInt(val) == 2 && this.goalchecked == 'average'){
+    } else if (parseInt(val) == 2 && this.goalchecked == 'average') {
       this.collectionChart();
-    } 
+    }
     this.proCollShow = parseInt(val);
   }
 
   getChartsTips() {
     this.chartstipsService.getCharts(1).subscribe((data) => {
-       if(data.message == 'success'){         
+      if (data.message == 'success') {
         this.charTips = data.data;
-       }
-    }, error => {});
+      }
+    }, error => { });
   }
 
 
   public showTopVlaues = false;
-  setTopValues(){
-    if(this.showTopVlaues == false){
+  setTopValues() {
+    if (this.showTopVlaues == false) {
       this.showTopVlaues = true;
       this.barChartOptionsDP1 = this.barChartOptions1;
     } else {
